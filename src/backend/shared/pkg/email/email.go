@@ -23,10 +23,7 @@ type EmailSender interface {
 
 // NewEmailSender constructs an EmailSender based on declarative configuration.
 func NewEmailSender(cfg *config.EmailConfig) EmailSender {
-	if cfg == nil || strings.EqualFold(cfg.GetProvider(), "console") || cfg.GetProvider() == "" {
-		return NewConsoleEmailSender()
-	}
-	if strings.EqualFold(cfg.GetProvider(), "smtp") {
+	if cfg != nil && cfg.GetSmtp() != nil {
 		return NewSMTPEmailSender(cfg.GetSmtp())
 	}
 	return NewConsoleEmailSender()

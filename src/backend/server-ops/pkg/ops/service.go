@@ -58,7 +58,7 @@ func (s *OpsService) GetSystemDiagnostics(ctx context.Context, _ *connect.Reques
 
 	return connect.NewResponse(&pb.GetSystemDiagnosticsResponse{
 		Version:                   "0.1.0",
-		Environment:               s.cfg.Environment,
+		Environment:               s.cfg.GetEnvironment(),
 		UptimeSeconds:             uptime,
 		MemoryAllocatedBytes:      memoryAlloc,
 		NumGoroutines:             numGoroutines,
@@ -399,13 +399,13 @@ func (s *OpsService) ExchangeOAuthCode(ctx context.Context, req *connect.Request
 	operatorName := "developer@quadsmith.dev"
 	groupName := "operators"
 	if s.cfg.Oauth != nil {
-		if s.cfg.Oauth.DefaultGroup != "" {
-			groupName = s.cfg.Oauth.DefaultGroup
+		if s.cfg.Oauth.GetDefaultGroup() != "" {
+			groupName = s.cfg.Oauth.GetDefaultGroup()
 		}
 		// If developer mappings configured, match first
 		if len(s.cfg.Oauth.DeveloperMappings) > 0 {
-			groupName = s.cfg.Oauth.DeveloperMappings[0].GroupName
-			operatorName = s.cfg.Oauth.DeveloperMappings[0].Email
+			groupName = s.cfg.Oauth.DeveloperMappings[0].GetGroupName()
+			operatorName = s.cfg.Oauth.DeveloperMappings[0].GetEmail()
 		}
 	}
 
@@ -517,8 +517,8 @@ func (s *OpsService) ListIamGroups(ctx context.Context, _ *connect.Request[pb.Li
 	var groups []*pb.IamGroupSummary
 	for _, g := range s.cfg.Groups {
 		groups = append(groups, &pb.IamGroupSummary{
-			Name:           g.Name,
-			Description:    g.Description,
+			Name:           g.GetName(),
+			Description:    g.GetDescription(),
 			AllowedMethods: g.AllowedMethods,
 		})
 	}

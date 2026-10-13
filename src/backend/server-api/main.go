@@ -49,7 +49,7 @@ func main() {
 		log.Fatalf("server-api: configuration validation failed: %v", err)
 	}
 
-	pool, err := pgxpool.New(context.Background(), cfg.Database.Url)
+	pool, err := pgxpool.New(context.Background(), cfg.Database.GetUrl())
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}
@@ -153,7 +153,7 @@ func main() {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		resp := map[string]any{
-			"environment": cfg.Environment,
+			"environment": cfg.GetEnvironment(),
 		}
 		_ = json.NewEncoder(w).Encode(resp)
 	})
@@ -168,10 +168,10 @@ func main() {
 		_, _ = w.Write([]byte("Quadsmith API Server\n"))
 	})
 
-	port := strconv.Itoa(int(cfg.Server.Port))
+	port := strconv.Itoa(int(cfg.Server.GetPort()))
 	fmt.Printf("Starting Quadsmith API Server on port %s...\n", port)
 
-	maxBytes := cfg.Server.MaxRequestBytes
+	maxBytes := cfg.Server.GetMaxRequestBytes()
 	if maxBytes <= 0 {
 		maxBytes = 2 << 20
 	}

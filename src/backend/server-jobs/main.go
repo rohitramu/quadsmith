@@ -72,7 +72,7 @@ func main() {
 		}
 
 		wg.Add(1)
-		go func(name, procedure, payload string, d time.Duration) {
+		go func(name, procedure string, d time.Duration) {
 			defer wg.Done()
 			ticker := time.NewTicker(d)
 			defer ticker.Stop()
@@ -88,7 +88,7 @@ func main() {
 					log.Printf("[JobServer] Triggering scheduled job %q (%s)...", name, procedure)
 					req := connect.NewRequest(&pb.TriggerJobRequest{
 						JobName:     procedure,
-						PayloadJson: payload,
+						PayloadJson: "{}",
 					})
 
 					t0 := time.Now()
@@ -103,7 +103,7 @@ func main() {
 					}
 				}
 			}
-		}(s.GetName(), s.GetProcedure(), s.GetPayloadJson(), interval)
+		}(s.GetName(), s.GetProcedure(), interval)
 	}
 
 	stop := make(chan os.Signal, 1)

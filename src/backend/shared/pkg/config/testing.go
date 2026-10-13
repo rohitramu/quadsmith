@@ -4,6 +4,7 @@ import (
 	"testing"
 	"time"
 
+	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/types/known/durationpb"
 	config "quadsmith/shared/gen/quadsmith/config"
 )
@@ -15,7 +16,7 @@ func WithServerPort(port int32) APIServerOption {
 		if c.Server == nil {
 			c.Server = &config.ServerConfig{}
 		}
-		c.Server.Port = port
+		c.Server.Port = proto.Int32(port)
 	}
 }
 
@@ -24,7 +25,7 @@ func WithDatabaseURL(url string) APIServerOption {
 		if c.Database == nil {
 			c.Database = &config.DatabaseConfig{}
 		}
-		c.Database.Url = url
+		c.Database.Url = proto.String(url)
 	}
 }
 
@@ -33,7 +34,7 @@ func WithDatabaseName(name string) APIServerOption {
 		if c.Database == nil {
 			c.Database = &config.DatabaseConfig{}
 		}
-		c.Database.Name = name
+		c.Database.Name = proto.String(name)
 	}
 }
 
@@ -42,7 +43,7 @@ func WithAuthSecret(secret string) APIServerOption {
 		if c.Auth == nil {
 			c.Auth = &config.AuthConfig{}
 		}
-		c.Auth.Secret = secret
+		c.Auth.Secret = proto.String(secret)
 	}
 }
 
@@ -58,30 +59,35 @@ func WithEmailCooldown(d time.Duration) APIServerOption {
 func NewTestAPIServerConfig(t testing.TB, opts ...APIServerOption) *config.ApiServerConfig {
 	t.Helper()
 	cfg := &config.ApiServerConfig{
-		Environment: "test",
+		Environment: proto.String("test"),
 		Server: &config.ServerConfig{
-			Port:            8080,
+			Port:            proto.Int32(8080),
 			ReadTimeout:     durationpb.New(30 * time.Second),
 			WriteTimeout:    durationpb.New(60 * time.Second),
 			IdleTimeout:     durationpb.New(120 * time.Second),
-			MaxRequestBytes: 2097152,
+			MaxRequestBytes: proto.Int64(2097152),
 		},
 		Database: &config.DatabaseConfig{
-			Url:            "postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api?sslmode=disable",
-			Name:           "quadsmith_api",
-			MaxConnections: 25,
-			MinConnections: 2,
+			Url:            proto.String("postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api?sslmode=disable"),
+			Name:           proto.String("quadsmith_api"),
+			MaxConnections: proto.Int32(25),
+			MinConnections: proto.Int32(2),
 		},
 		Auth: &config.AuthConfig{
-			Secret:           "quadsmith-test-secret-key-32bytes-long!",
-			DevPrintOtp:      false,
-			SecureCookies:    false,
-			TrustedProxyHops: 0,
+			Secret:           proto.String("quadsmith-test-secret-key-32bytes-long!"),
+			DevPrintOtp:      proto.Bool(false),
+			SecureCookies:    proto.Bool(false),
+			TrustedProxyHops: proto.Int32(0),
 			AccessTokenTtl:   durationpb.New(1 * time.Hour),
 			RefreshTokenTtl:  durationpb.New(120 * time.Hour),
 			OtpTtl:           durationpb.New(3 * time.Minute),
 			MagicLinkTtl:     durationpb.New(15 * time.Minute),
 			EmailCooldown:    durationpb.New(1 * time.Second),
+			Email: &config.EmailConfig{
+				Delivery: &config.EmailConfig_Console{
+					Console: &config.ConsoleEmailConfig{},
+				},
+			},
 		},
 	}
 
@@ -99,68 +105,79 @@ func WithOpsServerPort(port int32) OpsServerOption {
 		if c.Server == nil {
 			c.Server = &config.ServerConfig{}
 		}
-		c.Server.Port = port
+		c.Server.Port = proto.Int32(port)
 	}
 }
 
 func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *config.OpsServerConfig {
 	t.Helper()
 	cfg := &config.OpsServerConfig{
-		Environment: "test",
+		Environment: proto.String("test"),
 		Server: &config.ServerConfig{
-			Port: 8081,
+			Port:            proto.Int32(8081),
+			ReadTimeout:     durationpb.New(30 * time.Second),
+			WriteTimeout:    durationpb.New(60 * time.Second),
+			IdleTimeout:     durationpb.New(120 * time.Second),
+			MaxRequestBytes: proto.Int64(2097152),
 		},
 		Database: &config.DatabaseConfig{
-			Url:            "postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api?sslmode=disable",
-			Name:           "quadsmith_api",
-			MaxConnections: 25,
-			MinConnections: 2,
+			Url:            proto.String("postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api?sslmode=disable"),
+			Name:           proto.String("quadsmith_api"),
+			MaxConnections: proto.Int32(25),
+			MinConnections: proto.Int32(2),
 		},
 		InternalDatabase: &config.DatabaseConfig{
-			Url:            "postgres://postgres:postgres@127.0.0.1:5432/quadsmith_ops?sslmode=disable",
-			Name:           "quadsmith_ops",
-			MaxConnections: 25,
-			MinConnections: 2,
+			Url:            proto.String("postgres://postgres:postgres@127.0.0.1:5432/quadsmith_ops?sslmode=disable"),
+			Name:           proto.String("quadsmith_ops"),
+			MaxConnections: proto.Int32(25),
+			MinConnections: proto.Int32(2),
 		},
 		Groups: []*config.InternalGroupConfig{
 			{
-				Name:           "operators",
-				Description:    "Full developer ops permissions",
+				Name:           proto.String("operators"),
+				Description:    proto.String("Full developer ops permissions"),
 				AllowedMethods: []string{"*"},
 			},
 			{
-				Name:           "robots",
-				Description:    "Automated scheduler and cron permissions",
+				Name:           proto.String("robots"),
+				Description:    proto.String("Automated scheduler and cron permissions"),
 				AllowedMethods: []string{"*"},
 			},
 			{
-				Name:           "viewers",
-				Description:    "Read-only internal operator permissions",
+				Name:           proto.String("viewers"),
+				Description:    proto.String("Read-only internal operator permissions"),
 				AllowedMethods: []string{"Get*", "List*"},
 			},
 		},
 		BootstrapTokens: []*config.BootstrapTokenConfig{
 			{
-				Id:        "test-operator-token",
-				Name:      "Test Operator Token",
-				Token:     "qs_op_test_token_12345",
-				GroupName: "operators",
-				Type:      "HUMAN",
+				Id:        proto.String("test-operator-token"),
+				Name:      proto.String("Test Operator Token"),
+				Token:     proto.String("qs_op_test_token_12345"),
+				GroupName: proto.String("operators"),
+				Type:      proto.String("HUMAN"),
 			},
 			{
-				Id:        "test-robot-token",
-				Name:      "Test Robot Token",
-				Token:     "qs_robot_test_token_67890",
-				GroupName: "robots",
-				Type:      "ROBOT",
+				Id:        proto.String("test-robot-token"),
+				Name:      proto.String("Test Robot Token"),
+				Token:     proto.String("qs_robot_test_token_67890"),
+				GroupName: proto.String("robots"),
+				Type:      proto.String("ROBOT"),
 			},
 		},
 		Jit: &config.JitPolicyConfig{
-			Enabled:          true,
-			AutoApprove:      true,
-			DefaultHours:     2,
-			MaxHours:         12,
+			Enabled:          proto.Bool(true),
+			AutoApprove:      proto.Bool(true),
+			DefaultHours:     proto.Int32(2),
+			MaxHours:         proto.Int32(12),
 			SensitiveMethods: []string{"RunDatabaseMaintenance", "SeedDatabase"},
+		},
+		Oauth: &config.OAuthConfig{
+			Provider:     proto.String("github"),
+			ClientId:     proto.String("dummy-id"),
+			ClientSecret: proto.String("dummy-secret"),
+			AllowedOrgs:  []string{"quadsmith"},
+			DefaultGroup: proto.String("viewers"),
 		},
 	}
 
@@ -174,14 +191,14 @@ func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *config.OpsSe
 func NewTestJobServerConfig(t testing.TB) *config.JobServerConfig {
 	t.Helper()
 	return &config.JobServerConfig{
-		Environment:  "test",
-		OpsServerUrl: "http://127.0.0.1:8081",
-		AuthToken:    "qs_robot_test_token_67890",
+		Environment:  proto.String("test"),
+		OpsServerUrl: proto.String("http://127.0.0.1:8081"),
+		AuthToken:    proto.String("qs_robot_test_token_67890"),
 		Schedules: []*config.JobScheduleConfig{
 			{
-				Name:      "cleanup_expired_otps",
-				Procedure: "CleanupExpiredOtps",
-				Interval:  "6h",
+				Name:      proto.String("cleanup_expired_otps"),
+				Procedure: proto.String("CleanupExpiredOtps"),
+				Interval:  proto.String("6h"),
 			},
 		},
 	}

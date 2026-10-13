@@ -10,6 +10,7 @@ import (
 
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 	config "quadsmith/shared/gen/quadsmith/config"
 )
 
@@ -305,11 +306,11 @@ func applyAPIServerEnvOverrides(cfg *config.ApiServerConfig) {
 	}
 	if cfg.Auth != nil {
 		if v := os.Getenv("QS_AUTH_SECRET"); v != "" {
-			cfg.Auth.Secret = v
+			cfg.Auth.Secret = &v
 		}
-		if cfg.Auth.Email != nil && cfg.Auth.Email.Smtp != nil {
+		if cfg.Auth.Email != nil && cfg.Auth.Email.GetSmtp() != nil {
 			if v := os.Getenv("QS_SMTP_PASSWORD"); v != "" {
-				cfg.Auth.Email.Smtp.Password = v
+				cfg.Auth.Email.GetSmtp().Password = &v
 			}
 		}
 	}
@@ -324,17 +325,17 @@ func applyOpsServerEnvOverrides(cfg *config.OpsServerConfig) {
 	}
 	if cfg.Oauth != nil {
 		if v := os.Getenv("QS_OAUTH_CLIENT_ID"); v != "" {
-			cfg.Oauth.ClientId = v
+			cfg.Oauth.ClientId = &v
 		}
 		if v := os.Getenv("QS_OAUTH_CLIENT_SECRET"); v != "" {
-			cfg.Oauth.ClientSecret = v
+			cfg.Oauth.ClientSecret = &v
 		}
 	}
 }
 
 func applyJobServerEnvOverrides(cfg *config.JobServerConfig) {
 	if v := os.Getenv("QS_JOB_SERVER_AUTH_TOKEN"); v != "" {
-		cfg.AuthToken = v
+		cfg.AuthToken = &v
 	}
 }
 
@@ -344,19 +345,101 @@ func applyWebServerEnvOverrides(cfg *config.WebServerConfig) {
 
 func applyInternalDatabaseEnvOverrides(db *config.DatabaseConfig) {
 	if v := os.Getenv("QS_INTERNAL_DATABASE_URL"); v != "" {
-		db.Url = v
+		db.Url = &v
 	}
 }
 
 func applyDatabaseEnvOverrides(db *config.DatabaseConfig) {
 	if v := os.Getenv("QS_DATABASE_URL"); v != "" {
-		db.Url = v
+		db.Url = &v
+	}
+}
+
+// ValidateNoUnsetFields recursively inspects msg using Protobuf reflection.
+// It verifies that:
+// 1. Every non-oneof scalar field (which has presence enabled via 'optional') is explicitly set.
+// 2. Every non-oneof singular message field is explicitly set, and its sub-fields are recursively validated.
+// 3. For any oneof group, exactly one branch is set, and if that branch is a message, it is recursively validated.
+// 4. Repeated message fields: every element in the list is recursively validated.
+// 5. Special handling for Google Well-Known Types (like google.protobuf.Duration): verified to be non-nil.
+func ValidateNoUnsetFields(msg proto.Message) error {
+	if msg == nil {
+		return fmt.Errorf("configuration message is nil")
+	}
+	var missing []string
+	validateMessageFields(msg.ProtoReflect(), string(msg.ProtoReflect().Descriptor().Name()), &missing)
+	if len(missing) > 0 {
+		return fmt.Errorf("missing required configuration field(s):\n  - %s", strings.Join(missing, "\n  - "))
+	}
+	return nil
+}
+
+func validateMessageFields(m protoreflect.Message, path string, missing *[]string) {
+	if !m.IsValid() {
+		*missing = append(*missing, fmt.Sprintf("%s is invalid/nil", path))
+		return
+	}
+
+	md := m.Descriptor()
+	fields := md.Fields()
+
+	checkedOneofs := make(map[protoreflect.Name]bool)
+
+	for i := 0; i < fields.Len(); i++ {
+		fd := fields.Get(i)
+
+		// Check oneof groups
+		if oo := fd.ContainingOneof(); oo != nil {
+			if !checkedOneofs[oo.Name()] {
+				checkedOneofs[oo.Name()] = true
+				which := m.WhichOneof(oo)
+				if which == nil {
+					*missing = append(*missing, fmt.Sprintf("%s: oneof %q must have an active branch set", path, oo.Name()))
+				} else {
+					val := m.Get(which)
+					if which.Message() != nil && !which.IsList() && !which.IsMap() {
+						if which.Message().FullName() != "google.protobuf.Duration" && which.Message().FullName() != "google.protobuf.Timestamp" {
+							validateMessageFields(val.Message(), fmt.Sprintf("%s.%s", path, which.Name()), missing)
+						}
+					}
+				}
+			}
+			continue
+		}
+
+		// Non-oneof repeated fields: validate each element if it's a message
+		if fd.IsList() {
+			if fd.Message() != nil {
+				list := m.Get(fd).List()
+				for j := 0; j < list.Len(); j++ {
+					validateMessageFields(list.Get(j).Message(), fmt.Sprintf("%s.%s[%d]", path, fd.Name(), j), missing)
+				}
+			}
+			continue
+		}
+
+		// Non-oneof singular field: must be explicitly set
+		if !m.Has(fd) {
+			*missing = append(*missing, fmt.Sprintf("%s.%s", path, fd.Name()))
+			continue
+		}
+
+		// If it's a sub-message, recursively validate
+		if fd.Message() != nil && !fd.IsMap() {
+			if fd.Message().FullName() != "google.protobuf.Duration" && fd.Message().FullName() != "google.protobuf.Timestamp" {
+				validateMessageFields(m.Get(fd).Message(), fmt.Sprintf("%s.%s", path, fd.Name()), missing)
+			}
+		}
 	}
 }
 
 // ValidateAPIServerConfig ensures all configuration required by the API server daemon is present and valid.
 func ValidateAPIServerConfig(c *config.ApiServerConfig) error {
 	var errs []string
+
+	if err := ValidateNoUnsetFields(c); err != nil {
+		errs = append(errs, err.Error())
+	}
 
 	if strings.TrimSpace(c.GetEnvironment()) == "" {
 		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
@@ -365,8 +448,8 @@ func ValidateAPIServerConfig(c *config.ApiServerConfig) error {
 	if c.Server == nil {
 		errs = append(errs, "server configuration section is missing")
 	} else {
-		if c.Server.Port < 1 || c.Server.Port > 65535 {
-			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.Port))
+		if c.Server.GetPort() < 1 || c.Server.GetPort() > 65535 {
+			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.GetPort()))
 		}
 		if c.Server.ReadTimeout != nil && c.Server.ReadTimeout.AsDuration() <= 0 {
 			errs = append(errs, "server.read_timeout must be greater than 0")
@@ -377,7 +460,7 @@ func ValidateAPIServerConfig(c *config.ApiServerConfig) error {
 		if c.Server.IdleTimeout != nil && c.Server.IdleTimeout.AsDuration() <= 0 {
 			errs = append(errs, "server.idle_timeout must be greater than 0")
 		}
-		if c.Server.MaxRequestBytes <= 0 {
+		if c.Server.GetMaxRequestBytes() <= 0 {
 			errs = append(errs, "server.max_request_bytes must be greater than 0")
 		}
 	}
@@ -404,6 +487,10 @@ func ValidateAPIServerConfig(c *config.ApiServerConfig) error {
 func ValidateWebServerConfig(c *config.WebServerConfig) error {
 	var errs []string
 
+	if err := ValidateNoUnsetFields(c); err != nil {
+		errs = append(errs, err.Error())
+	}
+
 	if strings.TrimSpace(c.GetEnvironment()) == "" {
 		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
 	}
@@ -411,8 +498,8 @@ func ValidateWebServerConfig(c *config.WebServerConfig) error {
 	if c.Server == nil {
 		errs = append(errs, "server configuration section is missing")
 	} else {
-		if c.Server.Port < 1 || c.Server.Port > 65535 {
-			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.Port))
+		if c.Server.GetPort() < 1 || c.Server.GetPort() > 65535 {
+			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.GetPort()))
 		}
 		if c.Server.ReadTimeout != nil && c.Server.ReadTimeout.AsDuration() <= 0 {
 			errs = append(errs, "server.read_timeout must be greater than 0")
@@ -423,22 +510,25 @@ func ValidateWebServerConfig(c *config.WebServerConfig) error {
 		if c.Server.IdleTimeout != nil && c.Server.IdleTimeout.AsDuration() <= 0 {
 			errs = append(errs, "server.idle_timeout must be greater than 0")
 		}
-	}
-
-	if strings.TrimSpace(c.StaticDir) == "" {
-		errs = append(errs, "static_dir cannot be empty")
-	}
-
-	if strings.TrimSpace(c.ApiUrl) == "" {
-		errs = append(errs, "api_url cannot be empty")
-	} else {
-		u, err := url.Parse(c.ApiUrl)
-		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
-			errs = append(errs, fmt.Sprintf("api_url must be a valid HTTP or HTTPS URL (got %q)", c.ApiUrl))
+		if c.Server.GetMaxRequestBytes() <= 0 {
+			errs = append(errs, "server.max_request_bytes must be greater than 0")
 		}
 	}
 
-	if strings.TrimSpace(c.AppName) == "" {
+	if strings.TrimSpace(c.GetStaticDir()) == "" {
+		errs = append(errs, "static_dir cannot be empty")
+	}
+
+	if strings.TrimSpace(c.GetApiUrl()) == "" {
+		errs = append(errs, "api_url cannot be empty")
+	} else {
+		u, err := url.Parse(c.GetApiUrl())
+		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
+			errs = append(errs, fmt.Sprintf("api_url must be a valid HTTP or HTTPS URL (got %q)", c.GetApiUrl()))
+		}
+	}
+
+	if strings.TrimSpace(c.GetAppName()) == "" {
 		errs = append(errs, "app_name cannot be empty")
 	}
 
@@ -452,6 +542,10 @@ func ValidateWebServerConfig(c *config.WebServerConfig) error {
 func ValidateOpsServerConfig(c *config.OpsServerConfig) error {
 	var errs []string
 
+	if err := ValidateNoUnsetFields(c); err != nil {
+		errs = append(errs, err.Error())
+	}
+
 	if strings.TrimSpace(c.GetEnvironment()) == "" {
 		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
 	}
@@ -459,8 +553,8 @@ func ValidateOpsServerConfig(c *config.OpsServerConfig) error {
 	if c.Server == nil {
 		errs = append(errs, "server configuration section is missing")
 	} else {
-		if c.Server.Port < 1 || c.Server.Port > 65535 {
-			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.Port))
+		if c.Server.GetPort() < 1 || c.Server.GetPort() > 65535 {
+			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.GetPort()))
 		}
 		if c.Server.ReadTimeout != nil && c.Server.ReadTimeout.AsDuration() <= 0 {
 			errs = append(errs, "server.read_timeout must be greater than 0")
@@ -470,6 +564,9 @@ func ValidateOpsServerConfig(c *config.OpsServerConfig) error {
 		}
 		if c.Server.IdleTimeout != nil && c.Server.IdleTimeout.AsDuration() <= 0 {
 			errs = append(errs, "server.idle_timeout must be greater than 0")
+		}
+		if c.Server.GetMaxRequestBytes() <= 0 {
+			errs = append(errs, "server.max_request_bytes must be greater than 0")
 		}
 	}
 
@@ -498,6 +595,10 @@ func ValidateOpsServerConfig(c *config.OpsServerConfig) error {
 // ValidateJobServerConfig ensures all configuration required by the job server is present and valid.
 func ValidateJobServerConfig(c *config.JobServerConfig) error {
 	var errs []string
+
+	if err := ValidateNoUnsetFields(c); err != nil {
+		errs = append(errs, err.Error())
+	}
 
 	if strings.TrimSpace(c.GetEnvironment()) == "" {
 		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
@@ -530,6 +631,10 @@ func ValidateJobServerConfig(c *config.JobServerConfig) error {
 func ValidateOpsCliConfig(c *config.OpsCliConfig) error {
 	var errs []string
 
+	if err := ValidateNoUnsetFields(c); err != nil {
+		errs = append(errs, err.Error())
+	}
+
 	if strings.TrimSpace(c.GetEnvironment()) == "" {
 		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
 	}
@@ -556,6 +661,10 @@ func ValidateOpsCliConfig(c *config.OpsCliConfig) error {
 // ValidateCliConfig ensures configuration required by the customer CLI is present and valid.
 func ValidateCliConfig(c *config.CliConfig) error {
 	var errs []string
+
+	if err := ValidateNoUnsetFields(c); err != nil {
+		errs = append(errs, err.Error())
+	}
 
 	if strings.TrimSpace(c.GetEnvironment()) == "" {
 		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
@@ -647,24 +756,18 @@ func ValidateAuth(auth *config.AuthConfig, env string) error {
 		errs = append(errs, "auth.email_cooldown must be greater than 0")
 	}
 	if auth.GetEmail() != nil {
-		provider := strings.ToLower(strings.TrimSpace(auth.GetEmail().GetProvider()))
-		if provider != "" && provider != "console" && provider != "smtp" {
-			errs = append(errs, fmt.Sprintf("auth.email.provider must be 'console' or 'smtp' (got %q)", auth.GetEmail().GetProvider()))
+		if auth.GetEmail().GetSmtp() == nil && auth.GetEmail().GetConsole() == nil {
+			errs = append(errs, "auth.email must specify either 'console' or 'smtp'")
 		}
-		if provider == "smtp" {
-			if auth.GetEmail().GetSmtp() == nil {
-				errs = append(errs, "auth.email.smtp must be specified when provider is 'smtp'")
-			} else {
-				smtp := auth.GetEmail().GetSmtp()
-				if strings.TrimSpace(smtp.GetHost()) == "" {
-					errs = append(errs, "auth.email.smtp.host cannot be empty")
-				}
-				if smtp.GetPort() <= 0 || smtp.GetPort() > 65535 {
-					errs = append(errs, "auth.email.smtp.port must be between 1 and 65535")
-				}
-				if strings.TrimSpace(smtp.GetFromAddress()) == "" {
-					errs = append(errs, "auth.email.smtp.from_address cannot be empty")
-				}
+		if smtp := auth.GetEmail().GetSmtp(); smtp != nil {
+			if strings.TrimSpace(smtp.GetHost()) == "" {
+				errs = append(errs, "auth.email.smtp.host cannot be empty")
+			}
+			if smtp.GetPort() <= 0 || smtp.GetPort() > 65535 {
+				errs = append(errs, "auth.email.smtp.port must be between 1 and 65535")
+			}
+			if strings.TrimSpace(smtp.GetFromAddress()) == "" {
+				errs = append(errs, "auth.email.smtp.from_address cannot be empty")
 			}
 		}
 	}

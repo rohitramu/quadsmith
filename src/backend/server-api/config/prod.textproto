@@ -42,7 +42,6 @@ auth {
     seconds: 20
   }
   email {
-    provider: "smtp"
     smtp {
       host: "smtp.resend.com"
       port: 587

@@ -27,14 +27,14 @@ func TestWebServer_ConfigValidation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load web server sandbox config: %v", err)
 	}
-	if cfg.Server.Port != 3000 {
-		t.Errorf("expected port 3000, got %d", cfg.Server.Port)
+	if cfg.Server.GetPort() != 3000 {
+		t.Errorf("expected port 3000, got %d", cfg.Server.GetPort())
 	}
-	if cfg.ApiUrl != "http://127.0.0.1:8080" {
-		t.Errorf("expected apiUrl http://127.0.0.1:8080, got %s", cfg.ApiUrl)
+	if cfg.GetApiUrl() != "http://127.0.0.1:8080" {
+		t.Errorf("expected apiUrl http://127.0.0.1:8080, got %s", cfg.GetApiUrl())
 	}
-	if cfg.StaticDir != "src/frontend/web/app/dist" {
-		t.Errorf("expected staticDir src/frontend/web/app/dist, got %s", cfg.StaticDir)
+	if cfg.GetStaticDir() != "src/frontend/web/app/dist" {
+		t.Errorf("expected staticDir src/frontend/web/app/dist, got %s", cfg.GetStaticDir())
 	}
 }
 

@@ -97,11 +97,11 @@ func (in *OpsInterceptor) WrapStreamingHandler(next connect.StreamingHandlerFunc
 
 func (in *OpsInterceptor) authenticateToken(ctx context.Context, token string) (*OperatorContext, error) {
 	for _, bt := range in.cfg.BootstrapTokens {
-		if bt.Token != "" && bt.Token == token {
+		if bt.GetToken() != "" && bt.GetToken() == token {
 			return &OperatorContext{
-				Operator:     bt.Name,
-				OperatorType: bt.Type,
-				GroupName:    bt.GroupName,
+				Operator:     bt.GetName(),
+				OperatorType: bt.GetType(),
+				GroupName:    bt.GetGroupName(),
 			}, nil
 		}
 	}
@@ -139,7 +139,7 @@ func (in *OpsInterceptor) authenticateToken(ctx context.Context, token string) (
 func (in *OpsInterceptor) authorizeGroup(groupName, methodName string) error {
 	var group *config.InternalGroupConfig
 	for _, g := range in.cfg.Groups {
-		if g.Name == groupName {
+		if g.GetName() == groupName {
 			group = g
 			break
 		}
@@ -164,7 +164,7 @@ func (in *OpsInterceptor) authorizeGroup(groupName, methodName string) error {
 }
 
 func (in *OpsInterceptor) isSensitiveMethod(methodName string) bool {
-	if in.cfg.Jit == nil || !in.cfg.Jit.Enabled {
+	if in.cfg.Jit == nil || !in.cfg.Jit.GetEnabled() {
 		return false
 	}
 	for _, m := range in.cfg.Jit.SensitiveMethods {

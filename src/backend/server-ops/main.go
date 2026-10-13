@@ -40,22 +40,22 @@ func main() {
 	}
 
 	port := 8081
-	if cfg.Server != nil && cfg.Server.Port > 0 {
-		port = int(cfg.Server.Port)
+	if cfg.Server != nil && cfg.Server.GetPort() > 0 {
+		port = int(cfg.Server.GetPort())
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	publicPool, err := pgxpool.New(ctx, cfg.Database.Url)
+	publicPool, err := pgxpool.New(ctx, cfg.Database.GetUrl())
 	if err != nil {
-		log.Fatalf("Unable to connect to public database (%s): %v\n", cfg.Database.Name, err)
+		log.Fatalf("Unable to connect to public database (%s): %v\n", cfg.Database.GetName(), err)
 	}
 	defer publicPool.Close()
 
-	internalPool, err := pgxpool.New(ctx, cfg.InternalDatabase.Url)
+	internalPool, err := pgxpool.New(ctx, cfg.InternalDatabase.GetUrl())
 	if err != nil {
-		log.Fatalf("Unable to connect to internal database (%s): %v\n", cfg.InternalDatabase.Name, err)
+		log.Fatalf("Unable to connect to internal database (%s): %v\n", cfg.InternalDatabase.GetName(), err)
 	}
 	defer internalPool.Close()
 

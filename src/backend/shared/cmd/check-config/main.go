@@ -111,10 +111,10 @@ func validateConfigFile(check configFileCheck, raw []byte) error {
 		if err := bconfig.ValidateAPIServerConfig(&cfg); err != nil {
 			return err
 		}
-		if cfg.Server == nil || cfg.Server.IdleTimeout == nil || cfg.Server.MaxRequestBytes <= 0 {
+		if cfg.Server == nil || cfg.Server.IdleTimeout == nil || cfg.Server.GetMaxRequestBytes() <= 0 {
 			return fmt.Errorf("server timeouts and limits must be explicitly specified")
 		}
-		if cfg.Database == nil || cfg.Database.MinConnections <= 0 || cfg.Database.MaxConnections <= 0 {
+		if cfg.Database == nil || cfg.Database.GetMinConnections() <= 0 || cfg.Database.GetMaxConnections() <= 0 {
 			return fmt.Errorf("database connection limits must be explicitly specified")
 		}
 
@@ -129,13 +129,13 @@ func validateConfigFile(check configFileCheck, raw []byte) error {
 		if err := bconfig.ValidateOpsServerConfig(&cfg); err != nil {
 			return err
 		}
-		if cfg.Server == nil || cfg.Server.IdleTimeout == nil || cfg.Server.MaxRequestBytes <= 0 {
+		if cfg.Server == nil || cfg.Server.IdleTimeout == nil || cfg.Server.GetMaxRequestBytes() <= 0 {
 			return fmt.Errorf("server timeouts and limits must be explicitly specified")
 		}
-		if cfg.Database == nil || cfg.Database.MinConnections <= 0 || cfg.Database.MaxConnections <= 0 {
+		if cfg.Database == nil || cfg.Database.GetMinConnections() <= 0 || cfg.Database.GetMaxConnections() <= 0 {
 			return fmt.Errorf("database connection limits must be explicitly specified")
 		}
-		if cfg.InternalDatabase == nil || cfg.InternalDatabase.MinConnections <= 0 || cfg.InternalDatabase.MaxConnections <= 0 {
+		if cfg.InternalDatabase == nil || cfg.InternalDatabase.GetMinConnections() <= 0 || cfg.InternalDatabase.GetMaxConnections() <= 0 {
 			return fmt.Errorf("internal database connection limits must be explicitly specified")
 		}
 
@@ -162,10 +162,10 @@ func validateConfigFile(check configFileCheck, raw []byte) error {
 		if err := bconfig.ValidateWebServerConfig(&cfg); err != nil {
 			return err
 		}
-		if cfg.Server == nil || cfg.Server.IdleTimeout == nil || cfg.Server.MaxRequestBytes <= 0 {
+		if cfg.Server == nil || cfg.Server.IdleTimeout == nil || cfg.Server.GetMaxRequestBytes() <= 0 {
 			return fmt.Errorf("server timeouts and limits must be explicitly specified")
 		}
-		if strings.TrimSpace(cfg.StaticDir) == "" {
+		if strings.TrimSpace(cfg.GetStaticDir()) == "" {
 			return fmt.Errorf("static_dir must be explicitly specified")
 		}
 

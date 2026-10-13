@@ -36,13 +36,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err := bconfig.ValidateSeeder(cfg.Database, cfg.Environment); err != nil {
+	if err := bconfig.ValidateSeeder(cfg.Database, cfg.GetEnvironment()); err != nil {
 		fmt.Fprintf(os.Stderr, "%v\n", err)
 		os.Exit(1)
 	}
 
 	ctx := context.Background()
-	db, err := pgxpool.New(ctx, cfg.Database.Url)
+	db, err := pgxpool.New(ctx, cfg.Database.GetUrl())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to connect to database: %v\n", err)
 		os.Exit(1)

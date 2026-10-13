@@ -39,9 +39,9 @@ func main() {
 	}
 
 	clientCfg := map[string]string{
-		"environment": cfg.Environment,
-		"apiUrl":      cfg.ApiUrl,
-		"appName":     cfg.AppName,
+		"environment": cfg.GetEnvironment(),
+		"apiUrl":      cfg.GetApiUrl(),
+		"appName":     cfg.GetAppName(),
 	}
 	clientCfgJSONBytes, _ := json.Marshal(clientCfg)
 	clientCfgJSON := string(clientCfgJSONBytes)
@@ -65,10 +65,10 @@ func main() {
 	})
 
 	// Reverse proxy to API server
-	if cfg.ApiUrl != "" {
-		targetURL, err := url.Parse(cfg.ApiUrl)
+	if cfg.GetApiUrl() != "" {
+		targetURL, err := url.Parse(cfg.GetApiUrl())
 		if err != nil {
-			log.Fatalf("server-web: invalid api_url %q: %v", cfg.ApiUrl, err)
+			log.Fatalf("server-web: invalid api_url %q: %v", cfg.GetApiUrl(), err)
 		}
 		proxy := httputil.NewSingleHostReverseProxy(targetURL)
 		mux.Handle("/quadsmith.api.", proxy)
@@ -78,12 +78,12 @@ func main() {
 	}
 
 	// SPA & static asset handler
-	mux.Handle("/", static.ServeSPAWithConfig(cfg.StaticDir, cfg.ApiUrl, clientCfgJSON))
+	mux.Handle("/", static.ServeSPAWithConfig(cfg.GetStaticDir(), cfg.GetApiUrl(), clientCfgJSON))
 
-	port := strconv.Itoa(int(cfg.Server.Port))
+	port := strconv.Itoa(int(cfg.Server.GetPort()))
 	fmt.Printf("Starting Quadsmith Web Server on port %s...\n", port)
 
-	maxBytes := cfg.Server.MaxRequestBytes
+	maxBytes := cfg.Server.GetMaxRequestBytes()
 	if maxBytes <= 0 {
 		maxBytes = 10 << 20 // 10MB
 	}

@@ -14,229 +14,18 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_config_config: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Ch1xdWFkc21pdGgvY29uZmlnL2NvbmZpZy5wcm90bxIQcXVhZHNtaXRoLmNvbmZpZyJdCg5EYXRhYmFzZUNvbmZpZxILCgN1cmwYASABKAkSDAoEbmFtZRgCIAEoCRIXCg9tYXhfY29ubmVjdGlvbnMYAyABKAUSFwoPbWluX2Nvbm5lY3Rpb25zGAQgASgFIssBCgxTZXJ2ZXJDb25maWcSDAoEcG9ydBgBIAEoBRIvCgxyZWFkX3RpbWVvdXQYAiABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SMAoNd3JpdGVfdGltZW91dBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhIvCgxpZGxlX3RpbWVvdXQYBCABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SGQoRbWF4X3JlcXVlc3RfYnl0ZXMYBSABKAMiiQEKClNtdHBDb25maWcSDAoEaG9zdBgBIAEoCRIMCgRwb3J0GAIgASgFEhAKCHVzZXJuYW1lGAMgASgJEhAKCHBhc3N3b3JkGAQgASgJEhQKDGZyb21fYWRkcmVzcxgFIAEoCRIQCghyZXBseV90bxgGIAEoCRITCgtyZXF1aXJlX3RscxgHIAEoCCJLCgtFbWFpbENvbmZpZxIQCghwcm92aWRlchgBIAEoCRIqCgRzbXRwGAIgASgLMhwucXVhZHNtaXRoLmNvbmZpZy5TbXRwQ29uZmlnIpIDCgpBdXRoQ29uZmlnEg4KBnNlY3JldBgBIAEoCRIVCg1kZXZfcHJpbnRfb3RwGAIgASgIEhYKDnNlY3VyZV9jb29raWVzGAMgASgIEhoKEnRydXN0ZWRfcHJveHlfaG9wcxgEIAEoBRIzChBhY2Nlc3NfdG9rZW5fdHRsGAUgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEjQKEXJlZnJlc2hfdG9rZW5fdHRsGAYgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEioKB290cF90dGwYByABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SMQoObWFnaWNfbGlua190dGwYCCABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SMQoOZW1haWxfY29vbGRvd24YCSABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SLAoFZW1haWwYCiABKAsyHS5xdWFkc21pdGguY29uZmlnLkVtYWlsQ29uZmlnItQBCg9BcGlTZXJ2ZXJDb25maWcSEwoLZW52aXJvbm1lbnQYASABKAkSLgoGc2VydmVyGAIgASgLMh4ucXVhZHNtaXRoLmNvbmZpZy5TZXJ2ZXJDb25maWcSMgoIZGF0YWJhc2UYAyABKAsyIC5xdWFkc21pdGguY29uZmlnLkRhdGFiYXNlQ29uZmlnEioKBGF1dGgYBCABKAsyHC5xdWFkc21pdGguY29uZmlnLkF1dGhDb25maWcSHAoUY29yc19hbGxvd2VkX29yaWdpbnMYBSADKAkijQEKD1dlYlNlcnZlckNvbmZpZxITCgtlbnZpcm9ubWVudBgBIAEoCRIuCgZzZXJ2ZXIYAiABKAsyHi5xdWFkc21pdGguY29uZmlnLlNlcnZlckNvbmZpZxISCgpzdGF0aWNfZGlyGAMgASgJEg8KB2FwaV91cmwYBCABKAkSEAoIYXBwX25hbWUYBSABKAkiXQoJQ2xpQ29uZmlnEhMKC2Vudmlyb25tZW50GAEgASgJEg8KB2FwaV91cmwYAiABKAkSKgoHdGltZW91dBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbiJRChNJbnRlcm5hbEdyb3VwQ29uZmlnEgwKBG5hbWUYASABKAkSEwoLZGVzY3JpcHRpb24YAiABKAkSFwoPYWxsb3dlZF9tZXRob2RzGAMgAygJImEKFEJvb3RzdHJhcFRva2VuQ29uZmlnEgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkSDQoFdG9rZW4YAyABKAkSEgoKZ3JvdXBfbmFtZRgEIAEoCRIMCgR0eXBlGAUgASgJIn0KD0ppdFBvbGljeUNvbmZpZxIPCgdlbmFibGVkGAEgASgIEhQKDGF1dG9fYXBwcm92ZRgCIAEoCBIVCg1kZWZhdWx0X2hvdXJzGAMgASgFEhEKCW1heF9ob3VycxgEIAEoBRIZChFzZW5zaXRpdmVfbWV0aG9kcxgFIAMoCSI1ChBEZXZlbG9wZXJNYXBwaW5nEg0KBWVtYWlsGAEgASgJEhIKCmdyb3VwX25hbWUYAiABKAkilwIKC09BdXRoQ29uZmlnEhAKCHByb3ZpZGVyGAEgASgJEhEKCWNsaWVudF9pZBgCIAEoCRIVCg1jbGllbnRfc2VjcmV0GAMgASgJEhIKCmlzc3Vlcl91cmwYBCABKAkSFAoMYWxsb3dlZF9vcmdzGAUgAygJEhUKDWFsbG93ZWRfdGVhbXMYBiADKAkSHQoVYWxsb3dlZF9lbWFpbF9kb21haW5zGAcgAygJEhUKDWFsbG93ZWRfdXNlcnMYCCADKAkSFQoNZGVmYXVsdF9ncm91cBgJIAEoCRI+ChJkZXZlbG9wZXJfbWFwcGluZ3MYCiADKAsyIi5xdWFkc21pdGguY29uZmlnLkRldmVsb3Blck1hcHBpbmcingMKD09wc1NlcnZlckNvbmZpZxITCgtlbnZpcm9ubWVudBgBIAEoCRIuCgZzZXJ2ZXIYAiABKAsyHi5xdWFkc21pdGguY29uZmlnLlNlcnZlckNvbmZpZxIyCghkYXRhYmFzZRgDIAEoCzIgLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VDb25maWcSOwoRaW50ZXJuYWxfZGF0YWJhc2UYBCABKAsyIC5xdWFkc21pdGguY29uZmlnLkRhdGFiYXNlQ29uZmlnEjUKBmdyb3VwcxgFIAMoCzIlLnF1YWRzbWl0aC5jb25maWcuSW50ZXJuYWxHcm91cENvbmZpZxJAChBib290c3RyYXBfdG9rZW5zGAYgAygLMiYucXVhZHNtaXRoLmNvbmZpZy5Cb290c3RyYXBUb2tlbkNvbmZpZxIuCgNqaXQYByABKAsyIS5xdWFkc21pdGguY29uZmlnLkppdFBvbGljeUNvbmZpZxIsCgVvYXV0aBgIIAEoCzIdLnF1YWRzbWl0aC5jb25maWcuT0F1dGhDb25maWciZwoMT3BzQ2xpQ29uZmlnEhMKC2Vudmlyb25tZW50GAEgASgJEhYKDm9wc19zZXJ2ZXJfdXJsGAIgASgJEioKB3RpbWVvdXQYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24iXAoRSm9iU2NoZWR1bGVDb25maWcSDAoEbmFtZRgBIAEoCRIRCglwcm9jZWR1cmUYAiABKAkSEAoIaW50ZXJ2YWwYAyABKAkSFAoMcGF5bG9hZF9qc29uGAQgASgJIooBCg9Kb2JTZXJ2ZXJDb25maWcSEwoLZW52aXJvbm1lbnQYASABKAkSFgoOb3BzX3NlcnZlcl91cmwYAiABKAkSEgoKYXV0aF90b2tlbhgDIAEoCRI2CglzY2hlZHVsZXMYBCADKAsyIy5xdWFkc21pdGguY29uZmlnLkpvYlNjaGVkdWxlQ29uZmlnQi5aLHF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9jb25maWc7Y29uZmlnYgZwcm90bzM",
+    "Ch1xdWFkc21pdGgvY29uZmlnL2NvbmZpZy5wcm90bxIQcXVhZHNtaXRoLmNvbmZpZyLLAQoPQXBpU2VydmVyQ29uZmlnEhgKC2Vudmlyb25tZW50GAEgASgJSACIAQESLgoGc2VydmVyGAIgASgLMh4ucXVhZHNtaXRoLmNvbmZpZy5TZXJ2ZXJDb25maWcSMgoIZGF0YWJhc2UYAyABKAsyIC5xdWFkc21pdGguY29uZmlnLkRhdGFiYXNlQ29uZmlnEioKBGF1dGgYBCABKAsyHC5xdWFkc21pdGguY29uZmlnLkF1dGhDb25maWdCDgoMX2Vudmlyb25tZW50IrMDCg9PcHNTZXJ2ZXJDb25maWcSGAoLZW52aXJvbm1lbnQYASABKAlIAIgBARIuCgZzZXJ2ZXIYAiABKAsyHi5xdWFkc21pdGguY29uZmlnLlNlcnZlckNvbmZpZxIyCghkYXRhYmFzZRgDIAEoCzIgLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VDb25maWcSOwoRaW50ZXJuYWxfZGF0YWJhc2UYBCABKAsyIC5xdWFkc21pdGguY29uZmlnLkRhdGFiYXNlQ29uZmlnEjUKBmdyb3VwcxgFIAMoCzIlLnF1YWRzbWl0aC5jb25maWcuSW50ZXJuYWxHcm91cENvbmZpZxJAChBib290c3RyYXBfdG9rZW5zGAYgAygLMiYucXVhZHNtaXRoLmNvbmZpZy5Cb290c3RyYXBUb2tlbkNvbmZpZxIuCgNqaXQYByABKAsyIS5xdWFkc21pdGguY29uZmlnLkppdFBvbGljeUNvbmZpZxIsCgVvYXV0aBgIIAEoCzIdLnF1YWRzbWl0aC5jb25maWcuT0F1dGhDb25maWdCDgoMX2Vudmlyb25tZW50IssBCg9Kb2JTZXJ2ZXJDb25maWcSGAoLZW52aXJvbm1lbnQYASABKAlIAIgBARIbCg5vcHNfc2VydmVyX3VybBgCIAEoCUgBiAEBEhcKCmF1dGhfdG9rZW4YAyABKAlIAogBARI2CglzY2hlZHVsZXMYBCADKAsyIy5xdWFkc21pdGguY29uZmlnLkpvYlNjaGVkdWxlQ29uZmlnQg4KDF9lbnZpcm9ubWVudEIRCg9fb3BzX3NlcnZlcl91cmxCDQoLX2F1dGhfdG9rZW4i2QEKD1dlYlNlcnZlckNvbmZpZxIYCgtlbnZpcm9ubWVudBgBIAEoCUgAiAEBEi4KBnNlcnZlchgCIAEoCzIeLnF1YWRzbWl0aC5jb25maWcuU2VydmVyQ29uZmlnEhcKCnN0YXRpY19kaXIYAyABKAlIAYgBARIUCgdhcGlfdXJsGAQgASgJSAKIAQESFQoIYXBwX25hbWUYBSABKAlIA4gBAUIOCgxfZW52aXJvbm1lbnRCDQoLX3N0YXRpY19kaXJCCgoIX2FwaV91cmxCCwoJX2FwcF9uYW1lIoMBCglDbGlDb25maWcSGAoLZW52aXJvbm1lbnQYASABKAlIAIgBARIUCgdhcGlfdXJsGAIgASgJSAGIAQESKgoHdGltZW91dBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkIOCgxfZW52aXJvbm1lbnRCCgoIX2FwaV91cmwilAEKDE9wc0NsaUNvbmZpZxIYCgtlbnZpcm9ubWVudBgBIAEoCUgAiAEBEhsKDm9wc19zZXJ2ZXJfdXJsGAIgASgJSAGIAQESKgoHdGltZW91dBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkIOCgxfZW52aXJvbm1lbnRCEQoPX29wc19zZXJ2ZXJfdXJsInkKEUpvYlNjaGVkdWxlQ29uZmlnEhEKBG5hbWUYASABKAlIAIgBARIWCglwcm9jZWR1cmUYAiABKAlIAYgBARIVCghpbnRlcnZhbBgDIAEoCUgCiAEBQgcKBV9uYW1lQgwKCl9wcm9jZWR1cmVCCwoJX2ludGVydmFsInQKE0ludGVybmFsR3JvdXBDb25maWcSEQoEbmFtZRgBIAEoCUgAiAEBEhgKC2Rlc2NyaXB0aW9uGAIgASgJSAGIAQESFwoPYWxsb3dlZF9tZXRob2RzGAMgAygJQgcKBV9uYW1lQg4KDF9kZXNjcmlwdGlvbiKsAQoUQm9vdHN0cmFwVG9rZW5Db25maWcSDwoCaWQYASABKAlIAIgBARIRCgRuYW1lGAIgASgJSAGIAQESEgoFdG9rZW4YAyABKAlIAogBARIXCgpncm91cF9uYW1lGAQgASgJSAOIAQESEQoEdHlwZRgFIAEoCUgEiAEBQgUKA19pZEIHCgVfbmFtZUIICgZfdG9rZW5CDQoLX2dyb3VwX25hbWVCBwoFX3R5cGUizgEKD0ppdFBvbGljeUNvbmZpZxIUCgdlbmFibGVkGAEgASgISACIAQESGQoMYXV0b19hcHByb3ZlGAIgASgISAGIAQESGgoNZGVmYXVsdF9ob3VycxgDIAEoBUgCiAEBEhYKCW1heF9ob3VycxgEIAEoBUgDiAEBEhkKEXNlbnNpdGl2ZV9tZXRob2RzGAUgAygJQgoKCF9lbmFibGVkQg8KDV9hdXRvX2FwcHJvdmVCEAoOX2RlZmF1bHRfaG91cnNCDAoKX21heF9ob3VycyKJAgoLT0F1dGhDb25maWcSFQoIcHJvdmlkZXIYASABKAlIAIgBARIWCgljbGllbnRfaWQYAiABKAlIAYgBARIaCg1jbGllbnRfc2VjcmV0GAMgASgJSAKIAQESFAoMYWxsb3dlZF9vcmdzGAQgAygJEhoKDWRlZmF1bHRfZ3JvdXAYBSABKAlIA4gBARI+ChJkZXZlbG9wZXJfbWFwcGluZ3MYBiADKAsyIi5xdWFkc21pdGguY29uZmlnLkRldmVsb3Blck1hcHBpbmdCCwoJX3Byb3ZpZGVyQgwKCl9jbGllbnRfaWRCEAoOX2NsaWVudF9zZWNyZXRCEAoOX2RlZmF1bHRfZ3JvdXAiWAoQRGV2ZWxvcGVyTWFwcGluZxISCgVlbWFpbBgBIAEoCUgAiAEBEhcKCmdyb3VwX25hbWUYAiABKAlIAYgBAUIICgZfZW1haWxCDQoLX2dyb3VwX25hbWUi7QMKCkF1dGhDb25maWcSEwoGc2VjcmV0GAEgASgJSACIAQESGgoNZGV2X3ByaW50X290cBgCIAEoCEgBiAEBEhsKDnNlY3VyZV9jb29raWVzGAMgASgISAKIAQESHwoSdHJ1c3RlZF9wcm94eV9ob3BzGAQgASgFSAOIAQESMwoQYWNjZXNzX3Rva2VuX3R0bBgFIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhI0ChFyZWZyZXNoX3Rva2VuX3R0bBgGIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhIqCgdvdHBfdHRsGAcgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEjEKDm1hZ2ljX2xpbmtfdHRsGAggASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEjEKDmVtYWlsX2Nvb2xkb3duGAkgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEiwKBWVtYWlsGAogASgLMh0ucXVhZHNtaXRoLmNvbmZpZy5FbWFpbENvbmZpZ0IJCgdfc2VjcmV0QhAKDl9kZXZfcHJpbnRfb3RwQhEKD19zZWN1cmVfY29va2llc0IVChNfdHJ1c3RlZF9wcm94eV9ob3BzIoABCgtFbWFpbENvbmZpZxI3Cgdjb25zb2xlGAEgASgLMiQucXVhZHNtaXRoLmNvbmZpZy5Db25zb2xlRW1haWxDb25maWdIABIsCgRzbXRwGAIgASgLMhwucXVhZHNtaXRoLmNvbmZpZy5TbXRwQ29uZmlnSABCCgoIZGVsaXZlcnkiFAoSQ29uc29sZUVtYWlsQ29uZmlnIoYCCgpTbXRwQ29uZmlnEhEKBGhvc3QYASABKAlIAIgBARIRCgRwb3J0GAIgASgFSAGIAQESFQoIdXNlcm5hbWUYAyABKAlIAogBARIVCghwYXNzd29yZBgEIAEoCUgDiAEBEhkKDGZyb21fYWRkcmVzcxgFIAEoCUgEiAEBEhUKCHJlcGx5X3RvGAYgASgJSAWIAQESGAoLcmVxdWlyZV90bHMYByABKAhIBogBAUIHCgVfaG9zdEIHCgVfcG9ydEILCglfdXNlcm5hbWVCCwoJX3Bhc3N3b3JkQg8KDV9mcm9tX2FkZHJlc3NCCwoJX3JlcGx5X3RvQg4KDF9yZXF1aXJlX3RscyL0AQoMU2VydmVyQ29uZmlnEhEKBHBvcnQYASABKAVIAIgBARIvCgxyZWFkX3RpbWVvdXQYAiABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SMAoNd3JpdGVfdGltZW91dBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhIvCgxpZGxlX3RpbWVvdXQYBCABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SHgoRbWF4X3JlcXVlc3RfYnl0ZXMYBSABKANIAYgBAUIHCgVfcG9ydEIUChJfbWF4X3JlcXVlc3RfYnl0ZXMiqgEKDkRhdGFiYXNlQ29uZmlnEhAKA3VybBgBIAEoCUgAiAEBEhEKBG5hbWUYAiABKAlIAYgBARIcCg9tYXhfY29ubmVjdGlvbnMYAyABKAVIAogBARIcCg9taW5fY29ubmVjdGlvbnMYBCABKAVIA4gBAUIGCgRfdXJsQgcKBV9uYW1lQhIKEF9tYXhfY29ubmVjdGlvbnNCEgoQX21pbl9jb25uZWN0aW9uc0IuWixxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvY29uZmlnO2NvbmZpZ2IGcHJvdG8z",
     [file_google_protobuf_duration],
   );
-
-/**
- * @generated from message quadsmith.config.DatabaseConfig
- */
-export type DatabaseConfig = Message<"quadsmith.config.DatabaseConfig"> & {
-  /**
-   * @generated from field: string url = 1;
-   */
-  url: string;
-
-  /**
-   * @generated from field: string name = 2;
-   */
-  name: string;
-
-  /**
-   * @generated from field: int32 max_connections = 3;
-   */
-  maxConnections: number;
-
-  /**
-   * @generated from field: int32 min_connections = 4;
-   */
-  minConnections: number;
-};
-
-/**
- * Describes the message quadsmith.config.DatabaseConfig.
- * Use `create(DatabaseConfigSchema)` to create a new message.
- */
-export const DatabaseConfigSchema: GenMessage<DatabaseConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 0);
-
-/**
- * @generated from message quadsmith.config.ServerConfig
- */
-export type ServerConfig = Message<"quadsmith.config.ServerConfig"> & {
-  /**
-   * @generated from field: int32 port = 1;
-   */
-  port: number;
-
-  /**
-   * @generated from field: google.protobuf.Duration read_timeout = 2;
-   */
-  readTimeout?: Duration | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Duration write_timeout = 3;
-   */
-  writeTimeout?: Duration | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Duration idle_timeout = 4;
-   */
-  idleTimeout?: Duration | undefined;
-
-  /**
-   * @generated from field: int64 max_request_bytes = 5;
-   */
-  maxRequestBytes: bigint;
-};
-
-/**
- * Describes the message quadsmith.config.ServerConfig.
- * Use `create(ServerConfigSchema)` to create a new message.
- */
-export const ServerConfigSchema: GenMessage<ServerConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 1);
-
-/**
- * @generated from message quadsmith.config.SmtpConfig
- */
-export type SmtpConfig = Message<"quadsmith.config.SmtpConfig"> & {
-  /**
-   * @generated from field: string host = 1;
-   */
-  host: string;
-
-  /**
-   * e.g. 587 (STARTTLS) or 465 (TLS)
-   *
-   * @generated from field: int32 port = 2;
-   */
-  port: number;
-
-  /**
-   * @generated from field: string username = 3;
-   */
-  username: string;
-
-  /**
-   * @generated from field: string password = 4;
-   */
-  password: string;
-
-  /**
-   * e.g. "Quadsmith Auth <auth@quadsmith.net>"
-   *
-   * @generated from field: string from_address = 5;
-   */
-  fromAddress: string;
-
-  /**
-   * @generated from field: string reply_to = 6;
-   */
-  replyTo: string;
-
-  /**
-   * @generated from field: bool require_tls = 7;
-   */
-  requireTls: boolean;
-};
-
-/**
- * Describes the message quadsmith.config.SmtpConfig.
- * Use `create(SmtpConfigSchema)` to create a new message.
- */
-export const SmtpConfigSchema: GenMessage<SmtpConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 2);
-
-/**
- * @generated from message quadsmith.config.EmailConfig
- */
-export type EmailConfig = Message<"quadsmith.config.EmailConfig"> & {
-  /**
-   * "console", "smtp"
-   *
-   * @generated from field: string provider = 1;
-   */
-  provider: string;
-
-  /**
-   * @generated from field: quadsmith.config.SmtpConfig smtp = 2;
-   */
-  smtp?: SmtpConfig | undefined;
-};
-
-/**
- * Describes the message quadsmith.config.EmailConfig.
- * Use `create(EmailConfigSchema)` to create a new message.
- */
-export const EmailConfigSchema: GenMessage<EmailConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 3);
-
-/**
- * @generated from message quadsmith.config.AuthConfig
- */
-export type AuthConfig = Message<"quadsmith.config.AuthConfig"> & {
-  /**
-   * @generated from field: string secret = 1;
-   */
-  secret: string;
-
-  /**
-   * @generated from field: bool dev_print_otp = 2;
-   */
-  devPrintOtp: boolean;
-
-  /**
-   * @generated from field: bool secure_cookies = 3;
-   */
-  secureCookies: boolean;
-
-  /**
-   * @generated from field: int32 trusted_proxy_hops = 4;
-   */
-  trustedProxyHops: number;
-
-  /**
-   * @generated from field: google.protobuf.Duration access_token_ttl = 5;
-   */
-  accessTokenTtl?: Duration | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Duration refresh_token_ttl = 6;
-   */
-  refreshTokenTtl?: Duration | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Duration otp_ttl = 7;
-   */
-  otpTtl?: Duration | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Duration magic_link_ttl = 8;
-   */
-  magicLinkTtl?: Duration | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Duration email_cooldown = 9;
-   */
-  emailCooldown?: Duration | undefined;
-
-  /**
-   * @generated from field: quadsmith.config.EmailConfig email = 10;
-   */
-  email?: EmailConfig | undefined;
-};
-
-/**
- * Describes the message quadsmith.config.AuthConfig.
- * Use `create(AuthConfigSchema)` to create a new message.
- */
-export const AuthConfigSchema: GenMessage<AuthConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 4);
 
 /**
  * @generated from message quadsmith.config.ApiServerConfig
  */
 export type ApiServerConfig = Message<"quadsmith.config.ApiServerConfig"> & {
   /**
-   * @generated from field: string environment = 1;
+   * @generated from field: optional string environment = 1;
    */
-  environment: string;
+  environment?: string | undefined;
 
   /**
    * @generated from field: quadsmith.config.ServerConfig server = 2;
@@ -252,11 +41,6 @@ export type ApiServerConfig = Message<"quadsmith.config.ApiServerConfig"> & {
    * @generated from field: quadsmith.config.AuthConfig auth = 4;
    */
   auth?: AuthConfig | undefined;
-
-  /**
-   * @generated from field: repeated string cors_allowed_origins = 5;
-   */
-  corsAllowedOrigins: string[];
 };
 
 /**
@@ -265,276 +49,16 @@ export type ApiServerConfig = Message<"quadsmith.config.ApiServerConfig"> & {
  */
 export const ApiServerConfigSchema: GenMessage<ApiServerConfig> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 5);
-
-/**
- * @generated from message quadsmith.config.WebServerConfig
- */
-export type WebServerConfig = Message<"quadsmith.config.WebServerConfig"> & {
-  /**
-   * @generated from field: string environment = 1;
-   */
-  environment: string;
-
-  /**
-   * @generated from field: quadsmith.config.ServerConfig server = 2;
-   */
-  server?: ServerConfig | undefined;
-
-  /**
-   * @generated from field: string static_dir = 3;
-   */
-  staticDir: string;
-
-  /**
-   * @generated from field: string api_url = 4;
-   */
-  apiUrl: string;
-
-  /**
-   * @generated from field: string app_name = 5;
-   */
-  appName: string;
-};
-
-/**
- * Describes the message quadsmith.config.WebServerConfig.
- * Use `create(WebServerConfigSchema)` to create a new message.
- */
-export const WebServerConfigSchema: GenMessage<WebServerConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 6);
-
-/**
- * @generated from message quadsmith.config.CliConfig
- */
-export type CliConfig = Message<"quadsmith.config.CliConfig"> & {
-  /**
-   * @generated from field: string environment = 1;
-   */
-  environment: string;
-
-  /**
-   * @generated from field: string api_url = 2;
-   */
-  apiUrl: string;
-
-  /**
-   * @generated from field: google.protobuf.Duration timeout = 3;
-   */
-  timeout?: Duration | undefined;
-};
-
-/**
- * Describes the message quadsmith.config.CliConfig.
- * Use `create(CliConfigSchema)` to create a new message.
- */
-export const CliConfigSchema: GenMessage<CliConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 7);
-
-/**
- * @generated from message quadsmith.config.InternalGroupConfig
- */
-export type InternalGroupConfig = Message<"quadsmith.config.InternalGroupConfig"> & {
-  /**
-   * @generated from field: string name = 1;
-   */
-  name: string;
-
-  /**
-   * @generated from field: string description = 2;
-   */
-  description: string;
-
-  /**
-   * @generated from field: repeated string allowed_methods = 3;
-   */
-  allowedMethods: string[];
-};
-
-/**
- * Describes the message quadsmith.config.InternalGroupConfig.
- * Use `create(InternalGroupConfigSchema)` to create a new message.
- */
-export const InternalGroupConfigSchema: GenMessage<InternalGroupConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 8);
-
-/**
- * @generated from message quadsmith.config.BootstrapTokenConfig
- */
-export type BootstrapTokenConfig = Message<"quadsmith.config.BootstrapTokenConfig"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: string name = 2;
-   */
-  name: string;
-
-  /**
-   * @generated from field: string token = 3;
-   */
-  token: string;
-
-  /**
-   * @generated from field: string group_name = 4;
-   */
-  groupName: string;
-
-  /**
-   * 'HUMAN' or 'ROBOT'
-   *
-   * @generated from field: string type = 5;
-   */
-  type: string;
-};
-
-/**
- * Describes the message quadsmith.config.BootstrapTokenConfig.
- * Use `create(BootstrapTokenConfigSchema)` to create a new message.
- */
-export const BootstrapTokenConfigSchema: GenMessage<BootstrapTokenConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 9);
-
-/**
- * @generated from message quadsmith.config.JitPolicyConfig
- */
-export type JitPolicyConfig = Message<"quadsmith.config.JitPolicyConfig"> & {
-  /**
-   * @generated from field: bool enabled = 1;
-   */
-  enabled: boolean;
-
-  /**
-   * @generated from field: bool auto_approve = 2;
-   */
-  autoApprove: boolean;
-
-  /**
-   * @generated from field: int32 default_hours = 3;
-   */
-  defaultHours: number;
-
-  /**
-   * @generated from field: int32 max_hours = 4;
-   */
-  maxHours: number;
-
-  /**
-   * @generated from field: repeated string sensitive_methods = 5;
-   */
-  sensitiveMethods: string[];
-};
-
-/**
- * Describes the message quadsmith.config.JitPolicyConfig.
- * Use `create(JitPolicyConfigSchema)` to create a new message.
- */
-export const JitPolicyConfigSchema: GenMessage<JitPolicyConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 10);
-
-/**
- * @generated from message quadsmith.config.DeveloperMapping
- */
-export type DeveloperMapping = Message<"quadsmith.config.DeveloperMapping"> & {
-  /**
-   * @generated from field: string email = 1;
-   */
-  email: string;
-
-  /**
-   * @generated from field: string group_name = 2;
-   */
-  groupName: string;
-};
-
-/**
- * Describes the message quadsmith.config.DeveloperMapping.
- * Use `create(DeveloperMappingSchema)` to create a new message.
- */
-export const DeveloperMappingSchema: GenMessage<DeveloperMapping> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 11);
-
-/**
- * @generated from message quadsmith.config.OAuthConfig
- */
-export type OAuthConfig = Message<"quadsmith.config.OAuthConfig"> & {
-  /**
-   * "github", "google", etc.
-   *
-   * @generated from field: string provider = 1;
-   */
-  provider: string;
-
-  /**
-   * @generated from field: string client_id = 2;
-   */
-  clientId: string;
-
-  /**
-   * @generated from field: string client_secret = 3;
-   */
-  clientSecret: string;
-
-  /**
-   * @generated from field: string issuer_url = 4;
-   */
-  issuerUrl: string;
-
-  /**
-   * @generated from field: repeated string allowed_orgs = 5;
-   */
-  allowedOrgs: string[];
-
-  /**
-   * @generated from field: repeated string allowed_teams = 6;
-   */
-  allowedTeams: string[];
-
-  /**
-   * @generated from field: repeated string allowed_email_domains = 7;
-   */
-  allowedEmailDomains: string[];
-
-  /**
-   * @generated from field: repeated string allowed_users = 8;
-   */
-  allowedUsers: string[];
-
-  /**
-   * @generated from field: string default_group = 9;
-   */
-  defaultGroup: string;
-
-  /**
-   * @generated from field: repeated quadsmith.config.DeveloperMapping developer_mappings = 10;
-   */
-  developerMappings: DeveloperMapping[];
-};
-
-/**
- * Describes the message quadsmith.config.OAuthConfig.
- * Use `create(OAuthConfigSchema)` to create a new message.
- */
-export const OAuthConfigSchema: GenMessage<OAuthConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 12);
+  messageDesc(file_quadsmith_config_config, 0);
 
 /**
  * @generated from message quadsmith.config.OpsServerConfig
  */
 export type OpsServerConfig = Message<"quadsmith.config.OpsServerConfig"> & {
   /**
-   * @generated from field: string environment = 1;
+   * @generated from field: optional string environment = 1;
    */
-  environment: string;
+  environment?: string | undefined;
 
   /**
    * @generated from field: quadsmith.config.ServerConfig server = 2;
@@ -582,87 +106,26 @@ export type OpsServerConfig = Message<"quadsmith.config.OpsServerConfig"> & {
  */
 export const OpsServerConfigSchema: GenMessage<OpsServerConfig> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 13);
-
-/**
- * @generated from message quadsmith.config.OpsCliConfig
- */
-export type OpsCliConfig = Message<"quadsmith.config.OpsCliConfig"> & {
-  /**
-   * @generated from field: string environment = 1;
-   */
-  environment: string;
-
-  /**
-   * @generated from field: string ops_server_url = 2;
-   */
-  opsServerUrl: string;
-
-  /**
-   * @generated from field: google.protobuf.Duration timeout = 3;
-   */
-  timeout?: Duration | undefined;
-};
-
-/**
- * Describes the message quadsmith.config.OpsCliConfig.
- * Use `create(OpsCliConfigSchema)` to create a new message.
- */
-export const OpsCliConfigSchema: GenMessage<OpsCliConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 14);
-
-/**
- * @generated from message quadsmith.config.JobScheduleConfig
- */
-export type JobScheduleConfig = Message<"quadsmith.config.JobScheduleConfig"> & {
-  /**
-   * @generated from field: string name = 1;
-   */
-  name: string;
-
-  /**
-   * @generated from field: string procedure = 2;
-   */
-  procedure: string;
-
-  /**
-   * @generated from field: string interval = 3;
-   */
-  interval: string;
-
-  /**
-   * @generated from field: string payload_json = 4;
-   */
-  payloadJson: string;
-};
-
-/**
- * Describes the message quadsmith.config.JobScheduleConfig.
- * Use `create(JobScheduleConfigSchema)` to create a new message.
- */
-export const JobScheduleConfigSchema: GenMessage<JobScheduleConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_config, 15);
+  messageDesc(file_quadsmith_config_config, 1);
 
 /**
  * @generated from message quadsmith.config.JobServerConfig
  */
 export type JobServerConfig = Message<"quadsmith.config.JobServerConfig"> & {
   /**
-   * @generated from field: string environment = 1;
+   * @generated from field: optional string environment = 1;
    */
-  environment: string;
+  environment?: string | undefined;
 
   /**
-   * @generated from field: string ops_server_url = 2;
+   * @generated from field: optional string ops_server_url = 2;
    */
-  opsServerUrl: string;
+  opsServerUrl?: string | undefined;
 
   /**
-   * @generated from field: string auth_token = 3;
+   * @generated from field: optional string auth_token = 3;
    */
-  authToken: string;
+  authToken?: string | undefined;
 
   /**
    * @generated from field: repeated quadsmith.config.JobScheduleConfig schedules = 4;
@@ -676,4 +139,532 @@ export type JobServerConfig = Message<"quadsmith.config.JobServerConfig"> & {
  */
 export const JobServerConfigSchema: GenMessage<JobServerConfig> =
   /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 2);
+
+/**
+ * @generated from message quadsmith.config.WebServerConfig
+ */
+export type WebServerConfig = Message<"quadsmith.config.WebServerConfig"> & {
+  /**
+   * @generated from field: optional string environment = 1;
+   */
+  environment?: string | undefined;
+
+  /**
+   * @generated from field: quadsmith.config.ServerConfig server = 2;
+   */
+  server?: ServerConfig | undefined;
+
+  /**
+   * @generated from field: optional string static_dir = 3;
+   */
+  staticDir?: string | undefined;
+
+  /**
+   * @generated from field: optional string api_url = 4;
+   */
+  apiUrl?: string | undefined;
+
+  /**
+   * @generated from field: optional string app_name = 5;
+   */
+  appName?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.WebServerConfig.
+ * Use `create(WebServerConfigSchema)` to create a new message.
+ */
+export const WebServerConfigSchema: GenMessage<WebServerConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 3);
+
+/**
+ * @generated from message quadsmith.config.CliConfig
+ */
+export type CliConfig = Message<"quadsmith.config.CliConfig"> & {
+  /**
+   * @generated from field: optional string environment = 1;
+   */
+  environment?: string | undefined;
+
+  /**
+   * @generated from field: optional string api_url = 2;
+   */
+  apiUrl?: string | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Duration timeout = 3;
+   */
+  timeout?: Duration | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.CliConfig.
+ * Use `create(CliConfigSchema)` to create a new message.
+ */
+export const CliConfigSchema: GenMessage<CliConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 4);
+
+/**
+ * @generated from message quadsmith.config.OpsCliConfig
+ */
+export type OpsCliConfig = Message<"quadsmith.config.OpsCliConfig"> & {
+  /**
+   * @generated from field: optional string environment = 1;
+   */
+  environment?: string | undefined;
+
+  /**
+   * @generated from field: optional string ops_server_url = 2;
+   */
+  opsServerUrl?: string | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Duration timeout = 3;
+   */
+  timeout?: Duration | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.OpsCliConfig.
+ * Use `create(OpsCliConfigSchema)` to create a new message.
+ */
+export const OpsCliConfigSchema: GenMessage<OpsCliConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 5);
+
+/**
+ * @generated from message quadsmith.config.JobScheduleConfig
+ */
+export type JobScheduleConfig = Message<"quadsmith.config.JobScheduleConfig"> & {
+  /**
+   * @generated from field: optional string name = 1;
+   */
+  name?: string | undefined;
+
+  /**
+   * @generated from field: optional string procedure = 2;
+   */
+  procedure?: string | undefined;
+
+  /**
+   * @generated from field: optional string interval = 3;
+   */
+  interval?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.JobScheduleConfig.
+ * Use `create(JobScheduleConfigSchema)` to create a new message.
+ */
+export const JobScheduleConfigSchema: GenMessage<JobScheduleConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 6);
+
+/**
+ * @generated from message quadsmith.config.InternalGroupConfig
+ */
+export type InternalGroupConfig = Message<"quadsmith.config.InternalGroupConfig"> & {
+  /**
+   * @generated from field: optional string name = 1;
+   */
+  name?: string | undefined;
+
+  /**
+   * @generated from field: optional string description = 2;
+   */
+  description?: string | undefined;
+
+  /**
+   * @generated from field: repeated string allowed_methods = 3;
+   */
+  allowedMethods: string[];
+};
+
+/**
+ * Describes the message quadsmith.config.InternalGroupConfig.
+ * Use `create(InternalGroupConfigSchema)` to create a new message.
+ */
+export const InternalGroupConfigSchema: GenMessage<InternalGroupConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 7);
+
+/**
+ * @generated from message quadsmith.config.BootstrapTokenConfig
+ */
+export type BootstrapTokenConfig = Message<"quadsmith.config.BootstrapTokenConfig"> & {
+  /**
+   * @generated from field: optional string id = 1;
+   */
+  id?: string | undefined;
+
+  /**
+   * @generated from field: optional string name = 2;
+   */
+  name?: string | undefined;
+
+  /**
+   * @generated from field: optional string token = 3;
+   */
+  token?: string | undefined;
+
+  /**
+   * @generated from field: optional string group_name = 4;
+   */
+  groupName?: string | undefined;
+
+  /**
+   * 'HUMAN' or 'ROBOT'
+   *
+   * @generated from field: optional string type = 5;
+   */
+  type?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.BootstrapTokenConfig.
+ * Use `create(BootstrapTokenConfigSchema)` to create a new message.
+ */
+export const BootstrapTokenConfigSchema: GenMessage<BootstrapTokenConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 8);
+
+/**
+ * @generated from message quadsmith.config.JitPolicyConfig
+ */
+export type JitPolicyConfig = Message<"quadsmith.config.JitPolicyConfig"> & {
+  /**
+   * @generated from field: optional bool enabled = 1;
+   */
+  enabled?: boolean | undefined;
+
+  /**
+   * @generated from field: optional bool auto_approve = 2;
+   */
+  autoApprove?: boolean | undefined;
+
+  /**
+   * @generated from field: optional int32 default_hours = 3;
+   */
+  defaultHours?: number | undefined;
+
+  /**
+   * @generated from field: optional int32 max_hours = 4;
+   */
+  maxHours?: number | undefined;
+
+  /**
+   * @generated from field: repeated string sensitive_methods = 5;
+   */
+  sensitiveMethods: string[];
+};
+
+/**
+ * Describes the message quadsmith.config.JitPolicyConfig.
+ * Use `create(JitPolicyConfigSchema)` to create a new message.
+ */
+export const JitPolicyConfigSchema: GenMessage<JitPolicyConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 9);
+
+/**
+ * @generated from message quadsmith.config.OAuthConfig
+ */
+export type OAuthConfig = Message<"quadsmith.config.OAuthConfig"> & {
+  /**
+   * "github", "google", etc.
+   *
+   * @generated from field: optional string provider = 1;
+   */
+  provider?: string | undefined;
+
+  /**
+   * @generated from field: optional string client_id = 2;
+   */
+  clientId?: string | undefined;
+
+  /**
+   * @generated from field: optional string client_secret = 3;
+   */
+  clientSecret?: string | undefined;
+
+  /**
+   * @generated from field: repeated string allowed_orgs = 4;
+   */
+  allowedOrgs: string[];
+
+  /**
+   * @generated from field: optional string default_group = 5;
+   */
+  defaultGroup?: string | undefined;
+
+  /**
+   * @generated from field: repeated quadsmith.config.DeveloperMapping developer_mappings = 6;
+   */
+  developerMappings: DeveloperMapping[];
+};
+
+/**
+ * Describes the message quadsmith.config.OAuthConfig.
+ * Use `create(OAuthConfigSchema)` to create a new message.
+ */
+export const OAuthConfigSchema: GenMessage<OAuthConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 10);
+
+/**
+ * @generated from message quadsmith.config.DeveloperMapping
+ */
+export type DeveloperMapping = Message<"quadsmith.config.DeveloperMapping"> & {
+  /**
+   * @generated from field: optional string email = 1;
+   */
+  email?: string | undefined;
+
+  /**
+   * @generated from field: optional string group_name = 2;
+   */
+  groupName?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.DeveloperMapping.
+ * Use `create(DeveloperMappingSchema)` to create a new message.
+ */
+export const DeveloperMappingSchema: GenMessage<DeveloperMapping> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 11);
+
+/**
+ * @generated from message quadsmith.config.AuthConfig
+ */
+export type AuthConfig = Message<"quadsmith.config.AuthConfig"> & {
+  /**
+   * @generated from field: optional string secret = 1;
+   */
+  secret?: string | undefined;
+
+  /**
+   * @generated from field: optional bool dev_print_otp = 2;
+   */
+  devPrintOtp?: boolean | undefined;
+
+  /**
+   * @generated from field: optional bool secure_cookies = 3;
+   */
+  secureCookies?: boolean | undefined;
+
+  /**
+   * @generated from field: optional int32 trusted_proxy_hops = 4;
+   */
+  trustedProxyHops?: number | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Duration access_token_ttl = 5;
+   */
+  accessTokenTtl?: Duration | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Duration refresh_token_ttl = 6;
+   */
+  refreshTokenTtl?: Duration | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Duration otp_ttl = 7;
+   */
+  otpTtl?: Duration | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Duration magic_link_ttl = 8;
+   */
+  magicLinkTtl?: Duration | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Duration email_cooldown = 9;
+   */
+  emailCooldown?: Duration | undefined;
+
+  /**
+   * @generated from field: quadsmith.config.EmailConfig email = 10;
+   */
+  email?: EmailConfig | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.AuthConfig.
+ * Use `create(AuthConfigSchema)` to create a new message.
+ */
+export const AuthConfigSchema: GenMessage<AuthConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 12);
+
+/**
+ * @generated from message quadsmith.config.EmailConfig
+ */
+export type EmailConfig = Message<"quadsmith.config.EmailConfig"> & {
+  /**
+   * @generated from oneof quadsmith.config.EmailConfig.delivery
+   */
+  delivery:
+    | {
+        /**
+         * @generated from field: quadsmith.config.ConsoleEmailConfig console = 1;
+         */
+        value: ConsoleEmailConfig;
+        case: "console";
+      }
+    | {
+        /**
+         * @generated from field: quadsmith.config.SmtpConfig smtp = 2;
+         */
+        value: SmtpConfig;
+        case: "smtp";
+      }
+    | { case: undefined; value?: undefined };
+};
+
+/**
+ * Describes the message quadsmith.config.EmailConfig.
+ * Use `create(EmailConfigSchema)` to create a new message.
+ */
+export const EmailConfigSchema: GenMessage<EmailConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 13);
+
+/**
+ * @generated from message quadsmith.config.ConsoleEmailConfig
+ */
+export type ConsoleEmailConfig = Message<"quadsmith.config.ConsoleEmailConfig"> & {};
+
+/**
+ * Describes the message quadsmith.config.ConsoleEmailConfig.
+ * Use `create(ConsoleEmailConfigSchema)` to create a new message.
+ */
+export const ConsoleEmailConfigSchema: GenMessage<ConsoleEmailConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 14);
+
+/**
+ * @generated from message quadsmith.config.SmtpConfig
+ */
+export type SmtpConfig = Message<"quadsmith.config.SmtpConfig"> & {
+  /**
+   * @generated from field: optional string host = 1;
+   */
+  host?: string | undefined;
+
+  /**
+   * e.g. 587 (STARTTLS) or 465 (TLS)
+   *
+   * @generated from field: optional int32 port = 2;
+   */
+  port?: number | undefined;
+
+  /**
+   * @generated from field: optional string username = 3;
+   */
+  username?: string | undefined;
+
+  /**
+   * @generated from field: optional string password = 4;
+   */
+  password?: string | undefined;
+
+  /**
+   * e.g. "Quadsmith Auth <auth@quadsmith.net>"
+   *
+   * @generated from field: optional string from_address = 5;
+   */
+  fromAddress?: string | undefined;
+
+  /**
+   * @generated from field: optional string reply_to = 6;
+   */
+  replyTo?: string | undefined;
+
+  /**
+   * @generated from field: optional bool require_tls = 7;
+   */
+  requireTls?: boolean | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.SmtpConfig.
+ * Use `create(SmtpConfigSchema)` to create a new message.
+ */
+export const SmtpConfigSchema: GenMessage<SmtpConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 15);
+
+/**
+ * @generated from message quadsmith.config.ServerConfig
+ */
+export type ServerConfig = Message<"quadsmith.config.ServerConfig"> & {
+  /**
+   * @generated from field: optional int32 port = 1;
+   */
+  port?: number | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Duration read_timeout = 2;
+   */
+  readTimeout?: Duration | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Duration write_timeout = 3;
+   */
+  writeTimeout?: Duration | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Duration idle_timeout = 4;
+   */
+  idleTimeout?: Duration | undefined;
+
+  /**
+   * @generated from field: optional int64 max_request_bytes = 5;
+   */
+  maxRequestBytes?: bigint | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.ServerConfig.
+ * Use `create(ServerConfigSchema)` to create a new message.
+ */
+export const ServerConfigSchema: GenMessage<ServerConfig> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_config_config, 16);
+
+/**
+ * @generated from message quadsmith.config.DatabaseConfig
+ */
+export type DatabaseConfig = Message<"quadsmith.config.DatabaseConfig"> & {
+  /**
+   * @generated from field: optional string url = 1;
+   */
+  url?: string | undefined;
+
+  /**
+   * @generated from field: optional string name = 2;
+   */
+  name?: string | undefined;
+
+  /**
+   * @generated from field: optional int32 max_connections = 3;
+   */
+  maxConnections?: number | undefined;
+
+  /**
+   * @generated from field: optional int32 min_connections = 4;
+   */
+  minConnections?: number | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.DatabaseConfig.
+ * Use `create(DatabaseConfigSchema)` to create a new message.
+ */
+export const DatabaseConfigSchema: GenMessage<DatabaseConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_config, 17);

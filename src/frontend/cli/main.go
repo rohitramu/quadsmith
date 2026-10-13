@@ -52,7 +52,7 @@ func newRootCmd() *cobra.Command {
 		_ = os.Setenv("QS_COMPLETION_DESCRIPTIONS", "false")
 	}
 	cliCfg := getEmbeddedConfig()
-	targetURL := cliCfg.ApiUrl
+	targetURL := cliCfg.GetApiUrl()
 	if overrideTargetURL != "" {
 		targetURL = overrideTargetURL
 	}
@@ -63,7 +63,7 @@ func newRootCmd() *cobra.Command {
 		Short: "Quadsmith CLI",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
-			target := cliCfg.ApiUrl
+			target := cliCfg.GetApiUrl()
 			if overrideTargetURL != "" {
 				target = overrideTargetURL
 			}

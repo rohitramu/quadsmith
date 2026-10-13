@@ -42,6 +42,7 @@ auth {
     seconds: 20
   }
   email {
-    provider: "console"
+    console {
+    }
   }
 }

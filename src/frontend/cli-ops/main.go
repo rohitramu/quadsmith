@@ -39,7 +39,7 @@ func init() {
 		panic(fmt.Sprintf("invalid embedded ops CLI configuration: %v", err))
 	}
 	embeddedConfig = &cfg
-	opsServerURL = cfg.OpsServerUrl
+	opsServerURL = cfg.GetOpsServerUrl()
 }
 
 type SessionConfig struct {
@@ -75,7 +75,7 @@ func loadSessionToken() string {
 	}
 
 	// Default fallback in sandbox/test environments
-	if embeddedConfig.Environment == "sandbox" || embeddedConfig.Environment == "test" {
+	if embeddedConfig.GetEnvironment() == "sandbox" || embeddedConfig.GetEnvironment() == "test" {
 		return "qs_op_sandbox_token_12345"
 	}
 	return ""

@@ -5,6 +5,10 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+	"time"
+
+	"google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/types/known/durationpb"
 
 	config "quadsmith/shared/gen/quadsmith/config"
 )
@@ -46,10 +50,10 @@ func TestValidateDatabase(t *testing.T) {
 		{
 			name: "valid database config",
 			db: &config.DatabaseConfig{
-				Url:            "postgres://user:pass@127.0.0.1:5432/quadsmith_api",
-				Name:           "quadsmith_api",
-				MaxConnections: 20,
-				MinConnections: 5,
+				Url:            proto.String("postgres://user:pass@127.0.0.1:5432/quadsmith_api"),
+				Name:           proto.String("quadsmith_api"),
+				MaxConnections: proto.Int32(20),
+				MinConnections: proto.Int32(5),
 			},
 			env:     "sandbox",
 			wantErr: false,
@@ -57,9 +61,10 @@ func TestValidateDatabase(t *testing.T) {
 		{
 			name: "missing database name",
 			db: &config.DatabaseConfig{
-				Url:            "postgres://user:pass@127.0.0.1:5432/quadsmith_api",
-				Name:           "",
-				MaxConnections: 20,
+				Url:            proto.String("postgres://user:pass@127.0.0.1:5432/quadsmith_api"),
+				Name:           proto.String(""),
+				MaxConnections: proto.Int32(20),
+				MinConnections: proto.Int32(5),
 			},
 			env:     "sandbox",
 			wantErr: true,
@@ -68,9 +73,10 @@ func TestValidateDatabase(t *testing.T) {
 		{
 			name: "database name mismatch with url path",
 			db: &config.DatabaseConfig{
-				Url:            "postgres://user:pass@127.0.0.1:5432/quadsmith_api",
-				Name:           "quadsmith_ops",
-				MaxConnections: 20,
+				Url:            proto.String("postgres://user:pass@127.0.0.1:5432/quadsmith_api"),
+				Name:           proto.String("quadsmith_ops"),
+				MaxConnections: proto.Int32(20),
+				MinConnections: proto.Int32(5),
 			},
 			env:     "sandbox",
 			wantErr: true,
@@ -79,10 +85,10 @@ func TestValidateDatabase(t *testing.T) {
 		{
 			name: "min connections exceeds max connections",
 			db: &config.DatabaseConfig{
-				Url:            "postgres://user:pass@127.0.0.1:5432/quadsmith_api",
-				Name:           "quadsmith_api",
-				MaxConnections: 5,
-				MinConnections: 10,
+				Url:            proto.String("postgres://user:pass@127.0.0.1:5432/quadsmith_api"),
+				Name:           proto.String("quadsmith_api"),
+				MaxConnections: proto.Int32(5),
+				MinConnections: proto.Int32(10),
 			},
 			env:     "sandbox",
 			wantErr: true,
@@ -91,9 +97,10 @@ func TestValidateDatabase(t *testing.T) {
 		{
 			name: "localhost rejected in production",
 			db: &config.DatabaseConfig{
-				Url:            "postgres://user:pass@localhost:5432/quadsmith_api",
-				Name:           "quadsmith_api",
-				MaxConnections: 20,
+				Url:            proto.String("postgres://user:pass@localhost:5432/quadsmith_api"),
+				Name:           proto.String("quadsmith_api"),
+				MaxConnections: proto.Int32(20),
+				MinConnections: proto.Int32(5),
 			},
 			env:     "prod",
 			wantErr: true,
@@ -120,21 +127,53 @@ func TestValidateServer(t *testing.T) {
 		t.Fatalf("unexpected validation error on test config: %v", err)
 	}
 
-	cfg.Server.Port = 70000
+	cfg.Server.Port = proto.Int32(70000)
 	if err := ValidateAPIServerConfig(cfg); err == nil {
 		t.Error("expected error for invalid port, got nil")
 	}
 
 	webCfg := &config.WebServerConfig{
-		Environment: "sandbox",
+		Environment: proto.String("sandbox"),
 		Server: &config.ServerConfig{
-			Port: 3000,
+			Port:            proto.Int32(3000),
+			ReadTimeout:     durationpb.New(15 * time.Second),
+			WriteTimeout:    durationpb.New(15 * time.Second),
+			IdleTimeout:     durationpb.New(60 * time.Second),
+			MaxRequestBytes: proto.Int64(10485760),
 		},
-		StaticDir: "",
-		ApiUrl:    "http://localhost:8080",
+		StaticDir: proto.String(""),
+		ApiUrl:    proto.String("http://localhost:8080"),
+		AppName:   proto.String("Quadsmith"),
 	}
 	if err := ValidateWebServerConfig(webCfg); err == nil {
 		t.Error("expected error for empty static dir on web server, got nil")
+	}
+}
+
+func TestValidateNoUnsetFields(t *testing.T) {
+	cfg := NewTestAPIServerConfig(t)
+	if err := ValidateNoUnsetFields(cfg); err != nil {
+		t.Fatalf("expected valid config, got error: %v", err)
+	}
+
+	// Unset a scalar field
+	cfg.Auth.DevPrintOtp = nil
+	if err := ValidateNoUnsetFields(cfg); err == nil {
+		t.Fatal("expected error when scalar field is unset, got nil")
+	}
+
+	// Restore and unset a nested message field
+	cfg.Auth.DevPrintOtp = proto.Bool(false)
+	cfg.Server.IdleTimeout = nil
+	if err := ValidateNoUnsetFields(cfg); err == nil {
+		t.Fatal("expected error when message field is unset, got nil")
+	}
+
+	// Restore and unset oneof
+	cfg.Server.IdleTimeout = durationpb.New(120 * time.Second)
+	cfg.Auth.Email.Delivery = nil
+	if err := ValidateNoUnsetFields(cfg); err == nil {
+		t.Fatal("expected error when oneof is unset, got nil")
 	}
 }
 
@@ -151,20 +190,28 @@ server {
   port: ${PORT_VAR:-8080}
   read_timeout { seconds: 30 }
   write_timeout { seconds: 30 }
+  idle_timeout { seconds: 60 }
   max_request_bytes: 1048576
 }
 database {
   url: "postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api"
   name: "quadsmith_api"
   max_connections: 10
+  min_connections: 2
 }
 auth {
   secret: "${SECRET_VAR}"
+  dev_print_otp: false
+  secure_cookies: false
+  trusted_proxy_hops: 0
   access_token_ttl { seconds: 3600 }
   refresh_token_ttl { seconds: 86400 }
   otp_ttl { seconds: 300 }
   magic_link_ttl { seconds: 900 }
   email_cooldown { seconds: 1 }
+  email {
+    console {}
+  }
 }
 `
 	if err := os.WriteFile(configPath, []byte(content), 0644); err != nil {
@@ -176,14 +223,14 @@ auth {
 		t.Fatalf("failed to load config: %v", err)
 	}
 
-	if cfg.Server.Port != 9090 {
-		t.Errorf("expected port 9090, got %d", cfg.Server.Port)
+	if cfg.GetServer().GetPort() != 9090 {
+		t.Errorf("expected port 9090, got %d", cfg.GetServer().GetPort())
 	}
-	if cfg.Auth.Secret != "super-secret-key-12345678901234" {
-		t.Errorf("expected secret expanded, got %q", cfg.Auth.Secret)
+	if cfg.GetAuth().GetSecret() != "super-secret-key-12345678901234" {
+		t.Errorf("expected secret expanded, got %q", cfg.GetAuth().GetSecret())
 	}
-	if cfg.Database.Name != "quadsmith_api" {
-		t.Errorf("expected database name quadsmith_api, got %q", cfg.Database.Name)
+	if cfg.GetDatabase().GetName() != "quadsmith_api" {
+		t.Errorf("expected database name quadsmith_api, got %q", cfg.GetDatabase().GetName())
 	}
 
 	if err := ValidateAPIServerConfig(&cfg); err != nil {
@@ -214,7 +261,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server sandbox: %v", err)
 	}
-	if apiSandbox.Server.Port != 8080 || apiSandbox.Database.Name != "quadsmith_api" {
+	if apiSandbox.Server.GetPort() != 8080 || apiSandbox.Database.GetName() != "quadsmith_api" {
 		t.Errorf("unexpected api-server sandbox config: %+v", apiSandbox)
 	}
 
@@ -223,7 +270,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-server sandbox: %v", err)
 	}
-	if opsSandbox.Server.Port != 8081 || opsSandbox.Database.Name != "quadsmith_api" || opsSandbox.InternalDatabase.Name != "quadsmith_ops" {
+	if opsSandbox.Server.GetPort() != 8081 || opsSandbox.Database.GetName() != "quadsmith_api" || opsSandbox.InternalDatabase.GetName() != "quadsmith_ops" {
 		t.Errorf("unexpected ops-server sandbox config: %+v", opsSandbox)
 	}
 
@@ -232,7 +279,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load job-server sandbox: %v", err)
 	}
-	if jobSandbox.OpsServerUrl != "http://127.0.0.1:8081" || len(jobSandbox.Schedules) != 3 {
+	if jobSandbox.GetOpsServerUrl() != "http://127.0.0.1:8081" || len(jobSandbox.Schedules) != 3 {
 		t.Errorf("unexpected job-server sandbox config: %+v", jobSandbox)
 	}
 
@@ -241,7 +288,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load web-server sandbox: %v", err)
 	}
-	if webSandbox.Server.Port != 3000 || webSandbox.StaticDir != "src/frontend/web/app/dist" {
+	if webSandbox.Server.GetPort() != 3000 || webSandbox.GetStaticDir() != "src/frontend/web/app/dist" {
 		t.Errorf("unexpected web-server sandbox config: %+v", webSandbox)
 	}
 
@@ -249,7 +296,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops cli sandbox: %v", err)
 	}
-	if opsCliSandbox.OpsServerUrl != "http://127.0.0.1:8081" {
+	if opsCliSandbox.GetOpsServerUrl() != "http://127.0.0.1:8081" {
 		t.Errorf("unexpected ops cli sandbox config: %+v", opsCliSandbox)
 	}
 
@@ -257,7 +304,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load cli sandbox: %v", err)
 	}
-	if cliSandbox.ApiUrl != "http://127.0.0.1:8080" {
+	if cliSandbox.GetApiUrl() != "http://127.0.0.1:8080" {
 		t.Errorf("unexpected cli sandbox config: %+v", cliSandbox)
 	}
 
@@ -267,7 +314,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server test: %v", err)
 	}
-	if apiTest.Server.Port != 8080 {
+	if apiTest.Server.GetPort() != 8080 {
 		t.Errorf("unexpected api-server test config: %+v", apiTest)
 	}
 
@@ -276,7 +323,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-server test: %v", err)
 	}
-	if opsTest.Server.Port != 8081 || opsTest.InternalDatabase.Name != "quadsmith_ops" {
+	if opsTest.Server.GetPort() != 8081 || opsTest.InternalDatabase.GetName() != "quadsmith_ops" {
 		t.Errorf("unexpected ops-server test config: %+v", opsTest)
 	}
 
@@ -293,8 +340,8 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server staging: %v", err)
 	}
-	if apiStaging.Server.Port != 443 {
-		t.Errorf("unexpected api-server staging port: %d", apiStaging.Server.Port)
+	if apiStaging.Server.GetPort() != 443 {
+		t.Errorf("unexpected api-server staging port: %d", apiStaging.Server.GetPort())
 	}
 
 	apiProdPath := filepath.Join("..", "..", "..", "server-api", "config", "prod.textproto")
@@ -302,8 +349,8 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server prod: %v", err)
 	}
-	if apiProd.Server.Port != 443 {
-		t.Errorf("unexpected api-server prod port: %d", apiProd.Server.Port)
+	if apiProd.Server.GetPort() != 443 {
+		t.Errorf("unexpected api-server prod port: %d", apiProd.Server.GetPort())
 	}
 
 	opsStagingPath := filepath.Join("..", "..", "..", "server-ops", "config", "staging.textproto")
@@ -311,8 +358,8 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-server staging: %v", err)
 	}
-	if opsStaging.Server.Port != 8081 {
-		t.Errorf("unexpected ops-server staging port: %d", opsStaging.Server.Port)
+	if opsStaging.Server.GetPort() != 8081 {
+		t.Errorf("unexpected ops-server staging port: %d", opsStaging.Server.GetPort())
 	}
 
 	opsProdPath := filepath.Join("..", "..", "..", "server-ops", "config", "prod.textproto")
@@ -320,7 +367,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-server prod: %v", err)
 	}
-	if opsProd.Server.Port != 8081 {
-		t.Errorf("unexpected ops-server prod port: %d", opsProd.Server.Port)
+	if opsProd.Server.GetPort() != 8081 {
+		t.Errorf("unexpected ops-server prod port: %d", opsProd.Server.GetPort())
 	}
 }

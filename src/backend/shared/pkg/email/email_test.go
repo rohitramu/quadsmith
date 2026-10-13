@@ -32,17 +32,24 @@ func TestNewEmailSender(t *testing.T) {
 	}
 
 	// Console provider -> ConsoleEmailSender
-	s2 := NewEmailSender(&config.EmailConfig{Provider: "console"})
+	s2 := NewEmailSender(&config.EmailConfig{
+		Delivery: &config.EmailConfig_Console{
+			Console: &config.ConsoleEmailConfig{},
+		},
+	})
 	if _, ok := s2.(*ConsoleEmailSender); !ok {
 		t.Errorf("expected *ConsoleEmailSender, got %T", s2)
 	}
 
+	host := "smtp.example.com"
+	port := int32(587)
 	// SMTP provider -> SMTPEmailSender
 	s3 := NewEmailSender(&config.EmailConfig{
-		Provider: "smtp",
-		Smtp: &config.SmtpConfig{
-			Host: "smtp.example.com",
-			Port: 587,
+		Delivery: &config.EmailConfig_Smtp{
+			Smtp: &config.SmtpConfig{
+				Host: &host,
+				Port: &port,
+			},
 		},
 	})
 	if smtpSender, ok := s3.(*SMTPEmailSender); !ok {
