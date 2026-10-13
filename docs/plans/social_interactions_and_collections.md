@@ -1,365 +1,154 @@
 # Social Interactions, Q&A, Reviews, and Collections Design
 
-## Summary of Decisions
-
-| Decision | Choice | Rationale |
-|---|---|---|
-| **Target Entities** | `Build` and `Component` | Unified polymorphic social interactions across full aircraft builds and individual catalog components |
-| **Polymorphic Database Strategy** | Explicit Foreign Keys (`buildId?`, `componentId?`) | Enforces PostgreSQL foreign key constraints; uses `CHECK (num_nonnulls(buildId, componentId) = 1)` |
-| **Review System** | Steam-style Recommendations | Binary Thumbs Up / Down recommendation + text writeup; 1 review per user per entity; author cannot review their own build; aggregate rating is displayed as `% Positive` + qualitative tier |
-| **Review Voting** | Helpful / Unhelpful | Binary feedback on review quality; drives "Most Helpful" sorting; comments under reviews are chronological discussion threads without individual comment voting |
-| **Discussion & Technical Help** | Dedicated Q&A Section (StackOverflow-style) | Separated from Reviews to keep technical troubleshooting, wiring questions, and fitment guidance organized and searchable |
-| **Q&A Structure** | Questions + Independent Answers | Questions and Answers each have Up/Down voting; sorted by net score (`upvotes - downvotes`); accepted/endorsed answers float to the top |
-| **Answer Endorsements** | Dual Authority with Distinct Badges | **Question Asker** awards the "Accepted Answer" checkmark; **Build Author** awards the "Author Verified / Endorsed" badge |
-| **Micro-Comments** | Lightweight Clarifications | Flat chronological micro-comments attached directly under Questions or Answers for quick clarifications |
-| **Reputation System** | StackOverflow-style Karma | Users earn public profile reputation for high-quality community contributions |
-| **Reputation Values** | Upvotes: `+5`, Downvotes: `-2`, Max `+100` per post | Asker accepting answer: `+10`; Answer accepted: `+30`; Build author endorsement: `+20` |
-| **Anti-Griefing & Downvote Cost** | Downvoting costs `-2` rep to voter; max 3 downvotes/day; 10 rep unlock threshold | Discourages brigading and throwaway accounts; downvoting has real stakes |
-| **Content Lifecycle & Deletion** | Knowledge Preservation (StackOverflow/Reddit hybrid) | Questions with accepted or upvoted answers cannot be destroyed; author can disassociate/mask as `[Deleted User]`; deleted comments with replies show `[Comment deleted]`; reviews can be deleted (score recalculates) |
-| **Favorites / Collections** | Instagram & Printables style | Default system collection: "Liked" (1-click Heart icon); all collections are public; mixed item support (Builds + Components) |
+## Table of Contents
+- [1. Goal](#1-goal)
+- [2. Proposal](#2-proposal)
+  - [Polymorphic Relational Foreign Key Strategy](#polymorphic-relational-foreign-key-strategy)
+  - [Steam-Style Binary Review Subsystem](#steam-style-binary-review-subsystem)
+  - [StackOverflow-Style Technical Q&A Subsystem](#stackoverflow-style-technical-qa-subsystem)
+  - [Dual-Authority Answer Endorsement Badges](#dual-authority-answer-endorsement-badges)
+  - [Lightweight Clarification Micro-Comments](#lightweight-clarification-micro-comments)
+  - [Reputation Karma Economy and Anti-Griefing Safeguards](#reputation-karma-economy-and-anti-griefing-safeguards)
+  - [Public Multi-Item Collections and System Likes](#public-multi-item-collections-and-system-likes)
+  - [Knowledge Preservation and Soft-Deletion Lifecycle](#knowledge-preservation-and-soft-deletion-lifecycle)
+- [3. Assumptions](#3-assumptions)
 
 ---
 
-## 1. Reviews Subsystem (Steam-Style)
+## 1. Goal
 
-### 1.1 Overview
-Top-level evaluation of a Build or Component is modeled as a **Review**. This separates opinions and ratings from troubleshooting and Q&A.
+Provide a structured, community-driven social architecture for Quadsmith that separates evaluative opinions from technical troubleshooting, incentivizes helpful contributions through a balanced karma economy, preserves communal knowledge, and enables flexible curating across aircraft builds and catalog components.
 
-- **Recommendation:** Binary boolean `isRecommended` — `true` (Thumbs Up / Recommended) or `false` (Thumbs Down / Not Recommended).
-- **Review Content:** Markdown writeup describing flight performance, durability, ease of build, or component reliability.
-- **Constraints:**
-  - Exactly **1 review per user per target entity**.
-  - A user can update/edit their review at any time. When edited, an `(Edited)` badge and timestamp are displayed.
-  - **Self-Review Prevention:** A `Build` author cannot submit a review for their own build. (On `Component` records, all verified users may review).
-  - Review author cannot vote on their own review.
+---
 
-### 1.2 Aggregated Score & Tiers
-Aggregate ratings are calculated dynamically or materialized via triggers:
+## 2. Proposal
+
+> **TL;DR:**
+> - Enable polymorphic social features across aircraft builds and catalog components using strict relational foreign keys with PostgreSQL check constraints.
+> - Separate subjective evaluations into Steam-style binary recommendations (thumbs up/down with `% Positive` score tiers) and technical troubleshooting into StackOverflow-style Q&A.
+> - Implement dual-authority answer badges: question askers award "Accepted Answer" checkmarks, while build authors confer "Author Verified" endorsement badges.
+> - Prevent griefing with a high-stakes karma economy: downvoting costs the voter $-2$ reputation, requires a 10 reputation unlock threshold, and is limited to 3 downvotes per day.
+> - Support mixed-item public collections (containing both builds and components) anchored by a 1-click system "Liked" collection.
+
+The social interaction architecture addresses the distinct needs of FPV builders: sharing flight impressions, seeking technical troubleshooting advice (wiring, betaflight tuning, standoff spacing), and bookmarking components for future projects. By architecturally decoupling opinion reviews from Q&A troubleshooting and backing all interactions with relational database constraints, Quadsmith maintains high content quality while eliminating common comment-section toxicity.
+
+### Polymorphic Relational Foreign Key Strategy
+Social entities (`Review`, `Question`, `CollectionItem`) associate polymorphically with both assembled `Build` records and individual catalog `Component` entities. Rather than employing unconstrained generic string targets, tables maintain explicit nullable foreign keys (`build_uuid`, `entity_uuid`) enforced by PostgreSQL check constraints:
+
+```sql
+CHECK (num_nonnulls(build_uuid, entity_uuid) = 1)
+```
+
+This guarantees referential integrity, supports native cascading deletes, and allows foreign key joins without dynamic table lookups.
+
+#### Alternatives considered
+Generic polymorphic target columns storing a string `target_type` (e.g., `'BUILD'`, `'COMPONENT'`) and a target UUID.
+**Pros:**
+- Adds support for new targetable resource types in the future without modifying table DDL.
+**Cons:**
+- Destroys PostgreSQL relational integrity and precludes foreign key constraints.
+- Prevents database-level cascading deletes when builds or catalog components are pruned.
+
+### Steam-Style Binary Review Subsystem
+Subjective evaluations are structured as Steam-style recommendations rather than numerical star ratings:
+- **Recommendation**: A binary boolean (`is_recommended`) indicating Thumbs Up or Thumbs Down, paired with a Markdown body.
+- **Constraints**: Exactly one review per user per target entity; build creators are prohibited from reviewing their own aircraft.
+- **Score Aggregation**: Aggregate satisfaction is computed as the percentage of positive recommendations:
+
 $$\text{Score \%} = \left( \frac{\text{Count of Recommended Reviews}}{\text{Total Reviews}} \right) \times 100$$
 
-Displayed with qualitative tiers (matching Steam thresholds):
-- **Overwhelmingly Positive:** $\ge 95\%$ positive (minimum 50 reviews)
-- **Very Positive:** $80\% - 94\%$ positive (minimum 10 reviews)
-- **Positive:** $70\% - 79\%$ positive
-- **Mixed:** $40\% - 69\%$ positive
-- **Mostly Negative:** $20\% - 39\%$ positive
-- **Overwhelmingly Negative:** $< 20\%$ positive (minimum 50 reviews)
-- **Few Reviews:** Displayed as "X User Reviews" until a minimum threshold (e.g. 5 reviews) is met.
+Displayed alongside qualitative tiers:
+- **Overwhelmingly Positive**: $\ge 95\%$ positive ($\ge 50$ reviews)
+- **Very Positive**: $80\% - 94\%$ positive ($\ge 10$ reviews)
+- **Positive**: $70\% - 79\%$ positive
+- **Mixed**: $40\% - 69\%$ positive
+- **Mostly Negative**: $20\% - 39\%$ positive
+- **Overwhelmingly Negative**: $< 20\%$ positive ($\ge 50$ reviews)
+- **Few Reviews**: Rendered as a neutral count until reaching a minimum threshold of 5 reviews.
 
-### 1.3 Review Feedback & Discussion
-- **Review Votes:** Readers can vote a review as **Helpful** or **Unhelpful**.
-  - Review votes do not impact the entity's % positive score; they determine review sorting ("Most Helpful" vs "Most Recent").
-  - Users can change or withdraw their vote.
-- **Review Comments:** Each review has a chronological discussion thread for readers to reply directly to the reviewer (e.g., discussing their findings or asking for more flight details).
-  - To match Steam review threads, comments under reviews are purely conversational without nested replies or individual comment voting.
+Review readers can flag reviews as **Helpful** or **Unhelpful** to drive "Most Helpful" sorting without influencing the target entity's positive percentage.
 
----
+#### Alternatives considered
+Traditional 1-to-5 star rating systems.
+**Pros:**
+- Familiar interface pattern widely used in consumer e-commerce.
+**Cons:**
+- Suffers from chronic 5-star inflation, rendering intermediate 2, 3, and 4-star ratings ambiguous and difficult to calibrate.
+- Blurs the line between general satisfaction and specific technical defects.
 
-## 2. Technical Q&A Subsystem (StackOverflow-Style)
+### StackOverflow-Style Technical Q&A Subsystem
+To prevent technical troubleshooting and fitment guidance from being lost in conversational chatter, technical questions are housed in a dedicated Q&A section:
+- **Questions**: Posted against a build or component with a title, markdown body, and net community score.
+- **Answers**: Independent submissions per question with separate upvote and downvote voting. Answers are ranked dynamically:
+  1. Accepted Answer (pinned first)
+  2. Author Endorsed Answer
+  3. Net score ($\text{Upvotes} - \text{Downvotes}$)
+  4. Chronological recency
 
-### 2.1 Questions & Answers
-For technical inquiries ("What length standoffs fit the DJI O3 air unit?", "What Betaflight master multiplier works for these motors?"), a structured Q&A tab replaces unstructured comment threads.
+#### Alternatives considered
+A single, flat chronological comments thread beneath builds and components.
+**Pros:**
+- Simple to implement and requires minimal database models.
+**Cons:**
+- Causes valuable wiring solutions, PID tuning tips, and fitment answers to be buried under casual comments.
+- Lacks mechanisms to elevate proven solutions or endorse technical accuracy.
 
-- **Question:** Posted against a `Build` or `Component`.
-  - Has a title, body (markdown), and optional tag references.
-  - Can be upvoted or downvoted by the community.
-- **Answers:** Any user can submit a solution/answer to an open question.
-  - Multiple answers can be submitted per question.
-  - Answers have independent Up/Down voting.
-  - Sorted by:
-    1. Accepted Answer (pinned first)
-    2. Author Endorsed Answer
-    3. Net score ($\text{Upvotes} - \text{Downvotes}$)
-    4. Creation date (newest first)
+### Dual-Authority Answer Endorsement Badges
+To balance the perspective of the user who experienced the problem with the technical authority of the builder:
+- **Accepted Answer ($\checkmark$ Checkmark)**: Conferred exclusively by the **Question Asker** when a solution resolves their inquiry. Floats to the top of the answer list.
+- **Author Endorsed ($\bigstar$ Badge)**: Conferred exclusively by the **Build Author** on their own builds (or catalog administrators on hardware components). Confirms that the proposed advice aligns with the builder's physical testing.
 
-### 2.2 Dual-Authority Endorsements
-To recognize accurate answers while acknowledging the build creator's unique authority:
-1. **Accepted Answer ($\checkmark$ Checkmark):**
-   - Conferred by the **Question Asker**.
-   - Indicates that the answer resolved the asker's specific problem.
-   - Pinned to the top of the answer feed.
-2. **Author Verified / Endorsement ($\bigstar$ Author Badge):**
-   - Conferred exclusively by the **Build Author** on their own builds.
-   - Indicates: *"The creator of this build has verified that this advice/configuration is correct."*
-   - On catalog `Component` entries, this privilege belongs to site moderators/admins.
-- An answer can possess either, both, or neither of these badges.
+An answer may receive either, both, or neither badge.
 
-### 2.3 Clarification Micro-Comments
-Questions and Answers each support lightweight clarification comments underneath them:
-- Designed for minor questions ("Did you test this on 4S or 6S?") rather than full answers.
-- Single-level flat list with `@mention` capability.
-- No voting on micro-comments to keep overhead minimal.
+### Lightweight Clarification Micro-Comments
+Questions and Answers each support flat, chronological micro-comments:
+- Restricted to brief clarifications (e.g., verifying firmware version or flight cell count).
+- Flat hierarchy without nested replies to prevent recursive discussion trees.
+- Micro-comments do not support voting, minimizing overhead and keeping focus on primary answers.
 
----
+### Reputation Karma Economy and Anti-Griefing Safeguards
+User reputation reflects accumulated helpfulness across the community. Points are derived directly from relational vote records and endorsement events:
 
-## 3. Reputation & Voting Economy
-
-### 3.1 Point Values & Caps
-To incentivize helpful answers and avoid toxic downvote spam:
-
-| Event | Points Awarded to Author | Points Cost to Voter | Cap / Restrictions |
+| Community Action | Author Award | Voter Cost | Safeguards & Caps |
 |---|---|---|---|
-| **Question Upvoted** | `+5` | `0` | Max `+100` rep per post |
-| **Question Downvoted** | `-2` | `-2` | 3 downvotes / rolling 24h |
-| **Answer Upvoted** | `+5` | `0` | Max `+100` rep per post |
-| **Answer Downvoted** | `-2` | `-2` | 3 downvotes / rolling 24h |
-| **Review Voted Helpful** | `+5` | `0` | Max `+100` rep per review |
-| **Review Voted Unhelpful** | `-2` | `-2` | 3 downvotes / rolling 24h |
-| **Answer Accepted** (by asker) | `+30` (to answerer) | `0` (`+10` bonus to asker) | 1 accepted answer per question |
-| **Answer Endorsed** (by build author) | `+20` (to answerer) | `0` | 1 endorsed answer per question |
+| **Question Upvoted** | `+5` | `0` | Capped at `+100` per post |
+| **Question Downvoted** | `-2` | `-2` | 3 downvotes per rolling 24h |
+| **Answer Upvoted** | `+5` | `0` | Capped at `+100` per post |
+| **Answer Downvoted** | `-2` | `-2` | 3 downvotes per rolling 24h |
+| **Review Voted Helpful** | `+5` | `0` | Capped at `+100` per review |
+| **Review Voted Unhelpful** | `-2` | `-2` | 3 downvotes per rolling 24h |
+| **Answer Accepted by Asker** | `+30` (Answerer) | `0` (`+10` Asker bonus) | 1 accepted answer per question |
+| **Answer Endorsed by Author** | `+20` (Answerer) | `0` | 1 endorsed answer per question |
 
-- **Derivation from Source Tables:** Point events are derived directly from the primary relational vote tables (`QuestionVote`, `AnswerVote`, `ReviewVote`) and answer acceptances/endorsements rather than a separate untyped ledger table, guaranteeing foreign key integrity, cascade deletions, and zero data drift.
+#### Anti-Griefing Safeguards:
+- **Downvote Unlock Threshold**: Users must earn at least **10 reputation** before gaining the privilege to downvote.
+- **Voter Skin-in-the-Game**: Every cast downvote costs the voter $-2$ reputation.
+- **Daily Rate Ceiling**: Strict limit of 3 downvotes per user in any rolling 24-hour window.
+- **Reputation Floor**: Total reputation cannot drop below `0`.
 
-### 3.2 Privileges & Anti-Griefing Safeguards
-- **Starting Reputation:** New users start at `0` reputation.
-- **Minimum Floor:** A user's total reputation cannot drop below `0`.
-- **Downvote Unlock Threshold:** A user must achieve at least **`10` reputation** before they unlock the ability to downvote. Upvoting, asking questions, reviewing, and answering are open to all email-verified users immediately.
-- **Downvote Rate Limit:** Maximum of **3 downvotes per rolling 24-hour window** per user.
-- **Vote Retraction:** If a user cancels an upvote or downvote, all associated reputation adjustments are cleanly reversed.
+#### Alternatives considered
+Free, unconstrained downvoting with zero voter cost and no unlock threshold.
+**Pros:**
+- Low friction for users to flag incorrect answers or low-effort content.
+**Cons:**
+- Encourages retaliatory vote brigading and toxic pile-ons from throwaway accounts.
 
----
+### Public Multi-Item Collections and System Likes
+Users can organize and curate builds and components into collections:
+- **System "Liked" Collection**: Initialized automatically for every user account upon signup. Clicking the Heart icon on any build or component adds the item to this collection and increments the public item counter.
+- **Custom Collections**: Users can create named collections (e.g., *"Sub-250g Cinematic Builds"*, *"6S Freestyle Motors"*) containing mixed item types (both builds and catalog components).
+- **Public Visibility**: All collections are public by design and exposed on the user's public profile (`/@username/collections`).
 
-## 4. Favorites & Collections Subsystem (Instagram / Printables-Style)
-
-### 4.1 System "Liked" Collection
-- Every user account receives a system-managed **"Liked"** collection upon signup.
-- Clicking the **Heart / Like** button on any Build or Component:
-  - Adds the item to the user's "Liked" collection.
-  - Increments the public Like counter on that entity.
-  - Clicking again removes it from "Liked" and decrements the counter.
-- **Public Visibility:** All collections are public and accessible to view on user profiles.
-
-### 4.2 Custom Collections
-Users can create unlimited custom collections (e.g. *"Sub-250g Ideas"*, *"7-inch Long Range Inspo"*, *"Compatible Motors for Apex 5"*).
-- **Public by Design:** All collections are public by design, simplifying sharing and discovery across the community.
-- **Item Flexibility:** Collections support **mixed items** — a single collection can contain both `Build` and `Component` entries.
-- **Many-to-Many:** An item can be added to multiple collections simultaneously.
-- **Metadata:** Name, description, and optional cover image (or auto-preview from member items).
-- **Public Profile:** Collections appear on the user's profile at `/@username/collections`. Collections are view-only for visitors (no collection following or collaborative editing).
+### Knowledge Preservation and Soft-Deletion Lifecycle
+To protect communal troubleshooting history:
+- **Question Preservation Rule**: A Question with at least one accepted answer or an answer with a net positive score cannot be permanently hard-deleted by the author. If deletion is requested, the author's identity is masked as `[Deleted User]`, while the question and solutions remain accessible.
+- **Review Deletions**: An author may delete their review at any time, immediately removing it from the target entity's `% Positive` ratio.
+- **Comment Deletions**: Comments with replies display `[Comment deleted]` to maintain conversation context.
 
 ---
 
-## 5. Content Moderation, Preservation & Soft-Deletion
+## 3. Assumptions
 
-- **Knowledge Preservation Rule:** If a Question has at least one accepted answer or an answer with net upvotes ($\ge 1$), the Question cannot be hard-deleted by the asker.
-  - If the author requests deletion, the Question is marked with `deletedAt` and author display is masked as `[Deleted User]`. The answers and thread remain intact for the community.
-- **Review Deletion:** An author can delete their Review at any time. When deleted, the review is soft-deleted or removed from calculation, and the entity's `% Positive` score immediately recalculates.
-- **Comments with Children:** Micro-comments or review comments that have sub-replies display `[Comment deleted]` when removed by the author, preserving conversation context.
-- **Account Deletion / Ban:** When a user account is deleted or banned (`bannedAt` / `deletedAt` in `User` table), their contributions remain preserved with the author shown as `[Deleted User]`.
-
----
-
-## 6. Database Schema Specifications
-
-The following conceptual data models (using pseudo-schema syntax) reflect these architectural decisions:
-
-```prisma
-// ==========================================
-// 1. REVIEWS & REVIEW COMMENTS (STEAM-STYLE)
-// ==========================================
-
-model Review {
-  id             Int             @id @default(autoincrement())
-  userId         Int
-  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  // Polymorphic Target (Enforced: exactly one is set)
-  buildId        Int?
-  build          Build?          @relation(fields: [buildId], references: [id], onDelete: Cascade)
-  componentId    Int?
-  component      Component?      @relation(fields: [componentId], references: [id], onDelete: Cascade)
-
-  isRecommended  Boolean         // true = Thumbs Up / Recommended, false = Thumbs Down
-  body           String          // Markdown writeup
-  isEdited       Boolean         @default(false)
-  deletedAt      DateTime?
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-
-  votes          ReviewVote[]
-  comments       ReviewComment[]
-
-  @@unique([userId, buildId])
-  @@unique([userId, componentId])
-  @@index([buildId, isRecommended])
-  @@index([componentId, isRecommended])
-}
-
-model ReviewVote {
-  id        Int      @id @default(autoincrement())
-  reviewId  Int
-  review    Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  isHelpful Boolean  // true = Helpful, false = Unhelpful
-  createdAt DateTime @default(now())
-
-  @@unique([userId, reviewId])
-}
-
-model ReviewComment {
-  id        Int       @id @default(autoincrement())
-  reviewId  Int
-  review    Review    @relation(fields: [reviewId], references: [id], onDelete: Cascade)
-  userId    Int
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  body      String
-  deletedAt DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
-  @@index([reviewId, createdAt])
-}
-
-// ==========================================
-// 2. TECHNICAL Q&A (STACKOVERFLOW-STYLE)
-// ==========================================
-
-model Question {
-  id          Int            @id @default(autoincrement())
-  userId      Int
-  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  // Polymorphic Target
-  buildId     Int?
-  build       Build?         @relation(fields: [buildId], references: [id], onDelete: Cascade)
-  componentId Int?
-  component   Component?     @relation(fields: [componentId], references: [id], onDelete: Cascade)
-
-  title       String
-  body        String         // Markdown
-  netScore    Int            @default(0) // Denormalized for fast sorting
-  isEdited    Boolean        @default(false)
-  deletedAt   DateTime?
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
-
-  answers     Answer[]
-  votes       QuestionVote[]
-  comments    QuestionComment[]
-
-  @@index([buildId, netScore])
-  @@index([componentId, netScore])
-}
-
-model Answer {
-  id                Int             @id @default(autoincrement())
-  questionId        Int
-  question          Question        @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  userId            Int
-  user              User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  body              String          // Markdown
-  netScore          Int             @default(0) // Denormalized for fast sorting
-  isAcceptedByAsker Boolean         @default(false) // Checkmark from Question Asker
-  isAuthorEndorsed  Boolean         @default(false) // Star badge from Build Author
-  isEdited          Boolean         @default(false)
-  deletedAt         DateTime?
-  createdAt         DateTime        @default(now())
-  updatedAt         DateTime        @updatedAt
-
-  votes             AnswerVote[]
-  comments          AnswerComment[]
-
-  @@index([questionId, netScore])
-}
-
-model QuestionVote {
-  id         Int      @id @default(autoincrement())
-  questionId Int
-  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  userId     Int
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  isUpvote   Boolean  // true = Upvote (+1), false = Downvote (-1)
-  createdAt  DateTime @default(now())
-
-  @@unique([userId, questionId])
-}
-
-model AnswerVote {
-  id        Int      @id @default(autoincrement())
-  answerId  Int
-  answer    Answer   @relation(fields: [answerId], references: [id], onDelete: Cascade)
-  userId    Int
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  isUpvote  Boolean  // true = Upvote (+1), false = Downvote (-1)
-  createdAt DateTime @default(now())
-
-  @@unique([userId, answerId])
-}
-
-model QuestionComment {
-  id         Int       @id @default(autoincrement())
-  questionId Int
-  question   Question  @relation(fields: [questionId], references: [id], onDelete: Cascade)
-  userId     Int
-  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  body       String
-  deletedAt  DateTime?
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
-
-  @@index([questionId, createdAt])
-}
-
-model AnswerComment {
-  id        Int       @id @default(autoincrement())
-  answerId  Int
-  answer    Answer    @relation(fields: [answerId], references: [id], onDelete: Cascade)
-  userId    Int
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  body      String
-  deletedAt DateTime?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-
-  @@index([answerId, createdAt])
-}
-
-// ==========================================
-// 3. REPUTATION & USER KARMA
-// ==========================================
-
-model UserReputation {
-  userId        Int      @id
-  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  score         Int      @default(0) // Total earned reputation (minimum 0)
-  updatedAt     DateTime @updatedAt
-}
-
-// ==========================================
-// 4. FAVORITES & COLLECTIONS
-// ==========================================
-
-model Collection {
-  id            Int             @id @default(autoincrement())
-  userId        Int
-  user          User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  name          String
-  description   String?
-  isSystemCollection Boolean    @default(false) // System collection (e.g. 1-click likes)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-
-  items         CollectionItem[]
-
-  @@unique([userId, isSystemCollection])
-}
-
-model CollectionItem {
-  id           Int        @id @default(autoincrement())
-  collectionId Int
-  collection   Collection @relation(fields: [collectionId], references: [id], onDelete: Cascade)
-
-  // Polymorphic Target (Build or Component)
-  buildId      Int?
-  build        Build?     @relation(fields: [buildId], references: [id], onDelete: Cascade)
-  componentId  Int?
-  component    Component? @relation(fields: [componentId], references: [id], onDelete: Cascade)
-
-  createdAt    DateTime   @default(now())
-
-  @@unique([collectionId, buildId])
-  @@unique([collectionId, componentId])
-}
-```
+1. Social interactions are restricted to authenticated users with verified email addresses.
+2. Aircraft builds and catalog components can receive reviews, questions, and collections polymorphically.
+3. User reputation is computed deterministically from underlying vote, acceptance, and endorsement records.
