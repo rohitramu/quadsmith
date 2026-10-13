@@ -9,6 +9,13 @@ Always check the manufacturer's official website and official spec sheets as the
 - Never commit temporary or scratch scripts (e.g., `.cjs` helper scripts). Always store temporary or scratch scripts in the `.tmp/` directory at the root of the repository, and delete them immediately before finishing a task.
 - After creating a commit, always push to the remote. If you need to do a force push, ask the user first.
 - When writing a commit message, do not mention changes to AGENTS.md in the subject line (top line) unless it is the only changed file.
+- **Plan Implementation & Commits**:
+  - Implement plans in a single commit that saves the finalized plan to `docs/plans/<plan_name>.md`.
+  - Include the **Goal** section and a **TL;DR of the Proposal** in the commit message body following the subject line.
+  - For follow-up commits:
+    - If the plan changes: update the plan in `docs/plans/<plan_name>.md` in that commit.
+    - If fixing an incorrect implementation: treat it as a standard bugfix commit (no plan document update).
+    - If following up immediately on the branch's latest commit: amend the commit and update the plan/message as needed. If already pushed, ask before force-pushing.
 
 ## Code Cleanliness & Breaking Changes
 
@@ -25,6 +32,32 @@ Always check the manufacturer's official website and official spec sheets as the
     2. You are actively discussing a **plan** — defined specifically as either a **visual design** (iterating via preview artifacts) or a **planning document** (e.g., via the `/plan` action).
   - All iterations during plan discussion or visual design review must remain strictly confined to the plan or preview artifacts until approved.
 - **Prominent Approval Callouts**: Whenever waiting on user approval (when answering questions or discussing a plan), prominently display a dedicated callout at the end of the message. Title the callout using the format `Awaiting approval to <action>` (e.g., "Awaiting approval to Implement", "Awaiting approval to Execute"), making it immediately clear that progress is paused pending explicit confirmation.
+- **Plan Document Structure & Lifecycle**:
+  - Author and iterate on plans within the agent artifact directory (`<appDataDir>/brain/<conversation-id>/<plan_name>.md`) during review.
+  - In artifact files, use `&nbsp;` on blank lines between adjacent paragraphs for preview spacing, and `file:///` scheme links for editor clickability.
+  - Upon approval, convert internal file links to repo-relative paths, remove `&nbsp;` spacing, and commit the finalized plan to `docs/plans/<plan_name>.md` using pure standard Markdown.
+  - Every plan document must adhere to the standardized structure:
+    - **Table of Contents**: Linked list of all Level 1 headings present in the doc, plus nested design decision headings.
+    - **Horizontal Separators**: Use `---` only between Level 1 headings.
+    - **Omission of Empty Optional Sections**: Omit Background, Alternatives considered, Assumptions, Future work, or Open questions entirely if empty (do not include placeholders like "None", and exclude omitted sections from the Table of Contents).
+    - **Document All Discussed Alternatives**: Document all alternatives explored during discussion, regardless of quality or viability.
+    - **Concise Bulleted Summaries**: Use concise bulleted short items whenever helpful to explain complex concepts cleanly across plans, alternatives, and chat explanations.
+    - **Clickable Reference Links**: Include as many clickable reference links as appropriate using descriptive anchor text as evidence for statements. For committed repository files, use relative links, never absolute paths. External links should prioritize official documentation, Wikipedia, and StackExchange.
+    - **1. Background (optional)**: Context, and explicit references to any superseded plans.
+    - **2. Goal**
+    - **3. Proposal**: Starts with `> **TL;DR:** <explanation>` blockquote (short 1-2 sentence summary or concise bulleted list of short items), followed by a high-level concept explanation paragraph, then 1 sub-heading per design decision (`### <Design Decision>`) with nested `#### Alternatives considered` (unbulleted ~2 sentence summary, unbulleted `**Pros:**` and `**Cons:**` labels with bulleted items).
+    - **4. Alternatives considered (optional)**: High-level conceptual alternatives.
+    - **5. Assumptions (optional)**: Numbered list.
+    - **6. Future work (optional)**: 1 sub-heading per idea.
+    - **7. Open questions (optional)**: Numbered list.
+- **Plan Maintenance & Archival**:
+  - Keep all non-archived plans in `docs/plans/` up-to-date with every new commit.
+  - If a new plan contradicts an existing plan:
+    - Do not modify the existing plan document.
+    - Reference the superseded plan(s) in the `Background` section of the new plan.
+    - Move superseded plans into `docs/plans/archive/`.
+    - Notify the user of this situation during the plan discussion.
+  - If unsure whether an existing plan should be updated or archived, ask the user.
 
 ## Database & Schema Maintenance
 
