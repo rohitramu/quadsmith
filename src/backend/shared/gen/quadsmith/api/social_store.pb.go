@@ -13,7 +13,7 @@ import (
 )
 
 func CreateEntity(ctx context.Context, tx pgx.Tx, m *Entity) error {
-	query := `INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
+	query := `INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at, user_uuid, author_username) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -29,13 +29,18 @@ func CreateEntity(ctx context.Context, tx pgx.Tx, m *Entity) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.UpdatedAt))
+	}(m.UpdatedAt), func(s *string) interface{} {
+		if s == nil || *s == "" {
+			return nil
+		}
+		return *s
+	}(m.UserUuid), m.AuthorUsername)
 	return err
 }
 
 func GetEntity(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Entity, error) {
-	validCols := map[string]bool{"uuid": true, "collection": true, "id": true, "name": true, "description": true, "primary_display_image": true, "reference_links": true, "media": true, "author_or_manufacturer": true, "is_archived": true, "created_at": true, "updated_at": true}
-	colsStr := "uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at"
+	validCols := map[string]bool{"uuid": true, "collection": true, "id": true, "name": true, "description": true, "primary_display_image": true, "reference_links": true, "media": true, "author_or_manufacturer": true, "is_archived": true, "created_at": true, "updated_at": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -46,7 +51,7 @@ func GetEntity(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []st
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "collection", "id", "name", "description", "primary_display_image", "reference_links", "media", "author_or_manufacturer", "is_archived", "created_at", "updated_at"}
+		cols = []string{"uuid", "collection", "id", "name", "description", "primary_display_image", "reference_links", "media", "author_or_manufacturer", "is_archived", "created_at", "updated_at", "user_uuid", "author_username"}
 	}
 	query := `SELECT ` + colsStr + ` FROM entities WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -90,6 +95,10 @@ func GetEntity(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []st
 					m.UpdatedAt = timestamppb.New(*v)
 				}
 			})
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -107,7 +116,7 @@ func GetEntity(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []st
 }
 
 func UpdateEntity(ctx context.Context, tx pgx.Tx, m *Entity) error {
-	query := `UPDATE entities SET collection = $2, name = $3, description = $4, primary_display_image = $5, reference_links = $6, media = $7, author_or_manufacturer = $8, is_archived = $9, created_at = $10, updated_at = $11 WHERE uuid = $1`
+	query := `UPDATE entities SET collection = $2, name = $3, description = $4, primary_display_image = $5, reference_links = $6, media = $7, author_or_manufacturer = $8, is_archived = $9, created_at = $10, updated_at = $11, user_uuid = $12, author_username = $13 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, m.Collection, m.Name, m.Description, m.PrimaryDisplayImage, m.ReferenceLinks, m.Media, m.AuthorOrManufacturer, m.IsArchived, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
@@ -118,7 +127,12 @@ func UpdateEntity(ctx context.Context, tx pgx.Tx, m *Entity) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.UpdatedAt))
+	}(m.UpdatedAt), func(s *string) interface{} {
+		if s == nil || *s == "" {
+			return nil
+		}
+		return *s
+	}(m.UserUuid), m.AuthorUsername)
 	return err
 }
 
@@ -129,8 +143,8 @@ func DeleteEntity(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListEntities(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Entity, error) {
-	validCols := map[string]bool{"uuid": true, "collection": true, "id": true, "name": true, "description": true, "primary_display_image": true, "reference_links": true, "media": true, "author_or_manufacturer": true, "is_archived": true, "created_at": true, "updated_at": true}
-	colsStr := "uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at"
+	validCols := map[string]bool{"uuid": true, "collection": true, "id": true, "name": true, "description": true, "primary_display_image": true, "reference_links": true, "media": true, "author_or_manufacturer": true, "is_archived": true, "created_at": true, "updated_at": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -141,7 +155,7 @@ func ListEntities(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "collection", "id", "name", "description", "primary_display_image", "reference_links", "media", "author_or_manufacturer", "is_archived", "created_at", "updated_at"}
+		cols = []string{"uuid", "collection", "id", "name", "description", "primary_display_image", "reference_links", "media", "author_or_manufacturer", "is_archived", "created_at", "updated_at", "user_uuid", "author_username"}
 	}
 	query := `SELECT ` + colsStr + ` FROM entities`
 	if whereClause != "" {
@@ -226,6 +240,10 @@ func ListEntities(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []
 						m.UpdatedAt = timestamppb.New(*v)
 					}
 				})
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

@@ -13,3 +13,18 @@ export const getBattery = BatteryService.method.getBattery;
  * @generated from rpc quadsmith.api.BatteryService.ListBatteries
  */
 export const listBatteries = BatteryService.method.listBatteries;
+
+/**
+ * @generated from rpc quadsmith.api.BatteryService.CreateBattery
+ */
+export const createBattery = BatteryService.method.createBattery;
+
+/**
+ * @generated from rpc quadsmith.api.BatteryService.UpdateBattery
+ */
+export const updateBattery = BatteryService.method.updateBattery;
+
+/**
+ * @generated from rpc quadsmith.api.BatteryService.DeleteBattery
+ */
+export const deleteBattery = BatteryService.method.deleteBattery;

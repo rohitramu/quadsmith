@@ -10,44 +10,31 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// Domain Model
+// 1. gRPC Service (Services First)
 // ---------------------------------------------------------
-message Goggles {
-  option (quadsmith.sql.table) = {name: "goggles"};
-  option (quadsmith.common.collection_path) = "components/gear/goggles";
-  option (quadsmith.common.frontend) = {
-    color_code: "#d946ef"
-    default_columns: [
-      "manufacturer",
-      "name",
-      "video_protocol",
-      "display_type",
-      "resolution",
-      "fov_deg"
-    ]
-  };
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4;
-  float weight_g = 5;
-  string video_protocol = 6;
-  string display_type = 7;
-  string resolution = 8;
-  float fov_deg = 9;
-  string ipd_range_mm = 10;
-  string voltage_range = 11;
-  bool dvr_supported = 12;
-  string description = 13;
-  repeated ReferenceLink reference_links = 14;
-  optional string primary_display_image = 15;
-  repeated Media media = 16;
+service GogglesService {
+  rpc GetGoggles(GetGogglesRequest) returns (Goggles);
+  rpc ListGoggles(ListGogglesRequest) returns (ListGogglesResponse);
+  rpc CreateGoggles(CreateGogglesRequest) returns (Goggles);
+  rpc UpdateGoggles(UpdateGogglesRequest) returns (Goggles);
+  rpc DeleteGoggles(DeleteGogglesRequest) returns (DeleteGogglesResponse);
 }
 
 // ---------------------------------------------------------
-// RPC Requests & Responses
+// 2. RPC Requests & Responses (Callers Precede Callees)
 // ---------------------------------------------------------
+message CreateGogglesRequest {
+  Goggles goggles = 1;
+}
+
+message DeleteGogglesRequest {
+  string id = 1;
+}
+
+message DeleteGogglesResponse {
+  bool is_archived = 1;
+}
+
 message GetGogglesRequest {
   string id = 1;
   repeated string columns = 2;
@@ -66,10 +53,47 @@ message ListGogglesResponse {
   string next_page_token = 2;
 }
 
+message UpdateGogglesRequest {
+  Goggles goggles = 1;
+}
+
 // ---------------------------------------------------------
-// gRPC Service
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
-service GogglesService {
-  rpc GetGoggles(GetGogglesRequest) returns (Goggles);
-  rpc ListGoggles(ListGogglesRequest) returns (ListGogglesResponse);
+message Goggles {
+  option (quadsmith.sql.table) = {name: "goggles"};
+  option (quadsmith.common.collection_path) = "components/gear/goggles";
+  option (quadsmith.common.frontend) = {
+    color_code: "#d946ef"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "video_protocol",
+      "display_type",
+      "resolution",
+      "fov_deg"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {
+    is_primary_key: true
+    references: "entities(uuid) ON DELETE CASCADE"
+  }];
+  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
+  float weight_g = 5;
+  string video_protocol = 6;
+  string display_type = 7;
+  string resolution = 8;
+  float fov_deg = 9;
+  string ipd_range_mm = 10;
+  string voltage_range = 11;
+  bool dvr_supported = 12;
+  string description = 13 [(quadsmith.sql.column) = {ignore: true}];
+  repeated ReferenceLink reference_links = 14 [(quadsmith.sql.column) = {ignore: true}];
+  optional string primary_display_image = 15 [(quadsmith.sql.column) = {ignore: true}];
+  repeated Media media = 16 [(quadsmith.sql.column) = {ignore: true}];
+  optional string user_uuid = 17 [(quadsmith.sql.column) = {ignore: true}];
+  optional string author_username = 18 [(quadsmith.sql.column) = {ignore: true}];
 }

@@ -11,19 +11,19 @@ import (
 )
 
 func CreateSoftwareTool(ctx context.Context, tx pgx.Tx, m *SoftwareTool) error {
-	query := `INSERT INTO software_tools (uuid, id, manufacturer, name, version, category, platform, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`
+	query := `INSERT INTO software_tools (uuid, manufacturer, version, category, platform) VALUES ($1, $2, $3, $4, $5)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.Version, m.Category, m.Platform, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Manufacturer, m.Version, m.Category, m.Platform)
 	return err
 }
 
 func GetSoftwareTool(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*SoftwareTool, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "category": true, "platform": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, version, category, platform, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "category": true, "platform": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, version, category, platform, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetSoftwareTool(ctx context.Context, db *pgxpool.Pool, idOrUuid string, col
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "version", "category", "platform", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "version", "category", "platform", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM software_tools WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM software_tools INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &SoftwareTool{}
@@ -64,6 +64,10 @@ func GetSoftwareTool(ctx context.Context, db *pgxpool.Pool, idOrUuid string, col
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -81,20 +85,20 @@ func GetSoftwareTool(ctx context.Context, db *pgxpool.Pool, idOrUuid string, col
 }
 
 func UpdateSoftwareTool(ctx context.Context, tx pgx.Tx, m *SoftwareTool) error {
-	query := `UPDATE software_tools SET manufacturer = $2, name = $3, version = $4, category = $5, platform = $6, description = $7, reference_links = $8, primary_display_image = $9, media = $10 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.Version, m.Category, m.Platform, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE software_tools SET manufacturer = $2, version = $3, category = $4, platform = $5 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Version, m.Category, m.Platform)
 	return err
 }
 
 func DeleteSoftwareTool(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM software_tools WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM software_tools WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'software-tools' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListSoftwareTools(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*SoftwareTool, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "category": true, "platform": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, version, category, platform, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "category": true, "platform": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, version, category, platform, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -105,11 +109,12 @@ func ListSoftwareTools(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "version", "category", "platform", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "version", "category", "platform", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM software_tools`
+	query := `SELECT ` + colsStr + ` FROM software_tools INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -176,6 +181,10 @@ func ListSoftwareTools(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

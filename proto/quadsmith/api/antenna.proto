@@ -10,56 +10,31 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// Domain Model
+// 1. gRPC Service (Services First)
 // ---------------------------------------------------------
-message Antenna {
-  option (quadsmith.sql.table) = {name: "antennas"};
-  option (quadsmith.common.collection_path) = "components/hardware/antennas";
-  option (quadsmith.common.frontend) = {
-    color_code: "#eab308"
-    default_columns: [
-      "manufacturer",
-      "name",
-      "connector",
-      "polarization",
-      "frequency_band_mhz",
-      "gain_dbi"
-    ]
-  };
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4;
-  bool is_internal_only = 5;
-
-  float weight_g = 6;
-
-  // E.g., "U.FL", "MMCX", "SMA", "RP-SMA"
-  string connector = 7;
-
-  // E.g., "RHCP", "LHCP", "Linear"
-  string polarization = 8;
-
-  // Center frequency in GHz (e.g., 5.8, 2.4, 0.9)
-  uint32 frequency_band_mhz = 9;
-
-  // Length in millimeters (e.g., 60, 100, 150)
-  float length_mm = 10;
-
-  // Gain in dBi (e.g., 2.5, 3.0)
-  float gain_dbi = 11;
-  string description = 12;
-  repeated ReferenceLink reference_links = 13;
-  optional string primary_display_image = 14;
-  repeated Media media = 15;
+service AntennaService {
+  rpc GetAntenna(GetAntennaRequest) returns (Antenna);
+  rpc ListAntennas(ListAntennasRequest) returns (ListAntennasResponse);
+  rpc CreateAntenna(CreateAntennaRequest) returns (Antenna);
+  rpc UpdateAntenna(UpdateAntennaRequest) returns (Antenna);
+  rpc DeleteAntenna(DeleteAntennaRequest) returns (DeleteAntennaResponse);
 }
 
 // ---------------------------------------------------------
-// RPC Requests & Responses
+// 2. RPC Requests & Responses (Callers Precede Callees)
 // ---------------------------------------------------------
+message CreateAntennaRequest {
+  Antenna antenna = 1;
+}
+
+message DeleteAntennaRequest {
+  string id = 1;
+}
+
+message DeleteAntennaResponse {
+  bool is_archived = 1;
+}
+
 message GetAntennaRequest {
   string id = 1;
   repeated string columns = 2;
@@ -78,10 +53,59 @@ message ListAntennasResponse {
   string next_page_token = 2;
 }
 
+message UpdateAntennaRequest {
+  Antenna antenna = 1;
+}
+
 // ---------------------------------------------------------
-// gRPC Service
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
-service AntennaService {
-  rpc GetAntenna(GetAntennaRequest) returns (Antenna);
-  rpc ListAntennas(ListAntennasRequest) returns (ListAntennasResponse);
+message Antenna {
+  option (quadsmith.sql.table) = {name: "antennas"};
+  option (quadsmith.common.collection_path) = "components/hardware/antennas";
+  option (quadsmith.common.frontend) = {
+    color_code: "#eab308"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "connector",
+      "polarization",
+      "frequency_band_mhz",
+      "gain_dbi"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {
+    is_primary_key: true
+    references: "entities(uuid) ON DELETE CASCADE"
+  }];
+
+  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
+  bool is_internal_only = 5;
+
+  float weight_g = 6;
+
+  // E.g., "U.FL", "MMCX", "SMA", "RP-SMA"
+  string connector = 7;
+
+  // E.g., "RHCP", "LHCP", "Linear"
+  string polarization = 8;
+
+  // Center frequency in GHz (e.g., 5.8, 2.4, 0.9)
+  uint32 frequency_band_mhz = 9;
+
+  // Length in millimeters (e.g., 60, 100, 150)
+  float length_mm = 10;
+
+  // Gain in dBi (e.g., 2.5, 3.0)
+  float gain_dbi = 11;
+  string description = 12 [(quadsmith.sql.column) = {ignore: true}];
+  repeated ReferenceLink reference_links = 13 [(quadsmith.sql.column) = {ignore: true}];
+  optional string primary_display_image = 14 [(quadsmith.sql.column) = {ignore: true}];
+  repeated Media media = 15 [(quadsmith.sql.column) = {ignore: true}];
+  optional string user_uuid = 16 [(quadsmith.sql.column) = {ignore: true}];
+  optional string author_username = 17 [(quadsmith.sql.column) = {ignore: true}];
 }

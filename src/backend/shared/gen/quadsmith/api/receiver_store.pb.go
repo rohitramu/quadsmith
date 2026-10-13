@@ -11,24 +11,24 @@ import (
 )
 
 func CreateReceiver(ctx context.Context, tx pgx.Tx, m *Receiver) error {
-	query := `INSERT INTO receivers (uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
+	query := `INSERT INTO receivers (uuid, manufacturer, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.FrequencyBandMhz, m.HasTelemetry, func(s []string) interface{} {
+	}(m.Uuid), m.Manufacturer, m.IsInternalOnly, m.WeightG, m.Protocol, m.FrequencyBandMhz, m.HasTelemetry, func(s []string) interface{} {
 		if len(s) == 0 {
 			return nil
 		}
 		return s
-	}(m.AntennaUuids), m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.AntennaUuids))
 	return err
 }
 
 func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Receiver, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "frequency_band_mhz": true, "has_telemetry": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "frequency_band_mhz": true, "has_telemetry": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -39,9 +39,9 @@ func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band_mhz", "has_telemetry", "antenna_uuids", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band_mhz", "has_telemetry", "antenna_uuids", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM receivers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM receivers INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Receiver{}
@@ -75,6 +75,10 @@ func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -92,25 +96,25 @@ func GetReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 }
 
 func UpdateReceiver(ctx context.Context, tx pgx.Tx, m *Receiver) error {
-	query := `UPDATE receivers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, protocol = $6, frequency_band_mhz = $7, has_telemetry = $8, antenna_uuids = $9, description = $10, reference_links = $11, primary_display_image = $12, media = $13 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.FrequencyBandMhz, m.HasTelemetry, func(s []string) interface{} {
+	query := `UPDATE receivers SET manufacturer = $2, is_internal_only = $3, weight_g = $4, protocol = $5, frequency_band_mhz = $6, has_telemetry = $7, antenna_uuids = $8 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.IsInternalOnly, m.WeightG, m.Protocol, m.FrequencyBandMhz, m.HasTelemetry, func(s []string) interface{} {
 		if len(s) == 0 {
 			return nil
 		}
 		return s
-	}(m.AntennaUuids), m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.AntennaUuids))
 	return err
 }
 
 func DeleteReceiver(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM receivers WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM receivers WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'receivers' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Receiver, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "frequency_band_mhz": true, "has_telemetry": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "frequency_band_mhz": true, "has_telemetry": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -121,11 +125,12 @@ func ListReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band_mhz", "has_telemetry", "antenna_uuids", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "frequency_band_mhz", "has_telemetry", "antenna_uuids", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM receivers`
+	query := `SELECT ` + colsStr + ` FROM receivers INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -198,6 +203,10 @@ func ListReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

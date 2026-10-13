@@ -39,12 +39,24 @@ const (
 	// FcFirmwareServiceListFcFirmwaresProcedure is the fully-qualified name of the FcFirmwareService's
 	// ListFcFirmwares RPC.
 	FcFirmwareServiceListFcFirmwaresProcedure = "/quadsmith.api.FcFirmwareService/ListFcFirmwares"
+	// FcFirmwareServiceCreateFcFirmwareProcedure is the fully-qualified name of the FcFirmwareService's
+	// CreateFcFirmware RPC.
+	FcFirmwareServiceCreateFcFirmwareProcedure = "/quadsmith.api.FcFirmwareService/CreateFcFirmware"
+	// FcFirmwareServiceUpdateFcFirmwareProcedure is the fully-qualified name of the FcFirmwareService's
+	// UpdateFcFirmware RPC.
+	FcFirmwareServiceUpdateFcFirmwareProcedure = "/quadsmith.api.FcFirmwareService/UpdateFcFirmware"
+	// FcFirmwareServiceDeleteFcFirmwareProcedure is the fully-qualified name of the FcFirmwareService's
+	// DeleteFcFirmware RPC.
+	FcFirmwareServiceDeleteFcFirmwareProcedure = "/quadsmith.api.FcFirmwareService/DeleteFcFirmware"
 )
 
 // FcFirmwareServiceClient is a client for the quadsmith.api.FcFirmwareService service.
 type FcFirmwareServiceClient interface {
 	GetFcFirmware(context.Context, *connect.Request[api.GetFcFirmwareRequest]) (*connect.Response[api.FcFirmware], error)
 	ListFcFirmwares(context.Context, *connect.Request[api.ListFcFirmwaresRequest]) (*connect.Response[api.ListFcFirmwaresResponse], error)
+	CreateFcFirmware(context.Context, *connect.Request[api.CreateFcFirmwareRequest]) (*connect.Response[api.FcFirmware], error)
+	UpdateFcFirmware(context.Context, *connect.Request[api.UpdateFcFirmwareRequest]) (*connect.Response[api.FcFirmware], error)
+	DeleteFcFirmware(context.Context, *connect.Request[api.DeleteFcFirmwareRequest]) (*connect.Response[api.DeleteFcFirmwareResponse], error)
 }
 
 // NewFcFirmwareServiceClient constructs a client for the quadsmith.api.FcFirmwareService service.
@@ -70,13 +82,34 @@ func NewFcFirmwareServiceClient(httpClient connect.HTTPClient, baseURL string, o
 			connect.WithSchema(fcFirmwareServiceMethods.ByName("ListFcFirmwares")),
 			connect.WithClientOptions(opts...),
 		),
+		createFcFirmware: connect.NewClient[api.CreateFcFirmwareRequest, api.FcFirmware](
+			httpClient,
+			baseURL+FcFirmwareServiceCreateFcFirmwareProcedure,
+			connect.WithSchema(fcFirmwareServiceMethods.ByName("CreateFcFirmware")),
+			connect.WithClientOptions(opts...),
+		),
+		updateFcFirmware: connect.NewClient[api.UpdateFcFirmwareRequest, api.FcFirmware](
+			httpClient,
+			baseURL+FcFirmwareServiceUpdateFcFirmwareProcedure,
+			connect.WithSchema(fcFirmwareServiceMethods.ByName("UpdateFcFirmware")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteFcFirmware: connect.NewClient[api.DeleteFcFirmwareRequest, api.DeleteFcFirmwareResponse](
+			httpClient,
+			baseURL+FcFirmwareServiceDeleteFcFirmwareProcedure,
+			connect.WithSchema(fcFirmwareServiceMethods.ByName("DeleteFcFirmware")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // fcFirmwareServiceClient implements FcFirmwareServiceClient.
 type fcFirmwareServiceClient struct {
-	getFcFirmware   *connect.Client[api.GetFcFirmwareRequest, api.FcFirmware]
-	listFcFirmwares *connect.Client[api.ListFcFirmwaresRequest, api.ListFcFirmwaresResponse]
+	getFcFirmware    *connect.Client[api.GetFcFirmwareRequest, api.FcFirmware]
+	listFcFirmwares  *connect.Client[api.ListFcFirmwaresRequest, api.ListFcFirmwaresResponse]
+	createFcFirmware *connect.Client[api.CreateFcFirmwareRequest, api.FcFirmware]
+	updateFcFirmware *connect.Client[api.UpdateFcFirmwareRequest, api.FcFirmware]
+	deleteFcFirmware *connect.Client[api.DeleteFcFirmwareRequest, api.DeleteFcFirmwareResponse]
 }
 
 // GetFcFirmware calls quadsmith.api.FcFirmwareService.GetFcFirmware.
@@ -89,10 +122,28 @@ func (c *fcFirmwareServiceClient) ListFcFirmwares(ctx context.Context, req *conn
 	return c.listFcFirmwares.CallUnary(ctx, req)
 }
 
+// CreateFcFirmware calls quadsmith.api.FcFirmwareService.CreateFcFirmware.
+func (c *fcFirmwareServiceClient) CreateFcFirmware(ctx context.Context, req *connect.Request[api.CreateFcFirmwareRequest]) (*connect.Response[api.FcFirmware], error) {
+	return c.createFcFirmware.CallUnary(ctx, req)
+}
+
+// UpdateFcFirmware calls quadsmith.api.FcFirmwareService.UpdateFcFirmware.
+func (c *fcFirmwareServiceClient) UpdateFcFirmware(ctx context.Context, req *connect.Request[api.UpdateFcFirmwareRequest]) (*connect.Response[api.FcFirmware], error) {
+	return c.updateFcFirmware.CallUnary(ctx, req)
+}
+
+// DeleteFcFirmware calls quadsmith.api.FcFirmwareService.DeleteFcFirmware.
+func (c *fcFirmwareServiceClient) DeleteFcFirmware(ctx context.Context, req *connect.Request[api.DeleteFcFirmwareRequest]) (*connect.Response[api.DeleteFcFirmwareResponse], error) {
+	return c.deleteFcFirmware.CallUnary(ctx, req)
+}
+
 // FcFirmwareServiceHandler is an implementation of the quadsmith.api.FcFirmwareService service.
 type FcFirmwareServiceHandler interface {
 	GetFcFirmware(context.Context, *connect.Request[api.GetFcFirmwareRequest]) (*connect.Response[api.FcFirmware], error)
 	ListFcFirmwares(context.Context, *connect.Request[api.ListFcFirmwaresRequest]) (*connect.Response[api.ListFcFirmwaresResponse], error)
+	CreateFcFirmware(context.Context, *connect.Request[api.CreateFcFirmwareRequest]) (*connect.Response[api.FcFirmware], error)
+	UpdateFcFirmware(context.Context, *connect.Request[api.UpdateFcFirmwareRequest]) (*connect.Response[api.FcFirmware], error)
+	DeleteFcFirmware(context.Context, *connect.Request[api.DeleteFcFirmwareRequest]) (*connect.Response[api.DeleteFcFirmwareResponse], error)
 }
 
 // NewFcFirmwareServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -114,12 +165,36 @@ func NewFcFirmwareServiceHandler(svc FcFirmwareServiceHandler, opts ...connect.H
 		connect.WithSchema(fcFirmwareServiceMethods.ByName("ListFcFirmwares")),
 		connect.WithHandlerOptions(opts...),
 	)
+	fcFirmwareServiceCreateFcFirmwareHandler := connect.NewUnaryHandler(
+		FcFirmwareServiceCreateFcFirmwareProcedure,
+		svc.CreateFcFirmware,
+		connect.WithSchema(fcFirmwareServiceMethods.ByName("CreateFcFirmware")),
+		connect.WithHandlerOptions(opts...),
+	)
+	fcFirmwareServiceUpdateFcFirmwareHandler := connect.NewUnaryHandler(
+		FcFirmwareServiceUpdateFcFirmwareProcedure,
+		svc.UpdateFcFirmware,
+		connect.WithSchema(fcFirmwareServiceMethods.ByName("UpdateFcFirmware")),
+		connect.WithHandlerOptions(opts...),
+	)
+	fcFirmwareServiceDeleteFcFirmwareHandler := connect.NewUnaryHandler(
+		FcFirmwareServiceDeleteFcFirmwareProcedure,
+		svc.DeleteFcFirmware,
+		connect.WithSchema(fcFirmwareServiceMethods.ByName("DeleteFcFirmware")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.FcFirmwareService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case FcFirmwareServiceGetFcFirmwareProcedure:
 			fcFirmwareServiceGetFcFirmwareHandler.ServeHTTP(w, r)
 		case FcFirmwareServiceListFcFirmwaresProcedure:
 			fcFirmwareServiceListFcFirmwaresHandler.ServeHTTP(w, r)
+		case FcFirmwareServiceCreateFcFirmwareProcedure:
+			fcFirmwareServiceCreateFcFirmwareHandler.ServeHTTP(w, r)
+		case FcFirmwareServiceUpdateFcFirmwareProcedure:
+			fcFirmwareServiceUpdateFcFirmwareHandler.ServeHTTP(w, r)
+		case FcFirmwareServiceDeleteFcFirmwareProcedure:
+			fcFirmwareServiceDeleteFcFirmwareHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +210,16 @@ func (UnimplementedFcFirmwareServiceHandler) GetFcFirmware(context.Context, *con
 
 func (UnimplementedFcFirmwareServiceHandler) ListFcFirmwares(context.Context, *connect.Request[api.ListFcFirmwaresRequest]) (*connect.Response[api.ListFcFirmwaresResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FcFirmwareService.ListFcFirmwares is not implemented"))
+}
+
+func (UnimplementedFcFirmwareServiceHandler) CreateFcFirmware(context.Context, *connect.Request[api.CreateFcFirmwareRequest]) (*connect.Response[api.FcFirmware], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FcFirmwareService.CreateFcFirmware is not implemented"))
+}
+
+func (UnimplementedFcFirmwareServiceHandler) UpdateFcFirmware(context.Context, *connect.Request[api.UpdateFcFirmwareRequest]) (*connect.Response[api.FcFirmware], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FcFirmwareService.UpdateFcFirmware is not implemented"))
+}
+
+func (UnimplementedFcFirmwareServiceHandler) DeleteFcFirmware(context.Context, *connect.Request[api.DeleteFcFirmwareRequest]) (*connect.Response[api.DeleteFcFirmwareResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FcFirmwareService.DeleteFcFirmware is not implemented"))
 }

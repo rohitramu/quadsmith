@@ -39,12 +39,24 @@ const (
 	// ChargerServiceListChargersProcedure is the fully-qualified name of the ChargerService's
 	// ListChargers RPC.
 	ChargerServiceListChargersProcedure = "/quadsmith.api.ChargerService/ListChargers"
+	// ChargerServiceCreateChargerProcedure is the fully-qualified name of the ChargerService's
+	// CreateCharger RPC.
+	ChargerServiceCreateChargerProcedure = "/quadsmith.api.ChargerService/CreateCharger"
+	// ChargerServiceUpdateChargerProcedure is the fully-qualified name of the ChargerService's
+	// UpdateCharger RPC.
+	ChargerServiceUpdateChargerProcedure = "/quadsmith.api.ChargerService/UpdateCharger"
+	// ChargerServiceDeleteChargerProcedure is the fully-qualified name of the ChargerService's
+	// DeleteCharger RPC.
+	ChargerServiceDeleteChargerProcedure = "/quadsmith.api.ChargerService/DeleteCharger"
 )
 
 // ChargerServiceClient is a client for the quadsmith.api.ChargerService service.
 type ChargerServiceClient interface {
 	GetCharger(context.Context, *connect.Request[api.GetChargerRequest]) (*connect.Response[api.Charger], error)
 	ListChargers(context.Context, *connect.Request[api.ListChargersRequest]) (*connect.Response[api.ListChargersResponse], error)
+	CreateCharger(context.Context, *connect.Request[api.CreateChargerRequest]) (*connect.Response[api.Charger], error)
+	UpdateCharger(context.Context, *connect.Request[api.UpdateChargerRequest]) (*connect.Response[api.Charger], error)
+	DeleteCharger(context.Context, *connect.Request[api.DeleteChargerRequest]) (*connect.Response[api.DeleteChargerResponse], error)
 }
 
 // NewChargerServiceClient constructs a client for the quadsmith.api.ChargerService service. By
@@ -70,13 +82,34 @@ func NewChargerServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(chargerServiceMethods.ByName("ListChargers")),
 			connect.WithClientOptions(opts...),
 		),
+		createCharger: connect.NewClient[api.CreateChargerRequest, api.Charger](
+			httpClient,
+			baseURL+ChargerServiceCreateChargerProcedure,
+			connect.WithSchema(chargerServiceMethods.ByName("CreateCharger")),
+			connect.WithClientOptions(opts...),
+		),
+		updateCharger: connect.NewClient[api.UpdateChargerRequest, api.Charger](
+			httpClient,
+			baseURL+ChargerServiceUpdateChargerProcedure,
+			connect.WithSchema(chargerServiceMethods.ByName("UpdateCharger")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteCharger: connect.NewClient[api.DeleteChargerRequest, api.DeleteChargerResponse](
+			httpClient,
+			baseURL+ChargerServiceDeleteChargerProcedure,
+			connect.WithSchema(chargerServiceMethods.ByName("DeleteCharger")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // chargerServiceClient implements ChargerServiceClient.
 type chargerServiceClient struct {
-	getCharger   *connect.Client[api.GetChargerRequest, api.Charger]
-	listChargers *connect.Client[api.ListChargersRequest, api.ListChargersResponse]
+	getCharger    *connect.Client[api.GetChargerRequest, api.Charger]
+	listChargers  *connect.Client[api.ListChargersRequest, api.ListChargersResponse]
+	createCharger *connect.Client[api.CreateChargerRequest, api.Charger]
+	updateCharger *connect.Client[api.UpdateChargerRequest, api.Charger]
+	deleteCharger *connect.Client[api.DeleteChargerRequest, api.DeleteChargerResponse]
 }
 
 // GetCharger calls quadsmith.api.ChargerService.GetCharger.
@@ -89,10 +122,28 @@ func (c *chargerServiceClient) ListChargers(ctx context.Context, req *connect.Re
 	return c.listChargers.CallUnary(ctx, req)
 }
 
+// CreateCharger calls quadsmith.api.ChargerService.CreateCharger.
+func (c *chargerServiceClient) CreateCharger(ctx context.Context, req *connect.Request[api.CreateChargerRequest]) (*connect.Response[api.Charger], error) {
+	return c.createCharger.CallUnary(ctx, req)
+}
+
+// UpdateCharger calls quadsmith.api.ChargerService.UpdateCharger.
+func (c *chargerServiceClient) UpdateCharger(ctx context.Context, req *connect.Request[api.UpdateChargerRequest]) (*connect.Response[api.Charger], error) {
+	return c.updateCharger.CallUnary(ctx, req)
+}
+
+// DeleteCharger calls quadsmith.api.ChargerService.DeleteCharger.
+func (c *chargerServiceClient) DeleteCharger(ctx context.Context, req *connect.Request[api.DeleteChargerRequest]) (*connect.Response[api.DeleteChargerResponse], error) {
+	return c.deleteCharger.CallUnary(ctx, req)
+}
+
 // ChargerServiceHandler is an implementation of the quadsmith.api.ChargerService service.
 type ChargerServiceHandler interface {
 	GetCharger(context.Context, *connect.Request[api.GetChargerRequest]) (*connect.Response[api.Charger], error)
 	ListChargers(context.Context, *connect.Request[api.ListChargersRequest]) (*connect.Response[api.ListChargersResponse], error)
+	CreateCharger(context.Context, *connect.Request[api.CreateChargerRequest]) (*connect.Response[api.Charger], error)
+	UpdateCharger(context.Context, *connect.Request[api.UpdateChargerRequest]) (*connect.Response[api.Charger], error)
+	DeleteCharger(context.Context, *connect.Request[api.DeleteChargerRequest]) (*connect.Response[api.DeleteChargerResponse], error)
 }
 
 // NewChargerServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -114,12 +165,36 @@ func NewChargerServiceHandler(svc ChargerServiceHandler, opts ...connect.Handler
 		connect.WithSchema(chargerServiceMethods.ByName("ListChargers")),
 		connect.WithHandlerOptions(opts...),
 	)
+	chargerServiceCreateChargerHandler := connect.NewUnaryHandler(
+		ChargerServiceCreateChargerProcedure,
+		svc.CreateCharger,
+		connect.WithSchema(chargerServiceMethods.ByName("CreateCharger")),
+		connect.WithHandlerOptions(opts...),
+	)
+	chargerServiceUpdateChargerHandler := connect.NewUnaryHandler(
+		ChargerServiceUpdateChargerProcedure,
+		svc.UpdateCharger,
+		connect.WithSchema(chargerServiceMethods.ByName("UpdateCharger")),
+		connect.WithHandlerOptions(opts...),
+	)
+	chargerServiceDeleteChargerHandler := connect.NewUnaryHandler(
+		ChargerServiceDeleteChargerProcedure,
+		svc.DeleteCharger,
+		connect.WithSchema(chargerServiceMethods.ByName("DeleteCharger")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.ChargerService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ChargerServiceGetChargerProcedure:
 			chargerServiceGetChargerHandler.ServeHTTP(w, r)
 		case ChargerServiceListChargersProcedure:
 			chargerServiceListChargersHandler.ServeHTTP(w, r)
+		case ChargerServiceCreateChargerProcedure:
+			chargerServiceCreateChargerHandler.ServeHTTP(w, r)
+		case ChargerServiceUpdateChargerProcedure:
+			chargerServiceUpdateChargerHandler.ServeHTTP(w, r)
+		case ChargerServiceDeleteChargerProcedure:
+			chargerServiceDeleteChargerHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +210,16 @@ func (UnimplementedChargerServiceHandler) GetCharger(context.Context, *connect.R
 
 func (UnimplementedChargerServiceHandler) ListChargers(context.Context, *connect.Request[api.ListChargersRequest]) (*connect.Response[api.ListChargersResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.ChargerService.ListChargers is not implemented"))
+}
+
+func (UnimplementedChargerServiceHandler) CreateCharger(context.Context, *connect.Request[api.CreateChargerRequest]) (*connect.Response[api.Charger], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.ChargerService.CreateCharger is not implemented"))
+}
+
+func (UnimplementedChargerServiceHandler) UpdateCharger(context.Context, *connect.Request[api.UpdateChargerRequest]) (*connect.Response[api.Charger], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.ChargerService.UpdateCharger is not implemented"))
+}
+
+func (UnimplementedChargerServiceHandler) DeleteCharger(context.Context, *connect.Request[api.DeleteChargerRequest]) (*connect.Response[api.DeleteChargerResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.ChargerService.DeleteCharger is not implemented"))
 }

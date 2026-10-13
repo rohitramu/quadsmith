@@ -10,38 +10,31 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// Domain Model
+// 1. gRPC Service (Services First)
 // ---------------------------------------------------------
-message SoftwareTool {
-  option (quadsmith.sql.table) = {name: "software_tools"};
-  option (quadsmith.common.collection_path) = "components/software/software-tools";
-  option (quadsmith.common.frontend) = {
-    color_code: "#a855f7"
-    default_columns: [
-      "manufacturer",
-      "name",
-      "version",
-      "category",
-      "platform"
-    ]
-  };
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4;
-  string version = 5;
-  string category = 6;
-  string platform = 7;
-  string description = 8;
-  repeated ReferenceLink reference_links = 9;
-  optional string primary_display_image = 10;
-  repeated Media media = 11;
+service SoftwareToolService {
+  rpc GetSoftwareTool(GetSoftwareToolRequest) returns (SoftwareTool);
+  rpc ListSoftwareTools(ListSoftwareToolsRequest) returns (ListSoftwareToolsResponse);
+  rpc CreateSoftwareTool(CreateSoftwareToolRequest) returns (SoftwareTool);
+  rpc UpdateSoftwareTool(UpdateSoftwareToolRequest) returns (SoftwareTool);
+  rpc DeleteSoftwareTool(DeleteSoftwareToolRequest) returns (DeleteSoftwareToolResponse);
 }
 
 // ---------------------------------------------------------
-// RPC Requests & Responses
+// 2. RPC Requests & Responses (Callers Precede Callees)
 // ---------------------------------------------------------
+message CreateSoftwareToolRequest {
+  SoftwareTool software_tool = 1;
+}
+
+message DeleteSoftwareToolRequest {
+  string id = 1;
+}
+
+message DeleteSoftwareToolResponse {
+  bool is_archived = 1;
+}
+
 message GetSoftwareToolRequest {
   string id = 1;
   repeated string columns = 2;
@@ -60,10 +53,41 @@ message ListSoftwareToolsResponse {
   string next_page_token = 2;
 }
 
+message UpdateSoftwareToolRequest {
+  SoftwareTool software_tool = 1;
+}
+
 // ---------------------------------------------------------
-// gRPC Service
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
-service SoftwareToolService {
-  rpc GetSoftwareTool(GetSoftwareToolRequest) returns (SoftwareTool);
-  rpc ListSoftwareTools(ListSoftwareToolsRequest) returns (ListSoftwareToolsResponse);
+message SoftwareTool {
+  option (quadsmith.sql.table) = {name: "software_tools"};
+  option (quadsmith.common.collection_path) = "components/software/software-tools";
+  option (quadsmith.common.frontend) = {
+    color_code: "#a855f7"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "version",
+      "category",
+      "platform"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {
+    is_primary_key: true
+    references: "entities(uuid) ON DELETE CASCADE"
+  }];
+  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
+  string version = 5;
+  string category = 6;
+  string platform = 7;
+  string description = 8 [(quadsmith.sql.column) = {ignore: true}];
+  repeated ReferenceLink reference_links = 9 [(quadsmith.sql.column) = {ignore: true}];
+  optional string primary_display_image = 10 [(quadsmith.sql.column) = {ignore: true}];
+  repeated Media media = 11 [(quadsmith.sql.column) = {ignore: true}];
+  optional string user_uuid = 12 [(quadsmith.sql.column) = {ignore: true}];
+  optional string author_username = 13 [(quadsmith.sql.column) = {ignore: true}];
 }

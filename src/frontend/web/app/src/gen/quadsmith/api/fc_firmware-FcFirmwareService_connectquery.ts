@@ -13,3 +13,18 @@ export const getFcFirmware = FcFirmwareService.method.getFcFirmware;
  * @generated from rpc quadsmith.api.FcFirmwareService.ListFcFirmwares
  */
 export const listFcFirmwares = FcFirmwareService.method.listFcFirmwares;
+
+/**
+ * @generated from rpc quadsmith.api.FcFirmwareService.CreateFcFirmware
+ */
+export const createFcFirmware = FcFirmwareService.method.createFcFirmware;
+
+/**
+ * @generated from rpc quadsmith.api.FcFirmwareService.UpdateFcFirmware
+ */
+export const updateFcFirmware = FcFirmwareService.method.updateFcFirmware;
+
+/**
+ * @generated from rpc quadsmith.api.FcFirmwareService.DeleteFcFirmware
+ */
+export const deleteFcFirmware = FcFirmwareService.method.deleteFcFirmware;

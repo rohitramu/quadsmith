@@ -11,19 +11,19 @@ import (
 )
 
 func CreateGoggles(ctx context.Context, tx pgx.Tx, m *Goggles) error {
-	query := `INSERT INTO goggles (uuid, id, manufacturer, name, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`
+	query := `INSERT INTO goggles (uuid, manufacturer, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.VideoProtocol, m.DisplayType, m.Resolution, m.FovDeg, m.IpdRangeMm, m.VoltageRange, m.DvrSupported, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Manufacturer, m.WeightG, m.VideoProtocol, m.DisplayType, m.Resolution, m.FovDeg, m.IpdRangeMm, m.VoltageRange, m.DvrSupported)
 	return err
 }
 
 func GetGoggles(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Goggles, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "video_protocol": true, "display_type": true, "resolution": true, "fov_deg": true, "ipd_range_mm": true, "voltage_range": true, "dvr_supported": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "video_protocol": true, "display_type": true, "resolution": true, "fov_deg": true, "ipd_range_mm": true, "voltage_range": true, "dvr_supported": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetGoggles(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "video_protocol", "display_type", "resolution", "fov_deg", "ipd_range_mm", "voltage_range", "dvr_supported", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "video_protocol", "display_type", "resolution", "fov_deg", "ipd_range_mm", "voltage_range", "dvr_supported", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM goggles WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM goggles INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Goggles{}
@@ -74,6 +74,10 @@ func GetGoggles(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -91,20 +95,20 @@ func GetGoggles(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 }
 
 func UpdateGoggles(ctx context.Context, tx pgx.Tx, m *Goggles) error {
-	query := `UPDATE goggles SET manufacturer = $2, name = $3, weight_g = $4, video_protocol = $5, display_type = $6, resolution = $7, fov_deg = $8, ipd_range_mm = $9, voltage_range = $10, dvr_supported = $11, description = $12, reference_links = $13, primary_display_image = $14, media = $15 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.VideoProtocol, m.DisplayType, m.Resolution, m.FovDeg, m.IpdRangeMm, m.VoltageRange, m.DvrSupported, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE goggles SET manufacturer = $2, weight_g = $3, video_protocol = $4, display_type = $5, resolution = $6, fov_deg = $7, ipd_range_mm = $8, voltage_range = $9, dvr_supported = $10 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.WeightG, m.VideoProtocol, m.DisplayType, m.Resolution, m.FovDeg, m.IpdRangeMm, m.VoltageRange, m.DvrSupported)
 	return err
 }
 
 func DeleteGoggles(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM goggles WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM goggles WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'goggles' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListGoggles(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Goggles, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "video_protocol": true, "display_type": true, "resolution": true, "fov_deg": true, "ipd_range_mm": true, "voltage_range": true, "dvr_supported": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "video_protocol": true, "display_type": true, "resolution": true, "fov_deg": true, "ipd_range_mm": true, "voltage_range": true, "dvr_supported": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -115,11 +119,12 @@ func ListGoggles(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "video_protocol", "display_type", "resolution", "fov_deg", "ipd_range_mm", "voltage_range", "dvr_supported", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "video_protocol", "display_type", "resolution", "fov_deg", "ipd_range_mm", "voltage_range", "dvr_supported", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM goggles`
+	query := `SELECT ` + colsStr + ` FROM goggles INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -196,6 +201,10 @@ func ListGoggles(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

@@ -10,43 +10,31 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// Domain Model
+// 1. gRPC Service (Services First)
 // ---------------------------------------------------------
-message Transmitter {
-  option (quadsmith.sql.table) = {name: "transmitters"};
-  option (quadsmith.common.collection_path) = "components/gear/transmitters";
-  option (quadsmith.common.frontend) = {
-    color_code: "#0ea5e9"
-    default_columns: [
-      "manufacturer",
-      "name",
-      "rf_protocol",
-      "operating_system",
-      "gimbal_type",
-      "max_power_mw"
-    ]
-  };
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4;
-  float weight_g = 5;
-  string rf_protocol = 6;
-  string operating_system = 7;
-  string gimbal_type = 8;
-  uint32 max_power_mw = 9;
-  uint32 channels = 10;
-  string battery_type = 11;
-  string description = 12;
-  repeated ReferenceLink reference_links = 13;
-  optional string primary_display_image = 14;
-  repeated Media media = 15;
+service TransmitterService {
+  rpc GetTransmitter(GetTransmitterRequest) returns (Transmitter);
+  rpc ListTransmitters(ListTransmittersRequest) returns (ListTransmittersResponse);
+  rpc CreateTransmitter(CreateTransmitterRequest) returns (Transmitter);
+  rpc UpdateTransmitter(UpdateTransmitterRequest) returns (Transmitter);
+  rpc DeleteTransmitter(DeleteTransmitterRequest) returns (DeleteTransmitterResponse);
 }
 
 // ---------------------------------------------------------
-// RPC Requests & Responses
+// 2. RPC Requests & Responses (Callers Precede Callees)
 // ---------------------------------------------------------
+message CreateTransmitterRequest {
+  Transmitter transmitter = 1;
+}
+
+message DeleteTransmitterRequest {
+  string id = 1;
+}
+
+message DeleteTransmitterResponse {
+  bool is_archived = 1;
+}
+
 message GetTransmitterRequest {
   string id = 1;
   repeated string columns = 2;
@@ -65,10 +53,46 @@ message ListTransmittersResponse {
   string next_page_token = 2;
 }
 
+message UpdateTransmitterRequest {
+  Transmitter transmitter = 1;
+}
+
 // ---------------------------------------------------------
-// gRPC Service
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
-service TransmitterService {
-  rpc GetTransmitter(GetTransmitterRequest) returns (Transmitter);
-  rpc ListTransmitters(ListTransmittersRequest) returns (ListTransmittersResponse);
+message Transmitter {
+  option (quadsmith.sql.table) = {name: "transmitters"};
+  option (quadsmith.common.collection_path) = "components/gear/transmitters";
+  option (quadsmith.common.frontend) = {
+    color_code: "#0ea5e9"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "rf_protocol",
+      "operating_system",
+      "gimbal_type",
+      "max_power_mw"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {
+    is_primary_key: true
+    references: "entities(uuid) ON DELETE CASCADE"
+  }];
+  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
+  float weight_g = 5;
+  string rf_protocol = 6;
+  string operating_system = 7;
+  string gimbal_type = 8;
+  uint32 max_power_mw = 9;
+  uint32 channels = 10;
+  string battery_type = 11;
+  string description = 12 [(quadsmith.sql.column) = {ignore: true}];
+  repeated ReferenceLink reference_links = 13 [(quadsmith.sql.column) = {ignore: true}];
+  optional string primary_display_image = 14 [(quadsmith.sql.column) = {ignore: true}];
+  repeated Media media = 15 [(quadsmith.sql.column) = {ignore: true}];
+  optional string user_uuid = 16 [(quadsmith.sql.column) = {ignore: true}];
+  optional string author_username = 17 [(quadsmith.sql.column) = {ignore: true}];
 }

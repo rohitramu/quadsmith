@@ -13,3 +13,18 @@ export const getMotor = MotorService.method.getMotor;
  * @generated from rpc quadsmith.api.MotorService.ListMotors
  */
 export const listMotors = MotorService.method.listMotors;
+
+/**
+ * @generated from rpc quadsmith.api.MotorService.CreateMotor
+ */
+export const createMotor = MotorService.method.createMotor;
+
+/**
+ * @generated from rpc quadsmith.api.MotorService.UpdateMotor
+ */
+export const updateMotor = MotorService.method.updateMotor;
+
+/**
+ * @generated from rpc quadsmith.api.MotorService.DeleteMotor
+ */
+export const deleteMotor = MotorService.method.deleteMotor;

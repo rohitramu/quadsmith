@@ -1,4 +1,4 @@
-package validation
+package regression
 
 import (
 	"errors"
@@ -71,7 +71,7 @@ func TestValidateReferenceLinks(t *testing.T) {
 				},
 			},
 			wantErr:   true,
-			wantErrIs: ErrUnspecifiedReferenceLinkType,
+			wantErrIs: pb.ErrUnspecifiedReferenceLinkType,
 		},
 		{
 			name: "multiple links with distinct URLs are valid",
@@ -100,7 +100,7 @@ func TestValidateReferenceLinks(t *testing.T) {
 				},
 			},
 			wantErr:   true,
-			wantErrIs: ErrDuplicateReferenceLinkURL,
+			wantErrIs: pb.ErrDuplicateReferenceLinkURL,
 		},
 		{
 			name: "duplicate URLs with trailing slash variation return error",
@@ -115,13 +115,13 @@ func TestValidateReferenceLinks(t *testing.T) {
 				},
 			},
 			wantErr:   true,
-			wantErrIs: ErrDuplicateReferenceLinkURL,
+			wantErrIs: pb.ErrDuplicateReferenceLinkURL,
 		},
 	}
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			err := ValidateReferenceLinks(tt.links)
+			err := pb.ValidateReferenceLinks(tt.links)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("ValidateReferenceLinks() error = %v, wantErr %v", err, tt.wantErr)
 			}

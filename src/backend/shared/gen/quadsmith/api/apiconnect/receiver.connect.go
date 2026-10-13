@@ -39,12 +39,24 @@ const (
 	// ReceiverServiceListReceiversProcedure is the fully-qualified name of the ReceiverService's
 	// ListReceivers RPC.
 	ReceiverServiceListReceiversProcedure = "/quadsmith.api.ReceiverService/ListReceivers"
+	// ReceiverServiceCreateReceiverProcedure is the fully-qualified name of the ReceiverService's
+	// CreateReceiver RPC.
+	ReceiverServiceCreateReceiverProcedure = "/quadsmith.api.ReceiverService/CreateReceiver"
+	// ReceiverServiceUpdateReceiverProcedure is the fully-qualified name of the ReceiverService's
+	// UpdateReceiver RPC.
+	ReceiverServiceUpdateReceiverProcedure = "/quadsmith.api.ReceiverService/UpdateReceiver"
+	// ReceiverServiceDeleteReceiverProcedure is the fully-qualified name of the ReceiverService's
+	// DeleteReceiver RPC.
+	ReceiverServiceDeleteReceiverProcedure = "/quadsmith.api.ReceiverService/DeleteReceiver"
 )
 
 // ReceiverServiceClient is a client for the quadsmith.api.ReceiverService service.
 type ReceiverServiceClient interface {
 	GetReceiver(context.Context, *connect.Request[api.GetReceiverRequest]) (*connect.Response[api.Receiver], error)
 	ListReceivers(context.Context, *connect.Request[api.ListReceiversRequest]) (*connect.Response[api.ListReceiversResponse], error)
+	CreateReceiver(context.Context, *connect.Request[api.CreateReceiverRequest]) (*connect.Response[api.Receiver], error)
+	UpdateReceiver(context.Context, *connect.Request[api.UpdateReceiverRequest]) (*connect.Response[api.Receiver], error)
+	DeleteReceiver(context.Context, *connect.Request[api.DeleteReceiverRequest]) (*connect.Response[api.DeleteReceiverResponse], error)
 }
 
 // NewReceiverServiceClient constructs a client for the quadsmith.api.ReceiverService service. By
@@ -70,13 +82,34 @@ func NewReceiverServiceClient(httpClient connect.HTTPClient, baseURL string, opt
 			connect.WithSchema(receiverServiceMethods.ByName("ListReceivers")),
 			connect.WithClientOptions(opts...),
 		),
+		createReceiver: connect.NewClient[api.CreateReceiverRequest, api.Receiver](
+			httpClient,
+			baseURL+ReceiverServiceCreateReceiverProcedure,
+			connect.WithSchema(receiverServiceMethods.ByName("CreateReceiver")),
+			connect.WithClientOptions(opts...),
+		),
+		updateReceiver: connect.NewClient[api.UpdateReceiverRequest, api.Receiver](
+			httpClient,
+			baseURL+ReceiverServiceUpdateReceiverProcedure,
+			connect.WithSchema(receiverServiceMethods.ByName("UpdateReceiver")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteReceiver: connect.NewClient[api.DeleteReceiverRequest, api.DeleteReceiverResponse](
+			httpClient,
+			baseURL+ReceiverServiceDeleteReceiverProcedure,
+			connect.WithSchema(receiverServiceMethods.ByName("DeleteReceiver")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // receiverServiceClient implements ReceiverServiceClient.
 type receiverServiceClient struct {
-	getReceiver   *connect.Client[api.GetReceiverRequest, api.Receiver]
-	listReceivers *connect.Client[api.ListReceiversRequest, api.ListReceiversResponse]
+	getReceiver    *connect.Client[api.GetReceiverRequest, api.Receiver]
+	listReceivers  *connect.Client[api.ListReceiversRequest, api.ListReceiversResponse]
+	createReceiver *connect.Client[api.CreateReceiverRequest, api.Receiver]
+	updateReceiver *connect.Client[api.UpdateReceiverRequest, api.Receiver]
+	deleteReceiver *connect.Client[api.DeleteReceiverRequest, api.DeleteReceiverResponse]
 }
 
 // GetReceiver calls quadsmith.api.ReceiverService.GetReceiver.
@@ -89,10 +122,28 @@ func (c *receiverServiceClient) ListReceivers(ctx context.Context, req *connect.
 	return c.listReceivers.CallUnary(ctx, req)
 }
 
+// CreateReceiver calls quadsmith.api.ReceiverService.CreateReceiver.
+func (c *receiverServiceClient) CreateReceiver(ctx context.Context, req *connect.Request[api.CreateReceiverRequest]) (*connect.Response[api.Receiver], error) {
+	return c.createReceiver.CallUnary(ctx, req)
+}
+
+// UpdateReceiver calls quadsmith.api.ReceiverService.UpdateReceiver.
+func (c *receiverServiceClient) UpdateReceiver(ctx context.Context, req *connect.Request[api.UpdateReceiverRequest]) (*connect.Response[api.Receiver], error) {
+	return c.updateReceiver.CallUnary(ctx, req)
+}
+
+// DeleteReceiver calls quadsmith.api.ReceiverService.DeleteReceiver.
+func (c *receiverServiceClient) DeleteReceiver(ctx context.Context, req *connect.Request[api.DeleteReceiverRequest]) (*connect.Response[api.DeleteReceiverResponse], error) {
+	return c.deleteReceiver.CallUnary(ctx, req)
+}
+
 // ReceiverServiceHandler is an implementation of the quadsmith.api.ReceiverService service.
 type ReceiverServiceHandler interface {
 	GetReceiver(context.Context, *connect.Request[api.GetReceiverRequest]) (*connect.Response[api.Receiver], error)
 	ListReceivers(context.Context, *connect.Request[api.ListReceiversRequest]) (*connect.Response[api.ListReceiversResponse], error)
+	CreateReceiver(context.Context, *connect.Request[api.CreateReceiverRequest]) (*connect.Response[api.Receiver], error)
+	UpdateReceiver(context.Context, *connect.Request[api.UpdateReceiverRequest]) (*connect.Response[api.Receiver], error)
+	DeleteReceiver(context.Context, *connect.Request[api.DeleteReceiverRequest]) (*connect.Response[api.DeleteReceiverResponse], error)
 }
 
 // NewReceiverServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -114,12 +165,36 @@ func NewReceiverServiceHandler(svc ReceiverServiceHandler, opts ...connect.Handl
 		connect.WithSchema(receiverServiceMethods.ByName("ListReceivers")),
 		connect.WithHandlerOptions(opts...),
 	)
+	receiverServiceCreateReceiverHandler := connect.NewUnaryHandler(
+		ReceiverServiceCreateReceiverProcedure,
+		svc.CreateReceiver,
+		connect.WithSchema(receiverServiceMethods.ByName("CreateReceiver")),
+		connect.WithHandlerOptions(opts...),
+	)
+	receiverServiceUpdateReceiverHandler := connect.NewUnaryHandler(
+		ReceiverServiceUpdateReceiverProcedure,
+		svc.UpdateReceiver,
+		connect.WithSchema(receiverServiceMethods.ByName("UpdateReceiver")),
+		connect.WithHandlerOptions(opts...),
+	)
+	receiverServiceDeleteReceiverHandler := connect.NewUnaryHandler(
+		ReceiverServiceDeleteReceiverProcedure,
+		svc.DeleteReceiver,
+		connect.WithSchema(receiverServiceMethods.ByName("DeleteReceiver")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.ReceiverService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ReceiverServiceGetReceiverProcedure:
 			receiverServiceGetReceiverHandler.ServeHTTP(w, r)
 		case ReceiverServiceListReceiversProcedure:
 			receiverServiceListReceiversHandler.ServeHTTP(w, r)
+		case ReceiverServiceCreateReceiverProcedure:
+			receiverServiceCreateReceiverHandler.ServeHTTP(w, r)
+		case ReceiverServiceUpdateReceiverProcedure:
+			receiverServiceUpdateReceiverHandler.ServeHTTP(w, r)
+		case ReceiverServiceDeleteReceiverProcedure:
+			receiverServiceDeleteReceiverHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +210,16 @@ func (UnimplementedReceiverServiceHandler) GetReceiver(context.Context, *connect
 
 func (UnimplementedReceiverServiceHandler) ListReceivers(context.Context, *connect.Request[api.ListReceiversRequest]) (*connect.Response[api.ListReceiversResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.ReceiverService.ListReceivers is not implemented"))
+}
+
+func (UnimplementedReceiverServiceHandler) CreateReceiver(context.Context, *connect.Request[api.CreateReceiverRequest]) (*connect.Response[api.Receiver], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.ReceiverService.CreateReceiver is not implemented"))
+}
+
+func (UnimplementedReceiverServiceHandler) UpdateReceiver(context.Context, *connect.Request[api.UpdateReceiverRequest]) (*connect.Response[api.Receiver], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.ReceiverService.UpdateReceiver is not implemented"))
+}
+
+func (UnimplementedReceiverServiceHandler) DeleteReceiver(context.Context, *connect.Request[api.DeleteReceiverRequest]) (*connect.Response[api.DeleteReceiverResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.ReceiverService.DeleteReceiver is not implemented"))
 }

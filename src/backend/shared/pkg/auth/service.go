@@ -1208,10 +1208,10 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 		}
 
 		var buildCount int
-		_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM builds WHERE user_uuid = $1`, otherUserUUID).Scan(&buildCount)
+		_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false`, otherUserUUID).Scan(&buildCount)
 
 		var buildNames []string
-		rows, err := s.db.Query(ctx, `SELECT name FROM builds WHERE user_uuid = $1 ORDER BY name ASC LIMIT 10`, otherUserUUID)
+		rows, err := s.db.Query(ctx, `SELECT name FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false ORDER BY name ASC LIMIT 10`, otherUserUUID)
 		if err == nil {
 			defer rows.Close()
 			for rows.Next() {
@@ -1375,11 +1375,11 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 
 	// 1. Count builds to transfer
 	var buildCount int
-	_ = tx.QueryRow(ctx, `SELECT COUNT(*) FROM builds WHERE user_uuid = $1`, otherUserUUID).Scan(&buildCount)
+	_ = tx.QueryRow(ctx, `SELECT COUNT(*) FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false`, otherUserUUID).Scan(&buildCount)
 
-	// 2. Reassign builds to current user
+	// 2. Reassign builds and components to current user
 	_, err = tx.Exec(ctx, `
-		UPDATE builds
+		UPDATE entities
 		SET user_uuid = $1, author_username = $2
 		WHERE user_uuid = $3`,
 		userCtx.UserUUID, userCtx.UserID, otherUserUUID)
@@ -2959,7 +2959,7 @@ func (s *UserService) GetPublicProfile(ctx context.Context, req *connect.Request
 	}
 
 	var buildCount int32
-	_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM builds WHERE user_uuid = $1`, userUUID).Scan(&buildCount)
+	_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false`, userUUID).Scan(&buildCount)
 
 	var reputationScore int32
 	_ = s.db.QueryRow(ctx, `SELECT score FROM user_reputations WHERE user_uuid = $1`, userUUID).Scan(&reputationScore)

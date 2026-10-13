@@ -39,12 +39,24 @@ const (
 	// EscFirmwareServiceListEscFirmwaresProcedure is the fully-qualified name of the
 	// EscFirmwareService's ListEscFirmwares RPC.
 	EscFirmwareServiceListEscFirmwaresProcedure = "/quadsmith.api.EscFirmwareService/ListEscFirmwares"
+	// EscFirmwareServiceCreateEscFirmwareProcedure is the fully-qualified name of the
+	// EscFirmwareService's CreateEscFirmware RPC.
+	EscFirmwareServiceCreateEscFirmwareProcedure = "/quadsmith.api.EscFirmwareService/CreateEscFirmware"
+	// EscFirmwareServiceUpdateEscFirmwareProcedure is the fully-qualified name of the
+	// EscFirmwareService's UpdateEscFirmware RPC.
+	EscFirmwareServiceUpdateEscFirmwareProcedure = "/quadsmith.api.EscFirmwareService/UpdateEscFirmware"
+	// EscFirmwareServiceDeleteEscFirmwareProcedure is the fully-qualified name of the
+	// EscFirmwareService's DeleteEscFirmware RPC.
+	EscFirmwareServiceDeleteEscFirmwareProcedure = "/quadsmith.api.EscFirmwareService/DeleteEscFirmware"
 )
 
 // EscFirmwareServiceClient is a client for the quadsmith.api.EscFirmwareService service.
 type EscFirmwareServiceClient interface {
 	GetEscFirmware(context.Context, *connect.Request[api.GetEscFirmwareRequest]) (*connect.Response[api.EscFirmware], error)
 	ListEscFirmwares(context.Context, *connect.Request[api.ListEscFirmwaresRequest]) (*connect.Response[api.ListEscFirmwaresResponse], error)
+	CreateEscFirmware(context.Context, *connect.Request[api.CreateEscFirmwareRequest]) (*connect.Response[api.EscFirmware], error)
+	UpdateEscFirmware(context.Context, *connect.Request[api.UpdateEscFirmwareRequest]) (*connect.Response[api.EscFirmware], error)
+	DeleteEscFirmware(context.Context, *connect.Request[api.DeleteEscFirmwareRequest]) (*connect.Response[api.DeleteEscFirmwareResponse], error)
 }
 
 // NewEscFirmwareServiceClient constructs a client for the quadsmith.api.EscFirmwareService service.
@@ -70,13 +82,34 @@ func NewEscFirmwareServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(escFirmwareServiceMethods.ByName("ListEscFirmwares")),
 			connect.WithClientOptions(opts...),
 		),
+		createEscFirmware: connect.NewClient[api.CreateEscFirmwareRequest, api.EscFirmware](
+			httpClient,
+			baseURL+EscFirmwareServiceCreateEscFirmwareProcedure,
+			connect.WithSchema(escFirmwareServiceMethods.ByName("CreateEscFirmware")),
+			connect.WithClientOptions(opts...),
+		),
+		updateEscFirmware: connect.NewClient[api.UpdateEscFirmwareRequest, api.EscFirmware](
+			httpClient,
+			baseURL+EscFirmwareServiceUpdateEscFirmwareProcedure,
+			connect.WithSchema(escFirmwareServiceMethods.ByName("UpdateEscFirmware")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteEscFirmware: connect.NewClient[api.DeleteEscFirmwareRequest, api.DeleteEscFirmwareResponse](
+			httpClient,
+			baseURL+EscFirmwareServiceDeleteEscFirmwareProcedure,
+			connect.WithSchema(escFirmwareServiceMethods.ByName("DeleteEscFirmware")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // escFirmwareServiceClient implements EscFirmwareServiceClient.
 type escFirmwareServiceClient struct {
-	getEscFirmware   *connect.Client[api.GetEscFirmwareRequest, api.EscFirmware]
-	listEscFirmwares *connect.Client[api.ListEscFirmwaresRequest, api.ListEscFirmwaresResponse]
+	getEscFirmware    *connect.Client[api.GetEscFirmwareRequest, api.EscFirmware]
+	listEscFirmwares  *connect.Client[api.ListEscFirmwaresRequest, api.ListEscFirmwaresResponse]
+	createEscFirmware *connect.Client[api.CreateEscFirmwareRequest, api.EscFirmware]
+	updateEscFirmware *connect.Client[api.UpdateEscFirmwareRequest, api.EscFirmware]
+	deleteEscFirmware *connect.Client[api.DeleteEscFirmwareRequest, api.DeleteEscFirmwareResponse]
 }
 
 // GetEscFirmware calls quadsmith.api.EscFirmwareService.GetEscFirmware.
@@ -89,10 +122,28 @@ func (c *escFirmwareServiceClient) ListEscFirmwares(ctx context.Context, req *co
 	return c.listEscFirmwares.CallUnary(ctx, req)
 }
 
+// CreateEscFirmware calls quadsmith.api.EscFirmwareService.CreateEscFirmware.
+func (c *escFirmwareServiceClient) CreateEscFirmware(ctx context.Context, req *connect.Request[api.CreateEscFirmwareRequest]) (*connect.Response[api.EscFirmware], error) {
+	return c.createEscFirmware.CallUnary(ctx, req)
+}
+
+// UpdateEscFirmware calls quadsmith.api.EscFirmwareService.UpdateEscFirmware.
+func (c *escFirmwareServiceClient) UpdateEscFirmware(ctx context.Context, req *connect.Request[api.UpdateEscFirmwareRequest]) (*connect.Response[api.EscFirmware], error) {
+	return c.updateEscFirmware.CallUnary(ctx, req)
+}
+
+// DeleteEscFirmware calls quadsmith.api.EscFirmwareService.DeleteEscFirmware.
+func (c *escFirmwareServiceClient) DeleteEscFirmware(ctx context.Context, req *connect.Request[api.DeleteEscFirmwareRequest]) (*connect.Response[api.DeleteEscFirmwareResponse], error) {
+	return c.deleteEscFirmware.CallUnary(ctx, req)
+}
+
 // EscFirmwareServiceHandler is an implementation of the quadsmith.api.EscFirmwareService service.
 type EscFirmwareServiceHandler interface {
 	GetEscFirmware(context.Context, *connect.Request[api.GetEscFirmwareRequest]) (*connect.Response[api.EscFirmware], error)
 	ListEscFirmwares(context.Context, *connect.Request[api.ListEscFirmwaresRequest]) (*connect.Response[api.ListEscFirmwaresResponse], error)
+	CreateEscFirmware(context.Context, *connect.Request[api.CreateEscFirmwareRequest]) (*connect.Response[api.EscFirmware], error)
+	UpdateEscFirmware(context.Context, *connect.Request[api.UpdateEscFirmwareRequest]) (*connect.Response[api.EscFirmware], error)
+	DeleteEscFirmware(context.Context, *connect.Request[api.DeleteEscFirmwareRequest]) (*connect.Response[api.DeleteEscFirmwareResponse], error)
 }
 
 // NewEscFirmwareServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -114,12 +165,36 @@ func NewEscFirmwareServiceHandler(svc EscFirmwareServiceHandler, opts ...connect
 		connect.WithSchema(escFirmwareServiceMethods.ByName("ListEscFirmwares")),
 		connect.WithHandlerOptions(opts...),
 	)
+	escFirmwareServiceCreateEscFirmwareHandler := connect.NewUnaryHandler(
+		EscFirmwareServiceCreateEscFirmwareProcedure,
+		svc.CreateEscFirmware,
+		connect.WithSchema(escFirmwareServiceMethods.ByName("CreateEscFirmware")),
+		connect.WithHandlerOptions(opts...),
+	)
+	escFirmwareServiceUpdateEscFirmwareHandler := connect.NewUnaryHandler(
+		EscFirmwareServiceUpdateEscFirmwareProcedure,
+		svc.UpdateEscFirmware,
+		connect.WithSchema(escFirmwareServiceMethods.ByName("UpdateEscFirmware")),
+		connect.WithHandlerOptions(opts...),
+	)
+	escFirmwareServiceDeleteEscFirmwareHandler := connect.NewUnaryHandler(
+		EscFirmwareServiceDeleteEscFirmwareProcedure,
+		svc.DeleteEscFirmware,
+		connect.WithSchema(escFirmwareServiceMethods.ByName("DeleteEscFirmware")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.EscFirmwareService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case EscFirmwareServiceGetEscFirmwareProcedure:
 			escFirmwareServiceGetEscFirmwareHandler.ServeHTTP(w, r)
 		case EscFirmwareServiceListEscFirmwaresProcedure:
 			escFirmwareServiceListEscFirmwaresHandler.ServeHTTP(w, r)
+		case EscFirmwareServiceCreateEscFirmwareProcedure:
+			escFirmwareServiceCreateEscFirmwareHandler.ServeHTTP(w, r)
+		case EscFirmwareServiceUpdateEscFirmwareProcedure:
+			escFirmwareServiceUpdateEscFirmwareHandler.ServeHTTP(w, r)
+		case EscFirmwareServiceDeleteEscFirmwareProcedure:
+			escFirmwareServiceDeleteEscFirmwareHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +210,16 @@ func (UnimplementedEscFirmwareServiceHandler) GetEscFirmware(context.Context, *c
 
 func (UnimplementedEscFirmwareServiceHandler) ListEscFirmwares(context.Context, *connect.Request[api.ListEscFirmwaresRequest]) (*connect.Response[api.ListEscFirmwaresResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.EscFirmwareService.ListEscFirmwares is not implemented"))
+}
+
+func (UnimplementedEscFirmwareServiceHandler) CreateEscFirmware(context.Context, *connect.Request[api.CreateEscFirmwareRequest]) (*connect.Response[api.EscFirmware], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.EscFirmwareService.CreateEscFirmware is not implemented"))
+}
+
+func (UnimplementedEscFirmwareServiceHandler) UpdateEscFirmware(context.Context, *connect.Request[api.UpdateEscFirmwareRequest]) (*connect.Response[api.EscFirmware], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.EscFirmwareService.UpdateEscFirmware is not implemented"))
+}
+
+func (UnimplementedEscFirmwareServiceHandler) DeleteEscFirmware(context.Context, *connect.Request[api.DeleteEscFirmwareRequest]) (*connect.Response[api.DeleteEscFirmwareResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.EscFirmwareService.DeleteEscFirmware is not implemented"))
 }

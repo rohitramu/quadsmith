@@ -11,19 +11,19 @@ import (
 )
 
 func CreateFcFirmware(ctx context.Context, tx pgx.Tx, m *FcFirmware) error {
-	query := `INSERT INTO flight_controller_firmwares (uuid, id, manufacturer, name, version, target_architectures, supported_protocols, is_open_source, repository_url, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
+	query := `INSERT INTO flight_controller_firmwares (uuid, manufacturer, version, target_architectures, supported_protocols, is_open_source, repository_url) VALUES ($1, $2, $3, $4, $5, $6, $7)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.Version, m.TargetArchitectures, m.SupportedProtocols, m.IsOpenSource, m.RepositoryUrl, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Manufacturer, m.Version, m.TargetArchitectures, m.SupportedProtocols, m.IsOpenSource, m.RepositoryUrl)
 	return err
 }
 
 func GetFcFirmware(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*FcFirmware, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "target_architectures": true, "supported_protocols": true, "is_open_source": true, "repository_url": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, version, target_architectures, supported_protocols, is_open_source, repository_url, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "target_architectures": true, "supported_protocols": true, "is_open_source": true, "repository_url": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, version, target_architectures, supported_protocols, is_open_source, repository_url, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetFcFirmware(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols 
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "version", "target_architectures", "supported_protocols", "is_open_source", "repository_url", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "version", "target_architectures", "supported_protocols", "is_open_source", "repository_url", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM flight_controller_firmwares WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM flight_controller_firmwares INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &FcFirmware{}
@@ -68,6 +68,10 @@ func GetFcFirmware(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols 
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -85,20 +89,20 @@ func GetFcFirmware(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols 
 }
 
 func UpdateFcFirmware(ctx context.Context, tx pgx.Tx, m *FcFirmware) error {
-	query := `UPDATE flight_controller_firmwares SET manufacturer = $2, name = $3, version = $4, target_architectures = $5, supported_protocols = $6, is_open_source = $7, repository_url = $8, description = $9, reference_links = $10, primary_display_image = $11, media = $12 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.Version, m.TargetArchitectures, m.SupportedProtocols, m.IsOpenSource, m.RepositoryUrl, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE flight_controller_firmwares SET manufacturer = $2, version = $3, target_architectures = $4, supported_protocols = $5, is_open_source = $6, repository_url = $7 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Version, m.TargetArchitectures, m.SupportedProtocols, m.IsOpenSource, m.RepositoryUrl)
 	return err
 }
 
 func DeleteFcFirmware(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM flight_controller_firmwares WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM flight_controller_firmwares WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'fc-firmware' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListFcFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*FcFirmware, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "target_architectures": true, "supported_protocols": true, "is_open_source": true, "repository_url": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, version, target_architectures, supported_protocols, is_open_source, repository_url, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "target_architectures": true, "supported_protocols": true, "is_open_source": true, "repository_url": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, version, target_architectures, supported_protocols, is_open_source, repository_url, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -109,11 +113,12 @@ func ListFcFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, sorts
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "version", "target_architectures", "supported_protocols", "is_open_source", "repository_url", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "version", "target_architectures", "supported_protocols", "is_open_source", "repository_url", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM flight_controller_firmwares`
+	query := `SELECT ` + colsStr + ` FROM flight_controller_firmwares INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -184,6 +189,10 @@ func ListFcFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, sorts
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

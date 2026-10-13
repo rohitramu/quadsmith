@@ -24,7 +24,366 @@ const (
 )
 
 // ---------------------------------------------------------
-// Domain Model
+// 2. RPC Requests & Responses (Callers Precede Callees)
+// ---------------------------------------------------------
+type CreateFieldToolRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FieldTool     *FieldTool             `protobuf:"bytes,1,opt,name=field_tool,json=fieldTool,proto3" json:"field_tool,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateFieldToolRequest) Reset() {
+	*x = CreateFieldToolRequest{}
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateFieldToolRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateFieldToolRequest) ProtoMessage() {}
+
+func (x *CreateFieldToolRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateFieldToolRequest.ProtoReflect.Descriptor instead.
+func (*CreateFieldToolRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_field_tool_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *CreateFieldToolRequest) GetFieldTool() *FieldTool {
+	if x != nil {
+		return x.FieldTool
+	}
+	return nil
+}
+
+type DeleteFieldToolRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteFieldToolRequest) Reset() {
+	*x = DeleteFieldToolRequest{}
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteFieldToolRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteFieldToolRequest) ProtoMessage() {}
+
+func (x *DeleteFieldToolRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteFieldToolRequest.ProtoReflect.Descriptor instead.
+func (*DeleteFieldToolRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_field_tool_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *DeleteFieldToolRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteFieldToolResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteFieldToolResponse) Reset() {
+	*x = DeleteFieldToolResponse{}
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteFieldToolResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteFieldToolResponse) ProtoMessage() {}
+
+func (x *DeleteFieldToolResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteFieldToolResponse.ProtoReflect.Descriptor instead.
+func (*DeleteFieldToolResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_field_tool_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteFieldToolResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetFieldToolRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetFieldToolRequest) Reset() {
+	*x = GetFieldToolRequest{}
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetFieldToolRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetFieldToolRequest) ProtoMessage() {}
+
+func (x *GetFieldToolRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetFieldToolRequest.ProtoReflect.Descriptor instead.
+func (*GetFieldToolRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_field_tool_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetFieldToolRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetFieldToolRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListFieldToolsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListFieldToolsRequest) Reset() {
+	*x = ListFieldToolsRequest{}
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListFieldToolsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListFieldToolsRequest) ProtoMessage() {}
+
+func (x *ListFieldToolsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListFieldToolsRequest.ProtoReflect.Descriptor instead.
+func (*ListFieldToolsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_field_tool_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ListFieldToolsRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListFieldToolsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListFieldToolsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListFieldToolsRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListFieldToolsRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListFieldToolsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FieldTools    []*FieldTool           `protobuf:"bytes,1,rep,name=field_tools,json=fieldTools,proto3" json:"field_tools,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListFieldToolsResponse) Reset() {
+	*x = ListFieldToolsResponse{}
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListFieldToolsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListFieldToolsResponse) ProtoMessage() {}
+
+func (x *ListFieldToolsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListFieldToolsResponse.ProtoReflect.Descriptor instead.
+func (*ListFieldToolsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_field_tool_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListFieldToolsResponse) GetFieldTools() []*FieldTool {
+	if x != nil {
+		return x.FieldTools
+	}
+	return nil
+}
+
+func (x *ListFieldToolsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateFieldToolRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FieldTool     *FieldTool             `protobuf:"bytes,1,opt,name=field_tool,json=fieldTool,proto3" json:"field_tool,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateFieldToolRequest) Reset() {
+	*x = UpdateFieldToolRequest{}
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateFieldToolRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateFieldToolRequest) ProtoMessage() {}
+
+func (x *UpdateFieldToolRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateFieldToolRequest.ProtoReflect.Descriptor instead.
+func (*UpdateFieldToolRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_field_tool_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *UpdateFieldToolRequest) GetFieldTool() *FieldTool {
+	if x != nil {
+		return x.FieldTool
+	}
+	return nil
+}
+
+// ---------------------------------------------------------
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
 type FieldTool struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
@@ -39,13 +398,15 @@ type FieldTool struct {
 	ReferenceLinks      []*ReferenceLink       `protobuf:"bytes,9,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	PrimaryDisplayImage *string                `protobuf:"bytes,10,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media               []*Media               `protobuf:"bytes,11,rep,name=media,proto3" json:"media,omitempty"`
+	UserUuid            *string                `protobuf:"bytes,12,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
+	AuthorUsername      *string                `protobuf:"bytes,13,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
 
 func (x *FieldTool) Reset() {
 	*x = FieldTool{}
-	mi := &file_quadsmith_api_field_tool_proto_msgTypes[0]
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -57,7 +418,7 @@ func (x *FieldTool) String() string {
 func (*FieldTool) ProtoMessage() {}
 
 func (x *FieldTool) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_field_tool_proto_msgTypes[0]
+	mi := &file_quadsmith_api_field_tool_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -70,7 +431,7 @@ func (x *FieldTool) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FieldTool.ProtoReflect.Descriptor instead.
 func (*FieldTool) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_field_tool_proto_rawDescGZIP(), []int{0}
+	return file_quadsmith_api_field_tool_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *FieldTool) GetUuid() string {
@@ -150,185 +511,16 @@ func (x *FieldTool) GetMedia() []*Media {
 	return nil
 }
 
-// ---------------------------------------------------------
-// RPC Requests & Responses
-// ---------------------------------------------------------
-type GetFieldToolRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetFieldToolRequest) Reset() {
-	*x = GetFieldToolRequest{}
-	mi := &file_quadsmith_api_field_tool_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetFieldToolRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetFieldToolRequest) ProtoMessage() {}
-
-func (x *GetFieldToolRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_field_tool_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetFieldToolRequest.ProtoReflect.Descriptor instead.
-func (*GetFieldToolRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_field_tool_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *GetFieldToolRequest) GetId() string {
-	if x != nil {
-		return x.Id
+func (x *FieldTool) GetUserUuid() string {
+	if x != nil && x.UserUuid != nil {
+		return *x.UserUuid
 	}
 	return ""
 }
 
-func (x *GetFieldToolRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListFieldToolsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListFieldToolsRequest) Reset() {
-	*x = ListFieldToolsRequest{}
-	mi := &file_quadsmith_api_field_tool_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListFieldToolsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListFieldToolsRequest) ProtoMessage() {}
-
-func (x *ListFieldToolsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_field_tool_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListFieldToolsRequest.ProtoReflect.Descriptor instead.
-func (*ListFieldToolsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_field_tool_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *ListFieldToolsRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListFieldToolsRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListFieldToolsRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListFieldToolsRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListFieldToolsRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListFieldToolsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	FieldTools    []*FieldTool           `protobuf:"bytes,1,rep,name=field_tools,json=fieldTools,proto3" json:"field_tools,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListFieldToolsResponse) Reset() {
-	*x = ListFieldToolsResponse{}
-	mi := &file_quadsmith_api_field_tool_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListFieldToolsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListFieldToolsResponse) ProtoMessage() {}
-
-func (x *ListFieldToolsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_field_tool_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListFieldToolsResponse.ProtoReflect.Descriptor instead.
-func (*ListFieldToolsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_field_tool_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *ListFieldToolsResponse) GetFieldTools() []*FieldTool {
-	if x != nil {
-		return x.FieldTools
-	}
-	return nil
-}
-
-func (x *ListFieldToolsResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
+func (x *FieldTool) GetAuthorUsername() string {
+	if x != nil && x.AuthorUsername != nil {
+		return *x.AuthorUsername
 	}
 	return ""
 }
@@ -337,27 +529,15 @@ var File_quadsmith_api_field_tool_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_field_tool_proto_rawDesc = "" +
 	"\n" +
-	"\x1equadsmith/api/field_tool.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"\xb8\x04\n" +
-	"\tFieldTool\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1b\n" +
-	"\ttool_type\x18\x06 \x01(\tR\btoolType\x12!\n" +
-	"\fpower_source\x18\a \x01(\tR\vpowerSource\x12 \n" +
-	"\vdescription\x18\b \x01(\tR\vdescription\x12E\n" +
-	"\x0freference_links\x18\t \x03(\v2\x1c.quadsmith.api.ReferenceLinkR\x0ereferenceLinks\x127\n" +
-	"\x15primary_display_image\x18\n" +
-	" \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12*\n" +
-	"\x05media\x18\v \x03(\v2\x14.quadsmith.api.MediaR\x05media:t\x8a\xb5\x18@\n" +
-	"\fmanufacturer\n" +
-	"\x04name\n" +
-	"\ttool_type\n" +
-	"\fpower_source\n" +
-	"\bweight_g\x12\a#f43f5e\x9a\xb5\x18\x1bcomponents/gear/field-tools\xc2\xf3\x18\r\n" +
-	"\vfield_toolsB\x18\n" +
-	"\x16_primary_display_image\"?\n" +
+	"\x1equadsmith/api/field_tool.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"Q\n" +
+	"\x16CreateFieldToolRequest\x127\n" +
+	"\n" +
+	"field_tool\x18\x01 \x01(\v2\x18.quadsmith.api.FieldToolR\tfieldTool\"(\n" +
+	"\x16DeleteFieldToolRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\":\n" +
+	"\x17DeleteFieldToolResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\"?\n" +
 	"\x13GetFieldToolRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x99\x01\n" +
@@ -371,10 +551,41 @@ const file_quadsmith_api_field_tool_proto_rawDesc = "" +
 	"\x16ListFieldToolsResponse\x129\n" +
 	"\vfield_tools\x18\x01 \x03(\v2\x18.quadsmith.api.FieldToolR\n" +
 	"fieldTools\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xbf\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"Q\n" +
+	"\x16UpdateFieldToolRequest\x127\n" +
+	"\n" +
+	"field_tool\x18\x01 \x01(\v2\x18.quadsmith.api.FieldToolR\tfieldTool\"\x84\x06\n" +
+	"\tFieldTool\x12<\n" +
+	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12*\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x1a\n" +
+	"\x04name\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12\x19\n" +
+	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1b\n" +
+	"\ttool_type\x18\x06 \x01(\tR\btoolType\x12!\n" +
+	"\fpower_source\x18\a \x01(\tR\vpowerSource\x12(\n" +
+	"\vdescription\x18\b \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x12M\n" +
+	"\x0freference_links\x18\t \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
+	"\x15primary_display_image\x18\n" +
+	" \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x00R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
+	"\x05media\x18\v \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12(\n" +
+	"\tuser_uuid\x18\f \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x01R\buserUuid\x88\x01\x01\x124\n" +
+	"\x0fauthor_username\x18\r \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\x0eauthorUsername\x88\x01\x01:t\x8a\xb5\x18@\n" +
+	"\fmanufacturer\n" +
+	"\x04name\n" +
+	"\ttool_type\n" +
+	"\fpower_source\n" +
+	"\bweight_g\x12\a#f43f5e\x9a\xb5\x18\x1bcomponents/gear/field-tools\xc2\xf3\x18\r\n" +
+	"\vfield_toolsB\x18\n" +
+	"\x16_primary_display_imageB\f\n" +
+	"\n" +
+	"_user_uuidB\x12\n" +
+	"\x10_author_username2\xc9\x03\n" +
 	"\x10FieldToolService\x12L\n" +
 	"\fGetFieldTool\x12\".quadsmith.api.GetFieldToolRequest\x1a\x18.quadsmith.api.FieldTool\x12]\n" +
-	"\x0eListFieldTools\x12$.quadsmith.api.ListFieldToolsRequest\x1a%.quadsmith.api.ListFieldToolsResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"\x0eListFieldTools\x12$.quadsmith.api.ListFieldToolsRequest\x1a%.quadsmith.api.ListFieldToolsResponse\x12R\n" +
+	"\x0fCreateFieldTool\x12%.quadsmith.api.CreateFieldToolRequest\x1a\x18.quadsmith.api.FieldTool\x12R\n" +
+	"\x0fUpdateFieldTool\x12%.quadsmith.api.UpdateFieldToolRequest\x1a\x18.quadsmith.api.FieldTool\x12`\n" +
+	"\x0fDeleteFieldTool\x12%.quadsmith.api.DeleteFieldToolRequest\x1a&.quadsmith.api.DeleteFieldToolResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_field_tool_proto_rawDescOnce sync.Once
@@ -388,28 +599,40 @@ func file_quadsmith_api_field_tool_proto_rawDescGZIP() []byte {
 	return file_quadsmith_api_field_tool_proto_rawDescData
 }
 
-var file_quadsmith_api_field_tool_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_quadsmith_api_field_tool_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_field_tool_proto_goTypes = []any{
-	(*FieldTool)(nil),              // 0: quadsmith.api.FieldTool
-	(*GetFieldToolRequest)(nil),    // 1: quadsmith.api.GetFieldToolRequest
-	(*ListFieldToolsRequest)(nil),  // 2: quadsmith.api.ListFieldToolsRequest
-	(*ListFieldToolsResponse)(nil), // 3: quadsmith.api.ListFieldToolsResponse
-	(*ReferenceLink)(nil),          // 4: quadsmith.api.ReferenceLink
-	(*Media)(nil),                  // 5: quadsmith.api.Media
+	(*CreateFieldToolRequest)(nil),  // 0: quadsmith.api.CreateFieldToolRequest
+	(*DeleteFieldToolRequest)(nil),  // 1: quadsmith.api.DeleteFieldToolRequest
+	(*DeleteFieldToolResponse)(nil), // 2: quadsmith.api.DeleteFieldToolResponse
+	(*GetFieldToolRequest)(nil),     // 3: quadsmith.api.GetFieldToolRequest
+	(*ListFieldToolsRequest)(nil),   // 4: quadsmith.api.ListFieldToolsRequest
+	(*ListFieldToolsResponse)(nil),  // 5: quadsmith.api.ListFieldToolsResponse
+	(*UpdateFieldToolRequest)(nil),  // 6: quadsmith.api.UpdateFieldToolRequest
+	(*FieldTool)(nil),               // 7: quadsmith.api.FieldTool
+	(*ReferenceLink)(nil),           // 8: quadsmith.api.ReferenceLink
+	(*Media)(nil),                   // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_field_tool_proto_depIdxs = []int32{
-	4, // 0: quadsmith.api.FieldTool.reference_links:type_name -> quadsmith.api.ReferenceLink
-	5, // 1: quadsmith.api.FieldTool.media:type_name -> quadsmith.api.Media
-	0, // 2: quadsmith.api.ListFieldToolsResponse.field_tools:type_name -> quadsmith.api.FieldTool
-	1, // 3: quadsmith.api.FieldToolService.GetFieldTool:input_type -> quadsmith.api.GetFieldToolRequest
-	2, // 4: quadsmith.api.FieldToolService.ListFieldTools:input_type -> quadsmith.api.ListFieldToolsRequest
-	0, // 5: quadsmith.api.FieldToolService.GetFieldTool:output_type -> quadsmith.api.FieldTool
-	3, // 6: quadsmith.api.FieldToolService.ListFieldTools:output_type -> quadsmith.api.ListFieldToolsResponse
-	5, // [5:7] is the sub-list for method output_type
-	3, // [3:5] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	7,  // 0: quadsmith.api.CreateFieldToolRequest.field_tool:type_name -> quadsmith.api.FieldTool
+	7,  // 1: quadsmith.api.ListFieldToolsResponse.field_tools:type_name -> quadsmith.api.FieldTool
+	7,  // 2: quadsmith.api.UpdateFieldToolRequest.field_tool:type_name -> quadsmith.api.FieldTool
+	8,  // 3: quadsmith.api.FieldTool.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 4: quadsmith.api.FieldTool.media:type_name -> quadsmith.api.Media
+	3,  // 5: quadsmith.api.FieldToolService.GetFieldTool:input_type -> quadsmith.api.GetFieldToolRequest
+	4,  // 6: quadsmith.api.FieldToolService.ListFieldTools:input_type -> quadsmith.api.ListFieldToolsRequest
+	0,  // 7: quadsmith.api.FieldToolService.CreateFieldTool:input_type -> quadsmith.api.CreateFieldToolRequest
+	6,  // 8: quadsmith.api.FieldToolService.UpdateFieldTool:input_type -> quadsmith.api.UpdateFieldToolRequest
+	1,  // 9: quadsmith.api.FieldToolService.DeleteFieldTool:input_type -> quadsmith.api.DeleteFieldToolRequest
+	7,  // 10: quadsmith.api.FieldToolService.GetFieldTool:output_type -> quadsmith.api.FieldTool
+	5,  // 11: quadsmith.api.FieldToolService.ListFieldTools:output_type -> quadsmith.api.ListFieldToolsResponse
+	7,  // 12: quadsmith.api.FieldToolService.CreateFieldTool:output_type -> quadsmith.api.FieldTool
+	7,  // 13: quadsmith.api.FieldToolService.UpdateFieldTool:output_type -> quadsmith.api.FieldTool
+	2,  // 14: quadsmith.api.FieldToolService.DeleteFieldTool:output_type -> quadsmith.api.DeleteFieldToolResponse
+	10, // [10:15] is the sub-list for method output_type
+	5,  // [5:10] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_field_tool_proto_init() }
@@ -419,14 +642,14 @@ func file_quadsmith_api_field_tool_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_field_tool_proto_msgTypes[0].OneofWrappers = []any{}
+	file_quadsmith_api_field_tool_proto_msgTypes[7].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_field_tool_proto_rawDesc), len(file_quadsmith_api_field_tool_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -13,3 +13,18 @@ export const getFrame = FrameService.method.getFrame;
  * @generated from rpc quadsmith.api.FrameService.ListFrames
  */
 export const listFrames = FrameService.method.listFrames;
+
+/**
+ * @generated from rpc quadsmith.api.FrameService.CreateFrame
+ */
+export const createFrame = FrameService.method.createFrame;
+
+/**
+ * @generated from rpc quadsmith.api.FrameService.UpdateFrame
+ */
+export const updateFrame = FrameService.method.updateFrame;
+
+/**
+ * @generated from rpc quadsmith.api.FrameService.DeleteFrame
+ */
+export const deleteFrame = FrameService.method.deleteFrame;

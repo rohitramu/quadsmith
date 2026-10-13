@@ -4,11 +4,17 @@ package api
 import (
 	"connectrpc.com/connect"
 	"context"
+	"encoding/json"
 	"errors"
+	"fmt"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"quadsmith/shared/internal/cel2sql"
+	"quadsmith/shared/pkg/authcontext"
+	"quadsmith/shared/pkg/buildid"
 	"quadsmith/shared/pkg/pagination"
+	"regexp"
+	"strings"
 )
 
 type BatteryServiceHandler struct {
@@ -71,4 +77,354 @@ func (s *BatteryServiceHandler) ListBatteries(ctx context.Context, req *connect.
 		NextPageToken: nextPageToken,
 	}
 	return connect.NewResponse(res), nil
+}
+
+// CreateBattery creates and persists a new Battery component
+func (s *BatteryServiceHandler) CreateBattery(ctx context.Context, req *connect.Request[CreateBatteryRequest]) (*connect.Response[Battery], error) {
+	userCtx := authcontext.UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+	m := req.Msg.GetBattery()
+	if m == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("battery object is required"))
+	}
+
+	m.UserUuid = &userCtx.UserUUID
+	m.AuthorUsername = &userCtx.UserID
+
+	if strings.TrimSpace(m.Name) == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("name is required"))
+	}
+	if len(m.Name) > 256 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("name exceeds maximum length of 256 characters"))
+	}
+	if strings.TrimSpace(m.Manufacturer) == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("manufacturer is required"))
+	}
+	if len(m.Manufacturer) > 128 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("manufacturer exceeds maximum length of 128 characters"))
+	}
+	if m.CapacityMah <= 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("capacity must be positive"))
+	}
+	if m.CellCountS < 1 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("cell count must be at least 1"))
+	}
+	if m.MinVoltage <= 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("min voltage must be positive"))
+	}
+	if m.MaxVoltage < m.MinVoltage {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("max voltage cannot be less than min voltage"))
+	}
+	if m.MaxCurrentA <= 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("max current must be positive"))
+	}
+	if err := ValidateReferenceLinks(m.ReferenceLinks); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	m.Uuid = authcontext.NewUUIDv7()
+
+	if m.Id == "" {
+		base := strings.TrimSpace(m.Manufacturer + " " + m.Name)
+		if base == "" {
+			base = m.Name
+		}
+		reg := regexp.MustCompile("[^a-z0-9]+")
+		slug := strings.Trim(reg.ReplaceAllString(strings.ToLower(base), "-"), "-")
+		if slug == "" {
+			slug = "batteries-" + m.Uuid[:8]
+		}
+		m.Id = slug
+	} else {
+		m.Id = strings.ToLower(strings.TrimSpace(m.Id))
+		uuidRegex := regexp.MustCompile(`^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$`)
+		if uuidRegex.MatchString(m.Id) {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("custom id cannot be formatted as a UUID"))
+		}
+	}
+
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	defer tx.Rollback(ctx)
+
+	var idExists bool
+	if err := tx.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM entities WHERE collection = $1 AND id = $2)", "batteries", m.Id).Scan(&idExists); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to check id existence: %w", err))
+	}
+	if idExists {
+		newID, err := buildid.NextCopyID(m.Id, func(cand string) (bool, error) {
+			var exists bool
+			err := tx.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM entities WHERE collection = $1 AND id = $2)", "batteries", cand).Scan(&exists)
+			return exists, err
+		})
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate unique id: %w", err))
+		}
+		m.Id = newID
+	}
+
+	var refLinksJSON, mediaJSON []byte
+	if len(m.ReferenceLinks) > 0 {
+		refLinksJSON, _ = json.Marshal(m.ReferenceLinks)
+	}
+	if len(m.Media) > 0 {
+		mediaJSON, _ = json.Marshal(m.Media)
+	}
+	authorOrMfr := m.Manufacturer
+	_, err = tx.Exec(ctx, `
+		INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, user_uuid, author_username, is_archived, created_at, updated_at)
+		VALUES ($1, 'batteries', $2, $3, $4, $5, $6, $7, $8, $9, $10, false, NOW(), NOW())
+		ON CONFLICT (collection, id) DO UPDATE
+		SET name = EXCLUDED.name, description = EXCLUDED.description, primary_display_image = EXCLUDED.primary_display_image, author_or_manufacturer = EXCLUDED.author_or_manufacturer, updated_at = NOW()
+	`, m.Uuid, m.Id, m.Name, m.Description, m.PrimaryDisplayImage, refLinksJSON, mediaJSON, authorOrMfr, m.UserUuid, m.AuthorUsername)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save entity: %w", err))
+	}
+
+	if err := CreateBattery(ctx, tx, m); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save batteries: %w", err))
+	}
+
+	var blobURLs []string
+	if m.PrimaryDisplayImage != nil && *m.PrimaryDisplayImage != "" {
+		blobURLs = append(blobURLs, *m.PrimaryDisplayImage)
+	}
+	for _, item := range m.Media {
+		if item != nil && item.Url != "" {
+			blobURLs = append(blobURLs, item.Url)
+		}
+	}
+	blobRegex := regexp.MustCompile(`(?i)(?:^|/blobs/)([a-f0-9]{64}|[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})`)
+	for _, u := range blobURLs {
+		if matches := blobRegex.FindStringSubmatch(strings.TrimSpace(u)); len(matches) > 1 {
+			key := strings.ToLower(matches[1])
+			refUUID := authcontext.NewUUIDv7()
+			if _, err := tx.Exec(ctx, `
+				INSERT INTO blob_references (uuid, id, blob_uuid, entity_type, entity_uuid, created_at)
+				SELECT $1::uuid, 'ref-' || $1::text, b.uuid, $2, $3::uuid, NOW()
+				FROM blobs b
+				WHERE b.id = $4 OR b.uuid::text = $4
+				ON CONFLICT (blob_uuid, entity_type, entity_uuid) DO NOTHING;`,
+				refUUID, "batteries", m.Uuid, key); err != nil {
+				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to link blob reference: %w", err))
+			}
+		}
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(m), nil
+}
+
+// UpdateBattery updates an existing Battery component
+func (s *BatteryServiceHandler) UpdateBattery(ctx context.Context, req *connect.Request[UpdateBatteryRequest]) (*connect.Response[Battery], error) {
+	userCtx := authcontext.UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+	m := req.Msg.GetBattery()
+	if m == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("battery object is required"))
+	}
+
+	lookup := strings.TrimSpace(m.Id)
+	if lookup == "" {
+		lookup = strings.TrimSpace(m.Uuid)
+	}
+	if lookup == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("id or uuid is required for update"))
+	}
+
+	var existingUUID string
+	var existingID string
+	var existingUserUUID *string
+	var isArchived bool
+	err := s.db.QueryRow(ctx, "SELECT uuid::text, id, user_uuid::text, is_archived FROM entities WHERE collection = $1 AND (id = $2 OR uuid::text = $2)", "batteries", lookup).Scan(&existingUUID, &existingID, &existingUserUUID, &isArchived)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("battery not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	if userCtx.Role != "ADMIN" {
+		if existingUserUUID == nil || *existingUserUUID != userCtx.UserUUID {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("you do not have permission to update this component"))
+		}
+	}
+
+	m.Uuid = existingUUID
+	m.Id = existingID
+	m.UserUuid = existingUserUUID
+
+	if strings.TrimSpace(m.Name) == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("name is required"))
+	}
+	if len(m.Name) > 256 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("name exceeds maximum length of 256 characters"))
+	}
+	if strings.TrimSpace(m.Manufacturer) == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("manufacturer is required"))
+	}
+	if len(m.Manufacturer) > 128 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("manufacturer exceeds maximum length of 128 characters"))
+	}
+	if m.CapacityMah <= 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("capacity must be positive"))
+	}
+	if m.CellCountS < 1 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("cell count must be at least 1"))
+	}
+	if m.MinVoltage <= 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("min voltage must be positive"))
+	}
+	if m.MaxVoltage < m.MinVoltage {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("max voltage cannot be less than min voltage"))
+	}
+	if m.MaxCurrentA <= 0 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("max current must be positive"))
+	}
+	if err := ValidateReferenceLinks(m.ReferenceLinks); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	defer tx.Rollback(ctx)
+
+	var refLinksJSON, mediaJSON []byte
+	if len(m.ReferenceLinks) > 0 {
+		refLinksJSON, _ = json.Marshal(m.ReferenceLinks)
+	}
+	if len(m.Media) > 0 {
+		mediaJSON, _ = json.Marshal(m.Media)
+	}
+	authorOrMfr := m.Manufacturer
+	_, err = tx.Exec(ctx, `
+		UPDATE entities
+		SET name = $1, description = $2, primary_display_image = $3, reference_links = $4, media = $5, author_or_manufacturer = $6, updated_at = NOW()
+		WHERE uuid = $7
+	`, m.Name, m.Description, m.PrimaryDisplayImage, refLinksJSON, mediaJSON, authorOrMfr, m.Uuid)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update entity: %w", err))
+	}
+
+	if err := UpdateBattery(ctx, tx, m); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update batteries: %w", err))
+	}
+
+	if _, err := tx.Exec(ctx, "DELETE FROM blob_references WHERE entity_type = $1 AND entity_uuid = $2", "batteries", m.Uuid); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to clear old blob references: %w", err))
+	}
+
+	var blobURLs []string
+	if m.PrimaryDisplayImage != nil && *m.PrimaryDisplayImage != "" {
+		blobURLs = append(blobURLs, *m.PrimaryDisplayImage)
+	}
+	for _, item := range m.Media {
+		if item != nil && item.Url != "" {
+			blobURLs = append(blobURLs, item.Url)
+		}
+	}
+	blobRegex := regexp.MustCompile(`(?i)(?:^|/blobs/)([a-f0-9]{64}|[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})`)
+	for _, u := range blobURLs {
+		if matches := blobRegex.FindStringSubmatch(strings.TrimSpace(u)); len(matches) > 1 {
+			key := strings.ToLower(matches[1])
+			refUUID := authcontext.NewUUIDv7()
+			if _, err := tx.Exec(ctx, `
+				INSERT INTO blob_references (uuid, id, blob_uuid, entity_type, entity_uuid, created_at)
+				SELECT $1::uuid, 'ref-' || $1::text, b.uuid, $2, $3::uuid, NOW()
+				FROM blobs b
+				WHERE b.id = $4 OR b.uuid::text = $4
+				ON CONFLICT (blob_uuid, entity_type, entity_uuid) DO NOTHING;`,
+				refUUID, "batteries", m.Uuid, key); err != nil {
+				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to link blob reference: %w", err))
+			}
+		}
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	updated, err := GetBattery(ctx, s.db, m.Uuid, nil)
+	if err != nil {
+		return connect.NewResponse(m), nil
+	}
+	return connect.NewResponse(updated), nil
+}
+
+// DeleteBattery deletes or archives a Battery component
+func (s *BatteryServiceHandler) DeleteBattery(ctx context.Context, req *connect.Request[DeleteBatteryRequest]) (*connect.Response[DeleteBatteryResponse], error) {
+	userCtx := authcontext.UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+	idOrUUID := strings.TrimSpace(req.Msg.GetId())
+	if idOrUUID == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("id is required"))
+	}
+
+	var existingUUID string
+	var existingUserUUID *string
+	err := s.db.QueryRow(ctx, "SELECT uuid::text, user_uuid::text FROM entities WHERE collection = $1 AND (id = $2 OR uuid::text = $2)", "batteries", idOrUUID).Scan(&existingUUID, &existingUserUUID)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("battery not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	if userCtx.Role != "ADMIN" {
+		if existingUserUUID == nil || *existingUserUUID != userCtx.UserUUID {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("you do not have permission to delete this component"))
+		}
+	}
+
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	defer tx.Rollback(ctx)
+
+	var activityCount int64
+	_ = tx.QueryRow(ctx, `
+		SELECT (
+			(SELECT count(*) FROM questions WHERE entity_uuid = $1) +
+			(SELECT count(*) FROM reviews WHERE entity_uuid = $1) +
+			(SELECT count(*) FROM collection_items WHERE entity_uuid = $1)
+		)
+	`, existingUUID).Scan(&activityCount)
+
+	isArchived := false
+	if activityCount == 0 {
+		if _, err := tx.Exec(ctx, "DELETE FROM blob_references WHERE entity_type = $1 AND entity_uuid = $2", "batteries", existingUUID); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to delete blob references: %w", err))
+		}
+		if _, err := tx.Exec(ctx, "DELETE FROM batteries WHERE uuid = $1", existingUUID); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to delete from batteries: %w", err))
+		}
+		if _, err := tx.Exec(ctx, "DELETE FROM entities WHERE uuid = $1", existingUUID); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to delete entity: %w", err))
+		}
+	} else {
+		isArchived = true
+		if _, err := tx.Exec(ctx, "UPDATE entities SET is_archived = true, updated_at = NOW() WHERE uuid = $1", existingUUID); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to archive entity: %w", err))
+		}
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(&DeleteBatteryResponse{IsArchived: isArchived}), nil
 }

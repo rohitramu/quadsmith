@@ -24,7 +24,366 @@ const (
 )
 
 // ---------------------------------------------------------
-// Domain Model
+// 2. RPC Requests & Responses (Callers Precede Callees)
+// ---------------------------------------------------------
+type CreateChargerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Charger       *Charger               `protobuf:"bytes,1,opt,name=charger,proto3" json:"charger,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateChargerRequest) Reset() {
+	*x = CreateChargerRequest{}
+	mi := &file_quadsmith_api_charger_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateChargerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateChargerRequest) ProtoMessage() {}
+
+func (x *CreateChargerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_charger_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateChargerRequest.ProtoReflect.Descriptor instead.
+func (*CreateChargerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_charger_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *CreateChargerRequest) GetCharger() *Charger {
+	if x != nil {
+		return x.Charger
+	}
+	return nil
+}
+
+type DeleteChargerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteChargerRequest) Reset() {
+	*x = DeleteChargerRequest{}
+	mi := &file_quadsmith_api_charger_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteChargerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteChargerRequest) ProtoMessage() {}
+
+func (x *DeleteChargerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_charger_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteChargerRequest.ProtoReflect.Descriptor instead.
+func (*DeleteChargerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_charger_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *DeleteChargerRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteChargerResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteChargerResponse) Reset() {
+	*x = DeleteChargerResponse{}
+	mi := &file_quadsmith_api_charger_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteChargerResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteChargerResponse) ProtoMessage() {}
+
+func (x *DeleteChargerResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_charger_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteChargerResponse.ProtoReflect.Descriptor instead.
+func (*DeleteChargerResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_charger_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteChargerResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetChargerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetChargerRequest) Reset() {
+	*x = GetChargerRequest{}
+	mi := &file_quadsmith_api_charger_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetChargerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetChargerRequest) ProtoMessage() {}
+
+func (x *GetChargerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_charger_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetChargerRequest.ProtoReflect.Descriptor instead.
+func (*GetChargerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_charger_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetChargerRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetChargerRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListChargersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListChargersRequest) Reset() {
+	*x = ListChargersRequest{}
+	mi := &file_quadsmith_api_charger_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListChargersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListChargersRequest) ProtoMessage() {}
+
+func (x *ListChargersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_charger_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListChargersRequest.ProtoReflect.Descriptor instead.
+func (*ListChargersRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_charger_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ListChargersRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListChargersRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListChargersRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListChargersRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListChargersRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListChargersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Chargers      []*Charger             `protobuf:"bytes,1,rep,name=chargers,proto3" json:"chargers,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListChargersResponse) Reset() {
+	*x = ListChargersResponse{}
+	mi := &file_quadsmith_api_charger_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListChargersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListChargersResponse) ProtoMessage() {}
+
+func (x *ListChargersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_charger_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListChargersResponse.ProtoReflect.Descriptor instead.
+func (*ListChargersResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_charger_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListChargersResponse) GetChargers() []*Charger {
+	if x != nil {
+		return x.Chargers
+	}
+	return nil
+}
+
+func (x *ListChargersResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateChargerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Charger       *Charger               `protobuf:"bytes,1,opt,name=charger,proto3" json:"charger,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateChargerRequest) Reset() {
+	*x = UpdateChargerRequest{}
+	mi := &file_quadsmith_api_charger_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateChargerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateChargerRequest) ProtoMessage() {}
+
+func (x *UpdateChargerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_charger_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateChargerRequest.ProtoReflect.Descriptor instead.
+func (*UpdateChargerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_charger_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *UpdateChargerRequest) GetCharger() *Charger {
+	if x != nil {
+		return x.Charger
+	}
+	return nil
+}
+
+// ---------------------------------------------------------
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
 type Charger struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
@@ -43,13 +402,15 @@ type Charger struct {
 	ReferenceLinks       []*ReferenceLink       `protobuf:"bytes,13,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	PrimaryDisplayImage  *string                `protobuf:"bytes,14,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media                []*Media               `protobuf:"bytes,15,rep,name=media,proto3" json:"media,omitempty"`
+	UserUuid             *string                `protobuf:"bytes,16,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
+	AuthorUsername       *string                `protobuf:"bytes,17,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
 
 func (x *Charger) Reset() {
 	*x = Charger{}
-	mi := &file_quadsmith_api_charger_proto_msgTypes[0]
+	mi := &file_quadsmith_api_charger_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -61,7 +422,7 @@ func (x *Charger) String() string {
 func (*Charger) ProtoMessage() {}
 
 func (x *Charger) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_charger_proto_msgTypes[0]
+	mi := &file_quadsmith_api_charger_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -74,7 +435,7 @@ func (x *Charger) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Charger.ProtoReflect.Descriptor instead.
 func (*Charger) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_charger_proto_rawDescGZIP(), []int{0}
+	return file_quadsmith_api_charger_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Charger) GetUuid() string {
@@ -182,185 +543,16 @@ func (x *Charger) GetMedia() []*Media {
 	return nil
 }
 
-// ---------------------------------------------------------
-// RPC Requests & Responses
-// ---------------------------------------------------------
-type GetChargerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetChargerRequest) Reset() {
-	*x = GetChargerRequest{}
-	mi := &file_quadsmith_api_charger_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetChargerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetChargerRequest) ProtoMessage() {}
-
-func (x *GetChargerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_charger_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetChargerRequest.ProtoReflect.Descriptor instead.
-func (*GetChargerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_charger_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *GetChargerRequest) GetId() string {
-	if x != nil {
-		return x.Id
+func (x *Charger) GetUserUuid() string {
+	if x != nil && x.UserUuid != nil {
+		return *x.UserUuid
 	}
 	return ""
 }
 
-func (x *GetChargerRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListChargersRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListChargersRequest) Reset() {
-	*x = ListChargersRequest{}
-	mi := &file_quadsmith_api_charger_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListChargersRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListChargersRequest) ProtoMessage() {}
-
-func (x *ListChargersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_charger_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListChargersRequest.ProtoReflect.Descriptor instead.
-func (*ListChargersRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_charger_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *ListChargersRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListChargersRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListChargersRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListChargersRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListChargersRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListChargersResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Chargers      []*Charger             `protobuf:"bytes,1,rep,name=chargers,proto3" json:"chargers,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListChargersResponse) Reset() {
-	*x = ListChargersResponse{}
-	mi := &file_quadsmith_api_charger_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListChargersResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListChargersResponse) ProtoMessage() {}
-
-func (x *ListChargersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_charger_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListChargersResponse.ProtoReflect.Descriptor instead.
-func (*ListChargersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_charger_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *ListChargersResponse) GetChargers() []*Charger {
-	if x != nil {
-		return x.Chargers
-	}
-	return nil
-}
-
-func (x *ListChargersResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
+func (x *Charger) GetAuthorUsername() string {
+	if x != nil && x.AuthorUsername != nil {
+		return *x.AuthorUsername
 	}
 	return ""
 }
@@ -369,33 +561,14 @@ var File_quadsmith_api_charger_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_charger_proto_rawDesc = "" +
 	"\n" +
-	"\x1bquadsmith/api/charger.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"\x8e\x06\n" +
-	"\aCharger\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1a\n" +
-	"\bchannels\x18\x06 \x01(\rR\bchannels\x12+\n" +
-	"\x12max_charge_power_w\x18\a \x01(\x02R\x0fmaxChargePowerW\x12/\n" +
-	"\x14max_charge_current_a\x18\b \x01(\x02R\x11maxChargeCurrentA\x12.\n" +
-	"\x13input_voltage_range\x18\t \x01(\tR\x11inputVoltageRange\x123\n" +
-	"\x15supported_chemistries\x18\n" +
-	" \x01(\tR\x14supportedChemistries\x12\x1e\n" +
-	"\vmax_cells_s\x18\v \x01(\rR\tmaxCellsS\x12 \n" +
-	"\vdescription\x18\f \x01(\tR\vdescription\x12E\n" +
-	"\x0freference_links\x18\r \x03(\v2\x1c.quadsmith.api.ReferenceLinkR\x0ereferenceLinks\x127\n" +
-	"\x15primary_display_image\x18\x0e \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12*\n" +
-	"\x05media\x18\x0f \x03(\v2\x14.quadsmith.api.MediaR\x05media:\x8c\x01\x8a\xb5\x18^\n" +
-	"\fmanufacturer\n" +
-	"\x04name\n" +
-	"\bchannels\n" +
-	"\x12max_charge_power_w\n" +
-	"\x14max_charge_current_a\n" +
-	"\vmax_cells_s\x12\a#f59e0b\x9a\xb5\x18\x18components/gear/chargers\xc2\xf3\x18\n" +
-	"\n" +
-	"\bchargersB\x18\n" +
-	"\x16_primary_display_image\"=\n" +
+	"\x1bquadsmith/api/charger.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"H\n" +
+	"\x14CreateChargerRequest\x120\n" +
+	"\acharger\x18\x01 \x01(\v2\x16.quadsmith.api.ChargerR\acharger\"&\n" +
+	"\x14DeleteChargerRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"8\n" +
+	"\x15DeleteChargerResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\"=\n" +
 	"\x11GetChargerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x97\x01\n" +
@@ -408,11 +581,47 @@ const file_quadsmith_api_charger_proto_rawDesc = "" +
 	"\x04sort\x18\x05 \x03(\tR\x04sort\"r\n" +
 	"\x14ListChargersResponse\x122\n" +
 	"\bchargers\x18\x01 \x03(\v2\x16.quadsmith.api.ChargerR\bchargers\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xb1\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"H\n" +
+	"\x14UpdateChargerRequest\x120\n" +
+	"\acharger\x18\x01 \x01(\v2\x16.quadsmith.api.ChargerR\acharger\"\xda\a\n" +
+	"\aCharger\x12<\n" +
+	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12*\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x1a\n" +
+	"\x04name\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12\x19\n" +
+	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1a\n" +
+	"\bchannels\x18\x06 \x01(\rR\bchannels\x12+\n" +
+	"\x12max_charge_power_w\x18\a \x01(\x02R\x0fmaxChargePowerW\x12/\n" +
+	"\x14max_charge_current_a\x18\b \x01(\x02R\x11maxChargeCurrentA\x12.\n" +
+	"\x13input_voltage_range\x18\t \x01(\tR\x11inputVoltageRange\x123\n" +
+	"\x15supported_chemistries\x18\n" +
+	" \x01(\tR\x14supportedChemistries\x12\x1e\n" +
+	"\vmax_cells_s\x18\v \x01(\rR\tmaxCellsS\x12(\n" +
+	"\vdescription\x18\f \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x12M\n" +
+	"\x0freference_links\x18\r \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
+	"\x15primary_display_image\x18\x0e \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x00R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
+	"\x05media\x18\x0f \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12(\n" +
+	"\tuser_uuid\x18\x10 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x01R\buserUuid\x88\x01\x01\x124\n" +
+	"\x0fauthor_username\x18\x11 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\x0eauthorUsername\x88\x01\x01:\x8c\x01\x8a\xb5\x18^\n" +
+	"\fmanufacturer\n" +
+	"\x04name\n" +
+	"\bchannels\n" +
+	"\x12max_charge_power_w\n" +
+	"\x14max_charge_current_a\n" +
+	"\vmax_cells_s\x12\a#f59e0b\x9a\xb5\x18\x18components/gear/chargers\xc2\xf3\x18\n" +
+	"\n" +
+	"\bchargersB\x18\n" +
+	"\x16_primary_display_imageB\f\n" +
+	"\n" +
+	"_user_uuidB\x12\n" +
+	"\x10_author_username2\xa9\x03\n" +
 	"\x0eChargerService\x12F\n" +
 	"\n" +
 	"GetCharger\x12 .quadsmith.api.GetChargerRequest\x1a\x16.quadsmith.api.Charger\x12W\n" +
-	"\fListChargers\x12\".quadsmith.api.ListChargersRequest\x1a#.quadsmith.api.ListChargersResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"\fListChargers\x12\".quadsmith.api.ListChargersRequest\x1a#.quadsmith.api.ListChargersResponse\x12L\n" +
+	"\rCreateCharger\x12#.quadsmith.api.CreateChargerRequest\x1a\x16.quadsmith.api.Charger\x12L\n" +
+	"\rUpdateCharger\x12#.quadsmith.api.UpdateChargerRequest\x1a\x16.quadsmith.api.Charger\x12Z\n" +
+	"\rDeleteCharger\x12#.quadsmith.api.DeleteChargerRequest\x1a$.quadsmith.api.DeleteChargerResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_charger_proto_rawDescOnce sync.Once
@@ -426,28 +635,40 @@ func file_quadsmith_api_charger_proto_rawDescGZIP() []byte {
 	return file_quadsmith_api_charger_proto_rawDescData
 }
 
-var file_quadsmith_api_charger_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_quadsmith_api_charger_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_charger_proto_goTypes = []any{
-	(*Charger)(nil),              // 0: quadsmith.api.Charger
-	(*GetChargerRequest)(nil),    // 1: quadsmith.api.GetChargerRequest
-	(*ListChargersRequest)(nil),  // 2: quadsmith.api.ListChargersRequest
-	(*ListChargersResponse)(nil), // 3: quadsmith.api.ListChargersResponse
-	(*ReferenceLink)(nil),        // 4: quadsmith.api.ReferenceLink
-	(*Media)(nil),                // 5: quadsmith.api.Media
+	(*CreateChargerRequest)(nil),  // 0: quadsmith.api.CreateChargerRequest
+	(*DeleteChargerRequest)(nil),  // 1: quadsmith.api.DeleteChargerRequest
+	(*DeleteChargerResponse)(nil), // 2: quadsmith.api.DeleteChargerResponse
+	(*GetChargerRequest)(nil),     // 3: quadsmith.api.GetChargerRequest
+	(*ListChargersRequest)(nil),   // 4: quadsmith.api.ListChargersRequest
+	(*ListChargersResponse)(nil),  // 5: quadsmith.api.ListChargersResponse
+	(*UpdateChargerRequest)(nil),  // 6: quadsmith.api.UpdateChargerRequest
+	(*Charger)(nil),               // 7: quadsmith.api.Charger
+	(*ReferenceLink)(nil),         // 8: quadsmith.api.ReferenceLink
+	(*Media)(nil),                 // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_charger_proto_depIdxs = []int32{
-	4, // 0: quadsmith.api.Charger.reference_links:type_name -> quadsmith.api.ReferenceLink
-	5, // 1: quadsmith.api.Charger.media:type_name -> quadsmith.api.Media
-	0, // 2: quadsmith.api.ListChargersResponse.chargers:type_name -> quadsmith.api.Charger
-	1, // 3: quadsmith.api.ChargerService.GetCharger:input_type -> quadsmith.api.GetChargerRequest
-	2, // 4: quadsmith.api.ChargerService.ListChargers:input_type -> quadsmith.api.ListChargersRequest
-	0, // 5: quadsmith.api.ChargerService.GetCharger:output_type -> quadsmith.api.Charger
-	3, // 6: quadsmith.api.ChargerService.ListChargers:output_type -> quadsmith.api.ListChargersResponse
-	5, // [5:7] is the sub-list for method output_type
-	3, // [3:5] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	7,  // 0: quadsmith.api.CreateChargerRequest.charger:type_name -> quadsmith.api.Charger
+	7,  // 1: quadsmith.api.ListChargersResponse.chargers:type_name -> quadsmith.api.Charger
+	7,  // 2: quadsmith.api.UpdateChargerRequest.charger:type_name -> quadsmith.api.Charger
+	8,  // 3: quadsmith.api.Charger.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 4: quadsmith.api.Charger.media:type_name -> quadsmith.api.Media
+	3,  // 5: quadsmith.api.ChargerService.GetCharger:input_type -> quadsmith.api.GetChargerRequest
+	4,  // 6: quadsmith.api.ChargerService.ListChargers:input_type -> quadsmith.api.ListChargersRequest
+	0,  // 7: quadsmith.api.ChargerService.CreateCharger:input_type -> quadsmith.api.CreateChargerRequest
+	6,  // 8: quadsmith.api.ChargerService.UpdateCharger:input_type -> quadsmith.api.UpdateChargerRequest
+	1,  // 9: quadsmith.api.ChargerService.DeleteCharger:input_type -> quadsmith.api.DeleteChargerRequest
+	7,  // 10: quadsmith.api.ChargerService.GetCharger:output_type -> quadsmith.api.Charger
+	5,  // 11: quadsmith.api.ChargerService.ListChargers:output_type -> quadsmith.api.ListChargersResponse
+	7,  // 12: quadsmith.api.ChargerService.CreateCharger:output_type -> quadsmith.api.Charger
+	7,  // 13: quadsmith.api.ChargerService.UpdateCharger:output_type -> quadsmith.api.Charger
+	2,  // 14: quadsmith.api.ChargerService.DeleteCharger:output_type -> quadsmith.api.DeleteChargerResponse
+	10, // [10:15] is the sub-list for method output_type
+	5,  // [5:10] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_charger_proto_init() }
@@ -457,14 +678,14 @@ func file_quadsmith_api_charger_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_charger_proto_msgTypes[0].OneofWrappers = []any{}
+	file_quadsmith_api_charger_proto_msgTypes[7].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_charger_proto_rawDesc), len(file_quadsmith_api_charger_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

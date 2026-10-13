@@ -9,10 +9,12 @@ import {
   ChevronRight,
   Sparkles,
   ClipboardCheck,
+  Plus,
 } from "lucide-react";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
 import { BatteryCombobox } from "../components/BatteryCombobox";
 import { BatteryPickerModal } from "../components/BatteryPickerModal";
+import { ComponentFormModal } from "../components/ComponentFormModal";
 import { CollectionIcon } from "../components/CollectionIcon";
 import { getCollectionColor } from "../lib/collectionColors";
 import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
@@ -103,10 +105,86 @@ function BuildWizardContent() {
     selectedBatteryId,
     setSelectedBatteryId,
     compatibleBatteries,
+
+    // Component Setters
+    setSelectedFrame,
+    setSelectedFc,
+    setSelectedRx,
+    setSelectedRxAnt,
+    setSelectedEsc,
+    setSelectedMotor,
+    setSelectedProp,
+    setSelectedCam,
+    setSelectedVtx,
+    setSelectedVtxAnt,
+    setSelectedGps,
   } = useForge();
 
   const [isBatteryModalOpen, setIsBatteryModalOpen] = useState(false);
+  const [isCustomComponentModalOpen, setIsCustomComponentModalOpen] = useState(false);
   const [payloadInput, setPayloadInput] = useState(payloadWeightG.toString());
+
+  const currentStepConfig = useMemo(() => {
+    switch (activeStep) {
+      case 1:
+        return { collectionId: "frames", title: "Frame", setComponent: setSelectedFrame };
+      case 2:
+        return {
+          collectionId: "flight-controllers",
+          title: "Flight Controller",
+          setComponent: setSelectedFc,
+        };
+      case 3:
+        return { collectionId: "receivers", title: "Receiver", setComponent: setSelectedRx };
+      case 4:
+        return {
+          collectionId: "antennas",
+          title: "Receiver Antenna",
+          setComponent: setSelectedRxAnt,
+        };
+      case 5:
+        return {
+          collectionId: "electronic-speed-controllers",
+          title: "ESC",
+          setComponent: setSelectedEsc,
+        };
+      case 6:
+        return { collectionId: "motors", title: "Motor", setComponent: setSelectedMotor };
+      case 7:
+        return { collectionId: "propellers", title: "Propeller", setComponent: setSelectedProp };
+      case 8:
+        return { collectionId: "cameras", title: "Camera", setComponent: setSelectedCam };
+      case 9:
+        return {
+          collectionId: "video-transmitters",
+          title: "Video Transmitter",
+          setComponent: setSelectedVtx,
+        };
+      case 10:
+        return {
+          collectionId: "antennas",
+          title: "VTX Antenna",
+          setComponent: setSelectedVtxAnt,
+        };
+      case 11:
+        return { collectionId: "gps-receivers", title: "GPS", setComponent: setSelectedGps };
+      default:
+        return null;
+    }
+  }, [
+    activeStep,
+    setSelectedFrame,
+    setSelectedFc,
+    setSelectedRx,
+    setSelectedRxAnt,
+    setSelectedEsc,
+    setSelectedMotor,
+    setSelectedProp,
+    setSelectedCam,
+    setSelectedVtx,
+    setSelectedVtxAnt,
+    setSelectedGps,
+  ]);
 
   const stepRowRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const stepsContainerRef = useRef<HTMLDivElement | null>(null);
@@ -370,6 +448,22 @@ function BuildWizardContent() {
           {activeStep === 10 && <VtxAntennaStep />}
           {activeStep === 11 && <GpsStep />}
           {activeStep === 12 && <ReviewStep />}
+
+          {currentStepConfig && (
+            <div className="mt-4 flex items-center justify-between p-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs text-xs">
+              <span className="text-zinc-500">
+                Don't see your {currentStepConfig.title.toLowerCase()} in the catalog?
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsCustomComponentModalOpen(true)}
+                className="inline-flex items-center gap-1 font-semibold text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:underline cursor-pointer"
+              >
+                <Plus size={14} />
+                <span>Add custom {currentStepConfig.title.toLowerCase()}</span>
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Right Column (4 cols): Persistent Steps & Parts Summary & Live Evaluator */}
@@ -770,6 +864,17 @@ function BuildWizardContent() {
         limits={electricalLimits}
         compatibleBatteries={compatibleBatteries}
       />
+
+      {currentStepConfig && (
+        <ComponentFormModal
+          isOpen={isCustomComponentModalOpen}
+          onClose={() => setIsCustomComponentModalOpen(false)}
+          collectionId={currentStepConfig.collectionId}
+          onSuccess={(created) => {
+            currentStepConfig.setComponent(created);
+          }}
+        />
+      )}
     </div>
   );
 }

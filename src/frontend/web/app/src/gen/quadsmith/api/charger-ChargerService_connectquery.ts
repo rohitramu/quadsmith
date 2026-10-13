@@ -13,3 +13,18 @@ export const getCharger = ChargerService.method.getCharger;
  * @generated from rpc quadsmith.api.ChargerService.ListChargers
  */
 export const listChargers = ChargerService.method.listChargers;
+
+/**
+ * @generated from rpc quadsmith.api.ChargerService.CreateCharger
+ */
+export const createCharger = ChargerService.method.createCharger;
+
+/**
+ * @generated from rpc quadsmith.api.ChargerService.UpdateCharger
+ */
+export const updateCharger = ChargerService.method.updateCharger;
+
+/**
+ * @generated from rpc quadsmith.api.ChargerService.DeleteCharger
+ */
+export const deleteCharger = ChargerService.method.deleteCharger;

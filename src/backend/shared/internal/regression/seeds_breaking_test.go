@@ -9,7 +9,6 @@ import (
 	"google.golang.org/protobuf/encoding/prototext"
 
 	"quadsmith/shared/pkg/schemacheck"
-	"quadsmith/shared/pkg/validation"
 
 	pb "quadsmith/shared/gen/quadsmith/api"
 )
@@ -464,7 +463,7 @@ func TestSeeds_UnmarshalWithoutErrors(t *testing.T) {
 				}
 				seenUUIDs[uuid] = struct{}{}
 
-				if err := validation.ValidateReferenceLinks(refLinks[i]); err != nil {
+				if err := pb.ValidateReferenceLinks(refLinks[i]); err != nil {
 					t.Errorf("Record %d (%s) in %s has invalid reference links: %v", i, id, tt.filename, err)
 				}
 			}

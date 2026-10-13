@@ -13,3 +13,18 @@ export const getTransmitter = TransmitterService.method.getTransmitter;
  * @generated from rpc quadsmith.api.TransmitterService.ListTransmitters
  */
 export const listTransmitters = TransmitterService.method.listTransmitters;
+
+/**
+ * @generated from rpc quadsmith.api.TransmitterService.CreateTransmitter
+ */
+export const createTransmitter = TransmitterService.method.createTransmitter;
+
+/**
+ * @generated from rpc quadsmith.api.TransmitterService.UpdateTransmitter
+ */
+export const updateTransmitter = TransmitterService.method.updateTransmitter;
+
+/**
+ * @generated from rpc quadsmith.api.TransmitterService.DeleteTransmitter
+ */
+export const deleteTransmitter = TransmitterService.method.deleteTransmitter;

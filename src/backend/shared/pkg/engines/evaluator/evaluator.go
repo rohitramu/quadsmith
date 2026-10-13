@@ -1103,8 +1103,10 @@ func (s *EvaluatorServiceHandler) FindLightestCompatibleBattery(ctx context.Cont
 
 	var batteryId string
 	query := `
-		SELECT id FROM batteries
-		WHERE min_voltage >= $1 AND max_voltage <= $2 AND max_current_a >= $3
+		SELECT entities.id FROM batteries
+		INNER JOIN entities USING (uuid)
+		WHERE entities.is_archived = false
+		  AND min_voltage >= $1 AND max_voltage <= $2 AND max_current_a >= $3
 	`
 	args := []any{minV, maxV, maxA}
 	if len(connectors) > 0 {
@@ -1119,7 +1121,7 @@ func (s *EvaluatorServiceHandler) FindLightestCompatibleBattery(ctx context.Cont
 			args = append(args, valid)
 		}
 	}
-	query += ` ORDER BY weight_g ASC, id ASC LIMIT 1`
+	query += ` ORDER BY weight_g ASC, entities.id ASC LIMIT 1`
 
 	err := s.db.QueryRow(ctx, query, args...).Scan(&batteryId)
 	if err != nil {

@@ -24,7 +24,366 @@ const (
 )
 
 // ---------------------------------------------------------
-// Domain Model
+// 2. RPC Requests & Responses (Callers Precede Callees)
+// ---------------------------------------------------------
+type CreateReceiverRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Receiver      *Receiver              `protobuf:"bytes,1,opt,name=receiver,proto3" json:"receiver,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateReceiverRequest) Reset() {
+	*x = CreateReceiverRequest{}
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateReceiverRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateReceiverRequest) ProtoMessage() {}
+
+func (x *CreateReceiverRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateReceiverRequest.ProtoReflect.Descriptor instead.
+func (*CreateReceiverRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_receiver_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *CreateReceiverRequest) GetReceiver() *Receiver {
+	if x != nil {
+		return x.Receiver
+	}
+	return nil
+}
+
+type DeleteReceiverRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteReceiverRequest) Reset() {
+	*x = DeleteReceiverRequest{}
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteReceiverRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteReceiverRequest) ProtoMessage() {}
+
+func (x *DeleteReceiverRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteReceiverRequest.ProtoReflect.Descriptor instead.
+func (*DeleteReceiverRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_receiver_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *DeleteReceiverRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteReceiverResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteReceiverResponse) Reset() {
+	*x = DeleteReceiverResponse{}
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteReceiverResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteReceiverResponse) ProtoMessage() {}
+
+func (x *DeleteReceiverResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteReceiverResponse.ProtoReflect.Descriptor instead.
+func (*DeleteReceiverResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_receiver_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteReceiverResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetReceiverRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetReceiverRequest) Reset() {
+	*x = GetReceiverRequest{}
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetReceiverRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetReceiverRequest) ProtoMessage() {}
+
+func (x *GetReceiverRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetReceiverRequest.ProtoReflect.Descriptor instead.
+func (*GetReceiverRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_receiver_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetReceiverRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetReceiverRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListReceiversRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListReceiversRequest) Reset() {
+	*x = ListReceiversRequest{}
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListReceiversRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListReceiversRequest) ProtoMessage() {}
+
+func (x *ListReceiversRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListReceiversRequest.ProtoReflect.Descriptor instead.
+func (*ListReceiversRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_receiver_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ListReceiversRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListReceiversRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListReceiversRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListReceiversRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListReceiversRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListReceiversResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Receivers     []*Receiver            `protobuf:"bytes,1,rep,name=receivers,proto3" json:"receivers,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListReceiversResponse) Reset() {
+	*x = ListReceiversResponse{}
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListReceiversResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListReceiversResponse) ProtoMessage() {}
+
+func (x *ListReceiversResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListReceiversResponse.ProtoReflect.Descriptor instead.
+func (*ListReceiversResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_receiver_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListReceiversResponse) GetReceivers() []*Receiver {
+	if x != nil {
+		return x.Receivers
+	}
+	return nil
+}
+
+func (x *ListReceiversResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateReceiverRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Receiver      *Receiver              `protobuf:"bytes,1,opt,name=receiver,proto3" json:"receiver,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateReceiverRequest) Reset() {
+	*x = UpdateReceiverRequest{}
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateReceiverRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateReceiverRequest) ProtoMessage() {}
+
+func (x *UpdateReceiverRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateReceiverRequest.ProtoReflect.Descriptor instead.
+func (*UpdateReceiverRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_receiver_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *UpdateReceiverRequest) GetReceiver() *Receiver {
+	if x != nil {
+		return x.Receiver
+	}
+	return nil
+}
+
+// ---------------------------------------------------------
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
 type Receiver struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
@@ -45,13 +404,15 @@ type Receiver struct {
 	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,12,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	PrimaryDisplayImage *string          `protobuf:"bytes,13,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media               []*Media         `protobuf:"bytes,14,rep,name=media,proto3" json:"media,omitempty"`
+	UserUuid            *string          `protobuf:"bytes,15,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
+	AuthorUsername      *string          `protobuf:"bytes,16,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
 
 func (x *Receiver) Reset() {
 	*x = Receiver{}
-	mi := &file_quadsmith_api_receiver_proto_msgTypes[0]
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -63,7 +424,7 @@ func (x *Receiver) String() string {
 func (*Receiver) ProtoMessage() {}
 
 func (x *Receiver) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_receiver_proto_msgTypes[0]
+	mi := &file_quadsmith_api_receiver_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -76,7 +437,7 @@ func (x *Receiver) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Receiver.ProtoReflect.Descriptor instead.
 func (*Receiver) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_receiver_proto_rawDescGZIP(), []int{0}
+	return file_quadsmith_api_receiver_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Receiver) GetUuid() string {
@@ -177,185 +538,16 @@ func (x *Receiver) GetMedia() []*Media {
 	return nil
 }
 
-// ---------------------------------------------------------
-// RPC Requests & Responses
-// ---------------------------------------------------------
-type GetReceiverRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetReceiverRequest) Reset() {
-	*x = GetReceiverRequest{}
-	mi := &file_quadsmith_api_receiver_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetReceiverRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetReceiverRequest) ProtoMessage() {}
-
-func (x *GetReceiverRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_receiver_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetReceiverRequest.ProtoReflect.Descriptor instead.
-func (*GetReceiverRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_receiver_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *GetReceiverRequest) GetId() string {
-	if x != nil {
-		return x.Id
+func (x *Receiver) GetUserUuid() string {
+	if x != nil && x.UserUuid != nil {
+		return *x.UserUuid
 	}
 	return ""
 }
 
-func (x *GetReceiverRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListReceiversRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListReceiversRequest) Reset() {
-	*x = ListReceiversRequest{}
-	mi := &file_quadsmith_api_receiver_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListReceiversRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListReceiversRequest) ProtoMessage() {}
-
-func (x *ListReceiversRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_receiver_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListReceiversRequest.ProtoReflect.Descriptor instead.
-func (*ListReceiversRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_receiver_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *ListReceiversRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListReceiversRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListReceiversRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListReceiversRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListReceiversRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListReceiversResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Receivers     []*Receiver            `protobuf:"bytes,1,rep,name=receivers,proto3" json:"receivers,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListReceiversResponse) Reset() {
-	*x = ListReceiversResponse{}
-	mi := &file_quadsmith_api_receiver_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListReceiversResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListReceiversResponse) ProtoMessage() {}
-
-func (x *ListReceiversResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_receiver_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListReceiversResponse.ProtoReflect.Descriptor instead.
-func (*ListReceiversResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_receiver_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *ListReceiversResponse) GetReceivers() []*Receiver {
-	if x != nil {
-		return x.Receivers
-	}
-	return nil
-}
-
-func (x *ListReceiversResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
+func (x *Receiver) GetAuthorUsername() string {
+	if x != nil && x.AuthorUsername != nil {
+		return *x.AuthorUsername
 	}
 	return ""
 }
@@ -364,30 +556,14 @@ var File_quadsmith_api_receiver_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_receiver_proto_rawDesc = "" +
 	"\n" +
-	"\x1cquadsmith/api/receiver.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"\xc7\x05\n" +
-	"\bReceiver\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\x12(\n" +
-	"\x10is_internal_only\x18\x05 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
-	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\"\n" +
-	"\bprotocol\x18\a \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\bprotocol\x12,\n" +
-	"\x12frequency_band_mhz\x18\b \x01(\rR\x10frequencyBandMhz\x12#\n" +
-	"\rhas_telemetry\x18\t \x01(\bR\fhasTelemetry\x12#\n" +
-	"\rantenna_uuids\x18\n" +
-	" \x03(\tR\fantennaUuids\x12 \n" +
-	"\vdescription\x18\v \x01(\tR\vdescription\x12E\n" +
-	"\x0freference_links\x18\f \x03(\v2\x1c.quadsmith.api.ReferenceLinkR\x0ereferenceLinks\x127\n" +
-	"\x15primary_display_image\x18\r \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12*\n" +
-	"\x05media\x18\x0e \x03(\v2\x14.quadsmith.api.MediaR\x05media:~\x8a\xb5\x18J\n" +
-	"\fmanufacturer\n" +
-	"\x04name\n" +
-	"\bprotocol\n" +
-	"\x12frequency_band_mhz\n" +
-	"\rhas_telemetry\x12\a#a855f7\x9a\xb5\x18\x1dcomponents/hardware/receivers\xc2\xf3\x18\v\n" +
-	"\treceiversB\x18\n" +
-	"\x16_primary_display_image\">\n" +
+	"\x1cquadsmith/api/receiver.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"L\n" +
+	"\x15CreateReceiverRequest\x123\n" +
+	"\breceiver\x18\x01 \x01(\v2\x17.quadsmith.api.ReceiverR\breceiver\"'\n" +
+	"\x15DeleteReceiverRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"9\n" +
+	"\x16DeleteReceiverResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\">\n" +
 	"\x12GetReceiverRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x98\x01\n" +
@@ -400,10 +576,43 @@ const file_quadsmith_api_receiver_proto_rawDesc = "" +
 	"\x04sort\x18\x05 \x03(\tR\x04sort\"v\n" +
 	"\x15ListReceiversResponse\x125\n" +
 	"\treceivers\x18\x01 \x03(\v2\x17.quadsmith.api.ReceiverR\treceivers\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xb8\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"L\n" +
+	"\x15UpdateReceiverRequest\x123\n" +
+	"\breceiver\x18\x01 \x01(\v2\x17.quadsmith.api.ReceiverR\breceiver\"\x93\a\n" +
+	"\bReceiver\x12<\n" +
+	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12*\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x1a\n" +
+	"\x04name\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12(\n" +
+	"\x10is_internal_only\x18\x05 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
+	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\"\n" +
+	"\bprotocol\x18\a \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\bprotocol\x12,\n" +
+	"\x12frequency_band_mhz\x18\b \x01(\rR\x10frequencyBandMhz\x12#\n" +
+	"\rhas_telemetry\x18\t \x01(\bR\fhasTelemetry\x12#\n" +
+	"\rantenna_uuids\x18\n" +
+	" \x03(\tR\fantennaUuids\x12(\n" +
+	"\vdescription\x18\v \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x12M\n" +
+	"\x0freference_links\x18\f \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
+	"\x15primary_display_image\x18\r \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x00R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
+	"\x05media\x18\x0e \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12(\n" +
+	"\tuser_uuid\x18\x0f \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x01R\buserUuid\x88\x01\x01\x124\n" +
+	"\x0fauthor_username\x18\x10 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\x0eauthorUsername\x88\x01\x01:~\x8a\xb5\x18J\n" +
+	"\fmanufacturer\n" +
+	"\x04name\n" +
+	"\bprotocol\n" +
+	"\x12frequency_band_mhz\n" +
+	"\rhas_telemetry\x12\a#a855f7\x9a\xb5\x18\x1dcomponents/hardware/receivers\xc2\xf3\x18\v\n" +
+	"\treceiversB\x18\n" +
+	"\x16_primary_display_imageB\f\n" +
+	"\n" +
+	"_user_uuidB\x12\n" +
+	"\x10_author_username2\xb9\x03\n" +
 	"\x0fReceiverService\x12I\n" +
 	"\vGetReceiver\x12!.quadsmith.api.GetReceiverRequest\x1a\x17.quadsmith.api.Receiver\x12Z\n" +
-	"\rListReceivers\x12#.quadsmith.api.ListReceiversRequest\x1a$.quadsmith.api.ListReceiversResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"\rListReceivers\x12#.quadsmith.api.ListReceiversRequest\x1a$.quadsmith.api.ListReceiversResponse\x12O\n" +
+	"\x0eCreateReceiver\x12$.quadsmith.api.CreateReceiverRequest\x1a\x17.quadsmith.api.Receiver\x12O\n" +
+	"\x0eUpdateReceiver\x12$.quadsmith.api.UpdateReceiverRequest\x1a\x17.quadsmith.api.Receiver\x12]\n" +
+	"\x0eDeleteReceiver\x12$.quadsmith.api.DeleteReceiverRequest\x1a%.quadsmith.api.DeleteReceiverResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_receiver_proto_rawDescOnce sync.Once
@@ -417,28 +626,40 @@ func file_quadsmith_api_receiver_proto_rawDescGZIP() []byte {
 	return file_quadsmith_api_receiver_proto_rawDescData
 }
 
-var file_quadsmith_api_receiver_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_quadsmith_api_receiver_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_receiver_proto_goTypes = []any{
-	(*Receiver)(nil),              // 0: quadsmith.api.Receiver
-	(*GetReceiverRequest)(nil),    // 1: quadsmith.api.GetReceiverRequest
-	(*ListReceiversRequest)(nil),  // 2: quadsmith.api.ListReceiversRequest
-	(*ListReceiversResponse)(nil), // 3: quadsmith.api.ListReceiversResponse
-	(*ReferenceLink)(nil),         // 4: quadsmith.api.ReferenceLink
-	(*Media)(nil),                 // 5: quadsmith.api.Media
+	(*CreateReceiverRequest)(nil),  // 0: quadsmith.api.CreateReceiverRequest
+	(*DeleteReceiverRequest)(nil),  // 1: quadsmith.api.DeleteReceiverRequest
+	(*DeleteReceiverResponse)(nil), // 2: quadsmith.api.DeleteReceiverResponse
+	(*GetReceiverRequest)(nil),     // 3: quadsmith.api.GetReceiverRequest
+	(*ListReceiversRequest)(nil),   // 4: quadsmith.api.ListReceiversRequest
+	(*ListReceiversResponse)(nil),  // 5: quadsmith.api.ListReceiversResponse
+	(*UpdateReceiverRequest)(nil),  // 6: quadsmith.api.UpdateReceiverRequest
+	(*Receiver)(nil),               // 7: quadsmith.api.Receiver
+	(*ReferenceLink)(nil),          // 8: quadsmith.api.ReferenceLink
+	(*Media)(nil),                  // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_receiver_proto_depIdxs = []int32{
-	4, // 0: quadsmith.api.Receiver.reference_links:type_name -> quadsmith.api.ReferenceLink
-	5, // 1: quadsmith.api.Receiver.media:type_name -> quadsmith.api.Media
-	0, // 2: quadsmith.api.ListReceiversResponse.receivers:type_name -> quadsmith.api.Receiver
-	1, // 3: quadsmith.api.ReceiverService.GetReceiver:input_type -> quadsmith.api.GetReceiverRequest
-	2, // 4: quadsmith.api.ReceiverService.ListReceivers:input_type -> quadsmith.api.ListReceiversRequest
-	0, // 5: quadsmith.api.ReceiverService.GetReceiver:output_type -> quadsmith.api.Receiver
-	3, // 6: quadsmith.api.ReceiverService.ListReceivers:output_type -> quadsmith.api.ListReceiversResponse
-	5, // [5:7] is the sub-list for method output_type
-	3, // [3:5] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	7,  // 0: quadsmith.api.CreateReceiverRequest.receiver:type_name -> quadsmith.api.Receiver
+	7,  // 1: quadsmith.api.ListReceiversResponse.receivers:type_name -> quadsmith.api.Receiver
+	7,  // 2: quadsmith.api.UpdateReceiverRequest.receiver:type_name -> quadsmith.api.Receiver
+	8,  // 3: quadsmith.api.Receiver.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 4: quadsmith.api.Receiver.media:type_name -> quadsmith.api.Media
+	3,  // 5: quadsmith.api.ReceiverService.GetReceiver:input_type -> quadsmith.api.GetReceiverRequest
+	4,  // 6: quadsmith.api.ReceiverService.ListReceivers:input_type -> quadsmith.api.ListReceiversRequest
+	0,  // 7: quadsmith.api.ReceiverService.CreateReceiver:input_type -> quadsmith.api.CreateReceiverRequest
+	6,  // 8: quadsmith.api.ReceiverService.UpdateReceiver:input_type -> quadsmith.api.UpdateReceiverRequest
+	1,  // 9: quadsmith.api.ReceiverService.DeleteReceiver:input_type -> quadsmith.api.DeleteReceiverRequest
+	7,  // 10: quadsmith.api.ReceiverService.GetReceiver:output_type -> quadsmith.api.Receiver
+	5,  // 11: quadsmith.api.ReceiverService.ListReceivers:output_type -> quadsmith.api.ListReceiversResponse
+	7,  // 12: quadsmith.api.ReceiverService.CreateReceiver:output_type -> quadsmith.api.Receiver
+	7,  // 13: quadsmith.api.ReceiverService.UpdateReceiver:output_type -> quadsmith.api.Receiver
+	2,  // 14: quadsmith.api.ReceiverService.DeleteReceiver:output_type -> quadsmith.api.DeleteReceiverResponse
+	10, // [10:15] is the sub-list for method output_type
+	5,  // [5:10] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_receiver_proto_init() }
@@ -448,14 +669,14 @@ func file_quadsmith_api_receiver_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_receiver_proto_msgTypes[0].OneofWrappers = []any{}
+	file_quadsmith_api_receiver_proto_msgTypes[7].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_receiver_proto_rawDesc), len(file_quadsmith_api_receiver_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

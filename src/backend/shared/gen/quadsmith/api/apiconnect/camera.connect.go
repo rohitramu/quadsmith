@@ -38,12 +38,24 @@ const (
 	// CameraServiceListCamerasProcedure is the fully-qualified name of the CameraService's ListCameras
 	// RPC.
 	CameraServiceListCamerasProcedure = "/quadsmith.api.CameraService/ListCameras"
+	// CameraServiceCreateCameraProcedure is the fully-qualified name of the CameraService's
+	// CreateCamera RPC.
+	CameraServiceCreateCameraProcedure = "/quadsmith.api.CameraService/CreateCamera"
+	// CameraServiceUpdateCameraProcedure is the fully-qualified name of the CameraService's
+	// UpdateCamera RPC.
+	CameraServiceUpdateCameraProcedure = "/quadsmith.api.CameraService/UpdateCamera"
+	// CameraServiceDeleteCameraProcedure is the fully-qualified name of the CameraService's
+	// DeleteCamera RPC.
+	CameraServiceDeleteCameraProcedure = "/quadsmith.api.CameraService/DeleteCamera"
 )
 
 // CameraServiceClient is a client for the quadsmith.api.CameraService service.
 type CameraServiceClient interface {
 	GetCamera(context.Context, *connect.Request[api.GetCameraRequest]) (*connect.Response[api.Camera], error)
 	ListCameras(context.Context, *connect.Request[api.ListCamerasRequest]) (*connect.Response[api.ListCamerasResponse], error)
+	CreateCamera(context.Context, *connect.Request[api.CreateCameraRequest]) (*connect.Response[api.Camera], error)
+	UpdateCamera(context.Context, *connect.Request[api.UpdateCameraRequest]) (*connect.Response[api.Camera], error)
+	DeleteCamera(context.Context, *connect.Request[api.DeleteCameraRequest]) (*connect.Response[api.DeleteCameraResponse], error)
 }
 
 // NewCameraServiceClient constructs a client for the quadsmith.api.CameraService service. By
@@ -69,13 +81,34 @@ func NewCameraServiceClient(httpClient connect.HTTPClient, baseURL string, opts 
 			connect.WithSchema(cameraServiceMethods.ByName("ListCameras")),
 			connect.WithClientOptions(opts...),
 		),
+		createCamera: connect.NewClient[api.CreateCameraRequest, api.Camera](
+			httpClient,
+			baseURL+CameraServiceCreateCameraProcedure,
+			connect.WithSchema(cameraServiceMethods.ByName("CreateCamera")),
+			connect.WithClientOptions(opts...),
+		),
+		updateCamera: connect.NewClient[api.UpdateCameraRequest, api.Camera](
+			httpClient,
+			baseURL+CameraServiceUpdateCameraProcedure,
+			connect.WithSchema(cameraServiceMethods.ByName("UpdateCamera")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteCamera: connect.NewClient[api.DeleteCameraRequest, api.DeleteCameraResponse](
+			httpClient,
+			baseURL+CameraServiceDeleteCameraProcedure,
+			connect.WithSchema(cameraServiceMethods.ByName("DeleteCamera")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // cameraServiceClient implements CameraServiceClient.
 type cameraServiceClient struct {
-	getCamera   *connect.Client[api.GetCameraRequest, api.Camera]
-	listCameras *connect.Client[api.ListCamerasRequest, api.ListCamerasResponse]
+	getCamera    *connect.Client[api.GetCameraRequest, api.Camera]
+	listCameras  *connect.Client[api.ListCamerasRequest, api.ListCamerasResponse]
+	createCamera *connect.Client[api.CreateCameraRequest, api.Camera]
+	updateCamera *connect.Client[api.UpdateCameraRequest, api.Camera]
+	deleteCamera *connect.Client[api.DeleteCameraRequest, api.DeleteCameraResponse]
 }
 
 // GetCamera calls quadsmith.api.CameraService.GetCamera.
@@ -88,10 +121,28 @@ func (c *cameraServiceClient) ListCameras(ctx context.Context, req *connect.Requ
 	return c.listCameras.CallUnary(ctx, req)
 }
 
+// CreateCamera calls quadsmith.api.CameraService.CreateCamera.
+func (c *cameraServiceClient) CreateCamera(ctx context.Context, req *connect.Request[api.CreateCameraRequest]) (*connect.Response[api.Camera], error) {
+	return c.createCamera.CallUnary(ctx, req)
+}
+
+// UpdateCamera calls quadsmith.api.CameraService.UpdateCamera.
+func (c *cameraServiceClient) UpdateCamera(ctx context.Context, req *connect.Request[api.UpdateCameraRequest]) (*connect.Response[api.Camera], error) {
+	return c.updateCamera.CallUnary(ctx, req)
+}
+
+// DeleteCamera calls quadsmith.api.CameraService.DeleteCamera.
+func (c *cameraServiceClient) DeleteCamera(ctx context.Context, req *connect.Request[api.DeleteCameraRequest]) (*connect.Response[api.DeleteCameraResponse], error) {
+	return c.deleteCamera.CallUnary(ctx, req)
+}
+
 // CameraServiceHandler is an implementation of the quadsmith.api.CameraService service.
 type CameraServiceHandler interface {
 	GetCamera(context.Context, *connect.Request[api.GetCameraRequest]) (*connect.Response[api.Camera], error)
 	ListCameras(context.Context, *connect.Request[api.ListCamerasRequest]) (*connect.Response[api.ListCamerasResponse], error)
+	CreateCamera(context.Context, *connect.Request[api.CreateCameraRequest]) (*connect.Response[api.Camera], error)
+	UpdateCamera(context.Context, *connect.Request[api.UpdateCameraRequest]) (*connect.Response[api.Camera], error)
+	DeleteCamera(context.Context, *connect.Request[api.DeleteCameraRequest]) (*connect.Response[api.DeleteCameraResponse], error)
 }
 
 // NewCameraServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -113,12 +164,36 @@ func NewCameraServiceHandler(svc CameraServiceHandler, opts ...connect.HandlerOp
 		connect.WithSchema(cameraServiceMethods.ByName("ListCameras")),
 		connect.WithHandlerOptions(opts...),
 	)
+	cameraServiceCreateCameraHandler := connect.NewUnaryHandler(
+		CameraServiceCreateCameraProcedure,
+		svc.CreateCamera,
+		connect.WithSchema(cameraServiceMethods.ByName("CreateCamera")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cameraServiceUpdateCameraHandler := connect.NewUnaryHandler(
+		CameraServiceUpdateCameraProcedure,
+		svc.UpdateCamera,
+		connect.WithSchema(cameraServiceMethods.ByName("UpdateCamera")),
+		connect.WithHandlerOptions(opts...),
+	)
+	cameraServiceDeleteCameraHandler := connect.NewUnaryHandler(
+		CameraServiceDeleteCameraProcedure,
+		svc.DeleteCamera,
+		connect.WithSchema(cameraServiceMethods.ByName("DeleteCamera")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.CameraService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case CameraServiceGetCameraProcedure:
 			cameraServiceGetCameraHandler.ServeHTTP(w, r)
 		case CameraServiceListCamerasProcedure:
 			cameraServiceListCamerasHandler.ServeHTTP(w, r)
+		case CameraServiceCreateCameraProcedure:
+			cameraServiceCreateCameraHandler.ServeHTTP(w, r)
+		case CameraServiceUpdateCameraProcedure:
+			cameraServiceUpdateCameraHandler.ServeHTTP(w, r)
+		case CameraServiceDeleteCameraProcedure:
+			cameraServiceDeleteCameraHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -134,4 +209,16 @@ func (UnimplementedCameraServiceHandler) GetCamera(context.Context, *connect.Req
 
 func (UnimplementedCameraServiceHandler) ListCameras(context.Context, *connect.Request[api.ListCamerasRequest]) (*connect.Response[api.ListCamerasResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.CameraService.ListCameras is not implemented"))
+}
+
+func (UnimplementedCameraServiceHandler) CreateCamera(context.Context, *connect.Request[api.CreateCameraRequest]) (*connect.Response[api.Camera], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.CameraService.CreateCamera is not implemented"))
+}
+
+func (UnimplementedCameraServiceHandler) UpdateCamera(context.Context, *connect.Request[api.UpdateCameraRequest]) (*connect.Response[api.Camera], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.CameraService.UpdateCamera is not implemented"))
+}
+
+func (UnimplementedCameraServiceHandler) DeleteCamera(context.Context, *connect.Request[api.DeleteCameraRequest]) (*connect.Response[api.DeleteCameraResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.CameraService.DeleteCamera is not implemented"))
 }

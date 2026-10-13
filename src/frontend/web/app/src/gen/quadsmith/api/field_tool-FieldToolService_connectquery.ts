@@ -13,3 +13,18 @@ export const getFieldTool = FieldToolService.method.getFieldTool;
  * @generated from rpc quadsmith.api.FieldToolService.ListFieldTools
  */
 export const listFieldTools = FieldToolService.method.listFieldTools;
+
+/**
+ * @generated from rpc quadsmith.api.FieldToolService.CreateFieldTool
+ */
+export const createFieldTool = FieldToolService.method.createFieldTool;
+
+/**
+ * @generated from rpc quadsmith.api.FieldToolService.UpdateFieldTool
+ */
+export const updateFieldTool = FieldToolService.method.updateFieldTool;
+
+/**
+ * @generated from rpc quadsmith.api.FieldToolService.DeleteFieldTool
+ */
+export const deleteFieldTool = FieldToolService.method.deleteFieldTool;

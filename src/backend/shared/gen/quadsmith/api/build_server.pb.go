@@ -211,13 +211,13 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 	defer tx.Rollback(ctx)
 
 	var idExists bool
-	if err := tx.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM builds WHERE id = $1)", b.Id).Scan(&idExists); err != nil {
+	if err := tx.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM entities WHERE collection = 'builds' AND id = $1)", b.Id).Scan(&idExists); err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to check build id existence: %w", err))
 	}
 	if idExists {
 		newID, err := buildid.NextCopyID(b.Id, func(cand string) (bool, error) {
 			var exists bool
-			err := tx.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM builds WHERE id = $1)", cand).Scan(&exists)
+			err := tx.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM entities WHERE collection = 'builds' AND id = $1)", cand).Scan(&exists)
 			return exists, err
 		})
 		if err != nil {
@@ -238,11 +238,11 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 		authorStr = *b.AuthorUsername
 	}
 	_, err = tx.Exec(ctx, `
-		INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at)
-		VALUES ($1, 'builds', $2, $3, $4, $5, $6, $7, $8, false, NOW(), NOW())
+		INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, user_uuid, author_username, is_archived, created_at, updated_at)
+		VALUES ($1, 'builds', $2, $3, $4, $5, $6, $7, $8, $9, $10, false, NOW(), NOW())
 		ON CONFLICT (collection, id) DO UPDATE
-		SET name = EXCLUDED.name, description = EXCLUDED.description, primary_display_image = EXCLUDED.primary_display_image, author_or_manufacturer = EXCLUDED.author_or_manufacturer, updated_at = NOW()
-	`, b.Uuid, b.Id, b.Name, b.Description, b.PrimaryDisplayImage, refLinksJSON, mediaJSON, authorStr)
+		SET name = EXCLUDED.name, description = EXCLUDED.description, primary_display_image = EXCLUDED.primary_display_image, author_or_manufacturer = EXCLUDED.author_or_manufacturer, user_uuid = EXCLUDED.user_uuid, author_username = EXCLUDED.author_username, updated_at = NOW()
+	`, b.Uuid, b.Id, b.Name, b.Description, b.PrimaryDisplayImage, refLinksJSON, mediaJSON, authorStr, b.UserUuid, b.AuthorUsername)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save entity: %w", err))
 	}
@@ -313,7 +313,8 @@ func (s *BuildServiceHandler) DeleteBuild(ctx context.Context, req *connect.Requ
 	_ = tx.QueryRow(ctx, `
 		SELECT (
 			(SELECT count(*) FROM questions WHERE entity_uuid = $1) +
-			(SELECT count(*) FROM reviews WHERE entity_uuid = $1)
+			(SELECT count(*) FROM reviews WHERE entity_uuid = $1) +
+			(SELECT count(*) FROM collection_items WHERE entity_uuid = $1)
 		)
 	`, b.Uuid).Scan(&activityCount)
 	isArchived := false

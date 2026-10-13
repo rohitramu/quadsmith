@@ -208,12 +208,21 @@ func searchCollection(ctx context.Context, db *pgxpool.Pool, target CollectionTa
 		whereClauses = append(whereClauses, textMatchCond)
 	}
 
+	whereClauses = append(whereClauses, "entities.is_archived = false")
+
 	limitIdx := len(args) + 1
 	args = append(args, limit)
 
 	whereSQL := ""
 	if len(whereClauses) > 0 {
 		whereSQL = "WHERE " + strings.Join(whereClauses, " AND ")
+	}
+
+	fromClause := fmt.Sprintf("%s t INNER JOIN entities USING (uuid)", tableName)
+	jsonbExpr := "(to_jsonb(t.*) || to_jsonb(entities.*))"
+	if tableName == "entities" {
+		fromClause = "entities t"
+		jsonbExpr = "to_jsonb(t.*)"
 	}
 
 	querySQL := fmt.Sprintf(`SELECT
@@ -223,11 +232,11 @@ func searchCollection(ctx context.Context, db *pgxpool.Pool, target CollectionTa
 		COALESCE(description, ''),
 		COALESCE(primary_display_image, ''),
 		%s AS match_score,
-		to_jsonb(t.*)
-	FROM %s t
+		%s
+	FROM %s
 	%s
 	ORDER BY match_score DESC, name ASC, id ASC
-	LIMIT $%d`, scoreExpr, tableName, whereSQL, limitIdx)
+	LIMIT $%d`, scoreExpr, jsonbExpr, fromClause, whereSQL, limitIdx)
 
 	rows, err := db.Query(ctx, querySQL, args...)
 	if err != nil {

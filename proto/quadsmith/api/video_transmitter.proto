@@ -10,65 +10,31 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// Domain Model
+// 1. gRPC Service (Services First)
 // ---------------------------------------------------------
-message VideoTransmitter {
-  option (quadsmith.sql.table) = {name: "video_transmitters"};
-  option (quadsmith.common.collection_path) = "components/hardware/video-transmitters";
-  option (quadsmith.common.frontend) = {
-    color_code: "#ec4899"
-    default_columns: [
-      "manufacturer",
-      "name",
-      "protocol",
-      "max_power_mw",
-      "weight_g"
-    ]
-  };
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4;
-  bool is_internal_only = 5;
-
-  float weight_g = 6;
-
-  // E.g., "Analog", "DJI O3", "DJI O4 Pro", "DJI O4 Lite", "Walksnail Avatar", "HDZero"
-  string protocol = 7 [(quadsmith.sql.column) = {create_index: true}];
-
-  // Max output power in milliwatts (e.g., 800, 1000, 1200)
-  uint32 max_power_mw = 8;
-
-  // Input voltage range
-  float input_voltage_min_v = 9;
-  float input_voltage_max_v = 10;
-
-  // Array of antenna UUIDs included with or required by this video transmitter
-  repeated string antenna_uuids = 11;
-  string description = 12;
-  repeated ReferenceLink reference_links = 13;
-  optional string primary_display_image = 14;
-  repeated Media media = 15;
-
-  // Port/pin connection interface (e.g., "JST-SH 6-Pin", "Solder Pads", "JST-SH 4-Pin")
-  string port_type = 16;
-
-  // Board mounting pattern (e.g., "20x20mm", "25.5x25.5mm", "30.5x30.5mm")
-  string mount_pattern = 17;
-
-  // Center frequency in MHz (e.g., 5800 for 5.8GHz, 3300 for 3.3GHz, 1200 for 1.2GHz)
-  uint32 frequency_band_mhz = 18;
-
-  // Supported antenna connector types (e.g., ["SMA"], ["U.FL"], ["Dual U.FL", "U.FL"], ["MMCX", "SMA"])
-  repeated string antenna_connectors = 19;
+service VideoTransmitterService {
+  rpc GetVideoTransmitter(GetVideoTransmitterRequest) returns (VideoTransmitter);
+  rpc ListVideoTransmitters(ListVideoTransmittersRequest) returns (ListVideoTransmittersResponse);
+  rpc CreateVideoTransmitter(CreateVideoTransmitterRequest) returns (VideoTransmitter);
+  rpc UpdateVideoTransmitter(UpdateVideoTransmitterRequest) returns (VideoTransmitter);
+  rpc DeleteVideoTransmitter(DeleteVideoTransmitterRequest) returns (DeleteVideoTransmitterResponse);
 }
 
 // ---------------------------------------------------------
-// RPC Requests & Responses
+// 2. RPC Requests & Responses (Callers Precede Callees)
 // ---------------------------------------------------------
+message CreateVideoTransmitterRequest {
+  VideoTransmitter video_transmitter = 1;
+}
+
+message DeleteVideoTransmitterRequest {
+  string id = 1;
+}
+
+message DeleteVideoTransmitterResponse {
+  bool is_archived = 1;
+}
+
 message GetVideoTransmitterRequest {
   string id = 1;
   repeated string columns = 2;
@@ -87,10 +53,68 @@ message ListVideoTransmittersResponse {
   string next_page_token = 2;
 }
 
+message UpdateVideoTransmitterRequest {
+  VideoTransmitter video_transmitter = 1;
+}
+
 // ---------------------------------------------------------
-// gRPC Service
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
-service VideoTransmitterService {
-  rpc GetVideoTransmitter(GetVideoTransmitterRequest) returns (VideoTransmitter);
-  rpc ListVideoTransmitters(ListVideoTransmittersRequest) returns (ListVideoTransmittersResponse);
+message VideoTransmitter {
+  option (quadsmith.sql.table) = {name: "video_transmitters"};
+  option (quadsmith.common.collection_path) = "components/hardware/video-transmitters";
+  option (quadsmith.common.frontend) = {
+    color_code: "#ec4899"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "protocol",
+      "max_power_mw",
+      "weight_g"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {
+    is_primary_key: true
+    references: "entities(uuid) ON DELETE CASCADE"
+  }];
+
+  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
+  bool is_internal_only = 5;
+
+  float weight_g = 6;
+
+  // E.g., "Analog", "DJI O3", "DJI O4 Pro", "DJI O4 Lite", "Walksnail Avatar", "HDZero"
+  string protocol = 7 [(quadsmith.sql.column) = {create_index: true}];
+
+  // Max output power in milliwatts (e.g., 800, 1000, 1200)
+  uint32 max_power_mw = 8;
+
+  // Input voltage range
+  float input_voltage_min_v = 9;
+  float input_voltage_max_v = 10;
+
+  // Array of antenna UUIDs included with or required by this video transmitter
+  repeated string antenna_uuids = 11;
+  string description = 12 [(quadsmith.sql.column) = {ignore: true}];
+  repeated ReferenceLink reference_links = 13 [(quadsmith.sql.column) = {ignore: true}];
+  optional string primary_display_image = 14 [(quadsmith.sql.column) = {ignore: true}];
+  repeated Media media = 15 [(quadsmith.sql.column) = {ignore: true}];
+
+  // Port/pin connection interface (e.g., "JST-SH 6-Pin", "Solder Pads", "JST-SH 4-Pin")
+  string port_type = 16;
+
+  // Board mounting pattern (e.g., "20x20mm", "25.5x25.5mm", "30.5x30.5mm")
+  string mount_pattern = 17;
+
+  // Center frequency in MHz (e.g., 5800 for 5.8GHz, 3300 for 3.3GHz, 1200 for 1.2GHz)
+  uint32 frequency_band_mhz = 18;
+
+  // Supported antenna connector types (e.g., ["SMA"], ["U.FL"], ["Dual U.FL", "U.FL"], ["MMCX", "SMA"])
+  repeated string antenna_connectors = 19;
+  optional string user_uuid = 20 [(quadsmith.sql.column) = {ignore: true}];
+  optional string author_username = 21 [(quadsmith.sql.column) = {ignore: true}];
 }

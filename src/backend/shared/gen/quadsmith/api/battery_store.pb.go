@@ -11,19 +11,19 @@ import (
 )
 
 func CreateBattery(ctx context.Context, tx pgx.Tx, m *Battery) error {
-	query := `INSERT INTO batteries (uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)`
+	query := `INSERT INTO batteries (uuid, manufacturer, weight_g, capacity_mah, cell_count_s, chemistry, connector, min_voltage, max_voltage, max_current_a) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage, m.MaxCurrentA)
+	}(m.Uuid), m.Manufacturer, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector, m.MinVoltage, m.MaxVoltage, m.MaxCurrentA)
 	return err
 }
 
 func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Battery, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "capacity_mah": true, "cell_count_s": true, "chemistry": true, "connector": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "max_current_a": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "capacity_mah": true, "cell_count_s": true, "chemistry": true, "connector": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "max_current_a": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM batteries WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM batteries INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Battery{}
@@ -74,6 +74,10 @@ func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 			scanArgs[i] = &m.MaxVoltage
 		case "max_current_a":
 			scanArgs[i] = &m.MaxCurrentA
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -91,20 +95,20 @@ func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 }
 
 func UpdateBattery(ctx context.Context, tx pgx.Tx, m *Battery) error {
-	query := `UPDATE batteries SET manufacturer = $2, name = $3, weight_g = $4, capacity_mah = $5, cell_count_s = $6, chemistry = $7, connector = $8, description = $9, reference_links = $10, primary_display_image = $11, media = $12, min_voltage = $13, max_voltage = $14, max_current_a = $15 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage, m.MaxCurrentA)
+	query := `UPDATE batteries SET manufacturer = $2, weight_g = $3, capacity_mah = $4, cell_count_s = $5, chemistry = $6, connector = $7, min_voltage = $8, max_voltage = $9, max_current_a = $10 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.WeightG, m.CapacityMah, m.CellCountS, m.Chemistry, m.Connector, m.MinVoltage, m.MaxVoltage, m.MaxCurrentA)
 	return err
 }
 
 func DeleteBattery(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM batteries WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM batteries WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'batteries' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Battery, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "capacity_mah": true, "cell_count_s": true, "chemistry": true, "connector": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "max_current_a": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "capacity_mah": true, "cell_count_s": true, "chemistry": true, "connector": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "max_current_a": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -115,11 +119,12 @@ func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM batteries`
+	query := `SELECT ` + colsStr + ` FROM batteries INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -196,6 +201,10 @@ func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 				scanArgs[i] = &m.MaxVoltage
 			case "max_current_a":
 				scanArgs[i] = &m.MaxCurrentA
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

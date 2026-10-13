@@ -39,12 +39,24 @@ const (
 	// BatteryServiceListBatteriesProcedure is the fully-qualified name of the BatteryService's
 	// ListBatteries RPC.
 	BatteryServiceListBatteriesProcedure = "/quadsmith.api.BatteryService/ListBatteries"
+	// BatteryServiceCreateBatteryProcedure is the fully-qualified name of the BatteryService's
+	// CreateBattery RPC.
+	BatteryServiceCreateBatteryProcedure = "/quadsmith.api.BatteryService/CreateBattery"
+	// BatteryServiceUpdateBatteryProcedure is the fully-qualified name of the BatteryService's
+	// UpdateBattery RPC.
+	BatteryServiceUpdateBatteryProcedure = "/quadsmith.api.BatteryService/UpdateBattery"
+	// BatteryServiceDeleteBatteryProcedure is the fully-qualified name of the BatteryService's
+	// DeleteBattery RPC.
+	BatteryServiceDeleteBatteryProcedure = "/quadsmith.api.BatteryService/DeleteBattery"
 )
 
 // BatteryServiceClient is a client for the quadsmith.api.BatteryService service.
 type BatteryServiceClient interface {
 	GetBattery(context.Context, *connect.Request[api.GetBatteryRequest]) (*connect.Response[api.Battery], error)
 	ListBatteries(context.Context, *connect.Request[api.ListBatteriesRequest]) (*connect.Response[api.ListBatteriesResponse], error)
+	CreateBattery(context.Context, *connect.Request[api.CreateBatteryRequest]) (*connect.Response[api.Battery], error)
+	UpdateBattery(context.Context, *connect.Request[api.UpdateBatteryRequest]) (*connect.Response[api.Battery], error)
+	DeleteBattery(context.Context, *connect.Request[api.DeleteBatteryRequest]) (*connect.Response[api.DeleteBatteryResponse], error)
 }
 
 // NewBatteryServiceClient constructs a client for the quadsmith.api.BatteryService service. By
@@ -70,6 +82,24 @@ func NewBatteryServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(batteryServiceMethods.ByName("ListBatteries")),
 			connect.WithClientOptions(opts...),
 		),
+		createBattery: connect.NewClient[api.CreateBatteryRequest, api.Battery](
+			httpClient,
+			baseURL+BatteryServiceCreateBatteryProcedure,
+			connect.WithSchema(batteryServiceMethods.ByName("CreateBattery")),
+			connect.WithClientOptions(opts...),
+		),
+		updateBattery: connect.NewClient[api.UpdateBatteryRequest, api.Battery](
+			httpClient,
+			baseURL+BatteryServiceUpdateBatteryProcedure,
+			connect.WithSchema(batteryServiceMethods.ByName("UpdateBattery")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteBattery: connect.NewClient[api.DeleteBatteryRequest, api.DeleteBatteryResponse](
+			httpClient,
+			baseURL+BatteryServiceDeleteBatteryProcedure,
+			connect.WithSchema(batteryServiceMethods.ByName("DeleteBattery")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -77,6 +107,9 @@ func NewBatteryServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 type batteryServiceClient struct {
 	getBattery    *connect.Client[api.GetBatteryRequest, api.Battery]
 	listBatteries *connect.Client[api.ListBatteriesRequest, api.ListBatteriesResponse]
+	createBattery *connect.Client[api.CreateBatteryRequest, api.Battery]
+	updateBattery *connect.Client[api.UpdateBatteryRequest, api.Battery]
+	deleteBattery *connect.Client[api.DeleteBatteryRequest, api.DeleteBatteryResponse]
 }
 
 // GetBattery calls quadsmith.api.BatteryService.GetBattery.
@@ -89,10 +122,28 @@ func (c *batteryServiceClient) ListBatteries(ctx context.Context, req *connect.R
 	return c.listBatteries.CallUnary(ctx, req)
 }
 
+// CreateBattery calls quadsmith.api.BatteryService.CreateBattery.
+func (c *batteryServiceClient) CreateBattery(ctx context.Context, req *connect.Request[api.CreateBatteryRequest]) (*connect.Response[api.Battery], error) {
+	return c.createBattery.CallUnary(ctx, req)
+}
+
+// UpdateBattery calls quadsmith.api.BatteryService.UpdateBattery.
+func (c *batteryServiceClient) UpdateBattery(ctx context.Context, req *connect.Request[api.UpdateBatteryRequest]) (*connect.Response[api.Battery], error) {
+	return c.updateBattery.CallUnary(ctx, req)
+}
+
+// DeleteBattery calls quadsmith.api.BatteryService.DeleteBattery.
+func (c *batteryServiceClient) DeleteBattery(ctx context.Context, req *connect.Request[api.DeleteBatteryRequest]) (*connect.Response[api.DeleteBatteryResponse], error) {
+	return c.deleteBattery.CallUnary(ctx, req)
+}
+
 // BatteryServiceHandler is an implementation of the quadsmith.api.BatteryService service.
 type BatteryServiceHandler interface {
 	GetBattery(context.Context, *connect.Request[api.GetBatteryRequest]) (*connect.Response[api.Battery], error)
 	ListBatteries(context.Context, *connect.Request[api.ListBatteriesRequest]) (*connect.Response[api.ListBatteriesResponse], error)
+	CreateBattery(context.Context, *connect.Request[api.CreateBatteryRequest]) (*connect.Response[api.Battery], error)
+	UpdateBattery(context.Context, *connect.Request[api.UpdateBatteryRequest]) (*connect.Response[api.Battery], error)
+	DeleteBattery(context.Context, *connect.Request[api.DeleteBatteryRequest]) (*connect.Response[api.DeleteBatteryResponse], error)
 }
 
 // NewBatteryServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -114,12 +165,36 @@ func NewBatteryServiceHandler(svc BatteryServiceHandler, opts ...connect.Handler
 		connect.WithSchema(batteryServiceMethods.ByName("ListBatteries")),
 		connect.WithHandlerOptions(opts...),
 	)
+	batteryServiceCreateBatteryHandler := connect.NewUnaryHandler(
+		BatteryServiceCreateBatteryProcedure,
+		svc.CreateBattery,
+		connect.WithSchema(batteryServiceMethods.ByName("CreateBattery")),
+		connect.WithHandlerOptions(opts...),
+	)
+	batteryServiceUpdateBatteryHandler := connect.NewUnaryHandler(
+		BatteryServiceUpdateBatteryProcedure,
+		svc.UpdateBattery,
+		connect.WithSchema(batteryServiceMethods.ByName("UpdateBattery")),
+		connect.WithHandlerOptions(opts...),
+	)
+	batteryServiceDeleteBatteryHandler := connect.NewUnaryHandler(
+		BatteryServiceDeleteBatteryProcedure,
+		svc.DeleteBattery,
+		connect.WithSchema(batteryServiceMethods.ByName("DeleteBattery")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.BatteryService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case BatteryServiceGetBatteryProcedure:
 			batteryServiceGetBatteryHandler.ServeHTTP(w, r)
 		case BatteryServiceListBatteriesProcedure:
 			batteryServiceListBatteriesHandler.ServeHTTP(w, r)
+		case BatteryServiceCreateBatteryProcedure:
+			batteryServiceCreateBatteryHandler.ServeHTTP(w, r)
+		case BatteryServiceUpdateBatteryProcedure:
+			batteryServiceUpdateBatteryHandler.ServeHTTP(w, r)
+		case BatteryServiceDeleteBatteryProcedure:
+			batteryServiceDeleteBatteryHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +210,16 @@ func (UnimplementedBatteryServiceHandler) GetBattery(context.Context, *connect.R
 
 func (UnimplementedBatteryServiceHandler) ListBatteries(context.Context, *connect.Request[api.ListBatteriesRequest]) (*connect.Response[api.ListBatteriesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.BatteryService.ListBatteries is not implemented"))
+}
+
+func (UnimplementedBatteryServiceHandler) CreateBattery(context.Context, *connect.Request[api.CreateBatteryRequest]) (*connect.Response[api.Battery], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.BatteryService.CreateBattery is not implemented"))
+}
+
+func (UnimplementedBatteryServiceHandler) UpdateBattery(context.Context, *connect.Request[api.UpdateBatteryRequest]) (*connect.Response[api.Battery], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.BatteryService.UpdateBattery is not implemented"))
+}
+
+func (UnimplementedBatteryServiceHandler) DeleteBattery(context.Context, *connect.Request[api.DeleteBatteryRequest]) (*connect.Response[api.DeleteBatteryResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.BatteryService.DeleteBattery is not implemented"))
 }

@@ -66,10 +66,21 @@ func TestParseSQL_QuadsmithSchema(t *testing.T) {
 		t.Errorf("Expected motors primary key to be 'uuid', got %q", motors.PrimaryKey)
 	}
 
-	expectedMotorCols := []string{"uuid", "id", "manufacturer", "name", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv", "description", "reference_links", "primary_display_image", "media", "prop_mount_interfaces"}
+	expectedMotorCols := []string{"uuid", "manufacturer", "weight_g", "stator_diameter_mm", "stator_height_mm", "kv", "prop_mount_interfaces"}
 	for _, c := range expectedMotorCols {
 		if _, hasCol := motors.Columns[c]; !hasCol {
 			t.Errorf("Expected motors column %q not found", c)
+		}
+	}
+
+	entities, ok := schema.Tables["entities"]
+	if !ok {
+		t.Fatal("entities table not found")
+	}
+	expectedEntityCols := []string{"uuid", "collection", "id", "name", "description", "primary_display_image", "reference_links", "media", "author_or_manufacturer", "is_archived", "user_uuid", "author_username"}
+	for _, c := range expectedEntityCols {
+		if _, hasCol := entities.Columns[c]; !hasCol {
+			t.Errorf("Expected entities column %q not found", c)
 		}
 	}
 

@@ -39,12 +39,24 @@ const (
 	// GpsReceiverServiceListGpsReceiversProcedure is the fully-qualified name of the
 	// GpsReceiverService's ListGpsReceivers RPC.
 	GpsReceiverServiceListGpsReceiversProcedure = "/quadsmith.api.GpsReceiverService/ListGpsReceivers"
+	// GpsReceiverServiceCreateGpsReceiverProcedure is the fully-qualified name of the
+	// GpsReceiverService's CreateGpsReceiver RPC.
+	GpsReceiverServiceCreateGpsReceiverProcedure = "/quadsmith.api.GpsReceiverService/CreateGpsReceiver"
+	// GpsReceiverServiceUpdateGpsReceiverProcedure is the fully-qualified name of the
+	// GpsReceiverService's UpdateGpsReceiver RPC.
+	GpsReceiverServiceUpdateGpsReceiverProcedure = "/quadsmith.api.GpsReceiverService/UpdateGpsReceiver"
+	// GpsReceiverServiceDeleteGpsReceiverProcedure is the fully-qualified name of the
+	// GpsReceiverService's DeleteGpsReceiver RPC.
+	GpsReceiverServiceDeleteGpsReceiverProcedure = "/quadsmith.api.GpsReceiverService/DeleteGpsReceiver"
 )
 
 // GpsReceiverServiceClient is a client for the quadsmith.api.GpsReceiverService service.
 type GpsReceiverServiceClient interface {
 	GetGpsReceiver(context.Context, *connect.Request[api.GetGpsReceiverRequest]) (*connect.Response[api.GpsReceiver], error)
 	ListGpsReceivers(context.Context, *connect.Request[api.ListGpsReceiversRequest]) (*connect.Response[api.ListGpsReceiversResponse], error)
+	CreateGpsReceiver(context.Context, *connect.Request[api.CreateGpsReceiverRequest]) (*connect.Response[api.GpsReceiver], error)
+	UpdateGpsReceiver(context.Context, *connect.Request[api.UpdateGpsReceiverRequest]) (*connect.Response[api.GpsReceiver], error)
+	DeleteGpsReceiver(context.Context, *connect.Request[api.DeleteGpsReceiverRequest]) (*connect.Response[api.DeleteGpsReceiverResponse], error)
 }
 
 // NewGpsReceiverServiceClient constructs a client for the quadsmith.api.GpsReceiverService service.
@@ -70,13 +82,34 @@ func NewGpsReceiverServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(gpsReceiverServiceMethods.ByName("ListGpsReceivers")),
 			connect.WithClientOptions(opts...),
 		),
+		createGpsReceiver: connect.NewClient[api.CreateGpsReceiverRequest, api.GpsReceiver](
+			httpClient,
+			baseURL+GpsReceiverServiceCreateGpsReceiverProcedure,
+			connect.WithSchema(gpsReceiverServiceMethods.ByName("CreateGpsReceiver")),
+			connect.WithClientOptions(opts...),
+		),
+		updateGpsReceiver: connect.NewClient[api.UpdateGpsReceiverRequest, api.GpsReceiver](
+			httpClient,
+			baseURL+GpsReceiverServiceUpdateGpsReceiverProcedure,
+			connect.WithSchema(gpsReceiverServiceMethods.ByName("UpdateGpsReceiver")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteGpsReceiver: connect.NewClient[api.DeleteGpsReceiverRequest, api.DeleteGpsReceiverResponse](
+			httpClient,
+			baseURL+GpsReceiverServiceDeleteGpsReceiverProcedure,
+			connect.WithSchema(gpsReceiverServiceMethods.ByName("DeleteGpsReceiver")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // gpsReceiverServiceClient implements GpsReceiverServiceClient.
 type gpsReceiverServiceClient struct {
-	getGpsReceiver   *connect.Client[api.GetGpsReceiverRequest, api.GpsReceiver]
-	listGpsReceivers *connect.Client[api.ListGpsReceiversRequest, api.ListGpsReceiversResponse]
+	getGpsReceiver    *connect.Client[api.GetGpsReceiverRequest, api.GpsReceiver]
+	listGpsReceivers  *connect.Client[api.ListGpsReceiversRequest, api.ListGpsReceiversResponse]
+	createGpsReceiver *connect.Client[api.CreateGpsReceiverRequest, api.GpsReceiver]
+	updateGpsReceiver *connect.Client[api.UpdateGpsReceiverRequest, api.GpsReceiver]
+	deleteGpsReceiver *connect.Client[api.DeleteGpsReceiverRequest, api.DeleteGpsReceiverResponse]
 }
 
 // GetGpsReceiver calls quadsmith.api.GpsReceiverService.GetGpsReceiver.
@@ -89,10 +122,28 @@ func (c *gpsReceiverServiceClient) ListGpsReceivers(ctx context.Context, req *co
 	return c.listGpsReceivers.CallUnary(ctx, req)
 }
 
+// CreateGpsReceiver calls quadsmith.api.GpsReceiverService.CreateGpsReceiver.
+func (c *gpsReceiverServiceClient) CreateGpsReceiver(ctx context.Context, req *connect.Request[api.CreateGpsReceiverRequest]) (*connect.Response[api.GpsReceiver], error) {
+	return c.createGpsReceiver.CallUnary(ctx, req)
+}
+
+// UpdateGpsReceiver calls quadsmith.api.GpsReceiverService.UpdateGpsReceiver.
+func (c *gpsReceiverServiceClient) UpdateGpsReceiver(ctx context.Context, req *connect.Request[api.UpdateGpsReceiverRequest]) (*connect.Response[api.GpsReceiver], error) {
+	return c.updateGpsReceiver.CallUnary(ctx, req)
+}
+
+// DeleteGpsReceiver calls quadsmith.api.GpsReceiverService.DeleteGpsReceiver.
+func (c *gpsReceiverServiceClient) DeleteGpsReceiver(ctx context.Context, req *connect.Request[api.DeleteGpsReceiverRequest]) (*connect.Response[api.DeleteGpsReceiverResponse], error) {
+	return c.deleteGpsReceiver.CallUnary(ctx, req)
+}
+
 // GpsReceiverServiceHandler is an implementation of the quadsmith.api.GpsReceiverService service.
 type GpsReceiverServiceHandler interface {
 	GetGpsReceiver(context.Context, *connect.Request[api.GetGpsReceiverRequest]) (*connect.Response[api.GpsReceiver], error)
 	ListGpsReceivers(context.Context, *connect.Request[api.ListGpsReceiversRequest]) (*connect.Response[api.ListGpsReceiversResponse], error)
+	CreateGpsReceiver(context.Context, *connect.Request[api.CreateGpsReceiverRequest]) (*connect.Response[api.GpsReceiver], error)
+	UpdateGpsReceiver(context.Context, *connect.Request[api.UpdateGpsReceiverRequest]) (*connect.Response[api.GpsReceiver], error)
+	DeleteGpsReceiver(context.Context, *connect.Request[api.DeleteGpsReceiverRequest]) (*connect.Response[api.DeleteGpsReceiverResponse], error)
 }
 
 // NewGpsReceiverServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -114,12 +165,36 @@ func NewGpsReceiverServiceHandler(svc GpsReceiverServiceHandler, opts ...connect
 		connect.WithSchema(gpsReceiverServiceMethods.ByName("ListGpsReceivers")),
 		connect.WithHandlerOptions(opts...),
 	)
+	gpsReceiverServiceCreateGpsReceiverHandler := connect.NewUnaryHandler(
+		GpsReceiverServiceCreateGpsReceiverProcedure,
+		svc.CreateGpsReceiver,
+		connect.WithSchema(gpsReceiverServiceMethods.ByName("CreateGpsReceiver")),
+		connect.WithHandlerOptions(opts...),
+	)
+	gpsReceiverServiceUpdateGpsReceiverHandler := connect.NewUnaryHandler(
+		GpsReceiverServiceUpdateGpsReceiverProcedure,
+		svc.UpdateGpsReceiver,
+		connect.WithSchema(gpsReceiverServiceMethods.ByName("UpdateGpsReceiver")),
+		connect.WithHandlerOptions(opts...),
+	)
+	gpsReceiverServiceDeleteGpsReceiverHandler := connect.NewUnaryHandler(
+		GpsReceiverServiceDeleteGpsReceiverProcedure,
+		svc.DeleteGpsReceiver,
+		connect.WithSchema(gpsReceiverServiceMethods.ByName("DeleteGpsReceiver")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.GpsReceiverService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case GpsReceiverServiceGetGpsReceiverProcedure:
 			gpsReceiverServiceGetGpsReceiverHandler.ServeHTTP(w, r)
 		case GpsReceiverServiceListGpsReceiversProcedure:
 			gpsReceiverServiceListGpsReceiversHandler.ServeHTTP(w, r)
+		case GpsReceiverServiceCreateGpsReceiverProcedure:
+			gpsReceiverServiceCreateGpsReceiverHandler.ServeHTTP(w, r)
+		case GpsReceiverServiceUpdateGpsReceiverProcedure:
+			gpsReceiverServiceUpdateGpsReceiverHandler.ServeHTTP(w, r)
+		case GpsReceiverServiceDeleteGpsReceiverProcedure:
+			gpsReceiverServiceDeleteGpsReceiverHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +210,16 @@ func (UnimplementedGpsReceiverServiceHandler) GetGpsReceiver(context.Context, *c
 
 func (UnimplementedGpsReceiverServiceHandler) ListGpsReceivers(context.Context, *connect.Request[api.ListGpsReceiversRequest]) (*connect.Response[api.ListGpsReceiversResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.GpsReceiverService.ListGpsReceivers is not implemented"))
+}
+
+func (UnimplementedGpsReceiverServiceHandler) CreateGpsReceiver(context.Context, *connect.Request[api.CreateGpsReceiverRequest]) (*connect.Response[api.GpsReceiver], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.GpsReceiverService.CreateGpsReceiver is not implemented"))
+}
+
+func (UnimplementedGpsReceiverServiceHandler) UpdateGpsReceiver(context.Context, *connect.Request[api.UpdateGpsReceiverRequest]) (*connect.Response[api.GpsReceiver], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.GpsReceiverService.UpdateGpsReceiver is not implemented"))
+}
+
+func (UnimplementedGpsReceiverServiceHandler) DeleteGpsReceiver(context.Context, *connect.Request[api.DeleteGpsReceiverRequest]) (*connect.Response[api.DeleteGpsReceiverResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.GpsReceiverService.DeleteGpsReceiver is not implemented"))
 }

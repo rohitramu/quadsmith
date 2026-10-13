@@ -39,12 +39,24 @@ const (
 	// GogglesServiceListGogglesProcedure is the fully-qualified name of the GogglesService's
 	// ListGoggles RPC.
 	GogglesServiceListGogglesProcedure = "/quadsmith.api.GogglesService/ListGoggles"
+	// GogglesServiceCreateGogglesProcedure is the fully-qualified name of the GogglesService's
+	// CreateGoggles RPC.
+	GogglesServiceCreateGogglesProcedure = "/quadsmith.api.GogglesService/CreateGoggles"
+	// GogglesServiceUpdateGogglesProcedure is the fully-qualified name of the GogglesService's
+	// UpdateGoggles RPC.
+	GogglesServiceUpdateGogglesProcedure = "/quadsmith.api.GogglesService/UpdateGoggles"
+	// GogglesServiceDeleteGogglesProcedure is the fully-qualified name of the GogglesService's
+	// DeleteGoggles RPC.
+	GogglesServiceDeleteGogglesProcedure = "/quadsmith.api.GogglesService/DeleteGoggles"
 )
 
 // GogglesServiceClient is a client for the quadsmith.api.GogglesService service.
 type GogglesServiceClient interface {
 	GetGoggles(context.Context, *connect.Request[api.GetGogglesRequest]) (*connect.Response[api.Goggles], error)
 	ListGoggles(context.Context, *connect.Request[api.ListGogglesRequest]) (*connect.Response[api.ListGogglesResponse], error)
+	CreateGoggles(context.Context, *connect.Request[api.CreateGogglesRequest]) (*connect.Response[api.Goggles], error)
+	UpdateGoggles(context.Context, *connect.Request[api.UpdateGogglesRequest]) (*connect.Response[api.Goggles], error)
+	DeleteGoggles(context.Context, *connect.Request[api.DeleteGogglesRequest]) (*connect.Response[api.DeleteGogglesResponse], error)
 }
 
 // NewGogglesServiceClient constructs a client for the quadsmith.api.GogglesService service. By
@@ -70,13 +82,34 @@ func NewGogglesServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(gogglesServiceMethods.ByName("ListGoggles")),
 			connect.WithClientOptions(opts...),
 		),
+		createGoggles: connect.NewClient[api.CreateGogglesRequest, api.Goggles](
+			httpClient,
+			baseURL+GogglesServiceCreateGogglesProcedure,
+			connect.WithSchema(gogglesServiceMethods.ByName("CreateGoggles")),
+			connect.WithClientOptions(opts...),
+		),
+		updateGoggles: connect.NewClient[api.UpdateGogglesRequest, api.Goggles](
+			httpClient,
+			baseURL+GogglesServiceUpdateGogglesProcedure,
+			connect.WithSchema(gogglesServiceMethods.ByName("UpdateGoggles")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteGoggles: connect.NewClient[api.DeleteGogglesRequest, api.DeleteGogglesResponse](
+			httpClient,
+			baseURL+GogglesServiceDeleteGogglesProcedure,
+			connect.WithSchema(gogglesServiceMethods.ByName("DeleteGoggles")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // gogglesServiceClient implements GogglesServiceClient.
 type gogglesServiceClient struct {
-	getGoggles  *connect.Client[api.GetGogglesRequest, api.Goggles]
-	listGoggles *connect.Client[api.ListGogglesRequest, api.ListGogglesResponse]
+	getGoggles    *connect.Client[api.GetGogglesRequest, api.Goggles]
+	listGoggles   *connect.Client[api.ListGogglesRequest, api.ListGogglesResponse]
+	createGoggles *connect.Client[api.CreateGogglesRequest, api.Goggles]
+	updateGoggles *connect.Client[api.UpdateGogglesRequest, api.Goggles]
+	deleteGoggles *connect.Client[api.DeleteGogglesRequest, api.DeleteGogglesResponse]
 }
 
 // GetGoggles calls quadsmith.api.GogglesService.GetGoggles.
@@ -89,10 +122,28 @@ func (c *gogglesServiceClient) ListGoggles(ctx context.Context, req *connect.Req
 	return c.listGoggles.CallUnary(ctx, req)
 }
 
+// CreateGoggles calls quadsmith.api.GogglesService.CreateGoggles.
+func (c *gogglesServiceClient) CreateGoggles(ctx context.Context, req *connect.Request[api.CreateGogglesRequest]) (*connect.Response[api.Goggles], error) {
+	return c.createGoggles.CallUnary(ctx, req)
+}
+
+// UpdateGoggles calls quadsmith.api.GogglesService.UpdateGoggles.
+func (c *gogglesServiceClient) UpdateGoggles(ctx context.Context, req *connect.Request[api.UpdateGogglesRequest]) (*connect.Response[api.Goggles], error) {
+	return c.updateGoggles.CallUnary(ctx, req)
+}
+
+// DeleteGoggles calls quadsmith.api.GogglesService.DeleteGoggles.
+func (c *gogglesServiceClient) DeleteGoggles(ctx context.Context, req *connect.Request[api.DeleteGogglesRequest]) (*connect.Response[api.DeleteGogglesResponse], error) {
+	return c.deleteGoggles.CallUnary(ctx, req)
+}
+
 // GogglesServiceHandler is an implementation of the quadsmith.api.GogglesService service.
 type GogglesServiceHandler interface {
 	GetGoggles(context.Context, *connect.Request[api.GetGogglesRequest]) (*connect.Response[api.Goggles], error)
 	ListGoggles(context.Context, *connect.Request[api.ListGogglesRequest]) (*connect.Response[api.ListGogglesResponse], error)
+	CreateGoggles(context.Context, *connect.Request[api.CreateGogglesRequest]) (*connect.Response[api.Goggles], error)
+	UpdateGoggles(context.Context, *connect.Request[api.UpdateGogglesRequest]) (*connect.Response[api.Goggles], error)
+	DeleteGoggles(context.Context, *connect.Request[api.DeleteGogglesRequest]) (*connect.Response[api.DeleteGogglesResponse], error)
 }
 
 // NewGogglesServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -114,12 +165,36 @@ func NewGogglesServiceHandler(svc GogglesServiceHandler, opts ...connect.Handler
 		connect.WithSchema(gogglesServiceMethods.ByName("ListGoggles")),
 		connect.WithHandlerOptions(opts...),
 	)
+	gogglesServiceCreateGogglesHandler := connect.NewUnaryHandler(
+		GogglesServiceCreateGogglesProcedure,
+		svc.CreateGoggles,
+		connect.WithSchema(gogglesServiceMethods.ByName("CreateGoggles")),
+		connect.WithHandlerOptions(opts...),
+	)
+	gogglesServiceUpdateGogglesHandler := connect.NewUnaryHandler(
+		GogglesServiceUpdateGogglesProcedure,
+		svc.UpdateGoggles,
+		connect.WithSchema(gogglesServiceMethods.ByName("UpdateGoggles")),
+		connect.WithHandlerOptions(opts...),
+	)
+	gogglesServiceDeleteGogglesHandler := connect.NewUnaryHandler(
+		GogglesServiceDeleteGogglesProcedure,
+		svc.DeleteGoggles,
+		connect.WithSchema(gogglesServiceMethods.ByName("DeleteGoggles")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.GogglesService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case GogglesServiceGetGogglesProcedure:
 			gogglesServiceGetGogglesHandler.ServeHTTP(w, r)
 		case GogglesServiceListGogglesProcedure:
 			gogglesServiceListGogglesHandler.ServeHTTP(w, r)
+		case GogglesServiceCreateGogglesProcedure:
+			gogglesServiceCreateGogglesHandler.ServeHTTP(w, r)
+		case GogglesServiceUpdateGogglesProcedure:
+			gogglesServiceUpdateGogglesHandler.ServeHTTP(w, r)
+		case GogglesServiceDeleteGogglesProcedure:
+			gogglesServiceDeleteGogglesHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +210,16 @@ func (UnimplementedGogglesServiceHandler) GetGoggles(context.Context, *connect.R
 
 func (UnimplementedGogglesServiceHandler) ListGoggles(context.Context, *connect.Request[api.ListGogglesRequest]) (*connect.Response[api.ListGogglesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.GogglesService.ListGoggles is not implemented"))
+}
+
+func (UnimplementedGogglesServiceHandler) CreateGoggles(context.Context, *connect.Request[api.CreateGogglesRequest]) (*connect.Response[api.Goggles], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.GogglesService.CreateGoggles is not implemented"))
+}
+
+func (UnimplementedGogglesServiceHandler) UpdateGoggles(context.Context, *connect.Request[api.UpdateGogglesRequest]) (*connect.Response[api.Goggles], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.GogglesService.UpdateGoggles is not implemented"))
+}
+
+func (UnimplementedGogglesServiceHandler) DeleteGoggles(context.Context, *connect.Request[api.DeleteGogglesRequest]) (*connect.Response[api.DeleteGogglesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.GogglesService.DeleteGoggles is not implemented"))
 }

@@ -11,13 +11,13 @@ import (
 )
 
 func CreateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController) error {
-	query := `INSERT INTO flight_controllers (uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_electronic_speed_controller_uuid, internal_receiver_uuid, internal_video_transmitter_uuid, description, reference_links, primary_display_image, media, min_voltage, max_voltage, vtx_ports, vtx_voltage_min_v, vtx_voltage_max_v, mount_pattern) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20, $21)`
+	query := `INSERT INTO flight_controllers (uuid, manufacturer, is_internal_only, weight_g, processor, gyro, internal_electronic_speed_controller_uuid, internal_receiver_uuid, internal_video_transmitter_uuid, min_voltage, max_voltage, vtx_ports, vtx_voltage_min_v, vtx_voltage_max_v, mount_pattern) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Processor, m.Gyro, func(s *string) interface{} {
+	}(m.Uuid), m.Manufacturer, m.IsInternalOnly, m.WeightG, m.Processor, m.Gyro, func(s *string) interface{} {
 		if s == nil || *s == "" {
 			return nil
 		}
@@ -32,13 +32,13 @@ func CreateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController)
 			return nil
 		}
 		return *s
-	}(m.InternalVideoTransmitterUuid), m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage, m.VtxPorts, m.VtxVoltageMinV, m.VtxVoltageMaxV, m.MountPattern)
+	}(m.InternalVideoTransmitterUuid), m.MinVoltage, m.MaxVoltage, m.VtxPorts, m.VtxVoltageMinV, m.VtxVoltageMaxV, m.MountPattern)
 	return err
 }
 
 func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*FlightController, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "processor": true, "gyro": true, "internal_electronic_speed_controller_uuid": true, "internal_receiver_uuid": true, "internal_video_transmitter_uuid": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "vtx_ports": true, "vtx_voltage_min_v": true, "vtx_voltage_max_v": true, "mount_pattern": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_electronic_speed_controller_uuid, internal_receiver_uuid, internal_video_transmitter_uuid, description, reference_links, primary_display_image, media, min_voltage, max_voltage, vtx_ports, vtx_voltage_min_v, vtx_voltage_max_v, mount_pattern"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "processor": true, "gyro": true, "internal_electronic_speed_controller_uuid": true, "internal_receiver_uuid": true, "internal_video_transmitter_uuid": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "vtx_ports": true, "vtx_voltage_min_v": true, "vtx_voltage_max_v": true, "mount_pattern": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_electronic_speed_controller_uuid, internal_receiver_uuid, internal_video_transmitter_uuid, description, reference_links, primary_display_image, media, min_voltage, max_voltage, vtx_ports, vtx_voltage_min_v, vtx_voltage_max_v, mount_pattern, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -49,9 +49,9 @@ func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_electronic_speed_controller_uuid", "internal_receiver_uuid", "internal_video_transmitter_uuid", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "vtx_ports", "vtx_voltage_min_v", "vtx_voltage_max_v", "mount_pattern"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_electronic_speed_controller_uuid", "internal_receiver_uuid", "internal_video_transmitter_uuid", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "vtx_ports", "vtx_voltage_min_v", "vtx_voltage_max_v", "mount_pattern", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM flight_controllers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM flight_controllers INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &FlightController{}
@@ -99,6 +99,10 @@ func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 			scanArgs[i] = &m.VtxVoltageMaxV
 		case "mount_pattern":
 			scanArgs[i] = &m.MountPattern
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -116,8 +120,8 @@ func GetFlightController(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 }
 
 func UpdateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController) error {
-	query := `UPDATE flight_controllers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, processor = $6, gyro = $7, internal_electronic_speed_controller_uuid = $8, internal_receiver_uuid = $9, internal_video_transmitter_uuid = $10, description = $11, reference_links = $12, primary_display_image = $13, media = $14, min_voltage = $15, max_voltage = $16, vtx_ports = $17, vtx_voltage_min_v = $18, vtx_voltage_max_v = $19, mount_pattern = $20 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Processor, m.Gyro, func(s *string) interface{} {
+	query := `UPDATE flight_controllers SET manufacturer = $2, is_internal_only = $3, weight_g = $4, processor = $5, gyro = $6, internal_electronic_speed_controller_uuid = $7, internal_receiver_uuid = $8, internal_video_transmitter_uuid = $9, min_voltage = $10, max_voltage = $11, vtx_ports = $12, vtx_voltage_min_v = $13, vtx_voltage_max_v = $14, mount_pattern = $15 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.IsInternalOnly, m.WeightG, m.Processor, m.Gyro, func(s *string) interface{} {
 		if s == nil || *s == "" {
 			return nil
 		}
@@ -132,19 +136,19 @@ func UpdateFlightController(ctx context.Context, tx pgx.Tx, m *FlightController)
 			return nil
 		}
 		return *s
-	}(m.InternalVideoTransmitterUuid), m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.MinVoltage, m.MaxVoltage, m.VtxPorts, m.VtxVoltageMinV, m.VtxVoltageMaxV, m.MountPattern)
+	}(m.InternalVideoTransmitterUuid), m.MinVoltage, m.MaxVoltage, m.VtxPorts, m.VtxVoltageMinV, m.VtxVoltageMaxV, m.MountPattern)
 	return err
 }
 
 func DeleteFlightController(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM flight_controllers WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM flight_controllers WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'flight-controllers' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*FlightController, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "processor": true, "gyro": true, "internal_electronic_speed_controller_uuid": true, "internal_receiver_uuid": true, "internal_video_transmitter_uuid": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "vtx_ports": true, "vtx_voltage_min_v": true, "vtx_voltage_max_v": true, "mount_pattern": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_electronic_speed_controller_uuid, internal_receiver_uuid, internal_video_transmitter_uuid, description, reference_links, primary_display_image, media, min_voltage, max_voltage, vtx_ports, vtx_voltage_min_v, vtx_voltage_max_v, mount_pattern"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "processor": true, "gyro": true, "internal_electronic_speed_controller_uuid": true, "internal_receiver_uuid": true, "internal_video_transmitter_uuid": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "vtx_ports": true, "vtx_voltage_min_v": true, "vtx_voltage_max_v": true, "mount_pattern": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, processor, gyro, internal_electronic_speed_controller_uuid, internal_receiver_uuid, internal_video_transmitter_uuid, description, reference_links, primary_display_image, media, min_voltage, max_voltage, vtx_ports, vtx_voltage_min_v, vtx_voltage_max_v, mount_pattern, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -155,11 +159,12 @@ func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string,
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_electronic_speed_controller_uuid", "internal_receiver_uuid", "internal_video_transmitter_uuid", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "vtx_ports", "vtx_voltage_min_v", "vtx_voltage_max_v", "mount_pattern"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "processor", "gyro", "internal_electronic_speed_controller_uuid", "internal_receiver_uuid", "internal_video_transmitter_uuid", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "vtx_ports", "vtx_voltage_min_v", "vtx_voltage_max_v", "mount_pattern", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM flight_controllers`
+	query := `SELECT ` + colsStr + ` FROM flight_controllers INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -246,6 +251,10 @@ func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string,
 				scanArgs[i] = &m.VtxVoltageMaxV
 			case "mount_pattern":
 				scanArgs[i] = &m.MountPattern
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

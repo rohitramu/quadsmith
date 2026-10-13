@@ -1,12 +1,16 @@
 import { useState } from "react";
-import { useParams, Link } from "react-router-dom";
-import { useQuery } from "@connectrpc/connect-query";
-import { ChevronRight } from "lucide-react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useQuery, useMutation } from "@connectrpc/connect-query";
+import { useQueryClient } from "@tanstack/react-query";
+import { ChevronRight, Edit, Trash2, AlertTriangle, Loader2 } from "lucide-react";
 import {
   getHardwareCollection,
   getCollectionPath,
   type HardwareCollectionDef,
 } from "../lib/hardwareCollections";
+import { getComponentServiceDef } from "../lib/componentServices";
+import { useAuth } from "../context/AuthContext";
+import { ComponentFormModal } from "../components/ComponentFormModal";
 import { CollectionBadge } from "../components/CollectionBadge";
 import { MediaGallery } from "../components/MediaGallery";
 import { ReferenceLinksList } from "../components/SocialLinkPreviewCard";
@@ -24,15 +28,50 @@ function ProductDetailView({
   collection: HardwareCollectionDef;
   productId: string;
 }) {
-  const { data, isLoading, error } = useQuery(
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { user, isAuthenticated } = useAuth();
+  const srvDef = getComponentServiceDef(collection.id);
+
+  const { data, isLoading, error, refetch } = useQuery(
     collection.getQuery,
     { id: productId },
     { enabled: !!productId },
   );
 
   const [activeSocialTab, setActiveSocialTab] = useState<SocialTabType>("reviews");
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const { mutateAsync: mutateDelete } = useMutation(srvDef?.deleteMethod);
 
   const item = data as any;
+  const isCreator =
+    isAuthenticated &&
+    user &&
+    (user.uuid === item?.userUuid || user.id === item?.authorUsername || user.role === "ADMIN");
+
+  const handleDelete = async () => {
+    if (!srvDef?.deleteMethod) return;
+    setIsDeleting(true);
+    setDeleteError(null);
+    try {
+      const res: any = await mutateDelete({ id: item.id || item.uuid || productId });
+      await queryClient.invalidateQueries();
+      setIsDeleteConfirmOpen(false);
+      if (res?.isArchived) {
+        await refetch();
+      } else {
+        navigate(`/${getCollectionPath(collection)}`);
+      }
+    } catch (err: unknown) {
+      setDeleteError(err instanceof Error ? err.message : "Failed to delete component");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   useDocumentMeta({
     title: item
@@ -89,11 +128,62 @@ function ProductDetailView({
         <p className="text-zinc-500">Product not found.</p>
       ) : (
         <>
+          {item.isArchived && (
+            <div className="mb-6 p-4 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300 flex items-start gap-3 text-sm">
+              <AlertTriangle size={18} className="text-amber-500 shrink-0 mt-0.5" />
+              <div>
+                <span className="font-bold">Archived Component</span>
+                <p className="mt-0.5 text-xs opacity-90 leading-relaxed">
+                  This component has been archived and delisted from the public catalog. It remains
+                  visible here for historical builds and external references.
+                </p>
+              </div>
+            </div>
+          )}
+
           <div className="mb-8">
-            <h1 className="text-3xl font-bold">{item.name || item.id}</h1>
-            <p className="text-xl text-zinc-500 dark:text-zinc-400">
-              {item.manufacturer || "Unknown Manufacturer"}
-            </p>
+            <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-400">
+                    {srvDef?.singularLabel || collection.name}
+                  </span>
+                  {item.authorUsername && (
+                    <Link
+                      to={`/users/${item.authorUsername}`}
+                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 transition-colors"
+                    >
+                      Added by @{item.authorUsername}
+                    </Link>
+                  )}
+                </div>
+                <h1 className="text-3xl font-bold">{item.name || item.id}</h1>
+                <p className="text-xl text-zinc-500 dark:text-zinc-400">
+                  {item.manufacturer || "Unknown Manufacturer"}
+                </p>
+              </div>
+
+              {isCreator && (
+                <div className="flex items-center gap-2 shrink-0">
+                  <button
+                    type="button"
+                    onClick={() => setIsEditOpen(true)}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-medium transition-colors cursor-pointer"
+                  >
+                    <Edit size={14} className="text-zinc-500" />
+                    <span>Edit Component</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsDeleteConfirmOpen(true)}
+                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-medium transition-colors cursor-pointer"
+                  >
+                    <Trash2 size={14} />
+                    <span>Delete</span>
+                  </button>
+                </div>
+              )}
+            </div>
 
             <div className="mt-4">
               <SocialToolbar
@@ -188,6 +278,70 @@ function ProductDetailView({
             activeTab={activeSocialTab}
             onTabChange={setActiveSocialTab}
           />
+
+          {/* Edit Component Modal */}
+          <ComponentFormModal
+            isOpen={isEditOpen}
+            onClose={() => setIsEditOpen(false)}
+            collectionId={collection.id}
+            initialData={item}
+            onSuccess={() => {
+              refetch();
+            }}
+          />
+
+          {/* Delete Confirmation Modal */}
+          {isDeleteConfirmOpen && (
+            <div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="delete-confirm-title"
+              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
+            >
+              <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
+                <div className="w-10 h-10 rounded-full bg-amber-100 dark:bg-amber-950 text-amber-600 flex items-center justify-center">
+                  <AlertTriangle size={20} />
+                </div>
+
+                <div>
+                  <h3 id="delete-confirm-title" className="text-lg font-bold">
+                    Delete or Archive Component
+                  </h3>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1 leading-relaxed">
+                    If this component is referenced by existing builds, reviews, or collections, it
+                    will be <strong>archived and delisted</strong> from catalog searches to prevent
+                    breaking other pilots' builds. If unreferenced, it will be permanently deleted.
+                  </p>
+                </div>
+
+                {deleteError && (
+                  <div className="p-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 text-xs">
+                    {deleteError}
+                  </div>
+                )}
+
+                <div className="flex items-center justify-end gap-2 pt-2">
+                  <button
+                    type="button"
+                    disabled={isDeleting}
+                    onClick={() => setIsDeleteConfirmOpen(false)}
+                    className="px-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 text-xs font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    disabled={isDeleting}
+                    onClick={handleDelete}
+                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
+                  >
+                    {isDeleting && <Loader2 size={12} className="animate-spin" />}
+                    Confirm Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </>
       )}
     </div>

@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_goggles: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChtxdWFkc21pdGgvYXBpL2dvZ2dsZXMucHJvdG8SDXF1YWRzbWl0aC5hcGkitQQKB0dvZ2dsZXMSFAoEdXVpZBgBIAEoCUIGwvMYAhABEhIKAmlkGAIgASgJQgbC8xgCIAESHAoMbWFudWZhY3R1cmVyGAMgASgJQgbC8xgCKAESDAoEbmFtZRgEIAEoCRIQCgh3ZWlnaHRfZxgFIAEoAhIWCg52aWRlb19wcm90b2NvbBgGIAEoCRIUCgxkaXNwbGF5X3R5cGUYByABKAkSEgoKcmVzb2x1dGlvbhgIIAEoCRIPCgdmb3ZfZGVnGAkgASgCEhQKDGlwZF9yYW5nZV9tbRgKIAEoCRIVCg12b2x0YWdlX3JhbmdlGAsgASgJEhUKDWR2cl9zdXBwb3J0ZWQYDCABKAgSEwoLZGVzY3JpcHRpb24YDSABKAkSNQoPcmVmZXJlbmNlX2xpbmtzGA4gAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rEiIKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgPIAEoCUgAiAEBEiMKBW1lZGlhGBAgAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYTp8irUYUAoMbWFudWZhY3R1cmVyCgRuYW1lCg52aWRlb19wcm90b2NvbAoMZGlzcGxheV90eXBlCgpyZXNvbHV0aW9uCgdmb3ZfZGVnEgcjZDk0NmVmmrUYF2NvbXBvbmVudHMvZ2Vhci9nb2dnbGVzwvMYCQoHZ29nZ2xlc0IYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlIjAKEUdldEdvZ2dsZXNSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiagoSTGlzdEdvZ2dsZXNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiVwoTTGlzdEdvZ2dsZXNSZXNwb25zZRInCgdnb2dnbGVzGAEgAygLMhYucXVhZHNtaXRoLmFwaS5Hb2dnbGVzEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTKuAQoOR29nZ2xlc1NlcnZpY2USRgoKR2V0R29nZ2xlcxIgLnF1YWRzbWl0aC5hcGkuR2V0R29nZ2xlc1JlcXVlc3QaFi5xdWFkc21pdGguYXBpLkdvZ2dsZXMSVAoLTGlzdEdvZ2dsZXMSIS5xdWFkc21pdGguYXBpLkxpc3RHb2dnbGVzUmVxdWVzdBoiLnF1YWRzbWl0aC5hcGkuTGlzdEdvZ2dsZXNSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
+    "ChtxdWFkc21pdGgvYXBpL2dvZ2dsZXMucHJvdG8SDXF1YWRzbWl0aC5hcGkiPwoUQ3JlYXRlR29nZ2xlc1JlcXVlc3QSJwoHZ29nZ2xlcxgBIAEoCzIWLnF1YWRzbWl0aC5hcGkuR29nZ2xlcyIiChREZWxldGVHb2dnbGVzUmVxdWVzdBIKCgJpZBgBIAEoCSIsChVEZWxldGVHb2dnbGVzUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiMAoRR2V0R29nZ2xlc1JlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJqChJMaXN0R29nZ2xlc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJXChNMaXN0R29nZ2xlc1Jlc3BvbnNlEicKB2dvZ2dsZXMYASADKAsyFi5xdWFkc21pdGguYXBpLkdvZ2dsZXMSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIj8KFFVwZGF0ZUdvZ2dsZXNSZXF1ZXN0EicKB2dvZ2dsZXMYASABKAsyFi5xdWFkc21pdGguYXBpLkdvZ2dsZXMi5wUKB0dvZ2dsZXMSNgoEdXVpZBgBIAEoCUIowvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERRISCgJpZBgCIAEoCUIGwvMYAkABEhwKDG1hbnVmYWN0dXJlchgDIAEoCUIGwvMYAigBEhQKBG5hbWUYBCABKAlCBsLzGAJAARIQCgh3ZWlnaHRfZxgFIAEoAhIWCg52aWRlb19wcm90b2NvbBgGIAEoCRIUCgxkaXNwbGF5X3R5cGUYByABKAkSEgoKcmVzb2x1dGlvbhgIIAEoCRIPCgdmb3ZfZGVnGAkgASgCEhQKDGlwZF9yYW5nZV9tbRgKIAEoCRIVCg12b2x0YWdlX3JhbmdlGAsgASgJEhUKDWR2cl9zdXBwb3J0ZWQYDCABKAgSGwoLZGVzY3JpcHRpb24YDSABKAlCBsLzGAJAARI9Cg9yZWZlcmVuY2VfbGlua3MYDiADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCBsLzGAJAARIqChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYDyABKAlCBsLzGAJAAUgAiAEBEisKBW1lZGlhGBAgAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIGwvMYAkABEh4KCXVzZXJfdXVpZBgRIAEoCUIGwvMYAkABSAGIAQESJAoPYXV0aG9yX3VzZXJuYW1lGBIgASgJQgbC8xgCQAFIAogBATp8irUYUAoMbWFudWZhY3R1cmVyCgRuYW1lCg52aWRlb19wcm90b2NvbAoMZGlzcGxheV90eXBlCgpyZXNvbHV0aW9uCgdmb3ZfZGVnEgcjZDk0NmVmmrUYF2NvbXBvbmVudHMvZ2Vhci9nb2dnbGVzwvMYCQoHZ29nZ2xlc0IYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlQgwKCl91c2VyX3V1aWRCEgoQX2F1dGhvcl91c2VybmFtZTKmAwoOR29nZ2xlc1NlcnZpY2USRgoKR2V0R29nZ2xlcxIgLnF1YWRzbWl0aC5hcGkuR2V0R29nZ2xlc1JlcXVlc3QaFi5xdWFkc21pdGguYXBpLkdvZ2dsZXMSVAoLTGlzdEdvZ2dsZXMSIS5xdWFkc21pdGguYXBpLkxpc3RHb2dnbGVzUmVxdWVzdBoiLnF1YWRzbWl0aC5hcGkuTGlzdEdvZ2dsZXNSZXNwb25zZRJMCg1DcmVhdGVHb2dnbGVzEiMucXVhZHNtaXRoLmFwaS5DcmVhdGVHb2dnbGVzUmVxdWVzdBoWLnF1YWRzbWl0aC5hcGkuR29nZ2xlcxJMCg1VcGRhdGVHb2dnbGVzEiMucXVhZHNtaXRoLmFwaS5VcGRhdGVHb2dnbGVzUmVxdWVzdBoWLnF1YWRzbWl0aC5hcGkuR29nZ2xlcxJaCg1EZWxldGVHb2dnbGVzEiMucXVhZHNtaXRoLmFwaS5EZWxldGVHb2dnbGVzUmVxdWVzdBokLnF1YWRzbWl0aC5hcGkuRGVsZXRlR29nZ2xlc1Jlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -29,7 +29,167 @@ export const file_quadsmith_api_goggles: GenFile =
 
 /**
  * ---------------------------------------------------------
- * Domain Model
+ * 2. RPC Requests & Responses (Callers Precede Callees)
+ * ---------------------------------------------------------
+ *
+ * @generated from message quadsmith.api.CreateGogglesRequest
+ */
+export type CreateGogglesRequest = Message<"quadsmith.api.CreateGogglesRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.Goggles goggles = 1;
+   */
+  goggles?: Goggles | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.CreateGogglesRequest.
+ * Use `create(CreateGogglesRequestSchema)` to create a new message.
+ */
+export const CreateGogglesRequestSchema: GenMessage<CreateGogglesRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_goggles, 0);
+
+/**
+ * @generated from message quadsmith.api.DeleteGogglesRequest
+ */
+export type DeleteGogglesRequest = Message<"quadsmith.api.DeleteGogglesRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteGogglesRequest.
+ * Use `create(DeleteGogglesRequestSchema)` to create a new message.
+ */
+export const DeleteGogglesRequestSchema: GenMessage<DeleteGogglesRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_goggles, 1);
+
+/**
+ * @generated from message quadsmith.api.DeleteGogglesResponse
+ */
+export type DeleteGogglesResponse = Message<"quadsmith.api.DeleteGogglesResponse"> & {
+  /**
+   * @generated from field: bool is_archived = 1;
+   */
+  isArchived: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteGogglesResponse.
+ * Use `create(DeleteGogglesResponseSchema)` to create a new message.
+ */
+export const DeleteGogglesResponseSchema: GenMessage<DeleteGogglesResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_goggles, 2);
+
+/**
+ * @generated from message quadsmith.api.GetGogglesRequest
+ */
+export type GetGogglesRequest = Message<"quadsmith.api.GetGogglesRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.GetGogglesRequest.
+ * Use `create(GetGogglesRequestSchema)` to create a new message.
+ */
+export const GetGogglesRequestSchema: GenMessage<GetGogglesRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_goggles, 3);
+
+/**
+ * @generated from message quadsmith.api.ListGogglesRequest
+ */
+export type ListGogglesRequest = Message<"quadsmith.api.ListGogglesRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
+
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListGogglesRequest.
+ * Use `create(ListGogglesRequestSchema)` to create a new message.
+ */
+export const ListGogglesRequestSchema: GenMessage<ListGogglesRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_goggles, 4);
+
+/**
+ * @generated from message quadsmith.api.ListGogglesResponse
+ */
+export type ListGogglesResponse = Message<"quadsmith.api.ListGogglesResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.Goggles goggles = 1;
+   */
+  goggles: Goggles[];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListGogglesResponse.
+ * Use `create(ListGogglesResponseSchema)` to create a new message.
+ */
+export const ListGogglesResponseSchema: GenMessage<ListGogglesResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_goggles, 5);
+
+/**
+ * @generated from message quadsmith.api.UpdateGogglesRequest
+ */
+export type UpdateGogglesRequest = Message<"quadsmith.api.UpdateGogglesRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.Goggles goggles = 1;
+   */
+  goggles?: Goggles | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.UpdateGogglesRequest.
+ * Use `create(UpdateGogglesRequestSchema)` to create a new message.
+ */
+export const UpdateGogglesRequestSchema: GenMessage<UpdateGogglesRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_goggles, 6);
+
+/**
+ * ---------------------------------------------------------
+ * 3. Domain Model (Referenced by Services and Requests above)
  * ---------------------------------------------------------
  *
  * @generated from message quadsmith.api.Goggles
@@ -114,6 +274,16 @@ export type Goggles = Message<"quadsmith.api.Goggles"> & {
    * @generated from field: repeated quadsmith.api.Media media = 16;
    */
   media: Media[];
+
+  /**
+   * @generated from field: optional string user_uuid = 17;
+   */
+  userUuid?: string | undefined;
+
+  /**
+   * @generated from field: optional string author_username = 18;
+   */
+  authorUsername?: string | undefined;
 };
 
 /**
@@ -122,99 +292,11 @@ export type Goggles = Message<"quadsmith.api.Goggles"> & {
  */
 export const GogglesSchema: GenMessage<Goggles> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_goggles, 0);
+  messageDesc(file_quadsmith_api_goggles, 7);
 
 /**
  * ---------------------------------------------------------
- * RPC Requests & Responses
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.GetGogglesRequest
- */
-export type GetGogglesRequest = Message<"quadsmith.api.GetGogglesRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
-
-/**
- * Describes the message quadsmith.api.GetGogglesRequest.
- * Use `create(GetGogglesRequestSchema)` to create a new message.
- */
-export const GetGogglesRequestSchema: GenMessage<GetGogglesRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_goggles, 1);
-
-/**
- * @generated from message quadsmith.api.ListGogglesRequest
- */
-export type ListGogglesRequest = Message<"quadsmith.api.ListGogglesRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
-
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
-
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
-
-/**
- * Describes the message quadsmith.api.ListGogglesRequest.
- * Use `create(ListGogglesRequestSchema)` to create a new message.
- */
-export const ListGogglesRequestSchema: GenMessage<ListGogglesRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_goggles, 2);
-
-/**
- * @generated from message quadsmith.api.ListGogglesResponse
- */
-export type ListGogglesResponse = Message<"quadsmith.api.ListGogglesResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.Goggles goggles = 1;
-   */
-  goggles: Goggles[];
-
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
-
-/**
- * Describes the message quadsmith.api.ListGogglesResponse.
- * Use `create(ListGogglesResponseSchema)` to create a new message.
- */
-export const ListGogglesResponseSchema: GenMessage<ListGogglesResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_goggles, 3);
-
-/**
- * ---------------------------------------------------------
- * gRPC Service
+ * 1. gRPC Service (Services First)
  * ---------------------------------------------------------
  *
  * @generated from service quadsmith.api.GogglesService
@@ -235,5 +317,29 @@ export const GogglesService: GenService<{
     methodKind: "unary";
     input: typeof ListGogglesRequestSchema;
     output: typeof ListGogglesResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.GogglesService.CreateGoggles
+   */
+  createGoggles: {
+    methodKind: "unary";
+    input: typeof CreateGogglesRequestSchema;
+    output: typeof GogglesSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.GogglesService.UpdateGoggles
+   */
+  updateGoggles: {
+    methodKind: "unary";
+    input: typeof UpdateGogglesRequestSchema;
+    output: typeof GogglesSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.GogglesService.DeleteGoggles
+   */
+  deleteGoggles: {
+    methodKind: "unary";
+    input: typeof DeleteGogglesRequestSchema;
+    output: typeof DeleteGogglesResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_goggles, 0);

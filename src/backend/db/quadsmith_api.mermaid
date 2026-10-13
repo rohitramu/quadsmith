@@ -1,171 +1,7 @@
 erDiagram
-    builds {
-        UUID uuid PK
-        TEXT id UK
-        TEXT name
-        TEXT description
-        UUID frame_uuid FK
-        UUID motor_uuid FK
-        UUID flight_controller_uuid FK
-        UUID_ARRAY electronic_speed_controller_uuids
-        UUID_ARRAY receiver_uuids
-        UUID_ARRAY antenna_uuids
-        UUID propeller_uuid FK
-        UUID_ARRAY camera_uuids
-        UUID video_transmitter_uuid FK
-        UUID gps_receiver_uuid FK
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-        UUID user_uuid FK
-        TEXT author_username
-    }
-
-    motors {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        DECIMAL weight_g
-        DECIMAL stator_diameter_mm
-        DECIMAL stator_height_mm
-        INTEGER kv
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-        DECIMAL min_voltage
-        DECIMAL max_voltage
-        DECIMAL max_current_a
-        TEXT_ARRAY prop_mount_interfaces
-        TEXT mount_pattern
-    }
-
-    frames {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        DECIMAL weight_g
-        DECIMAL wheelbase_mm
-        DECIMAL max_prop_size_mm
-        TEXT geometry
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-        INTEGER motor_count
-        TEXT_ARRAY camera_mount_interfaces
-        TEXT_ARRAY motor_mount_patterns
-        TEXT_ARRAY board_mount_patterns
-    }
-
-    batteries {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        DECIMAL weight_g
-        INTEGER capacity_mah
-        INTEGER cell_count_s
-        TEXT chemistry
-        TEXT connector
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-        DECIMAL min_voltage
-        DECIMAL max_voltage
-        DECIMAL max_current_a
-    }
-
-    flight_controllers {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        BOOLEAN is_internal_only
-        DECIMAL weight_g
-        TEXT processor
-        TEXT gyro
-        UUID internal_electronic_speed_controller_uuid FK
-        UUID internal_receiver_uuid FK
-        UUID internal_video_transmitter_uuid FK
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-        DECIMAL min_voltage
-        DECIMAL max_voltage
-        TEXT_ARRAY vtx_ports
-        DECIMAL vtx_voltage_min_v
-        DECIMAL vtx_voltage_max_v
-        TEXT mount_pattern
-    }
-
-    electronic_speed_controllers {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        BOOLEAN is_internal_only
-        DECIMAL weight_g
-        INTEGER max_motors
-        DECIMAL motor_current_max_a
-        DECIMAL motor_current_burst_a
-        TEXT firmware
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-        DECIMAL min_voltage
-        DECIMAL max_voltage
-    }
-
-    receivers {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        BOOLEAN is_internal_only
-        DECIMAL weight_g
-        TEXT protocol
-        INTEGER frequency_band_mhz
-        BOOLEAN has_telemetry
-        UUID_ARRAY antenna_uuids
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-    }
-
-    video_transmitters {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        BOOLEAN is_internal_only
-        DECIMAL weight_g
-        TEXT protocol
-        INTEGER max_power_mw
-        DECIMAL input_voltage_min_v
-        DECIMAL input_voltage_max_v
-        UUID_ARRAY antenna_uuids
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-        TEXT port_type
-        TEXT mount_pattern
-        INTEGER frequency_band_mhz
-        TEXT_ARRAY antenna_connectors
-    }
-
     antennas {
-        UUID uuid PK
-        TEXT id UK
+        UUID uuid PK,FK
         TEXT manufacturer
-        TEXT name
         BOOLEAN is_internal_only
         DECIMAL weight_g
         TEXT connector
@@ -173,79 +9,12 @@ erDiagram
         INTEGER frequency_band_mhz
         DECIMAL length_mm
         DECIMAL gain_dbi
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
     }
-
-    propellers {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        DECIMAL weight_g
-        DECIMAL diameter_mm
-        DECIMAL pitch_mm
-        INTEGER blades
-        TEXT material
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-        TEXT prop_mount_interface
-    }
-
-    cameras {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        BOOLEAN is_internal_only
-        DECIMAL weight_g
-        TEXT protocol
-        TEXT sensor_size
-        TEXT camera_mount_interface
-        DECIMAL lens_size_mm
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-    }
-
-    gps_receivers {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        BOOLEAN is_internal_only
-        DECIMAL weight_g
-        TEXT chipset
-        TEXT protocol
-        TEXT compass
-        DECIMAL input_voltage_min_v
-        DECIMAL input_voltage_max_v
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-    }
-
-    builds ||--o| frames : has
-    builds ||--o| motors : has
-    builds ||--o| flight_controllers : has
-    builds ||--o| propellers : has
-    builds ||--o| video_transmitters : has
-    builds ||--o| gps_receivers : has
-
-    flight_controllers ||--o| electronic_speed_controllers : internal_electronic_speed_controller
-    flight_controllers ||--o| receivers : internal_receiver
-    flight_controllers ||--o| video_transmitters : internal_video_transmitter
 
     users {
         UUID uuid PK
-        TEXT id UK
-        TEXT email UK
+        TEXT id
+        TEXT email
         TEXT role
         TIMESTAMPTZ last_renamed_at
         TIMESTAMPTZ deleted_at
@@ -262,10 +31,26 @@ erDiagram
         TIMESTAMPTZ updated_at
     }
 
+    user_emails {
+        UUID uuid PK
+        UUID user_uuid FK
+        TEXT email
+        BOOLEAN is_primary
+        TIMESTAMPTZ created_at
+        BOOLEAN verified_via_otp
+    }
+
+    user_email_oauth_accounts {
+        UUID uuid PK
+        UUID user_email_uuid UK,FK
+        UUID oauth_account_uuid UK,FK
+        TIMESTAMPTZ created_at
+    }
+
     refresh_tokens {
         UUID uuid PK
         UUID user_uuid FK
-        TEXT token_hash UK
+        TEXT token_hash
         TIMESTAMPTZ expires_at
         TIMESTAMPTZ last_used_at
         TEXT device_hint
@@ -276,13 +61,13 @@ erDiagram
         UUID uuid PK
         TEXT email
         TEXT code_hash
-        TEXT challenge_id_hash
-        TEXT purpose
-        UUID requested_by_user_uuid FK
         TIMESTAMPTZ expires_at
         TIMESTAMPTZ used_at
         INTEGER failed_attempts
         TIMESTAMPTZ created_at
+        TEXT challenge_id_hash
+        TEXT purpose
+        UUID requested_by_user_uuid FK
         TEXT ip_address
         TEXT user_agent
         TEXT location_hint
@@ -311,118 +96,214 @@ erDiagram
         TIMESTAMPTZ created_at
     }
 
-    user_emails {
+    batteries {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        DECIMAL weight_g
+        INTEGER capacity_mah
+        INTEGER cell_count_s
+        TEXT chemistry
+        TEXT connector
+        DECIMAL min_voltage
+        DECIMAL max_voltage
+        DECIMAL max_current_a
+    }
+
+    blobs {
         UUID uuid PK
+        TEXT id
+        TEXT filename
+        TEXT mime_type
+        BIGINT size_bytes
+        BYTEA bytes
         UUID user_uuid FK
-        TEXT email UK
-        BOOLEAN is_primary
-        BOOLEAN verified_via_otp
         TIMESTAMPTZ created_at
     }
 
-    user_email_oauth_accounts {
+    blob_references {
         UUID uuid PK
-        UUID user_email_uuid FK
-        UUID oauth_account_uuid FK
+        TEXT id
+        UUID blob_uuid UK,FK
+        TEXT entity_type UK
+        UUID entity_uuid UK
         TIMESTAMPTZ created_at
+    }
+
+    builds {
+        UUID uuid PK,FK
+        UUID frame_uuid FK
+        UUID motor_uuid FK
+        UUID flight_controller_uuid FK
+        UUID_ARRAY electronic_speed_controller_uuids
+        UUID_ARRAY receiver_uuids
+        UUID_ARRAY antenna_uuids
+        UUID propeller_uuid FK
+        UUID_ARRAY camera_uuids
+        UUID video_transmitter_uuid FK
+        UUID gps_receiver_uuid FK
+    }
+
+    cameras {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        BOOLEAN is_internal_only
+        DECIMAL weight_g
+        TEXT protocol
+        TEXT sensor_size
+        TEXT camera_mount_interface
+        DECIMAL lens_size_mm
+    }
+
+    chargers {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        DECIMAL weight_g
+        INTEGER channels
+        DECIMAL max_charge_power_w
+        DECIMAL max_charge_current_a
+        TEXT input_voltage_range
+        TEXT supported_chemistries
+        INTEGER max_cells_s
+    }
+
+    electronic_speed_controllers {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        BOOLEAN is_internal_only
+        DECIMAL weight_g
+        INTEGER max_motors
+        DECIMAL motor_current_max_a
+        DECIMAL motor_current_burst_a
+        TEXT firmware
+        DECIMAL min_voltage
+        DECIMAL max_voltage
+    }
+
+    flight_controllers {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        BOOLEAN is_internal_only
+        DECIMAL weight_g
+        TEXT processor
+        TEXT gyro
+        UUID internal_electronic_speed_controller_uuid FK
+        UUID internal_receiver_uuid FK
+        UUID internal_video_transmitter_uuid FK
+        DECIMAL min_voltage
+        DECIMAL max_voltage
+        TEXT_ARRAY vtx_ports
+        DECIMAL vtx_voltage_min_v
+        DECIMAL vtx_voltage_max_v
+        TEXT mount_pattern
+    }
+
+    frames {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        DECIMAL weight_g
+        DECIMAL wheelbase_mm
+        DECIMAL max_prop_size_mm
+        TEXT geometry
+        INTEGER motor_count
+        TEXT_ARRAY camera_mount_interfaces
+        TEXT_ARRAY motor_mount_patterns
+        TEXT_ARRAY board_mount_patterns
+    }
+
+    gps_receivers {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        BOOLEAN is_internal_only
+        DECIMAL weight_g
+        TEXT chipset
+        TEXT protocol
+        TEXT compass
+        DECIMAL input_voltage_min_v
+        DECIMAL input_voltage_max_v
+    }
+
+    motors {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        DECIMAL weight_g
+        DECIMAL stator_diameter_mm
+        DECIMAL stator_height_mm
+        INTEGER kv
+        DECIMAL min_voltage
+        DECIMAL max_voltage
+        DECIMAL max_current_a
+        TEXT_ARRAY prop_mount_interfaces
+        TEXT mount_pattern
+    }
+
+    propellers {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        DECIMAL weight_g
+        DECIMAL diameter_mm
+        DECIMAL pitch_mm
+        INTEGER blades
+        TEXT material
+        TEXT prop_mount_interface
+    }
+
+    receivers {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        BOOLEAN is_internal_only
+        DECIMAL weight_g
+        TEXT protocol
+        INTEGER frequency_band_mhz
+        BOOLEAN has_telemetry
+        UUID_ARRAY antenna_uuids
+    }
+
+    video_transmitters {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        BOOLEAN is_internal_only
+        DECIMAL weight_g
+        TEXT protocol
+        INTEGER max_power_mw
+        DECIMAL input_voltage_min_v
+        DECIMAL input_voltage_max_v
+        UUID_ARRAY antenna_uuids
+        TEXT port_type
+        TEXT mount_pattern
+        INTEGER frequency_band_mhz
+        TEXT_ARRAY antenna_connectors
+    }
+
+    electronic_speed_controller_firmwares {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        TEXT version
+        TEXT protocols
+        TEXT pwm_frequency_range
+        BOOLEAN is_open_source
     }
 
     flight_controller_firmwares {
-        UUID uuid PK
-        TEXT id UK
+        UUID uuid PK,FK
         TEXT manufacturer
-        TEXT name
         TEXT version
         TEXT target_architectures
         TEXT supported_protocols
         BOOLEAN is_open_source
         TEXT repository_url
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
     }
 
-    electronic_speed_controller_firmwares {
-        UUID uuid PK
-        TEXT id UK
+    field_tools {
+        UUID uuid PK,FK
         TEXT manufacturer
-        TEXT name
-        TEXT version
-        TEXT protocols
-        TEXT pwm_frequency_range
-        BOOLEAN is_open_source
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-    }
-
-    video_transmitter_firmwares {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        TEXT version
-        TEXT protocol
-        TEXT supported_resolutions
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-    }
-
-    radio_firmwares {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        TEXT version
-        TEXT supported_protocols
-        BOOLEAN is_open_source
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-    }
-
-    software_tools {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        TEXT version
-        TEXT category
-        TEXT platform
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-    }
-
-    transmitters {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
         DECIMAL weight_g
-        TEXT rf_protocol
-        TEXT operating_system
-        TEXT gimbal_type
-        INTEGER max_power_mw
-        INTEGER channels
-        TEXT battery_type
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
+        TEXT tool_type
+        TEXT power_source
     }
 
     goggles {
-        UUID uuid PK
-        TEXT id UK
+        UUID uuid PK,FK
         TEXT manufacturer
-        TEXT name
         DECIMAL weight_g
         TEXT video_protocol
         TEXT display_type
@@ -431,48 +312,20 @@ erDiagram
         TEXT ipd_range_mm
         TEXT voltage_range
         BOOLEAN dvr_supported
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
     }
 
-    chargers {
-        UUID uuid PK
-        TEXT id UK
+    radio_firmwares {
+        UUID uuid PK,FK
         TEXT manufacturer
-        TEXT name
-        DECIMAL weight_g
-        INTEGER channels
-        DECIMAL max_charge_power_w
-        DECIMAL max_charge_current_a
-        TEXT input_voltage_range
-        TEXT supported_chemistries
-        INTEGER max_cells_s
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
-    }
-
-    field_tools {
-        UUID uuid PK
-        TEXT id UK
-        TEXT manufacturer
-        TEXT name
-        DECIMAL weight_g
-        TEXT tool_type
-        TEXT power_source
-        TEXT description
-        JSONB reference_links
-        TEXT primary_display_image
-        JSONB media
+        TEXT version
+        TEXT supported_protocols
+        BOOLEAN is_open_source
     }
 
     entities {
         UUID uuid PK
-        TEXT collection
-        TEXT id
+        TEXT collection UK
+        TEXT id UK
         TEXT name
         TEXT description
         TEXT primary_display_image
@@ -482,13 +335,15 @@ erDiagram
         BOOLEAN is_archived
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
+        UUID user_uuid FK
+        TEXT author_username
     }
 
     reviews {
         UUID uuid PK
-        TEXT id UK
-        UUID user_uuid FK
-        UUID entity_uuid FK
+        TEXT id
+        UUID user_uuid UK,FK
+        UUID entity_uuid UK,FK
         BOOLEAN is_recommended
         TEXT body
         BOOLEAN is_edited
@@ -508,8 +363,8 @@ erDiagram
 
     review_votes {
         UUID uuid PK
-        UUID review_uuid FK
-        UUID user_uuid FK
+        UUID review_uuid UK,FK
+        UUID user_uuid UK,FK
         BOOLEAN is_helpful
         TIMESTAMPTZ created_at
     }
@@ -528,7 +383,7 @@ erDiagram
 
     questions {
         UUID uuid PK
-        TEXT id UK
+        TEXT id
         UUID user_uuid FK
         UUID entity_uuid FK
         TEXT title
@@ -545,6 +400,7 @@ erDiagram
         INTEGER answer_count
         BOOLEAN has_accepted_answer
         INTEGER current_user_vote
+        JSONB comments
         TEXT collection
         TEXT entity_id
     }
@@ -569,20 +425,21 @@ erDiagram
         INTEGER downvote_count
         INTEGER current_user_vote
         INTEGER comment_count
+        JSONB comments
     }
 
     question_votes {
         UUID uuid PK
-        UUID question_uuid FK
-        UUID user_uuid FK
+        UUID question_uuid UK,FK
+        UUID user_uuid UK,FK
         BOOLEAN is_upvote
         TIMESTAMPTZ created_at
     }
 
     answer_votes {
         UUID uuid PK
-        UUID answer_uuid FK
-        UUID user_uuid FK
+        UUID answer_uuid UK,FK
+        UUID user_uuid UK,FK
         BOOLEAN is_upvote
         TIMESTAMPTZ created_at
     }
@@ -613,14 +470,14 @@ erDiagram
 
     user_reputations {
         UUID uuid PK
-        UUID user_uuid FK
+        UUID user_uuid UK,FK
         INTEGER score
         TIMESTAMPTZ updated_at
     }
 
     collections {
         UUID uuid PK
-        TEXT id UK
+        TEXT id
         UUID user_uuid FK
         TEXT name
         TEXT description
@@ -629,13 +486,13 @@ erDiagram
         TIMESTAMPTZ updated_at
         TEXT author_username
         INTEGER item_count
-        TEXT preview_images
+        TEXT_ARRAY preview_images
     }
 
     collection_items {
         UUID uuid PK
-        UUID collection_uuid FK
-        UUID entity_uuid FK
+        UUID collection_uuid UK,FK
+        UUID entity_uuid UK,FK
         TIMESTAMPTZ created_at
         TEXT entity_id
         TEXT collection
@@ -644,62 +501,64 @@ erDiagram
         TEXT author_or_manufacturer
     }
 
+    software_tools {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        TEXT version
+        TEXT category
+        TEXT platform
+    }
+
+    transmitters {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        DECIMAL weight_g
+        TEXT rf_protocol
+        TEXT operating_system
+        TEXT gimbal_type
+        INTEGER max_power_mw
+        INTEGER channels
+        TEXT battery_type
+    }
+
+    video_transmitter_firmwares {
+        UUID uuid PK,FK
+        TEXT manufacturer
+        TEXT version
+        TEXT protocol
+        TEXT supported_resolutions
+    }
+
+    builds ||--o| frames : has
+    builds ||--o| motors : has
+    builds ||--o| flight_controllers : has
+    builds ||--o| propellers : has
+    builds ||--o| video_transmitters : has
+    builds ||--o| gps_receivers : has
+    flight_controllers ||--o| electronic_speed_controllers : internal_electronic_speed_controller
+    flight_controllers ||--o| receivers : internal_receiver
+    flight_controllers ||--o| video_transmitters : internal_video_transmitter
     users ||--o| user_profiles : has
-    users ||--o{ user_emails : has
-    user_emails ||--o{ user_email_oauth_accounts : links
-    oauth_accounts ||--o{ user_email_oauth_accounts : links
-    users ||--o{ refresh_tokens : has
-    users ||--o{ username_histories : has
-    users ||--o{ oauth_accounts : has
-    users ||--o{ builds : authors
-    users ||--o{ email_otps : requests
     users ||--o| user_reputations : has
-    users ||--o{ collections : creates
-    users ||--o{ reviews : writes
-    users ||--o{ review_votes : casts
-    users ||--o{ review_comments : writes
-    users ||--o{ questions : asks
-    users ||--o{ answers : submits
-    users ||--o{ question_votes : casts
-    users ||--o{ answer_votes : casts
-    users ||--o{ question_comments : writes
-    users ||--o{ answer_comments : writes
-
-    entities ||--o{ reviews : receives
-    reviews ||--o{ review_votes : has
-    reviews ||--o{ review_comments : has
-
-    entities ||--o{ questions : receives
-    questions ||--o{ answers : has
-    questions ||--o{ question_votes : has
-    questions ||--o{ question_comments : has
-    answers ||--o{ answer_votes : has
-    answers ||--o{ answer_comments : has
-
-    collections ||--o{ collection_items : contains
-    entities ||--o{ collection_items : collected_in
-
-    blobs {
-        UUID uuid PK
-        TEXT id UK
-        TEXT filename
-        TEXT mime_type
-        BIGINT size_bytes
-        BYTEA bytes
-        UUID user_uuid FK
-        TIMESTAMPTZ created_at
-    }
-
-    blob_references {
-        UUID uuid PK
-        TEXT id UK
-        UUID blob_uuid FK
-        TEXT entity_type
-        UUID entity_uuid
-        TIMESTAMPTZ created_at
-    }
-
-    users ||--o{ blobs : uploads
-    blobs ||--o{ blob_references : referenced_by
-
-
+    entities ||--o| antennas : inherits
+    entities ||--o| batteries : inherits
+    entities ||--o| builds : inherits
+    entities ||--o| cameras : inherits
+    entities ||--o| chargers : inherits
+    entities ||--o| electronic_speed_controller_firmwares : inherits
+    entities ||--o| electronic_speed_controllers : inherits
+    entities ||--o| field_tools : inherits
+    entities ||--o| flight_controller_firmwares : inherits
+    entities ||--o| flight_controllers : inherits
+    entities ||--o| frames : inherits
+    entities ||--o| goggles : inherits
+    entities ||--o| gps_receivers : inherits
+    entities ||--o| motors : inherits
+    entities ||--o| propellers : inherits
+    entities ||--o| radio_firmwares : inherits
+    entities ||--o| receivers : inherits
+    entities ||--o| software_tools : inherits
+    entities ||--o| transmitters : inherits
+    entities ||--o| video_transmitter_firmwares : inherits
+    entities ||--o| video_transmitters : inherits
+    users ||--o{ entities : authors

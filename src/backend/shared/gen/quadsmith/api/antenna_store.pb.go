@@ -11,19 +11,19 @@ import (
 )
 
 func CreateAntenna(ctx context.Context, tx pgx.Tx, m *Antenna) error {
-	query := `INSERT INTO antennas (uuid, id, manufacturer, name, is_internal_only, weight_g, connector, polarization, frequency_band_mhz, length_mm, gain_dbi, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`
+	query := `INSERT INTO antennas (uuid, manufacturer, is_internal_only, weight_g, connector, polarization, frequency_band_mhz, length_mm, gain_dbi) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Connector, m.Polarization, m.FrequencyBandMhz, m.LengthMm, m.GainDbi, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Manufacturer, m.IsInternalOnly, m.WeightG, m.Connector, m.Polarization, m.FrequencyBandMhz, m.LengthMm, m.GainDbi)
 	return err
 }
 
 func GetAntenna(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Antenna, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "connector": true, "polarization": true, "frequency_band_mhz": true, "length_mm": true, "gain_dbi": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, connector, polarization, frequency_band_mhz, length_mm, gain_dbi, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "connector": true, "polarization": true, "frequency_band_mhz": true, "length_mm": true, "gain_dbi": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, connector, polarization, frequency_band_mhz, length_mm, gain_dbi, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetAntenna(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "connector", "polarization", "frequency_band_mhz", "length_mm", "gain_dbi", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "connector", "polarization", "frequency_band_mhz", "length_mm", "gain_dbi", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM antennas WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM antennas INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Antenna{}
@@ -72,6 +72,10 @@ func GetAntenna(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -89,20 +93,20 @@ func GetAntenna(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 }
 
 func UpdateAntenna(ctx context.Context, tx pgx.Tx, m *Antenna) error {
-	query := `UPDATE antennas SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, connector = $6, polarization = $7, frequency_band_mhz = $8, length_mm = $9, gain_dbi = $10, description = $11, reference_links = $12, primary_display_image = $13, media = $14 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Connector, m.Polarization, m.FrequencyBandMhz, m.LengthMm, m.GainDbi, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE antennas SET manufacturer = $2, is_internal_only = $3, weight_g = $4, connector = $5, polarization = $6, frequency_band_mhz = $7, length_mm = $8, gain_dbi = $9 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.IsInternalOnly, m.WeightG, m.Connector, m.Polarization, m.FrequencyBandMhz, m.LengthMm, m.GainDbi)
 	return err
 }
 
 func DeleteAntenna(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM antennas WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM antennas WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'antennas' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListAntennas(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Antenna, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "connector": true, "polarization": true, "frequency_band_mhz": true, "length_mm": true, "gain_dbi": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, connector, polarization, frequency_band_mhz, length_mm, gain_dbi, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "connector": true, "polarization": true, "frequency_band_mhz": true, "length_mm": true, "gain_dbi": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, connector, polarization, frequency_band_mhz, length_mm, gain_dbi, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -113,11 +117,12 @@ func ListAntennas(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "connector", "polarization", "frequency_band_mhz", "length_mm", "gain_dbi", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "connector", "polarization", "frequency_band_mhz", "length_mm", "gain_dbi", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM antennas`
+	query := `SELECT ` + colsStr + ` FROM antennas INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -192,6 +197,10 @@ func ListAntennas(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

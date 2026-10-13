@@ -11,19 +11,19 @@ import (
 )
 
 func CreateGpsReceiver(ctx context.Context, tx pgx.Tx, m *GpsReceiver) error {
-	query := `INSERT INTO gps_receivers (uuid, id, manufacturer, name, is_internal_only, weight_g, chipset, protocol, compass, input_voltage_min_v, input_voltage_max_v, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`
+	query := `INSERT INTO gps_receivers (uuid, manufacturer, is_internal_only, weight_g, chipset, protocol, compass, input_voltage_min_v, input_voltage_max_v) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Chipset, m.Protocol, m.Compass, m.InputVoltageMinV, m.InputVoltageMaxV, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Manufacturer, m.IsInternalOnly, m.WeightG, m.Chipset, m.Protocol, m.Compass, m.InputVoltageMinV, m.InputVoltageMaxV)
 	return err
 }
 
 func GetGpsReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*GpsReceiver, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "chipset": true, "protocol": true, "compass": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, chipset, protocol, compass, input_voltage_min_v, input_voltage_max_v, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "chipset": true, "protocol": true, "compass": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, chipset, protocol, compass, input_voltage_min_v, input_voltage_max_v, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetGpsReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "chipset", "protocol", "compass", "input_voltage_min_v", "input_voltage_max_v", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "chipset", "protocol", "compass", "input_voltage_min_v", "input_voltage_max_v", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM gps_receivers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM gps_receivers INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &GpsReceiver{}
@@ -72,6 +72,10 @@ func GetGpsReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -89,20 +93,20 @@ func GetGpsReceiver(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 }
 
 func UpdateGpsReceiver(ctx context.Context, tx pgx.Tx, m *GpsReceiver) error {
-	query := `UPDATE gps_receivers SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, chipset = $6, protocol = $7, compass = $8, input_voltage_min_v = $9, input_voltage_max_v = $10, description = $11, reference_links = $12, primary_display_image = $13, media = $14 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Chipset, m.Protocol, m.Compass, m.InputVoltageMinV, m.InputVoltageMaxV, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE gps_receivers SET manufacturer = $2, is_internal_only = $3, weight_g = $4, chipset = $5, protocol = $6, compass = $7, input_voltage_min_v = $8, input_voltage_max_v = $9 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.IsInternalOnly, m.WeightG, m.Chipset, m.Protocol, m.Compass, m.InputVoltageMinV, m.InputVoltageMaxV)
 	return err
 }
 
 func DeleteGpsReceiver(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM gps_receivers WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM gps_receivers WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'gps-receivers' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListGpsReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*GpsReceiver, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "chipset": true, "protocol": true, "compass": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, chipset, protocol, compass, input_voltage_min_v, input_voltage_max_v, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "chipset": true, "protocol": true, "compass": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, chipset, protocol, compass, input_voltage_min_v, input_voltage_max_v, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -113,11 +117,12 @@ func ListGpsReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "chipset", "protocol", "compass", "input_voltage_min_v", "input_voltage_max_v", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "chipset", "protocol", "compass", "input_voltage_min_v", "input_voltage_max_v", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM gps_receivers`
+	query := `SELECT ` + colsStr + ` FROM gps_receivers INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -192,6 +197,10 @@ func ListGpsReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

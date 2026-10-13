@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_build: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChlxdWFkc21pdGgvYXBpL2J1aWxkLnByb3RvEg1xdWFkc21pdGguYXBpIskGCgVCdWlsZBIUCgR1dWlkGAEgASgJQgbC8xgCEAESEgoCaWQYAiABKAlCBsLzGAIgARIMCgRuYW1lGAMgASgJEhMKC2Rlc2NyaXB0aW9uGAQgASgJEiYKCmZyYW1lX3V1aWQYBSABKAlCEsLzGA4aDGZyYW1lcyh1dWlkKRImCgptb3Rvcl91dWlkGAYgASgJQhLC8xgOGgxtb3RvcnModXVpZCkSPgoWZmxpZ2h0X2NvbnRyb2xsZXJfdXVpZBgIIAEoCUIewvMYGhoYZmxpZ2h0X2NvbnRyb2xsZXJzKHV1aWQpEikKIWVsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlcl91dWlkcxgJIAMoCRIWCg5yZWNlaXZlcl91dWlkcxgKIAMoCRIVCg1hbnRlbm5hX3V1aWRzGAsgAygJEi4KDnByb3BlbGxlcl91dWlkGAwgASgJQhbC8xgSGhBwcm9wZWxsZXJzKHV1aWQpEhQKDGNhbWVyYV91dWlkcxgNIAMoCRI+ChZ2aWRlb190cmFuc21pdHRlcl91dWlkGA4gASgJQh7C8xgaGhh2aWRlb190cmFuc21pdHRlcnModXVpZCkSOQoRZ3BzX3JlY2VpdmVyX3V1aWQYDyABKAlCGcLzGBUaE2dwc19yZWNlaXZlcnModXVpZClIAIgBARI1Cg9yZWZlcmVuY2VfbGlua3MYECADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmsSIgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGBEgASgJSAGIAQESIwoFbWVkaWEYEiADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhEikKCXVzZXJfdXVpZBgTIAEoCUIRwvMYDRoLdXNlcnModXVpZClIAogBARIcCg9hdXRob3JfdXNlcm5hbWUYFCABKAlIA4gBATotirUYEwoCaWQKBG5hbWUSByMzYjgyZjaatRgGYnVpbGRzwvMYCAoGYnVpbGRzQhQKEl9ncHNfcmVjZWl2ZXJfdXVpZEIYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlQgwKCl91c2VyX3V1aWRCEgoQX2F1dGhvcl91c2VybmFtZSIuCg9HZXRCdWlsZFJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJpChFMaXN0QnVpbGRzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlMKEkxpc3RCdWlsZHNSZXNwb25zZRIkCgZidWlsZHMYASADKAsyFC5xdWFkc21pdGguYXBpLkJ1aWxkEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSI5ChJDcmVhdGVCdWlsZFJlcXVlc3QSIwoFYnVpbGQYASABKAsyFC5xdWFkc21pdGguYXBpLkJ1aWxkIiAKEkRlbGV0ZUJ1aWxkUmVxdWVzdBIKCgJpZBgBIAEoCSIqChNEZWxldGVCdWlsZFJlc3BvbnNlEhMKC2lzX2FyY2hpdmVkGAEgASgIIn8KFENvbXBvbmVudE1hdGNoRGV0YWlsEhEKCWNvbXBvbmVudBgBIAEoCRITCgtleGFjdF9tYXRjaBgCIAEoCBITCgtkZXNjcmlwdGlvbhgDIAEoCRIWCg5wb2ludHNfYXdhcmRlZBgEIAEoARISCgptYXhfcG9pbnRzGAUgASgBIokBCgxTaW1pbGFyQnVpbGQSIwoFYnVpbGQYASABKAsyFC5xdWFkc21pdGguYXBpLkJ1aWxkEhgKEHNpbWlsYXJpdHlfc2NvcmUYAiABKAESOgoNbWF0Y2hfZGV0YWlscxgDIAMoCzIjLnF1YWRzbWl0aC5hcGkuQ29tcG9uZW50TWF0Y2hEZXRhaWwiOwoYTGlzdFNpbWlsYXJCdWlsZHNSZXF1ZXN0EhAKCGJ1aWxkX2lkGAEgASgJEg0KBWxpbWl0GAIgASgFIlAKGUxpc3RTaW1pbGFyQnVpbGRzUmVzcG9uc2USMwoOc2ltaWxhcl9idWlsZHMYASADKAsyGy5xdWFkc21pdGguYXBpLlNpbWlsYXJCdWlsZDKpAwoMQnVpbGRTZXJ2aWNlEkAKCEdldEJ1aWxkEh4ucXVhZHNtaXRoLmFwaS5HZXRCdWlsZFJlcXVlc3QaFC5xdWFkc21pdGguYXBpLkJ1aWxkElEKCkxpc3RCdWlsZHMSIC5xdWFkc21pdGguYXBpLkxpc3RCdWlsZHNSZXF1ZXN0GiEucXVhZHNtaXRoLmFwaS5MaXN0QnVpbGRzUmVzcG9uc2USRgoLQ3JlYXRlQnVpbGQSIS5xdWFkc21pdGguYXBpLkNyZWF0ZUJ1aWxkUmVxdWVzdBoULnF1YWRzbWl0aC5hcGkuQnVpbGQSVAoLRGVsZXRlQnVpbGQSIS5xdWFkc21pdGguYXBpLkRlbGV0ZUJ1aWxkUmVxdWVzdBoiLnF1YWRzbWl0aC5hcGkuRGVsZXRlQnVpbGRSZXNwb25zZRJmChFMaXN0U2ltaWxhckJ1aWxkcxInLnF1YWRzbWl0aC5hcGkuTGlzdFNpbWlsYXJCdWlsZHNSZXF1ZXN0GigucXVhZHNtaXRoLmFwaS5MaXN0U2ltaWxhckJ1aWxkc1Jlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "ChlxdWFkc21pdGgvYXBpL2J1aWxkLnByb3RvEg1xdWFkc21pdGguYXBpIn8KFENvbXBvbmVudE1hdGNoRGV0YWlsEhEKCWNvbXBvbmVudBgBIAEoCRITCgtleGFjdF9tYXRjaBgCIAEoCBITCgtkZXNjcmlwdGlvbhgDIAEoCRIWCg5wb2ludHNfYXdhcmRlZBgEIAEoARISCgptYXhfcG9pbnRzGAUgASgBIjkKEkNyZWF0ZUJ1aWxkUmVxdWVzdBIjCgVidWlsZBgBIAEoCzIULnF1YWRzbWl0aC5hcGkuQnVpbGQiIAoSRGVsZXRlQnVpbGRSZXF1ZXN0EgoKAmlkGAEgASgJIioKE0RlbGV0ZUJ1aWxkUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiLgoPR2V0QnVpbGRSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiaQoRTGlzdEJ1aWxkc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJTChJMaXN0QnVpbGRzUmVzcG9uc2USJAoGYnVpbGRzGAEgAygLMhQucXVhZHNtaXRoLmFwaS5CdWlsZBIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiOwoYTGlzdFNpbWlsYXJCdWlsZHNSZXF1ZXN0EhAKCGJ1aWxkX2lkGAEgASgJEg0KBWxpbWl0GAIgASgFIlAKGUxpc3RTaW1pbGFyQnVpbGRzUmVzcG9uc2USMwoOc2ltaWxhcl9idWlsZHMYASADKAsyGy5xdWFkc21pdGguYXBpLlNpbWlsYXJCdWlsZCKJAQoMU2ltaWxhckJ1aWxkEiMKBWJ1aWxkGAEgASgLMhQucXVhZHNtaXRoLmFwaS5CdWlsZBIYChBzaW1pbGFyaXR5X3Njb3JlGAIgASgBEjoKDW1hdGNoX2RldGFpbHMYAyADKAsyIy5xdWFkc21pdGguYXBpLkNvbXBvbmVudE1hdGNoRGV0YWlsIpAHCgVCdWlsZBI2CgR1dWlkGAEgASgJQijC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFEhIKAmlkGAIgASgJQgbC8xgCQAESFAoEbmFtZRgDIAEoCUIGwvMYAkABEhsKC2Rlc2NyaXB0aW9uGAQgASgJQgbC8xgCQAESJgoKZnJhbWVfdXVpZBgFIAEoCUISwvMYDhoMZnJhbWVzKHV1aWQpEiYKCm1vdG9yX3V1aWQYBiABKAlCEsLzGA4aDG1vdG9ycyh1dWlkKRI+ChZmbGlnaHRfY29udHJvbGxlcl91dWlkGAggASgJQh7C8xgaGhhmbGlnaHRfY29udHJvbGxlcnModXVpZCkSKQohZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVyX3V1aWRzGAkgAygJEhYKDnJlY2VpdmVyX3V1aWRzGAogAygJEhUKDWFudGVubmFfdXVpZHMYCyADKAkSLgoOcHJvcGVsbGVyX3V1aWQYDCABKAlCFsLzGBIaEHByb3BlbGxlcnModXVpZCkSFAoMY2FtZXJhX3V1aWRzGA0gAygJEj4KFnZpZGVvX3RyYW5zbWl0dGVyX3V1aWQYDiABKAlCHsLzGBoaGHZpZGVvX3RyYW5zbWl0dGVycyh1dWlkKRI5ChFncHNfcmVjZWl2ZXJfdXVpZBgPIAEoCUIZwvMYFRoTZ3BzX3JlY2VpdmVycyh1dWlkKUgAiAEBEj0KD3JlZmVyZW5jZV9saW5rcxgQIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGlua0IGwvMYAkABEioKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgRIAEoCUIGwvMYAkABSAGIAQESKwoFbWVkaWEYEiADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgbC8xgCQAESHgoJdXNlcl91dWlkGBMgASgJQgbC8xgCQAFIAogBARIkCg9hdXRob3JfdXNlcm5hbWUYFCABKAlCBsLzGAJAAUgDiAEBOi2KtRgTCgJpZAoEbmFtZRIHIzNiODJmNpq1GAZidWlsZHPC8xgICgZidWlsZHNCFAoSX2dwc19yZWNlaXZlcl91dWlkQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2VCDAoKX3VzZXJfdXVpZEISChBfYXV0aG9yX3VzZXJuYW1lMqkDCgxCdWlsZFNlcnZpY2USQAoIR2V0QnVpbGQSHi5xdWFkc21pdGguYXBpLkdldEJ1aWxkUmVxdWVzdBoULnF1YWRzbWl0aC5hcGkuQnVpbGQSUQoKTGlzdEJ1aWxkcxIgLnF1YWRzbWl0aC5hcGkuTGlzdEJ1aWxkc1JlcXVlc3QaIS5xdWFkc21pdGguYXBpLkxpc3RCdWlsZHNSZXNwb25zZRJGCgtDcmVhdGVCdWlsZBIhLnF1YWRzbWl0aC5hcGkuQ3JlYXRlQnVpbGRSZXF1ZXN0GhQucXVhZHNtaXRoLmFwaS5CdWlsZBJUCgtEZWxldGVCdWlsZBIhLnF1YWRzbWl0aC5hcGkuRGVsZXRlQnVpbGRSZXF1ZXN0GiIucXVhZHNtaXRoLmFwaS5EZWxldGVCdWlsZFJlc3BvbnNlEmYKEUxpc3RTaW1pbGFyQnVpbGRzEicucXVhZHNtaXRoLmFwaS5MaXN0U2ltaWxhckJ1aWxkc1JlcXVlc3QaKC5xdWFkc21pdGguYXBpLkxpc3RTaW1pbGFyQnVpbGRzUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -29,7 +29,256 @@ export const file_quadsmith_api_build: GenFile =
 
 /**
  * ---------------------------------------------------------
- * Domain Model
+ * 2. RPC Requests & Responses (Callers Precede Callees)
+ * ---------------------------------------------------------
+ *
+ * @generated from message quadsmith.api.ComponentMatchDetail
+ */
+export type ComponentMatchDetail = Message<"quadsmith.api.ComponentMatchDetail"> & {
+  /**
+   * @generated from field: string component = 1;
+   */
+  component: string;
+
+  /**
+   * @generated from field: bool exact_match = 2;
+   */
+  exactMatch: boolean;
+
+  /**
+   * @generated from field: string description = 3;
+   */
+  description: string;
+
+  /**
+   * @generated from field: double points_awarded = 4;
+   */
+  pointsAwarded: number;
+
+  /**
+   * @generated from field: double max_points = 5;
+   */
+  maxPoints: number;
+};
+
+/**
+ * Describes the message quadsmith.api.ComponentMatchDetail.
+ * Use `create(ComponentMatchDetailSchema)` to create a new message.
+ */
+export const ComponentMatchDetailSchema: GenMessage<ComponentMatchDetail> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_build, 0);
+
+/**
+ * @generated from message quadsmith.api.CreateBuildRequest
+ */
+export type CreateBuildRequest = Message<"quadsmith.api.CreateBuildRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.Build build = 1;
+   */
+  build?: Build | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.CreateBuildRequest.
+ * Use `create(CreateBuildRequestSchema)` to create a new message.
+ */
+export const CreateBuildRequestSchema: GenMessage<CreateBuildRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_build, 1);
+
+/**
+ * @generated from message quadsmith.api.DeleteBuildRequest
+ */
+export type DeleteBuildRequest = Message<"quadsmith.api.DeleteBuildRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteBuildRequest.
+ * Use `create(DeleteBuildRequestSchema)` to create a new message.
+ */
+export const DeleteBuildRequestSchema: GenMessage<DeleteBuildRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_build, 2);
+
+/**
+ * @generated from message quadsmith.api.DeleteBuildResponse
+ */
+export type DeleteBuildResponse = Message<"quadsmith.api.DeleteBuildResponse"> & {
+  /**
+   * @generated from field: bool is_archived = 1;
+   */
+  isArchived: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteBuildResponse.
+ * Use `create(DeleteBuildResponseSchema)` to create a new message.
+ */
+export const DeleteBuildResponseSchema: GenMessage<DeleteBuildResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_build, 3);
+
+/**
+ * @generated from message quadsmith.api.GetBuildRequest
+ */
+export type GetBuildRequest = Message<"quadsmith.api.GetBuildRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.GetBuildRequest.
+ * Use `create(GetBuildRequestSchema)` to create a new message.
+ */
+export const GetBuildRequestSchema: GenMessage<GetBuildRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_build, 4);
+
+/**
+ * @generated from message quadsmith.api.ListBuildsRequest
+ */
+export type ListBuildsRequest = Message<"quadsmith.api.ListBuildsRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
+
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListBuildsRequest.
+ * Use `create(ListBuildsRequestSchema)` to create a new message.
+ */
+export const ListBuildsRequestSchema: GenMessage<ListBuildsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_build, 5);
+
+/**
+ * @generated from message quadsmith.api.ListBuildsResponse
+ */
+export type ListBuildsResponse = Message<"quadsmith.api.ListBuildsResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.Build builds = 1;
+   */
+  builds: Build[];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListBuildsResponse.
+ * Use `create(ListBuildsResponseSchema)` to create a new message.
+ */
+export const ListBuildsResponseSchema: GenMessage<ListBuildsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_build, 6);
+
+/**
+ * @generated from message quadsmith.api.ListSimilarBuildsRequest
+ */
+export type ListSimilarBuildsRequest = Message<"quadsmith.api.ListSimilarBuildsRequest"> & {
+  /**
+   * @generated from field: string build_id = 1;
+   */
+  buildId: string;
+
+  /**
+   * @generated from field: int32 limit = 2;
+   */
+  limit: number;
+};
+
+/**
+ * Describes the message quadsmith.api.ListSimilarBuildsRequest.
+ * Use `create(ListSimilarBuildsRequestSchema)` to create a new message.
+ */
+export const ListSimilarBuildsRequestSchema: GenMessage<ListSimilarBuildsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_build, 7);
+
+/**
+ * @generated from message quadsmith.api.ListSimilarBuildsResponse
+ */
+export type ListSimilarBuildsResponse = Message<"quadsmith.api.ListSimilarBuildsResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.SimilarBuild similar_builds = 1;
+   */
+  similarBuilds: SimilarBuild[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListSimilarBuildsResponse.
+ * Use `create(ListSimilarBuildsResponseSchema)` to create a new message.
+ */
+export const ListSimilarBuildsResponseSchema: GenMessage<ListSimilarBuildsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_build, 8);
+
+/**
+ * @generated from message quadsmith.api.SimilarBuild
+ */
+export type SimilarBuild = Message<"quadsmith.api.SimilarBuild"> & {
+  /**
+   * @generated from field: quadsmith.api.Build build = 1;
+   */
+  build?: Build | undefined;
+
+  /**
+   * @generated from field: double similarity_score = 2;
+   */
+  similarityScore: number;
+
+  /**
+   * @generated from field: repeated quadsmith.api.ComponentMatchDetail match_details = 3;
+   */
+  matchDetails: ComponentMatchDetail[];
+};
+
+/**
+ * Describes the message quadsmith.api.SimilarBuild.
+ * Use `create(SimilarBuildSchema)` to create a new message.
+ */
+export const SimilarBuildSchema: GenMessage<SimilarBuild> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_build, 9);
+
+/**
+ * ---------------------------------------------------------
+ * 3. Domain Model (Referenced by Services and Requests above)
  * ---------------------------------------------------------
  *
  * @generated from message quadsmith.api.Build
@@ -157,260 +406,11 @@ export type Build = Message<"quadsmith.api.Build"> & {
  */
 export const BuildSchema: GenMessage<Build> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_build, 0);
-
-/**
- * ---------------------------------------------------------
- * RPC Requests & Responses
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.GetBuildRequest
- */
-export type GetBuildRequest = Message<"quadsmith.api.GetBuildRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
-
-/**
- * Describes the message quadsmith.api.GetBuildRequest.
- * Use `create(GetBuildRequestSchema)` to create a new message.
- */
-export const GetBuildRequestSchema: GenMessage<GetBuildRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_build, 1);
-
-/**
- * @generated from message quadsmith.api.ListBuildsRequest
- */
-export type ListBuildsRequest = Message<"quadsmith.api.ListBuildsRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
-
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
-
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
-
-/**
- * Describes the message quadsmith.api.ListBuildsRequest.
- * Use `create(ListBuildsRequestSchema)` to create a new message.
- */
-export const ListBuildsRequestSchema: GenMessage<ListBuildsRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_build, 2);
-
-/**
- * @generated from message quadsmith.api.ListBuildsResponse
- */
-export type ListBuildsResponse = Message<"quadsmith.api.ListBuildsResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.Build builds = 1;
-   */
-  builds: Build[];
-
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
-
-/**
- * Describes the message quadsmith.api.ListBuildsResponse.
- * Use `create(ListBuildsResponseSchema)` to create a new message.
- */
-export const ListBuildsResponseSchema: GenMessage<ListBuildsResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_build, 3);
-
-/**
- * @generated from message quadsmith.api.CreateBuildRequest
- */
-export type CreateBuildRequest = Message<"quadsmith.api.CreateBuildRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Build build = 1;
-   */
-  build?: Build | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateBuildRequest.
- * Use `create(CreateBuildRequestSchema)` to create a new message.
- */
-export const CreateBuildRequestSchema: GenMessage<CreateBuildRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_build, 4);
-
-/**
- * @generated from message quadsmith.api.DeleteBuildRequest
- */
-export type DeleteBuildRequest = Message<"quadsmith.api.DeleteBuildRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteBuildRequest.
- * Use `create(DeleteBuildRequestSchema)` to create a new message.
- */
-export const DeleteBuildRequestSchema: GenMessage<DeleteBuildRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_build, 5);
-
-/**
- * @generated from message quadsmith.api.DeleteBuildResponse
- */
-export type DeleteBuildResponse = Message<"quadsmith.api.DeleteBuildResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteBuildResponse.
- * Use `create(DeleteBuildResponseSchema)` to create a new message.
- */
-export const DeleteBuildResponseSchema: GenMessage<DeleteBuildResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_build, 6);
-
-/**
- * @generated from message quadsmith.api.ComponentMatchDetail
- */
-export type ComponentMatchDetail = Message<"quadsmith.api.ComponentMatchDetail"> & {
-  /**
-   * @generated from field: string component = 1;
-   */
-  component: string;
-
-  /**
-   * @generated from field: bool exact_match = 2;
-   */
-  exactMatch: boolean;
-
-  /**
-   * @generated from field: string description = 3;
-   */
-  description: string;
-
-  /**
-   * @generated from field: double points_awarded = 4;
-   */
-  pointsAwarded: number;
-
-  /**
-   * @generated from field: double max_points = 5;
-   */
-  maxPoints: number;
-};
-
-/**
- * Describes the message quadsmith.api.ComponentMatchDetail.
- * Use `create(ComponentMatchDetailSchema)` to create a new message.
- */
-export const ComponentMatchDetailSchema: GenMessage<ComponentMatchDetail> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_build, 7);
-
-/**
- * @generated from message quadsmith.api.SimilarBuild
- */
-export type SimilarBuild = Message<"quadsmith.api.SimilarBuild"> & {
-  /**
-   * @generated from field: quadsmith.api.Build build = 1;
-   */
-  build?: Build | undefined;
-
-  /**
-   * @generated from field: double similarity_score = 2;
-   */
-  similarityScore: number;
-
-  /**
-   * @generated from field: repeated quadsmith.api.ComponentMatchDetail match_details = 3;
-   */
-  matchDetails: ComponentMatchDetail[];
-};
-
-/**
- * Describes the message quadsmith.api.SimilarBuild.
- * Use `create(SimilarBuildSchema)` to create a new message.
- */
-export const SimilarBuildSchema: GenMessage<SimilarBuild> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_build, 8);
-
-/**
- * @generated from message quadsmith.api.ListSimilarBuildsRequest
- */
-export type ListSimilarBuildsRequest = Message<"quadsmith.api.ListSimilarBuildsRequest"> & {
-  /**
-   * @generated from field: string build_id = 1;
-   */
-  buildId: string;
-
-  /**
-   * @generated from field: int32 limit = 2;
-   */
-  limit: number;
-};
-
-/**
- * Describes the message quadsmith.api.ListSimilarBuildsRequest.
- * Use `create(ListSimilarBuildsRequestSchema)` to create a new message.
- */
-export const ListSimilarBuildsRequestSchema: GenMessage<ListSimilarBuildsRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_build, 9);
-
-/**
- * @generated from message quadsmith.api.ListSimilarBuildsResponse
- */
-export type ListSimilarBuildsResponse = Message<"quadsmith.api.ListSimilarBuildsResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.SimilarBuild similar_builds = 1;
-   */
-  similarBuilds: SimilarBuild[];
-};
-
-/**
- * Describes the message quadsmith.api.ListSimilarBuildsResponse.
- * Use `create(ListSimilarBuildsResponseSchema)` to create a new message.
- */
-export const ListSimilarBuildsResponseSchema: GenMessage<ListSimilarBuildsResponse> =
-  /*@__PURE__*/
   messageDesc(file_quadsmith_api_build, 10);
 
 /**
  * ---------------------------------------------------------
- * gRPC Service
+ * 1. gRPC Service (Services First)
  * ---------------------------------------------------------
  *
  * @generated from service quadsmith.api.BuildService

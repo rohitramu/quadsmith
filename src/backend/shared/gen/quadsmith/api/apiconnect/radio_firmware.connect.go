@@ -39,12 +39,24 @@ const (
 	// RadioFirmwareServiceListRadioFirmwaresProcedure is the fully-qualified name of the
 	// RadioFirmwareService's ListRadioFirmwares RPC.
 	RadioFirmwareServiceListRadioFirmwaresProcedure = "/quadsmith.api.RadioFirmwareService/ListRadioFirmwares"
+	// RadioFirmwareServiceCreateRadioFirmwareProcedure is the fully-qualified name of the
+	// RadioFirmwareService's CreateRadioFirmware RPC.
+	RadioFirmwareServiceCreateRadioFirmwareProcedure = "/quadsmith.api.RadioFirmwareService/CreateRadioFirmware"
+	// RadioFirmwareServiceUpdateRadioFirmwareProcedure is the fully-qualified name of the
+	// RadioFirmwareService's UpdateRadioFirmware RPC.
+	RadioFirmwareServiceUpdateRadioFirmwareProcedure = "/quadsmith.api.RadioFirmwareService/UpdateRadioFirmware"
+	// RadioFirmwareServiceDeleteRadioFirmwareProcedure is the fully-qualified name of the
+	// RadioFirmwareService's DeleteRadioFirmware RPC.
+	RadioFirmwareServiceDeleteRadioFirmwareProcedure = "/quadsmith.api.RadioFirmwareService/DeleteRadioFirmware"
 )
 
 // RadioFirmwareServiceClient is a client for the quadsmith.api.RadioFirmwareService service.
 type RadioFirmwareServiceClient interface {
 	GetRadioFirmware(context.Context, *connect.Request[api.GetRadioFirmwareRequest]) (*connect.Response[api.RadioFirmware], error)
 	ListRadioFirmwares(context.Context, *connect.Request[api.ListRadioFirmwaresRequest]) (*connect.Response[api.ListRadioFirmwaresResponse], error)
+	CreateRadioFirmware(context.Context, *connect.Request[api.CreateRadioFirmwareRequest]) (*connect.Response[api.RadioFirmware], error)
+	UpdateRadioFirmware(context.Context, *connect.Request[api.UpdateRadioFirmwareRequest]) (*connect.Response[api.RadioFirmware], error)
+	DeleteRadioFirmware(context.Context, *connect.Request[api.DeleteRadioFirmwareRequest]) (*connect.Response[api.DeleteRadioFirmwareResponse], error)
 }
 
 // NewRadioFirmwareServiceClient constructs a client for the quadsmith.api.RadioFirmwareService
@@ -70,13 +82,34 @@ func NewRadioFirmwareServiceClient(httpClient connect.HTTPClient, baseURL string
 			connect.WithSchema(radioFirmwareServiceMethods.ByName("ListRadioFirmwares")),
 			connect.WithClientOptions(opts...),
 		),
+		createRadioFirmware: connect.NewClient[api.CreateRadioFirmwareRequest, api.RadioFirmware](
+			httpClient,
+			baseURL+RadioFirmwareServiceCreateRadioFirmwareProcedure,
+			connect.WithSchema(radioFirmwareServiceMethods.ByName("CreateRadioFirmware")),
+			connect.WithClientOptions(opts...),
+		),
+		updateRadioFirmware: connect.NewClient[api.UpdateRadioFirmwareRequest, api.RadioFirmware](
+			httpClient,
+			baseURL+RadioFirmwareServiceUpdateRadioFirmwareProcedure,
+			connect.WithSchema(radioFirmwareServiceMethods.ByName("UpdateRadioFirmware")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteRadioFirmware: connect.NewClient[api.DeleteRadioFirmwareRequest, api.DeleteRadioFirmwareResponse](
+			httpClient,
+			baseURL+RadioFirmwareServiceDeleteRadioFirmwareProcedure,
+			connect.WithSchema(radioFirmwareServiceMethods.ByName("DeleteRadioFirmware")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // radioFirmwareServiceClient implements RadioFirmwareServiceClient.
 type radioFirmwareServiceClient struct {
-	getRadioFirmware   *connect.Client[api.GetRadioFirmwareRequest, api.RadioFirmware]
-	listRadioFirmwares *connect.Client[api.ListRadioFirmwaresRequest, api.ListRadioFirmwaresResponse]
+	getRadioFirmware    *connect.Client[api.GetRadioFirmwareRequest, api.RadioFirmware]
+	listRadioFirmwares  *connect.Client[api.ListRadioFirmwaresRequest, api.ListRadioFirmwaresResponse]
+	createRadioFirmware *connect.Client[api.CreateRadioFirmwareRequest, api.RadioFirmware]
+	updateRadioFirmware *connect.Client[api.UpdateRadioFirmwareRequest, api.RadioFirmware]
+	deleteRadioFirmware *connect.Client[api.DeleteRadioFirmwareRequest, api.DeleteRadioFirmwareResponse]
 }
 
 // GetRadioFirmware calls quadsmith.api.RadioFirmwareService.GetRadioFirmware.
@@ -89,11 +122,29 @@ func (c *radioFirmwareServiceClient) ListRadioFirmwares(ctx context.Context, req
 	return c.listRadioFirmwares.CallUnary(ctx, req)
 }
 
+// CreateRadioFirmware calls quadsmith.api.RadioFirmwareService.CreateRadioFirmware.
+func (c *radioFirmwareServiceClient) CreateRadioFirmware(ctx context.Context, req *connect.Request[api.CreateRadioFirmwareRequest]) (*connect.Response[api.RadioFirmware], error) {
+	return c.createRadioFirmware.CallUnary(ctx, req)
+}
+
+// UpdateRadioFirmware calls quadsmith.api.RadioFirmwareService.UpdateRadioFirmware.
+func (c *radioFirmwareServiceClient) UpdateRadioFirmware(ctx context.Context, req *connect.Request[api.UpdateRadioFirmwareRequest]) (*connect.Response[api.RadioFirmware], error) {
+	return c.updateRadioFirmware.CallUnary(ctx, req)
+}
+
+// DeleteRadioFirmware calls quadsmith.api.RadioFirmwareService.DeleteRadioFirmware.
+func (c *radioFirmwareServiceClient) DeleteRadioFirmware(ctx context.Context, req *connect.Request[api.DeleteRadioFirmwareRequest]) (*connect.Response[api.DeleteRadioFirmwareResponse], error) {
+	return c.deleteRadioFirmware.CallUnary(ctx, req)
+}
+
 // RadioFirmwareServiceHandler is an implementation of the quadsmith.api.RadioFirmwareService
 // service.
 type RadioFirmwareServiceHandler interface {
 	GetRadioFirmware(context.Context, *connect.Request[api.GetRadioFirmwareRequest]) (*connect.Response[api.RadioFirmware], error)
 	ListRadioFirmwares(context.Context, *connect.Request[api.ListRadioFirmwaresRequest]) (*connect.Response[api.ListRadioFirmwaresResponse], error)
+	CreateRadioFirmware(context.Context, *connect.Request[api.CreateRadioFirmwareRequest]) (*connect.Response[api.RadioFirmware], error)
+	UpdateRadioFirmware(context.Context, *connect.Request[api.UpdateRadioFirmwareRequest]) (*connect.Response[api.RadioFirmware], error)
+	DeleteRadioFirmware(context.Context, *connect.Request[api.DeleteRadioFirmwareRequest]) (*connect.Response[api.DeleteRadioFirmwareResponse], error)
 }
 
 // NewRadioFirmwareServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -115,12 +166,36 @@ func NewRadioFirmwareServiceHandler(svc RadioFirmwareServiceHandler, opts ...con
 		connect.WithSchema(radioFirmwareServiceMethods.ByName("ListRadioFirmwares")),
 		connect.WithHandlerOptions(opts...),
 	)
+	radioFirmwareServiceCreateRadioFirmwareHandler := connect.NewUnaryHandler(
+		RadioFirmwareServiceCreateRadioFirmwareProcedure,
+		svc.CreateRadioFirmware,
+		connect.WithSchema(radioFirmwareServiceMethods.ByName("CreateRadioFirmware")),
+		connect.WithHandlerOptions(opts...),
+	)
+	radioFirmwareServiceUpdateRadioFirmwareHandler := connect.NewUnaryHandler(
+		RadioFirmwareServiceUpdateRadioFirmwareProcedure,
+		svc.UpdateRadioFirmware,
+		connect.WithSchema(radioFirmwareServiceMethods.ByName("UpdateRadioFirmware")),
+		connect.WithHandlerOptions(opts...),
+	)
+	radioFirmwareServiceDeleteRadioFirmwareHandler := connect.NewUnaryHandler(
+		RadioFirmwareServiceDeleteRadioFirmwareProcedure,
+		svc.DeleteRadioFirmware,
+		connect.WithSchema(radioFirmwareServiceMethods.ByName("DeleteRadioFirmware")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.RadioFirmwareService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case RadioFirmwareServiceGetRadioFirmwareProcedure:
 			radioFirmwareServiceGetRadioFirmwareHandler.ServeHTTP(w, r)
 		case RadioFirmwareServiceListRadioFirmwaresProcedure:
 			radioFirmwareServiceListRadioFirmwaresHandler.ServeHTTP(w, r)
+		case RadioFirmwareServiceCreateRadioFirmwareProcedure:
+			radioFirmwareServiceCreateRadioFirmwareHandler.ServeHTTP(w, r)
+		case RadioFirmwareServiceUpdateRadioFirmwareProcedure:
+			radioFirmwareServiceUpdateRadioFirmwareHandler.ServeHTTP(w, r)
+		case RadioFirmwareServiceDeleteRadioFirmwareProcedure:
+			radioFirmwareServiceDeleteRadioFirmwareHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -136,4 +211,16 @@ func (UnimplementedRadioFirmwareServiceHandler) GetRadioFirmware(context.Context
 
 func (UnimplementedRadioFirmwareServiceHandler) ListRadioFirmwares(context.Context, *connect.Request[api.ListRadioFirmwaresRequest]) (*connect.Response[api.ListRadioFirmwaresResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.RadioFirmwareService.ListRadioFirmwares is not implemented"))
+}
+
+func (UnimplementedRadioFirmwareServiceHandler) CreateRadioFirmware(context.Context, *connect.Request[api.CreateRadioFirmwareRequest]) (*connect.Response[api.RadioFirmware], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.RadioFirmwareService.CreateRadioFirmware is not implemented"))
+}
+
+func (UnimplementedRadioFirmwareServiceHandler) UpdateRadioFirmware(context.Context, *connect.Request[api.UpdateRadioFirmwareRequest]) (*connect.Response[api.RadioFirmware], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.RadioFirmwareService.UpdateRadioFirmware is not implemented"))
+}
+
+func (UnimplementedRadioFirmwareServiceHandler) DeleteRadioFirmware(context.Context, *connect.Request[api.DeleteRadioFirmwareRequest]) (*connect.Response[api.DeleteRadioFirmwareResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.RadioFirmwareService.DeleteRadioFirmware is not implemented"))
 }

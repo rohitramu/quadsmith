@@ -24,7 +24,366 @@ const (
 )
 
 // ---------------------------------------------------------
-// Domain Model
+// 2. RPC Requests & Responses (Callers Precede Callees)
+// ---------------------------------------------------------
+type CreateFcFirmwareRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FcFirmware    *FcFirmware            `protobuf:"bytes,1,opt,name=fc_firmware,json=fcFirmware,proto3" json:"fc_firmware,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateFcFirmwareRequest) Reset() {
+	*x = CreateFcFirmwareRequest{}
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateFcFirmwareRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateFcFirmwareRequest) ProtoMessage() {}
+
+func (x *CreateFcFirmwareRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateFcFirmwareRequest.ProtoReflect.Descriptor instead.
+func (*CreateFcFirmwareRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *CreateFcFirmwareRequest) GetFcFirmware() *FcFirmware {
+	if x != nil {
+		return x.FcFirmware
+	}
+	return nil
+}
+
+type DeleteFcFirmwareRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteFcFirmwareRequest) Reset() {
+	*x = DeleteFcFirmwareRequest{}
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteFcFirmwareRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteFcFirmwareRequest) ProtoMessage() {}
+
+func (x *DeleteFcFirmwareRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteFcFirmwareRequest.ProtoReflect.Descriptor instead.
+func (*DeleteFcFirmwareRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *DeleteFcFirmwareRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteFcFirmwareResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteFcFirmwareResponse) Reset() {
+	*x = DeleteFcFirmwareResponse{}
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteFcFirmwareResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteFcFirmwareResponse) ProtoMessage() {}
+
+func (x *DeleteFcFirmwareResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteFcFirmwareResponse.ProtoReflect.Descriptor instead.
+func (*DeleteFcFirmwareResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteFcFirmwareResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetFcFirmwareRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetFcFirmwareRequest) Reset() {
+	*x = GetFcFirmwareRequest{}
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetFcFirmwareRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetFcFirmwareRequest) ProtoMessage() {}
+
+func (x *GetFcFirmwareRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetFcFirmwareRequest.ProtoReflect.Descriptor instead.
+func (*GetFcFirmwareRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetFcFirmwareRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetFcFirmwareRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListFcFirmwaresRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListFcFirmwaresRequest) Reset() {
+	*x = ListFcFirmwaresRequest{}
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListFcFirmwaresRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListFcFirmwaresRequest) ProtoMessage() {}
+
+func (x *ListFcFirmwaresRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListFcFirmwaresRequest.ProtoReflect.Descriptor instead.
+func (*ListFcFirmwaresRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ListFcFirmwaresRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListFcFirmwaresRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListFcFirmwaresRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListFcFirmwaresRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListFcFirmwaresRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListFcFirmwaresResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FcFirmwares   []*FcFirmware          `protobuf:"bytes,1,rep,name=fc_firmwares,json=fcFirmwares,proto3" json:"fc_firmwares,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListFcFirmwaresResponse) Reset() {
+	*x = ListFcFirmwaresResponse{}
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListFcFirmwaresResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListFcFirmwaresResponse) ProtoMessage() {}
+
+func (x *ListFcFirmwaresResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListFcFirmwaresResponse.ProtoReflect.Descriptor instead.
+func (*ListFcFirmwaresResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListFcFirmwaresResponse) GetFcFirmwares() []*FcFirmware {
+	if x != nil {
+		return x.FcFirmwares
+	}
+	return nil
+}
+
+func (x *ListFcFirmwaresResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateFcFirmwareRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FcFirmware    *FcFirmware            `protobuf:"bytes,1,opt,name=fc_firmware,json=fcFirmware,proto3" json:"fc_firmware,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateFcFirmwareRequest) Reset() {
+	*x = UpdateFcFirmwareRequest{}
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateFcFirmwareRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateFcFirmwareRequest) ProtoMessage() {}
+
+func (x *UpdateFcFirmwareRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateFcFirmwareRequest.ProtoReflect.Descriptor instead.
+func (*UpdateFcFirmwareRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *UpdateFcFirmwareRequest) GetFcFirmware() *FcFirmware {
+	if x != nil {
+		return x.FcFirmware
+	}
+	return nil
+}
+
+// ---------------------------------------------------------
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
 type FcFirmware struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
@@ -41,13 +400,15 @@ type FcFirmware struct {
 	ReferenceLinks      []*ReferenceLink       `protobuf:"bytes,11,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	PrimaryDisplayImage *string                `protobuf:"bytes,12,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media               []*Media               `protobuf:"bytes,13,rep,name=media,proto3" json:"media,omitempty"`
+	UserUuid            *string                `protobuf:"bytes,14,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
+	AuthorUsername      *string                `protobuf:"bytes,15,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
 
 func (x *FcFirmware) Reset() {
 	*x = FcFirmware{}
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[0]
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -59,7 +420,7 @@ func (x *FcFirmware) String() string {
 func (*FcFirmware) ProtoMessage() {}
 
 func (x *FcFirmware) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[0]
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -72,7 +433,7 @@ func (x *FcFirmware) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FcFirmware.ProtoReflect.Descriptor instead.
 func (*FcFirmware) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{0}
+	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *FcFirmware) GetUuid() string {
@@ -166,185 +527,16 @@ func (x *FcFirmware) GetMedia() []*Media {
 	return nil
 }
 
-// ---------------------------------------------------------
-// RPC Requests & Responses
-// ---------------------------------------------------------
-type GetFcFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetFcFirmwareRequest) Reset() {
-	*x = GetFcFirmwareRequest{}
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetFcFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetFcFirmwareRequest) ProtoMessage() {}
-
-func (x *GetFcFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetFcFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*GetFcFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *GetFcFirmwareRequest) GetId() string {
-	if x != nil {
-		return x.Id
+func (x *FcFirmware) GetUserUuid() string {
+	if x != nil && x.UserUuid != nil {
+		return *x.UserUuid
 	}
 	return ""
 }
 
-func (x *GetFcFirmwareRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListFcFirmwaresRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListFcFirmwaresRequest) Reset() {
-	*x = ListFcFirmwaresRequest{}
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListFcFirmwaresRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListFcFirmwaresRequest) ProtoMessage() {}
-
-func (x *ListFcFirmwaresRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListFcFirmwaresRequest.ProtoReflect.Descriptor instead.
-func (*ListFcFirmwaresRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *ListFcFirmwaresRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListFcFirmwaresRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListFcFirmwaresRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListFcFirmwaresRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListFcFirmwaresRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListFcFirmwaresResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	FcFirmwares   []*FcFirmware          `protobuf:"bytes,1,rep,name=fc_firmwares,json=fcFirmwares,proto3" json:"fc_firmwares,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListFcFirmwaresResponse) Reset() {
-	*x = ListFcFirmwaresResponse{}
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListFcFirmwaresResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListFcFirmwaresResponse) ProtoMessage() {}
-
-func (x *ListFcFirmwaresResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListFcFirmwaresResponse.ProtoReflect.Descriptor instead.
-func (*ListFcFirmwaresResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *ListFcFirmwaresResponse) GetFcFirmwares() []*FcFirmware {
-	if x != nil {
-		return x.FcFirmwares
-	}
-	return nil
-}
-
-func (x *ListFcFirmwaresResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
+func (x *FcFirmware) GetAuthorUsername() string {
+	if x != nil && x.AuthorUsername != nil {
+		return *x.AuthorUsername
 	}
 	return ""
 }
@@ -353,30 +545,15 @@ var File_quadsmith_api_fc_firmware_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_fc_firmware_proto_rawDesc = "" +
 	"\n" +
-	"\x1fquadsmith/api/fc_firmware.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"\xca\x05\n" +
-	"\n" +
-	"FcFirmware\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\x12\x18\n" +
-	"\aversion\x18\x05 \x01(\tR\aversion\x121\n" +
-	"\x14target_architectures\x18\x06 \x01(\tR\x13targetArchitectures\x12/\n" +
-	"\x13supported_protocols\x18\a \x01(\tR\x12supportedProtocols\x12$\n" +
-	"\x0eis_open_source\x18\b \x01(\bR\fisOpenSource\x12%\n" +
-	"\x0erepository_url\x18\t \x01(\tR\rrepositoryUrl\x12 \n" +
-	"\vdescription\x18\n" +
-	" \x01(\tR\vdescription\x12E\n" +
-	"\x0freference_links\x18\v \x03(\v2\x1c.quadsmith.api.ReferenceLinkR\x0ereferenceLinks\x127\n" +
-	"\x15primary_display_image\x18\f \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12*\n" +
-	"\x05media\x18\r \x03(\v2\x14.quadsmith.api.MediaR\x05media:\x94\x01\x8a\xb5\x18L\n" +
-	"\fmanufacturer\n" +
-	"\x04name\n" +
-	"\aversion\n" +
-	"\x14target_architectures\n" +
-	"\x0eis_open_source\x12\a#3b82f6\x9a\xb5\x18\x1fcomponents/software/fc-firmware\xc2\xf3\x18\x1d\n" +
-	"\x1bflight_controller_firmwaresB\x18\n" +
-	"\x16_primary_display_image\"@\n" +
+	"\x1fquadsmith/api/fc_firmware.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"U\n" +
+	"\x17CreateFcFirmwareRequest\x12:\n" +
+	"\vfc_firmware\x18\x01 \x01(\v2\x19.quadsmith.api.FcFirmwareR\n" +
+	"fcFirmware\")\n" +
+	"\x17DeleteFcFirmwareRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\";\n" +
+	"\x18DeleteFcFirmwareResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\"@\n" +
 	"\x14GetFcFirmwareRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x9a\x01\n" +
@@ -389,10 +566,44 @@ const file_quadsmith_api_fc_firmware_proto_rawDesc = "" +
 	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x7f\n" +
 	"\x17ListFcFirmwaresResponse\x12<\n" +
 	"\ffc_firmwares\x18\x01 \x03(\v2\x19.quadsmith.api.FcFirmwareR\vfcFirmwares\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xc6\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"U\n" +
+	"\x17UpdateFcFirmwareRequest\x12:\n" +
+	"\vfc_firmware\x18\x01 \x01(\v2\x19.quadsmith.api.FcFirmwareR\n" +
+	"fcFirmware\"\x96\a\n" +
+	"\n" +
+	"FcFirmware\x12<\n" +
+	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12*\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x1a\n" +
+	"\x04name\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12\x18\n" +
+	"\aversion\x18\x05 \x01(\tR\aversion\x121\n" +
+	"\x14target_architectures\x18\x06 \x01(\tR\x13targetArchitectures\x12/\n" +
+	"\x13supported_protocols\x18\a \x01(\tR\x12supportedProtocols\x12$\n" +
+	"\x0eis_open_source\x18\b \x01(\bR\fisOpenSource\x12%\n" +
+	"\x0erepository_url\x18\t \x01(\tR\rrepositoryUrl\x12(\n" +
+	"\vdescription\x18\n" +
+	" \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x12M\n" +
+	"\x0freference_links\x18\v \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
+	"\x15primary_display_image\x18\f \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x00R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
+	"\x05media\x18\r \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12(\n" +
+	"\tuser_uuid\x18\x0e \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x01R\buserUuid\x88\x01\x01\x124\n" +
+	"\x0fauthor_username\x18\x0f \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\x0eauthorUsername\x88\x01\x01:\x94\x01\x8a\xb5\x18L\n" +
+	"\fmanufacturer\n" +
+	"\x04name\n" +
+	"\aversion\n" +
+	"\x14target_architectures\n" +
+	"\x0eis_open_source\x12\a#3b82f6\x9a\xb5\x18\x1fcomponents/software/fc-firmware\xc2\xf3\x18\x1d\n" +
+	"\x1bflight_controller_firmwaresB\x18\n" +
+	"\x16_primary_display_imageB\f\n" +
+	"\n" +
+	"_user_uuidB\x12\n" +
+	"\x10_author_username2\xd9\x03\n" +
 	"\x11FcFirmwareService\x12O\n" +
 	"\rGetFcFirmware\x12#.quadsmith.api.GetFcFirmwareRequest\x1a\x19.quadsmith.api.FcFirmware\x12`\n" +
-	"\x0fListFcFirmwares\x12%.quadsmith.api.ListFcFirmwaresRequest\x1a&.quadsmith.api.ListFcFirmwaresResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"\x0fListFcFirmwares\x12%.quadsmith.api.ListFcFirmwaresRequest\x1a&.quadsmith.api.ListFcFirmwaresResponse\x12U\n" +
+	"\x10CreateFcFirmware\x12&.quadsmith.api.CreateFcFirmwareRequest\x1a\x19.quadsmith.api.FcFirmware\x12U\n" +
+	"\x10UpdateFcFirmware\x12&.quadsmith.api.UpdateFcFirmwareRequest\x1a\x19.quadsmith.api.FcFirmware\x12c\n" +
+	"\x10DeleteFcFirmware\x12&.quadsmith.api.DeleteFcFirmwareRequest\x1a'.quadsmith.api.DeleteFcFirmwareResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_fc_firmware_proto_rawDescOnce sync.Once
@@ -406,28 +617,40 @@ func file_quadsmith_api_fc_firmware_proto_rawDescGZIP() []byte {
 	return file_quadsmith_api_fc_firmware_proto_rawDescData
 }
 
-var file_quadsmith_api_fc_firmware_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_quadsmith_api_fc_firmware_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_fc_firmware_proto_goTypes = []any{
-	(*FcFirmware)(nil),              // 0: quadsmith.api.FcFirmware
-	(*GetFcFirmwareRequest)(nil),    // 1: quadsmith.api.GetFcFirmwareRequest
-	(*ListFcFirmwaresRequest)(nil),  // 2: quadsmith.api.ListFcFirmwaresRequest
-	(*ListFcFirmwaresResponse)(nil), // 3: quadsmith.api.ListFcFirmwaresResponse
-	(*ReferenceLink)(nil),           // 4: quadsmith.api.ReferenceLink
-	(*Media)(nil),                   // 5: quadsmith.api.Media
+	(*CreateFcFirmwareRequest)(nil),  // 0: quadsmith.api.CreateFcFirmwareRequest
+	(*DeleteFcFirmwareRequest)(nil),  // 1: quadsmith.api.DeleteFcFirmwareRequest
+	(*DeleteFcFirmwareResponse)(nil), // 2: quadsmith.api.DeleteFcFirmwareResponse
+	(*GetFcFirmwareRequest)(nil),     // 3: quadsmith.api.GetFcFirmwareRequest
+	(*ListFcFirmwaresRequest)(nil),   // 4: quadsmith.api.ListFcFirmwaresRequest
+	(*ListFcFirmwaresResponse)(nil),  // 5: quadsmith.api.ListFcFirmwaresResponse
+	(*UpdateFcFirmwareRequest)(nil),  // 6: quadsmith.api.UpdateFcFirmwareRequest
+	(*FcFirmware)(nil),               // 7: quadsmith.api.FcFirmware
+	(*ReferenceLink)(nil),            // 8: quadsmith.api.ReferenceLink
+	(*Media)(nil),                    // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_fc_firmware_proto_depIdxs = []int32{
-	4, // 0: quadsmith.api.FcFirmware.reference_links:type_name -> quadsmith.api.ReferenceLink
-	5, // 1: quadsmith.api.FcFirmware.media:type_name -> quadsmith.api.Media
-	0, // 2: quadsmith.api.ListFcFirmwaresResponse.fc_firmwares:type_name -> quadsmith.api.FcFirmware
-	1, // 3: quadsmith.api.FcFirmwareService.GetFcFirmware:input_type -> quadsmith.api.GetFcFirmwareRequest
-	2, // 4: quadsmith.api.FcFirmwareService.ListFcFirmwares:input_type -> quadsmith.api.ListFcFirmwaresRequest
-	0, // 5: quadsmith.api.FcFirmwareService.GetFcFirmware:output_type -> quadsmith.api.FcFirmware
-	3, // 6: quadsmith.api.FcFirmwareService.ListFcFirmwares:output_type -> quadsmith.api.ListFcFirmwaresResponse
-	5, // [5:7] is the sub-list for method output_type
-	3, // [3:5] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	7,  // 0: quadsmith.api.CreateFcFirmwareRequest.fc_firmware:type_name -> quadsmith.api.FcFirmware
+	7,  // 1: quadsmith.api.ListFcFirmwaresResponse.fc_firmwares:type_name -> quadsmith.api.FcFirmware
+	7,  // 2: quadsmith.api.UpdateFcFirmwareRequest.fc_firmware:type_name -> quadsmith.api.FcFirmware
+	8,  // 3: quadsmith.api.FcFirmware.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 4: quadsmith.api.FcFirmware.media:type_name -> quadsmith.api.Media
+	3,  // 5: quadsmith.api.FcFirmwareService.GetFcFirmware:input_type -> quadsmith.api.GetFcFirmwareRequest
+	4,  // 6: quadsmith.api.FcFirmwareService.ListFcFirmwares:input_type -> quadsmith.api.ListFcFirmwaresRequest
+	0,  // 7: quadsmith.api.FcFirmwareService.CreateFcFirmware:input_type -> quadsmith.api.CreateFcFirmwareRequest
+	6,  // 8: quadsmith.api.FcFirmwareService.UpdateFcFirmware:input_type -> quadsmith.api.UpdateFcFirmwareRequest
+	1,  // 9: quadsmith.api.FcFirmwareService.DeleteFcFirmware:input_type -> quadsmith.api.DeleteFcFirmwareRequest
+	7,  // 10: quadsmith.api.FcFirmwareService.GetFcFirmware:output_type -> quadsmith.api.FcFirmware
+	5,  // 11: quadsmith.api.FcFirmwareService.ListFcFirmwares:output_type -> quadsmith.api.ListFcFirmwaresResponse
+	7,  // 12: quadsmith.api.FcFirmwareService.CreateFcFirmware:output_type -> quadsmith.api.FcFirmware
+	7,  // 13: quadsmith.api.FcFirmwareService.UpdateFcFirmware:output_type -> quadsmith.api.FcFirmware
+	2,  // 14: quadsmith.api.FcFirmwareService.DeleteFcFirmware:output_type -> quadsmith.api.DeleteFcFirmwareResponse
+	10, // [10:15] is the sub-list for method output_type
+	5,  // [5:10] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_fc_firmware_proto_init() }
@@ -437,14 +660,14 @@ func file_quadsmith_api_fc_firmware_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_fc_firmware_proto_msgTypes[0].OneofWrappers = []any{}
+	file_quadsmith_api_fc_firmware_proto_msgTypes[7].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_fc_firmware_proto_rawDesc), len(file_quadsmith_api_fc_firmware_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

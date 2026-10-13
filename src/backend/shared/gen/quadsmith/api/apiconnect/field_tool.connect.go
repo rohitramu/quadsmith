@@ -39,12 +39,24 @@ const (
 	// FieldToolServiceListFieldToolsProcedure is the fully-qualified name of the FieldToolService's
 	// ListFieldTools RPC.
 	FieldToolServiceListFieldToolsProcedure = "/quadsmith.api.FieldToolService/ListFieldTools"
+	// FieldToolServiceCreateFieldToolProcedure is the fully-qualified name of the FieldToolService's
+	// CreateFieldTool RPC.
+	FieldToolServiceCreateFieldToolProcedure = "/quadsmith.api.FieldToolService/CreateFieldTool"
+	// FieldToolServiceUpdateFieldToolProcedure is the fully-qualified name of the FieldToolService's
+	// UpdateFieldTool RPC.
+	FieldToolServiceUpdateFieldToolProcedure = "/quadsmith.api.FieldToolService/UpdateFieldTool"
+	// FieldToolServiceDeleteFieldToolProcedure is the fully-qualified name of the FieldToolService's
+	// DeleteFieldTool RPC.
+	FieldToolServiceDeleteFieldToolProcedure = "/quadsmith.api.FieldToolService/DeleteFieldTool"
 )
 
 // FieldToolServiceClient is a client for the quadsmith.api.FieldToolService service.
 type FieldToolServiceClient interface {
 	GetFieldTool(context.Context, *connect.Request[api.GetFieldToolRequest]) (*connect.Response[api.FieldTool], error)
 	ListFieldTools(context.Context, *connect.Request[api.ListFieldToolsRequest]) (*connect.Response[api.ListFieldToolsResponse], error)
+	CreateFieldTool(context.Context, *connect.Request[api.CreateFieldToolRequest]) (*connect.Response[api.FieldTool], error)
+	UpdateFieldTool(context.Context, *connect.Request[api.UpdateFieldToolRequest]) (*connect.Response[api.FieldTool], error)
+	DeleteFieldTool(context.Context, *connect.Request[api.DeleteFieldToolRequest]) (*connect.Response[api.DeleteFieldToolResponse], error)
 }
 
 // NewFieldToolServiceClient constructs a client for the quadsmith.api.FieldToolService service. By
@@ -70,13 +82,34 @@ func NewFieldToolServiceClient(httpClient connect.HTTPClient, baseURL string, op
 			connect.WithSchema(fieldToolServiceMethods.ByName("ListFieldTools")),
 			connect.WithClientOptions(opts...),
 		),
+		createFieldTool: connect.NewClient[api.CreateFieldToolRequest, api.FieldTool](
+			httpClient,
+			baseURL+FieldToolServiceCreateFieldToolProcedure,
+			connect.WithSchema(fieldToolServiceMethods.ByName("CreateFieldTool")),
+			connect.WithClientOptions(opts...),
+		),
+		updateFieldTool: connect.NewClient[api.UpdateFieldToolRequest, api.FieldTool](
+			httpClient,
+			baseURL+FieldToolServiceUpdateFieldToolProcedure,
+			connect.WithSchema(fieldToolServiceMethods.ByName("UpdateFieldTool")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteFieldTool: connect.NewClient[api.DeleteFieldToolRequest, api.DeleteFieldToolResponse](
+			httpClient,
+			baseURL+FieldToolServiceDeleteFieldToolProcedure,
+			connect.WithSchema(fieldToolServiceMethods.ByName("DeleteFieldTool")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // fieldToolServiceClient implements FieldToolServiceClient.
 type fieldToolServiceClient struct {
-	getFieldTool   *connect.Client[api.GetFieldToolRequest, api.FieldTool]
-	listFieldTools *connect.Client[api.ListFieldToolsRequest, api.ListFieldToolsResponse]
+	getFieldTool    *connect.Client[api.GetFieldToolRequest, api.FieldTool]
+	listFieldTools  *connect.Client[api.ListFieldToolsRequest, api.ListFieldToolsResponse]
+	createFieldTool *connect.Client[api.CreateFieldToolRequest, api.FieldTool]
+	updateFieldTool *connect.Client[api.UpdateFieldToolRequest, api.FieldTool]
+	deleteFieldTool *connect.Client[api.DeleteFieldToolRequest, api.DeleteFieldToolResponse]
 }
 
 // GetFieldTool calls quadsmith.api.FieldToolService.GetFieldTool.
@@ -89,10 +122,28 @@ func (c *fieldToolServiceClient) ListFieldTools(ctx context.Context, req *connec
 	return c.listFieldTools.CallUnary(ctx, req)
 }
 
+// CreateFieldTool calls quadsmith.api.FieldToolService.CreateFieldTool.
+func (c *fieldToolServiceClient) CreateFieldTool(ctx context.Context, req *connect.Request[api.CreateFieldToolRequest]) (*connect.Response[api.FieldTool], error) {
+	return c.createFieldTool.CallUnary(ctx, req)
+}
+
+// UpdateFieldTool calls quadsmith.api.FieldToolService.UpdateFieldTool.
+func (c *fieldToolServiceClient) UpdateFieldTool(ctx context.Context, req *connect.Request[api.UpdateFieldToolRequest]) (*connect.Response[api.FieldTool], error) {
+	return c.updateFieldTool.CallUnary(ctx, req)
+}
+
+// DeleteFieldTool calls quadsmith.api.FieldToolService.DeleteFieldTool.
+func (c *fieldToolServiceClient) DeleteFieldTool(ctx context.Context, req *connect.Request[api.DeleteFieldToolRequest]) (*connect.Response[api.DeleteFieldToolResponse], error) {
+	return c.deleteFieldTool.CallUnary(ctx, req)
+}
+
 // FieldToolServiceHandler is an implementation of the quadsmith.api.FieldToolService service.
 type FieldToolServiceHandler interface {
 	GetFieldTool(context.Context, *connect.Request[api.GetFieldToolRequest]) (*connect.Response[api.FieldTool], error)
 	ListFieldTools(context.Context, *connect.Request[api.ListFieldToolsRequest]) (*connect.Response[api.ListFieldToolsResponse], error)
+	CreateFieldTool(context.Context, *connect.Request[api.CreateFieldToolRequest]) (*connect.Response[api.FieldTool], error)
+	UpdateFieldTool(context.Context, *connect.Request[api.UpdateFieldToolRequest]) (*connect.Response[api.FieldTool], error)
+	DeleteFieldTool(context.Context, *connect.Request[api.DeleteFieldToolRequest]) (*connect.Response[api.DeleteFieldToolResponse], error)
 }
 
 // NewFieldToolServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -114,12 +165,36 @@ func NewFieldToolServiceHandler(svc FieldToolServiceHandler, opts ...connect.Han
 		connect.WithSchema(fieldToolServiceMethods.ByName("ListFieldTools")),
 		connect.WithHandlerOptions(opts...),
 	)
+	fieldToolServiceCreateFieldToolHandler := connect.NewUnaryHandler(
+		FieldToolServiceCreateFieldToolProcedure,
+		svc.CreateFieldTool,
+		connect.WithSchema(fieldToolServiceMethods.ByName("CreateFieldTool")),
+		connect.WithHandlerOptions(opts...),
+	)
+	fieldToolServiceUpdateFieldToolHandler := connect.NewUnaryHandler(
+		FieldToolServiceUpdateFieldToolProcedure,
+		svc.UpdateFieldTool,
+		connect.WithSchema(fieldToolServiceMethods.ByName("UpdateFieldTool")),
+		connect.WithHandlerOptions(opts...),
+	)
+	fieldToolServiceDeleteFieldToolHandler := connect.NewUnaryHandler(
+		FieldToolServiceDeleteFieldToolProcedure,
+		svc.DeleteFieldTool,
+		connect.WithSchema(fieldToolServiceMethods.ByName("DeleteFieldTool")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.FieldToolService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case FieldToolServiceGetFieldToolProcedure:
 			fieldToolServiceGetFieldToolHandler.ServeHTTP(w, r)
 		case FieldToolServiceListFieldToolsProcedure:
 			fieldToolServiceListFieldToolsHandler.ServeHTTP(w, r)
+		case FieldToolServiceCreateFieldToolProcedure:
+			fieldToolServiceCreateFieldToolHandler.ServeHTTP(w, r)
+		case FieldToolServiceUpdateFieldToolProcedure:
+			fieldToolServiceUpdateFieldToolHandler.ServeHTTP(w, r)
+		case FieldToolServiceDeleteFieldToolProcedure:
+			fieldToolServiceDeleteFieldToolHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +210,16 @@ func (UnimplementedFieldToolServiceHandler) GetFieldTool(context.Context, *conne
 
 func (UnimplementedFieldToolServiceHandler) ListFieldTools(context.Context, *connect.Request[api.ListFieldToolsRequest]) (*connect.Response[api.ListFieldToolsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FieldToolService.ListFieldTools is not implemented"))
+}
+
+func (UnimplementedFieldToolServiceHandler) CreateFieldTool(context.Context, *connect.Request[api.CreateFieldToolRequest]) (*connect.Response[api.FieldTool], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FieldToolService.CreateFieldTool is not implemented"))
+}
+
+func (UnimplementedFieldToolServiceHandler) UpdateFieldTool(context.Context, *connect.Request[api.UpdateFieldToolRequest]) (*connect.Response[api.FieldTool], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FieldToolService.UpdateFieldTool is not implemented"))
+}
+
+func (UnimplementedFieldToolServiceHandler) DeleteFieldTool(context.Context, *connect.Request[api.DeleteFieldToolRequest]) (*connect.Response[api.DeleteFieldToolResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FieldToolService.DeleteFieldTool is not implemented"))
 }

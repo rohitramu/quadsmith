@@ -39,12 +39,24 @@ const (
 	// VtxFirmwareServiceListVtxFirmwaresProcedure is the fully-qualified name of the
 	// VtxFirmwareService's ListVtxFirmwares RPC.
 	VtxFirmwareServiceListVtxFirmwaresProcedure = "/quadsmith.api.VtxFirmwareService/ListVtxFirmwares"
+	// VtxFirmwareServiceCreateVtxFirmwareProcedure is the fully-qualified name of the
+	// VtxFirmwareService's CreateVtxFirmware RPC.
+	VtxFirmwareServiceCreateVtxFirmwareProcedure = "/quadsmith.api.VtxFirmwareService/CreateVtxFirmware"
+	// VtxFirmwareServiceUpdateVtxFirmwareProcedure is the fully-qualified name of the
+	// VtxFirmwareService's UpdateVtxFirmware RPC.
+	VtxFirmwareServiceUpdateVtxFirmwareProcedure = "/quadsmith.api.VtxFirmwareService/UpdateVtxFirmware"
+	// VtxFirmwareServiceDeleteVtxFirmwareProcedure is the fully-qualified name of the
+	// VtxFirmwareService's DeleteVtxFirmware RPC.
+	VtxFirmwareServiceDeleteVtxFirmwareProcedure = "/quadsmith.api.VtxFirmwareService/DeleteVtxFirmware"
 )
 
 // VtxFirmwareServiceClient is a client for the quadsmith.api.VtxFirmwareService service.
 type VtxFirmwareServiceClient interface {
 	GetVtxFirmware(context.Context, *connect.Request[api.GetVtxFirmwareRequest]) (*connect.Response[api.VtxFirmware], error)
 	ListVtxFirmwares(context.Context, *connect.Request[api.ListVtxFirmwaresRequest]) (*connect.Response[api.ListVtxFirmwaresResponse], error)
+	CreateVtxFirmware(context.Context, *connect.Request[api.CreateVtxFirmwareRequest]) (*connect.Response[api.VtxFirmware], error)
+	UpdateVtxFirmware(context.Context, *connect.Request[api.UpdateVtxFirmwareRequest]) (*connect.Response[api.VtxFirmware], error)
+	DeleteVtxFirmware(context.Context, *connect.Request[api.DeleteVtxFirmwareRequest]) (*connect.Response[api.DeleteVtxFirmwareResponse], error)
 }
 
 // NewVtxFirmwareServiceClient constructs a client for the quadsmith.api.VtxFirmwareService service.
@@ -70,13 +82,34 @@ func NewVtxFirmwareServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(vtxFirmwareServiceMethods.ByName("ListVtxFirmwares")),
 			connect.WithClientOptions(opts...),
 		),
+		createVtxFirmware: connect.NewClient[api.CreateVtxFirmwareRequest, api.VtxFirmware](
+			httpClient,
+			baseURL+VtxFirmwareServiceCreateVtxFirmwareProcedure,
+			connect.WithSchema(vtxFirmwareServiceMethods.ByName("CreateVtxFirmware")),
+			connect.WithClientOptions(opts...),
+		),
+		updateVtxFirmware: connect.NewClient[api.UpdateVtxFirmwareRequest, api.VtxFirmware](
+			httpClient,
+			baseURL+VtxFirmwareServiceUpdateVtxFirmwareProcedure,
+			connect.WithSchema(vtxFirmwareServiceMethods.ByName("UpdateVtxFirmware")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteVtxFirmware: connect.NewClient[api.DeleteVtxFirmwareRequest, api.DeleteVtxFirmwareResponse](
+			httpClient,
+			baseURL+VtxFirmwareServiceDeleteVtxFirmwareProcedure,
+			connect.WithSchema(vtxFirmwareServiceMethods.ByName("DeleteVtxFirmware")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // vtxFirmwareServiceClient implements VtxFirmwareServiceClient.
 type vtxFirmwareServiceClient struct {
-	getVtxFirmware   *connect.Client[api.GetVtxFirmwareRequest, api.VtxFirmware]
-	listVtxFirmwares *connect.Client[api.ListVtxFirmwaresRequest, api.ListVtxFirmwaresResponse]
+	getVtxFirmware    *connect.Client[api.GetVtxFirmwareRequest, api.VtxFirmware]
+	listVtxFirmwares  *connect.Client[api.ListVtxFirmwaresRequest, api.ListVtxFirmwaresResponse]
+	createVtxFirmware *connect.Client[api.CreateVtxFirmwareRequest, api.VtxFirmware]
+	updateVtxFirmware *connect.Client[api.UpdateVtxFirmwareRequest, api.VtxFirmware]
+	deleteVtxFirmware *connect.Client[api.DeleteVtxFirmwareRequest, api.DeleteVtxFirmwareResponse]
 }
 
 // GetVtxFirmware calls quadsmith.api.VtxFirmwareService.GetVtxFirmware.
@@ -89,10 +122,28 @@ func (c *vtxFirmwareServiceClient) ListVtxFirmwares(ctx context.Context, req *co
 	return c.listVtxFirmwares.CallUnary(ctx, req)
 }
 
+// CreateVtxFirmware calls quadsmith.api.VtxFirmwareService.CreateVtxFirmware.
+func (c *vtxFirmwareServiceClient) CreateVtxFirmware(ctx context.Context, req *connect.Request[api.CreateVtxFirmwareRequest]) (*connect.Response[api.VtxFirmware], error) {
+	return c.createVtxFirmware.CallUnary(ctx, req)
+}
+
+// UpdateVtxFirmware calls quadsmith.api.VtxFirmwareService.UpdateVtxFirmware.
+func (c *vtxFirmwareServiceClient) UpdateVtxFirmware(ctx context.Context, req *connect.Request[api.UpdateVtxFirmwareRequest]) (*connect.Response[api.VtxFirmware], error) {
+	return c.updateVtxFirmware.CallUnary(ctx, req)
+}
+
+// DeleteVtxFirmware calls quadsmith.api.VtxFirmwareService.DeleteVtxFirmware.
+func (c *vtxFirmwareServiceClient) DeleteVtxFirmware(ctx context.Context, req *connect.Request[api.DeleteVtxFirmwareRequest]) (*connect.Response[api.DeleteVtxFirmwareResponse], error) {
+	return c.deleteVtxFirmware.CallUnary(ctx, req)
+}
+
 // VtxFirmwareServiceHandler is an implementation of the quadsmith.api.VtxFirmwareService service.
 type VtxFirmwareServiceHandler interface {
 	GetVtxFirmware(context.Context, *connect.Request[api.GetVtxFirmwareRequest]) (*connect.Response[api.VtxFirmware], error)
 	ListVtxFirmwares(context.Context, *connect.Request[api.ListVtxFirmwaresRequest]) (*connect.Response[api.ListVtxFirmwaresResponse], error)
+	CreateVtxFirmware(context.Context, *connect.Request[api.CreateVtxFirmwareRequest]) (*connect.Response[api.VtxFirmware], error)
+	UpdateVtxFirmware(context.Context, *connect.Request[api.UpdateVtxFirmwareRequest]) (*connect.Response[api.VtxFirmware], error)
+	DeleteVtxFirmware(context.Context, *connect.Request[api.DeleteVtxFirmwareRequest]) (*connect.Response[api.DeleteVtxFirmwareResponse], error)
 }
 
 // NewVtxFirmwareServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -114,12 +165,36 @@ func NewVtxFirmwareServiceHandler(svc VtxFirmwareServiceHandler, opts ...connect
 		connect.WithSchema(vtxFirmwareServiceMethods.ByName("ListVtxFirmwares")),
 		connect.WithHandlerOptions(opts...),
 	)
+	vtxFirmwareServiceCreateVtxFirmwareHandler := connect.NewUnaryHandler(
+		VtxFirmwareServiceCreateVtxFirmwareProcedure,
+		svc.CreateVtxFirmware,
+		connect.WithSchema(vtxFirmwareServiceMethods.ByName("CreateVtxFirmware")),
+		connect.WithHandlerOptions(opts...),
+	)
+	vtxFirmwareServiceUpdateVtxFirmwareHandler := connect.NewUnaryHandler(
+		VtxFirmwareServiceUpdateVtxFirmwareProcedure,
+		svc.UpdateVtxFirmware,
+		connect.WithSchema(vtxFirmwareServiceMethods.ByName("UpdateVtxFirmware")),
+		connect.WithHandlerOptions(opts...),
+	)
+	vtxFirmwareServiceDeleteVtxFirmwareHandler := connect.NewUnaryHandler(
+		VtxFirmwareServiceDeleteVtxFirmwareProcedure,
+		svc.DeleteVtxFirmware,
+		connect.WithSchema(vtxFirmwareServiceMethods.ByName("DeleteVtxFirmware")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.VtxFirmwareService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case VtxFirmwareServiceGetVtxFirmwareProcedure:
 			vtxFirmwareServiceGetVtxFirmwareHandler.ServeHTTP(w, r)
 		case VtxFirmwareServiceListVtxFirmwaresProcedure:
 			vtxFirmwareServiceListVtxFirmwaresHandler.ServeHTTP(w, r)
+		case VtxFirmwareServiceCreateVtxFirmwareProcedure:
+			vtxFirmwareServiceCreateVtxFirmwareHandler.ServeHTTP(w, r)
+		case VtxFirmwareServiceUpdateVtxFirmwareProcedure:
+			vtxFirmwareServiceUpdateVtxFirmwareHandler.ServeHTTP(w, r)
+		case VtxFirmwareServiceDeleteVtxFirmwareProcedure:
+			vtxFirmwareServiceDeleteVtxFirmwareHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +210,16 @@ func (UnimplementedVtxFirmwareServiceHandler) GetVtxFirmware(context.Context, *c
 
 func (UnimplementedVtxFirmwareServiceHandler) ListVtxFirmwares(context.Context, *connect.Request[api.ListVtxFirmwaresRequest]) (*connect.Response[api.ListVtxFirmwaresResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.VtxFirmwareService.ListVtxFirmwares is not implemented"))
+}
+
+func (UnimplementedVtxFirmwareServiceHandler) CreateVtxFirmware(context.Context, *connect.Request[api.CreateVtxFirmwareRequest]) (*connect.Response[api.VtxFirmware], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.VtxFirmwareService.CreateVtxFirmware is not implemented"))
+}
+
+func (UnimplementedVtxFirmwareServiceHandler) UpdateVtxFirmware(context.Context, *connect.Request[api.UpdateVtxFirmwareRequest]) (*connect.Response[api.VtxFirmware], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.VtxFirmwareService.UpdateVtxFirmware is not implemented"))
+}
+
+func (UnimplementedVtxFirmwareServiceHandler) DeleteVtxFirmware(context.Context, *connect.Request[api.DeleteVtxFirmwareRequest]) (*connect.Response[api.DeleteVtxFirmwareResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.VtxFirmwareService.DeleteVtxFirmware is not implemented"))
 }

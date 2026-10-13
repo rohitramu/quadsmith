@@ -464,6 +464,118 @@ func newRootCmd() *cobra.Command {
 		fmt.Fprintf(f, "\t\treturn filtered, cobra.ShellCompDirectiveNoFileComp\n")
 		fmt.Fprintf(f, "\t})\n")
 		fmt.Fprintf(f, "\t%s.AddCommand(%s)\n", cmdVar, getCmdVar)
+
+		createCmdVar := strings.ToLower(msgName[:1]) + msgName[1:] + "CreateCmd"
+		updateCmdVar := strings.ToLower(msgName[:1]) + msgName[1:] + "UpdateCmd"
+		deleteCmdVar := strings.ToLower(msgName[:1]) + msgName[1:] + "DeleteCmd"
+
+		fmt.Fprintf(f, "\t%s := &cobra.Command{\n", createCmdVar)
+		fmt.Fprintf(f, "\t\tUse: \"create\",\n")
+		fmt.Fprintf(f, "\t\tShort: \"Create a new %s\",\n", strings.ToLower(msgName))
+		fmt.Fprintf(f, "\t\tRunE: func(cmd *cobra.Command, args []string) error {\n")
+		fmt.Fprintf(f, "\t\t\tfilePath, _ := cmd.Flags().GetString(\"file\")\n")
+		fmt.Fprintf(f, "\t\t\tvar data []byte\n")
+		fmt.Fprintf(f, "\t\t\tvar err error\n")
+		fmt.Fprintf(f, "\t\t\tif filePath == \"-\" || (filePath == \"\" && hasStdinData()) {\n")
+		fmt.Fprintf(f, "\t\t\t\tdata, err = io.ReadAll(os.Stdin)\n")
+		fmt.Fprintf(f, "\t\t\t} else if filePath != \"\" {\n")
+		fmt.Fprintf(f, "\t\t\t\tdata, err = os.ReadFile(filePath)\n")
+		fmt.Fprintf(f, "\t\t\t} else {\n")
+		fmt.Fprintf(f, "\t\t\t\treturn fmt.Errorf(\"--file flag or piped stdin is required\")\n")
+		fmt.Fprintf(f, "\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
+		fmt.Fprintf(f, "\t\t\tif strings.HasSuffix(filePath, \".yaml\") || strings.HasSuffix(filePath, \".yml\") {\n")
+		fmt.Fprintf(f, "\t\t\t\tdata, err = yaml.YAMLToJSON(data)\n")
+		fmt.Fprintf(f, "\t\t\t\tif err != nil { return fmt.Errorf(\"invalid YAML: %%w\", err) }\n")
+		fmt.Fprintf(f, "\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\tvar item pb.%s\n", msgName)
+		fmt.Fprintf(f, "\t\t\tif err := protojson.Unmarshal(data, &item); err != nil {\n")
+		fmt.Fprintf(f, "\t\t\t\treturn fmt.Errorf(\"failed to parse %s JSON: %%w\", err)\n", strings.ToLower(msgName))
+		fmt.Fprintf(f, "\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\tres, err := %s.Create%s(context.Background(), connect.NewRequest(&pb.Create%sRequest{%s: &item}))\n", clientVar, msgName, msgName, msgName)
+		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
+		fmt.Fprintf(f, "\t\t\tfmt.Fprintf(cmd.OutOrStdout(), \"Successfully created %s '%%s' (uuid: %%s)\\n\", res.Msg.Id, res.Msg.Uuid)\n", strings.ToLower(msgName))
+		fmt.Fprintf(f, "\t\t\treturn printGetOutput(cmd.OutOrStdout(), res.Msg, nil)\n")
+		fmt.Fprintf(f, "\t\t},\n")
+		fmt.Fprintf(f, "\t}\n")
+		fmt.Fprintf(f, "\t%s.Flags().StringP(\"file\", \"f\", \"\", \"Path to JSON/YAML file containing component specification (or '-' for stdin)\")\n", createCmdVar)
+
+		if msgName != "Build" {
+			fmt.Fprintf(f, "\t%s := &cobra.Command{\n", updateCmdVar)
+			fmt.Fprintf(f, "\t\tUse: \"update [id]\",\n")
+			fmt.Fprintf(f, "\t\tShort: \"Update an existing %s\",\n", strings.ToLower(msgName))
+			fmt.Fprintf(f, "\t\tArgs: cobra.ExactArgs(1),\n")
+			fmt.Fprintf(f, "\t\tValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n")
+			fmt.Fprintf(f, "\t\t\tif len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }\n")
+			fmt.Fprintf(f, "\t\t\tres, err := %s.List%s(context.Background(), connect.NewRequest(&pb.List%sRequest{PageSize: 100}))\n", clientVar, pluralName, pluralName)
+			fmt.Fprintf(f, "\t\t\tif err != nil { return nil, cobra.ShellCompDirectiveError }\n")
+			fmt.Fprintf(f, "\t\t\tvar comps []string\n")
+			fmt.Fprintf(f, "\t\t\tfor _, item := range res.Msg.%s {\n", pluralName)
+			fmt.Fprintf(f, "\t\t\t\tcomps = append(comps, item.Id)\n")
+			fmt.Fprintf(f, "\t\t\t}\n")
+			fmt.Fprintf(f, "\t\t\treturn comps, cobra.ShellCompDirectiveNoFileComp\n")
+			fmt.Fprintf(f, "\t\t},\n")
+			fmt.Fprintf(f, "\t\tRunE: func(cmd *cobra.Command, args []string) error {\n")
+			fmt.Fprintf(f, "\t\t\tfilePath, _ := cmd.Flags().GetString(\"file\")\n")
+			fmt.Fprintf(f, "\t\t\tvar data []byte\n")
+			fmt.Fprintf(f, "\t\t\tvar err error\n")
+			fmt.Fprintf(f, "\t\t\tif filePath == \"-\" || (filePath == \"\" && hasStdinData()) {\n")
+			fmt.Fprintf(f, "\t\t\t\tdata, err = io.ReadAll(os.Stdin)\n")
+			fmt.Fprintf(f, "\t\t\t} else if filePath != \"\" {\n")
+			fmt.Fprintf(f, "\t\t\t\tdata, err = os.ReadFile(filePath)\n")
+			fmt.Fprintf(f, "\t\t\t} else {\n")
+			fmt.Fprintf(f, "\t\t\t\treturn fmt.Errorf(\"--file flag or piped stdin is required\")\n")
+			fmt.Fprintf(f, "\t\t\t}\n")
+			fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
+			fmt.Fprintf(f, "\t\t\tif strings.HasSuffix(filePath, \".yaml\") || strings.HasSuffix(filePath, \".yml\") {\n")
+			fmt.Fprintf(f, "\t\t\t\tdata, err = yaml.YAMLToJSON(data)\n")
+			fmt.Fprintf(f, "\t\t\t\tif err != nil { return fmt.Errorf(\"invalid YAML: %%w\", err) }\n")
+			fmt.Fprintf(f, "\t\t\t}\n")
+			fmt.Fprintf(f, "\t\t\tvar item pb.%s\n", msgName)
+			fmt.Fprintf(f, "\t\t\tif err := protojson.Unmarshal(data, &item); err != nil {\n")
+			fmt.Fprintf(f, "\t\t\t\treturn fmt.Errorf(\"failed to parse %s JSON: %%w\", err)\n", strings.ToLower(msgName))
+			fmt.Fprintf(f, "\t\t\t}\n")
+			fmt.Fprintf(f, "\t\t\titem.Id = args[0]\n")
+			fmt.Fprintf(f, "\t\t\tres, err := %s.Update%s(context.Background(), connect.NewRequest(&pb.Update%sRequest{%s: &item}))\n", clientVar, msgName, msgName, msgName)
+			fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
+			fmt.Fprintf(f, "\t\t\tfmt.Fprintf(cmd.OutOrStdout(), \"Successfully updated %s '%%s'\\n\", res.Msg.Id)\n", strings.ToLower(msgName))
+			fmt.Fprintf(f, "\t\t\treturn printGetOutput(cmd.OutOrStdout(), res.Msg, nil)\n")
+			fmt.Fprintf(f, "\t\t},\n")
+			fmt.Fprintf(f, "\t}\n")
+			fmt.Fprintf(f, "\t%s.Flags().StringP(\"file\", \"f\", \"\", \"Path to JSON/YAML file containing component updates (or '-' for stdin)\")\n", updateCmdVar)
+		}
+
+		fmt.Fprintf(f, "\t%s := &cobra.Command{\n", deleteCmdVar)
+		fmt.Fprintf(f, "\t\tUse: \"delete [id]\",\n")
+		fmt.Fprintf(f, "\t\tShort: \"Delete or archive an existing %s\",\n", strings.ToLower(msgName))
+		fmt.Fprintf(f, "\t\tArgs: cobra.ExactArgs(1),\n")
+		fmt.Fprintf(f, "\t\tValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {\n")
+		fmt.Fprintf(f, "\t\t\tif len(args) != 0 { return nil, cobra.ShellCompDirectiveNoFileComp }\n")
+		fmt.Fprintf(f, "\t\t\tres, err := %s.List%s(context.Background(), connect.NewRequest(&pb.List%sRequest{PageSize: 100}))\n", clientVar, pluralName, pluralName)
+		fmt.Fprintf(f, "\t\t\tif err != nil { return nil, cobra.ShellCompDirectiveError }\n")
+		fmt.Fprintf(f, "\t\t\tvar comps []string\n")
+		fmt.Fprintf(f, "\t\t\tfor _, item := range res.Msg.%s {\n", pluralName)
+		fmt.Fprintf(f, "\t\t\t\tcomps = append(comps, item.Id)\n")
+		fmt.Fprintf(f, "\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\treturn comps, cobra.ShellCompDirectiveNoFileComp\n")
+		fmt.Fprintf(f, "\t\t},\n")
+		fmt.Fprintf(f, "\t\tRunE: func(cmd *cobra.Command, args []string) error {\n")
+		fmt.Fprintf(f, "\t\t\tres, err := %s.Delete%s(context.Background(), connect.NewRequest(&pb.Delete%sRequest{Id: args[0]}))\n", clientVar, msgName, msgName)
+		fmt.Fprintf(f, "\t\t\tif err != nil { return err }\n")
+		fmt.Fprintf(f, "\t\t\tif res.Msg.IsArchived {\n")
+		fmt.Fprintf(f, "\t\t\t\tfmt.Fprintf(cmd.OutOrStdout(), \"Component '%%s' has active references and was archived/delisted.\\n\", args[0])\n")
+		fmt.Fprintf(f, "\t\t\t} else {\n")
+		fmt.Fprintf(f, "\t\t\t\tfmt.Fprintf(cmd.OutOrStdout(), \"Component '%%s' was permanently deleted.\\n\", args[0])\n")
+		fmt.Fprintf(f, "\t\t\t}\n")
+		fmt.Fprintf(f, "\t\t\treturn nil\n")
+		fmt.Fprintf(f, "\t\t},\n")
+		fmt.Fprintf(f, "\t}\n")
+
+		fmt.Fprintf(f, "\t%s.AddCommand(%s)\n", cmdVar, createCmdVar)
+		if msgName != "Build" {
+			fmt.Fprintf(f, "\t%s.AddCommand(%s)\n", cmdVar, updateCmdVar)
+		}
+		fmt.Fprintf(f, "\t%s.AddCommand(%s)\n", cmdVar, deleteCmdVar)
 		fmt.Fprintf(f, "\t%s.AddCommand(%s)\n", parentVar, cmdVar)
 	}
 
@@ -709,6 +821,15 @@ func main() {
 		os.Exit(1)
 	}
 }
+
+func hasStdinData() bool {
+	stat, err := os.Stdin.Stat()
+	if err != nil {
+		return false
+	}
+	return (stat.Mode() & os.ModeCharDevice) == 0
+}
+
 
 
 func GetCollectionPath(m proto.Message) string {

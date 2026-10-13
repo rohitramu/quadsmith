@@ -10,59 +10,31 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// Domain Model
+// 1. gRPC Service (Services First)
 // ---------------------------------------------------------
-message Battery {
-  option (quadsmith.sql.table) = {name: "batteries"};
-  option (quadsmith.common.collection_path) = "components/hardware/batteries";
-  option (quadsmith.common.frontend) = {
-    color_code: "#84cc16"
-    default_columns: [
-      "manufacturer",
-      "name",
-      "cell_count_s",
-      "capacity_mah"
-    ]
-  };
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4;
-
-  float weight_g = 5;
-
-  // Total capacity in milliampere-hours (e.g., 1100, 1300)
-  uint32 capacity_mah = 6;
-
-  // Number of cells in series (e.g., 4 for 4S, 6 for 6S)
-  uint32 cell_count_s = 7 [(quadsmith.sql.column) = {create_index: true}];
-
-  // E.g., "LiPo", "LiHV", "Li-ion"
-  string chemistry = 8;
-
-  // E.g., "XT60", "XT30", "BT2.0"
-  string connector = 9;
-  string description = 10;
-  repeated ReferenceLink reference_links = 11;
-  optional string primary_display_image = 12;
-  repeated Media media = 13;
-
-  // Minimum operating / cutoff voltage (volts) - mandatory
-  float min_voltage = 14;
-
-  // Maximum fully charged voltage (volts) - mandatory
-  float max_voltage = 15;
-
-  // Maximum continuous discharge current rating (amperes) - mandatory
-  float max_current_a = 16;
+service BatteryService {
+  rpc GetBattery(GetBatteryRequest) returns (Battery);
+  rpc ListBatteries(ListBatteriesRequest) returns (ListBatteriesResponse);
+  rpc CreateBattery(CreateBatteryRequest) returns (Battery);
+  rpc UpdateBattery(UpdateBatteryRequest) returns (Battery);
+  rpc DeleteBattery(DeleteBatteryRequest) returns (DeleteBatteryResponse);
 }
 
 // ---------------------------------------------------------
-// RPC Requests & Responses
+// 2. RPC Requests & Responses (Callers Precede Callees)
 // ---------------------------------------------------------
+message CreateBatteryRequest {
+  Battery battery = 1;
+}
+
+message DeleteBatteryRequest {
+  string id = 1;
+}
+
+message DeleteBatteryResponse {
+  bool is_archived = 1;
+}
+
 message GetBatteryRequest {
   string id = 1;
   repeated string columns = 2;
@@ -81,10 +53,62 @@ message ListBatteriesResponse {
   string next_page_token = 2;
 }
 
+message UpdateBatteryRequest {
+  Battery battery = 1;
+}
+
 // ---------------------------------------------------------
-// gRPC Service
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
-service BatteryService {
-  rpc GetBattery(GetBatteryRequest) returns (Battery);
-  rpc ListBatteries(ListBatteriesRequest) returns (ListBatteriesResponse);
+message Battery {
+  option (quadsmith.sql.table) = {name: "batteries"};
+  option (quadsmith.common.collection_path) = "components/hardware/batteries";
+  option (quadsmith.common.frontend) = {
+    color_code: "#84cc16"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "cell_count_s",
+      "capacity_mah"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {
+    is_primary_key: true
+    references: "entities(uuid) ON DELETE CASCADE"
+  }];
+
+  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
+
+  float weight_g = 5;
+
+  // Total capacity in milliampere-hours (e.g., 1100, 1300)
+  uint32 capacity_mah = 6;
+
+  // Number of cells in series (e.g., 4 for 4S, 6 for 6S)
+  uint32 cell_count_s = 7 [(quadsmith.sql.column) = {create_index: true}];
+
+  // E.g., "LiPo", "LiHV", "Li-ion"
+  string chemistry = 8;
+
+  // E.g., "XT60", "XT30", "BT2.0"
+  string connector = 9;
+  string description = 10 [(quadsmith.sql.column) = {ignore: true}];
+  repeated ReferenceLink reference_links = 11 [(quadsmith.sql.column) = {ignore: true}];
+  optional string primary_display_image = 12 [(quadsmith.sql.column) = {ignore: true}];
+  repeated Media media = 13 [(quadsmith.sql.column) = {ignore: true}];
+
+  // Minimum operating / cutoff voltage (volts) - mandatory
+  float min_voltage = 14;
+
+  // Maximum fully charged voltage (volts) - mandatory
+  float max_voltage = 15;
+
+  // Maximum continuous discharge current rating (amperes) - mandatory
+  float max_current_a = 16;
+  optional string user_uuid = 17 [(quadsmith.sql.column) = {ignore: true}];
+  optional string author_username = 18 [(quadsmith.sql.column) = {ignore: true}];
 }

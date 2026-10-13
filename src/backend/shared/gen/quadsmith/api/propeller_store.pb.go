@@ -11,19 +11,19 @@ import (
 )
 
 func CreatePropeller(ctx context.Context, tx pgx.Tx, m *Propeller) error {
-	query := `INSERT INTO propellers (uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media, prop_mount_interface) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
+	query := `INSERT INTO propellers (uuid, manufacturer, weight_g, diameter_mm, pitch_mm, blades, material, prop_mount_interface) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.DiameterMm, m.PitchMm, m.Blades, m.Material, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.PropMountInterface)
+	}(m.Uuid), m.Manufacturer, m.WeightG, m.DiameterMm, m.PitchMm, m.Blades, m.Material, m.PropMountInterface)
 	return err
 }
 
 func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Propeller, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "diameter_mm": true, "pitch_mm": true, "blades": true, "material": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "prop_mount_interface": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media, prop_mount_interface"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "diameter_mm": true, "pitch_mm": true, "blades": true, "material": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "prop_mount_interface": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media, prop_mount_interface, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material", "description", "reference_links", "primary_display_image", "media", "prop_mount_interface"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material", "description", "reference_links", "primary_display_image", "media", "prop_mount_interface", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM propellers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM propellers INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Propeller{}
@@ -70,6 +70,10 @@ func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 			scanArgs[i] = &m.Media
 		case "prop_mount_interface":
 			scanArgs[i] = &m.PropMountInterface
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -87,20 +91,20 @@ func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 }
 
 func UpdatePropeller(ctx context.Context, tx pgx.Tx, m *Propeller) error {
-	query := `UPDATE propellers SET manufacturer = $2, name = $3, weight_g = $4, diameter_mm = $5, pitch_mm = $6, blades = $7, material = $8, description = $9, reference_links = $10, primary_display_image = $11, media = $12, prop_mount_interface = $13 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.DiameterMm, m.PitchMm, m.Blades, m.Material, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.PropMountInterface)
+	query := `UPDATE propellers SET manufacturer = $2, weight_g = $3, diameter_mm = $4, pitch_mm = $5, blades = $6, material = $7, prop_mount_interface = $8 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.WeightG, m.DiameterMm, m.PitchMm, m.Blades, m.Material, m.PropMountInterface)
 	return err
 }
 
 func DeletePropeller(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM propellers WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM propellers WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'propellers' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Propeller, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "diameter_mm": true, "pitch_mm": true, "blades": true, "material": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "prop_mount_interface": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media, prop_mount_interface"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "diameter_mm": true, "pitch_mm": true, "blades": true, "material": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "prop_mount_interface": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media, prop_mount_interface, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -111,11 +115,12 @@ func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material", "description", "reference_links", "primary_display_image", "media", "prop_mount_interface"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material", "description", "reference_links", "primary_display_image", "media", "prop_mount_interface", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM propellers`
+	query := `SELECT ` + colsStr + ` FROM propellers INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -188,6 +193,10 @@ func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 				scanArgs[i] = &m.Media
 			case "prop_mount_interface":
 				scanArgs[i] = &m.PropMountInterface
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

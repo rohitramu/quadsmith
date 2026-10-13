@@ -10,59 +10,31 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// Domain Model
+// 1. gRPC Service (Services First)
 // ---------------------------------------------------------
-message Frame {
-  option (quadsmith.sql.table) = {name: "frames"};
-  option (quadsmith.common.collection_path) = "components/hardware/frames";
-  option (quadsmith.common.frontend) = {
-    color_code: "#64748b"
-    default_columns: [
-      "manufacturer",
-      "name",
-      "wheelbase_mm",
-      "geometry"
-    ]
-  };
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4;
-
-  float weight_g = 5;
-
-  // The diagonal distance between motors in millimeters
-  float wheelbase_mm = 6;
-
-  // Maximum propeller size supported
-  float max_prop_size_mm = 7;
-
-  // E.g., "True X", "Squashed X", "Deadcat"
-  string geometry = 8;
-  string description = 9;
-  repeated ReferenceLink reference_links = 10;
-  optional string primary_display_image = 11;
-  repeated Media media = 12;
-
-  // Number of motors configured by this frame (e.g., 4 for standard quadcopters, 8 for coaxial X8 cinelifters)
-  uint32 motor_count = 13 [(quadsmith.sql.column) = {default_value: "4"}];
-
-  // Camera mount interfaces supported by this frame (e.g., ["14mm (Nano)"], ["19mm (Micro)"], ["20mm (DJI O3)"])
-  repeated string camera_mount_interfaces = 14;
-
-  // Motor mounting bolt patterns supported by this frame (e.g., ["16x16mm", "19x19mm"], ["9x9mm", "12x12mm"], ["3-hole 6.6mm"])
-  repeated string motor_mount_patterns = 15;
-
-  // Board mounting patterns supported by this frame (e.g., ["30.5x30.5mm", "20x20mm"], ["25.5x25.5mm"], ["16x16mm"])
-  repeated string board_mount_patterns = 16;
+service FrameService {
+  rpc GetFrame(GetFrameRequest) returns (Frame);
+  rpc ListFrames(ListFramesRequest) returns (ListFramesResponse);
+  rpc CreateFrame(CreateFrameRequest) returns (Frame);
+  rpc UpdateFrame(UpdateFrameRequest) returns (Frame);
+  rpc DeleteFrame(DeleteFrameRequest) returns (DeleteFrameResponse);
 }
 
 // ---------------------------------------------------------
-// RPC Requests & Responses
+// 2. RPC Requests & Responses (Callers Precede Callees)
 // ---------------------------------------------------------
+message CreateFrameRequest {
+  Frame frame = 1;
+}
+
+message DeleteFrameRequest {
+  string id = 1;
+}
+
+message DeleteFrameResponse {
+  bool is_archived = 1;
+}
+
 message GetFrameRequest {
   string id = 1;
   repeated string columns = 2;
@@ -81,10 +53,62 @@ message ListFramesResponse {
   string next_page_token = 2;
 }
 
+message UpdateFrameRequest {
+  Frame frame = 1;
+}
+
 // ---------------------------------------------------------
-// gRPC Service
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
-service FrameService {
-  rpc GetFrame(GetFrameRequest) returns (Frame);
-  rpc ListFrames(ListFramesRequest) returns (ListFramesResponse);
+message Frame {
+  option (quadsmith.sql.table) = {name: "frames"};
+  option (quadsmith.common.collection_path) = "components/hardware/frames";
+  option (quadsmith.common.frontend) = {
+    color_code: "#64748b"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "wheelbase_mm",
+      "geometry"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {
+    is_primary_key: true
+    references: "entities(uuid) ON DELETE CASCADE"
+  }];
+
+  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
+
+  float weight_g = 5;
+
+  // The diagonal distance between motors in millimeters
+  float wheelbase_mm = 6;
+
+  // Maximum propeller size supported
+  float max_prop_size_mm = 7;
+
+  // E.g., "True X", "Squashed X", "Deadcat"
+  string geometry = 8;
+  string description = 9 [(quadsmith.sql.column) = {ignore: true}];
+  repeated ReferenceLink reference_links = 10 [(quadsmith.sql.column) = {ignore: true}];
+  optional string primary_display_image = 11 [(quadsmith.sql.column) = {ignore: true}];
+  repeated Media media = 12 [(quadsmith.sql.column) = {ignore: true}];
+
+  // Number of motors configured by this frame (e.g., 4 for standard quadcopters, 8 for coaxial X8 cinelifters)
+  uint32 motor_count = 13 [(quadsmith.sql.column) = {default_value: "4"}];
+
+  // Camera mount interfaces supported by this frame (e.g., ["14mm (Nano)"], ["19mm (Micro)"], ["20mm (DJI O3)"])
+  repeated string camera_mount_interfaces = 14;
+
+  // Motor mounting bolt patterns supported by this frame (e.g., ["16x16mm", "19x19mm"], ["9x9mm", "12x12mm"], ["3-hole 6.6mm"])
+  repeated string motor_mount_patterns = 15;
+
+  // Board mounting patterns supported by this frame (e.g., ["30.5x30.5mm", "20x20mm"], ["25.5x25.5mm"], ["16x16mm"])
+  repeated string board_mount_patterns = 16;
+  optional string user_uuid = 17 [(quadsmith.sql.column) = {ignore: true}];
+  optional string author_username = 18 [(quadsmith.sql.column) = {ignore: true}];
 }

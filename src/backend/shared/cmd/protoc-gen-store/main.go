@@ -9,6 +9,7 @@ import (
 	"google.golang.org/protobuf/reflect/protoreflect"
 	"google.golang.org/protobuf/types/pluginpb"
 
+	commonpb "quadsmith/shared/gen/quadsmith/common"
 	sqlpb "quadsmith/shared/gen/quadsmith/sql"
 )
 
@@ -30,6 +31,16 @@ func getTableName(msg *protogen.Message) string {
 	if proto.HasExtension(opts, sqlpb.E_Table) {
 		if tblOpts, ok := proto.GetExtension(opts, sqlpb.E_Table).(*sqlpb.TableOptions); ok && tblOpts != nil && tblOpts.Name != "" {
 			return tblOpts.Name
+		}
+	}
+	return ""
+}
+
+func getCollectionPath(msg *protogen.Message) string {
+	opts := msg.Desc.Options()
+	if proto.HasExtension(opts, commonpb.E_CollectionPath) {
+		if p, ok := proto.GetExtension(opts, commonpb.E_CollectionPath).(string); ok && p != "" {
+			return strings.Trim(p, "/")
 		}
 	}
 	return ""
@@ -103,7 +114,16 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	}
 
 	msgName := msg.GoIdent.GoName
+	collPath := getCollectionPath(msg)
+	hasEntitiesJoin := collPath != "" && tableName != "entities"
 
+	collName := ""
+	if hasEntitiesJoin {
+		parts := strings.Split(collPath, "/")
+		collName = parts[len(parts)-1]
+	}
+
+	// activeFields: fields stored directly in tableName (for INSERT/UPDATE)
 	var activeFields []*protogen.Field
 	for _, field := range msg.Fields {
 		var colOpt *sqlpb.ColumnOptions
@@ -118,7 +138,15 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		activeFields = append(activeFields, field)
 	}
 
-	var colNames []string
+	// readableFields: fields accessible for SELECT (Get and List)
+	var readableFields []*protogen.Field
+	if hasEntitiesJoin {
+		readableFields = msg.Fields
+	} else {
+		readableFields = activeFields
+	}
+
+	var activeColNames []string
 	var placeHolders []string
 	var mFields []string
 	for i, field := range activeFields {
@@ -134,7 +162,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 				}
 			}
 		}
-		colNames = append(colNames, colName)
+		activeColNames = append(activeColNames, colName)
 
 		if colType != "" {
 			placeHolders = append(placeHolders, fmt.Sprintf("$%d::%s", i+1, colType))
@@ -158,29 +186,9 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		}
 	}
 
-	colsStr := strings.Join(colNames, ", ")
+	colsStr := strings.Join(activeColNames, ", ")
 	valsStr := strings.Join(placeHolders, ", ")
 	mFieldsStr := strings.Join(mFields, ", ")
-
-	hasId := false
-	for _, f := range activeFields {
-		fCol := string(f.Desc.Name())
-		if proto.HasExtension(f.Desc.Options(), sqlpb.E_Column) {
-			if co, ok := proto.GetExtension(f.Desc.Options(), sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
-				if co.Name != "" {
-					fCol = co.Name
-				}
-			}
-		}
-		if fCol == "id" {
-			hasId = true
-			break
-		}
-	}
-	whereClause := "uuid::text = $1"
-	if hasId {
-		whereClause = "id = $1 OR uuid::text = $1"
-	}
 
 	// --- CREATE ---
 	g.P("func Create", msgName, "(ctx context.Context, tx pgx.Tx, m *", msgName, ") error {")
@@ -190,12 +198,47 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("}")
 	g.P()
 
-	validColsStr := "map[string]bool{\"" + strings.Join(colNames, "\": true, \"") + "\": true}"
+	// readable columns
+	var readableColNames []string
+	for _, field := range readableFields {
+		colName := string(field.Desc.Name())
+		if proto.HasExtension(field.Desc.Options(), sqlpb.E_Column) {
+			if co, ok := proto.GetExtension(field.Desc.Options(), sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
+				if co.Name != "" {
+					colName = co.Name
+				}
+			}
+		}
+		readableColNames = append(readableColNames, colName)
+	}
+
+	readableColsStr := strings.Join(readableColNames, ", ")
+	validColsStr := "map[string]bool{\"" + strings.Join(readableColNames, "\": true, \"") + "\": true}"
+
+	hasId := false
+	for _, col := range readableColNames {
+		if col == "id" {
+			hasId = true
+			break
+		}
+	}
+
+	getWhereClause := "uuid::text = $1"
+	if hasEntitiesJoin {
+		getWhereClause = "entities.id = $1 OR entities.uuid::text = $1"
+	} else if hasId {
+		getWhereClause = "id = $1 OR uuid::text = $1"
+	}
+
+	fromClause := tableName
+	if hasEntitiesJoin {
+		fromClause = tableName + " INNER JOIN entities USING (uuid)"
+	}
 
 	// --- GET ---
 	g.P("func Get", msgName, "(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*", msgName, ", error) {")
 	g.P("	validCols := " + validColsStr)
-	g.P("	colsStr := \"", colsStr, "\"")
+	g.P("	colsStr := \"", readableColsStr, "\"")
 	g.P("	if len(cols) > 0 {")
 	g.P("		safeCols := make([]string, 0, len(cols))")
 	g.P("		for _, col := range cols {")
@@ -206,17 +249,16 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("		}")
 	g.P("		colsStr = strings.Join(safeCols, \", \")")
 	g.P("	} else {")
-	g.P("       cols = []string{\"" + strings.ReplaceAll(colsStr, ", ", "\", \"") + "\"}")
+	g.P("       cols = []string{\"" + strings.ReplaceAll(readableColsStr, ", ", "\", \"") + "\"}")
 	g.P("   }")
-	g.P("	query := `SELECT ` + colsStr + ` FROM ", tableName, " WHERE ", whereClause, " LIMIT 1`")
-
+	g.P("	query := `SELECT ` + colsStr + ` FROM ", fromClause, " WHERE ", getWhereClause, " LIMIT 1`")
 	g.P("	scanArgs := make([]interface{}, len(cols))")
 	g.P("	scanAssigns := make([]func(), 0, len(cols))")
 	g.P("	m := &", msgName, "{}")
 	g.P("	for i, col := range cols {")
 	g.P("		switch col {")
-	for j, colName := range colNames {
-		field := activeFields[j]
+	for j, colName := range readableColNames {
+		field := readableFields[j]
 		goName := field.GoName
 		g.P("		case \"", colName, "\":")
 		if isTimestampField(field) {
@@ -265,7 +307,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 
 	argIdx := 2
 	for i, field := range activeFields {
-		colName := colNames[i]
+		colName := activeColNames[i]
 		colType := ""
 		if proto.HasExtension(field.Desc.Options(), sqlpb.E_Column) {
 			if co, ok := proto.GetExtension(field.Desc.Options(), sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
@@ -293,15 +335,25 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	updateArgsStr := strings.Join(updateArgs, ", ")
 
 	g.P("func Update", msgName, "(ctx context.Context, tx pgx.Tx, m *", msgName, ") error {")
-	g.P("	query := `UPDATE ", tableName, " SET ", updateSetsStr, " WHERE uuid = $1`")
-	g.P("	_, err := tx.Exec(ctx, query, ", updateArgsStr, ")")
-	g.P("	return err")
+	if len(updateSets) > 0 {
+		g.P("	query := `UPDATE ", tableName, " SET ", updateSetsStr, " WHERE uuid = $1`")
+		g.P("	_, err := tx.Exec(ctx, query, ", updateArgsStr, ")")
+		g.P("	return err")
+	} else {
+		g.P("	return nil")
+	}
 	g.P("}")
 	g.P()
 
 	// --- DELETE ---
+	deleteWhere := "uuid::text = $1"
+	if hasEntitiesJoin {
+		deleteWhere = "uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = '" + collName + "' LIMIT 1) OR uuid::text = $1"
+	} else if hasId {
+		deleteWhere = "id = $1 OR uuid::text = $1"
+	}
 	g.P("func Delete", msgName, "(ctx context.Context, tx pgx.Tx, idOrUuid string) error {")
-	g.P("	query := `DELETE FROM ", tableName, " WHERE ", whereClause, "`")
+	g.P("	query := `DELETE FROM ", tableName, " WHERE ", deleteWhere, "`")
 	g.P("	_, err := tx.Exec(ctx, query, idOrUuid)")
 	g.P("	return err")
 	g.P("}")
@@ -315,11 +367,9 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		pluralName = msgName
 	}
 
-	validColsStr = "map[string]bool{\"" + strings.Join(colNames, "\": true, \"") + "\": true}"
-
 	g.P("func List", pluralName, "(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*", msgName, ", error) {")
 	g.P("	validCols := " + validColsStr)
-	g.P("	colsStr := \"", colsStr, "\"")
+	g.P("	colsStr := \"", readableColsStr, "\"")
 	g.P("	if len(cols) > 0 {")
 	g.P("		safeCols := make([]string, 0, len(cols))")
 	g.P("		for _, col := range cols {")
@@ -330,12 +380,19 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("		}")
 	g.P("		colsStr = strings.Join(safeCols, \", \")")
 	g.P("	} else {")
-	g.P("       cols = []string{\"" + strings.ReplaceAll(colsStr, ", ", "\", \"") + "\"}")
+	g.P("       cols = []string{\"" + strings.ReplaceAll(readableColsStr, ", ", "\", \"") + "\"}")
 	g.P("   }")
-	g.P("	query := `SELECT ` + colsStr + ` FROM ", tableName, "`")
-	g.P("	if whereClause != \"\" {")
-	g.P("		query += \" WHERE \" + whereClause")
-	g.P("	}")
+	g.P("	query := `SELECT ` + colsStr + ` FROM ", fromClause, "`")
+	if hasEntitiesJoin {
+		g.P("	query += \" WHERE entities.is_archived = false\"")
+		g.P("	if whereClause != \"\" {")
+		g.P("		query += \" AND (\" + whereClause + \")\"")
+		g.P("	}")
+	} else {
+		g.P("	if whereClause != \"\" {")
+		g.P("		query += \" WHERE \" + whereClause")
+		g.P("	}")
+	}
 	g.P("	var orderClauses []string")
 	g.P("	hasIdSort := false")
 	g.P("	if len(sorts) > 0 {")
@@ -356,7 +413,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("		}")
 	g.P("	}")
 	g.P("	if !hasIdSort {")
-	if hasId {
+	if hasId || hasEntitiesJoin {
 		g.P("		orderClauses = append(orderClauses, \"id ASC\")")
 	} else {
 		g.P("		orderClauses = append(orderClauses, \"uuid ASC\")")
@@ -378,14 +435,13 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("	defer rows.Close()")
 	g.P("	results := make([]*", msgName, ", 0)")
 	g.P("	for rows.Next() {")
-
 	g.P("		scanArgs := make([]interface{}, len(cols))")
 	g.P("		scanAssigns := make([]func(), 0, len(cols))")
 	g.P("		m := &", msgName, "{}")
 	g.P("		for i, col := range cols {")
 	g.P("			switch col {")
-	for j, colName := range colNames {
-		field := activeFields[j]
+	for j, colName := range readableColNames {
+		field := readableFields[j]
 		goName := field.GoName
 		g.P("			case \"", colName, "\":")
 		if isTimestampField(field) {
@@ -427,35 +483,4 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("	return results, nil")
 	g.P("}")
 	g.P()
-
-}
-
-func goDataType(desc protoreflect.FieldDescriptor) string {
-	if desc.IsList() {
-		switch desc.Kind() {
-		case protoreflect.StringKind:
-			return "[]string"
-		}
-		return "[]interface{}"
-	}
-	switch desc.Kind() {
-	case protoreflect.StringKind:
-		return "string"
-	case protoreflect.Int32Kind:
-		return "int32"
-	case protoreflect.Int64Kind:
-		return "int64"
-	case protoreflect.Uint32Kind:
-		return "uint32"
-	case protoreflect.Uint64Kind:
-		return "uint64"
-	case protoreflect.FloatKind:
-		return "float32"
-	case protoreflect.DoubleKind:
-		return "float64"
-	case protoreflect.BoolKind:
-		return "bool"
-	default:
-		return "string"
-	}
 }

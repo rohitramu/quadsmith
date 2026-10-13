@@ -11,19 +11,19 @@ import (
 )
 
 func CreateFieldTool(ctx context.Context, tx pgx.Tx, m *FieldTool) error {
-	query := `INSERT INTO field_tools (uuid, id, manufacturer, name, weight_g, tool_type, power_source, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`
+	query := `INSERT INTO field_tools (uuid, manufacturer, weight_g, tool_type, power_source) VALUES ($1, $2, $3, $4, $5)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.ToolType, m.PowerSource, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Manufacturer, m.WeightG, m.ToolType, m.PowerSource)
 	return err
 }
 
 func GetFieldTool(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*FieldTool, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "tool_type": true, "power_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, tool_type, power_source, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "tool_type": true, "power_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, tool_type, power_source, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetFieldTool(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "tool_type", "power_source", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "tool_type", "power_source", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM field_tools WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM field_tools INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &FieldTool{}
@@ -64,6 +64,10 @@ func GetFieldTool(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -81,20 +85,20 @@ func GetFieldTool(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 }
 
 func UpdateFieldTool(ctx context.Context, tx pgx.Tx, m *FieldTool) error {
-	query := `UPDATE field_tools SET manufacturer = $2, name = $3, weight_g = $4, tool_type = $5, power_source = $6, description = $7, reference_links = $8, primary_display_image = $9, media = $10 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.ToolType, m.PowerSource, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE field_tools SET manufacturer = $2, weight_g = $3, tool_type = $4, power_source = $5 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.WeightG, m.ToolType, m.PowerSource)
 	return err
 }
 
 func DeleteFieldTool(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM field_tools WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM field_tools WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'field-tools' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListFieldTools(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*FieldTool, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "tool_type": true, "power_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, tool_type, power_source, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "tool_type": true, "power_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, tool_type, power_source, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -105,11 +109,12 @@ func ListFieldTools(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "tool_type", "power_source", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "tool_type", "power_source", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM field_tools`
+	query := `SELECT ` + colsStr + ` FROM field_tools INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -176,6 +181,10 @@ func ListFieldTools(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

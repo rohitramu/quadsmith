@@ -13,3 +13,18 @@ export const getEscFirmware = EscFirmwareService.method.getEscFirmware;
  * @generated from rpc quadsmith.api.EscFirmwareService.ListEscFirmwares
  */
 export const listEscFirmwares = EscFirmwareService.method.listEscFirmwares;
+
+/**
+ * @generated from rpc quadsmith.api.EscFirmwareService.CreateEscFirmware
+ */
+export const createEscFirmware = EscFirmwareService.method.createEscFirmware;
+
+/**
+ * @generated from rpc quadsmith.api.EscFirmwareService.UpdateEscFirmware
+ */
+export const updateEscFirmware = EscFirmwareService.method.updateEscFirmware;
+
+/**
+ * @generated from rpc quadsmith.api.EscFirmwareService.DeleteEscFirmware
+ */
+export const deleteEscFirmware = EscFirmwareService.method.deleteEscFirmware;

@@ -10,51 +10,31 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// Domain Model
+// 1. gRPC Service (Services First)
 // ---------------------------------------------------------
-message Receiver {
-  option (quadsmith.sql.table) = {name: "receivers"};
-  option (quadsmith.common.collection_path) = "components/hardware/receivers";
-  option (quadsmith.common.frontend) = {
-    color_code: "#a855f7"
-    default_columns: [
-      "manufacturer",
-      "name",
-      "protocol",
-      "frequency_band_mhz",
-      "has_telemetry"
-    ]
-  };
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4;
-  bool is_internal_only = 5;
-
-  float weight_g = 6;
-
-  // E.g., "ExpressLRS", "Crossfire", "FrSky"
-  string protocol = 7 [(quadsmith.sql.column) = {create_index: true}];
-
-  // E.g., 2.4, 0.9 (for 900MHz)
-  uint32 frequency_band_mhz = 8;
-
-  bool has_telemetry = 9;
-
-  // Array of antenna UUIDs included with or required by this receiver
-  repeated string antenna_uuids = 10;
-  string description = 11;
-  repeated ReferenceLink reference_links = 12;
-  optional string primary_display_image = 13;
-  repeated Media media = 14;
+service ReceiverService {
+  rpc GetReceiver(GetReceiverRequest) returns (Receiver);
+  rpc ListReceivers(ListReceiversRequest) returns (ListReceiversResponse);
+  rpc CreateReceiver(CreateReceiverRequest) returns (Receiver);
+  rpc UpdateReceiver(UpdateReceiverRequest) returns (Receiver);
+  rpc DeleteReceiver(DeleteReceiverRequest) returns (DeleteReceiverResponse);
 }
 
 // ---------------------------------------------------------
-// RPC Requests & Responses
+// 2. RPC Requests & Responses (Callers Precede Callees)
 // ---------------------------------------------------------
+message CreateReceiverRequest {
+  Receiver receiver = 1;
+}
+
+message DeleteReceiverRequest {
+  string id = 1;
+}
+
+message DeleteReceiverResponse {
+  bool is_archived = 1;
+}
+
 message GetReceiverRequest {
   string id = 1;
   repeated string columns = 2;
@@ -73,10 +53,54 @@ message ListReceiversResponse {
   string next_page_token = 2;
 }
 
+message UpdateReceiverRequest {
+  Receiver receiver = 1;
+}
+
 // ---------------------------------------------------------
-// gRPC Service
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
-service ReceiverService {
-  rpc GetReceiver(GetReceiverRequest) returns (Receiver);
-  rpc ListReceivers(ListReceiversRequest) returns (ListReceiversResponse);
+message Receiver {
+  option (quadsmith.sql.table) = {name: "receivers"};
+  option (quadsmith.common.collection_path) = "components/hardware/receivers";
+  option (quadsmith.common.frontend) = {
+    color_code: "#a855f7"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "protocol",
+      "frequency_band_mhz",
+      "has_telemetry"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {
+    is_primary_key: true
+    references: "entities(uuid) ON DELETE CASCADE"
+  }];
+
+  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
+  bool is_internal_only = 5;
+
+  float weight_g = 6;
+
+  // E.g., "ExpressLRS", "Crossfire", "FrSky"
+  string protocol = 7 [(quadsmith.sql.column) = {create_index: true}];
+
+  // E.g., 2.4, 0.9 (for 900MHz)
+  uint32 frequency_band_mhz = 8;
+
+  bool has_telemetry = 9;
+
+  // Array of antenna UUIDs included with or required by this receiver
+  repeated string antenna_uuids = 10;
+  string description = 11 [(quadsmith.sql.column) = {ignore: true}];
+  repeated ReferenceLink reference_links = 12 [(quadsmith.sql.column) = {ignore: true}];
+  optional string primary_display_image = 13 [(quadsmith.sql.column) = {ignore: true}];
+  repeated Media media = 14 [(quadsmith.sql.column) = {ignore: true}];
+  optional string user_uuid = 15 [(quadsmith.sql.column) = {ignore: true}];
+  optional string author_username = 16 [(quadsmith.sql.column) = {ignore: true}];
 }

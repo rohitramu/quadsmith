@@ -39,12 +39,24 @@ const (
 	// SoftwareToolServiceListSoftwareToolsProcedure is the fully-qualified name of the
 	// SoftwareToolService's ListSoftwareTools RPC.
 	SoftwareToolServiceListSoftwareToolsProcedure = "/quadsmith.api.SoftwareToolService/ListSoftwareTools"
+	// SoftwareToolServiceCreateSoftwareToolProcedure is the fully-qualified name of the
+	// SoftwareToolService's CreateSoftwareTool RPC.
+	SoftwareToolServiceCreateSoftwareToolProcedure = "/quadsmith.api.SoftwareToolService/CreateSoftwareTool"
+	// SoftwareToolServiceUpdateSoftwareToolProcedure is the fully-qualified name of the
+	// SoftwareToolService's UpdateSoftwareTool RPC.
+	SoftwareToolServiceUpdateSoftwareToolProcedure = "/quadsmith.api.SoftwareToolService/UpdateSoftwareTool"
+	// SoftwareToolServiceDeleteSoftwareToolProcedure is the fully-qualified name of the
+	// SoftwareToolService's DeleteSoftwareTool RPC.
+	SoftwareToolServiceDeleteSoftwareToolProcedure = "/quadsmith.api.SoftwareToolService/DeleteSoftwareTool"
 )
 
 // SoftwareToolServiceClient is a client for the quadsmith.api.SoftwareToolService service.
 type SoftwareToolServiceClient interface {
 	GetSoftwareTool(context.Context, *connect.Request[api.GetSoftwareToolRequest]) (*connect.Response[api.SoftwareTool], error)
 	ListSoftwareTools(context.Context, *connect.Request[api.ListSoftwareToolsRequest]) (*connect.Response[api.ListSoftwareToolsResponse], error)
+	CreateSoftwareTool(context.Context, *connect.Request[api.CreateSoftwareToolRequest]) (*connect.Response[api.SoftwareTool], error)
+	UpdateSoftwareTool(context.Context, *connect.Request[api.UpdateSoftwareToolRequest]) (*connect.Response[api.SoftwareTool], error)
+	DeleteSoftwareTool(context.Context, *connect.Request[api.DeleteSoftwareToolRequest]) (*connect.Response[api.DeleteSoftwareToolResponse], error)
 }
 
 // NewSoftwareToolServiceClient constructs a client for the quadsmith.api.SoftwareToolService
@@ -70,13 +82,34 @@ func NewSoftwareToolServiceClient(httpClient connect.HTTPClient, baseURL string,
 			connect.WithSchema(softwareToolServiceMethods.ByName("ListSoftwareTools")),
 			connect.WithClientOptions(opts...),
 		),
+		createSoftwareTool: connect.NewClient[api.CreateSoftwareToolRequest, api.SoftwareTool](
+			httpClient,
+			baseURL+SoftwareToolServiceCreateSoftwareToolProcedure,
+			connect.WithSchema(softwareToolServiceMethods.ByName("CreateSoftwareTool")),
+			connect.WithClientOptions(opts...),
+		),
+		updateSoftwareTool: connect.NewClient[api.UpdateSoftwareToolRequest, api.SoftwareTool](
+			httpClient,
+			baseURL+SoftwareToolServiceUpdateSoftwareToolProcedure,
+			connect.WithSchema(softwareToolServiceMethods.ByName("UpdateSoftwareTool")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteSoftwareTool: connect.NewClient[api.DeleteSoftwareToolRequest, api.DeleteSoftwareToolResponse](
+			httpClient,
+			baseURL+SoftwareToolServiceDeleteSoftwareToolProcedure,
+			connect.WithSchema(softwareToolServiceMethods.ByName("DeleteSoftwareTool")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // softwareToolServiceClient implements SoftwareToolServiceClient.
 type softwareToolServiceClient struct {
-	getSoftwareTool   *connect.Client[api.GetSoftwareToolRequest, api.SoftwareTool]
-	listSoftwareTools *connect.Client[api.ListSoftwareToolsRequest, api.ListSoftwareToolsResponse]
+	getSoftwareTool    *connect.Client[api.GetSoftwareToolRequest, api.SoftwareTool]
+	listSoftwareTools  *connect.Client[api.ListSoftwareToolsRequest, api.ListSoftwareToolsResponse]
+	createSoftwareTool *connect.Client[api.CreateSoftwareToolRequest, api.SoftwareTool]
+	updateSoftwareTool *connect.Client[api.UpdateSoftwareToolRequest, api.SoftwareTool]
+	deleteSoftwareTool *connect.Client[api.DeleteSoftwareToolRequest, api.DeleteSoftwareToolResponse]
 }
 
 // GetSoftwareTool calls quadsmith.api.SoftwareToolService.GetSoftwareTool.
@@ -89,10 +122,28 @@ func (c *softwareToolServiceClient) ListSoftwareTools(ctx context.Context, req *
 	return c.listSoftwareTools.CallUnary(ctx, req)
 }
 
+// CreateSoftwareTool calls quadsmith.api.SoftwareToolService.CreateSoftwareTool.
+func (c *softwareToolServiceClient) CreateSoftwareTool(ctx context.Context, req *connect.Request[api.CreateSoftwareToolRequest]) (*connect.Response[api.SoftwareTool], error) {
+	return c.createSoftwareTool.CallUnary(ctx, req)
+}
+
+// UpdateSoftwareTool calls quadsmith.api.SoftwareToolService.UpdateSoftwareTool.
+func (c *softwareToolServiceClient) UpdateSoftwareTool(ctx context.Context, req *connect.Request[api.UpdateSoftwareToolRequest]) (*connect.Response[api.SoftwareTool], error) {
+	return c.updateSoftwareTool.CallUnary(ctx, req)
+}
+
+// DeleteSoftwareTool calls quadsmith.api.SoftwareToolService.DeleteSoftwareTool.
+func (c *softwareToolServiceClient) DeleteSoftwareTool(ctx context.Context, req *connect.Request[api.DeleteSoftwareToolRequest]) (*connect.Response[api.DeleteSoftwareToolResponse], error) {
+	return c.deleteSoftwareTool.CallUnary(ctx, req)
+}
+
 // SoftwareToolServiceHandler is an implementation of the quadsmith.api.SoftwareToolService service.
 type SoftwareToolServiceHandler interface {
 	GetSoftwareTool(context.Context, *connect.Request[api.GetSoftwareToolRequest]) (*connect.Response[api.SoftwareTool], error)
 	ListSoftwareTools(context.Context, *connect.Request[api.ListSoftwareToolsRequest]) (*connect.Response[api.ListSoftwareToolsResponse], error)
+	CreateSoftwareTool(context.Context, *connect.Request[api.CreateSoftwareToolRequest]) (*connect.Response[api.SoftwareTool], error)
+	UpdateSoftwareTool(context.Context, *connect.Request[api.UpdateSoftwareToolRequest]) (*connect.Response[api.SoftwareTool], error)
+	DeleteSoftwareTool(context.Context, *connect.Request[api.DeleteSoftwareToolRequest]) (*connect.Response[api.DeleteSoftwareToolResponse], error)
 }
 
 // NewSoftwareToolServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -114,12 +165,36 @@ func NewSoftwareToolServiceHandler(svc SoftwareToolServiceHandler, opts ...conne
 		connect.WithSchema(softwareToolServiceMethods.ByName("ListSoftwareTools")),
 		connect.WithHandlerOptions(opts...),
 	)
+	softwareToolServiceCreateSoftwareToolHandler := connect.NewUnaryHandler(
+		SoftwareToolServiceCreateSoftwareToolProcedure,
+		svc.CreateSoftwareTool,
+		connect.WithSchema(softwareToolServiceMethods.ByName("CreateSoftwareTool")),
+		connect.WithHandlerOptions(opts...),
+	)
+	softwareToolServiceUpdateSoftwareToolHandler := connect.NewUnaryHandler(
+		SoftwareToolServiceUpdateSoftwareToolProcedure,
+		svc.UpdateSoftwareTool,
+		connect.WithSchema(softwareToolServiceMethods.ByName("UpdateSoftwareTool")),
+		connect.WithHandlerOptions(opts...),
+	)
+	softwareToolServiceDeleteSoftwareToolHandler := connect.NewUnaryHandler(
+		SoftwareToolServiceDeleteSoftwareToolProcedure,
+		svc.DeleteSoftwareTool,
+		connect.WithSchema(softwareToolServiceMethods.ByName("DeleteSoftwareTool")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.SoftwareToolService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case SoftwareToolServiceGetSoftwareToolProcedure:
 			softwareToolServiceGetSoftwareToolHandler.ServeHTTP(w, r)
 		case SoftwareToolServiceListSoftwareToolsProcedure:
 			softwareToolServiceListSoftwareToolsHandler.ServeHTTP(w, r)
+		case SoftwareToolServiceCreateSoftwareToolProcedure:
+			softwareToolServiceCreateSoftwareToolHandler.ServeHTTP(w, r)
+		case SoftwareToolServiceUpdateSoftwareToolProcedure:
+			softwareToolServiceUpdateSoftwareToolHandler.ServeHTTP(w, r)
+		case SoftwareToolServiceDeleteSoftwareToolProcedure:
+			softwareToolServiceDeleteSoftwareToolHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +210,16 @@ func (UnimplementedSoftwareToolServiceHandler) GetSoftwareTool(context.Context, 
 
 func (UnimplementedSoftwareToolServiceHandler) ListSoftwareTools(context.Context, *connect.Request[api.ListSoftwareToolsRequest]) (*connect.Response[api.ListSoftwareToolsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.SoftwareToolService.ListSoftwareTools is not implemented"))
+}
+
+func (UnimplementedSoftwareToolServiceHandler) CreateSoftwareTool(context.Context, *connect.Request[api.CreateSoftwareToolRequest]) (*connect.Response[api.SoftwareTool], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.SoftwareToolService.CreateSoftwareTool is not implemented"))
+}
+
+func (UnimplementedSoftwareToolServiceHandler) UpdateSoftwareTool(context.Context, *connect.Request[api.UpdateSoftwareToolRequest]) (*connect.Response[api.SoftwareTool], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.SoftwareToolService.UpdateSoftwareTool is not implemented"))
+}
+
+func (UnimplementedSoftwareToolServiceHandler) DeleteSoftwareTool(context.Context, *connect.Request[api.DeleteSoftwareToolRequest]) (*connect.Response[api.DeleteSoftwareToolResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.SoftwareToolService.DeleteSoftwareTool is not implemented"))
 }

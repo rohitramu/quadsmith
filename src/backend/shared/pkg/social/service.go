@@ -256,7 +256,7 @@ func (s *SocialService) CreateReview(ctx context.Context, req *connect.Request[p
 	// 1. Self-Review Prevention: Build authors cannot review their own builds
 	if resolvedCol == "build" || resolvedCol == "builds" {
 		var authorUUID sql.NullString
-		err := s.db.QueryRow(ctx, "SELECT user_uuid FROM builds WHERE uuid = $1", entityUUID).Scan(&authorUUID)
+		err := s.db.QueryRow(ctx, "SELECT user_uuid FROM entities WHERE uuid = $1", entityUUID).Scan(&authorUUID)
 		if err == nil && authorUUID.Valid && authorUUID.String == u.UserUUID {
 			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("authors cannot submit a review for their own build"))
 		}
@@ -730,7 +730,7 @@ func (s *SocialService) CreateQuestion(ctx context.Context, req *connect.Request
 	// Self-Question Block: Users cannot post questions on their own builds
 	if resolvedCol == "build" || resolvedCol == "builds" {
 		var authorUUID sql.NullString
-		err := s.db.QueryRow(ctx, "SELECT user_uuid FROM builds WHERE uuid = $1", entityUUID).Scan(&authorUUID)
+		err := s.db.QueryRow(ctx, "SELECT user_uuid FROM entities WHERE uuid = $1", entityUUID).Scan(&authorUUID)
 		if err == nil && authorUUID.Valid && authorUUID.String == u.UserUUID {
 			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("authors cannot ask questions on their own builds"))
 		}
@@ -1455,9 +1455,9 @@ func (s *SocialService) EndorseAnswer(ctx context.Context, req *connect.Request[
 	// Dual-Authority: ONLY the Build Author can confer "Author Verified" star badge
 	var buildAuthorUUID sql.NullString
 	err = s.db.QueryRow(ctx, `
-		SELECT b.user_uuid
+		SELECT e.user_uuid
 		FROM questions q
-		JOIN builds b ON b.uuid = q.entity_uuid
+		JOIN entities e ON e.uuid = q.entity_uuid
 		WHERE q.uuid = $1
 	`, qUUID).Scan(&buildAuthorUUID)
 

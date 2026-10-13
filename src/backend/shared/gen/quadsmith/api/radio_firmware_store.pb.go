@@ -11,19 +11,19 @@ import (
 )
 
 func CreateRadioFirmware(ctx context.Context, tx pgx.Tx, m *RadioFirmware) error {
-	query := `INSERT INTO radio_firmwares (uuid, id, manufacturer, name, version, supported_protocols, is_open_source, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`
+	query := `INSERT INTO radio_firmwares (uuid, manufacturer, version, supported_protocols, is_open_source) VALUES ($1, $2, $3, $4, $5)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.Version, m.SupportedProtocols, m.IsOpenSource, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Manufacturer, m.Version, m.SupportedProtocols, m.IsOpenSource)
 	return err
 }
 
 func GetRadioFirmware(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*RadioFirmware, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "supported_protocols": true, "is_open_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, version, supported_protocols, is_open_source, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "supported_protocols": true, "is_open_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, version, supported_protocols, is_open_source, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetRadioFirmware(ctx context.Context, db *pgxpool.Pool, idOrUuid string, co
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "version", "supported_protocols", "is_open_source", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "version", "supported_protocols", "is_open_source", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM radio_firmwares WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM radio_firmwares INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &RadioFirmware{}
@@ -64,6 +64,10 @@ func GetRadioFirmware(ctx context.Context, db *pgxpool.Pool, idOrUuid string, co
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -81,20 +85,20 @@ func GetRadioFirmware(ctx context.Context, db *pgxpool.Pool, idOrUuid string, co
 }
 
 func UpdateRadioFirmware(ctx context.Context, tx pgx.Tx, m *RadioFirmware) error {
-	query := `UPDATE radio_firmwares SET manufacturer = $2, name = $3, version = $4, supported_protocols = $5, is_open_source = $6, description = $7, reference_links = $8, primary_display_image = $9, media = $10 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.Version, m.SupportedProtocols, m.IsOpenSource, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE radio_firmwares SET manufacturer = $2, version = $3, supported_protocols = $4, is_open_source = $5 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Version, m.SupportedProtocols, m.IsOpenSource)
 	return err
 }
 
 func DeleteRadioFirmware(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM radio_firmwares WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM radio_firmwares WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'radio-firmware' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListRadioFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*RadioFirmware, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "supported_protocols": true, "is_open_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, version, supported_protocols, is_open_source, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "supported_protocols": true, "is_open_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, version, supported_protocols, is_open_source, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -105,11 +109,12 @@ func ListRadioFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, so
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "version", "supported_protocols", "is_open_source", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "version", "supported_protocols", "is_open_source", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM radio_firmwares`
+	query := `SELECT ` + colsStr + ` FROM radio_firmwares INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -176,6 +181,10 @@ func ListRadioFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, so
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

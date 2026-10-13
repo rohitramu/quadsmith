@@ -15,14 +15,18 @@ import {
   CheckCircle,
   Trash2,
   X,
+  Cpu,
 } from "lucide-react";
 import { getPublicProfile } from "../gen/quadsmith/api/user-UserService_connectquery";
 import { listBuilds } from "../gen/quadsmith/api/build-BuildService_connectquery";
+import { search } from "../gen/quadsmith/api/search-SearchService_connectquery";
 import {
   listUserCollections,
   createCollection,
   deleteCollection,
 } from "../gen/quadsmith/api/social-SocialService_connectquery";
+import { ALL_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
+import { ComponentFormModal } from "../components/ComponentFormModal";
 import { getAvatarPalette, getInitial } from "../lib/avatarColor";
 import { BuildCard } from "../components/BuildCard";
 import { useAuth } from "../context/AuthContext";
@@ -43,9 +47,19 @@ export function UserProfilePage() {
   const [isCreating, setIsCreating] = useState(false);
   const [deletingColId, setDeletingColId] = useState<string | null>(null);
 
-  const activeTab = searchParams.get("tab") === "collections" ? "collections" : "builds";
+  // Component state
+  const [isComponentModalOpen, setIsComponentModalOpen] = useState(false);
+  const [createModalCollectionId, setCreateModalCollectionId] = useState("motors");
+  const [selectedEditComponent, setSelectedEditComponent] = useState<any>(null);
 
-  const handleTabChange = (tab: "builds" | "collections") => {
+  const activeTab =
+    searchParams.get("tab") === "collections"
+      ? "collections"
+      : searchParams.get("tab") === "components"
+        ? "components"
+        : "builds";
+
+  const handleTabChange = (tab: "builds" | "collections" | "components") => {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       if (tab === "builds") {
@@ -112,6 +126,29 @@ export function UserProfilePage() {
     error: collectionsError,
     refetch: refetchCollections,
   } = useQuery(listUserCollections, { userId: id || "" }, { enabled: !!id });
+
+  const componentSelectors = useMemo(() => {
+    return ALL_COLLECTIONS.map((c) => ({
+      path: getCollectionPath(c),
+      filter: `author_username == "${id}"`,
+    }));
+  }, [id]);
+
+  const {
+    data: componentsSearchData,
+    isLoading: isLoadingComponents,
+    refetch: refetchComponents,
+  } = useQuery(
+    search,
+    {
+      query: "",
+      selectors: componentSelectors,
+      limit: 100,
+    },
+    { enabled: !!id },
+  );
+
+  const contributedComponents = componentsSearchData?.results || [];
 
   const isOwner = user?.id === id;
   const collections = collectionsData?.collections || [];
@@ -347,6 +384,32 @@ export function UserProfilePage() {
               }`}
             >
               {displayColCount}
+            </span>
+          </button>
+
+          <button
+            role="tab"
+            id="tab-components"
+            aria-controls="panel-components"
+            aria-selected={activeTab === "components"}
+            type="button"
+            onClick={() => handleTabChange("components")}
+            className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer ${
+              activeTab === "components"
+                ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
+            }`}
+          >
+            <Cpu size={16} />
+            <span>Components</span>
+            <span
+              className={`px-2 py-0.5 rounded-full text-[11px] font-mono transition-colors ${
+                activeTab === "components"
+                  ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                  : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
+              }`}
+            >
+              {contributedComponents.length}
             </span>
           </button>
         </div>
@@ -652,6 +715,128 @@ export function UserProfilePage() {
             )}
           </section>
         )}
+
+        {/* Tab 3: Components Panel */}
+        {activeTab === "components" && (
+          <section
+            role="tabpanel"
+            id="panel-components"
+            aria-labelledby="tab-components"
+            className="space-y-6 animate-in fade-in duration-150"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
+              <div>
+                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                  <Cpu size={18} className="text-blue-500" />
+                  <span>Contributed Components</span>
+                </h3>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                  Hardware, gear, and software specifications cataloged by @{id}.
+                </p>
+              </div>
+
+              {isOwner && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSelectedEditComponent(null);
+                    setCreateModalCollectionId("motors");
+                    setIsComponentModalOpen(true);
+                  }}
+                  className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-xs shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                >
+                  <Plus size={14} />
+                  <span>Add Component</span>
+                </button>
+              )}
+            </div>
+
+            {isLoadingComponents ? (
+              <div className="flex h-48 w-full items-center justify-center text-zinc-400">
+                <Loader2 size={24} className="animate-spin text-blue-500" />
+              </div>
+            ) : contributedComponents.length === 0 ? (
+              <div className="text-center py-16 px-4 rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 space-y-3">
+                <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mx-auto text-zinc-400">
+                  <Cpu size={24} />
+                </div>
+                <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
+                  No Components Contributed Yet
+                </h4>
+                <p className="text-xs text-zinc-500 max-w-sm mx-auto">
+                  {isOwner
+                    ? "Contribute custom motors, frames, electronics, or firmware to Quadsmith's catalog."
+                    : `@${id} has not contributed any catalog components yet.`}
+                </p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {contributedComponents.map((item) => (
+                  <div
+                    key={item.uuid || item.id}
+                    className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all flex flex-col justify-between space-y-3 group"
+                  >
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+                          {item.collectionName || "Component"}
+                        </span>
+                        {isOwner && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedEditComponent(item);
+                              setCreateModalCollectionId(item.path.split("/").pop() || "motors");
+                              setIsComponentModalOpen(true);
+                            }}
+                            className="text-xs text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+                          >
+                            Edit
+                          </button>
+                        )}
+                      </div>
+
+                      <div className="flex items-center gap-3">
+                        {item.primaryDisplayImage ? (
+                          <img
+                            src={item.primaryDisplayImage}
+                            alt={item.name}
+                            className="w-10 h-10 rounded-lg object-cover bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shrink-0"
+                          />
+                        ) : (
+                          <div className="w-10 h-10 rounded-lg bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center text-zinc-400 shrink-0">
+                            <Cpu size={18} />
+                          </div>
+                        )}
+                        <div className="min-w-0 flex-1">
+                          <Link
+                            to={`/${item.path}/${item.id}`}
+                            className="font-bold text-sm text-zinc-900 dark:text-zinc-100 hover:underline truncate block"
+                          >
+                            {item.name}
+                          </Link>
+                          {item.description && (
+                            <p className="text-xs text-zinc-500 line-clamp-1">{item.description}</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800/80 flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+                      <span>{item.id}</span>
+                      <Link
+                        to={`/${item.path}/${item.id}`}
+                        className="text-blue-600 dark:text-blue-400 font-sans font-medium hover:underline"
+                      >
+                        View &rarr;
+                      </Link>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </section>
+        )}
       </div>
 
       {/* Create Collection Modal */}
@@ -738,6 +923,22 @@ export function UserProfilePage() {
             </form>
           </div>
         </div>
+      )}
+
+      {/* Component Form Modal */}
+      {isComponentModalOpen && (
+        <ComponentFormModal
+          isOpen={isComponentModalOpen}
+          onClose={() => {
+            setIsComponentModalOpen(false);
+            setSelectedEditComponent(null);
+          }}
+          collectionId={createModalCollectionId}
+          initialData={selectedEditComponent}
+          onSuccess={() => {
+            refetchComponents();
+          }}
+        />
       )}
     </div>
   );

@@ -262,6 +262,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	antennaCmd.AddCommand(antennaGetCmd)
+	antennaCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new antenna",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Antenna
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse antenna JSON: %w", err)
+			}
+			res, err := antennaClient.CreateAntenna(context.Background(), connect.NewRequest(&pb.CreateAntennaRequest{Antenna: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created antenna '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	antennaCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	antennaUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing antenna",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := antennaClient.ListAntennas(context.Background(), connect.NewRequest(&pb.ListAntennasRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Antennas {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Antenna
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse antenna JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := antennaClient.UpdateAntenna(context.Background(), connect.NewRequest(&pb.UpdateAntennaRequest{Antenna: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated antenna '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	antennaUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	antennaDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing antenna",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := antennaClient.ListAntennas(context.Background(), connect.NewRequest(&pb.ListAntennasRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Antennas {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := antennaClient.DeleteAntenna(context.Background(), connect.NewRequest(&pb.DeleteAntennaRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	antennaCmd.AddCommand(antennaCreateCmd)
+	antennaCmd.AddCommand(antennaUpdateCmd)
+	antennaCmd.AddCommand(antennaDeleteCmd)
 	componentsHardwareCmd.AddCommand(antennaCmd)
 
 	// --- Batteries ---
@@ -423,6 +545,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	batteryCmd.AddCommand(batteryGetCmd)
+	batteryCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new battery",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Battery
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse battery JSON: %w", err)
+			}
+			res, err := batteryClient.CreateBattery(context.Background(), connect.NewRequest(&pb.CreateBatteryRequest{Battery: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created battery '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	batteryCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	batteryUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing battery",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(&pb.ListBatteriesRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Batteries {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Battery
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse battery JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := batteryClient.UpdateBattery(context.Background(), connect.NewRequest(&pb.UpdateBatteryRequest{Battery: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated battery '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	batteryUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	batteryDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing battery",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := batteryClient.ListBatteries(context.Background(), connect.NewRequest(&pb.ListBatteriesRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Batteries {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := batteryClient.DeleteBattery(context.Background(), connect.NewRequest(&pb.DeleteBatteryRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	batteryCmd.AddCommand(batteryCreateCmd)
+	batteryCmd.AddCommand(batteryUpdateCmd)
+	batteryCmd.AddCommand(batteryDeleteCmd)
 	componentsHardwareCmd.AddCommand(batteryCmd)
 
 	// --- Builds ---
@@ -584,6 +828,75 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	buildCmd.AddCommand(buildGetCmd)
+	buildCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new build",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Build
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse build JSON: %w", err)
+			}
+			res, err := buildClient.CreateBuild(context.Background(), connect.NewRequest(&pb.CreateBuildRequest{Build: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created build '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	buildCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	buildDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing build",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := buildClient.ListBuilds(context.Background(), connect.NewRequest(&pb.ListBuildsRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Builds {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := buildClient.DeleteBuild(context.Background(), connect.NewRequest(&pb.DeleteBuildRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	buildCmd.AddCommand(buildCreateCmd)
+	buildCmd.AddCommand(buildDeleteCmd)
 	rootCmd.AddCommand(buildCmd)
 
 	// --- Cameras ---
@@ -745,6 +1058,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	cameraCmd.AddCommand(cameraGetCmd)
+	cameraCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new camera",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Camera
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse camera JSON: %w", err)
+			}
+			res, err := cameraClient.CreateCamera(context.Background(), connect.NewRequest(&pb.CreateCameraRequest{Camera: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created camera '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	cameraCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	cameraUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing camera",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := cameraClient.ListCameras(context.Background(), connect.NewRequest(&pb.ListCamerasRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Cameras {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Camera
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse camera JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := cameraClient.UpdateCamera(context.Background(), connect.NewRequest(&pb.UpdateCameraRequest{Camera: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated camera '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	cameraUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	cameraDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing camera",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := cameraClient.ListCameras(context.Background(), connect.NewRequest(&pb.ListCamerasRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Cameras {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := cameraClient.DeleteCamera(context.Background(), connect.NewRequest(&pb.DeleteCameraRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	cameraCmd.AddCommand(cameraCreateCmd)
+	cameraCmd.AddCommand(cameraUpdateCmd)
+	cameraCmd.AddCommand(cameraDeleteCmd)
 	componentsHardwareCmd.AddCommand(cameraCmd)
 
 	// --- ElectronicSpeedControllers ---
@@ -906,6 +1341,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	electronicSpeedControllerCmd.AddCommand(electronicSpeedControllerGetCmd)
+	electronicSpeedControllerCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new electronicspeedcontroller",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.ElectronicSpeedController
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse electronicspeedcontroller JSON: %w", err)
+			}
+			res, err := electronicSpeedControllerClient.CreateElectronicSpeedController(context.Background(), connect.NewRequest(&pb.CreateElectronicSpeedControllerRequest{ElectronicSpeedController: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created electronicspeedcontroller '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	electronicSpeedControllerCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	electronicSpeedControllerUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing electronicspeedcontroller",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := electronicSpeedControllerClient.ListElectronicSpeedControllers(context.Background(), connect.NewRequest(&pb.ListElectronicSpeedControllersRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.ElectronicSpeedControllers {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.ElectronicSpeedController
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse electronicspeedcontroller JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := electronicSpeedControllerClient.UpdateElectronicSpeedController(context.Background(), connect.NewRequest(&pb.UpdateElectronicSpeedControllerRequest{ElectronicSpeedController: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated electronicspeedcontroller '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	electronicSpeedControllerUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	electronicSpeedControllerDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing electronicspeedcontroller",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := electronicSpeedControllerClient.ListElectronicSpeedControllers(context.Background(), connect.NewRequest(&pb.ListElectronicSpeedControllersRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.ElectronicSpeedControllers {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := electronicSpeedControllerClient.DeleteElectronicSpeedController(context.Background(), connect.NewRequest(&pb.DeleteElectronicSpeedControllerRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	electronicSpeedControllerCmd.AddCommand(electronicSpeedControllerCreateCmd)
+	electronicSpeedControllerCmd.AddCommand(electronicSpeedControllerUpdateCmd)
+	electronicSpeedControllerCmd.AddCommand(electronicSpeedControllerDeleteCmd)
 	componentsHardwareCmd.AddCommand(electronicSpeedControllerCmd)
 
 	// --- FlightControllers ---
@@ -1067,6 +1624,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	flightControllerCmd.AddCommand(flightControllerGetCmd)
+	flightControllerCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new flightcontroller",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.FlightController
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse flightcontroller JSON: %w", err)
+			}
+			res, err := flightControllerClient.CreateFlightController(context.Background(), connect.NewRequest(&pb.CreateFlightControllerRequest{FlightController: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created flightcontroller '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	flightControllerCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	flightControllerUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing flightcontroller",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := flightControllerClient.ListFlightControllers(context.Background(), connect.NewRequest(&pb.ListFlightControllersRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.FlightControllers {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.FlightController
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse flightcontroller JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := flightControllerClient.UpdateFlightController(context.Background(), connect.NewRequest(&pb.UpdateFlightControllerRequest{FlightController: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated flightcontroller '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	flightControllerUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	flightControllerDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing flightcontroller",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := flightControllerClient.ListFlightControllers(context.Background(), connect.NewRequest(&pb.ListFlightControllersRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.FlightControllers {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := flightControllerClient.DeleteFlightController(context.Background(), connect.NewRequest(&pb.DeleteFlightControllerRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	flightControllerCmd.AddCommand(flightControllerCreateCmd)
+	flightControllerCmd.AddCommand(flightControllerUpdateCmd)
+	flightControllerCmd.AddCommand(flightControllerDeleteCmd)
 	componentsHardwareCmd.AddCommand(flightControllerCmd)
 
 	// --- Frames ---
@@ -1228,6 +1907,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	frameCmd.AddCommand(frameGetCmd)
+	frameCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new frame",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Frame
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse frame JSON: %w", err)
+			}
+			res, err := frameClient.CreateFrame(context.Background(), connect.NewRequest(&pb.CreateFrameRequest{Frame: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created frame '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	frameCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	frameUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing frame",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := frameClient.ListFrames(context.Background(), connect.NewRequest(&pb.ListFramesRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Frames {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Frame
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse frame JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := frameClient.UpdateFrame(context.Background(), connect.NewRequest(&pb.UpdateFrameRequest{Frame: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated frame '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	frameUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	frameDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing frame",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := frameClient.ListFrames(context.Background(), connect.NewRequest(&pb.ListFramesRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Frames {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := frameClient.DeleteFrame(context.Background(), connect.NewRequest(&pb.DeleteFrameRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	frameCmd.AddCommand(frameCreateCmd)
+	frameCmd.AddCommand(frameUpdateCmd)
+	frameCmd.AddCommand(frameDeleteCmd)
 	componentsHardwareCmd.AddCommand(frameCmd)
 
 	// --- GpsReceivers ---
@@ -1389,6 +2190,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	gpsReceiverCmd.AddCommand(gpsReceiverGetCmd)
+	gpsReceiverCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new gpsreceiver",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.GpsReceiver
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse gpsreceiver JSON: %w", err)
+			}
+			res, err := gpsReceiverClient.CreateGpsReceiver(context.Background(), connect.NewRequest(&pb.CreateGpsReceiverRequest{GpsReceiver: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created gpsreceiver '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	gpsReceiverCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	gpsReceiverUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing gpsreceiver",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := gpsReceiverClient.ListGpsReceivers(context.Background(), connect.NewRequest(&pb.ListGpsReceiversRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.GpsReceivers {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.GpsReceiver
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse gpsreceiver JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := gpsReceiverClient.UpdateGpsReceiver(context.Background(), connect.NewRequest(&pb.UpdateGpsReceiverRequest{GpsReceiver: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated gpsreceiver '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	gpsReceiverUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	gpsReceiverDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing gpsreceiver",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := gpsReceiverClient.ListGpsReceivers(context.Background(), connect.NewRequest(&pb.ListGpsReceiversRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.GpsReceivers {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := gpsReceiverClient.DeleteGpsReceiver(context.Background(), connect.NewRequest(&pb.DeleteGpsReceiverRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	gpsReceiverCmd.AddCommand(gpsReceiverCreateCmd)
+	gpsReceiverCmd.AddCommand(gpsReceiverUpdateCmd)
+	gpsReceiverCmd.AddCommand(gpsReceiverDeleteCmd)
 	componentsHardwareCmd.AddCommand(gpsReceiverCmd)
 
 	// --- Motors ---
@@ -1550,6 +2473,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	motorCmd.AddCommand(motorGetCmd)
+	motorCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new motor",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Motor
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse motor JSON: %w", err)
+			}
+			res, err := motorClient.CreateMotor(context.Background(), connect.NewRequest(&pb.CreateMotorRequest{Motor: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created motor '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	motorCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	motorUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing motor",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := motorClient.ListMotors(context.Background(), connect.NewRequest(&pb.ListMotorsRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Motors {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Motor
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse motor JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := motorClient.UpdateMotor(context.Background(), connect.NewRequest(&pb.UpdateMotorRequest{Motor: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated motor '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	motorUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	motorDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing motor",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := motorClient.ListMotors(context.Background(), connect.NewRequest(&pb.ListMotorsRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Motors {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := motorClient.DeleteMotor(context.Background(), connect.NewRequest(&pb.DeleteMotorRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	motorCmd.AddCommand(motorCreateCmd)
+	motorCmd.AddCommand(motorUpdateCmd)
+	motorCmd.AddCommand(motorDeleteCmd)
 	componentsHardwareCmd.AddCommand(motorCmd)
 
 	// --- Propellers ---
@@ -1711,6 +2756,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	propellerCmd.AddCommand(propellerGetCmd)
+	propellerCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new propeller",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Propeller
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse propeller JSON: %w", err)
+			}
+			res, err := propellerClient.CreatePropeller(context.Background(), connect.NewRequest(&pb.CreatePropellerRequest{Propeller: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created propeller '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	propellerCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	propellerUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing propeller",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := propellerClient.ListPropellers(context.Background(), connect.NewRequest(&pb.ListPropellersRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Propellers {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Propeller
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse propeller JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := propellerClient.UpdatePropeller(context.Background(), connect.NewRequest(&pb.UpdatePropellerRequest{Propeller: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated propeller '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	propellerUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	propellerDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing propeller",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := propellerClient.ListPropellers(context.Background(), connect.NewRequest(&pb.ListPropellersRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Propellers {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := propellerClient.DeletePropeller(context.Background(), connect.NewRequest(&pb.DeletePropellerRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	propellerCmd.AddCommand(propellerCreateCmd)
+	propellerCmd.AddCommand(propellerUpdateCmd)
+	propellerCmd.AddCommand(propellerDeleteCmd)
 	componentsHardwareCmd.AddCommand(propellerCmd)
 
 	// --- Receivers ---
@@ -1872,6 +3039,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	receiverCmd.AddCommand(receiverGetCmd)
+	receiverCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new receiver",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Receiver
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse receiver JSON: %w", err)
+			}
+			res, err := receiverClient.CreateReceiver(context.Background(), connect.NewRequest(&pb.CreateReceiverRequest{Receiver: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created receiver '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	receiverCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	receiverUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing receiver",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := receiverClient.ListReceivers(context.Background(), connect.NewRequest(&pb.ListReceiversRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Receivers {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Receiver
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse receiver JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := receiverClient.UpdateReceiver(context.Background(), connect.NewRequest(&pb.UpdateReceiverRequest{Receiver: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated receiver '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	receiverUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	receiverDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing receiver",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := receiverClient.ListReceivers(context.Background(), connect.NewRequest(&pb.ListReceiversRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Receivers {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := receiverClient.DeleteReceiver(context.Background(), connect.NewRequest(&pb.DeleteReceiverRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	receiverCmd.AddCommand(receiverCreateCmd)
+	receiverCmd.AddCommand(receiverUpdateCmd)
+	receiverCmd.AddCommand(receiverDeleteCmd)
 	componentsHardwareCmd.AddCommand(receiverCmd)
 
 	// --- VideoTransmitters ---
@@ -2033,6 +3322,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	videoTransmitterCmd.AddCommand(videoTransmitterGetCmd)
+	videoTransmitterCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new videotransmitter",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.VideoTransmitter
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse videotransmitter JSON: %w", err)
+			}
+			res, err := videoTransmitterClient.CreateVideoTransmitter(context.Background(), connect.NewRequest(&pb.CreateVideoTransmitterRequest{VideoTransmitter: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created videotransmitter '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	videoTransmitterCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	videoTransmitterUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing videotransmitter",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := videoTransmitterClient.ListVideoTransmitters(context.Background(), connect.NewRequest(&pb.ListVideoTransmittersRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.VideoTransmitters {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.VideoTransmitter
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse videotransmitter JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := videoTransmitterClient.UpdateVideoTransmitter(context.Background(), connect.NewRequest(&pb.UpdateVideoTransmitterRequest{VideoTransmitter: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated videotransmitter '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	videoTransmitterUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	videoTransmitterDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing videotransmitter",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := videoTransmitterClient.ListVideoTransmitters(context.Background(), connect.NewRequest(&pb.ListVideoTransmittersRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.VideoTransmitters {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := videoTransmitterClient.DeleteVideoTransmitter(context.Background(), connect.NewRequest(&pb.DeleteVideoTransmitterRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	videoTransmitterCmd.AddCommand(videoTransmitterCreateCmd)
+	videoTransmitterCmd.AddCommand(videoTransmitterUpdateCmd)
+	videoTransmitterCmd.AddCommand(videoTransmitterDeleteCmd)
 	componentsHardwareCmd.AddCommand(videoTransmitterCmd)
 
 	// --- FcFirmwares ---
@@ -2194,6 +3605,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	fcFirmwareCmd.AddCommand(fcFirmwareGetCmd)
+	fcFirmwareCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new fcfirmware",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.FcFirmware
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse fcfirmware JSON: %w", err)
+			}
+			res, err := fcFirmwareClient.CreateFcFirmware(context.Background(), connect.NewRequest(&pb.CreateFcFirmwareRequest{FcFirmware: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created fcfirmware '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	fcFirmwareCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	fcFirmwareUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing fcfirmware",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := fcFirmwareClient.ListFcFirmwares(context.Background(), connect.NewRequest(&pb.ListFcFirmwaresRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.FcFirmwares {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.FcFirmware
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse fcfirmware JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := fcFirmwareClient.UpdateFcFirmware(context.Background(), connect.NewRequest(&pb.UpdateFcFirmwareRequest{FcFirmware: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated fcfirmware '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	fcFirmwareUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	fcFirmwareDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing fcfirmware",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := fcFirmwareClient.ListFcFirmwares(context.Background(), connect.NewRequest(&pb.ListFcFirmwaresRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.FcFirmwares {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := fcFirmwareClient.DeleteFcFirmware(context.Background(), connect.NewRequest(&pb.DeleteFcFirmwareRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	fcFirmwareCmd.AddCommand(fcFirmwareCreateCmd)
+	fcFirmwareCmd.AddCommand(fcFirmwareUpdateCmd)
+	fcFirmwareCmd.AddCommand(fcFirmwareDeleteCmd)
 	componentsSoftwareCmd.AddCommand(fcFirmwareCmd)
 
 	// --- EscFirmwares ---
@@ -2355,6 +3888,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	escFirmwareCmd.AddCommand(escFirmwareGetCmd)
+	escFirmwareCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new escfirmware",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.EscFirmware
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse escfirmware JSON: %w", err)
+			}
+			res, err := escFirmwareClient.CreateEscFirmware(context.Background(), connect.NewRequest(&pb.CreateEscFirmwareRequest{EscFirmware: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created escfirmware '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	escFirmwareCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	escFirmwareUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing escfirmware",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := escFirmwareClient.ListEscFirmwares(context.Background(), connect.NewRequest(&pb.ListEscFirmwaresRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.EscFirmwares {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.EscFirmware
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse escfirmware JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := escFirmwareClient.UpdateEscFirmware(context.Background(), connect.NewRequest(&pb.UpdateEscFirmwareRequest{EscFirmware: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated escfirmware '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	escFirmwareUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	escFirmwareDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing escfirmware",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := escFirmwareClient.ListEscFirmwares(context.Background(), connect.NewRequest(&pb.ListEscFirmwaresRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.EscFirmwares {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := escFirmwareClient.DeleteEscFirmware(context.Background(), connect.NewRequest(&pb.DeleteEscFirmwareRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	escFirmwareCmd.AddCommand(escFirmwareCreateCmd)
+	escFirmwareCmd.AddCommand(escFirmwareUpdateCmd)
+	escFirmwareCmd.AddCommand(escFirmwareDeleteCmd)
 	componentsSoftwareCmd.AddCommand(escFirmwareCmd)
 
 	// --- VtxFirmwares ---
@@ -2516,6 +4171,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	vtxFirmwareCmd.AddCommand(vtxFirmwareGetCmd)
+	vtxFirmwareCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new vtxfirmware",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.VtxFirmware
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse vtxfirmware JSON: %w", err)
+			}
+			res, err := vtxFirmwareClient.CreateVtxFirmware(context.Background(), connect.NewRequest(&pb.CreateVtxFirmwareRequest{VtxFirmware: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created vtxfirmware '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	vtxFirmwareCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	vtxFirmwareUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing vtxfirmware",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := vtxFirmwareClient.ListVtxFirmwares(context.Background(), connect.NewRequest(&pb.ListVtxFirmwaresRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.VtxFirmwares {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.VtxFirmware
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse vtxfirmware JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := vtxFirmwareClient.UpdateVtxFirmware(context.Background(), connect.NewRequest(&pb.UpdateVtxFirmwareRequest{VtxFirmware: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated vtxfirmware '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	vtxFirmwareUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	vtxFirmwareDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing vtxfirmware",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := vtxFirmwareClient.ListVtxFirmwares(context.Background(), connect.NewRequest(&pb.ListVtxFirmwaresRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.VtxFirmwares {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := vtxFirmwareClient.DeleteVtxFirmware(context.Background(), connect.NewRequest(&pb.DeleteVtxFirmwareRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	vtxFirmwareCmd.AddCommand(vtxFirmwareCreateCmd)
+	vtxFirmwareCmd.AddCommand(vtxFirmwareUpdateCmd)
+	vtxFirmwareCmd.AddCommand(vtxFirmwareDeleteCmd)
 	componentsSoftwareCmd.AddCommand(vtxFirmwareCmd)
 
 	// --- RadioFirmwares ---
@@ -2677,6 +4454,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	radioFirmwareCmd.AddCommand(radioFirmwareGetCmd)
+	radioFirmwareCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new radiofirmware",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.RadioFirmware
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse radiofirmware JSON: %w", err)
+			}
+			res, err := radioFirmwareClient.CreateRadioFirmware(context.Background(), connect.NewRequest(&pb.CreateRadioFirmwareRequest{RadioFirmware: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created radiofirmware '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	radioFirmwareCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	radioFirmwareUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing radiofirmware",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := radioFirmwareClient.ListRadioFirmwares(context.Background(), connect.NewRequest(&pb.ListRadioFirmwaresRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.RadioFirmwares {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.RadioFirmware
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse radiofirmware JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := radioFirmwareClient.UpdateRadioFirmware(context.Background(), connect.NewRequest(&pb.UpdateRadioFirmwareRequest{RadioFirmware: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated radiofirmware '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	radioFirmwareUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	radioFirmwareDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing radiofirmware",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := radioFirmwareClient.ListRadioFirmwares(context.Background(), connect.NewRequest(&pb.ListRadioFirmwaresRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.RadioFirmwares {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := radioFirmwareClient.DeleteRadioFirmware(context.Background(), connect.NewRequest(&pb.DeleteRadioFirmwareRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	radioFirmwareCmd.AddCommand(radioFirmwareCreateCmd)
+	radioFirmwareCmd.AddCommand(radioFirmwareUpdateCmd)
+	radioFirmwareCmd.AddCommand(radioFirmwareDeleteCmd)
 	componentsSoftwareCmd.AddCommand(radioFirmwareCmd)
 
 	// --- SoftwareTools ---
@@ -2838,6 +4737,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	softwareToolCmd.AddCommand(softwareToolGetCmd)
+	softwareToolCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new softwaretool",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.SoftwareTool
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse softwaretool JSON: %w", err)
+			}
+			res, err := softwareToolClient.CreateSoftwareTool(context.Background(), connect.NewRequest(&pb.CreateSoftwareToolRequest{SoftwareTool: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created softwaretool '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	softwareToolCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	softwareToolUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing softwaretool",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := softwareToolClient.ListSoftwareTools(context.Background(), connect.NewRequest(&pb.ListSoftwareToolsRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.SoftwareTools {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.SoftwareTool
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse softwaretool JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := softwareToolClient.UpdateSoftwareTool(context.Background(), connect.NewRequest(&pb.UpdateSoftwareToolRequest{SoftwareTool: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated softwaretool '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	softwareToolUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	softwareToolDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing softwaretool",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := softwareToolClient.ListSoftwareTools(context.Background(), connect.NewRequest(&pb.ListSoftwareToolsRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.SoftwareTools {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := softwareToolClient.DeleteSoftwareTool(context.Background(), connect.NewRequest(&pb.DeleteSoftwareToolRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	softwareToolCmd.AddCommand(softwareToolCreateCmd)
+	softwareToolCmd.AddCommand(softwareToolUpdateCmd)
+	softwareToolCmd.AddCommand(softwareToolDeleteCmd)
 	componentsSoftwareCmd.AddCommand(softwareToolCmd)
 
 	// --- Transmitters ---
@@ -2999,6 +5020,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	transmitterCmd.AddCommand(transmitterGetCmd)
+	transmitterCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new transmitter",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Transmitter
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse transmitter JSON: %w", err)
+			}
+			res, err := transmitterClient.CreateTransmitter(context.Background(), connect.NewRequest(&pb.CreateTransmitterRequest{Transmitter: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created transmitter '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	transmitterCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	transmitterUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing transmitter",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := transmitterClient.ListTransmitters(context.Background(), connect.NewRequest(&pb.ListTransmittersRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Transmitters {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Transmitter
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse transmitter JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := transmitterClient.UpdateTransmitter(context.Background(), connect.NewRequest(&pb.UpdateTransmitterRequest{Transmitter: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated transmitter '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	transmitterUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	transmitterDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing transmitter",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := transmitterClient.ListTransmitters(context.Background(), connect.NewRequest(&pb.ListTransmittersRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Transmitters {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := transmitterClient.DeleteTransmitter(context.Background(), connect.NewRequest(&pb.DeleteTransmitterRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	transmitterCmd.AddCommand(transmitterCreateCmd)
+	transmitterCmd.AddCommand(transmitterUpdateCmd)
+	transmitterCmd.AddCommand(transmitterDeleteCmd)
 	componentsGearCmd.AddCommand(transmitterCmd)
 
 	// --- Goggles ---
@@ -3160,6 +5303,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	gogglesCmd.AddCommand(gogglesGetCmd)
+	gogglesCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new goggles",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Goggles
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse goggles JSON: %w", err)
+			}
+			res, err := gogglesClient.CreateGoggles(context.Background(), connect.NewRequest(&pb.CreateGogglesRequest{Goggles: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created goggles '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	gogglesCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	gogglesUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing goggles",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := gogglesClient.ListGoggles(context.Background(), connect.NewRequest(&pb.ListGogglesRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Goggles {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Goggles
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse goggles JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := gogglesClient.UpdateGoggles(context.Background(), connect.NewRequest(&pb.UpdateGogglesRequest{Goggles: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated goggles '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	gogglesUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	gogglesDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing goggles",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := gogglesClient.ListGoggles(context.Background(), connect.NewRequest(&pb.ListGogglesRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Goggles {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := gogglesClient.DeleteGoggles(context.Background(), connect.NewRequest(&pb.DeleteGogglesRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	gogglesCmd.AddCommand(gogglesCreateCmd)
+	gogglesCmd.AddCommand(gogglesUpdateCmd)
+	gogglesCmd.AddCommand(gogglesDeleteCmd)
 	componentsGearCmd.AddCommand(gogglesCmd)
 
 	// --- Chargers ---
@@ -3321,6 +5586,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	chargerCmd.AddCommand(chargerGetCmd)
+	chargerCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new charger",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Charger
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse charger JSON: %w", err)
+			}
+			res, err := chargerClient.CreateCharger(context.Background(), connect.NewRequest(&pb.CreateChargerRequest{Charger: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created charger '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	chargerCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	chargerUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing charger",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := chargerClient.ListChargers(context.Background(), connect.NewRequest(&pb.ListChargersRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Chargers {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.Charger
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse charger JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := chargerClient.UpdateCharger(context.Background(), connect.NewRequest(&pb.UpdateChargerRequest{Charger: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated charger '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	chargerUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	chargerDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing charger",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := chargerClient.ListChargers(context.Background(), connect.NewRequest(&pb.ListChargersRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.Chargers {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := chargerClient.DeleteCharger(context.Background(), connect.NewRequest(&pb.DeleteChargerRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	chargerCmd.AddCommand(chargerCreateCmd)
+	chargerCmd.AddCommand(chargerUpdateCmd)
+	chargerCmd.AddCommand(chargerDeleteCmd)
 	componentsGearCmd.AddCommand(chargerCmd)
 
 	// --- FieldTools ---
@@ -3482,6 +5869,128 @@ func newRootCmd() *cobra.Command {
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 	fieldToolCmd.AddCommand(fieldToolGetCmd)
+	fieldToolCreateCmd := &cobra.Command{
+		Use:   "create",
+		Short: "Create a new fieldtool",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.FieldTool
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse fieldtool JSON: %w", err)
+			}
+			res, err := fieldToolClient.CreateFieldTool(context.Background(), connect.NewRequest(&pb.CreateFieldToolRequest{FieldTool: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully created fieldtool '%s' (uuid: %s)\n", res.Msg.Id, res.Msg.Uuid)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	fieldToolCreateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component specification (or '-' for stdin)")
+	fieldToolUpdateCmd := &cobra.Command{
+		Use:   "update [id]",
+		Short: "Update an existing fieldtool",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := fieldToolClient.ListFieldTools(context.Background(), connect.NewRequest(&pb.ListFieldToolsRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.FieldTools {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			filePath, _ := cmd.Flags().GetString("file")
+			var data []byte
+			var err error
+			if filePath == "-" || (filePath == "" && hasStdinData()) {
+				data, err = io.ReadAll(os.Stdin)
+			} else if filePath != "" {
+				data, err = os.ReadFile(filePath)
+			} else {
+				return fmt.Errorf("--file flag or piped stdin is required")
+			}
+			if err != nil {
+				return err
+			}
+			if strings.HasSuffix(filePath, ".yaml") || strings.HasSuffix(filePath, ".yml") {
+				data, err = yaml.YAMLToJSON(data)
+				if err != nil {
+					return fmt.Errorf("invalid YAML: %w", err)
+				}
+			}
+			var item pb.FieldTool
+			if err := protojson.Unmarshal(data, &item); err != nil {
+				return fmt.Errorf("failed to parse fieldtool JSON: %w", err)
+			}
+			item.Id = args[0]
+			res, err := fieldToolClient.UpdateFieldTool(context.Background(), connect.NewRequest(&pb.UpdateFieldToolRequest{FieldTool: &item}))
+			if err != nil {
+				return err
+			}
+			fmt.Fprintf(cmd.OutOrStdout(), "Successfully updated fieldtool '%s'\n", res.Msg.Id)
+			return printGetOutput(cmd.OutOrStdout(), res.Msg, nil)
+		},
+	}
+	fieldToolUpdateCmd.Flags().StringP("file", "f", "", "Path to JSON/YAML file containing component updates (or '-' for stdin)")
+	fieldToolDeleteCmd := &cobra.Command{
+		Use:   "delete [id]",
+		Short: "Delete or archive an existing fieldtool",
+		Args:  cobra.ExactArgs(1),
+		ValidArgsFunction: func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+			if len(args) != 0 {
+				return nil, cobra.ShellCompDirectiveNoFileComp
+			}
+			res, err := fieldToolClient.ListFieldTools(context.Background(), connect.NewRequest(&pb.ListFieldToolsRequest{PageSize: 100}))
+			if err != nil {
+				return nil, cobra.ShellCompDirectiveError
+			}
+			var comps []string
+			for _, item := range res.Msg.FieldTools {
+				comps = append(comps, item.Id)
+			}
+			return comps, cobra.ShellCompDirectiveNoFileComp
+		},
+		RunE: func(cmd *cobra.Command, args []string) error {
+			res, err := fieldToolClient.DeleteFieldTool(context.Background(), connect.NewRequest(&pb.DeleteFieldToolRequest{Id: args[0]}))
+			if err != nil {
+				return err
+			}
+			if res.Msg.IsArchived {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' has active references and was archived/delisted.\n", args[0])
+			} else {
+				fmt.Fprintf(cmd.OutOrStdout(), "Component '%s' was permanently deleted.\n", args[0])
+			}
+			return nil
+		},
+	}
+	fieldToolCmd.AddCommand(fieldToolCreateCmd)
+	fieldToolCmd.AddCommand(fieldToolUpdateCmd)
+	fieldToolCmd.AddCommand(fieldToolDeleteCmd)
 	componentsGearCmd.AddCommand(fieldToolCmd)
 
 	// --- EVALUATOR ---
@@ -3732,6 +6241,14 @@ func main() {
 	if err := newRootCmd().Execute(); err != nil {
 		os.Exit(1)
 	}
+}
+
+func hasStdinData() bool {
+	stat, err := os.Stdin.Stat()
+	if err != nil {
+		return false
+	}
+	return (stat.Mode() & os.ModeCharDevice) == 0
 }
 
 func GetCollectionPath(m proto.Message) string {

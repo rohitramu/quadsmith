@@ -13,3 +13,18 @@ export const getAntenna = AntennaService.method.getAntenna;
  * @generated from rpc quadsmith.api.AntennaService.ListAntennas
  */
 export const listAntennas = AntennaService.method.listAntennas;
+
+/**
+ * @generated from rpc quadsmith.api.AntennaService.CreateAntenna
+ */
+export const createAntenna = AntennaService.method.createAntenna;
+
+/**
+ * @generated from rpc quadsmith.api.AntennaService.UpdateAntenna
+ */
+export const updateAntenna = AntennaService.method.updateAntenna;
+
+/**
+ * @generated from rpc quadsmith.api.AntennaService.DeleteAntenna
+ */
+export const deleteAntenna = AntennaService.method.deleteAntenna;

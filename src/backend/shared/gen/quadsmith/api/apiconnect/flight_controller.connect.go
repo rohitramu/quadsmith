@@ -39,12 +39,24 @@ const (
 	// FlightControllerServiceListFlightControllersProcedure is the fully-qualified name of the
 	// FlightControllerService's ListFlightControllers RPC.
 	FlightControllerServiceListFlightControllersProcedure = "/quadsmith.api.FlightControllerService/ListFlightControllers"
+	// FlightControllerServiceCreateFlightControllerProcedure is the fully-qualified name of the
+	// FlightControllerService's CreateFlightController RPC.
+	FlightControllerServiceCreateFlightControllerProcedure = "/quadsmith.api.FlightControllerService/CreateFlightController"
+	// FlightControllerServiceUpdateFlightControllerProcedure is the fully-qualified name of the
+	// FlightControllerService's UpdateFlightController RPC.
+	FlightControllerServiceUpdateFlightControllerProcedure = "/quadsmith.api.FlightControllerService/UpdateFlightController"
+	// FlightControllerServiceDeleteFlightControllerProcedure is the fully-qualified name of the
+	// FlightControllerService's DeleteFlightController RPC.
+	FlightControllerServiceDeleteFlightControllerProcedure = "/quadsmith.api.FlightControllerService/DeleteFlightController"
 )
 
 // FlightControllerServiceClient is a client for the quadsmith.api.FlightControllerService service.
 type FlightControllerServiceClient interface {
 	GetFlightController(context.Context, *connect.Request[api.GetFlightControllerRequest]) (*connect.Response[api.FlightController], error)
 	ListFlightControllers(context.Context, *connect.Request[api.ListFlightControllersRequest]) (*connect.Response[api.ListFlightControllersResponse], error)
+	CreateFlightController(context.Context, *connect.Request[api.CreateFlightControllerRequest]) (*connect.Response[api.FlightController], error)
+	UpdateFlightController(context.Context, *connect.Request[api.UpdateFlightControllerRequest]) (*connect.Response[api.FlightController], error)
+	DeleteFlightController(context.Context, *connect.Request[api.DeleteFlightControllerRequest]) (*connect.Response[api.DeleteFlightControllerResponse], error)
 }
 
 // NewFlightControllerServiceClient constructs a client for the
@@ -70,13 +82,34 @@ func NewFlightControllerServiceClient(httpClient connect.HTTPClient, baseURL str
 			connect.WithSchema(flightControllerServiceMethods.ByName("ListFlightControllers")),
 			connect.WithClientOptions(opts...),
 		),
+		createFlightController: connect.NewClient[api.CreateFlightControllerRequest, api.FlightController](
+			httpClient,
+			baseURL+FlightControllerServiceCreateFlightControllerProcedure,
+			connect.WithSchema(flightControllerServiceMethods.ByName("CreateFlightController")),
+			connect.WithClientOptions(opts...),
+		),
+		updateFlightController: connect.NewClient[api.UpdateFlightControllerRequest, api.FlightController](
+			httpClient,
+			baseURL+FlightControllerServiceUpdateFlightControllerProcedure,
+			connect.WithSchema(flightControllerServiceMethods.ByName("UpdateFlightController")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteFlightController: connect.NewClient[api.DeleteFlightControllerRequest, api.DeleteFlightControllerResponse](
+			httpClient,
+			baseURL+FlightControllerServiceDeleteFlightControllerProcedure,
+			connect.WithSchema(flightControllerServiceMethods.ByName("DeleteFlightController")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // flightControllerServiceClient implements FlightControllerServiceClient.
 type flightControllerServiceClient struct {
-	getFlightController   *connect.Client[api.GetFlightControllerRequest, api.FlightController]
-	listFlightControllers *connect.Client[api.ListFlightControllersRequest, api.ListFlightControllersResponse]
+	getFlightController    *connect.Client[api.GetFlightControllerRequest, api.FlightController]
+	listFlightControllers  *connect.Client[api.ListFlightControllersRequest, api.ListFlightControllersResponse]
+	createFlightController *connect.Client[api.CreateFlightControllerRequest, api.FlightController]
+	updateFlightController *connect.Client[api.UpdateFlightControllerRequest, api.FlightController]
+	deleteFlightController *connect.Client[api.DeleteFlightControllerRequest, api.DeleteFlightControllerResponse]
 }
 
 // GetFlightController calls quadsmith.api.FlightControllerService.GetFlightController.
@@ -89,11 +122,29 @@ func (c *flightControllerServiceClient) ListFlightControllers(ctx context.Contex
 	return c.listFlightControllers.CallUnary(ctx, req)
 }
 
+// CreateFlightController calls quadsmith.api.FlightControllerService.CreateFlightController.
+func (c *flightControllerServiceClient) CreateFlightController(ctx context.Context, req *connect.Request[api.CreateFlightControllerRequest]) (*connect.Response[api.FlightController], error) {
+	return c.createFlightController.CallUnary(ctx, req)
+}
+
+// UpdateFlightController calls quadsmith.api.FlightControllerService.UpdateFlightController.
+func (c *flightControllerServiceClient) UpdateFlightController(ctx context.Context, req *connect.Request[api.UpdateFlightControllerRequest]) (*connect.Response[api.FlightController], error) {
+	return c.updateFlightController.CallUnary(ctx, req)
+}
+
+// DeleteFlightController calls quadsmith.api.FlightControllerService.DeleteFlightController.
+func (c *flightControllerServiceClient) DeleteFlightController(ctx context.Context, req *connect.Request[api.DeleteFlightControllerRequest]) (*connect.Response[api.DeleteFlightControllerResponse], error) {
+	return c.deleteFlightController.CallUnary(ctx, req)
+}
+
 // FlightControllerServiceHandler is an implementation of the quadsmith.api.FlightControllerService
 // service.
 type FlightControllerServiceHandler interface {
 	GetFlightController(context.Context, *connect.Request[api.GetFlightControllerRequest]) (*connect.Response[api.FlightController], error)
 	ListFlightControllers(context.Context, *connect.Request[api.ListFlightControllersRequest]) (*connect.Response[api.ListFlightControllersResponse], error)
+	CreateFlightController(context.Context, *connect.Request[api.CreateFlightControllerRequest]) (*connect.Response[api.FlightController], error)
+	UpdateFlightController(context.Context, *connect.Request[api.UpdateFlightControllerRequest]) (*connect.Response[api.FlightController], error)
+	DeleteFlightController(context.Context, *connect.Request[api.DeleteFlightControllerRequest]) (*connect.Response[api.DeleteFlightControllerResponse], error)
 }
 
 // NewFlightControllerServiceHandler builds an HTTP handler from the service implementation. It
@@ -115,12 +166,36 @@ func NewFlightControllerServiceHandler(svc FlightControllerServiceHandler, opts 
 		connect.WithSchema(flightControllerServiceMethods.ByName("ListFlightControllers")),
 		connect.WithHandlerOptions(opts...),
 	)
+	flightControllerServiceCreateFlightControllerHandler := connect.NewUnaryHandler(
+		FlightControllerServiceCreateFlightControllerProcedure,
+		svc.CreateFlightController,
+		connect.WithSchema(flightControllerServiceMethods.ByName("CreateFlightController")),
+		connect.WithHandlerOptions(opts...),
+	)
+	flightControllerServiceUpdateFlightControllerHandler := connect.NewUnaryHandler(
+		FlightControllerServiceUpdateFlightControllerProcedure,
+		svc.UpdateFlightController,
+		connect.WithSchema(flightControllerServiceMethods.ByName("UpdateFlightController")),
+		connect.WithHandlerOptions(opts...),
+	)
+	flightControllerServiceDeleteFlightControllerHandler := connect.NewUnaryHandler(
+		FlightControllerServiceDeleteFlightControllerProcedure,
+		svc.DeleteFlightController,
+		connect.WithSchema(flightControllerServiceMethods.ByName("DeleteFlightController")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.FlightControllerService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case FlightControllerServiceGetFlightControllerProcedure:
 			flightControllerServiceGetFlightControllerHandler.ServeHTTP(w, r)
 		case FlightControllerServiceListFlightControllersProcedure:
 			flightControllerServiceListFlightControllersHandler.ServeHTTP(w, r)
+		case FlightControllerServiceCreateFlightControllerProcedure:
+			flightControllerServiceCreateFlightControllerHandler.ServeHTTP(w, r)
+		case FlightControllerServiceUpdateFlightControllerProcedure:
+			flightControllerServiceUpdateFlightControllerHandler.ServeHTTP(w, r)
+		case FlightControllerServiceDeleteFlightControllerProcedure:
+			flightControllerServiceDeleteFlightControllerHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -136,4 +211,16 @@ func (UnimplementedFlightControllerServiceHandler) GetFlightController(context.C
 
 func (UnimplementedFlightControllerServiceHandler) ListFlightControllers(context.Context, *connect.Request[api.ListFlightControllersRequest]) (*connect.Response[api.ListFlightControllersResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FlightControllerService.ListFlightControllers is not implemented"))
+}
+
+func (UnimplementedFlightControllerServiceHandler) CreateFlightController(context.Context, *connect.Request[api.CreateFlightControllerRequest]) (*connect.Response[api.FlightController], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FlightControllerService.CreateFlightController is not implemented"))
+}
+
+func (UnimplementedFlightControllerServiceHandler) UpdateFlightController(context.Context, *connect.Request[api.UpdateFlightControllerRequest]) (*connect.Response[api.FlightController], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FlightControllerService.UpdateFlightController is not implemented"))
+}
+
+func (UnimplementedFlightControllerServiceHandler) DeleteFlightController(context.Context, *connect.Request[api.DeleteFlightControllerRequest]) (*connect.Response[api.DeleteFlightControllerResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FlightControllerService.DeleteFlightController is not implemented"))
 }

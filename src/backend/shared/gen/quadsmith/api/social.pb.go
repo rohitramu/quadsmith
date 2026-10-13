@@ -150,6 +150,8 @@ type Entity struct {
 	IsArchived           bool                   `protobuf:"varint,10,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
 	CreatedAt            *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt            *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	UserUuid             *string                `protobuf:"bytes,13,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
+	AuthorUsername       *string                `protobuf:"bytes,14,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -266,6 +268,20 @@ func (x *Entity) GetUpdatedAt() *timestamppb.Timestamp {
 		return x.UpdatedAt
 	}
 	return nil
+}
+
+func (x *Entity) GetUserUuid() string {
+	if x != nil && x.UserUuid != nil {
+		return *x.UserUuid
+	}
+	return ""
+}
+
+func (x *Entity) GetAuthorUsername() string {
+	if x != nil && x.AuthorUsername != nil {
+		return *x.AuthorUsername
+	}
+	return ""
 }
 
 type ReviewSummary struct {
@@ -4238,7 +4254,7 @@ var File_quadsmith_api_social_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_social_proto_rawDesc = "" +
 	"\n" +
-	"\x1aquadsmith/api/social.proto\x12\rquadsmith.api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x17quadsmith/sql/sql.proto\"\xf6\x04\n" +
+	"\x1aquadsmith/api/social.proto\x12\rquadsmith.api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x17quadsmith/sql/sql.proto\"\xfd\x05\n" +
 	"\x06Entity\x12\x1a\n" +
 	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12&\n" +
 	"\n" +
@@ -4257,9 +4273,14 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
 	"\n" +
-	"updated_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt:\x1e\xc2\xf3\x18\x1a\n" +
+	"updated_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x125\n" +
+	"\tuser_uuid\x18\r \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01H\x01R\buserUuid\x88\x01\x01\x12,\n" +
+	"\x0fauthor_username\x18\x0e \x01(\tH\x02R\x0eauthorUsername\x88\x01\x01:\x1e\xc2\xf3\x18\x1a\n" +
 	"\bentities\x1a\x0ecollection, idB\x18\n" +
-	"\x16_primary_display_image\"\xbb\x01\n" +
+	"\x16_primary_display_imageB\f\n" +
+	"\n" +
+	"_user_uuidB\x12\n" +
+	"\x10_author_username\"\xbb\x01\n" +
 	"\rReviewSummary\x12#\n" +
 	"\rtotal_reviews\x18\x01 \x01(\x05R\ftotalReviews\x12+\n" +
 	"\x11recommended_count\x18\x02 \x01(\x05R\x10recommendedCount\x12)\n" +

@@ -2,17 +2,18 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
 	"time"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/protobuf/encoding/prototext"
 
 	"quadsmith/shared/pkg/authcontext"
 	"quadsmith/shared/pkg/config"
-	"quadsmith/shared/pkg/validation"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 	pb "quadsmith/shared/gen/quadsmith/api"
@@ -146,8 +147,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Motors {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("motor %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "motors", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateMotor(ctx, tx, v); err != nil {
 				panic(err)
@@ -162,11 +166,14 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Frames {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("frame %s: %w", v.Id, err))
 			}
 			if v.MotorCount == 0 {
 				v.MotorCount = 4
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "frames", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateFrame(ctx, tx, v); err != nil {
 				panic(err)
@@ -181,8 +188,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Batteries {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("battery %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "batteries", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateBattery(ctx, tx, v); err != nil {
 				panic(err)
@@ -197,8 +207,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.ElectronicSpeedControllers {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("electronic speed controller %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "electronic-speed-controllers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateElectronicSpeedController(ctx, tx, v); err != nil {
 				panic(err)
@@ -213,8 +226,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Antennas {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("antenna %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "antennas", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateAntenna(ctx, tx, v); err != nil {
 				panic(err)
@@ -229,8 +245,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Cameras {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("camera %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "cameras", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateCamera(ctx, tx, v); err != nil {
 				panic(err)
@@ -245,8 +264,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Propellers {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("propeller %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "propellers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreatePropeller(ctx, tx, v); err != nil {
 				panic(err)
@@ -261,8 +283,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Receivers {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("receiver %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "receivers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateReceiver(ctx, tx, v); err != nil {
 				panic(err)
@@ -277,8 +302,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.VideoTransmitters {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("video transmitter %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "video-transmitters", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateVideoTransmitter(ctx, tx, v); err != nil {
 				panic(err)
@@ -293,8 +321,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.FlightControllers {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("flight controller %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "flight-controllers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateFlightController(ctx, tx, v); err != nil {
 				panic(err)
@@ -309,8 +340,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.GpsReceivers {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("gps receiver %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "gps-receivers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateGpsReceiver(ctx, tx, v); err != nil {
 				panic(err)
@@ -325,8 +359,15 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Builds {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("build %s: %w", v.Id, err))
+			}
+			authorStr := ""
+			if v.AuthorUsername != nil {
+				authorStr = *v.AuthorUsername
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "builds", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, authorStr, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateBuild(ctx, tx, v); err != nil {
 				panic(err)
@@ -341,8 +382,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.FcFirmwares {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("fc_firmware %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "fc-firmware", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateFcFirmware(ctx, tx, v); err != nil {
 				panic(err)
@@ -357,8 +401,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.EscFirmwares {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("esc_firmware %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "esc-firmware", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateEscFirmware(ctx, tx, v); err != nil {
 				panic(err)
@@ -373,8 +420,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.VtxFirmwares {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("vtx_firmware %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "vtx-firmware", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateVtxFirmware(ctx, tx, v); err != nil {
 				panic(err)
@@ -389,8 +439,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.RadioFirmwares {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("radio_firmware %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "radio-firmware", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateRadioFirmware(ctx, tx, v); err != nil {
 				panic(err)
@@ -405,8 +458,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.SoftwareTools {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("software_tool %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "software-tools", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateSoftwareTool(ctx, tx, v); err != nil {
 				panic(err)
@@ -421,8 +477,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Transmitters {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("transmitter %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "transmitters", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateTransmitter(ctx, tx, v); err != nil {
 				panic(err)
@@ -437,8 +496,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Goggles {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("goggles %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "goggles", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateGoggles(ctx, tx, v); err != nil {
 				panic(err)
@@ -453,8 +515,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.Chargers {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("charger %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "chargers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateCharger(ctx, tx, v); err != nil {
 				panic(err)
@@ -469,8 +534,11 @@ func main() {
 			panic(err)
 		}
 		for _, v := range m.FieldTools {
-			if err := validation.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
+			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("field_tool %s: %w", v.Id, err))
+			}
+			if err := seedEntity(ctx, tx, &v.Uuid, "field-tools", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+				panic(err)
 			}
 			if err := pb.CreateFieldTool(ctx, tx, v); err != nil {
 				panic(err)
@@ -484,58 +552,55 @@ func main() {
 	tx.Exec(ctx, "UPDATE electronic_speed_controllers SET min_voltage = ROUND(min_voltage, 2), max_voltage = ROUND(max_voltage, 2), weight_g = ROUND(weight_g, 2);")
 	tx.Exec(ctx, "UPDATE motors SET min_voltage = ROUND(min_voltage, 2), max_voltage = ROUND(max_voltage, 2), max_current_a = ROUND(max_current_a, 2), weight_g = ROUND(weight_g, 2);")
 
-	// Populate unified components registry table
-	componentTables := []struct {
-		table      string
-		collection string
-	}{
-		{"motors", "motors"},
-		{"frames", "frames"},
-		{"batteries", "batteries"},
-		{"electronic_speed_controllers", "electronic-speed-controllers"},
-		{"flight_controllers", "flight-controllers"},
-		{"receivers", "receivers"},
-		{"video_transmitters", "video-transmitters"},
-		{"antennas", "antennas"},
-		{"cameras", "cameras"},
-		{"propellers", "propellers"},
-		{"gps_receivers", "gps-receivers"},
-		{"transmitters", "transmitters"},
-		{"goggles", "goggles"},
-		{"chargers", "chargers"},
-		{"field_tools", "field-tools"},
-		{"flight_controller_firmwares", "fc-firmware"},
-		{"electronic_speed_controller_firmwares", "esc-firmware"},
-		{"video_transmitter_firmwares", "vtx-firmware"},
-		{"radio_firmwares", "radio-firmware"},
-		{"software_tools", "software-tools"},
-	}
-
-	// Populate unified entities table from builds
-	query := `
-		INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at)
-		SELECT uuid, 'builds', id, name, description, primary_display_image, reference_links, media, COALESCE(author_username, ''), false, NOW(), NOW() FROM builds
-		ON CONFLICT (collection, id) DO NOTHING;
-	`
-	if _, err := tx.Exec(ctx, query); err != nil {
-		panic(fmt.Errorf("failed populating entities from builds: %w", err))
-	}
-
-	for _, ct := range componentTables {
-		q := fmt.Sprintf(`
-			INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at)
-			SELECT uuid, '%s', id, name, description, primary_display_image, reference_links, media, manufacturer, false, NOW(), NOW() FROM %s
-			ON CONFLICT (collection, id) DO NOTHING;
-		`, ct.collection, ct.table)
-		if _, err := tx.Exec(ctx, q); err != nil {
-			panic(fmt.Errorf("failed populating entities from %s: %w", ct.table, err))
-		}
-	}
-
 	if err := tx.Commit(ctx); err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to commit tx: %v\n", err)
 		os.Exit(1)
 	}
 
 	fmt.Println("Seed complete!")
+}
+
+const (
+	defaultSeederUserUUID = "018f0000-0000-7000-8000-000000000010"
+	defaultSeederUsername = "alex"
+)
+
+func seedEntity(ctx context.Context, tx pgx.Tx, uuidPtr *string, collection, id, name, description string, primaryDisplayImage *string, refLinks []*pb.ReferenceLink, media []*pb.Media, authorOrMfr string, userUUID *string, authorUsername *string) error {
+	if *uuidPtr == "" {
+		*uuidPtr = authcontext.NewUUIDv7()
+	}
+	if userUUID == nil || *userUUID == "" {
+		u := defaultSeederUserUUID
+		userUUID = &u
+	}
+	if authorUsername == nil || *authorUsername == "" {
+		a := defaultSeederUsername
+		authorUsername = &a
+	}
+	if authorOrMfr == "" && authorUsername != nil {
+		authorOrMfr = *authorUsername
+	}
+	var refLinksJSON []byte
+	var err error
+	if len(refLinks) > 0 {
+		refLinksJSON, err = json.Marshal(refLinks)
+		if err != nil {
+			return err
+		}
+	}
+	var mediaJSON []byte
+	if len(media) > 0 {
+		mediaJSON, err = json.Marshal(media)
+		if err != nil {
+			return err
+		}
+	}
+	query := `
+		INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, user_uuid, author_username, is_archived, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, false, NOW(), NOW())
+		ON CONFLICT (collection, id) DO UPDATE
+		SET name = EXCLUDED.name, description = EXCLUDED.description, primary_display_image = EXCLUDED.primary_display_image, author_or_manufacturer = EXCLUDED.author_or_manufacturer, user_uuid = EXCLUDED.user_uuid, author_username = EXCLUDED.author_username, updated_at = NOW()
+	`
+	_, err = tx.Exec(ctx, query, *uuidPtr, collection, id, name, description, primaryDisplayImage, refLinksJSON, mediaJSON, authorOrMfr, userUUID, authorUsername)
+	return err
 }

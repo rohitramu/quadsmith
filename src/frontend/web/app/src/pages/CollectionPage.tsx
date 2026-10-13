@@ -29,6 +29,7 @@ import { CollectionIcon } from "../components/CollectionIcon";
 import { getCollectionColor } from "../lib/collectionColors";
 import { ProductHoverCard } from "../components/ProductHoverCard";
 import { useDocumentMeta } from "../hooks/useDocumentMeta";
+import { ComponentFormModal } from "../components/ComponentFormModal";
 
 function ColumnHeader({
   title,
@@ -384,6 +385,7 @@ export function CollectionTableView({
   const [pageSize, setPageSize] = useState<number>(20);
   const [pageIndex, setPageIndex] = useState<number>(0);
   const [tokenHistory, setTokenHistory] = useState<string[]>([""]);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
 
   // Reset pagination when search params change
   const prevSearchParamsRef = useRef(searchParams.toString());
@@ -485,7 +487,7 @@ export function CollectionTableView({
 
   const currentToken = tokenHistory[pageIndex] || "";
 
-  const { data, isLoading, isFetching, error } = useQuery(
+  const { data, isLoading, isFetching, error, refetch } = useQuery(
     collection.listQuery,
     {
       filter: effectiveFilter,
@@ -567,6 +569,15 @@ export function CollectionTableView({
           />
           <h1 className="text-3xl font-bold">{collection.name}</h1>
         </div>
+
+        <button
+          type="button"
+          onClick={() => setIsCreateModalOpen(true)}
+          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-semibold shadow-xs transition-colors cursor-pointer"
+        >
+          <Plus size={16} />
+          <span>Add Component</span>
+        </button>
       </div>
 
       {/* Smart Filter Input above the table */}
@@ -746,6 +757,15 @@ export function CollectionTableView({
           )}
         </>
       )}
+
+      <ComponentFormModal
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
+        collectionId={collection.id}
+        onSuccess={() => {
+          refetch();
+        }}
+      />
     </div>
   );
 }

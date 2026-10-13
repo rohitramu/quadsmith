@@ -13,3 +13,18 @@ export const getSoftwareTool = SoftwareToolService.method.getSoftwareTool;
  * @generated from rpc quadsmith.api.SoftwareToolService.ListSoftwareTools
  */
 export const listSoftwareTools = SoftwareToolService.method.listSoftwareTools;
+
+/**
+ * @generated from rpc quadsmith.api.SoftwareToolService.CreateSoftwareTool
+ */
+export const createSoftwareTool = SoftwareToolService.method.createSoftwareTool;
+
+/**
+ * @generated from rpc quadsmith.api.SoftwareToolService.UpdateSoftwareTool
+ */
+export const updateSoftwareTool = SoftwareToolService.method.updateSoftwareTool;
+
+/**
+ * @generated from rpc quadsmith.api.SoftwareToolService.DeleteSoftwareTool
+ */
+export const deleteSoftwareTool = SoftwareToolService.method.deleteSoftwareTool;

@@ -10,7 +10,74 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// Domain Model
+// 1. gRPC Service (Services First)
+// ---------------------------------------------------------
+service BuildService {
+  rpc GetBuild(GetBuildRequest) returns (Build);
+  rpc ListBuilds(ListBuildsRequest) returns (ListBuildsResponse);
+  rpc CreateBuild(CreateBuildRequest) returns (Build);
+  rpc DeleteBuild(DeleteBuildRequest) returns (DeleteBuildResponse);
+  rpc ListSimilarBuilds(ListSimilarBuildsRequest) returns (ListSimilarBuildsResponse);
+}
+
+// ---------------------------------------------------------
+// 2. RPC Requests & Responses (Callers Precede Callees)
+// ---------------------------------------------------------
+message ComponentMatchDetail {
+  string component = 1;
+  bool exact_match = 2;
+  string description = 3;
+  double points_awarded = 4;
+  double max_points = 5;
+}
+
+message CreateBuildRequest {
+  Build build = 1;
+}
+
+message DeleteBuildRequest {
+  string id = 1;
+}
+
+message DeleteBuildResponse {
+  bool is_archived = 1;
+}
+
+message GetBuildRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListBuildsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListBuildsResponse {
+  repeated Build builds = 1;
+  string next_page_token = 2;
+}
+
+message ListSimilarBuildsRequest {
+  string build_id = 1;
+  int32 limit = 2;
+}
+
+message ListSimilarBuildsResponse {
+  repeated SimilarBuild similar_builds = 1;
+}
+
+message SimilarBuild {
+  Build build = 1;
+  double similarity_score = 2;
+  repeated ComponentMatchDetail match_details = 3;
+}
+
+// ---------------------------------------------------------
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
 message Build {
   option (quadsmith.sql.table) = {name: "builds"};
@@ -23,12 +90,14 @@ message Build {
     ]
   };
 
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string uuid = 1 [(quadsmith.sql.column) = {
+    is_primary_key: true
+    references: "entities(uuid) ON DELETE CASCADE"
+  }];
 
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-
-  string name = 3;
-  string description = 4;
+  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+  string name = 3 [(quadsmith.sql.column) = {ignore: true}];
+  string description = 4 [(quadsmith.sql.column) = {ignore: true}];
 
   // -------------------------------------------------------
   // Bill of Materials (Foreign Keys to Hardware tables)
@@ -67,76 +136,10 @@ message Build {
 
   // Optional GPS Receiver for navigation and rescue return-to-home
   optional string gps_receiver_uuid = 15 [(quadsmith.sql.column) = {references: "gps_receivers(uuid)"}];
-  repeated ReferenceLink reference_links = 16;
-  optional string primary_display_image = 17;
-  repeated Media media = 18;
-  optional string user_uuid = 19 [(quadsmith.sql.column) = {references: "users(uuid)"}];
-  optional string author_username = 20;
-}
 
-// ---------------------------------------------------------
-// RPC Requests & Responses
-// ---------------------------------------------------------
-message GetBuildRequest {
-  string id = 1;
-  repeated string columns = 2;
-}
-
-message ListBuildsRequest {
-  string filter = 1;
-  int32 page_size = 2;
-  string page_token = 3;
-  repeated string columns = 4;
-  repeated string sort = 5;
-}
-
-message ListBuildsResponse {
-  repeated Build builds = 1;
-  string next_page_token = 2;
-}
-
-message CreateBuildRequest {
-  Build build = 1;
-}
-
-message DeleteBuildRequest {
-  string id = 1;
-}
-
-message DeleteBuildResponse {
-  bool is_archived = 1;
-}
-
-message ComponentMatchDetail {
-  string component = 1;
-  bool exact_match = 2;
-  string description = 3;
-  double points_awarded = 4;
-  double max_points = 5;
-}
-
-message SimilarBuild {
-  Build build = 1;
-  double similarity_score = 2;
-  repeated ComponentMatchDetail match_details = 3;
-}
-
-message ListSimilarBuildsRequest {
-  string build_id = 1;
-  int32 limit = 2;
-}
-
-message ListSimilarBuildsResponse {
-  repeated SimilarBuild similar_builds = 1;
-}
-
-// ---------------------------------------------------------
-// gRPC Service
-// ---------------------------------------------------------
-service BuildService {
-  rpc GetBuild(GetBuildRequest) returns (Build);
-  rpc ListBuilds(ListBuildsRequest) returns (ListBuildsResponse);
-  rpc CreateBuild(CreateBuildRequest) returns (Build);
-  rpc DeleteBuild(DeleteBuildRequest) returns (DeleteBuildResponse);
-  rpc ListSimilarBuilds(ListSimilarBuildsRequest) returns (ListSimilarBuildsResponse);
+  repeated ReferenceLink reference_links = 16 [(quadsmith.sql.column) = {ignore: true}];
+  optional string primary_display_image = 17 [(quadsmith.sql.column) = {ignore: true}];
+  repeated Media media = 18 [(quadsmith.sql.column) = {ignore: true}];
+  optional string user_uuid = 19 [(quadsmith.sql.column) = {ignore: true}];
+  optional string author_username = 20 [(quadsmith.sql.column) = {ignore: true}];
 }

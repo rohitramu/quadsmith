@@ -11,19 +11,19 @@ import (
 )
 
 func CreateCharger(ctx context.Context, tx pgx.Tx, m *Charger) error {
-	query := `INSERT INTO chargers (uuid, id, manufacturer, name, weight_g, channels, max_charge_power_w, max_charge_current_a, input_voltage_range, supported_chemistries, max_cells_s, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`
+	query := `INSERT INTO chargers (uuid, manufacturer, weight_g, channels, max_charge_power_w, max_charge_current_a, input_voltage_range, supported_chemistries, max_cells_s) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.Channels, m.MaxChargePowerW, m.MaxChargeCurrentA, m.InputVoltageRange, m.SupportedChemistries, m.MaxCellsS, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Manufacturer, m.WeightG, m.Channels, m.MaxChargePowerW, m.MaxChargeCurrentA, m.InputVoltageRange, m.SupportedChemistries, m.MaxCellsS)
 	return err
 }
 
 func GetCharger(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Charger, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "channels": true, "max_charge_power_w": true, "max_charge_current_a": true, "input_voltage_range": true, "supported_chemistries": true, "max_cells_s": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, channels, max_charge_power_w, max_charge_current_a, input_voltage_range, supported_chemistries, max_cells_s, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "channels": true, "max_charge_power_w": true, "max_charge_current_a": true, "input_voltage_range": true, "supported_chemistries": true, "max_cells_s": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, channels, max_charge_power_w, max_charge_current_a, input_voltage_range, supported_chemistries, max_cells_s, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetCharger(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "channels", "max_charge_power_w", "max_charge_current_a", "input_voltage_range", "supported_chemistries", "max_cells_s", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "channels", "max_charge_power_w", "max_charge_current_a", "input_voltage_range", "supported_chemistries", "max_cells_s", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM chargers WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM chargers INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Charger{}
@@ -72,6 +72,10 @@ func GetCharger(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -89,20 +93,20 @@ func GetCharger(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 }
 
 func UpdateCharger(ctx context.Context, tx pgx.Tx, m *Charger) error {
-	query := `UPDATE chargers SET manufacturer = $2, name = $3, weight_g = $4, channels = $5, max_charge_power_w = $6, max_charge_current_a = $7, input_voltage_range = $8, supported_chemistries = $9, max_cells_s = $10, description = $11, reference_links = $12, primary_display_image = $13, media = $14 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.Channels, m.MaxChargePowerW, m.MaxChargeCurrentA, m.InputVoltageRange, m.SupportedChemistries, m.MaxCellsS, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE chargers SET manufacturer = $2, weight_g = $3, channels = $4, max_charge_power_w = $5, max_charge_current_a = $6, input_voltage_range = $7, supported_chemistries = $8, max_cells_s = $9 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.WeightG, m.Channels, m.MaxChargePowerW, m.MaxChargeCurrentA, m.InputVoltageRange, m.SupportedChemistries, m.MaxCellsS)
 	return err
 }
 
 func DeleteCharger(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM chargers WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM chargers WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'chargers' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListChargers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Charger, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "channels": true, "max_charge_power_w": true, "max_charge_current_a": true, "input_voltage_range": true, "supported_chemistries": true, "max_cells_s": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, channels, max_charge_power_w, max_charge_current_a, input_voltage_range, supported_chemistries, max_cells_s, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "channels": true, "max_charge_power_w": true, "max_charge_current_a": true, "input_voltage_range": true, "supported_chemistries": true, "max_cells_s": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, channels, max_charge_power_w, max_charge_current_a, input_voltage_range, supported_chemistries, max_cells_s, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -113,11 +117,12 @@ func ListChargers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "channels", "max_charge_power_w", "max_charge_current_a", "input_voltage_range", "supported_chemistries", "max_cells_s", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "channels", "max_charge_power_w", "max_charge_current_a", "input_voltage_range", "supported_chemistries", "max_cells_s", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM chargers`
+	query := `SELECT ` + colsStr + ` FROM chargers INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -192,6 +197,10 @@ func ListChargers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

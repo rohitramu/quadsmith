@@ -13,3 +13,18 @@ export const getVideoTransmitter = VideoTransmitterService.method.getVideoTransm
  * @generated from rpc quadsmith.api.VideoTransmitterService.ListVideoTransmitters
  */
 export const listVideoTransmitters = VideoTransmitterService.method.listVideoTransmitters;
+
+/**
+ * @generated from rpc quadsmith.api.VideoTransmitterService.CreateVideoTransmitter
+ */
+export const createVideoTransmitter = VideoTransmitterService.method.createVideoTransmitter;
+
+/**
+ * @generated from rpc quadsmith.api.VideoTransmitterService.UpdateVideoTransmitter
+ */
+export const updateVideoTransmitter = VideoTransmitterService.method.updateVideoTransmitter;
+
+/**
+ * @generated from rpc quadsmith.api.VideoTransmitterService.DeleteVideoTransmitter
+ */
+export const deleteVideoTransmitter = VideoTransmitterService.method.deleteVideoTransmitter;

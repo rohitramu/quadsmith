@@ -10,38 +10,31 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// Domain Model
+// 1. gRPC Service (Services First)
 // ---------------------------------------------------------
-message RadioFirmware {
-  option (quadsmith.sql.table) = {name: "radio_firmwares"};
-  option (quadsmith.common.collection_path) = "components/software/radio-firmware";
-  option (quadsmith.common.frontend) = {
-    color_code: "#84cc16"
-    default_columns: [
-      "manufacturer",
-      "name",
-      "version",
-      "supported_protocols",
-      "is_open_source"
-    ]
-  };
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4;
-  string version = 5;
-  string supported_protocols = 6;
-  bool is_open_source = 7;
-  string description = 8;
-  repeated ReferenceLink reference_links = 9;
-  optional string primary_display_image = 10;
-  repeated Media media = 11;
+service RadioFirmwareService {
+  rpc GetRadioFirmware(GetRadioFirmwareRequest) returns (RadioFirmware);
+  rpc ListRadioFirmwares(ListRadioFirmwaresRequest) returns (ListRadioFirmwaresResponse);
+  rpc CreateRadioFirmware(CreateRadioFirmwareRequest) returns (RadioFirmware);
+  rpc UpdateRadioFirmware(UpdateRadioFirmwareRequest) returns (RadioFirmware);
+  rpc DeleteRadioFirmware(DeleteRadioFirmwareRequest) returns (DeleteRadioFirmwareResponse);
 }
 
 // ---------------------------------------------------------
-// RPC Requests & Responses
+// 2. RPC Requests & Responses (Callers Precede Callees)
 // ---------------------------------------------------------
+message CreateRadioFirmwareRequest {
+  RadioFirmware radio_firmware = 1;
+}
+
+message DeleteRadioFirmwareRequest {
+  string id = 1;
+}
+
+message DeleteRadioFirmwareResponse {
+  bool is_archived = 1;
+}
+
 message GetRadioFirmwareRequest {
   string id = 1;
   repeated string columns = 2;
@@ -60,10 +53,41 @@ message ListRadioFirmwaresResponse {
   string next_page_token = 2;
 }
 
+message UpdateRadioFirmwareRequest {
+  RadioFirmware radio_firmware = 1;
+}
+
 // ---------------------------------------------------------
-// gRPC Service
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
-service RadioFirmwareService {
-  rpc GetRadioFirmware(GetRadioFirmwareRequest) returns (RadioFirmware);
-  rpc ListRadioFirmwares(ListRadioFirmwaresRequest) returns (ListRadioFirmwaresResponse);
+message RadioFirmware {
+  option (quadsmith.sql.table) = {name: "radio_firmwares"};
+  option (quadsmith.common.collection_path) = "components/software/radio-firmware";
+  option (quadsmith.common.frontend) = {
+    color_code: "#84cc16"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "version",
+      "supported_protocols",
+      "is_open_source"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {
+    is_primary_key: true
+    references: "entities(uuid) ON DELETE CASCADE"
+  }];
+  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
+  string version = 5;
+  string supported_protocols = 6;
+  bool is_open_source = 7;
+  string description = 8 [(quadsmith.sql.column) = {ignore: true}];
+  repeated ReferenceLink reference_links = 9 [(quadsmith.sql.column) = {ignore: true}];
+  optional string primary_display_image = 10 [(quadsmith.sql.column) = {ignore: true}];
+  repeated Media media = 11 [(quadsmith.sql.column) = {ignore: true}];
+  optional string user_uuid = 12 [(quadsmith.sql.column) = {ignore: true}];
+  optional string author_username = 13 [(quadsmith.sql.column) = {ignore: true}];
 }

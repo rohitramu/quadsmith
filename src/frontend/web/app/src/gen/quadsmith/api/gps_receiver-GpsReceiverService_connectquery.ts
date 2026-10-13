@@ -13,3 +13,18 @@ export const getGpsReceiver = GpsReceiverService.method.getGpsReceiver;
  * @generated from rpc quadsmith.api.GpsReceiverService.ListGpsReceivers
  */
 export const listGpsReceivers = GpsReceiverService.method.listGpsReceivers;
+
+/**
+ * @generated from rpc quadsmith.api.GpsReceiverService.CreateGpsReceiver
+ */
+export const createGpsReceiver = GpsReceiverService.method.createGpsReceiver;
+
+/**
+ * @generated from rpc quadsmith.api.GpsReceiverService.UpdateGpsReceiver
+ */
+export const updateGpsReceiver = GpsReceiverService.method.updateGpsReceiver;
+
+/**
+ * @generated from rpc quadsmith.api.GpsReceiverService.DeleteGpsReceiver
+ */
+export const deleteGpsReceiver = GpsReceiverService.method.deleteGpsReceiver;

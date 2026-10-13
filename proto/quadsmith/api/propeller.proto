@@ -10,54 +10,31 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// Domain Model
+// 1. gRPC Service (Services First)
 // ---------------------------------------------------------
-message Propeller {
-  option (quadsmith.sql.table) = {name: "propellers"};
-  option (quadsmith.common.collection_path) = "components/hardware/propellers";
-  option (quadsmith.common.frontend) = {
-    color_code: "#14b8a6"
-    default_columns: [
-      "manufacturer",
-      "name",
-      "diameter_mm",
-      "pitch_mm",
-      "blades"
-    ]
-  };
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4;
-
-  float weight_g = 5;
-
-  // E.g., 5.1, 7.0, 3.0
-  float diameter_mm = 6;
-
-  // E.g., 4.3, 3.1
-  float pitch_mm = 7;
-
-  // Number of blades (e.g., 2, 3, 4)
-  uint32 blades = 8;
-
-  // E.g., "Polycarbonate", "Carbon Fiber"
-  string material = 9;
-  string description = 10;
-  repeated ReferenceLink reference_links = 11;
-  optional string primary_display_image = 12;
-  repeated Media media = 13;
-
-  // Propeller mounting interface (e.g., "M5", "1.5mm T-Mount", "2mm T-Mount", "1.5mm Press-Fit", "1mm Press-Fit", "0.8mm Press-Fit")
-  string prop_mount_interface = 14;
+service PropellerService {
+  rpc GetPropeller(GetPropellerRequest) returns (Propeller);
+  rpc ListPropellers(ListPropellersRequest) returns (ListPropellersResponse);
+  rpc CreatePropeller(CreatePropellerRequest) returns (Propeller);
+  rpc UpdatePropeller(UpdatePropellerRequest) returns (Propeller);
+  rpc DeletePropeller(DeletePropellerRequest) returns (DeletePropellerResponse);
 }
 
 // ---------------------------------------------------------
-// RPC Requests & Responses
+// 2. RPC Requests & Responses (Callers Precede Callees)
 // ---------------------------------------------------------
+message CreatePropellerRequest {
+  Propeller propeller = 1;
+}
+
+message DeletePropellerRequest {
+  string id = 1;
+}
+
+message DeletePropellerResponse {
+  bool is_archived = 1;
+}
+
 message GetPropellerRequest {
   string id = 1;
   repeated string columns = 2;
@@ -76,10 +53,57 @@ message ListPropellersResponse {
   string next_page_token = 2;
 }
 
+message UpdatePropellerRequest {
+  Propeller propeller = 1;
+}
+
 // ---------------------------------------------------------
-// gRPC Service
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
-service PropellerService {
-  rpc GetPropeller(GetPropellerRequest) returns (Propeller);
-  rpc ListPropellers(ListPropellersRequest) returns (ListPropellersResponse);
+message Propeller {
+  option (quadsmith.sql.table) = {name: "propellers"};
+  option (quadsmith.common.collection_path) = "components/hardware/propellers";
+  option (quadsmith.common.frontend) = {
+    color_code: "#14b8a6"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "diameter_mm",
+      "pitch_mm",
+      "blades"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {
+    is_primary_key: true
+    references: "entities(uuid) ON DELETE CASCADE"
+  }];
+
+  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
+
+  float weight_g = 5;
+
+  // E.g., 5.1, 7.0, 3.0
+  float diameter_mm = 6;
+
+  // E.g., 4.3, 3.1
+  float pitch_mm = 7;
+
+  // Number of blades (e.g., 2, 3, 4)
+  uint32 blades = 8;
+
+  // E.g., "Polycarbonate", "Carbon Fiber"
+  string material = 9;
+  string description = 10 [(quadsmith.sql.column) = {ignore: true}];
+  repeated ReferenceLink reference_links = 11 [(quadsmith.sql.column) = {ignore: true}];
+  optional string primary_display_image = 12 [(quadsmith.sql.column) = {ignore: true}];
+  repeated Media media = 13 [(quadsmith.sql.column) = {ignore: true}];
+
+  // Propeller mounting interface (e.g., "M5", "1.5mm T-Mount", "2mm T-Mount", "1.5mm Press-Fit", "1mm Press-Fit", "0.8mm Press-Fit")
+  string prop_mount_interface = 14;
+  optional string user_uuid = 15 [(quadsmith.sql.column) = {ignore: true}];
+  optional string author_username = 16 [(quadsmith.sql.column) = {ignore: true}];
 }

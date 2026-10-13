@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_vtx_firmware: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiBxdWFkc21pdGgvYXBpL3Z0eF9maXJtd2FyZS5wcm90bxINcXVhZHNtaXRoLmFwaSLnAwoLVnR4RmlybXdhcmUSFAoEdXVpZBgBIAEoCUIGwvMYAhABEhIKAmlkGAIgASgJQgbC8xgCIAESHAoMbWFudWZhY3R1cmVyGAMgASgJQgbC8xgCKAESDAoEbmFtZRgEIAEoCRIPCgd2ZXJzaW9uGAUgASgJEhAKCHByb3RvY29sGAYgASgJEh0KFXN1cHBvcnRlZF9yZXNvbHV0aW9ucxgHIAEoCRITCgtkZXNjcmlwdGlvbhgIIAEoCRI1Cg9yZWZlcmVuY2VfbGlua3MYCSADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmsSIgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAogASgJSACIAQESIwoFbWVkaWEYCyADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhOpABirUYRwoMbWFudWZhY3R1cmVyCgRuYW1lCgd2ZXJzaW9uCghwcm90b2NvbAoVc3VwcG9ydGVkX3Jlc29sdXRpb25zEgcjZWM0ODk5mrUYIGNvbXBvbmVudHMvc29mdHdhcmUvdnR4LWZpcm13YXJlwvMYHQobdmlkZW9fdHJhbnNtaXR0ZXJfZmlybXdhcmVzQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2UiNAoVR2V0VnR4RmlybXdhcmVSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkibwoXTGlzdFZ0eEZpcm13YXJlc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJmChhMaXN0VnR4RmlybXdhcmVzUmVzcG9uc2USMQoNdnR4X2Zpcm13YXJlcxgBIAMoCzIaLnF1YWRzbWl0aC5hcGkuVnR4RmlybXdhcmUSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMs0BChJWdHhGaXJtd2FyZVNlcnZpY2USUgoOR2V0VnR4RmlybXdhcmUSJC5xdWFkc21pdGguYXBpLkdldFZ0eEZpcm13YXJlUmVxdWVzdBoaLnF1YWRzbWl0aC5hcGkuVnR4RmlybXdhcmUSYwoQTGlzdFZ0eEZpcm13YXJlcxImLnF1YWRzbWl0aC5hcGkuTGlzdFZ0eEZpcm13YXJlc1JlcXVlc3QaJy5xdWFkc21pdGguYXBpLkxpc3RWdHhGaXJtd2FyZXNSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
+    "CiBxdWFkc21pdGgvYXBpL3Z0eF9maXJtd2FyZS5wcm90bxINcXVhZHNtaXRoLmFwaSJMChhDcmVhdGVWdHhGaXJtd2FyZVJlcXVlc3QSMAoMdnR4X2Zpcm13YXJlGAEgASgLMhoucXVhZHNtaXRoLmFwaS5WdHhGaXJtd2FyZSImChhEZWxldGVWdHhGaXJtd2FyZVJlcXVlc3QSCgoCaWQYASABKAkiMAoZRGVsZXRlVnR4RmlybXdhcmVSZXNwb25zZRITCgtpc19hcmNoaXZlZBgBIAEoCCI0ChVHZXRWdHhGaXJtd2FyZVJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJvChdMaXN0VnR4RmlybXdhcmVzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJImYKGExpc3RWdHhGaXJtd2FyZXNSZXNwb25zZRIxCg12dHhfZmlybXdhcmVzGAEgAygLMhoucXVhZHNtaXRoLmFwaS5WdHhGaXJtd2FyZRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiTAoYVXBkYXRlVnR4RmlybXdhcmVSZXF1ZXN0EjAKDHZ0eF9maXJtd2FyZRgBIAEoCzIaLnF1YWRzbWl0aC5hcGkuVnR4RmlybXdhcmUimQUKC1Z0eEZpcm13YXJlEjYKBHV1aWQYASABKAlCKMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREUSEgoCaWQYAiABKAlCBsLzGAJAARIcCgxtYW51ZmFjdHVyZXIYAyABKAlCBsLzGAIoARIUCgRuYW1lGAQgASgJQgbC8xgCQAESDwoHdmVyc2lvbhgFIAEoCRIQCghwcm90b2NvbBgGIAEoCRIdChVzdXBwb3J0ZWRfcmVzb2x1dGlvbnMYByABKAkSGwoLZGVzY3JpcHRpb24YCCABKAlCBsLzGAJAARI9Cg9yZWZlcmVuY2VfbGlua3MYCSADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCBsLzGAJAARIqChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYCiABKAlCBsLzGAJAAUgAiAEBEisKBW1lZGlhGAsgAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIGwvMYAkABEh4KCXVzZXJfdXVpZBgMIAEoCUIGwvMYAkABSAGIAQESJAoPYXV0aG9yX3VzZXJuYW1lGA0gASgJQgbC8xgCQAFIAogBATqQAYq1GEcKDG1hbnVmYWN0dXJlcgoEbmFtZQoHdmVyc2lvbgoIcHJvdG9jb2wKFXN1cHBvcnRlZF9yZXNvbHV0aW9ucxIHI2VjNDg5OZq1GCBjb21wb25lbnRzL3NvZnR3YXJlL3Z0eC1maXJtd2FyZcLzGB0KG3ZpZGVvX3RyYW5zbWl0dGVyX2Zpcm13YXJlc0IYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlQgwKCl91c2VyX3V1aWRCEgoQX2F1dGhvcl91c2VybmFtZTLpAwoSVnR4RmlybXdhcmVTZXJ2aWNlElIKDkdldFZ0eEZpcm13YXJlEiQucXVhZHNtaXRoLmFwaS5HZXRWdHhGaXJtd2FyZVJlcXVlc3QaGi5xdWFkc21pdGguYXBpLlZ0eEZpcm13YXJlEmMKEExpc3RWdHhGaXJtd2FyZXMSJi5xdWFkc21pdGguYXBpLkxpc3RWdHhGaXJtd2FyZXNSZXF1ZXN0GicucXVhZHNtaXRoLmFwaS5MaXN0VnR4RmlybXdhcmVzUmVzcG9uc2USWAoRQ3JlYXRlVnR4RmlybXdhcmUSJy5xdWFkc21pdGguYXBpLkNyZWF0ZVZ0eEZpcm13YXJlUmVxdWVzdBoaLnF1YWRzbWl0aC5hcGkuVnR4RmlybXdhcmUSWAoRVXBkYXRlVnR4RmlybXdhcmUSJy5xdWFkc21pdGguYXBpLlVwZGF0ZVZ0eEZpcm13YXJlUmVxdWVzdBoaLnF1YWRzbWl0aC5hcGkuVnR4RmlybXdhcmUSZgoRRGVsZXRlVnR4RmlybXdhcmUSJy5xdWFkc21pdGguYXBpLkRlbGV0ZVZ0eEZpcm13YXJlUmVxdWVzdBooLnF1YWRzbWl0aC5hcGkuRGVsZXRlVnR4RmlybXdhcmVSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -29,7 +29,167 @@ export const file_quadsmith_api_vtx_firmware: GenFile =
 
 /**
  * ---------------------------------------------------------
- * Domain Model
+ * 2. RPC Requests & Responses (Callers Precede Callees)
+ * ---------------------------------------------------------
+ *
+ * @generated from message quadsmith.api.CreateVtxFirmwareRequest
+ */
+export type CreateVtxFirmwareRequest = Message<"quadsmith.api.CreateVtxFirmwareRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.VtxFirmware vtx_firmware = 1;
+   */
+  vtxFirmware?: VtxFirmware | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.CreateVtxFirmwareRequest.
+ * Use `create(CreateVtxFirmwareRequestSchema)` to create a new message.
+ */
+export const CreateVtxFirmwareRequestSchema: GenMessage<CreateVtxFirmwareRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_vtx_firmware, 0);
+
+/**
+ * @generated from message quadsmith.api.DeleteVtxFirmwareRequest
+ */
+export type DeleteVtxFirmwareRequest = Message<"quadsmith.api.DeleteVtxFirmwareRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteVtxFirmwareRequest.
+ * Use `create(DeleteVtxFirmwareRequestSchema)` to create a new message.
+ */
+export const DeleteVtxFirmwareRequestSchema: GenMessage<DeleteVtxFirmwareRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_vtx_firmware, 1);
+
+/**
+ * @generated from message quadsmith.api.DeleteVtxFirmwareResponse
+ */
+export type DeleteVtxFirmwareResponse = Message<"quadsmith.api.DeleteVtxFirmwareResponse"> & {
+  /**
+   * @generated from field: bool is_archived = 1;
+   */
+  isArchived: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteVtxFirmwareResponse.
+ * Use `create(DeleteVtxFirmwareResponseSchema)` to create a new message.
+ */
+export const DeleteVtxFirmwareResponseSchema: GenMessage<DeleteVtxFirmwareResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_vtx_firmware, 2);
+
+/**
+ * @generated from message quadsmith.api.GetVtxFirmwareRequest
+ */
+export type GetVtxFirmwareRequest = Message<"quadsmith.api.GetVtxFirmwareRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.GetVtxFirmwareRequest.
+ * Use `create(GetVtxFirmwareRequestSchema)` to create a new message.
+ */
+export const GetVtxFirmwareRequestSchema: GenMessage<GetVtxFirmwareRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_vtx_firmware, 3);
+
+/**
+ * @generated from message quadsmith.api.ListVtxFirmwaresRequest
+ */
+export type ListVtxFirmwaresRequest = Message<"quadsmith.api.ListVtxFirmwaresRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
+
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListVtxFirmwaresRequest.
+ * Use `create(ListVtxFirmwaresRequestSchema)` to create a new message.
+ */
+export const ListVtxFirmwaresRequestSchema: GenMessage<ListVtxFirmwaresRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_vtx_firmware, 4);
+
+/**
+ * @generated from message quadsmith.api.ListVtxFirmwaresResponse
+ */
+export type ListVtxFirmwaresResponse = Message<"quadsmith.api.ListVtxFirmwaresResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.VtxFirmware vtx_firmwares = 1;
+   */
+  vtxFirmwares: VtxFirmware[];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListVtxFirmwaresResponse.
+ * Use `create(ListVtxFirmwaresResponseSchema)` to create a new message.
+ */
+export const ListVtxFirmwaresResponseSchema: GenMessage<ListVtxFirmwaresResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_vtx_firmware, 5);
+
+/**
+ * @generated from message quadsmith.api.UpdateVtxFirmwareRequest
+ */
+export type UpdateVtxFirmwareRequest = Message<"quadsmith.api.UpdateVtxFirmwareRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.VtxFirmware vtx_firmware = 1;
+   */
+  vtxFirmware?: VtxFirmware | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.UpdateVtxFirmwareRequest.
+ * Use `create(UpdateVtxFirmwareRequestSchema)` to create a new message.
+ */
+export const UpdateVtxFirmwareRequestSchema: GenMessage<UpdateVtxFirmwareRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_vtx_firmware, 6);
+
+/**
+ * ---------------------------------------------------------
+ * 3. Domain Model (Referenced by Services and Requests above)
  * ---------------------------------------------------------
  *
  * @generated from message quadsmith.api.VtxFirmware
@@ -89,6 +249,16 @@ export type VtxFirmware = Message<"quadsmith.api.VtxFirmware"> & {
    * @generated from field: repeated quadsmith.api.Media media = 11;
    */
   media: Media[];
+
+  /**
+   * @generated from field: optional string user_uuid = 12;
+   */
+  userUuid?: string | undefined;
+
+  /**
+   * @generated from field: optional string author_username = 13;
+   */
+  authorUsername?: string | undefined;
 };
 
 /**
@@ -97,99 +267,11 @@ export type VtxFirmware = Message<"quadsmith.api.VtxFirmware"> & {
  */
 export const VtxFirmwareSchema: GenMessage<VtxFirmware> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_vtx_firmware, 0);
+  messageDesc(file_quadsmith_api_vtx_firmware, 7);
 
 /**
  * ---------------------------------------------------------
- * RPC Requests & Responses
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.GetVtxFirmwareRequest
- */
-export type GetVtxFirmwareRequest = Message<"quadsmith.api.GetVtxFirmwareRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
-
-/**
- * Describes the message quadsmith.api.GetVtxFirmwareRequest.
- * Use `create(GetVtxFirmwareRequestSchema)` to create a new message.
- */
-export const GetVtxFirmwareRequestSchema: GenMessage<GetVtxFirmwareRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_vtx_firmware, 1);
-
-/**
- * @generated from message quadsmith.api.ListVtxFirmwaresRequest
- */
-export type ListVtxFirmwaresRequest = Message<"quadsmith.api.ListVtxFirmwaresRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
-
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
-
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
-
-/**
- * Describes the message quadsmith.api.ListVtxFirmwaresRequest.
- * Use `create(ListVtxFirmwaresRequestSchema)` to create a new message.
- */
-export const ListVtxFirmwaresRequestSchema: GenMessage<ListVtxFirmwaresRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_vtx_firmware, 2);
-
-/**
- * @generated from message quadsmith.api.ListVtxFirmwaresResponse
- */
-export type ListVtxFirmwaresResponse = Message<"quadsmith.api.ListVtxFirmwaresResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.VtxFirmware vtx_firmwares = 1;
-   */
-  vtxFirmwares: VtxFirmware[];
-
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
-
-/**
- * Describes the message quadsmith.api.ListVtxFirmwaresResponse.
- * Use `create(ListVtxFirmwaresResponseSchema)` to create a new message.
- */
-export const ListVtxFirmwaresResponseSchema: GenMessage<ListVtxFirmwaresResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_vtx_firmware, 3);
-
-/**
- * ---------------------------------------------------------
- * gRPC Service
+ * 1. gRPC Service (Services First)
  * ---------------------------------------------------------
  *
  * @generated from service quadsmith.api.VtxFirmwareService
@@ -210,5 +292,29 @@ export const VtxFirmwareService: GenService<{
     methodKind: "unary";
     input: typeof ListVtxFirmwaresRequestSchema;
     output: typeof ListVtxFirmwaresResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.VtxFirmwareService.CreateVtxFirmware
+   */
+  createVtxFirmware: {
+    methodKind: "unary";
+    input: typeof CreateVtxFirmwareRequestSchema;
+    output: typeof VtxFirmwareSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.VtxFirmwareService.UpdateVtxFirmware
+   */
+  updateVtxFirmware: {
+    methodKind: "unary";
+    input: typeof UpdateVtxFirmwareRequestSchema;
+    output: typeof VtxFirmwareSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.VtxFirmwareService.DeleteVtxFirmware
+   */
+  deleteVtxFirmware: {
+    methodKind: "unary";
+    input: typeof DeleteVtxFirmwareRequestSchema;
+    output: typeof DeleteVtxFirmwareResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_vtx_firmware, 0);

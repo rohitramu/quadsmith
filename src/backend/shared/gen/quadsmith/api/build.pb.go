@@ -24,7 +24,554 @@ const (
 )
 
 // ---------------------------------------------------------
-// Domain Model
+// 2. RPC Requests & Responses (Callers Precede Callees)
+// ---------------------------------------------------------
+type ComponentMatchDetail struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Component     string                 `protobuf:"bytes,1,opt,name=component,proto3" json:"component,omitempty"`
+	ExactMatch    bool                   `protobuf:"varint,2,opt,name=exact_match,json=exactMatch,proto3" json:"exact_match,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	PointsAwarded float64                `protobuf:"fixed64,4,opt,name=points_awarded,json=pointsAwarded,proto3" json:"points_awarded,omitempty"`
+	MaxPoints     float64                `protobuf:"fixed64,5,opt,name=max_points,json=maxPoints,proto3" json:"max_points,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ComponentMatchDetail) Reset() {
+	*x = ComponentMatchDetail{}
+	mi := &file_quadsmith_api_build_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ComponentMatchDetail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ComponentMatchDetail) ProtoMessage() {}
+
+func (x *ComponentMatchDetail) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_build_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ComponentMatchDetail.ProtoReflect.Descriptor instead.
+func (*ComponentMatchDetail) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *ComponentMatchDetail) GetComponent() string {
+	if x != nil {
+		return x.Component
+	}
+	return ""
+}
+
+func (x *ComponentMatchDetail) GetExactMatch() bool {
+	if x != nil {
+		return x.ExactMatch
+	}
+	return false
+}
+
+func (x *ComponentMatchDetail) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *ComponentMatchDetail) GetPointsAwarded() float64 {
+	if x != nil {
+		return x.PointsAwarded
+	}
+	return 0
+}
+
+func (x *ComponentMatchDetail) GetMaxPoints() float64 {
+	if x != nil {
+		return x.MaxPoints
+	}
+	return 0
+}
+
+type CreateBuildRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Build         *Build                 `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateBuildRequest) Reset() {
+	*x = CreateBuildRequest{}
+	mi := &file_quadsmith_api_build_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateBuildRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateBuildRequest) ProtoMessage() {}
+
+func (x *CreateBuildRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_build_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateBuildRequest.ProtoReflect.Descriptor instead.
+func (*CreateBuildRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateBuildRequest) GetBuild() *Build {
+	if x != nil {
+		return x.Build
+	}
+	return nil
+}
+
+type DeleteBuildRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteBuildRequest) Reset() {
+	*x = DeleteBuildRequest{}
+	mi := &file_quadsmith_api_build_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteBuildRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBuildRequest) ProtoMessage() {}
+
+func (x *DeleteBuildRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_build_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBuildRequest.ProtoReflect.Descriptor instead.
+func (*DeleteBuildRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteBuildRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteBuildResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteBuildResponse) Reset() {
+	*x = DeleteBuildResponse{}
+	mi := &file_quadsmith_api_build_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteBuildResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBuildResponse) ProtoMessage() {}
+
+func (x *DeleteBuildResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_build_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBuildResponse.ProtoReflect.Descriptor instead.
+func (*DeleteBuildResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DeleteBuildResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetBuildRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetBuildRequest) Reset() {
+	*x = GetBuildRequest{}
+	mi := &file_quadsmith_api_build_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBuildRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBuildRequest) ProtoMessage() {}
+
+func (x *GetBuildRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_build_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBuildRequest.ProtoReflect.Descriptor instead.
+func (*GetBuildRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetBuildRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetBuildRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListBuildsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBuildsRequest) Reset() {
+	*x = ListBuildsRequest{}
+	mi := &file_quadsmith_api_build_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBuildsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBuildsRequest) ProtoMessage() {}
+
+func (x *ListBuildsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_build_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBuildsRequest.ProtoReflect.Descriptor instead.
+func (*ListBuildsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListBuildsRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListBuildsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListBuildsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListBuildsRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListBuildsRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListBuildsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Builds        []*Build               `protobuf:"bytes,1,rep,name=builds,proto3" json:"builds,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBuildsResponse) Reset() {
+	*x = ListBuildsResponse{}
+	mi := &file_quadsmith_api_build_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBuildsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBuildsResponse) ProtoMessage() {}
+
+func (x *ListBuildsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_build_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBuildsResponse.ProtoReflect.Descriptor instead.
+func (*ListBuildsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListBuildsResponse) GetBuilds() []*Build {
+	if x != nil {
+		return x.Builds
+	}
+	return nil
+}
+
+func (x *ListBuildsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type ListSimilarBuildsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	BuildId       string                 `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
+	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSimilarBuildsRequest) Reset() {
+	*x = ListSimilarBuildsRequest{}
+	mi := &file_quadsmith_api_build_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSimilarBuildsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSimilarBuildsRequest) ProtoMessage() {}
+
+func (x *ListSimilarBuildsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_build_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSimilarBuildsRequest.ProtoReflect.Descriptor instead.
+func (*ListSimilarBuildsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *ListSimilarBuildsRequest) GetBuildId() string {
+	if x != nil {
+		return x.BuildId
+	}
+	return ""
+}
+
+func (x *ListSimilarBuildsRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+type ListSimilarBuildsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SimilarBuilds []*SimilarBuild        `protobuf:"bytes,1,rep,name=similar_builds,json=similarBuilds,proto3" json:"similar_builds,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSimilarBuildsResponse) Reset() {
+	*x = ListSimilarBuildsResponse{}
+	mi := &file_quadsmith_api_build_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSimilarBuildsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSimilarBuildsResponse) ProtoMessage() {}
+
+func (x *ListSimilarBuildsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_build_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSimilarBuildsResponse.ProtoReflect.Descriptor instead.
+func (*ListSimilarBuildsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ListSimilarBuildsResponse) GetSimilarBuilds() []*SimilarBuild {
+	if x != nil {
+		return x.SimilarBuilds
+	}
+	return nil
+}
+
+type SimilarBuild struct {
+	state           protoimpl.MessageState  `protogen:"open.v1"`
+	Build           *Build                  `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
+	SimilarityScore float64                 `protobuf:"fixed64,2,opt,name=similarity_score,json=similarityScore,proto3" json:"similarity_score,omitempty"`
+	MatchDetails    []*ComponentMatchDetail `protobuf:"bytes,3,rep,name=match_details,json=matchDetails,proto3" json:"match_details,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *SimilarBuild) Reset() {
+	*x = SimilarBuild{}
+	mi := &file_quadsmith_api_build_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SimilarBuild) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SimilarBuild) ProtoMessage() {}
+
+func (x *SimilarBuild) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_build_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SimilarBuild.ProtoReflect.Descriptor instead.
+func (*SimilarBuild) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *SimilarBuild) GetBuild() *Build {
+	if x != nil {
+		return x.Build
+	}
+	return nil
+}
+
+func (x *SimilarBuild) GetSimilarityScore() float64 {
+	if x != nil {
+		return x.SimilarityScore
+	}
+	return 0
+}
+
+func (x *SimilarBuild) GetMatchDetails() []*ComponentMatchDetail {
+	if x != nil {
+		return x.MatchDetails
+	}
+	return nil
+}
+
+// ---------------------------------------------------------
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
 type Build struct {
 	state       protoimpl.MessageState `protogen:"open.v1"`
@@ -63,7 +610,7 @@ type Build struct {
 
 func (x *Build) Reset() {
 	*x = Build{}
-	mi := &file_quadsmith_api_build_proto_msgTypes[0]
+	mi := &file_quadsmith_api_build_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -75,7 +622,7 @@ func (x *Build) String() string {
 func (*Build) ProtoMessage() {}
 
 func (x *Build) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_build_proto_msgTypes[0]
+	mi := &file_quadsmith_api_build_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -88,7 +635,7 @@ func (x *Build) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Build.ProtoReflect.Descriptor instead.
 func (*Build) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{0}
+	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *Build) GetUuid() string {
@@ -224,589 +771,26 @@ func (x *Build) GetAuthorUsername() string {
 	return ""
 }
 
-// ---------------------------------------------------------
-// RPC Requests & Responses
-// ---------------------------------------------------------
-type GetBuildRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetBuildRequest) Reset() {
-	*x = GetBuildRequest{}
-	mi := &file_quadsmith_api_build_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetBuildRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetBuildRequest) ProtoMessage() {}
-
-func (x *GetBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_build_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetBuildRequest.ProtoReflect.Descriptor instead.
-func (*GetBuildRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *GetBuildRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *GetBuildRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListBuildsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListBuildsRequest) Reset() {
-	*x = ListBuildsRequest{}
-	mi := &file_quadsmith_api_build_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListBuildsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListBuildsRequest) ProtoMessage() {}
-
-func (x *ListBuildsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_build_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListBuildsRequest.ProtoReflect.Descriptor instead.
-func (*ListBuildsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *ListBuildsRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListBuildsRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListBuildsRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListBuildsRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListBuildsRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListBuildsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Builds        []*Build               `protobuf:"bytes,1,rep,name=builds,proto3" json:"builds,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListBuildsResponse) Reset() {
-	*x = ListBuildsResponse{}
-	mi := &file_quadsmith_api_build_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListBuildsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListBuildsResponse) ProtoMessage() {}
-
-func (x *ListBuildsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_build_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListBuildsResponse.ProtoReflect.Descriptor instead.
-func (*ListBuildsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *ListBuildsResponse) GetBuilds() []*Build {
-	if x != nil {
-		return x.Builds
-	}
-	return nil
-}
-
-func (x *ListBuildsResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-type CreateBuildRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Build         *Build                 `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateBuildRequest) Reset() {
-	*x = CreateBuildRequest{}
-	mi := &file_quadsmith_api_build_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateBuildRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateBuildRequest) ProtoMessage() {}
-
-func (x *CreateBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_build_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateBuildRequest.ProtoReflect.Descriptor instead.
-func (*CreateBuildRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *CreateBuildRequest) GetBuild() *Build {
-	if x != nil {
-		return x.Build
-	}
-	return nil
-}
-
-type DeleteBuildRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteBuildRequest) Reset() {
-	*x = DeleteBuildRequest{}
-	mi := &file_quadsmith_api_build_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteBuildRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteBuildRequest) ProtoMessage() {}
-
-func (x *DeleteBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_build_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteBuildRequest.ProtoReflect.Descriptor instead.
-func (*DeleteBuildRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *DeleteBuildRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteBuildResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteBuildResponse) Reset() {
-	*x = DeleteBuildResponse{}
-	mi := &file_quadsmith_api_build_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteBuildResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteBuildResponse) ProtoMessage() {}
-
-func (x *DeleteBuildResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_build_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteBuildResponse.ProtoReflect.Descriptor instead.
-func (*DeleteBuildResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *DeleteBuildResponse) GetIsArchived() bool {
-	if x != nil {
-		return x.IsArchived
-	}
-	return false
-}
-
-type ComponentMatchDetail struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Component     string                 `protobuf:"bytes,1,opt,name=component,proto3" json:"component,omitempty"`
-	ExactMatch    bool                   `protobuf:"varint,2,opt,name=exact_match,json=exactMatch,proto3" json:"exact_match,omitempty"`
-	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	PointsAwarded float64                `protobuf:"fixed64,4,opt,name=points_awarded,json=pointsAwarded,proto3" json:"points_awarded,omitempty"`
-	MaxPoints     float64                `protobuf:"fixed64,5,opt,name=max_points,json=maxPoints,proto3" json:"max_points,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ComponentMatchDetail) Reset() {
-	*x = ComponentMatchDetail{}
-	mi := &file_quadsmith_api_build_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ComponentMatchDetail) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ComponentMatchDetail) ProtoMessage() {}
-
-func (x *ComponentMatchDetail) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_build_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ComponentMatchDetail.ProtoReflect.Descriptor instead.
-func (*ComponentMatchDetail) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *ComponentMatchDetail) GetComponent() string {
-	if x != nil {
-		return x.Component
-	}
-	return ""
-}
-
-func (x *ComponentMatchDetail) GetExactMatch() bool {
-	if x != nil {
-		return x.ExactMatch
-	}
-	return false
-}
-
-func (x *ComponentMatchDetail) GetDescription() string {
-	if x != nil {
-		return x.Description
-	}
-	return ""
-}
-
-func (x *ComponentMatchDetail) GetPointsAwarded() float64 {
-	if x != nil {
-		return x.PointsAwarded
-	}
-	return 0
-}
-
-func (x *ComponentMatchDetail) GetMaxPoints() float64 {
-	if x != nil {
-		return x.MaxPoints
-	}
-	return 0
-}
-
-type SimilarBuild struct {
-	state           protoimpl.MessageState  `protogen:"open.v1"`
-	Build           *Build                  `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
-	SimilarityScore float64                 `protobuf:"fixed64,2,opt,name=similarity_score,json=similarityScore,proto3" json:"similarity_score,omitempty"`
-	MatchDetails    []*ComponentMatchDetail `protobuf:"bytes,3,rep,name=match_details,json=matchDetails,proto3" json:"match_details,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *SimilarBuild) Reset() {
-	*x = SimilarBuild{}
-	mi := &file_quadsmith_api_build_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SimilarBuild) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SimilarBuild) ProtoMessage() {}
-
-func (x *SimilarBuild) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_build_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SimilarBuild.ProtoReflect.Descriptor instead.
-func (*SimilarBuild) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *SimilarBuild) GetBuild() *Build {
-	if x != nil {
-		return x.Build
-	}
-	return nil
-}
-
-func (x *SimilarBuild) GetSimilarityScore() float64 {
-	if x != nil {
-		return x.SimilarityScore
-	}
-	return 0
-}
-
-func (x *SimilarBuild) GetMatchDetails() []*ComponentMatchDetail {
-	if x != nil {
-		return x.MatchDetails
-	}
-	return nil
-}
-
-type ListSimilarBuildsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	BuildId       string                 `protobuf:"bytes,1,opt,name=build_id,json=buildId,proto3" json:"build_id,omitempty"`
-	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListSimilarBuildsRequest) Reset() {
-	*x = ListSimilarBuildsRequest{}
-	mi := &file_quadsmith_api_build_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListSimilarBuildsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListSimilarBuildsRequest) ProtoMessage() {}
-
-func (x *ListSimilarBuildsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_build_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListSimilarBuildsRequest.ProtoReflect.Descriptor instead.
-func (*ListSimilarBuildsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *ListSimilarBuildsRequest) GetBuildId() string {
-	if x != nil {
-		return x.BuildId
-	}
-	return ""
-}
-
-func (x *ListSimilarBuildsRequest) GetLimit() int32 {
-	if x != nil {
-		return x.Limit
-	}
-	return 0
-}
-
-type ListSimilarBuildsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SimilarBuilds []*SimilarBuild        `protobuf:"bytes,1,rep,name=similar_builds,json=similarBuilds,proto3" json:"similar_builds,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListSimilarBuildsResponse) Reset() {
-	*x = ListSimilarBuildsResponse{}
-	mi := &file_quadsmith_api_build_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListSimilarBuildsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListSimilarBuildsResponse) ProtoMessage() {}
-
-func (x *ListSimilarBuildsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_build_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListSimilarBuildsResponse.ProtoReflect.Descriptor instead.
-func (*ListSimilarBuildsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *ListSimilarBuildsResponse) GetSimilarBuilds() []*SimilarBuild {
-	if x != nil {
-		return x.SimilarBuilds
-	}
-	return nil
-}
-
 var File_quadsmith_api_build_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_build_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/api/build.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"\xd8\b\n" +
-	"\x05Build\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12\x12\n" +
-	"\x04name\x18\x03 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x04 \x01(\tR\vdescription\x121\n" +
+	"\x19quadsmith/api/build.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"\xbd\x01\n" +
+	"\x14ComponentMatchDetail\x12\x1c\n" +
+	"\tcomponent\x18\x01 \x01(\tR\tcomponent\x12\x1f\n" +
+	"\vexact_match\x18\x02 \x01(\bR\n" +
+	"exactMatch\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12%\n" +
+	"\x0epoints_awarded\x18\x04 \x01(\x01R\rpointsAwarded\x12\x1d\n" +
 	"\n" +
-	"frame_uuid\x18\x05 \x01(\tB\x12\xc2\xf3\x18\x0e\x1a\fframes(uuid)R\tframeUuid\x121\n" +
-	"\n" +
-	"motor_uuid\x18\x06 \x01(\tB\x12\xc2\xf3\x18\x0e\x1a\fmotors(uuid)R\tmotorUuid\x12T\n" +
-	"\x16flight_controller_uuid\x18\b \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18flight_controllers(uuid)R\x14flightControllerUuid\x12I\n" +
-	"!electronic_speed_controller_uuids\x18\t \x03(\tR\x1eelectronicSpeedControllerUuids\x12%\n" +
-	"\x0ereceiver_uuids\x18\n" +
-	" \x03(\tR\rreceiverUuids\x12#\n" +
-	"\rantenna_uuids\x18\v \x03(\tR\fantennaUuids\x12=\n" +
-	"\x0epropeller_uuid\x18\f \x01(\tB\x16\xc2\xf3\x18\x12\x1a\x10propellers(uuid)R\rpropellerUuid\x12!\n" +
-	"\fcamera_uuids\x18\r \x03(\tR\vcameraUuids\x12T\n" +
-	"\x16video_transmitter_uuid\x18\x0e \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)R\x14videoTransmitterUuid\x12J\n" +
-	"\x11gps_receiver_uuid\x18\x0f \x01(\tB\x19\xc2\xf3\x18\x15\x1a\x13gps_receivers(uuid)H\x00R\x0fgpsReceiverUuid\x88\x01\x01\x12E\n" +
-	"\x0freference_links\x18\x10 \x03(\v2\x1c.quadsmith.api.ReferenceLinkR\x0ereferenceLinks\x127\n" +
-	"\x15primary_display_image\x18\x11 \x01(\tH\x01R\x13primaryDisplayImage\x88\x01\x01\x12*\n" +
-	"\x05media\x18\x12 \x03(\v2\x14.quadsmith.api.MediaR\x05media\x123\n" +
-	"\tuser_uuid\x18\x13 \x01(\tB\x11\xc2\xf3\x18\r\x1a\vusers(uuid)H\x02R\buserUuid\x88\x01\x01\x12,\n" +
-	"\x0fauthor_username\x18\x14 \x01(\tH\x03R\x0eauthorUsername\x88\x01\x01:-\x8a\xb5\x18\x13\n" +
-	"\x02id\n" +
-	"\x04name\x12\a#3b82f6\x9a\xb5\x18\x06builds\xc2\xf3\x18\b\n" +
-	"\x06buildsB\x14\n" +
-	"\x12_gps_receiver_uuidB\x18\n" +
-	"\x16_primary_display_imageB\f\n" +
-	"\n" +
-	"_user_uuidB\x12\n" +
-	"\x10_author_username\";\n" +
+	"max_points\x18\x05 \x01(\x01R\tmaxPoints\"@\n" +
+	"\x12CreateBuildRequest\x12*\n" +
+	"\x05build\x18\x01 \x01(\v2\x14.quadsmith.api.BuildR\x05build\"$\n" +
+	"\x12DeleteBuildRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"6\n" +
+	"\x13DeleteBuildResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\";\n" +
 	"\x0fGetBuildRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +
@@ -819,31 +803,47 @@ const file_quadsmith_api_build_proto_rawDesc = "" +
 	"\x04sort\x18\x05 \x03(\tR\x04sort\"j\n" +
 	"\x12ListBuildsResponse\x12,\n" +
 	"\x06builds\x18\x01 \x03(\v2\x14.quadsmith.api.BuildR\x06builds\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"@\n" +
-	"\x12CreateBuildRequest\x12*\n" +
-	"\x05build\x18\x01 \x01(\v2\x14.quadsmith.api.BuildR\x05build\"$\n" +
-	"\x12DeleteBuildRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"6\n" +
-	"\x13DeleteBuildResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"\xbd\x01\n" +
-	"\x14ComponentMatchDetail\x12\x1c\n" +
-	"\tcomponent\x18\x01 \x01(\tR\tcomponent\x12\x1f\n" +
-	"\vexact_match\x18\x02 \x01(\bR\n" +
-	"exactMatch\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x12%\n" +
-	"\x0epoints_awarded\x18\x04 \x01(\x01R\rpointsAwarded\x12\x1d\n" +
-	"\n" +
-	"max_points\x18\x05 \x01(\x01R\tmaxPoints\"\xaf\x01\n" +
-	"\fSimilarBuild\x12*\n" +
-	"\x05build\x18\x01 \x01(\v2\x14.quadsmith.api.BuildR\x05build\x12)\n" +
-	"\x10similarity_score\x18\x02 \x01(\x01R\x0fsimilarityScore\x12H\n" +
-	"\rmatch_details\x18\x03 \x03(\v2#.quadsmith.api.ComponentMatchDetailR\fmatchDetails\"K\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"K\n" +
 	"\x18ListSimilarBuildsRequest\x12\x19\n" +
 	"\bbuild_id\x18\x01 \x01(\tR\abuildId\x12\x14\n" +
 	"\x05limit\x18\x02 \x01(\x05R\x05limit\"_\n" +
 	"\x19ListSimilarBuildsResponse\x12B\n" +
-	"\x0esimilar_builds\x18\x01 \x03(\v2\x1b.quadsmith.api.SimilarBuildR\rsimilarBuilds2\xa9\x03\n" +
+	"\x0esimilar_builds\x18\x01 \x03(\v2\x1b.quadsmith.api.SimilarBuildR\rsimilarBuilds\"\xaf\x01\n" +
+	"\fSimilarBuild\x12*\n" +
+	"\x05build\x18\x01 \x01(\v2\x14.quadsmith.api.BuildR\x05build\x12)\n" +
+	"\x10similarity_score\x18\x02 \x01(\x01R\x0fsimilarityScore\x12H\n" +
+	"\rmatch_details\x18\x03 \x03(\v2#.quadsmith.api.ComponentMatchDetailR\fmatchDetails\"\x9f\t\n" +
+	"\x05Build\x12<\n" +
+	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12\x1a\n" +
+	"\x04name\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12(\n" +
+	"\vdescription\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x121\n" +
+	"\n" +
+	"frame_uuid\x18\x05 \x01(\tB\x12\xc2\xf3\x18\x0e\x1a\fframes(uuid)R\tframeUuid\x121\n" +
+	"\n" +
+	"motor_uuid\x18\x06 \x01(\tB\x12\xc2\xf3\x18\x0e\x1a\fmotors(uuid)R\tmotorUuid\x12T\n" +
+	"\x16flight_controller_uuid\x18\b \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18flight_controllers(uuid)R\x14flightControllerUuid\x12I\n" +
+	"!electronic_speed_controller_uuids\x18\t \x03(\tR\x1eelectronicSpeedControllerUuids\x12%\n" +
+	"\x0ereceiver_uuids\x18\n" +
+	" \x03(\tR\rreceiverUuids\x12#\n" +
+	"\rantenna_uuids\x18\v \x03(\tR\fantennaUuids\x12=\n" +
+	"\x0epropeller_uuid\x18\f \x01(\tB\x16\xc2\xf3\x18\x12\x1a\x10propellers(uuid)R\rpropellerUuid\x12!\n" +
+	"\fcamera_uuids\x18\r \x03(\tR\vcameraUuids\x12T\n" +
+	"\x16video_transmitter_uuid\x18\x0e \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)R\x14videoTransmitterUuid\x12J\n" +
+	"\x11gps_receiver_uuid\x18\x0f \x01(\tB\x19\xc2\xf3\x18\x15\x1a\x13gps_receivers(uuid)H\x00R\x0fgpsReceiverUuid\x88\x01\x01\x12M\n" +
+	"\x0freference_links\x18\x10 \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
+	"\x15primary_display_image\x18\x11 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x01R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
+	"\x05media\x18\x12 \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12(\n" +
+	"\tuser_uuid\x18\x13 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\buserUuid\x88\x01\x01\x124\n" +
+	"\x0fauthor_username\x18\x14 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x03R\x0eauthorUsername\x88\x01\x01:-\x8a\xb5\x18\x13\n" +
+	"\x02id\n" +
+	"\x04name\x12\a#3b82f6\x9a\xb5\x18\x06builds\xc2\xf3\x18\b\n" +
+	"\x06buildsB\x14\n" +
+	"\x12_gps_receiver_uuidB\x18\n" +
+	"\x16_primary_display_imageB\f\n" +
+	"\n" +
+	"_user_uuidB\x12\n" +
+	"\x10_author_username2\xa9\x03\n" +
 	"\fBuildService\x12@\n" +
 	"\bGetBuild\x12\x1e.quadsmith.api.GetBuildRequest\x1a\x14.quadsmith.api.Build\x12Q\n" +
 	"\n" +
@@ -866,38 +866,38 @@ func file_quadsmith_api_build_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_api_build_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_quadsmith_api_build_proto_goTypes = []any{
-	(*Build)(nil),                     // 0: quadsmith.api.Build
-	(*GetBuildRequest)(nil),           // 1: quadsmith.api.GetBuildRequest
-	(*ListBuildsRequest)(nil),         // 2: quadsmith.api.ListBuildsRequest
-	(*ListBuildsResponse)(nil),        // 3: quadsmith.api.ListBuildsResponse
-	(*CreateBuildRequest)(nil),        // 4: quadsmith.api.CreateBuildRequest
-	(*DeleteBuildRequest)(nil),        // 5: quadsmith.api.DeleteBuildRequest
-	(*DeleteBuildResponse)(nil),       // 6: quadsmith.api.DeleteBuildResponse
-	(*ComponentMatchDetail)(nil),      // 7: quadsmith.api.ComponentMatchDetail
-	(*SimilarBuild)(nil),              // 8: quadsmith.api.SimilarBuild
-	(*ListSimilarBuildsRequest)(nil),  // 9: quadsmith.api.ListSimilarBuildsRequest
-	(*ListSimilarBuildsResponse)(nil), // 10: quadsmith.api.ListSimilarBuildsResponse
+	(*ComponentMatchDetail)(nil),      // 0: quadsmith.api.ComponentMatchDetail
+	(*CreateBuildRequest)(nil),        // 1: quadsmith.api.CreateBuildRequest
+	(*DeleteBuildRequest)(nil),        // 2: quadsmith.api.DeleteBuildRequest
+	(*DeleteBuildResponse)(nil),       // 3: quadsmith.api.DeleteBuildResponse
+	(*GetBuildRequest)(nil),           // 4: quadsmith.api.GetBuildRequest
+	(*ListBuildsRequest)(nil),         // 5: quadsmith.api.ListBuildsRequest
+	(*ListBuildsResponse)(nil),        // 6: quadsmith.api.ListBuildsResponse
+	(*ListSimilarBuildsRequest)(nil),  // 7: quadsmith.api.ListSimilarBuildsRequest
+	(*ListSimilarBuildsResponse)(nil), // 8: quadsmith.api.ListSimilarBuildsResponse
+	(*SimilarBuild)(nil),              // 9: quadsmith.api.SimilarBuild
+	(*Build)(nil),                     // 10: quadsmith.api.Build
 	(*ReferenceLink)(nil),             // 11: quadsmith.api.ReferenceLink
 	(*Media)(nil),                     // 12: quadsmith.api.Media
 }
 var file_quadsmith_api_build_proto_depIdxs = []int32{
-	11, // 0: quadsmith.api.Build.reference_links:type_name -> quadsmith.api.ReferenceLink
-	12, // 1: quadsmith.api.Build.media:type_name -> quadsmith.api.Media
-	0,  // 2: quadsmith.api.ListBuildsResponse.builds:type_name -> quadsmith.api.Build
-	0,  // 3: quadsmith.api.CreateBuildRequest.build:type_name -> quadsmith.api.Build
-	0,  // 4: quadsmith.api.SimilarBuild.build:type_name -> quadsmith.api.Build
-	7,  // 5: quadsmith.api.SimilarBuild.match_details:type_name -> quadsmith.api.ComponentMatchDetail
-	8,  // 6: quadsmith.api.ListSimilarBuildsResponse.similar_builds:type_name -> quadsmith.api.SimilarBuild
-	1,  // 7: quadsmith.api.BuildService.GetBuild:input_type -> quadsmith.api.GetBuildRequest
-	2,  // 8: quadsmith.api.BuildService.ListBuilds:input_type -> quadsmith.api.ListBuildsRequest
-	4,  // 9: quadsmith.api.BuildService.CreateBuild:input_type -> quadsmith.api.CreateBuildRequest
-	5,  // 10: quadsmith.api.BuildService.DeleteBuild:input_type -> quadsmith.api.DeleteBuildRequest
-	9,  // 11: quadsmith.api.BuildService.ListSimilarBuilds:input_type -> quadsmith.api.ListSimilarBuildsRequest
-	0,  // 12: quadsmith.api.BuildService.GetBuild:output_type -> quadsmith.api.Build
-	3,  // 13: quadsmith.api.BuildService.ListBuilds:output_type -> quadsmith.api.ListBuildsResponse
-	0,  // 14: quadsmith.api.BuildService.CreateBuild:output_type -> quadsmith.api.Build
-	6,  // 15: quadsmith.api.BuildService.DeleteBuild:output_type -> quadsmith.api.DeleteBuildResponse
-	10, // 16: quadsmith.api.BuildService.ListSimilarBuilds:output_type -> quadsmith.api.ListSimilarBuildsResponse
+	10, // 0: quadsmith.api.CreateBuildRequest.build:type_name -> quadsmith.api.Build
+	10, // 1: quadsmith.api.ListBuildsResponse.builds:type_name -> quadsmith.api.Build
+	9,  // 2: quadsmith.api.ListSimilarBuildsResponse.similar_builds:type_name -> quadsmith.api.SimilarBuild
+	10, // 3: quadsmith.api.SimilarBuild.build:type_name -> quadsmith.api.Build
+	0,  // 4: quadsmith.api.SimilarBuild.match_details:type_name -> quadsmith.api.ComponentMatchDetail
+	11, // 5: quadsmith.api.Build.reference_links:type_name -> quadsmith.api.ReferenceLink
+	12, // 6: quadsmith.api.Build.media:type_name -> quadsmith.api.Media
+	4,  // 7: quadsmith.api.BuildService.GetBuild:input_type -> quadsmith.api.GetBuildRequest
+	5,  // 8: quadsmith.api.BuildService.ListBuilds:input_type -> quadsmith.api.ListBuildsRequest
+	1,  // 9: quadsmith.api.BuildService.CreateBuild:input_type -> quadsmith.api.CreateBuildRequest
+	2,  // 10: quadsmith.api.BuildService.DeleteBuild:input_type -> quadsmith.api.DeleteBuildRequest
+	7,  // 11: quadsmith.api.BuildService.ListSimilarBuilds:input_type -> quadsmith.api.ListSimilarBuildsRequest
+	10, // 12: quadsmith.api.BuildService.GetBuild:output_type -> quadsmith.api.Build
+	6,  // 13: quadsmith.api.BuildService.ListBuilds:output_type -> quadsmith.api.ListBuildsResponse
+	10, // 14: quadsmith.api.BuildService.CreateBuild:output_type -> quadsmith.api.Build
+	3,  // 15: quadsmith.api.BuildService.DeleteBuild:output_type -> quadsmith.api.DeleteBuildResponse
+	8,  // 16: quadsmith.api.BuildService.ListSimilarBuilds:output_type -> quadsmith.api.ListSimilarBuildsResponse
 	12, // [12:17] is the sub-list for method output_type
 	7,  // [7:12] is the sub-list for method input_type
 	7,  // [7:7] is the sub-list for extension type_name
@@ -912,7 +912,7 @@ func file_quadsmith_api_build_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_build_proto_msgTypes[0].OneofWrappers = []any{}
+	file_quadsmith_api_build_proto_msgTypes[10].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

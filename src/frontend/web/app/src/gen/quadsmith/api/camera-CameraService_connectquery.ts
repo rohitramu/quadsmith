@@ -13,3 +13,18 @@ export const getCamera = CameraService.method.getCamera;
  * @generated from rpc quadsmith.api.CameraService.ListCameras
  */
 export const listCameras = CameraService.method.listCameras;
+
+/**
+ * @generated from rpc quadsmith.api.CameraService.CreateCamera
+ */
+export const createCamera = CameraService.method.createCamera;
+
+/**
+ * @generated from rpc quadsmith.api.CameraService.UpdateCamera
+ */
+export const updateCamera = CameraService.method.updateCamera;
+
+/**
+ * @generated from rpc quadsmith.api.CameraService.DeleteCamera
+ */
+export const deleteCamera = CameraService.method.deleteCamera;

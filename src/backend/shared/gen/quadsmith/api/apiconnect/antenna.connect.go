@@ -39,12 +39,24 @@ const (
 	// AntennaServiceListAntennasProcedure is the fully-qualified name of the AntennaService's
 	// ListAntennas RPC.
 	AntennaServiceListAntennasProcedure = "/quadsmith.api.AntennaService/ListAntennas"
+	// AntennaServiceCreateAntennaProcedure is the fully-qualified name of the AntennaService's
+	// CreateAntenna RPC.
+	AntennaServiceCreateAntennaProcedure = "/quadsmith.api.AntennaService/CreateAntenna"
+	// AntennaServiceUpdateAntennaProcedure is the fully-qualified name of the AntennaService's
+	// UpdateAntenna RPC.
+	AntennaServiceUpdateAntennaProcedure = "/quadsmith.api.AntennaService/UpdateAntenna"
+	// AntennaServiceDeleteAntennaProcedure is the fully-qualified name of the AntennaService's
+	// DeleteAntenna RPC.
+	AntennaServiceDeleteAntennaProcedure = "/quadsmith.api.AntennaService/DeleteAntenna"
 )
 
 // AntennaServiceClient is a client for the quadsmith.api.AntennaService service.
 type AntennaServiceClient interface {
 	GetAntenna(context.Context, *connect.Request[api.GetAntennaRequest]) (*connect.Response[api.Antenna], error)
 	ListAntennas(context.Context, *connect.Request[api.ListAntennasRequest]) (*connect.Response[api.ListAntennasResponse], error)
+	CreateAntenna(context.Context, *connect.Request[api.CreateAntennaRequest]) (*connect.Response[api.Antenna], error)
+	UpdateAntenna(context.Context, *connect.Request[api.UpdateAntennaRequest]) (*connect.Response[api.Antenna], error)
+	DeleteAntenna(context.Context, *connect.Request[api.DeleteAntennaRequest]) (*connect.Response[api.DeleteAntennaResponse], error)
 }
 
 // NewAntennaServiceClient constructs a client for the quadsmith.api.AntennaService service. By
@@ -70,13 +82,34 @@ func NewAntennaServiceClient(httpClient connect.HTTPClient, baseURL string, opts
 			connect.WithSchema(antennaServiceMethods.ByName("ListAntennas")),
 			connect.WithClientOptions(opts...),
 		),
+		createAntenna: connect.NewClient[api.CreateAntennaRequest, api.Antenna](
+			httpClient,
+			baseURL+AntennaServiceCreateAntennaProcedure,
+			connect.WithSchema(antennaServiceMethods.ByName("CreateAntenna")),
+			connect.WithClientOptions(opts...),
+		),
+		updateAntenna: connect.NewClient[api.UpdateAntennaRequest, api.Antenna](
+			httpClient,
+			baseURL+AntennaServiceUpdateAntennaProcedure,
+			connect.WithSchema(antennaServiceMethods.ByName("UpdateAntenna")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteAntenna: connect.NewClient[api.DeleteAntennaRequest, api.DeleteAntennaResponse](
+			httpClient,
+			baseURL+AntennaServiceDeleteAntennaProcedure,
+			connect.WithSchema(antennaServiceMethods.ByName("DeleteAntenna")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // antennaServiceClient implements AntennaServiceClient.
 type antennaServiceClient struct {
-	getAntenna   *connect.Client[api.GetAntennaRequest, api.Antenna]
-	listAntennas *connect.Client[api.ListAntennasRequest, api.ListAntennasResponse]
+	getAntenna    *connect.Client[api.GetAntennaRequest, api.Antenna]
+	listAntennas  *connect.Client[api.ListAntennasRequest, api.ListAntennasResponse]
+	createAntenna *connect.Client[api.CreateAntennaRequest, api.Antenna]
+	updateAntenna *connect.Client[api.UpdateAntennaRequest, api.Antenna]
+	deleteAntenna *connect.Client[api.DeleteAntennaRequest, api.DeleteAntennaResponse]
 }
 
 // GetAntenna calls quadsmith.api.AntennaService.GetAntenna.
@@ -89,10 +122,28 @@ func (c *antennaServiceClient) ListAntennas(ctx context.Context, req *connect.Re
 	return c.listAntennas.CallUnary(ctx, req)
 }
 
+// CreateAntenna calls quadsmith.api.AntennaService.CreateAntenna.
+func (c *antennaServiceClient) CreateAntenna(ctx context.Context, req *connect.Request[api.CreateAntennaRequest]) (*connect.Response[api.Antenna], error) {
+	return c.createAntenna.CallUnary(ctx, req)
+}
+
+// UpdateAntenna calls quadsmith.api.AntennaService.UpdateAntenna.
+func (c *antennaServiceClient) UpdateAntenna(ctx context.Context, req *connect.Request[api.UpdateAntennaRequest]) (*connect.Response[api.Antenna], error) {
+	return c.updateAntenna.CallUnary(ctx, req)
+}
+
+// DeleteAntenna calls quadsmith.api.AntennaService.DeleteAntenna.
+func (c *antennaServiceClient) DeleteAntenna(ctx context.Context, req *connect.Request[api.DeleteAntennaRequest]) (*connect.Response[api.DeleteAntennaResponse], error) {
+	return c.deleteAntenna.CallUnary(ctx, req)
+}
+
 // AntennaServiceHandler is an implementation of the quadsmith.api.AntennaService service.
 type AntennaServiceHandler interface {
 	GetAntenna(context.Context, *connect.Request[api.GetAntennaRequest]) (*connect.Response[api.Antenna], error)
 	ListAntennas(context.Context, *connect.Request[api.ListAntennasRequest]) (*connect.Response[api.ListAntennasResponse], error)
+	CreateAntenna(context.Context, *connect.Request[api.CreateAntennaRequest]) (*connect.Response[api.Antenna], error)
+	UpdateAntenna(context.Context, *connect.Request[api.UpdateAntennaRequest]) (*connect.Response[api.Antenna], error)
+	DeleteAntenna(context.Context, *connect.Request[api.DeleteAntennaRequest]) (*connect.Response[api.DeleteAntennaResponse], error)
 }
 
 // NewAntennaServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -114,12 +165,36 @@ func NewAntennaServiceHandler(svc AntennaServiceHandler, opts ...connect.Handler
 		connect.WithSchema(antennaServiceMethods.ByName("ListAntennas")),
 		connect.WithHandlerOptions(opts...),
 	)
+	antennaServiceCreateAntennaHandler := connect.NewUnaryHandler(
+		AntennaServiceCreateAntennaProcedure,
+		svc.CreateAntenna,
+		connect.WithSchema(antennaServiceMethods.ByName("CreateAntenna")),
+		connect.WithHandlerOptions(opts...),
+	)
+	antennaServiceUpdateAntennaHandler := connect.NewUnaryHandler(
+		AntennaServiceUpdateAntennaProcedure,
+		svc.UpdateAntenna,
+		connect.WithSchema(antennaServiceMethods.ByName("UpdateAntenna")),
+		connect.WithHandlerOptions(opts...),
+	)
+	antennaServiceDeleteAntennaHandler := connect.NewUnaryHandler(
+		AntennaServiceDeleteAntennaProcedure,
+		svc.DeleteAntenna,
+		connect.WithSchema(antennaServiceMethods.ByName("DeleteAntenna")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.AntennaService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AntennaServiceGetAntennaProcedure:
 			antennaServiceGetAntennaHandler.ServeHTTP(w, r)
 		case AntennaServiceListAntennasProcedure:
 			antennaServiceListAntennasHandler.ServeHTTP(w, r)
+		case AntennaServiceCreateAntennaProcedure:
+			antennaServiceCreateAntennaHandler.ServeHTTP(w, r)
+		case AntennaServiceUpdateAntennaProcedure:
+			antennaServiceUpdateAntennaHandler.ServeHTTP(w, r)
+		case AntennaServiceDeleteAntennaProcedure:
+			antennaServiceDeleteAntennaHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +210,16 @@ func (UnimplementedAntennaServiceHandler) GetAntenna(context.Context, *connect.R
 
 func (UnimplementedAntennaServiceHandler) ListAntennas(context.Context, *connect.Request[api.ListAntennasRequest]) (*connect.Response[api.ListAntennasResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AntennaService.ListAntennas is not implemented"))
+}
+
+func (UnimplementedAntennaServiceHandler) CreateAntenna(context.Context, *connect.Request[api.CreateAntennaRequest]) (*connect.Response[api.Antenna], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AntennaService.CreateAntenna is not implemented"))
+}
+
+func (UnimplementedAntennaServiceHandler) UpdateAntenna(context.Context, *connect.Request[api.UpdateAntennaRequest]) (*connect.Response[api.Antenna], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AntennaService.UpdateAntenna is not implemented"))
+}
+
+func (UnimplementedAntennaServiceHandler) DeleteAntenna(context.Context, *connect.Request[api.DeleteAntennaRequest]) (*connect.Response[api.DeleteAntennaResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AntennaService.DeleteAntenna is not implemented"))
 }

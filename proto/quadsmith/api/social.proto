@@ -34,6 +34,11 @@ message Entity {
   }];
   google.protobuf.Timestamp created_at = 11 [(quadsmith.sql.column) = {default_value: "NOW()"}];
   google.protobuf.Timestamp updated_at = 12 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  optional string user_uuid = 13 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+  optional string author_username = 14;
 }
 
 // ---------------------------------------------------------

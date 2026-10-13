@@ -13,3 +13,18 @@ export const getReceiver = ReceiverService.method.getReceiver;
  * @generated from rpc quadsmith.api.ReceiverService.ListReceivers
  */
 export const listReceivers = ReceiverService.method.listReceivers;
+
+/**
+ * @generated from rpc quadsmith.api.ReceiverService.CreateReceiver
+ */
+export const createReceiver = ReceiverService.method.createReceiver;
+
+/**
+ * @generated from rpc quadsmith.api.ReceiverService.UpdateReceiver
+ */
+export const updateReceiver = ReceiverService.method.updateReceiver;
+
+/**
+ * @generated from rpc quadsmith.api.ReceiverService.DeleteReceiver
+ */
+export const deleteReceiver = ReceiverService.method.deleteReceiver;

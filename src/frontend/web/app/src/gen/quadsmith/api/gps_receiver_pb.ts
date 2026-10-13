@@ -18,7 +18,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_gps_receiver: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiBxdWFkc21pdGgvYXBpL2dwc19yZWNlaXZlci5wcm90bxINcXVhZHNtaXRoLmFwaSKyBAoLR3BzUmVjZWl2ZXISFAoEdXVpZBgBIAEoCUIGwvMYAhABEhIKAmlkGAIgASgJQgbC8xgCIAESHAoMbWFudWZhY3R1cmVyGAMgASgJQgbC8xgCKAESDAoEbmFtZRgEIAEoCRIYChBpc19pbnRlcm5hbF9vbmx5GAUgASgIEhAKCHdlaWdodF9nGAYgASgCEg8KB2NoaXBzZXQYByABKAkSGAoIcHJvdG9jb2wYCCABKAlCBsLzGAIoARIUCgdjb21wYXNzGAkgASgJSACIAQESGwoTaW5wdXRfdm9sdGFnZV9taW5fdhgLIAEoAhIbChNpbnB1dF92b2x0YWdlX21heF92GAwgASgCEhMKC2Rlc2NyaXB0aW9uGA0gASgJEjUKD3JlZmVyZW5jZV9saW5rcxgOIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGluaxIiChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYDyABKAlIAYgBARIjCgVtZWRpYRgQIAMoCzIULnF1YWRzbWl0aC5hcGkuTWVkaWE6a4q1GC8KDG1hbnVmYWN0dXJlcgoEbmFtZQoHY2hpcHNldAoHY29tcGFzcxIHIzEwYjk4MZq1GCFjb21wb25lbnRzL2hhcmR3YXJlL2dwcy1yZWNlaXZlcnPC8xgPCg1ncHNfcmVjZWl2ZXJzQgoKCF9jb21wYXNzQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2UiNAoVR2V0R3BzUmVjZWl2ZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkibwoXTGlzdEdwc1JlY2VpdmVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJmChhMaXN0R3BzUmVjZWl2ZXJzUmVzcG9uc2USMQoNZ3BzX3JlY2VpdmVycxgBIAMoCzIaLnF1YWRzbWl0aC5hcGkuR3BzUmVjZWl2ZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMs0BChJHcHNSZWNlaXZlclNlcnZpY2USUgoOR2V0R3BzUmVjZWl2ZXISJC5xdWFkc21pdGguYXBpLkdldEdwc1JlY2VpdmVyUmVxdWVzdBoaLnF1YWRzbWl0aC5hcGkuR3BzUmVjZWl2ZXISYwoQTGlzdEdwc1JlY2VpdmVycxImLnF1YWRzbWl0aC5hcGkuTGlzdEdwc1JlY2VpdmVyc1JlcXVlc3QaJy5xdWFkc21pdGguYXBpLkxpc3RHcHNSZWNlaXZlcnNSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
+    "CiBxdWFkc21pdGgvYXBpL2dwc19yZWNlaXZlci5wcm90bxINcXVhZHNtaXRoLmFwaSJMChhDcmVhdGVHcHNSZWNlaXZlclJlcXVlc3QSMAoMZ3BzX3JlY2VpdmVyGAEgASgLMhoucXVhZHNtaXRoLmFwaS5HcHNSZWNlaXZlciImChhEZWxldGVHcHNSZWNlaXZlclJlcXVlc3QSCgoCaWQYASABKAkiMAoZRGVsZXRlR3BzUmVjZWl2ZXJSZXNwb25zZRITCgtpc19hcmNoaXZlZBgBIAEoCCI0ChVHZXRHcHNSZWNlaXZlclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJvChdMaXN0R3BzUmVjZWl2ZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJImYKGExpc3RHcHNSZWNlaXZlcnNSZXNwb25zZRIxCg1ncHNfcmVjZWl2ZXJzGAEgAygLMhoucXVhZHNtaXRoLmFwaS5HcHNSZWNlaXZlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiTAoYVXBkYXRlR3BzUmVjZWl2ZXJSZXF1ZXN0EjAKDGdwc19yZWNlaXZlchgBIAEoCzIaLnF1YWRzbWl0aC5hcGkuR3BzUmVjZWl2ZXIi5AUKC0dwc1JlY2VpdmVyEjYKBHV1aWQYASABKAlCKMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREUSEgoCaWQYAiABKAlCBsLzGAJAARIcCgxtYW51ZmFjdHVyZXIYAyABKAlCBsLzGAIoARIUCgRuYW1lGAQgASgJQgbC8xgCQAESGAoQaXNfaW50ZXJuYWxfb25seRgFIAEoCBIQCgh3ZWlnaHRfZxgGIAEoAhIPCgdjaGlwc2V0GAcgASgJEhgKCHByb3RvY29sGAggASgJQgbC8xgCKAESFAoHY29tcGFzcxgJIAEoCUgAiAEBEhsKE2lucHV0X3ZvbHRhZ2VfbWluX3YYCyABKAISGwoTaW5wdXRfdm9sdGFnZV9tYXhfdhgMIAEoAhIbCgtkZXNjcmlwdGlvbhgNIAEoCUIGwvMYAkABEj0KD3JlZmVyZW5jZV9saW5rcxgOIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGlua0IGwvMYAkABEioKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgPIAEoCUIGwvMYAkABSAGIAQESKwoFbWVkaWEYECADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgbC8xgCQAESHgoJdXNlcl91dWlkGBEgASgJQgbC8xgCQAFIAogBARIkCg9hdXRob3JfdXNlcm5hbWUYEiABKAlCBsLzGAJAAUgDiAEBOmuKtRgvCgxtYW51ZmFjdHVyZXIKBG5hbWUKB2NoaXBzZXQKB2NvbXBhc3MSByMxMGI5ODGatRghY29tcG9uZW50cy9oYXJkd2FyZS9ncHMtcmVjZWl2ZXJzwvMYDwoNZ3BzX3JlY2VpdmVyc0IKCghfY29tcGFzc0IYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlQgwKCl91c2VyX3V1aWRCEgoQX2F1dGhvcl91c2VybmFtZTLpAwoSR3BzUmVjZWl2ZXJTZXJ2aWNlElIKDkdldEdwc1JlY2VpdmVyEiQucXVhZHNtaXRoLmFwaS5HZXRHcHNSZWNlaXZlclJlcXVlc3QaGi5xdWFkc21pdGguYXBpLkdwc1JlY2VpdmVyEmMKEExpc3RHcHNSZWNlaXZlcnMSJi5xdWFkc21pdGguYXBpLkxpc3RHcHNSZWNlaXZlcnNSZXF1ZXN0GicucXVhZHNtaXRoLmFwaS5MaXN0R3BzUmVjZWl2ZXJzUmVzcG9uc2USWAoRQ3JlYXRlR3BzUmVjZWl2ZXISJy5xdWFkc21pdGguYXBpLkNyZWF0ZUdwc1JlY2VpdmVyUmVxdWVzdBoaLnF1YWRzbWl0aC5hcGkuR3BzUmVjZWl2ZXISWAoRVXBkYXRlR3BzUmVjZWl2ZXISJy5xdWFkc21pdGguYXBpLlVwZGF0ZUdwc1JlY2VpdmVyUmVxdWVzdBoaLnF1YWRzbWl0aC5hcGkuR3BzUmVjZWl2ZXISZgoRRGVsZXRlR3BzUmVjZWl2ZXISJy5xdWFkc21pdGguYXBpLkRlbGV0ZUdwc1JlY2VpdmVyUmVxdWVzdBooLnF1YWRzbWl0aC5hcGkuRGVsZXRlR3BzUmVjZWl2ZXJSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -29,7 +29,167 @@ export const file_quadsmith_api_gps_receiver: GenFile =
 
 /**
  * ---------------------------------------------------------
- * Domain Model
+ * 2. RPC Requests & Responses (Callers Precede Callees)
+ * ---------------------------------------------------------
+ *
+ * @generated from message quadsmith.api.CreateGpsReceiverRequest
+ */
+export type CreateGpsReceiverRequest = Message<"quadsmith.api.CreateGpsReceiverRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.GpsReceiver gps_receiver = 1;
+   */
+  gpsReceiver?: GpsReceiver | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.CreateGpsReceiverRequest.
+ * Use `create(CreateGpsReceiverRequestSchema)` to create a new message.
+ */
+export const CreateGpsReceiverRequestSchema: GenMessage<CreateGpsReceiverRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_gps_receiver, 0);
+
+/**
+ * @generated from message quadsmith.api.DeleteGpsReceiverRequest
+ */
+export type DeleteGpsReceiverRequest = Message<"quadsmith.api.DeleteGpsReceiverRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteGpsReceiverRequest.
+ * Use `create(DeleteGpsReceiverRequestSchema)` to create a new message.
+ */
+export const DeleteGpsReceiverRequestSchema: GenMessage<DeleteGpsReceiverRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_gps_receiver, 1);
+
+/**
+ * @generated from message quadsmith.api.DeleteGpsReceiverResponse
+ */
+export type DeleteGpsReceiverResponse = Message<"quadsmith.api.DeleteGpsReceiverResponse"> & {
+  /**
+   * @generated from field: bool is_archived = 1;
+   */
+  isArchived: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteGpsReceiverResponse.
+ * Use `create(DeleteGpsReceiverResponseSchema)` to create a new message.
+ */
+export const DeleteGpsReceiverResponseSchema: GenMessage<DeleteGpsReceiverResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_gps_receiver, 2);
+
+/**
+ * @generated from message quadsmith.api.GetGpsReceiverRequest
+ */
+export type GetGpsReceiverRequest = Message<"quadsmith.api.GetGpsReceiverRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.GetGpsReceiverRequest.
+ * Use `create(GetGpsReceiverRequestSchema)` to create a new message.
+ */
+export const GetGpsReceiverRequestSchema: GenMessage<GetGpsReceiverRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_gps_receiver, 3);
+
+/**
+ * @generated from message quadsmith.api.ListGpsReceiversRequest
+ */
+export type ListGpsReceiversRequest = Message<"quadsmith.api.ListGpsReceiversRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
+
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListGpsReceiversRequest.
+ * Use `create(ListGpsReceiversRequestSchema)` to create a new message.
+ */
+export const ListGpsReceiversRequestSchema: GenMessage<ListGpsReceiversRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_gps_receiver, 4);
+
+/**
+ * @generated from message quadsmith.api.ListGpsReceiversResponse
+ */
+export type ListGpsReceiversResponse = Message<"quadsmith.api.ListGpsReceiversResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.GpsReceiver gps_receivers = 1;
+   */
+  gpsReceivers: GpsReceiver[];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListGpsReceiversResponse.
+ * Use `create(ListGpsReceiversResponseSchema)` to create a new message.
+ */
+export const ListGpsReceiversResponseSchema: GenMessage<ListGpsReceiversResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_gps_receiver, 5);
+
+/**
+ * @generated from message quadsmith.api.UpdateGpsReceiverRequest
+ */
+export type UpdateGpsReceiverRequest = Message<"quadsmith.api.UpdateGpsReceiverRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.GpsReceiver gps_receiver = 1;
+   */
+  gpsReceiver?: GpsReceiver | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.UpdateGpsReceiverRequest.
+ * Use `create(UpdateGpsReceiverRequestSchema)` to create a new message.
+ */
+export const UpdateGpsReceiverRequestSchema: GenMessage<UpdateGpsReceiverRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_gps_receiver, 6);
+
+/**
+ * ---------------------------------------------------------
+ * 3. Domain Model (Referenced by Services and Requests above)
  * ---------------------------------------------------------
  *
  * @generated from message quadsmith.api.GpsReceiver
@@ -119,6 +279,16 @@ export type GpsReceiver = Message<"quadsmith.api.GpsReceiver"> & {
    * @generated from field: repeated quadsmith.api.Media media = 16;
    */
   media: Media[];
+
+  /**
+   * @generated from field: optional string user_uuid = 17;
+   */
+  userUuid?: string | undefined;
+
+  /**
+   * @generated from field: optional string author_username = 18;
+   */
+  authorUsername?: string | undefined;
 };
 
 /**
@@ -127,99 +297,11 @@ export type GpsReceiver = Message<"quadsmith.api.GpsReceiver"> & {
  */
 export const GpsReceiverSchema: GenMessage<GpsReceiver> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_gps_receiver, 0);
+  messageDesc(file_quadsmith_api_gps_receiver, 7);
 
 /**
  * ---------------------------------------------------------
- * RPC Requests & Responses
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.GetGpsReceiverRequest
- */
-export type GetGpsReceiverRequest = Message<"quadsmith.api.GetGpsReceiverRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
-
-/**
- * Describes the message quadsmith.api.GetGpsReceiverRequest.
- * Use `create(GetGpsReceiverRequestSchema)` to create a new message.
- */
-export const GetGpsReceiverRequestSchema: GenMessage<GetGpsReceiverRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_gps_receiver, 1);
-
-/**
- * @generated from message quadsmith.api.ListGpsReceiversRequest
- */
-export type ListGpsReceiversRequest = Message<"quadsmith.api.ListGpsReceiversRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
-
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
-
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
-
-/**
- * Describes the message quadsmith.api.ListGpsReceiversRequest.
- * Use `create(ListGpsReceiversRequestSchema)` to create a new message.
- */
-export const ListGpsReceiversRequestSchema: GenMessage<ListGpsReceiversRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_gps_receiver, 2);
-
-/**
- * @generated from message quadsmith.api.ListGpsReceiversResponse
- */
-export type ListGpsReceiversResponse = Message<"quadsmith.api.ListGpsReceiversResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.GpsReceiver gps_receivers = 1;
-   */
-  gpsReceivers: GpsReceiver[];
-
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
-
-/**
- * Describes the message quadsmith.api.ListGpsReceiversResponse.
- * Use `create(ListGpsReceiversResponseSchema)` to create a new message.
- */
-export const ListGpsReceiversResponseSchema: GenMessage<ListGpsReceiversResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_gps_receiver, 3);
-
-/**
- * ---------------------------------------------------------
- * gRPC Service
+ * 1. gRPC Service (Services First)
  * ---------------------------------------------------------
  *
  * @generated from service quadsmith.api.GpsReceiverService
@@ -240,5 +322,29 @@ export const GpsReceiverService: GenService<{
     methodKind: "unary";
     input: typeof ListGpsReceiversRequestSchema;
     output: typeof ListGpsReceiversResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.GpsReceiverService.CreateGpsReceiver
+   */
+  createGpsReceiver: {
+    methodKind: "unary";
+    input: typeof CreateGpsReceiverRequestSchema;
+    output: typeof GpsReceiverSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.GpsReceiverService.UpdateGpsReceiver
+   */
+  updateGpsReceiver: {
+    methodKind: "unary";
+    input: typeof UpdateGpsReceiverRequestSchema;
+    output: typeof GpsReceiverSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.GpsReceiverService.DeleteGpsReceiver
+   */
+  deleteGpsReceiver: {
+    methodKind: "unary";
+    input: typeof DeleteGpsReceiverRequestSchema;
+    output: typeof DeleteGpsReceiverResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_gps_receiver, 0);

@@ -39,12 +39,24 @@ const (
 	// VideoTransmitterServiceListVideoTransmittersProcedure is the fully-qualified name of the
 	// VideoTransmitterService's ListVideoTransmitters RPC.
 	VideoTransmitterServiceListVideoTransmittersProcedure = "/quadsmith.api.VideoTransmitterService/ListVideoTransmitters"
+	// VideoTransmitterServiceCreateVideoTransmitterProcedure is the fully-qualified name of the
+	// VideoTransmitterService's CreateVideoTransmitter RPC.
+	VideoTransmitterServiceCreateVideoTransmitterProcedure = "/quadsmith.api.VideoTransmitterService/CreateVideoTransmitter"
+	// VideoTransmitterServiceUpdateVideoTransmitterProcedure is the fully-qualified name of the
+	// VideoTransmitterService's UpdateVideoTransmitter RPC.
+	VideoTransmitterServiceUpdateVideoTransmitterProcedure = "/quadsmith.api.VideoTransmitterService/UpdateVideoTransmitter"
+	// VideoTransmitterServiceDeleteVideoTransmitterProcedure is the fully-qualified name of the
+	// VideoTransmitterService's DeleteVideoTransmitter RPC.
+	VideoTransmitterServiceDeleteVideoTransmitterProcedure = "/quadsmith.api.VideoTransmitterService/DeleteVideoTransmitter"
 )
 
 // VideoTransmitterServiceClient is a client for the quadsmith.api.VideoTransmitterService service.
 type VideoTransmitterServiceClient interface {
 	GetVideoTransmitter(context.Context, *connect.Request[api.GetVideoTransmitterRequest]) (*connect.Response[api.VideoTransmitter], error)
 	ListVideoTransmitters(context.Context, *connect.Request[api.ListVideoTransmittersRequest]) (*connect.Response[api.ListVideoTransmittersResponse], error)
+	CreateVideoTransmitter(context.Context, *connect.Request[api.CreateVideoTransmitterRequest]) (*connect.Response[api.VideoTransmitter], error)
+	UpdateVideoTransmitter(context.Context, *connect.Request[api.UpdateVideoTransmitterRequest]) (*connect.Response[api.VideoTransmitter], error)
+	DeleteVideoTransmitter(context.Context, *connect.Request[api.DeleteVideoTransmitterRequest]) (*connect.Response[api.DeleteVideoTransmitterResponse], error)
 }
 
 // NewVideoTransmitterServiceClient constructs a client for the
@@ -70,13 +82,34 @@ func NewVideoTransmitterServiceClient(httpClient connect.HTTPClient, baseURL str
 			connect.WithSchema(videoTransmitterServiceMethods.ByName("ListVideoTransmitters")),
 			connect.WithClientOptions(opts...),
 		),
+		createVideoTransmitter: connect.NewClient[api.CreateVideoTransmitterRequest, api.VideoTransmitter](
+			httpClient,
+			baseURL+VideoTransmitterServiceCreateVideoTransmitterProcedure,
+			connect.WithSchema(videoTransmitterServiceMethods.ByName("CreateVideoTransmitter")),
+			connect.WithClientOptions(opts...),
+		),
+		updateVideoTransmitter: connect.NewClient[api.UpdateVideoTransmitterRequest, api.VideoTransmitter](
+			httpClient,
+			baseURL+VideoTransmitterServiceUpdateVideoTransmitterProcedure,
+			connect.WithSchema(videoTransmitterServiceMethods.ByName("UpdateVideoTransmitter")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteVideoTransmitter: connect.NewClient[api.DeleteVideoTransmitterRequest, api.DeleteVideoTransmitterResponse](
+			httpClient,
+			baseURL+VideoTransmitterServiceDeleteVideoTransmitterProcedure,
+			connect.WithSchema(videoTransmitterServiceMethods.ByName("DeleteVideoTransmitter")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // videoTransmitterServiceClient implements VideoTransmitterServiceClient.
 type videoTransmitterServiceClient struct {
-	getVideoTransmitter   *connect.Client[api.GetVideoTransmitterRequest, api.VideoTransmitter]
-	listVideoTransmitters *connect.Client[api.ListVideoTransmittersRequest, api.ListVideoTransmittersResponse]
+	getVideoTransmitter    *connect.Client[api.GetVideoTransmitterRequest, api.VideoTransmitter]
+	listVideoTransmitters  *connect.Client[api.ListVideoTransmittersRequest, api.ListVideoTransmittersResponse]
+	createVideoTransmitter *connect.Client[api.CreateVideoTransmitterRequest, api.VideoTransmitter]
+	updateVideoTransmitter *connect.Client[api.UpdateVideoTransmitterRequest, api.VideoTransmitter]
+	deleteVideoTransmitter *connect.Client[api.DeleteVideoTransmitterRequest, api.DeleteVideoTransmitterResponse]
 }
 
 // GetVideoTransmitter calls quadsmith.api.VideoTransmitterService.GetVideoTransmitter.
@@ -89,11 +122,29 @@ func (c *videoTransmitterServiceClient) ListVideoTransmitters(ctx context.Contex
 	return c.listVideoTransmitters.CallUnary(ctx, req)
 }
 
+// CreateVideoTransmitter calls quadsmith.api.VideoTransmitterService.CreateVideoTransmitter.
+func (c *videoTransmitterServiceClient) CreateVideoTransmitter(ctx context.Context, req *connect.Request[api.CreateVideoTransmitterRequest]) (*connect.Response[api.VideoTransmitter], error) {
+	return c.createVideoTransmitter.CallUnary(ctx, req)
+}
+
+// UpdateVideoTransmitter calls quadsmith.api.VideoTransmitterService.UpdateVideoTransmitter.
+func (c *videoTransmitterServiceClient) UpdateVideoTransmitter(ctx context.Context, req *connect.Request[api.UpdateVideoTransmitterRequest]) (*connect.Response[api.VideoTransmitter], error) {
+	return c.updateVideoTransmitter.CallUnary(ctx, req)
+}
+
+// DeleteVideoTransmitter calls quadsmith.api.VideoTransmitterService.DeleteVideoTransmitter.
+func (c *videoTransmitterServiceClient) DeleteVideoTransmitter(ctx context.Context, req *connect.Request[api.DeleteVideoTransmitterRequest]) (*connect.Response[api.DeleteVideoTransmitterResponse], error) {
+	return c.deleteVideoTransmitter.CallUnary(ctx, req)
+}
+
 // VideoTransmitterServiceHandler is an implementation of the quadsmith.api.VideoTransmitterService
 // service.
 type VideoTransmitterServiceHandler interface {
 	GetVideoTransmitter(context.Context, *connect.Request[api.GetVideoTransmitterRequest]) (*connect.Response[api.VideoTransmitter], error)
 	ListVideoTransmitters(context.Context, *connect.Request[api.ListVideoTransmittersRequest]) (*connect.Response[api.ListVideoTransmittersResponse], error)
+	CreateVideoTransmitter(context.Context, *connect.Request[api.CreateVideoTransmitterRequest]) (*connect.Response[api.VideoTransmitter], error)
+	UpdateVideoTransmitter(context.Context, *connect.Request[api.UpdateVideoTransmitterRequest]) (*connect.Response[api.VideoTransmitter], error)
+	DeleteVideoTransmitter(context.Context, *connect.Request[api.DeleteVideoTransmitterRequest]) (*connect.Response[api.DeleteVideoTransmitterResponse], error)
 }
 
 // NewVideoTransmitterServiceHandler builds an HTTP handler from the service implementation. It
@@ -115,12 +166,36 @@ func NewVideoTransmitterServiceHandler(svc VideoTransmitterServiceHandler, opts 
 		connect.WithSchema(videoTransmitterServiceMethods.ByName("ListVideoTransmitters")),
 		connect.WithHandlerOptions(opts...),
 	)
+	videoTransmitterServiceCreateVideoTransmitterHandler := connect.NewUnaryHandler(
+		VideoTransmitterServiceCreateVideoTransmitterProcedure,
+		svc.CreateVideoTransmitter,
+		connect.WithSchema(videoTransmitterServiceMethods.ByName("CreateVideoTransmitter")),
+		connect.WithHandlerOptions(opts...),
+	)
+	videoTransmitterServiceUpdateVideoTransmitterHandler := connect.NewUnaryHandler(
+		VideoTransmitterServiceUpdateVideoTransmitterProcedure,
+		svc.UpdateVideoTransmitter,
+		connect.WithSchema(videoTransmitterServiceMethods.ByName("UpdateVideoTransmitter")),
+		connect.WithHandlerOptions(opts...),
+	)
+	videoTransmitterServiceDeleteVideoTransmitterHandler := connect.NewUnaryHandler(
+		VideoTransmitterServiceDeleteVideoTransmitterProcedure,
+		svc.DeleteVideoTransmitter,
+		connect.WithSchema(videoTransmitterServiceMethods.ByName("DeleteVideoTransmitter")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.VideoTransmitterService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case VideoTransmitterServiceGetVideoTransmitterProcedure:
 			videoTransmitterServiceGetVideoTransmitterHandler.ServeHTTP(w, r)
 		case VideoTransmitterServiceListVideoTransmittersProcedure:
 			videoTransmitterServiceListVideoTransmittersHandler.ServeHTTP(w, r)
+		case VideoTransmitterServiceCreateVideoTransmitterProcedure:
+			videoTransmitterServiceCreateVideoTransmitterHandler.ServeHTTP(w, r)
+		case VideoTransmitterServiceUpdateVideoTransmitterProcedure:
+			videoTransmitterServiceUpdateVideoTransmitterHandler.ServeHTTP(w, r)
+		case VideoTransmitterServiceDeleteVideoTransmitterProcedure:
+			videoTransmitterServiceDeleteVideoTransmitterHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -136,4 +211,16 @@ func (UnimplementedVideoTransmitterServiceHandler) GetVideoTransmitter(context.C
 
 func (UnimplementedVideoTransmitterServiceHandler) ListVideoTransmitters(context.Context, *connect.Request[api.ListVideoTransmittersRequest]) (*connect.Response[api.ListVideoTransmittersResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.VideoTransmitterService.ListVideoTransmitters is not implemented"))
+}
+
+func (UnimplementedVideoTransmitterServiceHandler) CreateVideoTransmitter(context.Context, *connect.Request[api.CreateVideoTransmitterRequest]) (*connect.Response[api.VideoTransmitter], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.VideoTransmitterService.CreateVideoTransmitter is not implemented"))
+}
+
+func (UnimplementedVideoTransmitterServiceHandler) UpdateVideoTransmitter(context.Context, *connect.Request[api.UpdateVideoTransmitterRequest]) (*connect.Response[api.VideoTransmitter], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.VideoTransmitterService.UpdateVideoTransmitter is not implemented"))
+}
+
+func (UnimplementedVideoTransmitterServiceHandler) DeleteVideoTransmitter(context.Context, *connect.Request[api.DeleteVideoTransmitterRequest]) (*connect.Response[api.DeleteVideoTransmitterResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.VideoTransmitterService.DeleteVideoTransmitter is not implemented"))
 }

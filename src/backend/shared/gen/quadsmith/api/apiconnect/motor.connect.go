@@ -37,12 +37,24 @@ const (
 	MotorServiceGetMotorProcedure = "/quadsmith.api.MotorService/GetMotor"
 	// MotorServiceListMotorsProcedure is the fully-qualified name of the MotorService's ListMotors RPC.
 	MotorServiceListMotorsProcedure = "/quadsmith.api.MotorService/ListMotors"
+	// MotorServiceCreateMotorProcedure is the fully-qualified name of the MotorService's CreateMotor
+	// RPC.
+	MotorServiceCreateMotorProcedure = "/quadsmith.api.MotorService/CreateMotor"
+	// MotorServiceUpdateMotorProcedure is the fully-qualified name of the MotorService's UpdateMotor
+	// RPC.
+	MotorServiceUpdateMotorProcedure = "/quadsmith.api.MotorService/UpdateMotor"
+	// MotorServiceDeleteMotorProcedure is the fully-qualified name of the MotorService's DeleteMotor
+	// RPC.
+	MotorServiceDeleteMotorProcedure = "/quadsmith.api.MotorService/DeleteMotor"
 )
 
 // MotorServiceClient is a client for the quadsmith.api.MotorService service.
 type MotorServiceClient interface {
 	GetMotor(context.Context, *connect.Request[api.GetMotorRequest]) (*connect.Response[api.Motor], error)
 	ListMotors(context.Context, *connect.Request[api.ListMotorsRequest]) (*connect.Response[api.ListMotorsResponse], error)
+	CreateMotor(context.Context, *connect.Request[api.CreateMotorRequest]) (*connect.Response[api.Motor], error)
+	UpdateMotor(context.Context, *connect.Request[api.UpdateMotorRequest]) (*connect.Response[api.Motor], error)
+	DeleteMotor(context.Context, *connect.Request[api.DeleteMotorRequest]) (*connect.Response[api.DeleteMotorResponse], error)
 }
 
 // NewMotorServiceClient constructs a client for the quadsmith.api.MotorService service. By default,
@@ -68,13 +80,34 @@ func NewMotorServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(motorServiceMethods.ByName("ListMotors")),
 			connect.WithClientOptions(opts...),
 		),
+		createMotor: connect.NewClient[api.CreateMotorRequest, api.Motor](
+			httpClient,
+			baseURL+MotorServiceCreateMotorProcedure,
+			connect.WithSchema(motorServiceMethods.ByName("CreateMotor")),
+			connect.WithClientOptions(opts...),
+		),
+		updateMotor: connect.NewClient[api.UpdateMotorRequest, api.Motor](
+			httpClient,
+			baseURL+MotorServiceUpdateMotorProcedure,
+			connect.WithSchema(motorServiceMethods.ByName("UpdateMotor")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteMotor: connect.NewClient[api.DeleteMotorRequest, api.DeleteMotorResponse](
+			httpClient,
+			baseURL+MotorServiceDeleteMotorProcedure,
+			connect.WithSchema(motorServiceMethods.ByName("DeleteMotor")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // motorServiceClient implements MotorServiceClient.
 type motorServiceClient struct {
-	getMotor   *connect.Client[api.GetMotorRequest, api.Motor]
-	listMotors *connect.Client[api.ListMotorsRequest, api.ListMotorsResponse]
+	getMotor    *connect.Client[api.GetMotorRequest, api.Motor]
+	listMotors  *connect.Client[api.ListMotorsRequest, api.ListMotorsResponse]
+	createMotor *connect.Client[api.CreateMotorRequest, api.Motor]
+	updateMotor *connect.Client[api.UpdateMotorRequest, api.Motor]
+	deleteMotor *connect.Client[api.DeleteMotorRequest, api.DeleteMotorResponse]
 }
 
 // GetMotor calls quadsmith.api.MotorService.GetMotor.
@@ -87,10 +120,28 @@ func (c *motorServiceClient) ListMotors(ctx context.Context, req *connect.Reques
 	return c.listMotors.CallUnary(ctx, req)
 }
 
+// CreateMotor calls quadsmith.api.MotorService.CreateMotor.
+func (c *motorServiceClient) CreateMotor(ctx context.Context, req *connect.Request[api.CreateMotorRequest]) (*connect.Response[api.Motor], error) {
+	return c.createMotor.CallUnary(ctx, req)
+}
+
+// UpdateMotor calls quadsmith.api.MotorService.UpdateMotor.
+func (c *motorServiceClient) UpdateMotor(ctx context.Context, req *connect.Request[api.UpdateMotorRequest]) (*connect.Response[api.Motor], error) {
+	return c.updateMotor.CallUnary(ctx, req)
+}
+
+// DeleteMotor calls quadsmith.api.MotorService.DeleteMotor.
+func (c *motorServiceClient) DeleteMotor(ctx context.Context, req *connect.Request[api.DeleteMotorRequest]) (*connect.Response[api.DeleteMotorResponse], error) {
+	return c.deleteMotor.CallUnary(ctx, req)
+}
+
 // MotorServiceHandler is an implementation of the quadsmith.api.MotorService service.
 type MotorServiceHandler interface {
 	GetMotor(context.Context, *connect.Request[api.GetMotorRequest]) (*connect.Response[api.Motor], error)
 	ListMotors(context.Context, *connect.Request[api.ListMotorsRequest]) (*connect.Response[api.ListMotorsResponse], error)
+	CreateMotor(context.Context, *connect.Request[api.CreateMotorRequest]) (*connect.Response[api.Motor], error)
+	UpdateMotor(context.Context, *connect.Request[api.UpdateMotorRequest]) (*connect.Response[api.Motor], error)
+	DeleteMotor(context.Context, *connect.Request[api.DeleteMotorRequest]) (*connect.Response[api.DeleteMotorResponse], error)
 }
 
 // NewMotorServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -112,12 +163,36 @@ func NewMotorServiceHandler(svc MotorServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(motorServiceMethods.ByName("ListMotors")),
 		connect.WithHandlerOptions(opts...),
 	)
+	motorServiceCreateMotorHandler := connect.NewUnaryHandler(
+		MotorServiceCreateMotorProcedure,
+		svc.CreateMotor,
+		connect.WithSchema(motorServiceMethods.ByName("CreateMotor")),
+		connect.WithHandlerOptions(opts...),
+	)
+	motorServiceUpdateMotorHandler := connect.NewUnaryHandler(
+		MotorServiceUpdateMotorProcedure,
+		svc.UpdateMotor,
+		connect.WithSchema(motorServiceMethods.ByName("UpdateMotor")),
+		connect.WithHandlerOptions(opts...),
+	)
+	motorServiceDeleteMotorHandler := connect.NewUnaryHandler(
+		MotorServiceDeleteMotorProcedure,
+		svc.DeleteMotor,
+		connect.WithSchema(motorServiceMethods.ByName("DeleteMotor")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.MotorService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case MotorServiceGetMotorProcedure:
 			motorServiceGetMotorHandler.ServeHTTP(w, r)
 		case MotorServiceListMotorsProcedure:
 			motorServiceListMotorsHandler.ServeHTTP(w, r)
+		case MotorServiceCreateMotorProcedure:
+			motorServiceCreateMotorHandler.ServeHTTP(w, r)
+		case MotorServiceUpdateMotorProcedure:
+			motorServiceUpdateMotorHandler.ServeHTTP(w, r)
+		case MotorServiceDeleteMotorProcedure:
+			motorServiceDeleteMotorHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -133,4 +208,16 @@ func (UnimplementedMotorServiceHandler) GetMotor(context.Context, *connect.Reque
 
 func (UnimplementedMotorServiceHandler) ListMotors(context.Context, *connect.Request[api.ListMotorsRequest]) (*connect.Response[api.ListMotorsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.MotorService.ListMotors is not implemented"))
+}
+
+func (UnimplementedMotorServiceHandler) CreateMotor(context.Context, *connect.Request[api.CreateMotorRequest]) (*connect.Response[api.Motor], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.MotorService.CreateMotor is not implemented"))
+}
+
+func (UnimplementedMotorServiceHandler) UpdateMotor(context.Context, *connect.Request[api.UpdateMotorRequest]) (*connect.Response[api.Motor], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.MotorService.UpdateMotor is not implemented"))
+}
+
+func (UnimplementedMotorServiceHandler) DeleteMotor(context.Context, *connect.Request[api.DeleteMotorRequest]) (*connect.Response[api.DeleteMotorResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.MotorService.DeleteMotor is not implemented"))
 }

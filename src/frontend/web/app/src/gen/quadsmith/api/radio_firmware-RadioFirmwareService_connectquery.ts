@@ -13,3 +13,18 @@ export const getRadioFirmware = RadioFirmwareService.method.getRadioFirmware;
  * @generated from rpc quadsmith.api.RadioFirmwareService.ListRadioFirmwares
  */
 export const listRadioFirmwares = RadioFirmwareService.method.listRadioFirmwares;
+
+/**
+ * @generated from rpc quadsmith.api.RadioFirmwareService.CreateRadioFirmware
+ */
+export const createRadioFirmware = RadioFirmwareService.method.createRadioFirmware;
+
+/**
+ * @generated from rpc quadsmith.api.RadioFirmwareService.UpdateRadioFirmware
+ */
+export const updateRadioFirmware = RadioFirmwareService.method.updateRadioFirmware;
+
+/**
+ * @generated from rpc quadsmith.api.RadioFirmwareService.DeleteRadioFirmware
+ */
+export const deleteRadioFirmware = RadioFirmwareService.method.deleteRadioFirmware;

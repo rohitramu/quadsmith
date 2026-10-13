@@ -10,43 +10,31 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// Domain Model
+// 1. gRPC Service (Services First)
 // ---------------------------------------------------------
-message Charger {
-  option (quadsmith.sql.table) = {name: "chargers"};
-  option (quadsmith.common.collection_path) = "components/gear/chargers";
-  option (quadsmith.common.frontend) = {
-    color_code: "#f59e0b"
-    default_columns: [
-      "manufacturer",
-      "name",
-      "channels",
-      "max_charge_power_w",
-      "max_charge_current_a",
-      "max_cells_s"
-    ]
-  };
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4;
-  float weight_g = 5;
-  uint32 channels = 6;
-  float max_charge_power_w = 7;
-  float max_charge_current_a = 8;
-  string input_voltage_range = 9;
-  string supported_chemistries = 10;
-  uint32 max_cells_s = 11;
-  string description = 12;
-  repeated ReferenceLink reference_links = 13;
-  optional string primary_display_image = 14;
-  repeated Media media = 15;
+service ChargerService {
+  rpc GetCharger(GetChargerRequest) returns (Charger);
+  rpc ListChargers(ListChargersRequest) returns (ListChargersResponse);
+  rpc CreateCharger(CreateChargerRequest) returns (Charger);
+  rpc UpdateCharger(UpdateChargerRequest) returns (Charger);
+  rpc DeleteCharger(DeleteChargerRequest) returns (DeleteChargerResponse);
 }
 
 // ---------------------------------------------------------
-// RPC Requests & Responses
+// 2. RPC Requests & Responses (Callers Precede Callees)
 // ---------------------------------------------------------
+message CreateChargerRequest {
+  Charger charger = 1;
+}
+
+message DeleteChargerRequest {
+  string id = 1;
+}
+
+message DeleteChargerResponse {
+  bool is_archived = 1;
+}
+
 message GetChargerRequest {
   string id = 1;
   repeated string columns = 2;
@@ -65,10 +53,46 @@ message ListChargersResponse {
   string next_page_token = 2;
 }
 
+message UpdateChargerRequest {
+  Charger charger = 1;
+}
+
 // ---------------------------------------------------------
-// gRPC Service
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
-service ChargerService {
-  rpc GetCharger(GetChargerRequest) returns (Charger);
-  rpc ListChargers(ListChargersRequest) returns (ListChargersResponse);
+message Charger {
+  option (quadsmith.sql.table) = {name: "chargers"};
+  option (quadsmith.common.collection_path) = "components/gear/chargers";
+  option (quadsmith.common.frontend) = {
+    color_code: "#f59e0b"
+    default_columns: [
+      "manufacturer",
+      "name",
+      "channels",
+      "max_charge_power_w",
+      "max_charge_current_a",
+      "max_cells_s"
+    ]
+  };
+
+  string uuid = 1 [(quadsmith.sql.column) = {
+    is_primary_key: true
+    references: "entities(uuid) ON DELETE CASCADE"
+  }];
+  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
+  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
+  float weight_g = 5;
+  uint32 channels = 6;
+  float max_charge_power_w = 7;
+  float max_charge_current_a = 8;
+  string input_voltage_range = 9;
+  string supported_chemistries = 10;
+  uint32 max_cells_s = 11;
+  string description = 12 [(quadsmith.sql.column) = {ignore: true}];
+  repeated ReferenceLink reference_links = 13 [(quadsmith.sql.column) = {ignore: true}];
+  optional string primary_display_image = 14 [(quadsmith.sql.column) = {ignore: true}];
+  repeated Media media = 15 [(quadsmith.sql.column) = {ignore: true}];
+  optional string user_uuid = 16 [(quadsmith.sql.column) = {ignore: true}];
+  optional string author_username = 17 [(quadsmith.sql.column) = {ignore: true}];
 }

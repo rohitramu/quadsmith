@@ -89,6 +89,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -124,6 +126,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -162,6 +166,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -200,6 +206,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -238,6 +246,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -275,6 +285,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"min_voltage",
 			"max_voltage",
 			"max_current_a",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -310,6 +322,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -352,6 +366,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"media",
 			"min_voltage",
 			"max_voltage",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -399,6 +415,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"vtx_voltage_min_v",
 			"vtx_voltage_max_v",
 			"mount_pattern",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -436,6 +454,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"camera_mount_interfaces",
 			"motor_mount_patterns",
 			"board_mount_patterns",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -475,6 +495,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -513,6 +535,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"max_current_a",
 			"prop_mount_interfaces",
 			"mount_pattern",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -549,6 +573,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"primary_display_image",
 			"media",
 			"prop_mount_interface",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -587,6 +613,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -632,6 +660,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"mount_pattern",
 			"frequency_band_mhz",
 			"antenna_connectors",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -668,6 +698,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -705,6 +737,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -740,6 +774,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -775,6 +811,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"user_uuid",
+			"author_username",
 		},
 	},
 	{
@@ -810,6 +848,8 @@ var AllSearchCollections = []*SearchCollectionDef{
 			"reference_links",
 			"primary_display_image",
 			"media",
+			"user_uuid",
+			"author_username",
 		},
 	},
 }

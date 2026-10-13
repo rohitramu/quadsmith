@@ -39,12 +39,24 @@ const (
 	// PropellerServiceListPropellersProcedure is the fully-qualified name of the PropellerService's
 	// ListPropellers RPC.
 	PropellerServiceListPropellersProcedure = "/quadsmith.api.PropellerService/ListPropellers"
+	// PropellerServiceCreatePropellerProcedure is the fully-qualified name of the PropellerService's
+	// CreatePropeller RPC.
+	PropellerServiceCreatePropellerProcedure = "/quadsmith.api.PropellerService/CreatePropeller"
+	// PropellerServiceUpdatePropellerProcedure is the fully-qualified name of the PropellerService's
+	// UpdatePropeller RPC.
+	PropellerServiceUpdatePropellerProcedure = "/quadsmith.api.PropellerService/UpdatePropeller"
+	// PropellerServiceDeletePropellerProcedure is the fully-qualified name of the PropellerService's
+	// DeletePropeller RPC.
+	PropellerServiceDeletePropellerProcedure = "/quadsmith.api.PropellerService/DeletePropeller"
 )
 
 // PropellerServiceClient is a client for the quadsmith.api.PropellerService service.
 type PropellerServiceClient interface {
 	GetPropeller(context.Context, *connect.Request[api.GetPropellerRequest]) (*connect.Response[api.Propeller], error)
 	ListPropellers(context.Context, *connect.Request[api.ListPropellersRequest]) (*connect.Response[api.ListPropellersResponse], error)
+	CreatePropeller(context.Context, *connect.Request[api.CreatePropellerRequest]) (*connect.Response[api.Propeller], error)
+	UpdatePropeller(context.Context, *connect.Request[api.UpdatePropellerRequest]) (*connect.Response[api.Propeller], error)
+	DeletePropeller(context.Context, *connect.Request[api.DeletePropellerRequest]) (*connect.Response[api.DeletePropellerResponse], error)
 }
 
 // NewPropellerServiceClient constructs a client for the quadsmith.api.PropellerService service. By
@@ -70,13 +82,34 @@ func NewPropellerServiceClient(httpClient connect.HTTPClient, baseURL string, op
 			connect.WithSchema(propellerServiceMethods.ByName("ListPropellers")),
 			connect.WithClientOptions(opts...),
 		),
+		createPropeller: connect.NewClient[api.CreatePropellerRequest, api.Propeller](
+			httpClient,
+			baseURL+PropellerServiceCreatePropellerProcedure,
+			connect.WithSchema(propellerServiceMethods.ByName("CreatePropeller")),
+			connect.WithClientOptions(opts...),
+		),
+		updatePropeller: connect.NewClient[api.UpdatePropellerRequest, api.Propeller](
+			httpClient,
+			baseURL+PropellerServiceUpdatePropellerProcedure,
+			connect.WithSchema(propellerServiceMethods.ByName("UpdatePropeller")),
+			connect.WithClientOptions(opts...),
+		),
+		deletePropeller: connect.NewClient[api.DeletePropellerRequest, api.DeletePropellerResponse](
+			httpClient,
+			baseURL+PropellerServiceDeletePropellerProcedure,
+			connect.WithSchema(propellerServiceMethods.ByName("DeletePropeller")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // propellerServiceClient implements PropellerServiceClient.
 type propellerServiceClient struct {
-	getPropeller   *connect.Client[api.GetPropellerRequest, api.Propeller]
-	listPropellers *connect.Client[api.ListPropellersRequest, api.ListPropellersResponse]
+	getPropeller    *connect.Client[api.GetPropellerRequest, api.Propeller]
+	listPropellers  *connect.Client[api.ListPropellersRequest, api.ListPropellersResponse]
+	createPropeller *connect.Client[api.CreatePropellerRequest, api.Propeller]
+	updatePropeller *connect.Client[api.UpdatePropellerRequest, api.Propeller]
+	deletePropeller *connect.Client[api.DeletePropellerRequest, api.DeletePropellerResponse]
 }
 
 // GetPropeller calls quadsmith.api.PropellerService.GetPropeller.
@@ -89,10 +122,28 @@ func (c *propellerServiceClient) ListPropellers(ctx context.Context, req *connec
 	return c.listPropellers.CallUnary(ctx, req)
 }
 
+// CreatePropeller calls quadsmith.api.PropellerService.CreatePropeller.
+func (c *propellerServiceClient) CreatePropeller(ctx context.Context, req *connect.Request[api.CreatePropellerRequest]) (*connect.Response[api.Propeller], error) {
+	return c.createPropeller.CallUnary(ctx, req)
+}
+
+// UpdatePropeller calls quadsmith.api.PropellerService.UpdatePropeller.
+func (c *propellerServiceClient) UpdatePropeller(ctx context.Context, req *connect.Request[api.UpdatePropellerRequest]) (*connect.Response[api.Propeller], error) {
+	return c.updatePropeller.CallUnary(ctx, req)
+}
+
+// DeletePropeller calls quadsmith.api.PropellerService.DeletePropeller.
+func (c *propellerServiceClient) DeletePropeller(ctx context.Context, req *connect.Request[api.DeletePropellerRequest]) (*connect.Response[api.DeletePropellerResponse], error) {
+	return c.deletePropeller.CallUnary(ctx, req)
+}
+
 // PropellerServiceHandler is an implementation of the quadsmith.api.PropellerService service.
 type PropellerServiceHandler interface {
 	GetPropeller(context.Context, *connect.Request[api.GetPropellerRequest]) (*connect.Response[api.Propeller], error)
 	ListPropellers(context.Context, *connect.Request[api.ListPropellersRequest]) (*connect.Response[api.ListPropellersResponse], error)
+	CreatePropeller(context.Context, *connect.Request[api.CreatePropellerRequest]) (*connect.Response[api.Propeller], error)
+	UpdatePropeller(context.Context, *connect.Request[api.UpdatePropellerRequest]) (*connect.Response[api.Propeller], error)
+	DeletePropeller(context.Context, *connect.Request[api.DeletePropellerRequest]) (*connect.Response[api.DeletePropellerResponse], error)
 }
 
 // NewPropellerServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -114,12 +165,36 @@ func NewPropellerServiceHandler(svc PropellerServiceHandler, opts ...connect.Han
 		connect.WithSchema(propellerServiceMethods.ByName("ListPropellers")),
 		connect.WithHandlerOptions(opts...),
 	)
+	propellerServiceCreatePropellerHandler := connect.NewUnaryHandler(
+		PropellerServiceCreatePropellerProcedure,
+		svc.CreatePropeller,
+		connect.WithSchema(propellerServiceMethods.ByName("CreatePropeller")),
+		connect.WithHandlerOptions(opts...),
+	)
+	propellerServiceUpdatePropellerHandler := connect.NewUnaryHandler(
+		PropellerServiceUpdatePropellerProcedure,
+		svc.UpdatePropeller,
+		connect.WithSchema(propellerServiceMethods.ByName("UpdatePropeller")),
+		connect.WithHandlerOptions(opts...),
+	)
+	propellerServiceDeletePropellerHandler := connect.NewUnaryHandler(
+		PropellerServiceDeletePropellerProcedure,
+		svc.DeletePropeller,
+		connect.WithSchema(propellerServiceMethods.ByName("DeletePropeller")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.PropellerService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case PropellerServiceGetPropellerProcedure:
 			propellerServiceGetPropellerHandler.ServeHTTP(w, r)
 		case PropellerServiceListPropellersProcedure:
 			propellerServiceListPropellersHandler.ServeHTTP(w, r)
+		case PropellerServiceCreatePropellerProcedure:
+			propellerServiceCreatePropellerHandler.ServeHTTP(w, r)
+		case PropellerServiceUpdatePropellerProcedure:
+			propellerServiceUpdatePropellerHandler.ServeHTTP(w, r)
+		case PropellerServiceDeletePropellerProcedure:
+			propellerServiceDeletePropellerHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +210,16 @@ func (UnimplementedPropellerServiceHandler) GetPropeller(context.Context, *conne
 
 func (UnimplementedPropellerServiceHandler) ListPropellers(context.Context, *connect.Request[api.ListPropellersRequest]) (*connect.Response[api.ListPropellersResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.PropellerService.ListPropellers is not implemented"))
+}
+
+func (UnimplementedPropellerServiceHandler) CreatePropeller(context.Context, *connect.Request[api.CreatePropellerRequest]) (*connect.Response[api.Propeller], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.PropellerService.CreatePropeller is not implemented"))
+}
+
+func (UnimplementedPropellerServiceHandler) UpdatePropeller(context.Context, *connect.Request[api.UpdatePropellerRequest]) (*connect.Response[api.Propeller], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.PropellerService.UpdatePropeller is not implemented"))
+}
+
+func (UnimplementedPropellerServiceHandler) DeletePropeller(context.Context, *connect.Request[api.DeletePropellerRequest]) (*connect.Response[api.DeletePropellerResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.PropellerService.DeletePropeller is not implemented"))
 }

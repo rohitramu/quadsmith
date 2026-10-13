@@ -39,12 +39,24 @@ const (
 	// TransmitterServiceListTransmittersProcedure is the fully-qualified name of the
 	// TransmitterService's ListTransmitters RPC.
 	TransmitterServiceListTransmittersProcedure = "/quadsmith.api.TransmitterService/ListTransmitters"
+	// TransmitterServiceCreateTransmitterProcedure is the fully-qualified name of the
+	// TransmitterService's CreateTransmitter RPC.
+	TransmitterServiceCreateTransmitterProcedure = "/quadsmith.api.TransmitterService/CreateTransmitter"
+	// TransmitterServiceUpdateTransmitterProcedure is the fully-qualified name of the
+	// TransmitterService's UpdateTransmitter RPC.
+	TransmitterServiceUpdateTransmitterProcedure = "/quadsmith.api.TransmitterService/UpdateTransmitter"
+	// TransmitterServiceDeleteTransmitterProcedure is the fully-qualified name of the
+	// TransmitterService's DeleteTransmitter RPC.
+	TransmitterServiceDeleteTransmitterProcedure = "/quadsmith.api.TransmitterService/DeleteTransmitter"
 )
 
 // TransmitterServiceClient is a client for the quadsmith.api.TransmitterService service.
 type TransmitterServiceClient interface {
 	GetTransmitter(context.Context, *connect.Request[api.GetTransmitterRequest]) (*connect.Response[api.Transmitter], error)
 	ListTransmitters(context.Context, *connect.Request[api.ListTransmittersRequest]) (*connect.Response[api.ListTransmittersResponse], error)
+	CreateTransmitter(context.Context, *connect.Request[api.CreateTransmitterRequest]) (*connect.Response[api.Transmitter], error)
+	UpdateTransmitter(context.Context, *connect.Request[api.UpdateTransmitterRequest]) (*connect.Response[api.Transmitter], error)
+	DeleteTransmitter(context.Context, *connect.Request[api.DeleteTransmitterRequest]) (*connect.Response[api.DeleteTransmitterResponse], error)
 }
 
 // NewTransmitterServiceClient constructs a client for the quadsmith.api.TransmitterService service.
@@ -70,13 +82,34 @@ func NewTransmitterServiceClient(httpClient connect.HTTPClient, baseURL string, 
 			connect.WithSchema(transmitterServiceMethods.ByName("ListTransmitters")),
 			connect.WithClientOptions(opts...),
 		),
+		createTransmitter: connect.NewClient[api.CreateTransmitterRequest, api.Transmitter](
+			httpClient,
+			baseURL+TransmitterServiceCreateTransmitterProcedure,
+			connect.WithSchema(transmitterServiceMethods.ByName("CreateTransmitter")),
+			connect.WithClientOptions(opts...),
+		),
+		updateTransmitter: connect.NewClient[api.UpdateTransmitterRequest, api.Transmitter](
+			httpClient,
+			baseURL+TransmitterServiceUpdateTransmitterProcedure,
+			connect.WithSchema(transmitterServiceMethods.ByName("UpdateTransmitter")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteTransmitter: connect.NewClient[api.DeleteTransmitterRequest, api.DeleteTransmitterResponse](
+			httpClient,
+			baseURL+TransmitterServiceDeleteTransmitterProcedure,
+			connect.WithSchema(transmitterServiceMethods.ByName("DeleteTransmitter")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // transmitterServiceClient implements TransmitterServiceClient.
 type transmitterServiceClient struct {
-	getTransmitter   *connect.Client[api.GetTransmitterRequest, api.Transmitter]
-	listTransmitters *connect.Client[api.ListTransmittersRequest, api.ListTransmittersResponse]
+	getTransmitter    *connect.Client[api.GetTransmitterRequest, api.Transmitter]
+	listTransmitters  *connect.Client[api.ListTransmittersRequest, api.ListTransmittersResponse]
+	createTransmitter *connect.Client[api.CreateTransmitterRequest, api.Transmitter]
+	updateTransmitter *connect.Client[api.UpdateTransmitterRequest, api.Transmitter]
+	deleteTransmitter *connect.Client[api.DeleteTransmitterRequest, api.DeleteTransmitterResponse]
 }
 
 // GetTransmitter calls quadsmith.api.TransmitterService.GetTransmitter.
@@ -89,10 +122,28 @@ func (c *transmitterServiceClient) ListTransmitters(ctx context.Context, req *co
 	return c.listTransmitters.CallUnary(ctx, req)
 }
 
+// CreateTransmitter calls quadsmith.api.TransmitterService.CreateTransmitter.
+func (c *transmitterServiceClient) CreateTransmitter(ctx context.Context, req *connect.Request[api.CreateTransmitterRequest]) (*connect.Response[api.Transmitter], error) {
+	return c.createTransmitter.CallUnary(ctx, req)
+}
+
+// UpdateTransmitter calls quadsmith.api.TransmitterService.UpdateTransmitter.
+func (c *transmitterServiceClient) UpdateTransmitter(ctx context.Context, req *connect.Request[api.UpdateTransmitterRequest]) (*connect.Response[api.Transmitter], error) {
+	return c.updateTransmitter.CallUnary(ctx, req)
+}
+
+// DeleteTransmitter calls quadsmith.api.TransmitterService.DeleteTransmitter.
+func (c *transmitterServiceClient) DeleteTransmitter(ctx context.Context, req *connect.Request[api.DeleteTransmitterRequest]) (*connect.Response[api.DeleteTransmitterResponse], error) {
+	return c.deleteTransmitter.CallUnary(ctx, req)
+}
+
 // TransmitterServiceHandler is an implementation of the quadsmith.api.TransmitterService service.
 type TransmitterServiceHandler interface {
 	GetTransmitter(context.Context, *connect.Request[api.GetTransmitterRequest]) (*connect.Response[api.Transmitter], error)
 	ListTransmitters(context.Context, *connect.Request[api.ListTransmittersRequest]) (*connect.Response[api.ListTransmittersResponse], error)
+	CreateTransmitter(context.Context, *connect.Request[api.CreateTransmitterRequest]) (*connect.Response[api.Transmitter], error)
+	UpdateTransmitter(context.Context, *connect.Request[api.UpdateTransmitterRequest]) (*connect.Response[api.Transmitter], error)
+	DeleteTransmitter(context.Context, *connect.Request[api.DeleteTransmitterRequest]) (*connect.Response[api.DeleteTransmitterResponse], error)
 }
 
 // NewTransmitterServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -114,12 +165,36 @@ func NewTransmitterServiceHandler(svc TransmitterServiceHandler, opts ...connect
 		connect.WithSchema(transmitterServiceMethods.ByName("ListTransmitters")),
 		connect.WithHandlerOptions(opts...),
 	)
+	transmitterServiceCreateTransmitterHandler := connect.NewUnaryHandler(
+		TransmitterServiceCreateTransmitterProcedure,
+		svc.CreateTransmitter,
+		connect.WithSchema(transmitterServiceMethods.ByName("CreateTransmitter")),
+		connect.WithHandlerOptions(opts...),
+	)
+	transmitterServiceUpdateTransmitterHandler := connect.NewUnaryHandler(
+		TransmitterServiceUpdateTransmitterProcedure,
+		svc.UpdateTransmitter,
+		connect.WithSchema(transmitterServiceMethods.ByName("UpdateTransmitter")),
+		connect.WithHandlerOptions(opts...),
+	)
+	transmitterServiceDeleteTransmitterHandler := connect.NewUnaryHandler(
+		TransmitterServiceDeleteTransmitterProcedure,
+		svc.DeleteTransmitter,
+		connect.WithSchema(transmitterServiceMethods.ByName("DeleteTransmitter")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.TransmitterService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case TransmitterServiceGetTransmitterProcedure:
 			transmitterServiceGetTransmitterHandler.ServeHTTP(w, r)
 		case TransmitterServiceListTransmittersProcedure:
 			transmitterServiceListTransmittersHandler.ServeHTTP(w, r)
+		case TransmitterServiceCreateTransmitterProcedure:
+			transmitterServiceCreateTransmitterHandler.ServeHTTP(w, r)
+		case TransmitterServiceUpdateTransmitterProcedure:
+			transmitterServiceUpdateTransmitterHandler.ServeHTTP(w, r)
+		case TransmitterServiceDeleteTransmitterProcedure:
+			transmitterServiceDeleteTransmitterHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -135,4 +210,16 @@ func (UnimplementedTransmitterServiceHandler) GetTransmitter(context.Context, *c
 
 func (UnimplementedTransmitterServiceHandler) ListTransmitters(context.Context, *connect.Request[api.ListTransmittersRequest]) (*connect.Response[api.ListTransmittersResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.TransmitterService.ListTransmitters is not implemented"))
+}
+
+func (UnimplementedTransmitterServiceHandler) CreateTransmitter(context.Context, *connect.Request[api.CreateTransmitterRequest]) (*connect.Response[api.Transmitter], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.TransmitterService.CreateTransmitter is not implemented"))
+}
+
+func (UnimplementedTransmitterServiceHandler) UpdateTransmitter(context.Context, *connect.Request[api.UpdateTransmitterRequest]) (*connect.Response[api.Transmitter], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.TransmitterService.UpdateTransmitter is not implemented"))
+}
+
+func (UnimplementedTransmitterServiceHandler) DeleteTransmitter(context.Context, *connect.Request[api.DeleteTransmitterRequest]) (*connect.Response[api.DeleteTransmitterResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.TransmitterService.DeleteTransmitter is not implemented"))
 }

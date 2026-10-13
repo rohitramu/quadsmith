@@ -13,3 +13,18 @@ export const getGoggles = GogglesService.method.getGoggles;
  * @generated from rpc quadsmith.api.GogglesService.ListGoggles
  */
 export const listGoggles = GogglesService.method.listGoggles;
+
+/**
+ * @generated from rpc quadsmith.api.GogglesService.CreateGoggles
+ */
+export const createGoggles = GogglesService.method.createGoggles;
+
+/**
+ * @generated from rpc quadsmith.api.GogglesService.UpdateGoggles
+ */
+export const updateGoggles = GogglesService.method.updateGoggles;
+
+/**
+ * @generated from rpc quadsmith.api.GogglesService.DeleteGoggles
+ */
+export const deleteGoggles = GogglesService.method.deleteGoggles;

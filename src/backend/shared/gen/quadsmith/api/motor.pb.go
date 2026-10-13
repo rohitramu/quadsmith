@@ -24,7 +24,366 @@ const (
 )
 
 // ---------------------------------------------------------
-// Domain Model
+// 2. RPC Requests & Responses (Callers Precede Callees)
+// ---------------------------------------------------------
+type CreateMotorRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Motor         *Motor                 `protobuf:"bytes,1,opt,name=motor,proto3" json:"motor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateMotorRequest) Reset() {
+	*x = CreateMotorRequest{}
+	mi := &file_quadsmith_api_motor_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateMotorRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateMotorRequest) ProtoMessage() {}
+
+func (x *CreateMotorRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_motor_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateMotorRequest.ProtoReflect.Descriptor instead.
+func (*CreateMotorRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_motor_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *CreateMotorRequest) GetMotor() *Motor {
+	if x != nil {
+		return x.Motor
+	}
+	return nil
+}
+
+type DeleteMotorRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMotorRequest) Reset() {
+	*x = DeleteMotorRequest{}
+	mi := &file_quadsmith_api_motor_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMotorRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMotorRequest) ProtoMessage() {}
+
+func (x *DeleteMotorRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_motor_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMotorRequest.ProtoReflect.Descriptor instead.
+func (*DeleteMotorRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_motor_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *DeleteMotorRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteMotorResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteMotorResponse) Reset() {
+	*x = DeleteMotorResponse{}
+	mi := &file_quadsmith_api_motor_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteMotorResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteMotorResponse) ProtoMessage() {}
+
+func (x *DeleteMotorResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_motor_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteMotorResponse.ProtoReflect.Descriptor instead.
+func (*DeleteMotorResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_motor_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteMotorResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetMotorRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetMotorRequest) Reset() {
+	*x = GetMotorRequest{}
+	mi := &file_quadsmith_api_motor_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetMotorRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetMotorRequest) ProtoMessage() {}
+
+func (x *GetMotorRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_motor_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetMotorRequest.ProtoReflect.Descriptor instead.
+func (*GetMotorRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_motor_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetMotorRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetMotorRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListMotorsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMotorsRequest) Reset() {
+	*x = ListMotorsRequest{}
+	mi := &file_quadsmith_api_motor_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMotorsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMotorsRequest) ProtoMessage() {}
+
+func (x *ListMotorsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_motor_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMotorsRequest.ProtoReflect.Descriptor instead.
+func (*ListMotorsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_motor_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ListMotorsRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListMotorsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListMotorsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListMotorsRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListMotorsRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListMotorsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Motors        []*Motor               `protobuf:"bytes,1,rep,name=motors,proto3" json:"motors,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListMotorsResponse) Reset() {
+	*x = ListMotorsResponse{}
+	mi := &file_quadsmith_api_motor_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListMotorsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListMotorsResponse) ProtoMessage() {}
+
+func (x *ListMotorsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_motor_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListMotorsResponse.ProtoReflect.Descriptor instead.
+func (*ListMotorsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_motor_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListMotorsResponse) GetMotors() []*Motor {
+	if x != nil {
+		return x.Motors
+	}
+	return nil
+}
+
+func (x *ListMotorsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateMotorRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Motor         *Motor                 `protobuf:"bytes,1,opt,name=motor,proto3" json:"motor,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateMotorRequest) Reset() {
+	*x = UpdateMotorRequest{}
+	mi := &file_quadsmith_api_motor_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateMotorRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateMotorRequest) ProtoMessage() {}
+
+func (x *UpdateMotorRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_motor_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateMotorRequest.ProtoReflect.Descriptor instead.
+func (*UpdateMotorRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_motor_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *UpdateMotorRequest) GetMotor() *Motor {
+	if x != nil {
+		return x.Motor
+	}
+	return nil
+}
+
+// ---------------------------------------------------------
+// 3. Domain Model (Referenced by Services and Requests above)
 // ---------------------------------------------------------
 type Motor struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -50,14 +409,16 @@ type Motor struct {
 	// Supported propeller mounting interfaces (e.g., ["M5"], ["1.5mm T-Mount", "1.5mm Press-Fit"], ["1mm Press-Fit"], ["0.8mm Press-Fit"])
 	PropMountInterfaces []string `protobuf:"bytes,16,rep,name=prop_mount_interfaces,json=propMountInterfaces,proto3" json:"prop_mount_interfaces,omitempty"`
 	// Motor mounting bolt pattern (e.g., "16x16mm", "19x19mm", "12x12mm", "9x9mm", "3-hole 6.6mm")
-	MountPattern  string `protobuf:"bytes,17,opt,name=mount_pattern,json=mountPattern,proto3" json:"mount_pattern,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	MountPattern   string  `protobuf:"bytes,17,opt,name=mount_pattern,json=mountPattern,proto3" json:"mount_pattern,omitempty"`
+	UserUuid       *string `protobuf:"bytes,18,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
+	AuthorUsername *string `protobuf:"bytes,19,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *Motor) Reset() {
 	*x = Motor{}
-	mi := &file_quadsmith_api_motor_proto_msgTypes[0]
+	mi := &file_quadsmith_api_motor_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -69,7 +430,7 @@ func (x *Motor) String() string {
 func (*Motor) ProtoMessage() {}
 
 func (x *Motor) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_motor_proto_msgTypes[0]
+	mi := &file_quadsmith_api_motor_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -82,7 +443,7 @@ func (x *Motor) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Motor.ProtoReflect.Descriptor instead.
 func (*Motor) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_motor_proto_rawDescGZIP(), []int{0}
+	return file_quadsmith_api_motor_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *Motor) GetUuid() string {
@@ -204,187 +565,16 @@ func (x *Motor) GetMountPattern() string {
 	return ""
 }
 
-// ---------------------------------------------------------
-// RPC Requests & Responses
-// ---------------------------------------------------------
-type GetMotorRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// Can be the UUID or the human-readable ID
-	Id            string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetMotorRequest) Reset() {
-	*x = GetMotorRequest{}
-	mi := &file_quadsmith_api_motor_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetMotorRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetMotorRequest) ProtoMessage() {}
-
-func (x *GetMotorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_motor_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetMotorRequest.ProtoReflect.Descriptor instead.
-func (*GetMotorRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_motor_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *GetMotorRequest) GetId() string {
-	if x != nil {
-		return x.Id
+func (x *Motor) GetUserUuid() string {
+	if x != nil && x.UserUuid != nil {
+		return *x.UserUuid
 	}
 	return ""
 }
 
-func (x *GetMotorRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListMotorsRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// A CEL query string (e.g., "weight_g < 30.0 && kv >= 2000")
-	Filter        string   `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32    `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string   `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListMotorsRequest) Reset() {
-	*x = ListMotorsRequest{}
-	mi := &file_quadsmith_api_motor_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListMotorsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListMotorsRequest) ProtoMessage() {}
-
-func (x *ListMotorsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_motor_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListMotorsRequest.ProtoReflect.Descriptor instead.
-func (*ListMotorsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_motor_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *ListMotorsRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListMotorsRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListMotorsRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListMotorsRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListMotorsRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListMotorsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Motors        []*Motor               `protobuf:"bytes,1,rep,name=motors,proto3" json:"motors,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListMotorsResponse) Reset() {
-	*x = ListMotorsResponse{}
-	mi := &file_quadsmith_api_motor_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListMotorsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListMotorsResponse) ProtoMessage() {}
-
-func (x *ListMotorsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_motor_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListMotorsResponse.ProtoReflect.Descriptor instead.
-func (*ListMotorsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_motor_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *ListMotorsResponse) GetMotors() []*Motor {
-	if x != nil {
-		return x.Motors
-	}
-	return nil
-}
-
-func (x *ListMotorsResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
+func (x *Motor) GetAuthorUsername() string {
+	if x != nil && x.AuthorUsername != nil {
+		return *x.AuthorUsername
 	}
 	return ""
 }
@@ -393,34 +583,14 @@ var File_quadsmith_api_motor_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_motor_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/api/motor.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"\x92\x06\n" +
-	"\x05Motor\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12,\n" +
-	"\x12stator_diameter_mm\x18\x06 \x01(\x02R\x10statorDiameterMm\x12(\n" +
-	"\x10stator_height_mm\x18\a \x01(\x02R\x0estatorHeightMm\x12\x16\n" +
-	"\x02kv\x18\b \x01(\rB\x06\xc2\xf3\x18\x02(\x01R\x02kv\x12 \n" +
-	"\vdescription\x18\t \x01(\tR\vdescription\x12E\n" +
-	"\x0freference_links\x18\n" +
-	" \x03(\v2\x1c.quadsmith.api.ReferenceLinkR\x0ereferenceLinks\x127\n" +
-	"\x15primary_display_image\x18\v \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12*\n" +
-	"\x05media\x18\f \x03(\v2\x14.quadsmith.api.MediaR\x05media\x12\x1f\n" +
-	"\vmin_voltage\x18\r \x01(\x02R\n" +
-	"minVoltage\x12\x1f\n" +
-	"\vmax_voltage\x18\x0e \x01(\x02R\n" +
-	"maxVoltage\x12\"\n" +
-	"\rmax_current_a\x18\x0f \x01(\x02R\vmaxCurrentA\x122\n" +
-	"\x15prop_mount_interfaces\x18\x10 \x03(\tR\x13propMountInterfaces\x12#\n" +
-	"\rmount_pattern\x18\x11 \x01(\tR\fmountPattern:c\x8a\xb5\x185\n" +
-	"\fmanufacturer\n" +
-	"\x04name\n" +
-	"\x12stator_diameter_mm\n" +
-	"\x02kv\x12\a#ef4444\x9a\xb5\x18\x1acomponents/hardware/motors\xc2\xf3\x18\b\n" +
-	"\x06motorsB\x18\n" +
-	"\x16_primary_display_image\";\n" +
+	"\x19quadsmith/api/motor.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"@\n" +
+	"\x12CreateMotorRequest\x12*\n" +
+	"\x05motor\x18\x01 \x01(\v2\x14.quadsmith.api.MotorR\x05motor\"$\n" +
+	"\x12DeleteMotorRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"6\n" +
+	"\x13DeleteMotorResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\";\n" +
 	"\x0fGetMotorRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +
@@ -433,11 +603,48 @@ const file_quadsmith_api_motor_proto_rawDesc = "" +
 	"\x04sort\x18\x05 \x03(\tR\x04sort\"j\n" +
 	"\x12ListMotorsResponse\x12,\n" +
 	"\x06motors\x18\x01 \x03(\v2\x14.quadsmith.api.MotorR\x06motors\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xa3\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"@\n" +
+	"\x12UpdateMotorRequest\x12*\n" +
+	"\x05motor\x18\x01 \x01(\v2\x14.quadsmith.api.MotorR\x05motor\"\xde\a\n" +
+	"\x05Motor\x12<\n" +
+	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
+	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12*\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x1a\n" +
+	"\x04name\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12\x19\n" +
+	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12,\n" +
+	"\x12stator_diameter_mm\x18\x06 \x01(\x02R\x10statorDiameterMm\x12(\n" +
+	"\x10stator_height_mm\x18\a \x01(\x02R\x0estatorHeightMm\x12\x16\n" +
+	"\x02kv\x18\b \x01(\rB\x06\xc2\xf3\x18\x02(\x01R\x02kv\x12(\n" +
+	"\vdescription\x18\t \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x12M\n" +
+	"\x0freference_links\x18\n" +
+	" \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
+	"\x15primary_display_image\x18\v \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x00R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
+	"\x05media\x18\f \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12\x1f\n" +
+	"\vmin_voltage\x18\r \x01(\x02R\n" +
+	"minVoltage\x12\x1f\n" +
+	"\vmax_voltage\x18\x0e \x01(\x02R\n" +
+	"maxVoltage\x12\"\n" +
+	"\rmax_current_a\x18\x0f \x01(\x02R\vmaxCurrentA\x122\n" +
+	"\x15prop_mount_interfaces\x18\x10 \x03(\tR\x13propMountInterfaces\x12#\n" +
+	"\rmount_pattern\x18\x11 \x01(\tR\fmountPattern\x12(\n" +
+	"\tuser_uuid\x18\x12 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x01R\buserUuid\x88\x01\x01\x124\n" +
+	"\x0fauthor_username\x18\x13 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\x0eauthorUsername\x88\x01\x01:c\x8a\xb5\x185\n" +
+	"\fmanufacturer\n" +
+	"\x04name\n" +
+	"\x12stator_diameter_mm\n" +
+	"\x02kv\x12\a#ef4444\x9a\xb5\x18\x1acomponents/hardware/motors\xc2\xf3\x18\b\n" +
+	"\x06motorsB\x18\n" +
+	"\x16_primary_display_imageB\f\n" +
+	"\n" +
+	"_user_uuidB\x12\n" +
+	"\x10_author_username2\x89\x03\n" +
 	"\fMotorService\x12@\n" +
 	"\bGetMotor\x12\x1e.quadsmith.api.GetMotorRequest\x1a\x14.quadsmith.api.Motor\x12Q\n" +
 	"\n" +
-	"ListMotors\x12 .quadsmith.api.ListMotorsRequest\x1a!.quadsmith.api.ListMotorsResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"ListMotors\x12 .quadsmith.api.ListMotorsRequest\x1a!.quadsmith.api.ListMotorsResponse\x12F\n" +
+	"\vCreateMotor\x12!.quadsmith.api.CreateMotorRequest\x1a\x14.quadsmith.api.Motor\x12F\n" +
+	"\vUpdateMotor\x12!.quadsmith.api.UpdateMotorRequest\x1a\x14.quadsmith.api.Motor\x12T\n" +
+	"\vDeleteMotor\x12!.quadsmith.api.DeleteMotorRequest\x1a\".quadsmith.api.DeleteMotorResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_motor_proto_rawDescOnce sync.Once
@@ -451,28 +658,40 @@ func file_quadsmith_api_motor_proto_rawDescGZIP() []byte {
 	return file_quadsmith_api_motor_proto_rawDescData
 }
 
-var file_quadsmith_api_motor_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_quadsmith_api_motor_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_motor_proto_goTypes = []any{
-	(*Motor)(nil),              // 0: quadsmith.api.Motor
-	(*GetMotorRequest)(nil),    // 1: quadsmith.api.GetMotorRequest
-	(*ListMotorsRequest)(nil),  // 2: quadsmith.api.ListMotorsRequest
-	(*ListMotorsResponse)(nil), // 3: quadsmith.api.ListMotorsResponse
-	(*ReferenceLink)(nil),      // 4: quadsmith.api.ReferenceLink
-	(*Media)(nil),              // 5: quadsmith.api.Media
+	(*CreateMotorRequest)(nil),  // 0: quadsmith.api.CreateMotorRequest
+	(*DeleteMotorRequest)(nil),  // 1: quadsmith.api.DeleteMotorRequest
+	(*DeleteMotorResponse)(nil), // 2: quadsmith.api.DeleteMotorResponse
+	(*GetMotorRequest)(nil),     // 3: quadsmith.api.GetMotorRequest
+	(*ListMotorsRequest)(nil),   // 4: quadsmith.api.ListMotorsRequest
+	(*ListMotorsResponse)(nil),  // 5: quadsmith.api.ListMotorsResponse
+	(*UpdateMotorRequest)(nil),  // 6: quadsmith.api.UpdateMotorRequest
+	(*Motor)(nil),               // 7: quadsmith.api.Motor
+	(*ReferenceLink)(nil),       // 8: quadsmith.api.ReferenceLink
+	(*Media)(nil),               // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_motor_proto_depIdxs = []int32{
-	4, // 0: quadsmith.api.Motor.reference_links:type_name -> quadsmith.api.ReferenceLink
-	5, // 1: quadsmith.api.Motor.media:type_name -> quadsmith.api.Media
-	0, // 2: quadsmith.api.ListMotorsResponse.motors:type_name -> quadsmith.api.Motor
-	1, // 3: quadsmith.api.MotorService.GetMotor:input_type -> quadsmith.api.GetMotorRequest
-	2, // 4: quadsmith.api.MotorService.ListMotors:input_type -> quadsmith.api.ListMotorsRequest
-	0, // 5: quadsmith.api.MotorService.GetMotor:output_type -> quadsmith.api.Motor
-	3, // 6: quadsmith.api.MotorService.ListMotors:output_type -> quadsmith.api.ListMotorsResponse
-	5, // [5:7] is the sub-list for method output_type
-	3, // [3:5] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	7,  // 0: quadsmith.api.CreateMotorRequest.motor:type_name -> quadsmith.api.Motor
+	7,  // 1: quadsmith.api.ListMotorsResponse.motors:type_name -> quadsmith.api.Motor
+	7,  // 2: quadsmith.api.UpdateMotorRequest.motor:type_name -> quadsmith.api.Motor
+	8,  // 3: quadsmith.api.Motor.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 4: quadsmith.api.Motor.media:type_name -> quadsmith.api.Media
+	3,  // 5: quadsmith.api.MotorService.GetMotor:input_type -> quadsmith.api.GetMotorRequest
+	4,  // 6: quadsmith.api.MotorService.ListMotors:input_type -> quadsmith.api.ListMotorsRequest
+	0,  // 7: quadsmith.api.MotorService.CreateMotor:input_type -> quadsmith.api.CreateMotorRequest
+	6,  // 8: quadsmith.api.MotorService.UpdateMotor:input_type -> quadsmith.api.UpdateMotorRequest
+	1,  // 9: quadsmith.api.MotorService.DeleteMotor:input_type -> quadsmith.api.DeleteMotorRequest
+	7,  // 10: quadsmith.api.MotorService.GetMotor:output_type -> quadsmith.api.Motor
+	5,  // 11: quadsmith.api.MotorService.ListMotors:output_type -> quadsmith.api.ListMotorsResponse
+	7,  // 12: quadsmith.api.MotorService.CreateMotor:output_type -> quadsmith.api.Motor
+	7,  // 13: quadsmith.api.MotorService.UpdateMotor:output_type -> quadsmith.api.Motor
+	2,  // 14: quadsmith.api.MotorService.DeleteMotor:output_type -> quadsmith.api.DeleteMotorResponse
+	10, // [10:15] is the sub-list for method output_type
+	5,  // [5:10] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_motor_proto_init() }
@@ -482,14 +701,14 @@ func file_quadsmith_api_motor_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_motor_proto_msgTypes[0].OneofWrappers = []any{}
+	file_quadsmith_api_motor_proto_msgTypes[7].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_motor_proto_rawDesc), len(file_quadsmith_api_motor_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   8,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

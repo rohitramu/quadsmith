@@ -13,3 +13,18 @@ export const getFlightController = FlightControllerService.method.getFlightContr
  * @generated from rpc quadsmith.api.FlightControllerService.ListFlightControllers
  */
 export const listFlightControllers = FlightControllerService.method.listFlightControllers;
+
+/**
+ * @generated from rpc quadsmith.api.FlightControllerService.CreateFlightController
+ */
+export const createFlightController = FlightControllerService.method.createFlightController;
+
+/**
+ * @generated from rpc quadsmith.api.FlightControllerService.UpdateFlightController
+ */
+export const updateFlightController = FlightControllerService.method.updateFlightController;
+
+/**
+ * @generated from rpc quadsmith.api.FlightControllerService.DeleteFlightController
+ */
+export const deleteFlightController = FlightControllerService.method.deleteFlightController;

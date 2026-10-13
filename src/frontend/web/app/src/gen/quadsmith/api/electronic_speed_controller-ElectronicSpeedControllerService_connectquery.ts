@@ -15,3 +15,21 @@ export const getElectronicSpeedController =
  */
 export const listElectronicSpeedControllers =
   ElectronicSpeedControllerService.method.listElectronicSpeedControllers;
+
+/**
+ * @generated from rpc quadsmith.api.ElectronicSpeedControllerService.CreateElectronicSpeedController
+ */
+export const createElectronicSpeedController =
+  ElectronicSpeedControllerService.method.createElectronicSpeedController;
+
+/**
+ * @generated from rpc quadsmith.api.ElectronicSpeedControllerService.UpdateElectronicSpeedController
+ */
+export const updateElectronicSpeedController =
+  ElectronicSpeedControllerService.method.updateElectronicSpeedController;
+
+/**
+ * @generated from rpc quadsmith.api.ElectronicSpeedControllerService.DeleteElectronicSpeedController
+ */
+export const deleteElectronicSpeedController =
+  ElectronicSpeedControllerService.method.deleteElectronicSpeedController;

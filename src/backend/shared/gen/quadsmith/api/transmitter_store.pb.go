@@ -11,19 +11,19 @@ import (
 )
 
 func CreateTransmitter(ctx context.Context, tx pgx.Tx, m *Transmitter) error {
-	query := `INSERT INTO transmitters (uuid, id, manufacturer, name, weight_g, rf_protocol, operating_system, gimbal_type, max_power_mw, channels, battery_type, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`
+	query := `INSERT INTO transmitters (uuid, manufacturer, weight_g, rf_protocol, operating_system, gimbal_type, max_power_mw, channels, battery_type) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.WeightG, m.RfProtocol, m.OperatingSystem, m.GimbalType, m.MaxPowerMw, m.Channels, m.BatteryType, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Manufacturer, m.WeightG, m.RfProtocol, m.OperatingSystem, m.GimbalType, m.MaxPowerMw, m.Channels, m.BatteryType)
 	return err
 }
 
 func GetTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Transmitter, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "rf_protocol": true, "operating_system": true, "gimbal_type": true, "max_power_mw": true, "channels": true, "battery_type": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, rf_protocol, operating_system, gimbal_type, max_power_mw, channels, battery_type, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "rf_protocol": true, "operating_system": true, "gimbal_type": true, "max_power_mw": true, "channels": true, "battery_type": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, rf_protocol, operating_system, gimbal_type, max_power_mw, channels, battery_type, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "rf_protocol", "operating_system", "gimbal_type", "max_power_mw", "channels", "battery_type", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "rf_protocol", "operating_system", "gimbal_type", "max_power_mw", "channels", "battery_type", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM transmitters WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM transmitters INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Transmitter{}
@@ -72,6 +72,10 @@ func GetTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -89,20 +93,20 @@ func GetTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 }
 
 func UpdateTransmitter(ctx context.Context, tx pgx.Tx, m *Transmitter) error {
-	query := `UPDATE transmitters SET manufacturer = $2, name = $3, weight_g = $4, rf_protocol = $5, operating_system = $6, gimbal_type = $7, max_power_mw = $8, channels = $9, battery_type = $10, description = $11, reference_links = $12, primary_display_image = $13, media = $14 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.WeightG, m.RfProtocol, m.OperatingSystem, m.GimbalType, m.MaxPowerMw, m.Channels, m.BatteryType, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE transmitters SET manufacturer = $2, weight_g = $3, rf_protocol = $4, operating_system = $5, gimbal_type = $6, max_power_mw = $7, channels = $8, battery_type = $9 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.WeightG, m.RfProtocol, m.OperatingSystem, m.GimbalType, m.MaxPowerMw, m.Channels, m.BatteryType)
 	return err
 }
 
 func DeleteTransmitter(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM transmitters WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM transmitters WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'transmitters' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Transmitter, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "rf_protocol": true, "operating_system": true, "gimbal_type": true, "max_power_mw": true, "channels": true, "battery_type": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, rf_protocol, operating_system, gimbal_type, max_power_mw, channels, battery_type, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "rf_protocol": true, "operating_system": true, "gimbal_type": true, "max_power_mw": true, "channels": true, "battery_type": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, rf_protocol, operating_system, gimbal_type, max_power_mw, channels, battery_type, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -113,11 +117,12 @@ func ListTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "rf_protocol", "operating_system", "gimbal_type", "max_power_mw", "channels", "battery_type", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "rf_protocol", "operating_system", "gimbal_type", "max_power_mw", "channels", "battery_type", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM transmitters`
+	query := `SELECT ` + colsStr + ` FROM transmitters INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -192,6 +197,10 @@ func ListTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

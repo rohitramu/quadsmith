@@ -37,12 +37,24 @@ const (
 	FrameServiceGetFrameProcedure = "/quadsmith.api.FrameService/GetFrame"
 	// FrameServiceListFramesProcedure is the fully-qualified name of the FrameService's ListFrames RPC.
 	FrameServiceListFramesProcedure = "/quadsmith.api.FrameService/ListFrames"
+	// FrameServiceCreateFrameProcedure is the fully-qualified name of the FrameService's CreateFrame
+	// RPC.
+	FrameServiceCreateFrameProcedure = "/quadsmith.api.FrameService/CreateFrame"
+	// FrameServiceUpdateFrameProcedure is the fully-qualified name of the FrameService's UpdateFrame
+	// RPC.
+	FrameServiceUpdateFrameProcedure = "/quadsmith.api.FrameService/UpdateFrame"
+	// FrameServiceDeleteFrameProcedure is the fully-qualified name of the FrameService's DeleteFrame
+	// RPC.
+	FrameServiceDeleteFrameProcedure = "/quadsmith.api.FrameService/DeleteFrame"
 )
 
 // FrameServiceClient is a client for the quadsmith.api.FrameService service.
 type FrameServiceClient interface {
 	GetFrame(context.Context, *connect.Request[api.GetFrameRequest]) (*connect.Response[api.Frame], error)
 	ListFrames(context.Context, *connect.Request[api.ListFramesRequest]) (*connect.Response[api.ListFramesResponse], error)
+	CreateFrame(context.Context, *connect.Request[api.CreateFrameRequest]) (*connect.Response[api.Frame], error)
+	UpdateFrame(context.Context, *connect.Request[api.UpdateFrameRequest]) (*connect.Response[api.Frame], error)
+	DeleteFrame(context.Context, *connect.Request[api.DeleteFrameRequest]) (*connect.Response[api.DeleteFrameResponse], error)
 }
 
 // NewFrameServiceClient constructs a client for the quadsmith.api.FrameService service. By default,
@@ -68,13 +80,34 @@ func NewFrameServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(frameServiceMethods.ByName("ListFrames")),
 			connect.WithClientOptions(opts...),
 		),
+		createFrame: connect.NewClient[api.CreateFrameRequest, api.Frame](
+			httpClient,
+			baseURL+FrameServiceCreateFrameProcedure,
+			connect.WithSchema(frameServiceMethods.ByName("CreateFrame")),
+			connect.WithClientOptions(opts...),
+		),
+		updateFrame: connect.NewClient[api.UpdateFrameRequest, api.Frame](
+			httpClient,
+			baseURL+FrameServiceUpdateFrameProcedure,
+			connect.WithSchema(frameServiceMethods.ByName("UpdateFrame")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteFrame: connect.NewClient[api.DeleteFrameRequest, api.DeleteFrameResponse](
+			httpClient,
+			baseURL+FrameServiceDeleteFrameProcedure,
+			connect.WithSchema(frameServiceMethods.ByName("DeleteFrame")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // frameServiceClient implements FrameServiceClient.
 type frameServiceClient struct {
-	getFrame   *connect.Client[api.GetFrameRequest, api.Frame]
-	listFrames *connect.Client[api.ListFramesRequest, api.ListFramesResponse]
+	getFrame    *connect.Client[api.GetFrameRequest, api.Frame]
+	listFrames  *connect.Client[api.ListFramesRequest, api.ListFramesResponse]
+	createFrame *connect.Client[api.CreateFrameRequest, api.Frame]
+	updateFrame *connect.Client[api.UpdateFrameRequest, api.Frame]
+	deleteFrame *connect.Client[api.DeleteFrameRequest, api.DeleteFrameResponse]
 }
 
 // GetFrame calls quadsmith.api.FrameService.GetFrame.
@@ -87,10 +120,28 @@ func (c *frameServiceClient) ListFrames(ctx context.Context, req *connect.Reques
 	return c.listFrames.CallUnary(ctx, req)
 }
 
+// CreateFrame calls quadsmith.api.FrameService.CreateFrame.
+func (c *frameServiceClient) CreateFrame(ctx context.Context, req *connect.Request[api.CreateFrameRequest]) (*connect.Response[api.Frame], error) {
+	return c.createFrame.CallUnary(ctx, req)
+}
+
+// UpdateFrame calls quadsmith.api.FrameService.UpdateFrame.
+func (c *frameServiceClient) UpdateFrame(ctx context.Context, req *connect.Request[api.UpdateFrameRequest]) (*connect.Response[api.Frame], error) {
+	return c.updateFrame.CallUnary(ctx, req)
+}
+
+// DeleteFrame calls quadsmith.api.FrameService.DeleteFrame.
+func (c *frameServiceClient) DeleteFrame(ctx context.Context, req *connect.Request[api.DeleteFrameRequest]) (*connect.Response[api.DeleteFrameResponse], error) {
+	return c.deleteFrame.CallUnary(ctx, req)
+}
+
 // FrameServiceHandler is an implementation of the quadsmith.api.FrameService service.
 type FrameServiceHandler interface {
 	GetFrame(context.Context, *connect.Request[api.GetFrameRequest]) (*connect.Response[api.Frame], error)
 	ListFrames(context.Context, *connect.Request[api.ListFramesRequest]) (*connect.Response[api.ListFramesResponse], error)
+	CreateFrame(context.Context, *connect.Request[api.CreateFrameRequest]) (*connect.Response[api.Frame], error)
+	UpdateFrame(context.Context, *connect.Request[api.UpdateFrameRequest]) (*connect.Response[api.Frame], error)
+	DeleteFrame(context.Context, *connect.Request[api.DeleteFrameRequest]) (*connect.Response[api.DeleteFrameResponse], error)
 }
 
 // NewFrameServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -112,12 +163,36 @@ func NewFrameServiceHandler(svc FrameServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(frameServiceMethods.ByName("ListFrames")),
 		connect.WithHandlerOptions(opts...),
 	)
+	frameServiceCreateFrameHandler := connect.NewUnaryHandler(
+		FrameServiceCreateFrameProcedure,
+		svc.CreateFrame,
+		connect.WithSchema(frameServiceMethods.ByName("CreateFrame")),
+		connect.WithHandlerOptions(opts...),
+	)
+	frameServiceUpdateFrameHandler := connect.NewUnaryHandler(
+		FrameServiceUpdateFrameProcedure,
+		svc.UpdateFrame,
+		connect.WithSchema(frameServiceMethods.ByName("UpdateFrame")),
+		connect.WithHandlerOptions(opts...),
+	)
+	frameServiceDeleteFrameHandler := connect.NewUnaryHandler(
+		FrameServiceDeleteFrameProcedure,
+		svc.DeleteFrame,
+		connect.WithSchema(frameServiceMethods.ByName("DeleteFrame")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.FrameService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case FrameServiceGetFrameProcedure:
 			frameServiceGetFrameHandler.ServeHTTP(w, r)
 		case FrameServiceListFramesProcedure:
 			frameServiceListFramesHandler.ServeHTTP(w, r)
+		case FrameServiceCreateFrameProcedure:
+			frameServiceCreateFrameHandler.ServeHTTP(w, r)
+		case FrameServiceUpdateFrameProcedure:
+			frameServiceUpdateFrameHandler.ServeHTTP(w, r)
+		case FrameServiceDeleteFrameProcedure:
+			frameServiceDeleteFrameHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -133,4 +208,16 @@ func (UnimplementedFrameServiceHandler) GetFrame(context.Context, *connect.Reque
 
 func (UnimplementedFrameServiceHandler) ListFrames(context.Context, *connect.Request[api.ListFramesRequest]) (*connect.Response[api.ListFramesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FrameService.ListFrames is not implemented"))
+}
+
+func (UnimplementedFrameServiceHandler) CreateFrame(context.Context, *connect.Request[api.CreateFrameRequest]) (*connect.Response[api.Frame], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FrameService.CreateFrame is not implemented"))
+}
+
+func (UnimplementedFrameServiceHandler) UpdateFrame(context.Context, *connect.Request[api.UpdateFrameRequest]) (*connect.Response[api.Frame], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FrameService.UpdateFrame is not implemented"))
+}
+
+func (UnimplementedFrameServiceHandler) DeleteFrame(context.Context, *connect.Request[api.DeleteFrameRequest]) (*connect.Response[api.DeleteFrameResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.FrameService.DeleteFrame is not implemented"))
 }

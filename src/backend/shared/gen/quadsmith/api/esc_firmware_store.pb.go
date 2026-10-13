@@ -11,19 +11,19 @@ import (
 )
 
 func CreateEscFirmware(ctx context.Context, tx pgx.Tx, m *EscFirmware) error {
-	query := `INSERT INTO electronic_speed_controller_firmwares (uuid, id, manufacturer, name, version, protocols, pwm_frequency_range, is_open_source, description, reference_links, primary_display_image, media) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`
+	query := `INSERT INTO electronic_speed_controller_firmwares (uuid, manufacturer, version, protocols, pwm_frequency_range, is_open_source) VALUES ($1, $2, $3, $4, $5, $6)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.Version, m.Protocols, m.PwmFrequencyRange, m.IsOpenSource, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	}(m.Uuid), m.Manufacturer, m.Version, m.Protocols, m.PwmFrequencyRange, m.IsOpenSource)
 	return err
 }
 
 func GetEscFirmware(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*EscFirmware, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "protocols": true, "pwm_frequency_range": true, "is_open_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, version, protocols, pwm_frequency_range, is_open_source, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "protocols": true, "pwm_frequency_range": true, "is_open_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, version, protocols, pwm_frequency_range, is_open_source, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetEscFirmware(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "version", "protocols", "pwm_frequency_range", "is_open_source", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "version", "protocols", "pwm_frequency_range", "is_open_source", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM electronic_speed_controller_firmwares WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM electronic_speed_controller_firmwares INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &EscFirmware{}
@@ -66,6 +66,10 @@ func GetEscFirmware(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -83,20 +87,20 @@ func GetEscFirmware(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols
 }
 
 func UpdateEscFirmware(ctx context.Context, tx pgx.Tx, m *EscFirmware) error {
-	query := `UPDATE electronic_speed_controller_firmwares SET manufacturer = $2, name = $3, version = $4, protocols = $5, pwm_frequency_range = $6, is_open_source = $7, description = $8, reference_links = $9, primary_display_image = $10, media = $11 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.Version, m.Protocols, m.PwmFrequencyRange, m.IsOpenSource, m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media)
+	query := `UPDATE electronic_speed_controller_firmwares SET manufacturer = $2, version = $3, protocols = $4, pwm_frequency_range = $5, is_open_source = $6 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Version, m.Protocols, m.PwmFrequencyRange, m.IsOpenSource)
 	return err
 }
 
 func DeleteEscFirmware(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM electronic_speed_controller_firmwares WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM electronic_speed_controller_firmwares WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'esc-firmware' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListEscFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*EscFirmware, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "protocols": true, "pwm_frequency_range": true, "is_open_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true}
-	colsStr := "uuid, id, manufacturer, name, version, protocols, pwm_frequency_range, is_open_source, description, reference_links, primary_display_image, media"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "version": true, "protocols": true, "pwm_frequency_range": true, "is_open_source": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, version, protocols, pwm_frequency_range, is_open_source, description, reference_links, primary_display_image, media, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -107,11 +111,12 @@ func ListEscFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "version", "protocols", "pwm_frequency_range", "is_open_source", "description", "reference_links", "primary_display_image", "media"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "version", "protocols", "pwm_frequency_range", "is_open_source", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM electronic_speed_controller_firmwares`
+	query := `SELECT ` + colsStr + ` FROM electronic_speed_controller_firmwares INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -180,6 +185,10 @@ func ListEscFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

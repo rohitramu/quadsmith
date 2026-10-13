@@ -11,24 +11,24 @@ import (
 )
 
 func CreateVideoTransmitter(ctx context.Context, tx pgx.Tx, m *VideoTransmitter) error {
-	query := `INSERT INTO video_transmitters (uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links, primary_display_image, media, port_type, mount_pattern, frequency_band_mhz, antenna_connectors) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`
+	query := `INSERT INTO video_transmitters (uuid, manufacturer, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, port_type, mount_pattern, frequency_band_mhz, antenna_connectors) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.MaxPowerMw, m.InputVoltageMinV, m.InputVoltageMaxV, func(s []string) interface{} {
+	}(m.Uuid), m.Manufacturer, m.IsInternalOnly, m.WeightG, m.Protocol, m.MaxPowerMw, m.InputVoltageMinV, m.InputVoltageMaxV, func(s []string) interface{} {
 		if len(s) == 0 {
 			return nil
 		}
 		return s
-	}(m.AntennaUuids), m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.PortType, m.MountPattern, m.FrequencyBandMhz, m.AntennaConnectors)
+	}(m.AntennaUuids), m.PortType, m.MountPattern, m.FrequencyBandMhz, m.AntennaConnectors)
 	return err
 }
 
 func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*VideoTransmitter, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "max_power_mw": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "port_type": true, "mount_pattern": true, "frequency_band_mhz": true, "antenna_connectors": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links, primary_display_image, media, port_type, mount_pattern, frequency_band_mhz, antenna_connectors"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "max_power_mw": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "port_type": true, "mount_pattern": true, "frequency_band_mhz": true, "antenna_connectors": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links, primary_display_image, media, port_type, mount_pattern, frequency_band_mhz, antenna_connectors, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -39,9 +39,9 @@ func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links", "primary_display_image", "media", "port_type", "mount_pattern", "frequency_band_mhz", "antenna_connectors"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links", "primary_display_image", "media", "port_type", "mount_pattern", "frequency_band_mhz", "antenna_connectors", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM video_transmitters WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM video_transmitters INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &VideoTransmitter{}
@@ -85,6 +85,10 @@ func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 			scanArgs[i] = &m.FrequencyBandMhz
 		case "antenna_connectors":
 			scanArgs[i] = &m.AntennaConnectors
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
+		case "author_username":
+			scanArgs[i] = &m.AuthorUsername
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -102,25 +106,25 @@ func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 }
 
 func UpdateVideoTransmitter(ctx context.Context, tx pgx.Tx, m *VideoTransmitter) error {
-	query := `UPDATE video_transmitters SET manufacturer = $2, name = $3, is_internal_only = $4, weight_g = $5, protocol = $6, max_power_mw = $7, input_voltage_min_v = $8, input_voltage_max_v = $9, antenna_uuids = $10, description = $11, reference_links = $12, primary_display_image = $13, media = $14, port_type = $15, mount_pattern = $16, frequency_band_mhz = $17, antenna_connectors = $18 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.Name, m.IsInternalOnly, m.WeightG, m.Protocol, m.MaxPowerMw, m.InputVoltageMinV, m.InputVoltageMaxV, func(s []string) interface{} {
+	query := `UPDATE video_transmitters SET manufacturer = $2, is_internal_only = $3, weight_g = $4, protocol = $5, max_power_mw = $6, input_voltage_min_v = $7, input_voltage_max_v = $8, antenna_uuids = $9, port_type = $10, mount_pattern = $11, frequency_band_mhz = $12, antenna_connectors = $13 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Manufacturer, m.IsInternalOnly, m.WeightG, m.Protocol, m.MaxPowerMw, m.InputVoltageMinV, m.InputVoltageMaxV, func(s []string) interface{} {
 		if len(s) == 0 {
 			return nil
 		}
 		return s
-	}(m.AntennaUuids), m.Description, m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, m.PortType, m.MountPattern, m.FrequencyBandMhz, m.AntennaConnectors)
+	}(m.AntennaUuids), m.PortType, m.MountPattern, m.FrequencyBandMhz, m.AntennaConnectors)
 	return err
 }
 
 func DeleteVideoTransmitter(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM video_transmitters WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM video_transmitters WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'video-transmitters' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
 
 func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*VideoTransmitter, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "max_power_mw": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "port_type": true, "mount_pattern": true, "frequency_band_mhz": true, "antenna_connectors": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links, primary_display_image, media, port_type, mount_pattern, frequency_band_mhz, antenna_connectors"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "max_power_mw": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "port_type": true, "mount_pattern": true, "frequency_band_mhz": true, "antenna_connectors": true, "user_uuid": true, "author_username": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links, primary_display_image, media, port_type, mount_pattern, frequency_band_mhz, antenna_connectors, user_uuid, author_username"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -131,11 +135,12 @@ func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string,
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links", "primary_display_image", "media", "port_type", "mount_pattern", "frequency_band_mhz", "antenna_connectors"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links", "primary_display_image", "media", "port_type", "mount_pattern", "frequency_band_mhz", "antenna_connectors", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM video_transmitters`
+	query := `SELECT ` + colsStr + ` FROM video_transmitters INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -218,6 +223,10 @@ func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string,
 				scanArgs[i] = &m.FrequencyBandMhz
 			case "antenna_connectors":
 				scanArgs[i] = &m.AntennaConnectors
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
+			case "author_username":
+				scanArgs[i] = &m.AuthorUsername
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

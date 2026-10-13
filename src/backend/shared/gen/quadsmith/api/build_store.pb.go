@@ -11,13 +11,13 @@ import (
 )
 
 func CreateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
-	query := `INSERT INTO builds (uuid, id, name, description, frame_uuid, motor_uuid, flight_controller_uuid, electronic_speed_controller_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, video_transmitter_uuid, gps_receiver_uuid, reference_links, primary_display_image, media, user_uuid, author_username) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`
+	query := `INSERT INTO builds (uuid, frame_uuid, motor_uuid, flight_controller_uuid, electronic_speed_controller_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, video_transmitter_uuid, gps_receiver_uuid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Name, m.Description, func(s string) interface{} {
+	}(m.Uuid), func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
@@ -67,12 +67,7 @@ func CreateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
 			return nil
 		}
 		return *s
-	}(m.GpsReceiverUuid), m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, func(s *string) interface{} {
-		if s == nil || *s == "" {
-			return nil
-		}
-		return *s
-	}(m.UserUuid), m.AuthorUsername)
+	}(m.GpsReceiverUuid))
 	return err
 }
 
@@ -91,7 +86,7 @@ func GetBuild(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 	} else {
 		cols = []string{"uuid", "id", "name", "description", "frame_uuid", "motor_uuid", "flight_controller_uuid", "electronic_speed_controller_uuids", "receiver_uuids", "antenna_uuids", "propeller_uuid", "camera_uuids", "video_transmitter_uuid", "gps_receiver_uuid", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM builds WHERE id = $1 OR uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM builds INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Build{}
@@ -182,8 +177,8 @@ func GetBuild(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 }
 
 func UpdateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
-	query := `UPDATE builds SET name = $2, description = $3, frame_uuid = $4, motor_uuid = $5, flight_controller_uuid = $6, electronic_speed_controller_uuids = $7, receiver_uuids = $8, antenna_uuids = $9, propeller_uuid = $10, camera_uuids = $11, video_transmitter_uuid = $12, gps_receiver_uuid = $13, reference_links = $14, primary_display_image = $15, media = $16, user_uuid = $17, author_username = $18 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Name, m.Description, func(s string) interface{} {
+	query := `UPDATE builds SET frame_uuid = $2, motor_uuid = $3, flight_controller_uuid = $4, electronic_speed_controller_uuids = $5, receiver_uuids = $6, antenna_uuids = $7, propeller_uuid = $8, camera_uuids = $9, video_transmitter_uuid = $10, gps_receiver_uuid = $11 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
@@ -233,17 +228,12 @@ func UpdateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
 			return nil
 		}
 		return *s
-	}(m.GpsReceiverUuid), m.ReferenceLinks, m.PrimaryDisplayImage, m.Media, func(s *string) interface{} {
-		if s == nil || *s == "" {
-			return nil
-		}
-		return *s
-	}(m.UserUuid), m.AuthorUsername)
+	}(m.GpsReceiverUuid))
 	return err
 }
 
 func DeleteBuild(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM builds WHERE id = $1 OR uuid::text = $1`
+	query := `DELETE FROM builds WHERE uuid = (SELECT uuid FROM entities WHERE (id = $1 OR uuid::text = $1) AND collection = 'builds' LIMIT 1) OR uuid::text = $1`
 	_, err := tx.Exec(ctx, query, idOrUuid)
 	return err
 }
@@ -263,9 +253,10 @@ func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 	} else {
 		cols = []string{"uuid", "id", "name", "description", "frame_uuid", "motor_uuid", "flight_controller_uuid", "electronic_speed_controller_uuids", "receiver_uuids", "antenna_uuids", "propeller_uuid", "camera_uuids", "video_transmitter_uuid", "gps_receiver_uuid", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
 	}
-	query := `SELECT ` + colsStr + ` FROM builds`
+	query := `SELECT ` + colsStr + ` FROM builds INNER JOIN entities USING (uuid)`
+	query += " WHERE entities.is_archived = false"
 	if whereClause != "" {
-		query += " WHERE " + whereClause
+		query += " AND (" + whereClause + ")"
 	}
 	var orderClauses []string
 	hasIdSort := false

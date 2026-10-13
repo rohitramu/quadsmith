@@ -40,6 +40,15 @@ const (
 	// ElectronicSpeedControllerServiceListElectronicSpeedControllersProcedure is the fully-qualified
 	// name of the ElectronicSpeedControllerService's ListElectronicSpeedControllers RPC.
 	ElectronicSpeedControllerServiceListElectronicSpeedControllersProcedure = "/quadsmith.api.ElectronicSpeedControllerService/ListElectronicSpeedControllers"
+	// ElectronicSpeedControllerServiceCreateElectronicSpeedControllerProcedure is the fully-qualified
+	// name of the ElectronicSpeedControllerService's CreateElectronicSpeedController RPC.
+	ElectronicSpeedControllerServiceCreateElectronicSpeedControllerProcedure = "/quadsmith.api.ElectronicSpeedControllerService/CreateElectronicSpeedController"
+	// ElectronicSpeedControllerServiceUpdateElectronicSpeedControllerProcedure is the fully-qualified
+	// name of the ElectronicSpeedControllerService's UpdateElectronicSpeedController RPC.
+	ElectronicSpeedControllerServiceUpdateElectronicSpeedControllerProcedure = "/quadsmith.api.ElectronicSpeedControllerService/UpdateElectronicSpeedController"
+	// ElectronicSpeedControllerServiceDeleteElectronicSpeedControllerProcedure is the fully-qualified
+	// name of the ElectronicSpeedControllerService's DeleteElectronicSpeedController RPC.
+	ElectronicSpeedControllerServiceDeleteElectronicSpeedControllerProcedure = "/quadsmith.api.ElectronicSpeedControllerService/DeleteElectronicSpeedController"
 )
 
 // ElectronicSpeedControllerServiceClient is a client for the
@@ -47,6 +56,9 @@ const (
 type ElectronicSpeedControllerServiceClient interface {
 	GetElectronicSpeedController(context.Context, *connect.Request[api.GetElectronicSpeedControllerRequest]) (*connect.Response[api.ElectronicSpeedController], error)
 	ListElectronicSpeedControllers(context.Context, *connect.Request[api.ListElectronicSpeedControllersRequest]) (*connect.Response[api.ListElectronicSpeedControllersResponse], error)
+	CreateElectronicSpeedController(context.Context, *connect.Request[api.CreateElectronicSpeedControllerRequest]) (*connect.Response[api.ElectronicSpeedController], error)
+	UpdateElectronicSpeedController(context.Context, *connect.Request[api.UpdateElectronicSpeedControllerRequest]) (*connect.Response[api.ElectronicSpeedController], error)
+	DeleteElectronicSpeedController(context.Context, *connect.Request[api.DeleteElectronicSpeedControllerRequest]) (*connect.Response[api.DeleteElectronicSpeedControllerResponse], error)
 }
 
 // NewElectronicSpeedControllerServiceClient constructs a client for the
@@ -73,13 +85,34 @@ func NewElectronicSpeedControllerServiceClient(httpClient connect.HTTPClient, ba
 			connect.WithSchema(electronicSpeedControllerServiceMethods.ByName("ListElectronicSpeedControllers")),
 			connect.WithClientOptions(opts...),
 		),
+		createElectronicSpeedController: connect.NewClient[api.CreateElectronicSpeedControllerRequest, api.ElectronicSpeedController](
+			httpClient,
+			baseURL+ElectronicSpeedControllerServiceCreateElectronicSpeedControllerProcedure,
+			connect.WithSchema(electronicSpeedControllerServiceMethods.ByName("CreateElectronicSpeedController")),
+			connect.WithClientOptions(opts...),
+		),
+		updateElectronicSpeedController: connect.NewClient[api.UpdateElectronicSpeedControllerRequest, api.ElectronicSpeedController](
+			httpClient,
+			baseURL+ElectronicSpeedControllerServiceUpdateElectronicSpeedControllerProcedure,
+			connect.WithSchema(electronicSpeedControllerServiceMethods.ByName("UpdateElectronicSpeedController")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteElectronicSpeedController: connect.NewClient[api.DeleteElectronicSpeedControllerRequest, api.DeleteElectronicSpeedControllerResponse](
+			httpClient,
+			baseURL+ElectronicSpeedControllerServiceDeleteElectronicSpeedControllerProcedure,
+			connect.WithSchema(electronicSpeedControllerServiceMethods.ByName("DeleteElectronicSpeedController")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // electronicSpeedControllerServiceClient implements ElectronicSpeedControllerServiceClient.
 type electronicSpeedControllerServiceClient struct {
-	getElectronicSpeedController   *connect.Client[api.GetElectronicSpeedControllerRequest, api.ElectronicSpeedController]
-	listElectronicSpeedControllers *connect.Client[api.ListElectronicSpeedControllersRequest, api.ListElectronicSpeedControllersResponse]
+	getElectronicSpeedController    *connect.Client[api.GetElectronicSpeedControllerRequest, api.ElectronicSpeedController]
+	listElectronicSpeedControllers  *connect.Client[api.ListElectronicSpeedControllersRequest, api.ListElectronicSpeedControllersResponse]
+	createElectronicSpeedController *connect.Client[api.CreateElectronicSpeedControllerRequest, api.ElectronicSpeedController]
+	updateElectronicSpeedController *connect.Client[api.UpdateElectronicSpeedControllerRequest, api.ElectronicSpeedController]
+	deleteElectronicSpeedController *connect.Client[api.DeleteElectronicSpeedControllerRequest, api.DeleteElectronicSpeedControllerResponse]
 }
 
 // GetElectronicSpeedController calls
@@ -94,11 +127,32 @@ func (c *electronicSpeedControllerServiceClient) ListElectronicSpeedControllers(
 	return c.listElectronicSpeedControllers.CallUnary(ctx, req)
 }
 
+// CreateElectronicSpeedController calls
+// quadsmith.api.ElectronicSpeedControllerService.CreateElectronicSpeedController.
+func (c *electronicSpeedControllerServiceClient) CreateElectronicSpeedController(ctx context.Context, req *connect.Request[api.CreateElectronicSpeedControllerRequest]) (*connect.Response[api.ElectronicSpeedController], error) {
+	return c.createElectronicSpeedController.CallUnary(ctx, req)
+}
+
+// UpdateElectronicSpeedController calls
+// quadsmith.api.ElectronicSpeedControllerService.UpdateElectronicSpeedController.
+func (c *electronicSpeedControllerServiceClient) UpdateElectronicSpeedController(ctx context.Context, req *connect.Request[api.UpdateElectronicSpeedControllerRequest]) (*connect.Response[api.ElectronicSpeedController], error) {
+	return c.updateElectronicSpeedController.CallUnary(ctx, req)
+}
+
+// DeleteElectronicSpeedController calls
+// quadsmith.api.ElectronicSpeedControllerService.DeleteElectronicSpeedController.
+func (c *electronicSpeedControllerServiceClient) DeleteElectronicSpeedController(ctx context.Context, req *connect.Request[api.DeleteElectronicSpeedControllerRequest]) (*connect.Response[api.DeleteElectronicSpeedControllerResponse], error) {
+	return c.deleteElectronicSpeedController.CallUnary(ctx, req)
+}
+
 // ElectronicSpeedControllerServiceHandler is an implementation of the
 // quadsmith.api.ElectronicSpeedControllerService service.
 type ElectronicSpeedControllerServiceHandler interface {
 	GetElectronicSpeedController(context.Context, *connect.Request[api.GetElectronicSpeedControllerRequest]) (*connect.Response[api.ElectronicSpeedController], error)
 	ListElectronicSpeedControllers(context.Context, *connect.Request[api.ListElectronicSpeedControllersRequest]) (*connect.Response[api.ListElectronicSpeedControllersResponse], error)
+	CreateElectronicSpeedController(context.Context, *connect.Request[api.CreateElectronicSpeedControllerRequest]) (*connect.Response[api.ElectronicSpeedController], error)
+	UpdateElectronicSpeedController(context.Context, *connect.Request[api.UpdateElectronicSpeedControllerRequest]) (*connect.Response[api.ElectronicSpeedController], error)
+	DeleteElectronicSpeedController(context.Context, *connect.Request[api.DeleteElectronicSpeedControllerRequest]) (*connect.Response[api.DeleteElectronicSpeedControllerResponse], error)
 }
 
 // NewElectronicSpeedControllerServiceHandler builds an HTTP handler from the service
@@ -120,12 +174,36 @@ func NewElectronicSpeedControllerServiceHandler(svc ElectronicSpeedControllerSer
 		connect.WithSchema(electronicSpeedControllerServiceMethods.ByName("ListElectronicSpeedControllers")),
 		connect.WithHandlerOptions(opts...),
 	)
+	electronicSpeedControllerServiceCreateElectronicSpeedControllerHandler := connect.NewUnaryHandler(
+		ElectronicSpeedControllerServiceCreateElectronicSpeedControllerProcedure,
+		svc.CreateElectronicSpeedController,
+		connect.WithSchema(electronicSpeedControllerServiceMethods.ByName("CreateElectronicSpeedController")),
+		connect.WithHandlerOptions(opts...),
+	)
+	electronicSpeedControllerServiceUpdateElectronicSpeedControllerHandler := connect.NewUnaryHandler(
+		ElectronicSpeedControllerServiceUpdateElectronicSpeedControllerProcedure,
+		svc.UpdateElectronicSpeedController,
+		connect.WithSchema(electronicSpeedControllerServiceMethods.ByName("UpdateElectronicSpeedController")),
+		connect.WithHandlerOptions(opts...),
+	)
+	electronicSpeedControllerServiceDeleteElectronicSpeedControllerHandler := connect.NewUnaryHandler(
+		ElectronicSpeedControllerServiceDeleteElectronicSpeedControllerProcedure,
+		svc.DeleteElectronicSpeedController,
+		connect.WithSchema(electronicSpeedControllerServiceMethods.ByName("DeleteElectronicSpeedController")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.ElectronicSpeedControllerService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case ElectronicSpeedControllerServiceGetElectronicSpeedControllerProcedure:
 			electronicSpeedControllerServiceGetElectronicSpeedControllerHandler.ServeHTTP(w, r)
 		case ElectronicSpeedControllerServiceListElectronicSpeedControllersProcedure:
 			electronicSpeedControllerServiceListElectronicSpeedControllersHandler.ServeHTTP(w, r)
+		case ElectronicSpeedControllerServiceCreateElectronicSpeedControllerProcedure:
+			electronicSpeedControllerServiceCreateElectronicSpeedControllerHandler.ServeHTTP(w, r)
+		case ElectronicSpeedControllerServiceUpdateElectronicSpeedControllerProcedure:
+			electronicSpeedControllerServiceUpdateElectronicSpeedControllerHandler.ServeHTTP(w, r)
+		case ElectronicSpeedControllerServiceDeleteElectronicSpeedControllerProcedure:
+			electronicSpeedControllerServiceDeleteElectronicSpeedControllerHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -141,4 +219,16 @@ func (UnimplementedElectronicSpeedControllerServiceHandler) GetElectronicSpeedCo
 
 func (UnimplementedElectronicSpeedControllerServiceHandler) ListElectronicSpeedControllers(context.Context, *connect.Request[api.ListElectronicSpeedControllersRequest]) (*connect.Response[api.ListElectronicSpeedControllersResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.ElectronicSpeedControllerService.ListElectronicSpeedControllers is not implemented"))
+}
+
+func (UnimplementedElectronicSpeedControllerServiceHandler) CreateElectronicSpeedController(context.Context, *connect.Request[api.CreateElectronicSpeedControllerRequest]) (*connect.Response[api.ElectronicSpeedController], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.ElectronicSpeedControllerService.CreateElectronicSpeedController is not implemented"))
+}
+
+func (UnimplementedElectronicSpeedControllerServiceHandler) UpdateElectronicSpeedController(context.Context, *connect.Request[api.UpdateElectronicSpeedControllerRequest]) (*connect.Response[api.ElectronicSpeedController], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.ElectronicSpeedControllerService.UpdateElectronicSpeedController is not implemented"))
+}
+
+func (UnimplementedElectronicSpeedControllerServiceHandler) DeleteElectronicSpeedController(context.Context, *connect.Request[api.DeleteElectronicSpeedControllerRequest]) (*connect.Response[api.DeleteElectronicSpeedControllerResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.ElectronicSpeedControllerService.DeleteElectronicSpeedController is not implemented"))
 }
