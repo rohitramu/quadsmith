@@ -45,7 +45,7 @@ Always check the manufacturer's official website and official spec sheets as the
     - **Clickable Reference Links**: Include as many clickable reference links as appropriate using descriptive anchor text as evidence for statements. For committed repository files, use relative links, never absolute paths. External links should prioritize official documentation, Wikipedia, and StackExchange.
     - **1. Background (optional)**: Context, and explicit references to any superseded plans.
     - **2. Goal**
-    - **3. Proposal**: Starts with `> **TL;DR:** <explanation>` blockquote (short 1-2 sentence summary or concise bulleted list of short items), followed by a high-level concept explanation paragraph, then 1 sub-heading per design decision (`### <Design Decision>`) with nested `#### Alternatives considered` (unbulleted ~2 sentence summary, unbulleted `**Pros:**` and `**Cons:**` labels with bulleted items).
+    - **3. Proposal**: Starts with `> **TL;DR:** <explanation>` blockquote (short 1-2 sentence summary or concise bulleted list of short items), followed by a high-level concept explanation paragraph, then 1 sub-heading per design decision (`### <Design Decision>`) with the proposal explanation directly under it (using diagrams, tables, images, UI screenshots, UI concept images, artifacts, or code snippets with path references as appropriate), and nested `#### Alternatives considered` (unbulleted ~2 sentence summary, unbulleted `**Pros:**` and `**Cons:**` labels with bulleted items).
     - **4. Alternatives considered (optional)**: High-level conceptual alternatives.
     - **5. Assumptions (optional)**: Numbered list.
     - **6. Future work (optional)**: 1 sub-heading per idea.
