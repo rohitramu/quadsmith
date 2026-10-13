@@ -310,6 +310,17 @@ func (s *OpsService) TriggerJob(ctx context.Context, req *connect.Request[pb.Tri
 			CallId:  callID,
 		}), nil
 
+	case "purgesoftdeletedaccounts", "purge_soft_deleted_accounts", "purge_accounts":
+		count, err := auth.HandlePurgeSoftDeletedAccounts(ctx, s.publicDb)
+		if err != nil {
+			return nil, err
+		}
+		return connect.NewResponse(&pb.TriggerJobResponse{
+			Success: true,
+			Message: fmt.Sprintf("HandlePurgeSoftDeletedAccounts executed successfully; purged %d account(s)", count),
+			CallId:  callID,
+		}), nil
+
 	default:
 		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unknown scheduled job %q", req.Msg.GetJobName()))
 	}

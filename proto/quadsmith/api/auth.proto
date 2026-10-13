@@ -90,6 +90,8 @@ message AuthResponse {
   UserProfile profile = 4;
   bool account_setup_required = 5;
   string setup_token = 6;
+  optional string account_status = 7;
+  optional google.protobuf.Timestamp scheduled_purge_at = 8;
 }
 
 message CompleteAccountSetupRequest {
@@ -251,6 +253,47 @@ message ListArchivedUsernamesResponse {
 }
 
 // ---------------------------------------------------------
+// Account Deletion Requests & Responses
+// ---------------------------------------------------------
+
+message SendDeleteAccountVerificationRequest {
+  string username = 1 [(quadsmith.validate.rules).string = {
+    min_len: 3
+    max_len: 20
+  }];
+}
+
+message SendDeleteAccountVerificationResponse {
+  bool success = 1;
+  string message = 2;
+  string challenge_id = 3;
+  google.protobuf.Timestamp expires_at = 4;
+}
+
+message DeleteAccountRequest {
+  string username = 1;
+  string challenge_id = 2;
+  oneof verification {
+    string code = 3;
+    string magic_token = 4;
+  }
+}
+
+message DeleteAccountResponse {
+  bool success = 1;
+  string message = 2;
+  google.protobuf.Timestamp scheduled_purge_at = 3;
+}
+
+message CancelAccountDeletionRequest {}
+
+message CancelAccountDeletionResponse {
+  bool success = 1;
+  string message = 2;
+  User user = 3;
+}
+
+// ---------------------------------------------------------
 // Authentication Service
 // ---------------------------------------------------------
 
@@ -277,4 +320,8 @@ service AuthService {
 
   rpc ChangeUsername(ChangeUsernameRequest) returns (ChangeUsernameResponse);
   rpc ListArchivedUsernames(ListArchivedUsernamesRequest) returns (ListArchivedUsernamesResponse);
+
+  rpc SendDeleteAccountVerification(SendDeleteAccountVerificationRequest) returns (SendDeleteAccountVerificationResponse);
+  rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResponse);
+  rpc CancelAccountDeletion(CancelAccountDeletionRequest) returns (CancelAccountDeletionResponse);
 }

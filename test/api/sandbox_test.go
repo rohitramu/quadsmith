@@ -1261,3 +1261,228 @@ func TestSandboxUpdateCollection(t *testing.T) {
 		t.Errorf("expected GetCollection description to be 'Updated description', got '%s'", getRes.Msg.Description)
 	}
 }
+
+func TestSandboxAuth_AccountDeletionGracePeriodAndResurrection(t *testing.T) {
+	apiUrl := getAPIURL()
+	client := &http.Client{Timeout: 2 * time.Second}
+	_, err := client.Get(apiUrl)
+	if err != nil {
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
+	}
+
+	authClient := apiconnect.NewAuthServiceClient(
+		http.DefaultClient,
+		apiUrl,
+	)
+	userClient := apiconnect.NewUserServiceClient(
+		http.DefaultClient,
+		apiUrl,
+	)
+	ctx := context.Background()
+
+	dbUrl := getDBURL()
+	pool, err := pgxpool.New(ctx, dbUrl)
+	if err != nil {
+		t.Fatalf("failed to connect to db: %v", err)
+	}
+	defer pool.Close()
+
+	userUUID := "018f0000-0000-7000-8000-0000000000d1"
+	username := "delete_pilot"
+	userEmail := "delete_pilot@example.com"
+
+	// Cleanup any previous test data
+	_, _ = pool.Exec(ctx, `DELETE FROM email_otps WHERE email = $1 OR requested_by_user_uuid = $2`, userEmail, userUUID)
+	_, _ = pool.Exec(ctx, `DELETE FROM user_emails WHERE email = $1`, userEmail)
+	_, _ = pool.Exec(ctx, `DELETE FROM user_profiles WHERE user_uuid = $1`, userUUID)
+	_, _ = pool.Exec(ctx, `DELETE FROM refresh_tokens WHERE user_uuid = $1`, userUUID)
+	_, _ = pool.Exec(ctx, `DELETE FROM users WHERE uuid = $1 OR id = $2`, userUUID, username)
+
+	// Seed user
+	_, err = pool.Exec(ctx, `
+		INSERT INTO users (uuid, id, email, role, created_at, updated_at)
+		VALUES ($1, $2, $3, 'USER', NOW(), NOW())`,
+		userUUID, username, userEmail)
+	if err != nil {
+		t.Fatalf("failed to seed user: %v", err)
+	}
+
+	_, err = pool.Exec(ctx, `
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
+		VALUES ($1, $2, $3, true, true, NOW())`,
+		"018f0000-0000-7000-8000-0000000000e1", userUUID, userEmail)
+	if err != nil {
+		t.Fatalf("failed to seed user email: %v", err)
+	}
+
+	token, err := auth.SignAccessToken(userUUID, username, userEmail, "USER", "test-session-d1")
+	if err != nil {
+		t.Fatalf("failed to sign access token: %v", err)
+	}
+
+	// 1. SendDeleteAccountVerification - mismatch username fails
+	badReq := connect.NewRequest(&pb.SendDeleteAccountVerificationRequest{
+		Username: "wrong_username",
+	})
+	badReq.Header().Set("Authorization", "Bearer "+token)
+	_, err = authClient.SendDeleteAccountVerification(ctx, badReq)
+	if err == nil {
+		t.Fatal("expected SendDeleteAccountVerification to fail on mismatched username, but it succeeded")
+	}
+
+	// 2. SendDeleteAccountVerification - correct username succeeds
+	sendReq := connect.NewRequest(&pb.SendDeleteAccountVerificationRequest{
+		Username: username,
+	})
+	sendReq.Header().Set("Authorization", "Bearer "+token)
+	sendRes, err := authClient.SendDeleteAccountVerification(ctx, sendReq)
+	if err != nil {
+		t.Fatalf("SendDeleteAccountVerification failed: %v", err)
+	}
+	if !sendRes.Msg.Success || sendRes.Msg.ChallengeId == "" {
+		t.Fatalf("unexpected SendDeleteAccountVerification response: %+v", sendRes.Msg)
+	}
+
+	// Query OTP challenge from DB
+	var otpUUID string
+	var expiresAt time.Time
+	err = pool.QueryRow(ctx, `
+		SELECT uuid, expires_at FROM email_otps
+		WHERE requested_by_user_uuid = $1 AND purpose = 'delete_account' AND used_at IS NULL
+		ORDER BY created_at DESC LIMIT 1`, userUUID).Scan(&otpUUID, &expiresAt)
+	if err != nil {
+		t.Fatalf("failed to query delete_account email_otps: %v", err)
+	}
+
+	// 3. DeleteAccount using magic token
+	magicToken, err := auth.SignMagicLinkToken(otpUUID, userEmail, "delete_account", userUUID, expiresAt)
+	if err != nil {
+		t.Fatalf("failed to generate magic link token: %v", err)
+	}
+
+	delReq := connect.NewRequest(&pb.DeleteAccountRequest{
+		Username: username,
+		Verification: &pb.DeleteAccountRequest_MagicToken{
+			MagicToken: magicToken,
+		},
+	})
+	delReq.Header().Set("Authorization", "Bearer "+token)
+	delRes, err := authClient.DeleteAccount(ctx, delReq)
+	if err != nil {
+		t.Fatalf("DeleteAccount failed: %v", err)
+	}
+	if !delRes.Msg.Success || delRes.Msg.ScheduledPurgeAt == nil {
+		t.Fatalf("unexpected DeleteAccount response: %+v", delRes.Msg)
+	}
+
+	// Check DB: user is soft-deleted
+	var dbDeletedAt *time.Time
+	err = pool.QueryRow(ctx, `SELECT deleted_at FROM users WHERE uuid = $1`, userUUID).Scan(&dbDeletedAt)
+	if err != nil || dbDeletedAt == nil {
+		t.Fatalf("expected users.deleted_at to be set, err: %v, deleted_at: %v", err, dbDeletedAt)
+	}
+
+	// 4. In-Place Handle Locking: CheckUsernameAvailable reports handle UNAVAILABLE
+	availRes, err := userClient.CheckUsernameAvailable(ctx, connect.NewRequest(&pb.CheckUsernameAvailableRequest{
+		Username: username,
+	}))
+	if err != nil {
+		t.Fatalf("CheckUsernameAvailable failed: %v", err)
+	}
+	if availRes.Msg.Available || availRes.Msg.Status != pb.UsernameAvailabilityStatus_USERNAME_AVAILABILITY_STATUS_UNAVAILABLE {
+		t.Errorf("expected soft-deleted username to remain locked (UNAVAILABLE), got available: %v, status: %v",
+			availRes.Msg.Available, availRes.Msg.Status)
+	}
+
+	// 5. Login attempt during 30-day grace period returns PENDING_DELETION
+	// Age previous email OTP to clear cooldown
+	_, _ = pool.Exec(ctx, `UPDATE email_otps SET created_at = NOW() - INTERVAL '30 seconds' WHERE email = $1`, userEmail)
+	loginOtpRes, err := authClient.SendEmailOtp(ctx, connect.NewRequest(&pb.SendEmailOtpRequest{
+		Email: userEmail,
+	}))
+	if err != nil {
+		t.Fatalf("SendEmailOtp during grace period failed: %v", err)
+	}
+	if !loginOtpRes.Msg.IsExistingAccount {
+		t.Errorf("expected is_existing_account = true for user in grace period")
+	}
+
+	var loginOtpUUID string
+	var loginExpiresAt time.Time
+	err = pool.QueryRow(ctx, `
+		SELECT uuid, expires_at FROM email_otps
+		WHERE email = $1 AND purpose = 'login' AND used_at IS NULL
+		ORDER BY created_at DESC LIMIT 1`, userEmail).Scan(&loginOtpUUID, &loginExpiresAt)
+	if err != nil {
+		t.Fatalf("failed to query login OTP from DB: %v", err)
+	}
+
+	loginMagicToken, err := auth.SignMagicLinkToken(loginOtpUUID, userEmail, "login", "", loginExpiresAt)
+	if err != nil {
+		t.Fatalf("failed to sign login magic token: %v", err)
+	}
+
+	verifyRes, err := authClient.VerifyMagicLink(ctx, connect.NewRequest(&pb.VerifyMagicLinkRequest{
+		Token: loginMagicToken,
+	}))
+	if err != nil {
+		t.Fatalf("VerifyMagicLink failed during grace period: %v", err)
+	}
+	if verifyRes.Msg.GetAccountStatus() != "PENDING_DELETION" {
+		t.Errorf("expected account_status 'PENDING_DELETION', got '%s'", verifyRes.Msg.GetAccountStatus())
+	}
+	if verifyRes.Msg.ScheduledPurgeAt == nil {
+		t.Errorf("expected scheduled_purge_at to be populated in AuthResponse")
+	}
+
+	// 6. CancelAccountDeletion restores the account
+	resurrectReq := connect.NewRequest(&pb.CancelAccountDeletionRequest{})
+	resurrectReq.Header().Set("Authorization", "Bearer "+verifyRes.Msg.AccessToken)
+	resurrectRes, err := authClient.CancelAccountDeletion(ctx, resurrectReq)
+	if err != nil {
+		t.Fatalf("CancelAccountDeletion failed: %v", err)
+	}
+	if !resurrectRes.Msg.Success {
+		t.Errorf("expected CancelAccountDeletion success = true")
+	}
+
+	// Check DB: deleted_at is cleared!
+	err = pool.QueryRow(ctx, `SELECT deleted_at FROM users WHERE uuid = $1`, userUUID).Scan(&dbDeletedAt)
+	if err != nil {
+		t.Fatalf("failed to query user after resurrection: %v", err)
+	}
+	if dbDeletedAt != nil {
+		t.Errorf("expected deleted_at to be NULL after resurrection, got %v", dbDeletedAt)
+	}
+
+	// 7. Scrubber test: simulate account past 30 days and verify purge
+	_, _ = pool.Exec(ctx, `UPDATE users SET deleted_at = NOW() - INTERVAL '31 days' WHERE uuid = $1`, userUUID)
+	purgedCount, err := auth.HandlePurgeSoftDeletedAccounts(ctx, pool)
+	if err != nil {
+		t.Fatalf("HandlePurgeSoftDeletedAccounts failed: %v", err)
+	}
+	if purgedCount != 1 {
+		t.Errorf("expected 1 user purged, got %d", purgedCount)
+	}
+
+	// Verify handle released and anonymized
+	var currentId string
+	err = pool.QueryRow(ctx, `SELECT id FROM users WHERE uuid = $1`, userUUID).Scan(&currentId)
+	if err != nil {
+		t.Fatalf("failed to query purged user: %v", err)
+	}
+	if !strings.HasPrefix(currentId, "deleted-") {
+		t.Errorf("expected purged user id to start with 'deleted-', got '%s'", currentId)
+	}
+
+	// Verify original username is now available to new users
+	availAfterPurge, err := userClient.CheckUsernameAvailable(ctx, connect.NewRequest(&pb.CheckUsernameAvailableRequest{
+		Username: username,
+	}))
+	if err != nil {
+		t.Fatalf("CheckUsernameAvailable after purge failed: %v", err)
+	}
+	if !availAfterPurge.Msg.Available {
+		t.Errorf("expected username to be available after purge, got: %+v", availAfterPurge.Msg)
+	}
+}

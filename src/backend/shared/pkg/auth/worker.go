@@ -93,3 +93,110 @@ func HandleCleanupExpiredTokens(ctx context.Context, pool *pgxpool.Pool) (int64,
 	}
 	return rows, nil
 }
+
+// HandlePurgeSoftDeletedAccounts executes atomic final data purges for soft-deleted accounts
+// whose 30-day grace period has elapsed.
+func HandlePurgeSoftDeletedAccounts(ctx context.Context, pool *pgxpool.Pool) (int64, error) {
+	rows, err := pool.Query(ctx, `
+		SELECT uuid, id FROM users
+		WHERE deleted_at IS NOT NULL
+		  AND deleted_at <= NOW() - INTERVAL '30 days';`)
+	if err != nil {
+		return 0, fmt.Errorf("failed to query expired soft-deleted users: %w", err)
+	}
+	defer rows.Close()
+
+	type expiredUser struct {
+		uuid string
+		id   string
+	}
+	var users []expiredUser
+	for rows.Next() {
+		var u expiredUser
+		if err := rows.Scan(&u.uuid, &u.id); err != nil {
+			log.Printf("[PurgeWorker] Failed to scan user: %v", err)
+			continue
+		}
+		users = append(users, u)
+	}
+	if err := rows.Err(); err != nil {
+		return 0, fmt.Errorf("error reading expired users: %w", err)
+	}
+
+	var purgedCount int64
+	for _, u := range users {
+		tx, err := pool.Begin(ctx)
+		if err != nil {
+			log.Printf("[PurgeWorker] Failed to begin transaction for %s: %v", u.uuid, err)
+			continue
+		}
+
+		// 1. Anonymize user handle, releasing original username to the public pool
+		newHandle := "deleted-" + u.uuid
+		_, err = tx.Exec(ctx, `UPDATE users SET id = $1, email = $2, updated_at = NOW() WHERE uuid = $3`, newHandle, newHandle+"@deleted.quadsmith.internal", u.uuid)
+		if err != nil {
+			_ = tx.Rollback(ctx)
+			log.Printf("[PurgeWorker] Failed to anonymize user %s: %v", u.uuid, err)
+			continue
+		}
+
+		// 2. Clear personal profile details
+		_, err = tx.Exec(ctx, `UPDATE user_profiles SET bio = '', avatar_url = '', updated_at = NOW() WHERE user_uuid = $1`, u.uuid)
+		if err != nil {
+			_ = tx.Rollback(ctx)
+			log.Printf("[PurgeWorker] Failed to clear profile for %s: %v", u.uuid, err)
+			continue
+		}
+
+		// 3. Hard delete email addresses and OAuth junction records
+		_, err = tx.Exec(ctx, `
+			DELETE FROM user_email_oauth_accounts
+			WHERE user_email_uuid IN (SELECT uuid FROM user_emails WHERE user_uuid = $1)`, u.uuid)
+		if err != nil {
+			_ = tx.Rollback(ctx)
+			log.Printf("[PurgeWorker] Failed to delete user_email_oauth_accounts for %s: %v", u.uuid, err)
+			continue
+		}
+
+		_, err = tx.Exec(ctx, `DELETE FROM user_emails WHERE user_uuid = $1`, u.uuid)
+		if err != nil {
+			_ = tx.Rollback(ctx)
+			log.Printf("[PurgeWorker] Failed to delete user_emails for %s: %v", u.uuid, err)
+			continue
+		}
+
+		// 4. Hard delete linked OAuth provider credentials
+		_, err = tx.Exec(ctx, `DELETE FROM oauth_accounts WHERE user_uuid = $1`, u.uuid)
+		if err != nil {
+			_ = tx.Rollback(ctx)
+			log.Printf("[PurgeWorker] Failed to delete oauth_accounts for %s: %v", u.uuid, err)
+			continue
+		}
+
+		// 5. Revoke all active sessions and refresh tokens
+		_, err = tx.Exec(ctx, `DELETE FROM refresh_tokens WHERE user_uuid = $1`, u.uuid)
+		if err != nil {
+			_ = tx.Rollback(ctx)
+			log.Printf("[PurgeWorker] Failed to delete refresh_tokens for %s: %v", u.uuid, err)
+			continue
+		}
+
+		// 6. Delete any email OTP challenges requested by or sent to this user
+		_, err = tx.Exec(ctx, `DELETE FROM email_otps WHERE requested_by_user_uuid = $1`, u.uuid)
+		if err != nil {
+			_ = tx.Rollback(ctx)
+			log.Printf("[PurgeWorker] Failed to delete email_otps for %s: %v", u.uuid, err)
+			continue
+		}
+
+		if err := tx.Commit(ctx); err != nil {
+			log.Printf("[PurgeWorker] Failed to commit purge for %s: %v", u.uuid, err)
+			continue
+		}
+
+		log.Printf("[PurgeWorker] Successfully purged user %s (@%s), released handle", u.uuid, u.id)
+		purgedCount++
+	}
+
+	return purgedCount, nil
+}

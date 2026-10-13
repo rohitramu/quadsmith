@@ -192,11 +192,17 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 		fmt.Printf("=======================================================\n\n")
 	}
 
+	exists, err := s.userExistsForEmail(ctx, email)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
 	res := connect.NewResponse(&pb.SendEmailOtpResponse{
-		Success:         true,
-		Message:         "Verification code sent to your email",
-		CooldownSeconds: int32(s.cfg.EmailCooldown.Seconds()),
-		ChallengeId:     &challengeToken,
+		Success:           true,
+		Message:           "Verification code sent to your email",
+		CooldownSeconds:   int32(s.cfg.EmailCooldown.Seconds()),
+		ChallengeId:       &challengeToken,
+		IsExistingAccount: exists,
 	})
 	s.setChallengeCookie(res.Header(), challengeToken)
 	return res, nil
@@ -625,9 +631,9 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
 
-	// Check if active user already has this username
+	// Check if active user already has this username (or is in 30-day deletion grace period)
 	var activeOwnerUUID string
-	err = s.db.QueryRow(ctx, `SELECT uuid FROM users WHERE LOWER(id) = $1 AND deleted_at IS NULL`, username).Scan(&activeOwnerUUID)
+	err = s.db.QueryRow(ctx, `SELECT uuid FROM users WHERE LOWER(id) = $1 AND (deleted_at IS NULL OR deleted_at + INTERVAL '30 days' > NOW())`, username).Scan(&activeOwnerUUID)
 	if err == nil {
 		return nil, connect.NewError(connect.CodeAlreadyExists, errors.New("This username is already taken"))
 	} else if !errors.Is(err, pgx.ErrNoRows) {
@@ -712,10 +718,10 @@ func (s *AuthService) userExistsForEmail(ctx context.Context, email string) (boo
 		SELECT COUNT(*) FROM (
 			SELECT 1 FROM user_emails ue
 			JOIN users u ON u.uuid = ue.user_uuid
-			WHERE LOWER(ue.email) = LOWER($1) AND u.deleted_at IS NULL
+			WHERE LOWER(ue.email) = LOWER($1) AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
 			UNION
 			SELECT 1 FROM users u
-			WHERE LOWER(u.email) = LOWER($1) AND u.deleted_at IS NULL
+			WHERE LOWER(u.email) = LOWER($1) AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
 		) sub`, email).Scan(&count)
 	if err != nil {
 		return false, err
@@ -847,6 +853,9 @@ func (s *AuthService) GetCurrentUser(ctx context.Context, _ *connect.Request[pb.
 	}
 	if lastRenamedAt != nil {
 		user.LastRenamedAt = timestamppb.New(*lastRenamedAt)
+	}
+	if deletedAt != nil {
+		user.DeletedAt = timestamppb.New(*deletedAt)
 	}
 	if createdAt != nil {
 		user.CreatedAt = timestamppb.New(*createdAt)
@@ -1897,9 +1906,9 @@ func (s *AuthService) ChangeUsername(ctx context.Context, req *connect.Request[p
 			}
 		}
 
-		// 2. Check if taken by another active user
+		// 2. Check if taken by another active user or held in 30-day deletion grace period
 		var activeExists bool
-		err = s.db.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM users WHERE LOWER(id) = $1 AND deleted_at IS NULL)`, newUsername).Scan(&activeExists)
+		err = s.db.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM users WHERE LOWER(id) = $1 AND (deleted_at IS NULL OR deleted_at + INTERVAL '30 days' > NOW()))`, newUsername).Scan(&activeExists)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}
@@ -2320,7 +2329,7 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		SELECT u.uuid, u.id, u.email, u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
 		FROM user_emails ue
 		JOIN users u ON u.uuid = ue.user_uuid
-		WHERE LOWER(ue.email) = LOWER($1) AND u.deleted_at IS NULL
+		WHERE LOWER(ue.email) = LOWER($1) AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
 		LIMIT 1`, email).Scan(
 		&userUUID, &username, &user.Email, &role,
 		&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
@@ -2330,7 +2339,7 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		err = s.db.QueryRow(ctx, `
 			SELECT uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at
 			FROM users
-			WHERE LOWER(email) = LOWER($1) AND deleted_at IS NULL`, email).Scan(
+			WHERE LOWER(email) = LOWER($1) AND (deleted_at IS NULL OR deleted_at + INTERVAL '30 days' > NOW())`, email).Scan(
 			&userUUID, &username, &user.Email, &role,
 			&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 	}
@@ -2388,6 +2397,9 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		if lastRenamedAt != nil {
 			user.LastRenamedAt = timestamppb.New(*lastRenamedAt)
 		}
+		if deletedAt != nil {
+			user.DeletedAt = timestamppb.New(*deletedAt)
+		}
 		if createdAt != nil {
 			user.CreatedAt = timestamppb.New(*createdAt)
 		}
@@ -2427,11 +2439,21 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign access token: %w", err))
 	}
 
+	var accountStatus *string
+	var scheduledPurgeAt *timestamppb.Timestamp
+	if deletedAt != nil {
+		status := "PENDING_DELETION"
+		accountStatus = &status
+		scheduledPurgeAt = timestamppb.New(deletedAt.Add(30 * 24 * time.Hour))
+	}
+
 	res := connect.NewResponse(&pb.AuthResponse{
-		AccessToken:  accessToken,
-		RefreshToken: rawRefreshToken,
-		User:         &user,
-		Profile:      &profile,
+		AccessToken:      accessToken,
+		RefreshToken:     rawRefreshToken,
+		User:             &user,
+		Profile:          &profile,
+		AccountStatus:    accountStatus,
+		ScheduledPurgeAt: scheduledPurgeAt,
 	})
 
 	cookie := &http.Cookie{
@@ -2519,7 +2541,7 @@ func (s *AuthService) generateUniqueUsername(ctx context.Context, email string) 
 	for {
 		var exists bool
 		err := s.db.QueryRow(ctx, `
-			SELECT EXISTS(SELECT 1 FROM users WHERE id = $1 AND deleted_at IS NULL)
+			SELECT EXISTS(SELECT 1 FROM users WHERE id = $1 AND (deleted_at IS NULL OR deleted_at + INTERVAL '30 days' > NOW()))
 			OR EXISTS(SELECT 1 FROM username_histories WHERE old_username = $1 AND COALESCE(first_archived_at, renamed_at) >= NOW() - INTERVAL '30 days')`, candidate).Scan(&exists)
 		if err != nil || !exists {
 			return candidate
@@ -2533,6 +2555,297 @@ func (s *AuthService) generateUniqueUsername(ctx context.Context, email string) 
 			candidate = cleaned + suffix
 		}
 	}
+}
+
+// SendDeleteAccountVerification initiates account deletion by dispatching an out-of-band email verification challenge.
+func (s *AuthService) SendDeleteAccountVerification(ctx context.Context, req *connect.Request[pb.SendDeleteAccountVerificationRequest]) (*connect.Response[pb.SendDeleteAccountVerificationResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+
+	username := strings.ToLower(strings.TrimSpace(req.Msg.GetUsername()))
+	if username == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("username is required"))
+	}
+
+	// Verify username matches authenticated caller's identity
+	var currentUsername, primaryEmail string
+	err := s.db.QueryRow(ctx, `
+		SELECT u.id, COALESCE(ue.email, u.email)
+		FROM users u
+		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
+		WHERE u.uuid = $1 AND u.deleted_at IS NULL`, userCtx.UserUUID).Scan(&currentUsername, &primaryEmail)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("active user not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	if !strings.EqualFold(username, currentUsername) {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("username does not match your account"))
+	}
+
+	// Rate limit per IP
+	clientIP := getClientIP(req)
+	if err := CheckIPRateLimit(clientIP); err != nil {
+		return nil, connect.NewError(connect.CodeResourceExhausted, err)
+	}
+
+	cooldown, err := CheckEmailCooldown(ctx, s.db, primaryEmail)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if cooldown > 0 {
+		connErr := connect.NewError(connect.CodeResourceExhausted, fmt.Errorf("please wait %d seconds before requesting another code", cooldown))
+		if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
+			Message:           fmt.Sprintf("Please wait %d seconds before requesting another code", cooldown),
+			RemainingAttempts: 0,
+			MaxAttempts:       MaxOtpAttempts,
+			IsExhausted:       false,
+			CooldownSeconds:   cooldown,
+		}); detailErr == nil {
+			connErr.AddDetail(detail)
+		}
+		return nil, connErr
+	}
+
+	// Invalidate previous unconsumed delete_account OTP challenges for this user/email
+	_, _ = s.db.Exec(ctx, `
+		UPDATE email_otps
+		SET used_at = NOW()
+		WHERE (email = $1 OR requested_by_user_uuid = $2) AND purpose = 'delete_account' AND used_at IS NULL`,
+		primaryEmail, userCtx.UserUUID)
+
+	otpCode, codeHash, err := GenerateOTP()
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate otp: %w", err))
+	}
+
+	challengeToken, challengeHash, err := GenerateChallengeToken()
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate challenge token: %w", err))
+	}
+
+	otpUUID := NewUUIDv7()
+	now := time.Now()
+	expiresAt := now.Add(s.cfg.MagicLinkTTL)
+
+	_, err = s.db.Exec(ctx, `
+		INSERT INTO email_otps (uuid, email, challenge_id_hash, code_hash, purpose, requested_by_user_uuid, expires_at, created_at, failed_attempts)
+		VALUES ($1, $2, $3, $4, 'delete_account', $5, $6, $7, 0)`,
+		otpUUID, primaryEmail, challengeHash, codeHash, userCtx.UserUUID, expiresAt, now)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save delete account challenge: %w", err))
+	}
+
+	magicToken, err := SignMagicLinkToken(otpUUID, primaryEmail, "delete_account", userCtx.UserUUID, expiresAt)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate magic link token: %w", err))
+	}
+
+	baseURL := s.getBaseURL(req)
+	magicLinkURL := fmt.Sprintf("%s/delete-account?token=%s", baseURL, magicToken)
+
+	// Send verification email synchronously with strict 5s timeout
+	emailCtx, emailCancel := context.WithTimeout(ctx, 5*time.Second)
+	defer emailCancel()
+
+	if err := s.emailSender.SendVerification(emailCtx, primaryEmail, otpCode, magicLinkURL, "Account Deletion Confirmation", s.cfg.OtpTTL); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to deliver verification email: %w", err))
+	}
+
+	return connect.NewResponse(&pb.SendDeleteAccountVerificationResponse{
+		Success:     true,
+		Message:     "Account deletion verification code and link sent to your primary email",
+		ChallengeId: challengeToken,
+		ExpiresAt:   timestamppb.New(expiresAt),
+	}), nil
+}
+
+// DeleteAccount verifies the deletion challenge (code or magic token) and marks the account as soft-deleted.
+func (s *AuthService) DeleteAccount(ctx context.Context, req *connect.Request[pb.DeleteAccountRequest]) (*connect.Response[pb.DeleteAccountResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+
+	username := strings.ToLower(strings.TrimSpace(req.Msg.GetUsername()))
+	if username == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("username is required"))
+	}
+
+	// Verify username matches authenticated user
+	var currentUsername string
+	err := s.db.QueryRow(ctx, `SELECT id FROM users WHERE uuid = $1 AND deleted_at IS NULL`, userCtx.UserUUID).Scan(&currentUsername)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("active user not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if !strings.EqualFold(username, currentUsername) {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("username does not match your account"))
+	}
+
+	// Check verification method: either code (with challenge_id) or magic_token
+	code := strings.TrimSpace(req.Msg.GetCode())
+	magicToken := strings.TrimSpace(req.Msg.GetMagicToken())
+	challengeID := strings.TrimSpace(req.Msg.GetChallengeId())
+
+	if code == "" && magicToken == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("verification code or magic token required"))
+	}
+
+	if code != "" {
+		if challengeID == "" {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("challenge_id required when verifying with code"))
+		}
+		challengeHash := HashToken(challengeID)
+
+		var otpUUID, codeHash string
+		var failedAttempts int
+		var expiresAt time.Time
+
+		err := s.db.QueryRow(ctx, `
+			SELECT uuid, code_hash, failed_attempts, expires_at
+			FROM email_otps
+			WHERE challenge_id_hash = $1
+			  AND purpose = 'delete_account'
+			  AND requested_by_user_uuid = $2
+			  AND used_at IS NULL
+			ORDER BY created_at DESC
+			LIMIT 1`, challengeHash, userCtx.UserUUID).Scan(&otpUUID, &codeHash, &failedAttempts, &expiresAt)
+		if err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid or expired deletion challenge"))
+			}
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+
+		if time.Now().After(expiresAt) {
+			return nil, connect.NewError(connect.CodeDeadlineExceeded, errors.New("verification code has expired"))
+		}
+
+		if failedAttempts >= MaxOtpAttempts {
+			return nil, connect.NewError(connect.CodeResourceExhausted, errors.New("too many failed attempts; please request a new verification code"))
+		}
+
+		if !VerifyOTP(code, codeHash) {
+			failedAttempts++
+			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET failed_attempts = $1 WHERE uuid = $2`, failedAttempts, otpUUID)
+			remaining := MaxOtpAttempts - failedAttempts
+			if remaining <= 0 {
+				return nil, connect.NewError(connect.CodeResourceExhausted, errors.New("too many failed attempts; please request a new verification code"))
+			}
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid verification code; %d attempt(s) remaining", remaining))
+		}
+
+		// Mark challenge used
+		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
+	} else if magicToken != "" {
+		claims, err := VerifyMagicLinkToken(magicToken)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid or expired magic link: %w", err))
+		}
+		if claims.Purpose != "delete_account" {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid token purpose"))
+		}
+		if claims.RequesterUserUUID != userCtx.UserUUID {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("magic link was issued to a different user"))
+		}
+
+		// Check and mark used
+		var usedAt *time.Time
+		err = s.db.QueryRow(ctx, `SELECT used_at FROM email_otps WHERE uuid = $1`, claims.OtpUUID).Scan(&usedAt)
+		if err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("challenge not found"))
+			}
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		if usedAt != nil {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("magic link has already been used"))
+		}
+		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, claims.OtpUUID)
+	}
+
+	// 1-line soft deletion: set deleted_at = NOW()
+	now := time.Now()
+	_, err = s.db.Exec(ctx, `UPDATE users SET deleted_at = $1, updated_at = $1 WHERE uuid = $2`, now, userCtx.UserUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to schedule account deletion: %w", err))
+	}
+
+	// Revoke active refresh tokens
+	_, _ = s.db.Exec(ctx, `DELETE FROM refresh_tokens WHERE user_uuid = $1`, userCtx.UserUUID)
+
+	scheduledPurgeAt := now.Add(30 * 24 * time.Hour)
+	return connect.NewResponse(&pb.DeleteAccountResponse{
+		Success:          true,
+		Message:          "Your account has been scheduled for deletion. You have a 30-day grace period to restore it by logging in.",
+		ScheduledPurgeAt: timestamppb.New(scheduledPurgeAt),
+	}), nil
+}
+
+// CancelAccountDeletion restores a soft-deleted account within the 30-day grace period.
+func (s *AuthService) CancelAccountDeletion(ctx context.Context, _ *connect.Request[pb.CancelAccountDeletionRequest]) (*connect.Response[pb.CancelAccountDeletionResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+
+	// Verify that the user is currently soft-deleted and within 30-day grace period
+	var deletedAt *time.Time
+	err := s.db.QueryRow(ctx, `SELECT deleted_at FROM users WHERE uuid = $1`, userCtx.UserUUID).Scan(&deletedAt)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	if deletedAt == nil {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("account is not scheduled for deletion"))
+	}
+
+	if time.Now().After(deletedAt.Add(30 * 24 * time.Hour)) {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("the 30-day grace period for this account has expired"))
+	}
+
+	// 1-Line Resurrection: clear deleted_at
+	_, err = s.db.Exec(ctx, `UPDATE users SET deleted_at = NULL, updated_at = NOW() WHERE uuid = $1`, userCtx.UserUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to restore account: %w", err))
+	}
+
+	// Fetch updated user
+	var user pb.User
+	var lastRenamedAt, bannedAt, createdAt, updatedAt *time.Time
+	err = s.db.QueryRow(ctx, `
+		SELECT uuid, id, email, role, last_renamed_at, banned_at, created_at, updated_at
+		FROM users WHERE uuid = $1`, userCtx.UserUUID).Scan(
+		&user.Uuid, &user.Id, &user.Email, &user.Role,
+		&lastRenamedAt, &bannedAt, &createdAt, &updatedAt)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if lastRenamedAt != nil {
+		user.LastRenamedAt = timestamppb.New(*lastRenamedAt)
+	}
+	if createdAt != nil {
+		user.CreatedAt = timestamppb.New(*createdAt)
+	}
+	if updatedAt != nil {
+		user.UpdatedAt = timestamppb.New(*updatedAt)
+	}
+
+	return connect.NewResponse(&pb.CancelAccountDeletionResponse{
+		Success: true,
+		Message: "Your account has been successfully restored",
+		User:    &user,
+	}), nil
 }
 
 // ---------------------------------------------------------
@@ -2694,9 +3007,9 @@ func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.R
 
 	userCtx := UserContextFromContext(ctx)
 
-	// Check if active user already has this username
+	// Check if active user already has this username (or is in 30-day deletion grace period)
 	var activeOwnerUUID string
-	err := s.db.QueryRow(ctx, `SELECT uuid FROM users WHERE LOWER(id) = $1 AND deleted_at IS NULL`, username).Scan(&activeOwnerUUID)
+	err := s.db.QueryRow(ctx, `SELECT uuid FROM users WHERE LOWER(id) = $1 AND (deleted_at IS NULL OR deleted_at + INTERVAL '30 days' > NOW())`, username).Scan(&activeOwnerUUID)
 	if err == nil {
 		if userCtx != nil && activeOwnerUUID == userCtx.UserUUID {
 			return connect.NewResponse(&pb.CheckUsernameAvailableResponse{

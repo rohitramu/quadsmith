@@ -103,3 +103,18 @@ export const changeUsername = AuthService.method.changeUsername;
  * @generated from rpc quadsmith.api.AuthService.ListArchivedUsernames
  */
 export const listArchivedUsernames = AuthService.method.listArchivedUsernames;
+
+/**
+ * @generated from rpc quadsmith.api.AuthService.SendDeleteAccountVerification
+ */
+export const sendDeleteAccountVerification = AuthService.method.sendDeleteAccountVerification;
+
+/**
+ * @generated from rpc quadsmith.api.AuthService.DeleteAccount
+ */
+export const deleteAccount = AuthService.method.deleteAccount;
+
+/**
+ * @generated from rpc quadsmith.api.AuthService.CancelAccountDeletion
+ */
+export const cancelAccountDeletion = AuthService.method.cancelAccountDeletion;

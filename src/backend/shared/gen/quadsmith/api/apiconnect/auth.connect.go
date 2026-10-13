@@ -92,6 +92,15 @@ const (
 	// AuthServiceListArchivedUsernamesProcedure is the fully-qualified name of the AuthService's
 	// ListArchivedUsernames RPC.
 	AuthServiceListArchivedUsernamesProcedure = "/quadsmith.api.AuthService/ListArchivedUsernames"
+	// AuthServiceSendDeleteAccountVerificationProcedure is the fully-qualified name of the
+	// AuthService's SendDeleteAccountVerification RPC.
+	AuthServiceSendDeleteAccountVerificationProcedure = "/quadsmith.api.AuthService/SendDeleteAccountVerification"
+	// AuthServiceDeleteAccountProcedure is the fully-qualified name of the AuthService's DeleteAccount
+	// RPC.
+	AuthServiceDeleteAccountProcedure = "/quadsmith.api.AuthService/DeleteAccount"
+	// AuthServiceCancelAccountDeletionProcedure is the fully-qualified name of the AuthService's
+	// CancelAccountDeletion RPC.
+	AuthServiceCancelAccountDeletionProcedure = "/quadsmith.api.AuthService/CancelAccountDeletion"
 )
 
 // AuthServiceClient is a client for the quadsmith.api.AuthService service.
@@ -116,6 +125,9 @@ type AuthServiceClient interface {
 	RemoveUserEmail(context.Context, *connect.Request[api.RemoveUserEmailRequest]) (*connect.Response[api.RemoveUserEmailResponse], error)
 	ChangeUsername(context.Context, *connect.Request[api.ChangeUsernameRequest]) (*connect.Response[api.ChangeUsernameResponse], error)
 	ListArchivedUsernames(context.Context, *connect.Request[api.ListArchivedUsernamesRequest]) (*connect.Response[api.ListArchivedUsernamesResponse], error)
+	SendDeleteAccountVerification(context.Context, *connect.Request[api.SendDeleteAccountVerificationRequest]) (*connect.Response[api.SendDeleteAccountVerificationResponse], error)
+	DeleteAccount(context.Context, *connect.Request[api.DeleteAccountRequest]) (*connect.Response[api.DeleteAccountResponse], error)
+	CancelAccountDeletion(context.Context, *connect.Request[api.CancelAccountDeletionRequest]) (*connect.Response[api.CancelAccountDeletionResponse], error)
 }
 
 // NewAuthServiceClient constructs a client for the quadsmith.api.AuthService service. By default,
@@ -249,31 +261,52 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("ListArchivedUsernames")),
 			connect.WithClientOptions(opts...),
 		),
+		sendDeleteAccountVerification: connect.NewClient[api.SendDeleteAccountVerificationRequest, api.SendDeleteAccountVerificationResponse](
+			httpClient,
+			baseURL+AuthServiceSendDeleteAccountVerificationProcedure,
+			connect.WithSchema(authServiceMethods.ByName("SendDeleteAccountVerification")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteAccount: connect.NewClient[api.DeleteAccountRequest, api.DeleteAccountResponse](
+			httpClient,
+			baseURL+AuthServiceDeleteAccountProcedure,
+			connect.WithSchema(authServiceMethods.ByName("DeleteAccount")),
+			connect.WithClientOptions(opts...),
+		),
+		cancelAccountDeletion: connect.NewClient[api.CancelAccountDeletionRequest, api.CancelAccountDeletionResponse](
+			httpClient,
+			baseURL+AuthServiceCancelAccountDeletionProcedure,
+			connect.WithSchema(authServiceMethods.ByName("CancelAccountDeletion")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
 // authServiceClient implements AuthServiceClient.
 type authServiceClient struct {
-	sendEmailOtp             *connect.Client[api.SendEmailOtpRequest, api.SendEmailOtpResponse]
-	verifyEmailOtp           *connect.Client[api.VerifyEmailOtpRequest, api.AuthResponse]
-	verifyMagicLink          *connect.Client[api.VerifyMagicLinkRequest, api.AuthResponse]
-	getLoginChallengeDetails *connect.Client[api.GetLoginChallengeDetailsRequest, api.GetLoginChallengeDetailsResponse]
-	approveLoginChallenge    *connect.Client[api.ApproveLoginChallengeRequest, api.ApproveLoginChallengeResponse]
-	denyLoginChallenge       *connect.Client[api.DenyLoginChallengeRequest, api.DenyLoginChallengeResponse]
-	getLoginChallengeStatus  *connect.Client[api.GetLoginChallengeStatusRequest, api.GetLoginChallengeStatusResponse]
-	completeAccountSetup     *connect.Client[api.CompleteAccountSetupRequest, api.AuthResponse]
-	refreshToken             *connect.Client[api.RefreshTokenRequest, api.AuthResponse]
-	getCurrentUser           *connect.Client[api.GetCurrentUserRequest, api.User]
-	updateProfile            *connect.Client[api.UpdateProfileRequest, api.UserProfile]
-	logout                   *connect.Client[api.LogoutRequest, api.LogoutResponse]
-	listUserEmails           *connect.Client[api.ListUserEmailsRequest, api.ListUserEmailsResponse]
-	sendAddEmailOtp          *connect.Client[api.SendAddEmailOtpRequest, api.SendEmailOtpResponse]
-	verifyAddEmailOtp        *connect.Client[api.VerifyAddEmailOtpRequest, api.VerifyAddEmailOtpResponse]
-	mergeAccount             *connect.Client[api.MergeAccountRequest, api.MergeAccountResponse]
-	setPrimaryEmail          *connect.Client[api.SetPrimaryEmailRequest, api.SetPrimaryEmailResponse]
-	removeUserEmail          *connect.Client[api.RemoveUserEmailRequest, api.RemoveUserEmailResponse]
-	changeUsername           *connect.Client[api.ChangeUsernameRequest, api.ChangeUsernameResponse]
-	listArchivedUsernames    *connect.Client[api.ListArchivedUsernamesRequest, api.ListArchivedUsernamesResponse]
+	sendEmailOtp                  *connect.Client[api.SendEmailOtpRequest, api.SendEmailOtpResponse]
+	verifyEmailOtp                *connect.Client[api.VerifyEmailOtpRequest, api.AuthResponse]
+	verifyMagicLink               *connect.Client[api.VerifyMagicLinkRequest, api.AuthResponse]
+	getLoginChallengeDetails      *connect.Client[api.GetLoginChallengeDetailsRequest, api.GetLoginChallengeDetailsResponse]
+	approveLoginChallenge         *connect.Client[api.ApproveLoginChallengeRequest, api.ApproveLoginChallengeResponse]
+	denyLoginChallenge            *connect.Client[api.DenyLoginChallengeRequest, api.DenyLoginChallengeResponse]
+	getLoginChallengeStatus       *connect.Client[api.GetLoginChallengeStatusRequest, api.GetLoginChallengeStatusResponse]
+	completeAccountSetup          *connect.Client[api.CompleteAccountSetupRequest, api.AuthResponse]
+	refreshToken                  *connect.Client[api.RefreshTokenRequest, api.AuthResponse]
+	getCurrentUser                *connect.Client[api.GetCurrentUserRequest, api.User]
+	updateProfile                 *connect.Client[api.UpdateProfileRequest, api.UserProfile]
+	logout                        *connect.Client[api.LogoutRequest, api.LogoutResponse]
+	listUserEmails                *connect.Client[api.ListUserEmailsRequest, api.ListUserEmailsResponse]
+	sendAddEmailOtp               *connect.Client[api.SendAddEmailOtpRequest, api.SendEmailOtpResponse]
+	verifyAddEmailOtp             *connect.Client[api.VerifyAddEmailOtpRequest, api.VerifyAddEmailOtpResponse]
+	mergeAccount                  *connect.Client[api.MergeAccountRequest, api.MergeAccountResponse]
+	setPrimaryEmail               *connect.Client[api.SetPrimaryEmailRequest, api.SetPrimaryEmailResponse]
+	removeUserEmail               *connect.Client[api.RemoveUserEmailRequest, api.RemoveUserEmailResponse]
+	changeUsername                *connect.Client[api.ChangeUsernameRequest, api.ChangeUsernameResponse]
+	listArchivedUsernames         *connect.Client[api.ListArchivedUsernamesRequest, api.ListArchivedUsernamesResponse]
+	sendDeleteAccountVerification *connect.Client[api.SendDeleteAccountVerificationRequest, api.SendDeleteAccountVerificationResponse]
+	deleteAccount                 *connect.Client[api.DeleteAccountRequest, api.DeleteAccountResponse]
+	cancelAccountDeletion         *connect.Client[api.CancelAccountDeletionRequest, api.CancelAccountDeletionResponse]
 }
 
 // SendEmailOtp calls quadsmith.api.AuthService.SendEmailOtp.
@@ -376,6 +409,21 @@ func (c *authServiceClient) ListArchivedUsernames(ctx context.Context, req *conn
 	return c.listArchivedUsernames.CallUnary(ctx, req)
 }
 
+// SendDeleteAccountVerification calls quadsmith.api.AuthService.SendDeleteAccountVerification.
+func (c *authServiceClient) SendDeleteAccountVerification(ctx context.Context, req *connect.Request[api.SendDeleteAccountVerificationRequest]) (*connect.Response[api.SendDeleteAccountVerificationResponse], error) {
+	return c.sendDeleteAccountVerification.CallUnary(ctx, req)
+}
+
+// DeleteAccount calls quadsmith.api.AuthService.DeleteAccount.
+func (c *authServiceClient) DeleteAccount(ctx context.Context, req *connect.Request[api.DeleteAccountRequest]) (*connect.Response[api.DeleteAccountResponse], error) {
+	return c.deleteAccount.CallUnary(ctx, req)
+}
+
+// CancelAccountDeletion calls quadsmith.api.AuthService.CancelAccountDeletion.
+func (c *authServiceClient) CancelAccountDeletion(ctx context.Context, req *connect.Request[api.CancelAccountDeletionRequest]) (*connect.Response[api.CancelAccountDeletionResponse], error) {
+	return c.cancelAccountDeletion.CallUnary(ctx, req)
+}
+
 // AuthServiceHandler is an implementation of the quadsmith.api.AuthService service.
 type AuthServiceHandler interface {
 	SendEmailOtp(context.Context, *connect.Request[api.SendEmailOtpRequest]) (*connect.Response[api.SendEmailOtpResponse], error)
@@ -398,6 +446,9 @@ type AuthServiceHandler interface {
 	RemoveUserEmail(context.Context, *connect.Request[api.RemoveUserEmailRequest]) (*connect.Response[api.RemoveUserEmailResponse], error)
 	ChangeUsername(context.Context, *connect.Request[api.ChangeUsernameRequest]) (*connect.Response[api.ChangeUsernameResponse], error)
 	ListArchivedUsernames(context.Context, *connect.Request[api.ListArchivedUsernamesRequest]) (*connect.Response[api.ListArchivedUsernamesResponse], error)
+	SendDeleteAccountVerification(context.Context, *connect.Request[api.SendDeleteAccountVerificationRequest]) (*connect.Response[api.SendDeleteAccountVerificationResponse], error)
+	DeleteAccount(context.Context, *connect.Request[api.DeleteAccountRequest]) (*connect.Response[api.DeleteAccountResponse], error)
+	CancelAccountDeletion(context.Context, *connect.Request[api.CancelAccountDeletionRequest]) (*connect.Response[api.CancelAccountDeletionResponse], error)
 }
 
 // NewAuthServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -527,6 +578,24 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(authServiceMethods.ByName("ListArchivedUsernames")),
 		connect.WithHandlerOptions(opts...),
 	)
+	authServiceSendDeleteAccountVerificationHandler := connect.NewUnaryHandler(
+		AuthServiceSendDeleteAccountVerificationProcedure,
+		svc.SendDeleteAccountVerification,
+		connect.WithSchema(authServiceMethods.ByName("SendDeleteAccountVerification")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceDeleteAccountHandler := connect.NewUnaryHandler(
+		AuthServiceDeleteAccountProcedure,
+		svc.DeleteAccount,
+		connect.WithSchema(authServiceMethods.ByName("DeleteAccount")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceCancelAccountDeletionHandler := connect.NewUnaryHandler(
+		AuthServiceCancelAccountDeletionProcedure,
+		svc.CancelAccountDeletion,
+		connect.WithSchema(authServiceMethods.ByName("CancelAccountDeletion")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.AuthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AuthServiceSendEmailOtpProcedure:
@@ -569,6 +638,12 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 			authServiceChangeUsernameHandler.ServeHTTP(w, r)
 		case AuthServiceListArchivedUsernamesProcedure:
 			authServiceListArchivedUsernamesHandler.ServeHTTP(w, r)
+		case AuthServiceSendDeleteAccountVerificationProcedure:
+			authServiceSendDeleteAccountVerificationHandler.ServeHTTP(w, r)
+		case AuthServiceDeleteAccountProcedure:
+			authServiceDeleteAccountHandler.ServeHTTP(w, r)
+		case AuthServiceCancelAccountDeletionProcedure:
+			authServiceCancelAccountDeletionHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -656,4 +731,16 @@ func (UnimplementedAuthServiceHandler) ChangeUsername(context.Context, *connect.
 
 func (UnimplementedAuthServiceHandler) ListArchivedUsernames(context.Context, *connect.Request[api.ListArchivedUsernamesRequest]) (*connect.Response[api.ListArchivedUsernamesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.ListArchivedUsernames is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) SendDeleteAccountVerification(context.Context, *connect.Request[api.SendDeleteAccountVerificationRequest]) (*connect.Response[api.SendDeleteAccountVerificationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.SendDeleteAccountVerification is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) DeleteAccount(context.Context, *connect.Request[api.DeleteAccountRequest]) (*connect.Response[api.DeleteAccountResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.DeleteAccount is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) CancelAccountDeletion(context.Context, *connect.Request[api.CancelAccountDeletionRequest]) (*connect.Response[api.CancelAccountDeletionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.CancelAccountDeletion is not implemented"))
 }
