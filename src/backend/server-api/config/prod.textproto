@@ -1,6 +1,7 @@
+environment: "prod"
+
 server {
   port: 443
-  static_dir: "/app/web/dist"
   read_timeout {
     seconds: 30
   }
@@ -12,12 +13,14 @@ server {
   }
   max_request_bytes: 2097152
 }
+
 database {
   url: "${QS_DATABASE_URL}"
   name: "quadsmith_api"
   max_connections: 50
   min_connections: 5
 }
+
 auth {
   secret: "${QS_AUTH_SECRET}"
   dev_print_otp: false

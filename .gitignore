@@ -41,6 +41,7 @@ node_modules/
 **/cli/qs
 **/cmd/seeder/seeder
 **/cmd/check-regex/check-regex
+**/cmd/check-config/check-config
 
 # Editor & OS Files
 .vscode/

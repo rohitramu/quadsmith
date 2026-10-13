@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-# Check that no binary/ELF executables are staged
+# 1. Check that no binary/ELF executables are staged
 echo "Checking for binary executables..."
 for f in $(git diff --cached --name-only); do
     if [ -f "$f" ]; then
@@ -18,105 +18,24 @@ for f in $(git diff --cached --name-only); do
     fi
 done
 
-# Check that generated files are up to date
-echo "Checking that generated files are up to date..."
-make generate
-if ! git diff --exit-code -- src/backend/shared/gen src/frontend/web/app/src/gen src/backend/db/quadsmith_api.sql src/backend/db/quadsmith_ops.sql src/frontend/cli/main.go > /dev/null 2>&1; then
-    echo "Error: Generated files are out of sync with source definitions or unstaged."
-    echo "Please run 'make generate' and stage all generated changes before committing."
+# 2. Run make build to format, tidy, verify, and build everything
+echo "Running make build..."
+make build
+
+# 3. Check that no tracked files were modified and no untracked files were generated
+if ! git diff --exit-code > /dev/null 2>&1; then
+    echo "Error: Files were modified by formatters/linters/generators during 'make build'."
+    echo "Please stage all modified files before committing:"
+    git diff --name-only
     exit 1
 fi
-UNTRACKED_GEN=$(git status --porcelain -- src/backend/shared/gen src/frontend/web/app/src/gen src/backend/db/quadsmith_api.sql src/backend/db/quadsmith_ops.sql src/frontend/cli/main.go | grep '^??' || true)
+
+UNTRACKED_GEN=$(git status --porcelain | grep '^??' || true)
 if [ -n "$UNTRACKED_GEN" ]; then
-    echo "Error: Found untracked generated files. Please stage all generated files before committing:"
+    echo "Error: Found untracked files generated or left unstaged after 'make build':"
     echo "$UNTRACKED_GEN"
+    echo "Please stage or clean up these files before committing."
     exit 1
 fi
 
-# Check Python formatting
-echo "Checking Python formatting..."
-if command -v uvx >/dev/null 2>&1; then
-    if ! uvx ruff check --select I tools/ > /dev/null 2>&1; then
-        echo "Error: Python imports are not sorted."
-        echo "Please run 'uvx ruff check --select I --fix tools/' to organize them."
-        exit 1
-    fi
-    if ! uvx ruff format --check tools/ > /dev/null 2>&1; then
-        echo "Error: Python files are not formatted."
-        echo "Please run 'uvx ruff format tools/' to format them."
-        exit 1
-    fi
-elif command -v ruff >/dev/null 2>&1; then
-    if ! ruff check --select I tools/ > /dev/null 2>&1; then
-        echo "Error: Python imports are not sorted."
-        echo "Please run 'ruff check --select I --fix tools/' to organize them."
-        exit 1
-    fi
-    if ! ruff format --check tools/ > /dev/null 2>&1; then
-        echo "Error: Python files are not formatted."
-        echo "Please run 'ruff format tools/' to format them."
-        exit 1
-    fi
-fi
-
-# Check Go formatting
-echo "Checking Go formatting..."
-UNFORMATTED_GO=$(gofmt -s -l $(find . -name "*.go" -not -path "*/vendor/*" -not -path "*/.tmp/*"))
-if [ -n "$UNFORMATTED_GO" ]; then
-    echo "Error: The following Go files are not formatted or need simplification:"
-    echo "$UNFORMATTED_GO"
-    echo "Please run 'gofmt -s -w <files>' before committing."
-    exit 1
-fi
-
-# Check TypeScript, HTML, and CSS formatting
-echo "Checking TypeScript, HTML, and CSS formatting..."
-if ! npx --prefix src/frontend/web/app prettier --check "src/frontend/web/app/index.html" "src/frontend/web/app/src/**/*.{ts,tsx,css,html}" > /dev/null 2>&1; then
-    echo "Error: TypeScript, HTML, or CSS files are not formatted."
-    echo "Please run 'npx --prefix src/frontend/web/app prettier --write \"src/frontend/web/app/index.html\" \"src/frontend/web/app/src/**/*.{ts,tsx,css,html}\"' before committing."
-    exit 1
-fi
-
-# Check Markdown formatting
-echo "Checking Markdown formatting..."
-if ! npx --prefix src/frontend/web/app prettier --ignore-path .prettierignore --check "**/*.md" > /dev/null 2>&1; then
-    echo "Error: Markdown files are not formatted."
-    echo "Please run 'npx --prefix src/frontend/web/app prettier --ignore-path .prettierignore --write \"**/*.md\"' before committing."
-    exit 1
-fi
-
-# Check Markdown linting
-echo "Checking Markdown linting..."
-if ! npx --prefix src/frontend/web/app markdownlint -c .markdownlint.json --ignore-path .markdownlintignore "**/*.md" > /dev/null 2>&1; then
-    echo "Error: Markdown files have lint errors."
-    echo "Please run 'npx --prefix src/frontend/web/app markdownlint -c .markdownlint.json --ignore-path .markdownlintignore \"**/*.md\"' to inspect and fix."
-    exit 1
-fi
-
-# Check Protobuf formatting
-echo "Checking Protobuf formatting..."
-if ! (cd proto && ../bin/buf format -d --exit-code > /dev/null 2>&1); then
-    echo "Error: Protobuf files are not formatted."
-    echo "Please run '(cd proto && ../bin/buf format -w)' before committing."
-    exit 1
-fi
-
-# Check Textproto formatting
-echo "Checking Textproto formatting..."
-if [ ! -f bin/txtpbfmt ]; then
-    (cd src && go build -mod=vendor -o ../bin/txtpbfmt github.com/protocolbuffers/txtpbfmt/cmd/txtpbfmt)
-fi
-UNFORMATTED_TEXTPROTO=""
-for f in $(find src test -name "*.textproto"); do
-    if [ -n "$(./bin/txtpbfmt -dry_run -expand_all_children "$f")" ]; then
-        UNFORMATTED_TEXTPROTO="$UNFORMATTED_TEXTPROTO $f"
-    fi
-done
-if [ -n "$UNFORMATTED_TEXTPROTO" ]; then
-    echo "Error: The following textproto files are not formatted:"
-    for f in $UNFORMATTED_TEXTPROTO; do
-        echo "  $f"
-    done
-    echo "Please run 'make build' or format textproto files with 'txtpbfmt -expand_all_children' before committing."
-    exit 1
-fi
+echo "Pre-commit checks passed successfully."

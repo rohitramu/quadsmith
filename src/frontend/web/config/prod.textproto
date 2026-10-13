@@ -3,6 +3,16 @@ environment: "prod"
 server {
   port: 443
   static_dir: "src/frontend/web/app/dist"
+  read_timeout {
+    seconds: 15
+  }
+  write_timeout {
+    seconds: 15
+  }
+  idle_timeout {
+    seconds: 60
+  }
+  max_request_bytes: 10485760
 }
 
 api_url: "https://api.quadsmith.com"

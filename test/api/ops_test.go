@@ -335,11 +335,10 @@ func TestOpsServer_ScheduledJobsAndAudit(t *testing.T) {
 }
 
 func TestQSOpsCLIExecution(t *testing.T) {
-	opsUrl := getOpsURL()
 	qsopsPath := resolveQSOpsPath(t)
 
 	// 1. qsops system diag
-	cmd := exec.Command(qsopsPath, "system", "diag", "--ops-url", opsUrl, "--token", "qs_op_sandbox_token_12345", "--json")
+	cmd := exec.Command(qsopsPath, "system", "diag", "--token", "qs_op_sandbox_token_12345", "--json")
 	out, err := cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("qsops system diag failed: %v, output: %s", err, string(out))
@@ -350,7 +349,7 @@ func TestQSOpsCLIExecution(t *testing.T) {
 	}
 
 	// 2. qsops db stats
-	cmd = exec.Command(qsopsPath, "db", "stats", "--ops-url", opsUrl, "--token", "qs_op_sandbox_token_12345", "--json")
+	cmd = exec.Command(qsopsPath, "db", "stats", "--token", "qs_op_sandbox_token_12345", "--json")
 	out, err = cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("qsops db stats failed: %v, output: %s", err, string(out))
@@ -361,7 +360,7 @@ func TestQSOpsCLIExecution(t *testing.T) {
 	}
 
 	// 3. qsops jobs list
-	cmd = exec.Command(qsopsPath, "jobs", "list", "--ops-url", opsUrl, "--token", "qs_op_sandbox_token_12345", "--json")
+	cmd = exec.Command(qsopsPath, "jobs", "list", "--token", "qs_op_sandbox_token_12345", "--json")
 	out, err = cmd.CombinedOutput()
 	if err != nil {
 		t.Fatalf("qsops jobs list failed: %v, output: %s", err, string(out))

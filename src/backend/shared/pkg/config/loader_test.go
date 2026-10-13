@@ -258,7 +258,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load cli sandbox: %v", err)
 	}
-	if cliSandbox.ApiUrl != "http://localhost:8080" {
+	if cliSandbox.ApiUrl != "http://127.0.0.1:8080" {
 		t.Errorf("unexpected cli sandbox config: %+v", cliSandbox)
 	}
 

@@ -3,6 +3,16 @@ environment: "test"
 server {
   port: 3000
   static_dir: "src/frontend/web/app/dist"
+  read_timeout {
+    seconds: 15
+  }
+  write_timeout {
+    seconds: 15
+  }
+  idle_timeout {
+    seconds: 60
+  }
+  max_request_bytes: 10485760
 }
 
 api_url: "http://127.0.0.1:8080"

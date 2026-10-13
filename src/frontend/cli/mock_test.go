@@ -78,9 +78,10 @@ func setupMockServer(t *testing.T, registerHandlers ...func(*http.ServeMux)) *ht
 		reg(mux)
 	}
 	server := httptest.NewServer(mux)
+	overrideTargetURL = server.URL
 	t.Cleanup(func() {
+		overrideTargetURL = ""
 		server.Close()
 	})
-	t.Setenv("QS_API_URL", server.URL)
 	return server
 }

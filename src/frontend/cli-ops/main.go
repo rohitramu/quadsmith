@@ -15,17 +15,32 @@ import (
 	"github.com/spf13/cobra"
 	"google.golang.org/protobuf/encoding/protojson"
 
+	"google.golang.org/protobuf/encoding/prototext"
+	bconfig "quadsmith/shared/gen/quadsmith/config"
 	pb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 	"quadsmith/shared/pkg/config"
 )
 
 var (
-	envName      string
-	opsServerURL string
-	tokenFlag    string
-	jsonOut      bool
+	embeddedConfig *bconfig.OpsCliConfig
+	opsServerURL   string
+	tokenFlag      string
+	jsonOut        bool
 )
+
+func init() {
+	var cfg bconfig.OpsCliConfig
+	opts := prototext.UnmarshalOptions{DiscardUnknown: false}
+	if err := opts.Unmarshal(embeddedConfigRaw, &cfg); err != nil {
+		panic(fmt.Sprintf("failed to parse embedded ops CLI configuration: %v", err))
+	}
+	if err := config.ValidateOpsCliConfig(&cfg); err != nil {
+		panic(fmt.Sprintf("invalid embedded ops CLI configuration: %v", err))
+	}
+	embeddedConfig = &cfg
+	opsServerURL = cfg.OpsServerUrl
+}
 
 type SessionConfig struct {
 	Token     string    `json:"token"`
@@ -60,7 +75,7 @@ func loadSessionToken() string {
 	}
 
 	// Default fallback in sandbox/test environments
-	if envName == "sandbox" || envName == "test" || envName == "" {
+	if embeddedConfig.Environment == "sandbox" || embeddedConfig.Environment == "test" {
 		return "qs_op_sandbox_token_12345"
 	}
 	return ""
@@ -127,20 +142,8 @@ func newRootCmd() *cobra.Command {
 		Use:   "qsops",
 		Short: "Quadsmith Developer Operations CLI",
 		Long:  "Operational and developer tooling for system diagnostics, IAM, JIT elevation, DB maintenance, and scheduled jobs.",
-		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-			cfg, err := config.LoadOpsCliConfig("", envName)
-			if err == nil && cfg != nil && opsServerURL == "" {
-				opsServerURL = cfg.OpsServerUrl
-			}
-			if opsServerURL == "" {
-				opsServerURL = "http://127.0.0.1:8081"
-			}
-			return nil
-		},
 	}
 
-	rootCmd.PersistentFlags().StringVar(&envName, "env", "", "Target environment (sandbox, test, staging, prod)")
-	rootCmd.PersistentFlags().StringVar(&opsServerURL, "ops-url", "", "Ops server ConnectRPC URL (env: QS_OPS_SERVER_URL)")
 	rootCmd.PersistentFlags().StringVar(&tokenFlag, "token", "", "Operator session or bootstrap token (env: QS_OPS_TOKEN)")
 	rootCmd.PersistentFlags().BoolVar(&jsonOut, "json", false, "Output results in JSON format")
 

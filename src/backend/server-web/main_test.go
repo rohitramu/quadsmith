@@ -30,8 +30,8 @@ func TestWebServer_ConfigValidation(t *testing.T) {
 	if cfg.Server.Port != 3000 {
 		t.Errorf("expected port 3000, got %d", cfg.Server.Port)
 	}
-	if cfg.ApiUrl != "http://localhost:8080" {
-		t.Errorf("expected apiUrl http://localhost:8080, got %s", cfg.ApiUrl)
+	if cfg.ApiUrl != "http://127.0.0.1:8080" {
+		t.Errorf("expected apiUrl http://127.0.0.1:8080, got %s", cfg.ApiUrl)
 	}
 }
 
@@ -49,7 +49,7 @@ func TestWebServer_Endpoints(t *testing.T) {
 
 	clientCfg := map[string]string{
 		"environment": "sandbox",
-		"apiUrl":      "http://localhost:8080",
+		"apiUrl":      "http://127.0.0.1:8080",
 		"appName":     "Quadsmith (Sandbox)",
 	}
 	clientCfgBytes, _ := json.Marshal(clientCfg)
@@ -83,7 +83,7 @@ func TestWebServer_Endpoints(t *testing.T) {
 	if recCfg.Code != http.StatusOK {
 		t.Errorf("expected status 200 for /api/v1/config, got %d", recCfg.Code)
 	}
-	if !strings.Contains(recCfg.Body.String(), "http://localhost:8080") {
+	if !strings.Contains(recCfg.Body.String(), "http://127.0.0.1:8080") {
 		t.Errorf("expected api_url in response, got %s", recCfg.Body.String())
 	}
 
@@ -98,7 +98,7 @@ func TestWebServer_Endpoints(t *testing.T) {
 	if !strings.Contains(body, "window.__QUADSMITH_CONFIG__") {
 		t.Errorf("expected injected window.__QUADSMITH_CONFIG__ in index.html, got: %s", body)
 	}
-	if !strings.Contains(body, "http://localhost:8080") {
+	if !strings.Contains(body, "http://127.0.0.1:8080") {
 		t.Errorf("expected injected api url in window.__QUADSMITH_CONFIG__, got: %s", body)
 	}
 }

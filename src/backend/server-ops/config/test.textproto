@@ -1,34 +1,52 @@
+environment: "test"
+
 server {
   port: 8081
+  read_timeout {
+    seconds: 30
+  }
+  write_timeout {
+    seconds: 60
+  }
+  idle_timeout {
+    seconds: 120
+  }
+  max_request_bytes: 2097152
 }
+
 database {
   url: "${QS_DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api?sslmode=disable}"
   name: "quadsmith_api"
   max_connections: 25
   min_connections: 2
 }
+
 internal_database {
   url: "${QS_INTERNAL_DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:5432/quadsmith_ops?sslmode=disable}"
   name: "quadsmith_ops"
   max_connections: 25
   min_connections: 2
 }
+
 groups {
   name: "operators"
   description: "Full developer ops permissions"
   allowed_methods: "*"
 }
+
 groups {
   name: "robots"
   description: "Automated scheduler and cron permissions"
   allowed_methods: "*"
 }
+
 groups {
   name: "viewers"
   description: "Read-only internal operator permissions"
   allowed_methods: "Get*"
   allowed_methods: "List*"
 }
+
 bootstrap_tokens {
   id: "test-operator"
   name: "Test Operator Token"
@@ -36,6 +54,7 @@ bootstrap_tokens {
   group_name: "operators"
   type: "HUMAN"
 }
+
 bootstrap_tokens {
   id: "sandbox-operator"
   name: "Sandbox Operator Token"
@@ -43,6 +62,7 @@ bootstrap_tokens {
   group_name: "operators"
   type: "HUMAN"
 }
+
 bootstrap_tokens {
   id: "test-viewer"
   name: "Test Viewer Token"
@@ -50,6 +70,7 @@ bootstrap_tokens {
   group_name: "viewers"
   type: "HUMAN"
 }
+
 bootstrap_tokens {
   id: "test-robot"
   name: "Test Robot Token"
@@ -57,6 +78,7 @@ bootstrap_tokens {
   group_name: "robots"
   type: "ROBOT"
 }
+
 jit {
   enabled: true
   auto_approve: true
@@ -66,6 +88,7 @@ jit {
   sensitive_methods: "SeedDatabase"
   sensitive_methods: "RevokeInternalToken"
 }
+
 oauth {
   provider: "github"
   client_id: "${QS_OAUTH_CLIENT_ID:-github-test-id}"

@@ -6,13 +6,10 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"strconv"
 	"strings"
-	"time"
 
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
-	"google.golang.org/protobuf/types/known/durationpb"
 	config "quadsmith/shared/gen/quadsmith/config"
 )
 
@@ -93,10 +90,6 @@ func LoadAPIServerConfig(configPath string) (*config.ApiServerConfig, error) {
 		return nil, err
 	}
 
-	if cfg.GetEnvironment() == "" {
-		cfg.Environment = inferEnvironment(configPath, "")
-	}
-
 	applyAPIServerEnvOverrides(&cfg)
 
 	if err := ValidateAPIServerConfig(&cfg); err != nil {
@@ -119,10 +112,6 @@ func LoadOpsServerConfig(configPath string) (*config.OpsServerConfig, error) {
 	var cfg config.OpsServerConfig
 	if err := Load(configPath, &cfg); err != nil {
 		return nil, err
-	}
-
-	if cfg.GetEnvironment() == "" {
-		cfg.Environment = inferEnvironment(configPath, "")
 	}
 
 	applyOpsServerEnvOverrides(&cfg)
@@ -149,10 +138,6 @@ func LoadJobServerConfig(configPath string) (*config.JobServerConfig, error) {
 		return nil, err
 	}
 
-	if cfg.GetEnvironment() == "" {
-		cfg.Environment = inferEnvironment(configPath, "")
-	}
-
 	applyJobServerEnvOverrides(&cfg)
 
 	if err := ValidateJobServerConfig(&cfg); err != nil {
@@ -177,10 +162,6 @@ func LoadWebServerConfig(configPath string) (*config.WebServerConfig, error) {
 		return nil, err
 	}
 
-	if cfg.GetEnvironment() == "" {
-		cfg.Environment = inferEnvironment(configPath, "")
-	}
-
 	applyWebServerEnvOverrides(&cfg)
 
 	if err := ValidateWebServerConfig(&cfg); err != nil {
@@ -202,12 +183,6 @@ func LoadOpsCliConfig(configPath, envName string) (*config.OpsCliConfig, error) 
 		_ = Load(resolvedPath, &cfg)
 	}
 
-	if cfg.GetEnvironment() == "" {
-		cfg.Environment = inferEnvironment(resolvedPath, envName)
-	}
-
-	applyOpsCliEnvOverrides(&cfg)
-
 	if err := ValidateOpsCliConfig(&cfg); err != nil {
 		return nil, err
 	}
@@ -226,12 +201,6 @@ func LoadCliConfig(configPath, envName string) (*config.CliConfig, error) {
 	if err := Load(resolvedPath, &cfg); err != nil {
 		return nil, err
 	}
-
-	if cfg.GetEnvironment() == "" {
-		cfg.Environment = inferEnvironment(resolvedPath, envName)
-	}
-
-	applyCliEnvOverrides(&cfg)
 
 	if err := ValidateCliConfig(&cfg); err != nil {
 		return nil, err
@@ -331,168 +300,42 @@ func FindBinaryConfigFile(binaryName, envName string) (string, error) {
 }
 
 func applyAPIServerEnvOverrides(cfg *config.ApiServerConfig) {
-	if cfg.Server == nil {
-		cfg.Server = &config.ServerConfig{}
+	if cfg.Database != nil {
+		applyDatabaseEnvOverrides(cfg.Database)
 	}
-	if v := os.Getenv("QS_SERVER_PORT"); v != "" {
-		if p, err := strconv.Atoi(v); err == nil {
-			cfg.Server.Port = int32(p)
-		}
-	}
-	if v := os.Getenv("QS_SERVER_STATIC_DIR"); v != "" {
-		cfg.Server.StaticDir = v
-	}
-	if v := os.Getenv("QS_SERVER_READ_TIMEOUT"); v != "" {
-		if d, err := time.ParseDuration(v); err == nil {
-			cfg.Server.ReadTimeout = durationpb.New(d)
-		}
-	}
-	if v := os.Getenv("QS_SERVER_WRITE_TIMEOUT"); v != "" {
-		if d, err := time.ParseDuration(v); err == nil {
-			cfg.Server.WriteTimeout = durationpb.New(d)
-		}
-	}
-
-	if cfg.Database == nil {
-		cfg.Database = &config.DatabaseConfig{}
-	}
-	applyDatabaseEnvOverrides(cfg.Database)
-
-	if cfg.Auth == nil {
-		cfg.Auth = &config.AuthConfig{}
-	}
-	if v := os.Getenv("QS_AUTH_SECRET"); v != "" {
-		cfg.Auth.Secret = v
-	}
-	if v := os.Getenv("QS_AUTH_DEV_PRINT_OTP"); v != "" {
-		cfg.Auth.DevPrintOtp = v == "true" || v == "1"
-	}
-	if v := os.Getenv("QS_AUTH_SECURE_COOKIES"); v != "" {
-		cfg.Auth.SecureCookies = v == "true" || v == "1"
-	}
-	if v := os.Getenv("QS_AUTH_TRUSTED_PROXY_HOPS"); v != "" {
-		if hops, err := strconv.Atoi(v); err == nil {
-			cfg.Auth.TrustedProxyHops = int32(hops)
-		}
-	}
-	if v := os.Getenv("QS_AUTH_ACCESS_TOKEN_TTL"); v != "" {
-		if d, err := time.ParseDuration(v); err == nil {
-			cfg.Auth.AccessTokenTtl = durationpb.New(d)
-		}
-	}
-	if v := os.Getenv("QS_AUTH_REFRESH_TOKEN_TTL"); v != "" {
-		if d, err := time.ParseDuration(v); err == nil {
-			cfg.Auth.RefreshTokenTtl = durationpb.New(d)
-		}
-	}
-	if v := os.Getenv("QS_AUTH_OTP_TTL"); v != "" {
-		if d, err := time.ParseDuration(v); err == nil {
-			cfg.Auth.OtpTtl = durationpb.New(d)
-		}
-	}
-	if v := os.Getenv("QS_AUTH_MAGIC_LINK_TTL"); v != "" {
-		if d, err := time.ParseDuration(v); err == nil {
-			cfg.Auth.MagicLinkTtl = durationpb.New(d)
-		}
-	}
-	if v := os.Getenv("QS_AUTH_EMAIL_COOLDOWN"); v != "" {
-		if d, err := time.ParseDuration(v); err == nil {
-			cfg.Auth.EmailCooldown = durationpb.New(d)
+	if cfg.Auth != nil {
+		if v := os.Getenv("QS_AUTH_SECRET"); v != "" {
+			cfg.Auth.Secret = v
 		}
 	}
 }
 
 func applyOpsServerEnvOverrides(cfg *config.OpsServerConfig) {
-	if cfg.Server == nil {
-		cfg.Server = &config.ServerConfig{}
+	if cfg.Database != nil {
+		applyDatabaseEnvOverrides(cfg.Database)
 	}
-	if v := os.Getenv("QS_OPS_SERVER_PORT"); v != "" {
-		if p, err := strconv.Atoi(v); err == nil {
-			cfg.Server.Port = int32(p)
+	if cfg.InternalDatabase != nil {
+		applyInternalDatabaseEnvOverrides(cfg.InternalDatabase)
+	}
+	if cfg.Oauth != nil {
+		if v := os.Getenv("QS_OAUTH_CLIENT_ID"); v != "" {
+			cfg.Oauth.ClientId = v
 		}
-	}
-
-	if cfg.Database == nil {
-		cfg.Database = &config.DatabaseConfig{}
-	}
-	applyDatabaseEnvOverrides(cfg.Database)
-
-	if cfg.InternalDatabase == nil {
-		cfg.InternalDatabase = &config.DatabaseConfig{}
-	}
-	applyInternalDatabaseEnvOverrides(cfg.InternalDatabase)
-
-	if cfg.Oauth == nil {
-		cfg.Oauth = &config.OAuthConfig{}
-	}
-	if v := os.Getenv("QS_OAUTH_CLIENT_ID"); v != "" {
-		cfg.Oauth.ClientId = v
-	}
-	if v := os.Getenv("QS_OAUTH_CLIENT_SECRET"); v != "" {
-		cfg.Oauth.ClientSecret = v
-	}
-	if v := os.Getenv("QS_OAUTH_ISSUER_URL"); v != "" {
-		cfg.Oauth.IssuerUrl = v
+		if v := os.Getenv("QS_OAUTH_CLIENT_SECRET"); v != "" {
+			cfg.Oauth.ClientSecret = v
+		}
 	}
 }
 
 func applyJobServerEnvOverrides(cfg *config.JobServerConfig) {
-	if v := os.Getenv("QS_JOB_SERVER_OPS_URL"); v != "" {
-		cfg.OpsServerUrl = v
-	} else if v := os.Getenv("QS_OPS_SERVER_URL"); v != "" {
-		cfg.OpsServerUrl = v
-	}
 	if v := os.Getenv("QS_JOB_SERVER_AUTH_TOKEN"); v != "" {
 		cfg.AuthToken = v
 	}
 }
 
 func applyWebServerEnvOverrides(cfg *config.WebServerConfig) {
-	if cfg.Server == nil {
-		cfg.Server = &config.ServerConfig{}
-	}
-	if v := os.Getenv("QS_WEB_SERVER_PORT"); v != "" {
-		if p, err := strconv.Atoi(v); err == nil {
-			cfg.Server.Port = int32(p)
-		}
-	}
-	if v := os.Getenv("QS_WEB_SERVER_STATIC_DIR"); v != "" {
-		cfg.Server.StaticDir = v
-	}
-	if v := os.Getenv("QS_API_URL"); v != "" {
-		cfg.ApiUrl = v
-	}
-	if v := os.Getenv("QS_APP_NAME"); v != "" {
-		cfg.AppName = v
-	}
 	if cfg.Database != nil {
-		if cfg.Database.MaxConnections <= 0 {
-			cfg.Database.MaxConnections = 10
-		}
-		if cfg.Database.MinConnections <= 0 {
-			cfg.Database.MinConnections = 1
-		}
 		applyDatabaseEnvOverrides(cfg.Database)
-	}
-}
-
-func applyOpsCliEnvOverrides(cfg *config.OpsCliConfig) {
-	if v := os.Getenv("QS_OPS_SERVER_URL"); v != "" {
-		cfg.OpsServerUrl = v
-	}
-	if cfg.OpsServerUrl == "" {
-		cfg.OpsServerUrl = "http://127.0.0.1:8081"
-	}
-}
-
-func applyCliEnvOverrides(cfg *config.CliConfig) {
-	if v := os.Getenv("QS_CLI_API_URL"); v != "" {
-		cfg.ApiUrl = v
-	} else if v := os.Getenv("QS_API_URL"); v != "" {
-		cfg.ApiUrl = v
-	}
-	if cfg.ApiUrl == "" {
-		cfg.ApiUrl = "http://127.0.0.1:8080"
 	}
 }
 
@@ -500,43 +343,21 @@ func applyInternalDatabaseEnvOverrides(db *config.DatabaseConfig) {
 	if v := os.Getenv("QS_INTERNAL_DATABASE_URL"); v != "" {
 		db.Url = v
 	}
-	if v := os.Getenv("QS_INTERNAL_DATABASE_NAME"); v != "" {
-		db.Name = v
-	}
-	if v := os.Getenv("QS_INTERNAL_DATABASE_MAX_CONNECTIONS"); v != "" {
-		if n, err := strconv.Atoi(v); err == nil {
-			db.MaxConnections = int32(n)
-		}
-	}
-	if v := os.Getenv("QS_INTERNAL_DATABASE_MIN_CONNECTIONS"); v != "" {
-		if n, err := strconv.Atoi(v); err == nil {
-			db.MinConnections = int32(n)
-		}
-	}
 }
 
 func applyDatabaseEnvOverrides(db *config.DatabaseConfig) {
 	if v := os.Getenv("QS_DATABASE_URL"); v != "" {
 		db.Url = v
 	}
-	if v := os.Getenv("QS_DATABASE_NAME"); v != "" {
-		db.Name = v
-	}
-	if v := os.Getenv("QS_DATABASE_MAX_CONNECTIONS"); v != "" {
-		if n, err := strconv.Atoi(v); err == nil {
-			db.MaxConnections = int32(n)
-		}
-	}
-	if v := os.Getenv("QS_DATABASE_MIN_CONNECTIONS"); v != "" {
-		if n, err := strconv.Atoi(v); err == nil {
-			db.MinConnections = int32(n)
-		}
-	}
 }
 
 // ValidateAPIServerConfig ensures all configuration required by the API server daemon is present and valid.
 func ValidateAPIServerConfig(c *config.ApiServerConfig) error {
 	var errs []string
+
+	if strings.TrimSpace(c.GetEnvironment()) == "" {
+		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
+	}
 
 	if c.Server == nil {
 		errs = append(errs, "server configuration section is missing")
@@ -549,6 +370,9 @@ func ValidateAPIServerConfig(c *config.ApiServerConfig) error {
 		}
 		if c.Server.WriteTimeout != nil && c.Server.WriteTimeout.AsDuration() <= 0 {
 			errs = append(errs, "server.write_timeout must be greater than 0")
+		}
+		if c.Server.IdleTimeout != nil && c.Server.IdleTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.idle_timeout must be greater than 0")
 		}
 		if c.Server.MaxRequestBytes <= 0 {
 			errs = append(errs, "server.max_request_bytes must be greater than 0")
@@ -577,6 +401,10 @@ func ValidateAPIServerConfig(c *config.ApiServerConfig) error {
 func ValidateWebServerConfig(c *config.WebServerConfig) error {
 	var errs []string
 
+	if strings.TrimSpace(c.GetEnvironment()) == "" {
+		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
+	}
+
 	if c.Server == nil {
 		errs = append(errs, "server configuration section is missing")
 	} else {
@@ -592,6 +420,9 @@ func ValidateWebServerConfig(c *config.WebServerConfig) error {
 		if c.Server.WriteTimeout != nil && c.Server.WriteTimeout.AsDuration() <= 0 {
 			errs = append(errs, "server.write_timeout must be greater than 0")
 		}
+		if c.Server.IdleTimeout != nil && c.Server.IdleTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.idle_timeout must be greater than 0")
+		}
 	}
 
 	if strings.TrimSpace(c.ApiUrl) == "" {
@@ -601,6 +432,10 @@ func ValidateWebServerConfig(c *config.WebServerConfig) error {
 		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
 			errs = append(errs, fmt.Sprintf("api_url must be a valid HTTP or HTTPS URL (got %q)", c.ApiUrl))
 		}
+	}
+
+	if strings.TrimSpace(c.AppName) == "" {
+		errs = append(errs, "app_name cannot be empty")
 	}
 
 	if c.Database != nil && c.Database.Url != "" {
@@ -619,11 +454,24 @@ func ValidateWebServerConfig(c *config.WebServerConfig) error {
 func ValidateOpsServerConfig(c *config.OpsServerConfig) error {
 	var errs []string
 
+	if strings.TrimSpace(c.GetEnvironment()) == "" {
+		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
+	}
+
 	if c.Server == nil {
 		errs = append(errs, "server configuration section is missing")
 	} else {
 		if c.Server.Port < 1 || c.Server.Port > 65535 {
 			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.Port))
+		}
+		if c.Server.ReadTimeout != nil && c.Server.ReadTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.read_timeout must be greater than 0")
+		}
+		if c.Server.WriteTimeout != nil && c.Server.WriteTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.write_timeout must be greater than 0")
+		}
+		if c.Server.IdleTimeout != nil && c.Server.IdleTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.idle_timeout must be greater than 0")
 		}
 	}
 
@@ -653,8 +501,25 @@ func ValidateOpsServerConfig(c *config.OpsServerConfig) error {
 func ValidateJobServerConfig(c *config.JobServerConfig) error {
 	var errs []string
 
+	if strings.TrimSpace(c.GetEnvironment()) == "" {
+		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
+	}
+
 	if strings.TrimSpace(c.GetOpsServerUrl()) == "" {
 		errs = append(errs, "ops_server_url cannot be empty")
+	} else {
+		u, err := url.Parse(c.GetOpsServerUrl())
+		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
+			errs = append(errs, fmt.Sprintf("ops_server_url must be a valid HTTP or HTTPS URL (got %q)", c.GetOpsServerUrl()))
+		}
+	}
+
+	if strings.TrimSpace(c.GetAuthToken()) == "" {
+		errs = append(errs, "auth_token cannot be empty")
+	}
+
+	if len(c.Schedules) == 0 {
+		errs = append(errs, "at least one schedule must be defined in schedules")
 	}
 
 	if len(errs) > 0 {
@@ -667,8 +532,21 @@ func ValidateJobServerConfig(c *config.JobServerConfig) error {
 func ValidateOpsCliConfig(c *config.OpsCliConfig) error {
 	var errs []string
 
+	if strings.TrimSpace(c.GetEnvironment()) == "" {
+		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
+	}
+
 	if strings.TrimSpace(c.GetOpsServerUrl()) == "" {
 		errs = append(errs, "ops_server_url cannot be empty")
+	} else {
+		u, err := url.Parse(c.GetOpsServerUrl())
+		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
+			errs = append(errs, fmt.Sprintf("ops_server_url must be a valid HTTP or HTTPS URL (got %q)", c.GetOpsServerUrl()))
+		}
+	}
+
+	if c.Timeout != nil && c.Timeout.AsDuration() <= 0 {
+		errs = append(errs, "timeout must be greater than 0")
 	}
 
 	if len(errs) > 0 {
@@ -681,8 +559,21 @@ func ValidateOpsCliConfig(c *config.OpsCliConfig) error {
 func ValidateCliConfig(c *config.CliConfig) error {
 	var errs []string
 
+	if strings.TrimSpace(c.GetEnvironment()) == "" {
+		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
+	}
+
 	if strings.TrimSpace(c.GetApiUrl()) == "" {
 		errs = append(errs, "api_url cannot be empty")
+	} else {
+		u, err := url.Parse(c.GetApiUrl())
+		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
+			errs = append(errs, fmt.Sprintf("api_url must be a valid HTTP or HTTPS URL (got %q)", c.GetApiUrl()))
+		}
+	}
+
+	if c.Timeout != nil && c.Timeout.AsDuration() <= 0 {
+		errs = append(errs, "timeout must be greater than 0")
 	}
 
 	if len(errs) > 0 {

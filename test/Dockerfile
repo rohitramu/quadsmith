@@ -47,7 +47,7 @@ RUN --mount=type=cache,target=/root/.cache/go-build \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server-ops ./src/backend/server-ops/main.go && \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server-jobs ./src/backend/server-jobs/main.go && \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/server-web ./src/backend/server-web/main.go && \
-    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/qsops ./src/frontend/cli-ops/main.go && \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/qsops ./src/frontend/cli-ops && \
     CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./src/backend/shared/cmd/seeder
 
 

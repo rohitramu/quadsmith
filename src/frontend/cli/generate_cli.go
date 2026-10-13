@@ -199,16 +199,28 @@ import (
 	pb "quadsmith/shared/gen/quadsmith/api"
 	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 	common "quadsmith/shared/gen/quadsmith/common"
+	config "quadsmith/shared/gen/quadsmith/config"
 	bconfig "quadsmith/shared/pkg/config"
+	"google.golang.org/protobuf/encoding/prototext"
 )
 
 var (
-	configPath string
-	envName    string
-	apiURL     string
-	jsonOut    bool
-	yamlOut    bool
+	jsonOut           bool
+	yamlOut           bool
+	overrideTargetURL string
 )
+
+func getEmbeddedConfig() *config.CliConfig {
+	var cfg config.CliConfig
+	opts := prototext.UnmarshalOptions{DiscardUnknown: false}
+	if err := opts.Unmarshal(embeddedConfigRaw, &cfg); err != nil {
+		panic(fmt.Sprintf("failed to parse embedded CLI configuration: %v", err))
+	}
+	if err := bconfig.ValidateCliConfig(&cfg); err != nil {
+		panic(fmt.Sprintf("invalid embedded CLI configuration: %v", err))
+	}
+	return &cfg
+}
 
 func newRootCmd() *cobra.Command {
 	jsonOut = false
@@ -216,10 +228,10 @@ func newRootCmd() *cobra.Command {
 	if _, ok := os.LookupEnv("QS_COMPLETION_DESCRIPTIONS"); !ok {
 		_ = os.Setenv("QS_COMPLETION_DESCRIPTIONS", "false")
 	}
-	cfg, err := bconfig.LoadCliConfig(configPath, envName)
-	targetURL := "http://localhost:8080"
-	if err == nil && cfg != nil && cfg.ApiUrl != "" {
-		targetURL = cfg.ApiUrl
+	cliCfg := getEmbeddedConfig()
+	targetURL := cliCfg.ApiUrl
+	if overrideTargetURL != "" {
+		targetURL = overrideTargetURL
 	}
 	SetActiveTargetURL(targetURL)
 
@@ -228,25 +240,16 @@ func newRootCmd() *cobra.Command {
 		Short: "Quadsmith CLI",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
-			cfg, err := bconfig.LoadCliConfig(configPath, envName)
-			if err != nil {
-				return err
+			target := cliCfg.ApiUrl
+			if overrideTargetURL != "" {
+				target = overrideTargetURL
 			}
-			if cmd.Flags().Lookup("api-url").Changed {
-				cfg.ApiUrl = apiURL
-			}
-			if err := bconfig.ValidateCliConfig(cfg); err != nil {
-				return err
-			}
-			SetActiveTargetURL(cfg.ApiUrl)
+			SetActiveTargetURL(target)
 			return nil
 		},
 	}
 	rootCmd.CompletionOptions.DisableDescriptions = true
 
-	rootCmd.PersistentFlags().StringVar(&configPath, "config", "", "Path to CLI configuration textproto file")
-	rootCmd.PersistentFlags().StringVar(&envName, "env", "", "Target environment (sandbox, test, staging, prod)")
-	rootCmd.PersistentFlags().StringVar(&apiURL, "api-url", "", "API server base URL (env: QS_CLI_API_URL)")
 	rootCmd.PersistentFlags().BoolVar(&jsonOut, "json", false, "Output format as JSON")
 	httpClient := newCLIHTTPClient()
 `)

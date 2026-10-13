@@ -1,4 +1,5 @@
-ops_server_url: "${QS_JOB_SERVER_OPS_URL:-http://127.0.0.1:8081}"
+environment: "sandbox"
+ops_server_url: "http://127.0.0.1:8081"
 auth_token: "${QS_JOB_SERVER_AUTH_TOKEN:-qs_robot_sandbox_token_67890}"
 schedules {
   name: "cleanup_expired_otps"

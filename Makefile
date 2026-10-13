@@ -20,34 +20,84 @@ ifeq (tool,$(firstword $(MAKECMDGOALS)))
   $(foreach arg,$(TOOL_ARGS),$(eval $(arg):;@:))
 endif
 
+MODULES        := src/backend/shared src/backend/server-api src/backend/server-ops src/backend/server-jobs src/backend/server-web src/frontend/cli src/frontend/cli-ops test src/build_deps
 VENDOR_PLUGINS := bin/protoc-gen-go bin/protoc-gen-connect-go bin/buf bin/txtpbfmt
 CUSTOM_PLUGINS := bin/protoc-gen-sql bin/protoc-gen-store bin/protoc-gen-server
 PROTO_FILES    := $(shell find proto -type f 2>/dev/null)
 CLI_FILES      := $(shell find src/frontend/cli -name "*.go" -not -name "*_test.go" 2>/dev/null)
+OPS_CLI_FILES  := $(shell find src/frontend/cli-ops -name "*.go" -not -name "*_test.go" 2>/dev/null)
 
 all: build
 
-build: generate bin/qs bin/qsops
+tidy:
+	@echo "--- Running go mod tidy on all modules ---"
+	@for mod in $(MODULES); do \
+		(cd $$mod && go mod tidy) || exit 1; \
+	done
+	@echo "--- Syncing vendor directory ---"
+	@cd src && go work vendor
+
+fmt: $(VENDOR_PLUGINS)
+	@echo "--- Formatting Python code ---"
+	@if command -v uvx >/dev/null 2>&1; then \
+		uvx ruff check --select I --fix tools/ >/dev/null 2>&1 || true; \
+		uvx ruff format tools/ >/dev/null 2>&1 || true; \
+	elif command -v ruff >/dev/null 2>&1; then \
+		ruff check --select I --fix tools/ >/dev/null 2>&1 || true; \
+		ruff format tools/ >/dev/null 2>&1 || true; \
+	fi
+	@echo "--- Formatting Go code with gofmt ---"
+	@gofmt -s -w $(shell find . -name "*.go" -not -path "*/vendor/*" -not -path "*/.tmp/*")
+	@echo "--- Formatting TypeScript, HTML, CSS with Prettier ---"
+	@npx --prefix src/frontend/web/app prettier --write "src/frontend/web/app/index.html" "src/frontend/web/app/src/**/*.{ts,tsx,css,html}" >/dev/null 2>&1 || true
+	@echo "--- Formatting and linting Markdown ---"
+	@npx --prefix src/frontend/web/app prettier --ignore-path .prettierignore --write "**/*.md" >/dev/null 2>&1 || true
+	@npx --prefix src/frontend/web/app markdownlint -c .markdownlint.json --ignore-path .markdownlintignore --fix "**/*.md" >/dev/null 2>&1 || true
+	@echo "--- Formatting Protobuf with buf ---"
+	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf format -w
 	@echo "--- Formatting textproto files with txtpbfmt ---"
 	@find src test -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
+
+build: tidy fmt generate
 	@echo "--- Verifying Protobuf regex patterns (Go RE2) ---"
 	@go run -mod=vendor ./src/backend/shared/cmd/check-regex
-	@echo "--- Building all Go binaries to bin/ ---"
+	@echo "--- Validating all application configurations ---"
+	@go run -mod=vendor ./src/backend/shared/cmd/check-config
+	@echo "--- Building all Go server binaries to bin/ ---"
+	@mkdir -p bin
 	@go build -mod=vendor -o bin/server-api ./src/backend/server-api/main.go
 	@go build -mod=vendor -o bin/server-ops ./src/backend/server-ops/main.go
 	@go build -mod=vendor -o bin/server-jobs ./src/backend/server-jobs/main.go
 	@go build -mod=vendor -o bin/server-web ./src/backend/server-web/main.go
 	@go build -mod=vendor -o bin/seeder ./src/backend/shared/cmd/seeder
+	@echo "--- Building CLI (qs) binaries to bin/ ---"
+	@go build -mod=vendor -tags sandbox -o bin/qs-sandbox ./src/frontend/cli
+	@go build -mod=vendor -tags test -o bin/qs-test ./src/frontend/cli
+	@go build -mod=vendor -tags staging -o bin/qs-staging ./src/frontend/cli
+	@go build -mod=vendor -tags prod -o bin/qs-prod ./src/frontend/cli
+	@cp -f bin/qs-sandbox bin/qs
+	@echo "--- Building Operations CLI (qsops) binaries to bin/ ---"
+	@go build -mod=vendor -tags sandbox -o bin/qsops-sandbox ./src/frontend/cli-ops
+	@go build -mod=vendor -tags test -o bin/qsops-test ./src/frontend/cli-ops
+	@go build -mod=vendor -tags staging -o bin/qsops-staging ./src/frontend/cli-ops
+	@go build -mod=vendor -tags prod -o bin/qsops-prod ./src/frontend/cli-ops
+	@cp -f bin/qsops-sandbox bin/qsops
+	@echo "--- Generating shell completions to bin/ ---"
+	@./bin/qs completion bash > bin/completion.bash || true
+	@./bin/qs completion zsh > bin/completion.zsh || true
+	@./bin/qsops completion bash > bin/qsops_completion.bash || true
+	@./bin/qsops completion zsh > bin/qsops_completion.zsh || true
 	@echo "--- Building WebAssembly Core Engine ---"
 	@cp -f $$(go env GOROOT)/lib/wasm/wasm_exec.js src/frontend/web/app/public/wasm_exec.js
 	@GOOS=js GOARCH=wasm go build -mod=vendor -o src/frontend/web/app/public/quadsmith-engine.wasm ./src/backend/shared/cmd/wasm/main.go
 	@echo "--- Building Web UI ---"
 	@cd src/frontend/web/app && npm run build
 
-bin/qsops: $(wildcard src/frontend/cli-ops/*.go) bin/.generate_proto.sentinel
+bin/qsops: $(OPS_CLI_FILES) bin/.generate_proto.sentinel
 	@mkdir -p bin
 	@echo "--- Building Operations CLI to bin/qsops ---"
-	@go build -mod=vendor -o bin/qsops ./src/frontend/cli-ops/main.go
+	@go build -mod=vendor -tags sandbox -o bin/qsops-sandbox ./src/frontend/cli-ops
+	@cp -f bin/qsops-sandbox bin/qsops
 	@echo "--- Generating qsops shell completions to bin/ ---"
 	@./bin/qsops completion bash > bin/qsops_completion.bash || true
 	@./bin/qsops completion zsh > bin/qsops_completion.zsh || true
@@ -55,7 +105,9 @@ bin/qsops: $(wildcard src/frontend/cli-ops/*.go) bin/.generate_proto.sentinel
 bin/qs: $(CLI_FILES) bin/.generate_proto.sentinel
 	@mkdir -p bin
 	@echo "--- Generating and building CLI to bin/qs ---"
-	@cd src/frontend/cli && go run generate_cli.go && gofmt -s -w main.go && go build -mod=vendor -o ../../../bin/qs .
+	@cd src/frontend/cli && go run generate_cli.go && gofmt -s -w main.go
+	@go build -mod=vendor -tags sandbox -o bin/qs-sandbox ./src/frontend/cli
+	@cp -f bin/qs-sandbox bin/qs
 	@echo "--- Generating shell completions to bin/ ---"
 	@./bin/qs completion bash > bin/completion.bash || true
 	@./bin/qs completion zsh > bin/completion.zsh || true
@@ -121,7 +173,13 @@ bin/.format_sql.sentinel: $(wildcard src/backend/db/*.sql) .sql-formatter.json
 	@for f in src/backend/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$$f"; done
 	@touch bin/.format_sql.sentinel
 
-generate: bin/.generate_proto.sentinel bin/.format_sql.sentinel
+bin/.generate_cli.sentinel: $(CLI_FILES) bin/.generate_proto.sentinel
+	@mkdir -p bin
+	@echo "--- Generating CLI code ---"
+	@cd src/frontend/cli && go run generate_cli.go && gofmt -s -w main.go
+	@touch bin/.generate_cli.sentinel
+
+generate: bin/.generate_proto.sentinel bin/.format_sql.sentinel bin/.generate_cli.sentinel
 
 test: generate
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
