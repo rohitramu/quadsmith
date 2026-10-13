@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package quadsmith.config;
+
+import "quadsmith/config/common.proto";
+
+option go_package = "quadsmith/shared/gen/quadsmith/config;config";
+
+// ---------------------------------------------------------
+// Web Server Root Configuration
+// ---------------------------------------------------------
+
+message WebServerConfig {
+  optional string environment = 1;
+  ServerConfig server = 2;
+  optional string static_dir = 3;
+  optional string api_url = 4;
+  optional string app_name = 5;
+}

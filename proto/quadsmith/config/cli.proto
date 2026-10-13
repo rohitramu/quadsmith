@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package quadsmith.config;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "quadsmith/shared/gen/quadsmith/config;config";
+
+// ---------------------------------------------------------
+// CLI Root Configuration
+// ---------------------------------------------------------
+
+message CliConfig {
+  optional string environment = 1;
+  optional string api_url = 2;
+  google.protobuf.Duration timeout = 3;
+}

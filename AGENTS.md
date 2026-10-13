@@ -177,6 +177,10 @@ corroboration checks.
     by multiple messages, it must appear below all messages that reference it.
   - **Enums & Leaf Types**: Enums and shared leaf records must appear below all
     messages that reference them.
+  - **Alphabetical Ordering (Lowest Precedence)**: When multiple definitions
+    exist at the same structural tier without dependency constraints between
+    them, sort them in alphabetical order. This rule takes lowest precedence and
+    must never violate the top-down structural invariant.
 
 ## Path Referencing
 

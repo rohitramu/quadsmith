@@ -1,0 +1,59 @@
+syntax = "proto3";
+
+package quadsmith.config;
+
+import "google/protobuf/duration.proto";
+import "quadsmith/config/common.proto";
+
+option go_package = "quadsmith/shared/gen/quadsmith/config;config";
+
+// ---------------------------------------------------------
+// API Server Root Configuration
+// ---------------------------------------------------------
+
+message ApiServerConfig {
+  optional string environment = 1;
+  ServerConfig server = 2;
+  DatabaseConfig database = 3;
+  AuthConfig auth = 4;
+}
+
+// ---------------------------------------------------------
+// Authentication Subordinate Configuration
+// ---------------------------------------------------------
+
+message AuthConfig {
+  optional string secret = 1;
+  optional bool dev_print_otp = 2;
+  optional bool secure_cookies = 3;
+  optional int32 trusted_proxy_hops = 4;
+  google.protobuf.Duration access_token_ttl = 5;
+  google.protobuf.Duration refresh_token_ttl = 6;
+  google.protobuf.Duration otp_ttl = 7;
+  google.protobuf.Duration magic_link_ttl = 8;
+  google.protobuf.Duration email_cooldown = 9;
+  EmailConfig email = 10;
+}
+
+// ---------------------------------------------------------
+// Email Subordinate Configurations
+// ---------------------------------------------------------
+
+message EmailConfig {
+  oneof delivery {
+    ConsoleEmailConfig console = 1;
+    SmtpConfig smtp = 2;
+  }
+}
+
+message ConsoleEmailConfig {}
+
+message SmtpConfig {
+  optional string host = 1;
+  optional int32 port = 2;
+  optional string username = 3;
+  optional string password = 4;
+  optional string from_address = 5;
+  optional string reply_to = 6;
+  optional bool require_tls = 7;
+}
