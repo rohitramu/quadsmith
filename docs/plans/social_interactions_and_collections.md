@@ -39,8 +39,9 @@ components.
 > - Implement dual-authority answer badges: question askers award "Accepted
 >   Answer" checkmarks, while build authors confer "Author Verified" endorsement
 >   badges.
-> - Prevent griefing via karma safeguards: downvoting costs $-2$ reputation,
->   requires 10 reputation, and caps at 3 downvotes daily.
+> - Prevent griefing with a high-stakes karma economy: downvoting costs the
+>   voter $-2$ reputation, requires a 10 reputation unlock threshold, and is
+>   limited to 3 downvotes per day.
 > - Support mixed-item public collections (containing both builds and
 >   components) anchored by a 1-click system "Liked" collection.
 
@@ -68,8 +69,6 @@ This guarantees referential integrity, supports native cascading deletes, and
 allows foreign key joins without dynamic table lookups.
 
 #### <a id="alternatives-considered-polymorphic-relational-fk" >Alternatives considered</a>
-
-##### <a id="generic-string-target-columns" >Generic String Target Columns</a>
 
 Generic polymorphic target columns storing a string `target_type` (e.g.,
 `'BUILD'`, `'COMPONENT'`) and a target UUID.
@@ -120,8 +119,6 @@ Helpful" sorting without influencing the target entity's positive percentage.
 
 #### <a id="alternatives-considered-steam-style-binary-reviews" >Alternatives considered</a>
 
-##### <a id="five-star-rating-system" >Traditional 1-to-5 Star Rating System</a>
-
 Traditional 1-to-5 star rating systems.
 
 **Pros:**
@@ -151,8 +148,6 @@ section:
   4. Chronological recency
 
 #### <a id="alternatives-considered-stackoverflow-style-qa" >Alternatives considered</a>
-
-##### <a id="flat-chronological-comment-thread" >Flat Chronological Comment Thread</a>
 
 A single, flat chronological comments thread beneath builds and components.
 
@@ -218,8 +213,6 @@ are derived directly from relational vote records and endorsement events:
 - **Reputation Floor**: Total reputation cannot drop below `0`.
 
 #### <a id="alternatives-considered-reputation-karma-economy" >Alternatives considered</a>
-
-##### <a id="unconstrained-zero-cost-downvoting" >Unconstrained Zero-Cost Downvoting</a>
 
 Free, unconstrained downvoting with zero voter cost and no unlock threshold.
 

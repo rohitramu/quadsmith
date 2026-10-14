@@ -32,12 +32,14 @@ battery and payload parameters.
 >   ($I_{xx}, I_{yy}, I_{zz}$) using discrete point-mass approximations.
 > - Model battery
 >   [voltage sag](https://en.wikipedia.org/wiki/Internal_resistance) and loaded
->   RPM to analytically evaluate static thrust and power draw without empirical
->   lookup tables.
-> - Compute
+>   RPM to analytically evaluate static thrust and electrical power draw without
+>   requiring empirical lookup tables.
+> - Compute core flight metrics:
 >   [thrust-to-weight ratio (TWR)](https://en.wikipedia.org/wiki/Thrust-to-weight_ratio),
->   [drag-limited](https://en.wikipedia.org/wiki/Drag_equation) top speed,
->   multi-style flight times, and dual range limits (RF vs. aerodynamic).
+>   aerodynamic top speed via the
+>   [drag equation](https://en.wikipedia.org/wiki/Drag_equation), multi-style
+>   flight times (hover, cruise, freestyle, race), and dual range limits (RF vs.
+>   aerodynamic).
 > - Assess flight agility and prop wash handling through
 >   [disk loading](https://en.wikipedia.org/wiki/Disk_loading) and
 >   torque-to-inertia ratios, accompanied by continuous payload vs. TWR curves.
@@ -71,8 +73,6 @@ inertia summations:
 $$I_{zz} = 4 \times M_{arm} \times r^2 + I_{core}$$
 
 #### <a id="alternatives-considered-point-mass-modeling" >Alternatives considered</a>
-
-##### <a id="full-3d-cad-mesh-and-fea-modeling" >Full 3D CAD Mesh and FEA Modeling</a>
 
 Using full 3D CAD mesh geometry and finite element analysis (FEA) to compute
 exact volume and mass distributions.
@@ -110,8 +110,6 @@ $+15\%$ static thrust increase, while pusher configurations apply a $-5\%$
 penalty due to arm wake turbulence.
 
 #### <a id="alternatives-considered-aerodynamic-thrust-modeling" >Alternatives considered</a>
-
-##### <a id="empirical-bench-test-lookup-tables" >Empirical Bench Test Lookup Tables</a>
 
 Empirical bench test lookup tables compiled from physical thrust stand
 measurements.

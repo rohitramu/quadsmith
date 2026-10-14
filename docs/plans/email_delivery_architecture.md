@@ -79,12 +79,6 @@ Protobuf schemas.
 > - Dispatch verification emails synchronously with a strict 5-second context
 >   timeout for immediate client error reporting.
 
-The email delivery and identity architecture couples zero-cost OAuth identity
-delegation with a standard SMTP verification pipeline. By tracking
-multi-provider email provenance in PostgreSQL and dispatching time-sensitive
-verification challenges synchronously through trusted transactional SMTP relays,
-Quadsmith achieves sub-second inbox delivery without proprietary vendor lock-in.
-
 ```mermaid
 flowchart TD
     subgraph Identity Sources
@@ -291,69 +285,69 @@ where multiple OAuth providers verify the identical email address:
      [`user_emails`](../../src/backend/db/quadsmith_api.sql#L51).
    - Create a dedicated junction table `user_email_oauth_accounts`:
 
-   ```sql
-   CREATE TABLE IF NOT EXISTS user_email_oauth_accounts (
-     uuid UUID NOT NULL,
-     PRIMARY KEY (uuid),
-     user_email_uuid UUID NOT NULL,
-     oauth_account_uuid UUID NOT NULL,
-     created_at TIMESTAMPTZ DEFAULT NOW(),
-     UNIQUE (user_email_uuid, oauth_account_uuid)
-   );
+```sql
+CREATE TABLE IF NOT EXISTS user_email_oauth_accounts (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  user_email_uuid UUID NOT NULL,
+  oauth_account_uuid UUID NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE (user_email_uuid, oauth_account_uuid)
+);
 
-   ALTER TABLE user_email_oauth_accounts
-   ADD CONSTRAINT fk_user_email_oauth_accounts_user_email_uuid
-   FOREIGN KEY (user_email_uuid) REFERENCES user_emails (uuid) ON DELETE CASCADE;
+ALTER TABLE user_email_oauth_accounts
+ADD CONSTRAINT fk_user_email_oauth_accounts_user_email_uuid
+FOREIGN KEY (user_email_uuid) REFERENCES user_emails (uuid) ON DELETE CASCADE;
 
-   ALTER TABLE user_email_oauth_accounts
-   ADD CONSTRAINT fk_user_email_oauth_accounts_oauth_account_uuid
-   FOREIGN KEY (oauth_account_uuid) REFERENCES oauth_accounts (uuid) ON DELETE CASCADE;
-   ```
+ALTER TABLE user_email_oauth_accounts
+ADD CONSTRAINT fk_user_email_oauth_accounts_oauth_account_uuid
+FOREIGN KEY (oauth_account_uuid) REFERENCES oauth_accounts (uuid) ON DELETE CASCADE;
+```
 
-2. **Protobuf Model Updates**: Extend
+1. **Protobuf Model Updates**: Extend
    [`UserEmail`](../../proto/quadsmith/api/user.proto#L75) with provenance
    attributes:
 
-   ```protobuf
-   message UserEmail {
-     option (quadsmith.sql.table) = {name: "user_emails"};
+```protobuf
+message UserEmail {
+  option (quadsmith.sql.table) = {name: "user_emails"};
 
-     string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-     string user_uuid = 2 [(quadsmith.sql.column) = {
-       references: "users(uuid)"
-       create_index: true
-     }];
-     string email = 3 [(quadsmith.sql.column) = {
-       is_unique: true
-       create_index: true
-     }];
-     bool is_primary = 4 [(quadsmith.sql.column) = {default_value: "false"}];
-     google.protobuf.Timestamp created_at = 5;
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string user_uuid = 2 [(quadsmith.sql.column) = {
+    references: "users(uuid)"
+    create_index: true
+  }];
+  string email = 3 [(quadsmith.sql.column) = {
+    is_unique: true
+    create_index: true
+  }];
+  bool is_primary = 4 [(quadsmith.sql.column) = {default_value: "false"}];
+  google.protobuf.Timestamp created_at = 5;
 
-     bool verified_via_otp = 6 [(quadsmith.sql.column) = {default_value: "false"}];
-     repeated string oauth_providers = 7 [(quadsmith.sql.column) = {ignore: true}];
-   }
+  bool verified_via_otp = 6 [(quadsmith.sql.column) = {default_value: "false"}];
+  repeated string oauth_providers = 7 [(quadsmith.sql.column) = {ignore: true}];
+}
 
-   message UserEmailOAuthAccount {
-     option (quadsmith.sql.table) = {
-       name: "user_email_oauth_accounts"
-       unique_constraints: "user_email_uuid, oauth_account_uuid"
-     };
+message UserEmailOAuthAccount {
+  option (quadsmith.sql.table) = {
+    name: "user_email_oauth_accounts"
+    unique_constraints: "user_email_uuid, oauth_account_uuid"
+  };
 
-     string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-     string user_email_uuid = 2 [(quadsmith.sql.column) = {
-       references: "user_emails(uuid) ON DELETE CASCADE"
-       create_index: true
-     }];
-     string oauth_account_uuid = 3 [(quadsmith.sql.column) = {
-       references: "oauth_accounts(uuid) ON DELETE CASCADE"
-       create_index: true
-     }];
-     google.protobuf.Timestamp created_at = 4 [(quadsmith.sql.column) = {default_value: "NOW()"}];
-   }
-   ```
+  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string user_email_uuid = 2 [(quadsmith.sql.column) = {
+    references: "user_emails(uuid) ON DELETE CASCADE"
+    create_index: true
+  }];
+  string oauth_account_uuid = 3 [(quadsmith.sql.column) = {
+    references: "oauth_accounts(uuid) ON DELETE CASCADE"
+    create_index: true
+  }];
+  google.protobuf.Timestamp created_at = 4 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+}
+```
 
-3. **Data Aggregation**: When loading emails for `ListUserEmails` or profile
+1. **Data Aggregation**: When loading emails for `ListUserEmails` or profile
    views, aggregate associated OAuth providers via SQL:
 
    ```sql
@@ -560,7 +554,7 @@ network delivery.
 ### <a id="declarative-configuration-in-configproto" >Declarative Configuration in `config.proto`</a>
 
 Extend
-[proto/quadsmith/config/server_api.proto](../../proto/quadsmith/config/server_api.proto)
+[proto/quadsmith/config/config.proto](../../proto/quadsmith/config/config.proto)
 to define a typed `EmailConfig` message:
 
 ```protobuf

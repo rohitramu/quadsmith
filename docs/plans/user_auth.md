@@ -13,6 +13,10 @@
   - [Soft-Deletion, Account Banning, and Resurrection Lifecycle](#soft-deletion-account-banning-and-resurrection-lifecycle)
 - [3. Assumptions](#3-assumptions)
 - [4. Future work](#4-future-work)
+  - [Meta OAuth Provider Support](#meta-oauth-provider-support)
+  - [Automated OTP Pruning Worker](#automated-otp-pruning-worker)
+  - [Active Sessions Management UI](#active-sessions-management-ui)
+  - [Fine-Grained Temporary Bans and Audit Trail](#fine-grained-temporary-bans-and-audit-trail)
 
 ---
 
@@ -33,8 +37,8 @@ soft-delete content preservation.
 >   TTL) and multi-provider OAuth (Google, GitHub, Discord, Microsoft).
 > - Deploy a hybrid session strategy: short-lived stateless JWT access tokens (1
 >   hour) paired with database-backed revocable refresh tokens (30 days).
-> - Mitigate brute-force attacks with two-tier throttling: 3 attempts per code
->   and 3 exhausted challenges per IP before 60-minute lockout.
+> - Mitigate brute force attacks via two-tier throttling: 3 failed attempts per
+>   code, and 3 failed challenges per IP triggering a 60-minute lockout.
 > - Anchor database models to hidden UUID v7 primary keys with unique public
 >   username handles (`id`) matching project conventions.
 > - Safeguard communal knowledge during account deletion or administrative bans
@@ -125,8 +129,6 @@ Users authenticate without static passwords via two pathways:
 
 #### <a id="alternatives-considered-passwordless-auth" >Alternatives considered</a>
 
-##### <a id="traditional-password-authentication" >Traditional Password-Based Authentication</a>
-
 Traditional password-based authentication with salt and bcrypt hashing.
 
 **Pros:**
@@ -156,8 +158,6 @@ Session state uses a two-tier token model:
   current 1-hour JWT expires.
 
 #### <a id="alternatives-considered-hybrid-jwt-tokens" >Alternatives considered</a>
-
-##### <a id="pure-stateless-jwt-sessions" >Pure Stateless JWT Sessions</a>
 
 Pure stateless JWTs without database-backed refresh tokens.
 
@@ -236,8 +236,6 @@ To balance privacy rights with community knowledge preservation:
   with `banned_at` are permanently barred from resurrection.
 
 #### <a id="alternatives-considered-soft-deletion-lifecycle" >Alternatives considered</a>
-
-##### <a id="hard-cascading-user-deletion" >Hard Cascading User Deletion</a>
 
 Hard cascading deletion that purges user records and all associated builds,
 questions, and answers.

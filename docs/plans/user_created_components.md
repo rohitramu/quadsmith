@@ -71,13 +71,6 @@ rules.
 > - Provide schema-driven modal editors in the web UI, quick-add shortcuts in
 >   the Forge wizard, and CLI CRUD commands.
 
-The component authoring architecture unifies all 20 hardware, gear, and firmware
-collections under a relational Table-Per-Type (TPT) hierarchy rooted at
-`entities`. By centralizing ownership, identity slugs, and shared metadata in
-`entities` while isolating domain-specific technical fields in subtype tables,
-Quadsmith enables full creator-owned CRUD operations across the Web UI and CLI
-without column duplication or archival desynchronization.
-
 ```text
                +--------------------------------------------+
                |                  entities                  |
@@ -503,7 +496,7 @@ electrical safety checks:
   - `name`: Required, 1 to 256 characters.
   - `manufacturer`: Required, 1 to 128 characters.
   - `reference_links`: Validated with
-    [`api.ValidateReferenceLinks`](../../src/backend/shared/gen/quadsmith/api/referencelink_validation.pb.go).
+    [`validation.ValidateReferenceLinks`](../../src/backend/shared/pkg/validation/validation.go).
   - `media` and `primary_display_image`: Valid URL or `/blobs/<hash>` format.
 - **Hardware-Specific Domain Bounds**:
   - `Motor`: `kv > 0`, `stator_diameter_mm > 0`, `stator_height_mm > 0`,
@@ -555,10 +548,7 @@ differentiate platform-seeded components from user-created items.
 
 ### <a id="responsive-dynamic-modal-forms-forge-quick-add-profile-tab-and-full-cli-crud" >Responsive Dynamic Modal Forms, Forge Quick-Add, Profile Tab, and Full CLI CRUD</a>
 
-Component creation and management are exposed across both the React web
-application and the Go CLI (`qs`):
-
-**Web UI Implementation:**
+#### Web UI Implementation
 
 1. **Collection Pages (`CollectionPage.tsx`)**:
    - Add a prominent **"+ Add Component"** button to the collection header
@@ -586,7 +576,7 @@ application and the Go CLI (`qs`):
    - Displays all components contributed by the user with category badges,
      creation dates, and direct management shortcuts for the profile owner.
 
-**CLI Implementation (`qs`):**
+#### CLI Implementation (`qs`)
 
 Enhance [`generate_cli.go`](../../src/frontend/cli/generate_cli.go) to generate
 uniform `create`, `update`, and `delete` commands across all component

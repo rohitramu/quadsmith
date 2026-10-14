@@ -6,11 +6,10 @@
 - [2. Goal](#2-goal)
 - [3. Proposal](#3-proposal)
   - [Design Decision 1: Plan Document Structure & Section Rules](#design-decision-1-plan-document-structure-and-section-rules)
-  - [Design Decision 2: Plan Lifecycle (Artifacts to `docs/plans/`)](#design-decision-2-plan-lifecycle-artifacts-to-docs-plans)
+  - [Design Decision 2: Plan Lifecycle (Artifacts to docs/plans/)](#design-decision-2-plan-lifecycle-artifacts-to-docs-plans)
   - [Design Decision 3: Git Commit Workflow Integration](#design-decision-3-git-commit-workflow-integration)
   - [Design Decision 4: Plan Maintenance, Superseding, and Archival](#design-decision-4-plan-maintenance-superseding-and-archival)
   - [Design Decision 5: Self-Execution for this Change](#design-decision-5-self-execution-for-this-change)
-  - [Design Decision 6: Automated Plan Structure Linting](#design-decision-6-automated-plan-structure-linting)
 - [4. Alternatives considered](#4-alternatives-considered)
 - [5. Assumptions](#5-assumptions)
 
@@ -485,40 +484,6 @@ minimizes the number of files touched during the task.
 
 - Misses the opportunity to establish the first reference document following the
   new standard.
-
-### <a id="design-decision-6-automated-plan-structure-linting" >Design Decision 6: Automated Plan Structure Linting</a>
-
-Enforce all plan structure and lifecycle rules automatically via the
-[planlint](../../src/backend/shared/pkg/planlint/planlint.go) package and the
-[check-plans](../../src/backend/shared/cmd/check-plans/main.go) CLI:
-
-- **Build & Pre-Commit Enforcement**: `make lint-plans` (invoked automatically
-  by `make build` and `.githooks/pre-commit`) runs `check-plans` against all
-  non-archived plans in `docs/plans/*.md`.
-- **Test Suite Enforcement**:
-  [planlint_test.go](../../src/backend/shared/pkg/planlint/planlint_test.go)
-  verifies all active plans in `docs/plans/` during `make test` alongside unit
-  tests for every rule.
-- **Artifact Mode Support**: Passing `--artifact` (or linting a path inside the
-  agent `/brain/` directory) validates draft artifact rules (`&nbsp;` paragraph
-  spacers and `file:///` links) before approval.
-
-#### <a id="alternatives-considered-design-decision-6" >Alternatives considered</a>
-
-##### <a id="rely-solely-on-markdownlint" >Rely Solely on markdownlint</a>
-
-Use only `.markdownlint.json` rules without a custom Go linter for plan
-documents.
-
-**Pros:**
-
-- Requires no custom Go validation code.
-
-**Cons:**
-
-- Cannot validate Quadsmith-specific semantic invariants such as custom heading
-  anchors, Table of Contents synchronization, 20-word TL;DR limits, Pros/Cons
-  alternative sub-sections, or relative link target existence.
 
 ---
 
