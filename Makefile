@@ -1,4 +1,4 @@
-.PHONY: all build sandbox generate clean test test-e2e vendor tool breaking-change test-breaking warn-breaking
+.PHONY: all build sandbox generate clean test test-e2e vendor tool breaking-change test-breaking warn-breaking lint-plans
 
 export GOWORK := $(shell pwd)/src/go.work
 
@@ -58,7 +58,11 @@ fmt: $(VENDOR_PLUGINS)
 	@echo "--- Formatting textproto files with txtpbfmt ---"
 	@find src test -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
 
-build: tidy fmt generate
+lint-plans:
+	@echo "--- Verifying plan document structure ---"
+	@go run -mod=vendor ./src/backend/shared/cmd/check-plans
+
+build: tidy fmt generate lint-plans
 	@echo "--- Verifying Protobuf regex patterns (Go RE2) ---"
 	@go run -mod=vendor ./src/backend/shared/cmd/check-regex
 	@echo "--- Validating all application configurations ---"

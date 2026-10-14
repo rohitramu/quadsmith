@@ -34,9 +34,8 @@ guidance.
 >   requiring a pre-existing saved build.
 > - Emit structured result objects grouping severity-coded messages, actionable
 >   resolution tips, and typed metrics for UI gauges.
-> - Verify physical dimensions (stack mounts, propeller clearance, camera
->   width), electrical limits (voltage ranges, current headroom), software
->   protocols (video links, control links), and UART peripheral budgets.
+> - Verify physical dimensions, electrical limits (voltage and current
+>   headroom), software/RF protocols, and UART peripheral budgets.
 > - Permit permissive saving of builds flagged with definite incompatibilities
 >   to support custom hardware modifications.
 
@@ -58,6 +57,8 @@ or electrical constraints. The system acts as an advisory assistant rather than
 a restrictive gatekeeper.
 
 #### <a id="alternatives-considered-permissive-build-persistence" >Alternatives considered</a>
+
+##### <a id="strict-persistence-gating" >Strict Persistence Gating</a>
 
 Strict persistence gating that rejects saving or publishing builds containing
 unresolved `DEFINITE_INCOMPATIBILITY` diagnostics.
@@ -85,6 +86,8 @@ executes a single batch query to resolve specifications and known override
 issues, runs the evaluation in memory, and returns the diagnostics payload.
 
 #### <a id="alternatives-considered-stateless-evaluation-api" >Alternatives considered</a>
+
+##### <a id="database-backed-build-evaluation" >Database-Backed Build Evaluation</a>
 
 Requiring a persistent `Build` record in the database before running
 compatibility checks.

@@ -10,7 +10,6 @@
   - [Sub-Second Local and CI Integration Suite](#sub-second-local-and-ci-integration-suite)
 - [3. Assumptions](#3-assumptions)
 - [4. Future work](#4-future-work)
-  - [End-to-End Browser Testing with Playwright](#end-to-end-browser-testing-with-playwright)
 
 ---
 
@@ -89,6 +88,8 @@ interactions in milliseconds.
 
 #### <a id="alternatives-considered-headless-dom-execution" >Alternatives considered</a>
 
+##### <a id="browser-only-component-testing" >Browser-Only Component Testing</a>
+
 Executing all unit, component, and routing tests inside real browser automation
 instances using tools like Playwright or Cypress.
 
@@ -114,6 +115,8 @@ The router transport routes client RPC queries (`ListMotors`, `GetMotor`,
 responses, pagination tokens, or error codes.
 
 #### <a id="alternatives-considered-mock-router-transports" >Alternatives considered</a>
+
+##### <a id="network-level-http-interception" >Network-Level HTTP Interception (MSW / Fetch Mocks)</a>
 
 Using network-level mocking libraries such as Mock Service Worker (MSW) or
 mocking `fetch` calls directly.

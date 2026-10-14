@@ -68,6 +68,13 @@ preservation of communal knowledge.
 > - Purge personal data and release handle to public pool via automated scrubber
 >   after 30 days.
 
+The account deletion lifecycle balances strict security verification, user
+remorse recovery, and long-term community preservation. By retaining the user's
+handle in place on the `users` record during the 30-day soft-deletion grace
+period and anchoring state exclusively to `users.deleted_at`, the system avoids
+multi-table synchronization drift while enabling instant 1-line account
+restoration before the background scrubber permanently anonymizes personal data.
+
 ```mermaid
 flowchart TD
     subgraph Step 1: Client Request
