@@ -11,13 +11,13 @@ import {
 import { getComponentServiceDef } from "../lib/componentServices";
 import { useAuth } from "../context/AuthContext";
 import { ComponentFormModal } from "../components/ComponentFormModal";
-import { CollectionBadge } from "../components/CollectionBadge";
+import { CollectionBadge } from "@quadsmith/shared";
 import { MediaGallery } from "../components/MediaGallery";
 import { ReferenceLinksList } from "../components/SocialLinkPreviewCard";
 import { SocialToolbar } from "../components/SocialToolbar";
 import { SocialTabs, type SocialTabType } from "../components/SocialTabs";
-import { useDocumentMeta } from "../hooks/useDocumentMeta";
-import { formatProductTitle } from "../lib/format";
+import { useDocumentMeta } from "@quadsmith/shared";
+import { formatProductTitle } from "@quadsmith/shared";
 
 function ProductDetailView({
   categoryId,

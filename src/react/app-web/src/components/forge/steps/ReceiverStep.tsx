@@ -2,10 +2,10 @@ import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, Sparkles, Check } from "lucide-react";
 import { useForge, checkRxAntennaCompatibility } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
-import { CollectionIcon } from "../../CollectionIcon";
+import { CollectionIcon } from "@quadsmith/shared";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
-import { getCollectionColor } from "../../../lib/collectionColors";
-import type { Receiver } from "../../../gen/quadsmith/api/receiver_pb";
+import { getCollectionColor } from "@quadsmith/shared";
+import type { Receiver } from "@quadsmith/shared/gen/quadsmith/api/receiver_pb";
 
 export function ReceiverStep() {
   const {

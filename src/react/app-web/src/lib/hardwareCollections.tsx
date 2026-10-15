@@ -1,56 +1,68 @@
 import React from "react";
-import { formatStatorSize } from "./format";
+import { formatStatorSize } from "@quadsmith/shared";
 import type { FieldDef } from "../components/SmartFilterInput";
-import { getCollectionColorFromSchema, type CollectionColorDef } from "./collectionColors";
+import { getCollectionColorFromSchema, type CollectionColorDef } from "@quadsmith/shared";
 
 // Protobuf Schemas
-import { AntennaSchema } from "../gen/quadsmith/api/antenna_pb";
-import { BatterySchema } from "../gen/quadsmith/api/battery_pb";
-import { CameraSchema } from "../gen/quadsmith/api/camera_pb";
-import { ElectronicSpeedControllerSchema } from "../gen/quadsmith/api/electronic_speed_controller_pb";
-import { FlightControllerSchema } from "../gen/quadsmith/api/flight_controller_pb";
-import { FrameSchema } from "../gen/quadsmith/api/frame_pb";
-import { GpsReceiverSchema } from "../gen/quadsmith/api/gps_receiver_pb";
-import { MotorSchema } from "../gen/quadsmith/api/motor_pb";
-import { PropellerSchema } from "../gen/quadsmith/api/propeller_pb";
-import { ReceiverSchema } from "../gen/quadsmith/api/receiver_pb";
-import { VideoTransmitterSchema } from "../gen/quadsmith/api/video_transmitter_pb";
+import { AntennaSchema } from "@quadsmith/shared/gen/quadsmith/api/antenna_pb";
+import { BatterySchema } from "@quadsmith/shared/gen/quadsmith/api/battery_pb";
+import { CameraSchema } from "@quadsmith/shared/gen/quadsmith/api/camera_pb";
+import { ElectronicSpeedControllerSchema } from "@quadsmith/shared/gen/quadsmith/api/electronic_speed_controller_pb";
+import { FlightControllerSchema } from "@quadsmith/shared/gen/quadsmith/api/flight_controller_pb";
+import { FrameSchema } from "@quadsmith/shared/gen/quadsmith/api/frame_pb";
+import { GpsReceiverSchema } from "@quadsmith/shared/gen/quadsmith/api/gps_receiver_pb";
+import { MotorSchema } from "@quadsmith/shared/gen/quadsmith/api/motor_pb";
+import { PropellerSchema } from "@quadsmith/shared/gen/quadsmith/api/propeller_pb";
+import { ReceiverSchema } from "@quadsmith/shared/gen/quadsmith/api/receiver_pb";
+import { VideoTransmitterSchema } from "@quadsmith/shared/gen/quadsmith/api/video_transmitter_pb";
 
 // Connect Query Services
-import { listAntennas, getAntenna } from "../gen/quadsmith/api/antenna-AntennaService_connectquery";
+import {
+  listAntennas,
+  getAntenna,
+} from "@quadsmith/shared/gen/quadsmith/api/antenna-AntennaService_connectquery";
 import {
   listBatteries,
   getBattery,
-} from "../gen/quadsmith/api/battery-BatteryService_connectquery";
-import { listCameras, getCamera } from "../gen/quadsmith/api/camera-CameraService_connectquery";
+} from "@quadsmith/shared/gen/quadsmith/api/battery-BatteryService_connectquery";
+import {
+  listCameras,
+  getCamera,
+} from "@quadsmith/shared/gen/quadsmith/api/camera-CameraService_connectquery";
 import {
   listElectronicSpeedControllers,
   getElectronicSpeedController,
-} from "../gen/quadsmith/api/electronic_speed_controller-ElectronicSpeedControllerService_connectquery";
+} from "@quadsmith/shared/gen/quadsmith/api/electronic_speed_controller-ElectronicSpeedControllerService_connectquery";
 import {
   listFlightControllers,
   getFlightController,
-} from "../gen/quadsmith/api/flight_controller-FlightControllerService_connectquery";
-import { listFrames, getFrame } from "../gen/quadsmith/api/frame-FrameService_connectquery";
+} from "@quadsmith/shared/gen/quadsmith/api/flight_controller-FlightControllerService_connectquery";
+import {
+  listFrames,
+  getFrame,
+} from "@quadsmith/shared/gen/quadsmith/api/frame-FrameService_connectquery";
 import {
   listGpsReceivers,
   getGpsReceiver,
-} from "../gen/quadsmith/api/gps_receiver-GpsReceiverService_connectquery";
-import { listMotors, getMotor } from "../gen/quadsmith/api/motor-MotorService_connectquery";
+} from "@quadsmith/shared/gen/quadsmith/api/gps_receiver-GpsReceiverService_connectquery";
+import {
+  listMotors,
+  getMotor,
+} from "@quadsmith/shared/gen/quadsmith/api/motor-MotorService_connectquery";
 import {
   listPropellers,
   getPropeller,
-} from "../gen/quadsmith/api/propeller-PropellerService_connectquery";
+} from "@quadsmith/shared/gen/quadsmith/api/propeller-PropellerService_connectquery";
 import {
   listReceivers,
   getReceiver,
-} from "../gen/quadsmith/api/receiver-ReceiverService_connectquery";
+} from "@quadsmith/shared/gen/quadsmith/api/receiver-ReceiverService_connectquery";
 import {
   listVideoTransmitters,
   getVideoTransmitter,
-} from "../gen/quadsmith/api/video_transmitter-VideoTransmitterService_connectquery";
+} from "@quadsmith/shared/gen/quadsmith/api/video_transmitter-VideoTransmitterService_connectquery";
 import { getOption } from "@bufbuild/protobuf";
-import { collection_path as collectionPathOpt } from "../gen/quadsmith/common/common_pb";
+import { collection_path as collectionPathOpt } from "@quadsmith/shared/gen/quadsmith/common/common_pb";
 
 export interface ColumnConfig {
   id: string;
@@ -2059,7 +2071,7 @@ export {
   getCollectionColorByCode,
   getCollectionColorFromSchema,
   type CollectionColorDef,
-} from "./collectionColors";
+} from "@quadsmith/shared";
 
 import { SOFTWARE_COLLECTIONS } from "./softwareCollections";
 import { GEAR_COLLECTIONS } from "./gearCollections";

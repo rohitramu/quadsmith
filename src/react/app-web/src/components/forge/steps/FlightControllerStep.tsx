@@ -14,10 +14,10 @@ import {
 } from "lucide-react";
 import { useForge, isMountPatternCompatible } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
-import { CollectionIcon } from "../../CollectionIcon";
+import { CollectionIcon } from "@quadsmith/shared";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
-import { getCollectionColor } from "../../../lib/collectionColors";
-import type { FlightController } from "../../../gen/quadsmith/api/flight_controller_pb";
+import { getCollectionColor } from "@quadsmith/shared";
+import type { FlightController } from "@quadsmith/shared/gen/quadsmith/api/flight_controller_pb";
 
 export function FlightControllerStep() {
   const {

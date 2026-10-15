@@ -9,8 +9,8 @@ import {
   voteReview,
   createReviewComment,
   deleteReviewComment,
-} from "../gen/quadsmith/api/social-SocialService_connectquery";
-import { ReviewVoteType, type Review } from "../gen/quadsmith/api/social_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/social-SocialService_connectquery";
+import { ReviewVoteType, type Review } from "@quadsmith/shared/gen/quadsmith/api/social_pb";
 import { useAuth } from "../context/AuthContext";
 import {
   ThumbsUp,
@@ -23,12 +23,8 @@ import {
   ChevronUp,
   AlertCircle,
 } from "lucide-react";
-import {
-  getReviewTierBadgeClass,
-  getReviewTierLabel,
-  formatRelativeDate,
-} from "../lib/socialFormat";
-import { getAvatarPalette, getInitial } from "../lib/avatarColor";
+import { getReviewTierBadgeClass, getReviewTierLabel, formatRelativeDate } from "@quadsmith/shared";
+import { getAvatarPalette, getInitial } from "@quadsmith/shared";
 
 export interface SocialReviewSectionProps {
   target: { type?: "build" | "component"; id: string; collection?: string };

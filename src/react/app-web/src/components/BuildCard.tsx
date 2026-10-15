@@ -3,7 +3,7 @@ import { useQuery } from "@connectrpc/connect-query";
 import {
   evaluateBuild,
   getBuildElectricalLimits,
-} from "../gen/quadsmith/api/evaluator-EvaluatorService_connectquery";
+} from "@quadsmith/shared/gen/quadsmith/api/evaluator-EvaluatorService_connectquery";
 import {
   Gauge,
   Clock,
@@ -18,10 +18,10 @@ import {
   Compass,
 } from "lucide-react";
 import { useState } from "react";
-import { getCollectionColor } from "../lib/collectionColors";
-import { CollectionBadge } from "./CollectionBadge";
+import { getCollectionColor } from "@quadsmith/shared";
+import { CollectionBadge } from "@quadsmith/shared";
 
-import type { Build, ComponentMatchDetail } from "../gen/quadsmith/api/build_pb";
+import type { Build, ComponentMatchDetail } from "@quadsmith/shared/gen/quadsmith/api/build_pb";
 
 export interface BuildCardProps {
   build: Build;

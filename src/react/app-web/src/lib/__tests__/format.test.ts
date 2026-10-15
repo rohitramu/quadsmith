@@ -7,7 +7,7 @@ import {
   getHoverThrottleColor,
   formatProductTitle,
   formatWeight,
-} from "../format";
+} from "@quadsmith/shared";
 
 describe("formatStatorSize", () => {
   it("formats integer stator dimensions as 4 digits", () => {

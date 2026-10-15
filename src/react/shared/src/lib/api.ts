@@ -1,0 +1,46 @@
+import { createConnectTransport } from "@connectrpc/connect-web";
+import type { Transport } from "@connectrpc/connect";
+
+export interface CreateApiTransportOptions {
+  baseUrl?: string;
+  storageKey?: string;
+}
+
+export function getStoredAccessToken(storageKey: string = "qs_access_token"): string | null {
+  if (typeof window === "undefined" || !window.localStorage) return null;
+  return localStorage.getItem(storageKey);
+}
+
+export function setStoredAccessToken(
+  token: string | null,
+  storageKey: string = "qs_access_token",
+): void {
+  if (typeof window === "undefined" || !window.localStorage) return;
+  if (token) {
+    localStorage.setItem(storageKey, token);
+  } else {
+    localStorage.removeItem(storageKey);
+  }
+}
+
+export function createApiTransport(options: CreateApiTransportOptions = {}): Transport {
+  const { baseUrl = "", storageKey = "qs_access_token" } = options;
+  return createConnectTransport({
+    baseUrl,
+    fetch: (input, init) => {
+      return fetch(input, {
+        ...init,
+        credentials: "include",
+      });
+    },
+    interceptors: [
+      (next) => async (req) => {
+        const token = getStoredAccessToken(storageKey);
+        if (token) {
+          req.header.set("Authorization", `Bearer ${token}`);
+        }
+        return await next(req);
+      },
+    ],
+  });
+}

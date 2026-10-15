@@ -4,10 +4,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import {
   getEntitySocialSummary,
   toggleLikeItem,
-} from "../gen/quadsmith/api/social-SocialService_connectquery";
+} from "@quadsmith/shared/gen/quadsmith/api/social-SocialService_connectquery";
 import { useAuth } from "../context/AuthContext";
 import { Heart, Bookmark, Share2, ThumbsUp, HelpCircle, Check, Loader2 } from "lucide-react";
-import { getReviewTierBadgeClass, getReviewTierLabel } from "../lib/socialFormat";
+import { getReviewTierBadgeClass, getReviewTierLabel } from "@quadsmith/shared";
 import { SaveToCollectionModal } from "./SaveToCollectionModal";
 
 export interface SocialToolbarProps {

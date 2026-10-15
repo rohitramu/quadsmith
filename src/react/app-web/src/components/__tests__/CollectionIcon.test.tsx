@@ -6,7 +6,7 @@ import {
   DroneFrame,
   Propeller,
   Motor,
-} from "../CollectionIcon";
+} from "@quadsmith/shared";
 import {
   Antenna,
   Battery,

@@ -7,8 +7,8 @@ import {
   getCollectionPath,
   getCollectionColor,
 } from "../lib/hardwareCollections";
-import { CollectionBadge } from "./CollectionBadge";
-import { CollectionIcon } from "./CollectionIcon";
+import { CollectionBadge } from "@quadsmith/shared";
+import { CollectionIcon } from "@quadsmith/shared";
 import { ExternalLink } from "lucide-react";
 
 export interface ProductHoverCardProps {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getAvatarPalette, getInitial, AVATAR_PALETTES } from "../avatarColor";
+import { getAvatarPalette, getInitial, AVATAR_PALETTES } from "@quadsmith/shared";
 
 describe("Avatar Color Utilities", () => {
   it("deterministically returns the same palette for a given UUID", () => {

@@ -31,8 +31,8 @@ jobs:
       uses: astral-sh/setup-uv@v3
 
     - name: Install Web Dependencies
-      run: npm ci
-      working-directory: ./src/react/app-web
+      run: npm install
+      working-directory: ./src/react
 
     - name: Verify Code Generation
       run: |
@@ -52,7 +52,7 @@ jobs:
         find src test -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
 
         # Format TypeScript, HTML, and CSS
-        npx --prefix src/react/app-web prettier --write "src/react/app-web/index.html" "src/react/app-web/src/**/*.{ts,tsx,css,html}"
+        npx --prefix src/react/app-web prettier --write "src/react/app-web/index.html" "src/react/app-web/src/**/*.{ts,tsx,css,html}" "src/react/shared/src/**/*.{ts,tsx,css,html}"
 
         # Format and Lint Markdown
         npx --prefix src/react/app-web prettier --ignore-path .prettierignore --write "**/*.md"

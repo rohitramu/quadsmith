@@ -5,6 +5,9 @@ services:
       dockerfile: test/Dockerfile.db
     ports:
       - "${DB_PORT:-5432}:5432"
+      - "${PORT:-8080}:8080"
+      - "${OPS_PORT:-8081}:8081"
+      - "${WEB_PORT:-3001}:3000"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d quadsmith_api"]
       interval: 100ms
@@ -16,13 +19,10 @@ services:
     build:
       context: ..
       dockerfile: src/go/server-api/Dockerfile
+    network_mode: "service:db"
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "${PORT:-8080}:8080"
-    environment:
-      - QS_DATABASE_URL=postgres://postgres:postgres@db:5432/quadsmith_api?sslmode=disable
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
       interval: 100ms
@@ -35,14 +35,10 @@ services:
     build:
       context: ..
       dockerfile: src/go/server-ops/Dockerfile
+    network_mode: "service:db"
     depends_on:
       db:
         condition: service_healthy
-    ports:
-      - "${OPS_PORT:-8081}:8081"
-    environment:
-      - QS_DATABASE_URL=postgres://postgres:postgres@db:5432/quadsmith_api?sslmode=disable
-      - QS_INTERNAL_DATABASE_URL=postgres://postgres:postgres@db:5432/quadsmith_ops?sslmode=disable
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8081/healthz || exit 1"]
       interval: 100ms
@@ -55,28 +51,24 @@ services:
     build:
       context: ..
       dockerfile: src/go/server-jobs/Dockerfile
+    network_mode: "service:db"
     depends_on:
       ops:
         condition: service_healthy
-    volumes:
-      - ./config/jobs.textproto:/app/config/jobs.textproto:ro
-    entrypoint: ["/app/server-jobs", "--config", "/app/config/jobs.textproto"]
+    entrypoint: ["/app/server-jobs", "--config", "/app/src/go/server-jobs/config/sandbox.textproto"]
 
   web:
     build:
       context: ..
       dockerfile: src/go/server-web/Dockerfile
+    network_mode: "service:db"
     depends_on:
       api:
         condition: service_healthy
-    ports:
-      - "${WEB_PORT:-3001}:3000"
-    volumes:
-      - ./config/web.textproto:/app/config/web.textproto:ro
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:3000/healthz || exit 1"]
       interval: 100ms
       timeout: 1s
       retries: 50
       start_period: 200ms
-    entrypoint: ["/app/server-web", "--config", "/app/config/web.textproto"]
+    entrypoint: ["/app/server-web", "--config", "/app/src/go/server-web/config/sandbox.textproto"]

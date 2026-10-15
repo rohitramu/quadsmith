@@ -2,39 +2,39 @@ import { useParams, Link } from "react-router-dom";
 import { useState, useMemo, useEffect } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import { keepPreviousData } from "@tanstack/react-query";
-import { getBuild } from "../gen/quadsmith/api/build-BuildService_connectquery";
+import { getBuild } from "@quadsmith/shared/gen/quadsmith/api/build-BuildService_connectquery";
 import {
   evaluateBuild,
   getBuildElectricalLimits,
-} from "../gen/quadsmith/api/evaluator-EvaluatorService_connectquery";
-import { checkCompatibility } from "../gen/quadsmith/api/compatibility-CompatibilityService_connectquery";
-import { getFrame } from "../gen/quadsmith/api/frame-FrameService_connectquery";
-import { getMotor } from "../gen/quadsmith/api/motor-MotorService_connectquery";
-import { listBatteries } from "../gen/quadsmith/api/battery-BatteryService_connectquery";
-import { getFlightController } from "../gen/quadsmith/api/flight_controller-FlightControllerService_connectquery";
-import { getElectronicSpeedController } from "../gen/quadsmith/api/electronic_speed_controller-ElectronicSpeedControllerService_connectquery";
-import { getPropeller } from "../gen/quadsmith/api/propeller-PropellerService_connectquery";
-import { getCamera } from "../gen/quadsmith/api/camera-CameraService_connectquery";
-import { getVideoTransmitter } from "../gen/quadsmith/api/video_transmitter-VideoTransmitterService_connectquery";
-import { getReceiver } from "../gen/quadsmith/api/receiver-ReceiverService_connectquery";
-import { getAntenna } from "../gen/quadsmith/api/antenna-AntennaService_connectquery";
-import { getGpsReceiver } from "../gen/quadsmith/api/gps_receiver-GpsReceiverService_connectquery";
-import { SystemMessageSeverity } from "../gen/quadsmith/api/evaluator_pb";
-import type { Battery } from "../gen/quadsmith/api/battery_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/evaluator-EvaluatorService_connectquery";
+import { checkCompatibility } from "@quadsmith/shared/gen/quadsmith/api/compatibility-CompatibilityService_connectquery";
+import { getFrame } from "@quadsmith/shared/gen/quadsmith/api/frame-FrameService_connectquery";
+import { getMotor } from "@quadsmith/shared/gen/quadsmith/api/motor-MotorService_connectquery";
+import { listBatteries } from "@quadsmith/shared/gen/quadsmith/api/battery-BatteryService_connectquery";
+import { getFlightController } from "@quadsmith/shared/gen/quadsmith/api/flight_controller-FlightControllerService_connectquery";
+import { getElectronicSpeedController } from "@quadsmith/shared/gen/quadsmith/api/electronic_speed_controller-ElectronicSpeedControllerService_connectquery";
+import { getPropeller } from "@quadsmith/shared/gen/quadsmith/api/propeller-PropellerService_connectquery";
+import { getCamera } from "@quadsmith/shared/gen/quadsmith/api/camera-CameraService_connectquery";
+import { getVideoTransmitter } from "@quadsmith/shared/gen/quadsmith/api/video_transmitter-VideoTransmitterService_connectquery";
+import { getReceiver } from "@quadsmith/shared/gen/quadsmith/api/receiver-ReceiverService_connectquery";
+import { getAntenna } from "@quadsmith/shared/gen/quadsmith/api/antenna-AntennaService_connectquery";
+import { getGpsReceiver } from "@quadsmith/shared/gen/quadsmith/api/gps_receiver-GpsReceiverService_connectquery";
+import { SystemMessageSeverity } from "@quadsmith/shared/gen/quadsmith/api/evaluator_pb";
+import type { Battery } from "@quadsmith/shared/gen/quadsmith/api/battery_pb";
 import { MediaGallery } from "../components/MediaGallery";
 import { BatteryPickerModal } from "../components/BatteryPickerModal";
-import { buildBatteryCelFilter } from "../lib/batteryFilter";
-import { CollectionIcon } from "../components/CollectionIcon";
-import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
+import { buildBatteryCelFilter } from "@quadsmith/shared";
+import { CollectionIcon } from "@quadsmith/shared";
+import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "@quadsmith/shared";
 import { getHardwareCollection, getCollectionPath } from "../lib/hardwareCollections";
-import { getCollectionColor } from "../lib/collectionColors";
-import { CollectionBadge } from "../components/CollectionBadge";
+import { getCollectionColor } from "@quadsmith/shared";
+import { CollectionBadge } from "@quadsmith/shared";
 import { ReferenceLinksList } from "../components/SocialLinkPreviewCard";
 import { ProductHoverCard } from "../components/ProductHoverCard";
 import { BatteryCombobox } from "../components/BatteryCombobox";
 import { SocialToolbar } from "../components/SocialToolbar";
 import { SocialTabs, type SocialTabType } from "../components/SocialTabs";
-import { useDocumentMeta } from "../hooks/useDocumentMeta";
+import { useDocumentMeta } from "@quadsmith/shared";
 import {
   ChevronRight,
   Gauge,

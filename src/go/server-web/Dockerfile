@@ -1,11 +1,14 @@
 FROM node:22 AS web-builder
 WORKDIR /app
 
-COPY src/react/app-web/package.json src/react/app-web/package-lock.json* ./
-RUN npm install
+COPY src/react/package.json ./src/react/
+COPY src/react/shared/package.json ./src/react/shared/
+COPY src/react/app-web/package.json src/react/app-web/package-lock.json* ./src/react/app-web/
+RUN cd src/react && npm install
 
-COPY src/react/app-web/ .
-RUN npm run build
+COPY src/react/shared ./src/react/shared
+COPY src/react/app-web ./src/react/app-web
+RUN cd src/react/app-web && npm run build
 
 FROM golang:1.27 AS builder
 WORKDIR /app
@@ -35,7 +38,7 @@ RUN apk --no-cache add ca-certificates tzdata
 EXPOSE 3000 443
 
 COPY --from=builder /app/bin/server-web /app/server-web
-COPY --from=web-builder /app/dist /app/src/react/app-web/dist
+COPY --from=web-builder /app/src/react/app-web/dist /app/src/react/app-web/dist
 COPY src/go/server-web/config /app/src/go/server-web/config
 
 ENTRYPOINT ["/app/server-web", "--config", "/app/src/go/server-web/config/prod.textproto"]

@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import { Copy, Check } from "lucide-react";
-import { formatCelFilterForDisplay } from "../lib/batteryFilter";
+import { formatCelFilterForDisplay } from "@quadsmith/shared";
 
 export interface CompatibilityHoverCardProps {
   filter?: string | null;

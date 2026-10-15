@@ -2,11 +2,11 @@ import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, AlertTriangle, Check } from "lucide-react";
 import { useForge, isMountPatternCompatible } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
-import { CollectionIcon } from "../../CollectionIcon";
+import { CollectionIcon } from "@quadsmith/shared";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
-import { getCollectionColor } from "../../../lib/collectionColors";
-import { formatStatorSize } from "../../../lib/format";
-import type { Motor } from "../../../gen/quadsmith/api/motor_pb";
+import { getCollectionColor } from "@quadsmith/shared";
+import { formatStatorSize } from "@quadsmith/shared";
+import type { Motor } from "@quadsmith/shared/gen/quadsmith/api/motor_pb";
 
 export function MotorStep() {
   const {

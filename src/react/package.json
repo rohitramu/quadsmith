@@ -1,0 +1,8 @@
+{
+  "name": "quadsmith-react",
+  "private": true,
+  "workspaces": [
+    "shared",
+    "app-web"
+  ]
+}

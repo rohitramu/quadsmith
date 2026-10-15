@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { ArrowLeft, Save, AlertCircle, Loader2, ShieldCheck, Lock, Globe } from "lucide-react";
 import { useForge } from "../ForgeContext";
-import { CollectionIcon } from "../../CollectionIcon";
-import { getCollectionColor } from "../../../lib/collectionColors";
+import { CollectionIcon } from "@quadsmith/shared";
+import { getCollectionColor } from "@quadsmith/shared";
 
 export function ReviewStep() {
   const {

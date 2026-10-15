@@ -6,7 +6,7 @@ import {
   isElementEllipsized,
   getElementFullText,
   findEllipsizedTarget,
-} from "../EllipsisHint";
+} from "@quadsmith/shared";
 
 describe("EllipsisHint Component & Utilities", () => {
   beforeEach(() => {

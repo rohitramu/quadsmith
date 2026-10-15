@@ -17,7 +17,6 @@
   - [Layered Base and Overlay Configuration Architecture](#layered-base-and-overlay-configuration-architecture)
 - [5. Assumptions](#5-assumptions)
 - [6. Future work](#6-future-work)
-  - [Shared Frontend UI Component Library](#shared-frontend-ui-component-library)
   - [Automated Production Release Pipeline](#automated-production-release-pipeline)
 
 ---
@@ -118,8 +117,9 @@ src/
 └── react/                             # All React / TypeScript web applications
     ├── app-web/                       # Primary React 19 SPA (Vite, Tailwind CSS)
     │   ├── src/, public/, package.json, vite.config.ts
-    ├── (future) app-ops/              # Future administrative & review web portal
-    └── (future) shared/               # Future shared UI component library & hooks
+    ├── shared/                        # Shared UI components, hooks, lib, & generated protos
+    │   ├── src/, package.json, tsconfig.json
+    └── (future) app-ops/              # Future administrative & review web portal
 ```
 
 Key architectural benefits of this structure:
@@ -402,11 +402,6 @@ merge minimal environment overlays using `proto.Merge` at runtime.
 ---
 
 ## <a id="6-future-work" >6. Future work</a>
-
-### <a id="shared-frontend-ui-component-library" >Shared Frontend UI Component Library</a>
-
-Extract reusable React components, design system tokens, and generated
-ConnectRPC clients into `src/react/shared/` when introducing `app-ops`.
 
 ### <a id="automated-production-release-pipeline" >Automated Production Release Pipeline</a>
 

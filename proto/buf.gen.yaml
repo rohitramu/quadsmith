@@ -18,10 +18,10 @@ plugins:
     path: ../bin/protoc-gen-server
     opt: paths=source_relative
   - plugin: es
-    out: ../src/react/app-web/src/gen
+    out: ../src/react/shared/src/gen
     path: ../src/react/app-web/node_modules/.bin/protoc-gen-es
     opt: target=ts
   - plugin: connect-query
-    out: ../src/react/app-web/src/gen
+    out: ../src/react/shared/src/gen
     path: ../src/react/app-web/node_modules/.bin/protoc-gen-connect-query
     opt: target=ts

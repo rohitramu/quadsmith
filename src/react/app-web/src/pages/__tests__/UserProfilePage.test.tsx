@@ -4,7 +4,7 @@ import { renderWithProviders } from "../../test/test-utils";
 import { UserProfilePage } from "../UserProfilePage";
 import { Route, Routes } from "react-router-dom";
 import { create } from "@bufbuild/protobuf";
-import { BuildSchema, type Build } from "../../gen/quadsmith/api/build_pb";
+import { BuildSchema, type Build } from "@quadsmith/shared/gen/quadsmith/api/build_pb";
 import {
   mockBuild1,
   mockBuild2,

@@ -13,10 +13,10 @@ import {
 } from "lucide-react";
 import { useForge, checkVtxAntennaCompatibility, formatFrequencyBand } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
-import { CollectionIcon } from "../../CollectionIcon";
+import { CollectionIcon } from "@quadsmith/shared";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
-import { getCollectionColor } from "../../../lib/collectionColors";
-import type { Antenna } from "../../../gen/quadsmith/api/antenna_pb";
+import { getCollectionColor } from "@quadsmith/shared";
+import type { Antenna } from "@quadsmith/shared/gen/quadsmith/api/antenna_pb";
 
 export function VtxAntennaStep() {
   const {

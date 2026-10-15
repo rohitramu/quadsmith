@@ -1,10 +1,10 @@
 import { useInfiniteQuery } from "@connectrpc/connect-query";
-import { listBuilds } from "../gen/quadsmith/api/build-BuildService_connectquery";
+import { listBuilds } from "@quadsmith/shared/gen/quadsmith/api/build-BuildService_connectquery";
 import { BuildCard } from "../components/BuildCard";
 import { useMemo, useRef, useEffect } from "react";
 import { RefreshCw, CheckCircle, GalleryVertical } from "lucide-react";
-import { useDocumentMeta } from "../hooks/useDocumentMeta";
-import { getCollectionColor } from "../lib/collectionColors";
+import { useDocumentMeta } from "@quadsmith/shared";
+import { getCollectionColor } from "@quadsmith/shared";
 
 export function BuildFeedPage() {
   useDocumentMeta({

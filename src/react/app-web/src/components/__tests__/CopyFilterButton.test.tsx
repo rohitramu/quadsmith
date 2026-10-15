@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../test/test-utils";
-import { CopyFilterButton } from "../CopyFilterButton";
+import { CopyFilterButton } from "@quadsmith/shared";
 
 describe("CopyFilterButton Component", () => {
   beforeEach(() => {

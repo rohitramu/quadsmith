@@ -6,7 +6,7 @@ import {
   createCollection,
   addCollectionItem,
   removeCollectionItem,
-} from "../gen/quadsmith/api/social-SocialService_connectquery";
+} from "@quadsmith/shared/gen/quadsmith/api/social-SocialService_connectquery";
 import { useAuth } from "../context/AuthContext";
 import { X, Plus, Check, Bookmark, Loader2 } from "lucide-react";
 

@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { screen } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
-import { CollectionBadge } from "../CollectionBadge";
+import { CollectionBadge } from "@quadsmith/shared";
 
 describe("CollectionBadge Component", () => {
   it("renders collection name and styled badge without dot", () => {

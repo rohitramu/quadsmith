@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildBatteryCelFilter, formatBatteryFilterForDisplay } from "../batteryFilter";
+import { buildBatteryCelFilter, formatBatteryFilterForDisplay } from "@quadsmith/shared";
 
 describe("buildBatteryCelFilter", () => {
   it("returns empty string when limits is null or undefined", () => {

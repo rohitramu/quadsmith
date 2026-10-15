@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 import { useTransport } from "@connectrpc/connect-query";
 import { createClient } from "@connectrpc/connect";
-import { AuthService, LoginChallengeStatus } from "../gen/quadsmith/api/auth_pb";
+import { AuthService, LoginChallengeStatus } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import type {
   ChangeUsernameResponse,
   ListArchivedUsernamesResponse,
@@ -12,14 +12,14 @@ import type {
   SendDataExportVerificationResponse,
   VerifyDataExportRequest,
   VerifyDataExportResponse,
-} from "../gen/quadsmith/api/auth_pb";
-import { UserService } from "../gen/quadsmith/api/user_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
+import { UserService } from "@quadsmith/shared/gen/quadsmith/api/user_pb";
 import type {
   User,
   UserProfile,
   UserEmail,
   UsernameAvailabilityStatus,
-} from "../gen/quadsmith/api/user_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/user_pb";
 import { setAccessToken, getAccessToken } from "../lib/api";
 
 export interface AuthContextType {

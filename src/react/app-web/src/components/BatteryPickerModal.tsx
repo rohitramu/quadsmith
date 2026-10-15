@@ -1,12 +1,12 @@
 import React, { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useQuery } from "@connectrpc/connect-query";
-import type { Battery } from "../gen/quadsmith/api/battery_pb";
-import { listBatteries } from "../gen/quadsmith/api/battery-BatteryService_connectquery";
+import type { Battery } from "@quadsmith/shared/gen/quadsmith/api/battery_pb";
+import { listBatteries } from "@quadsmith/shared/gen/quadsmith/api/battery-BatteryService_connectquery";
 import { X, Search, Weight, Gauge, Check, ArrowUpDown, Filter } from "lucide-react";
-import { getCollectionColor } from "../lib/collectionColors";
-import { CollectionBadge } from "./CollectionBadge";
-import { CollectionIcon } from "./CollectionIcon";
-import { buildBatteryCelFilter } from "../lib/batteryFilter";
+import { getCollectionColor } from "@quadsmith/shared";
+import { CollectionBadge } from "@quadsmith/shared";
+import { CollectionIcon } from "@quadsmith/shared";
+import { buildBatteryCelFilter } from "@quadsmith/shared";
 import { CompatibilityHoverCard } from "./CompatibilityHoverCard";
 
 export interface BatteryPickerModalProps {

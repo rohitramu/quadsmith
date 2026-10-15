@@ -1,7 +1,7 @@
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import { useQuery } from "@connectrpc/connect-query";
 import { getOption } from "@bufbuild/protobuf";
-import { frontend as frontendOpt } from "../gen/quadsmith/common/common_pb";
+import { frontend as frontendOpt } from "@quadsmith/shared/gen/quadsmith/common/common_pb";
 import {
   ArrowUp,
   ArrowDown,
@@ -24,11 +24,11 @@ import {
   type HardwareCollectionDef,
   type ColumnConfig,
 } from "../lib/hardwareCollections";
-import { CollectionBadge } from "../components/CollectionBadge";
-import { CollectionIcon } from "../components/CollectionIcon";
-import { getCollectionColor } from "../lib/collectionColors";
+import { CollectionBadge } from "@quadsmith/shared";
+import { CollectionIcon } from "@quadsmith/shared";
+import { getCollectionColor } from "@quadsmith/shared";
 import { ProductHoverCard } from "../components/ProductHoverCard";
-import { useDocumentMeta } from "../hooks/useDocumentMeta";
+import { useDocumentMeta } from "@quadsmith/shared";
 import { ComponentFormModal } from "../components/ComponentFormModal";
 
 function ColumnHeader({

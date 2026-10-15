@@ -2,10 +2,10 @@ import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, Check } from "lucide-react";
 import { useForge } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
-import { CollectionIcon } from "../../CollectionIcon";
+import { CollectionIcon } from "@quadsmith/shared";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
-import { getCollectionColor } from "../../../lib/collectionColors";
-import type { Propeller } from "../../../gen/quadsmith/api/propeller_pb";
+import { getCollectionColor } from "@quadsmith/shared";
+import type { Propeller } from "@quadsmith/shared/gen/quadsmith/api/propeller_pb";
 
 export function PropellerStep() {
   const {

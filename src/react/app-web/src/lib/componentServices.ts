@@ -2,122 +2,122 @@ import {
   createAntenna,
   updateAntenna,
   deleteAntenna,
-} from "../gen/quadsmith/api/antenna-AntennaService_connectquery";
-import { AntennaSchema } from "../gen/quadsmith/api/antenna_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/antenna-AntennaService_connectquery";
+import { AntennaSchema } from "@quadsmith/shared/gen/quadsmith/api/antenna_pb";
 import {
   createBattery,
   updateBattery,
   deleteBattery,
-} from "../gen/quadsmith/api/battery-BatteryService_connectquery";
-import { BatterySchema } from "../gen/quadsmith/api/battery_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/battery-BatteryService_connectquery";
+import { BatterySchema } from "@quadsmith/shared/gen/quadsmith/api/battery_pb";
 import {
   createCamera,
   updateCamera,
   deleteCamera,
-} from "../gen/quadsmith/api/camera-CameraService_connectquery";
-import { CameraSchema } from "../gen/quadsmith/api/camera_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/camera-CameraService_connectquery";
+import { CameraSchema } from "@quadsmith/shared/gen/quadsmith/api/camera_pb";
 import {
   createCharger,
   updateCharger,
   deleteCharger,
-} from "../gen/quadsmith/api/charger-ChargerService_connectquery";
-import { ChargerSchema } from "../gen/quadsmith/api/charger_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/charger-ChargerService_connectquery";
+import { ChargerSchema } from "@quadsmith/shared/gen/quadsmith/api/charger_pb";
 import {
   createElectronicSpeedController,
   updateElectronicSpeedController,
   deleteElectronicSpeedController,
-} from "../gen/quadsmith/api/electronic_speed_controller-ElectronicSpeedControllerService_connectquery";
-import { ElectronicSpeedControllerSchema } from "../gen/quadsmith/api/electronic_speed_controller_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/electronic_speed_controller-ElectronicSpeedControllerService_connectquery";
+import { ElectronicSpeedControllerSchema } from "@quadsmith/shared/gen/quadsmith/api/electronic_speed_controller_pb";
 import {
   createEscFirmware,
   updateEscFirmware,
   deleteEscFirmware,
-} from "../gen/quadsmith/api/esc_firmware-EscFirmwareService_connectquery";
-import { EscFirmwareSchema } from "../gen/quadsmith/api/esc_firmware_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/esc_firmware-EscFirmwareService_connectquery";
+import { EscFirmwareSchema } from "@quadsmith/shared/gen/quadsmith/api/esc_firmware_pb";
 import {
   createFcFirmware,
   updateFcFirmware,
   deleteFcFirmware,
-} from "../gen/quadsmith/api/fc_firmware-FcFirmwareService_connectquery";
-import { FcFirmwareSchema } from "../gen/quadsmith/api/fc_firmware_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/fc_firmware-FcFirmwareService_connectquery";
+import { FcFirmwareSchema } from "@quadsmith/shared/gen/quadsmith/api/fc_firmware_pb";
 import {
   createFieldTool,
   updateFieldTool,
   deleteFieldTool,
-} from "../gen/quadsmith/api/field_tool-FieldToolService_connectquery";
-import { FieldToolSchema } from "../gen/quadsmith/api/field_tool_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/field_tool-FieldToolService_connectquery";
+import { FieldToolSchema } from "@quadsmith/shared/gen/quadsmith/api/field_tool_pb";
 import {
   createFlightController,
   updateFlightController,
   deleteFlightController,
-} from "../gen/quadsmith/api/flight_controller-FlightControllerService_connectquery";
-import { FlightControllerSchema } from "../gen/quadsmith/api/flight_controller_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/flight_controller-FlightControllerService_connectquery";
+import { FlightControllerSchema } from "@quadsmith/shared/gen/quadsmith/api/flight_controller_pb";
 import {
   createFrame,
   updateFrame,
   deleteFrame,
-} from "../gen/quadsmith/api/frame-FrameService_connectquery";
-import { FrameSchema } from "../gen/quadsmith/api/frame_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/frame-FrameService_connectquery";
+import { FrameSchema } from "@quadsmith/shared/gen/quadsmith/api/frame_pb";
 import {
   createGoggles,
   updateGoggles,
   deleteGoggles,
-} from "../gen/quadsmith/api/goggles-GogglesService_connectquery";
-import { GogglesSchema } from "../gen/quadsmith/api/goggles_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/goggles-GogglesService_connectquery";
+import { GogglesSchema } from "@quadsmith/shared/gen/quadsmith/api/goggles_pb";
 import {
   createGpsReceiver,
   updateGpsReceiver,
   deleteGpsReceiver,
-} from "../gen/quadsmith/api/gps_receiver-GpsReceiverService_connectquery";
-import { GpsReceiverSchema } from "../gen/quadsmith/api/gps_receiver_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/gps_receiver-GpsReceiverService_connectquery";
+import { GpsReceiverSchema } from "@quadsmith/shared/gen/quadsmith/api/gps_receiver_pb";
 import {
   createMotor,
   updateMotor,
   deleteMotor,
-} from "../gen/quadsmith/api/motor-MotorService_connectquery";
-import { MotorSchema } from "../gen/quadsmith/api/motor_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/motor-MotorService_connectquery";
+import { MotorSchema } from "@quadsmith/shared/gen/quadsmith/api/motor_pb";
 import {
   createPropeller,
   updatePropeller,
   deletePropeller,
-} from "../gen/quadsmith/api/propeller-PropellerService_connectquery";
-import { PropellerSchema } from "../gen/quadsmith/api/propeller_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/propeller-PropellerService_connectquery";
+import { PropellerSchema } from "@quadsmith/shared/gen/quadsmith/api/propeller_pb";
 import {
   createRadioFirmware,
   updateRadioFirmware,
   deleteRadioFirmware,
-} from "../gen/quadsmith/api/radio_firmware-RadioFirmwareService_connectquery";
-import { RadioFirmwareSchema } from "../gen/quadsmith/api/radio_firmware_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/radio_firmware-RadioFirmwareService_connectquery";
+import { RadioFirmwareSchema } from "@quadsmith/shared/gen/quadsmith/api/radio_firmware_pb";
 import {
   createReceiver,
   updateReceiver,
   deleteReceiver,
-} from "../gen/quadsmith/api/receiver-ReceiverService_connectquery";
-import { ReceiverSchema } from "../gen/quadsmith/api/receiver_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/receiver-ReceiverService_connectquery";
+import { ReceiverSchema } from "@quadsmith/shared/gen/quadsmith/api/receiver_pb";
 import {
   createSoftwareTool,
   updateSoftwareTool,
   deleteSoftwareTool,
-} from "../gen/quadsmith/api/software_tool-SoftwareToolService_connectquery";
-import { SoftwareToolSchema } from "../gen/quadsmith/api/software_tool_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/software_tool-SoftwareToolService_connectquery";
+import { SoftwareToolSchema } from "@quadsmith/shared/gen/quadsmith/api/software_tool_pb";
 import {
   createTransmitter,
   updateTransmitter,
   deleteTransmitter,
-} from "../gen/quadsmith/api/transmitter-TransmitterService_connectquery";
-import { TransmitterSchema } from "../gen/quadsmith/api/transmitter_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/transmitter-TransmitterService_connectquery";
+import { TransmitterSchema } from "@quadsmith/shared/gen/quadsmith/api/transmitter_pb";
 import {
   createVideoTransmitter,
   updateVideoTransmitter,
   deleteVideoTransmitter,
-} from "../gen/quadsmith/api/video_transmitter-VideoTransmitterService_connectquery";
-import { VideoTransmitterSchema } from "../gen/quadsmith/api/video_transmitter_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/video_transmitter-VideoTransmitterService_connectquery";
+import { VideoTransmitterSchema } from "@quadsmith/shared/gen/quadsmith/api/video_transmitter_pb";
 import {
   createVtxFirmware,
   updateVtxFirmware,
   deleteVtxFirmware,
-} from "../gen/quadsmith/api/vtx_firmware-VtxFirmwareService_connectquery";
-import { VtxFirmwareSchema } from "../gen/quadsmith/api/vtx_firmware_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/vtx_firmware-VtxFirmwareService_connectquery";
+import { VtxFirmwareSchema } from "@quadsmith/shared/gen/quadsmith/api/vtx_firmware_pb";
 
 export interface ComponentServiceDef {
   collectionId: string;

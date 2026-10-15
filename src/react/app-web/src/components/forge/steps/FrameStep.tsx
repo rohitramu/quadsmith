@@ -2,9 +2,9 @@ import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, Check } from "lucide-react";
 import { useForge } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
-import { CollectionIcon } from "../../CollectionIcon";
-import { getCollectionColor } from "../../../lib/collectionColors";
-import type { Frame } from "../../../gen/quadsmith/api/frame_pb";
+import { CollectionIcon } from "@quadsmith/shared";
+import { getCollectionColor } from "@quadsmith/shared";
+import type { Frame } from "@quadsmith/shared/gen/quadsmith/api/frame_pb";
 
 export function FrameStep() {
   const {

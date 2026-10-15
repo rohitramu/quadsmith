@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@connectrpc/connect-query";
-import { search } from "../gen/quadsmith/api/search-SearchService_connectquery";
+import { search } from "@quadsmith/shared/gen/quadsmith/api/search-SearchService_connectquery";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
 import {
@@ -22,12 +22,12 @@ import {
   getCollectionPath,
 } from "../lib/hardwareCollections";
 
-import { getCollectionColor } from "../lib/collectionColors";
-import { CollectionBadge } from "./CollectionBadge";
-import { CollectionIcon } from "./CollectionIcon";
-import { EllipsisHint } from "./EllipsisHint";
+import { getCollectionColor } from "@quadsmith/shared";
+import { CollectionBadge } from "@quadsmith/shared";
+import { CollectionIcon } from "@quadsmith/shared";
+import { EllipsisHint } from "@quadsmith/shared";
 import { useAuth } from "../context/AuthContext";
-import { getAvatarPalette, getInitial } from "../lib/avatarColor";
+import { getAvatarPalette, getInitial } from "@quadsmith/shared";
 
 export function Layout() {
   const { user, profile, logout } = useAuth();

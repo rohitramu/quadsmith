@@ -13,8 +13,8 @@ import {
   endorseAnswer,
   createQuestionComment,
   createAnswerComment,
-} from "../gen/quadsmith/api/social-SocialService_connectquery";
-import type { Question } from "../gen/quadsmith/api/social_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/social-SocialService_connectquery";
+import type { Question } from "@quadsmith/shared/gen/quadsmith/api/social_pb";
 import { useAuth } from "../context/AuthContext";
 import {
   ChevronUp,
@@ -26,7 +26,7 @@ import {
   HelpCircle,
   Plus,
 } from "lucide-react";
-import { formatRelativeDate } from "../lib/socialFormat";
+import { formatRelativeDate } from "@quadsmith/shared";
 
 export interface SocialQaSectionProps {
   target: { type?: "build" | "component"; id: string; collection?: string };

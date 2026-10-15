@@ -3,7 +3,7 @@ import { useQuery } from "@connectrpc/connect-query";
 import {
   getEntitySocialSummary,
   listUserCollections,
-} from "../gen/quadsmith/api/social-SocialService_connectquery";
+} from "@quadsmith/shared/gen/quadsmith/api/social-SocialService_connectquery";
 import { useAuth } from "../context/AuthContext";
 import {
   ThumbsUp,
@@ -19,7 +19,7 @@ import { SocialReviewSection } from "./SocialReviewSection";
 import { SocialQaSection } from "./SocialQaSection";
 import { SimilarBuildsTab } from "./SimilarBuildsTab";
 import { SaveToCollectionModal } from "./SaveToCollectionModal";
-import { listSimilarBuilds } from "../gen/quadsmith/api/build-BuildService_connectquery";
+import { listSimilarBuilds } from "@quadsmith/shared/gen/quadsmith/api/build-BuildService_connectquery";
 import { Link } from "react-router-dom";
 
 export type SocialTabType = "reviews" | "qa" | "similar" | "collections";

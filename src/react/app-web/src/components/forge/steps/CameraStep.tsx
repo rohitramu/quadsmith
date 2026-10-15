@@ -2,10 +2,10 @@ import { useMemo, useEffect } from "react";
 import { Search, X, ArrowRight, ArrowLeft, AlertCircle, EyeOff, Check } from "lucide-react";
 import { useForge, isCameraMountCompatible } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
-import { CollectionIcon } from "../../CollectionIcon";
+import { CollectionIcon } from "@quadsmith/shared";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
-import { getCollectionColor } from "../../../lib/collectionColors";
-import type { Camera } from "../../../gen/quadsmith/api/camera_pb";
+import { getCollectionColor } from "@quadsmith/shared";
+import type { Camera } from "@quadsmith/shared/gen/quadsmith/api/camera_pb";
 
 export function CameraStep() {
   const {

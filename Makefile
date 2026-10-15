@@ -49,7 +49,7 @@ fmt: $(VENDOR_PLUGINS)
 	@echo "--- Formatting Go code with gofmt ---"
 	@gofmt -s -w $(shell find . -name "*.go" -not -path "*/vendor/*" -not -path "*/.tmp/*")
 	@echo "--- Formatting TypeScript, HTML, CSS with Prettier ---"
-	@npx --prefix src/react/app-web prettier --write "src/react/app-web/index.html" "src/react/app-web/src/**/*.{ts,tsx,css,html}" >/dev/null 2>&1 || true
+	@npx --prefix src/react/app-web prettier --write "src/react/app-web/index.html" "src/react/app-web/src/**/*.{ts,tsx,css,html}" "src/react/shared/src/**/*.{ts,tsx,css,html}" >/dev/null 2>&1 || true
 	@echo "--- Formatting and linting Markdown ---"
 	@npx --prefix src/react/app-web prettier --ignore-path .prettierignore --write "**/*.md" >/dev/null 2>&1 || true
 	@npx --prefix src/react/app-web markdownlint -c .markdownlint.json --ignore-path .markdownlintignore --fix "**/*.md" >/dev/null 2>&1 || true
@@ -165,7 +165,7 @@ bin/.generate_proto.sentinel: $(PROTO_FILES) $(VENDOR_PLUGINS) $(CUSTOM_PLUGINS)
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf format -w
 	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
 	@gofmt -s -w src/go/shared/gen/
-	@npx --prefix src/react/app-web prettier --write "src/react/app-web/src/gen/**/*.{ts,tsx}" || true
+	@npx --prefix src/react/app-web prettier --write "src/react/shared/src/gen/**/*.{ts,tsx}" || true
 	@touch bin/.generate_proto.sentinel
 
 bin/.format_sql.sentinel: $(wildcard src/go/db/*.sql) .sql-formatter.json

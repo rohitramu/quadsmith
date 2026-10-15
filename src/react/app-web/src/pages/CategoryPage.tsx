@@ -6,9 +6,9 @@ import {
   GEAR_COLLECTIONS,
   getCollectionPath,
 } from "../lib/hardwareCollections";
-import { getCollectionColor } from "../lib/collectionColors";
-import { CollectionIcon } from "../components/CollectionIcon";
-import { useDocumentMeta } from "../hooks/useDocumentMeta";
+import { getCollectionColor } from "@quadsmith/shared";
+import { CollectionIcon } from "@quadsmith/shared";
+import { useDocumentMeta } from "@quadsmith/shared";
 
 export function CategoryPage() {
   const { categoryId } = useParams();

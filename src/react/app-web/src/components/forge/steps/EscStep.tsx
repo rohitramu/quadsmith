@@ -11,10 +11,10 @@ import {
 } from "lucide-react";
 import { useForge } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
-import { CollectionIcon } from "../../CollectionIcon";
+import { CollectionIcon } from "@quadsmith/shared";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
-import { getCollectionColor } from "../../../lib/collectionColors";
-import type { ElectronicSpeedController } from "../../../gen/quadsmith/api/electronic_speed_controller_pb";
+import { getCollectionColor } from "@quadsmith/shared";
+import type { ElectronicSpeedController } from "@quadsmith/shared/gen/quadsmith/api/electronic_speed_controller_pb";
 
 export function EscStep() {
   const {

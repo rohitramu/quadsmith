@@ -17,20 +17,20 @@ import {
   X,
   Cpu,
 } from "lucide-react";
-import { getPublicProfile } from "../gen/quadsmith/api/user-UserService_connectquery";
-import { listBuilds } from "../gen/quadsmith/api/build-BuildService_connectquery";
-import { search } from "../gen/quadsmith/api/search-SearchService_connectquery";
+import { getPublicProfile } from "@quadsmith/shared/gen/quadsmith/api/user-UserService_connectquery";
+import { listBuilds } from "@quadsmith/shared/gen/quadsmith/api/build-BuildService_connectquery";
+import { search } from "@quadsmith/shared/gen/quadsmith/api/search-SearchService_connectquery";
 import {
   listUserCollections,
   createCollection,
   deleteCollection,
-} from "../gen/quadsmith/api/social-SocialService_connectquery";
+} from "@quadsmith/shared/gen/quadsmith/api/social-SocialService_connectquery";
 import { ALL_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
 import { ComponentFormModal } from "../components/ComponentFormModal";
-import { getAvatarPalette, getInitial } from "../lib/avatarColor";
+import { getAvatarPalette, getInitial } from "@quadsmith/shared";
 import { BuildCard } from "../components/BuildCard";
 import { useAuth } from "../context/AuthContext";
-import { useDocumentMeta } from "../hooks/useDocumentMeta";
+import { useDocumentMeta } from "@quadsmith/shared";
 
 export function UserProfilePage() {
   const { id } = useParams<{ id: string }>();

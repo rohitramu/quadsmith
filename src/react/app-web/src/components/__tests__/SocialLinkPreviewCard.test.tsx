@@ -8,7 +8,7 @@ import {
   validateReferenceLink,
   validateReferenceLinks,
 } from "../SocialLinkPreviewCard";
-import { ReferenceLinkType } from "../../gen/quadsmith/api/reference_link_pb";
+import { ReferenceLinkType } from "@quadsmith/shared/gen/quadsmith/api/reference_link_pb";
 
 describe("SocialLinkPreviewCard", () => {
   it("renders preview with mock transport data", async () => {

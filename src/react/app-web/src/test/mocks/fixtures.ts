@@ -1,13 +1,13 @@
 import { create } from "@bufbuild/protobuf";
-import { MotorSchema, type Motor } from "../../gen/quadsmith/api/motor_pb";
-import { FrameSchema, type Frame } from "../../gen/quadsmith/api/frame_pb";
+import { MotorSchema, type Motor } from "@quadsmith/shared/gen/quadsmith/api/motor_pb";
+import { FrameSchema, type Frame } from "@quadsmith/shared/gen/quadsmith/api/frame_pb";
 import {
   FlightControllerSchema,
   type FlightController,
-} from "../../gen/quadsmith/api/flight_controller_pb";
-import { ReferenceLinkType } from "../../gen/quadsmith/api/reference_link_pb";
-import { MediaType } from "../../gen/quadsmith/api/media_pb";
-import { UserEmailSchema, type UserEmail } from "../../gen/quadsmith/api/user_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/flight_controller_pb";
+import { ReferenceLinkType } from "@quadsmith/shared/gen/quadsmith/api/reference_link_pb";
+import { MediaType } from "@quadsmith/shared/gen/quadsmith/api/media_pb";
+import { UserEmailSchema, type UserEmail } from "@quadsmith/shared/gen/quadsmith/api/user_pb";
 import {
   ReviewSchema,
   type Review,
@@ -27,7 +27,7 @@ import {
   type EntitySocialSummary,
   ReviewTier,
   ReviewVoteType,
-} from "../../gen/quadsmith/api/social_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/social_pb";
 
 export const mockMotor1: Motor = create(MotorSchema, {
   uuid: "018f0000-0000-7000-0000-000000000001",
@@ -159,30 +159,33 @@ export const mockFcAioVtx: FlightController = create(FlightControllerSchema, {
 
 export const mockFlightControllers: FlightController[] = [mockFC1, mockFC2, mockFcAioVtx];
 
-import { BatterySchema, type Battery } from "../../gen/quadsmith/api/battery_pb";
+import { BatterySchema, type Battery } from "@quadsmith/shared/gen/quadsmith/api/battery_pb";
 import {
   ElectronicSpeedControllerSchema,
   type ElectronicSpeedController,
-} from "../../gen/quadsmith/api/electronic_speed_controller_pb";
-import { PropellerSchema, type Propeller } from "../../gen/quadsmith/api/propeller_pb";
-import { CameraSchema, type Camera } from "../../gen/quadsmith/api/camera_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/electronic_speed_controller_pb";
+import { PropellerSchema, type Propeller } from "@quadsmith/shared/gen/quadsmith/api/propeller_pb";
+import { CameraSchema, type Camera } from "@quadsmith/shared/gen/quadsmith/api/camera_pb";
 import {
   VideoTransmitterSchema,
   type VideoTransmitter,
-} from "../../gen/quadsmith/api/video_transmitter_pb";
-import { ReceiverSchema, type Receiver } from "../../gen/quadsmith/api/receiver_pb";
-import { AntennaSchema, type Antenna } from "../../gen/quadsmith/api/antenna_pb";
-import { GpsReceiverSchema, type GpsReceiver } from "../../gen/quadsmith/api/gps_receiver_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/video_transmitter_pb";
+import { ReceiverSchema, type Receiver } from "@quadsmith/shared/gen/quadsmith/api/receiver_pb";
+import { AntennaSchema, type Antenna } from "@quadsmith/shared/gen/quadsmith/api/antenna_pb";
+import {
+  GpsReceiverSchema,
+  type GpsReceiver,
+} from "@quadsmith/shared/gen/quadsmith/api/gps_receiver_pb";
 import {
   BuildSchema,
   type Build,
   SimilarBuildSchema,
   type SimilarBuild,
-} from "../../gen/quadsmith/api/build_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/build_pb";
 import {
   EvaluateBuildResponseSchema,
   type EvaluateBuildResponse,
-} from "../../gen/quadsmith/api/evaluator_pb";
+} from "@quadsmith/shared/gen/quadsmith/api/evaluator_pb";
 
 export const mockBattery1: Battery = create(BatterySchema, {
   uuid: "018f0000-0000-7000-0000-000000000030",

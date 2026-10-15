@@ -12,10 +12,10 @@ import {
 } from "lucide-react";
 import { useForge, checkVtxAntennaCompatibility, isMountPatternCompatible } from "../ForgeContext";
 import { ProductHoverCard } from "../../ProductHoverCard";
-import { CollectionIcon } from "../../CollectionIcon";
+import { CollectionIcon } from "@quadsmith/shared";
 import { CompatibilityHoverCard } from "../../CompatibilityHoverCard";
-import { getCollectionColor } from "../../../lib/collectionColors";
-import type { VideoTransmitter } from "../../../gen/quadsmith/api/video_transmitter_pb";
+import { getCollectionColor } from "@quadsmith/shared";
+import type { VideoTransmitter } from "@quadsmith/shared/gen/quadsmith/api/video_transmitter_pb";
 
 export function VtxStep() {
   const {

@@ -11,13 +11,13 @@ import {
   ClipboardCheck,
   Plus,
 } from "lucide-react";
-import { useDocumentMeta } from "../hooks/useDocumentMeta";
+import { useDocumentMeta } from "@quadsmith/shared";
 import { BatteryCombobox } from "../components/BatteryCombobox";
 import { BatteryPickerModal } from "../components/BatteryPickerModal";
 import { ComponentFormModal } from "../components/ComponentFormModal";
-import { CollectionIcon } from "../components/CollectionIcon";
-import { getCollectionColor } from "../lib/collectionColors";
-import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "../lib/format";
+import { CollectionIcon } from "@quadsmith/shared";
+import { getCollectionColor } from "@quadsmith/shared";
+import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "@quadsmith/shared";
 import {
   ForgeProvider,
   useForge,
