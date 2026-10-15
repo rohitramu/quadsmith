@@ -1,4 +1,4 @@
-.PHONY: all build sandbox generate clean test test-e2e vendor tool breaking-change test-breaking warn-breaking
+.PHONY: all build sandbox generate clean test test-e2e test-ui-e2e update-snapshots vendor tool breaking-change test-breaking warn-breaking
 
 export GOWORK := $(shell pwd)/src/go/go.work
 
@@ -205,6 +205,36 @@ test-breaking: breaking-change
 test-e2e: bin/qs bin/qsops
 	@echo "--- Running E2E Sandbox Tests ---"
 	@./test/run_sandbox_tests.sh
+
+test-ui-e2e:
+	@echo "--- Building Web E2E Container ---"
+	@docker build -t quadsmith-web-e2e -f test/web/Dockerfile .
+	@echo "--- Running Web E2E Tests ---"
+	@mkdir -p .tmp/playwright-report
+	@docker run --rm --ipc=host --network host \
+		-v $(CURDIR)/test/web/snapshots:/app/snapshots \
+		-v $(CURDIR)/.tmp/playwright-report:/app/playwright-report \
+		-e BASE_URL=$${QS_WEB_URL:-http://127.0.0.1:8080} \
+		-e HOST_UID=$$(id -u) \
+		-e HOST_GID=$$(id -g) \
+		$${PLAYWRIGHT_WORKERS:+-e PLAYWRIGHT_WORKERS=$${PLAYWRIGHT_WORKERS}} \
+		quadsmith-web-e2e $(TOOL_ARGS)
+
+update-snapshots:
+	@echo "--- Building Web E2E Container ---"
+	@docker build -t quadsmith-web-e2e -f test/web/Dockerfile .
+	@echo "--- Updating Web Visual Regression Snapshots ---"
+	@mkdir -p .tmp/playwright-report
+	@mkdir -p test/web/snapshots
+	@docker run --rm --ipc=host --network host \
+		-v $(CURDIR)/test/web/snapshots:/app/snapshots \
+		-v $(CURDIR)/.tmp/playwright-report:/app/playwright-report \
+		-e BASE_URL=$${QS_WEB_URL:-http://127.0.0.1:8080} \
+		-e HOST_UID=$$(id -u) \
+		-e HOST_GID=$$(id -g) \
+		$${PLAYWRIGHT_WORKERS:+-e PLAYWRIGHT_WORKERS=$${PLAYWRIGHT_WORKERS}} \
+		-e UPDATE_SNAPSHOTS=true \
+		quadsmith-web-e2e $(TOOL_ARGS)
 
 clean:
 	@echo "--- Cleaning Workspace ---"

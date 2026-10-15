@@ -168,10 +168,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 // ignore
               }
               // Profile refresh via silent refresh
-              const refreshRes = await authClient.refreshToken({});
-              if (mounted) {
-                if (refreshRes.accessToken) setAccessToken(refreshRes.accessToken);
-                if (refreshRes.profile) setProfile(refreshRes.profile);
+              try {
+                const refreshRes = await authClient.refreshToken({});
+                if (mounted) {
+                  if (refreshRes.accessToken) setAccessToken(refreshRes.accessToken);
+                  if (refreshRes.profile) setProfile(refreshRes.profile);
+                }
+              } catch {
+                // Refresh cookie may not be present (e.g. bearer-only session)
               }
               return;
             }

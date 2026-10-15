@@ -65,3 +65,20 @@ export QS_INTERNAL_DATABASE_URL="${INTERNAL_DB_URL}"
 export GOWORK="${ROOT_DIR}/src/go/go.work"
 
 go test -count=1 -v ./test/...
+
+echo "--- Building Web E2E Test Container ---"
+docker build -t quadsmith-web-e2e -f test/web/Dockerfile .
+
+echo "--- Running Web E2E and Visual Regression Tests ---"
+mkdir -p "${ROOT_DIR}/.tmp/playwright-report"
+mkdir -p "${ROOT_DIR}/test/web/snapshots"
+docker run --rm --ipc=host --network host \
+    -v "${ROOT_DIR}/test/web/snapshots:/app/snapshots" \
+    -v "${ROOT_DIR}/.tmp/playwright-report:/app/playwright-report" \
+    -e BASE_URL="${WEB_URL}" \
+    -e HOST_UID="$(id -u)" \
+    -e HOST_GID="$(id -g)" \
+    ${PLAYWRIGHT_WORKERS:+-e PLAYWRIGHT_WORKERS=${PLAYWRIGHT_WORKERS}} \
+    ${UPDATE_SNAPSHOTS:+-e UPDATE_SNAPSHOTS=true} \
+    quadsmith-web-e2e "$@"
+

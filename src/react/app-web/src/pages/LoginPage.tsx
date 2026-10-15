@@ -108,6 +108,16 @@ export function LoginPage() {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === "theme" && (e.newValue === "light" || e.newValue === "dark")) {
+        setTheme(e.newValue);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
   // If already logged in, redirect immediately
   useEffect(() => {
     if (isAuthenticated) {
@@ -286,6 +296,11 @@ export function LoginPage() {
     const trimmed = email.trim();
     if (!trimmed) {
       setErrorMsg("Please enter your email address");
+      return;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(trimmed)) {
+      setErrorMsg("Please enter a valid email address");
       return;
     }
 
@@ -1086,9 +1101,12 @@ export function LoginPage() {
 
           <div className="space-y-4">
             {renderErrorBanner()}
-            <form onSubmit={handleSendEmail} className="space-y-4">
+            <form noValidate onSubmit={handleSendEmail} className="space-y-4">
               <div>
-                <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
+                <label
+                  htmlFor="emailInput"
+                  className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5"
+                >
                   Email Address
                 </label>
                 <div className="relative">
@@ -1097,6 +1115,7 @@ export function LoginPage() {
                     size={16}
                   />
                   <input
+                    id="emailInput"
                     ref={emailInputRef}
                     autoFocus
                     type="email"

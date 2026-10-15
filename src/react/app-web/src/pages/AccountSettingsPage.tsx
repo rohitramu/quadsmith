@@ -106,6 +106,10 @@ export function AccountSettingsPage() {
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
+  // Account Deletion state
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deleteConfirmHandle, setDeleteConfirmHandle] = useState("");
+
   // Synchronize initial values when profile loads
   useEffect(() => {
     if (profile) {
@@ -1572,6 +1576,104 @@ export function AccountSettingsPage() {
           </div>
         )}
       </section>
+
+      {/* Section 4: Danger Zone */}
+      <section className="rounded-2xl border border-rose-200 dark:border-rose-900/40 bg-rose-50/20 dark:bg-rose-950/10 p-6 space-y-4 shadow-2xs">
+        <div className="flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <h2 className="text-sm font-bold text-rose-700 dark:text-rose-400 flex items-center gap-2">
+              <Trash2 size={16} className="text-rose-500" />
+              <span>Danger Zone</span>
+            </h2>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+              Permanently delete your Quadsmith account and personal data after a 30-day grace
+              period.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setIsDeleteModalOpen(true)}
+            className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-rose-600 hover:bg-rose-500 transition shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0"
+          >
+            <Trash2 size={14} />
+            <span>Delete Account</span>
+          </button>
+        </div>
+      </section>
+
+      {/* Modal: Voluntary Account Deletion Dialog */}
+      {isDeleteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
+          <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl p-6 space-y-5 relative">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-2.5 text-rose-600 dark:text-rose-400">
+                <div className="p-2 rounded-xl bg-rose-500/10 border border-rose-500/20">
+                  <AlertTriangle size={20} />
+                </div>
+                <div>
+                  <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+                    Delete Account
+                  </h3>
+                  <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                    This action will begin the deletion process
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsDeleteModalOpen(false)}
+                className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 cursor-pointer"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="p-3.5 rounded-xl border border-amber-500/20 bg-amber-500/10 text-amber-800 dark:text-amber-300 text-xs space-y-1">
+              <p className="font-semibold">30-day grace period</p>
+              <p className="text-[11px] opacity-90">
+                Your account enters a 30 days grace period before being permanently deleted. You can
+                log in at any time during this grace period to cancel the deletion request and
+                recover your account.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                To confirm, type your username{" "}
+                <span className="font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                  @{user?.id}
+                </span>
+                :
+              </label>
+              <input
+                type="text"
+                placeholder={user?.id || "username"}
+                value={deleteConfirmHandle}
+                onChange={(e) => setDeleteConfirmHandle(e.target.value)}
+                className="w-full px-3 py-2 text-xs rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 font-mono focus:outline-none focus:ring-2 focus:ring-rose-500 text-zinc-900 dark:text-zinc-100"
+              />
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={() => setIsDeleteModalOpen(false)}
+                className="px-3.5 py-2 text-xs font-medium rounded-xl border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={deleteConfirmHandle.trim().toLowerCase() !== user?.id?.toLowerCase()}
+                className="px-3.5 py-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-500 disabled:opacity-40 disabled:cursor-not-allowed rounded-xl transition cursor-pointer"
+              >
+                Confirm Account Deletion
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Modal: Add Email Address Dialog (mirrors login flow) */}
       {isAddEmailOpen && (
