@@ -1570,12 +1570,11 @@ func (x *GetUserRequest) GetId() string {
 type ListBansRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        *string                `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3,oneof" json:"user_id,omitempty"` // Filter by user (optional)
-	ActiveOnly    bool                   `protobuf:"varint,2,opt,name=active_only,json=activeOnly,proto3" json:"active_only,omitempty"`
-	PageSize      int32                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Filter        string                 `protobuf:"bytes,5,opt,name=filter,proto3" json:"filter,omitempty"`
-	Sort          []string               `protobuf:"bytes,6,rep,name=sort,proto3" json:"sort,omitempty"`
-	Columns       []string               `protobuf:"bytes,7,rep,name=columns,proto3" json:"columns,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Filter        string                 `protobuf:"bytes,4,opt,name=filter,proto3" json:"filter,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	Columns       []string               `protobuf:"bytes,6,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1615,13 +1614,6 @@ func (x *ListBansRequest) GetUserId() string {
 		return *x.UserId
 	}
 	return ""
-}
-
-func (x *ListBansRequest) GetActiveOnly() bool {
-	if x != nil {
-		return x.ActiveOnly
-	}
-	return false
 }
 
 func (x *ListBansRequest) GetPageSize() int32 {
@@ -2189,17 +2181,15 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"active_ban\x18\x02 \x01(\v2\x12.quadsmith.api.BanH\x00R\tactiveBan\x88\x01\x01B\r\n" +
 	"\v_active_ban\" \n" +
 	"\x0eGetUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\xde\x01\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\xbd\x01\n" +
 	"\x0fListBansRequest\x12\x1c\n" +
-	"\auser_id\x18\x01 \x01(\tH\x00R\x06userId\x88\x01\x01\x12\x1f\n" +
-	"\vactive_only\x18\x02 \x01(\bR\n" +
-	"activeOnly\x12\x1b\n" +
-	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\auser_id\x18\x01 \x01(\tH\x00R\x06userId\x88\x01\x01\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x04 \x01(\tR\tpageToken\x12\x16\n" +
-	"\x06filter\x18\x05 \x01(\tR\x06filter\x12\x12\n" +
-	"\x04sort\x18\x06 \x03(\tR\x04sort\x12\x18\n" +
-	"\acolumns\x18\a \x03(\tR\acolumnsB\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x16\n" +
+	"\x06filter\x18\x04 \x01(\tR\x06filter\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sort\x12\x18\n" +
+	"\acolumns\x18\x06 \x03(\tR\acolumnsB\n" +
 	"\n" +
 	"\b_user_id\"b\n" +
 	"\x10ListBansResponse\x12&\n" +

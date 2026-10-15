@@ -455,12 +455,11 @@ message GetUserRequest {
 
 message ListBansRequest {
   optional string user_id = 1; // Filter by user (optional)
-  bool active_only = 2;
-  int32 page_size = 3;
-  string page_token = 4;
-  string filter = 5;
-  repeated string sort = 6;
-  repeated string columns = 7;
+  int32 page_size = 2;
+  string page_token = 3;
+  string filter = 4;
+  repeated string sort = 5;
+  repeated string columns = 6;
 }
 
 message ListBansResponse {

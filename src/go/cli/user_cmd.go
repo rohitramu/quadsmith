@@ -42,14 +42,13 @@ func initUserCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 	}
 
 	var (
-		banReason     string
-		banNotes      string
-		banExpiresIn  string
-		banPermanent  bool
-		banRevoke     bool
-		banActiveOnly bool
-		banLimit      int32
-		banYAML       bool
+		banReason    string
+		banNotes     string
+		banExpiresIn string
+		banPermanent bool
+		banRevoke    bool
+		banLimit     int32
+		banYAML      bool
 	)
 
 	banColumns := []string{"uuid", "user_uuid", "banned_by_user_uuid", "reason", "internal_notes", "expires_at", "created_at", "revoked_at", "revoked_by_user_uuid", "revoke_reason"}
@@ -115,7 +114,6 @@ func initUserCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 			columns, _ := cmd.Flags().GetStringSlice("column")
 			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
 			limit, _ := cmd.Flags().GetInt32("limit")
-			activeOnly, _ := cmd.Flags().GetBool("active-only")
 			yamlFlag, _ := cmd.Flags().GetBool("yaml")
 
 			if limit < 0 {
@@ -133,13 +131,12 @@ func initUserCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 			var currentToken string
 			for {
 				req := &pb.ListBansRequest{
-					UserId:     userFilter,
-					ActiveOnly: activeOnly,
-					PageSize:   pageSize,
-					PageToken:  currentToken,
-					Filter:     filter,
-					Sort:       sortOpts,
-					Columns:    columns,
+					UserId:    userFilter,
+					PageSize:  pageSize,
+					PageToken: currentToken,
+					Filter:    filter,
+					Sort:      sortOpts,
+					Columns:   columns,
 				}
 				res, err := userClient.ListBans(ctx, connect.NewRequest(req))
 				if err != nil {
@@ -168,7 +165,6 @@ func initUserCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 	listCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
 	listCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^created_at)")
 	listCmd.Flags().Int32VarP(&banLimit, "limit", "l", 50, "Maximum number of bans to list")
-	listCmd.Flags().BoolVar(&banActiveOnly, "active-only", false, "Filter list to only active bans")
 	listCmd.Flags().BoolVar(&banYAML, "yaml", false, "Output in YAML format")
 
 	_ = listCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {

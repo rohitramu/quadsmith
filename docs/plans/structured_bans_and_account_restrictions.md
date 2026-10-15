@@ -459,9 +459,11 @@ message UpdateBanResponse {
 
 message ListBansRequest {
   optional string user_id = 1; // Filter by user (optional)
-  bool active_only = 2;
-  int32 page_size = 3;
-  string page_token = 4;
+  int32 page_size = 2;
+  string page_token = 3;
+  string filter = 4;
+  repeated string sort = 5;
+  repeated string columns = 6;
 }
 
 message ListBansResponse {
@@ -585,7 +587,7 @@ consistently follows the operation name:
 3. **List Ban History**:
 
    ```bash
-   qs user bans list [username|uuid] [-f filter] [-s sort,...] [-c column,...] [-l 50] [--active-only] [--yaml] [--json]
+   qs user bans list [username|uuid] [-f filter] [-s sort,...] [-c column,...] [-l 50] [--yaml] [--json]
    ```
 
 4. **Update Active Ban**:

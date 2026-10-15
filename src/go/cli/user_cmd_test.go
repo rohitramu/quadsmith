@@ -292,7 +292,6 @@ func TestCLI_UserBans_List_Flags(t *testing.T) {
 		"-s", "^created_at",
 		"-c", "uuid,reason",
 		"-l", "25",
-		"--active-only",
 	})
 	if err := cmd1.Execute(); err != nil {
 		t.Fatalf("list with flags failed: %v", err)
@@ -309,9 +308,6 @@ func TestCLI_UserBans_List_Flags(t *testing.T) {
 	}
 	if len(capturedReq.Sort) != 1 || capturedReq.Sort[0] != "^created_at" {
 		t.Errorf("expected sort flag [^created_at], got %v", capturedReq.Sort)
-	}
-	if !capturedReq.ActiveOnly {
-		t.Errorf("expected active-only flag true")
 	}
 
 	// Output should include header columns UUID and REASON

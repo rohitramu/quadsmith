@@ -3899,10 +3899,6 @@ func (s *UserService) ListBans(ctx context.Context, req *connect.Request[pb.List
 		query += fmt.Sprintf(" AND user_uuid = $%d::uuid", len(args))
 	}
 
-	if req.Msg.GetActiveOnly() {
-		query += " AND revoked_at IS NULL AND (expires_at IS NULL OR expires_at > NOW())"
-	}
-
 	if effectiveFilter != "" {
 		whereClause, filterArgs, err := cel2sql.Compile(effectiveFilter)
 		if err != nil {
