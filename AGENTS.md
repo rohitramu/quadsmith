@@ -19,15 +19,21 @@ corroboration checks.
 - When writing a commit message, do not mention changes to AGENTS.md in the
   subject line (top line) unless it is the only changed file.
 - **Plan Implementation & Commits**:
+  - **Mention Active Plans in Related Commits**: Every commit that relates to or
+    impacts one or more active plans (directly in `docs/plans/`) must explicitly
+    cite those plans (by relative path, e.g., `docs/plans/<plan_name>.md`) in
+    the commit message body. Archived plans in `docs/plans/archive/` must be
+    ignored and not cited.
   - Implement plans in a single commit that saves the finalized plan to
     `docs/plans/<plan_name>.md`.
-  - Include the **Goal** section and a **TL;DR of the Proposal** in the commit
-    message body following the subject line.
+  - Include the **Goal** section, a **TL;DR of the Proposal**, and the plan path
+    reference in the commit message body following the subject line.
   - For follow-up commits:
+    - Explicitly mention the affected active plan(s) in the commit message body.
     - If the plan changes: update the plan in `docs/plans/<plan_name>.md` in
       that commit.
     - If fixing an incorrect implementation: treat it as a standard bugfix
-      commit (no plan document update).
+      commit (no plan document update needed, but still cite the active plan).
     - If following up immediately on the branch's latest commit: amend the
       commit and update the plan/message as needed. If already pushed, ask
       before force-pushing.

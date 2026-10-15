@@ -315,18 +315,25 @@ define the following commit conventions:
 
 1. **Single Commit Implementation**: Plans should be implemented in a single
    commit.
-2. **Commit Message Format**: The commit message must include the standard
+2. **Active Plan Citation Invariant**: Every commit that relates to or impacts
+   one or more active plans (directly in `docs/plans/`) must explicitly cite
+   those plans (by relative path, e.g., `docs/plans/<plan_name>.md`) in the
+   commit message body. Archived plans in `docs/plans/archive/` should be
+   ignored and not cited.
+3. **Commit Message Format**: The commit message must include the standard
    top-line subject, followed by just the **Goal** section and a **TL;DR of the
    Proposal** (conforming to
    [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) and
    [Git Commit Best Practices](https://stackoverflow.com/questions/2126210/detailed-guidelines-for-git-commit-messages)).
-3. **Follow-up Commits**:
+4. **Follow-up Commits**:
 
+   - Explicitly mention the affected active plan(s) in the commit message body.
    - If a follow-up commit is required because the plan needs to change: update
      the plan document in `docs/plans/<plan_name>.md` as part of that commit.
    - If a follow-up commit is required because the code does not correctly
      implement the plan: treat it as a bugfix with a simple commit message (the
-     plan document does not need to be updated).
+     plan document does not need to be updated, but the relevant active plan
+     must still be cited).
    - If the follow-up commit is for a plan implemented in the latest commit on
      the branch: amend the commit via
      [`git commit --amend`](https://git-scm.com/docs/git-commit#Documentation/git-commit.txt---amend)
@@ -340,15 +347,21 @@ Snippet to add to [AGENTS.md](../../AGENTS.md#L12-L18) under
 
 ```markdown
 - **Plan Implementation & Commits**:
+  - **Mention Active Plans in Related Commits**: Every commit that relates to or
+    impacts one or more active plans (directly in `docs/plans/`) must explicitly
+    cite those plans (by relative path, e.g., `docs/plans/<plan_name>.md`) in
+    the commit message body. Archived plans in `docs/plans/archive/` must be
+    ignored and not cited.
   - Implement plans in a single commit that saves the finalized plan to
     `docs/plans/<plan_name>.md`.
-  - Include the **Goal** section and a **TL;DR of the Proposal** in the commit
-    message body following the subject line.
+  - Include the **Goal** section, a **TL;DR of the Proposal**, and the plan path
+    reference in the commit message body following the subject line.
   - For follow-up commits:
+    - Explicitly mention the affected active plan(s) in the commit message body.
     - If the plan changes: update the plan in `docs/plans/<plan_name>.md` in
       that commit.
     - If fixing an incorrect implementation: treat it as a standard bugfix
-      commit (no plan document update).
+      commit (no plan document update needed, but still cite the active plan).
     - If following up immediately on the branch's latest commit: amend the
       commit and update the plan/message as needed. If already pushed, ask
       before force-pushing.
