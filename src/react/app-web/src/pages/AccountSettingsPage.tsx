@@ -23,6 +23,7 @@ import {
 import { useAuth } from "../context/AuthContext";
 import type { ArchivedUsername } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import { OtpVerificationErrorSchema } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
+import { UsernameAvailabilityStatus } from "@quadsmith/shared/gen/quadsmith/api/user_pb";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
 import { getAvatarPalette, getInitial, getApiBaseUrl } from "@quadsmith/shared";
@@ -66,7 +67,7 @@ export function AccountSettingsPage() {
   const [isLoadingArchived, setIsLoadingArchived] = useState(false);
   const [newUsernameInput, setNewUsernameInput] = useState("");
   const [usernameAvailability, setUsernameAvailability] = useState<{
-    status: "idle" | "checking" | "available" | "unavailable" | "error";
+    status: "idle" | "checking" | "available" | "unavailable" | "invalid" | "error";
     message: string;
   }>({ status: "idle", message: "" });
   const [isSubmittingUsername, setIsSubmittingUsername] = useState(false);
@@ -860,21 +861,20 @@ export function AccountSettingsPage() {
     const regex = /^[a-z][a-z0-9_]{1,18}[a-z0-9]$/;
     if (!regex.test(trimmed)) {
       setUsernameAvailability({
-        status: "unavailable",
-        message:
-          "3-20 characters: letters, numbers, and underscores (must start with letter and end with alphanumeric)",
+        status: "invalid",
+        message: "",
       });
       return;
     }
     if (trimmed.includes("__")) {
       setUsernameAvailability({
-        status: "unavailable",
-        message: "Cannot contain consecutive underscores",
+        status: "invalid",
+        message: "",
       });
       return;
     }
     if (trimmed.includes("quadsmith") || trimmed.includes("quad_smith")) {
-      setUsernameAvailability({ status: "unavailable", message: "Cannot contain 'quadsmith'" });
+      setUsernameAvailability({ status: "invalid", message: "" });
       return;
     }
 
@@ -886,6 +886,11 @@ export function AccountSettingsPage() {
           setUsernameAvailability({
             status: "available",
             message: res.message || "Username is available",
+          });
+        } else if (res.status === UsernameAvailabilityStatus.INVALID) {
+          setUsernameAvailability({
+            status: "invalid",
+            message: "",
           });
         } else {
           setUsernameAvailability({
@@ -1925,7 +1930,18 @@ export function AccountSettingsPage() {
                 </div>
 
                 <div className="relative">
-                  <div className="flex items-center rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 px-3.5 py-2.5 focus-within:border-blue-500 transition">
+                  <div
+                    data-testid="username-input-container"
+                    className={`flex items-center rounded-xl border px-3.5 py-2.5 transition ${
+                      usernameAvailability.status === "available"
+                        ? "border-emerald-500/80 bg-emerald-500/5 focus-within:ring-2 focus-within:ring-emerald-500"
+                        : usernameAvailability.status === "invalid"
+                          ? "border-rose-500 bg-rose-500/5 focus-within:ring-2 focus-within:ring-rose-500"
+                          : usernameAvailability.status === "unavailable"
+                            ? "border-amber-500 bg-amber-500/5 focus-within:ring-2 focus-within:ring-amber-500"
+                            : "border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20"
+                    }`}
+                  >
                     <span className="font-mono text-zinc-400 dark:text-zinc-500 text-xs mr-1 select-none">
                       @
                     </span>
@@ -1936,6 +1952,10 @@ export function AccountSettingsPage() {
                       onChange={(e) => setNewUsernameInput(e.target.value.toLowerCase().trim())}
                       placeholder="new_username"
                       maxLength={20}
+                      aria-invalid={
+                        usernameAvailability.status === "invalid" ||
+                        usernameAvailability.status === "unavailable"
+                      }
                       className="bg-transparent text-xs font-mono text-zinc-900 dark:text-zinc-100 outline-none w-full disabled:opacity-50"
                     />
                     {usernameAvailability.status === "checking" && (
@@ -1946,7 +1966,13 @@ export function AccountSettingsPage() {
                         ✓ Available
                       </span>
                     )}
-                    {usernameAvailability.status === "unavailable" && (
+                    {usernameAvailability.status === "unavailable" &&
+                      usernameAvailability.message && (
+                        <span className="text-[11px] font-medium text-amber-600 dark:text-amber-400 shrink-0 ml-2">
+                          {usernameAvailability.message}
+                        </span>
+                      )}
+                    {usernameAvailability.status === "error" && usernameAvailability.message && (
                       <span className="text-[11px] font-medium text-rose-600 dark:text-rose-400 shrink-0 ml-2">
                         {usernameAvailability.message}
                       </span>

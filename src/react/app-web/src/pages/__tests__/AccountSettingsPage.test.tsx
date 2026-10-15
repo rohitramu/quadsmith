@@ -269,6 +269,42 @@ describe("AccountSettingsPage Component", () => {
     });
   });
 
+  it("indicates invalid username via border styling without showing redundant error message", async () => {
+    renderApp("/account");
+
+    const changeUsernameBtn = await screen.findByRole("button", { name: /change username/i });
+    fireEvent.click(changeUsernameBtn);
+
+    expect(await screen.findByRole("heading", { name: /change username/i })).toBeInTheDocument();
+
+    const usernameInput = screen.getByPlaceholderText("new_username");
+    const container = screen.getByTestId("username-input-container");
+
+    // Type an invalid username (too short: "ab")
+    fireEvent.change(usernameInput, { target: { value: "ab" } });
+
+    // The container border indicates invalidity
+    expect(container.className).toContain("border-rose-500");
+    expect(usernameInput).toHaveAttribute("aria-invalid", "true");
+
+    // The redundant error message is NOT displayed
+    expect(
+      screen.queryByText(
+        "3-20 characters: letters, numbers, and underscores (must start with letter and end with alphanumeric)",
+      ),
+    ).not.toBeInTheDocument();
+
+    // The explanation below the text box is still present
+    expect(
+      screen.getByText(/3-20 characters: lowercase letters, numbers, and single underscores/i),
+    ).toBeInTheDocument();
+
+    // Submit button is disabled
+    const dialog = screen.getByRole("dialog", { name: /change username/i });
+    const submitBtn = within(dialog).getByRole("button", { name: /^change username$/i });
+    expect(submitBtn).toBeDisabled();
+  });
+
   it("disables Save button initially, enables it when fields are modified, and shows modified indicators", async () => {
     renderApp("/account");
 
