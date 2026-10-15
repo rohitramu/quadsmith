@@ -145,6 +145,11 @@ function ProductHoverCardPresenter({
   }, [as, placement]);
 
   const handleMouseEnter = (e: React.MouseEvent) => {
+    if (typeof window !== "undefined" && window.matchMedia) {
+      if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
+        return;
+      }
+    }
     lastMousePosRef.current = { clientX: e.clientX, clientY: e.clientY };
     if (closeTimerRef.current) {
       clearTimeout(closeTimerRef.current);
@@ -216,7 +221,7 @@ function ProductHoverCardPresenter({
               transform: coords.placeAbove ? "translateY(-100%)" : "none",
               zIndex: 9999,
             }}
-            className="w-80 p-3.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl transition-opacity animate-in fade-in zoom-in-95 duration-150 pointer-events-auto"
+            className="w-80 max-w-[calc(100vw-2rem)] p-3.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl transition-opacity animate-in fade-in zoom-in-95 duration-150 pointer-events-auto"
             data-testid="product-hover-card"
           >
             {/* Header: Thumbnail + Title + Badge */}

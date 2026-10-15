@@ -41,7 +41,7 @@ describe("CollectionPage Component", () => {
     expect(emaxLink).toHaveAttribute("href", "/components/hardware/motors/emax-eco-ii-2207");
   });
 
-  it("handles sorting by clicking column headers", async () => {
+  it("handles sorting via toolbar sort selector and direction toggle", async () => {
     const { user } = renderWithProviders(
       <Routes>
         <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
@@ -53,21 +53,18 @@ describe("CollectionPage Component", () => {
       expect(screen.getByText("ECO II 2207")).toBeInTheDocument();
     });
 
-    // Find sort button for Name column
-    const sortBtn = screen.getByRole("button", { name: /sort by name/i });
-    expect(sortBtn).toBeInTheDocument();
+    // Find sort combobox
+    const sortCombobox = screen.getByRole("combobox", { name: /sort by field/i });
+    expect(sortCombobox).toBeInTheDocument();
+    expect(sortCombobox).toHaveTextContent("Sort: Name");
 
-    // Click to sort ascending
-    await user.click(sortBtn);
-    await waitFor(() => {
-      expect(sortBtn).toHaveAttribute("title", "Sort by Name");
-    });
+    // Find direction button (initially ascending)
+    const dirBtn = screen.getByRole("button", { name: /sort ascending/i });
+    expect(dirBtn).toBeInTheDocument();
 
-    // Click again to sort descending
-    await user.click(sortBtn);
-    await waitFor(() => {
-      expect(sortBtn).toHaveAttribute("title", "Sort by Name");
-    });
+    // Toggle direction to descending
+    await user.click(dirBtn);
+    expect(await screen.findByRole("button", { name: /sort descending/i })).toBeInTheDocument();
   });
 
   it("opens column selector and allows toggling visible columns", async () => {
@@ -223,15 +220,9 @@ describe("CollectionPage Component", () => {
     const locationSearch = screen.getByTestId("location-search");
     expect(locationSearch.textContent).toBe("");
 
-    // Click sort button for Name column -> asc
-    const sortBtn = screen.getByRole("button", { name: /sort by name/i });
-    await user.click(sortBtn);
-    await waitFor(() => {
-      expect(locationSearch.textContent).toBe("?sort=name");
-    });
-
-    // Click again -> desc (^name)
-    await user.click(sortBtn);
+    // Click sort direction button -> desc (^name)
+    const dirBtn = screen.getByRole("button", { name: /sort ascending/i });
+    await user.click(dirBtn);
     await waitFor(() => {
       expect(locationSearch.textContent).toBe("?sort=%5Ename");
     });
@@ -244,10 +235,11 @@ describe("CollectionPage Component", () => {
       expect(locationSearch.textContent).toContain("sort=%5Ename");
     });
 
-    // Click sort button again -> removes sort from URL
-    await user.click(sortBtn);
+    // Toggle direction button again -> asc (name)
+    const descDirBtn = screen.getByRole("button", { name: /sort descending/i });
+    await user.click(descDirBtn);
     await waitFor(() => {
-      expect(locationSearch.textContent).not.toContain("sort=");
+      expect(locationSearch.textContent).toContain("sort=name");
       expect(locationSearch.textContent).toContain("filter=kv+%3E%3D+2000");
     });
   });
@@ -278,12 +270,11 @@ describe("CollectionPage Component", () => {
     const filterInput = screen.getByPlaceholderText(/filter components/i) as HTMLInputElement;
     expect(filterInput.value).toBe("ECO");
 
-    // Table header should show Name and KV columns
-    expect(screen.getByText("Name")).toBeInTheDocument();
+    // Sort dropdown should show Name, and spec card should show KV
+    expect(screen.getByText("Sort: Name")).toBeInTheDocument();
     expect(screen.getByText("KV")).toBeInTheDocument();
 
-    // Table header should NOT show Manufacturer or Stator Size
-    expect(screen.queryByText("Manufacturer")).not.toBeInTheDocument();
+    // Spec card should NOT show Stator Size
     expect(screen.queryByText("Stator Size")).not.toBeInTheDocument();
   });
 

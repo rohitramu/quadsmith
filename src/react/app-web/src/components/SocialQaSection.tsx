@@ -28,6 +28,13 @@ import {
   Plus,
 } from "lucide-react";
 import { formatRelativeDate } from "@quadsmith/shared";
+import { StyledSelect } from "./StyledSelect";
+
+const qaSortOptions = [
+  { value: "votes", label: "Most Votes" },
+  { value: "recent", label: "Most Recent" },
+  { value: "unanswered", label: "Unanswered" },
+];
 
 export interface SocialQaSectionProps {
   target: { type?: "build" | "component"; id: string; collection?: string };
@@ -267,15 +274,13 @@ export function SocialQaSection({
           </span>
           <div className="flex items-center gap-2 text-xs">
             <span className="text-zinc-400">Sort by:</span>
-            <select
+            <StyledSelect
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1 text-zinc-700 dark:text-zinc-300 focus:outline-hidden text-xs"
-            >
-              <option value="votes">Most Votes</option>
-              <option value="recent">Most Recent</option>
-              <option value="unanswered">Unanswered</option>
-            </select>
+              onChange={(val) => setSortBy(val)}
+              options={qaSortOptions}
+              ariaLabel="Sort questions"
+              size="sm"
+            />
           </div>
         </div>
 

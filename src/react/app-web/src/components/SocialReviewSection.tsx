@@ -26,6 +26,12 @@ import {
 } from "lucide-react";
 import { getReviewTierBadgeClass, getReviewTierLabel, formatRelativeDate } from "@quadsmith/shared";
 import { getAvatarPalette, getInitial } from "@quadsmith/shared";
+import { StyledSelect } from "./StyledSelect";
+
+const reviewSortOptions = [
+  { value: "helpful", label: "Most Helpful" },
+  { value: "recent", label: "Most Recent" },
+];
 
 export interface SocialReviewSectionProps {
   target: { type?: "build" | "component"; id: string; collection?: string };
@@ -356,14 +362,13 @@ export function SocialReviewSection({
           </span>
           <div className="flex items-center gap-2 text-xs">
             <span className="text-zinc-400">Sort by:</span>
-            <select
+            <StyledSelect
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-2 py-1 text-zinc-700 dark:text-zinc-300 focus:outline-hidden text-xs"
-            >
-              <option value="helpful">Most Helpful</option>
-              <option value="recent">Most Recent</option>
-            </select>
+              onChange={(val) => setSortBy(val)}
+              options={reviewSortOptions}
+              ariaLabel="Sort reviews"
+              size="sm"
+            />
           </div>
         </div>
 

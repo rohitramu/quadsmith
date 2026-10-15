@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../test/test-utils";
 import { Layout } from "../Layout";
 import { HARDWARE_COLLECTIONS } from "../../lib/hardwareCollections";
@@ -20,12 +21,23 @@ describe("Layout Component", () => {
     expect(logoLink).toHaveAttribute("href", "/");
 
     // Search Bar
-    const searchInput = screen.getByPlaceholderText("Search components...");
+    const searchInput = screen.getByPlaceholderText(/search/i);
     expect(searchInput).toBeInTheDocument();
 
     // Theme Toggle Button
     const themeBtn = screen.getByRole("button", { name: "Toggle theme" });
     expect(themeBtn).toBeInTheDocument();
+  });
+
+  it("focuses search bar on '/' keyboard shortcut", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<Layout />, { route: "/" });
+
+    const searchInput = screen.getByPlaceholderText(/search/i);
+    expect(searchInput).not.toHaveFocus();
+
+    await user.keyboard("/");
+    expect(searchInput).toHaveFocus();
   });
 
   it("toggles light and dark themes correctly and persists to localStorage", async () => {
@@ -46,6 +58,32 @@ describe("Layout Component", () => {
     await user.click(themeButton);
     expect(document.documentElement.classList.contains("dark")).toBe(true);
     expect(localStorage.getItem("theme")).toBe("dark");
+  });
+
+  it("opens mobile navigation drawer on hamburger menu click and closes on close button or backdrop click", async () => {
+    const { user } = renderWithProviders(<Layout />, { route: "/" });
+
+    const menuButton = screen.getByRole("button", { name: "Open navigation menu" });
+    expect(menuButton).toBeInTheDocument();
+
+    // Initially drawer dialog is not present
+    expect(screen.queryByRole("dialog", { name: "Navigation drawer" })).not.toBeInTheDocument();
+
+    // Click hamburger to open drawer
+    await user.click(menuButton);
+    const drawer = screen.getByRole("dialog", { name: "Navigation drawer" });
+    expect(drawer).toBeInTheDocument();
+
+    // Close button inside drawer closes it
+    const closeBtn = screen.getByRole("button", { name: "Close navigation menu" });
+    await user.click(closeBtn);
+    expect(screen.queryByRole("dialog", { name: "Navigation drawer" })).not.toBeInTheDocument();
+
+    // Reopen and close via Escape
+    await user.click(menuButton);
+    expect(screen.getByRole("dialog", { name: "Navigation drawer" })).toBeInTheDocument();
+    await user.keyboard("{Escape}");
+    expect(screen.queryByRole("dialog", { name: "Navigation drawer" })).not.toBeInTheDocument();
   });
 
   it("renders sidebar navigation links with hardware collections permanently expanded", () => {
@@ -89,8 +127,9 @@ describe("Layout Component", () => {
 
     // All hardware collections are permanently visible on initial render with icons
     for (const collection of HARDWARE_COLLECTIONS) {
-      const link = screen.getByRole("link", { name: collection.name });
-      expect(link).toBeInTheDocument();
+      const links = screen.getAllByRole("link", { name: collection.name });
+      expect(links.length).toBeGreaterThanOrEqual(1);
+      const link = links[0];
       expect(link).toHaveAttribute("href", `/components/hardware/${collection.id}`);
       expect(link.querySelector("svg")).toBeInTheDocument();
       expect(link.querySelector(".rounded-full")).not.toBeInTheDocument();
@@ -117,20 +156,18 @@ describe("Layout Component", () => {
     expect(feedIcon).toHaveClass("text-blue-600");
   });
 
-  it("shows account dropdown menu with username link to public profile, Account settings, and Log out on hover", async () => {
+  it("shows account dropdown menu on hover and allows tap-to-toggle", async () => {
     const { user } = renderWithProviders(<Layout />, { route: "/" });
 
-    // Find the account settings avatar button
-    const accountBtn = await screen.findByRole("link", { name: /Account Settings/i });
+    // Wait for auth to resolve and find the account settings avatar button
+    const accountBtn = await screen.findByRole("button", { name: /Account Settings/i });
     expect(accountBtn).toBeInTheDocument();
 
     // Menu is not visible initially
     expect(screen.queryByRole("menu", { name: /account menu/i })).not.toBeInTheDocument();
 
-    // Hover over the account button container
+    // Hover over avatar opens menu
     await user.hover(accountBtn);
-
-    // Menu should appear
     const menu = await screen.findByRole("menu", { name: /account menu/i });
     expect(menu).toBeInTheDocument();
 
@@ -138,9 +175,6 @@ describe("Layout Component", () => {
     const usernameProfileLink = screen.getByRole("link", { name: /@fpv_pilot/i });
     expect(usernameProfileLink).toBeInTheDocument();
     expect(usernameProfileLink).toHaveAttribute("href", "/users/fpv_pilot");
-
-    // There should NOT be a separate "Public profile" menu item
-    expect(screen.queryByRole("menuitem", { name: /public profile/i })).not.toBeInTheDocument();
 
     const settingsLink = screen.getByRole("menuitem", { name: /account settings/i });
     expect(settingsLink).toBeInTheDocument();

@@ -36,7 +36,7 @@ test.describe("Failure Modes, Input Validations & Fault Injection", () => {
       // Attempt click (force click should not advance step)
       await nextBtn.click({ force: true });
       // Should still be on Step 1
-      await expect(page.getByText(/Frame/i).first()).toBeVisible();
+      await expect(page.getByText(/Frame Chassis/i).first()).toBeVisible();
     }
   });
 
@@ -62,7 +62,7 @@ test.describe("Failure Modes, Input Validations & Fault Injection", () => {
     // Restore network connection and reload to verify recovery
     await restoreRoute();
     await page.reload();
-    await expect(page.locator("table tbody tr").first()).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('[data-testid="catalog-card"]').first()).toBeVisible({ timeout: 10000 });
   });
 
   test("renders graceful error card when build evaluator returns 500 server error", async ({

@@ -1186,68 +1186,86 @@ export function AccountSettingsPage() {
           </div>
         )}
 
-        {/* Email List Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <tbody className="divide-y divide-zinc-200/60 dark:divide-zinc-800/60 font-mono">
-              {displayedEmails.map((em) => (
-                <tr key={em.email} className="group">
-                  <td className="py-3 pr-4">
-                    <div className="flex items-center gap-2 font-sans font-medium text-zinc-900 dark:text-zinc-100">
-                      <span>{em.email}</span>
-                      {em.isPrimary && (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                          Primary
-                        </span>
-                      )}
-                    </div>
-                  </td>
-                  <td className="py-3 text-zinc-500 text-[11px] font-sans">
-                    {formatDate(em.createdAt?.seconds)}
-                  </td>
-                  <td className="py-3 text-right space-x-2 font-sans">
-                    {em.isPrimary ? (
-                      <span className="text-zinc-400 dark:text-zinc-600 text-[11px] italic">
-                        Default login address
+        {/* Email List Cards */}
+        <div role="table" aria-label="Associated Emails" className="space-y-2">
+          {displayedEmails.map((em) => (
+            <div
+              role="row"
+              key={em.email}
+              className={`p-3.5 rounded-xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all ${
+                em.isPrimary
+                  ? "border-emerald-500/40 bg-emerald-500/5 dark:bg-emerald-950/20"
+                  : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40"
+              }`}
+            >
+              <div className="flex items-center gap-3 min-w-0">
+                <div
+                  className={`p-1.5 rounded-lg border shrink-0 ${
+                    em.isPrimary
+                      ? "bg-emerald-500/15 border-emerald-500/30 text-emerald-600 dark:text-emerald-400"
+                      : "bg-zinc-100 dark:bg-zinc-800 border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400"
+                  }`}
+                >
+                  <Mail size={16} />
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="font-semibold text-xs text-zinc-900 dark:text-zinc-100 truncate">
+                      {em.email}
+                    </span>
+                    {em.isPrimary && (
+                      <span className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 shrink-0">
+                        Primary
                       </span>
-                    ) : isBanned ? (
-                      <span className="text-zinc-400 dark:text-zinc-600 text-[11px] italic">
-                        Read-only (Suspended)
-                      </span>
-                    ) : (
-                      <>
-                        <button
-                          type="button"
-                          disabled={emailActionLoading === em.email}
-                          onClick={() => handleSetPrimary(em.email)}
-                          className="px-2.5 py-1 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-[11px] font-medium transition inline-flex items-center gap-1"
-                        >
-                          {emailActionLoading === em.email && (
-                            <Loader2 size={11} className="animate-spin" />
-                          )}
-                          <span>Make Primary</span>
-                        </button>
-                        <button
-                          type="button"
-                          disabled={emailActionLoading === em.email}
-                          onClick={() => handleRemoveEmail(em.email)}
-                          aria-label={`Remove ${em.email}`}
-                          title="Remove email"
-                          className="p-1.5 rounded-lg border border-rose-500/20 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition inline-flex items-center justify-center align-middle"
-                        >
-                          {emailActionLoading === em.email ? (
-                            <Loader2 size={13} className="animate-spin" />
-                          ) : (
-                            <Trash2 size={13} />
-                          )}
-                        </button>
-                      </>
                     )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                  </div>
+                  <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                    Added {formatDate(em.createdAt?.seconds)}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+                {em.isPrimary ? (
+                  <span className="text-zinc-400 dark:text-zinc-600 text-[11px] italic font-sans">
+                    Default login address
+                  </span>
+                ) : isBanned ? (
+                  <span className="text-zinc-400 dark:text-zinc-600 text-[11px] italic font-sans">
+                    Read-only (Suspended)
+                  </span>
+                ) : (
+                  <>
+                    <button
+                      type="button"
+                      disabled={emailActionLoading === em.email}
+                      onClick={() => handleSetPrimary(em.email)}
+                      className="px-2.5 py-1 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-300 text-[11px] font-medium transition inline-flex items-center gap-1 cursor-pointer"
+                    >
+                      {emailActionLoading === em.email && (
+                        <Loader2 size={11} className="animate-spin" />
+                      )}
+                      <span>Make Primary</span>
+                    </button>
+                    <button
+                      type="button"
+                      disabled={emailActionLoading === em.email}
+                      onClick={() => handleRemoveEmail(em.email)}
+                      aria-label={`Remove ${em.email}`}
+                      title="Remove email"
+                      className="p-1.5 rounded-lg border border-rose-500/20 text-rose-600 dark:text-rose-400 hover:bg-rose-500/10 transition inline-flex items-center justify-center cursor-pointer"
+                    >
+                      {emailActionLoading === em.email ? (
+                        <Loader2 size={13} className="animate-spin" />
+                      ) : (
+                        <Trash2 size={13} />
+                      )}
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -1309,7 +1327,7 @@ export function AccountSettingsPage() {
                 return (
                   <div
                     key={sess.uuid}
-                    className="px-3.5 py-2.5 rounded-xl border-2 border-emerald-500/40 bg-emerald-500/5 dark:bg-emerald-950/20 flex items-center justify-between gap-3 transition-all shadow-2xs"
+                    className="px-3.5 py-2.5 rounded-xl border-2 border-emerald-500/40 bg-emerald-500/5 dark:bg-emerald-950/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all shadow-2xs"
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="p-1.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 shrink-0">
@@ -1352,7 +1370,7 @@ export function AccountSettingsPage() {
                       </div>
                     </div>
 
-                    <div className="shrink-0 flex items-center">
+                    <div className="shrink-0 flex items-center self-end sm:self-center">
                       <span className="text-[11px] text-zinc-400 italic font-mono px-2 py-0.5">
                         Current
                       </span>
@@ -1364,7 +1382,7 @@ export function AccountSettingsPage() {
               return (
                 <div
                   key={sess.uuid}
-                  className="px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-950/40 hover:border-zinc-300 dark:hover:border-zinc-700 flex items-center justify-between gap-3 transition-all"
+                  className="px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-950/40 hover:border-zinc-300 dark:hover:border-zinc-700 flex flex-col sm:flex-row sm:items-center justify-between gap-3 transition-all"
                 >
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 shrink-0">
@@ -1425,7 +1443,7 @@ export function AccountSettingsPage() {
                       setRevokeSessionError(null);
                       setSessionToRevoke(sess);
                     }}
-                    className="px-2.5 py-1 rounded-lg text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-rose-600 dark:hover:text-rose-400 border border-zinc-300 dark:border-zinc-700 hover:border-rose-400 dark:hover:border-rose-500/50 bg-white dark:bg-zinc-900 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition flex items-center gap-1 shadow-2xs cursor-pointer shrink-0"
+                    className="px-2.5 py-1 rounded-lg text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-rose-600 dark:hover:text-rose-400 border border-zinc-300 dark:border-zinc-700 hover:border-rose-400 dark:hover:border-rose-500/50 bg-white dark:bg-zinc-900 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition flex items-center gap-1 shadow-2xs cursor-pointer self-end sm:self-center shrink-0"
                   >
                     <X size={12} />
                     <span>Revoke</span>

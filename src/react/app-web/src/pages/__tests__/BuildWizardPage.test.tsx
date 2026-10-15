@@ -1052,4 +1052,42 @@ describe("BuildWizardPage Component", () => {
     expect(await screen.findByText("5. Electronic Speed Controller (ESC)")).toBeInTheDocument();
     expect(screen.getByText("Use Integrated FC ESC")).toBeInTheDocument();
   });
+
+  it("renders mobile collapsible progress & telemetry bar with interactive parts and telemetry drawers", async () => {
+    const user = userEvent.setup();
+    renderWizard();
+
+    await advanceToStep1(user);
+
+    // Verify mobile progress bar is in document
+    const mobileBar = screen.getByTestId("forge-mobile-progress-bar");
+    expect(mobileBar).toBeInTheDocument();
+    expect(within(mobileBar).getByText(/Step 1 of 12 • Frame/i)).toBeInTheDocument();
+    expect(within(mobileBar).getByText(/Dry wt:/i)).toBeInTheDocument();
+    expect(within(mobileBar).getByText(/TWR:/i)).toBeInTheDocument();
+
+    // Toggle Parts drawer
+    const partsToggleBtn = within(mobileBar).getByRole("button", { name: /toggle parts drawer/i });
+    expect(partsToggleBtn).toHaveAttribute("aria-expanded", "false");
+    await user.click(partsToggleBtn);
+    expect(partsToggleBtn).toHaveAttribute("aria-expanded", "true");
+
+    // Click Step 1 in drawer
+    const step1Btn = within(mobileBar).getByRole("button", { name: /1\. Frame/i });
+    expect(step1Btn).toBeInTheDocument();
+
+    // Toggle Telemetry drawer
+    const telemetryToggleBtn = within(mobileBar).getByRole("button", {
+      name: /toggle telemetry drawer/i,
+    });
+    expect(telemetryToggleBtn).toHaveAttribute("aria-expanded", "false");
+    await user.click(telemetryToggleBtn);
+    expect(telemetryToggleBtn).toHaveAttribute("aria-expanded", "true");
+    expect(partsToggleBtn).toHaveAttribute("aria-expanded", "false");
+
+    // Telemetry drawer content
+    expect(within(mobileBar).getByText("AUW")).toBeInTheDocument();
+    expect(within(mobileBar).getByText("Hover Throttle")).toBeInTheDocument();
+    expect(within(mobileBar).getByText("Est. Flight")).toBeInTheDocument();
+  });
 });

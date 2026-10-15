@@ -118,11 +118,12 @@ export function SocialTabs({
       )}
 
       {/* Tab Navigation Bar */}
-      <div className="flex items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-px flex-wrap">
+      {/* Tab Navigation Bar */}
+      <div className="flex items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-px overflow-x-auto whitespace-nowrap scrollbar-thin">
         <button
           type="button"
           onClick={() => handleTabSelect("reviews")}
-          className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer ${
+          className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer shrink-0 ${
             activeTab === "reviews"
               ? "border-blue-500 text-blue-600 dark:text-blue-400"
               : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
@@ -138,7 +139,7 @@ export function SocialTabs({
         <button
           type="button"
           onClick={() => handleTabSelect("qa")}
-          className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer ${
+          className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer shrink-0 ${
             activeTab === "qa"
               ? "border-blue-500 text-blue-600 dark:text-blue-400"
               : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
@@ -155,7 +156,7 @@ export function SocialTabs({
           <button
             type="button"
             onClick={() => handleTabSelect("similar")}
-            className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer ${
+            className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer shrink-0 ${
               activeTab === "similar"
                 ? "border-blue-500 text-blue-600 dark:text-blue-400"
                 : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
@@ -172,7 +173,7 @@ export function SocialTabs({
         <button
           type="button"
           onClick={() => handleTabSelect("collections")}
-          className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer ${
+          className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer shrink-0 ${
             activeTab === "collections"
               ? "border-blue-500 text-blue-600 dark:text-blue-400"
               : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"

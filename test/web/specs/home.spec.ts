@@ -11,7 +11,7 @@ test.describe("Home Page & Core Layout", () => {
     await preparePageForSnapshot(page, { theme: "dark" });
 
     // Verify presence of core landing landmarks
-    await expect(page.locator("nav")).toBeVisible();
+    await expect(page.locator("header")).toBeVisible();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
     // Verify main content container is rendered
@@ -29,7 +29,7 @@ test.describe("Home Page & Core Layout", () => {
     await preparePageForSnapshot(page, { theme: "light" });
 
     // Verify header navigation elements
-    await expect(page.locator("nav")).toBeVisible();
+    await expect(page.locator("header")).toBeVisible();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.locator("main")).toBeVisible();
 

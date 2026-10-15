@@ -27,7 +27,13 @@ import {
 } from "@quadsmith/shared/gen/quadsmith/api/social-SocialService_connectquery";
 import { ALL_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
 import { ComponentFormModal } from "../components/ComponentFormModal";
-import { getAvatarPalette, getInitial } from "@quadsmith/shared";
+import {
+  getAvatarPalette,
+  getInitial,
+  CollectionBadge,
+  CollectionIcon,
+  getCollectionColor,
+} from "@quadsmith/shared";
 import { BuildCard } from "../components/BuildCard";
 import { UserBadge } from "../components/UserBadge";
 import { useAuth } from "../context/AuthContext";
@@ -329,12 +335,12 @@ export function UserProfilePage() {
       </div>
 
       {/* Larger Tabbed Section */}
-      <div className="p-6 sm:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm space-y-6">
+      <div className="p-4 sm:p-6 lg:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-6">
         {/* Tab Navigation Bar */}
         <div
           role="tablist"
           aria-label="User profile content"
-          className="flex items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-px"
+          className="flex items-center gap-1 sm:gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-px overflow-x-auto whitespace-nowrap scrollbar-thin"
         >
           <button
             role="tab"
@@ -343,18 +349,18 @@ export function UserProfilePage() {
             aria-selected={activeTab === "builds"}
             type="button"
             onClick={() => handleTabChange("builds")}
-            className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2.5 sm:py-3 border-b-2 font-bold text-xs sm:text-sm transition-colors cursor-pointer shrink-0 ${
               activeTab === "builds"
-                ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
                 : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
             }`}
           >
-            <Hammer size={16} />
+            <Hammer size={15} />
             <span>Builds</span>
             <span
-              className={`px-2 py-0.5 rounded-full text-[11px] font-mono transition-colors ${
+              className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono transition-colors ${
                 activeTab === "builds"
-                  ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                   : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
               }`}
             >
@@ -369,18 +375,18 @@ export function UserProfilePage() {
             aria-selected={activeTab === "collections"}
             type="button"
             onClick={() => handleTabChange("collections")}
-            className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2.5 sm:py-3 border-b-2 font-bold text-xs sm:text-sm transition-colors cursor-pointer shrink-0 ${
               activeTab === "collections"
-                ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
                 : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
             }`}
           >
-            <Bookmark size={16} />
+            <Bookmark size={15} />
             <span>Collections</span>
             <span
-              className={`px-2 py-0.5 rounded-full text-[11px] font-mono transition-colors ${
+              className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono transition-colors ${
                 activeTab === "collections"
-                  ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                   : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
               }`}
             >
@@ -395,18 +401,18 @@ export function UserProfilePage() {
             aria-selected={activeTab === "components"}
             type="button"
             onClick={() => handleTabChange("components")}
-            className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2.5 sm:py-3 border-b-2 font-bold text-xs sm:text-sm transition-colors cursor-pointer shrink-0 ${
               activeTab === "components"
-                ? "border-blue-500 text-blue-600 dark:text-blue-400"
+                ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
                 : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
             }`}
           >
-            <Cpu size={16} />
+            <Cpu size={15} />
             <span>Components</span>
             <span
-              className={`px-2 py-0.5 rounded-full text-[11px] font-mono transition-colors ${
+              className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono transition-colors ${
                 activeTab === "components"
-                  ? "bg-blue-500/10 text-blue-600 dark:text-blue-400"
+                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
                   : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
               }`}
             >
@@ -427,7 +433,7 @@ export function UserProfilePage() {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
               <div>
                 <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                  <Hammer size={18} className="text-blue-500" />
+                  <Hammer size={18} className="text-emerald-500" />
                   <span>Authored Builds</span>
                 </h3>
                 <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
@@ -436,13 +442,14 @@ export function UserProfilePage() {
                 </p>
               </div>
 
-              {isOwner && (
+              {isOwner && builds.length > 0 && (
                 <Link
                   to="/build/new"
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs shadow-md shadow-blue-500/20 transition-colors self-start sm:self-auto cursor-pointer"
+                  aria-label="Add Build"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-500/20 transition-colors self-start sm:self-auto cursor-pointer"
                 >
                   <Plus size={14} />
-                  <span>New Build in Forge</span>
+                  <span>+ Add New</span>
                 </Link>
               )}
             </div>
@@ -502,10 +509,11 @@ export function UserProfilePage() {
                   <div className="pt-2">
                     <Link
                       to="/build/new"
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs shadow-md shadow-blue-500/20 transition-colors"
+                      aria-label="Add Build"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-500/20 transition-colors cursor-pointer"
                     >
                       <Plus size={14} />
-                      <span>Start a New Build in Forge</span>
+                      <span>+ Add New</span>
                     </Link>
                   </div>
                 )}
@@ -549,7 +557,7 @@ export function UserProfilePage() {
             className="space-y-6 animate-in fade-in duration-150"
           >
             {/* Collections Section Subheader with subtle plus button */}
-            <div className="flex items-center justify-between gap-4 pb-2">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
               <div>
                 <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
                   <Bookmark size={18} className="text-blue-500" />
@@ -564,11 +572,12 @@ export function UserProfilePage() {
                 <button
                   type="button"
                   onClick={() => setIsCreateOpen(true)}
-                  className="inline-flex items-center justify-center p-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-600 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors cursor-pointer self-start sm:self-auto"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-500/20 transition-colors self-start sm:self-auto cursor-pointer"
                   title="Add Collection"
                   aria-label="Add Collection"
                 >
-                  <Plus size={16} />
+                  <Plus size={14} />
+                  <span>+ Add New</span>
                 </button>
               )}
             </div>
@@ -625,10 +634,11 @@ export function UserProfilePage() {
                     <button
                       type="button"
                       onClick={() => setIsCreateOpen(true)}
-                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs shadow-md shadow-blue-500/20 transition-colors cursor-pointer"
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-500/20 transition-colors cursor-pointer"
+                      aria-label="Add Collection"
                     >
                       <Plus size={14} />
-                      <span>Add Collection</span>
+                      <span>+ Add New</span>
                     </button>
                   </div>
                 )}
@@ -738,7 +748,7 @@ export function UserProfilePage() {
                 </p>
               </div>
 
-              {isOwner && (
+              {isOwner && contributedComponents.length > 0 && (
                 <button
                   type="button"
                   onClick={() => {
@@ -746,10 +756,11 @@ export function UserProfilePage() {
                     setCreateModalCollectionId("motors");
                     setIsComponentModalOpen(true);
                   }}
-                  className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold text-xs shadow-xs transition-colors flex items-center gap-1.5 cursor-pointer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-500/20 transition-colors self-start sm:self-auto cursor-pointer"
+                  aria-label="Add Component"
                 >
                   <Plus size={14} />
-                  <span>Add Component</span>
+                  <span>+ Add New</span>
                 </button>
               )}
             </div>
@@ -771,71 +782,101 @@ export function UserProfilePage() {
                     ? "Contribute custom motors, frames, electronics, or firmware to Quadsmith's catalog."
                     : `@${id} has not contributed any catalog components yet.`}
                 </p>
+                {isOwner && (
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedEditComponent(null);
+                        setCreateModalCollectionId("motors");
+                        setIsComponentModalOpen(true);
+                      }}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-500/20 transition-colors cursor-pointer"
+                      aria-label="Add Component"
+                    >
+                      <Plus size={14} />
+                      <span>+ Add New</span>
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {contributedComponents.map((item) => (
-                  <div
-                    key={item.uuid || item.id}
-                    className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all flex flex-col justify-between space-y-3 group"
-                  >
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
-                          {item.collectionName || "Component"}
-                        </span>
-                        {isOwner && (
-                          <button
-                            type="button"
-                            onClick={() => {
-                              setSelectedEditComponent(item);
-                              setCreateModalCollectionId(item.path.split("/").pop() || "motors");
-                              setIsComponentModalOpen(true);
-                            }}
-                            className="text-xs text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
-                          >
-                            Edit
-                          </button>
-                        )}
-                      </div>
-
-                      <div className="flex items-center gap-3">
-                        {item.primaryDisplayImage ? (
-                          <img
-                            src={item.primaryDisplayImage}
-                            alt={item.name}
-                            className="w-10 h-10 rounded-lg object-cover bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shrink-0"
+                {contributedComponents.map((item) => {
+                  const collectionKey = item.path
+                    ? item.path.split("/").pop() || "motors"
+                    : "motors";
+                  const colColor = getCollectionColor(collectionKey);
+                  return (
+                    <div
+                      key={item.uuid || item.id}
+                      className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all flex flex-col justify-between space-y-3 group"
+                    >
+                      <div className="space-y-2">
+                        <div className="flex items-center justify-between">
+                          <CollectionBadge
+                            collection={collectionKey}
+                            label={item.collectionName || collectionKey}
+                            variant="pill"
+                            size="xs"
                           />
-                        ) : (
-                          <div className="w-10 h-10 rounded-lg bg-zinc-200 dark:bg-zinc-800 flex items-center justify-center text-zinc-400 shrink-0">
-                            <Cpu size={18} />
-                          </div>
-                        )}
-                        <div className="min-w-0 flex-1">
-                          <Link
-                            to={`/${item.path}/${item.id}`}
-                            className="font-bold text-sm text-zinc-900 dark:text-zinc-100 hover:underline truncate block"
-                          >
-                            {item.name}
-                          </Link>
-                          {item.description && (
-                            <p className="text-xs text-zinc-500 line-clamp-1">{item.description}</p>
+                          {isOwner && (
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setSelectedEditComponent(item);
+                                setCreateModalCollectionId(item.path.split("/").pop() || "motors");
+                                setIsComponentModalOpen(true);
+                              }}
+                              className="text-xs text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+                            >
+                              Edit
+                            </button>
                           )}
                         </div>
+
+                        <div className="flex items-center gap-3">
+                          {item.primaryDisplayImage ? (
+                            <img
+                              src={item.primaryDisplayImage}
+                              alt={item.name}
+                              className="w-10 h-10 rounded-lg object-cover bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shrink-0"
+                            />
+                          ) : (
+                            <div
+                              className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border border-zinc-200/80 dark:border-zinc-700/60 ${colColor.iconBgClass} ${colColor.textClass}`}
+                            >
+                              <CollectionIcon collection={collectionKey} color={true} size={18} />
+                            </div>
+                          )}
+                          <div className="min-w-0 flex-1">
+                            <Link
+                              to={`/${item.path}/${item.id}`}
+                              className="font-bold text-sm text-zinc-900 dark:text-zinc-100 hover:underline truncate block"
+                            >
+                              {item.name}
+                            </Link>
+                            {item.description && (
+                              <p className="text-xs text-zinc-500 line-clamp-1">
+                                {item.description}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800/80 flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+                        <span>{item.id}</span>
+                        <Link
+                          to={`/${item.path}/${item.id}`}
+                          className="text-blue-600 dark:text-blue-400 font-sans font-medium hover:underline"
+                        >
+                          View &rarr;
+                        </Link>
                       </div>
                     </div>
-
-                    <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800/80 flex items-center justify-between text-[11px] text-zinc-400 font-mono">
-                      <span>{item.id}</span>
-                      <Link
-                        to={`/${item.path}/${item.id}`}
-                        className="text-blue-600 dark:text-blue-400 font-sans font-medium hover:underline"
-                      >
-                        View &rarr;
-                      </Link>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </section>

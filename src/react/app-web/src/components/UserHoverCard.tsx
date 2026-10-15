@@ -104,6 +104,11 @@ export function UserHoverCard({
 
   const handleMouseEnter = () => {
     if (!isValidUser) return;
+    if (typeof window !== "undefined" && window.matchMedia) {
+      if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) {
+        return;
+      }
+    }
     if (closeTimerRef.current) {
       clearTimeout(closeTimerRef.current);
       closeTimerRef.current = null;
@@ -151,6 +156,7 @@ export function UserHoverCard({
               top: coords.top - window.scrollY,
               left: coords.left - window.scrollX,
               width: 280,
+              maxWidth: "calc(100vw - 2rem)",
             }}
             onMouseEnter={() => {
               if (closeTimerRef.current) {

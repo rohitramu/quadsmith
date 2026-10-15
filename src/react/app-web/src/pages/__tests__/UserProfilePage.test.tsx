@@ -274,4 +274,34 @@ describe("UserProfilePage Component", () => {
 
     expect(await screen.findByText("Collection Detail Page")).toBeInTheDocument();
   });
+
+  it("renders consistent emerald + Add New buttons across Builds, Collections, and Components tabs", async () => {
+    const { user } = renderUserProfile("/users/fpv_pilot");
+
+    // Builds tab has "+ Add New" button with emerald styling and aria-label="Add Build"
+    const addBuildBtn = await screen.findByRole("link", { name: /add build/i });
+    expect(addBuildBtn).toBeInTheDocument();
+    expect(addBuildBtn).toHaveTextContent("+ Add New");
+    expect(addBuildBtn.className).toContain("bg-emerald-600");
+
+    // Switch to Collections tab
+    const collectionsTab = screen.getByRole("tab", { name: /collections/i });
+    await user.click(collectionsTab);
+
+    // Collections tab has "+ Add New" button with emerald styling and aria-label="Add Collection"
+    const addColBtn = await screen.findByRole("button", { name: /add collection/i });
+    expect(addColBtn).toBeInTheDocument();
+    expect(addColBtn).toHaveTextContent("+ Add New");
+    expect(addColBtn.className).toContain("bg-emerald-600");
+
+    // Switch to Components tab
+    const componentsTab = screen.getByRole("tab", { name: /components/i });
+    await user.click(componentsTab);
+
+    // Components tab has "+ Add New" button with emerald styling and aria-label="Add Component"
+    const addCompBtn = await screen.findByRole("button", { name: /add component/i });
+    expect(addCompBtn).toBeInTheDocument();
+    expect(addCompBtn).toHaveTextContent("+ Add New");
+    expect(addCompBtn.className).toContain("bg-emerald-600");
+  });
 });

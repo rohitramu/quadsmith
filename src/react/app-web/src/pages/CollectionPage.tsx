@@ -5,7 +5,6 @@ import { frontend as frontendOpt } from "@quadsmith/shared/gen/quadsmith/common/
 import {
   ArrowUp,
   ArrowDown,
-  ArrowUpDown,
   Columns3,
   GripVertical,
   ChevronUp,
@@ -30,44 +29,7 @@ import { getCollectionColor } from "@quadsmith/shared";
 import { ProductHoverCard } from "../components/ProductHoverCard";
 import { useDocumentMeta } from "@quadsmith/shared";
 import { ComponentFormModal } from "../components/ComponentFormModal";
-
-function ColumnHeader({
-  title,
-  field,
-  sortField,
-  sortDir,
-  onSortToggle,
-}: {
-  title: string;
-  field: string;
-  sortField: string | null;
-  sortDir: "asc" | "desc";
-  onSortToggle: (field: string) => void;
-}) {
-  return (
-    <div className="flex items-center gap-1.5">
-      <span>{title}</span>
-      <button
-        type="button"
-        onClick={() => onSortToggle(field)}
-        title={`Sort by ${title}`}
-        className={`p-1 rounded transition-colors cursor-pointer ${
-          sortField === field
-            ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50"
-            : "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400"
-        }`}
-      >
-        {sortField === field && sortDir === "asc" ? (
-          <ArrowUp size={13} />
-        ) : sortField === field && sortDir === "desc" ? (
-          <ArrowDown size={13} />
-        ) : (
-          <ArrowUpDown size={13} />
-        )}
-      </button>
-    </div>
-  );
-}
+import { StyledSelect } from "../components/StyledSelect";
 
 function ColumnSelector({
   allColumns,
@@ -427,23 +389,6 @@ export function CollectionTableView({
     return sortDir === "desc" ? [`^${sortField}`] : [sortField];
   }, [sortField, sortDir]);
 
-  const handleSortToggle = (field: string) => {
-    const nextParams = new URLSearchParams(searchParams);
-    if (sortField === field) {
-      if (sortDir === "asc") {
-        nextParams.set("sort", `^${field}`);
-      } else {
-        nextParams.delete("sort");
-      }
-    } else {
-      nextParams.set("sort", field);
-    }
-    nextParams.delete("dir");
-    nextParams.delete("sort_dir");
-    nextParams.delete("order");
-    setSearchParams(nextParams);
-  };
-
   const handleFilterApply = (q: string) => {
     const nextParams = new URLSearchParams(searchParams);
     const trimmed = q.trim();
@@ -573,10 +518,11 @@ export function CollectionTableView({
         <button
           type="button"
           onClick={() => setIsCreateModalOpen(true)}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-sm font-semibold shadow-xs transition-colors cursor-pointer"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold shadow-xs transition-colors cursor-pointer"
+          aria-label="Add Component"
         >
           <Plus size={16} />
-          <span>Add Component</span>
+          <span>+ Add New</span>
         </button>
       </div>
 
@@ -595,8 +541,8 @@ export function CollectionTableView({
 
       {data && (
         <>
-          {/* Table Toolbar with Component Count & Column Selector */}
-          <div className="flex items-center justify-between mb-3 text-xs text-zinc-500">
+          {/* Catalog Toolbar with Count, Sort, Columns & Internal Toggle */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 text-xs text-zinc-500">
             <div className="flex items-center gap-2">
               <span>
                 {count > 0 ? (
@@ -617,18 +563,67 @@ export function CollectionTableView({
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-4">
+
+            <div className="flex items-center flex-wrap gap-2.5 sm:gap-3">
+              {/* Toolbar Sort Dropdown */}
+              <div className="flex items-center gap-1.5">
+                <StyledSelect
+                  value={
+                    sortField || (collection.columns["name"] ? "name" : activeColumns[0]?.id || "")
+                  }
+                  onChange={(newField) => {
+                    const nextParams = new URLSearchParams(searchParams);
+                    nextParams.set("sort", sortDir === "desc" ? `^${newField}` : newField);
+                    nextParams.delete("dir");
+                    nextParams.delete("sort_dir");
+                    nextParams.delete("order");
+                    setSearchParams(nextParams);
+                  }}
+                  options={activeColumns.map((col) => ({
+                    value: col.id,
+                    label: `Sort: ${col.title}`,
+                  }))}
+                  ariaLabel="Sort by field"
+                  size="sm"
+                />
+                <button
+                  type="button"
+                  onClick={() => {
+                    const currentField =
+                      sortField ||
+                      (collection.columns["name"] ? "name" : activeColumns[0]?.id || "");
+                    const nextDir = sortDir === "asc" ? "desc" : "asc";
+                    const nextParams = new URLSearchParams(searchParams);
+                    nextParams.set("sort", nextDir === "desc" ? `^${currentField}` : currentField);
+                    nextParams.delete("dir");
+                    nextParams.delete("sort_dir");
+                    nextParams.delete("order");
+                    setSearchParams(nextParams);
+                  }}
+                  title={
+                    sortDir === "asc"
+                      ? "Sort ascending (click for descending)"
+                      : "Sort descending (click for ascending)"
+                  }
+                  aria-label={sortDir === "asc" ? "Sort ascending" : "Sort descending"}
+                  className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors shadow-xs cursor-pointer shrink-0"
+                >
+                  {sortDir === "desc" ? <ArrowDown size={14} /> : <ArrowUp size={14} />}
+                </button>
+              </div>
+
               {hasInternalField && (
                 <label className="flex items-center gap-1.5 cursor-pointer text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200">
                   <input
                     type="checkbox"
                     checked={showInternal}
                     onChange={(e) => handleShowInternalChange(e.target.checked)}
-                    className="rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                    className="rounded border-zinc-300 dark:border-zinc-700 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
                   />
                   <span>Show internal</span>
                 </label>
               )}
+
               <ColumnSelector
                 allColumns={Object.values(collection.columns)}
                 selectedColumnIds={selectedColumnIds}
@@ -638,80 +633,97 @@ export function CollectionTableView({
             </div>
           </div>
 
-          <div className="overflow-x-auto rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs">
-            <table className="w-full text-left text-sm text-zinc-600 dark:text-zinc-400">
-              <thead className="bg-zinc-50 dark:bg-zinc-950/50 text-xs uppercase font-semibold text-zinc-500 border-b border-zinc-200 dark:border-zinc-800">
-                <tr>
-                  {activeColumns.map((col) => (
-                    <th key={col.id} className="px-4 py-3">
-                      <ColumnHeader
-                        title={col.title}
-                        field={col.id}
-                        sortField={sortField}
-                        sortDir={sortDir}
-                        onSortToggle={handleSortToggle}
-                      />
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-zinc-200 dark:divide-zinc-800">
-                {items.map((item: any) => (
-                  <ProductHoverCard
-                    key={item.id}
-                    as="tr"
-                    collectionId={collection.id}
-                    item={item}
-                    className="hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors group relative"
-                  >
-                    {activeColumns.map((col, idx) => (
-                      <td key={col.id} className="px-4 py-3">
-                        {idx === 0 && (
-                          <Link
-                            to={`/${getCollectionPath(collection)}/${item.id}`}
-                            className="absolute inset-0 z-10"
-                            aria-label={`View ${item.name || item.id}`}
-                          />
+          {items.length === 0 ? (
+            <div className="rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 p-8 text-center text-sm text-zinc-500">
+              No {collection.name.toLowerCase()} found matching the active filters.
+            </div>
+          ) : (
+            <div
+              data-testid="catalog-grid"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4"
+            >
+              {items.map((item: any) => (
+                <ProductHoverCard
+                  key={item.id}
+                  as="article"
+                  collectionId={collection.id}
+                  item={item}
+                  className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/90 p-4 sm:p-5 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-all flex flex-col justify-between relative group"
+                >
+                  <div data-testid="catalog-card">
+                    {/* Header: Name, Manufacturer, Badges */}
+                    <div className="flex items-start justify-between gap-2 pb-3 mb-3 border-b border-zinc-100 dark:border-zinc-800/80">
+                      <div className="min-w-0 flex-1">
+                        <Link
+                          to={`/${getCollectionPath(collection)}/${item.id}`}
+                          className="font-bold text-sm sm:text-base text-zinc-900 dark:text-zinc-50 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors line-clamp-1"
+                          aria-label={`View ${item.name || item.id}`}
+                        >
+                          {item.name || item.id}
+                        </Link>
+                        {item.manufacturer && (
+                          <p className="text-xs text-zinc-400 dark:text-zinc-500 font-medium truncate mt-0.5">
+                            {item.manufacturer}
+                          </p>
                         )}
-                        {col.id === "name" ? (
-                          <div className="relative z-20 inline-block">{col.renderCell(item)}</div>
-                        ) : (
-                          col.renderCell(item)
+                      </div>
+
+                      <div className="flex items-center gap-1.5 shrink-0">
+                        {(item.isUserCreated || item.is_user_created) && (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                            Community
+                          </span>
                         )}
-                      </td>
-                    ))}
-                  </ProductHoverCard>
-                ))}
-                {items.length === 0 && (
-                  <tr>
-                    <td
-                      colSpan={activeColumns.length}
-                      className="px-4 py-8 text-center text-zinc-500"
-                    >
-                      No {collection.name.toLowerCase()} found matching the active filters.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+                        {item.is_internal_only && (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                            Internal
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Spec Grid for active columns */}
+                    <div className="grid grid-cols-2 gap-2">
+                      {activeColumns
+                        .filter((col) => col.id !== "name")
+                        .map((col) => (
+                          <div
+                            key={col.id}
+                            className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl px-2.5 py-1.5 border border-zinc-100 dark:border-zinc-800/80 flex flex-col min-w-0"
+                          >
+                            <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500 truncate">
+                              {col.title}
+                            </span>
+                            <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate mt-0.5">
+                              {col.renderCell(item)}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+                </ProductHoverCard>
+              ))}
+            </div>
+          )}
 
           {/* Bottom Pagination Controls */}
           {(count > 0 || pageIndex > 0) && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-4 text-xs text-zinc-500 dark:text-zinc-400">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-6 text-xs text-zinc-500 dark:text-zinc-400">
               {/* Rows per page selector */}
               <div className="flex items-center gap-2">
                 <span>Rows per page:</span>
-                <select
+                <StyledSelect<number>
                   value={pageSize}
-                  onChange={(e) => handlePageSizeChange(Number(e.target.value))}
-                  className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded px-2 py-1 text-zinc-700 dark:text-zinc-300 font-medium focus:outline-none focus:ring-1 focus:ring-blue-500 cursor-pointer shadow-xs"
-                >
-                  <option value={10}>10</option>
-                  <option value={20}>20</option>
-                  <option value={50}>50</option>
-                  <option value={100}>100</option>
-                </select>
+                  onChange={(newSize) => handlePageSizeChange(newSize)}
+                  options={[
+                    { value: 10, label: "10" },
+                    { value: 20, label: "20" },
+                    { value: 50, label: "50" },
+                    { value: 100, label: "100" },
+                  ]}
+                  ariaLabel="Rows per page"
+                  size="sm"
+                />
                 <span className="text-zinc-300 dark:text-zinc-700">|</span>
                 <span>
                   Showing {startItem}–{endItem}

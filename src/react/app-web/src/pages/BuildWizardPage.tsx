@@ -7,6 +7,7 @@ import {
   AlertTriangle,
   AlertCircle,
   ChevronRight,
+  ChevronDown,
   ClipboardCheck,
   Plus,
 } from "lucide-react";
@@ -121,6 +122,8 @@ function BuildWizardContent() {
   const [isBatteryModalOpen, setIsBatteryModalOpen] = useState(false);
   const [isCustomComponentModalOpen, setIsCustomComponentModalOpen] = useState(false);
   const [payloadInput, setPayloadInput] = useState(payloadWeightG.toString());
+  const [mobilePartsOpen, setMobilePartsOpen] = useState(false);
+  const [mobileTelemetryOpen, setMobileTelemetryOpen] = useState(false);
 
   const currentStepConfig = useMemo(() => {
     switch (activeStep) {
@@ -416,7 +419,220 @@ function BuildWizardContent() {
       {/* Main 2-Column Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column (8 cols): Active Step Component */}
-        <div className="lg:col-span-8">
+        <div className="lg:col-span-8 space-y-4">
+          {/* Mobile Collapsible Progress & Telemetry Bar (lg:hidden) */}
+          <div
+            data-testid="forge-mobile-progress-bar"
+            className="lg:hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm overflow-hidden"
+          >
+            {/* Step progress bar track */}
+            <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800">
+              <div
+                className="h-full bg-blue-600 transition-all duration-300"
+                style={{ width: `${(activeStep / 12) * 100}%` }}
+              />
+            </div>
+
+            {/* Always-visible summary header strip */}
+            <div className="p-3 flex flex-wrap items-center justify-between gap-2.5">
+              <div className="flex items-center gap-2 min-w-0">
+                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                  Step {activeStep} of 12 •{" "}
+                  {allForgeStepsList.find((s) => s.step === activeStep)?.title || "Review"}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-1.5 flex-wrap">
+                {/* Dry Weight Pill */}
+                <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                  Dry wt:{" "}
+                  <span className="font-bold text-blue-600 dark:text-blue-400">
+                    {dryWeightG.toFixed(1)}g
+                  </span>
+                </span>
+
+                {/* TWR Pill */}
+                {evaluatedMetrics?.twr != null ? (
+                  <span
+                    className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-md ${getTwrColor(evaluatedMetrics.twr)}`}
+                  >
+                    TWR: {evaluatedMetrics.twr.toFixed(1)}:1
+                  </span>
+                ) : (
+                  <span className="text-[11px] font-mono text-zinc-400 px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800">
+                    TWR: —
+                  </span>
+                )}
+
+                {/* Parts Toggle Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobilePartsOpen(!mobilePartsOpen);
+                    if (!mobilePartsOpen) setMobileTelemetryOpen(false);
+                  }}
+                  className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg border transition-colors cursor-pointer ${
+                    mobilePartsOpen
+                      ? "bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
+                      : "border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  }`}
+                  aria-expanded={mobilePartsOpen}
+                  aria-label="Toggle parts drawer"
+                >
+                  <span>Parts ({equippedCount}/11)</span>
+                  <ChevronDown
+                    size={13}
+                    className={`transition-transform duration-200 ${mobilePartsOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+
+                {/* Telemetry Toggle Button */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileTelemetryOpen(!mobileTelemetryOpen);
+                    if (!mobileTelemetryOpen) setMobilePartsOpen(false);
+                  }}
+                  className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg border transition-colors cursor-pointer ${
+                    mobileTelemetryOpen
+                      ? "bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
+                      : "border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  }`}
+                  aria-expanded={mobileTelemetryOpen}
+                  aria-label="Toggle telemetry drawer"
+                >
+                  <Gauge size={13} />
+                  <span>Telemetry</span>
+                  <ChevronDown
+                    size={13}
+                    className={`transition-transform duration-200 ${mobileTelemetryOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+              </div>
+            </div>
+
+            {/* Expandable Parts Drawer */}
+            {mobilePartsOpen && (
+              <div className="p-3 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs max-h-64 overflow-y-auto custom-scroll pr-1">
+                  {allForgeStepsList.map((part) => {
+                    const isCurrent = activeStep === part.step;
+                    const isUnlocked = unlockedSteps.includes(part.step);
+
+                    return (
+                      <button
+                        key={part.step}
+                        type="button"
+                        disabled={!isUnlocked}
+                        onClick={() => {
+                          if (isUnlocked) {
+                            setActiveStep(part.step);
+                            setMobilePartsOpen(false);
+                          }
+                        }}
+                        className={`p-2 rounded-xl border flex items-center justify-between gap-2 text-left transition-all ${
+                          isCurrent
+                            ? "border-blue-500 bg-blue-50/70 dark:bg-blue-950/40 ring-1 ring-blue-500/40"
+                            : isUnlocked
+                              ? "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 cursor-pointer"
+                              : "border-zinc-100 dark:border-zinc-800/40 opacity-40 cursor-not-allowed"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="text-[10px] font-mono text-zinc-400 font-bold shrink-0">
+                            {part.step}.
+                          </span>
+                          <div className="min-w-0">
+                            <span className="font-semibold text-[11px] text-zinc-800 dark:text-zinc-200 truncate block">
+                              {part.label}
+                            </span>
+                            <span className="text-[10px] text-zinc-400 truncate block">
+                              {part.item?.name ||
+                                (part.omitted ? "Omitted" : isUnlocked ? "Not selected" : "Locked")}
+                            </span>
+                          </div>
+                        </div>
+                        {isCurrent && (
+                          <span className="text-[9px] px-1.5 py-0.5 rounded font-bold bg-blue-600 text-white shrink-0">
+                            Active
+                          </span>
+                        )}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* Expandable Telemetry Drawer */}
+            {mobileTelemetryOpen && (
+              <div className="p-3.5 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40 space-y-3">
+                {/* Live Flight Metrics Grid */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
+                      AUW
+                    </span>
+                    <span className="text-sm font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                      {allUpWeightG > 0 ? `${allUpWeightG.toFixed(1)}g` : "—"}
+                    </span>
+                  </div>
+                  <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
+                      TWR
+                    </span>
+                    <span
+                      className={`text-sm font-mono font-bold ${evaluatedMetrics?.twr != null ? getTwrColor(evaluatedMetrics.twr) : "text-zinc-400"}`}
+                    >
+                      {evaluatedMetrics?.twr != null ? `${evaluatedMetrics.twr.toFixed(1)}:1` : "—"}
+                    </span>
+                  </div>
+                  <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
+                      Hover Throttle
+                    </span>
+                    <span
+                      className={`text-sm font-mono font-bold ${evaluatedMetrics?.hoverThrottlePercent != null ? getHoverThrottleColor(evaluatedMetrics.hoverThrottlePercent) : "text-zinc-400"}`}
+                    >
+                      {evaluatedMetrics?.hoverThrottlePercent != null
+                        ? `${evaluatedMetrics.hoverThrottlePercent.toFixed(0)}%`
+                        : "—"}
+                    </span>
+                  </div>
+                  <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
+                      Est. Flight
+                    </span>
+                    <span className="text-sm font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                      {evaluatedMetrics?.estimatedFlightTimeMin != null
+                        ? `${evaluatedMetrics.estimatedFlightTimeMin.toFixed(1)} min`
+                        : "—"}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Battery Selection Quick Row */}
+                <div className="flex items-center gap-2 pt-1">
+                  <div className="flex-1 min-w-0">
+                    <BatteryCombobox
+                      selectedBatteryId={selectedBatteryId}
+                      onSelectBattery={(id) => setSelectedBatteryId(id)}
+                      batteries={compatibleBatteries}
+                      ariaLabel="Select mobile test battery"
+                      className="w-full text-xs"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsBatteryModalOpen(true)}
+                    className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shrink-0 cursor-pointer"
+                  >
+                    Browse
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
           {activeStep === 1 && <FrameStep />}
           {activeStep === 2 && <FlightControllerStep />}
           {activeStep === 3 && <ReceiverStep />}

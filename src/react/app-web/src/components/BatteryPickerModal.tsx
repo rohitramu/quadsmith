@@ -8,6 +8,7 @@ import { CollectionBadge } from "@quadsmith/shared";
 import { CollectionIcon } from "@quadsmith/shared";
 import { buildBatteryCelFilter } from "@quadsmith/shared";
 import { CompatibilityHoverCard } from "./CompatibilityHoverCard";
+import { StyledSelect } from "./StyledSelect";
 
 export interface BatteryPickerModalProps {
   isOpen: boolean;
@@ -27,6 +28,12 @@ export interface BatteryPickerModalProps {
 }
 
 type SortOption = "weight_asc" | "capacity_desc" | "current_desc";
+
+const sortOptions: { value: SortOption; label: string }[] = [
+  { value: "weight_asc", label: "Lightest (Recommended)" },
+  { value: "capacity_desc", label: "Capacity (High to Low)" },
+  { value: "current_desc", label: "Max Current (High to Low)" },
+];
 
 export function BatteryPickerModal({
   isOpen,
@@ -280,15 +287,13 @@ export function BatteryPickerModal({
           <div className="flex items-center gap-1.5">
             <ArrowUpDown size={14} className="text-zinc-400" />
             <span className="text-zinc-500 dark:text-zinc-400 font-medium">Sort:</span>
-            <select
+            <StyledSelect
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="px-2 py-1 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="weight_asc">Lightest (Recommended)</option>
-              <option value="capacity_desc">Capacity (High to Low)</option>
-              <option value="current_desc">Max Current (High to Low)</option>
-            </select>
+              onChange={(val) => setSortBy(val as SortOption)}
+              options={sortOptions}
+              ariaLabel="Sort batteries"
+              size="sm"
+            />
           </div>
         </div>
       </div>
