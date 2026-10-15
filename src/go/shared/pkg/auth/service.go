@@ -20,7 +20,9 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
+	"quadsmith/shared/internal/cel2sql"
 	"quadsmith/shared/pkg/email"
+	"quadsmith/shared/pkg/pagination"
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 	pb "quadsmith/shared/gen/quadsmith/api"
@@ -3854,13 +3856,29 @@ func (s *UserService) UpdateBan(ctx context.Context, req *connect.Request[pb.Upd
 		newExpiresAt = &t
 	}
 
+	var revokedAt *time.Time
+	var revokedByUserUUID *string
+	var revokeReason string
+	if req.Msg.GetRevoke() {
+		now := time.Now()
+		revokedAt = &now
+		revokedByUserUUID = &userCtx.UserUUID
+		revokeReason = "Ban revoked by administrator"
+		if req.Msg.RevokeReason != nil && strings.TrimSpace(req.Msg.GetRevokeReason()) != "" {
+			revokeReason = strings.TrimSpace(req.Msg.GetRevokeReason())
+		}
+	}
+
 	_, err = s.db.Exec(ctx, `
 		UPDATE bans
 		SET reason = $2,
 		    internal_notes = $3,
-		    expires_at = $4
+		    expires_at = $4,
+		    revoked_at = $5,
+		    revoked_by_user_uuid = $6,
+		    revoke_reason = $7
 		WHERE uuid = $1::uuid
-	`, banUUID, newReason, newNotes, newExpiresAt)
+	`, banUUID, newReason, newNotes, newExpiresAt, revokedAt, revokedByUserUUID, revokeReason)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update ban: %w", err))
 	}
@@ -3876,10 +3894,20 @@ func (s *UserService) UpdateBan(ctx context.Context, req *connect.Request[pb.Upd
 	if newExpiresAt != nil {
 		resBan.ExpiresAt = timestamppb.New(*newExpiresAt)
 	}
+	if revokedAt != nil {
+		resBan.RevokedAt = timestamppb.New(*revokedAt)
+		resBan.RevokedByUserUuid = revokedByUserUUID
+		resBan.RevokeReason = revokeReason
+	}
+
+	msg := fmt.Sprintf("Ban on @%s successfully updated", targetHandle)
+	if revokedAt != nil {
+		msg = fmt.Sprintf("Ban on @%s successfully revoked", targetHandle)
+	}
 
 	return connect.NewResponse(&pb.UpdateBanResponse{
 		Success: true,
-		Message: fmt.Sprintf("Ban on @%s successfully updated", targetHandle),
+		Message: msg,
 		Ban:     resBan,
 	}), nil
 }
@@ -3893,11 +3921,14 @@ func (s *UserService) ListBans(ctx context.Context, req *connect.Request[pb.List
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("admin privileges required"))
 	}
 
-	pageSize := req.Msg.GetPageSize()
-	if pageSize <= 0 {
-		pageSize = 50
-	} else if pageSize > 100 {
-		pageSize = 100
+	pageSize, err := pagination.ParsePageSize(req.Msg.GetPageSize())
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	effectiveFilter, effectiveSort, offset, err := pagination.ResolveParams(req.Msg.GetFilter(), req.Msg.GetSort(), req.Msg.GetPageToken())
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
 
 	var targetUserUUID *string
@@ -3922,19 +3953,73 @@ func (s *UserService) ListBans(ctx context.Context, req *connect.Request[pb.List
 		FROM bans
 		WHERE 1=1`
 	args := []any{}
-	argIdx := 1
 
 	if targetUserUUID != nil {
-		query += fmt.Sprintf(" AND user_uuid = $%d::uuid", argIdx)
 		args = append(args, *targetUserUUID)
-		argIdx++
+		query += fmt.Sprintf(" AND user_uuid = $%d::uuid", len(args))
 	}
 
 	if req.Msg.GetActiveOnly() {
 		query += " AND revoked_at IS NULL AND (expires_at IS NULL OR expires_at > NOW())"
 	}
 
-	query += fmt.Sprintf(" ORDER BY created_at DESC LIMIT %d", pageSize)
+	if effectiveFilter != "" {
+		whereClause, filterArgs, err := cel2sql.Compile(effectiveFilter)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInvalidArgument, err)
+		}
+		if whereClause != "" {
+			startOffset := len(args)
+			re := regexp.MustCompile(`\$(\d+)`)
+			adjustedWhere := re.ReplaceAllStringFunc(whereClause, func(m string) string {
+				n, _ := strconv.Atoi(m[1:])
+				return fmt.Sprintf("$%d", n+startOffset)
+			})
+			query += " AND (" + adjustedWhere + ")"
+			args = append(args, filterArgs...)
+		}
+	}
+
+	validSortCols := map[string]bool{
+		"uuid":                 true,
+		"user_uuid":            true,
+		"banned_by_user_uuid":  true,
+		"reason":               true,
+		"internal_notes":       true,
+		"expires_at":           true,
+		"created_at":           true,
+		"revoked_at":           true,
+		"revoked_by_user_uuid": true,
+		"revoke_reason":        true,
+	}
+
+	var orderClauses []string
+	if len(effectiveSort) > 0 {
+		for _, s := range effectiveSort {
+			col := s
+			dir := "ASC NULLS LAST"
+			if strings.HasPrefix(s, "^") {
+				col = s[1:]
+				dir = "DESC NULLS LAST"
+			}
+			if !validSortCols[col] {
+				return nil, connect.NewError(connect.CodeInvalidArgument, pagination.ErrInvalidSortColumn(col))
+			}
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
+		}
+	} else {
+		orderClauses = append(orderClauses, "created_at DESC")
+	}
+	query += " ORDER BY " + strings.Join(orderClauses, ", ")
+
+	limit := pageSize + 1
+	args = append(args, limit)
+	query += fmt.Sprintf(" LIMIT $%d", len(args))
+
+	if offset > 0 {
+		args = append(args, offset)
+		query += fmt.Sprintf(" OFFSET $%d", len(args))
+	}
 
 	rows, err := s.db.Query(ctx, query, args...)
 	if err != nil {
@@ -3970,8 +4055,18 @@ func (s *UserService) ListBans(ctx context.Context, req *connect.Request[pb.List
 		bans = append(bans, &ban)
 	}
 
+	var nextPageToken string
+	if int32(len(bans)) > pageSize {
+		bans = bans[:pageSize]
+		nextPageToken, err = pagination.EncodePageToken(offset+pageSize, effectiveFilter, effectiveSort)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to encode next page token: %w", err))
+		}
+	}
+
 	return connect.NewResponse(&pb.ListBansResponse{
-		Bans: bans,
+		Bans:          bans,
+		NextPageToken: nextPageToken,
 	}), nil
 }
 

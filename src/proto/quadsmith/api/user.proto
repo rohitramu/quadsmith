@@ -459,6 +459,9 @@ message ListBansRequest {
   bool active_only = 2;
   int32 page_size = 3;
   string page_token = 4;
+  string filter = 5;
+  repeated string sort = 6;
+  repeated string columns = 7;
 }
 
 message ListBansResponse {
@@ -497,6 +500,8 @@ message UpdateBanRequest {
   optional string internal_notes = 3; // Updated private staff notes
   optional google.protobuf.Timestamp expires_at = 4; // Updated expiration timestamp
   bool clear_expires_at = 5; // Set true to convert temporary ban into permanent ban
+  optional bool revoke = 6; // Set true to revoke/lift the ban immediately
+  optional string revoke_reason = 7; // Reason for revocation if revoking
 }
 
 message UpdateBanResponse {

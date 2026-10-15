@@ -575,43 +575,58 @@ another route, displaying a brief temporary toast notification.
 Administrative pilots managing Quadsmith use the `qs` CLI in
 [`src/go/cli`](../../src/go/cli) to enforce moderation actions following the
 standard entity collection interface
-`qs user bans <username|uuid> [get|list|create|update|delete]`:
+`qs user bans [get|list|create|update] <username|uuid>` where the target
+identifier consistently follows the operation name:
 
 1. **Create Ban**:
 
    ```bash
-   qs user bans <username|uuid> create --reason "Spamming commercial links" [--expires-in 7d|30d] [--notes "Reported by multiple pilots"]
+   qs user bans create <username|uuid> --reason "Spamming commercial links" [--expires-in 7d|30d] [--notes "Reported by multiple pilots"]
    ```
 
 2. **Get Active Ban Details**:
 
    ```bash
-   qs user bans <username|uuid> get
+   qs user bans get <username|uuid> [-c column,...] [--yaml] [--json]
    ```
 
 3. **List Ban History**:
 
    ```bash
-   qs user bans <username|uuid> list [--active-only] [--limit 50]
+   qs user bans list [username|uuid] [-f filter] [-s sort,...] [-c column,...] [-l 50] [--active-only] [--yaml] [--json]
    ```
 
 4. **Update Active Ban**:
 
    ```bash
-   qs user bans <username|uuid> update [--reason "..."] [--expires-in 14d] [--permanent] [--notes "..."]
+   qs user bans update <username|uuid> [--reason "..."] [--expires-in 14d] [--permanent] [--revoke] [--notes "..."]
    ```
 
-5. **Delete (Unban) Active Ban**:
-
-   ```bash
-   qs user bans <username|uuid> delete [--reason "Appeal accepted by moderation team"]
-   ```
-
-All commands verify `Role == "ADMIN"`, support both `<username|uuid> <action>`
-and `<action> <username|uuid>` argument orderings, and format output cleanly in
-human tabular or `--json` / `--yaml` mode.
+Because the `bans` collection serves as an immutable moderation audit log, it
+strictly allows `create` and `update` mutation operations (omitting `delete`).
+Active bans are modified or revoked via `update`, and the `list` operation
+supports standard sorting, column projection, CEL filtering, pagination limits,
+and output formatting (`--json` and `--yaml`) flags common to all Quadsmith
+entity collections. All commands require `Role == "ADMIN"`.
 
 #### <a id="alternatives-considered-cli-placement" >Alternatives considered</a>
+
+##### <a id="delete-mutation-for-unbanning" >Delete Mutation for Unbanning</a>
+
+Treating unbans as a `delete` operation on the `bans` collection (e.g.,
+`qs user bans delete <username|uuid>`).
+
+**Pros:**
+
+- Conforms to conventional CRUD verb sets where deletion inverts creation.
+
+**Cons:**
+
+- Misrepresents the underlying data model by implying ban records are wiped from
+  database history.
+- The `bans` collection functions as an append-only audit trail and moderation
+  log where active bans are either updated (shortened, lengthened, made
+  permanent) or revoked rather than purged.
 
 ##### <a id="ops-cli-only-enforcement" >Ops CLI Only Enforcement</a>
 

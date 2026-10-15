@@ -1573,6 +1573,9 @@ type ListBansRequest struct {
 	ActiveOnly    bool                   `protobuf:"varint,2,opt,name=active_only,json=activeOnly,proto3" json:"active_only,omitempty"`
 	PageSize      int32                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
 	PageToken     string                 `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Filter        string                 `protobuf:"bytes,5,opt,name=filter,proto3" json:"filter,omitempty"`
+	Sort          []string               `protobuf:"bytes,6,rep,name=sort,proto3" json:"sort,omitempty"`
+	Columns       []string               `protobuf:"bytes,7,rep,name=columns,proto3" json:"columns,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1633,6 +1636,27 @@ func (x *ListBansRequest) GetPageToken() string {
 		return x.PageToken
 	}
 	return ""
+}
+
+func (x *ListBansRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListBansRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+func (x *ListBansRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
 }
 
 type ListBansResponse struct {
@@ -1942,6 +1966,8 @@ type UpdateBanRequest struct {
 	InternalNotes  *string                `protobuf:"bytes,3,opt,name=internal_notes,json=internalNotes,proto3,oneof" json:"internal_notes,omitempty"` // Updated private staff notes
 	ExpiresAt      *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=expires_at,json=expiresAt,proto3,oneof" json:"expires_at,omitempty"`             // Updated expiration timestamp
 	ClearExpiresAt bool                   `protobuf:"varint,5,opt,name=clear_expires_at,json=clearExpiresAt,proto3" json:"clear_expires_at,omitempty"` // Set true to convert temporary ban into permanent ban
+	Revoke         *bool                  `protobuf:"varint,6,opt,name=revoke,proto3,oneof" json:"revoke,omitempty"`                                   // Set true to revoke/lift the ban immediately
+	RevokeReason   *string                `protobuf:"bytes,7,opt,name=revoke_reason,json=revokeReason,proto3,oneof" json:"revoke_reason,omitempty"`    // Reason for revocation if revoking
 	unknownFields  protoimpl.UnknownFields
 	sizeCache      protoimpl.SizeCache
 }
@@ -2009,6 +2035,20 @@ func (x *UpdateBanRequest) GetClearExpiresAt() bool {
 		return x.ClearExpiresAt
 	}
 	return false
+}
+
+func (x *UpdateBanRequest) GetRevoke() bool {
+	if x != nil && x.Revoke != nil {
+		return *x.Revoke
+	}
+	return false
+}
+
+func (x *UpdateBanRequest) GetRevokeReason() string {
+	if x != nil && x.RevokeReason != nil {
+		return *x.RevokeReason
+	}
+	return ""
 }
 
 type UpdateBanResponse struct {
@@ -2261,14 +2301,17 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"active_ban\x18\x02 \x01(\v2\x12.quadsmith.api.BanH\x00R\tactiveBan\x88\x01\x01B\r\n" +
 	"\v_active_ban\" \n" +
 	"\x0eGetUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"\x98\x01\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\xde\x01\n" +
 	"\x0fListBansRequest\x12\x1c\n" +
 	"\auser_id\x18\x01 \x01(\tH\x00R\x06userId\x88\x01\x01\x12\x1f\n" +
 	"\vactive_only\x18\x02 \x01(\bR\n" +
 	"activeOnly\x12\x1b\n" +
 	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\x12\x1d\n" +
 	"\n" +
-	"page_token\x18\x04 \x01(\tR\tpageTokenB\n" +
+	"page_token\x18\x04 \x01(\tR\tpageToken\x12\x16\n" +
+	"\x06filter\x18\x05 \x01(\tR\x06filter\x12\x12\n" +
+	"\x04sort\x18\x06 \x03(\tR\x04sort\x12\x18\n" +
+	"\acolumns\x18\a \x03(\tR\acolumnsB\n" +
 	"\n" +
 	"\b_user_id\"b\n" +
 	"\x10ListBansResponse\x12&\n" +
@@ -2290,17 +2333,21 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"\x11UnbanUserResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12$\n" +
-	"\x03ban\x18\x03 \x01(\v2\x12.quadsmith.api.BanR\x03ban\"\x8b\x02\n" +
+	"\x03ban\x18\x03 \x01(\v2\x12.quadsmith.api.BanR\x03ban\"\xef\x02\n" +
 	"\x10UpdateBanRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1b\n" +
 	"\x06reason\x18\x02 \x01(\tH\x00R\x06reason\x88\x01\x01\x12*\n" +
 	"\x0einternal_notes\x18\x03 \x01(\tH\x01R\rinternalNotes\x88\x01\x01\x12>\n" +
 	"\n" +
 	"expires_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampH\x02R\texpiresAt\x88\x01\x01\x12(\n" +
-	"\x10clear_expires_at\x18\x05 \x01(\bR\x0eclearExpiresAtB\t\n" +
+	"\x10clear_expires_at\x18\x05 \x01(\bR\x0eclearExpiresAt\x12\x1b\n" +
+	"\x06revoke\x18\x06 \x01(\bH\x03R\x06revoke\x88\x01\x01\x12(\n" +
+	"\rrevoke_reason\x18\a \x01(\tH\x04R\frevokeReason\x88\x01\x01B\t\n" +
 	"\a_reasonB\x11\n" +
 	"\x0f_internal_notesB\r\n" +
-	"\v_expires_at\"m\n" +
+	"\v_expires_atB\t\n" +
+	"\a_revokeB\x10\n" +
+	"\x0e_revoke_reason\"m\n" +
 	"\x11UpdateBanResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12$\n" +

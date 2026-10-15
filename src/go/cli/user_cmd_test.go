@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"net/http"
 	"strings"
 	"testing"
@@ -10,6 +11,7 @@ import (
 
 	"connectrpc.com/connect"
 	"google.golang.org/protobuf/types/known/timestamppb"
+	"sigs.k8s.io/yaml"
 
 	pb "quadsmith/shared/gen/quadsmith/api"
 	"quadsmith/shared/gen/quadsmith/api/apiconnect"
@@ -91,14 +93,16 @@ func TestParseDurationOrDays(t *testing.T) {
 	}
 }
 
-func TestCLI_UserBans_CreateBothOrderings(t *testing.T) {
+func TestCLI_UserBans_Create(t *testing.T) {
 	calledTarget := ""
 	calledReason := ""
+	calledNotes := ""
 
 	mock := &mockUserService{
 		banUserFunc: func(ctx context.Context, req *connect.Request[pb.BanUserRequest]) (*connect.Response[pb.BanUserResponse], error) {
 			calledTarget = req.Msg.UserId
 			calledReason = req.Msg.Reason
+			calledNotes = req.Msg.InternalNotes
 			return connect.NewResponse(&pb.BanUserResponse{
 				Success: true,
 				Message: "User @" + req.Msg.UserId + " successfully banned",
@@ -114,46 +118,30 @@ func TestCLI_UserBans_CreateBothOrderings(t *testing.T) {
 		mux.Handle(apiconnect.NewUserServiceHandler(mock))
 	})
 
-	// Style 1: qs user bans <username|uuid> create --reason="..."
-	cmd1 := newRootCmd()
-	var outBuf1 bytes.Buffer
-	cmd1.SetOut(&outBuf1)
-	cmd1.SetArgs([]string{"user", "bans", "fpv_pilot", "create", "--reason", "Spamming reviews"})
-	err := cmd1.Execute()
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"user", "bans", "create", "fpv_pilot", "--reason", "Spamming reviews", "--notes", "Repeated report"})
+	err := cmd.Execute()
 	if err != nil {
-		t.Fatalf("style 1 failed: %v", err)
+		t.Fatalf("create failed: %v", err)
 	}
-	if calledTarget != "fpv_pilot" || calledReason != "Spamming reviews" {
-		t.Errorf("unexpected call args in style 1: target=%q, reason=%q", calledTarget, calledReason)
+	if calledTarget != "fpv_pilot" || calledReason != "Spamming reviews" || calledNotes != "Repeated report" {
+		t.Errorf("unexpected call args: target=%q, reason=%q, notes=%q", calledTarget, calledReason, calledNotes)
 	}
-	if !strings.Contains(outBuf1.String(), "successfully banned") {
-		t.Errorf("expected success message in style 1, got: %s", outBuf1.String())
-	}
-
-	// Reset
-	calledTarget = ""
-	calledReason = ""
-
-	// Style 2: qs user bans create <username|uuid> --reason="..."
-	cmd2 := newRootCmd()
-	var outBuf2 bytes.Buffer
-	cmd2.SetOut(&outBuf2)
-	cmd2.SetArgs([]string{"user", "bans", "create", "fpv_pilot", "--reason", "Spamming reviews"})
-	err = cmd2.Execute()
-	if err != nil {
-		t.Fatalf("style 2 failed: %v", err)
-	}
-	if calledTarget != "fpv_pilot" || calledReason != "Spamming reviews" {
-		t.Errorf("unexpected call args in style 2: target=%q, reason=%q", calledTarget, calledReason)
-	}
-	if !strings.Contains(outBuf2.String(), "successfully banned") {
-		t.Errorf("expected success message in style 2, got: %s", outBuf2.String())
+	if !strings.Contains(outBuf.String(), "successfully banned") {
+		t.Errorf("expected success message, got: %s", outBuf.String())
 	}
 }
 
-func TestCLI_UserBans_GetBothOrderings(t *testing.T) {
+func TestCLI_UserBans_Get(t *testing.T) {
 	mock := &mockUserService{
 		getUserBanStatusFunc: func(ctx context.Context, req *connect.Request[pb.GetUserBanStatusRequest]) (*connect.Response[pb.GetUserBanStatusResponse], error) {
+			if req.Msg.UserId == "clean_user" {
+				return connect.NewResponse(&pb.GetUserBanStatusResponse{
+					IsBanned: false,
+				}), nil
+			}
 			return connect.NewResponse(&pb.GetUserBanStatusResponse{
 				IsBanned: true,
 				ActiveBan: &pb.Ban{
@@ -169,36 +157,57 @@ func TestCLI_UserBans_GetBothOrderings(t *testing.T) {
 		mux.Handle(apiconnect.NewUserServiceHandler(mock))
 	})
 
-	// Style 1: qs user bans <username|uuid> get
+	// 1. Get banned user
 	cmd1 := newRootCmd()
 	var outBuf1 bytes.Buffer
 	cmd1.SetOut(&outBuf1)
-	cmd1.SetArgs([]string{"user", "bans", "fpv_pilot", "get"})
+	cmd1.SetArgs([]string{"user", "bans", "get", "fpv_pilot"})
 	if err := cmd1.Execute(); err != nil {
-		t.Fatalf("style 1 failed: %v", err)
+		t.Fatalf("get failed: %v", err)
 	}
 	if !strings.Contains(outBuf1.String(), "Repeated community violations") {
-		t.Errorf("expected ban details in style 1, got:\n%s", outBuf1.String())
+		t.Errorf("expected ban details, got:\n%s", outBuf1.String())
 	}
 
-	// Style 2: qs user bans get <username|uuid>
+	// 2. Get with column projection
 	cmd2 := newRootCmd()
 	var outBuf2 bytes.Buffer
 	cmd2.SetOut(&outBuf2)
-	cmd2.SetArgs([]string{"user", "bans", "get", "fpv_pilot"})
+	cmd2.SetArgs([]string{"user", "bans", "get", "fpv_pilot", "-c", "reason"})
 	if err := cmd2.Execute(); err != nil {
-		t.Fatalf("style 2 failed: %v", err)
+		t.Fatalf("get with columns failed: %v", err)
 	}
 	if !strings.Contains(outBuf2.String(), "Repeated community violations") {
-		t.Errorf("expected ban details in style 2, got:\n%s", outBuf2.String())
+		t.Errorf("expected reason column, got:\n%s", outBuf2.String())
+	}
+
+	// 3. Get clean user
+	cmd3 := newRootCmd()
+	var outBuf3 bytes.Buffer
+	cmd3.SetOut(&outBuf3)
+	cmd3.SetArgs([]string{"user", "bans", "get", "clean_user"})
+	if err := cmd3.Execute(); err != nil {
+		t.Fatalf("get clean user failed: %v", err)
+	}
+	if !strings.Contains(outBuf3.String(), "not currently banned") {
+		t.Errorf("expected not banned message, got:\n%s", outBuf3.String())
 	}
 }
 
-func TestCLI_UserBans_UpdateBothOrderings(t *testing.T) {
+func TestCLI_UserBans_Update(t *testing.T) {
 	calledTarget := ""
+	calledReason := ""
+	calledRevoke := false
+
 	mock := &mockUserService{
 		updateBanFunc: func(ctx context.Context, req *connect.Request[pb.UpdateBanRequest]) (*connect.Response[pb.UpdateBanResponse], error) {
 			calledTarget = req.Msg.UserId
+			if req.Msg.Reason != nil {
+				calledReason = *req.Msg.Reason
+			}
+			if req.Msg.Revoke != nil {
+				calledRevoke = *req.Msg.Revoke
+			}
 			return connect.NewResponse(&pb.UpdateBanResponse{
 				Success: true,
 				Message: "Ban on @" + req.Msg.UserId + " successfully updated",
@@ -214,44 +223,51 @@ func TestCLI_UserBans_UpdateBothOrderings(t *testing.T) {
 		mux.Handle(apiconnect.NewUserServiceHandler(mock))
 	})
 
-	// Style 1: qs user bans <username|uuid> update
+	// 1. Update reason and expiry
 	cmd1 := newRootCmd()
 	var outBuf1 bytes.Buffer
 	cmd1.SetOut(&outBuf1)
-	cmd1.SetArgs([]string{"user", "bans", "fpv_pilot", "update", "--expires-in", "7d"})
+	cmd1.SetArgs([]string{"user", "bans", "update", "fpv_pilot", "--reason", "Updated reason", "--expires-in", "7d"})
 	if err := cmd1.Execute(); err != nil {
-		t.Fatalf("style 1 failed: %v", err)
+		t.Fatalf("update failed: %v", err)
 	}
-	if calledTarget != "fpv_pilot" {
-		t.Errorf("unexpected target in style 1: %q", calledTarget)
+	if calledTarget != "fpv_pilot" || calledReason != "Updated reason" {
+		t.Errorf("unexpected update args: target=%q, reason=%q", calledTarget, calledReason)
 	}
 
-	calledTarget = ""
-
-	// Style 2: qs user bans update <username|uuid>
+	// 2. Revoke active ban
 	cmd2 := newRootCmd()
 	var outBuf2 bytes.Buffer
 	cmd2.SetOut(&outBuf2)
-	cmd2.SetArgs([]string{"user", "bans", "update", "fpv_pilot", "--expires-in", "7d"})
+	cmd2.SetArgs([]string{"user", "bans", "update", "fpv_pilot", "--revoke", "--reason", "Appeal granted"})
 	if err := cmd2.Execute(); err != nil {
-		t.Fatalf("style 2 failed: %v", err)
+		t.Fatalf("update revoke failed: %v", err)
 	}
-	if calledTarget != "fpv_pilot" {
-		t.Errorf("unexpected target in style 2: %q", calledTarget)
+	if !calledRevoke || calledReason != "Appeal granted" {
+		t.Errorf("unexpected revoke call: revoke=%v, reason=%q", calledRevoke, calledReason)
 	}
 }
 
-func TestCLI_UserBans_DeleteBothOrderings(t *testing.T) {
-	calledTarget := ""
+func TestCLI_UserBans_List_Flags(t *testing.T) {
+	var capturedReq *pb.ListBansRequest
+
 	mock := &mockUserService{
-		unbanUserFunc: func(ctx context.Context, req *connect.Request[pb.UnbanUserRequest]) (*connect.Response[pb.UnbanUserResponse], error) {
-			calledTarget = req.Msg.UserId
-			return connect.NewResponse(&pb.UnbanUserResponse{
-				Success: true,
-				Message: "User @" + req.Msg.UserId + " successfully unbanned",
-				Ban: &pb.Ban{
-					Uuid:     "ban-1234",
-					UserUuid: "user-5678",
+		listBansFunc: func(ctx context.Context, req *connect.Request[pb.ListBansRequest]) (*connect.Response[pb.ListBansResponse], error) {
+			capturedReq = req.Msg
+			return connect.NewResponse(&pb.ListBansResponse{
+				Bans: []*pb.Ban{
+					{
+						Uuid:      "ban-1",
+						UserUuid:  "user-1",
+						Reason:    "Spamming",
+						CreatedAt: timestamppb.Now(),
+					},
+					{
+						Uuid:      "ban-2",
+						UserUuid:  "user-2",
+						Reason:    "Abuse",
+						CreatedAt: timestamppb.Now(),
+					},
 				},
 			}), nil
 		},
@@ -260,29 +276,101 @@ func TestCLI_UserBans_DeleteBothOrderings(t *testing.T) {
 		mux.Handle(apiconnect.NewUserServiceHandler(mock))
 	})
 
-	// Style 1: qs user bans <username|uuid> delete
+	// 1. List with standard flags
 	cmd1 := newRootCmd()
 	var outBuf1 bytes.Buffer
 	cmd1.SetOut(&outBuf1)
-	cmd1.SetArgs([]string{"user", "bans", "fpv_pilot", "delete", "--reason", "Appeal granted"})
+	cmd1.SetArgs([]string{
+		"user", "bans", "list", "fpv_pilot",
+		"-f", "reason == 'Spamming'",
+		"-s", "^created_at",
+		"-c", "uuid,reason",
+		"-l", "25",
+		"--active-only",
+	})
 	if err := cmd1.Execute(); err != nil {
-		t.Fatalf("style 1 failed: %v", err)
-	}
-	if calledTarget != "fpv_pilot" {
-		t.Errorf("unexpected target in style 1: %q", calledTarget)
+		t.Fatalf("list with flags failed: %v", err)
 	}
 
-	calledTarget = ""
+	if capturedReq == nil {
+		t.Fatal("expected listBans to be called, got nil")
+	}
+	if capturedReq.UserId == nil || *capturedReq.UserId != "fpv_pilot" {
+		t.Errorf("expected user_id filter fpv_pilot, got %v", capturedReq.UserId)
+	}
+	if capturedReq.Filter != "reason == 'Spamming'" {
+		t.Errorf("expected filter flag, got %q", capturedReq.Filter)
+	}
+	if len(capturedReq.Sort) != 1 || capturedReq.Sort[0] != "^created_at" {
+		t.Errorf("expected sort flag [^created_at], got %v", capturedReq.Sort)
+	}
+	if !capturedReq.ActiveOnly {
+		t.Errorf("expected active-only flag true")
+	}
 
-	// Style 2: qs user bans delete <username|uuid>
+	// Output should include header columns UUID and REASON
+	out1 := outBuf1.String()
+	if !strings.Contains(out1, "UUID") || !strings.Contains(out1, "REASON") {
+		t.Errorf("expected column headers UUID and REASON, got:\n%s", out1)
+	}
+
+	// 2. List with --json
 	cmd2 := newRootCmd()
 	var outBuf2 bytes.Buffer
 	cmd2.SetOut(&outBuf2)
-	cmd2.SetArgs([]string{"user", "bans", "delete", "fpv_pilot", "--reason", "Appeal granted"})
+	cmd2.SetArgs([]string{"user", "bans", "list", "--json"})
 	if err := cmd2.Execute(); err != nil {
-		t.Fatalf("style 2 failed: %v", err)
+		t.Fatalf("list --json failed: %v", err)
 	}
-	if calledTarget != "fpv_pilot" {
-		t.Errorf("unexpected target in style 2: %q", calledTarget)
+	var jsonResults []map[string]interface{}
+	if err := json.Unmarshal(outBuf2.Bytes(), &jsonResults); err != nil {
+		t.Fatalf("failed to parse JSON output: %v\nOutput:\n%s", err, outBuf2.String())
+	}
+	if len(jsonResults) != 2 {
+		t.Fatalf("expected 2 JSON ban records, got %d", len(jsonResults))
+	}
+
+	// 3. List with --yaml
+	cmd3 := newRootCmd()
+	var outBuf3 bytes.Buffer
+	cmd3.SetOut(&outBuf3)
+	cmd3.SetArgs([]string{"user", "bans", "list", "--yaml"})
+	if err := cmd3.Execute(); err != nil {
+		t.Fatalf("list --yaml failed: %v", err)
+	}
+	var yamlResults []map[string]interface{}
+	if err := yaml.Unmarshal(outBuf3.Bytes(), &yamlResults); err != nil {
+		t.Fatalf("failed to parse YAML output: %v\nOutput:\n%s", err, outBuf3.String())
+	}
+	if len(yamlResults) != 2 {
+		t.Fatalf("expected 2 YAML ban records, got %d", len(yamlResults))
+	}
+}
+
+func TestCLI_UserBans_NoDeleteSubcommand(t *testing.T) {
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"user", "bans", "delete", "fpv_pilot"})
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected error executing 'delete' subcommand on bans, got nil")
+	}
+	if !strings.Contains(err.Error(), "unknown command") {
+		t.Errorf("expected unknown command error for delete, got: %v", err)
+	}
+}
+
+func TestCLI_UserBans_TargetMustFollowOperation(t *testing.T) {
+	cmd := newRootCmd()
+	var outBuf bytes.Buffer
+	cmd.SetOut(&outBuf)
+	cmd.SetArgs([]string{"user", "bans", "fpv_pilot", "create"})
+	err := cmd.Execute()
+	if err == nil {
+		t.Fatal("expected error executing 'user bans fpv_pilot create' (reversed order), got nil")
+	}
+	if !strings.Contains(err.Error(), "unknown command") {
+		t.Errorf("expected unknown command error for 'fpv_pilot', got: %v", err)
 	}
 }

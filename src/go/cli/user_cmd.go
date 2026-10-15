@@ -5,9 +5,9 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"regexp"
 	"strconv"
 	"strings"
-	"text/tabwriter"
 	"time"
 
 	"connectrpc.com/connect"
@@ -46,428 +46,353 @@ func initUserCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 		banNotes      string
 		banExpiresIn  string
 		banPermanent  bool
+		banRevoke     bool
 		banActiveOnly bool
 		banLimit      int32
-		banJSON       bool
 		banYAML       bool
 	)
 
-	runGet := func(cmd *cobra.Command, target string) error {
-		target = strings.TrimSpace(target)
-		if target == "" {
-			return errors.New("target username or uuid required")
-		}
-
-		ctx := context.Background()
-		res, err := userClient.GetUserBanStatus(ctx, connect.NewRequest(&pb.GetUserBanStatusRequest{
-			UserId: target,
-		}))
-		if err != nil {
-			return err
-		}
-
-		if banJSON {
-			m := protojson.MarshalOptions{Indent: "  ", EmitUnpopulated: false}
-			data, err := m.Marshal(res.Msg)
-			if err != nil {
-				return err
-			}
-			fmt.Fprintln(cmd.OutOrStdout(), string(data))
-			return nil
-		}
-
-		if banYAML {
-			m := protojson.MarshalOptions{EmitUnpopulated: false}
-			data, err := m.Marshal(res.Msg)
-			if err != nil {
-				return err
-			}
-			y, err := yaml.JSONToYAML(data)
-			if err != nil {
-				return err
-			}
-			fmt.Fprint(cmd.OutOrStdout(), string(y))
-			return nil
-		}
-
-		if !res.Msg.IsBanned || res.Msg.ActiveBan == nil {
-			fmt.Fprintf(cmd.OutOrStdout(), "User @%s is not currently banned.\n", target)
-			return nil
-		}
-
-		b := res.Msg.ActiveBan
-		w := tabwriter.NewWriter(cmd.OutOrStdout(), 0, 0, 2, ' ', 0)
-		fmt.Fprintf(w, "BAN ID:\t%s\n", b.Uuid)
-		fmt.Fprintf(w, "USER UUID:\t%s\n", b.UserUuid)
-		fmt.Fprintf(w, "REASON:\t%s\n", b.Reason)
-		if b.InternalNotes != "" {
-			fmt.Fprintf(w, "NOTES:\t%s\n", b.InternalNotes)
-		}
-		if b.CreatedAt != nil {
-			fmt.Fprintf(w, "ENACTED:\t%s\n", time.Unix(b.CreatedAt.Seconds, 0).Format(time.RFC3339))
-		}
-		if b.ExpiresAt != nil {
-			fmt.Fprintf(w, "EXPIRES:\t%s\n", time.Unix(b.ExpiresAt.Seconds, 0).Format(time.RFC3339))
-			fmt.Fprintf(w, "TYPE:\tTemporary\n")
-		} else {
-			fmt.Fprintf(w, "EXPIRES:\tNever\n")
-			fmt.Fprintf(w, "TYPE:\tPermanent\n")
-		}
-		if b.BannedByUserUuid != "" {
-			fmt.Fprintf(w, "BANNED BY:\t%s\n", b.BannedByUserUuid)
-		}
-		return w.Flush()
-	}
-
-	runList := func(cmd *cobra.Command, target string) error {
-		target = strings.TrimSpace(target)
-		var userFilter *string
-		if target != "" {
-			userFilter = &target
-		}
-
-		ctx := context.Background()
-		res, err := userClient.ListBans(ctx, connect.NewRequest(&pb.ListBansRequest{
-			UserId:     userFilter,
-			ActiveOnly: banActiveOnly,
-			PageSize:   banLimit,
-		}))
-		if err != nil {
-			return err
-		}
-
-		if banJSON {
-			m := protojson.MarshalOptions{Indent: "  ", EmitUnpopulated: false}
-			data, err := m.Marshal(res.Msg)
-			if err != nil {
-				return err
-			}
-			fmt.Fprintln(cmd.OutOrStdout(), string(data))
-			return nil
-		}
-
-		if banYAML {
-			m := protojson.MarshalOptions{EmitUnpopulated: false}
-			data, err := m.Marshal(res.Msg)
-			if err != nil {
-				return err
-			}
-			y, err := yaml.JSONToYAML(data)
-			if err != nil {
-				return err
-			}
-			fmt.Fprint(cmd.OutOrStdout(), string(y))
-			return nil
-		}
-
-		if len(res.Msg.Bans) == 0 {
-			if target != "" {
-				fmt.Fprintf(cmd.OutOrStdout(), "No ban records found for user @%s.\n", target)
-			} else {
-				fmt.Fprintln(cmd.OutOrStdout(), "No ban records found.")
-			}
-			return nil
-		}
-
-		w := tabwriter.NewWriter(cmd.OutOrStdout(), 0, 0, 2, ' ', 0)
-		fmt.Fprintln(w, "ID\tUSER\tSTATUS\tREASON\tENACTED\tEXPIRES")
-		for _, b := range res.Msg.Bans {
-			status := "ACTIVE"
-			if b.RevokedAt != nil {
-				status = "REVOKED"
-			} else if b.ExpiresAt != nil && time.Unix(b.ExpiresAt.Seconds, 0).Before(time.Now()) {
-				status = "EXPIRED"
-			}
-
-			enacted := "recent"
-			if b.CreatedAt != nil {
-				enacted = time.Unix(b.CreatedAt.Seconds, 0).Format("2006-01-02")
-			}
-
-			expires := "permanent"
-			if b.ExpiresAt != nil {
-				expires = time.Unix(b.ExpiresAt.Seconds, 0).Format("2006-01-02")
-			}
-
-			reason := b.Reason
-			if len(reason) > 30 {
-				reason = reason[:27] + "..."
-			}
-
-			fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%s\n", b.Uuid, b.UserUuid, status, reason, enacted, expires)
-		}
-		return w.Flush()
-	}
-
-	runCreate := func(cmd *cobra.Command, target string) error {
-		target = strings.TrimSpace(target)
-		if target == "" {
-			return errors.New("target username or uuid required")
-		}
-		if strings.TrimSpace(banReason) == "" {
-			return errors.New("--reason is required")
-		}
-
-		var expiresAt *timestamppb.Timestamp
-		if strings.TrimSpace(banExpiresIn) != "" {
-			dur, err := parseDurationOrDays(banExpiresIn)
-			if err != nil {
-				return fmt.Errorf("invalid --expires-in value: %w", err)
-			}
-			expiresAt = timestamppb.New(time.Now().Add(dur))
-		}
-
-		ctx := context.Background()
-		res, err := userClient.BanUser(ctx, connect.NewRequest(&pb.BanUserRequest{
-			UserId:        target,
-			Reason:        banReason,
-			InternalNotes: banNotes,
-			ExpiresAt:     expiresAt,
-		}))
-		if err != nil {
-			return err
-		}
-
-		if banJSON {
-			m := protojson.MarshalOptions{Indent: "  ", EmitUnpopulated: false}
-			data, err := m.Marshal(res.Msg)
-			if err != nil {
-				return err
-			}
-			fmt.Fprintln(cmd.OutOrStdout(), string(data))
-			return nil
-		}
-
-		fmt.Fprintf(cmd.OutOrStdout(), "✓ %s (Ban ID: %s)\n", res.Msg.Message, res.Msg.Ban.Uuid)
-		return nil
-	}
-
-	runUpdate := func(cmd *cobra.Command, target string) error {
-		target = strings.TrimSpace(target)
-		if target == "" {
-			return errors.New("target username or uuid required")
-		}
-
-		var reasonPtr *string
-		if strings.TrimSpace(banReason) != "" {
-			r := strings.TrimSpace(banReason)
-			reasonPtr = &r
-		}
-
-		var notesPtr *string
-		if strings.TrimSpace(banNotes) != "" {
-			n := strings.TrimSpace(banNotes)
-			notesPtr = &n
-		}
-
-		var expiresAt *timestamppb.Timestamp
-		if strings.TrimSpace(banExpiresIn) != "" {
-			dur, err := parseDurationOrDays(banExpiresIn)
-			if err != nil {
-				return fmt.Errorf("invalid --expires-in value: %w", err)
-			}
-			expiresAt = timestamppb.New(time.Now().Add(dur))
-		}
-
-		ctx := context.Background()
-		res, err := userClient.UpdateBan(ctx, connect.NewRequest(&pb.UpdateBanRequest{
-			UserId:         target,
-			Reason:         reasonPtr,
-			InternalNotes:  notesPtr,
-			ExpiresAt:      expiresAt,
-			ClearExpiresAt: banPermanent,
-		}))
-		if err != nil {
-			return err
-		}
-
-		if banJSON {
-			m := protojson.MarshalOptions{Indent: "  ", EmitUnpopulated: false}
-			data, err := m.Marshal(res.Msg)
-			if err != nil {
-				return err
-			}
-			fmt.Fprintln(cmd.OutOrStdout(), string(data))
-			return nil
-		}
-
-		fmt.Fprintf(cmd.OutOrStdout(), "✓ %s (Ban ID: %s)\n", res.Msg.Message, res.Msg.Ban.Uuid)
-		return nil
-	}
-
-	runDelete := func(cmd *cobra.Command, target string) error {
-		target = strings.TrimSpace(target)
-		if target == "" {
-			return errors.New("target username or uuid required")
-		}
-
-		reason := strings.TrimSpace(banReason)
-		if reason == "" {
-			reason = "Ban revoked by administrator"
-		}
-
-		ctx := context.Background()
-		res, err := userClient.UnbanUser(ctx, connect.NewRequest(&pb.UnbanUserRequest{
-			UserId:       target,
-			RevokeReason: reason,
-		}))
-		if err != nil {
-			return err
-		}
-
-		if banJSON {
-			m := protojson.MarshalOptions{Indent: "  ", EmitUnpopulated: false}
-			data, err := m.Marshal(res.Msg)
-			if err != nil {
-				return err
-			}
-			fmt.Fprintln(cmd.OutOrStdout(), string(data))
-			return nil
-		}
-
-		fmt.Fprintf(cmd.OutOrStdout(), "✓ %s (Ban ID: %s)\n", res.Msg.Message, res.Msg.Ban.Uuid)
-		return nil
-	}
-
-	bansCmd := &cobra.Command{
-		Use:     "bans <username|uuid> [get|list|create|update|delete]",
-		Aliases: []string{"ban"},
-		Short:   "Manage user bans and account restrictions",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			if len(args) == 0 {
-				return cmd.Help()
-			}
-
-			first := strings.TrimSpace(args[0])
-			switch strings.ToLower(first) {
-			case "get":
-				target := ""
-				if len(args) > 1 {
-					target = args[1]
-				}
-				return runGet(cmd, target)
-			case "list":
-				target := ""
-				if len(args) > 1 {
-					target = args[1]
-				}
-				return runList(cmd, target)
-			case "create":
-				target := ""
-				if len(args) > 1 {
-					target = args[1]
-				}
-				return runCreate(cmd, target)
-			case "update":
-				target := ""
-				if len(args) > 1 {
-					target = args[1]
-				}
-				return runUpdate(cmd, target)
-			case "delete":
-				target := ""
-				if len(args) > 1 {
-					target = args[1]
-				}
-				return runDelete(cmd, target)
-			}
-
-			target := first
-			if len(args) == 1 {
-				return runGet(cmd, target)
-			}
-
-			action := strings.ToLower(strings.TrimSpace(args[1]))
-			switch action {
-			case "get":
-				return runGet(cmd, target)
-			case "list":
-				return runList(cmd, target)
-			case "create":
-				return runCreate(cmd, target)
-			case "update":
-				return runUpdate(cmd, target)
-			case "delete":
-				return runDelete(cmd, target)
-			default:
-				return fmt.Errorf("unknown action %q for user %s (valid: get, list, create, update, delete)", action, target)
-			}
-		},
-	}
-
-	bansCmd.PersistentFlags().StringVar(&banReason, "reason", "", "Infraction reason (or revocation reason for delete)")
-	bansCmd.PersistentFlags().StringVar(&banNotes, "notes", "", "Internal administrator moderation notes")
-	bansCmd.PersistentFlags().StringVar(&banExpiresIn, "expires-in", "", "Ban duration (e.g. 24h, 7d, 30d; omit for permanent)")
-	bansCmd.PersistentFlags().BoolVar(&banPermanent, "permanent", false, "Convert ban to permanent (remove expiration on update)")
-	bansCmd.PersistentFlags().BoolVar(&banActiveOnly, "active-only", false, "Filter list to only active bans")
-	bansCmd.PersistentFlags().Int32Var(&banLimit, "limit", 50, "Maximum number of bans to list")
-	bansCmd.PersistentFlags().BoolVar(&banJSON, "json", false, "Output in JSON format")
-	bansCmd.PersistentFlags().BoolVar(&banYAML, "yaml", false, "Output in YAML format")
+	banColumns := []string{"uuid", "user_uuid", "banned_by_user_uuid", "reason", "internal_notes", "expires_at", "created_at", "revoked_at", "revoked_by_user_uuid", "revoke_reason"}
 
 	getCmd := &cobra.Command{
-		Use:   "get [username|uuid]",
+		Use:   "get <username|uuid>",
 		Short: "Get active ban details for a user",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			target := ""
-			if len(args) > 0 {
-				target = args[0]
+			target := strings.TrimSpace(args[0])
+			columns, _ := cmd.Flags().GetStringSlice("column")
+			yamlFlag, _ := cmd.Flags().GetBool("yaml")
+
+			ctx := context.Background()
+			res, err := userClient.GetUserBanStatus(ctx, connect.NewRequest(&pb.GetUserBanStatusRequest{
+				UserId: target,
+			}))
+			if err != nil {
+				return err
 			}
-			return runGet(cmd, target)
+
+			if !res.Msg.IsBanned || res.Msg.ActiveBan == nil {
+				fmt.Fprintf(cmd.OutOrStdout(), "User @%s is not currently banned.\n", target)
+				return nil
+			}
+
+			yamlOut = yamlFlag
+			return printGetOutput(cmd.OutOrStdout(), res.Msg.ActiveBan, columns)
 		},
 	}
-	bansCmd.AddCommand(getCmd)
+	getCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
+	getCmd.Flags().BoolVar(&banYAML, "yaml", false, "Output format as YAML")
+	_ = getCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		selected, _ := cmd.Flags().GetStringSlice("column")
+		selectedMap := make(map[string]bool)
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
+		var filtered []string
+		for _, c := range banColumns {
+			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
+				filtered = append(filtered, c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
 
 	listCmd := &cobra.Command{
 		Use:   "list [username|uuid]",
 		Short: "List ban history for a user (or all system bans)",
+		Args:  cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			target := ""
 			if len(args) > 0 {
-				target = args[0]
+				target = strings.TrimSpace(args[0])
 			}
-			return runList(cmd, target)
+			var userFilter *string
+			if target != "" {
+				userFilter = &target
+			}
+
+			filter, _ := cmd.Flags().GetString("filter")
+			columns, _ := cmd.Flags().GetStringSlice("column")
+			sortOpts, _ := cmd.Flags().GetStringSlice("sort")
+			limit, _ := cmd.Flags().GetInt32("limit")
+			activeOnly, _ := cmd.Flags().GetBool("active-only")
+			yamlFlag, _ := cmd.Flags().GetBool("yaml")
+
+			if limit < 0 {
+				cmd.SilenceUsage = false
+				return fmt.Errorf("limit cannot be negative")
+			}
+
+			pageSize := int32(50)
+			if limit > 0 && limit < pageSize {
+				pageSize = limit
+			}
+
+			ctx := context.Background()
+			var all []*pb.Ban
+			var currentToken string
+			for {
+				req := &pb.ListBansRequest{
+					UserId:     userFilter,
+					ActiveOnly: activeOnly,
+					PageSize:   pageSize,
+					PageToken:  currentToken,
+					Filter:     filter,
+					Sort:       sortOpts,
+					Columns:    columns,
+				}
+				res, err := userClient.ListBans(ctx, connect.NewRequest(req))
+				if err != nil {
+					return err
+				}
+				all = append(all, res.Msg.Bans...)
+				if limit > 0 && int32(len(all)) >= limit {
+					all = all[:limit]
+					break
+				}
+				if res.Msg.NextPageToken == "" {
+					break
+				}
+				currentToken = res.Msg.NextPageToken
+			}
+
+			if len(columns) == 0 {
+				columns = []string{"uuid", "user_uuid", "reason", "created_at", "expires_at"}
+			}
+
+			yamlOut = yamlFlag
+			return printOutput(cmd.OutOrStdout(), all, columns)
 		},
 	}
-	bansCmd.AddCommand(listCmd)
+	listCmd.Flags().StringP("filter", "f", "", "CEL filter string")
+	listCmd.Flags().StringSliceP("column", "c", nil, "Columns to select")
+	listCmd.Flags().StringSliceP("sort", "s", nil, "Columns to sort by (e.g. ^created_at)")
+	listCmd.Flags().Int32VarP(&banLimit, "limit", "l", 50, "Maximum number of bans to list")
+	listCmd.Flags().BoolVar(&banActiveOnly, "active-only", false, "Filter list to only active bans")
+	listCmd.Flags().BoolVar(&banYAML, "yaml", false, "Output in YAML format")
+
+	_ = listCmd.RegisterFlagCompletionFunc("column", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		selected, _ := cmd.Flags().GetStringSlice("column")
+		selectedMap := make(map[string]bool)
+		for _, s := range selected {
+			selectedMap[s] = true
+		}
+		var filtered []string
+		for _, c := range banColumns {
+			if !selectedMap[c] && strings.HasPrefix(c, toComplete) {
+				filtered = append(filtered, c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
+	_ = listCmd.RegisterFlagCompletionFunc("sort", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		selected, _ := cmd.Flags().GetStringSlice("sort")
+		selectedMap := make(map[string]bool)
+		for _, s := range selected {
+			selectedMap[strings.TrimPrefix(s, "^")] = true
+		}
+		isDesc := strings.HasPrefix(toComplete, "^")
+		cleanPrefix := strings.TrimPrefix(toComplete, "^")
+		var filtered []string
+		for _, c := range banColumns {
+			if !selectedMap[c] && strings.HasPrefix(c, cleanPrefix) {
+				if isDesc {
+					filtered = append(filtered, "^"+c)
+				} else {
+					filtered = append(filtered, c)
+					filtered = append(filtered, "^"+c)
+				}
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
+	_ = listCmd.RegisterFlagCompletionFunc("filter", func(cmd *cobra.Command, args []string, toComplete string) ([]string, cobra.ShellCompDirective) {
+		re := regexp.MustCompile(`([a-zA-Z_]+)$`)
+		match := re.FindStringSubmatch(toComplete)
+		prefix := ""
+		base := toComplete
+		if len(match) > 0 {
+			prefix = match[1]
+			base = toComplete[:len(toComplete)-len(prefix)]
+		}
+		var filtered []string
+		for _, c := range banColumns {
+			if len(prefix) == 0 || strings.HasPrefix(c, prefix) {
+				filtered = append(filtered, base+c)
+			}
+		}
+		return filtered, cobra.ShellCompDirectiveNoFileComp
+	})
 
 	createCmd := &cobra.Command{
-		Use:   "create [username|uuid]",
+		Use:   "create <username|uuid>",
 		Short: "Ban a user and suspend all linked email addresses",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			target := ""
-			if len(args) > 0 {
-				target = args[0]
+			target := strings.TrimSpace(args[0])
+			reason, _ := cmd.Flags().GetString("reason")
+			if strings.TrimSpace(reason) == "" {
+				return errors.New("--reason is required")
 			}
-			return runCreate(cmd, target)
+			notes, _ := cmd.Flags().GetString("notes")
+			expiresIn, _ := cmd.Flags().GetString("expires-in")
+			yamlFlag, _ := cmd.Flags().GetBool("yaml")
+
+			var expiresAt *timestamppb.Timestamp
+			if strings.TrimSpace(expiresIn) != "" {
+				dur, err := parseDurationOrDays(expiresIn)
+				if err != nil {
+					return fmt.Errorf("invalid --expires-in value: %w", err)
+				}
+				expiresAt = timestamppb.New(time.Now().Add(dur))
+			}
+
+			ctx := context.Background()
+			res, err := userClient.BanUser(ctx, connect.NewRequest(&pb.BanUserRequest{
+				UserId:        target,
+				Reason:        reason,
+				InternalNotes: notes,
+				ExpiresAt:     expiresAt,
+			}))
+			if err != nil {
+				return err
+			}
+
+			yamlOut = yamlFlag
+			if jsonOut {
+				m := protojson.MarshalOptions{Indent: "  ", EmitUnpopulated: false}
+				data, err := m.Marshal(res.Msg)
+				if err != nil {
+					return err
+				}
+				fmt.Fprintln(cmd.OutOrStdout(), string(data))
+				return nil
+			}
+			if yamlOut {
+				m := protojson.MarshalOptions{EmitUnpopulated: false}
+				data, err := m.Marshal(res.Msg)
+				if err != nil {
+					return err
+				}
+				y, err := yaml.JSONToYAML(data)
+				if err != nil {
+					return err
+				}
+				fmt.Fprint(cmd.OutOrStdout(), string(y))
+				return nil
+			}
+
+			fmt.Fprintf(cmd.OutOrStdout(), "✓ %s (Ban ID: %s)\n", res.Msg.Message, res.Msg.Ban.Uuid)
+			return nil
 		},
 	}
-	bansCmd.AddCommand(createCmd)
+	createCmd.Flags().StringVar(&banReason, "reason", "", "Infraction reason (required)")
+	_ = createCmd.MarkFlagRequired("reason")
+	createCmd.Flags().StringVar(&banNotes, "notes", "", "Internal administrator moderation notes")
+	createCmd.Flags().StringVar(&banExpiresIn, "expires-in", "", "Ban duration (e.g. 24h, 7d, 30d; omit for permanent)")
+	createCmd.Flags().BoolVar(&banYAML, "yaml", false, "Output in YAML format")
 
 	updateCmd := &cobra.Command{
-		Use:   "update [username|uuid]",
+		Use:   "update <username|uuid>",
 		Short: "Update an active ban's duration, reason, or internal notes",
+		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			target := ""
-			if len(args) > 0 {
-				target = args[0]
-			}
-			return runUpdate(cmd, target)
-		},
-	}
-	bansCmd.AddCommand(updateCmd)
+			target := strings.TrimSpace(args[0])
+			reason, _ := cmd.Flags().GetString("reason")
+			notes, _ := cmd.Flags().GetString("notes")
+			expiresIn, _ := cmd.Flags().GetString("expires-in")
+			permanent, _ := cmd.Flags().GetBool("permanent")
+			revoke, _ := cmd.Flags().GetBool("revoke")
+			yamlFlag, _ := cmd.Flags().GetBool("yaml")
 
-	deleteCmd := &cobra.Command{
-		Use:   "delete [username|uuid]",
-		Short: "Unban a user and restore suspended account access",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			target := ""
-			if len(args) > 0 {
-				target = args[0]
+			var reasonPtr *string
+			if strings.TrimSpace(reason) != "" {
+				r := strings.TrimSpace(reason)
+				reasonPtr = &r
 			}
-			return runDelete(cmd, target)
+
+			var notesPtr *string
+			if strings.TrimSpace(notes) != "" {
+				n := strings.TrimSpace(notes)
+				notesPtr = &n
+			}
+
+			var expiresAt *timestamppb.Timestamp
+			if strings.TrimSpace(expiresIn) != "" {
+				dur, err := parseDurationOrDays(expiresIn)
+				if err != nil {
+					return fmt.Errorf("invalid --expires-in value: %w", err)
+				}
+				expiresAt = timestamppb.New(time.Now().Add(dur))
+			}
+
+			var revokePtr *bool
+			if revoke {
+				revokePtr = &revoke
+			}
+
+			ctx := context.Background()
+			res, err := userClient.UpdateBan(ctx, connect.NewRequest(&pb.UpdateBanRequest{
+				UserId:         target,
+				Reason:         reasonPtr,
+				InternalNotes:  notesPtr,
+				ExpiresAt:      expiresAt,
+				ClearExpiresAt: permanent,
+				Revoke:         revokePtr,
+				RevokeReason:   reasonPtr,
+			}))
+			if err != nil {
+				return err
+			}
+
+			yamlOut = yamlFlag
+			if jsonOut {
+				m := protojson.MarshalOptions{Indent: "  ", EmitUnpopulated: false}
+				data, err := m.Marshal(res.Msg)
+				if err != nil {
+					return err
+				}
+				fmt.Fprintln(cmd.OutOrStdout(), string(data))
+				return nil
+			}
+			if yamlOut {
+				m := protojson.MarshalOptions{EmitUnpopulated: false}
+				data, err := m.Marshal(res.Msg)
+				if err != nil {
+					return err
+				}
+				y, err := yaml.JSONToYAML(data)
+				if err != nil {
+					return err
+				}
+				fmt.Fprint(cmd.OutOrStdout(), string(y))
+				return nil
+			}
+
+			fmt.Fprintf(cmd.OutOrStdout(), "✓ %s (Ban ID: %s)\n", res.Msg.Message, res.Msg.Ban.Uuid)
+			return nil
 		},
 	}
-	bansCmd.AddCommand(deleteCmd)
+	updateCmd.Flags().StringVar(&banReason, "reason", "", "Updated infraction reason")
+	updateCmd.Flags().StringVar(&banNotes, "notes", "", "Updated internal administrator moderation notes")
+	updateCmd.Flags().StringVar(&banExpiresIn, "expires-in", "", "Updated ban duration (e.g. 24h, 7d, 30d)")
+	updateCmd.Flags().BoolVar(&banPermanent, "permanent", false, "Convert ban to permanent (remove expiration)")
+	updateCmd.Flags().BoolVar(&banRevoke, "revoke", false, "Revoke/lift the ban immediately")
+	updateCmd.Flags().BoolVar(&banYAML, "yaml", false, "Output in YAML format")
+
+	bansCmd := &cobra.Command{
+		Use:     "bans",
+		Aliases: []string{"ban"},
+		Short:   "Manage user bans and moderation history",
+		Args:    cobra.NoArgs,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return cmd.Help()
+		},
+	}
+	bansCmd.AddCommand(getCmd)
+	bansCmd.AddCommand(listCmd)
+	bansCmd.AddCommand(createCmd)
+	bansCmd.AddCommand(updateCmd)
 
 	userCmd.AddCommand(bansCmd)
 	rootCmd.AddCommand(userCmd)
