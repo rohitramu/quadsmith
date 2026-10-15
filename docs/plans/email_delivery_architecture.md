@@ -393,7 +393,8 @@ When a user unlinks an external OAuth provider (e.g. unlinking GitHub):
      email (`is_primary == true`) or the only email registered to the account,
      the server **strictly rejects** the unlinking request with a
      `FAILED_PRECONDITION` error:
-     `"Cannot unlink this provider because it supplies your primary email. Please designate another verified email as primary before unlinking."`
+     `"Cannot unlink this provider because it supplies your primary email.`
+     `Please designate another verified email as primary before unlinking."`
    - If the email is a secondary address, it is automatically removed from
      `user_emails`.
 

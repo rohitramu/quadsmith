@@ -1287,7 +1287,7 @@ func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[
 		return nil, connect.NewError(connect.CodeResourceExhausted, err)
 	}
 
-	cooldown, err := CheckEmailCooldown(ctx, s.db, email)
+	cooldown, err := CheckEmailCooldown(ctx, s.db, email, s.cfg.EmailCooldown)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -2885,7 +2885,7 @@ func (s *AuthService) SendDeleteAccountVerification(ctx context.Context, req *co
 		return nil, connect.NewError(connect.CodeResourceExhausted, err)
 	}
 
-	cooldown, err := CheckEmailCooldown(ctx, s.db, primaryEmail)
+	cooldown, err := CheckEmailCooldown(ctx, s.db, primaryEmail, s.cfg.EmailCooldown)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -3175,7 +3175,7 @@ func (s *AuthService) SendDataExportVerification(ctx context.Context, req *conne
 		return nil, connect.NewError(connect.CodeResourceExhausted, err)
 	}
 
-	cooldown, err := CheckEmailCooldown(ctx, s.db, primaryEmail)
+	cooldown, err := CheckEmailCooldown(ctx, s.db, primaryEmail, s.cfg.EmailCooldown)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}

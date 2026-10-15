@@ -39,7 +39,7 @@ auth {
     seconds: 900
   }
   email_cooldown {
-    seconds: 20
+    seconds: 1
   }
   email {
     console {

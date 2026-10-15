@@ -93,7 +93,7 @@ build: tidy fmt generate
 	@echo "--- Building Web UI ---"
 	@cd src/react/app-web && npm run build
 
-bin/qsops: $(OPS_CLI_FILES) bin/.generate_proto.sentinel
+bin/qsops: $(OPS_CLI_FILES) bin/.generate_proto.sentinel src/go/vendor/modules.txt
 	@mkdir -p bin
 	@echo "--- Building Operations CLI to bin/qsops ---"
 	@go build -mod=vendor -tags sandbox -o bin/qsops-sandbox ./src/go/cli-ops
@@ -102,7 +102,7 @@ bin/qsops: $(OPS_CLI_FILES) bin/.generate_proto.sentinel
 	@./bin/qsops completion bash > bin/qsops_completion.bash || true
 	@./bin/qsops completion zsh > bin/qsops_completion.zsh || true
 
-bin/qs: $(CLI_FILES) bin/.generate_proto.sentinel
+bin/qs: $(CLI_FILES) bin/.generate_proto.sentinel src/go/vendor/modules.txt
 	@mkdir -p bin
 	@echo "--- Generating and building CLI to bin/qs ---"
 	@cd src/go/cli && go run generate_cli.go && gofmt -s -w main.go
@@ -136,7 +136,11 @@ warn-breaking:
 		echo ""; \
 	fi
 
-$(VENDOR_PLUGINS):
+src/go/vendor/modules.txt: $(shell find src/go -name "go.mod" -o -name "go.sum" 2>/dev/null) src/go/go.work
+	@echo "--- Syncing vendor directory ---"
+	@cd src/go && go work vendor
+
+$(VENDOR_PLUGINS): src/go/vendor/modules.txt
 	@mkdir -p bin
 	@echo "--- Installing protoc plugins from vendor ---"
 	@cd src/go && go build -mod=vendor -o $(CURDIR)/bin/protoc-gen-go google.golang.org/protobuf/cmd/protoc-gen-go
@@ -144,17 +148,17 @@ $(VENDOR_PLUGINS):
 	@cd src/go && go build -mod=vendor -o $(CURDIR)/bin/buf github.com/bufbuild/buf/cmd/buf
 	@cd src/go && go build -mod=vendor -o $(CURDIR)/bin/txtpbfmt github.com/protocolbuffers/txtpbfmt/cmd/txtpbfmt
 
-bin/protoc-gen-sql: $(wildcard src/go/shared/cmd/protoc-gen-sql/*.go)
+bin/protoc-gen-sql: src/go/vendor/modules.txt $(wildcard src/go/shared/cmd/protoc-gen-sql/*.go)
 	@mkdir -p bin
 	@echo "--- Building custom protoc plugin: protoc-gen-sql ---"
 	@go build -mod=vendor -o bin/protoc-gen-sql ./src/go/shared/cmd/protoc-gen-sql
 
-bin/protoc-gen-store: $(wildcard src/go/shared/cmd/protoc-gen-store/*.go)
+bin/protoc-gen-store: src/go/vendor/modules.txt $(wildcard src/go/shared/cmd/protoc-gen-store/*.go)
 	@mkdir -p bin
 	@echo "--- Building custom protoc plugin: protoc-gen-store ---"
 	@go build -mod=vendor -o bin/protoc-gen-store ./src/go/shared/cmd/protoc-gen-store
 
-bin/protoc-gen-server: $(wildcard src/go/shared/cmd/protoc-gen-server/*.go)
+bin/protoc-gen-server: src/go/vendor/modules.txt $(wildcard src/go/shared/cmd/protoc-gen-server/*.go)
 	@mkdir -p bin
 	@echo "--- Building custom protoc plugin: protoc-gen-server ---"
 	@go build -mod=vendor -o bin/protoc-gen-server ./src/go/shared/cmd/protoc-gen-server

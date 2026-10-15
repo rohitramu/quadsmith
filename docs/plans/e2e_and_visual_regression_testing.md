@@ -548,10 +548,14 @@ and CI workflows:
         single job.
      2. `test`: Executes `make ci-test SHARD=${{ matrix.shard }}` in parallel
         across runner nodes using a sharding matrix (`shard: [1/2, 2/2]`).
+   - Both stages synchronize Go workspace vendor dependencies (`go work vendor`)
+     and install frozen web dependencies via `npm ci` prior to execution,
+     ensuring hermetic clean-runner builds without lockfile mutations.
    - Each CI runner node executes a disjoint slice of the 110-test multi-browser
      matrix concurrently, reducing CI wall-clock test execution time by ~50%.
    - On failure, individual shard test reports from `.tmp/playwright-report` are
-     uploaded via `actions/upload-artifact` for immediate debugging.
+     uploaded via `actions/upload-artifact` using sanitized shard identifiers
+     (e.g., `playwright-report-shard-1`) for immediate debugging.
 
 #### <a id="alternatives-considered-makefile-integration" >Alternatives considered</a>
 

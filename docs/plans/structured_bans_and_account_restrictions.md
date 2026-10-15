@@ -134,8 +134,8 @@ CREATE INDEX IF NOT EXISTS idx_bans_created_at ON bans (created_at);
 Key architectural rules:
 
 - **Active Ban Check**: A user is actively banned if and only if there exists a
-  row in `bans` where
-  `user_uuid = $1 AND revoked_at IS NULL AND (expires_at IS NULL OR expires_at > NOW())`.
+  row in `bans` where `user_uuid = $1 AND revoked_at IS NULL` and
+  `(expires_at IS NULL OR expires_at > NOW())`.
 - **Permanent Bans**: Represented cleanly by `expires_at IS NULL`.
 - **Reversibility**: Permanent bans are fully reversible at any time by setting
   `revoked_at = NOW()`, preserving historical audit integrity.
@@ -528,7 +528,7 @@ two dedicated components for suspended accounts:
    - **Privacy Section**: Features self-service data export and voluntary
      account deletion under the concise heading **"Privacy"**.
 
-```
+```text
 +--------------------------------------------------------------------------+
 |  [!] Account Access Restricted                                           |
 |  Your account was suspended on Oct 14, 2026.                             |

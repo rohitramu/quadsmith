@@ -150,11 +150,12 @@ corroboration checks.
       images, UI screenshots, UI concept images, artifacts, or code snippets
       with path references as appropriate), and nested
       `#### <a id="custom-anchor-text" >Alternatives considered</a>` containing
-      1 sub-heading per alternative (`##### <a id="custom-anchor-text"
-      > Alternative
-      > Name</a>`), each with an unbulleted ~2 sentence summary explaining the alternative, an unbulleted`**Pros:**`label, a blank line, a bulleted list of pros compared to the proposal, a blank line, an unbulleted`**Cons:**`
-      > label, a blank line, and a bulleted list of cons compared to the
-      > proposal.
+      1 sub-heading per alternative
+      (`##### <a id="custom-anchor-text" >Alternative Name</a>`), each with an
+      unbulleted ~2 sentence summary explaining the alternative, an unbulleted
+      `**Pros:**` label, a blank line, a bulleted list of pros compared to the
+      proposal, a blank line, an unbulleted `**Cons:**` label, a blank line, and
+      a bulleted list of cons compared to the proposal.
     - **4. Alternatives considered (optional)**: High-level conceptual
       alternatives, containing 1 sub-heading per alternative
       (`### <a id="custom-anchor-text" >Alternative Name</a>`), each with an

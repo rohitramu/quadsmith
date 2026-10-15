@@ -46,10 +46,39 @@ test.describe("Authentication Flows", () => {
       await emailInput.press("Enter");
     }
 
-    // Wait for step 2 (verification code prompt)
-    await expect(
-      page.getByText(/verification code|check your email|enter the code/i),
-    ).toBeVisible({ timeout: 10000 });
+    // In parallel test runs across browser profiles, multiple workers submit pilot@example.com simultaneously.
+    // If rate-limited by email cooldown, wait for cooldown to expire and re-submit.
+    const step2Heading = page.getByRole("heading", { name: /verify your email/i });
+    const cooldownNotice = page.getByText(/please wait \d+ seconds? before requesting another code/i);
+
+    for (let attempt = 0; attempt < 5; attempt++) {
+      if (await step2Heading.isVisible()) {
+        break;
+      }
+      const isCooldown = await cooldownNotice.isVisible({ timeout: 1500 }).catch(() => false);
+      if (isCooldown) {
+        await page.waitForTimeout(1200);
+        await submitBtn.click();
+      } else {
+        const result = await Promise.race([
+          step2Heading.waitFor({ state: "visible", timeout: 2000 }).then(() => "step2").catch(() => null),
+          cooldownNotice.waitFor({ state: "visible", timeout: 2000 }).then(() => "cooldown").catch(() => null),
+        ]);
+        if (result === "step2") {
+          break;
+        }
+        if (result === "cooldown") {
+          await page.waitForTimeout(1200);
+          await submitBtn.click();
+        }
+      }
+    }
+
+    // Wait for step 2 heading and OTP input
+    await expect(step2Heading).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('input[autocomplete="one-time-code"]')).toBeVisible({
+      timeout: 10000,
+    });
 
     await preparePageForSnapshot(page, { theme: "dark" });
 

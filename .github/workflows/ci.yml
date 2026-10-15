@@ -11,12 +11,15 @@ jobs:
     name: Verify Code & Formatting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: "1.27"
+
+      - name: Sync Go Vendor Dependencies
+        run: cd src/go && go work vendor
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -32,7 +35,7 @@ jobs:
         uses: astral-sh/setup-uv@v3
 
       - name: Install Web Dependencies
-        run: npm install
+        run: npm ci
         working-directory: ./src/react
 
       - name: Verify Code Generation
@@ -77,13 +80,21 @@ jobs:
       fail-fast: false
       matrix:
         shard: [1/2, 2/2]
+        include:
+          - shard: 1/2
+            shard_id: 1
+          - shard: 2/2
+            shard_id: 2
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Go
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: "1.27"
+
+      - name: Sync Go Vendor Dependencies
+        run: cd src/go && go work vendor
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -99,7 +110,7 @@ jobs:
         uses: astral-sh/setup-uv@v3
 
       - name: Install Web Dependencies
-        run: npm install
+        run: npm ci
         working-directory: ./src/react
 
       - name: Run Tests (Shard ${{ matrix.shard }})
@@ -107,8 +118,8 @@ jobs:
 
       - name: Upload Playwright Failure Report
         if: failure()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: playwright-report-shard-${{ strategy.job-index }}
+          name: playwright-report-shard-${{ matrix.shard_id }}
           path: .tmp/playwright-report/
           retention-days: 7

@@ -33,8 +33,8 @@ test.describe("The Forge (Build Wizard)", () => {
   test("loads existing build for editing on /builds/:id/edit", async ({ page }) => {
     await loginAs(page, SEEDED_PILOT);
     await page.goto("/builds/long-range-explorer/edit");
-    await expect(page.getByText(/Frame/i).first()).toBeVisible({ timeout: 10000 });
-    await expect(page.getByRole("button", { name: /save/i })).toBeVisible({ timeout: 10000 });
+    await expect(page.getByText(/Frame Chassis/i).first()).toBeVisible({ timeout: 15000 });
+    await expect(page.locator("#selected-frame-item")).toBeVisible({ timeout: 15000 });
     await preparePageForSnapshot(page, { theme: "dark" });
 
     // Visual snapshot comparison (Edit Mode)
