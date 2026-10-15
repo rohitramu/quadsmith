@@ -1,4 +1,4 @@
-.PHONY: all build sandbox generate clean test test-e2e test-ui-e2e update-snapshots vendor tool breaking-change test-breaking warn-breaking
+.PHONY: all build sandbox generate clean test ci-test update-snapshots vendor tool breaking-change test-breaking warn-breaking
 
 export GOWORK := $(shell pwd)/src/go/go.work
 
@@ -181,7 +181,7 @@ bin/.generate_cli.sentinel: $(CLI_FILES) bin/.generate_proto.sentinel
 
 generate: bin/.generate_proto.sentinel bin/.format_sql.sentinel bin/.generate_cli.sentinel
 
-test: generate
+test: generate bin/qs bin/qsops
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 	@echo "--- Running Go Tests ---"
 	@cd src/go/shared && go test -mod=vendor -count=1 ./...
@@ -193,32 +193,25 @@ test: generate
 	@cd src/go/cli-ops && go test -mod=vendor ./...
 	@echo "--- Running Web UI Tests ---"
 	@cd src/react/app-web && npm test
-	@$(MAKE) --no-print-directory test-e2e
+	@echo "--- Running E2E Sandbox Tests (Desktop Chrome & Mobile Chrome) ---"
+	@./test/run_sandbox_tests.sh $(if $(PROJECT),--project $(PROJECT),--project chromium-desktop --project chromium-mobile) $(TOOL_ARGS)
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 
-breaking-change: generate
-	@echo "--- Running Breaking Change Regression Tests ---"
-	@cd src/go/shared && STRICT_BREAKING=1 go test -mod=vendor -v -count=1 ./internal/regression/... ./pkg/schemacheck/...
-
-test-breaking: breaking-change
-
-test-e2e: bin/qs bin/qsops
-	@echo "--- Running E2E Sandbox Tests ---"
-	@./test/run_sandbox_tests.sh
-
-test-ui-e2e:
-	@echo "--- Building Web E2E Container ---"
-	@docker build -t quadsmith-web-e2e -f test/web/Dockerfile .
-	@echo "--- Running Web E2E Tests ---"
-	@mkdir -p .tmp/playwright-report
-	@docker run --rm --ipc=host --network host \
-		-v $(CURDIR)/test/web/snapshots:/app/snapshots \
-		-v $(CURDIR)/.tmp/playwright-report:/app/playwright-report \
-		-e BASE_URL=$${QS_WEB_URL:-http://127.0.0.1:8080} \
-		-e HOST_UID=$$(id -u) \
-		-e HOST_GID=$$(id -g) \
-		$${PLAYWRIGHT_WORKERS:+-e PLAYWRIGHT_WORKERS=$${PLAYWRIGHT_WORKERS}} \
-		quadsmith-web-e2e $(if $(PROJECT),--project $(PROJECT)) $(TOOL_ARGS)
+ci-test: generate bin/qs bin/qsops
+	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
+	@echo "--- Running Go Tests ---"
+	@cd src/go/shared && go test -mod=vendor -count=1 ./...
+	@cd src/go/server-api && go test -mod=vendor -count=1 ./...
+	@cd src/go/server-ops && go test -mod=vendor -count=1 ./...
+	@cd src/go/server-jobs && go test -mod=vendor -count=1 ./...
+	@cd src/go/server-web && go test -mod=vendor -count=1 ./...
+	@cd src/go/cli && go test -mod=vendor ./...
+	@cd src/go/cli-ops && go test -mod=vendor ./...
+	@echo "--- Running Web UI Tests ---"
+	@cd src/react/app-web && npm test
+	@echo "--- Running Full E2E Sandbox Tests (All Browsers & Profiles) ---"
+	@./test/run_sandbox_tests.sh $(TOOL_ARGS)
+	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 
 update-snapshots:
 	@echo "--- Building Web E2E Container ---"

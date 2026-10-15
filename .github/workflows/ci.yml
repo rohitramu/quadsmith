@@ -69,4 +69,4 @@ jobs:
         git diff --exit-code || (echo "Code formatting is out of sync. Please ensure you are running formatters on Python, Go, TypeScript, HTML, CSS, Protobuf, Textproto, and Markdown files." && exit 1)
 
     - name: Run Tests
-      run: make test
+      run: make ci-test

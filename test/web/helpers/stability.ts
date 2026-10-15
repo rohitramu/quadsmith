@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { Page, expect } from "@playwright/test";
 
 export interface StabilityOptions {
   theme?: "light" | "dark";
@@ -23,34 +23,45 @@ export async function preparePageForSnapshot(
     // Clock may already be installed
   }
 
-  // Set theme mode (light or dark)
-  await page.evaluate((targetTheme) => {
-    try {
-      localStorage.setItem("theme", targetTheme);
-      if (targetTheme === "dark") {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
+  const applyTheme = () =>
+    page.evaluate((targetTheme) => {
+      try {
+        localStorage.setItem("theme", targetTheme);
+        if (targetTheme === "dark") {
+          document.documentElement.classList.add("dark");
+        } else {
+          document.documentElement.classList.remove("dark");
+        }
+        window.dispatchEvent(
+          new CustomEvent("qs-theme-change", { detail: targetTheme }),
+        );
+        window.dispatchEvent(
+          new StorageEvent("storage", {
+            key: "theme",
+            newValue: targetTheme,
+            storageArea: localStorage,
+          }),
+        );
+      } catch {
+        // ignore
       }
-      window.dispatchEvent(
-        new CustomEvent("qs-theme-change", { detail: targetTheme }),
-      );
-      window.dispatchEvent(
-        new StorageEvent("storage", {
-          key: "theme",
-          newValue: targetTheme,
-          storageArea: localStorage,
-        }),
-      );
-    } catch {
-      // ignore
-    }
-  }, theme);
+    }, theme);
 
-  if (theme === "dark") {
-    await page.waitForFunction(() => document.documentElement.classList.contains("dark"));
-  } else {
-    await page.waitForFunction(() => !document.documentElement.classList.contains("dark"));
+  await applyTheme();
+
+  try {
+    if (theme === "dark") {
+      await expect(page.locator("html")).toHaveClass(/(^|\s)dark(\s|$)/, { timeout: 2000 });
+    } else {
+      await expect(page.locator("html")).not.toHaveClass(/(^|\s)dark(\s|$)/, { timeout: 2000 });
+    }
+  } catch {
+    await applyTheme();
+    if (theme === "dark") {
+      await expect(page.locator("html")).toHaveClass(/(^|\s)dark(\s|$)/, { timeout: 5000 });
+    } else {
+      await expect(page.locator("html")).not.toHaveClass(/(^|\s)dark(\s|$)/, { timeout: 5000 });
+    }
   }
 
   // Disable CSS animations, keyframes, transitions, and smooth scrolling

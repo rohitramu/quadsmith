@@ -71,10 +71,12 @@ docker build -t quadsmith-web-e2e -f test/web/Dockerfile .
 
 echo "--- Running Web E2E and Visual Regression Tests ---"
 mkdir -p "${ROOT_DIR}/.tmp/playwright-report"
+mkdir -p "${ROOT_DIR}/.tmp/test-results"
 mkdir -p "${ROOT_DIR}/test/web/snapshots"
 docker run --rm --ipc=host --network host \
     -v "${ROOT_DIR}/test/web/snapshots:/app/snapshots" \
     -v "${ROOT_DIR}/.tmp/playwright-report:/app/playwright-report" \
+    -v "${ROOT_DIR}/.tmp/test-results:/app/test-results" \
     -e BASE_URL="${WEB_URL}" \
     -e HOST_UID="$(id -u)" \
     -e HOST_GID="$(id -g)" \

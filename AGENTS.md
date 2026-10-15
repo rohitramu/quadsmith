@@ -229,7 +229,7 @@ corroboration checks.
 
 - **Long-Running Commands & Non-Blocking Execution**:
   - Never execute potentially long-running commands (e.g., full test suites
-    `make test` / `make test-e2e`, Docker container builds, heavy code
+    `make test` / `make ci-test`, Docker container builds, heavy code
     compilation, or benchmark scripts) with large synchronous wait windows that
     risk hanging indefinitely.
   - Always dispatch potentially long-running commands to the background using a

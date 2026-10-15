@@ -68,7 +68,7 @@ and network faults).
 ```mermaid
 flowchart TD
     subgraph Execution Environments
-        LocalSandbox["Local Docker Sandbox (make test-e2e)"]
+        LocalSandbox["Local Docker Sandbox (make test / make ci-test)"]
         Staging["Staging Deployment (staging.quadsmith.com)"]
         Prod["Production Deployment (quadsmith.com)"]
     end
@@ -512,8 +512,8 @@ The testing pipeline integrates cleanly into Quadsmith's established development
 and CI workflows:
 
 1. **Sandbox Test Script (`test/run_sandbox_tests.sh`)**:
-   - When `test/run_sandbox_tests.sh` executes (as part of `make test-e2e` or
-     `make test`), it:
+   - When `test/run_sandbox_tests.sh` executes (as part of `make test` or
+     `make ci-test`), it:
      1. Starts and verifies the health of the Docker sandbox (`db`, `api`,
         `ops`, `jobs`, `web`).
      2. Runs Go sandbox tests (`go test -count=1 -v ./test/...`).
@@ -525,33 +525,29 @@ and CI workflows:
 2. **Targeted Makefile Commands**:
 
    ```makefile
-   # Run full sandbox test suite (Go tests + Playwright UI E2E)
-   test-e2e: bin/qs bin/qsops
-       @./test/run_sandbox_tests.sh
+   # Run unit tests and sandbox E2E tests targeting Chrome Desktop & Chrome Mobile
+   test: generate bin/qs bin/qsops
+       @./test/run_sandbox_tests.sh $(if $(PROJECT),--project $(PROJECT),--project chromium-desktop --project chromium-mobile) $(TOOL_ARGS)
 
-   # Run only Playwright UI tests against an already running sandbox or live server
-   test-ui-e2e:
-       @docker build -t quadsmith-web-e2e -f test/web/Dockerfile .
-       @docker run --rm --network host \
-           -v $(CURDIR)/test/web/snapshots:/app/snapshots \
-           -v $(CURDIR)/.tmp/playwright-report:/app/playwright-report \
-           -e BASE_URL=$${QS_WEB_URL:-http://127.0.0.1:8080} \
-           quadsmith-web-e2e
+   # Run unit tests and full sandbox test suite across all 5 browser profiles
+   ci-test: generate bin/qs bin/qsops
+       @./test/run_sandbox_tests.sh $(TOOL_ARGS)
 
    # Re-baseline golden screenshots after intentional UI changes
    update-snapshots:
        @docker build -t quadsmith-web-e2e -f test/web/Dockerfile .
        @docker run --rm --network host \
            -v $(CURDIR)/test/web/snapshots:/app/snapshots \
+           -v $(CURDIR)/.tmp/playwright-report:/app/playwright-report \
            -e BASE_URL=$${QS_WEB_URL:-http://127.0.0.1:8080} \
            -e UPDATE_SNAPSHOTS=true \
-           quadsmith-web-e2e
+           quadsmith-web-e2e $(if $(PROJECT),--project $(PROJECT)) $(TOOL_ARGS)
    ```
 
 3. **Continuous Integration Pipeline (`.github/workflows/ci.yml`)**:
-   - Because `ci.yml` runs `make test`, and `make test` invokes `test-e2e`, the
-     entire E2E and visual regression suite runs automatically on every pull
-     request and commit to `main`.
+   - `ci.yml` runs `make ci-test`, executing the entire E2E and visual
+     regression suite across all 5 browser profiles on every pull request and
+     commit to `main`.
    - CI failure artifacts from `.tmp/playwright-report` are uploaded using
      `actions/upload-artifact` on test failure for immediate inspection.
 
@@ -559,7 +555,8 @@ and CI workflows:
 
 ##### <a id="separate-make-test-from-test-e2e" >Separate make test from test-e2e</a>
 
-Decoupling `make test-e2e` from `make test`, requiring manual invocation.
+Decoupling full multi-browser tests into a separate command without running any
+E2E in `make test`.
 
 **Pros:**
 
@@ -567,7 +564,7 @@ Decoupling `make test-e2e` from `make test`, requiring manual invocation.
 
 **Cons:**
 
-- Increases the likelihood that developers or CI skip E2E tests, allowing visual
+- Increases the likelihood that developers skip E2E tests, allowing visual
   regressions to land on `main`.
 
 ---

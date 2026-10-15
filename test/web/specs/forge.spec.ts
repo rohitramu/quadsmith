@@ -8,10 +8,9 @@ test.describe("The Forge (Build Wizard)", () => {
   }) => {
     await loginAs(page, SEEDED_PILOT);
     await page.goto("/builds/new");
-    await preparePageForSnapshot(page, { theme: "dark" });
-
     // Step 1: Frame should be active and visible
     await expect(page.getByText(/Frame/i).first()).toBeVisible();
+    await preparePageForSnapshot(page, { theme: "dark" });
 
     // Visual snapshot comparison (Dark Mode)
     await expect(page).toHaveScreenshot("forge-step1-dark.png", {
@@ -22,9 +21,8 @@ test.describe("The Forge (Build Wizard)", () => {
   test("renders The Forge build wizard in light mode", async ({ page }) => {
     await loginAs(page, SEEDED_PILOT);
     await page.goto("/builds/new");
-    await preparePageForSnapshot(page, { theme: "light" });
-
     await expect(page.getByText(/Frame/i).first()).toBeVisible();
+    await preparePageForSnapshot(page, { theme: "light" });
 
     // Visual snapshot comparison (Light Mode)
     await expect(page).toHaveScreenshot("forge-step1-light.png", {

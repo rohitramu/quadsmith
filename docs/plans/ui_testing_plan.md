@@ -73,8 +73,8 @@ flowchart TD
             PW --> PreviewServer
         end
 
-        In-Memory Test Suite --> MakeTest["make test (Enforced in local dev & CI)"]
-        Future E2E Suite --> MakeE2E["make test-e2e (Full Browser Integration)"]
+        In-Memory Test Suite --> MakeTest["make test (Unit tests + Chrome E2E)"]
+        Future E2E Suite --> MakeCI["make ci-test (Full Browser Integration)"]
     end
 ```
 
@@ -193,5 +193,5 @@ testing suite using Playwright is planned:
 - **Visual Regression Testing**: Screenshot comparisons (`toHaveScreenshot()`)
   to detect unintended visual styling or CSS regressions across viewport
   breakpoints and color themes.
-- **Dedicated Target**: Isolated under `make test-e2e` to prevent slowing down
-  daily commit workflows while ensuring thorough pre-release validation.
+- **Dedicated Target**: Isolated under `make ci-test` for full multi-browser
+  validation while `make test` runs targeted Chrome Desktop and Mobile suites.
