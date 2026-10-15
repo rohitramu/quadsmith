@@ -20,6 +20,7 @@ import {
 import { useState } from "react";
 import { getCollectionColor } from "@quadsmith/shared";
 import { CollectionBadge } from "@quadsmith/shared";
+import { UserHoverCard } from "./UserHoverCard";
 
 import type { Build, ComponentMatchDetail } from "@quadsmith/shared/gen/quadsmith/api/build_pb";
 
@@ -148,7 +149,19 @@ export function BuildCard({
                   </span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
-                  <span>@{build.authorUsername || "community"}</span>
+                  {build.authorUsername ? (
+                    <UserHoverCard username={build.authorUsername}>
+                      <Link
+                        to={`/users/${build.authorUsername}`}
+                        className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        @{build.authorUsername}
+                      </Link>
+                    </UserHoverCard>
+                  ) : (
+                    <span>@community</span>
+                  )}
                   <span>•</span>
                   <CollectionBadge collection="builds" label="Build" size="xs" />
                 </div>
@@ -290,12 +303,14 @@ export function BuildCard({
             </Link>
             <div className="flex items-center gap-2 text-xs text-zinc-500 font-mono">
               {build.authorUsername ? (
-                <Link
-                  to={`/users/${build.authorUsername}`}
-                  className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
-                >
-                  @{build.authorUsername}
-                </Link>
+                <UserHoverCard username={build.authorUsername}>
+                  <Link
+                    to={`/users/${build.authorUsername}`}
+                    className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline transition-colors"
+                  >
+                    @{build.authorUsername}
+                  </Link>
+                </UserHoverCard>
               ) : (
                 <span>@community</span>
               )}

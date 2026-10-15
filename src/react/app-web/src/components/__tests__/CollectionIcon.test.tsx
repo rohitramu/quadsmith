@@ -56,4 +56,40 @@ describe("CollectionIcon Component", () => {
     expect(svg).toBeInTheDocument();
     expect(svg).toHaveClass("text-emerald-500");
   });
+
+  it("safely resolves CollectionColorDef objects, hex strings, and boolean colors", () => {
+    // 1. With CollectionColorDef object
+    const colorDef = {
+      id: "frames",
+      hex: "#64748b",
+      name: "Frames",
+      colorName: "slate",
+      badgeClass: "",
+      trimClass: "",
+      dotClass: "",
+      borderTopClass: "",
+      borderLeftClass: "",
+      textClass: "",
+      iconBgClass: "",
+      hoverBorderClass: "",
+    };
+    const { container: c1 } = render(
+      <CollectionIcon collection="frames" size={16} color={colorDef} />,
+    );
+    const svg1 = c1.querySelector("svg");
+    expect(svg1).toHaveStyle({ color: "#64748b" });
+    expect(svg1?.getAttribute("color")).toBe("#64748b");
+
+    // 2. With boolean color={true}
+    const { container: c2 } = render(<CollectionIcon collection="motors" size={16} color={true} />);
+    const svg2 = c2.querySelector("svg");
+    expect(svg2).toHaveStyle({ color: "#ef4444" });
+
+    // 3. With hex string
+    const { container: c3 } = render(
+      <CollectionIcon collection="cameras" size={16} color="#06b6d4" />,
+    );
+    const svg3 = c3.querySelector("svg");
+    expect(svg3).toHaveStyle({ color: "#06b6d4" });
+  });
 });

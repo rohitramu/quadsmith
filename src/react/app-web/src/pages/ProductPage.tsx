@@ -13,6 +13,7 @@ import { useAuth } from "../context/AuthContext";
 import { ComponentFormModal } from "../components/ComponentFormModal";
 import { CollectionBadge } from "@quadsmith/shared";
 import { MediaGallery } from "../components/MediaGallery";
+import { UserHoverCard } from "../components/UserHoverCard";
 import { ReferenceLinksList } from "../components/SocialLinkPreviewCard";
 import { SocialToolbar } from "../components/SocialToolbar";
 import { SocialTabs, type SocialTabType } from "../components/SocialTabs";
@@ -149,12 +150,14 @@ function ProductDetailView({
                     {srvDef?.singularLabel || collection.name}
                   </span>
                   {item.authorUsername && (
-                    <Link
-                      to={`/users/${item.authorUsername}`}
-                      className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 transition-colors"
-                    >
-                      Added by @{item.authorUsername}
-                    </Link>
+                    <UserHoverCard username={item.authorUsername}>
+                      <Link
+                        to={`/users/${item.authorUsername}`}
+                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs font-medium bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-700 border border-zinc-200 dark:border-zinc-700 transition-colors"
+                      >
+                        Added by @{item.authorUsername}
+                      </Link>
+                    </UserHoverCard>
                   )}
                 </div>
                 <h1 className="text-3xl font-bold">{item.name || item.id}</h1>

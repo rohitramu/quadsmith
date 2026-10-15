@@ -20,7 +20,11 @@ import {
   type LucideProps,
 } from "lucide-react";
 
-import { normalizeCollectionKey } from "../lib/collectionColors";
+import {
+  normalizeCollectionKey,
+  getCollectionColor,
+  type CollectionColorDef,
+} from "../lib/collectionColors";
 
 export type IconComponent = FC<LucideProps & SVGProps<SVGSVGElement>>;
 
@@ -201,7 +205,7 @@ export interface CollectionIconProps {
   collectionId?: string | null;
   size?: number;
   className?: string;
-  color?: any;
+  color?: string | boolean | CollectionColorDef | any;
 }
 
 export function CollectionIcon({
@@ -213,12 +217,21 @@ export function CollectionIcon({
   ...props
 }: CollectionIconProps) {
   const Component = getCollectionIconComponent(collection || collectionId);
+  const resolvedColor =
+    color === true
+      ? getCollectionColor(collection || collectionId).hex
+      : typeof color === "object" && color !== null && "hex" in color
+        ? (color.hex as string)
+        : typeof color === "string"
+          ? color
+          : undefined;
+
   return (
     <Component
       size={size}
       className={className}
-      color={color}
-      style={color ? { color } : undefined}
+      color={resolvedColor}
+      style={resolvedColor ? { color: resolvedColor } : undefined}
       aria-hidden="true"
       {...props}
     />

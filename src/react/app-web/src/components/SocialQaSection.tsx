@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useQuery, useMutation } from "@connectrpc/connect-query";
+import { UserHoverCard } from "./UserHoverCard";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   listQuestions,
@@ -347,9 +349,20 @@ export function SocialQaSection({
                       <span className="text-xs text-zinc-400">•</span>
                       <span className="text-xs text-zinc-500 dark:text-zinc-400">
                         Asked by{" "}
-                        <span className="font-medium text-zinc-800 dark:text-zinc-200">
-                          @{q.authorUsername || "User"}
-                        </span>
+                        {q.authorUsername ? (
+                          <UserHoverCard username={q.authorUsername}>
+                            <Link
+                              to={`/users/${q.authorUsername}`}
+                              className="font-medium text-zinc-800 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
+                            >
+                              @{q.authorUsername}
+                            </Link>
+                          </UserHoverCard>
+                        ) : (
+                          <span className="font-medium text-zinc-800 dark:text-zinc-200">
+                            @User
+                          </span>
+                        )}
                       </span>
                       <span className="text-[11px] text-zinc-400">
                         {formatRelativeDate(q.createdAt?.seconds)}
@@ -381,9 +394,21 @@ export function SocialQaSection({
                           <div key={c.uuid} className="flex items-start gap-2">
                             <span className="text-zinc-400 font-mono">↳</span>
                             <div className="flex-1">
-                              <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-                                @{c.authorUsername}:{" "}
-                              </span>
+                              {c.authorUsername ? (
+                                <UserHoverCard username={c.authorUsername}>
+                                  <Link
+                                    to={`/users/${c.authorUsername}`}
+                                    className="font-semibold text-zinc-800 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
+                                  >
+                                    @{c.authorUsername}
+                                  </Link>
+                                </UserHoverCard>
+                              ) : (
+                                <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                                  @User
+                                </span>
+                              )}
+                              <span>: </span>
                               <span>{c.body}</span>
                               <span className="text-[10px] text-zinc-400 ml-1.5">
                                 • {formatRelativeDate(c.createdAt?.seconds)}
@@ -634,9 +659,18 @@ function QuestionAnswersList({
 
               <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
                 Answered by{" "}
-                <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-                  @{ans.authorUsername || "User"}
-                </span>{" "}
+                {ans.authorUsername ? (
+                  <UserHoverCard username={ans.authorUsername}>
+                    <Link
+                      to={`/users/${ans.authorUsername}`}
+                      className="font-semibold text-zinc-800 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
+                    >
+                      @{ans.authorUsername}
+                    </Link>
+                  </UserHoverCard>
+                ) : (
+                  <span className="font-semibold text-zinc-800 dark:text-zinc-200">@User</span>
+                )}{" "}
                 • {formatRelativeDate(ans.createdAt?.seconds)}
               </div>
             </div>
@@ -685,9 +719,19 @@ function QuestionAnswersList({
               <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800/80 text-xs text-zinc-600 dark:text-zinc-400 pl-4 space-y-1">
                 {comments.map((c) => (
                   <p key={c.uuid}>
-                    <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-                      @{c.authorUsername}:{" "}
-                    </span>
+                    {c.authorUsername ? (
+                      <UserHoverCard username={c.authorUsername}>
+                        <Link
+                          to={`/users/${c.authorUsername}`}
+                          className="font-semibold text-zinc-800 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
+                        >
+                          @{c.authorUsername}
+                        </Link>
+                      </UserHoverCard>
+                    ) : (
+                      <span className="font-semibold text-zinc-800 dark:text-zinc-200">@User</span>
+                    )}
+                    <span>: </span>
                     <span>{c.body}</span>
                     <span className="text-[10px] text-zinc-400 ml-1.5">
                       • {formatRelativeDate(c.createdAt?.seconds)}

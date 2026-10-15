@@ -11,6 +11,7 @@ import {
 } from "@quadsmith/shared/gen/quadsmith/api/social-SocialService_connectquery";
 import type { CollectionItem } from "@quadsmith/shared/gen/quadsmith/api/social_pb";
 import { useAuth } from "../context/AuthContext";
+import { UserHoverCard } from "../components/UserHoverCard";
 import {
   Bookmark,
   Heart,
@@ -196,7 +197,20 @@ export function UserCollectionsPage() {
                 )}
               </div>
               <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
-                Curated by @{singleCol.authorUsername} • {items.length} items
+                Curated by{" "}
+                {singleCol.authorUsername ? (
+                  <UserHoverCard username={singleCol.authorUsername}>
+                    <Link
+                      to={`/users/${singleCol.authorUsername}`}
+                      className="font-medium text-zinc-700 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
+                    >
+                      @{singleCol.authorUsername}
+                    </Link>
+                  </UserHoverCard>
+                ) : (
+                  <span>@community</span>
+                )}{" "}
+                • {items.length} items
               </p>
             </div>
           </div>

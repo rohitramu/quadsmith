@@ -31,6 +31,7 @@ import { getCollectionColor } from "@quadsmith/shared";
 import { CollectionBadge } from "@quadsmith/shared";
 import { ReferenceLinksList } from "../components/SocialLinkPreviewCard";
 import { ProductHoverCard } from "../components/ProductHoverCard";
+import { UserHoverCard } from "../components/UserHoverCard";
 import { BatteryCombobox } from "../components/BatteryCombobox";
 import { SocialToolbar } from "../components/SocialToolbar";
 import { SocialTabs, type SocialTabType } from "../components/SocialTabs";
@@ -518,12 +519,14 @@ export function BuildProfilePage() {
         {build.authorUsername && (
           <div className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
             Created by{" "}
-            <Link
-              to={`/users/${build.authorUsername}`}
-              className="font-medium text-zinc-700 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
-            >
-              @{build.authorUsername}
-            </Link>
+            <UserHoverCard username={build.authorUsername}>
+              <Link
+                to={`/users/${build.authorUsername}`}
+                className="font-medium text-zinc-700 dark:text-zinc-300 hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
+              >
+                @{build.authorUsername}
+              </Link>
+            </UserHoverCard>
           </div>
         )}
         {build.description && (
