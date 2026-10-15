@@ -23,20 +23,18 @@ import (
 
 func resolveSeedPath(t *testing.T) string {
 	t.Helper()
-	// Relative from test/api/
-	p := filepath.Join("..", "seed_data", "motors.textproto")
-	if _, err := os.Stat(p); err == nil {
-		return p
+	candidates := []string{
+		filepath.Join("..", "sandbox", "db", "seed_data", "motors.textproto"),
+		filepath.Join("sandbox", "db", "seed_data", "motors.textproto"),
+		filepath.Join("test", "sandbox", "db", "seed_data", "motors.textproto"),
+		filepath.Join("..", "seed_data", "motors.textproto"),
+		filepath.Join("seed_data", "motors.textproto"),
+		filepath.Join("test", "seed_data", "motors.textproto"),
 	}
-	// Relative from test/
-	p = filepath.Join("seed_data", "motors.textproto")
-	if _, err := os.Stat(p); err == nil {
-		return p
-	}
-	// Relative from root
-	p = filepath.Join("test", "seed_data", "motors.textproto")
-	if _, err := os.Stat(p); err == nil {
-		return p
+	for _, p := range candidates {
+		if _, err := os.Stat(p); err == nil {
+			return p
+		}
 	}
 	t.Fatalf("Failed to resolve motors.textproto path")
 	return ""

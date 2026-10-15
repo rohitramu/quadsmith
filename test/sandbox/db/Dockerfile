@@ -27,17 +27,17 @@ ENV PGDATA=/var/lib/postgresql/pgdata
 WORKDIR /app
 
 COPY --from=builder /app/bin/seeder /app/seeder
-COPY src/go/db/quadsmith_api.sql /app/src/go/db/quadsmith_api.sql
-COPY src/go/db/quadsmith_ops.sql /app/src/go/db/quadsmith_ops.sql
-COPY test/seed_data /app/test/seed_data
+COPY src/db/quadsmith_api.sql /app/src/db/quadsmith_api.sql
+COPY src/db/quadsmith_ops.sql /app/src/db/quadsmith_ops.sql
+COPY test/sandbox/db/seed_data /app/test/sandbox/db/seed_data
 COPY src/go/server-api/config /app/src/go/server-api/config
 
 RUN docker-entrypoint.sh postgres & \
     pid=$! && \
     until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 0.1; done && \
     psql -U postgres -c "CREATE DATABASE quadsmith_ops;" && \
-    psql -U postgres -d quadsmith_api < /app/src/go/db/quadsmith_api.sql && \
-    psql -U postgres -d quadsmith_ops < /app/src/go/db/quadsmith_ops.sql && \
+    psql -U postgres -d quadsmith_api < /app/src/db/quadsmith_api.sql && \
+    psql -U postgres -d quadsmith_ops < /app/src/db/quadsmith_ops.sql && \
     /app/seeder --config /app/src/go/server-api/config/sandbox.textproto && \
     gosu postgres pg_ctl -D "$PGDATA" -m fast -w stop && \
     wait $pid

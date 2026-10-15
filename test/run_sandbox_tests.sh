@@ -24,7 +24,7 @@ is_sandbox_ready() {
 
 cleanup() {
     echo "--- Stopping test sandbox containers ---"
-    docker compose -f test/docker-compose.yml down -v >/dev/null 2>&1 || true
+    docker compose -f test/sandbox/docker-compose.yaml down -v >/dev/null 2>&1 || true
 }
 trap cleanup EXIT INT TERM
 
@@ -32,10 +32,10 @@ echo "--- Stopping any existing sandbox instance ---"
 cleanup
 
 echo "--- Building Sandbox Container Images ---"
-docker compose -f test/docker-compose.yml build
+docker compose -f test/sandbox/docker-compose.yaml build
 
 echo "--- Starting fresh Sandbox containers on port ${PORT} (Ops: ${OPS_PORT}, Web: ${WEB_PORT}, DB: ${DB_PORT}) ---"
-docker compose -f test/docker-compose.yml up -d
+docker compose -f test/sandbox/docker-compose.yaml up -d
 
 echo "--- Waiting for Sandbox to become healthy ---"
 MAX_RETRIES=40
@@ -46,7 +46,7 @@ until is_sandbox_ready; do
     if [ "$COUNT" -ge "$MAX_RETRIES" ]; then
         echo "Error: Sandbox failed to become ready after $((MAX_RETRIES / 5)) seconds."
         echo "=== Container logs ==="
-        docker compose -f test/docker-compose.yml logs | tail -n 50
+        docker compose -f test/sandbox/docker-compose.yaml logs | tail -n 50
         exit 1
     fi
 done

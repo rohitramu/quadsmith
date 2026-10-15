@@ -23,7 +23,7 @@ endif
 MODULES        := src/go/shared src/go/server-api src/go/server-ops src/go/server-jobs src/go/server-web src/go/cli src/go/cli-ops test src/go/build_deps
 VENDOR_PLUGINS := bin/protoc-gen-go bin/protoc-gen-connect-go bin/buf bin/txtpbfmt
 CUSTOM_PLUGINS := bin/protoc-gen-sql bin/protoc-gen-store bin/protoc-gen-server
-PROTO_FILES    := $(shell find proto -type f 2>/dev/null)
+PROTO_FILES    := $(shell find src/proto -type f 2>/dev/null)
 CLI_FILES      := $(shell find src/go/cli -name "*.go" -not -name "*_test.go" 2>/dev/null)
 OPS_CLI_FILES  := $(shell find src/go/cli-ops -name "*.go" -not -name "*_test.go" 2>/dev/null)
 
@@ -54,7 +54,7 @@ fmt: $(VENDOR_PLUGINS)
 	@npx --prefix src/react/app-web prettier --ignore-path .prettierignore --write "**/*.md" >/dev/null 2>&1 || true
 	@npx --prefix src/react/app-web markdownlint -c .markdownlint.json --ignore-path .markdownlintignore --fix "**/*.md" >/dev/null 2>&1 || true
 	@echo "--- Formatting Protobuf with buf ---"
-	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf format -w
+	@cd src/proto && PATH="$(shell pwd)/bin:$$PATH" buf format -w
 	@echo "--- Formatting textproto files with txtpbfmt ---"
 	@find src test -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
 
@@ -118,8 +118,8 @@ sandbox: generate bin/qs bin/qsops
 
 db-migrate: generate
 	@echo "--- Applying Database Schemas with psqldef ---"
-	@psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_api < src/go/db/quadsmith_api.sql
-	@psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_ops < src/go/db/quadsmith_ops.sql
+	@psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_api < src/db/quadsmith_api.sql
+	@psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_ops < src/db/quadsmith_ops.sql
 
 warn-breaking:
 	@if [ ! -s .tmp/breaking_warning.log ]; then \
@@ -162,15 +162,15 @@ bin/protoc-gen-server: $(wildcard src/go/shared/cmd/protoc-gen-server/*.go)
 bin/.generate_proto.sentinel: $(PROTO_FILES) $(VENDOR_PLUGINS) $(CUSTOM_PLUGINS)
 	@mkdir -p bin
 	@echo "--- Generating Protobuf & ConnectRPC Code ---"
-	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf format -w
-	@cd proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
+	@cd src/proto && PATH="$(shell pwd)/bin:$$PATH" buf format -w
+	@cd src/proto && PATH="$(shell pwd)/bin:$$PATH" buf generate
 	@gofmt -s -w src/go/shared/gen/
 	@npx --prefix src/react/app-web prettier --write "src/react/shared/src/gen/**/*.{ts,tsx}" || true
 	@touch bin/.generate_proto.sentinel
 
-bin/.format_sql.sentinel: $(wildcard src/go/db/*.sql) .sql-formatter.json
+bin/.format_sql.sentinel: $(wildcard src/db/*.sql) .sql-formatter.json
 	@mkdir -p bin
-	@for f in src/go/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$$f"; done
+	@for f in src/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$$f"; done
 	@touch bin/.format_sql.sentinel
 
 bin/.generate_cli.sentinel: $(CLI_FILES) bin/.generate_proto.sentinel

@@ -10,6 +10,8 @@ import (
 func TestParseSQL_QuadsmithSchema(t *testing.T) {
 	// Find quadsmith.sql relative to repo
 	possiblePaths := []string{
+		"../../../../src/db/quadsmith_api.sql",
+		"src/db/quadsmith_api.sql",
 		"../../../db/quadsmith_api.sql",
 		"../../../../src/go/db/quadsmith_api.sql",
 		"src/go/db/quadsmith_api.sql",

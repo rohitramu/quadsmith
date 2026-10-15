@@ -12,10 +12,10 @@ export OPS_PORT="${OPS_PORT:-8081}"
 export WEB_PORT="${WEB_PORT:-3001}"
 
 echo "--- Stopping any existing sandbox instance ---"
-docker compose -f test/docker-compose.yml down -v >/dev/null 2>&1 || true
+docker compose -f test/sandbox/docker-compose.yaml down -v >/dev/null 2>&1 || true
 
 echo "--- Building Sandbox Container Images ---"
-docker compose -f test/docker-compose.yml build
+docker compose -f test/sandbox/docker-compose.yaml build
 
 echo "--- Starting Quadsmith Sandbox (API: $PORT, Ops: $OPS_PORT, Web: $WEB_PORT, DB: $DB_PORT) ---"
-docker compose -f test/docker-compose.yml up
+docker compose -f test/sandbox/docker-compose.yaml up

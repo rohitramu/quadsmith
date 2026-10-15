@@ -75,9 +75,15 @@ func main() {
 
 	fmt.Println("Seeding Database from textproto...")
 
-	dir := "test/seed_data/"
+	dir := "test/sandbox/db/seed_data/"
 	if _, err := os.Stat(dir); os.IsNotExist(err) {
-		for _, fallback := range []string{"../../test/seed_data/", "../../../test/seed_data/"} {
+		for _, fallback := range []string{
+			"../../test/sandbox/db/seed_data/",
+			"../../../test/sandbox/db/seed_data/",
+			"test/seed_data/",
+			"../../test/seed_data/",
+			"../../../test/seed_data/",
+		} {
 			if _, err := os.Stat(fallback); err == nil {
 				dir = fallback
 				break

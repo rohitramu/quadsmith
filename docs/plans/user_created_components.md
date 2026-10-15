@@ -24,7 +24,7 @@ In Quadsmith, physical drone hardware specifications, pilot gear, and companion
 firmware profiles are cataloged across 20 distinct relational tables and served
 via dedicated ConnectRPC services. Currently, component data is read-only for
 regular users, populated exclusively via pre-compiled
-[seed textprotos](../../test/seed_data) and maintenance commands.
+[seed textprotos](../../test/sandbox/db/seed_data) and maintenance commands.
 
 Furthermore, investigation of the current architecture reveals an underlying
 data desynchronization flaw between the domain tables (such as

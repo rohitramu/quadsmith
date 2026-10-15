@@ -172,13 +172,13 @@ corroboration checks.
 
 ## Database & Schema Maintenance
 
-- Whenever `backend/db/quadsmith.sql` (or any `<database>.sql`) is modified,
-  update `backend/db/quadsmith.mermaid` (or `<database>.mermaid`) to match,
-  ensuring no existing entities or relationships (such as `Build` links) are
-  dropped or abbreviated.
+- Whenever `src/db/<database>.sql` (or any `<database>.sql`) is modified, update
+  `src/db/<database>.mermaid` (or `<database>.mermaid`) to match, ensuring no
+  existing entities or relationships (such as `Build` links) are dropped or
+  abbreviated.
 - The local Postgres database is managed declaratively via `psqldef` (from the
   `sqldef` project). We maintain a single desired state per database in
-  `backend/db/<database>.sql` (e.g., `backend/db/quadsmith.sql`) rather than
+  `src/db/<database>.sql` (e.g., `src/db/quadsmith_api.sql`) rather than
   sequential migration files. Never use Prisma commands.
 - Apply schema changes by running `psqldef` against the local database. Ensure
   the `go.work` structure reflects any module changes.

@@ -176,17 +176,21 @@ def process_item(item, session):
 
 
 def collect_items():
+    seed_dir = "../../test/sandbox/db/seed_data"
+    if not os.path.exists(seed_dir):
+        seed_dir = "../../test/seed_data"
+
     files = {
-        "motors": "../../test/seed_data/motors.textproto",
-        "batteries": "../../test/seed_data/batteries.textproto",
-        "frames": "../../test/seed_data/frames.textproto",
-        "escs": "../../test/seed_data/electronic_speed_controllers.textproto",
-        "flight_controllers": "../../test/seed_data/flight_controllers.textproto",
-        "propellers": "../../test/seed_data/propellers.textproto",
-        "receivers": "../../test/seed_data/receivers.textproto",
-        "cameras": "../../test/seed_data/cameras.textproto",
-        "video_transmitters": "../../test/seed_data/video_transmitters.textproto",
-        "antennas": "../../test/seed_data/antennas.textproto",
+        "motors": os.path.join(seed_dir, "motors.textproto"),
+        "batteries": os.path.join(seed_dir, "batteries.textproto"),
+        "frames": os.path.join(seed_dir, "frames.textproto"),
+        "escs": os.path.join(seed_dir, "electronic_speed_controllers.textproto"),
+        "flight_controllers": os.path.join(seed_dir, "flight_controllers.textproto"),
+        "propellers": os.path.join(seed_dir, "propellers.textproto"),
+        "receivers": os.path.join(seed_dir, "receivers.textproto"),
+        "cameras": os.path.join(seed_dir, "cameras.textproto"),
+        "video_transmitters": os.path.join(seed_dir, "video_transmitters.textproto"),
+        "antennas": os.path.join(seed_dir, "antennas.textproto"),
     }
 
     items = []

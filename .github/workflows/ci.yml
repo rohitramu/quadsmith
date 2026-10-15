@@ -46,7 +46,7 @@ jobs:
         find . -name "*.go" -not -path "*/vendor/*" -exec gofmt -s -w {} +
         
         # Format Protobuf
-        cd proto && ../bin/buf format -w && cd ..
+        cd src/proto && ../../bin/buf format -w && cd ../..
 
         # Format Textproto
         find src test -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
@@ -63,7 +63,7 @@ jobs:
         uvx ruff format tools/
         
         # Format SQL
-        for f in src/go/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$f"; done
+        for f in src/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$f"; done
         
         # Ensure that no files were modified by the formatters
         git diff --exit-code || (echo "Code formatting is out of sync. Please ensure you are running formatters on Python, Go, TypeScript, HTML, CSS, Protobuf, Textproto, and Markdown files." && exit 1)

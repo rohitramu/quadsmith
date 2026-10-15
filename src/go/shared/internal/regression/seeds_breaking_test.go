@@ -19,7 +19,10 @@ func TestSeeds_UnmarshalWithoutErrors(t *testing.T) {
 		t.Fatalf("Failed to initialize GitHelper: %v", err)
 	}
 
-	seedsDir := filepath.Join(gh.RepoRoot, "test/seed_data")
+	seedsDir := filepath.Join(gh.RepoRoot, "test/sandbox/db/seed_data")
+	if _, err := os.Stat(seedsDir); os.IsNotExist(err) {
+		seedsDir = filepath.Join(gh.RepoRoot, "test/seed_data")
+	}
 
 	tests := []struct {
 		filename  string

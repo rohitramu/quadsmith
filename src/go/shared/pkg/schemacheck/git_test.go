@@ -36,15 +36,18 @@ func TestGitHelper(t *testing.T) {
 	}
 
 	// Test reading schema from the resolved baseRef
-	content, err := gh.GetFileAtRef(baseRef, "src/go/db/quadsmith_api.sql")
+	content, err := gh.GetFileAtRef(baseRef, "src/db/quadsmith_api.sql")
 	if err != nil {
-		content, err = gh.GetFileAtRef(baseRef, "src/backend/db/quadsmith_api.sql")
+		content, err = gh.GetFileAtRef(baseRef, "src/go/db/quadsmith_api.sql")
 		if err != nil {
-			content, err = gh.GetFileAtRef(baseRef, "src/backend/db/quadsmith.sql")
+			content, err = gh.GetFileAtRef(baseRef, "src/backend/db/quadsmith_api.sql")
 			if err != nil {
-				content, err = gh.GetFileAtRef(baseRef, "src/backend/db/schema.sql")
+				content, err = gh.GetFileAtRef(baseRef, "src/backend/db/quadsmith.sql")
 				if err != nil {
-					t.Fatalf("Failed to read schema at base ref %s: %v", baseRef, err)
+					content, err = gh.GetFileAtRef(baseRef, "src/backend/db/schema.sql")
+					if err != nil {
+						t.Fatalf("Failed to read schema at base ref %s: %v", baseRef, err)
+					}
 				}
 			}
 		}

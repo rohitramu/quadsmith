@@ -91,6 +91,10 @@ by programming language and framework:
 
 ```text
 src/
+├── db/                                # Canonical PostgreSQL DDL schemas & Mermaid diagrams
+│   ├── quadsmith_api.sql, quadsmith_ops.sql
+│   └── quadsmith_api.mermaid, quadsmith_ops.mermaid
+│
 ├── go/                                # All Go modules, shared libraries, and tooling
 │   ├── go.work                        # Go workspace defining all local modules
 │   ├── shared/                        # Shared Go domain, CEL engine, auth, db, protos
@@ -98,7 +102,7 @@ src/
 │   │   └── go.mod (quadsmith/shared)
 │   ├── server-api/                    # ConnectRPC API server (Go) + Dockerfile
 │   │   ├── main.go, config/
-│   │   ├── server-ops/                # Operations & admin server (Go) + Dockerfile
+│   ├── server-ops/                    # Operations & admin server (Go) + Dockerfile
 │   │   ├── main.go, config/
 │   ├── server-jobs/                   # Scheduled jobs daemon (Go) + Dockerfile
 │   │   ├── main.go, config/
@@ -108,11 +112,12 @@ src/
 │   │   ├── main.go, config/
 │   ├── cli-ops/                       # qsops Go CLI client
 │   │   ├── main.go, config/
-│   ├── db/                            # PostgreSQL DDL schemas & Mermaid diagrams
-│   │   ├── quadsmith_api.sql, quadsmith_ops.sql
-│   │   ├── quadsmith_api.mermaid, quadsmith_ops.mermaid
 │   └── build_deps/                    # Toolchain Go dependencies
 │       └── tools.go, go.mod
+│
+├── proto/                             # Canonical Protobuf schema definitions & buf config
+│   ├── buf.gen.yaml, buf.yaml
+│   └── quadsmith/                     # API, config, common, sql, data protobuf packages
 │
 └── react/                             # All React / TypeScript web applications
     ├── app-web/                       # Primary React 19 SPA (Vite, Tailwind CSS)
@@ -225,11 +230,12 @@ select output images.
 
 Local sandbox development (`make sandbox`) and integration testing
 (`make test-e2e`) will transition to Docker Compose, housed cleanly in
-[`test/docker-compose.yml`](../../test/docker-compose.yml).
+[`test/sandbox/docker-compose.yaml`](../../test/sandbox/docker-compose.yaml).
 
 To overcome the standard 9-second cold database initialization penalty, a
-dedicated test database image ([`test/Dockerfile.db`](../../test/Dockerfile.db))
-will pre-apply SQL DDL schemas and pre-populate catalog data at image build time
+dedicated test database image
+([`test/sandbox/db/Dockerfile`](../../test/sandbox/db/Dockerfile)) will
+pre-apply SQL DDL schemas and pre-populate catalog data at image build time
 using the database seeder binary.
 
 Empirical testing validates that this reduces Compose startup from 9,162 ms to
@@ -244,7 +250,7 @@ Empirical testing validates that this reduces Compose startup from 9,162 ms to
 
 The test harness scripts [`test/start_sandbox.sh`](../../test/start_sandbox.sh)
 and [`test/run_sandbox_tests.sh`](../../test/run_sandbox_tests.sh) will be
-refactored to orchestrate `docker compose -f test/docker-compose.yml`.
+refactored to orchestrate `docker compose -f test/sandbox/docker-compose.yaml`.
 
 #### <a id="alternatives-considered-compose-sandbox" >Alternatives considered</a>
 
@@ -329,8 +335,8 @@ The GitHub Actions workflow in
   `src/react/app-web`.
 - Update all Go module paths from `src/backend/...` and `src/frontend/cli...` to
   `src/go/...`.
-- Update `proto/buf.gen.yaml` output targets to `../src/go/shared/gen` and
-  `../src/go/db`.
+- Update `src/proto/buf.gen.yaml` output targets to `../go/shared/gen`, `../db`,
+  and `../react/shared/src/gen`.
 - Add Prettier and Markdownlint verification steps matching the root
   [`Makefile`](../../Makefile).
 - Ensure `make generate`, `make build`, and `make test` pass hermetically.
