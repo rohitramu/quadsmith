@@ -18,6 +18,7 @@ service BuildService {
   rpc GetBuild(GetBuildRequest) returns (Build);
   rpc ListBuilds(ListBuildsRequest) returns (ListBuildsResponse);
   rpc CreateBuild(CreateBuildRequest) returns (Build);
+  rpc UpdateBuild(UpdateBuildRequest) returns (Build);
   rpc DeleteBuild(DeleteBuildRequest) returns (DeleteBuildResponse);
   rpc ListSimilarBuilds(ListSimilarBuildsRequest) returns (ListSimilarBuildsResponse);
 }
@@ -194,4 +195,8 @@ message ComponentMatchDetail {
   string description = 3;
   double points_awarded = 4;
   double max_points = 5;
+}
+
+message UpdateBuildRequest {
+  Build build = 1;
 }

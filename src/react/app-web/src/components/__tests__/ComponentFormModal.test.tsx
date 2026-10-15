@@ -22,10 +22,10 @@ describe("ComponentFormModal Component", () => {
     expect(screen.getByRole("heading", { name: /add new motor/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/manufacturer \*/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/model name \*/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/id slug/i)).toBeInTheDocument();
+    expect(screen.queryByLabelText(/id slug/i)).not.toBeInTheDocument();
   });
 
-  it("pre-populates form in edit mode and disables immutable id slug", () => {
+  it("pre-populates form in edit mode", () => {
     const mockMotor = {
       uuid: "01925b42-1234-789a-b456-abcdef012345",
       id: "tmotor-f80-pro-1900kv",
@@ -53,8 +53,45 @@ describe("ComponentFormModal Component", () => {
     expect(screen.getByRole("heading", { name: /edit motor/i })).toBeInTheDocument();
     expect(screen.getByDisplayValue("T-Motor")).toBeInTheDocument();
     expect(screen.getByDisplayValue("F80 Pro")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("tmotor-f80-pro-1900kv")).toBeDisabled();
     expect(screen.getByDisplayValue("High torque racing motor")).toBeInTheDocument();
+    expect(screen.queryByLabelText(/id slug/i)).not.toBeInTheDocument();
+  });
+
+  it("pre-populates form in clone / create similar mode with all editable specs", () => {
+    const mockMotor = {
+      uuid: "01925b42-1234-789a-b456-abcdef012345",
+      id: "tmotor-f80-pro-1900kv",
+      manufacturer: "T-Motor",
+      name: "F80 Pro",
+      description: "High torque racing motor",
+      kv: 1900,
+      statorDiameterMm: 24,
+      statorHeightMm: 8,
+      minVoltage: 16.8,
+      maxVoltage: 25.2,
+      maxCurrentA: 55,
+      weightG: 41.2,
+    };
+
+    renderWithProviders(
+      <ComponentFormModal
+        isOpen={true}
+        onClose={vi.fn()}
+        collectionId="motors"
+        initialData={mockMotor}
+        isClone={true}
+      />,
+    );
+
+    expect(screen.getByRole("heading", { name: /create similar motor/i })).toBeInTheDocument();
+    const mfgInput = screen.getByDisplayValue("T-Motor");
+    const nameInput = screen.getByDisplayValue("F80 Pro");
+    const kvInput = screen.getByDisplayValue("1900");
+    expect(mfgInput).toBeEnabled();
+    expect(nameInput).toBeEnabled();
+    expect(kvInput).toBeEnabled();
+    expect(screen.queryByLabelText(/id slug/i)).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /create motor/i })).toBeInTheDocument();
   });
 
   it("allows adding and removing reference links", async () => {

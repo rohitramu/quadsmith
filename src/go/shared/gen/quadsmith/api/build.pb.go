@@ -766,6 +766,50 @@ func (x *ComponentMatchDetail) GetMaxPoints() float64 {
 	return 0
 }
 
+type UpdateBuildRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Build         *Build                 `protobuf:"bytes,1,opt,name=build,proto3" json:"build,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateBuildRequest) Reset() {
+	*x = UpdateBuildRequest{}
+	mi := &file_quadsmith_api_build_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateBuildRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateBuildRequest) ProtoMessage() {}
+
+func (x *UpdateBuildRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_build_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateBuildRequest.ProtoReflect.Descriptor instead.
+func (*UpdateBuildRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *UpdateBuildRequest) GetBuild() *Build {
+	if x != nil {
+		return x.Build
+	}
+	return nil
+}
+
 var File_quadsmith_api_build_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_build_proto_rawDesc = "" +
@@ -848,12 +892,15 @@ const file_quadsmith_api_build_proto_rawDesc = "" +
 	"\vdescription\x18\x03 \x01(\tR\vdescription\x12%\n" +
 	"\x0epoints_awarded\x18\x04 \x01(\x01R\rpointsAwarded\x12\x1d\n" +
 	"\n" +
-	"max_points\x18\x05 \x01(\x01R\tmaxPoints2\xa9\x03\n" +
+	"max_points\x18\x05 \x01(\x01R\tmaxPoints\"@\n" +
+	"\x12UpdateBuildRequest\x12*\n" +
+	"\x05build\x18\x01 \x01(\v2\x14.quadsmith.api.BuildR\x05build2\xf1\x03\n" +
 	"\fBuildService\x12@\n" +
 	"\bGetBuild\x12\x1e.quadsmith.api.GetBuildRequest\x1a\x14.quadsmith.api.Build\x12Q\n" +
 	"\n" +
 	"ListBuilds\x12 .quadsmith.api.ListBuildsRequest\x1a!.quadsmith.api.ListBuildsResponse\x12F\n" +
-	"\vCreateBuild\x12!.quadsmith.api.CreateBuildRequest\x1a\x14.quadsmith.api.Build\x12T\n" +
+	"\vCreateBuild\x12!.quadsmith.api.CreateBuildRequest\x1a\x14.quadsmith.api.Build\x12F\n" +
+	"\vUpdateBuild\x12!.quadsmith.api.UpdateBuildRequest\x1a\x14.quadsmith.api.Build\x12T\n" +
 	"\vDeleteBuild\x12!.quadsmith.api.DeleteBuildRequest\x1a\".quadsmith.api.DeleteBuildResponse\x12f\n" +
 	"\x11ListSimilarBuilds\x12'.quadsmith.api.ListSimilarBuildsRequest\x1a(.quadsmith.api.ListSimilarBuildsResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
@@ -869,7 +916,7 @@ func file_quadsmith_api_build_proto_rawDescGZIP() []byte {
 	return file_quadsmith_api_build_proto_rawDescData
 }
 
-var file_quadsmith_api_build_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_quadsmith_api_build_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_quadsmith_api_build_proto_goTypes = []any{
 	(*Build)(nil),                     // 0: quadsmith.api.Build
 	(*CreateBuildRequest)(nil),        // 1: quadsmith.api.CreateBuildRequest
@@ -882,32 +929,36 @@ var file_quadsmith_api_build_proto_goTypes = []any{
 	(*ListSimilarBuildsResponse)(nil), // 8: quadsmith.api.ListSimilarBuildsResponse
 	(*SimilarBuild)(nil),              // 9: quadsmith.api.SimilarBuild
 	(*ComponentMatchDetail)(nil),      // 10: quadsmith.api.ComponentMatchDetail
-	(*ReferenceLink)(nil),             // 11: quadsmith.api.ReferenceLink
-	(*Media)(nil),                     // 12: quadsmith.api.Media
+	(*UpdateBuildRequest)(nil),        // 11: quadsmith.api.UpdateBuildRequest
+	(*ReferenceLink)(nil),             // 12: quadsmith.api.ReferenceLink
+	(*Media)(nil),                     // 13: quadsmith.api.Media
 }
 var file_quadsmith_api_build_proto_depIdxs = []int32{
-	11, // 0: quadsmith.api.Build.reference_links:type_name -> quadsmith.api.ReferenceLink
-	12, // 1: quadsmith.api.Build.media:type_name -> quadsmith.api.Media
+	12, // 0: quadsmith.api.Build.reference_links:type_name -> quadsmith.api.ReferenceLink
+	13, // 1: quadsmith.api.Build.media:type_name -> quadsmith.api.Media
 	0,  // 2: quadsmith.api.CreateBuildRequest.build:type_name -> quadsmith.api.Build
 	0,  // 3: quadsmith.api.ListBuildsResponse.builds:type_name -> quadsmith.api.Build
 	9,  // 4: quadsmith.api.ListSimilarBuildsResponse.similar_builds:type_name -> quadsmith.api.SimilarBuild
 	0,  // 5: quadsmith.api.SimilarBuild.build:type_name -> quadsmith.api.Build
 	10, // 6: quadsmith.api.SimilarBuild.match_details:type_name -> quadsmith.api.ComponentMatchDetail
-	4,  // 7: quadsmith.api.BuildService.GetBuild:input_type -> quadsmith.api.GetBuildRequest
-	5,  // 8: quadsmith.api.BuildService.ListBuilds:input_type -> quadsmith.api.ListBuildsRequest
-	1,  // 9: quadsmith.api.BuildService.CreateBuild:input_type -> quadsmith.api.CreateBuildRequest
-	2,  // 10: quadsmith.api.BuildService.DeleteBuild:input_type -> quadsmith.api.DeleteBuildRequest
-	7,  // 11: quadsmith.api.BuildService.ListSimilarBuilds:input_type -> quadsmith.api.ListSimilarBuildsRequest
-	0,  // 12: quadsmith.api.BuildService.GetBuild:output_type -> quadsmith.api.Build
-	6,  // 13: quadsmith.api.BuildService.ListBuilds:output_type -> quadsmith.api.ListBuildsResponse
-	0,  // 14: quadsmith.api.BuildService.CreateBuild:output_type -> quadsmith.api.Build
-	3,  // 15: quadsmith.api.BuildService.DeleteBuild:output_type -> quadsmith.api.DeleteBuildResponse
-	8,  // 16: quadsmith.api.BuildService.ListSimilarBuilds:output_type -> quadsmith.api.ListSimilarBuildsResponse
-	12, // [12:17] is the sub-list for method output_type
-	7,  // [7:12] is the sub-list for method input_type
-	7,  // [7:7] is the sub-list for extension type_name
-	7,  // [7:7] is the sub-list for extension extendee
-	0,  // [0:7] is the sub-list for field type_name
+	0,  // 7: quadsmith.api.UpdateBuildRequest.build:type_name -> quadsmith.api.Build
+	4,  // 8: quadsmith.api.BuildService.GetBuild:input_type -> quadsmith.api.GetBuildRequest
+	5,  // 9: quadsmith.api.BuildService.ListBuilds:input_type -> quadsmith.api.ListBuildsRequest
+	1,  // 10: quadsmith.api.BuildService.CreateBuild:input_type -> quadsmith.api.CreateBuildRequest
+	11, // 11: quadsmith.api.BuildService.UpdateBuild:input_type -> quadsmith.api.UpdateBuildRequest
+	2,  // 12: quadsmith.api.BuildService.DeleteBuild:input_type -> quadsmith.api.DeleteBuildRequest
+	7,  // 13: quadsmith.api.BuildService.ListSimilarBuilds:input_type -> quadsmith.api.ListSimilarBuildsRequest
+	0,  // 14: quadsmith.api.BuildService.GetBuild:output_type -> quadsmith.api.Build
+	6,  // 15: quadsmith.api.BuildService.ListBuilds:output_type -> quadsmith.api.ListBuildsResponse
+	0,  // 16: quadsmith.api.BuildService.CreateBuild:output_type -> quadsmith.api.Build
+	0,  // 17: quadsmith.api.BuildService.UpdateBuild:output_type -> quadsmith.api.Build
+	3,  // 18: quadsmith.api.BuildService.DeleteBuild:output_type -> quadsmith.api.DeleteBuildResponse
+	8,  // 19: quadsmith.api.BuildService.ListSimilarBuilds:output_type -> quadsmith.api.ListSimilarBuildsResponse
+	14, // [14:20] is the sub-list for method output_type
+	8,  // [8:14] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_build_proto_init() }
@@ -924,7 +975,7 @@ func file_quadsmith_api_build_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_build_proto_rawDesc), len(file_quadsmith_api_build_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

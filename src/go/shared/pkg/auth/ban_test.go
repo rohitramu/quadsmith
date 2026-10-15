@@ -45,6 +45,7 @@ func TestAllowedBannedProcedures(t *testing.T) {
 		apiconnect.SocialServiceCreateQuestionProcedure,
 		apiconnect.SocialServiceCreateAnswerProcedure,
 		apiconnect.BuildServiceCreateBuildProcedure,
+		apiconnect.BuildServiceUpdateBuildProcedure,
 		apiconnect.BuildServiceDeleteBuildProcedure,
 		apiconnect.UserServiceBanUserProcedure,
 		apiconnect.UserServiceUnbanUserProcedure,

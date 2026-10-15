@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import { useQuery, useMutation } from "@connectrpc/connect-query";
 import { useQueryClient } from "@tanstack/react-query";
-import { ChevronRight, Edit, Trash2, AlertTriangle, Loader2 } from "lucide-react";
+import { ChevronRight, Edit, Trash2, AlertTriangle, Loader2, Copy } from "lucide-react";
 import {
   getHardwareCollection,
   getCollectionPath,
@@ -41,6 +41,7 @@ function ProductDetailView({
   );
 
   const [activeSocialTab, setActiveSocialTab] = useState<SocialTabType>("reviews");
+  const [isCreateSimilarOpen, setIsCreateSimilarOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -166,26 +167,36 @@ function ProductDetailView({
                 </p>
               </div>
 
-              {isCreator && (
-                <div className="flex items-center gap-2 shrink-0">
-                  <button
-                    type="button"
-                    onClick={() => setIsEditOpen(true)}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-medium transition-colors cursor-pointer"
-                  >
-                    <Edit size={14} className="text-zinc-500" />
-                    <span>Edit Component</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setIsDeleteConfirmOpen(true)}
-                    className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-medium transition-colors cursor-pointer"
-                  >
-                    <Trash2 size={14} />
-                    <span>Delete</span>
-                  </button>
-                </div>
-              )}
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setIsCreateSimilarOpen(true)}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-medium transition-colors cursor-pointer"
+                >
+                  <Copy size={14} className="text-zinc-500" />
+                  <span>Create Similar</span>
+                </button>
+                {isCreator && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => setIsEditOpen(true)}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-medium transition-colors cursor-pointer"
+                    >
+                      <Edit size={14} className="text-zinc-500" />
+                      <span>Edit Component</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setIsDeleteConfirmOpen(true)}
+                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-red-200 dark:border-red-900/50 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/30 text-xs font-medium transition-colors cursor-pointer"
+                    >
+                      <Trash2 size={14} />
+                      <span>Delete</span>
+                    </button>
+                  </>
+                )}
+              </div>
             </div>
 
             <div className="mt-4">
@@ -280,6 +291,22 @@ function ProductDetailView({
             entityName={item.name || item.id}
             activeTab={activeSocialTab}
             onTabChange={setActiveSocialTab}
+          />
+
+          {/* Create Similar Component Modal */}
+          <ComponentFormModal
+            isOpen={isCreateSimilarOpen}
+            onClose={() => setIsCreateSimilarOpen(false)}
+            collectionId={collection.id}
+            initialData={item}
+            isClone={true}
+            onSuccess={(newItem) => {
+              if (newItem?.id || newItem?.uuid) {
+                navigate(
+                  `/components/${categoryId}/${collection.id}/${newItem.id || newItem.uuid}`,
+                );
+              }
+            }}
           />
 
           {/* Edit Component Modal */}

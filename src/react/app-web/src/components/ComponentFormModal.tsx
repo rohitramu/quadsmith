@@ -10,6 +10,7 @@ export interface ComponentFormModalProps {
   onClose: () => void;
   collectionId: string;
   initialData?: any;
+  isClone?: boolean;
   onSuccess?: (item: any) => void;
 }
 
@@ -50,6 +51,7 @@ export function ComponentFormModal({
   onClose,
   collectionId,
   initialData,
+  isClone,
   onSuccess,
 }: ComponentFormModalProps) {
   const queryClient = useQueryClient();
@@ -58,12 +60,11 @@ export function ComponentFormModal({
   const colDef = useMemo(() => getComponentCollection(collectionId), [collectionId]);
   const srvDef = useMemo(() => getComponentServiceDef(collectionId), [collectionId]);
 
-  const isEditing = Boolean(initialData?.id || initialData?.uuid);
+  const isEditing = Boolean((initialData?.id || initialData?.uuid) && !isClone);
 
   // Common metadata fields
   const [manufacturer, setManufacturer] = useState("");
   const [name, setName] = useState("");
-  const [idSlug, setIdSlug] = useState("");
   const [description, setDescription] = useState("");
   const [primaryDisplayImage, setPrimaryDisplayImage] = useState("");
   const [referenceLinks, setReferenceLinks] = useState<{ label: string; url: string }[]>([]);
@@ -112,7 +113,6 @@ export function ComponentFormModal({
     if (initialData) {
       setManufacturer(initialData.manufacturer || "");
       setName(initialData.name || "");
-      setIdSlug(initialData.id || "");
       setDescription(initialData.description || "");
       setPrimaryDisplayImage(initialData.primaryDisplayImage || "");
       setReferenceLinks(
@@ -136,7 +136,6 @@ export function ComponentFormModal({
     } else {
       setManufacturer("");
       setName("");
-      setIdSlug("");
       setDescription("");
       setPrimaryDisplayImage("");
       setReferenceLinks([]);
@@ -247,10 +246,10 @@ export function ComponentFormModal({
         ...specValues,
       };
 
-      if (idSlug.trim()) {
-        payload.id = idSlug.trim();
+      if (isEditing && initialData?.id) {
+        payload.id = initialData.id;
       }
-      if (initialData?.uuid) {
+      if (isEditing && initialData?.uuid) {
         payload.uuid = initialData.uuid;
       }
 
@@ -304,10 +303,16 @@ export function ComponentFormModal({
             </div>
             <div>
               <h2 id="component-form-modal-title" className="text-lg font-bold tracking-tight">
-                {isEditing ? `Edit ${singularLabel}` : `Add New ${singularLabel}`}
+                {isClone
+                  ? `Create Similar ${singularLabel}`
+                  : isEditing
+                    ? `Edit ${singularLabel}`
+                    : `Add New ${singularLabel}`}
               </h2>
               <p className="text-xs text-zinc-500">
-                Enter technical specifications to catalog this component.
+                {isClone
+                  ? `Create a new ${singularLabel.toLowerCase()} pre-filled with technical specifications.`
+                  : "Enter technical specifications to catalog this component."}
               </p>
             </div>
           </div>
@@ -371,28 +376,6 @@ export function ComponentFormModal({
                     className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-red-500 focus:outline-none text-xs"
                   />
                 </div>
-              </div>
-
-              <div>
-                <label
-                  htmlFor="input-id-slug"
-                  className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1"
-                >
-                  ID Slug {isEditing ? "(Immutable)" : "(Auto-generated if empty)"}
-                </label>
-                <input
-                  id="input-id-slug"
-                  type="text"
-                  disabled={isEditing}
-                  value={idSlug}
-                  onChange={(e) => setIdSlug(e.target.value)}
-                  placeholder="e.g. tmotor-f80-pro-1900kv"
-                  className={`w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 font-mono text-xs ${
-                    isEditing
-                      ? "bg-zinc-100 dark:bg-zinc-800/80 text-zinc-400 cursor-not-allowed"
-                      : "bg-zinc-50 dark:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-red-500 focus:outline-none"
-                  }`}
-                />
               </div>
 
               <div>
@@ -608,7 +591,11 @@ export function ComponentFormModal({
                 className="inline-flex items-center gap-1.5 px-5 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
               >
                 {isSubmitting && <Loader2 size={14} className="animate-spin" />}
-                {isEditing ? "Update Component" : "Save Component"}
+                {isClone
+                  ? `Create ${singularLabel}`
+                  : isEditing
+                    ? "Update Component"
+                    : "Save Component"}
               </button>
             </div>
           </div>

@@ -38,6 +38,7 @@ export function ReviewStep() {
     setIsPrivate,
     isSaving,
     saveError,
+    editingBuildId,
     handleSaveBuild,
     handlePrevStep,
   } = useForge();
@@ -396,7 +397,9 @@ export function ReviewStep() {
           className="flex items-center gap-2 px-6 py-2.5 rounded-xl font-bold text-xs bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 disabled:cursor-not-allowed text-white transition-all shadow-md cursor-pointer"
         >
           {isSaving ? <Loader2 size={14} className="animate-spin" /> : <Save size={14} />}
-          <span>{isSaving ? "Saving Build..." : "Save & Create Build"}</span>
+          <span>
+            {isSaving ? "Saving Build..." : editingBuildId ? "Save Changes" : "Save & Create Build"}
+          </span>
         </button>
       </div>
     </div>

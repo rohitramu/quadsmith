@@ -16,6 +16,7 @@ import {
   Radio,
   Camera,
   Compass,
+  Copy,
 } from "lucide-react";
 import { useState } from "react";
 import { getCollectionColor } from "@quadsmith/shared";
@@ -469,13 +470,23 @@ export function BuildCard({
             <div className="text-zinc-400 text-xs italic">Evaluating build specs...</div>
           )}
 
-          <Link
-            to={`/builds/${build.id}`}
-            className="flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 group-hover:translate-x-0.5 transition-all"
-          >
-            <span>View Profile</span>
-            <ChevronRight size={14} />
-          </Link>
+          <div className="flex items-center gap-3">
+            <Link
+              to={`/builds/new?from=${build.id || build.uuid}`}
+              className="flex items-center gap-1 text-xs font-semibold text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
+              title="Build similar aircraft starting with these components"
+            >
+              <Copy size={12} />
+              <span>Build Similar</span>
+            </Link>
+            <Link
+              to={`/builds/${build.id}`}
+              className="flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 group-hover:translate-x-0.5 transition-all"
+            >
+              <span>View Profile</span>
+              <ChevronRight size={14} />
+            </Link>
+          </div>
         </div>
       </div>
     </article>

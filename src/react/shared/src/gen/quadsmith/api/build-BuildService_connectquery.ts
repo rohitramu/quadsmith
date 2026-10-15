@@ -20,6 +20,11 @@ export const listBuilds = BuildService.method.listBuilds;
 export const createBuild = BuildService.method.createBuild;
 
 /**
+ * @generated from rpc quadsmith.api.BuildService.UpdateBuild
+ */
+export const updateBuild = BuildService.method.updateBuild;
+
+/**
  * @generated from rpc quadsmith.api.BuildService.DeleteBuild
  */
 export const deleteBuild = BuildService.method.deleteBuild;

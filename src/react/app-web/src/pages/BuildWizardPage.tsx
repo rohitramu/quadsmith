@@ -7,7 +7,6 @@ import {
   AlertTriangle,
   AlertCircle,
   ChevronRight,
-  Sparkles,
   ClipboardCheck,
   Plus,
 } from "lucide-react";
@@ -30,7 +29,6 @@ import {
 } from "../components/forge/ForgeContext";
 
 // Step components
-import { TemplateStep } from "../components/forge/steps/TemplateStep";
 import { FrameStep } from "../components/forge/steps/FrameStep";
 import { FlightControllerStep } from "../components/forge/steps/FlightControllerStep";
 import { ReceiverStep } from "../components/forge/steps/ReceiverStep";
@@ -55,8 +53,6 @@ export {
 };
 
 function BuildWizardContent() {
-  useDocumentMeta({ title: "The Forge | Quadsmith" });
-
   const {
     activeStep,
     setActiveStep,
@@ -65,9 +61,7 @@ function BuildWizardContent() {
     stepConflicts,
     stepBatteryConflicts,
     resetBuild,
-    templateBuilds,
-    selectedTemplateId,
-    isTemplateConfirmed,
+    editingBuildId,
 
     // Selections
     selectedFrame,
@@ -119,6 +113,10 @@ function BuildWizardContent() {
     setSelectedVtxAnt,
     setSelectedGps,
   } = useForge();
+
+  useDocumentMeta({
+    title: editingBuildId ? "Edit Build | The Forge | Quadsmith" : "The Forge | Quadsmith",
+  });
 
   const [isBatteryModalOpen, setIsBatteryModalOpen] = useState(false);
   const [isCustomComponentModalOpen, setIsCustomComponentModalOpen] = useState(false);
@@ -245,23 +243,7 @@ function BuildWizardContent() {
     selectedGps,
   ].filter(Boolean).length;
 
-  const selectedTemplate = templateBuilds?.find((t) => t.id === selectedTemplateId);
-
   const allForgeStepsList = [
-    {
-      step: 0,
-      title: "Template",
-      label: "Template",
-      collectionId: null,
-      item: selectedTemplate
-        ? { name: selectedTemplate.name }
-        : isTemplateConfirmed
-          ? { name: "Start from Scratch" }
-          : null,
-      weightG: 0,
-      omitted: false,
-      count: 1,
-    },
     {
       step: 1,
       title: "Frame",
@@ -435,7 +417,6 @@ function BuildWizardContent() {
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Left Column (8 cols): Active Step Component */}
         <div className="lg:col-span-8">
-          {activeStep === 0 && <TemplateStep />}
           {activeStep === 1 && <FrameStep />}
           {activeStep === 2 && <FlightControllerStep />}
           {activeStep === 3 && <ReceiverStep />}
@@ -541,15 +522,6 @@ function BuildWizardContent() {
                         <div className="w-5 h-5 rounded-md flex items-center justify-center shrink-0">
                           {hasConflict || hasBatteryConflict ? (
                             <AlertTriangle size={14} className="text-amber-500 shrink-0" />
-                          ) : part.step === 0 ? (
-                            <Sparkles
-                              size={14}
-                              className={
-                                isComplete || isTemplateConfirmed
-                                  ? "text-blue-500 shrink-0"
-                                  : "text-zinc-400 dark:text-zinc-500 shrink-0"
-                              }
-                            />
                           ) : part.step === 12 ? (
                             <ClipboardCheck
                               size={14}
@@ -589,9 +561,7 @@ function BuildWizardContent() {
                                       ? "Locked (Omitted)"
                                       : part.omitted
                                         ? "None (Omitted)"
-                                        : part.step === 0
-                                          ? "Baseline"
-                                          : "Not selected")}
+                                        : "Not selected")}
                           </div>
                         </div>
                       </div>
@@ -605,10 +575,6 @@ function BuildWizardContent() {
                         {part.weightG > 0 ? (
                           <span className="font-mono text-zinc-600 dark:text-zinc-400 text-[10px]">
                             {part.weightG.toFixed(1)}g
-                          </span>
-                        ) : part.step === 0 ? (
-                          <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                            {isComplete ? "Done" : "--"}
                           </span>
                         ) : part.step === 12 ? (
                           <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">

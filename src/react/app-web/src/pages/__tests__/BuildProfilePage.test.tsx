@@ -3,6 +3,7 @@ import { screen, waitFor, fireEvent } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
 import { BuildProfilePage } from "../BuildProfilePage";
 import { Route, Routes } from "react-router-dom";
+import { mockBuild1 } from "../../test/mocks/fixtures";
 
 describe("BuildProfilePage Component", () => {
   function renderBuildProfile(buildId: string = "bando-basher-5-inch") {
@@ -448,5 +449,44 @@ describe("BuildProfilePage Component", () => {
     // Right column: 1220 + 8 = 1228px (positioned to the right of the card)
     expect(rightHoverCard.style.left).toBe("1228px");
     expect(rightHoverCard.style.top).toBe("300px");
+  });
+
+  it("renders Build Similar button linking to /builds/new?from=<id>", async () => {
+    renderBuildProfile();
+
+    const buildSimilarLink = await screen.findByRole("link", { name: /build similar/i });
+    expect(buildSimilarLink).toBeInTheDocument();
+    expect(buildSimilarLink).toHaveAttribute("href", "/builds/new?from=bando-basher-5-inch");
+  });
+
+  it("renders Edit Build button when the logged-in user is the creator", async () => {
+    renderWithProviders(
+      <Routes>
+        <Route path="/builds/:buildId" element={<BuildProfilePage />} />
+      </Routes>,
+      {
+        route: "/builds/my-owned-build",
+        transportOptions: {
+          builds: [
+            {
+              ...mockBuild1,
+              id: "my-owned-build",
+              authorUsername: "fpv_pilot",
+            },
+          ],
+        },
+      },
+    );
+
+    const editBuildLink = await screen.findByRole("link", { name: /edit build/i });
+    expect(editBuildLink).toBeInTheDocument();
+    expect(editBuildLink).toHaveAttribute("href", "/builds/my-owned-build/edit");
+  });
+
+  it("does not render Edit Build button when the logged-in user is not the creator", async () => {
+    renderBuildProfile("bando-basher-5-inch");
+
+    await screen.findByRole("heading", { level: 1, name: "Bando Basher 5 inch" });
+    expect(screen.queryByRole("link", { name: /edit build/i })).not.toBeInTheDocument();
   });
 });

@@ -284,6 +284,185 @@ func (s *BuildServiceHandler) CreateBuild(ctx context.Context, req *connect.Requ
 	return connect.NewResponse(b), nil
 }
 
+// UpdateBuild updates an existing build record
+func (s *BuildServiceHandler) UpdateBuild(ctx context.Context, req *connect.Request[UpdateBuildRequest]) (*connect.Response[Build], error) {
+	userCtx := authcontext.UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+	b := req.Msg.GetBuild()
+	if b == nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("build object is required"))
+	}
+
+	lookup := strings.TrimSpace(b.Id)
+	if lookup == "" {
+		lookup = strings.TrimSpace(b.Uuid)
+	}
+	if lookup == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("id or uuid is required for update"))
+	}
+
+	var existingUUID string
+	var existingID string
+	var existingUserUUID *string
+	var authorStr string
+	var isArchived bool
+	err := s.db.QueryRow(ctx, "SELECT uuid::text, id, user_uuid::text, COALESCE(author_or_manufacturer, ''), is_archived FROM entities WHERE collection = 'builds' AND (id = $1 OR uuid::text = $1)", lookup).Scan(&existingUUID, &existingID, &existingUserUUID, &authorStr, &isArchived)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("build not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	if userCtx.Role != "ADMIN" {
+		if existingUserUUID == nil || *existingUserUUID != userCtx.UserUUID {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("you do not have permission to update this build"))
+		}
+	}
+
+	b.Uuid = existingUUID
+	b.Id = existingID
+	b.UserUuid = existingUserUUID
+	if authorStr != "" {
+		b.AuthorUsername = &authorStr
+	}
+
+	if strings.TrimSpace(b.Name) == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("name is required"))
+	}
+	if len(b.Name) > 256 {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("name exceeds maximum length of 256 characters"))
+	}
+
+	if err := ValidateReferenceLinks(b.ReferenceLinks); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	// Translate any foreign key human-readable IDs to UUIDs (per AGENTS.md rule)
+	if b.FrameUuid != "" {
+		if m, err := GetFrame(ctx, s.db, b.FrameUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+			b.FrameUuid = m.Uuid
+		}
+	}
+	if b.MotorUuid != "" {
+		if m, err := GetMotor(ctx, s.db, b.MotorUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+			b.MotorUuid = m.Uuid
+		}
+	}
+	if b.PropellerUuid != "" {
+		if m, err := GetPropeller(ctx, s.db, b.PropellerUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+			b.PropellerUuid = m.Uuid
+		}
+	}
+	if b.FlightControllerUuid != "" {
+		if m, err := GetFlightController(ctx, s.db, b.FlightControllerUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+			b.FlightControllerUuid = m.Uuid
+		}
+	}
+	if b.VideoTransmitterUuid != "" {
+		if m, err := GetVideoTransmitter(ctx, s.db, b.VideoTransmitterUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+			b.VideoTransmitterUuid = m.Uuid
+		}
+	}
+	if b.GpsReceiverUuid != nil && *b.GpsReceiverUuid != "" {
+		if m, err := GetGpsReceiver(ctx, s.db, *b.GpsReceiverUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+			*b.GpsReceiverUuid = m.Uuid
+		}
+	}
+	for i, idOrUuid := range b.ElectronicSpeedControllerUuids {
+		if idOrUuid != "" {
+			if m, err := GetElectronicSpeedController(ctx, s.db, idOrUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+				b.ElectronicSpeedControllerUuids[i] = m.Uuid
+			}
+		}
+	}
+	for i, idOrUuid := range b.ReceiverUuids {
+		if idOrUuid != "" {
+			if m, err := GetReceiver(ctx, s.db, idOrUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+				b.ReceiverUuids[i] = m.Uuid
+			}
+		}
+	}
+	for i, idOrUuid := range b.AntennaUuids {
+		if idOrUuid != "" {
+			if m, err := GetAntenna(ctx, s.db, idOrUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+				b.AntennaUuids[i] = m.Uuid
+			}
+		}
+	}
+	for i, idOrUuid := range b.CameraUuids {
+		if idOrUuid != "" {
+			if m, err := GetCamera(ctx, s.db, idOrUuid, []string{"uuid"}); err == nil && m != nil && m.Uuid != "" {
+				b.CameraUuids[i] = m.Uuid
+			}
+		}
+	}
+
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	defer tx.Rollback(ctx)
+
+	var refLinksJSON, mediaJSON []byte
+	if len(b.ReferenceLinks) > 0 {
+		refLinksJSON, _ = json.Marshal(b.ReferenceLinks)
+	}
+	if len(b.Media) > 0 {
+		mediaJSON, _ = json.Marshal(b.Media)
+	}
+	_, err = tx.Exec(ctx, `
+		UPDATE entities
+		SET name = $1, description = $2, primary_display_image = $3, reference_links = $4, media = $5, updated_at = NOW()
+		WHERE uuid = $6
+	`, b.Name, b.Description, b.PrimaryDisplayImage, refLinksJSON, mediaJSON, b.Uuid)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update entity: %w", err))
+	}
+
+	if err := UpdateBuild(ctx, tx, b); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update build: %w", err))
+	}
+
+	if _, err := tx.Exec(ctx, "DELETE FROM blob_references WHERE entity_type = 'build' AND entity_uuid = $1", b.Uuid); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to clear old blob references: %w", err))
+	}
+
+	var blobURLs []string
+	if b.PrimaryDisplayImage != nil && *b.PrimaryDisplayImage != "" {
+		blobURLs = append(blobURLs, *b.PrimaryDisplayImage)
+	}
+	for _, m := range b.Media {
+		if m != nil && m.Url != "" {
+			blobURLs = append(blobURLs, m.Url)
+		}
+	}
+	blobRegex := regexp.MustCompile(`(?i)(?:^|/blobs/)([a-f0-9]{64}|[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12})`)
+	for _, u := range blobURLs {
+		if matches := blobRegex.FindStringSubmatch(strings.TrimSpace(u)); len(matches) > 1 {
+			key := strings.ToLower(matches[1])
+			refUUID := authcontext.NewUUIDv7()
+			if _, err := tx.Exec(ctx, `
+				INSERT INTO blob_references (uuid, id, blob_uuid, entity_type, entity_uuid, created_at)
+				SELECT $1::uuid, 'ref-' || $1::text, b.uuid, 'build', $2::uuid, NOW()
+				FROM blobs b
+				WHERE b.id = $3 OR b.uuid::text = $3
+				ON CONFLICT (blob_uuid, entity_type, entity_uuid) DO NOTHING;`,
+				refUUID, b.Uuid, key); err != nil {
+				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to link blob reference: %w", err))
+			}
+		}
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	return connect.NewResponse(b), nil
+}
+
 // DeleteBuild deletes or delists a build record (Steam-style hybrid deletion)
 func (s *BuildServiceHandler) DeleteBuild(ctx context.Context, req *connect.Request[DeleteBuildRequest]) (*connect.Response[DeleteBuildResponse], error) {
 	userCtx := authcontext.UserContextFromContext(ctx)

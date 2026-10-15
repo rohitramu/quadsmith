@@ -42,6 +42,7 @@ export function AppRoutes() {
           <Route path="users/:id/collections/:collectionId" element={<UserCollectionsPage />} />
           <Route path="builds" element={<BuildFeedPage />} />
           <Route path="builds/new" element={<BuildWizardPage />} />
+          <Route path="builds/:buildId/edit" element={<BuildWizardPage />} />
           <Route path="builds/:buildId" element={<BuildProfilePage />} />
           <Route path="components/:categoryId" element={<CategoryPage />} />
           <Route path="components/:categoryId/:collectionId" element={<CollectionPage />} />

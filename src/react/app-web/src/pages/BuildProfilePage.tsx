@@ -36,6 +36,7 @@ import { BatteryCombobox } from "../components/BatteryCombobox";
 import { SocialToolbar } from "../components/SocialToolbar";
 import { SocialTabs, type SocialTabType } from "../components/SocialTabs";
 import { useDocumentMeta } from "@quadsmith/shared";
+import { useAuth } from "../context/AuthContext";
 import {
   ChevronRight,
   Gauge,
@@ -53,6 +54,8 @@ import {
   Minus,
   RefreshCw,
   Search,
+  Copy,
+  Edit,
 } from "lucide-react";
 
 interface BomComponentProps {
@@ -168,11 +171,17 @@ export function BuildProfilePage() {
   const [isBatteryModalOpen, setIsBatteryModalOpen] = useState(false);
   const [activeSocialTab, setActiveSocialTab] = useState<SocialTabType>("reviews");
 
+  const { user, isAuthenticated } = useAuth();
   const {
     data: build,
     isLoading: isLoadingBuild,
     error: buildError,
   } = useQuery(getBuild, { id: buildId || "" }, { enabled: !!buildId });
+
+  const isCreator =
+    isAuthenticated &&
+    user &&
+    (user.uuid === build?.userUuid || user.id === build?.authorUsername || user.role === "ADMIN");
 
   useDocumentMeta({
     title: build ? `${build.name} — FPV Drone Build — Quadsmith` : "Build Profile — Quadsmith",
@@ -513,20 +522,43 @@ export function BuildProfilePage() {
 
       {/* Build Profile Header */}
       <div className="mb-8">
-        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
-          {build.name}
-        </h1>
-        {build.authorUsername && (
-          <div className="mt-2 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
-            <span>Created by</span>
-            <UserBadge username={build.authorUsername} size="sm" />
+        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+              {build.name}
+            </h1>
+            {build.authorUsername && (
+              <div className="mt-2 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
+                <span>Created by</span>
+                <UserBadge username={build.authorUsername} size="sm" />
+              </div>
+            )}
+            {build.description && (
+              <p className="mt-3 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-3xl">
+                {build.description}
+              </p>
+            )}
           </div>
-        )}
-        {build.description && (
-          <p className="mt-3 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-3xl">
-            {build.description}
-          </p>
-        )}
+
+          <div className="flex items-center gap-2 shrink-0">
+            <Link
+              to={`/builds/new?from=${build.id || buildId}`}
+              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-medium transition-colors cursor-pointer"
+            >
+              <Copy size={14} className="text-zinc-500" />
+              <span>Build Similar</span>
+            </Link>
+            {isCreator && (
+              <Link
+                to={`/builds/${build.id || buildId}/edit`}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-medium transition-colors cursor-pointer"
+              >
+                <Edit size={14} className="text-zinc-500" />
+                <span>Edit Build</span>
+              </Link>
+            )}
+          </div>
+        </div>
 
         <div className="mt-4">
           <SocialToolbar

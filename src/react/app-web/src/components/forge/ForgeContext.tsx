@@ -10,7 +10,7 @@ import {
 import { useQuery, useMutation, useTransport } from "@connectrpc/connect-query";
 import { createClient } from "@connectrpc/connect";
 import { create } from "@bufbuild/protobuf";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 // ConnectQuery hooks for component listing
 import { listFrames } from "@quadsmith/shared/gen/quadsmith/api/frame-FrameService_connectquery";
@@ -26,11 +26,15 @@ import { listGpsReceivers } from "@quadsmith/shared/gen/quadsmith/api/gps_receiv
 import { listBatteries } from "@quadsmith/shared/gen/quadsmith/api/battery-BatteryService_connectquery";
 import {
   createBuild,
-  listBuilds,
+  updateBuild,
 } from "@quadsmith/shared/gen/quadsmith/api/build-BuildService_connectquery";
 
 // Protobuf types & services
-import { BuildSchema, type Build } from "@quadsmith/shared/gen/quadsmith/api/build_pb";
+import {
+  BuildSchema,
+  BuildService,
+  type Build,
+} from "@quadsmith/shared/gen/quadsmith/api/build_pb";
 import { FrameService, type Frame } from "@quadsmith/shared/gen/quadsmith/api/frame_pb";
 import { MotorService, type Motor } from "@quadsmith/shared/gen/quadsmith/api/motor_pb";
 import { PropellerService, type Propeller } from "@quadsmith/shared/gen/quadsmith/api/propeller_pb";
@@ -467,14 +471,15 @@ interface ForgeContextType {
   antennas: Antenna[];
   gpsList: GpsReceiver[];
   batteries: Battery[];
-  templateBuilds: Build[];
   isWasmReady: boolean;
 
-  // Baseline / Template (Step 0)
-  selectedTemplateId: string | null;
-  isTemplateConfirmed: boolean;
-  applyTemplate: (template: Build) => Promise<void>;
-  selectNoTemplate: () => void;
+  // Build Edit & Clone State
+  editingBuildId: string | null;
+  editingBuildUuid: string | null;
+  isEditMode: boolean;
+  isBuildSimilarMode: boolean;
+  isHydratingBuild: boolean;
+  hydrateBuildFromRecord: (build: Build, mode: "edit" | "similar") => Promise<void>;
 
   // Selections
   selectedFrame: Frame | null;
@@ -572,11 +577,19 @@ const ForgeContext = createContext<ForgeContextType | null>(null);
 
 export function ForgeProvider({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
+  const { buildId: routeBuildId } = useParams<{ buildId?: string }>();
+  const [searchParams] = useSearchParams();
+  const fromBuildId = searchParams.get("from");
   const transport = useTransport();
   const { isReady: isWasmReady } = useWasmEngine();
 
-  // Active step
-  const [activeStep, setActiveStep] = useState<number>(0);
+  // Active step starts directly at Step 1 (Frame)
+  const [activeStep, setActiveStep] = useState<number>(1);
+
+  // Edit & Similar state
+  const [editingBuildId, setEditingBuildId] = useState<string | null>(null);
+  const [editingBuildUuid, setEditingBuildUuid] = useState<string | null>(null);
+  const [isHydratingBuild, setIsHydratingBuild] = useState<boolean>(false);
 
   // Queries
   const { data: framesData } = useQuery(listFrames, { pageSize: 100 });
@@ -590,7 +603,6 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
   const { data: antennasData } = useQuery(listAntennas, { pageSize: 100 });
   const { data: gpsData } = useQuery(listGpsReceivers, { pageSize: 100 });
   const { data: batteriesData } = useQuery(listBatteries, { pageSize: 100 });
-  const { data: buildsData } = useQuery(listBuilds, { pageSize: 50 });
 
   const [extraFrames, setExtraFrames] = useState<Frame[]>([]);
   const [extraMotors, setExtraMotors] = useState<Motor[]>([]);
@@ -848,11 +860,8 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
     return [...base, ...extras];
   }, [batteriesData, extraBatteries]);
 
-  const templateBuilds = useMemo(() => buildsData?.builds || [], [buildsData]);
-
-  // Step 0 Baseline
-  const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null);
-  const [isTemplateConfirmed, setIsTemplateConfirmed] = useState<boolean>(false);
+  const isEditMode = Boolean(routeBuildId || editingBuildId);
+  const isBuildSimilarMode = Boolean(fromBuildId && !isEditMode);
 
   // Component Selections
   const [selectedFrame, setSelectedFrame] = useState<Frame | null>(null);
@@ -923,7 +932,8 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
   const [saveError, setSaveError] = useState<string | null>(null);
 
   const saveMutation = useMutation(createBuild);
-  const isSaving = saveMutation.isPending;
+  const updateMutation = useMutation(updateBuild);
+  const isSaving = saveMutation.isPending || updateMutation.isPending;
 
   // Active battery
   const activeBattery = useMemo(() => {
@@ -1535,7 +1545,6 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
   // Step Completion Status
   const stepCompletion = useMemo<Record<number, boolean>>(() => {
     return {
-      0: isTemplateConfirmed,
       1: !!selectedFrame,
       2: !!selectedFc,
       3: !!(useIntegratedRx ? integratedRx : selectedRx),
@@ -1550,7 +1559,6 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
       12: false,
     };
   }, [
-    isTemplateConfirmed,
     selectedFrame,
     selectedFc,
     useIntegratedRx,
@@ -1574,14 +1582,11 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
   ]);
 
   // Unlocked Steps Logic:
-  // Step 0 is always unlocked.
-  // Step 1 unlocks once Step 0 is confirmed.
+  // Step 1 is always unlocked.
   // Step K+1 unlocks if all steps <= K are completed AND no step <= K has an unresolved conflict.
   // If a step has a conflict, that step itself is unlocked (so the user can navigate to it and fix it), but all subsequent steps are LOCKED.
   const unlockedSteps = useMemo(() => {
-    const unlocked = [0];
-    if (!stepCompletion[0]) return unlocked;
-    unlocked.push(1);
+    const unlocked = [1];
 
     for (let step = 1; step <= 11; step++) {
       // If camera is None, steps 9 (VTX) and 10 (VTX Antenna) are locked
@@ -1688,7 +1693,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
   ]);
 
   const handlePrevStep = useCallback(() => {
-    if (activeStep <= 0) return;
+    if (activeStep <= 1) return;
     let target = activeStep - 1;
 
     // Backward skip rules:
@@ -1700,7 +1705,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
       target = 9;
     }
 
-    setActiveStep(Math.max(0, target));
+    setActiveStep(Math.max(1, target));
   }, [
     activeStep,
     isRxAntennaIntegrated,
@@ -1709,13 +1714,25 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
     isVtxAntennaIntegrated,
   ]);
 
-  // Baseline Template handlers
-  const applyTemplate = useCallback(
-    async (build: Build) => {
-      setSelectedTemplateId(build.id || build.uuid);
-      setIsTemplateConfirmed(true);
-      setBuildName(build.name || "Custom Build");
-      if (build.description) setBuildDesc(build.description);
+  // Hydrate build from record (for editing or building similar)
+  const hydrateBuildFromRecord = useCallback(
+    async (build: Build, mode: "edit" | "similar") => {
+      if (mode === "edit") {
+        setEditingBuildId(build.id || null);
+        setEditingBuildUuid(build.uuid || null);
+        setBuildName(build.name || "");
+        setBuildDesc(build.description || "");
+      } else {
+        setEditingBuildId(null);
+        setEditingBuildUuid(null);
+        setBuildName(build.name ? `Copy of ${build.name}` : "Custom Build");
+        const remixDesc = build.authorUsername
+          ? `Remix of ${build.name} by @${build.authorUsername}`
+          : build.name
+            ? `Remix of ${build.name}`
+            : "";
+        setBuildDesc(remixDesc || build.description || "");
+      }
 
       // Frame
       let f = build.frameUuid ? frames.find((x) => x.uuid === build.frameUuid) : null;
@@ -1724,7 +1741,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           const client = createClient(FrameService, transport);
           f = await client.getFrame({ id: build.frameUuid });
         } catch (e) {
-          console.error("Failed to fetch template frame:", e);
+          console.error("Failed to fetch frame:", e);
         }
       }
       if (f) {
@@ -1741,7 +1758,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           const client = createClient(MotorService, transport);
           m = await client.getMotor({ id: build.motorUuid });
         } catch (e) {
-          console.error("Failed to fetch template motor:", e);
+          console.error("Failed to fetch motor:", e);
         }
       }
       if (m) {
@@ -1758,7 +1775,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           const client = createClient(PropellerService, transport);
           p = await client.getPropeller({ id: build.propellerUuid });
         } catch (e) {
-          console.error("Failed to fetch template propeller:", e);
+          console.error("Failed to fetch propeller:", e);
         }
       }
       if (p) {
@@ -1777,7 +1794,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           const client = createClient(FlightControllerService, transport);
           fc = await client.getFlightController({ id: build.flightControllerUuid });
         } catch (e) {
-          console.error("Failed to fetch template FC:", e);
+          console.error("Failed to fetch FC:", e);
         }
       }
       if (fc) setSelectedFc(fc);
@@ -1793,7 +1810,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
             id: build.electronicSpeedControllerUuids[0],
           });
         } catch (e) {
-          console.error("Failed to fetch template ESC:", e);
+          console.error("Failed to fetch ESC:", e);
         }
       }
       if (esc) {
@@ -1809,7 +1826,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           const client = createClient(ReceiverService, transport);
           rx = await client.getReceiver({ id: build.receiverUuids[0] });
         } catch (e) {
-          console.error("Failed to fetch template receiver:", e);
+          console.error("Failed to fetch receiver:", e);
         }
       }
       if (rx) {
@@ -1826,7 +1843,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           const client = createClient(VideoTransmitterService, transport);
           v = await client.getVideoTransmitter({ id: build.videoTransmitterUuid });
         } catch (e) {
-          console.error("Failed to fetch template VTX:", e);
+          console.error("Failed to fetch VTX:", e);
         }
       }
       if (v) {
@@ -1845,7 +1862,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           const client = createClient(CameraService, transport);
           cam = await client.getCamera({ id: build.cameraUuids[0] });
         } catch (e) {
-          console.error("Failed to fetch template camera:", e);
+          console.error("Failed to fetch camera:", e);
         }
       }
       if (cam) {
@@ -1860,7 +1877,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           const client = createClient(GpsReceiverService, transport);
           g = await client.getGpsReceiver({ id: build.gpsReceiverUuid });
         } catch (e) {
-          console.error("Failed to fetch template GPS:", e);
+          console.error("Failed to fetch GPS:", e);
         }
       }
       if (g) {
@@ -1880,7 +1897,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
               const client = createClient(AntennaService, transport);
               ant = await client.getAntenna({ id: antUuid });
             } catch (e) {
-              console.error("Failed to fetch template antenna:", e);
+              console.error("Failed to fetch antenna:", e);
             }
           }
           if (ant) {
@@ -1896,19 +1913,45 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
           }
         }
       }
+
+      setActiveStep(1);
     },
     [frames, motors, props, fcs, escs, rxs, vtxs, cams, gpsList, antennas, transport],
   );
 
-  const selectNoTemplate = useCallback(() => {
-    setSelectedTemplateId(null);
-    setIsTemplateConfirmed(true);
-  }, []);
+  // Auto-hydrate initial build from URL route or query param
+  useEffect(() => {
+    const targetId = routeBuildId || fromBuildId;
+    if (!targetId) return;
+    const resolvedBuildId = targetId;
+
+    let active = true;
+    async function loadInitialBuild() {
+      setIsHydratingBuild(true);
+      try {
+        const client = createClient(BuildService, transport);
+        const res = await client.getBuild({ id: resolvedBuildId });
+        if (!active || !res) return;
+        await hydrateBuildFromRecord(res, routeBuildId ? "edit" : "similar");
+      } catch (err) {
+        console.error("Failed to load build:", err);
+      } finally {
+        if (active) {
+          setIsHydratingBuild(false);
+        }
+      }
+    }
+
+    loadInitialBuild();
+    return () => {
+      active = false;
+    };
+  }, [routeBuildId, fromBuildId, transport, hydrateBuildFromRecord]);
 
   // Reset build to clean slate
   const resetBuild = useCallback(() => {
-    setSelectedTemplateId(null);
-    setIsTemplateConfirmed(false);
+    setEditingBuildId(null);
+    setEditingBuildUuid(null);
     setSelectedFrame(null);
     setSelectedFc(null);
     setSelectedRx(null);
@@ -1933,7 +1976,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
     });
     setBuildName("Custom Build");
     setBuildDesc("Custom build configured via Quadsmith: The Forge.");
-    setActiveStep(0);
+    setActiveStep(1);
     setSaveError(null);
   }, []);
 
@@ -1988,27 +2031,35 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
 
     try {
       setSaveError(null);
-      const res = await saveMutation.mutateAsync({
-        build: create(BuildSchema, {
-          name: buildName,
-          description: buildDesc,
-          frameUuid: selectedFrame.uuid,
-          motorUuid: selectedMotor.uuid,
-          propellerUuid: selectedProp.uuid,
-          flightControllerUuid: selectedFc.uuid,
-          electronicSpeedControllerUuids:
-            selectedEsc && !useIntegratedEsc && !noneSelections.esc ? [selectedEsc.uuid] : [],
-          receiverUuids: selectedRx && !useIntegratedRx ? [selectedRx.uuid] : [],
-          antennaUuids: [
-            selectedRxAnt && !isRxAntennaIntegrated ? selectedRxAnt.uuid : null,
-            selectedVtxAnt && !noneSelections.vtxAntenna ? selectedVtxAnt.uuid : null,
-          ].filter(Boolean) as string[],
-          cameraUuids: selectedCam && !noneSelections.camera ? [selectedCam.uuid] : [],
-          videoTransmitterUuid:
-            selectedVtx && !useIntegratedVtx && !noneSelections.vtx ? selectedVtx.uuid : "",
-          gpsReceiverUuid: selectedGps && !noneSelections.gps ? selectedGps.uuid : "",
-        }),
+      const isEdit = Boolean(editingBuildId || editingBuildUuid);
+      const buildPayload = create(BuildSchema, {
+        uuid: editingBuildUuid || undefined,
+        id: editingBuildId || undefined,
+        name: buildName,
+        description: buildDesc,
+        frameUuid: selectedFrame.uuid,
+        motorUuid: selectedMotor.uuid,
+        propellerUuid: selectedProp.uuid,
+        flightControllerUuid: selectedFc.uuid,
+        electronicSpeedControllerUuids:
+          selectedEsc && !useIntegratedEsc && !noneSelections.esc ? [selectedEsc.uuid] : [],
+        receiverUuids: selectedRx && !useIntegratedRx ? [selectedRx.uuid] : [],
+        antennaUuids: [
+          selectedRxAnt && !isRxAntennaIntegrated ? selectedRxAnt.uuid : null,
+          selectedVtxAnt && !noneSelections.vtxAntenna ? selectedVtxAnt.uuid : null,
+        ].filter(Boolean) as string[],
+        cameraUuids: selectedCam && !noneSelections.camera ? [selectedCam.uuid] : [],
+        videoTransmitterUuid:
+          selectedVtx && !useIntegratedVtx && !noneSelections.vtx ? selectedVtx.uuid : "",
+        gpsReceiverUuid: selectedGps && !noneSelections.gps ? selectedGps.uuid : "",
       });
+
+      let res: any;
+      if (isEdit) {
+        res = await updateMutation.mutateAsync({ build: buildPayload });
+      } else {
+        res = await saveMutation.mutateAsync({ build: buildPayload });
+      }
 
       if (res?.id || res?.uuid) {
         navigate(`/builds/${res.id || res.uuid}`);
@@ -2037,7 +2088,10 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
     buildName,
     buildDesc,
     isPrivate,
+    editingBuildId,
+    editingBuildUuid,
     saveMutation,
+    updateMutation,
     navigate,
   ]);
 
@@ -2063,13 +2117,14 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
     antennas,
     gpsList,
     batteries,
-    templateBuilds,
     isWasmReady,
 
-    selectedTemplateId,
-    isTemplateConfirmed,
-    applyTemplate,
-    selectNoTemplate,
+    editingBuildId,
+    editingBuildUuid,
+    isEditMode,
+    isBuildSimilarMode,
+    isHydratingBuild,
+    hydrateBuildFromRecord,
 
     selectedFrame,
     setSelectedFrame,

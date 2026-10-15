@@ -37,26 +37,18 @@ describe("BuildWizardPage Component", () => {
     return renderWithProviders(
       <Routes>
         <Route path="/builds/new" element={<BuildWizardPage />} />
+        <Route path="/builds/:buildId/edit" element={<BuildWizardPage />} />
         <Route path="/builds/:buildId" element={<SavedProfile />} />
       </Routes>,
       { route: "/builds/new", ...options },
     );
   }
 
-  async function confirmScratchBaseline(user: ReturnType<typeof userEvent.setup>) {
-    const scratchCard = await screen.findByText(/No Template \(Start from Scratch\)/i);
-    await user.click(scratchCard);
-  }
-
-  async function advanceToStep1(user: ReturnType<typeof userEvent.setup>) {
-    await confirmScratchBaseline(user);
-    const nextBtn = await screen.findByRole("button", { name: /Next: Frame/i });
-    await waitFor(() => expect(nextBtn).toBeEnabled());
-    await user.click(nextBtn);
+  async function advanceToStep1(_user?: ReturnType<typeof userEvent.setup>) {
     await screen.findByText("1. Frame Chassis");
   }
 
-  it("renders with initial empty state: Step 0 active, Step 1 locked until baseline confirmation", async () => {
+  it("renders with initial empty state: Step 1 active immediately and unlocked", async () => {
     renderWizard();
 
     // Check title & banner
@@ -66,17 +58,15 @@ describe("BuildWizardPage Component", () => {
     expect(headingContainer?.querySelector("svg")).toBeInTheDocument();
     expect(headingContainer?.querySelector("svg")).toHaveClass("text-[#FF6D00]");
 
-    // Step 0 active in step bar, Step 1 locked (disabled) pending confirmation
-    expect(screen.getByRole("button", { name: /^step 0:/i })).toBeEnabled();
-    expect(screen.getByRole("button", { name: /^step 1:/i })).toBeDisabled();
+    // Step 1 active in step bar, Step 2 locked (disabled)
+    expect(screen.getByRole("button", { name: /^step 1:/i })).toBeEnabled();
     expect(screen.getByRole("button", { name: /^step 2:/i })).toBeDisabled();
 
-    // Step 0 baseline options
-    expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
-    expect(screen.getByText(/No Template \(Start from Scratch\)/i)).toBeInTheDocument();
+    // Step 1 Frame step header
+    expect(screen.getByText("1. Frame Chassis")).toBeInTheDocument();
 
-    // Next: Frame button is disabled pending explicit confirmation
-    const nextBtn = screen.getByRole("button", { name: /Next: Frame/i });
+    // Next: Flight Controller button is disabled pending frame selection
+    const nextBtn = screen.getByRole("button", { name: /Next: Flight Controller/i });
     expect(nextBtn).toBeDisabled();
 
     // Initial dry weight is 0.00g
@@ -86,26 +76,26 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("Selected Parts")).toBeInTheDocument();
   });
 
-  it("requires positive confirmation for Step 0 ('No template') before unlocking Step 1 and enabling Next", async () => {
+  it("supports editing existing builds via /builds/:buildId/edit, pre-populating components and displaying 'Save Changes'", async () => {
     const user = userEvent.setup();
-    renderWizard();
+    renderWizard({
+      route: "/builds/bando-basher-5-inch/edit",
+    });
 
-    // Initially Step 1 is locked and Next: Frame is disabled
-    expect(screen.getByRole("button", { name: /^step 1:/i })).toBeDisabled();
-    const nextBtn = screen.getByRole("button", { name: /Next: Frame/i });
-    expect(nextBtn).toBeDisabled();
-
-    // Click "No template (Start from scratch)"
-    await confirmScratchBaseline(user);
-
-    // Now Step 0 shows confirmed and Step 1 is unlocked
-    expect(screen.getByText("Confirmed")).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /^step 1:/i })).toBeEnabled();
-    expect(nextBtn).toBeEnabled();
-
-    // Advance to Step 1 (Frame Chassis)
-    await user.click(nextBtn);
+    // Wait for hydration to load components from build
     expect(await screen.findByText("1. Frame Chassis")).toBeInTheDocument();
+
+    const stepNav = await screen.findByRole("navigation", { name: "Build Steps" });
+    const stepTabs = within(stepNav).getAllByRole("button");
+    expect(stepTabs).toHaveLength(12);
+
+    // Navigate to Step 12 (Review & Save)
+    const step12Tab = within(stepNav).getByRole("button", { name: /^step 12:/i });
+    expect(step12Tab).toBeEnabled();
+    await user.click(step12Tab);
+
+    // Review & Save step should display "Save Changes" instead of "Save & Create Build"
+    expect(await screen.findByRole("button", { name: /Save Changes/i })).toBeInTheDocument();
   });
 
   it("allows searching for frames and filtering products in real time", async () => {
@@ -348,27 +338,25 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("+0.00g")).toBeInTheDocument();
   });
 
-  it("allows selecting a template in Step 0, reviewing BOM in Step 12, and saving the build to PostgreSQL", async () => {
+  it("allows loading baseline build via /builds/new?from=<id>, reviewing BOM in Step 12, and saving the build to PostgreSQL", async () => {
     const user = userEvent.setup();
-    renderWizard();
+    renderWizard({
+      route: "/builds/new?from=bando-basher-5-inch",
+    });
 
-    // In Step 0, select "Bando Basher 5 inch" template
-    const templateCard = await screen.findByText("Bando Basher 5 inch");
-    await user.click(templateCard);
+    // Wait for hydration
+    expect(await screen.findByText("1. Frame Chassis")).toBeInTheDocument();
 
-    // Template should be active and all steps unlocked
-    expect(screen.getByText("Template Active")).toBeInTheDocument();
-
-    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const stepNav = await screen.findByRole("navigation", { name: "Build Steps" });
     const stepTabs = within(stepNav).getAllByRole("button");
-    expect(stepTabs).toHaveLength(13);
+    expect(stepTabs).toHaveLength(12);
 
     // Navigate to Step 12 (Review & Save)
     const step12Tab = within(stepNav).getByRole("button", { name: /^step 12:/i });
     expect(step12Tab).toBeEnabled();
     await user.click(step12Tab);
 
-    // Check BOM items populated from template
+    // Check BOM items populated from baseline build
     expect(await screen.findByText(/Bill of Materials \(BOM\)/i)).toBeInTheDocument();
     expect(screen.getAllByText(/ECO II 2207/i).length).toBeGreaterThanOrEqual(1);
     expect(screen.getAllByText(/F405 V4 FC/i).length).toBeGreaterThanOrEqual(1);
@@ -391,31 +379,31 @@ describe("BuildWizardPage Component", () => {
     const saveBtn = screen.getByRole("button", { name: /Save & Create Build/i });
     await user.click(saveBtn);
 
-    // Should navigate to saved build profile with auto-incremented -copy1 suffix
+    // Should navigate to saved build profile
     expect(await screen.findByTestId("build-profile-page")).toBeInTheDocument();
-    expect(screen.getByTestId("saved-build-id")).toHaveTextContent("bando-basher-5-inch-copy1");
+    expect(screen.getByTestId("saved-build-id")).toHaveTextContent("copy-of-bando-basher-5-inch");
   });
 
   it("auto-increments copy suffix when saving duplicate builds", async () => {
     const user = userEvent.setup();
     const copy1Build = { ...mockBuild1, id: "bando-basher-5-inch-copy1", uuid: "copy1-uuid" };
     renderWizard({
+      route: "/builds/new?from=bando-basher-5-inch",
       transportOptions: {
         builds: [mockBuild1, copy1Build, mockBuild2],
       },
     });
 
-    // Select template in Step 0
-    const templateCards = await screen.findAllByText("Bando Basher 5 inch");
-    await user.click(templateCards[0]);
+    // Wait for hydration
+    expect(await screen.findByText("1. Frame Chassis")).toBeInTheDocument();
 
     // Navigate to Step 12 (Review & Save)
-    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const stepNav = await screen.findByRole("navigation", { name: "Build Steps" });
     const step12Tab = within(stepNav).getByRole("button", { name: /^step 12:/i });
     await user.click(step12Tab);
 
     // Change build name to one that generates -copy1
-    const nameInput = screen.getByLabelText("Build Name");
+    const nameInput = await screen.findByLabelText("Build Name");
     await user.clear(nameInput);
     await user.type(nameInput, "Bando Basher 5 inch copy1");
 
@@ -428,26 +416,26 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByTestId("saved-build-id")).toHaveTextContent("bando-basher-5-inch-copy2");
   });
 
-  it("resets all wizard selections and returns to Step 0 on Reset button click", async () => {
+  it("resets all wizard selections and returns to Step 1 on Reset button click", async () => {
     const user = userEvent.setup();
-    renderWizard();
+    renderWizard({
+      route: "/builds/new?from=bando-basher-5-inch",
+    });
 
-    // Select template in Step 0
-    const templateCard = await screen.findByText("Bando Basher 5 inch");
-    await user.click(templateCard);
-    expect(screen.getByText("Template Active")).toBeInTheDocument();
-
-    // Advance to Step 1
-    await user.click(screen.getByRole("button", { name: /Next: Frame/i }));
-    expect(screen.getByText("1. Frame Chassis")).toBeInTheDocument();
+    // Wait for hydration
+    expect(await screen.findByText("1. Frame Chassis")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("11 / 11 Parts")).toBeInTheDocument();
+    });
 
     // Click Reset button in the top banner
     const resetBtn = screen.getByRole("button", { name: /Reset Build/i });
     await user.click(resetBtn);
 
-    // Should return to Step 0 baseline selection
-    expect(screen.getByText("Choose Starting Baseline")).toBeInTheDocument();
-    expect(screen.getAllByText("0.00g").length).toBeGreaterThanOrEqual(1);
+    // Should return to clean Step 1 state
+    expect(screen.getByText("1. Frame Chassis")).toBeInTheDocument();
+    expect(screen.getByText("0 / 11 Parts")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^step 2:/i })).toBeDisabled();
   });
 
   it("displays dynamic CEL filter when physics engine is active and allows toggling compatible parts", async () => {
@@ -480,21 +468,18 @@ describe("BuildWizardPage Component", () => {
     expect(compatibleCheckbox).not.toBeChecked();
   });
 
-  it("renders the selected frame in the frame list when 'Bando Basher 5 inch' template is selected", async () => {
-    const user = userEvent.setup();
-    renderWizard();
+  it("renders the selected frame in the frame list when build baseline is loaded via /builds/new?from=<id>", async () => {
+    renderWizard({
+      route: "/builds/new?from=bando-basher-5-inch",
+    });
 
-    // In Step 0, select "Bando Basher 5 inch" template
-    const templateCard = await screen.findByText("Bando Basher 5 inch");
-    await user.click(templateCard);
-
-    // Advance to Step 1
-    await user.click(screen.getByRole("button", { name: /Next: Frame/i }));
+    // Wait for hydration
+    expect(await screen.findByText("1. Frame Chassis")).toBeInTheDocument();
 
     // Verify Step 1 Frame step has no "Compatible only" toggle
     expect(screen.queryByRole("checkbox", { name: /compatible only/i })).toBeNull();
 
-    // Verify the frame from the template is displayed in the list and selected
+    // Verify the frame from the baseline build is displayed in the list and selected
     const selectedFrameName = mockFrame1.name;
     const frameCards = await screen.findAllByText(selectedFrameName);
     expect(frameCards.length).toBeGreaterThan(0);
@@ -513,7 +498,7 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText("0 / 11 Parts")).toBeInTheDocument();
     expect(screen.getByText((_, el) => el?.textContent === "Dry: 0.0g")).toBeInTheDocument();
 
-    // Confirm Step 0 and select Frame in Step 1
+    // Select Frame in Step 1
     await advanceToStep1(user);
     await user.click(await screen.findByText("Master 5 V2"));
 
@@ -768,14 +753,12 @@ describe("BuildWizardPage Component", () => {
 
   it("formats motor stator and prop diameter with mm/inch correctly", async () => {
     const user = userEvent.setup();
-    renderWizard();
-
-    // Select template to load parts immediately
-    const templateCard = await screen.findByText("Bando Basher 5 inch");
-    await user.click(templateCard);
+    renderWizard({
+      route: "/builds/new?from=bando-basher-5-inch",
+    });
 
     // Navigate to Step 6 (Motors)
-    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const stepNav = await screen.findByRole("navigation", { name: "Build Steps" });
     await user.click(within(stepNav).getByRole("button", { name: /^step 6:/i }));
 
     // Verify motor card stator size format (2207)
@@ -826,18 +809,16 @@ describe("BuildWizardPage Component", () => {
     });
 
     const user = userEvent.setup();
-    renderWizard();
+    renderWizard({
+      route: "/builds/new?from=bando-basher-5-inch",
+    });
 
-    // Select template to populate all components
-    const templateCard = await screen.findByText("Bando Basher 5 inch");
-    await user.click(templateCard);
-
-    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const stepNav = await screen.findByRole("navigation", { name: "Build Steps" });
     const step7Tab = within(stepNav).getByRole("button", { name: /^step 7:/i });
     const step8Tab = within(stepNav).getByRole("button", { name: /^step 8:/i });
     const step12Tab = within(stepNav).getByRole("button", { name: /^step 12:/i });
 
-    // Await template application and verification that steps are enabled
+    // Await hydration and verification that steps are enabled
     await waitFor(() => expect(step7Tab).toBeEnabled());
     expect(step8Tab).toBeEnabled();
     expect(step12Tab).toBeEnabled();
@@ -878,14 +859,12 @@ describe("BuildWizardPage Component", () => {
     vi.spyOn(wasmEngine, "checkCompatibility").mockReturnValue({ messages: [] } as any);
 
     const user = userEvent.setup();
-    renderWizard();
+    renderWizard({
+      route: "/builds/new?from=bando-basher-5-inch",
+    });
 
-    // Select template to populate components (SpeedyBee 50A ESC with minVoltage: 11.1V)
-    const templateCard = await screen.findByText("Bando Basher 5 inch");
-    await user.click(templateCard);
-
-    // Await template application
-    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    // Await hydration
+    const stepNav = await screen.findByRole("navigation", { name: "Build Steps" });
     const step5Tab = within(stepNav).getByRole("button", { name: /^step 5:/i });
     await waitFor(() => expect(step5Tab).toBeEnabled());
 
@@ -903,13 +882,11 @@ describe("BuildWizardPage Component", () => {
 
   it("does not auto-select analog integrated VTX when digital camera is selected", async () => {
     const user = userEvent.setup();
-    renderWizard();
+    renderWizard({
+      route: "/builds/new?from=bando-basher-5-inch",
+    });
 
-    // Load template baseline so all steps are complete
-    const templateCard = await screen.findByText("Bando Basher 5 inch");
-    await user.click(templateCard);
-
-    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const stepNav = await screen.findByRole("navigation", { name: "Build Steps" });
     const step2Tab = within(stepNav).getByRole("button", { name: /^step 2:/i });
     const step8Tab = within(stepNav).getByRole("button", { name: /^step 8:/i });
     const step9Tab = within(stepNav).getByRole("button", { name: /^step 9:/i });
@@ -1000,13 +977,11 @@ describe("BuildWizardPage Component", () => {
       return { messages } as any;
     });
     const user = userEvent.setup();
-    renderWizard();
+    renderWizard({
+      route: "/builds/new?from=bando-basher-5-inch",
+    });
 
-    // Load template baseline so all steps are complete
-    const templateCard = await screen.findByText("Bando Basher 5 inch");
-    await user.click(templateCard);
-
-    const stepNav = screen.getByRole("navigation", { name: "Build Steps" });
+    const stepNav = await screen.findByRole("navigation", { name: "Build Steps" });
     const step10Tab = within(stepNav).getByRole("button", { name: /^step 10:/i });
     const step11Tab = within(stepNav).getByRole("button", { name: /^step 11:/i });
     const step12Tab = within(stepNav).getByRole("button", { name: /^step 12:/i });
