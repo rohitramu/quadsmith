@@ -23,8 +23,39 @@ export function setStoredAccessToken(
   }
 }
 
+export function getApiBaseUrl(): string {
+  if (typeof window === "undefined") {
+    return "";
+  }
+
+  // Allow explicit override if configured via build/runtime env var
+  const envUrl = (import.meta as any).env?.VITE_API_URL;
+  if (envUrl) {
+    return envUrl;
+  }
+
+  const { hostname, protocol } = window.location;
+
+  // Local development / sandbox: separate ports (API server on port 8082)
+  if (hostname === "localhost" || hostname === "127.0.0.1") {
+    return `${protocol}//${hostname}:8082`;
+  }
+
+  // Production / Staging: sub-domains
+  if (hostname === "quadsmith.com" || hostname === "www.quadsmith.com") {
+    return `${protocol}//api.quadsmith.com`;
+  }
+  if (hostname.endsWith(".quadsmith.com")) {
+    const sub = hostname.replace(/\.?quadsmith\.com$/, "");
+    return `${protocol}//${sub}-api.quadsmith.com`;
+  }
+
+  // Fallback for custom domains: prefix with "api."
+  return `${protocol}//api.${hostname}`;
+}
+
 export function createApiTransport(options: CreateApiTransportOptions = {}): Transport {
-  const { baseUrl = "", storageKey = "qs_access_token" } = options;
+  const { baseUrl = getApiBaseUrl(), storageKey = "qs_access_token" } = options;
   return createConnectTransport({
     baseUrl,
     fetch: (input, init) => {

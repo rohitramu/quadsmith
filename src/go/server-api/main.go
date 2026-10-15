@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"strconv"
 	"strings"
@@ -13,6 +14,7 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/rs/cors"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
@@ -182,9 +184,11 @@ func main() {
 		idleTimeout = cfg.Server.IdleTimeout.AsDuration()
 	}
 
+	corsMiddleware := newCORSMiddleware()
+
 	server := &http.Server{
 		Addr:              ":" + port,
-		Handler:           h2c.NewHandler(rootHandler, &http2.Server{}),
+		Handler:           h2c.NewHandler(corsMiddleware.Handler(rootHandler), &http2.Server{}),
 		ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout:       readTimeout,
 		WriteTimeout:      writeTimeout,
@@ -216,5 +220,40 @@ func securityHeadersMiddleware(next http.Handler) http.Handler {
 			w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
 		}
 		next.ServeHTTP(w, r)
+	})
+}
+
+func newCORSMiddleware() *cors.Cors {
+	return cors.New(cors.Options{
+		AllowOriginFunc: func(origin string) bool {
+			u, err := url.Parse(origin)
+			if err != nil {
+				return false
+			}
+			host := u.Hostname()
+			if host == "localhost" || host == "127.0.0.1" {
+				return true
+			}
+			if host == "quadsmith.com" || strings.HasSuffix(host, ".quadsmith.com") {
+				return true
+			}
+			return false
+		},
+		AllowedMethods: []string{
+			http.MethodGet,
+			http.MethodPost,
+			http.MethodPut,
+			http.MethodDelete,
+			http.MethodOptions,
+			http.MethodHead,
+		},
+		AllowedHeaders: []string{"*"},
+		ExposedHeaders: []string{
+			"Grpc-Status",
+			"Grpc-Message",
+			"Grpc-Status-Details-Bin",
+			"Connect-End-Stream",
+		},
+		AllowCredentials: true,
 	})
 }

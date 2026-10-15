@@ -260,7 +260,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server sandbox: %v", err)
 	}
-	if apiSandbox.Server.GetPort() != 8080 || apiSandbox.Database.GetName() != "quadsmith_api" {
+	if apiSandbox.Server.GetPort() != 8082 || apiSandbox.Database.GetName() != "quadsmith_api" {
 		t.Errorf("unexpected api-server sandbox config: %+v", apiSandbox)
 	}
 
@@ -287,7 +287,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load web-server sandbox: %v", err)
 	}
-	if webSandbox.Server.GetPort() != 3000 || webSandbox.GetStaticDir() != "src/react/app-web/dist" {
+	if webSandbox.Server.GetPort() != 8080 || webSandbox.GetStaticDir() != "src/react/app-web/dist" {
 		t.Errorf("unexpected web-server sandbox config: %+v", webSandbox)
 	}
 
@@ -303,7 +303,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load cli sandbox: %v", err)
 	}
-	if cliSandbox.GetApiUrl() != "http://127.0.0.1:8080" {
+	if cliSandbox.GetApiUrl() != "http://127.0.0.1:8082" {
 		t.Errorf("unexpected cli sandbox config: %+v", cliSandbox)
 	}
 
@@ -313,7 +313,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server test: %v", err)
 	}
-	if apiTest.Server.GetPort() != 8080 {
+	if apiTest.Server.GetPort() != 8082 {
 		t.Errorf("unexpected api-server test config: %+v", apiTest)
 	}
 

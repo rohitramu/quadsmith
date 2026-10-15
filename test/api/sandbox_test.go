@@ -25,7 +25,7 @@ func getAPIURL() string {
 	if url := os.Getenv("QS_API_URL"); url != "" {
 		return url
 	}
-	return "http://127.0.0.1:8080"
+	return "http://127.0.0.1:8082"
 }
 
 func getDBURL() string {

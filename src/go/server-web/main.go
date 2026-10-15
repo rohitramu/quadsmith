@@ -5,11 +5,8 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"net/http/httputil"
-	"net/url"
 	"os"
 	"strconv"
-	"strings"
 	"time"
 
 	"golang.org/x/net/http2"
@@ -30,34 +27,8 @@ func buildHandler(cfg *configpb.WebServerConfig) http.Handler {
 		_, _ = w.Write([]byte("ok\n"))
 	})
 
-	var proxy http.Handler
-	if cfg.GetApiUrl() != "" {
-		targetURL, err := url.Parse(cfg.GetApiUrl())
-		if err != nil {
-			log.Fatalf("server-web: invalid api_url %q: %v", cfg.GetApiUrl(), err)
-		}
-		reverseProxy := httputil.NewSingleHostReverseProxy(targetURL)
-		reverseProxy.FlushInterval = -1
-		originalDirector := reverseProxy.Director
-		reverseProxy.Director = func(req *http.Request) {
-			originalDirector(req)
-			req.Host = targetURL.Host
-		}
-		proxy = reverseProxy
-	}
-
-	spaHandler := static.ServeSPA(cfg.GetStaticDir(), cfg.GetApiUrl())
-
-	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if proxy != nil && (strings.HasPrefix(r.URL.Path, "/quadsmith.api.") ||
-			strings.HasPrefix(r.URL.Path, "/api/") ||
-			r.URL.Path == "/api/blobs" ||
-			strings.HasPrefix(r.URL.Path, "/blobs/")) {
-			proxy.ServeHTTP(w, r)
-			return
-		}
-		spaHandler.ServeHTTP(w, r)
-	})
+	// SPA & static asset handler
+	mux.Handle("/", static.ServeSPA(cfg.GetStaticDir(), cfg.GetApiUrl()))
 
 	maxBytes := cfg.Server.GetMaxRequestBytes()
 	if maxBytes <= 0 {
@@ -118,13 +89,7 @@ func main() {
 }
 
 func dynamicMaxBytesHandler(next http.Handler, defaultLimit int64) http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		limit := defaultLimit
-		if strings.HasPrefix(r.URL.Path, "/api/blobs") {
-			limit = 100 << 20 // 100MB for blob uploads
-		}
-		http.MaxBytesHandler(next, limit).ServeHTTP(w, r)
-	})
+	return http.MaxBytesHandler(next, defaultLimit)
 }
 
 func securityHeadersMiddleware(next http.Handler) http.Handler {
@@ -132,7 +97,7 @@ func securityHeadersMiddleware(next http.Handler) http.Handler {
 		w.Header().Set("X-Content-Type-Options", "nosniff")
 		w.Header().Set("X-Frame-Options", "DENY")
 		w.Header().Set("Referrer-Policy", "strict-origin-when-cross-origin")
-		w.Header().Set("Content-Security-Policy", "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self';")
+		w.Header().Set("Content-Security-Policy", "default-src 'self'; connect-src 'self' https://*.quadsmith.com https://quadsmith.com http://localhost:* http://127.0.0.1:* ws: wss:; script-src 'self' 'wasm-unsafe-eval' https://www.gstatic.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; frame-src https://www.youtube.com https://www.youtube-nocookie.com; frame-ancestors 'none'; object-src 'none'; base-uri 'self';")
 		if r.TLS != nil || r.Header.Get("X-Forwarded-Proto") == "https" {
 			w.Header().Set("Strict-Transport-Security", "max-age=31536000; includeSubDomains")
 		}

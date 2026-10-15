@@ -17,5 +17,5 @@ docker compose -f test/sandbox/docker-compose.yaml down -v >/dev/null 2>&1 || tr
 echo "--- Building Sandbox Container Images ---"
 docker compose -f test/sandbox/docker-compose.yaml build
 
-echo "--- Starting Quadsmith Sandbox (Web/API on port $PORT, Ops on $OPS_PORT, Direct API on $API_PORT, DB on $DB_PORT) ---"
+echo "--- Starting Quadsmith Sandbox (Web on $PORT, Ops on $OPS_PORT, API on $API_PORT, DB on $DB_PORT) ---"
 docker compose -f test/sandbox/docker-compose.yaml up

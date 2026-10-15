@@ -10,7 +10,7 @@ export DB_PORT="${DB_PORT:-5432}"
 export OPS_PORT="${OPS_PORT:-8081}"
 export API_PORT="${API_PORT:-8082}"
 
-API_URL="${QS_CLI_API_URL:-${QS_API_URL:-http://127.0.0.1:${PORT}}}"
+API_URL="${QS_CLI_API_URL:-${QS_API_URL:-http://127.0.0.1:${API_PORT}}}"
 OPS_URL="${QS_OPS_SERVER_URL:-${QS_OPS_URL:-http://127.0.0.1:${OPS_PORT}}}"
 WEB_URL="${QS_WEB_URL:-http://127.0.0.1:${PORT}}"
 DB_URL="${QS_DATABASE_URL:-${DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:${DB_PORT}/quadsmith_api}}"
@@ -19,7 +19,7 @@ INTERNAL_DB_URL="${QS_INTERNAL_DATABASE_URL:-postgres://postgres:postgres@127.0.
 is_sandbox_ready() {
     curl -s -f -m 1 "${API_URL}/healthz" >/dev/null 2>&1 && \
     curl -s -f -m 1 "${OPS_URL}/healthz" >/dev/null 2>&1 && \
-    curl -s -f -m 1 "http://127.0.0.1:${API_PORT}/healthz" >/dev/null 2>&1
+    curl -s -f -m 1 "${WEB_URL}/healthz" >/dev/null 2>&1
 }
 
 cleanup() {
@@ -34,7 +34,7 @@ cleanup
 echo "--- Building Sandbox Container Images ---"
 docker compose -f test/sandbox/docker-compose.yaml build
 
-echo "--- Starting fresh Sandbox containers on port ${PORT} (Ops: ${OPS_PORT}, Direct API: ${API_PORT}, DB: ${DB_PORT}) ---"
+echo "--- Starting fresh Sandbox containers on port ${PORT} (Ops: ${OPS_PORT}, API: ${API_PORT}, DB: ${DB_PORT}) ---"
 docker compose -f test/sandbox/docker-compose.yaml up -d
 
 echo "--- Waiting for Sandbox to become healthy ---"

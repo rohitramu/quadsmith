@@ -1,7 +1,7 @@
 environment: "test"
 
 server {
-  port: 3000
+  port: 8080
   read_timeout {
     seconds: 15
   }
@@ -15,4 +15,4 @@ server {
 }
 
 static_dir: "src/react/app-web/dist"
-api_url: "http://127.0.0.1:8080"
+api_url: "http://127.0.0.1:8082"

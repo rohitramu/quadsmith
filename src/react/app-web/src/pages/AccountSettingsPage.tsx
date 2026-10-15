@@ -25,7 +25,7 @@ import type { ArchivedUsername } from "@quadsmith/shared/gen/quadsmith/api/auth_
 import { OtpVerificationErrorSchema } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
-import { getAvatarPalette, getInitial } from "@quadsmith/shared";
+import { getAvatarPalette, getInitial, getApiBaseUrl } from "@quadsmith/shared";
 
 export function AccountSettingsPage() {
   const {
@@ -306,7 +306,8 @@ export function AccountSettingsPage() {
         const res = await verifyDataExport(undefined, undefined, exportDataToken);
         if (active && res.success && res.downloadUrl) {
           const link = document.createElement("a");
-          link.href = res.downloadUrl;
+          const rawUrl = res.downloadUrl;
+          link.href = rawUrl.startsWith("http") ? rawUrl : `${getApiBaseUrl()}${rawUrl}`;
           link.setAttribute("download", res.filename || "quadsmith-data-export.zip");
           document.body.appendChild(link);
           link.click();
@@ -385,7 +386,8 @@ export function AccountSettingsPage() {
         setIsExportModalOpen(false);
 
         const link = document.createElement("a");
-        link.href = res.downloadUrl;
+        const rawUrl = res.downloadUrl;
+        link.href = rawUrl.startsWith("http") ? rawUrl : `${getApiBaseUrl()}${rawUrl}`;
         link.setAttribute("download", res.filename || "quadsmith-data-export.zip");
         document.body.appendChild(link);
         link.click();

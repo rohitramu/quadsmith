@@ -29,11 +29,11 @@ func TestWebServer_ConfigValidation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load web server sandbox config: %v", err)
 	}
-	if cfg.Server.GetPort() != 3000 {
-		t.Errorf("expected port 3000, got %d", cfg.Server.GetPort())
+	if cfg.Server.GetPort() != 8080 {
+		t.Errorf("expected port 8080, got %d", cfg.Server.GetPort())
 	}
-	if cfg.GetApiUrl() != "http://127.0.0.1:8080" {
-		t.Errorf("expected apiUrl http://127.0.0.1:8080, got %s", cfg.GetApiUrl())
+	if cfg.GetApiUrl() != "http://127.0.0.1:8082" {
+		t.Errorf("expected apiUrl http://127.0.0.1:8082, got %s", cfg.GetApiUrl())
 	}
 	if cfg.GetStaticDir() != "src/react/app-web/dist" {
 		t.Errorf("expected staticDir src/react/app-web/dist, got %s", cfg.GetStaticDir())
@@ -52,27 +52,11 @@ func TestWebServer_Endpoints(t *testing.T) {
 		t.Fatalf("failed to write index.html: %v", err)
 	}
 
-	// Mock backend API server
-	mockAPI := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if strings.HasPrefix(r.URL.Path, "/quadsmith.api.") {
-			w.Header().Set("Content-Type", "application/connect+json")
-			_, _ = w.Write([]byte(`{"ok": true}`))
-			return
-		}
-		if strings.HasPrefix(r.URL.Path, "/api/blobs") || strings.HasPrefix(r.URL.Path, "/blobs/") {
-			w.Header().Set("Content-Type", "application/json")
-			_, _ = w.Write([]byte(`{"blob": true}`))
-			return
-		}
-		w.WriteHeader(http.StatusNotFound)
-	}))
-	defer mockAPI.Close()
-
 	cfg := &configpb.WebServerConfig{
-		ApiUrl:    proto.String(mockAPI.URL),
+		ApiUrl:    proto.String("http://127.0.0.1:8082"),
 		StaticDir: proto.String(tempDir),
 		Server: &configpb.ServerConfig{
-			Port:            proto.Int32(3000),
+			Port:            proto.Int32(8080),
 			MaxRequestBytes: proto.Int64(10485760),
 		},
 	}
@@ -87,29 +71,6 @@ func TestWebServer_Endpoints(t *testing.T) {
 	}
 	if recHealth.Body.String() != "ok\n" {
 		t.Errorf("expected 'ok\\n', got %q", recHealth.Body.String())
-	}
-
-	// Test reverse proxy for ConnectRPC /quadsmith.api.AuthService/Login
-	reqRPC := httptest.NewRequest(http.MethodPost, "/quadsmith.api.AuthService/Login", strings.NewReader(`{}`))
-	reqRPC.Header.Set("Content-Type", "application/connect+json")
-	recRPC := httptest.NewRecorder()
-	handler.ServeHTTP(recRPC, reqRPC)
-	if recRPC.Code != http.StatusOK {
-		t.Errorf("expected status 200 for /quadsmith.api.AuthService/Login, got %d", recRPC.Code)
-	}
-	if ct := recRPC.Header().Get("Content-Type"); ct != "application/connect+json" {
-		t.Errorf("expected Content-Type 'application/connect+json', got %q", ct)
-	}
-	if recRPC.Body.String() != `{"ok": true}` {
-		t.Errorf("expected '{\"ok\": true}', got %q", recRPC.Body.String())
-	}
-
-	// Test reverse proxy for /api/blobs
-	reqBlob := httptest.NewRequest(http.MethodGet, "/api/blobs/test-id", nil)
-	recBlob := httptest.NewRecorder()
-	handler.ServeHTTP(recBlob, reqBlob)
-	if recBlob.Code != http.StatusOK {
-		t.Errorf("expected status 200 for /api/blobs/test-id, got %d", recBlob.Code)
 	}
 
 	// Test SPA fallback on /login
