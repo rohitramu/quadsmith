@@ -94,8 +94,11 @@ corroboration checks.
 - **Plan Document Structure & Lifecycle**:
   - Author and iterate on plans within the agent artifact directory
     (`<appDataDir>/brain/<conversation-id>/<plan_name>.md`) during review.
-  - In artifact files, use `&nbsp;` on blank lines between adjacent paragraphs
-    for preview spacing, and `file:///` scheme links for editor clickability.
+  - In artifact files, use `&nbsp;` on blank lines strictly between adjacent
+    prose text paragraphs for preview spacing, and `file:///` scheme links for
+    editor clickability. Never use `&nbsp;` directly above or below headings,
+    horizontal rules (`---`), tables, lists, or code blocks; use regular empty
+    blank lines around them.
   - Upon approval, convert internal file links to repo-relative paths, remove
     `&nbsp;` spacing, and commit the finalized plan to
     `docs/plans/<plan_name>.md` using pure standard Markdown.
@@ -106,6 +109,9 @@ corroboration checks.
     - **Blank Lines for Headings, Lists & Code Blocks**: Bulleted lists,
       headings (except on the very first line of the file), and code blocks must
       have a blank line before and after them.
+    - **Table Boundaries**: Markdown tables must always have a clean, regular
+      empty blank line before and after them. Never place `&nbsp;` immediately
+      after a table, which breaks table termination and merges text into cells.
     - **Line Wrapping at 80 Characters**: Lines should wrap at 80 characters
       whenever possible.
     - **Custom Anchors for All Headings**: Every heading must have a unique
@@ -130,26 +136,25 @@ corroboration checks.
       superseded plans.
     - **2. Goal**
     - **3. Proposal**: Starts with `> **TL;DR:** <explanation>` blockquote (at
-      most 5 statements, with each statement 20 words or less, formatted as
-      either a short paragraph or concise bulleted list), followed by a
-      high-level concept explanation paragraph, then 1 sub-heading per design
-      decision (`### <a id="custom-anchor-text" >Design Decision</a>`) with the
-      proposal explanation directly under it (using diagrams, tables, images, UI
-      screenshots, UI concept images, artifacts, or code snippets with path
-      references as appropriate), and nested
+      most 5 statements, with each statement 20 words or less, crisp and punchy,
+      formatted as either a short paragraph or concise bulleted list), followed
+      by a high-level concept explanation paragraph, then 1 sub-heading per
+      design decision (`### <a id="custom-anchor-text" >Design Decision</a>`)
+      with the proposal explanation directly under it (using diagrams, tables,
+      images, UI screenshots, UI concept images, artifacts, or code snippets
+      with path references as appropriate), and nested
       `#### <a id="custom-anchor-text" >Alternatives considered</a>` containing
-      1 sub-heading per alternative
-      (`##### <a id="custom-anchor-text" >Alternative Name</a>`), each with an
-      unbulleted ~2 sentence summary explaining the alternative, an unbulleted
-      `**Pros:**` label followed by a bulleted list of pros compared to the
-      proposal, and an unbulleted `**Cons:**` label followed by a bulleted list
-      of cons compared to the proposal.
+      1 sub-heading per alternative (`##### <a id="custom-anchor-text"
+      > Alternative
+      > Name</a>`), each with an unbulleted ~2 sentence summary explaining the alternative, an unbulleted`**Pros:**`label, a blank line, a bulleted list of pros compared to the proposal, a blank line, an unbulleted`**Cons:**`
+      > label, a blank line, and a bulleted list of cons compared to the
+      > proposal.
     - **4. Alternatives considered (optional)**: High-level conceptual
       alternatives, containing 1 sub-heading per alternative
       (`### <a id="custom-anchor-text" >Alternative Name</a>`), each with an
       unbulleted ~2 sentence summary explaining the alternative, an unbulleted
-      `**Pros:**` label followed by a bulleted list of pros, and an unbulleted
-      `**Cons:**` label followed by a bulleted list of cons.
+      `**Pros:**` label, a blank line, a bulleted list of pros, a blank line, an
+      unbulleted `**Cons:**` label, a blank line, and a bulleted list of cons.
     - **5. Assumptions (optional)**: Numbered list.
     - **6. Future work (optional)**: 1 sub-heading per idea.
     - **7. Open questions (optional)**: Numbered list.
