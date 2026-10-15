@@ -5,9 +5,6 @@ services:
       dockerfile: test/sandbox/db/Dockerfile
     ports:
       - "${DB_PORT:-5432}:5432"
-      - "${PORT:-8080}:8080"
-      - "${OPS_PORT:-8081}:8081"
-      - "${API_PORT:-8082}:8082"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres -d quadsmith_api"]
       interval: 100ms
@@ -19,12 +16,15 @@ services:
     build:
       context: ../..
       dockerfile: src/go/server-api/Dockerfile
-    network_mode: "service:db"
+    ports:
+      - "${API_PORT:-8081}:8080"
+    environment:
+      - QS_DATABASE_URL=postgres://postgres:postgres@db:5432/quadsmith_api?sslmode=disable
     depends_on:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8082/healthz || exit 1"]
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
       interval: 100ms
       timeout: 1s
       retries: 50
@@ -35,12 +35,16 @@ services:
     build:
       context: ../..
       dockerfile: src/go/server-ops/Dockerfile
-    network_mode: "service:db"
+    ports:
+      - "${OPS_PORT:-8082}:8080"
+    environment:
+      - QS_DATABASE_URL=postgres://postgres:postgres@db:5432/quadsmith_api?sslmode=disable
+      - QS_INTERNAL_DATABASE_URL=postgres://postgres:postgres@db:5432/quadsmith_ops?sslmode=disable
     depends_on:
       db:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8081/healthz || exit 1"]
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
       interval: 100ms
       timeout: 1s
       retries: 50
@@ -51,7 +55,8 @@ services:
     build:
       context: ../..
       dockerfile: src/go/server-jobs/Dockerfile
-    network_mode: "service:db"
+    environment:
+      - QS_OPS_SERVER_URL=http://ops:8080
     depends_on:
       ops:
         condition: service_healthy
@@ -61,7 +66,10 @@ services:
     build:
       context: ../..
       dockerfile: src/go/server-web/Dockerfile
-    network_mode: "service:db"
+    ports:
+      - "${PORT:-8080}:8080"
+    environment:
+      - QS_API_URL=http://api:8080
     depends_on:
       api:
         condition: service_healthy

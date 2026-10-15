@@ -36,9 +36,9 @@ export function getApiBaseUrl(): string {
 
   const { hostname, protocol } = window.location;
 
-  // Local development / sandbox: separate ports (API server on port 8082)
+  // Local development / sandbox: separate ports (API server on port 8081)
   if (hostname === "localhost" || hostname === "127.0.0.1") {
-    return `${protocol}//${hostname}:8082`;
+    return `${protocol}//${hostname}:8081`;
   }
 
   // Production / Staging: sub-domains

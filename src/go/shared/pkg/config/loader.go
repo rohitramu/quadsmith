@@ -349,10 +349,15 @@ func applyJobServerEnvOverrides(cfg *config.JobServerConfig) {
 	if v := os.Getenv("QS_JOB_SERVER_AUTH_TOKEN"); v != "" {
 		cfg.AuthToken = &v
 	}
+	if v := os.Getenv("QS_OPS_SERVER_URL"); v != "" {
+		cfg.OpsServerUrl = &v
+	}
 }
 
 func applyWebServerEnvOverrides(cfg *config.WebServerConfig) {
-	// WebServerConfig contains no secrets or secret environment variable overrides.
+	if v := os.Getenv("QS_API_URL"); v != "" {
+		cfg.ApiUrl = &v
+	}
 }
 
 func applyInternalDatabaseEnvOverrides(db *config.DatabaseConfig) {

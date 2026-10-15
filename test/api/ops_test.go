@@ -23,7 +23,7 @@ func getOpsURL() string {
 	if url := os.Getenv("QS_OPS_URL"); url != "" {
 		return url
 	}
-	return "http://127.0.0.1:8081"
+	return "http://127.0.0.1:8082"
 }
 
 func getOpsDBURL() string {

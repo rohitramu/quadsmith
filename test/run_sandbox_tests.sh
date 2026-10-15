@@ -7,8 +7,8 @@ cd "$ROOT_DIR"
 
 export PORT="${PORT:-8080}"
 export DB_PORT="${DB_PORT:-5432}"
-export OPS_PORT="${OPS_PORT:-8081}"
-export API_PORT="${API_PORT:-8082}"
+export OPS_PORT="${OPS_PORT:-8082}"
+export API_PORT="${API_PORT:-8081}"
 
 API_URL="${QS_CLI_API_URL:-${QS_API_URL:-http://127.0.0.1:${API_PORT}}}"
 OPS_URL="${QS_OPS_SERVER_URL:-${QS_OPS_URL:-http://127.0.0.1:${OPS_PORT}}}"

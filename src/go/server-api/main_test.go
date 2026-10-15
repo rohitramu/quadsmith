@@ -21,8 +21,8 @@ func TestAPIServer_ConfigValidation(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load API server sandbox config: %v", err)
 	}
-	if cfg.Server.GetPort() != 8082 {
-		t.Errorf("expected port 8082, got %d", cfg.Server.GetPort())
+	if cfg.Server.GetPort() != 8080 {
+		t.Errorf("expected port 8080, got %d", cfg.Server.GetPort())
 	}
 }
 

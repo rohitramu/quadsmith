@@ -40,7 +40,7 @@ func main() {
 		log.Fatalf("server-ops: configuration validation failed: %v", err)
 	}
 
-	port := 8081
+	port := 8080
 	if cfg.Server != nil && cfg.Server.GetPort() > 0 {
 		port = int(cfg.Server.GetPort())
 	}

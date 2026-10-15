@@ -35,7 +35,7 @@ WORKDIR /app
 
 RUN apk --no-cache add ca-certificates tzdata
 
-EXPOSE 3000 443
+EXPOSE 8080 443
 
 COPY --from=builder /app/bin/server-web /app/server-web
 COPY --from=web-builder /app/src/react/app-web/dist /app/src/react/app-web/dist

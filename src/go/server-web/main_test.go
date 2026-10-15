@@ -32,8 +32,8 @@ func TestWebServer_ConfigValidation(t *testing.T) {
 	if cfg.Server.GetPort() != 8080 {
 		t.Errorf("expected port 8080, got %d", cfg.Server.GetPort())
 	}
-	if cfg.GetApiUrl() != "http://127.0.0.1:8082" {
-		t.Errorf("expected apiUrl http://127.0.0.1:8082, got %s", cfg.GetApiUrl())
+	if cfg.GetApiUrl() != "http://127.0.0.1:8081" {
+		t.Errorf("expected apiUrl http://127.0.0.1:8081, got %s", cfg.GetApiUrl())
 	}
 	if cfg.GetStaticDir() != "src/react/app-web/dist" {
 		t.Errorf("expected staticDir src/react/app-web/dist, got %s", cfg.GetStaticDir())
@@ -53,7 +53,7 @@ func TestWebServer_Endpoints(t *testing.T) {
 	}
 
 	cfg := &configpb.WebServerConfig{
-		ApiUrl:    proto.String("http://127.0.0.1:8082"),
+		ApiUrl:    proto.String("http://127.0.0.1:8081"),
 		StaticDir: proto.String(tempDir),
 		Server: &configpb.ServerConfig{
 			Port:            proto.Int32(8080),

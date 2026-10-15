@@ -260,7 +260,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server sandbox: %v", err)
 	}
-	if apiSandbox.Server.GetPort() != 8082 || apiSandbox.Database.GetName() != "quadsmith_api" {
+	if apiSandbox.Server.GetPort() != 8080 || apiSandbox.Database.GetName() != "quadsmith_api" {
 		t.Errorf("unexpected api-server sandbox config: %+v", apiSandbox)
 	}
 
@@ -269,7 +269,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-server sandbox: %v", err)
 	}
-	if opsSandbox.Server.GetPort() != 8081 || opsSandbox.Database.GetName() != "quadsmith_api" || opsSandbox.InternalDatabase.GetName() != "quadsmith_ops" {
+	if opsSandbox.Server.GetPort() != 8080 || opsSandbox.Database.GetName() != "quadsmith_api" || opsSandbox.InternalDatabase.GetName() != "quadsmith_ops" {
 		t.Errorf("unexpected ops-server sandbox config: %+v", opsSandbox)
 	}
 
@@ -278,7 +278,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load job-server sandbox: %v", err)
 	}
-	if jobSandbox.GetOpsServerUrl() != "http://127.0.0.1:8081" || len(jobSandbox.Schedules) != 4 {
+	if jobSandbox.GetOpsServerUrl() != "http://127.0.0.1:8082" || len(jobSandbox.Schedules) != 4 {
 		t.Errorf("unexpected job-server sandbox config: %+v", jobSandbox)
 	}
 
@@ -295,7 +295,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops cli sandbox: %v", err)
 	}
-	if opsCliSandbox.GetOpsServerUrl() != "http://127.0.0.1:8081" {
+	if opsCliSandbox.GetOpsServerUrl() != "http://127.0.0.1:8082" {
 		t.Errorf("unexpected ops cli sandbox config: %+v", opsCliSandbox)
 	}
 
@@ -303,7 +303,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load cli sandbox: %v", err)
 	}
-	if cliSandbox.GetApiUrl() != "http://127.0.0.1:8082" {
+	if cliSandbox.GetApiUrl() != "http://127.0.0.1:8081" {
 		t.Errorf("unexpected cli sandbox config: %+v", cliSandbox)
 	}
 
@@ -313,7 +313,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server test: %v", err)
 	}
-	if apiTest.Server.GetPort() != 8082 {
+	if apiTest.Server.GetPort() != 8080 {
 		t.Errorf("unexpected api-server test config: %+v", apiTest)
 	}
 
@@ -322,7 +322,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-server test: %v", err)
 	}
-	if opsTest.Server.GetPort() != 8081 || opsTest.InternalDatabase.GetName() != "quadsmith_ops" {
+	if opsTest.Server.GetPort() != 8080 || opsTest.InternalDatabase.GetName() != "quadsmith_ops" {
 		t.Errorf("unexpected ops-server test config: %+v", opsTest)
 	}
 
@@ -357,7 +357,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-server staging: %v", err)
 	}
-	if opsStaging.Server.GetPort() != 8081 {
+	if opsStaging.Server.GetPort() != 8080 {
 		t.Errorf("unexpected ops-server staging port: %d", opsStaging.Server.GetPort())
 	}
 
@@ -366,7 +366,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-server prod: %v", err)
 	}
-	if opsProd.Server.GetPort() != 8081 {
+	if opsProd.Server.GetPort() != 8080 {
 		t.Errorf("unexpected ops-server prod port: %d", opsProd.Server.GetPort())
 	}
 }

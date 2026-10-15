@@ -115,7 +115,7 @@ func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *config.OpsSe
 	cfg := &config.OpsServerConfig{
 		Environment: proto.String("test"),
 		Server: &config.ServerConfig{
-			Port:            proto.Int32(8081),
+			Port:            proto.Int32(8080),
 			ReadTimeout:     durationpb.New(30 * time.Second),
 			WriteTimeout:    durationpb.New(60 * time.Second),
 			IdleTimeout:     durationpb.New(120 * time.Second),
@@ -193,7 +193,7 @@ func NewTestJobServerConfig(t testing.TB) *config.JobServerConfig {
 	t.Helper()
 	return &config.JobServerConfig{
 		Environment:  proto.String("test"),
-		OpsServerUrl: proto.String("http://127.0.0.1:8081"),
+		OpsServerUrl: proto.String("http://127.0.0.1:8082"),
 		AuthToken:    proto.String("qs_robot_test_token_67890"),
 		Schedules: []*config.JobScheduleConfig{
 			{
