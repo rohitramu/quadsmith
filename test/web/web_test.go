@@ -13,7 +13,7 @@ func getWebURL() string {
 	if u := os.Getenv("QS_WEB_URL"); u != "" {
 		return u
 	}
-	return "http://127.0.0.1:3001"
+	return "http://127.0.0.1:8080"
 }
 
 func TestWeb_Healthz(t *testing.T) {

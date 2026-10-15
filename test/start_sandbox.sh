@@ -9,7 +9,7 @@ cd "$ROOT_DIR"
 export PORT="${1:-8080}"
 export DB_PORT="${DB_PORT:-5432}"
 export OPS_PORT="${OPS_PORT:-8081}"
-export WEB_PORT="${WEB_PORT:-3001}"
+export API_PORT="${API_PORT:-8082}"
 
 echo "--- Stopping any existing sandbox instance ---"
 docker compose -f test/sandbox/docker-compose.yaml down -v >/dev/null 2>&1 || true
@@ -17,5 +17,5 @@ docker compose -f test/sandbox/docker-compose.yaml down -v >/dev/null 2>&1 || tr
 echo "--- Building Sandbox Container Images ---"
 docker compose -f test/sandbox/docker-compose.yaml build
 
-echo "--- Starting Quadsmith Sandbox (API: $PORT, Ops: $OPS_PORT, Web: $WEB_PORT, DB: $DB_PORT) ---"
+echo "--- Starting Quadsmith Sandbox (Web/API on port $PORT, Ops on $OPS_PORT, Direct API on $API_PORT, DB on $DB_PORT) ---"
 docker compose -f test/sandbox/docker-compose.yaml up

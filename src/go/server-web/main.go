@@ -17,7 +17,55 @@ import (
 
 	"quadsmith/shared/pkg/config"
 	"quadsmith/shared/pkg/static"
+
+	configpb "quadsmith/shared/gen/quadsmith/config"
 )
+
+func buildHandler(cfg *configpb.WebServerConfig) http.Handler {
+	mux := http.NewServeMux()
+
+	// Health check
+	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte("ok\n"))
+	})
+
+	var proxy http.Handler
+	if cfg.GetApiUrl() != "" {
+		targetURL, err := url.Parse(cfg.GetApiUrl())
+		if err != nil {
+			log.Fatalf("server-web: invalid api_url %q: %v", cfg.GetApiUrl(), err)
+		}
+		reverseProxy := httputil.NewSingleHostReverseProxy(targetURL)
+		reverseProxy.FlushInterval = -1
+		originalDirector := reverseProxy.Director
+		reverseProxy.Director = func(req *http.Request) {
+			originalDirector(req)
+			req.Host = targetURL.Host
+		}
+		proxy = reverseProxy
+	}
+
+	spaHandler := static.ServeSPA(cfg.GetStaticDir(), cfg.GetApiUrl())
+
+	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if proxy != nil && (strings.HasPrefix(r.URL.Path, "/quadsmith.api.") ||
+			strings.HasPrefix(r.URL.Path, "/api/") ||
+			r.URL.Path == "/api/blobs" ||
+			strings.HasPrefix(r.URL.Path, "/blobs/")) {
+			proxy.ServeHTTP(w, r)
+			return
+		}
+		spaHandler.ServeHTTP(w, r)
+	})
+
+	maxBytes := cfg.Server.GetMaxRequestBytes()
+	if maxBytes <= 0 {
+		maxBytes = 10 << 20 // 10MB
+	}
+
+	return securityHeadersMiddleware(dynamicMaxBytesHandler(mux, maxBytes))
+}
 
 func main() {
 	var configPath string
@@ -37,40 +85,10 @@ func main() {
 		log.Fatalf("server-web: configuration validation failed: %v", err)
 	}
 
-	mux := http.NewServeMux()
-
-	// Health check
-	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte("ok\n"))
-	})
-
-	// Reverse proxy to API server
-	if cfg.GetApiUrl() != "" {
-		targetURL, err := url.Parse(cfg.GetApiUrl())
-		if err != nil {
-			log.Fatalf("server-web: invalid api_url %q: %v", cfg.GetApiUrl(), err)
-		}
-		proxy := httputil.NewSingleHostReverseProxy(targetURL)
-		mux.Handle("/quadsmith.api.", proxy)
-		mux.Handle("/api/account/export", proxy)
-		mux.Handle("/api/blobs", proxy)
-		mux.Handle("/api/blobs/", proxy)
-		mux.Handle("/blobs/", proxy)
-	}
-
-	// SPA & static asset handler
-	mux.Handle("/", static.ServeSPA(cfg.GetStaticDir(), cfg.GetApiUrl()))
-
 	port := strconv.Itoa(int(cfg.Server.GetPort()))
 	fmt.Printf("Starting Quadsmith Web Server on port %s...\n", port)
 
-	maxBytes := cfg.Server.GetMaxRequestBytes()
-	if maxBytes <= 0 {
-		maxBytes = 10 << 20 // 10MB
-	}
-
-	rootHandler := securityHeadersMiddleware(dynamicMaxBytesHandler(mux, maxBytes))
+	handler := buildHandler(cfg)
 
 	readTimeout := 30 * time.Second
 	if cfg.Server.ReadTimeout != nil && cfg.Server.ReadTimeout.AsDuration() > 0 {
@@ -87,7 +105,7 @@ func main() {
 
 	server := &http.Server{
 		Addr:              ":" + port,
-		Handler:           h2c.NewHandler(rootHandler, &http2.Server{}),
+		Handler:           h2c.NewHandler(handler, &http2.Server{}),
 		ReadHeaderTimeout: 5 * time.Second,
 		ReadTimeout:       readTimeout,
 		WriteTimeout:      writeTimeout,
