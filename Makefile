@@ -194,7 +194,7 @@ test: generate bin/qs bin/qsops
 	@echo "--- Running Web UI Tests ---"
 	@cd src/react/app-web && npm test
 	@echo "--- Running E2E Sandbox Tests (Desktop Chrome & Mobile Chrome) ---"
-	@./test/run_sandbox_tests.sh $(if $(PROJECT),--project $(PROJECT),--project chromium-desktop --project chromium-mobile) $(TOOL_ARGS)
+	@./test/run_sandbox_tests.sh $(if $(PROJECT),--project $(PROJECT),--project chromium-desktop --project chromium-mobile) $(if $(SHARD),--shard=$(SHARD)) $(TOOL_ARGS)
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 
 ci-test: generate bin/qs bin/qsops
@@ -210,7 +210,7 @@ ci-test: generate bin/qs bin/qsops
 	@echo "--- Running Web UI Tests ---"
 	@cd src/react/app-web && npm test
 	@echo "--- Running Full E2E Sandbox Tests (All Browsers & Profiles) ---"
-	@./test/run_sandbox_tests.sh $(TOOL_ARGS)
+	@./test/run_sandbox_tests.sh $(if $(SHARD),--shard=$(SHARD)) $(TOOL_ARGS)
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 
 update-snapshots:

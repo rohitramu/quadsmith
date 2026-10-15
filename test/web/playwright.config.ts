@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import os from "node:os";
 
 const projects = [
   {
@@ -52,10 +53,11 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
-  // Default to 1 worker per browser profile (projects.length = 5)
+  // Dynamic default: 50% of CPU threads (minimum 2), leaving adequate headroom
+  // for browser rendering threads, the Go API server, and PostgreSQL.
   workers: process.env.PLAYWRIGHT_WORKERS
     ? parseInt(process.env.PLAYWRIGHT_WORKERS, 10)
-    : projects.length,
+    : Math.max(2, Math.floor(os.cpus().length / 2)),
   reporter: [
     ["list"],
     [

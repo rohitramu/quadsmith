@@ -258,18 +258,15 @@ prevent flaky tests:
      masked using `mask: [page.locator('[data-testid="dynamic-id"]')]`.
    - **Font Readiness**: Enforces `await document.fonts.ready` prior to snapshot
      capture.
-5. **Default Worker Allocation (1 Worker per Browser Profile)**:
-   - Configured by default to allocate exactly 1 worker per browser profile
-     (`workers: 5`, matching the 5 browser profile projects: Chromium Desktop,
-     Chromium Mobile, Firefox Desktop, WebKit Desktop, and WebKit Mobile).
-   - Defaults dynamically to `projects.length` so that every configured browser
-     engine and viewport executes concurrently without worker contention.
-   - Prevents backend connection pool exhaustion, database lock contention, and
-     flakiness against the single sandbox backend server.
+5. **Dynamic Default Worker Allocation (50% CPU Threads)**:
+   - Configured by default to allocate 50% of available CPU threads
+     (`Math.max(2, Math.floor(os.cpus().length / 2))`).
+   - Balances parallel test execution across browser profiles while leaving
+     adequate CPU headroom for browser rendering processes, the Go ConnectRPC
+     API server, and PostgreSQL without thread starvation or thrashing.
    - Developers can override this default via the `PLAYWRIGHT_WORKERS`
      environment variable (e.g., `PLAYWRIGHT_WORKERS=1` for single-threaded
-     debugging or when targeting a single project with
-     `TOOL_ARGS="--project chromium-desktop"`).
+     debugging or explicit worker counts).
 
 #### <a id="alternatives-considered-snapshot-diffing" >Alternatives considered</a>
 
@@ -527,11 +524,11 @@ and CI workflows:
    ```makefile
    # Run unit tests and sandbox E2E tests targeting Chrome Desktop & Chrome Mobile
    test: generate bin/qs bin/qsops
-       @./test/run_sandbox_tests.sh $(if $(PROJECT),--project $(PROJECT),--project chromium-desktop --project chromium-mobile) $(TOOL_ARGS)
+       @./test/run_sandbox_tests.sh $(if $(PROJECT),--project $(PROJECT),--project chromium-desktop --project chromium-mobile) $(if $(SHARD),--shard=$(SHARD)) $(TOOL_ARGS)
 
    # Run unit tests and full sandbox test suite across all 5 browser profiles
    ci-test: generate bin/qs bin/qsops
-       @./test/run_sandbox_tests.sh $(TOOL_ARGS)
+       @./test/run_sandbox_tests.sh $(if $(SHARD),--shard=$(SHARD)) $(TOOL_ARGS)
 
    # Re-baseline golden screenshots after intentional UI changes
    update-snapshots:
@@ -544,12 +541,17 @@ and CI workflows:
            quadsmith-web-e2e $(if $(PROJECT),--project $(PROJECT)) $(TOOL_ARGS)
    ```
 
-3. **Continuous Integration Pipeline (`.github/workflows/ci.yml`)**:
-   - `ci.yml` runs `make ci-test`, executing the entire E2E and visual
-     regression suite across all 5 browser profiles on every pull request and
-     commit to `main`.
-   - CI failure artifacts from `.tmp/playwright-report` are uploaded using
-     `actions/upload-artifact` on test failure for immediate inspection.
+3. **Continuous Integration Pipeline with Sharding
+   (`.github/workflows/ci.yml`)**:
+   - `ci.yml` is structured into two sequential stages:
+     1. `verify`: Runs code generation, formatting, and linting checks in a
+        single job.
+     2. `test`: Executes `make ci-test SHARD=${{ matrix.shard }}` in parallel
+        across runner nodes using a sharding matrix (`shard: [1/2, 2/2]`).
+   - Each CI runner node executes a disjoint slice of the 110-test multi-browser
+     matrix concurrently, reducing CI wall-clock test execution time by ~50%.
+   - On failure, individual shard test reports from `.tmp/playwright-report` are
+     uploaded via `actions/upload-artifact` for immediate debugging.
 
 #### <a id="alternatives-considered-makefile-integration" >Alternatives considered</a>
 
