@@ -15,7 +15,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: '1.22'
+        go-version: '1.27'
 
     - name: Set up Node
       uses: actions/setup-node@v4
@@ -32,7 +32,7 @@ jobs:
 
     - name: Install Web Dependencies
       run: npm ci
-      working-directory: ./src/frontend/web
+      working-directory: ./src/react/app-web
 
     - name: Verify Code Generation
       run: |
@@ -52,17 +52,21 @@ jobs:
         find src test -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
 
         # Format TypeScript, HTML, and CSS
-        npx --prefix src/frontend/web prettier --write "src/frontend/web/index.html" "src/frontend/web/src/**/*.{ts,tsx,css,html}"
+        npx --prefix src/react/app-web prettier --write "src/react/app-web/index.html" "src/react/app-web/src/**/*.{ts,tsx,css,html}"
+
+        # Format and Lint Markdown
+        npx --prefix src/react/app-web prettier --ignore-path .prettierignore --write "**/*.md"
+        npx --prefix src/react/app-web markdownlint -c .markdownlint.json --ignore-path .markdownlintignore --fix "**/*.md"
 
         # Format Python (isort + ruff format)
         uvx ruff check --select I --fix tools/
         uvx ruff format tools/
         
         # Format SQL
-        for f in src/backend/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$f"; done
+        for f in src/go/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$f"; done
         
         # Ensure that no files were modified by the formatters
-        git diff --exit-code || (echo "Code formatting is out of sync. Please ensure you are running formatters on Python, Go, TypeScript, HTML, CSS, Protobuf, and Textproto files." && exit 1)
+        git diff --exit-code || (echo "Code formatting is out of sync. Please ensure you are running formatters on Python, Go, TypeScript, HTML, CSS, Protobuf, Textproto, and Markdown files." && exit 1)
 
     - name: Run Tests
       run: make test

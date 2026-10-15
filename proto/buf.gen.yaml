@@ -1,27 +1,27 @@
 version: v1
 plugins:
   - plugin: go
-    out: ../src/backend/shared/gen
+    out: ../src/go/shared/gen
     opt: paths=source_relative
   - plugin: connect-go
-    out: ../src/backend/shared/gen
+    out: ../src/go/shared/gen
     opt: paths=source_relative
   - plugin: sql
-    out: ../src/backend/db
+    out: ../src/go/db
     path: ../bin/protoc-gen-sql
   - plugin: store
-    out: ../src/backend/shared/gen
+    out: ../src/go/shared/gen
     path: ../bin/protoc-gen-store
     opt: paths=source_relative
   - plugin: server
-    out: ../src/backend/shared/gen
+    out: ../src/go/shared/gen
     path: ../bin/protoc-gen-server
     opt: paths=source_relative
   - plugin: es
-    out: ../src/frontend/web/app/src/gen
-    path: ../src/frontend/web/app/node_modules/.bin/protoc-gen-es
+    out: ../src/react/app-web/src/gen
+    path: ../src/react/app-web/node_modules/.bin/protoc-gen-es
     opt: target=ts
   - plugin: connect-query
-    out: ../src/frontend/web/app/src/gen
-    path: ../src/frontend/web/app/node_modules/.bin/protoc-gen-connect-query
+    out: ../src/react/app-web/src/gen
+    path: ../src/react/app-web/node_modules/.bin/protoc-gen-connect-query
     opt: target=ts

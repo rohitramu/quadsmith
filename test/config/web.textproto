@@ -1,0 +1,18 @@
+environment: "sandbox"
+
+server {
+  port: 3000
+  read_timeout {
+    seconds: 15
+  }
+  write_timeout {
+    seconds: 15
+  }
+  idle_timeout {
+    seconds: 60
+  }
+  max_request_bytes: 10485760
+}
+
+static_dir: "src/react/app-web/dist"
+api_url: "http://api:8080"

@@ -1,0 +1,41 @@
+FROM node:22 AS web-builder
+WORKDIR /app
+
+COPY src/react/app-web/package.json src/react/app-web/package-lock.json* ./
+RUN npm install
+
+COPY src/react/app-web/ .
+RUN npm run build
+
+FROM golang:1.27 AS builder
+WORKDIR /app
+ENV GOWORK=/app/src/go/go.work
+
+COPY src/go/go.work src/go/go.work.sum* ./src/go/
+COPY src/go/build_deps/go.mod src/go/build_deps/go.sum* ./src/go/build_deps/
+COPY src/go/shared/go.mod src/go/shared/go.sum* ./src/go/shared/
+COPY src/go/server-api/go.mod src/go/server-api/go.sum* ./src/go/server-api/
+COPY src/go/server-ops/go.mod src/go/server-ops/go.sum* ./src/go/server-ops/
+COPY src/go/server-jobs/go.mod src/go/server-jobs/go.sum* ./src/go/server-jobs/
+COPY src/go/server-web/go.mod src/go/server-web/go.sum* ./src/go/server-web/
+COPY src/go/cli/go.mod src/go/cli/go.sum* ./src/go/cli/
+COPY src/go/cli-ops/go.mod src/go/cli-ops/go.sum* ./src/go/cli-ops/
+COPY test/go.mod test/go.sum* ./test/
+COPY src/go/vendor/ ./src/go/vendor/
+
+COPY . .
+
+RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor -ldflags="-w -s" -o /app/bin/server-web ./src/go/server-web/main.go
+
+FROM alpine:latest
+WORKDIR /app
+
+RUN apk --no-cache add ca-certificates tzdata
+
+EXPOSE 3000 443
+
+COPY --from=builder /app/bin/server-web /app/server-web
+COPY --from=web-builder /app/dist /app/src/react/app-web/dist
+COPY src/go/server-web/config /app/src/go/server-web/config
+
+ENTRYPOINT ["/app/server-web", "--config", "/app/src/go/server-web/config/prod.textproto"]

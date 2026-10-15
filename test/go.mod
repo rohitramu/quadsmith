@@ -25,6 +25,6 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20240826202546-f6391c0de4c7 // indirect
 )
 
-replace quadsmith/shared => ../src/backend/shared
+replace quadsmith/shared => ../src/go/shared
 
-replace quadsmith/server-ops => ../src/backend/server-ops
+replace quadsmith/server-ops => ../src/go/server-ops

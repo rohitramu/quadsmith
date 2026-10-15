@@ -1,0 +1,43 @@
+FROM golang:1.27 AS builder
+WORKDIR /app
+ENV GOWORK=/app/src/go/go.work
+
+COPY src/go/go.work src/go/go.work.sum* ./src/go/
+COPY src/go/build_deps/go.mod src/go/build_deps/go.sum* ./src/go/build_deps/
+COPY src/go/shared/go.mod src/go/shared/go.sum* ./src/go/shared/
+COPY src/go/server-api/go.mod src/go/server-api/go.sum* ./src/go/server-api/
+COPY src/go/server-ops/go.mod src/go/server-ops/go.sum* ./src/go/server-ops/
+COPY src/go/server-jobs/go.mod src/go/server-jobs/go.sum* ./src/go/server-jobs/
+COPY src/go/server-web/go.mod src/go/server-web/go.sum* ./src/go/server-web/
+COPY src/go/cli/go.mod src/go/cli/go.sum* ./src/go/cli/
+COPY src/go/cli-ops/go.mod src/go/cli-ops/go.sum* ./src/go/cli-ops/
+COPY test/go.mod test/go.sum* ./test/
+COPY src/go/vendor/ ./src/go/vendor/
+COPY . .
+
+RUN --mount=type=cache,target=/root/.cache/go-build \
+    CGO_ENABLED=0 GOOS=linux go build -mod=vendor -o /app/bin/seeder ./src/go/shared/cmd/seeder
+
+FROM postgres:15
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=postgres
+ENV POSTGRES_DB=quadsmith_api
+ENV PGDATA=/var/lib/postgresql/pgdata
+
+WORKDIR /app
+
+COPY --from=builder /app/bin/seeder /app/seeder
+COPY src/go/db/quadsmith_api.sql /app/src/go/db/quadsmith_api.sql
+COPY src/go/db/quadsmith_ops.sql /app/src/go/db/quadsmith_ops.sql
+COPY test/seed_data /app/test/seed_data
+COPY src/go/server-api/config /app/src/go/server-api/config
+
+RUN docker-entrypoint.sh postgres & \
+    pid=$! && \
+    until pg_isready -h 127.0.0.1 -U postgres >/dev/null 2>&1; do sleep 0.1; done && \
+    psql -U postgres -c "CREATE DATABASE quadsmith_ops;" && \
+    psql -U postgres -d quadsmith_api < /app/src/go/db/quadsmith_api.sql && \
+    psql -U postgres -d quadsmith_ops < /app/src/go/db/quadsmith_ops.sql && \
+    /app/seeder --config /app/src/go/server-api/config/sandbox.textproto && \
+    gosu postgres pg_ctl -D "$PGDATA" -m fast -w stop && \
+    wait $pid
