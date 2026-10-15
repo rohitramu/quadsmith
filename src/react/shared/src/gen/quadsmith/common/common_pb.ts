@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_common_common: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Ch1xdWFkc21pdGgvY29tbW9uL2NvbW1vbi5wcm90bxIQcXVhZHNtaXRoLmNvbW1vbiI+Cg9Gcm9udGVuZE9wdGlvbnMSFwoPZGVmYXVsdF9jb2x1bW5zGAEgAygJEhIKCmNvbG9yX2NvZGUYAiABKAk6YAoIZnJvbnRlbmQSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY0YYDIAEoCzIhLnF1YWRzbWl0aC5jb21tb24uRnJvbnRlbmRPcHRpb25zUghmcm9udGVuZDpKCg9jb2xsZWN0aW9uX3BhdGgSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMY04YDIAEoCVIOY29sbGVjdGlvblBhdGhCLloscXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2NvbW1vbjtjb21tb25iBnByb3RvMw",
+    "Ch1xdWFkc21pdGgvY29tbW9uL2NvbW1vbi5wcm90bxIQcXVhZHNtaXRoLmNvbW1vbiIqCg9Gcm9udGVuZE9wdGlvbnMSFwoPZGVmYXVsdF9jb2x1bW5zGAEgAygJOmAKCGZyb250ZW5kEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGNGGAyABKAsyIS5xdWFkc21pdGguY29tbW9uLkZyb250ZW5kT3B0aW9uc1IIZnJvbnRlbmQ6SgoPY29sbGVjdGlvbl9wYXRoEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGNOGAyABKAlSDmNvbGxlY3Rpb25QYXRoQi5aLHF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9jb21tb247Y29tbW9uYgZwcm90bzM",
     [file_google_protobuf_descriptor],
   );
 
@@ -28,13 +28,6 @@ export type FrontendOptions = Message<"quadsmith.common.FrontendOptions"> & {
    * @generated from field: repeated string default_columns = 1;
    */
   defaultColumns: string[];
-
-  /**
-   * The primary color code for this resource collection (e.g., hex code "#10b981").
-   *
-   * @generated from field: string color_code = 2;
-   */
-  colorCode: string;
 };
 
 /**

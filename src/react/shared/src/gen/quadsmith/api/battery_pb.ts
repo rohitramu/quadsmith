@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_battery: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChtxdWFkc21pdGgvYXBpL2JhdHRlcnkucHJvdG8SDXF1YWRzbWl0aC5hcGkiPwoUQ3JlYXRlQmF0dGVyeVJlcXVlc3QSJwoHYmF0dGVyeRgBIAEoCzIWLnF1YWRzbWl0aC5hcGkuQmF0dGVyeSIiChREZWxldGVCYXR0ZXJ5UmVxdWVzdBIKCgJpZBgBIAEoCSIsChVEZWxldGVCYXR0ZXJ5UmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiMAoRR2V0QmF0dGVyeVJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJsChRMaXN0QmF0dGVyaWVzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlsKFUxpc3RCYXR0ZXJpZXNSZXNwb25zZRIpCgliYXR0ZXJpZXMYASADKAsyFi5xdWFkc21pdGguYXBpLkJhdHRlcnkSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIj8KFFVwZGF0ZUJhdHRlcnlSZXF1ZXN0EicKB2JhdHRlcnkYASABKAsyFi5xdWFkc21pdGguYXBpLkJhdHRlcnkilgcKB0JhdHRlcnkSOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSFgoCaWQYAiABKAlCCsLzGAJAAcDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkCEhgKBG5hbWUYBCABKAlCCsLzGAJAAcDwGQISFgoId2VpZ2h0X2cYBSABKAJCBMDwGQISGgoMY2FwYWNpdHlfbWFoGAYgASgNQgTA8BkCEiAKDGNlbGxfY291bnRfcxgHIAEoDUIKwvMYAigBwPAZAhIXCgljaGVtaXN0cnkYCCABKAlCBMDwGQISFwoJY29ubmVjdG9yGAkgASgJQgTA8BkCEh8KC2Rlc2NyaXB0aW9uGAogASgJQgrC8xgCQAHA8BkCEkEKD3JlZmVyZW5jZV9saW5rcxgLIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGlua0IKwvMYAkABwPAZAhIuChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYDCABKAlCCsLzGAJAAcDwGQJIAIgBARIvCgVtZWRpYRgNIAMoCzIULnF1YWRzbWl0aC5hcGkuTWVkaWFCCsLzGAJAAcDwGQISGQoLbWluX3ZvbHRhZ2UYDiABKAJCBMDwGQISGQoLbWF4X3ZvbHRhZ2UYDyABKAJCBMDwGQISGwoNbWF4X2N1cnJlbnRfYRgQIAEoAkIEwPAZAhIiCgl1c2VyX3V1aWQYESABKAlCCsLzGAJAAcDwGQRIAYgBARIoCg9hdXRob3JfdXNlcm5hbWUYEiABKAlCCsLzGAJAAcDwGQJIAogBATrQAYq1GDkKDG1hbnVmYWN0dXJlcgoEbmFtZQoMY2VsbF9jb3VudF9zCgxjYXBhY2l0eV9tYWgSByM4NGNjMTaatRgdY29tcG9uZW50cy9oYXJkd2FyZS9iYXR0ZXJpZXPC8xgLCgliYXR0ZXJpZXPC8BlfCAUSW3V1aWQgSU4gKFNFTEVDVCB1dWlkIEZST00gZW50aXRpZXMgV0hFUkUgY29sbGVjdGlvbiA9ICdiYXR0ZXJpZXMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUyrAMKDkJhdHRlcnlTZXJ2aWNlEkYKCkdldEJhdHRlcnkSIC5xdWFkc21pdGguYXBpLkdldEJhdHRlcnlSZXF1ZXN0GhYucXVhZHNtaXRoLmFwaS5CYXR0ZXJ5EloKDUxpc3RCYXR0ZXJpZXMSIy5xdWFkc21pdGguYXBpLkxpc3RCYXR0ZXJpZXNSZXF1ZXN0GiQucXVhZHNtaXRoLmFwaS5MaXN0QmF0dGVyaWVzUmVzcG9uc2USTAoNQ3JlYXRlQmF0dGVyeRIjLnF1YWRzbWl0aC5hcGkuQ3JlYXRlQmF0dGVyeVJlcXVlc3QaFi5xdWFkc21pdGguYXBpLkJhdHRlcnkSTAoNVXBkYXRlQmF0dGVyeRIjLnF1YWRzbWl0aC5hcGkuVXBkYXRlQmF0dGVyeVJlcXVlc3QaFi5xdWFkc21pdGguYXBpLkJhdHRlcnkSWgoNRGVsZXRlQmF0dGVyeRIjLnF1YWRzbWl0aC5hcGkuRGVsZXRlQmF0dGVyeVJlcXVlc3QaJC5xdWFkc21pdGguYXBpLkRlbGV0ZUJhdHRlcnlSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
+    "ChtxdWFkc21pdGgvYXBpL2JhdHRlcnkucHJvdG8SDXF1YWRzbWl0aC5hcGkijQcKB0JhdHRlcnkSOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSFgoCaWQYAiABKAlCCsLzGAJAAcDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkCEhgKBG5hbWUYBCABKAlCCsLzGAJAAcDwGQISFgoId2VpZ2h0X2cYBSABKAJCBMDwGQISGgoMY2FwYWNpdHlfbWFoGAYgASgNQgTA8BkCEiAKDGNlbGxfY291bnRfcxgHIAEoDUIKwvMYAigBwPAZAhIXCgljaGVtaXN0cnkYCCABKAlCBMDwGQISFwoJY29ubmVjdG9yGAkgASgJQgTA8BkCEh8KC2Rlc2NyaXB0aW9uGAogASgJQgrC8xgCQAHA8BkCEkEKD3JlZmVyZW5jZV9saW5rcxgLIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGlua0IKwvMYAkABwPAZAhIuChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYDCABKAlCCsLzGAJAAcDwGQJIAIgBARIvCgVtZWRpYRgNIAMoCzIULnF1YWRzbWl0aC5hcGkuTWVkaWFCCsLzGAJAAcDwGQISGQoLbWluX3ZvbHRhZ2UYDiABKAJCBMDwGQISGQoLbWF4X3ZvbHRhZ2UYDyABKAJCBMDwGQISGwoNbWF4X2N1cnJlbnRfYRgQIAEoAkIEwPAZAhIiCgl1c2VyX3V1aWQYESABKAlCCsLzGAJAAcDwGQRIAYgBARIoCg9hdXRob3JfdXNlcm5hbWUYEiABKAlCCsLzGAJAAcDwGQJIAogBATrHAYq1GDAKDG1hbnVmYWN0dXJlcgoEbmFtZQoMY2VsbF9jb3VudF9zCgxjYXBhY2l0eV9tYWiatRgdY29tcG9uZW50cy9oYXJkd2FyZS9iYXR0ZXJpZXPC8xgLCgliYXR0ZXJpZXPC8BlfCAUSW3V1aWQgSU4gKFNFTEVDVCB1dWlkIEZST00gZW50aXRpZXMgV0hFUkUgY29sbGVjdGlvbiA9ICdiYXR0ZXJpZXMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiPwoUQ3JlYXRlQmF0dGVyeVJlcXVlc3QSJwoHYmF0dGVyeRgBIAEoCzIWLnF1YWRzbWl0aC5hcGkuQmF0dGVyeSIiChREZWxldGVCYXR0ZXJ5UmVxdWVzdBIKCgJpZBgBIAEoCSIsChVEZWxldGVCYXR0ZXJ5UmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiMAoRR2V0QmF0dGVyeVJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJsChRMaXN0QmF0dGVyaWVzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlsKFUxpc3RCYXR0ZXJpZXNSZXNwb25zZRIpCgliYXR0ZXJpZXMYASADKAsyFi5xdWFkc21pdGguYXBpLkJhdHRlcnkSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIj8KFFVwZGF0ZUJhdHRlcnlSZXF1ZXN0EicKB2JhdHRlcnkYASABKAsyFi5xdWFkc21pdGguYXBpLkJhdHRlcnkyrAMKDkJhdHRlcnlTZXJ2aWNlEkYKCkdldEJhdHRlcnkSIC5xdWFkc21pdGguYXBpLkdldEJhdHRlcnlSZXF1ZXN0GhYucXVhZHNtaXRoLmFwaS5CYXR0ZXJ5EloKDUxpc3RCYXR0ZXJpZXMSIy5xdWFkc21pdGguYXBpLkxpc3RCYXR0ZXJpZXNSZXF1ZXN0GiQucXVhZHNtaXRoLmFwaS5MaXN0QmF0dGVyaWVzUmVzcG9uc2USTAoNQ3JlYXRlQmF0dGVyeRIjLnF1YWRzbWl0aC5hcGkuQ3JlYXRlQmF0dGVyeVJlcXVlc3QaFi5xdWFkc21pdGguYXBpLkJhdHRlcnkSTAoNVXBkYXRlQmF0dGVyeRIjLnF1YWRzbWl0aC5hcGkuVXBkYXRlQmF0dGVyeVJlcXVlc3QaFi5xdWFkc21pdGguYXBpLkJhdHRlcnkSWgoNRGVsZXRlQmF0dGVyeRIjLnF1YWRzbWl0aC5hcGkuRGVsZXRlQmF0dGVyeVJlcXVlc3QaJC5xdWFkc21pdGguYXBpLkRlbGV0ZUJhdHRlcnlSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -30,170 +30,6 @@ export const file_quadsmith_api_battery: GenFile =
   );
 
 /**
- * ---------------------------------------------------------
- * 2. RPC Requests & Responses (Callers Precede Callees)
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.CreateBatteryRequest
- */
-export type CreateBatteryRequest = Message<"quadsmith.api.CreateBatteryRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Battery battery = 1;
-   */
-  battery?: Battery | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateBatteryRequest.
- * Use `create(CreateBatteryRequestSchema)` to create a new message.
- */
-export const CreateBatteryRequestSchema: GenMessage<CreateBatteryRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_battery, 0);
-
-/**
- * @generated from message quadsmith.api.DeleteBatteryRequest
- */
-export type DeleteBatteryRequest = Message<"quadsmith.api.DeleteBatteryRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteBatteryRequest.
- * Use `create(DeleteBatteryRequestSchema)` to create a new message.
- */
-export const DeleteBatteryRequestSchema: GenMessage<DeleteBatteryRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_battery, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteBatteryResponse
- */
-export type DeleteBatteryResponse = Message<"quadsmith.api.DeleteBatteryResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteBatteryResponse.
- * Use `create(DeleteBatteryResponseSchema)` to create a new message.
- */
-export const DeleteBatteryResponseSchema: GenMessage<DeleteBatteryResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_battery, 2);
-
-/**
- * @generated from message quadsmith.api.GetBatteryRequest
- */
-export type GetBatteryRequest = Message<"quadsmith.api.GetBatteryRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
-
-/**
- * Describes the message quadsmith.api.GetBatteryRequest.
- * Use `create(GetBatteryRequestSchema)` to create a new message.
- */
-export const GetBatteryRequestSchema: GenMessage<GetBatteryRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_battery, 3);
-
-/**
- * @generated from message quadsmith.api.ListBatteriesRequest
- */
-export type ListBatteriesRequest = Message<"quadsmith.api.ListBatteriesRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
-
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
-
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
-
-/**
- * Describes the message quadsmith.api.ListBatteriesRequest.
- * Use `create(ListBatteriesRequestSchema)` to create a new message.
- */
-export const ListBatteriesRequestSchema: GenMessage<ListBatteriesRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_battery, 4);
-
-/**
- * @generated from message quadsmith.api.ListBatteriesResponse
- */
-export type ListBatteriesResponse = Message<"quadsmith.api.ListBatteriesResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.Battery batteries = 1;
-   */
-  batteries: Battery[];
-
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
-
-/**
- * Describes the message quadsmith.api.ListBatteriesResponse.
- * Use `create(ListBatteriesResponseSchema)` to create a new message.
- */
-export const ListBatteriesResponseSchema: GenMessage<ListBatteriesResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_battery, 5);
-
-/**
- * @generated from message quadsmith.api.UpdateBatteryRequest
- */
-export type UpdateBatteryRequest = Message<"quadsmith.api.UpdateBatteryRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Battery battery = 1;
-   */
-  battery?: Battery | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateBatteryRequest.
- * Use `create(UpdateBatteryRequestSchema)` to create a new message.
- */
-export const UpdateBatteryRequestSchema: GenMessage<UpdateBatteryRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_battery, 6);
-
-/**
- * ---------------------------------------------------------
- * 3. Domain Model (Referenced by Services and Requests above)
- * ---------------------------------------------------------
- *
  * @generated from message quadsmith.api.Battery
  */
 export type Battery = Message<"quadsmith.api.Battery"> & {
@@ -308,13 +144,165 @@ export type Battery = Message<"quadsmith.api.Battery"> & {
  */
 export const BatterySchema: GenMessage<Battery> =
   /*@__PURE__*/
+  messageDesc(file_quadsmith_api_battery, 0);
+
+/**
+ * @generated from message quadsmith.api.CreateBatteryRequest
+ */
+export type CreateBatteryRequest = Message<"quadsmith.api.CreateBatteryRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.Battery battery = 1;
+   */
+  battery?: Battery | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.CreateBatteryRequest.
+ * Use `create(CreateBatteryRequestSchema)` to create a new message.
+ */
+export const CreateBatteryRequestSchema: GenMessage<CreateBatteryRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_battery, 1);
+
+/**
+ * @generated from message quadsmith.api.DeleteBatteryRequest
+ */
+export type DeleteBatteryRequest = Message<"quadsmith.api.DeleteBatteryRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteBatteryRequest.
+ * Use `create(DeleteBatteryRequestSchema)` to create a new message.
+ */
+export const DeleteBatteryRequestSchema: GenMessage<DeleteBatteryRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_battery, 2);
+
+/**
+ * @generated from message quadsmith.api.DeleteBatteryResponse
+ */
+export type DeleteBatteryResponse = Message<"quadsmith.api.DeleteBatteryResponse"> & {
+  /**
+   * @generated from field: bool is_archived = 1;
+   */
+  isArchived: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteBatteryResponse.
+ * Use `create(DeleteBatteryResponseSchema)` to create a new message.
+ */
+export const DeleteBatteryResponseSchema: GenMessage<DeleteBatteryResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_battery, 3);
+
+/**
+ * @generated from message quadsmith.api.GetBatteryRequest
+ */
+export type GetBatteryRequest = Message<"quadsmith.api.GetBatteryRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.GetBatteryRequest.
+ * Use `create(GetBatteryRequestSchema)` to create a new message.
+ */
+export const GetBatteryRequestSchema: GenMessage<GetBatteryRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_battery, 4);
+
+/**
+ * @generated from message quadsmith.api.ListBatteriesRequest
+ */
+export type ListBatteriesRequest = Message<"quadsmith.api.ListBatteriesRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
+
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListBatteriesRequest.
+ * Use `create(ListBatteriesRequestSchema)` to create a new message.
+ */
+export const ListBatteriesRequestSchema: GenMessage<ListBatteriesRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_battery, 5);
+
+/**
+ * @generated from message quadsmith.api.ListBatteriesResponse
+ */
+export type ListBatteriesResponse = Message<"quadsmith.api.ListBatteriesResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.Battery batteries = 1;
+   */
+  batteries: Battery[];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListBatteriesResponse.
+ * Use `create(ListBatteriesResponseSchema)` to create a new message.
+ */
+export const ListBatteriesResponseSchema: GenMessage<ListBatteriesResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_battery, 6);
+
+/**
+ * @generated from message quadsmith.api.UpdateBatteryRequest
+ */
+export type UpdateBatteryRequest = Message<"quadsmith.api.UpdateBatteryRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.Battery battery = 1;
+   */
+  battery?: Battery | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.UpdateBatteryRequest.
+ * Use `create(UpdateBatteryRequestSchema)` to create a new message.
+ */
+export const UpdateBatteryRequestSchema: GenMessage<UpdateBatteryRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_api_battery, 7);
 
 /**
- * ---------------------------------------------------------
- * 1. gRPC Service (Services First)
- * ---------------------------------------------------------
- *
  * @generated from service quadsmith.api.BatteryService
  */
 export const BatteryService: GenService<{

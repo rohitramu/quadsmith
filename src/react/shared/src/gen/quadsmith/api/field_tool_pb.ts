@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_field_tool: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Ch5xdWFkc21pdGgvYXBpL2ZpZWxkX3Rvb2wucHJvdG8SDXF1YWRzbWl0aC5hcGkiRgoWQ3JlYXRlRmllbGRUb29sUmVxdWVzdBIsCgpmaWVsZF90b29sGAEgASgLMhgucXVhZHNtaXRoLmFwaS5GaWVsZFRvb2wiJAoWRGVsZXRlRmllbGRUb29sUmVxdWVzdBIKCgJpZBgBIAEoCSIuChdEZWxldGVGaWVsZFRvb2xSZXNwb25zZRITCgtpc19hcmNoaXZlZBgBIAEoCCIyChNHZXRGaWVsZFRvb2xSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkibQoVTGlzdEZpZWxkVG9vbHNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiYAoWTGlzdEZpZWxkVG9vbHNSZXNwb25zZRItCgtmaWVsZF90b29scxgBIAMoCzIYLnF1YWRzbWl0aC5hcGkuRmllbGRUb29sEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSJGChZVcGRhdGVGaWVsZFRvb2xSZXF1ZXN0EiwKCmZpZWxkX3Rvb2wYASABKAsyGC5xdWFkc21pdGguYXBpLkZpZWxkVG9vbCKTBgoJRmllbGRUb29sEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhYKAmlkGAIgASgJQgrC8xgCQAHA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZAhIYCgRuYW1lGAQgASgJQgrC8xgCQAHA8BkCEhYKCHdlaWdodF9nGAUgASgCQgTA8BkCEhcKCXRvb2xfdHlwZRgGIAEoCUIEwPAZAhIaCgxwb3dlcl9zb3VyY2UYByABKAlCBMDwGQISHwoLZGVzY3JpcHRpb24YCCABKAlCCsLzGAJAAcDwGQISQQoPcmVmZXJlbmNlX2xpbmtzGAkgAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgrC8xgCQAHA8BkCEi4KFXByaW1hcnlfZGlzcGxheV9pbWFnZRgKIAEoCUIKwvMYAkABwPAZAkgAiAEBEi8KBW1lZGlhGAsgAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIKwvMYAkABwPAZAhIiCgl1c2VyX3V1aWQYDCABKAlCCsLzGAJAAcDwGQRIAYgBARIoCg9hdXRob3JfdXNlcm5hbWUYDSABKAlCCsLzGAJAAcDwGQJIAogBATrZAYq1GEAKDG1hbnVmYWN0dXJlcgoEbmFtZQoJdG9vbF90eXBlCgxwb3dlcl9zb3VyY2UKCHdlaWdodF9nEgcjZjQzZjVlmrUYG2NvbXBvbmVudHMvZ2Vhci9maWVsZC10b29sc8LzGA0KC2ZpZWxkX3Rvb2xzwvAZYQgFEl11dWlkIElOIChTRUxFQ1QgdXVpZCBGUk9NIGVudGl0aWVzIFdIRVJFIGNvbGxlY3Rpb24gPSAnZmllbGQtdG9vbHMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUyyQMKEEZpZWxkVG9vbFNlcnZpY2USTAoMR2V0RmllbGRUb29sEiIucXVhZHNtaXRoLmFwaS5HZXRGaWVsZFRvb2xSZXF1ZXN0GhgucXVhZHNtaXRoLmFwaS5GaWVsZFRvb2wSXQoOTGlzdEZpZWxkVG9vbHMSJC5xdWFkc21pdGguYXBpLkxpc3RGaWVsZFRvb2xzUmVxdWVzdBolLnF1YWRzbWl0aC5hcGkuTGlzdEZpZWxkVG9vbHNSZXNwb25zZRJSCg9DcmVhdGVGaWVsZFRvb2wSJS5xdWFkc21pdGguYXBpLkNyZWF0ZUZpZWxkVG9vbFJlcXVlc3QaGC5xdWFkc21pdGguYXBpLkZpZWxkVG9vbBJSCg9VcGRhdGVGaWVsZFRvb2wSJS5xdWFkc21pdGguYXBpLlVwZGF0ZUZpZWxkVG9vbFJlcXVlc3QaGC5xdWFkc21pdGguYXBpLkZpZWxkVG9vbBJgCg9EZWxldGVGaWVsZFRvb2wSJS5xdWFkc21pdGguYXBpLkRlbGV0ZUZpZWxkVG9vbFJlcXVlc3QaJi5xdWFkc21pdGguYXBpLkRlbGV0ZUZpZWxkVG9vbFJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "Ch5xdWFkc21pdGgvYXBpL2ZpZWxkX3Rvb2wucHJvdG8SDXF1YWRzbWl0aC5hcGkiigYKCUZpZWxkVG9vbBI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIWCgJpZBgCIAEoCUIKwvMYAkABwPAZBBIgCgxtYW51ZmFjdHVyZXIYAyABKAlCCsLzGAIoAcDwGQISGAoEbmFtZRgEIAEoCUIKwvMYAkABwPAZAhIWCgh3ZWlnaHRfZxgFIAEoAkIEwPAZAhIXCgl0b29sX3R5cGUYBiABKAlCBMDwGQISGgoMcG93ZXJfc291cmNlGAcgASgJQgTA8BkCEh8KC2Rlc2NyaXB0aW9uGAggASgJQgrC8xgCQAHA8BkCEkEKD3JlZmVyZW5jZV9saW5rcxgJIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGlua0IKwvMYAkABwPAZAhIuChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYCiABKAlCCsLzGAJAAcDwGQJIAIgBARIvCgVtZWRpYRgLIAMoCzIULnF1YWRzbWl0aC5hcGkuTWVkaWFCCsLzGAJAAcDwGQISIgoJdXNlcl91dWlkGAwgASgJQgrC8xgCQAHA8BkESAGIAQESKAoPYXV0aG9yX3VzZXJuYW1lGA0gASgJQgrC8xgCQAHA8BkCSAKIAQE60AGKtRg3CgxtYW51ZmFjdHVyZXIKBG5hbWUKCXRvb2xfdHlwZQoMcG93ZXJfc291cmNlCgh3ZWlnaHRfZ5q1GBtjb21wb25lbnRzL2dlYXIvZmllbGQtdG9vbHPC8xgNCgtmaWVsZF90b29sc8LwGWEIBRJddXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSBlbnRpdGllcyBXSEVSRSBjb2xsZWN0aW9uID0gJ2ZpZWxkLXRvb2xzJyBBTkQgdXNlcl91dWlkID0gJDE6OnV1aWQpQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2VCDAoKX3VzZXJfdXVpZEISChBfYXV0aG9yX3VzZXJuYW1lIkYKFkNyZWF0ZUZpZWxkVG9vbFJlcXVlc3QSLAoKZmllbGRfdG9vbBgBIAEoCzIYLnF1YWRzbWl0aC5hcGkuRmllbGRUb29sIiQKFkRlbGV0ZUZpZWxkVG9vbFJlcXVlc3QSCgoCaWQYASABKAkiLgoXRGVsZXRlRmllbGRUb29sUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiMgoTR2V0RmllbGRUb29sUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJIm0KFUxpc3RGaWVsZFRvb2xzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJImAKFkxpc3RGaWVsZFRvb2xzUmVzcG9uc2USLQoLZmllbGRfdG9vbHMYASADKAsyGC5xdWFkc21pdGguYXBpLkZpZWxkVG9vbBIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiRgoWVXBkYXRlRmllbGRUb29sUmVxdWVzdBIsCgpmaWVsZF90b29sGAEgASgLMhgucXVhZHNtaXRoLmFwaS5GaWVsZFRvb2wyyQMKEEZpZWxkVG9vbFNlcnZpY2USTAoMR2V0RmllbGRUb29sEiIucXVhZHNtaXRoLmFwaS5HZXRGaWVsZFRvb2xSZXF1ZXN0GhgucXVhZHNtaXRoLmFwaS5GaWVsZFRvb2wSXQoOTGlzdEZpZWxkVG9vbHMSJC5xdWFkc21pdGguYXBpLkxpc3RGaWVsZFRvb2xzUmVxdWVzdBolLnF1YWRzbWl0aC5hcGkuTGlzdEZpZWxkVG9vbHNSZXNwb25zZRJSCg9DcmVhdGVGaWVsZFRvb2wSJS5xdWFkc21pdGguYXBpLkNyZWF0ZUZpZWxkVG9vbFJlcXVlc3QaGC5xdWFkc21pdGguYXBpLkZpZWxkVG9vbBJSCg9VcGRhdGVGaWVsZFRvb2wSJS5xdWFkc21pdGguYXBpLlVwZGF0ZUZpZWxkVG9vbFJlcXVlc3QaGC5xdWFkc21pdGguYXBpLkZpZWxkVG9vbBJgCg9EZWxldGVGaWVsZFRvb2wSJS5xdWFkc21pdGguYXBpLkRlbGV0ZUZpZWxkVG9vbFJlcXVlc3QaJi5xdWFkc21pdGguYXBpLkRlbGV0ZUZpZWxkVG9vbFJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -30,170 +30,6 @@ export const file_quadsmith_api_field_tool: GenFile =
   );
 
 /**
- * ---------------------------------------------------------
- * 2. RPC Requests & Responses (Callers Precede Callees)
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.CreateFieldToolRequest
- */
-export type CreateFieldToolRequest = Message<"quadsmith.api.CreateFieldToolRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.FieldTool field_tool = 1;
-   */
-  fieldTool?: FieldTool | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateFieldToolRequest.
- * Use `create(CreateFieldToolRequestSchema)` to create a new message.
- */
-export const CreateFieldToolRequestSchema: GenMessage<CreateFieldToolRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_field_tool, 0);
-
-/**
- * @generated from message quadsmith.api.DeleteFieldToolRequest
- */
-export type DeleteFieldToolRequest = Message<"quadsmith.api.DeleteFieldToolRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteFieldToolRequest.
- * Use `create(DeleteFieldToolRequestSchema)` to create a new message.
- */
-export const DeleteFieldToolRequestSchema: GenMessage<DeleteFieldToolRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_field_tool, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteFieldToolResponse
- */
-export type DeleteFieldToolResponse = Message<"quadsmith.api.DeleteFieldToolResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteFieldToolResponse.
- * Use `create(DeleteFieldToolResponseSchema)` to create a new message.
- */
-export const DeleteFieldToolResponseSchema: GenMessage<DeleteFieldToolResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_field_tool, 2);
-
-/**
- * @generated from message quadsmith.api.GetFieldToolRequest
- */
-export type GetFieldToolRequest = Message<"quadsmith.api.GetFieldToolRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
-
-/**
- * Describes the message quadsmith.api.GetFieldToolRequest.
- * Use `create(GetFieldToolRequestSchema)` to create a new message.
- */
-export const GetFieldToolRequestSchema: GenMessage<GetFieldToolRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_field_tool, 3);
-
-/**
- * @generated from message quadsmith.api.ListFieldToolsRequest
- */
-export type ListFieldToolsRequest = Message<"quadsmith.api.ListFieldToolsRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
-
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
-
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
-
-/**
- * Describes the message quadsmith.api.ListFieldToolsRequest.
- * Use `create(ListFieldToolsRequestSchema)` to create a new message.
- */
-export const ListFieldToolsRequestSchema: GenMessage<ListFieldToolsRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_field_tool, 4);
-
-/**
- * @generated from message quadsmith.api.ListFieldToolsResponse
- */
-export type ListFieldToolsResponse = Message<"quadsmith.api.ListFieldToolsResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.FieldTool field_tools = 1;
-   */
-  fieldTools: FieldTool[];
-
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
-
-/**
- * Describes the message quadsmith.api.ListFieldToolsResponse.
- * Use `create(ListFieldToolsResponseSchema)` to create a new message.
- */
-export const ListFieldToolsResponseSchema: GenMessage<ListFieldToolsResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_field_tool, 5);
-
-/**
- * @generated from message quadsmith.api.UpdateFieldToolRequest
- */
-export type UpdateFieldToolRequest = Message<"quadsmith.api.UpdateFieldToolRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.FieldTool field_tool = 1;
-   */
-  fieldTool?: FieldTool | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateFieldToolRequest.
- * Use `create(UpdateFieldToolRequestSchema)` to create a new message.
- */
-export const UpdateFieldToolRequestSchema: GenMessage<UpdateFieldToolRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_field_tool, 6);
-
-/**
- * ---------------------------------------------------------
- * 3. Domain Model (Referenced by Services and Requests above)
- * ---------------------------------------------------------
- *
  * @generated from message quadsmith.api.FieldTool
  */
 export type FieldTool = Message<"quadsmith.api.FieldTool"> & {
@@ -269,13 +105,165 @@ export type FieldTool = Message<"quadsmith.api.FieldTool"> & {
  */
 export const FieldToolSchema: GenMessage<FieldTool> =
   /*@__PURE__*/
+  messageDesc(file_quadsmith_api_field_tool, 0);
+
+/**
+ * @generated from message quadsmith.api.CreateFieldToolRequest
+ */
+export type CreateFieldToolRequest = Message<"quadsmith.api.CreateFieldToolRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.FieldTool field_tool = 1;
+   */
+  fieldTool?: FieldTool | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.CreateFieldToolRequest.
+ * Use `create(CreateFieldToolRequestSchema)` to create a new message.
+ */
+export const CreateFieldToolRequestSchema: GenMessage<CreateFieldToolRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_field_tool, 1);
+
+/**
+ * @generated from message quadsmith.api.DeleteFieldToolRequest
+ */
+export type DeleteFieldToolRequest = Message<"quadsmith.api.DeleteFieldToolRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteFieldToolRequest.
+ * Use `create(DeleteFieldToolRequestSchema)` to create a new message.
+ */
+export const DeleteFieldToolRequestSchema: GenMessage<DeleteFieldToolRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_field_tool, 2);
+
+/**
+ * @generated from message quadsmith.api.DeleteFieldToolResponse
+ */
+export type DeleteFieldToolResponse = Message<"quadsmith.api.DeleteFieldToolResponse"> & {
+  /**
+   * @generated from field: bool is_archived = 1;
+   */
+  isArchived: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteFieldToolResponse.
+ * Use `create(DeleteFieldToolResponseSchema)` to create a new message.
+ */
+export const DeleteFieldToolResponseSchema: GenMessage<DeleteFieldToolResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_field_tool, 3);
+
+/**
+ * @generated from message quadsmith.api.GetFieldToolRequest
+ */
+export type GetFieldToolRequest = Message<"quadsmith.api.GetFieldToolRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.GetFieldToolRequest.
+ * Use `create(GetFieldToolRequestSchema)` to create a new message.
+ */
+export const GetFieldToolRequestSchema: GenMessage<GetFieldToolRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_field_tool, 4);
+
+/**
+ * @generated from message quadsmith.api.ListFieldToolsRequest
+ */
+export type ListFieldToolsRequest = Message<"quadsmith.api.ListFieldToolsRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
+
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListFieldToolsRequest.
+ * Use `create(ListFieldToolsRequestSchema)` to create a new message.
+ */
+export const ListFieldToolsRequestSchema: GenMessage<ListFieldToolsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_field_tool, 5);
+
+/**
+ * @generated from message quadsmith.api.ListFieldToolsResponse
+ */
+export type ListFieldToolsResponse = Message<"quadsmith.api.ListFieldToolsResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.FieldTool field_tools = 1;
+   */
+  fieldTools: FieldTool[];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListFieldToolsResponse.
+ * Use `create(ListFieldToolsResponseSchema)` to create a new message.
+ */
+export const ListFieldToolsResponseSchema: GenMessage<ListFieldToolsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_field_tool, 6);
+
+/**
+ * @generated from message quadsmith.api.UpdateFieldToolRequest
+ */
+export type UpdateFieldToolRequest = Message<"quadsmith.api.UpdateFieldToolRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.FieldTool field_tool = 1;
+   */
+  fieldTool?: FieldTool | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.UpdateFieldToolRequest.
+ * Use `create(UpdateFieldToolRequestSchema)` to create a new message.
+ */
+export const UpdateFieldToolRequestSchema: GenMessage<UpdateFieldToolRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_api_field_tool, 7);
 
 /**
- * ---------------------------------------------------------
- * 1. gRPC Service (Services First)
- * ---------------------------------------------------------
- *
  * @generated from service quadsmith.api.FieldToolService
  */
 export const FieldToolService: GenService<{

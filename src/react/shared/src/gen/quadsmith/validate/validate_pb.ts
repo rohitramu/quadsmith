@@ -14,9 +14,27 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_validate_validate: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiFxdWFkc21pdGgvdmFsaWRhdGUvdmFsaWRhdGUucHJvdG8SEnF1YWRzbWl0aC52YWxpZGF0ZSJmCgtTdHJpbmdSdWxlcxIPCgdtaW5fbGVuGAEgASgFEg8KB21heF9sZW4YAiABKAUSDwoHcGF0dGVybhgDIAEoCRIOCgZub3RfaW4YBCADKAkSFAoMbm90X2NvbnRhaW5zGAUgAygJIj0KCkZpZWxkUnVsZXMSLwoGc3RyaW5nGAEgASgLMh8ucXVhZHNtaXRoLnZhbGlkYXRlLlN0cmluZ1J1bGVzOlUKBXJ1bGVzEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxiglgMgASgLMh4ucXVhZHNtaXRoLnZhbGlkYXRlLkZpZWxkUnVsZXNSBXJ1bGVzQjJaMHF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC92YWxpZGF0ZTt2YWxpZGF0ZWIGcHJvdG8z",
+    "CiFxdWFkc21pdGgvdmFsaWRhdGUvdmFsaWRhdGUucHJvdG8SEnF1YWRzbWl0aC52YWxpZGF0ZSI9CgpGaWVsZFJ1bGVzEi8KBnN0cmluZxgBIAEoCzIfLnF1YWRzbWl0aC52YWxpZGF0ZS5TdHJpbmdSdWxlcyJmCgtTdHJpbmdSdWxlcxIPCgdtaW5fbGVuGAEgASgFEg8KB21heF9sZW4YAiABKAUSDwoHcGF0dGVybhgDIAEoCRIOCgZub3RfaW4YBCADKAkSFAoMbm90X2NvbnRhaW5zGAUgAygJOlUKBXJ1bGVzEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxiglgMgASgLMh4ucXVhZHNtaXRoLnZhbGlkYXRlLkZpZWxkUnVsZXNSBXJ1bGVzQjJaMHF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC92YWxpZGF0ZTt2YWxpZGF0ZWIGcHJvdG8z",
     [file_google_protobuf_descriptor],
   );
+
+/**
+ * @generated from message quadsmith.validate.FieldRules
+ */
+export type FieldRules = Message<"quadsmith.validate.FieldRules"> & {
+  /**
+   * @generated from field: quadsmith.validate.StringRules string = 1;
+   */
+  string?: StringRules | undefined;
+};
+
+/**
+ * Describes the message quadsmith.validate.FieldRules.
+ * Use `create(FieldRulesSchema)` to create a new message.
+ */
+export const FieldRulesSchema: GenMessage<FieldRules> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_validate_validate, 0);
 
 /**
  * @generated from message quadsmith.validate.StringRules
@@ -105,24 +123,6 @@ export type StringRules = Message<"quadsmith.validate.StringRules"> & {
  * Use `create(StringRulesSchema)` to create a new message.
  */
 export const StringRulesSchema: GenMessage<StringRules> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_validate_validate, 0);
-
-/**
- * @generated from message quadsmith.validate.FieldRules
- */
-export type FieldRules = Message<"quadsmith.validate.FieldRules"> & {
-  /**
-   * @generated from field: quadsmith.validate.StringRules string = 1;
-   */
-  string?: StringRules | undefined;
-};
-
-/**
- * Describes the message quadsmith.validate.FieldRules.
- * Use `create(FieldRulesSchema)` to create a new message.
- */
-export const FieldRulesSchema: GenMessage<FieldRules> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_validate_validate, 1);
 

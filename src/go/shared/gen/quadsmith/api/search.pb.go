@@ -21,6 +21,115 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// SearchRequest for text completion across collections.
+type SearchRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The search text entered by the user (can be empty string for initial combobox load).
+	Query string `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
+	// Optional array of selector objects. If omitted or empty, all registered collections are searched.
+	Selectors []*SearchSelector `protobuf:"bytes,2,rep,name=selectors,proto3" json:"selectors,omitempty"`
+	// Maximum number of ranked results to return (Default: 10, Maximum: 100).
+	Limit         int32 `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SearchRequest) Reset() {
+	*x = SearchRequest{}
+	mi := &file_quadsmith_api_search_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchRequest) ProtoMessage() {}
+
+func (x *SearchRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_search_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchRequest.ProtoReflect.Descriptor instead.
+func (*SearchRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_search_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *SearchRequest) GetQuery() string {
+	if x != nil {
+		return x.Query
+	}
+	return ""
+}
+
+func (x *SearchRequest) GetSelectors() []*SearchSelector {
+	if x != nil {
+		return x.Selectors
+	}
+	return nil
+}
+
+func (x *SearchRequest) GetLimit() int32 {
+	if x != nil {
+		return x.Limit
+	}
+	return 0
+}
+
+// SearchResponse containing ordered matches across collections.
+type SearchResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Results       []*SearchResultItem    `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SearchResponse) Reset() {
+	*x = SearchResponse{}
+	mi := &file_quadsmith_api_search_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SearchResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchResponse) ProtoMessage() {}
+
+func (x *SearchResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_search_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchResponse.ProtoReflect.Descriptor instead.
+func (*SearchResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_search_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *SearchResponse) GetResults() []*SearchResultItem {
+	if x != nil {
+		return x.Results
+	}
+	return nil
+}
+
 // SearchSelector binds a specific collection path to an optional CEL filter.
 type SearchSelector struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
@@ -35,7 +144,7 @@ type SearchSelector struct {
 
 func (x *SearchSelector) Reset() {
 	*x = SearchSelector{}
-	mi := &file_quadsmith_api_search_proto_msgTypes[0]
+	mi := &file_quadsmith_api_search_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -47,7 +156,7 @@ func (x *SearchSelector) String() string {
 func (*SearchSelector) ProtoMessage() {}
 
 func (x *SearchSelector) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_search_proto_msgTypes[0]
+	mi := &file_quadsmith_api_search_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -60,7 +169,7 @@ func (x *SearchSelector) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchSelector.ProtoReflect.Descriptor instead.
 func (*SearchSelector) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_search_proto_rawDescGZIP(), []int{0}
+	return file_quadsmith_api_search_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *SearchSelector) GetPath() string {
@@ -104,7 +213,7 @@ type SearchResultItem struct {
 
 func (x *SearchResultItem) Reset() {
 	*x = SearchResultItem{}
-	mi := &file_quadsmith_api_search_proto_msgTypes[1]
+	mi := &file_quadsmith_api_search_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -116,7 +225,7 @@ func (x *SearchResultItem) String() string {
 func (*SearchResultItem) ProtoMessage() {}
 
 func (x *SearchResultItem) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_search_proto_msgTypes[1]
+	mi := &file_quadsmith_api_search_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -129,7 +238,7 @@ func (x *SearchResultItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchResultItem.ProtoReflect.Descriptor instead.
 func (*SearchResultItem) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_search_proto_rawDescGZIP(), []int{1}
+	return file_quadsmith_api_search_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *SearchResultItem) GetId() string {
@@ -195,120 +304,17 @@ func (x *SearchResultItem) GetMetadata() map[string]string {
 	return nil
 }
 
-// SearchRequest for text completion across collections.
-type SearchRequest struct {
-	state protoimpl.MessageState `protogen:"open.v1"`
-	// The search text entered by the user (can be empty string for initial combobox load).
-	Query string `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
-	// Optional array of selector objects. If omitted or empty, all registered collections are searched.
-	Selectors []*SearchSelector `protobuf:"bytes,2,rep,name=selectors,proto3" json:"selectors,omitempty"`
-	// Maximum number of ranked results to return (Default: 10, Maximum: 100).
-	Limit         int32 `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SearchRequest) Reset() {
-	*x = SearchRequest{}
-	mi := &file_quadsmith_api_search_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SearchRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SearchRequest) ProtoMessage() {}
-
-func (x *SearchRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_search_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SearchRequest.ProtoReflect.Descriptor instead.
-func (*SearchRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_search_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *SearchRequest) GetQuery() string {
-	if x != nil {
-		return x.Query
-	}
-	return ""
-}
-
-func (x *SearchRequest) GetSelectors() []*SearchSelector {
-	if x != nil {
-		return x.Selectors
-	}
-	return nil
-}
-
-func (x *SearchRequest) GetLimit() int32 {
-	if x != nil {
-		return x.Limit
-	}
-	return 0
-}
-
-// SearchResponse containing ordered matches across collections.
-type SearchResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Results       []*SearchResultItem    `protobuf:"bytes,1,rep,name=results,proto3" json:"results,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SearchResponse) Reset() {
-	*x = SearchResponse{}
-	mi := &file_quadsmith_api_search_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SearchResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SearchResponse) ProtoMessage() {}
-
-func (x *SearchResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_search_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SearchResponse.ProtoReflect.Descriptor instead.
-func (*SearchResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_search_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *SearchResponse) GetResults() []*SearchResultItem {
-	if x != nil {
-		return x.Results
-	}
-	return nil
-}
-
 var File_quadsmith_api_search_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_search_proto_rawDesc = "" +
 	"\n" +
-	"\x1aquadsmith/api/search.proto\x12\rquadsmith.api\"L\n" +
+	"\x1aquadsmith/api/search.proto\x12\rquadsmith.api\"x\n" +
+	"\rSearchRequest\x12\x14\n" +
+	"\x05query\x18\x01 \x01(\tR\x05query\x12;\n" +
+	"\tselectors\x18\x02 \x03(\v2\x1d.quadsmith.api.SearchSelectorR\tselectors\x12\x14\n" +
+	"\x05limit\x18\x03 \x01(\x05R\x05limit\"K\n" +
+	"\x0eSearchResponse\x129\n" +
+	"\aresults\x18\x01 \x03(\v2\x1f.quadsmith.api.SearchResultItemR\aresults\"L\n" +
 	"\x0eSearchSelector\x12\x12\n" +
 	"\x04path\x18\x01 \x01(\tR\x04path\x12\x1b\n" +
 	"\x06filter\x18\x02 \x01(\tH\x00R\x06filter\x88\x01\x01B\t\n" +
@@ -327,13 +333,7 @@ const file_quadsmith_api_search_proto_rawDesc = "" +
 	"\rMetadataEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01B\x18\n" +
-	"\x16_primary_display_image\"x\n" +
-	"\rSearchRequest\x12\x14\n" +
-	"\x05query\x18\x01 \x01(\tR\x05query\x12;\n" +
-	"\tselectors\x18\x02 \x03(\v2\x1d.quadsmith.api.SearchSelectorR\tselectors\x12\x14\n" +
-	"\x05limit\x18\x03 \x01(\x05R\x05limit\"K\n" +
-	"\x0eSearchResponse\x129\n" +
-	"\aresults\x18\x01 \x03(\v2\x1f.quadsmith.api.SearchResultItemR\aresults2V\n" +
+	"\x16_primary_display_image2V\n" +
 	"\rSearchService\x12E\n" +
 	"\x06Search\x12\x1c.quadsmith.api.SearchRequest\x1a\x1d.quadsmith.api.SearchResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
@@ -351,18 +351,18 @@ func file_quadsmith_api_search_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_api_search_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_quadsmith_api_search_proto_goTypes = []any{
-	(*SearchSelector)(nil),   // 0: quadsmith.api.SearchSelector
-	(*SearchResultItem)(nil), // 1: quadsmith.api.SearchResultItem
-	(*SearchRequest)(nil),    // 2: quadsmith.api.SearchRequest
-	(*SearchResponse)(nil),   // 3: quadsmith.api.SearchResponse
+	(*SearchRequest)(nil),    // 0: quadsmith.api.SearchRequest
+	(*SearchResponse)(nil),   // 1: quadsmith.api.SearchResponse
+	(*SearchSelector)(nil),   // 2: quadsmith.api.SearchSelector
+	(*SearchResultItem)(nil), // 3: quadsmith.api.SearchResultItem
 	nil,                      // 4: quadsmith.api.SearchResultItem.MetadataEntry
 }
 var file_quadsmith_api_search_proto_depIdxs = []int32{
-	4, // 0: quadsmith.api.SearchResultItem.metadata:type_name -> quadsmith.api.SearchResultItem.MetadataEntry
-	0, // 1: quadsmith.api.SearchRequest.selectors:type_name -> quadsmith.api.SearchSelector
-	1, // 2: quadsmith.api.SearchResponse.results:type_name -> quadsmith.api.SearchResultItem
-	2, // 3: quadsmith.api.SearchService.Search:input_type -> quadsmith.api.SearchRequest
-	3, // 4: quadsmith.api.SearchService.Search:output_type -> quadsmith.api.SearchResponse
+	2, // 0: quadsmith.api.SearchRequest.selectors:type_name -> quadsmith.api.SearchSelector
+	3, // 1: quadsmith.api.SearchResponse.results:type_name -> quadsmith.api.SearchResultItem
+	4, // 2: quadsmith.api.SearchResultItem.metadata:type_name -> quadsmith.api.SearchResultItem.MetadataEntry
+	0, // 3: quadsmith.api.SearchService.Search:input_type -> quadsmith.api.SearchRequest
+	1, // 4: quadsmith.api.SearchService.Search:output_type -> quadsmith.api.SearchResponse
 	4, // [4:5] is the sub-list for method output_type
 	3, // [3:4] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -375,8 +375,8 @@ func file_quadsmith_api_search_proto_init() {
 	if File_quadsmith_api_search_proto != nil {
 		return
 	}
-	file_quadsmith_api_search_proto_msgTypes[0].OneofWrappers = []any{}
-	file_quadsmith_api_search_proto_msgTypes[1].OneofWrappers = []any{}
+	file_quadsmith_api_search_proto_msgTypes[2].OneofWrappers = []any{}
+	file_quadsmith_api_search_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

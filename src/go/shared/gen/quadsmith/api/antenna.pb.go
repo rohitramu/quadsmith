@@ -24,368 +24,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
-// ---------------------------------------------------------
-type CreateAntennaRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Antenna       *Antenna               `protobuf:"bytes,1,opt,name=antenna,proto3" json:"antenna,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateAntennaRequest) Reset() {
-	*x = CreateAntennaRequest{}
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateAntennaRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateAntennaRequest) ProtoMessage() {}
-
-func (x *CreateAntennaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateAntennaRequest.ProtoReflect.Descriptor instead.
-func (*CreateAntennaRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *CreateAntennaRequest) GetAntenna() *Antenna {
-	if x != nil {
-		return x.Antenna
-	}
-	return nil
-}
-
-type DeleteAntennaRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteAntennaRequest) Reset() {
-	*x = DeleteAntennaRequest{}
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteAntennaRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteAntennaRequest) ProtoMessage() {}
-
-func (x *DeleteAntennaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteAntennaRequest.ProtoReflect.Descriptor instead.
-func (*DeleteAntennaRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *DeleteAntennaRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteAntennaResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteAntennaResponse) Reset() {
-	*x = DeleteAntennaResponse{}
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteAntennaResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteAntennaResponse) ProtoMessage() {}
-
-func (x *DeleteAntennaResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteAntennaResponse.ProtoReflect.Descriptor instead.
-func (*DeleteAntennaResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteAntennaResponse) GetIsArchived() bool {
-	if x != nil {
-		return x.IsArchived
-	}
-	return false
-}
-
-type GetAntennaRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetAntennaRequest) Reset() {
-	*x = GetAntennaRequest{}
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetAntennaRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetAntennaRequest) ProtoMessage() {}
-
-func (x *GetAntennaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetAntennaRequest.ProtoReflect.Descriptor instead.
-func (*GetAntennaRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *GetAntennaRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *GetAntennaRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListAntennasRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListAntennasRequest) Reset() {
-	*x = ListAntennasRequest{}
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListAntennasRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListAntennasRequest) ProtoMessage() {}
-
-func (x *ListAntennasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListAntennasRequest.ProtoReflect.Descriptor instead.
-func (*ListAntennasRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *ListAntennasRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListAntennasRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListAntennasRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListAntennasRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListAntennasRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListAntennasResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Antennas      []*Antenna             `protobuf:"bytes,1,rep,name=antennas,proto3" json:"antennas,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListAntennasResponse) Reset() {
-	*x = ListAntennasResponse{}
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListAntennasResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListAntennasResponse) ProtoMessage() {}
-
-func (x *ListAntennasResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListAntennasResponse.ProtoReflect.Descriptor instead.
-func (*ListAntennasResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *ListAntennasResponse) GetAntennas() []*Antenna {
-	if x != nil {
-		return x.Antennas
-	}
-	return nil
-}
-
-func (x *ListAntennasResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-type UpdateAntennaRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Antenna       *Antenna               `protobuf:"bytes,1,opt,name=antenna,proto3" json:"antenna,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateAntennaRequest) Reset() {
-	*x = UpdateAntennaRequest{}
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateAntennaRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateAntennaRequest) ProtoMessage() {}
-
-func (x *UpdateAntennaRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateAntennaRequest.ProtoReflect.Descriptor instead.
-func (*UpdateAntennaRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *UpdateAntennaRequest) GetAntenna() *Antenna {
-	if x != nil {
-		return x.Antenna
-	}
-	return nil
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 type Antenna struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Uuid           string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -416,7 +54,7 @@ type Antenna struct {
 
 func (x *Antenna) Reset() {
 	*x = Antenna{}
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[7]
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -428,7 +66,7 @@ func (x *Antenna) String() string {
 func (*Antenna) ProtoMessage() {}
 
 func (x *Antenna) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_antenna_proto_msgTypes[7]
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -441,7 +79,7 @@ func (x *Antenna) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Antenna.ProtoReflect.Descriptor instead.
 func (*Antenna) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{7}
+	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Antenna) GetUuid() string {
@@ -563,33 +201,367 @@ func (x *Antenna) GetAuthorUsername() string {
 	return ""
 }
 
+type CreateAntennaRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Antenna       *Antenna               `protobuf:"bytes,1,opt,name=antenna,proto3" json:"antenna,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateAntennaRequest) Reset() {
+	*x = CreateAntennaRequest{}
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateAntennaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateAntennaRequest) ProtoMessage() {}
+
+func (x *CreateAntennaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateAntennaRequest.ProtoReflect.Descriptor instead.
+func (*CreateAntennaRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateAntennaRequest) GetAntenna() *Antenna {
+	if x != nil {
+		return x.Antenna
+	}
+	return nil
+}
+
+type DeleteAntennaRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteAntennaRequest) Reset() {
+	*x = DeleteAntennaRequest{}
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteAntennaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteAntennaRequest) ProtoMessage() {}
+
+func (x *DeleteAntennaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteAntennaRequest.ProtoReflect.Descriptor instead.
+func (*DeleteAntennaRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteAntennaRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteAntennaResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteAntennaResponse) Reset() {
+	*x = DeleteAntennaResponse{}
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteAntennaResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteAntennaResponse) ProtoMessage() {}
+
+func (x *DeleteAntennaResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteAntennaResponse.ProtoReflect.Descriptor instead.
+func (*DeleteAntennaResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DeleteAntennaResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetAntennaRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetAntennaRequest) Reset() {
+	*x = GetAntennaRequest{}
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetAntennaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetAntennaRequest) ProtoMessage() {}
+
+func (x *GetAntennaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetAntennaRequest.ProtoReflect.Descriptor instead.
+func (*GetAntennaRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetAntennaRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetAntennaRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListAntennasRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAntennasRequest) Reset() {
+	*x = ListAntennasRequest{}
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAntennasRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAntennasRequest) ProtoMessage() {}
+
+func (x *ListAntennasRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAntennasRequest.ProtoReflect.Descriptor instead.
+func (*ListAntennasRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListAntennasRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListAntennasRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListAntennasRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListAntennasRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListAntennasRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListAntennasResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Antennas      []*Antenna             `protobuf:"bytes,1,rep,name=antennas,proto3" json:"antennas,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAntennasResponse) Reset() {
+	*x = ListAntennasResponse{}
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAntennasResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAntennasResponse) ProtoMessage() {}
+
+func (x *ListAntennasResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAntennasResponse.ProtoReflect.Descriptor instead.
+func (*ListAntennasResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListAntennasResponse) GetAntennas() []*Antenna {
+	if x != nil {
+		return x.Antennas
+	}
+	return nil
+}
+
+func (x *ListAntennasResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateAntennaRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Antenna       *Antenna               `protobuf:"bytes,1,opt,name=antenna,proto3" json:"antenna,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateAntennaRequest) Reset() {
+	*x = UpdateAntennaRequest{}
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateAntennaRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateAntennaRequest) ProtoMessage() {}
+
+func (x *UpdateAntennaRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_antenna_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateAntennaRequest.ProtoReflect.Descriptor instead.
+func (*UpdateAntennaRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_antenna_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateAntennaRequest) GetAntenna() *Antenna {
+	if x != nil {
+		return x.Antenna
+	}
+	return nil
+}
+
 var File_quadsmith_api_antenna_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_antenna_proto_rawDesc = "" +
 	"\n" +
-	"\x1bquadsmith/api/antenna.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"H\n" +
-	"\x14CreateAntennaRequest\x120\n" +
-	"\aantenna\x18\x01 \x01(\v2\x16.quadsmith.api.AntennaR\aantenna\"&\n" +
-	"\x14DeleteAntennaRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"8\n" +
-	"\x15DeleteAntennaResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"=\n" +
-	"\x11GetAntennaRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x97\x01\n" +
-	"\x13ListAntennasRequest\x12\x16\n" +
-	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
-	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
-	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
-	"\x04sort\x18\x05 \x03(\tR\x04sort\"r\n" +
-	"\x14ListAntennasResponse\x122\n" +
-	"\bantennas\x18\x01 \x03(\v2\x16.quadsmith.api.AntennaR\bantennas\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"H\n" +
-	"\x14UpdateAntennaRequest\x120\n" +
-	"\aantenna\x18\x01 \x01(\v2\x16.quadsmith.api.AntennaR\aantenna\"\xdb\b\n" +
+	"\x1bquadsmith/api/antenna.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xd2\b\n" +
 	"\aAntenna\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
 	"\x02id\x18\x02 \x01(\tB\n" +
@@ -617,19 +589,41 @@ const file_quadsmith_api_antenna_proto_rawDesc = "" +
 	"\tuser_uuid\x18\x10 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
 	"\x0fauthor_username\x18\x11 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xe8\x01\x8a\xb5\x18T\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xdf\x01\x8a\xb5\x18K\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\tconnector\n" +
 	"\fpolarization\n" +
 	"\x12frequency_band_mhz\n" +
-	"\bgain_dbi\x12\a#eab308\x9a\xb5\x18\x1ccomponents/hardware/antennas\xc2\xf3\x18\n" +
+	"\bgain_dbi\x9a\xb5\x18\x1ccomponents/hardware/antennas\xc2\xf3\x18\n" +
 	"\n" +
 	"\bantennas\xc2\xf0\x19^\b\x05\x12Zuuid IN (SELECT uuid FROM entities WHERE collection = 'antennas' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +
-	"\x10_author_username2\xa9\x03\n" +
+	"\x10_author_username\"H\n" +
+	"\x14CreateAntennaRequest\x120\n" +
+	"\aantenna\x18\x01 \x01(\v2\x16.quadsmith.api.AntennaR\aantenna\"&\n" +
+	"\x14DeleteAntennaRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"8\n" +
+	"\x15DeleteAntennaResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\"=\n" +
+	"\x11GetAntennaRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x97\x01\n" +
+	"\x13ListAntennasRequest\x12\x16\n" +
+	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sort\"r\n" +
+	"\x14ListAntennasResponse\x122\n" +
+	"\bantennas\x18\x01 \x03(\v2\x16.quadsmith.api.AntennaR\bantennas\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"H\n" +
+	"\x14UpdateAntennaRequest\x120\n" +
+	"\aantenna\x18\x01 \x01(\v2\x16.quadsmith.api.AntennaR\aantenna2\xa9\x03\n" +
 	"\x0eAntennaService\x12F\n" +
 	"\n" +
 	"GetAntenna\x12 .quadsmith.api.GetAntennaRequest\x1a\x16.quadsmith.api.Antenna\x12W\n" +
@@ -652,33 +646,33 @@ func file_quadsmith_api_antenna_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_api_antenna_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_antenna_proto_goTypes = []any{
-	(*CreateAntennaRequest)(nil),  // 0: quadsmith.api.CreateAntennaRequest
-	(*DeleteAntennaRequest)(nil),  // 1: quadsmith.api.DeleteAntennaRequest
-	(*DeleteAntennaResponse)(nil), // 2: quadsmith.api.DeleteAntennaResponse
-	(*GetAntennaRequest)(nil),     // 3: quadsmith.api.GetAntennaRequest
-	(*ListAntennasRequest)(nil),   // 4: quadsmith.api.ListAntennasRequest
-	(*ListAntennasResponse)(nil),  // 5: quadsmith.api.ListAntennasResponse
-	(*UpdateAntennaRequest)(nil),  // 6: quadsmith.api.UpdateAntennaRequest
-	(*Antenna)(nil),               // 7: quadsmith.api.Antenna
+	(*Antenna)(nil),               // 0: quadsmith.api.Antenna
+	(*CreateAntennaRequest)(nil),  // 1: quadsmith.api.CreateAntennaRequest
+	(*DeleteAntennaRequest)(nil),  // 2: quadsmith.api.DeleteAntennaRequest
+	(*DeleteAntennaResponse)(nil), // 3: quadsmith.api.DeleteAntennaResponse
+	(*GetAntennaRequest)(nil),     // 4: quadsmith.api.GetAntennaRequest
+	(*ListAntennasRequest)(nil),   // 5: quadsmith.api.ListAntennasRequest
+	(*ListAntennasResponse)(nil),  // 6: quadsmith.api.ListAntennasResponse
+	(*UpdateAntennaRequest)(nil),  // 7: quadsmith.api.UpdateAntennaRequest
 	(*ReferenceLink)(nil),         // 8: quadsmith.api.ReferenceLink
 	(*Media)(nil),                 // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_antenna_proto_depIdxs = []int32{
-	7,  // 0: quadsmith.api.CreateAntennaRequest.antenna:type_name -> quadsmith.api.Antenna
-	7,  // 1: quadsmith.api.ListAntennasResponse.antennas:type_name -> quadsmith.api.Antenna
-	7,  // 2: quadsmith.api.UpdateAntennaRequest.antenna:type_name -> quadsmith.api.Antenna
-	8,  // 3: quadsmith.api.Antenna.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 4: quadsmith.api.Antenna.media:type_name -> quadsmith.api.Media
-	3,  // 5: quadsmith.api.AntennaService.GetAntenna:input_type -> quadsmith.api.GetAntennaRequest
-	4,  // 6: quadsmith.api.AntennaService.ListAntennas:input_type -> quadsmith.api.ListAntennasRequest
-	0,  // 7: quadsmith.api.AntennaService.CreateAntenna:input_type -> quadsmith.api.CreateAntennaRequest
-	6,  // 8: quadsmith.api.AntennaService.UpdateAntenna:input_type -> quadsmith.api.UpdateAntennaRequest
-	1,  // 9: quadsmith.api.AntennaService.DeleteAntenna:input_type -> quadsmith.api.DeleteAntennaRequest
-	7,  // 10: quadsmith.api.AntennaService.GetAntenna:output_type -> quadsmith.api.Antenna
-	5,  // 11: quadsmith.api.AntennaService.ListAntennas:output_type -> quadsmith.api.ListAntennasResponse
-	7,  // 12: quadsmith.api.AntennaService.CreateAntenna:output_type -> quadsmith.api.Antenna
-	7,  // 13: quadsmith.api.AntennaService.UpdateAntenna:output_type -> quadsmith.api.Antenna
-	2,  // 14: quadsmith.api.AntennaService.DeleteAntenna:output_type -> quadsmith.api.DeleteAntennaResponse
+	8,  // 0: quadsmith.api.Antenna.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 1: quadsmith.api.Antenna.media:type_name -> quadsmith.api.Media
+	0,  // 2: quadsmith.api.CreateAntennaRequest.antenna:type_name -> quadsmith.api.Antenna
+	0,  // 3: quadsmith.api.ListAntennasResponse.antennas:type_name -> quadsmith.api.Antenna
+	0,  // 4: quadsmith.api.UpdateAntennaRequest.antenna:type_name -> quadsmith.api.Antenna
+	4,  // 5: quadsmith.api.AntennaService.GetAntenna:input_type -> quadsmith.api.GetAntennaRequest
+	5,  // 6: quadsmith.api.AntennaService.ListAntennas:input_type -> quadsmith.api.ListAntennasRequest
+	1,  // 7: quadsmith.api.AntennaService.CreateAntenna:input_type -> quadsmith.api.CreateAntennaRequest
+	7,  // 8: quadsmith.api.AntennaService.UpdateAntenna:input_type -> quadsmith.api.UpdateAntennaRequest
+	2,  // 9: quadsmith.api.AntennaService.DeleteAntenna:input_type -> quadsmith.api.DeleteAntennaRequest
+	0,  // 10: quadsmith.api.AntennaService.GetAntenna:output_type -> quadsmith.api.Antenna
+	6,  // 11: quadsmith.api.AntennaService.ListAntennas:output_type -> quadsmith.api.ListAntennasResponse
+	0,  // 12: quadsmith.api.AntennaService.CreateAntenna:output_type -> quadsmith.api.Antenna
+	0,  // 13: quadsmith.api.AntennaService.UpdateAntenna:output_type -> quadsmith.api.Antenna
+	3,  // 14: quadsmith.api.AntennaService.DeleteAntenna:output_type -> quadsmith.api.DeleteAntennaResponse
 	10, // [10:15] is the sub-list for method output_type
 	5,  // [5:10] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
@@ -693,7 +687,7 @@ func file_quadsmith_api_antenna_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_antenna_proto_msgTypes[7].OneofWrappers = []any{}
+	file_quadsmith_api_antenna_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

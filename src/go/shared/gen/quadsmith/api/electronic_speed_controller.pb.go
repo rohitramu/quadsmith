@@ -24,368 +24,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
-// ---------------------------------------------------------
-type CreateElectronicSpeedControllerRequest struct {
-	state                     protoimpl.MessageState     `protogen:"open.v1"`
-	ElectronicSpeedController *ElectronicSpeedController `protobuf:"bytes,1,opt,name=electronic_speed_controller,json=electronicSpeedController,proto3" json:"electronic_speed_controller,omitempty"`
-	unknownFields             protoimpl.UnknownFields
-	sizeCache                 protoimpl.SizeCache
-}
-
-func (x *CreateElectronicSpeedControllerRequest) Reset() {
-	*x = CreateElectronicSpeedControllerRequest{}
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateElectronicSpeedControllerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateElectronicSpeedControllerRequest) ProtoMessage() {}
-
-func (x *CreateElectronicSpeedControllerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateElectronicSpeedControllerRequest.ProtoReflect.Descriptor instead.
-func (*CreateElectronicSpeedControllerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *CreateElectronicSpeedControllerRequest) GetElectronicSpeedController() *ElectronicSpeedController {
-	if x != nil {
-		return x.ElectronicSpeedController
-	}
-	return nil
-}
-
-type DeleteElectronicSpeedControllerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteElectronicSpeedControllerRequest) Reset() {
-	*x = DeleteElectronicSpeedControllerRequest{}
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteElectronicSpeedControllerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteElectronicSpeedControllerRequest) ProtoMessage() {}
-
-func (x *DeleteElectronicSpeedControllerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteElectronicSpeedControllerRequest.ProtoReflect.Descriptor instead.
-func (*DeleteElectronicSpeedControllerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *DeleteElectronicSpeedControllerRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteElectronicSpeedControllerResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteElectronicSpeedControllerResponse) Reset() {
-	*x = DeleteElectronicSpeedControllerResponse{}
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteElectronicSpeedControllerResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteElectronicSpeedControllerResponse) ProtoMessage() {}
-
-func (x *DeleteElectronicSpeedControllerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteElectronicSpeedControllerResponse.ProtoReflect.Descriptor instead.
-func (*DeleteElectronicSpeedControllerResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteElectronicSpeedControllerResponse) GetIsArchived() bool {
-	if x != nil {
-		return x.IsArchived
-	}
-	return false
-}
-
-type GetElectronicSpeedControllerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetElectronicSpeedControllerRequest) Reset() {
-	*x = GetElectronicSpeedControllerRequest{}
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetElectronicSpeedControllerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetElectronicSpeedControllerRequest) ProtoMessage() {}
-
-func (x *GetElectronicSpeedControllerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetElectronicSpeedControllerRequest.ProtoReflect.Descriptor instead.
-func (*GetElectronicSpeedControllerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *GetElectronicSpeedControllerRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *GetElectronicSpeedControllerRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListElectronicSpeedControllersRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListElectronicSpeedControllersRequest) Reset() {
-	*x = ListElectronicSpeedControllersRequest{}
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListElectronicSpeedControllersRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListElectronicSpeedControllersRequest) ProtoMessage() {}
-
-func (x *ListElectronicSpeedControllersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListElectronicSpeedControllersRequest.ProtoReflect.Descriptor instead.
-func (*ListElectronicSpeedControllersRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *ListElectronicSpeedControllersRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListElectronicSpeedControllersRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListElectronicSpeedControllersRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListElectronicSpeedControllersRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListElectronicSpeedControllersRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListElectronicSpeedControllersResponse struct {
-	state                      protoimpl.MessageState       `protogen:"open.v1"`
-	ElectronicSpeedControllers []*ElectronicSpeedController `protobuf:"bytes,1,rep,name=electronic_speed_controllers,json=electronicSpeedControllers,proto3" json:"electronic_speed_controllers,omitempty"`
-	NextPageToken              string                       `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields              protoimpl.UnknownFields
-	sizeCache                  protoimpl.SizeCache
-}
-
-func (x *ListElectronicSpeedControllersResponse) Reset() {
-	*x = ListElectronicSpeedControllersResponse{}
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListElectronicSpeedControllersResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListElectronicSpeedControllersResponse) ProtoMessage() {}
-
-func (x *ListElectronicSpeedControllersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListElectronicSpeedControllersResponse.ProtoReflect.Descriptor instead.
-func (*ListElectronicSpeedControllersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *ListElectronicSpeedControllersResponse) GetElectronicSpeedControllers() []*ElectronicSpeedController {
-	if x != nil {
-		return x.ElectronicSpeedControllers
-	}
-	return nil
-}
-
-func (x *ListElectronicSpeedControllersResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-type UpdateElectronicSpeedControllerRequest struct {
-	state                     protoimpl.MessageState     `protogen:"open.v1"`
-	ElectronicSpeedController *ElectronicSpeedController `protobuf:"bytes,1,opt,name=electronic_speed_controller,json=electronicSpeedController,proto3" json:"electronic_speed_controller,omitempty"`
-	unknownFields             protoimpl.UnknownFields
-	sizeCache                 protoimpl.SizeCache
-}
-
-func (x *UpdateElectronicSpeedControllerRequest) Reset() {
-	*x = UpdateElectronicSpeedControllerRequest{}
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateElectronicSpeedControllerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateElectronicSpeedControllerRequest) ProtoMessage() {}
-
-func (x *UpdateElectronicSpeedControllerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateElectronicSpeedControllerRequest.ProtoReflect.Descriptor instead.
-func (*UpdateElectronicSpeedControllerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *UpdateElectronicSpeedControllerRequest) GetElectronicSpeedController() *ElectronicSpeedController {
-	if x != nil {
-		return x.ElectronicSpeedController
-	}
-	return nil
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 type ElectronicSpeedController struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Uuid           string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -417,7 +55,7 @@ type ElectronicSpeedController struct {
 
 func (x *ElectronicSpeedController) Reset() {
 	*x = ElectronicSpeedController{}
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[7]
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -429,7 +67,7 @@ func (x *ElectronicSpeedController) String() string {
 func (*ElectronicSpeedController) ProtoMessage() {}
 
 func (x *ElectronicSpeedController) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[7]
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -442,7 +80,7 @@ func (x *ElectronicSpeedController) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ElectronicSpeedController.ProtoReflect.Descriptor instead.
 func (*ElectronicSpeedController) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{7}
+	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *ElectronicSpeedController) GetUuid() string {
@@ -571,33 +209,367 @@ func (x *ElectronicSpeedController) GetAuthorUsername() string {
 	return ""
 }
 
+type CreateElectronicSpeedControllerRequest struct {
+	state                     protoimpl.MessageState     `protogen:"open.v1"`
+	ElectronicSpeedController *ElectronicSpeedController `protobuf:"bytes,1,opt,name=electronic_speed_controller,json=electronicSpeedController,proto3" json:"electronic_speed_controller,omitempty"`
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
+}
+
+func (x *CreateElectronicSpeedControllerRequest) Reset() {
+	*x = CreateElectronicSpeedControllerRequest{}
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateElectronicSpeedControllerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateElectronicSpeedControllerRequest) ProtoMessage() {}
+
+func (x *CreateElectronicSpeedControllerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateElectronicSpeedControllerRequest.ProtoReflect.Descriptor instead.
+func (*CreateElectronicSpeedControllerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateElectronicSpeedControllerRequest) GetElectronicSpeedController() *ElectronicSpeedController {
+	if x != nil {
+		return x.ElectronicSpeedController
+	}
+	return nil
+}
+
+type DeleteElectronicSpeedControllerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteElectronicSpeedControllerRequest) Reset() {
+	*x = DeleteElectronicSpeedControllerRequest{}
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteElectronicSpeedControllerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteElectronicSpeedControllerRequest) ProtoMessage() {}
+
+func (x *DeleteElectronicSpeedControllerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteElectronicSpeedControllerRequest.ProtoReflect.Descriptor instead.
+func (*DeleteElectronicSpeedControllerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteElectronicSpeedControllerRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteElectronicSpeedControllerResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteElectronicSpeedControllerResponse) Reset() {
+	*x = DeleteElectronicSpeedControllerResponse{}
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteElectronicSpeedControllerResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteElectronicSpeedControllerResponse) ProtoMessage() {}
+
+func (x *DeleteElectronicSpeedControllerResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteElectronicSpeedControllerResponse.ProtoReflect.Descriptor instead.
+func (*DeleteElectronicSpeedControllerResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DeleteElectronicSpeedControllerResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetElectronicSpeedControllerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetElectronicSpeedControllerRequest) Reset() {
+	*x = GetElectronicSpeedControllerRequest{}
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetElectronicSpeedControllerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetElectronicSpeedControllerRequest) ProtoMessage() {}
+
+func (x *GetElectronicSpeedControllerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetElectronicSpeedControllerRequest.ProtoReflect.Descriptor instead.
+func (*GetElectronicSpeedControllerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetElectronicSpeedControllerRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetElectronicSpeedControllerRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListElectronicSpeedControllersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListElectronicSpeedControllersRequest) Reset() {
+	*x = ListElectronicSpeedControllersRequest{}
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListElectronicSpeedControllersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListElectronicSpeedControllersRequest) ProtoMessage() {}
+
+func (x *ListElectronicSpeedControllersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListElectronicSpeedControllersRequest.ProtoReflect.Descriptor instead.
+func (*ListElectronicSpeedControllersRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListElectronicSpeedControllersRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListElectronicSpeedControllersRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListElectronicSpeedControllersRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListElectronicSpeedControllersRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListElectronicSpeedControllersRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListElectronicSpeedControllersResponse struct {
+	state                      protoimpl.MessageState       `protogen:"open.v1"`
+	ElectronicSpeedControllers []*ElectronicSpeedController `protobuf:"bytes,1,rep,name=electronic_speed_controllers,json=electronicSpeedControllers,proto3" json:"electronic_speed_controllers,omitempty"`
+	NextPageToken              string                       `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields              protoimpl.UnknownFields
+	sizeCache                  protoimpl.SizeCache
+}
+
+func (x *ListElectronicSpeedControllersResponse) Reset() {
+	*x = ListElectronicSpeedControllersResponse{}
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListElectronicSpeedControllersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListElectronicSpeedControllersResponse) ProtoMessage() {}
+
+func (x *ListElectronicSpeedControllersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListElectronicSpeedControllersResponse.ProtoReflect.Descriptor instead.
+func (*ListElectronicSpeedControllersResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListElectronicSpeedControllersResponse) GetElectronicSpeedControllers() []*ElectronicSpeedController {
+	if x != nil {
+		return x.ElectronicSpeedControllers
+	}
+	return nil
+}
+
+func (x *ListElectronicSpeedControllersResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateElectronicSpeedControllerRequest struct {
+	state                     protoimpl.MessageState     `protogen:"open.v1"`
+	ElectronicSpeedController *ElectronicSpeedController `protobuf:"bytes,1,opt,name=electronic_speed_controller,json=electronicSpeedController,proto3" json:"electronic_speed_controller,omitempty"`
+	unknownFields             protoimpl.UnknownFields
+	sizeCache                 protoimpl.SizeCache
+}
+
+func (x *UpdateElectronicSpeedControllerRequest) Reset() {
+	*x = UpdateElectronicSpeedControllerRequest{}
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateElectronicSpeedControllerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateElectronicSpeedControllerRequest) ProtoMessage() {}
+
+func (x *UpdateElectronicSpeedControllerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_electronic_speed_controller_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateElectronicSpeedControllerRequest.ProtoReflect.Descriptor instead.
+func (*UpdateElectronicSpeedControllerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateElectronicSpeedControllerRequest) GetElectronicSpeedController() *ElectronicSpeedController {
+	if x != nil {
+		return x.ElectronicSpeedController
+	}
+	return nil
+}
+
 var File_quadsmith_api_electronic_speed_controller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_electronic_speed_controller_proto_rawDesc = "" +
 	"\n" +
-	"/quadsmith/api/electronic_speed_controller.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\x92\x01\n" +
-	"&CreateElectronicSpeedControllerRequest\x12h\n" +
-	"\x1belectronic_speed_controller\x18\x01 \x01(\v2(.quadsmith.api.ElectronicSpeedControllerR\x19electronicSpeedController\"8\n" +
-	"&DeleteElectronicSpeedControllerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"J\n" +
-	"'DeleteElectronicSpeedControllerResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"O\n" +
-	"#GetElectronicSpeedControllerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa9\x01\n" +
-	"%ListElectronicSpeedControllersRequest\x12\x16\n" +
-	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
-	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
-	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
-	"\x04sort\x18\x05 \x03(\tR\x04sort\"\xbc\x01\n" +
-	"&ListElectronicSpeedControllersResponse\x12j\n" +
-	"\x1celectronic_speed_controllers\x18\x01 \x03(\v2(.quadsmith.api.ElectronicSpeedControllerR\x1aelectronicSpeedControllers\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x92\x01\n" +
-	"&UpdateElectronicSpeedControllerRequest\x12h\n" +
-	"\x1belectronic_speed_controller\x18\x01 \x01(\v2(.quadsmith.api.ElectronicSpeedControllerR\x19electronicSpeedController\"\xda\t\n" +
+	"/quadsmith/api/electronic_speed_controller.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xd1\t\n" +
 	"\x19ElectronicSpeedController\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
 	"\x02id\x18\x02 \x01(\tB\n" +
@@ -629,18 +601,40 @@ const file_quadsmith_api_electronic_speed_controller_proto_rawDesc = "" +
 	"\tuser_uuid\x18\x11 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
 	"\x0fauthor_username\x18\x12 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\x98\x02\x8a\xb5\x18H\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\x8f\x02\x8a\xb5\x18?\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\x13motor_current_max_a\n" +
 	"\n" +
 	"max_motors\n" +
-	"\bfirmware\x12\a#f97316\x9a\xb5\x180components/hardware/electronic-speed-controllers\xc2\xf3\x18\x1e\n" +
+	"\bfirmware\x9a\xb5\x180components/hardware/electronic-speed-controllers\xc2\xf3\x18\x1e\n" +
 	"\x1celectronic_speed_controllers\xc2\xf0\x19r\b\x05\x12nuuid IN (SELECT uuid FROM entities WHERE collection = 'electronic-speed-controllers' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +
-	"\x10_author_username2\xcd\x05\n" +
+	"\x10_author_username\"\x92\x01\n" +
+	"&CreateElectronicSpeedControllerRequest\x12h\n" +
+	"\x1belectronic_speed_controller\x18\x01 \x01(\v2(.quadsmith.api.ElectronicSpeedControllerR\x19electronicSpeedController\"8\n" +
+	"&DeleteElectronicSpeedControllerRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"J\n" +
+	"'DeleteElectronicSpeedControllerResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\"O\n" +
+	"#GetElectronicSpeedControllerRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa9\x01\n" +
+	"%ListElectronicSpeedControllersRequest\x12\x16\n" +
+	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sort\"\xbc\x01\n" +
+	"&ListElectronicSpeedControllersResponse\x12j\n" +
+	"\x1celectronic_speed_controllers\x18\x01 \x03(\v2(.quadsmith.api.ElectronicSpeedControllerR\x1aelectronicSpeedControllers\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x92\x01\n" +
+	"&UpdateElectronicSpeedControllerRequest\x12h\n" +
+	"\x1belectronic_speed_controller\x18\x01 \x01(\v2(.quadsmith.api.ElectronicSpeedControllerR\x19electronicSpeedController2\xcd\x05\n" +
 	" ElectronicSpeedControllerService\x12|\n" +
 	"\x1cGetElectronicSpeedController\x122.quadsmith.api.GetElectronicSpeedControllerRequest\x1a(.quadsmith.api.ElectronicSpeedController\x12\x8d\x01\n" +
 	"\x1eListElectronicSpeedControllers\x124.quadsmith.api.ListElectronicSpeedControllersRequest\x1a5.quadsmith.api.ListElectronicSpeedControllersResponse\x12\x82\x01\n" +
@@ -662,33 +656,33 @@ func file_quadsmith_api_electronic_speed_controller_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_api_electronic_speed_controller_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_electronic_speed_controller_proto_goTypes = []any{
-	(*CreateElectronicSpeedControllerRequest)(nil),  // 0: quadsmith.api.CreateElectronicSpeedControllerRequest
-	(*DeleteElectronicSpeedControllerRequest)(nil),  // 1: quadsmith.api.DeleteElectronicSpeedControllerRequest
-	(*DeleteElectronicSpeedControllerResponse)(nil), // 2: quadsmith.api.DeleteElectronicSpeedControllerResponse
-	(*GetElectronicSpeedControllerRequest)(nil),     // 3: quadsmith.api.GetElectronicSpeedControllerRequest
-	(*ListElectronicSpeedControllersRequest)(nil),   // 4: quadsmith.api.ListElectronicSpeedControllersRequest
-	(*ListElectronicSpeedControllersResponse)(nil),  // 5: quadsmith.api.ListElectronicSpeedControllersResponse
-	(*UpdateElectronicSpeedControllerRequest)(nil),  // 6: quadsmith.api.UpdateElectronicSpeedControllerRequest
-	(*ElectronicSpeedController)(nil),               // 7: quadsmith.api.ElectronicSpeedController
+	(*ElectronicSpeedController)(nil),               // 0: quadsmith.api.ElectronicSpeedController
+	(*CreateElectronicSpeedControllerRequest)(nil),  // 1: quadsmith.api.CreateElectronicSpeedControllerRequest
+	(*DeleteElectronicSpeedControllerRequest)(nil),  // 2: quadsmith.api.DeleteElectronicSpeedControllerRequest
+	(*DeleteElectronicSpeedControllerResponse)(nil), // 3: quadsmith.api.DeleteElectronicSpeedControllerResponse
+	(*GetElectronicSpeedControllerRequest)(nil),     // 4: quadsmith.api.GetElectronicSpeedControllerRequest
+	(*ListElectronicSpeedControllersRequest)(nil),   // 5: quadsmith.api.ListElectronicSpeedControllersRequest
+	(*ListElectronicSpeedControllersResponse)(nil),  // 6: quadsmith.api.ListElectronicSpeedControllersResponse
+	(*UpdateElectronicSpeedControllerRequest)(nil),  // 7: quadsmith.api.UpdateElectronicSpeedControllerRequest
 	(*ReferenceLink)(nil),                           // 8: quadsmith.api.ReferenceLink
 	(*Media)(nil),                                   // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_electronic_speed_controller_proto_depIdxs = []int32{
-	7,  // 0: quadsmith.api.CreateElectronicSpeedControllerRequest.electronic_speed_controller:type_name -> quadsmith.api.ElectronicSpeedController
-	7,  // 1: quadsmith.api.ListElectronicSpeedControllersResponse.electronic_speed_controllers:type_name -> quadsmith.api.ElectronicSpeedController
-	7,  // 2: quadsmith.api.UpdateElectronicSpeedControllerRequest.electronic_speed_controller:type_name -> quadsmith.api.ElectronicSpeedController
-	8,  // 3: quadsmith.api.ElectronicSpeedController.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 4: quadsmith.api.ElectronicSpeedController.media:type_name -> quadsmith.api.Media
-	3,  // 5: quadsmith.api.ElectronicSpeedControllerService.GetElectronicSpeedController:input_type -> quadsmith.api.GetElectronicSpeedControllerRequest
-	4,  // 6: quadsmith.api.ElectronicSpeedControllerService.ListElectronicSpeedControllers:input_type -> quadsmith.api.ListElectronicSpeedControllersRequest
-	0,  // 7: quadsmith.api.ElectronicSpeedControllerService.CreateElectronicSpeedController:input_type -> quadsmith.api.CreateElectronicSpeedControllerRequest
-	6,  // 8: quadsmith.api.ElectronicSpeedControllerService.UpdateElectronicSpeedController:input_type -> quadsmith.api.UpdateElectronicSpeedControllerRequest
-	1,  // 9: quadsmith.api.ElectronicSpeedControllerService.DeleteElectronicSpeedController:input_type -> quadsmith.api.DeleteElectronicSpeedControllerRequest
-	7,  // 10: quadsmith.api.ElectronicSpeedControllerService.GetElectronicSpeedController:output_type -> quadsmith.api.ElectronicSpeedController
-	5,  // 11: quadsmith.api.ElectronicSpeedControllerService.ListElectronicSpeedControllers:output_type -> quadsmith.api.ListElectronicSpeedControllersResponse
-	7,  // 12: quadsmith.api.ElectronicSpeedControllerService.CreateElectronicSpeedController:output_type -> quadsmith.api.ElectronicSpeedController
-	7,  // 13: quadsmith.api.ElectronicSpeedControllerService.UpdateElectronicSpeedController:output_type -> quadsmith.api.ElectronicSpeedController
-	2,  // 14: quadsmith.api.ElectronicSpeedControllerService.DeleteElectronicSpeedController:output_type -> quadsmith.api.DeleteElectronicSpeedControllerResponse
+	8,  // 0: quadsmith.api.ElectronicSpeedController.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 1: quadsmith.api.ElectronicSpeedController.media:type_name -> quadsmith.api.Media
+	0,  // 2: quadsmith.api.CreateElectronicSpeedControllerRequest.electronic_speed_controller:type_name -> quadsmith.api.ElectronicSpeedController
+	0,  // 3: quadsmith.api.ListElectronicSpeedControllersResponse.electronic_speed_controllers:type_name -> quadsmith.api.ElectronicSpeedController
+	0,  // 4: quadsmith.api.UpdateElectronicSpeedControllerRequest.electronic_speed_controller:type_name -> quadsmith.api.ElectronicSpeedController
+	4,  // 5: quadsmith.api.ElectronicSpeedControllerService.GetElectronicSpeedController:input_type -> quadsmith.api.GetElectronicSpeedControllerRequest
+	5,  // 6: quadsmith.api.ElectronicSpeedControllerService.ListElectronicSpeedControllers:input_type -> quadsmith.api.ListElectronicSpeedControllersRequest
+	1,  // 7: quadsmith.api.ElectronicSpeedControllerService.CreateElectronicSpeedController:input_type -> quadsmith.api.CreateElectronicSpeedControllerRequest
+	7,  // 8: quadsmith.api.ElectronicSpeedControllerService.UpdateElectronicSpeedController:input_type -> quadsmith.api.UpdateElectronicSpeedControllerRequest
+	2,  // 9: quadsmith.api.ElectronicSpeedControllerService.DeleteElectronicSpeedController:input_type -> quadsmith.api.DeleteElectronicSpeedControllerRequest
+	0,  // 10: quadsmith.api.ElectronicSpeedControllerService.GetElectronicSpeedController:output_type -> quadsmith.api.ElectronicSpeedController
+	6,  // 11: quadsmith.api.ElectronicSpeedControllerService.ListElectronicSpeedControllers:output_type -> quadsmith.api.ListElectronicSpeedControllersResponse
+	0,  // 12: quadsmith.api.ElectronicSpeedControllerService.CreateElectronicSpeedController:output_type -> quadsmith.api.ElectronicSpeedController
+	0,  // 13: quadsmith.api.ElectronicSpeedControllerService.UpdateElectronicSpeedController:output_type -> quadsmith.api.ElectronicSpeedController
+	3,  // 14: quadsmith.api.ElectronicSpeedControllerService.DeleteElectronicSpeedController:output_type -> quadsmith.api.DeleteElectronicSpeedControllerResponse
 	10, // [10:15] is the sub-list for method output_type
 	5,  // [5:10] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
@@ -703,7 +697,7 @@ func file_quadsmith_api_electronic_speed_controller_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_electronic_speed_controller_proto_msgTypes[7].OneofWrappers = []any{}
+	file_quadsmith_api_electronic_speed_controller_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

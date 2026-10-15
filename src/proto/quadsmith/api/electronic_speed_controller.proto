@@ -11,8 +11,9 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// 1. gRPC Service (Services First)
+// Services
 // ---------------------------------------------------------
+
 service ElectronicSpeedControllerService {
   rpc GetElectronicSpeedController(GetElectronicSpeedControllerRequest) returns (ElectronicSpeedController);
   rpc ListElectronicSpeedControllers(ListElectronicSpeedControllersRequest) returns (ListElectronicSpeedControllersResponse);
@@ -22,45 +23,9 @@ service ElectronicSpeedControllerService {
 }
 
 // ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
+// Domain model
 // ---------------------------------------------------------
-message CreateElectronicSpeedControllerRequest {
-  ElectronicSpeedController electronic_speed_controller = 1;
-}
 
-message DeleteElectronicSpeedControllerRequest {
-  string id = 1;
-}
-
-message DeleteElectronicSpeedControllerResponse {
-  bool is_archived = 1;
-}
-
-message GetElectronicSpeedControllerRequest {
-  string id = 1;
-  repeated string columns = 2;
-}
-
-message ListElectronicSpeedControllersRequest {
-  string filter = 1;
-  int32 page_size = 2;
-  string page_token = 3;
-  repeated string columns = 4;
-  repeated string sort = 5;
-}
-
-message ListElectronicSpeedControllersResponse {
-  repeated ElectronicSpeedController electronic_speed_controllers = 1;
-  string next_page_token = 2;
-}
-
-message UpdateElectronicSpeedControllerRequest {
-  ElectronicSpeedController electronic_speed_controller = 1;
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 message ElectronicSpeedController {
   option (quadsmith.sql.table) = {name: "electronic_speed_controllers"};
   option (quadsmith.common.collection_path) = "components/hardware/electronic-speed-controllers";
@@ -69,7 +34,6 @@ message ElectronicSpeedController {
     user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'electronic-speed-controllers' AND user_uuid = $1::uuid)"
   };
   option (quadsmith.common.frontend) = {
-    color_code: "#f97316"
     default_columns: [
       "manufacturer",
       "name",
@@ -143,4 +107,42 @@ message ElectronicSpeedController {
     (quadsmith.sql.column) = {ignore: true},
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
   ];
+}
+
+// ---------------------------------------------------------
+// Request/response messages
+// ---------------------------------------------------------
+
+message CreateElectronicSpeedControllerRequest {
+  ElectronicSpeedController electronic_speed_controller = 1;
+}
+
+message DeleteElectronicSpeedControllerRequest {
+  string id = 1;
+}
+
+message DeleteElectronicSpeedControllerResponse {
+  bool is_archived = 1;
+}
+
+message GetElectronicSpeedControllerRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListElectronicSpeedControllersRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListElectronicSpeedControllersResponse {
+  repeated ElectronicSpeedController electronic_speed_controllers = 1;
+  string next_page_token = 2;
+}
+
+message UpdateElectronicSpeedControllerRequest {
+  ElectronicSpeedController electronic_speed_controller = 1;
 }

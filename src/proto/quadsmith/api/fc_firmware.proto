@@ -11,8 +11,9 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// 1. gRPC Service (Services First)
+// Services
 // ---------------------------------------------------------
+
 service FcFirmwareService {
   rpc GetFcFirmware(GetFcFirmwareRequest) returns (FcFirmware);
   rpc ListFcFirmwares(ListFcFirmwaresRequest) returns (ListFcFirmwaresResponse);
@@ -22,45 +23,9 @@ service FcFirmwareService {
 }
 
 // ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
+// Domain model
 // ---------------------------------------------------------
-message CreateFcFirmwareRequest {
-  FcFirmware fc_firmware = 1;
-}
 
-message DeleteFcFirmwareRequest {
-  string id = 1;
-}
-
-message DeleteFcFirmwareResponse {
-  bool is_archived = 1;
-}
-
-message GetFcFirmwareRequest {
-  string id = 1;
-  repeated string columns = 2;
-}
-
-message ListFcFirmwaresRequest {
-  string filter = 1;
-  int32 page_size = 2;
-  string page_token = 3;
-  repeated string columns = 4;
-  repeated string sort = 5;
-}
-
-message ListFcFirmwaresResponse {
-  repeated FcFirmware fc_firmwares = 1;
-  string next_page_token = 2;
-}
-
-message UpdateFcFirmwareRequest {
-  FcFirmware fc_firmware = 1;
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 message FcFirmware {
   option (quadsmith.sql.table) = {name: "flight_controller_firmwares"};
   option (quadsmith.common.collection_path) = "components/software/fc-firmware";
@@ -69,7 +34,6 @@ message FcFirmware {
     user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'fc-firmware' AND user_uuid = $1::uuid)"
   };
   option (quadsmith.common.frontend) = {
-    color_code: "#3b82f6"
     default_columns: [
       "manufacturer",
       "name",
@@ -127,4 +91,42 @@ message FcFirmware {
     (quadsmith.sql.column) = {ignore: true},
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
   ];
+}
+
+// ---------------------------------------------------------
+// Request/response messages
+// ---------------------------------------------------------
+
+message CreateFcFirmwareRequest {
+  FcFirmware fc_firmware = 1;
+}
+
+message DeleteFcFirmwareRequest {
+  string id = 1;
+}
+
+message DeleteFcFirmwareResponse {
+  bool is_archived = 1;
+}
+
+message GetFcFirmwareRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListFcFirmwaresRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListFcFirmwaresResponse {
+  repeated FcFirmware fc_firmwares = 1;
+  string next_page_token = 2;
+}
+
+message UpdateFcFirmwareRequest {
+  FcFirmware fc_firmware = 1;
 }

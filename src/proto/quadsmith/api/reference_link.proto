@@ -6,10 +6,18 @@ import "quadsmith/data/data.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
+// ---------------------------------------------------------
+// Domain model
+// ---------------------------------------------------------
+
 message ReferenceLink {
   repeated ReferenceLinkType types = 1 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   string url = 2 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 }
+
+// ---------------------------------------------------------
+// Everything else
+// ---------------------------------------------------------
 
 enum ReferenceLinkType {
   // Retained for proto3 enum zero-value requirement, but invalid in practice.

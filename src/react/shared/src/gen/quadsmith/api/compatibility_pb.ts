@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_compatibility: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiFxdWFkc21pdGgvYXBpL2NvbXBhdGliaWxpdHkucHJvdG8SDXF1YWRzbWl0aC5hcGkiQAoZQ2hlY2tDb21wYXRpYmlsaXR5UmVxdWVzdBIjCgVidWlsZBgBIAEoCzIULnF1YWRzbWl0aC5hcGkuQnVpbGQiXQojQ2hlY2tDb21wb25lbnRzQ29tcGF0aWJpbGl0eVJlcXVlc3QSNgoKY29tcG9uZW50cxgBIAEoCzIiLnF1YWRzbWl0aC5hcGkuQXNzZW1ibGVkQ29tcG9uZW50cyJtChhHZW5lcmF0ZUNlbEZpbHRlclJlcXVlc3QSGQoRdGFyZ2V0X2NvbGxlY3Rpb24YASABKAkSNgoKY29tcG9uZW50cxgCIAEoCzIiLnF1YWRzbWl0aC5hcGkuQXNzZW1ibGVkQ29tcG9uZW50cyIrChlHZW5lcmF0ZUNlbEZpbHRlclJlc3BvbnNlEg4KBmZpbHRlchgBIAEoCSJTChpDaGVja0NvbXBhdGliaWxpdHlSZXNwb25zZRI1CghtZXNzYWdlcxgBIAMoCzIjLnF1YWRzbWl0aC5hcGkuQ29tcGF0aWJpbGl0eU1lc3NhZ2UilAEKFENvbXBhdGliaWxpdHlNZXNzYWdlEhQKDGNoZWNrZXJfbmFtZRgBIAEoCRISCgpjb21wb25lbnRzGAIgASgJEhYKDnNldmVyaXR5X2xldmVsGAMgASgFEhUKDXNldmVyaXR5X25hbWUYBCABKAkSDwoHbWVzc2FnZRgFIAEoCRISCgpyZXNvbHV0aW9uGAYgASgJMu4CChRDb21wYXRpYmlsaXR5U2VydmljZRJrChJDaGVja0NvbXBhdGliaWxpdHkSKC5xdWFkc21pdGguYXBpLkNoZWNrQ29tcGF0aWJpbGl0eVJlcXVlc3QaKS5xdWFkc21pdGguYXBpLkNoZWNrQ29tcGF0aWJpbGl0eVJlc3BvbnNlIgASfwocQ2hlY2tDb21wb25lbnRzQ29tcGF0aWJpbGl0eRIyLnF1YWRzbWl0aC5hcGkuQ2hlY2tDb21wb25lbnRzQ29tcGF0aWJpbGl0eVJlcXVlc3QaKS5xdWFkc21pdGguYXBpLkNoZWNrQ29tcGF0aWJpbGl0eVJlc3BvbnNlIgASaAoRR2VuZXJhdGVDZWxGaWx0ZXISJy5xdWFkc21pdGguYXBpLkdlbmVyYXRlQ2VsRmlsdGVyUmVxdWVzdBooLnF1YWRzbWl0aC5hcGkuR2VuZXJhdGVDZWxGaWx0ZXJSZXNwb25zZSIAQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "CiFxdWFkc21pdGgvYXBpL2NvbXBhdGliaWxpdHkucHJvdG8SDXF1YWRzbWl0aC5hcGkiQAoZQ2hlY2tDb21wYXRpYmlsaXR5UmVxdWVzdBIjCgVidWlsZBgBIAEoCzIULnF1YWRzbWl0aC5hcGkuQnVpbGQiUwoaQ2hlY2tDb21wYXRpYmlsaXR5UmVzcG9uc2USNQoIbWVzc2FnZXMYASADKAsyIy5xdWFkc21pdGguYXBpLkNvbXBhdGliaWxpdHlNZXNzYWdlIl0KI0NoZWNrQ29tcG9uZW50c0NvbXBhdGliaWxpdHlSZXF1ZXN0EjYKCmNvbXBvbmVudHMYASABKAsyIi5xdWFkc21pdGguYXBpLkFzc2VtYmxlZENvbXBvbmVudHMibQoYR2VuZXJhdGVDZWxGaWx0ZXJSZXF1ZXN0EhkKEXRhcmdldF9jb2xsZWN0aW9uGAEgASgJEjYKCmNvbXBvbmVudHMYAiABKAsyIi5xdWFkc21pdGguYXBpLkFzc2VtYmxlZENvbXBvbmVudHMiKwoZR2VuZXJhdGVDZWxGaWx0ZXJSZXNwb25zZRIOCgZmaWx0ZXIYASABKAkilAEKFENvbXBhdGliaWxpdHlNZXNzYWdlEhQKDGNoZWNrZXJfbmFtZRgBIAEoCRISCgpjb21wb25lbnRzGAIgASgJEhYKDnNldmVyaXR5X2xldmVsGAMgASgFEhUKDXNldmVyaXR5X25hbWUYBCABKAkSDwoHbWVzc2FnZRgFIAEoCRISCgpyZXNvbHV0aW9uGAYgASgJMu4CChRDb21wYXRpYmlsaXR5U2VydmljZRJrChJDaGVja0NvbXBhdGliaWxpdHkSKC5xdWFkc21pdGguYXBpLkNoZWNrQ29tcGF0aWJpbGl0eVJlcXVlc3QaKS5xdWFkc21pdGguYXBpLkNoZWNrQ29tcGF0aWJpbGl0eVJlc3BvbnNlIgASfwocQ2hlY2tDb21wb25lbnRzQ29tcGF0aWJpbGl0eRIyLnF1YWRzbWl0aC5hcGkuQ2hlY2tDb21wb25lbnRzQ29tcGF0aWJpbGl0eVJlcXVlc3QaKS5xdWFkc21pdGguYXBpLkNoZWNrQ29tcGF0aWJpbGl0eVJlc3BvbnNlIgASaAoRR2VuZXJhdGVDZWxGaWx0ZXISJy5xdWFkc21pdGguYXBpLkdlbmVyYXRlQ2VsRmlsdGVyUmVxdWVzdBooLnF1YWRzbWl0aC5hcGkuR2VuZXJhdGVDZWxGaWx0ZXJSZXNwb25zZSIAQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
     [file_quadsmith_api_build, file_quadsmith_api_components],
   );
 
@@ -39,6 +39,24 @@ export const CheckCompatibilityRequestSchema: GenMessage<CheckCompatibilityReque
   messageDesc(file_quadsmith_api_compatibility, 0);
 
 /**
+ * @generated from message quadsmith.api.CheckCompatibilityResponse
+ */
+export type CheckCompatibilityResponse = Message<"quadsmith.api.CheckCompatibilityResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.CompatibilityMessage messages = 1;
+   */
+  messages: CompatibilityMessage[];
+};
+
+/**
+ * Describes the message quadsmith.api.CheckCompatibilityResponse.
+ * Use `create(CheckCompatibilityResponseSchema)` to create a new message.
+ */
+export const CheckCompatibilityResponseSchema: GenMessage<CheckCompatibilityResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_compatibility, 1);
+
+/**
  * @generated from message quadsmith.api.CheckComponentsCompatibilityRequest
  */
 export type CheckComponentsCompatibilityRequest =
@@ -55,7 +73,7 @@ export type CheckComponentsCompatibilityRequest =
  */
 export const CheckComponentsCompatibilityRequestSchema: GenMessage<CheckComponentsCompatibilityRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_compatibility, 1);
+  messageDesc(file_quadsmith_api_compatibility, 2);
 
 /**
  * @generated from message quadsmith.api.GenerateCelFilterRequest
@@ -78,7 +96,7 @@ export type GenerateCelFilterRequest = Message<"quadsmith.api.GenerateCelFilterR
  */
 export const GenerateCelFilterRequestSchema: GenMessage<GenerateCelFilterRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_compatibility, 2);
+  messageDesc(file_quadsmith_api_compatibility, 3);
 
 /**
  * @generated from message quadsmith.api.GenerateCelFilterResponse
@@ -95,24 +113,6 @@ export type GenerateCelFilterResponse = Message<"quadsmith.api.GenerateCelFilter
  * Use `create(GenerateCelFilterResponseSchema)` to create a new message.
  */
 export const GenerateCelFilterResponseSchema: GenMessage<GenerateCelFilterResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_compatibility, 3);
-
-/**
- * @generated from message quadsmith.api.CheckCompatibilityResponse
- */
-export type CheckCompatibilityResponse = Message<"quadsmith.api.CheckCompatibilityResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.CompatibilityMessage messages = 1;
-   */
-  messages: CompatibilityMessage[];
-};
-
-/**
- * Describes the message quadsmith.api.CheckCompatibilityResponse.
- * Use `create(CheckCompatibilityResponseSchema)` to create a new message.
- */
-export const CheckCompatibilityResponseSchema: GenMessage<CheckCompatibilityResponse> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_compatibility, 4);
 

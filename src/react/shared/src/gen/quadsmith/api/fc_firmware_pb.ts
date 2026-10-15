@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_fc_firmware: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Ch9xdWFkc21pdGgvYXBpL2ZjX2Zpcm13YXJlLnByb3RvEg1xdWFkc21pdGguYXBpIkkKF0NyZWF0ZUZjRmlybXdhcmVSZXF1ZXN0Ei4KC2ZjX2Zpcm13YXJlGAEgASgLMhkucXVhZHNtaXRoLmFwaS5GY0Zpcm13YXJlIiUKF0RlbGV0ZUZjRmlybXdhcmVSZXF1ZXN0EgoKAmlkGAEgASgJIi8KGERlbGV0ZUZjRmlybXdhcmVSZXNwb25zZRITCgtpc19hcmNoaXZlZBgBIAEoCCIzChRHZXRGY0Zpcm13YXJlUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJIm4KFkxpc3RGY0Zpcm13YXJlc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJjChdMaXN0RmNGaXJtd2FyZXNSZXNwb25zZRIvCgxmY19maXJtd2FyZXMYASADKAsyGS5xdWFkc21pdGguYXBpLkZjRmlybXdhcmUSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIkkKF1VwZGF0ZUZjRmlybXdhcmVSZXF1ZXN0Ei4KC2ZjX2Zpcm13YXJlGAEgASgLMhkucXVhZHNtaXRoLmFwaS5GY0Zpcm13YXJlIoEHCgpGY0Zpcm13YXJlEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhYKAmlkGAIgASgJQgrC8xgCQAHA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZAhIYCgRuYW1lGAQgASgJQgrC8xgCQAHA8BkCEhUKB3ZlcnNpb24YBSABKAlCBMDwGQISIgoUdGFyZ2V0X2FyY2hpdGVjdHVyZXMYBiABKAlCBMDwGQISIQoTc3VwcG9ydGVkX3Byb3RvY29scxgHIAEoCUIEwPAZAhIcCg5pc19vcGVuX3NvdXJjZRgIIAEoCEIEwPAZAhIcCg5yZXBvc2l0b3J5X3VybBgJIAEoCUIEwPAZAhIfCgtkZXNjcmlwdGlvbhgKIAEoCUIKwvMYAkABwPAZAhJBCg9yZWZlcmVuY2VfbGlua3MYCyADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCCsLzGAJAAcDwGQISLgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAwgASgJQgrC8xgCQAHA8BkCSACIAQESLwoFbWVkaWEYDSADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgrC8xgCQAHA8BkCEiIKCXVzZXJfdXVpZBgOIAEoCUIKwvMYAkABwPAZBEgBiAEBEigKD2F1dGhvcl91c2VybmFtZRgPIAEoCUIKwvMYAkABwPAZAkgCiAEBOvkBirUYTAoMbWFudWZhY3R1cmVyCgRuYW1lCgd2ZXJzaW9uChR0YXJnZXRfYXJjaGl0ZWN0dXJlcwoOaXNfb3Blbl9zb3VyY2USByMzYjgyZjaatRgfY29tcG9uZW50cy9zb2Z0d2FyZS9mYy1maXJtd2FyZcLzGB0KG2ZsaWdodF9jb250cm9sbGVyX2Zpcm13YXJlc8LwGWEIBRJddXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSBlbnRpdGllcyBXSEVSRSBjb2xsZWN0aW9uID0gJ2ZjLWZpcm13YXJlJyBBTkQgdXNlcl91dWlkID0gJDE6OnV1aWQpQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2VCDAoKX3VzZXJfdXVpZEISChBfYXV0aG9yX3VzZXJuYW1lMtkDChFGY0Zpcm13YXJlU2VydmljZRJPCg1HZXRGY0Zpcm13YXJlEiMucXVhZHNtaXRoLmFwaS5HZXRGY0Zpcm13YXJlUmVxdWVzdBoZLnF1YWRzbWl0aC5hcGkuRmNGaXJtd2FyZRJgCg9MaXN0RmNGaXJtd2FyZXMSJS5xdWFkc21pdGguYXBpLkxpc3RGY0Zpcm13YXJlc1JlcXVlc3QaJi5xdWFkc21pdGguYXBpLkxpc3RGY0Zpcm13YXJlc1Jlc3BvbnNlElUKEENyZWF0ZUZjRmlybXdhcmUSJi5xdWFkc21pdGguYXBpLkNyZWF0ZUZjRmlybXdhcmVSZXF1ZXN0GhkucXVhZHNtaXRoLmFwaS5GY0Zpcm13YXJlElUKEFVwZGF0ZUZjRmlybXdhcmUSJi5xdWFkc21pdGguYXBpLlVwZGF0ZUZjRmlybXdhcmVSZXF1ZXN0GhkucXVhZHNtaXRoLmFwaS5GY0Zpcm13YXJlEmMKEERlbGV0ZUZjRmlybXdhcmUSJi5xdWFkc21pdGguYXBpLkRlbGV0ZUZjRmlybXdhcmVSZXF1ZXN0GicucXVhZHNtaXRoLmFwaS5EZWxldGVGY0Zpcm13YXJlUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
+    "Ch9xdWFkc21pdGgvYXBpL2ZjX2Zpcm13YXJlLnByb3RvEg1xdWFkc21pdGguYXBpIvgGCgpGY0Zpcm13YXJlEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhYKAmlkGAIgASgJQgrC8xgCQAHA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZAhIYCgRuYW1lGAQgASgJQgrC8xgCQAHA8BkCEhUKB3ZlcnNpb24YBSABKAlCBMDwGQISIgoUdGFyZ2V0X2FyY2hpdGVjdHVyZXMYBiABKAlCBMDwGQISIQoTc3VwcG9ydGVkX3Byb3RvY29scxgHIAEoCUIEwPAZAhIcCg5pc19vcGVuX3NvdXJjZRgIIAEoCEIEwPAZAhIcCg5yZXBvc2l0b3J5X3VybBgJIAEoCUIEwPAZAhIfCgtkZXNjcmlwdGlvbhgKIAEoCUIKwvMYAkABwPAZAhJBCg9yZWZlcmVuY2VfbGlua3MYCyADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCCsLzGAJAAcDwGQISLgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAwgASgJQgrC8xgCQAHA8BkCSACIAQESLwoFbWVkaWEYDSADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgrC8xgCQAHA8BkCEiIKCXVzZXJfdXVpZBgOIAEoCUIKwvMYAkABwPAZBEgBiAEBEigKD2F1dGhvcl91c2VybmFtZRgPIAEoCUIKwvMYAkABwPAZAkgCiAEBOvABirUYQwoMbWFudWZhY3R1cmVyCgRuYW1lCgd2ZXJzaW9uChR0YXJnZXRfYXJjaGl0ZWN0dXJlcwoOaXNfb3Blbl9zb3VyY2WatRgfY29tcG9uZW50cy9zb2Z0d2FyZS9mYy1maXJtd2FyZcLzGB0KG2ZsaWdodF9jb250cm9sbGVyX2Zpcm13YXJlc8LwGWEIBRJddXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSBlbnRpdGllcyBXSEVSRSBjb2xsZWN0aW9uID0gJ2ZjLWZpcm13YXJlJyBBTkQgdXNlcl91dWlkID0gJDE6OnV1aWQpQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2VCDAoKX3VzZXJfdXVpZEISChBfYXV0aG9yX3VzZXJuYW1lIkkKF0NyZWF0ZUZjRmlybXdhcmVSZXF1ZXN0Ei4KC2ZjX2Zpcm13YXJlGAEgASgLMhkucXVhZHNtaXRoLmFwaS5GY0Zpcm13YXJlIiUKF0RlbGV0ZUZjRmlybXdhcmVSZXF1ZXN0EgoKAmlkGAEgASgJIi8KGERlbGV0ZUZjRmlybXdhcmVSZXNwb25zZRITCgtpc19hcmNoaXZlZBgBIAEoCCIzChRHZXRGY0Zpcm13YXJlUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJIm4KFkxpc3RGY0Zpcm13YXJlc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJjChdMaXN0RmNGaXJtd2FyZXNSZXNwb25zZRIvCgxmY19maXJtd2FyZXMYASADKAsyGS5xdWFkc21pdGguYXBpLkZjRmlybXdhcmUSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIkkKF1VwZGF0ZUZjRmlybXdhcmVSZXF1ZXN0Ei4KC2ZjX2Zpcm13YXJlGAEgASgLMhkucXVhZHNtaXRoLmFwaS5GY0Zpcm13YXJlMtkDChFGY0Zpcm13YXJlU2VydmljZRJPCg1HZXRGY0Zpcm13YXJlEiMucXVhZHNtaXRoLmFwaS5HZXRGY0Zpcm13YXJlUmVxdWVzdBoZLnF1YWRzbWl0aC5hcGkuRmNGaXJtd2FyZRJgCg9MaXN0RmNGaXJtd2FyZXMSJS5xdWFkc21pdGguYXBpLkxpc3RGY0Zpcm13YXJlc1JlcXVlc3QaJi5xdWFkc21pdGguYXBpLkxpc3RGY0Zpcm13YXJlc1Jlc3BvbnNlElUKEENyZWF0ZUZjRmlybXdhcmUSJi5xdWFkc21pdGguYXBpLkNyZWF0ZUZjRmlybXdhcmVSZXF1ZXN0GhkucXVhZHNtaXRoLmFwaS5GY0Zpcm13YXJlElUKEFVwZGF0ZUZjRmlybXdhcmUSJi5xdWFkc21pdGguYXBpLlVwZGF0ZUZjRmlybXdhcmVSZXF1ZXN0GhkucXVhZHNtaXRoLmFwaS5GY0Zpcm13YXJlEmMKEERlbGV0ZUZjRmlybXdhcmUSJi5xdWFkc21pdGguYXBpLkRlbGV0ZUZjRmlybXdhcmVSZXF1ZXN0GicucXVhZHNtaXRoLmFwaS5EZWxldGVGY0Zpcm13YXJlUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -30,170 +30,6 @@ export const file_quadsmith_api_fc_firmware: GenFile =
   );
 
 /**
- * ---------------------------------------------------------
- * 2. RPC Requests & Responses (Callers Precede Callees)
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.CreateFcFirmwareRequest
- */
-export type CreateFcFirmwareRequest = Message<"quadsmith.api.CreateFcFirmwareRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.FcFirmware fc_firmware = 1;
-   */
-  fcFirmware?: FcFirmware | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateFcFirmwareRequest.
- * Use `create(CreateFcFirmwareRequestSchema)` to create a new message.
- */
-export const CreateFcFirmwareRequestSchema: GenMessage<CreateFcFirmwareRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_fc_firmware, 0);
-
-/**
- * @generated from message quadsmith.api.DeleteFcFirmwareRequest
- */
-export type DeleteFcFirmwareRequest = Message<"quadsmith.api.DeleteFcFirmwareRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteFcFirmwareRequest.
- * Use `create(DeleteFcFirmwareRequestSchema)` to create a new message.
- */
-export const DeleteFcFirmwareRequestSchema: GenMessage<DeleteFcFirmwareRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_fc_firmware, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteFcFirmwareResponse
- */
-export type DeleteFcFirmwareResponse = Message<"quadsmith.api.DeleteFcFirmwareResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteFcFirmwareResponse.
- * Use `create(DeleteFcFirmwareResponseSchema)` to create a new message.
- */
-export const DeleteFcFirmwareResponseSchema: GenMessage<DeleteFcFirmwareResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_fc_firmware, 2);
-
-/**
- * @generated from message quadsmith.api.GetFcFirmwareRequest
- */
-export type GetFcFirmwareRequest = Message<"quadsmith.api.GetFcFirmwareRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
-
-/**
- * Describes the message quadsmith.api.GetFcFirmwareRequest.
- * Use `create(GetFcFirmwareRequestSchema)` to create a new message.
- */
-export const GetFcFirmwareRequestSchema: GenMessage<GetFcFirmwareRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_fc_firmware, 3);
-
-/**
- * @generated from message quadsmith.api.ListFcFirmwaresRequest
- */
-export type ListFcFirmwaresRequest = Message<"quadsmith.api.ListFcFirmwaresRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
-
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
-
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
-
-/**
- * Describes the message quadsmith.api.ListFcFirmwaresRequest.
- * Use `create(ListFcFirmwaresRequestSchema)` to create a new message.
- */
-export const ListFcFirmwaresRequestSchema: GenMessage<ListFcFirmwaresRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_fc_firmware, 4);
-
-/**
- * @generated from message quadsmith.api.ListFcFirmwaresResponse
- */
-export type ListFcFirmwaresResponse = Message<"quadsmith.api.ListFcFirmwaresResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.FcFirmware fc_firmwares = 1;
-   */
-  fcFirmwares: FcFirmware[];
-
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
-
-/**
- * Describes the message quadsmith.api.ListFcFirmwaresResponse.
- * Use `create(ListFcFirmwaresResponseSchema)` to create a new message.
- */
-export const ListFcFirmwaresResponseSchema: GenMessage<ListFcFirmwaresResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_fc_firmware, 5);
-
-/**
- * @generated from message quadsmith.api.UpdateFcFirmwareRequest
- */
-export type UpdateFcFirmwareRequest = Message<"quadsmith.api.UpdateFcFirmwareRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.FcFirmware fc_firmware = 1;
-   */
-  fcFirmware?: FcFirmware | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateFcFirmwareRequest.
- * Use `create(UpdateFcFirmwareRequestSchema)` to create a new message.
- */
-export const UpdateFcFirmwareRequestSchema: GenMessage<UpdateFcFirmwareRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_fc_firmware, 6);
-
-/**
- * ---------------------------------------------------------
- * 3. Domain Model (Referenced by Services and Requests above)
- * ---------------------------------------------------------
- *
  * @generated from message quadsmith.api.FcFirmware
  */
 export type FcFirmware = Message<"quadsmith.api.FcFirmware"> & {
@@ -279,13 +115,165 @@ export type FcFirmware = Message<"quadsmith.api.FcFirmware"> & {
  */
 export const FcFirmwareSchema: GenMessage<FcFirmware> =
   /*@__PURE__*/
+  messageDesc(file_quadsmith_api_fc_firmware, 0);
+
+/**
+ * @generated from message quadsmith.api.CreateFcFirmwareRequest
+ */
+export type CreateFcFirmwareRequest = Message<"quadsmith.api.CreateFcFirmwareRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.FcFirmware fc_firmware = 1;
+   */
+  fcFirmware?: FcFirmware | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.CreateFcFirmwareRequest.
+ * Use `create(CreateFcFirmwareRequestSchema)` to create a new message.
+ */
+export const CreateFcFirmwareRequestSchema: GenMessage<CreateFcFirmwareRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_fc_firmware, 1);
+
+/**
+ * @generated from message quadsmith.api.DeleteFcFirmwareRequest
+ */
+export type DeleteFcFirmwareRequest = Message<"quadsmith.api.DeleteFcFirmwareRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteFcFirmwareRequest.
+ * Use `create(DeleteFcFirmwareRequestSchema)` to create a new message.
+ */
+export const DeleteFcFirmwareRequestSchema: GenMessage<DeleteFcFirmwareRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_fc_firmware, 2);
+
+/**
+ * @generated from message quadsmith.api.DeleteFcFirmwareResponse
+ */
+export type DeleteFcFirmwareResponse = Message<"quadsmith.api.DeleteFcFirmwareResponse"> & {
+  /**
+   * @generated from field: bool is_archived = 1;
+   */
+  isArchived: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteFcFirmwareResponse.
+ * Use `create(DeleteFcFirmwareResponseSchema)` to create a new message.
+ */
+export const DeleteFcFirmwareResponseSchema: GenMessage<DeleteFcFirmwareResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_fc_firmware, 3);
+
+/**
+ * @generated from message quadsmith.api.GetFcFirmwareRequest
+ */
+export type GetFcFirmwareRequest = Message<"quadsmith.api.GetFcFirmwareRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.GetFcFirmwareRequest.
+ * Use `create(GetFcFirmwareRequestSchema)` to create a new message.
+ */
+export const GetFcFirmwareRequestSchema: GenMessage<GetFcFirmwareRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_fc_firmware, 4);
+
+/**
+ * @generated from message quadsmith.api.ListFcFirmwaresRequest
+ */
+export type ListFcFirmwaresRequest = Message<"quadsmith.api.ListFcFirmwaresRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
+
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListFcFirmwaresRequest.
+ * Use `create(ListFcFirmwaresRequestSchema)` to create a new message.
+ */
+export const ListFcFirmwaresRequestSchema: GenMessage<ListFcFirmwaresRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_fc_firmware, 5);
+
+/**
+ * @generated from message quadsmith.api.ListFcFirmwaresResponse
+ */
+export type ListFcFirmwaresResponse = Message<"quadsmith.api.ListFcFirmwaresResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.FcFirmware fc_firmwares = 1;
+   */
+  fcFirmwares: FcFirmware[];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListFcFirmwaresResponse.
+ * Use `create(ListFcFirmwaresResponseSchema)` to create a new message.
+ */
+export const ListFcFirmwaresResponseSchema: GenMessage<ListFcFirmwaresResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_fc_firmware, 6);
+
+/**
+ * @generated from message quadsmith.api.UpdateFcFirmwareRequest
+ */
+export type UpdateFcFirmwareRequest = Message<"quadsmith.api.UpdateFcFirmwareRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.FcFirmware fc_firmware = 1;
+   */
+  fcFirmware?: FcFirmware | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.UpdateFcFirmwareRequest.
+ * Use `create(UpdateFcFirmwareRequestSchema)` to create a new message.
+ */
+export const UpdateFcFirmwareRequestSchema: GenMessage<UpdateFcFirmwareRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_api_fc_firmware, 7);
 
 /**
- * ---------------------------------------------------------
- * 1. gRPC Service (Services First)
- * ---------------------------------------------------------
- *
  * @generated from service quadsmith.api.FcFirmwareService
  */
 export const FcFirmwareService: GenService<{

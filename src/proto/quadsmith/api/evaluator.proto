@@ -8,17 +8,20 @@ import "quadsmith/api/components.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
-enum SystemMessageSeverity {
-  SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED = 0;
-  SYSTEM_MESSAGE_SEVERITY_INFO = 1;
-  SYSTEM_MESSAGE_SEVERITY_WARNING = 2;
-  SYSTEM_MESSAGE_SEVERITY_ERROR = 3;
+// ---------------------------------------------------------
+// Services
+// ---------------------------------------------------------
+
+service EvaluatorService {
+  rpc EvaluateBuild(EvaluateBuildRequest) returns (EvaluateBuildResponse);
+  rpc GetBuildElectricalLimits(GetBuildElectricalLimitsRequest) returns (GetBuildElectricalLimitsResponse);
+  rpc EvaluateComponents(EvaluateComponentsRequest) returns (EvaluateBuildResponse);
+  rpc GetComponentsElectricalLimits(GetComponentsElectricalLimitsRequest) returns (GetBuildElectricalLimitsResponse);
 }
 
-message SystemMessage {
-  SystemMessageSeverity severity = 1;
-  string message = 2;
-}
+// ---------------------------------------------------------
+// Request/response messages
+// ---------------------------------------------------------
 
 message EvaluateBuildRequest {
   oneof build_source {
@@ -70,6 +73,11 @@ message EvaluateBuildResponse {
   repeated string compatible_connectors = 21;
 }
 
+message EvaluateComponentsRequest {
+  AssembledComponents components = 1;
+  float payload_weight_g = 2;
+}
+
 message GetBuildElectricalLimitsRequest {
   oneof build_source {
     // Required build ID or UUID.
@@ -90,19 +98,23 @@ message GetBuildElectricalLimitsResponse {
   repeated string compatible_connectors = 7;
 }
 
-message EvaluateComponentsRequest {
-  AssembledComponents components = 1;
-  float payload_weight_g = 2;
-}
-
 message GetComponentsElectricalLimitsRequest {
   AssembledComponents components = 1;
   repeated Battery candidate_batteries = 2;
 }
 
-service EvaluatorService {
-  rpc EvaluateBuild(EvaluateBuildRequest) returns (EvaluateBuildResponse);
-  rpc GetBuildElectricalLimits(GetBuildElectricalLimitsRequest) returns (GetBuildElectricalLimitsResponse);
-  rpc EvaluateComponents(EvaluateComponentsRequest) returns (EvaluateBuildResponse);
-  rpc GetComponentsElectricalLimits(GetComponentsElectricalLimitsRequest) returns (GetBuildElectricalLimitsResponse);
+// ---------------------------------------------------------
+// Everything else
+// ---------------------------------------------------------
+
+message SystemMessage {
+  SystemMessageSeverity severity = 1;
+  string message = 2;
+}
+
+enum SystemMessageSeverity {
+  SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED = 0;
+  SYSTEM_MESSAGE_SEVERITY_INFO = 1;
+  SYSTEM_MESSAGE_SEVERITY_WARNING = 2;
+  SYSTEM_MESSAGE_SEVERITY_ERROR = 3;
 }

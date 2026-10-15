@@ -732,23 +732,12 @@ func getDefaultColumns(msg *protogen.Message) []string {
 	return nil
 }
 
-func getColorCode(msg *protogen.Message) string {
-	opts := msg.Desc.Options()
-	if proto.HasExtension(opts, commonpb.E_Frontend) {
-		if fe, ok := proto.GetExtension(opts, commonpb.E_Frontend).(*commonpb.FrontendOptions); ok && fe != nil {
-			return fe.ColorCode
-		}
-	}
-	return ""
-}
-
 func generateSearchRegistry(gen *protogen.Plugin) {
 	type colInfo struct {
 		canonicalPath   string
 		tableName       string
 		displayName     string
 		messageName     string
-		colorCode       string
 		hasManufacturer bool
 		defaultColumns  []string
 		columns         []string
@@ -828,7 +817,6 @@ func generateSearchRegistry(gen *protogen.Plugin) {
 				tableName:       tbl,
 				displayName:     plural,
 				messageName:     msgName,
-				colorCode:       getColorCode(msg),
 				hasManufacturer: hasMfr,
 				defaultColumns:  getDefaultColumns(msg),
 				columns:         cols,
@@ -857,7 +845,6 @@ func generateSearchRegistry(gen *protogen.Plugin) {
 	g.P("	TableName       string")
 	g.P("	DisplayName     string")
 	g.P("	MessageName     string")
-	g.P("	ColorCode       string")
 	g.P("	HasManufacturer bool")
 	g.P("	DefaultColumns  []string")
 	g.P("	Columns         []string")
@@ -875,7 +862,6 @@ func generateSearchRegistry(gen *protogen.Plugin) {
 		g.P("		TableName: ", fmt.Sprintf("%q", c.tableName), ",")
 		g.P("		DisplayName: ", fmt.Sprintf("%q", c.displayName), ",")
 		g.P("		MessageName: ", fmt.Sprintf("%q", c.messageName), ",")
-		g.P("		ColorCode: ", fmt.Sprintf("%q", c.colorCode), ",")
 		g.P("		HasManufacturer: ", c.hasManufacturer, ",")
 		g.P("		DefaultColumns: []string{")
 		for _, col := range c.defaultColumns {

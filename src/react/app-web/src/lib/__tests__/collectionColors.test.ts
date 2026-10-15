@@ -1,20 +1,43 @@
 import { describe, it, expect } from "vitest";
-import { getOption } from "@bufbuild/protobuf";
-import { frontend } from "@quadsmith/shared/gen/quadsmith/common/common_pb";
-import { BatterySchema } from "@quadsmith/shared/gen/quadsmith/api/battery_pb";
-import { BuildSchema } from "@quadsmith/shared/gen/quadsmith/api/build_pb";
 import {
+  COLOR_PALETTE,
   COLLECTION_COLORS,
   DEFAULT_COLLECTION_COLOR,
   getCollectionColor,
   getCollectionColorByCode,
-  getCollectionColorFromSchema,
   normalizeCollectionKey,
 } from "@quadsmith/shared";
 import { HARDWARE_COLLECTIONS } from "../hardwareCollections";
 
 describe("collectionColors module", () => {
-  it("contains unique color definitions for all 11 hardware collections and builds", () => {
+  it("defines an authoritative color palette of at least 25 distinct colors with light and dark variants", () => {
+    expect(COLOR_PALETTE.length).toBeGreaterThanOrEqual(25);
+
+    // Verify all hex codes in palette are unique
+    const hexCodes = new Set(COLOR_PALETTE.map((c) => c.hex.toLowerCase()));
+    expect(hexCodes.size).toBe(COLOR_PALETTE.length);
+
+    // Verify all color names are unique
+    const colorNames = new Set(COLOR_PALETTE.map((c) => c.colorName.toLowerCase()));
+    expect(colorNames.size).toBe(COLOR_PALETTE.length);
+
+    // Verify each color has both light mode and dark mode styling classes
+    for (const color of COLOR_PALETTE) {
+      expect(color.badgeClass).toContain("bg-");
+      expect(color.badgeClass).toContain("dark:bg-");
+      expect(color.badgeClass).toContain("text-");
+      expect(color.badgeClass).toContain("dark:text-");
+      expect(color.bgClass).toContain("dark:bg-");
+      expect(color.textClass).toContain("dark:text-");
+      expect(color.borderClass).toContain("dark:border-");
+      expect(color.trimClass).toContain("bg-");
+      expect(color.dotClass).toContain("bg-");
+      expect(color.iconBgClass).toContain("dark:bg-");
+      expect(color.hoverBorderClass).toContain("hover:border-");
+    }
+  });
+
+  it("contains color definitions for all hardware collections, builds, firmware, and tools", () => {
     const requiredCollections = [
       "antennas",
       "batteries",
@@ -39,8 +62,6 @@ describe("collectionColors module", () => {
       "field-tools",
     ];
 
-    expect(Object.keys(COLLECTION_COLORS)).toHaveLength(21);
-
     for (const key of requiredCollections) {
       expect(COLLECTION_COLORS[key]).toBeDefined();
       expect(COLLECTION_COLORS[key].hex).toMatch(/^#[0-9a-f]{6}$/i);
@@ -56,34 +77,6 @@ describe("collectionColors module", () => {
     // Builds shares the blue theme (#3b82f6) with flight controllers
     expect(COLLECTION_COLORS["builds"].hex).toBe("#3b82f6");
     expect(COLLECTION_COLORS["flight-controllers"].hex).toBe("#3b82f6");
-  });
-
-  it("extracts colors directly from proto schema options as the source of truth", () => {
-    // BatterySchema defines color_code: "#84cc16" in battery.proto
-    const batteryProtoColor = getOption(BatterySchema, frontend)?.colorCode;
-    expect(batteryProtoColor).toBe("#84cc16");
-
-    const batteryColor = getCollectionColorFromSchema(BatterySchema, "batteries", "Batteries");
-    expect(batteryColor.hex).toBe("#84cc16");
-    expect(batteryColor.colorName).toBe("lime");
-    expect(batteryColor.trimClass).toBe("bg-lime-500");
-
-    // BuildSchema defines color_code: "#3b82f6" in build.proto
-    const buildProtoColor = getOption(BuildSchema, frontend)?.colorCode;
-    expect(buildProtoColor).toBe("#3b82f6");
-
-    const buildColor = getCollectionColorFromSchema(BuildSchema, "builds", "Builds");
-    expect(buildColor.hex).toBe("#3b82f6");
-    expect(buildColor.colorName).toBe("blue");
-    expect(buildColor.textClass).toBe("text-blue-600 dark:text-blue-400");
-
-    // Verify all HARDWARE_COLLECTIONS derive their color from their proto schema
-    for (const col of HARDWARE_COLLECTIONS) {
-      const protoColor = getOption(col.schema, frontend)?.colorCode;
-      expect(protoColor).toBeDefined();
-      expect(col.color?.hex).toBe(protoColor);
-      expect(COLLECTION_COLORS[col.id].hex).toBe(protoColor);
-    }
   });
 
   it("assigns colors to every item in HARDWARE_COLLECTIONS", () => {
@@ -168,11 +161,5 @@ describe("collectionColors module", () => {
     // Case-insensitivity and prefix handling
     expect(getCollectionColorByCode("#10B981").colorName).toBe("emerald");
     expect(getCollectionColorByCode("10b981").colorName).toBe("emerald");
-
-    // Schema without frontend color option falls back to slate/grey
-    const dummySchemaWithoutColor = { name: "MockMessage" };
-    const colorFromEmptySchema = getCollectionColorFromSchema(dummySchemaWithoutColor);
-    expect(colorFromEmptySchema.hex).toBe("#64748b");
-    expect(colorFromEmptySchema.colorName).toBe("slate");
   });
 });

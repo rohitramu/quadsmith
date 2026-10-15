@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_motor: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChlxdWFkc21pdGgvYXBpL21vdG9yLnByb3RvEg1xdWFkc21pdGguYXBpIjkKEkNyZWF0ZU1vdG9yUmVxdWVzdBIjCgVtb3RvchgBIAEoCzIULnF1YWRzbWl0aC5hcGkuTW90b3IiIAoSRGVsZXRlTW90b3JSZXF1ZXN0EgoKAmlkGAEgASgJIioKE0RlbGV0ZU1vdG9yUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiLgoPR2V0TW90b3JSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiaQoRTGlzdE1vdG9yc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJTChJMaXN0TW90b3JzUmVzcG9uc2USJAoGbW90b3JzGAEgAygLMhQucXVhZHNtaXRoLmFwaS5Nb3RvchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiOQoSVXBkYXRlTW90b3JSZXF1ZXN0EiMKBW1vdG9yGAEgASgLMhQucXVhZHNtaXRoLmFwaS5Nb3RvciKzBwoFTW90b3ISOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSFgoCaWQYAiABKAlCCsLzGAJAAcDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkCEhgKBG5hbWUYBCABKAlCCsLzGAJAAcDwGQISFgoId2VpZ2h0X2cYBSABKAJCBMDwGQISIAoSc3RhdG9yX2RpYW1ldGVyX21tGAYgASgCQgTA8BkCEh4KEHN0YXRvcl9oZWlnaHRfbW0YByABKAJCBMDwGQISFgoCa3YYCCABKA1CCsLzGAIoAcDwGQISHwoLZGVzY3JpcHRpb24YCSABKAlCCsLzGAJAAcDwGQISQQoPcmVmZXJlbmNlX2xpbmtzGAogAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgrC8xgCQAHA8BkCEi4KFXByaW1hcnlfZGlzcGxheV9pbWFnZRgLIAEoCUIKwvMYAkABwPAZAkgAiAEBEi8KBW1lZGlhGAwgAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIKwvMYAkABwPAZAhIZCgttaW5fdm9sdGFnZRgNIAEoAkIEwPAZAhIZCgttYXhfdm9sdGFnZRgOIAEoAkIEwPAZAhIbCg1tYXhfY3VycmVudF9hGA8gASgCQgTA8BkCEiMKFXByb3BfbW91bnRfaW50ZXJmYWNlcxgQIAMoCUIEwPAZAhIbCg1tb3VudF9wYXR0ZXJuGBEgASgJQgTA8BkCEiIKCXVzZXJfdXVpZBgSIAEoCUIKwvMYAkABwPAZBEgBiAEBEigKD2F1dGhvcl91c2VybmFtZRgTIAEoCUIKwvMYAkABwPAZAkgCiAEBOsMBirUYNQoMbWFudWZhY3R1cmVyCgRuYW1lChJzdGF0b3JfZGlhbWV0ZXJfbW0KAmt2EgcjZWY0NDQ0mrUYGmNvbXBvbmVudHMvaGFyZHdhcmUvbW90b3JzwvMYCAoGbW90b3JzwvAZXAgFElh1dWlkIElOIChTRUxFQ1QgdXVpZCBGUk9NIGVudGl0aWVzIFdIRVJFIGNvbGxlY3Rpb24gPSAnbW90b3JzJyBBTkQgdXNlcl91dWlkID0gJDE6OnV1aWQpQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2VCDAoKX3VzZXJfdXVpZEISChBfYXV0aG9yX3VzZXJuYW1lMokDCgxNb3RvclNlcnZpY2USQAoIR2V0TW90b3ISHi5xdWFkc21pdGguYXBpLkdldE1vdG9yUmVxdWVzdBoULnF1YWRzbWl0aC5hcGkuTW90b3ISUQoKTGlzdE1vdG9ycxIgLnF1YWRzbWl0aC5hcGkuTGlzdE1vdG9yc1JlcXVlc3QaIS5xdWFkc21pdGguYXBpLkxpc3RNb3RvcnNSZXNwb25zZRJGCgtDcmVhdGVNb3RvchIhLnF1YWRzbWl0aC5hcGkuQ3JlYXRlTW90b3JSZXF1ZXN0GhQucXVhZHNtaXRoLmFwaS5Nb3RvchJGCgtVcGRhdGVNb3RvchIhLnF1YWRzbWl0aC5hcGkuVXBkYXRlTW90b3JSZXF1ZXN0GhQucXVhZHNtaXRoLmFwaS5Nb3RvchJUCgtEZWxldGVNb3RvchIhLnF1YWRzbWl0aC5hcGkuRGVsZXRlTW90b3JSZXF1ZXN0GiIucXVhZHNtaXRoLmFwaS5EZWxldGVNb3RvclJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "ChlxdWFkc21pdGgvYXBpL21vdG9yLnByb3RvEg1xdWFkc21pdGguYXBpIqoHCgVNb3RvchI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIWCgJpZBgCIAEoCUIKwvMYAkABwPAZBBIgCgxtYW51ZmFjdHVyZXIYAyABKAlCCsLzGAIoAcDwGQISGAoEbmFtZRgEIAEoCUIKwvMYAkABwPAZAhIWCgh3ZWlnaHRfZxgFIAEoAkIEwPAZAhIgChJzdGF0b3JfZGlhbWV0ZXJfbW0YBiABKAJCBMDwGQISHgoQc3RhdG9yX2hlaWdodF9tbRgHIAEoAkIEwPAZAhIWCgJrdhgIIAEoDUIKwvMYAigBwPAZAhIfCgtkZXNjcmlwdGlvbhgJIAEoCUIKwvMYAkABwPAZAhJBCg9yZWZlcmVuY2VfbGlua3MYCiADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCCsLzGAJAAcDwGQISLgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAsgASgJQgrC8xgCQAHA8BkCSACIAQESLwoFbWVkaWEYDCADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgrC8xgCQAHA8BkCEhkKC21pbl92b2x0YWdlGA0gASgCQgTA8BkCEhkKC21heF92b2x0YWdlGA4gASgCQgTA8BkCEhsKDW1heF9jdXJyZW50X2EYDyABKAJCBMDwGQISIwoVcHJvcF9tb3VudF9pbnRlcmZhY2VzGBAgAygJQgTA8BkCEhsKDW1vdW50X3BhdHRlcm4YESABKAlCBMDwGQISIgoJdXNlcl91dWlkGBIgASgJQgrC8xgCQAHA8BkESAGIAQESKAoPYXV0aG9yX3VzZXJuYW1lGBMgASgJQgrC8xgCQAHA8BkCSAKIAQE6ugGKtRgsCgxtYW51ZmFjdHVyZXIKBG5hbWUKEnN0YXRvcl9kaWFtZXRlcl9tbQoCa3aatRgaY29tcG9uZW50cy9oYXJkd2FyZS9tb3RvcnPC8xgICgZtb3RvcnPC8BlcCAUSWHV1aWQgSU4gKFNFTEVDVCB1dWlkIEZST00gZW50aXRpZXMgV0hFUkUgY29sbGVjdGlvbiA9ICdtb3RvcnMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiOQoSQ3JlYXRlTW90b3JSZXF1ZXN0EiMKBW1vdG9yGAEgASgLMhQucXVhZHNtaXRoLmFwaS5Nb3RvciIgChJEZWxldGVNb3RvclJlcXVlc3QSCgoCaWQYASABKAkiKgoTRGVsZXRlTW90b3JSZXNwb25zZRITCgtpc19hcmNoaXZlZBgBIAEoCCIuCg9HZXRNb3RvclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJpChFMaXN0TW90b3JzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlMKEkxpc3RNb3RvcnNSZXNwb25zZRIkCgZtb3RvcnMYASADKAsyFC5xdWFkc21pdGguYXBpLk1vdG9yEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSI5ChJVcGRhdGVNb3RvclJlcXVlc3QSIwoFbW90b3IYASABKAsyFC5xdWFkc21pdGguYXBpLk1vdG9yMokDCgxNb3RvclNlcnZpY2USQAoIR2V0TW90b3ISHi5xdWFkc21pdGguYXBpLkdldE1vdG9yUmVxdWVzdBoULnF1YWRzbWl0aC5hcGkuTW90b3ISUQoKTGlzdE1vdG9ycxIgLnF1YWRzbWl0aC5hcGkuTGlzdE1vdG9yc1JlcXVlc3QaIS5xdWFkc21pdGguYXBpLkxpc3RNb3RvcnNSZXNwb25zZRJGCgtDcmVhdGVNb3RvchIhLnF1YWRzbWl0aC5hcGkuQ3JlYXRlTW90b3JSZXF1ZXN0GhQucXVhZHNtaXRoLmFwaS5Nb3RvchJGCgtVcGRhdGVNb3RvchIhLnF1YWRzbWl0aC5hcGkuVXBkYXRlTW90b3JSZXF1ZXN0GhQucXVhZHNtaXRoLmFwaS5Nb3RvchJUCgtEZWxldGVNb3RvchIhLnF1YWRzbWl0aC5hcGkuRGVsZXRlTW90b3JSZXF1ZXN0GiIucXVhZHNtaXRoLmFwaS5EZWxldGVNb3RvclJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -30,170 +30,6 @@ export const file_quadsmith_api_motor: GenFile =
   );
 
 /**
- * ---------------------------------------------------------
- * 2. RPC Requests & Responses (Callers Precede Callees)
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.CreateMotorRequest
- */
-export type CreateMotorRequest = Message<"quadsmith.api.CreateMotorRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Motor motor = 1;
-   */
-  motor?: Motor | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateMotorRequest.
- * Use `create(CreateMotorRequestSchema)` to create a new message.
- */
-export const CreateMotorRequestSchema: GenMessage<CreateMotorRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_motor, 0);
-
-/**
- * @generated from message quadsmith.api.DeleteMotorRequest
- */
-export type DeleteMotorRequest = Message<"quadsmith.api.DeleteMotorRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteMotorRequest.
- * Use `create(DeleteMotorRequestSchema)` to create a new message.
- */
-export const DeleteMotorRequestSchema: GenMessage<DeleteMotorRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_motor, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteMotorResponse
- */
-export type DeleteMotorResponse = Message<"quadsmith.api.DeleteMotorResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteMotorResponse.
- * Use `create(DeleteMotorResponseSchema)` to create a new message.
- */
-export const DeleteMotorResponseSchema: GenMessage<DeleteMotorResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_motor, 2);
-
-/**
- * @generated from message quadsmith.api.GetMotorRequest
- */
-export type GetMotorRequest = Message<"quadsmith.api.GetMotorRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
-
-/**
- * Describes the message quadsmith.api.GetMotorRequest.
- * Use `create(GetMotorRequestSchema)` to create a new message.
- */
-export const GetMotorRequestSchema: GenMessage<GetMotorRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_motor, 3);
-
-/**
- * @generated from message quadsmith.api.ListMotorsRequest
- */
-export type ListMotorsRequest = Message<"quadsmith.api.ListMotorsRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
-
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
-
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
-
-/**
- * Describes the message quadsmith.api.ListMotorsRequest.
- * Use `create(ListMotorsRequestSchema)` to create a new message.
- */
-export const ListMotorsRequestSchema: GenMessage<ListMotorsRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_motor, 4);
-
-/**
- * @generated from message quadsmith.api.ListMotorsResponse
- */
-export type ListMotorsResponse = Message<"quadsmith.api.ListMotorsResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.Motor motors = 1;
-   */
-  motors: Motor[];
-
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
-
-/**
- * Describes the message quadsmith.api.ListMotorsResponse.
- * Use `create(ListMotorsResponseSchema)` to create a new message.
- */
-export const ListMotorsResponseSchema: GenMessage<ListMotorsResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_motor, 5);
-
-/**
- * @generated from message quadsmith.api.UpdateMotorRequest
- */
-export type UpdateMotorRequest = Message<"quadsmith.api.UpdateMotorRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Motor motor = 1;
-   */
-  motor?: Motor | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateMotorRequest.
- * Use `create(UpdateMotorRequestSchema)` to create a new message.
- */
-export const UpdateMotorRequestSchema: GenMessage<UpdateMotorRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_motor, 6);
-
-/**
- * ---------------------------------------------------------
- * 3. Domain Model (Referenced by Services and Requests above)
- * ---------------------------------------------------------
- *
  * @generated from message quadsmith.api.Motor
  */
 export type Motor = Message<"quadsmith.api.Motor"> & {
@@ -311,13 +147,165 @@ export type Motor = Message<"quadsmith.api.Motor"> & {
  */
 export const MotorSchema: GenMessage<Motor> =
   /*@__PURE__*/
+  messageDesc(file_quadsmith_api_motor, 0);
+
+/**
+ * @generated from message quadsmith.api.CreateMotorRequest
+ */
+export type CreateMotorRequest = Message<"quadsmith.api.CreateMotorRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.Motor motor = 1;
+   */
+  motor?: Motor | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.CreateMotorRequest.
+ * Use `create(CreateMotorRequestSchema)` to create a new message.
+ */
+export const CreateMotorRequestSchema: GenMessage<CreateMotorRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_motor, 1);
+
+/**
+ * @generated from message quadsmith.api.DeleteMotorRequest
+ */
+export type DeleteMotorRequest = Message<"quadsmith.api.DeleteMotorRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteMotorRequest.
+ * Use `create(DeleteMotorRequestSchema)` to create a new message.
+ */
+export const DeleteMotorRequestSchema: GenMessage<DeleteMotorRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_motor, 2);
+
+/**
+ * @generated from message quadsmith.api.DeleteMotorResponse
+ */
+export type DeleteMotorResponse = Message<"quadsmith.api.DeleteMotorResponse"> & {
+  /**
+   * @generated from field: bool is_archived = 1;
+   */
+  isArchived: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteMotorResponse.
+ * Use `create(DeleteMotorResponseSchema)` to create a new message.
+ */
+export const DeleteMotorResponseSchema: GenMessage<DeleteMotorResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_motor, 3);
+
+/**
+ * @generated from message quadsmith.api.GetMotorRequest
+ */
+export type GetMotorRequest = Message<"quadsmith.api.GetMotorRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.GetMotorRequest.
+ * Use `create(GetMotorRequestSchema)` to create a new message.
+ */
+export const GetMotorRequestSchema: GenMessage<GetMotorRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_motor, 4);
+
+/**
+ * @generated from message quadsmith.api.ListMotorsRequest
+ */
+export type ListMotorsRequest = Message<"quadsmith.api.ListMotorsRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
+
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListMotorsRequest.
+ * Use `create(ListMotorsRequestSchema)` to create a new message.
+ */
+export const ListMotorsRequestSchema: GenMessage<ListMotorsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_motor, 5);
+
+/**
+ * @generated from message quadsmith.api.ListMotorsResponse
+ */
+export type ListMotorsResponse = Message<"quadsmith.api.ListMotorsResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.Motor motors = 1;
+   */
+  motors: Motor[];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListMotorsResponse.
+ * Use `create(ListMotorsResponseSchema)` to create a new message.
+ */
+export const ListMotorsResponseSchema: GenMessage<ListMotorsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_motor, 6);
+
+/**
+ * @generated from message quadsmith.api.UpdateMotorRequest
+ */
+export type UpdateMotorRequest = Message<"quadsmith.api.UpdateMotorRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.Motor motor = 1;
+   */
+  motor?: Motor | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.UpdateMotorRequest.
+ * Use `create(UpdateMotorRequestSchema)` to create a new message.
+ */
+export const UpdateMotorRequestSchema: GenMessage<UpdateMotorRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_api_motor, 7);
 
 /**
- * ---------------------------------------------------------
- * 1. gRPC Service (Services First)
- * ---------------------------------------------------------
- *
  * @generated from service quadsmith.api.MotorService
  */
 export const MotorService: GenService<{

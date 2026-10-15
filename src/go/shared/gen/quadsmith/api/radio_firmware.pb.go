@@ -24,368 +24,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
-// ---------------------------------------------------------
-type CreateRadioFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RadioFirmware *RadioFirmware         `protobuf:"bytes,1,opt,name=radio_firmware,json=radioFirmware,proto3" json:"radio_firmware,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateRadioFirmwareRequest) Reset() {
-	*x = CreateRadioFirmwareRequest{}
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateRadioFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateRadioFirmwareRequest) ProtoMessage() {}
-
-func (x *CreateRadioFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateRadioFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*CreateRadioFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *CreateRadioFirmwareRequest) GetRadioFirmware() *RadioFirmware {
-	if x != nil {
-		return x.RadioFirmware
-	}
-	return nil
-}
-
-type DeleteRadioFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteRadioFirmwareRequest) Reset() {
-	*x = DeleteRadioFirmwareRequest{}
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteRadioFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteRadioFirmwareRequest) ProtoMessage() {}
-
-func (x *DeleteRadioFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteRadioFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*DeleteRadioFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *DeleteRadioFirmwareRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteRadioFirmwareResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteRadioFirmwareResponse) Reset() {
-	*x = DeleteRadioFirmwareResponse{}
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteRadioFirmwareResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteRadioFirmwareResponse) ProtoMessage() {}
-
-func (x *DeleteRadioFirmwareResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteRadioFirmwareResponse.ProtoReflect.Descriptor instead.
-func (*DeleteRadioFirmwareResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteRadioFirmwareResponse) GetIsArchived() bool {
-	if x != nil {
-		return x.IsArchived
-	}
-	return false
-}
-
-type GetRadioFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetRadioFirmwareRequest) Reset() {
-	*x = GetRadioFirmwareRequest{}
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetRadioFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetRadioFirmwareRequest) ProtoMessage() {}
-
-func (x *GetRadioFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetRadioFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*GetRadioFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *GetRadioFirmwareRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *GetRadioFirmwareRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListRadioFirmwaresRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListRadioFirmwaresRequest) Reset() {
-	*x = ListRadioFirmwaresRequest{}
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListRadioFirmwaresRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListRadioFirmwaresRequest) ProtoMessage() {}
-
-func (x *ListRadioFirmwaresRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListRadioFirmwaresRequest.ProtoReflect.Descriptor instead.
-func (*ListRadioFirmwaresRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *ListRadioFirmwaresRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListRadioFirmwaresRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListRadioFirmwaresRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListRadioFirmwaresRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListRadioFirmwaresRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListRadioFirmwaresResponse struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	RadioFirmwares []*RadioFirmware       `protobuf:"bytes,1,rep,name=radio_firmwares,json=radioFirmwares,proto3" json:"radio_firmwares,omitempty"`
-	NextPageToken  string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *ListRadioFirmwaresResponse) Reset() {
-	*x = ListRadioFirmwaresResponse{}
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListRadioFirmwaresResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListRadioFirmwaresResponse) ProtoMessage() {}
-
-func (x *ListRadioFirmwaresResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListRadioFirmwaresResponse.ProtoReflect.Descriptor instead.
-func (*ListRadioFirmwaresResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *ListRadioFirmwaresResponse) GetRadioFirmwares() []*RadioFirmware {
-	if x != nil {
-		return x.RadioFirmwares
-	}
-	return nil
-}
-
-func (x *ListRadioFirmwaresResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-type UpdateRadioFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RadioFirmware *RadioFirmware         `protobuf:"bytes,1,opt,name=radio_firmware,json=radioFirmware,proto3" json:"radio_firmware,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateRadioFirmwareRequest) Reset() {
-	*x = UpdateRadioFirmwareRequest{}
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateRadioFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateRadioFirmwareRequest) ProtoMessage() {}
-
-func (x *UpdateRadioFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateRadioFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*UpdateRadioFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *UpdateRadioFirmwareRequest) GetRadioFirmware() *RadioFirmware {
-	if x != nil {
-		return x.RadioFirmware
-	}
-	return nil
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 type RadioFirmware struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	Uuid                string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -407,7 +45,7 @@ type RadioFirmware struct {
 
 func (x *RadioFirmware) Reset() {
 	*x = RadioFirmware{}
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[7]
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -419,7 +57,7 @@ func (x *RadioFirmware) String() string {
 func (*RadioFirmware) ProtoMessage() {}
 
 func (x *RadioFirmware) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[7]
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -432,7 +70,7 @@ func (x *RadioFirmware) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RadioFirmware.ProtoReflect.Descriptor instead.
 func (*RadioFirmware) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{7}
+	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *RadioFirmware) GetUuid() string {
@@ -526,33 +164,367 @@ func (x *RadioFirmware) GetAuthorUsername() string {
 	return ""
 }
 
+type CreateRadioFirmwareRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RadioFirmware *RadioFirmware         `protobuf:"bytes,1,opt,name=radio_firmware,json=radioFirmware,proto3" json:"radio_firmware,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateRadioFirmwareRequest) Reset() {
+	*x = CreateRadioFirmwareRequest{}
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateRadioFirmwareRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateRadioFirmwareRequest) ProtoMessage() {}
+
+func (x *CreateRadioFirmwareRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateRadioFirmwareRequest.ProtoReflect.Descriptor instead.
+func (*CreateRadioFirmwareRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateRadioFirmwareRequest) GetRadioFirmware() *RadioFirmware {
+	if x != nil {
+		return x.RadioFirmware
+	}
+	return nil
+}
+
+type DeleteRadioFirmwareRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteRadioFirmwareRequest) Reset() {
+	*x = DeleteRadioFirmwareRequest{}
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteRadioFirmwareRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteRadioFirmwareRequest) ProtoMessage() {}
+
+func (x *DeleteRadioFirmwareRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteRadioFirmwareRequest.ProtoReflect.Descriptor instead.
+func (*DeleteRadioFirmwareRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteRadioFirmwareRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteRadioFirmwareResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteRadioFirmwareResponse) Reset() {
+	*x = DeleteRadioFirmwareResponse{}
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteRadioFirmwareResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteRadioFirmwareResponse) ProtoMessage() {}
+
+func (x *DeleteRadioFirmwareResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteRadioFirmwareResponse.ProtoReflect.Descriptor instead.
+func (*DeleteRadioFirmwareResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DeleteRadioFirmwareResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetRadioFirmwareRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetRadioFirmwareRequest) Reset() {
+	*x = GetRadioFirmwareRequest{}
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetRadioFirmwareRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetRadioFirmwareRequest) ProtoMessage() {}
+
+func (x *GetRadioFirmwareRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetRadioFirmwareRequest.ProtoReflect.Descriptor instead.
+func (*GetRadioFirmwareRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetRadioFirmwareRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetRadioFirmwareRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListRadioFirmwaresRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListRadioFirmwaresRequest) Reset() {
+	*x = ListRadioFirmwaresRequest{}
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListRadioFirmwaresRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListRadioFirmwaresRequest) ProtoMessage() {}
+
+func (x *ListRadioFirmwaresRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListRadioFirmwaresRequest.ProtoReflect.Descriptor instead.
+func (*ListRadioFirmwaresRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListRadioFirmwaresRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListRadioFirmwaresRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListRadioFirmwaresRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListRadioFirmwaresRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListRadioFirmwaresRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListRadioFirmwaresResponse struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	RadioFirmwares []*RadioFirmware       `protobuf:"bytes,1,rep,name=radio_firmwares,json=radioFirmwares,proto3" json:"radio_firmwares,omitempty"`
+	NextPageToken  string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *ListRadioFirmwaresResponse) Reset() {
+	*x = ListRadioFirmwaresResponse{}
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListRadioFirmwaresResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListRadioFirmwaresResponse) ProtoMessage() {}
+
+func (x *ListRadioFirmwaresResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListRadioFirmwaresResponse.ProtoReflect.Descriptor instead.
+func (*ListRadioFirmwaresResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListRadioFirmwaresResponse) GetRadioFirmwares() []*RadioFirmware {
+	if x != nil {
+		return x.RadioFirmwares
+	}
+	return nil
+}
+
+func (x *ListRadioFirmwaresResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateRadioFirmwareRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	RadioFirmware *RadioFirmware         `protobuf:"bytes,1,opt,name=radio_firmware,json=radioFirmware,proto3" json:"radio_firmware,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateRadioFirmwareRequest) Reset() {
+	*x = UpdateRadioFirmwareRequest{}
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateRadioFirmwareRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateRadioFirmwareRequest) ProtoMessage() {}
+
+func (x *UpdateRadioFirmwareRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_radio_firmware_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateRadioFirmwareRequest.ProtoReflect.Descriptor instead.
+func (*UpdateRadioFirmwareRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_radio_firmware_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateRadioFirmwareRequest) GetRadioFirmware() *RadioFirmware {
+	if x != nil {
+		return x.RadioFirmware
+	}
+	return nil
+}
+
 var File_quadsmith_api_radio_firmware_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_radio_firmware_proto_rawDesc = "" +
 	"\n" +
-	"\"quadsmith/api/radio_firmware.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"a\n" +
-	"\x1aCreateRadioFirmwareRequest\x12C\n" +
-	"\x0eradio_firmware\x18\x01 \x01(\v2\x1c.quadsmith.api.RadioFirmwareR\rradioFirmware\",\n" +
-	"\x1aDeleteRadioFirmwareRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\">\n" +
-	"\x1bDeleteRadioFirmwareResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"C\n" +
-	"\x17GetRadioFirmwareRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x9d\x01\n" +
-	"\x19ListRadioFirmwaresRequest\x12\x16\n" +
-	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
-	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
-	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
-	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x8b\x01\n" +
-	"\x1aListRadioFirmwaresResponse\x12E\n" +
-	"\x0fradio_firmwares\x18\x01 \x03(\v2\x1c.quadsmith.api.RadioFirmwareR\x0eradioFirmwares\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"a\n" +
-	"\x1aUpdateRadioFirmwareRequest\x12C\n" +
-	"\x0eradio_firmware\x18\x01 \x01(\v2\x1c.quadsmith.api.RadioFirmwareR\rradioFirmware\"\xd7\a\n" +
+	"\"quadsmith/api/radio_firmware.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xce\a\n" +
 	"\rRadioFirmware\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
 	"\x02id\x18\x02 \x01(\tB\n" +
@@ -576,17 +548,39 @@ const file_quadsmith_api_radio_firmware_proto_rawDesc = "" +
 	"\tuser_uuid\x18\f \x01(\tB\n" +
 	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
 	"\x0fauthor_username\x18\r \x01(\tB\n" +
-	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xf2\x01\x8a\xb5\x18K\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xe9\x01\x8a\xb5\x18B\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\aversion\n" +
 	"\x13supported_protocols\n" +
-	"\x0eis_open_source\x12\a#84cc16\x9a\xb5\x18\"components/software/radio-firmware\xc2\xf3\x18\x11\n" +
+	"\x0eis_open_source\x9a\xb5\x18\"components/software/radio-firmware\xc2\xf3\x18\x11\n" +
 	"\x0fradio_firmwares\xc2\xf0\x19d\b\x05\x12`uuid IN (SELECT uuid FROM entities WHERE collection = 'radio-firmware' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +
-	"\x10_author_username2\x89\x04\n" +
+	"\x10_author_username\"a\n" +
+	"\x1aCreateRadioFirmwareRequest\x12C\n" +
+	"\x0eradio_firmware\x18\x01 \x01(\v2\x1c.quadsmith.api.RadioFirmwareR\rradioFirmware\",\n" +
+	"\x1aDeleteRadioFirmwareRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\">\n" +
+	"\x1bDeleteRadioFirmwareResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\"C\n" +
+	"\x17GetRadioFirmwareRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x9d\x01\n" +
+	"\x19ListRadioFirmwaresRequest\x12\x16\n" +
+	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x8b\x01\n" +
+	"\x1aListRadioFirmwaresResponse\x12E\n" +
+	"\x0fradio_firmwares\x18\x01 \x03(\v2\x1c.quadsmith.api.RadioFirmwareR\x0eradioFirmwares\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"a\n" +
+	"\x1aUpdateRadioFirmwareRequest\x12C\n" +
+	"\x0eradio_firmware\x18\x01 \x01(\v2\x1c.quadsmith.api.RadioFirmwareR\rradioFirmware2\x89\x04\n" +
 	"\x14RadioFirmwareService\x12X\n" +
 	"\x10GetRadioFirmware\x12&.quadsmith.api.GetRadioFirmwareRequest\x1a\x1c.quadsmith.api.RadioFirmware\x12i\n" +
 	"\x12ListRadioFirmwares\x12(.quadsmith.api.ListRadioFirmwaresRequest\x1a).quadsmith.api.ListRadioFirmwaresResponse\x12^\n" +
@@ -608,33 +602,33 @@ func file_quadsmith_api_radio_firmware_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_api_radio_firmware_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_radio_firmware_proto_goTypes = []any{
-	(*CreateRadioFirmwareRequest)(nil),  // 0: quadsmith.api.CreateRadioFirmwareRequest
-	(*DeleteRadioFirmwareRequest)(nil),  // 1: quadsmith.api.DeleteRadioFirmwareRequest
-	(*DeleteRadioFirmwareResponse)(nil), // 2: quadsmith.api.DeleteRadioFirmwareResponse
-	(*GetRadioFirmwareRequest)(nil),     // 3: quadsmith.api.GetRadioFirmwareRequest
-	(*ListRadioFirmwaresRequest)(nil),   // 4: quadsmith.api.ListRadioFirmwaresRequest
-	(*ListRadioFirmwaresResponse)(nil),  // 5: quadsmith.api.ListRadioFirmwaresResponse
-	(*UpdateRadioFirmwareRequest)(nil),  // 6: quadsmith.api.UpdateRadioFirmwareRequest
-	(*RadioFirmware)(nil),               // 7: quadsmith.api.RadioFirmware
+	(*RadioFirmware)(nil),               // 0: quadsmith.api.RadioFirmware
+	(*CreateRadioFirmwareRequest)(nil),  // 1: quadsmith.api.CreateRadioFirmwareRequest
+	(*DeleteRadioFirmwareRequest)(nil),  // 2: quadsmith.api.DeleteRadioFirmwareRequest
+	(*DeleteRadioFirmwareResponse)(nil), // 3: quadsmith.api.DeleteRadioFirmwareResponse
+	(*GetRadioFirmwareRequest)(nil),     // 4: quadsmith.api.GetRadioFirmwareRequest
+	(*ListRadioFirmwaresRequest)(nil),   // 5: quadsmith.api.ListRadioFirmwaresRequest
+	(*ListRadioFirmwaresResponse)(nil),  // 6: quadsmith.api.ListRadioFirmwaresResponse
+	(*UpdateRadioFirmwareRequest)(nil),  // 7: quadsmith.api.UpdateRadioFirmwareRequest
 	(*ReferenceLink)(nil),               // 8: quadsmith.api.ReferenceLink
 	(*Media)(nil),                       // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_radio_firmware_proto_depIdxs = []int32{
-	7,  // 0: quadsmith.api.CreateRadioFirmwareRequest.radio_firmware:type_name -> quadsmith.api.RadioFirmware
-	7,  // 1: quadsmith.api.ListRadioFirmwaresResponse.radio_firmwares:type_name -> quadsmith.api.RadioFirmware
-	7,  // 2: quadsmith.api.UpdateRadioFirmwareRequest.radio_firmware:type_name -> quadsmith.api.RadioFirmware
-	8,  // 3: quadsmith.api.RadioFirmware.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 4: quadsmith.api.RadioFirmware.media:type_name -> quadsmith.api.Media
-	3,  // 5: quadsmith.api.RadioFirmwareService.GetRadioFirmware:input_type -> quadsmith.api.GetRadioFirmwareRequest
-	4,  // 6: quadsmith.api.RadioFirmwareService.ListRadioFirmwares:input_type -> quadsmith.api.ListRadioFirmwaresRequest
-	0,  // 7: quadsmith.api.RadioFirmwareService.CreateRadioFirmware:input_type -> quadsmith.api.CreateRadioFirmwareRequest
-	6,  // 8: quadsmith.api.RadioFirmwareService.UpdateRadioFirmware:input_type -> quadsmith.api.UpdateRadioFirmwareRequest
-	1,  // 9: quadsmith.api.RadioFirmwareService.DeleteRadioFirmware:input_type -> quadsmith.api.DeleteRadioFirmwareRequest
-	7,  // 10: quadsmith.api.RadioFirmwareService.GetRadioFirmware:output_type -> quadsmith.api.RadioFirmware
-	5,  // 11: quadsmith.api.RadioFirmwareService.ListRadioFirmwares:output_type -> quadsmith.api.ListRadioFirmwaresResponse
-	7,  // 12: quadsmith.api.RadioFirmwareService.CreateRadioFirmware:output_type -> quadsmith.api.RadioFirmware
-	7,  // 13: quadsmith.api.RadioFirmwareService.UpdateRadioFirmware:output_type -> quadsmith.api.RadioFirmware
-	2,  // 14: quadsmith.api.RadioFirmwareService.DeleteRadioFirmware:output_type -> quadsmith.api.DeleteRadioFirmwareResponse
+	8,  // 0: quadsmith.api.RadioFirmware.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 1: quadsmith.api.RadioFirmware.media:type_name -> quadsmith.api.Media
+	0,  // 2: quadsmith.api.CreateRadioFirmwareRequest.radio_firmware:type_name -> quadsmith.api.RadioFirmware
+	0,  // 3: quadsmith.api.ListRadioFirmwaresResponse.radio_firmwares:type_name -> quadsmith.api.RadioFirmware
+	0,  // 4: quadsmith.api.UpdateRadioFirmwareRequest.radio_firmware:type_name -> quadsmith.api.RadioFirmware
+	4,  // 5: quadsmith.api.RadioFirmwareService.GetRadioFirmware:input_type -> quadsmith.api.GetRadioFirmwareRequest
+	5,  // 6: quadsmith.api.RadioFirmwareService.ListRadioFirmwares:input_type -> quadsmith.api.ListRadioFirmwaresRequest
+	1,  // 7: quadsmith.api.RadioFirmwareService.CreateRadioFirmware:input_type -> quadsmith.api.CreateRadioFirmwareRequest
+	7,  // 8: quadsmith.api.RadioFirmwareService.UpdateRadioFirmware:input_type -> quadsmith.api.UpdateRadioFirmwareRequest
+	2,  // 9: quadsmith.api.RadioFirmwareService.DeleteRadioFirmware:input_type -> quadsmith.api.DeleteRadioFirmwareRequest
+	0,  // 10: quadsmith.api.RadioFirmwareService.GetRadioFirmware:output_type -> quadsmith.api.RadioFirmware
+	6,  // 11: quadsmith.api.RadioFirmwareService.ListRadioFirmwares:output_type -> quadsmith.api.ListRadioFirmwaresResponse
+	0,  // 12: quadsmith.api.RadioFirmwareService.CreateRadioFirmware:output_type -> quadsmith.api.RadioFirmware
+	0,  // 13: quadsmith.api.RadioFirmwareService.UpdateRadioFirmware:output_type -> quadsmith.api.RadioFirmware
+	3,  // 14: quadsmith.api.RadioFirmwareService.DeleteRadioFirmware:output_type -> quadsmith.api.DeleteRadioFirmwareResponse
 	10, // [10:15] is the sub-list for method output_type
 	5,  // [5:10] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
@@ -649,7 +643,7 @@ func file_quadsmith_api_radio_firmware_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_radio_firmware_proto_msgTypes[7].OneofWrappers = []any{}
+	file_quadsmith_api_radio_firmware_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

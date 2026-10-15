@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_camera: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChpxdWFkc21pdGgvYXBpL2NhbWVyYS5wcm90bxINcXVhZHNtaXRoLmFwaSI8ChNDcmVhdGVDYW1lcmFSZXF1ZXN0EiUKBmNhbWVyYRgBIAEoCzIVLnF1YWRzbWl0aC5hcGkuQ2FtZXJhIiEKE0RlbGV0ZUNhbWVyYVJlcXVlc3QSCgoCaWQYASABKAkiKwoURGVsZXRlQ2FtZXJhUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiLwoQR2V0Q2FtZXJhUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImoKEkxpc3RDYW1lcmFzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlYKE0xpc3RDYW1lcmFzUmVzcG9uc2USJgoHY2FtZXJhcxgBIAMoCzIVLnF1YWRzbWl0aC5hcGkuQ2FtZXJhEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSI8ChNVcGRhdGVDYW1lcmFSZXF1ZXN0EiUKBmNhbWVyYRgBIAEoCzIVLnF1YWRzbWl0aC5hcGkuQ2FtZXJhIucGCgZDYW1lcmESOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSFgoCaWQYAiABKAlCCsLzGAJAAcDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkCEhgKBG5hbWUYBCABKAlCCsLzGAJAAcDwGQISHgoQaXNfaW50ZXJuYWxfb25seRgFIAEoCEIEwPAZAhIWCgh3ZWlnaHRfZxgGIAEoAkIEwPAZAhIWCghwcm90b2NvbBgHIAEoCUIEwPAZAhIZCgtzZW5zb3Jfc2l6ZRgIIAEoCUIEwPAZAhIkChZjYW1lcmFfbW91bnRfaW50ZXJmYWNlGAkgASgJQgTA8BkCEhoKDGxlbnNfc2l6ZV9tbRgKIAEoAkIEwPAZAhIfCgtkZXNjcmlwdGlvbhgLIAEoCUIKwvMYAkABwPAZAhJBCg9yZWZlcmVuY2VfbGlua3MYDCADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCCsLzGAJAAcDwGQISLgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGA0gASgJQgrC8xgCQAHA8BkCSACIAQESLwoFbWVkaWEYDiADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgrC8xgCQAHA8BkCEiIKCXVzZXJfdXVpZBgPIAEoCUIKwvMYAkABwPAZBEgBiAEBEigKD2F1dGhvcl91c2VybmFtZRgQIAEoCUIKwvMYAkABwPAZAkgCiAEBOtABirUYPwoMbWFudWZhY3R1cmVyCgRuYW1lCghwcm90b2NvbAoWY2FtZXJhX21vdW50X2ludGVyZmFjZRIHIzA2YjZkNJq1GBtjb21wb25lbnRzL2hhcmR3YXJlL2NhbWVyYXPC8xgJCgdjYW1lcmFzwvAZXQgFEll1dWlkIElOIChTRUxFQ1QgdXVpZCBGUk9NIGVudGl0aWVzIFdIRVJFIGNvbGxlY3Rpb24gPSAnY2FtZXJhcycgQU5EIHVzZXJfdXVpZCA9ICQxOjp1dWlkKUIYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlQgwKCl91c2VyX3V1aWRCEgoQX2F1dGhvcl91c2VybmFtZTKZAwoNQ2FtZXJhU2VydmljZRJDCglHZXRDYW1lcmESHy5xdWFkc21pdGguYXBpLkdldENhbWVyYVJlcXVlc3QaFS5xdWFkc21pdGguYXBpLkNhbWVyYRJUCgtMaXN0Q2FtZXJhcxIhLnF1YWRzbWl0aC5hcGkuTGlzdENhbWVyYXNSZXF1ZXN0GiIucXVhZHNtaXRoLmFwaS5MaXN0Q2FtZXJhc1Jlc3BvbnNlEkkKDENyZWF0ZUNhbWVyYRIiLnF1YWRzbWl0aC5hcGkuQ3JlYXRlQ2FtZXJhUmVxdWVzdBoVLnF1YWRzbWl0aC5hcGkuQ2FtZXJhEkkKDFVwZGF0ZUNhbWVyYRIiLnF1YWRzbWl0aC5hcGkuVXBkYXRlQ2FtZXJhUmVxdWVzdBoVLnF1YWRzbWl0aC5hcGkuQ2FtZXJhElcKDERlbGV0ZUNhbWVyYRIiLnF1YWRzbWl0aC5hcGkuRGVsZXRlQ2FtZXJhUmVxdWVzdBojLnF1YWRzbWl0aC5hcGkuRGVsZXRlQ2FtZXJhUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
+    "ChpxdWFkc21pdGgvYXBpL2NhbWVyYS5wcm90bxINcXVhZHNtaXRoLmFwaSLeBgoGQ2FtZXJhEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhYKAmlkGAIgASgJQgrC8xgCQAHA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZAhIYCgRuYW1lGAQgASgJQgrC8xgCQAHA8BkCEh4KEGlzX2ludGVybmFsX29ubHkYBSABKAhCBMDwGQISFgoId2VpZ2h0X2cYBiABKAJCBMDwGQISFgoIcHJvdG9jb2wYByABKAlCBMDwGQISGQoLc2Vuc29yX3NpemUYCCABKAlCBMDwGQISJAoWY2FtZXJhX21vdW50X2ludGVyZmFjZRgJIAEoCUIEwPAZAhIaCgxsZW5zX3NpemVfbW0YCiABKAJCBMDwGQISHwoLZGVzY3JpcHRpb24YCyABKAlCCsLzGAJAAcDwGQISQQoPcmVmZXJlbmNlX2xpbmtzGAwgAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgrC8xgCQAHA8BkCEi4KFXByaW1hcnlfZGlzcGxheV9pbWFnZRgNIAEoCUIKwvMYAkABwPAZAkgAiAEBEi8KBW1lZGlhGA4gAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIKwvMYAkABwPAZAhIiCgl1c2VyX3V1aWQYDyABKAlCCsLzGAJAAcDwGQRIAYgBARIoCg9hdXRob3JfdXNlcm5hbWUYECABKAlCCsLzGAJAAcDwGQJIAogBATrHAYq1GDYKDG1hbnVmYWN0dXJlcgoEbmFtZQoIcHJvdG9jb2wKFmNhbWVyYV9tb3VudF9pbnRlcmZhY2WatRgbY29tcG9uZW50cy9oYXJkd2FyZS9jYW1lcmFzwvMYCQoHY2FtZXJhc8LwGV0IBRJZdXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSBlbnRpdGllcyBXSEVSRSBjb2xsZWN0aW9uID0gJ2NhbWVyYXMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiPAoTQ3JlYXRlQ2FtZXJhUmVxdWVzdBIlCgZjYW1lcmEYASABKAsyFS5xdWFkc21pdGguYXBpLkNhbWVyYSIhChNEZWxldGVDYW1lcmFSZXF1ZXN0EgoKAmlkGAEgASgJIisKFERlbGV0ZUNhbWVyYVJlc3BvbnNlEhMKC2lzX2FyY2hpdmVkGAEgASgIIi8KEEdldENhbWVyYVJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJqChJMaXN0Q2FtZXJhc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJWChNMaXN0Q2FtZXJhc1Jlc3BvbnNlEiYKB2NhbWVyYXMYASADKAsyFS5xdWFkc21pdGguYXBpLkNhbWVyYRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiPAoTVXBkYXRlQ2FtZXJhUmVxdWVzdBIlCgZjYW1lcmEYASABKAsyFS5xdWFkc21pdGguYXBpLkNhbWVyYTKZAwoNQ2FtZXJhU2VydmljZRJDCglHZXRDYW1lcmESHy5xdWFkc21pdGguYXBpLkdldENhbWVyYVJlcXVlc3QaFS5xdWFkc21pdGguYXBpLkNhbWVyYRJUCgtMaXN0Q2FtZXJhcxIhLnF1YWRzbWl0aC5hcGkuTGlzdENhbWVyYXNSZXF1ZXN0GiIucXVhZHNtaXRoLmFwaS5MaXN0Q2FtZXJhc1Jlc3BvbnNlEkkKDENyZWF0ZUNhbWVyYRIiLnF1YWRzbWl0aC5hcGkuQ3JlYXRlQ2FtZXJhUmVxdWVzdBoVLnF1YWRzbWl0aC5hcGkuQ2FtZXJhEkkKDFVwZGF0ZUNhbWVyYRIiLnF1YWRzbWl0aC5hcGkuVXBkYXRlQ2FtZXJhUmVxdWVzdBoVLnF1YWRzbWl0aC5hcGkuQ2FtZXJhElcKDERlbGV0ZUNhbWVyYRIiLnF1YWRzbWl0aC5hcGkuRGVsZXRlQ2FtZXJhUmVxdWVzdBojLnF1YWRzbWl0aC5hcGkuRGVsZXRlQ2FtZXJhUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -30,170 +30,6 @@ export const file_quadsmith_api_camera: GenFile =
   );
 
 /**
- * ---------------------------------------------------------
- * 2. RPC Requests & Responses (Callers Precede Callees)
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.CreateCameraRequest
- */
-export type CreateCameraRequest = Message<"quadsmith.api.CreateCameraRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Camera camera = 1;
-   */
-  camera?: Camera | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateCameraRequest.
- * Use `create(CreateCameraRequestSchema)` to create a new message.
- */
-export const CreateCameraRequestSchema: GenMessage<CreateCameraRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 0);
-
-/**
- * @generated from message quadsmith.api.DeleteCameraRequest
- */
-export type DeleteCameraRequest = Message<"quadsmith.api.DeleteCameraRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteCameraRequest.
- * Use `create(DeleteCameraRequestSchema)` to create a new message.
- */
-export const DeleteCameraRequestSchema: GenMessage<DeleteCameraRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteCameraResponse
- */
-export type DeleteCameraResponse = Message<"quadsmith.api.DeleteCameraResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteCameraResponse.
- * Use `create(DeleteCameraResponseSchema)` to create a new message.
- */
-export const DeleteCameraResponseSchema: GenMessage<DeleteCameraResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 2);
-
-/**
- * @generated from message quadsmith.api.GetCameraRequest
- */
-export type GetCameraRequest = Message<"quadsmith.api.GetCameraRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
-
-/**
- * Describes the message quadsmith.api.GetCameraRequest.
- * Use `create(GetCameraRequestSchema)` to create a new message.
- */
-export const GetCameraRequestSchema: GenMessage<GetCameraRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 3);
-
-/**
- * @generated from message quadsmith.api.ListCamerasRequest
- */
-export type ListCamerasRequest = Message<"quadsmith.api.ListCamerasRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
-
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
-
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
-
-/**
- * Describes the message quadsmith.api.ListCamerasRequest.
- * Use `create(ListCamerasRequestSchema)` to create a new message.
- */
-export const ListCamerasRequestSchema: GenMessage<ListCamerasRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 4);
-
-/**
- * @generated from message quadsmith.api.ListCamerasResponse
- */
-export type ListCamerasResponse = Message<"quadsmith.api.ListCamerasResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.Camera cameras = 1;
-   */
-  cameras: Camera[];
-
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
-
-/**
- * Describes the message quadsmith.api.ListCamerasResponse.
- * Use `create(ListCamerasResponseSchema)` to create a new message.
- */
-export const ListCamerasResponseSchema: GenMessage<ListCamerasResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 5);
-
-/**
- * @generated from message quadsmith.api.UpdateCameraRequest
- */
-export type UpdateCameraRequest = Message<"quadsmith.api.UpdateCameraRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Camera camera = 1;
-   */
-  camera?: Camera | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateCameraRequest.
- * Use `create(UpdateCameraRequestSchema)` to create a new message.
- */
-export const UpdateCameraRequestSchema: GenMessage<UpdateCameraRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 6);
-
-/**
- * ---------------------------------------------------------
- * 3. Domain Model (Referenced by Services and Requests above)
- * ---------------------------------------------------------
- *
  * @generated from message quadsmith.api.Camera
  */
 export type Camera = Message<"quadsmith.api.Camera"> & {
@@ -292,13 +128,165 @@ export type Camera = Message<"quadsmith.api.Camera"> & {
  */
 export const CameraSchema: GenMessage<Camera> =
   /*@__PURE__*/
+  messageDesc(file_quadsmith_api_camera, 0);
+
+/**
+ * @generated from message quadsmith.api.CreateCameraRequest
+ */
+export type CreateCameraRequest = Message<"quadsmith.api.CreateCameraRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.Camera camera = 1;
+   */
+  camera?: Camera | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.CreateCameraRequest.
+ * Use `create(CreateCameraRequestSchema)` to create a new message.
+ */
+export const CreateCameraRequestSchema: GenMessage<CreateCameraRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_camera, 1);
+
+/**
+ * @generated from message quadsmith.api.DeleteCameraRequest
+ */
+export type DeleteCameraRequest = Message<"quadsmith.api.DeleteCameraRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteCameraRequest.
+ * Use `create(DeleteCameraRequestSchema)` to create a new message.
+ */
+export const DeleteCameraRequestSchema: GenMessage<DeleteCameraRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_camera, 2);
+
+/**
+ * @generated from message quadsmith.api.DeleteCameraResponse
+ */
+export type DeleteCameraResponse = Message<"quadsmith.api.DeleteCameraResponse"> & {
+  /**
+   * @generated from field: bool is_archived = 1;
+   */
+  isArchived: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteCameraResponse.
+ * Use `create(DeleteCameraResponseSchema)` to create a new message.
+ */
+export const DeleteCameraResponseSchema: GenMessage<DeleteCameraResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_camera, 3);
+
+/**
+ * @generated from message quadsmith.api.GetCameraRequest
+ */
+export type GetCameraRequest = Message<"quadsmith.api.GetCameraRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.GetCameraRequest.
+ * Use `create(GetCameraRequestSchema)` to create a new message.
+ */
+export const GetCameraRequestSchema: GenMessage<GetCameraRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_camera, 4);
+
+/**
+ * @generated from message quadsmith.api.ListCamerasRequest
+ */
+export type ListCamerasRequest = Message<"quadsmith.api.ListCamerasRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
+
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListCamerasRequest.
+ * Use `create(ListCamerasRequestSchema)` to create a new message.
+ */
+export const ListCamerasRequestSchema: GenMessage<ListCamerasRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_camera, 5);
+
+/**
+ * @generated from message quadsmith.api.ListCamerasResponse
+ */
+export type ListCamerasResponse = Message<"quadsmith.api.ListCamerasResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.Camera cameras = 1;
+   */
+  cameras: Camera[];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListCamerasResponse.
+ * Use `create(ListCamerasResponseSchema)` to create a new message.
+ */
+export const ListCamerasResponseSchema: GenMessage<ListCamerasResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_camera, 6);
+
+/**
+ * @generated from message quadsmith.api.UpdateCameraRequest
+ */
+export type UpdateCameraRequest = Message<"quadsmith.api.UpdateCameraRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.Camera camera = 1;
+   */
+  camera?: Camera | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.UpdateCameraRequest.
+ * Use `create(UpdateCameraRequestSchema)` to create a new message.
+ */
+export const UpdateCameraRequestSchema: GenMessage<UpdateCameraRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_api_camera, 7);
 
 /**
- * ---------------------------------------------------------
- * 1. gRPC Service (Services First)
- * ---------------------------------------------------------
- *
  * @generated from service quadsmith.api.CameraService
  */
 export const CameraService: GenService<{

@@ -24,34 +24,55 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
-// ---------------------------------------------------------
-type ComponentMatchDetail struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Component     string                 `protobuf:"bytes,1,opt,name=component,proto3" json:"component,omitempty"`
-	ExactMatch    bool                   `protobuf:"varint,2,opt,name=exact_match,json=exactMatch,proto3" json:"exact_match,omitempty"`
-	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	PointsAwarded float64                `protobuf:"fixed64,4,opt,name=points_awarded,json=pointsAwarded,proto3" json:"points_awarded,omitempty"`
-	MaxPoints     float64                `protobuf:"fixed64,5,opt,name=max_points,json=maxPoints,proto3" json:"max_points,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+type Build struct {
+	state       protoimpl.MessageState `protogen:"open.v1"`
+	Uuid        string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	Id          string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
+	Name        string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
+	Description string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	// The frame used for this build
+	FrameUuid string `protobuf:"bytes,5,opt,name=frame_uuid,json=frameUuid,proto3" json:"frame_uuid,omitempty"`
+	// The motor SKU used for this build (assumes 4x for a standard quad)
+	MotorUuid string `protobuf:"bytes,6,opt,name=motor_uuid,json=motorUuid,proto3" json:"motor_uuid,omitempty"`
+	// The central Flight Controller (which may be an AIO board)
+	FlightControllerUuid string `protobuf:"bytes,8,opt,name=flight_controller_uuid,json=flightControllerUuid,proto3" json:"flight_controller_uuid,omitempty"`
+	// Array of Electronic Speed Controller boards (e.g. one 4-in-1, or four individual ESCs)
+	ElectronicSpeedControllerUuids []string `protobuf:"bytes,9,rep,name=electronic_speed_controller_uuids,json=electronicSpeedControllerUuids,proto3" json:"electronic_speed_controller_uuids,omitempty"`
+	// Array of receivers (e.g. primary ELRS, backup crossfire)
+	ReceiverUuids []string `protobuf:"bytes,10,rep,name=receiver_uuids,json=receiverUuids,proto3" json:"receiver_uuids,omitempty"`
+	// Array of antennas
+	AntennaUuids []string `protobuf:"bytes,11,rep,name=antenna_uuids,json=antennaUuids,proto3" json:"antenna_uuids,omitempty"`
+	// The propeller SKU used (assumes 4x or 8x depending on motors)
+	PropellerUuid string `protobuf:"bytes,12,opt,name=propeller_uuid,json=propellerUuid,proto3" json:"propeller_uuid,omitempty"`
+	// Array of cameras (e.g. primary FPV cam, secondary action cam)
+	CameraUuids []string `protobuf:"bytes,13,rep,name=camera_uuids,json=cameraUuids,proto3" json:"camera_uuids,omitempty"`
+	// The Video Transmitter used for this build
+	VideoTransmitterUuid string `protobuf:"bytes,14,opt,name=video_transmitter_uuid,json=videoTransmitterUuid,proto3" json:"video_transmitter_uuid,omitempty"`
+	// Optional GPS Receiver for navigation and rescue return-to-home
+	GpsReceiverUuid     *string          `protobuf:"bytes,15,opt,name=gps_receiver_uuid,json=gpsReceiverUuid,proto3,oneof" json:"gps_receiver_uuid,omitempty"`
+	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,16,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
+	PrimaryDisplayImage *string          `protobuf:"bytes,17,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
+	Media               []*Media         `protobuf:"bytes,18,rep,name=media,proto3" json:"media,omitempty"`
+	UserUuid            *string          `protobuf:"bytes,19,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
+	AuthorUsername      *string          `protobuf:"bytes,20,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
+	unknownFields       protoimpl.UnknownFields
+	sizeCache           protoimpl.SizeCache
 }
 
-func (x *ComponentMatchDetail) Reset() {
-	*x = ComponentMatchDetail{}
+func (x *Build) Reset() {
+	*x = Build{}
 	mi := &file_quadsmith_api_build_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ComponentMatchDetail) String() string {
+func (x *Build) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ComponentMatchDetail) ProtoMessage() {}
+func (*Build) ProtoMessage() {}
 
-func (x *ComponentMatchDetail) ProtoReflect() protoreflect.Message {
+func (x *Build) ProtoReflect() protoreflect.Message {
 	mi := &file_quadsmith_api_build_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -63,44 +84,142 @@ func (x *ComponentMatchDetail) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ComponentMatchDetail.ProtoReflect.Descriptor instead.
-func (*ComponentMatchDetail) Descriptor() ([]byte, []int) {
+// Deprecated: Use Build.ProtoReflect.Descriptor instead.
+func (*Build) Descriptor() ([]byte, []int) {
 	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *ComponentMatchDetail) GetComponent() string {
+func (x *Build) GetUuid() string {
 	if x != nil {
-		return x.Component
+		return x.Uuid
 	}
 	return ""
 }
 
-func (x *ComponentMatchDetail) GetExactMatch() bool {
+func (x *Build) GetId() string {
 	if x != nil {
-		return x.ExactMatch
+		return x.Id
 	}
-	return false
+	return ""
 }
 
-func (x *ComponentMatchDetail) GetDescription() string {
+func (x *Build) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Build) GetDescription() string {
 	if x != nil {
 		return x.Description
 	}
 	return ""
 }
 
-func (x *ComponentMatchDetail) GetPointsAwarded() float64 {
+func (x *Build) GetFrameUuid() string {
 	if x != nil {
-		return x.PointsAwarded
+		return x.FrameUuid
 	}
-	return 0
+	return ""
 }
 
-func (x *ComponentMatchDetail) GetMaxPoints() float64 {
+func (x *Build) GetMotorUuid() string {
 	if x != nil {
-		return x.MaxPoints
+		return x.MotorUuid
 	}
-	return 0
+	return ""
+}
+
+func (x *Build) GetFlightControllerUuid() string {
+	if x != nil {
+		return x.FlightControllerUuid
+	}
+	return ""
+}
+
+func (x *Build) GetElectronicSpeedControllerUuids() []string {
+	if x != nil {
+		return x.ElectronicSpeedControllerUuids
+	}
+	return nil
+}
+
+func (x *Build) GetReceiverUuids() []string {
+	if x != nil {
+		return x.ReceiverUuids
+	}
+	return nil
+}
+
+func (x *Build) GetAntennaUuids() []string {
+	if x != nil {
+		return x.AntennaUuids
+	}
+	return nil
+}
+
+func (x *Build) GetPropellerUuid() string {
+	if x != nil {
+		return x.PropellerUuid
+	}
+	return ""
+}
+
+func (x *Build) GetCameraUuids() []string {
+	if x != nil {
+		return x.CameraUuids
+	}
+	return nil
+}
+
+func (x *Build) GetVideoTransmitterUuid() string {
+	if x != nil {
+		return x.VideoTransmitterUuid
+	}
+	return ""
+}
+
+func (x *Build) GetGpsReceiverUuid() string {
+	if x != nil && x.GpsReceiverUuid != nil {
+		return *x.GpsReceiverUuid
+	}
+	return ""
+}
+
+func (x *Build) GetReferenceLinks() []*ReferenceLink {
+	if x != nil {
+		return x.ReferenceLinks
+	}
+	return nil
+}
+
+func (x *Build) GetPrimaryDisplayImage() string {
+	if x != nil && x.PrimaryDisplayImage != nil {
+		return *x.PrimaryDisplayImage
+	}
+	return ""
+}
+
+func (x *Build) GetMedia() []*Media {
+	if x != nil {
+		return x.Media
+	}
+	return nil
+}
+
+func (x *Build) GetUserUuid() string {
+	if x != nil && x.UserUuid != nil {
+		return *x.UserUuid
+	}
+	return ""
+}
+
+func (x *Build) GetAuthorUsername() string {
+	if x != nil && x.AuthorUsername != nil {
+		return *x.AuthorUsername
+	}
+	return ""
 }
 
 type CreateBuildRequest struct {
@@ -571,58 +690,31 @@ func (x *SimilarBuild) GetMatchDetails() []*ComponentMatchDetail {
 	return nil
 }
 
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
-type Build struct {
-	state       protoimpl.MessageState `protogen:"open.v1"`
-	Uuid        string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	Id          string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Name        string                 `protobuf:"bytes,3,opt,name=name,proto3" json:"name,omitempty"`
-	Description string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
-	// The frame used for this build
-	FrameUuid string `protobuf:"bytes,5,opt,name=frame_uuid,json=frameUuid,proto3" json:"frame_uuid,omitempty"`
-	// The motor SKU used for this build (assumes 4x for a standard quad)
-	MotorUuid string `protobuf:"bytes,6,opt,name=motor_uuid,json=motorUuid,proto3" json:"motor_uuid,omitempty"`
-	// The central Flight Controller (which may be an AIO board)
-	FlightControllerUuid string `protobuf:"bytes,8,opt,name=flight_controller_uuid,json=flightControllerUuid,proto3" json:"flight_controller_uuid,omitempty"`
-	// Array of Electronic Speed Controller boards (e.g. one 4-in-1, or four individual ESCs)
-	ElectronicSpeedControllerUuids []string `protobuf:"bytes,9,rep,name=electronic_speed_controller_uuids,json=electronicSpeedControllerUuids,proto3" json:"electronic_speed_controller_uuids,omitempty"`
-	// Array of receivers (e.g. primary ELRS, backup crossfire)
-	ReceiverUuids []string `protobuf:"bytes,10,rep,name=receiver_uuids,json=receiverUuids,proto3" json:"receiver_uuids,omitempty"`
-	// Array of antennas
-	AntennaUuids []string `protobuf:"bytes,11,rep,name=antenna_uuids,json=antennaUuids,proto3" json:"antenna_uuids,omitempty"`
-	// The propeller SKU used (assumes 4x or 8x depending on motors)
-	PropellerUuid string `protobuf:"bytes,12,opt,name=propeller_uuid,json=propellerUuid,proto3" json:"propeller_uuid,omitempty"`
-	// Array of cameras (e.g. primary FPV cam, secondary action cam)
-	CameraUuids []string `protobuf:"bytes,13,rep,name=camera_uuids,json=cameraUuids,proto3" json:"camera_uuids,omitempty"`
-	// The Video Transmitter used for this build
-	VideoTransmitterUuid string `protobuf:"bytes,14,opt,name=video_transmitter_uuid,json=videoTransmitterUuid,proto3" json:"video_transmitter_uuid,omitempty"`
-	// Optional GPS Receiver for navigation and rescue return-to-home
-	GpsReceiverUuid     *string          `protobuf:"bytes,15,opt,name=gps_receiver_uuid,json=gpsReceiverUuid,proto3,oneof" json:"gps_receiver_uuid,omitempty"`
-	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,16,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
-	PrimaryDisplayImage *string          `protobuf:"bytes,17,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
-	Media               []*Media         `protobuf:"bytes,18,rep,name=media,proto3" json:"media,omitempty"`
-	UserUuid            *string          `protobuf:"bytes,19,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
-	AuthorUsername      *string          `protobuf:"bytes,20,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
-	unknownFields       protoimpl.UnknownFields
-	sizeCache           protoimpl.SizeCache
+type ComponentMatchDetail struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Component     string                 `protobuf:"bytes,1,opt,name=component,proto3" json:"component,omitempty"`
+	ExactMatch    bool                   `protobuf:"varint,2,opt,name=exact_match,json=exactMatch,proto3" json:"exact_match,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	PointsAwarded float64                `protobuf:"fixed64,4,opt,name=points_awarded,json=pointsAwarded,proto3" json:"points_awarded,omitempty"`
+	MaxPoints     float64                `protobuf:"fixed64,5,opt,name=max_points,json=maxPoints,proto3" json:"max_points,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
-func (x *Build) Reset() {
-	*x = Build{}
+func (x *ComponentMatchDetail) Reset() {
+	*x = ComponentMatchDetail{}
 	mi := &file_quadsmith_api_build_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *Build) String() string {
+func (x *ComponentMatchDetail) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*Build) ProtoMessage() {}
+func (*ComponentMatchDetail) ProtoMessage() {}
 
-func (x *Build) ProtoReflect() protoreflect.Message {
+func (x *ComponentMatchDetail) ProtoReflect() protoreflect.Message {
 	mi := &file_quadsmith_api_build_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -634,186 +726,51 @@ func (x *Build) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use Build.ProtoReflect.Descriptor instead.
-func (*Build) Descriptor() ([]byte, []int) {
+// Deprecated: Use ComponentMatchDetail.ProtoReflect.Descriptor instead.
+func (*ComponentMatchDetail) Descriptor() ([]byte, []int) {
 	return file_quadsmith_api_build_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *Build) GetUuid() string {
+func (x *ComponentMatchDetail) GetComponent() string {
 	if x != nil {
-		return x.Uuid
+		return x.Component
 	}
 	return ""
 }
 
-func (x *Build) GetId() string {
+func (x *ComponentMatchDetail) GetExactMatch() bool {
 	if x != nil {
-		return x.Id
+		return x.ExactMatch
 	}
-	return ""
+	return false
 }
 
-func (x *Build) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *Build) GetDescription() string {
+func (x *ComponentMatchDetail) GetDescription() string {
 	if x != nil {
 		return x.Description
 	}
 	return ""
 }
 
-func (x *Build) GetFrameUuid() string {
+func (x *ComponentMatchDetail) GetPointsAwarded() float64 {
 	if x != nil {
-		return x.FrameUuid
+		return x.PointsAwarded
 	}
-	return ""
+	return 0
 }
 
-func (x *Build) GetMotorUuid() string {
+func (x *ComponentMatchDetail) GetMaxPoints() float64 {
 	if x != nil {
-		return x.MotorUuid
+		return x.MaxPoints
 	}
-	return ""
-}
-
-func (x *Build) GetFlightControllerUuid() string {
-	if x != nil {
-		return x.FlightControllerUuid
-	}
-	return ""
-}
-
-func (x *Build) GetElectronicSpeedControllerUuids() []string {
-	if x != nil {
-		return x.ElectronicSpeedControllerUuids
-	}
-	return nil
-}
-
-func (x *Build) GetReceiverUuids() []string {
-	if x != nil {
-		return x.ReceiverUuids
-	}
-	return nil
-}
-
-func (x *Build) GetAntennaUuids() []string {
-	if x != nil {
-		return x.AntennaUuids
-	}
-	return nil
-}
-
-func (x *Build) GetPropellerUuid() string {
-	if x != nil {
-		return x.PropellerUuid
-	}
-	return ""
-}
-
-func (x *Build) GetCameraUuids() []string {
-	if x != nil {
-		return x.CameraUuids
-	}
-	return nil
-}
-
-func (x *Build) GetVideoTransmitterUuid() string {
-	if x != nil {
-		return x.VideoTransmitterUuid
-	}
-	return ""
-}
-
-func (x *Build) GetGpsReceiverUuid() string {
-	if x != nil && x.GpsReceiverUuid != nil {
-		return *x.GpsReceiverUuid
-	}
-	return ""
-}
-
-func (x *Build) GetReferenceLinks() []*ReferenceLink {
-	if x != nil {
-		return x.ReferenceLinks
-	}
-	return nil
-}
-
-func (x *Build) GetPrimaryDisplayImage() string {
-	if x != nil && x.PrimaryDisplayImage != nil {
-		return *x.PrimaryDisplayImage
-	}
-	return ""
-}
-
-func (x *Build) GetMedia() []*Media {
-	if x != nil {
-		return x.Media
-	}
-	return nil
-}
-
-func (x *Build) GetUserUuid() string {
-	if x != nil && x.UserUuid != nil {
-		return *x.UserUuid
-	}
-	return ""
-}
-
-func (x *Build) GetAuthorUsername() string {
-	if x != nil && x.AuthorUsername != nil {
-		return *x.AuthorUsername
-	}
-	return ""
+	return 0
 }
 
 var File_quadsmith_api_build_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_build_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/api/build.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xbd\x01\n" +
-	"\x14ComponentMatchDetail\x12\x1c\n" +
-	"\tcomponent\x18\x01 \x01(\tR\tcomponent\x12\x1f\n" +
-	"\vexact_match\x18\x02 \x01(\bR\n" +
-	"exactMatch\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x12%\n" +
-	"\x0epoints_awarded\x18\x04 \x01(\x01R\rpointsAwarded\x12\x1d\n" +
-	"\n" +
-	"max_points\x18\x05 \x01(\x01R\tmaxPoints\"@\n" +
-	"\x12CreateBuildRequest\x12*\n" +
-	"\x05build\x18\x01 \x01(\v2\x14.quadsmith.api.BuildR\x05build\"$\n" +
-	"\x12DeleteBuildRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"6\n" +
-	"\x13DeleteBuildResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\";\n" +
-	"\x0fGetBuildRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +
-	"\x11ListBuildsRequest\x12\x16\n" +
-	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
-	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
-	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
-	"\x04sort\x18\x05 \x03(\tR\x04sort\"j\n" +
-	"\x12ListBuildsResponse\x12,\n" +
-	"\x06builds\x18\x01 \x03(\v2\x14.quadsmith.api.BuildR\x06builds\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"K\n" +
-	"\x18ListSimilarBuildsRequest\x12\x19\n" +
-	"\bbuild_id\x18\x01 \x01(\tR\abuildId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\"_\n" +
-	"\x19ListSimilarBuildsResponse\x12B\n" +
-	"\x0esimilar_builds\x18\x01 \x03(\v2\x1b.quadsmith.api.SimilarBuildR\rsimilarBuilds\"\xaf\x01\n" +
-	"\fSimilarBuild\x12*\n" +
-	"\x05build\x18\x01 \x01(\v2\x14.quadsmith.api.BuildR\x05build\x12)\n" +
-	"\x10similarity_score\x18\x02 \x01(\x01R\x0fsimilarityScore\x12H\n" +
-	"\rmatch_details\x18\x03 \x03(\v2#.quadsmith.api.ComponentMatchDetailR\fmatchDetails\"\xd4\n" +
+	"\x19quadsmith/api/build.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xcb\n" +
 	"\n" +
 	"\x05Build\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
@@ -845,15 +802,53 @@ const file_quadsmith_api_build_proto_rawDesc = "" +
 	"\tuser_uuid\x18\x13 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x02R\buserUuid\x88\x01\x01\x128\n" +
 	"\x0fauthor_username\x18\x14 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x03R\x0eauthorUsername\x88\x01\x01:\x8d\x01\x8a\xb5\x18\x13\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x03R\x0eauthorUsername\x88\x01\x01:\x84\x01\x8a\xb5\x18\n" +
+	"\n" +
 	"\x02id\n" +
-	"\x04name\x12\a#3b82f6\x9a\xb5\x18\x06builds\xc2\xf3\x18\b\n" +
+	"\x04name\x9a\xb5\x18\x06builds\xc2\xf3\x18\b\n" +
 	"\x06builds\xc2\xf0\x19\\\b\x04\x12Xuuid IN (SELECT uuid FROM entities WHERE collection = 'builds' AND user_uuid = $1::uuid)B\x14\n" +
 	"\x12_gps_receiver_uuidB\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +
-	"\x10_author_username2\xa9\x03\n" +
+	"\x10_author_username\"@\n" +
+	"\x12CreateBuildRequest\x12*\n" +
+	"\x05build\x18\x01 \x01(\v2\x14.quadsmith.api.BuildR\x05build\"$\n" +
+	"\x12DeleteBuildRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"6\n" +
+	"\x13DeleteBuildResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\";\n" +
+	"\x0fGetBuildRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +
+	"\x11ListBuildsRequest\x12\x16\n" +
+	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sort\"j\n" +
+	"\x12ListBuildsResponse\x12,\n" +
+	"\x06builds\x18\x01 \x03(\v2\x14.quadsmith.api.BuildR\x06builds\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"K\n" +
+	"\x18ListSimilarBuildsRequest\x12\x19\n" +
+	"\bbuild_id\x18\x01 \x01(\tR\abuildId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\"_\n" +
+	"\x19ListSimilarBuildsResponse\x12B\n" +
+	"\x0esimilar_builds\x18\x01 \x03(\v2\x1b.quadsmith.api.SimilarBuildR\rsimilarBuilds\"\xaf\x01\n" +
+	"\fSimilarBuild\x12*\n" +
+	"\x05build\x18\x01 \x01(\v2\x14.quadsmith.api.BuildR\x05build\x12)\n" +
+	"\x10similarity_score\x18\x02 \x01(\x01R\x0fsimilarityScore\x12H\n" +
+	"\rmatch_details\x18\x03 \x03(\v2#.quadsmith.api.ComponentMatchDetailR\fmatchDetails\"\xbd\x01\n" +
+	"\x14ComponentMatchDetail\x12\x1c\n" +
+	"\tcomponent\x18\x01 \x01(\tR\tcomponent\x12\x1f\n" +
+	"\vexact_match\x18\x02 \x01(\bR\n" +
+	"exactMatch\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12%\n" +
+	"\x0epoints_awarded\x18\x04 \x01(\x01R\rpointsAwarded\x12\x1d\n" +
+	"\n" +
+	"max_points\x18\x05 \x01(\x01R\tmaxPoints2\xa9\x03\n" +
 	"\fBuildService\x12@\n" +
 	"\bGetBuild\x12\x1e.quadsmith.api.GetBuildRequest\x1a\x14.quadsmith.api.Build\x12Q\n" +
 	"\n" +
@@ -876,7 +871,7 @@ func file_quadsmith_api_build_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_api_build_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
 var file_quadsmith_api_build_proto_goTypes = []any{
-	(*ComponentMatchDetail)(nil),      // 0: quadsmith.api.ComponentMatchDetail
+	(*Build)(nil),                     // 0: quadsmith.api.Build
 	(*CreateBuildRequest)(nil),        // 1: quadsmith.api.CreateBuildRequest
 	(*DeleteBuildRequest)(nil),        // 2: quadsmith.api.DeleteBuildRequest
 	(*DeleteBuildResponse)(nil),       // 3: quadsmith.api.DeleteBuildResponse
@@ -886,26 +881,26 @@ var file_quadsmith_api_build_proto_goTypes = []any{
 	(*ListSimilarBuildsRequest)(nil),  // 7: quadsmith.api.ListSimilarBuildsRequest
 	(*ListSimilarBuildsResponse)(nil), // 8: quadsmith.api.ListSimilarBuildsResponse
 	(*SimilarBuild)(nil),              // 9: quadsmith.api.SimilarBuild
-	(*Build)(nil),                     // 10: quadsmith.api.Build
+	(*ComponentMatchDetail)(nil),      // 10: quadsmith.api.ComponentMatchDetail
 	(*ReferenceLink)(nil),             // 11: quadsmith.api.ReferenceLink
 	(*Media)(nil),                     // 12: quadsmith.api.Media
 }
 var file_quadsmith_api_build_proto_depIdxs = []int32{
-	10, // 0: quadsmith.api.CreateBuildRequest.build:type_name -> quadsmith.api.Build
-	10, // 1: quadsmith.api.ListBuildsResponse.builds:type_name -> quadsmith.api.Build
-	9,  // 2: quadsmith.api.ListSimilarBuildsResponse.similar_builds:type_name -> quadsmith.api.SimilarBuild
-	10, // 3: quadsmith.api.SimilarBuild.build:type_name -> quadsmith.api.Build
-	0,  // 4: quadsmith.api.SimilarBuild.match_details:type_name -> quadsmith.api.ComponentMatchDetail
-	11, // 5: quadsmith.api.Build.reference_links:type_name -> quadsmith.api.ReferenceLink
-	12, // 6: quadsmith.api.Build.media:type_name -> quadsmith.api.Media
+	11, // 0: quadsmith.api.Build.reference_links:type_name -> quadsmith.api.ReferenceLink
+	12, // 1: quadsmith.api.Build.media:type_name -> quadsmith.api.Media
+	0,  // 2: quadsmith.api.CreateBuildRequest.build:type_name -> quadsmith.api.Build
+	0,  // 3: quadsmith.api.ListBuildsResponse.builds:type_name -> quadsmith.api.Build
+	9,  // 4: quadsmith.api.ListSimilarBuildsResponse.similar_builds:type_name -> quadsmith.api.SimilarBuild
+	0,  // 5: quadsmith.api.SimilarBuild.build:type_name -> quadsmith.api.Build
+	10, // 6: quadsmith.api.SimilarBuild.match_details:type_name -> quadsmith.api.ComponentMatchDetail
 	4,  // 7: quadsmith.api.BuildService.GetBuild:input_type -> quadsmith.api.GetBuildRequest
 	5,  // 8: quadsmith.api.BuildService.ListBuilds:input_type -> quadsmith.api.ListBuildsRequest
 	1,  // 9: quadsmith.api.BuildService.CreateBuild:input_type -> quadsmith.api.CreateBuildRequest
 	2,  // 10: quadsmith.api.BuildService.DeleteBuild:input_type -> quadsmith.api.DeleteBuildRequest
 	7,  // 11: quadsmith.api.BuildService.ListSimilarBuilds:input_type -> quadsmith.api.ListSimilarBuildsRequest
-	10, // 12: quadsmith.api.BuildService.GetBuild:output_type -> quadsmith.api.Build
+	0,  // 12: quadsmith.api.BuildService.GetBuild:output_type -> quadsmith.api.Build
 	6,  // 13: quadsmith.api.BuildService.ListBuilds:output_type -> quadsmith.api.ListBuildsResponse
-	10, // 14: quadsmith.api.BuildService.CreateBuild:output_type -> quadsmith.api.Build
+	0,  // 14: quadsmith.api.BuildService.CreateBuild:output_type -> quadsmith.api.Build
 	3,  // 15: quadsmith.api.BuildService.DeleteBuild:output_type -> quadsmith.api.DeleteBuildResponse
 	8,  // 16: quadsmith.api.BuildService.ListSimilarBuilds:output_type -> quadsmith.api.ListSimilarBuildsResponse
 	12, // [12:17] is the sub-list for method output_type
@@ -922,7 +917,7 @@ func file_quadsmith_api_build_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_build_proto_msgTypes[10].OneofWrappers = []any{}
+	file_quadsmith_api_build_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -65,6 +65,50 @@ func (x *CheckCompatibilityRequest) GetBuild() *Build {
 	return nil
 }
 
+type CheckCompatibilityResponse struct {
+	state         protoimpl.MessageState  `protogen:"open.v1"`
+	Messages      []*CompatibilityMessage `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CheckCompatibilityResponse) Reset() {
+	*x = CheckCompatibilityResponse{}
+	mi := &file_quadsmith_api_compatibility_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CheckCompatibilityResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CheckCompatibilityResponse) ProtoMessage() {}
+
+func (x *CheckCompatibilityResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_compatibility_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CheckCompatibilityResponse.ProtoReflect.Descriptor instead.
+func (*CheckCompatibilityResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_compatibility_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CheckCompatibilityResponse) GetMessages() []*CompatibilityMessage {
+	if x != nil {
+		return x.Messages
+	}
+	return nil
+}
+
 type CheckComponentsCompatibilityRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Components    *AssembledComponents   `protobuf:"bytes,1,opt,name=components,proto3" json:"components,omitempty"`
@@ -74,7 +118,7 @@ type CheckComponentsCompatibilityRequest struct {
 
 func (x *CheckComponentsCompatibilityRequest) Reset() {
 	*x = CheckComponentsCompatibilityRequest{}
-	mi := &file_quadsmith_api_compatibility_proto_msgTypes[1]
+	mi := &file_quadsmith_api_compatibility_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -86,7 +130,7 @@ func (x *CheckComponentsCompatibilityRequest) String() string {
 func (*CheckComponentsCompatibilityRequest) ProtoMessage() {}
 
 func (x *CheckComponentsCompatibilityRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_compatibility_proto_msgTypes[1]
+	mi := &file_quadsmith_api_compatibility_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -99,7 +143,7 @@ func (x *CheckComponentsCompatibilityRequest) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use CheckComponentsCompatibilityRequest.ProtoReflect.Descriptor instead.
 func (*CheckComponentsCompatibilityRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_compatibility_proto_rawDescGZIP(), []int{1}
+	return file_quadsmith_api_compatibility_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *CheckComponentsCompatibilityRequest) GetComponents() *AssembledComponents {
@@ -119,7 +163,7 @@ type GenerateCelFilterRequest struct {
 
 func (x *GenerateCelFilterRequest) Reset() {
 	*x = GenerateCelFilterRequest{}
-	mi := &file_quadsmith_api_compatibility_proto_msgTypes[2]
+	mi := &file_quadsmith_api_compatibility_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -131,7 +175,7 @@ func (x *GenerateCelFilterRequest) String() string {
 func (*GenerateCelFilterRequest) ProtoMessage() {}
 
 func (x *GenerateCelFilterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_compatibility_proto_msgTypes[2]
+	mi := &file_quadsmith_api_compatibility_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -144,7 +188,7 @@ func (x *GenerateCelFilterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateCelFilterRequest.ProtoReflect.Descriptor instead.
 func (*GenerateCelFilterRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_compatibility_proto_rawDescGZIP(), []int{2}
+	return file_quadsmith_api_compatibility_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *GenerateCelFilterRequest) GetTargetCollection() string {
@@ -170,7 +214,7 @@ type GenerateCelFilterResponse struct {
 
 func (x *GenerateCelFilterResponse) Reset() {
 	*x = GenerateCelFilterResponse{}
-	mi := &file_quadsmith_api_compatibility_proto_msgTypes[3]
+	mi := &file_quadsmith_api_compatibility_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -182,7 +226,7 @@ func (x *GenerateCelFilterResponse) String() string {
 func (*GenerateCelFilterResponse) ProtoMessage() {}
 
 func (x *GenerateCelFilterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_compatibility_proto_msgTypes[3]
+	mi := &file_quadsmith_api_compatibility_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -195,7 +239,7 @@ func (x *GenerateCelFilterResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GenerateCelFilterResponse.ProtoReflect.Descriptor instead.
 func (*GenerateCelFilterResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_compatibility_proto_rawDescGZIP(), []int{3}
+	return file_quadsmith_api_compatibility_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *GenerateCelFilterResponse) GetFilter() string {
@@ -203,50 +247,6 @@ func (x *GenerateCelFilterResponse) GetFilter() string {
 		return x.Filter
 	}
 	return ""
-}
-
-type CheckCompatibilityResponse struct {
-	state         protoimpl.MessageState  `protogen:"open.v1"`
-	Messages      []*CompatibilityMessage `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CheckCompatibilityResponse) Reset() {
-	*x = CheckCompatibilityResponse{}
-	mi := &file_quadsmith_api_compatibility_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CheckCompatibilityResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CheckCompatibilityResponse) ProtoMessage() {}
-
-func (x *CheckCompatibilityResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_compatibility_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CheckCompatibilityResponse.ProtoReflect.Descriptor instead.
-func (*CheckCompatibilityResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_compatibility_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *CheckCompatibilityResponse) GetMessages() []*CompatibilityMessage {
-	if x != nil {
-		return x.Messages
-	}
-	return nil
 }
 
 type CompatibilityMessage struct {
@@ -339,7 +339,9 @@ const file_quadsmith_api_compatibility_proto_rawDesc = "" +
 	"\n" +
 	"!quadsmith/api/compatibility.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/build.proto\x1a\x1equadsmith/api/components.proto\"G\n" +
 	"\x19CheckCompatibilityRequest\x12*\n" +
-	"\x05build\x18\x01 \x01(\v2\x14.quadsmith.api.BuildR\x05build\"i\n" +
+	"\x05build\x18\x01 \x01(\v2\x14.quadsmith.api.BuildR\x05build\"]\n" +
+	"\x1aCheckCompatibilityResponse\x12?\n" +
+	"\bmessages\x18\x01 \x03(\v2#.quadsmith.api.CompatibilityMessageR\bmessages\"i\n" +
 	"#CheckComponentsCompatibilityRequest\x12B\n" +
 	"\n" +
 	"components\x18\x01 \x01(\v2\".quadsmith.api.AssembledComponentsR\n" +
@@ -350,9 +352,7 @@ const file_quadsmith_api_compatibility_proto_rawDesc = "" +
 	"components\x18\x02 \x01(\v2\".quadsmith.api.AssembledComponentsR\n" +
 	"components\"3\n" +
 	"\x19GenerateCelFilterResponse\x12\x16\n" +
-	"\x06filter\x18\x01 \x01(\tR\x06filter\"]\n" +
-	"\x1aCheckCompatibilityResponse\x12?\n" +
-	"\bmessages\x18\x01 \x03(\v2#.quadsmith.api.CompatibilityMessageR\bmessages\"\xdf\x01\n" +
+	"\x06filter\x18\x01 \x01(\tR\x06filter\"\xdf\x01\n" +
 	"\x14CompatibilityMessage\x12!\n" +
 	"\fchecker_name\x18\x01 \x01(\tR\vcheckerName\x12\x1e\n" +
 	"\n" +
@@ -384,25 +384,25 @@ func file_quadsmith_api_compatibility_proto_rawDescGZIP() []byte {
 var file_quadsmith_api_compatibility_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_quadsmith_api_compatibility_proto_goTypes = []any{
 	(*CheckCompatibilityRequest)(nil),           // 0: quadsmith.api.CheckCompatibilityRequest
-	(*CheckComponentsCompatibilityRequest)(nil), // 1: quadsmith.api.CheckComponentsCompatibilityRequest
-	(*GenerateCelFilterRequest)(nil),            // 2: quadsmith.api.GenerateCelFilterRequest
-	(*GenerateCelFilterResponse)(nil),           // 3: quadsmith.api.GenerateCelFilterResponse
-	(*CheckCompatibilityResponse)(nil),          // 4: quadsmith.api.CheckCompatibilityResponse
+	(*CheckCompatibilityResponse)(nil),          // 1: quadsmith.api.CheckCompatibilityResponse
+	(*CheckComponentsCompatibilityRequest)(nil), // 2: quadsmith.api.CheckComponentsCompatibilityRequest
+	(*GenerateCelFilterRequest)(nil),            // 3: quadsmith.api.GenerateCelFilterRequest
+	(*GenerateCelFilterResponse)(nil),           // 4: quadsmith.api.GenerateCelFilterResponse
 	(*CompatibilityMessage)(nil),                // 5: quadsmith.api.CompatibilityMessage
 	(*Build)(nil),                               // 6: quadsmith.api.Build
 	(*AssembledComponents)(nil),                 // 7: quadsmith.api.AssembledComponents
 }
 var file_quadsmith_api_compatibility_proto_depIdxs = []int32{
 	6, // 0: quadsmith.api.CheckCompatibilityRequest.build:type_name -> quadsmith.api.Build
-	7, // 1: quadsmith.api.CheckComponentsCompatibilityRequest.components:type_name -> quadsmith.api.AssembledComponents
-	7, // 2: quadsmith.api.GenerateCelFilterRequest.components:type_name -> quadsmith.api.AssembledComponents
-	5, // 3: quadsmith.api.CheckCompatibilityResponse.messages:type_name -> quadsmith.api.CompatibilityMessage
+	5, // 1: quadsmith.api.CheckCompatibilityResponse.messages:type_name -> quadsmith.api.CompatibilityMessage
+	7, // 2: quadsmith.api.CheckComponentsCompatibilityRequest.components:type_name -> quadsmith.api.AssembledComponents
+	7, // 3: quadsmith.api.GenerateCelFilterRequest.components:type_name -> quadsmith.api.AssembledComponents
 	0, // 4: quadsmith.api.CompatibilityService.CheckCompatibility:input_type -> quadsmith.api.CheckCompatibilityRequest
-	1, // 5: quadsmith.api.CompatibilityService.CheckComponentsCompatibility:input_type -> quadsmith.api.CheckComponentsCompatibilityRequest
-	2, // 6: quadsmith.api.CompatibilityService.GenerateCelFilter:input_type -> quadsmith.api.GenerateCelFilterRequest
-	4, // 7: quadsmith.api.CompatibilityService.CheckCompatibility:output_type -> quadsmith.api.CheckCompatibilityResponse
-	4, // 8: quadsmith.api.CompatibilityService.CheckComponentsCompatibility:output_type -> quadsmith.api.CheckCompatibilityResponse
-	3, // 9: quadsmith.api.CompatibilityService.GenerateCelFilter:output_type -> quadsmith.api.GenerateCelFilterResponse
+	2, // 5: quadsmith.api.CompatibilityService.CheckComponentsCompatibility:input_type -> quadsmith.api.CheckComponentsCompatibilityRequest
+	3, // 6: quadsmith.api.CompatibilityService.GenerateCelFilter:input_type -> quadsmith.api.GenerateCelFilterRequest
+	1, // 7: quadsmith.api.CompatibilityService.CheckCompatibility:output_type -> quadsmith.api.CheckCompatibilityResponse
+	1, // 8: quadsmith.api.CompatibilityService.CheckComponentsCompatibility:output_type -> quadsmith.api.CheckCompatibilityResponse
+	4, // 9: quadsmith.api.CompatibilityService.GenerateCelFilter:output_type -> quadsmith.api.GenerateCelFilterResponse
 	7, // [7:10] is the sub-list for method output_type
 	4, // [4:7] is the sub-list for method input_type
 	4, // [4:4] is the sub-list for extension type_name

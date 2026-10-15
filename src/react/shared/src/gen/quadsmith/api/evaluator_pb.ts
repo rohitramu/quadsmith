@@ -18,32 +18,9 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_evaluator: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Ch1xdWFkc21pdGgvYXBpL2V2YWx1YXRvci5wcm90bxINcXVhZHNtaXRoLmFwaSJYCg1TeXN0ZW1NZXNzYWdlEjYKCHNldmVyaXR5GAEgASgOMiQucXVhZHNtaXRoLmFwaS5TeXN0ZW1NZXNzYWdlU2V2ZXJpdHkSDwoHbWVzc2FnZRgCIAEoCSKPAQoURXZhbHVhdGVCdWlsZFJlcXVlc3QSEgoIYnVpbGRfaWQYASABKAlIABIlCgVidWlsZBgEIAEoCzIULnF1YWRzbWl0aC5hcGkuQnVpbGRIABIYChBwYXlsb2FkX3dlaWdodF9nGAIgASgCEhIKCmJhdHRlcnlfaWQYAyABKAlCDgoMYnVpbGRfc291cmNlIt0DChVFdmFsdWF0ZUJ1aWxkUmVzcG9uc2USFwoPYWxsX3VwX3dlaWdodF9nGAEgASgCEh4KFmhvdmVyX3Rocm90dGxlX3BlcmNlbnQYAiABKAISHgoWdGhydXN0X3RvX3dlaWdodF9yYXRpbxgDIAEoAhIbChNtaW5fZmxpZ2h0X3RpbWVfbWluGAcgASgCEhsKE21heF9mbGlnaHRfdGltZV9taW4YCCABKAISHQoVbWF4X2FjY2VsZXJhdGlvbl9tcHMyGAkgASgCEhUKDXRvcF9zcGVlZF9rbWgYCiABKAISEQoJaG92ZXJfcnBtGAsgASgNEjUKD3N5c3RlbV9tZXNzYWdlcxgMIAMoCzIcLnF1YWRzbWl0aC5hcGkuU3lzdGVtTWVzc2FnZRIQCghidWlsZF9pZBgNIAEoCRIYChBwYXlsb2FkX3dlaWdodF9nGA4gASgCEhIKCmJhdHRlcnlfaWQYDyABKAkSEwoLbWluX3ZvbHRhZ2UYECABKAISEwoLbWF4X3ZvbHRhZ2UYESABKAISFQoNbWF4X2N1cnJlbnRfYRgSIAEoAhIRCgljb25uZWN0b3IYFCABKAkSHQoVY29tcGF0aWJsZV9jb25uZWN0b3JzGBUgAygJImwKH0dldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1JlcXVlc3QSEgoIYnVpbGRfaWQYASABKAlIABIlCgVidWlsZBgCIAEoCzIULnF1YWRzbWl0aC5hcGkuQnVpbGRIAEIOCgxidWlsZF9zb3VyY2UiwwEKIEdldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1Jlc3BvbnNlEhMKC21pbl92b2x0YWdlGAEgASgCEhMKC21heF92b2x0YWdlGAIgASgCEhUKDW1heF9jdXJyZW50X2EYAyABKAISGgoSZGVmYXVsdF9iYXR0ZXJ5X2lkGAQgASgJEhAKCGJ1aWxkX2lkGAUgASgJEhEKCWNvbm5lY3RvchgGIAEoCRIdChVjb21wYXRpYmxlX2Nvbm5lY3RvcnMYByADKAkibQoZRXZhbHVhdGVDb21wb25lbnRzUmVxdWVzdBI2Cgpjb21wb25lbnRzGAEgASgLMiIucXVhZHNtaXRoLmFwaS5Bc3NlbWJsZWRDb21wb25lbnRzEhgKEHBheWxvYWRfd2VpZ2h0X2cYAiABKAIikwEKJEdldENvbXBvbmVudHNFbGVjdHJpY2FsTGltaXRzUmVxdWVzdBI2Cgpjb21wb25lbnRzGAEgASgLMiIucXVhZHNtaXRoLmFwaS5Bc3NlbWJsZWRDb21wb25lbnRzEjMKE2NhbmRpZGF0ZV9iYXR0ZXJpZXMYAiADKAsyFi5xdWFkc21pdGguYXBpLkJhdHRlcnkqqgEKFVN5c3RlbU1lc3NhZ2VTZXZlcml0eRInCiNTWVNURU1fTUVTU0FHRV9TRVZFUklUWV9VTlNQRUNJRklFRBAAEiAKHFNZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX0lORk8QARIjCh9TWVNURU1fTUVTU0FHRV9TRVZFUklUWV9XQVJOSU5HEAISIQodU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfRVJST1IQAzLZAwoQRXZhbHVhdG9yU2VydmljZRJaCg1FdmFsdWF0ZUJ1aWxkEiMucXVhZHNtaXRoLmFwaS5FdmFsdWF0ZUJ1aWxkUmVxdWVzdBokLnF1YWRzbWl0aC5hcGkuRXZhbHVhdGVCdWlsZFJlc3BvbnNlEnsKGEdldEJ1aWxkRWxlY3RyaWNhbExpbWl0cxIuLnF1YWRzbWl0aC5hcGkuR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVxdWVzdBovLnF1YWRzbWl0aC5hcGkuR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVzcG9uc2USZAoSRXZhbHVhdGVDb21wb25lbnRzEigucXVhZHNtaXRoLmFwaS5FdmFsdWF0ZUNvbXBvbmVudHNSZXF1ZXN0GiQucXVhZHNtaXRoLmFwaS5FdmFsdWF0ZUJ1aWxkUmVzcG9uc2UShQEKHUdldENvbXBvbmVudHNFbGVjdHJpY2FsTGltaXRzEjMucXVhZHNtaXRoLmFwaS5HZXRDb21wb25lbnRzRWxlY3RyaWNhbExpbWl0c1JlcXVlc3QaLy5xdWFkc21pdGguYXBpLkdldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1Jlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "Ch1xdWFkc21pdGgvYXBpL2V2YWx1YXRvci5wcm90bxINcXVhZHNtaXRoLmFwaSKPAQoURXZhbHVhdGVCdWlsZFJlcXVlc3QSEgoIYnVpbGRfaWQYASABKAlIABIlCgVidWlsZBgEIAEoCzIULnF1YWRzbWl0aC5hcGkuQnVpbGRIABIYChBwYXlsb2FkX3dlaWdodF9nGAIgASgCEhIKCmJhdHRlcnlfaWQYAyABKAlCDgoMYnVpbGRfc291cmNlIt0DChVFdmFsdWF0ZUJ1aWxkUmVzcG9uc2USFwoPYWxsX3VwX3dlaWdodF9nGAEgASgCEh4KFmhvdmVyX3Rocm90dGxlX3BlcmNlbnQYAiABKAISHgoWdGhydXN0X3RvX3dlaWdodF9yYXRpbxgDIAEoAhIbChNtaW5fZmxpZ2h0X3RpbWVfbWluGAcgASgCEhsKE21heF9mbGlnaHRfdGltZV9taW4YCCABKAISHQoVbWF4X2FjY2VsZXJhdGlvbl9tcHMyGAkgASgCEhUKDXRvcF9zcGVlZF9rbWgYCiABKAISEQoJaG92ZXJfcnBtGAsgASgNEjUKD3N5c3RlbV9tZXNzYWdlcxgMIAMoCzIcLnF1YWRzbWl0aC5hcGkuU3lzdGVtTWVzc2FnZRIQCghidWlsZF9pZBgNIAEoCRIYChBwYXlsb2FkX3dlaWdodF9nGA4gASgCEhIKCmJhdHRlcnlfaWQYDyABKAkSEwoLbWluX3ZvbHRhZ2UYECABKAISEwoLbWF4X3ZvbHRhZ2UYESABKAISFQoNbWF4X2N1cnJlbnRfYRgSIAEoAhIRCgljb25uZWN0b3IYFCABKAkSHQoVY29tcGF0aWJsZV9jb25uZWN0b3JzGBUgAygJIm0KGUV2YWx1YXRlQ29tcG9uZW50c1JlcXVlc3QSNgoKY29tcG9uZW50cxgBIAEoCzIiLnF1YWRzbWl0aC5hcGkuQXNzZW1ibGVkQ29tcG9uZW50cxIYChBwYXlsb2FkX3dlaWdodF9nGAIgASgCImwKH0dldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1JlcXVlc3QSEgoIYnVpbGRfaWQYASABKAlIABIlCgVidWlsZBgCIAEoCzIULnF1YWRzbWl0aC5hcGkuQnVpbGRIAEIOCgxidWlsZF9zb3VyY2UiwwEKIEdldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1Jlc3BvbnNlEhMKC21pbl92b2x0YWdlGAEgASgCEhMKC21heF92b2x0YWdlGAIgASgCEhUKDW1heF9jdXJyZW50X2EYAyABKAISGgoSZGVmYXVsdF9iYXR0ZXJ5X2lkGAQgASgJEhAKCGJ1aWxkX2lkGAUgASgJEhEKCWNvbm5lY3RvchgGIAEoCRIdChVjb21wYXRpYmxlX2Nvbm5lY3RvcnMYByADKAkikwEKJEdldENvbXBvbmVudHNFbGVjdHJpY2FsTGltaXRzUmVxdWVzdBI2Cgpjb21wb25lbnRzGAEgASgLMiIucXVhZHNtaXRoLmFwaS5Bc3NlbWJsZWRDb21wb25lbnRzEjMKE2NhbmRpZGF0ZV9iYXR0ZXJpZXMYAiADKAsyFi5xdWFkc21pdGguYXBpLkJhdHRlcnkiWAoNU3lzdGVtTWVzc2FnZRI2CghzZXZlcml0eRgBIAEoDjIkLnF1YWRzbWl0aC5hcGkuU3lzdGVtTWVzc2FnZVNldmVyaXR5Eg8KB21lc3NhZ2UYAiABKAkqqgEKFVN5c3RlbU1lc3NhZ2VTZXZlcml0eRInCiNTWVNURU1fTUVTU0FHRV9TRVZFUklUWV9VTlNQRUNJRklFRBAAEiAKHFNZU1RFTV9NRVNTQUdFX1NFVkVSSVRZX0lORk8QARIjCh9TWVNURU1fTUVTU0FHRV9TRVZFUklUWV9XQVJOSU5HEAISIQodU1lTVEVNX01FU1NBR0VfU0VWRVJJVFlfRVJST1IQAzLZAwoQRXZhbHVhdG9yU2VydmljZRJaCg1FdmFsdWF0ZUJ1aWxkEiMucXVhZHNtaXRoLmFwaS5FdmFsdWF0ZUJ1aWxkUmVxdWVzdBokLnF1YWRzbWl0aC5hcGkuRXZhbHVhdGVCdWlsZFJlc3BvbnNlEnsKGEdldEJ1aWxkRWxlY3RyaWNhbExpbWl0cxIuLnF1YWRzbWl0aC5hcGkuR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVxdWVzdBovLnF1YWRzbWl0aC5hcGkuR2V0QnVpbGRFbGVjdHJpY2FsTGltaXRzUmVzcG9uc2USZAoSRXZhbHVhdGVDb21wb25lbnRzEigucXVhZHNtaXRoLmFwaS5FdmFsdWF0ZUNvbXBvbmVudHNSZXF1ZXN0GiQucXVhZHNtaXRoLmFwaS5FdmFsdWF0ZUJ1aWxkUmVzcG9uc2UShQEKHUdldENvbXBvbmVudHNFbGVjdHJpY2FsTGltaXRzEjMucXVhZHNtaXRoLmFwaS5HZXRDb21wb25lbnRzRWxlY3RyaWNhbExpbWl0c1JlcXVlc3QaLy5xdWFkc21pdGguYXBpLkdldEJ1aWxkRWxlY3RyaWNhbExpbWl0c1Jlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
     [file_quadsmith_api_battery, file_quadsmith_api_build, file_quadsmith_api_components],
   );
-
-/**
- * @generated from message quadsmith.api.SystemMessage
- */
-export type SystemMessage = Message<"quadsmith.api.SystemMessage"> & {
-  /**
-   * @generated from field: quadsmith.api.SystemMessageSeverity severity = 1;
-   */
-  severity: SystemMessageSeverity;
-
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
-};
-
-/**
- * Describes the message quadsmith.api.SystemMessage.
- * Use `create(SystemMessageSchema)` to create a new message.
- */
-export const SystemMessageSchema: GenMessage<SystemMessage> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_evaluator, 0);
 
 /**
  * @generated from message quadsmith.api.EvaluateBuildRequest
@@ -92,7 +69,7 @@ export type EvaluateBuildRequest = Message<"quadsmith.api.EvaluateBuildRequest">
  */
 export const EvaluateBuildRequestSchema: GenMessage<EvaluateBuildRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_evaluator, 1);
+  messageDesc(file_quadsmith_api_evaluator, 0);
 
 /**
  * @generated from message quadsmith.api.EvaluateBuildResponse
@@ -208,6 +185,29 @@ export type EvaluateBuildResponse = Message<"quadsmith.api.EvaluateBuildResponse
  */
 export const EvaluateBuildResponseSchema: GenMessage<EvaluateBuildResponse> =
   /*@__PURE__*/
+  messageDesc(file_quadsmith_api_evaluator, 1);
+
+/**
+ * @generated from message quadsmith.api.EvaluateComponentsRequest
+ */
+export type EvaluateComponentsRequest = Message<"quadsmith.api.EvaluateComponentsRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.AssembledComponents components = 1;
+   */
+  components?: AssembledComponents | undefined;
+
+  /**
+   * @generated from field: float payload_weight_g = 2;
+   */
+  payloadWeightG: number;
+};
+
+/**
+ * Describes the message quadsmith.api.EvaluateComponentsRequest.
+ * Use `create(EvaluateComponentsRequestSchema)` to create a new message.
+ */
+export const EvaluateComponentsRequestSchema: GenMessage<EvaluateComponentsRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_api_evaluator, 2);
 
 /**
@@ -300,29 +300,6 @@ export const GetBuildElectricalLimitsResponseSchema: GenMessage<GetBuildElectric
   messageDesc(file_quadsmith_api_evaluator, 4);
 
 /**
- * @generated from message quadsmith.api.EvaluateComponentsRequest
- */
-export type EvaluateComponentsRequest = Message<"quadsmith.api.EvaluateComponentsRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.AssembledComponents components = 1;
-   */
-  components?: AssembledComponents | undefined;
-
-  /**
-   * @generated from field: float payload_weight_g = 2;
-   */
-  payloadWeightG: number;
-};
-
-/**
- * Describes the message quadsmith.api.EvaluateComponentsRequest.
- * Use `create(EvaluateComponentsRequestSchema)` to create a new message.
- */
-export const EvaluateComponentsRequestSchema: GenMessage<EvaluateComponentsRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_evaluator, 5);
-
-/**
  * @generated from message quadsmith.api.GetComponentsElectricalLimitsRequest
  */
 export type GetComponentsElectricalLimitsRequest =
@@ -343,6 +320,29 @@ export type GetComponentsElectricalLimitsRequest =
  * Use `create(GetComponentsElectricalLimitsRequestSchema)` to create a new message.
  */
 export const GetComponentsElectricalLimitsRequestSchema: GenMessage<GetComponentsElectricalLimitsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_evaluator, 5);
+
+/**
+ * @generated from message quadsmith.api.SystemMessage
+ */
+export type SystemMessage = Message<"quadsmith.api.SystemMessage"> & {
+  /**
+   * @generated from field: quadsmith.api.SystemMessageSeverity severity = 1;
+   */
+  severity: SystemMessageSeverity;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.api.SystemMessage.
+ * Use `create(SystemMessageSchema)` to create a new message.
+ */
+export const SystemMessageSchema: GenMessage<SystemMessage> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_evaluator, 6);
 

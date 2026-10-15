@@ -1,7 +1,7 @@
 import React from "react";
 import { formatStatorSize } from "@quadsmith/shared";
 import type { FieldDef } from "../components/SmartFilterInput";
-import { getCollectionColorFromSchema, type CollectionColorDef } from "@quadsmith/shared";
+import { getCollectionColor, type CollectionColorDef } from "@quadsmith/shared";
 
 // Protobuf Schemas
 import { AntennaSchema } from "@quadsmith/shared/gen/quadsmith/api/antenna_pb";
@@ -2063,7 +2063,7 @@ export function getCollectionPath(collection: HardwareCollectionDef): string {
 
 for (const col of HARDWARE_COLLECTIONS) {
   col.path = getCollectionPath(col);
-  col.color = getCollectionColorFromSchema(col.schema, col.id, col.name);
+  col.color = getCollectionColor(col.id);
 }
 
 export {

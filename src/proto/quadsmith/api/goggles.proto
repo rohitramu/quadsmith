@@ -11,8 +11,9 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// 1. gRPC Service (Services First)
+// Services
 // ---------------------------------------------------------
+
 service GogglesService {
   rpc GetGoggles(GetGogglesRequest) returns (Goggles);
   rpc ListGoggles(ListGogglesRequest) returns (ListGogglesResponse);
@@ -22,45 +23,9 @@ service GogglesService {
 }
 
 // ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
+// Domain model
 // ---------------------------------------------------------
-message CreateGogglesRequest {
-  Goggles goggles = 1;
-}
 
-message DeleteGogglesRequest {
-  string id = 1;
-}
-
-message DeleteGogglesResponse {
-  bool is_archived = 1;
-}
-
-message GetGogglesRequest {
-  string id = 1;
-  repeated string columns = 2;
-}
-
-message ListGogglesRequest {
-  string filter = 1;
-  int32 page_size = 2;
-  string page_token = 3;
-  repeated string columns = 4;
-  repeated string sort = 5;
-}
-
-message ListGogglesResponse {
-  repeated Goggles goggles = 1;
-  string next_page_token = 2;
-}
-
-message UpdateGogglesRequest {
-  Goggles goggles = 1;
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 message Goggles {
   option (quadsmith.sql.table) = {name: "goggles"};
   option (quadsmith.common.collection_path) = "components/gear/goggles";
@@ -69,7 +34,6 @@ message Goggles {
     user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'goggles' AND user_uuid = $1::uuid)"
   };
   option (quadsmith.common.frontend) = {
-    color_code: "#d946ef"
     default_columns: [
       "manufacturer",
       "name",
@@ -131,4 +95,42 @@ message Goggles {
     (quadsmith.sql.column) = {ignore: true},
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
   ];
+}
+
+// ---------------------------------------------------------
+// Request/response messages
+// ---------------------------------------------------------
+
+message CreateGogglesRequest {
+  Goggles goggles = 1;
+}
+
+message DeleteGogglesRequest {
+  string id = 1;
+}
+
+message DeleteGogglesResponse {
+  bool is_archived = 1;
+}
+
+message GetGogglesRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListGogglesRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListGogglesResponse {
+  repeated Goggles goggles = 1;
+  string next_page_token = 2;
+}
+
+message UpdateGogglesRequest {
+  Goggles goggles = 1;
 }

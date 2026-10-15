@@ -24,368 +24,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
-// ---------------------------------------------------------
-type CreateBatteryRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Battery       *Battery               `protobuf:"bytes,1,opt,name=battery,proto3" json:"battery,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateBatteryRequest) Reset() {
-	*x = CreateBatteryRequest{}
-	mi := &file_quadsmith_api_battery_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateBatteryRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateBatteryRequest) ProtoMessage() {}
-
-func (x *CreateBatteryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_battery_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateBatteryRequest.ProtoReflect.Descriptor instead.
-func (*CreateBatteryRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *CreateBatteryRequest) GetBattery() *Battery {
-	if x != nil {
-		return x.Battery
-	}
-	return nil
-}
-
-type DeleteBatteryRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteBatteryRequest) Reset() {
-	*x = DeleteBatteryRequest{}
-	mi := &file_quadsmith_api_battery_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteBatteryRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteBatteryRequest) ProtoMessage() {}
-
-func (x *DeleteBatteryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_battery_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteBatteryRequest.ProtoReflect.Descriptor instead.
-func (*DeleteBatteryRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *DeleteBatteryRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteBatteryResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteBatteryResponse) Reset() {
-	*x = DeleteBatteryResponse{}
-	mi := &file_quadsmith_api_battery_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteBatteryResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteBatteryResponse) ProtoMessage() {}
-
-func (x *DeleteBatteryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_battery_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteBatteryResponse.ProtoReflect.Descriptor instead.
-func (*DeleteBatteryResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteBatteryResponse) GetIsArchived() bool {
-	if x != nil {
-		return x.IsArchived
-	}
-	return false
-}
-
-type GetBatteryRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetBatteryRequest) Reset() {
-	*x = GetBatteryRequest{}
-	mi := &file_quadsmith_api_battery_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetBatteryRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetBatteryRequest) ProtoMessage() {}
-
-func (x *GetBatteryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_battery_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetBatteryRequest.ProtoReflect.Descriptor instead.
-func (*GetBatteryRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *GetBatteryRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *GetBatteryRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListBatteriesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListBatteriesRequest) Reset() {
-	*x = ListBatteriesRequest{}
-	mi := &file_quadsmith_api_battery_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListBatteriesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListBatteriesRequest) ProtoMessage() {}
-
-func (x *ListBatteriesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_battery_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListBatteriesRequest.ProtoReflect.Descriptor instead.
-func (*ListBatteriesRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *ListBatteriesRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListBatteriesRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListBatteriesRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListBatteriesRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListBatteriesRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListBatteriesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Batteries     []*Battery             `protobuf:"bytes,1,rep,name=batteries,proto3" json:"batteries,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListBatteriesResponse) Reset() {
-	*x = ListBatteriesResponse{}
-	mi := &file_quadsmith_api_battery_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListBatteriesResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListBatteriesResponse) ProtoMessage() {}
-
-func (x *ListBatteriesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_battery_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListBatteriesResponse.ProtoReflect.Descriptor instead.
-func (*ListBatteriesResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *ListBatteriesResponse) GetBatteries() []*Battery {
-	if x != nil {
-		return x.Batteries
-	}
-	return nil
-}
-
-func (x *ListBatteriesResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-type UpdateBatteryRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Battery       *Battery               `protobuf:"bytes,1,opt,name=battery,proto3" json:"battery,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateBatteryRequest) Reset() {
-	*x = UpdateBatteryRequest{}
-	mi := &file_quadsmith_api_battery_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateBatteryRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateBatteryRequest) ProtoMessage() {}
-
-func (x *UpdateBatteryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_battery_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateBatteryRequest.ProtoReflect.Descriptor instead.
-func (*UpdateBatteryRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *UpdateBatteryRequest) GetBattery() *Battery {
-	if x != nil {
-		return x.Battery
-	}
-	return nil
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 type Battery struct {
 	state        protoimpl.MessageState `protogen:"open.v1"`
 	Uuid         string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -419,7 +57,7 @@ type Battery struct {
 
 func (x *Battery) Reset() {
 	*x = Battery{}
-	mi := &file_quadsmith_api_battery_proto_msgTypes[7]
+	mi := &file_quadsmith_api_battery_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -431,7 +69,7 @@ func (x *Battery) String() string {
 func (*Battery) ProtoMessage() {}
 
 func (x *Battery) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_battery_proto_msgTypes[7]
+	mi := &file_quadsmith_api_battery_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -444,7 +82,7 @@ func (x *Battery) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Battery.ProtoReflect.Descriptor instead.
 func (*Battery) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{7}
+	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Battery) GetUuid() string {
@@ -573,33 +211,367 @@ func (x *Battery) GetAuthorUsername() string {
 	return ""
 }
 
+type CreateBatteryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Battery       *Battery               `protobuf:"bytes,1,opt,name=battery,proto3" json:"battery,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateBatteryRequest) Reset() {
+	*x = CreateBatteryRequest{}
+	mi := &file_quadsmith_api_battery_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateBatteryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateBatteryRequest) ProtoMessage() {}
+
+func (x *CreateBatteryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_battery_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateBatteryRequest.ProtoReflect.Descriptor instead.
+func (*CreateBatteryRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateBatteryRequest) GetBattery() *Battery {
+	if x != nil {
+		return x.Battery
+	}
+	return nil
+}
+
+type DeleteBatteryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteBatteryRequest) Reset() {
+	*x = DeleteBatteryRequest{}
+	mi := &file_quadsmith_api_battery_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteBatteryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBatteryRequest) ProtoMessage() {}
+
+func (x *DeleteBatteryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_battery_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBatteryRequest.ProtoReflect.Descriptor instead.
+func (*DeleteBatteryRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteBatteryRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteBatteryResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteBatteryResponse) Reset() {
+	*x = DeleteBatteryResponse{}
+	mi := &file_quadsmith_api_battery_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteBatteryResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteBatteryResponse) ProtoMessage() {}
+
+func (x *DeleteBatteryResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_battery_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteBatteryResponse.ProtoReflect.Descriptor instead.
+func (*DeleteBatteryResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DeleteBatteryResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetBatteryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetBatteryRequest) Reset() {
+	*x = GetBatteryRequest{}
+	mi := &file_quadsmith_api_battery_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetBatteryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetBatteryRequest) ProtoMessage() {}
+
+func (x *GetBatteryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_battery_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetBatteryRequest.ProtoReflect.Descriptor instead.
+func (*GetBatteryRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetBatteryRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetBatteryRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListBatteriesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBatteriesRequest) Reset() {
+	*x = ListBatteriesRequest{}
+	mi := &file_quadsmith_api_battery_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBatteriesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBatteriesRequest) ProtoMessage() {}
+
+func (x *ListBatteriesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_battery_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBatteriesRequest.ProtoReflect.Descriptor instead.
+func (*ListBatteriesRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListBatteriesRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListBatteriesRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListBatteriesRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListBatteriesRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListBatteriesRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListBatteriesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Batteries     []*Battery             `protobuf:"bytes,1,rep,name=batteries,proto3" json:"batteries,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBatteriesResponse) Reset() {
+	*x = ListBatteriesResponse{}
+	mi := &file_quadsmith_api_battery_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBatteriesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBatteriesResponse) ProtoMessage() {}
+
+func (x *ListBatteriesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_battery_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBatteriesResponse.ProtoReflect.Descriptor instead.
+func (*ListBatteriesResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListBatteriesResponse) GetBatteries() []*Battery {
+	if x != nil {
+		return x.Batteries
+	}
+	return nil
+}
+
+func (x *ListBatteriesResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateBatteryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Battery       *Battery               `protobuf:"bytes,1,opt,name=battery,proto3" json:"battery,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateBatteryRequest) Reset() {
+	*x = UpdateBatteryRequest{}
+	mi := &file_quadsmith_api_battery_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateBatteryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateBatteryRequest) ProtoMessage() {}
+
+func (x *UpdateBatteryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_battery_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateBatteryRequest.ProtoReflect.Descriptor instead.
+func (*UpdateBatteryRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_battery_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateBatteryRequest) GetBattery() *Battery {
+	if x != nil {
+		return x.Battery
+	}
+	return nil
+}
+
 var File_quadsmith_api_battery_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_battery_proto_rawDesc = "" +
 	"\n" +
-	"\x1bquadsmith/api/battery.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"H\n" +
-	"\x14CreateBatteryRequest\x120\n" +
-	"\abattery\x18\x01 \x01(\v2\x16.quadsmith.api.BatteryR\abattery\"&\n" +
-	"\x14DeleteBatteryRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"8\n" +
-	"\x15DeleteBatteryResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"=\n" +
-	"\x11GetBatteryRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x98\x01\n" +
-	"\x14ListBatteriesRequest\x12\x16\n" +
-	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
-	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
-	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
-	"\x04sort\x18\x05 \x03(\tR\x04sort\"u\n" +
-	"\x15ListBatteriesResponse\x124\n" +
-	"\tbatteries\x18\x01 \x03(\v2\x16.quadsmith.api.BatteryR\tbatteries\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"H\n" +
-	"\x14UpdateBatteryRequest\x120\n" +
-	"\abattery\x18\x01 \x01(\v2\x16.quadsmith.api.BatteryR\abattery\"\xe4\b\n" +
+	"\x1bquadsmith/api/battery.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xdb\b\n" +
 	"\aBattery\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
 	"\x02id\x18\x02 \x01(\tB\n" +
@@ -632,16 +604,38 @@ const file_quadsmith_api_battery_proto_rawDesc = "" +
 	"\tuser_uuid\x18\x11 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
 	"\x0fauthor_username\x18\x12 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xd0\x01\x8a\xb5\x189\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xc7\x01\x8a\xb5\x180\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\fcell_count_s\n" +
-	"\fcapacity_mah\x12\a#84cc16\x9a\xb5\x18\x1dcomponents/hardware/batteries\xc2\xf3\x18\v\n" +
+	"\fcapacity_mah\x9a\xb5\x18\x1dcomponents/hardware/batteries\xc2\xf3\x18\v\n" +
 	"\tbatteries\xc2\xf0\x19_\b\x05\x12[uuid IN (SELECT uuid FROM entities WHERE collection = 'batteries' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +
-	"\x10_author_username2\xac\x03\n" +
+	"\x10_author_username\"H\n" +
+	"\x14CreateBatteryRequest\x120\n" +
+	"\abattery\x18\x01 \x01(\v2\x16.quadsmith.api.BatteryR\abattery\"&\n" +
+	"\x14DeleteBatteryRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"8\n" +
+	"\x15DeleteBatteryResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\"=\n" +
+	"\x11GetBatteryRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x98\x01\n" +
+	"\x14ListBatteriesRequest\x12\x16\n" +
+	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sort\"u\n" +
+	"\x15ListBatteriesResponse\x124\n" +
+	"\tbatteries\x18\x01 \x03(\v2\x16.quadsmith.api.BatteryR\tbatteries\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"H\n" +
+	"\x14UpdateBatteryRequest\x120\n" +
+	"\abattery\x18\x01 \x01(\v2\x16.quadsmith.api.BatteryR\abattery2\xac\x03\n" +
 	"\x0eBatteryService\x12F\n" +
 	"\n" +
 	"GetBattery\x12 .quadsmith.api.GetBatteryRequest\x1a\x16.quadsmith.api.Battery\x12Z\n" +
@@ -664,33 +658,33 @@ func file_quadsmith_api_battery_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_api_battery_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_battery_proto_goTypes = []any{
-	(*CreateBatteryRequest)(nil),  // 0: quadsmith.api.CreateBatteryRequest
-	(*DeleteBatteryRequest)(nil),  // 1: quadsmith.api.DeleteBatteryRequest
-	(*DeleteBatteryResponse)(nil), // 2: quadsmith.api.DeleteBatteryResponse
-	(*GetBatteryRequest)(nil),     // 3: quadsmith.api.GetBatteryRequest
-	(*ListBatteriesRequest)(nil),  // 4: quadsmith.api.ListBatteriesRequest
-	(*ListBatteriesResponse)(nil), // 5: quadsmith.api.ListBatteriesResponse
-	(*UpdateBatteryRequest)(nil),  // 6: quadsmith.api.UpdateBatteryRequest
-	(*Battery)(nil),               // 7: quadsmith.api.Battery
+	(*Battery)(nil),               // 0: quadsmith.api.Battery
+	(*CreateBatteryRequest)(nil),  // 1: quadsmith.api.CreateBatteryRequest
+	(*DeleteBatteryRequest)(nil),  // 2: quadsmith.api.DeleteBatteryRequest
+	(*DeleteBatteryResponse)(nil), // 3: quadsmith.api.DeleteBatteryResponse
+	(*GetBatteryRequest)(nil),     // 4: quadsmith.api.GetBatteryRequest
+	(*ListBatteriesRequest)(nil),  // 5: quadsmith.api.ListBatteriesRequest
+	(*ListBatteriesResponse)(nil), // 6: quadsmith.api.ListBatteriesResponse
+	(*UpdateBatteryRequest)(nil),  // 7: quadsmith.api.UpdateBatteryRequest
 	(*ReferenceLink)(nil),         // 8: quadsmith.api.ReferenceLink
 	(*Media)(nil),                 // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_battery_proto_depIdxs = []int32{
-	7,  // 0: quadsmith.api.CreateBatteryRequest.battery:type_name -> quadsmith.api.Battery
-	7,  // 1: quadsmith.api.ListBatteriesResponse.batteries:type_name -> quadsmith.api.Battery
-	7,  // 2: quadsmith.api.UpdateBatteryRequest.battery:type_name -> quadsmith.api.Battery
-	8,  // 3: quadsmith.api.Battery.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 4: quadsmith.api.Battery.media:type_name -> quadsmith.api.Media
-	3,  // 5: quadsmith.api.BatteryService.GetBattery:input_type -> quadsmith.api.GetBatteryRequest
-	4,  // 6: quadsmith.api.BatteryService.ListBatteries:input_type -> quadsmith.api.ListBatteriesRequest
-	0,  // 7: quadsmith.api.BatteryService.CreateBattery:input_type -> quadsmith.api.CreateBatteryRequest
-	6,  // 8: quadsmith.api.BatteryService.UpdateBattery:input_type -> quadsmith.api.UpdateBatteryRequest
-	1,  // 9: quadsmith.api.BatteryService.DeleteBattery:input_type -> quadsmith.api.DeleteBatteryRequest
-	7,  // 10: quadsmith.api.BatteryService.GetBattery:output_type -> quadsmith.api.Battery
-	5,  // 11: quadsmith.api.BatteryService.ListBatteries:output_type -> quadsmith.api.ListBatteriesResponse
-	7,  // 12: quadsmith.api.BatteryService.CreateBattery:output_type -> quadsmith.api.Battery
-	7,  // 13: quadsmith.api.BatteryService.UpdateBattery:output_type -> quadsmith.api.Battery
-	2,  // 14: quadsmith.api.BatteryService.DeleteBattery:output_type -> quadsmith.api.DeleteBatteryResponse
+	8,  // 0: quadsmith.api.Battery.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 1: quadsmith.api.Battery.media:type_name -> quadsmith.api.Media
+	0,  // 2: quadsmith.api.CreateBatteryRequest.battery:type_name -> quadsmith.api.Battery
+	0,  // 3: quadsmith.api.ListBatteriesResponse.batteries:type_name -> quadsmith.api.Battery
+	0,  // 4: quadsmith.api.UpdateBatteryRequest.battery:type_name -> quadsmith.api.Battery
+	4,  // 5: quadsmith.api.BatteryService.GetBattery:input_type -> quadsmith.api.GetBatteryRequest
+	5,  // 6: quadsmith.api.BatteryService.ListBatteries:input_type -> quadsmith.api.ListBatteriesRequest
+	1,  // 7: quadsmith.api.BatteryService.CreateBattery:input_type -> quadsmith.api.CreateBatteryRequest
+	7,  // 8: quadsmith.api.BatteryService.UpdateBattery:input_type -> quadsmith.api.UpdateBatteryRequest
+	2,  // 9: quadsmith.api.BatteryService.DeleteBattery:input_type -> quadsmith.api.DeleteBatteryRequest
+	0,  // 10: quadsmith.api.BatteryService.GetBattery:output_type -> quadsmith.api.Battery
+	6,  // 11: quadsmith.api.BatteryService.ListBatteries:output_type -> quadsmith.api.ListBatteriesResponse
+	0,  // 12: quadsmith.api.BatteryService.CreateBattery:output_type -> quadsmith.api.Battery
+	0,  // 13: quadsmith.api.BatteryService.UpdateBattery:output_type -> quadsmith.api.Battery
+	3,  // 14: quadsmith.api.BatteryService.DeleteBattery:output_type -> quadsmith.api.DeleteBatteryResponse
 	10, // [10:15] is the sub-list for method output_type
 	5,  // [5:10] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
@@ -705,7 +699,7 @@ func file_quadsmith_api_battery_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_battery_proto_msgTypes[7].OneofWrappers = []any{}
+	file_quadsmith_api_battery_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

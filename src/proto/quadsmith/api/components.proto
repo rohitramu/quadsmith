@@ -16,6 +16,10 @@ import "quadsmith/api/video_transmitter.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
+// ---------------------------------------------------------
+// Domain model
+// ---------------------------------------------------------
+
 message AssembledComponents {
   Frame frame = 1;
   Motor motor = 2;

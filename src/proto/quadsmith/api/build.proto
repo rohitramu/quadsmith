@@ -11,8 +11,9 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// 1. gRPC Service (Services First)
+// Services
 // ---------------------------------------------------------
+
 service BuildService {
   rpc GetBuild(GetBuildRequest) returns (Build);
   rpc ListBuilds(ListBuildsRequest) returns (ListBuildsResponse);
@@ -22,64 +23,9 @@ service BuildService {
 }
 
 // ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
+// Domain model
 // ---------------------------------------------------------
-message ComponentMatchDetail {
-  string component = 1;
-  bool exact_match = 2;
-  string description = 3;
-  double points_awarded = 4;
-  double max_points = 5;
-}
 
-message CreateBuildRequest {
-  Build build = 1;
-}
-
-message DeleteBuildRequest {
-  string id = 1;
-}
-
-message DeleteBuildResponse {
-  bool is_archived = 1;
-}
-
-message GetBuildRequest {
-  string id = 1;
-  repeated string columns = 2;
-}
-
-message ListBuildsRequest {
-  string filter = 1;
-  int32 page_size = 2;
-  string page_token = 3;
-  repeated string columns = 4;
-  repeated string sort = 5;
-}
-
-message ListBuildsResponse {
-  repeated Build builds = 1;
-  string next_page_token = 2;
-}
-
-message ListSimilarBuildsRequest {
-  string build_id = 1;
-  int32 limit = 2;
-}
-
-message ListSimilarBuildsResponse {
-  repeated SimilarBuild similar_builds = 1;
-}
-
-message SimilarBuild {
-  Build build = 1;
-  double similarity_score = 2;
-  repeated ComponentMatchDetail match_details = 3;
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 message Build {
   option (quadsmith.sql.table) = {name: "builds"};
   option (quadsmith.common.collection_path) = "builds";
@@ -88,7 +34,6 @@ message Build {
     user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'builds' AND user_uuid = $1::uuid)"
   };
   option (quadsmith.common.frontend) = {
-    color_code: "#3b82f6"
     default_columns: [
       "id",
       "name"
@@ -192,4 +137,61 @@ message Build {
     (quadsmith.sql.column) = {ignore: true},
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
   ];
+}
+
+// ---------------------------------------------------------
+// Request/response messages
+// ---------------------------------------------------------
+
+message CreateBuildRequest {
+  Build build = 1;
+}
+
+message DeleteBuildRequest {
+  string id = 1;
+}
+
+message DeleteBuildResponse {
+  bool is_archived = 1;
+}
+
+message GetBuildRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListBuildsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListBuildsResponse {
+  repeated Build builds = 1;
+  string next_page_token = 2;
+}
+
+message ListSimilarBuildsRequest {
+  string build_id = 1;
+  int32 limit = 2;
+}
+
+message ListSimilarBuildsResponse {
+  repeated SimilarBuild similar_builds = 1;
+}
+
+message SimilarBuild {
+  Build build = 1;
+  double similarity_score = 2;
+  repeated ComponentMatchDetail match_details = 3;
+}
+
+message ComponentMatchDetail {
+  string component = 1;
+  bool exact_match = 2;
+  string description = 3;
+  double points_awarded = 4;
+  double max_points = 5;
 }

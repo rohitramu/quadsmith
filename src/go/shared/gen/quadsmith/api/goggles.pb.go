@@ -24,368 +24,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
-// ---------------------------------------------------------
-type CreateGogglesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Goggles       *Goggles               `protobuf:"bytes,1,opt,name=goggles,proto3" json:"goggles,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateGogglesRequest) Reset() {
-	*x = CreateGogglesRequest{}
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateGogglesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateGogglesRequest) ProtoMessage() {}
-
-func (x *CreateGogglesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateGogglesRequest.ProtoReflect.Descriptor instead.
-func (*CreateGogglesRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *CreateGogglesRequest) GetGoggles() *Goggles {
-	if x != nil {
-		return x.Goggles
-	}
-	return nil
-}
-
-type DeleteGogglesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteGogglesRequest) Reset() {
-	*x = DeleteGogglesRequest{}
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteGogglesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteGogglesRequest) ProtoMessage() {}
-
-func (x *DeleteGogglesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteGogglesRequest.ProtoReflect.Descriptor instead.
-func (*DeleteGogglesRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *DeleteGogglesRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteGogglesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteGogglesResponse) Reset() {
-	*x = DeleteGogglesResponse{}
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteGogglesResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteGogglesResponse) ProtoMessage() {}
-
-func (x *DeleteGogglesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteGogglesResponse.ProtoReflect.Descriptor instead.
-func (*DeleteGogglesResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteGogglesResponse) GetIsArchived() bool {
-	if x != nil {
-		return x.IsArchived
-	}
-	return false
-}
-
-type GetGogglesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetGogglesRequest) Reset() {
-	*x = GetGogglesRequest{}
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetGogglesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetGogglesRequest) ProtoMessage() {}
-
-func (x *GetGogglesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetGogglesRequest.ProtoReflect.Descriptor instead.
-func (*GetGogglesRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *GetGogglesRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *GetGogglesRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListGogglesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListGogglesRequest) Reset() {
-	*x = ListGogglesRequest{}
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListGogglesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListGogglesRequest) ProtoMessage() {}
-
-func (x *ListGogglesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListGogglesRequest.ProtoReflect.Descriptor instead.
-func (*ListGogglesRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *ListGogglesRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListGogglesRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListGogglesRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListGogglesRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListGogglesRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListGogglesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Goggles       []*Goggles             `protobuf:"bytes,1,rep,name=goggles,proto3" json:"goggles,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListGogglesResponse) Reset() {
-	*x = ListGogglesResponse{}
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListGogglesResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListGogglesResponse) ProtoMessage() {}
-
-func (x *ListGogglesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListGogglesResponse.ProtoReflect.Descriptor instead.
-func (*ListGogglesResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *ListGogglesResponse) GetGoggles() []*Goggles {
-	if x != nil {
-		return x.Goggles
-	}
-	return nil
-}
-
-func (x *ListGogglesResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-type UpdateGogglesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Goggles       *Goggles               `protobuf:"bytes,1,opt,name=goggles,proto3" json:"goggles,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateGogglesRequest) Reset() {
-	*x = UpdateGogglesRequest{}
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateGogglesRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateGogglesRequest) ProtoMessage() {}
-
-func (x *UpdateGogglesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateGogglesRequest.ProtoReflect.Descriptor instead.
-func (*UpdateGogglesRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *UpdateGogglesRequest) GetGoggles() *Goggles {
-	if x != nil {
-		return x.Goggles
-	}
-	return nil
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 type Goggles struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	Uuid                string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -412,7 +50,7 @@ type Goggles struct {
 
 func (x *Goggles) Reset() {
 	*x = Goggles{}
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[7]
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -424,7 +62,7 @@ func (x *Goggles) String() string {
 func (*Goggles) ProtoMessage() {}
 
 func (x *Goggles) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_goggles_proto_msgTypes[7]
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -437,7 +75,7 @@ func (x *Goggles) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Goggles.ProtoReflect.Descriptor instead.
 func (*Goggles) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{7}
+	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Goggles) GetUuid() string {
@@ -566,33 +204,367 @@ func (x *Goggles) GetAuthorUsername() string {
 	return ""
 }
 
+type CreateGogglesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Goggles       *Goggles               `protobuf:"bytes,1,opt,name=goggles,proto3" json:"goggles,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateGogglesRequest) Reset() {
+	*x = CreateGogglesRequest{}
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateGogglesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateGogglesRequest) ProtoMessage() {}
+
+func (x *CreateGogglesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateGogglesRequest.ProtoReflect.Descriptor instead.
+func (*CreateGogglesRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateGogglesRequest) GetGoggles() *Goggles {
+	if x != nil {
+		return x.Goggles
+	}
+	return nil
+}
+
+type DeleteGogglesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteGogglesRequest) Reset() {
+	*x = DeleteGogglesRequest{}
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteGogglesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteGogglesRequest) ProtoMessage() {}
+
+func (x *DeleteGogglesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteGogglesRequest.ProtoReflect.Descriptor instead.
+func (*DeleteGogglesRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteGogglesRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteGogglesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteGogglesResponse) Reset() {
+	*x = DeleteGogglesResponse{}
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteGogglesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteGogglesResponse) ProtoMessage() {}
+
+func (x *DeleteGogglesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteGogglesResponse.ProtoReflect.Descriptor instead.
+func (*DeleteGogglesResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DeleteGogglesResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetGogglesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetGogglesRequest) Reset() {
+	*x = GetGogglesRequest{}
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetGogglesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetGogglesRequest) ProtoMessage() {}
+
+func (x *GetGogglesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetGogglesRequest.ProtoReflect.Descriptor instead.
+func (*GetGogglesRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetGogglesRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetGogglesRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListGogglesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListGogglesRequest) Reset() {
+	*x = ListGogglesRequest{}
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListGogglesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListGogglesRequest) ProtoMessage() {}
+
+func (x *ListGogglesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListGogglesRequest.ProtoReflect.Descriptor instead.
+func (*ListGogglesRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListGogglesRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListGogglesRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListGogglesRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListGogglesRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListGogglesRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListGogglesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Goggles       []*Goggles             `protobuf:"bytes,1,rep,name=goggles,proto3" json:"goggles,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListGogglesResponse) Reset() {
+	*x = ListGogglesResponse{}
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListGogglesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListGogglesResponse) ProtoMessage() {}
+
+func (x *ListGogglesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListGogglesResponse.ProtoReflect.Descriptor instead.
+func (*ListGogglesResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListGogglesResponse) GetGoggles() []*Goggles {
+	if x != nil {
+		return x.Goggles
+	}
+	return nil
+}
+
+func (x *ListGogglesResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateGogglesRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Goggles       *Goggles               `protobuf:"bytes,1,opt,name=goggles,proto3" json:"goggles,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateGogglesRequest) Reset() {
+	*x = UpdateGogglesRequest{}
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateGogglesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateGogglesRequest) ProtoMessage() {}
+
+func (x *UpdateGogglesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_goggles_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateGogglesRequest.ProtoReflect.Descriptor instead.
+func (*UpdateGogglesRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_goggles_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateGogglesRequest) GetGoggles() *Goggles {
+	if x != nil {
+		return x.Goggles
+	}
+	return nil
+}
+
 var File_quadsmith_api_goggles_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_goggles_proto_rawDesc = "" +
 	"\n" +
-	"\x1bquadsmith/api/goggles.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"H\n" +
-	"\x14CreateGogglesRequest\x120\n" +
-	"\agoggles\x18\x01 \x01(\v2\x16.quadsmith.api.GogglesR\agoggles\"&\n" +
-	"\x14DeleteGogglesRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"8\n" +
-	"\x15DeleteGogglesResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"=\n" +
-	"\x11GetGogglesRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x96\x01\n" +
-	"\x12ListGogglesRequest\x12\x16\n" +
-	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
-	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
-	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
-	"\x04sort\x18\x05 \x03(\tR\x04sort\"o\n" +
-	"\x13ListGogglesResponse\x120\n" +
-	"\agoggles\x18\x01 \x03(\v2\x16.quadsmith.api.GogglesR\agoggles\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"H\n" +
-	"\x14UpdateGogglesRequest\x120\n" +
-	"\agoggles\x18\x01 \x01(\v2\x16.quadsmith.api.GogglesR\agoggles\"\xf3\b\n" +
+	"\x1bquadsmith/api/goggles.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xea\b\n" +
 	"\aGoggles\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
 	"\x02id\x18\x02 \x01(\tB\n" +
@@ -624,19 +596,41 @@ const file_quadsmith_api_goggles_proto_rawDesc = "" +
 	"\tuser_uuid\x18\x11 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
 	"\x0fauthor_username\x18\x12 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xdd\x01\x8a\xb5\x18P\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xd4\x01\x8a\xb5\x18G\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\x0evideo_protocol\n" +
 	"\fdisplay_type\n" +
 	"\n" +
 	"resolution\n" +
-	"\afov_deg\x12\a#d946ef\x9a\xb5\x18\x17components/gear/goggles\xc2\xf3\x18\t\n" +
+	"\afov_deg\x9a\xb5\x18\x17components/gear/goggles\xc2\xf3\x18\t\n" +
 	"\agoggles\xc2\xf0\x19]\b\x05\x12Yuuid IN (SELECT uuid FROM entities WHERE collection = 'goggles' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +
-	"\x10_author_username2\xa6\x03\n" +
+	"\x10_author_username\"H\n" +
+	"\x14CreateGogglesRequest\x120\n" +
+	"\agoggles\x18\x01 \x01(\v2\x16.quadsmith.api.GogglesR\agoggles\"&\n" +
+	"\x14DeleteGogglesRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"8\n" +
+	"\x15DeleteGogglesResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\"=\n" +
+	"\x11GetGogglesRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x96\x01\n" +
+	"\x12ListGogglesRequest\x12\x16\n" +
+	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sort\"o\n" +
+	"\x13ListGogglesResponse\x120\n" +
+	"\agoggles\x18\x01 \x03(\v2\x16.quadsmith.api.GogglesR\agoggles\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"H\n" +
+	"\x14UpdateGogglesRequest\x120\n" +
+	"\agoggles\x18\x01 \x01(\v2\x16.quadsmith.api.GogglesR\agoggles2\xa6\x03\n" +
 	"\x0eGogglesService\x12F\n" +
 	"\n" +
 	"GetGoggles\x12 .quadsmith.api.GetGogglesRequest\x1a\x16.quadsmith.api.Goggles\x12T\n" +
@@ -659,33 +653,33 @@ func file_quadsmith_api_goggles_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_api_goggles_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_goggles_proto_goTypes = []any{
-	(*CreateGogglesRequest)(nil),  // 0: quadsmith.api.CreateGogglesRequest
-	(*DeleteGogglesRequest)(nil),  // 1: quadsmith.api.DeleteGogglesRequest
-	(*DeleteGogglesResponse)(nil), // 2: quadsmith.api.DeleteGogglesResponse
-	(*GetGogglesRequest)(nil),     // 3: quadsmith.api.GetGogglesRequest
-	(*ListGogglesRequest)(nil),    // 4: quadsmith.api.ListGogglesRequest
-	(*ListGogglesResponse)(nil),   // 5: quadsmith.api.ListGogglesResponse
-	(*UpdateGogglesRequest)(nil),  // 6: quadsmith.api.UpdateGogglesRequest
-	(*Goggles)(nil),               // 7: quadsmith.api.Goggles
+	(*Goggles)(nil),               // 0: quadsmith.api.Goggles
+	(*CreateGogglesRequest)(nil),  // 1: quadsmith.api.CreateGogglesRequest
+	(*DeleteGogglesRequest)(nil),  // 2: quadsmith.api.DeleteGogglesRequest
+	(*DeleteGogglesResponse)(nil), // 3: quadsmith.api.DeleteGogglesResponse
+	(*GetGogglesRequest)(nil),     // 4: quadsmith.api.GetGogglesRequest
+	(*ListGogglesRequest)(nil),    // 5: quadsmith.api.ListGogglesRequest
+	(*ListGogglesResponse)(nil),   // 6: quadsmith.api.ListGogglesResponse
+	(*UpdateGogglesRequest)(nil),  // 7: quadsmith.api.UpdateGogglesRequest
 	(*ReferenceLink)(nil),         // 8: quadsmith.api.ReferenceLink
 	(*Media)(nil),                 // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_goggles_proto_depIdxs = []int32{
-	7,  // 0: quadsmith.api.CreateGogglesRequest.goggles:type_name -> quadsmith.api.Goggles
-	7,  // 1: quadsmith.api.ListGogglesResponse.goggles:type_name -> quadsmith.api.Goggles
-	7,  // 2: quadsmith.api.UpdateGogglesRequest.goggles:type_name -> quadsmith.api.Goggles
-	8,  // 3: quadsmith.api.Goggles.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 4: quadsmith.api.Goggles.media:type_name -> quadsmith.api.Media
-	3,  // 5: quadsmith.api.GogglesService.GetGoggles:input_type -> quadsmith.api.GetGogglesRequest
-	4,  // 6: quadsmith.api.GogglesService.ListGoggles:input_type -> quadsmith.api.ListGogglesRequest
-	0,  // 7: quadsmith.api.GogglesService.CreateGoggles:input_type -> quadsmith.api.CreateGogglesRequest
-	6,  // 8: quadsmith.api.GogglesService.UpdateGoggles:input_type -> quadsmith.api.UpdateGogglesRequest
-	1,  // 9: quadsmith.api.GogglesService.DeleteGoggles:input_type -> quadsmith.api.DeleteGogglesRequest
-	7,  // 10: quadsmith.api.GogglesService.GetGoggles:output_type -> quadsmith.api.Goggles
-	5,  // 11: quadsmith.api.GogglesService.ListGoggles:output_type -> quadsmith.api.ListGogglesResponse
-	7,  // 12: quadsmith.api.GogglesService.CreateGoggles:output_type -> quadsmith.api.Goggles
-	7,  // 13: quadsmith.api.GogglesService.UpdateGoggles:output_type -> quadsmith.api.Goggles
-	2,  // 14: quadsmith.api.GogglesService.DeleteGoggles:output_type -> quadsmith.api.DeleteGogglesResponse
+	8,  // 0: quadsmith.api.Goggles.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 1: quadsmith.api.Goggles.media:type_name -> quadsmith.api.Media
+	0,  // 2: quadsmith.api.CreateGogglesRequest.goggles:type_name -> quadsmith.api.Goggles
+	0,  // 3: quadsmith.api.ListGogglesResponse.goggles:type_name -> quadsmith.api.Goggles
+	0,  // 4: quadsmith.api.UpdateGogglesRequest.goggles:type_name -> quadsmith.api.Goggles
+	4,  // 5: quadsmith.api.GogglesService.GetGoggles:input_type -> quadsmith.api.GetGogglesRequest
+	5,  // 6: quadsmith.api.GogglesService.ListGoggles:input_type -> quadsmith.api.ListGogglesRequest
+	1,  // 7: quadsmith.api.GogglesService.CreateGoggles:input_type -> quadsmith.api.CreateGogglesRequest
+	7,  // 8: quadsmith.api.GogglesService.UpdateGoggles:input_type -> quadsmith.api.UpdateGogglesRequest
+	2,  // 9: quadsmith.api.GogglesService.DeleteGoggles:input_type -> quadsmith.api.DeleteGogglesRequest
+	0,  // 10: quadsmith.api.GogglesService.GetGoggles:output_type -> quadsmith.api.Goggles
+	6,  // 11: quadsmith.api.GogglesService.ListGoggles:output_type -> quadsmith.api.ListGogglesResponse
+	0,  // 12: quadsmith.api.GogglesService.CreateGoggles:output_type -> quadsmith.api.Goggles
+	0,  // 13: quadsmith.api.GogglesService.UpdateGoggles:output_type -> quadsmith.api.Goggles
+	3,  // 14: quadsmith.api.GogglesService.DeleteGoggles:output_type -> quadsmith.api.DeleteGogglesResponse
 	10, // [10:15] is the sub-list for method output_type
 	5,  // [5:10] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
@@ -700,7 +694,7 @@ func file_quadsmith_api_goggles_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_goggles_proto_msgTypes[7].OneofWrappers = []any{}
+	file_quadsmith_api_goggles_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

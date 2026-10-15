@@ -24,368 +24,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
-// ---------------------------------------------------------
-type CreateSoftwareToolRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SoftwareTool  *SoftwareTool          `protobuf:"bytes,1,opt,name=software_tool,json=softwareTool,proto3" json:"software_tool,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateSoftwareToolRequest) Reset() {
-	*x = CreateSoftwareToolRequest{}
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateSoftwareToolRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateSoftwareToolRequest) ProtoMessage() {}
-
-func (x *CreateSoftwareToolRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateSoftwareToolRequest.ProtoReflect.Descriptor instead.
-func (*CreateSoftwareToolRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *CreateSoftwareToolRequest) GetSoftwareTool() *SoftwareTool {
-	if x != nil {
-		return x.SoftwareTool
-	}
-	return nil
-}
-
-type DeleteSoftwareToolRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteSoftwareToolRequest) Reset() {
-	*x = DeleteSoftwareToolRequest{}
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteSoftwareToolRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteSoftwareToolRequest) ProtoMessage() {}
-
-func (x *DeleteSoftwareToolRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteSoftwareToolRequest.ProtoReflect.Descriptor instead.
-func (*DeleteSoftwareToolRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *DeleteSoftwareToolRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteSoftwareToolResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteSoftwareToolResponse) Reset() {
-	*x = DeleteSoftwareToolResponse{}
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteSoftwareToolResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteSoftwareToolResponse) ProtoMessage() {}
-
-func (x *DeleteSoftwareToolResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteSoftwareToolResponse.ProtoReflect.Descriptor instead.
-func (*DeleteSoftwareToolResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteSoftwareToolResponse) GetIsArchived() bool {
-	if x != nil {
-		return x.IsArchived
-	}
-	return false
-}
-
-type GetSoftwareToolRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetSoftwareToolRequest) Reset() {
-	*x = GetSoftwareToolRequest{}
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetSoftwareToolRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetSoftwareToolRequest) ProtoMessage() {}
-
-func (x *GetSoftwareToolRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetSoftwareToolRequest.ProtoReflect.Descriptor instead.
-func (*GetSoftwareToolRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *GetSoftwareToolRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *GetSoftwareToolRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListSoftwareToolsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListSoftwareToolsRequest) Reset() {
-	*x = ListSoftwareToolsRequest{}
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListSoftwareToolsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListSoftwareToolsRequest) ProtoMessage() {}
-
-func (x *ListSoftwareToolsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListSoftwareToolsRequest.ProtoReflect.Descriptor instead.
-func (*ListSoftwareToolsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *ListSoftwareToolsRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListSoftwareToolsRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListSoftwareToolsRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListSoftwareToolsRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListSoftwareToolsRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListSoftwareToolsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SoftwareTools []*SoftwareTool        `protobuf:"bytes,1,rep,name=software_tools,json=softwareTools,proto3" json:"software_tools,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListSoftwareToolsResponse) Reset() {
-	*x = ListSoftwareToolsResponse{}
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListSoftwareToolsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListSoftwareToolsResponse) ProtoMessage() {}
-
-func (x *ListSoftwareToolsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListSoftwareToolsResponse.ProtoReflect.Descriptor instead.
-func (*ListSoftwareToolsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *ListSoftwareToolsResponse) GetSoftwareTools() []*SoftwareTool {
-	if x != nil {
-		return x.SoftwareTools
-	}
-	return nil
-}
-
-func (x *ListSoftwareToolsResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-type UpdateSoftwareToolRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	SoftwareTool  *SoftwareTool          `protobuf:"bytes,1,opt,name=software_tool,json=softwareTool,proto3" json:"software_tool,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateSoftwareToolRequest) Reset() {
-	*x = UpdateSoftwareToolRequest{}
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateSoftwareToolRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateSoftwareToolRequest) ProtoMessage() {}
-
-func (x *UpdateSoftwareToolRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateSoftwareToolRequest.ProtoReflect.Descriptor instead.
-func (*UpdateSoftwareToolRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *UpdateSoftwareToolRequest) GetSoftwareTool() *SoftwareTool {
-	if x != nil {
-		return x.SoftwareTool
-	}
-	return nil
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 type SoftwareTool struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	Uuid                string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -407,7 +45,7 @@ type SoftwareTool struct {
 
 func (x *SoftwareTool) Reset() {
 	*x = SoftwareTool{}
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[7]
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -419,7 +57,7 @@ func (x *SoftwareTool) String() string {
 func (*SoftwareTool) ProtoMessage() {}
 
 func (x *SoftwareTool) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_software_tool_proto_msgTypes[7]
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -432,7 +70,7 @@ func (x *SoftwareTool) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SoftwareTool.ProtoReflect.Descriptor instead.
 func (*SoftwareTool) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{7}
+	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *SoftwareTool) GetUuid() string {
@@ -526,33 +164,367 @@ func (x *SoftwareTool) GetAuthorUsername() string {
 	return ""
 }
 
+type CreateSoftwareToolRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SoftwareTool  *SoftwareTool          `protobuf:"bytes,1,opt,name=software_tool,json=softwareTool,proto3" json:"software_tool,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateSoftwareToolRequest) Reset() {
+	*x = CreateSoftwareToolRequest{}
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateSoftwareToolRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateSoftwareToolRequest) ProtoMessage() {}
+
+func (x *CreateSoftwareToolRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateSoftwareToolRequest.ProtoReflect.Descriptor instead.
+func (*CreateSoftwareToolRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateSoftwareToolRequest) GetSoftwareTool() *SoftwareTool {
+	if x != nil {
+		return x.SoftwareTool
+	}
+	return nil
+}
+
+type DeleteSoftwareToolRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteSoftwareToolRequest) Reset() {
+	*x = DeleteSoftwareToolRequest{}
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteSoftwareToolRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteSoftwareToolRequest) ProtoMessage() {}
+
+func (x *DeleteSoftwareToolRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteSoftwareToolRequest.ProtoReflect.Descriptor instead.
+func (*DeleteSoftwareToolRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteSoftwareToolRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteSoftwareToolResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteSoftwareToolResponse) Reset() {
+	*x = DeleteSoftwareToolResponse{}
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteSoftwareToolResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteSoftwareToolResponse) ProtoMessage() {}
+
+func (x *DeleteSoftwareToolResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteSoftwareToolResponse.ProtoReflect.Descriptor instead.
+func (*DeleteSoftwareToolResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DeleteSoftwareToolResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetSoftwareToolRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetSoftwareToolRequest) Reset() {
+	*x = GetSoftwareToolRequest{}
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetSoftwareToolRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetSoftwareToolRequest) ProtoMessage() {}
+
+func (x *GetSoftwareToolRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetSoftwareToolRequest.ProtoReflect.Descriptor instead.
+func (*GetSoftwareToolRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetSoftwareToolRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetSoftwareToolRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListSoftwareToolsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSoftwareToolsRequest) Reset() {
+	*x = ListSoftwareToolsRequest{}
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSoftwareToolsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSoftwareToolsRequest) ProtoMessage() {}
+
+func (x *ListSoftwareToolsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSoftwareToolsRequest.ProtoReflect.Descriptor instead.
+func (*ListSoftwareToolsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListSoftwareToolsRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListSoftwareToolsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListSoftwareToolsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListSoftwareToolsRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListSoftwareToolsRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListSoftwareToolsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SoftwareTools []*SoftwareTool        `protobuf:"bytes,1,rep,name=software_tools,json=softwareTools,proto3" json:"software_tools,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListSoftwareToolsResponse) Reset() {
+	*x = ListSoftwareToolsResponse{}
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListSoftwareToolsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListSoftwareToolsResponse) ProtoMessage() {}
+
+func (x *ListSoftwareToolsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListSoftwareToolsResponse.ProtoReflect.Descriptor instead.
+func (*ListSoftwareToolsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListSoftwareToolsResponse) GetSoftwareTools() []*SoftwareTool {
+	if x != nil {
+		return x.SoftwareTools
+	}
+	return nil
+}
+
+func (x *ListSoftwareToolsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateSoftwareToolRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SoftwareTool  *SoftwareTool          `protobuf:"bytes,1,opt,name=software_tool,json=softwareTool,proto3" json:"software_tool,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateSoftwareToolRequest) Reset() {
+	*x = UpdateSoftwareToolRequest{}
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateSoftwareToolRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateSoftwareToolRequest) ProtoMessage() {}
+
+func (x *UpdateSoftwareToolRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_software_tool_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateSoftwareToolRequest.ProtoReflect.Descriptor instead.
+func (*UpdateSoftwareToolRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_software_tool_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateSoftwareToolRequest) GetSoftwareTool() *SoftwareTool {
+	if x != nil {
+		return x.SoftwareTool
+	}
+	return nil
+}
+
 var File_quadsmith_api_software_tool_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_software_tool_proto_rawDesc = "" +
 	"\n" +
-	"!quadsmith/api/software_tool.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"]\n" +
-	"\x19CreateSoftwareToolRequest\x12@\n" +
-	"\rsoftware_tool\x18\x01 \x01(\v2\x1b.quadsmith.api.SoftwareToolR\fsoftwareTool\"+\n" +
-	"\x19DeleteSoftwareToolRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"=\n" +
-	"\x1aDeleteSoftwareToolResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"B\n" +
-	"\x16GetSoftwareToolRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x9c\x01\n" +
-	"\x18ListSoftwareToolsRequest\x12\x16\n" +
-	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
-	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
-	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
-	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x87\x01\n" +
-	"\x19ListSoftwareToolsResponse\x12B\n" +
-	"\x0esoftware_tools\x18\x01 \x03(\v2\x1b.quadsmith.api.SoftwareToolR\rsoftwareTools\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"]\n" +
-	"\x19UpdateSoftwareToolRequest\x12@\n" +
-	"\rsoftware_tool\x18\x01 \x01(\v2\x1b.quadsmith.api.SoftwareToolR\fsoftwareTool\"\xa5\a\n" +
+	"!quadsmith/api/software_tool.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\x9c\a\n" +
 	"\fSoftwareTool\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
 	"\x02id\x18\x02 \x01(\tB\n" +
@@ -576,17 +548,39 @@ const file_quadsmith_api_software_tool_proto_rawDesc = "" +
 	"\tuser_uuid\x18\f \x01(\tB\n" +
 	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
 	"\x0fauthor_username\x18\r \x01(\tB\n" +
-	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xe0\x01\x8a\xb5\x18:\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xd7\x01\x8a\xb5\x181\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\aversion\n" +
 	"\bcategory\n" +
-	"\bplatform\x12\a#a855f7\x9a\xb5\x18\"components/software/software-tools\xc2\xf3\x18\x10\n" +
+	"\bplatform\x9a\xb5\x18\"components/software/software-tools\xc2\xf3\x18\x10\n" +
 	"\x0esoftware_tools\xc2\xf0\x19d\b\x05\x12`uuid IN (SELECT uuid FROM entities WHERE collection = 'software-tools' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +
-	"\x10_author_username2\xf9\x03\n" +
+	"\x10_author_username\"]\n" +
+	"\x19CreateSoftwareToolRequest\x12@\n" +
+	"\rsoftware_tool\x18\x01 \x01(\v2\x1b.quadsmith.api.SoftwareToolR\fsoftwareTool\"+\n" +
+	"\x19DeleteSoftwareToolRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"=\n" +
+	"\x1aDeleteSoftwareToolResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\"B\n" +
+	"\x16GetSoftwareToolRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x9c\x01\n" +
+	"\x18ListSoftwareToolsRequest\x12\x16\n" +
+	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x87\x01\n" +
+	"\x19ListSoftwareToolsResponse\x12B\n" +
+	"\x0esoftware_tools\x18\x01 \x03(\v2\x1b.quadsmith.api.SoftwareToolR\rsoftwareTools\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"]\n" +
+	"\x19UpdateSoftwareToolRequest\x12@\n" +
+	"\rsoftware_tool\x18\x01 \x01(\v2\x1b.quadsmith.api.SoftwareToolR\fsoftwareTool2\xf9\x03\n" +
 	"\x13SoftwareToolService\x12U\n" +
 	"\x0fGetSoftwareTool\x12%.quadsmith.api.GetSoftwareToolRequest\x1a\x1b.quadsmith.api.SoftwareTool\x12f\n" +
 	"\x11ListSoftwareTools\x12'.quadsmith.api.ListSoftwareToolsRequest\x1a(.quadsmith.api.ListSoftwareToolsResponse\x12[\n" +
@@ -608,33 +602,33 @@ func file_quadsmith_api_software_tool_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_api_software_tool_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_software_tool_proto_goTypes = []any{
-	(*CreateSoftwareToolRequest)(nil),  // 0: quadsmith.api.CreateSoftwareToolRequest
-	(*DeleteSoftwareToolRequest)(nil),  // 1: quadsmith.api.DeleteSoftwareToolRequest
-	(*DeleteSoftwareToolResponse)(nil), // 2: quadsmith.api.DeleteSoftwareToolResponse
-	(*GetSoftwareToolRequest)(nil),     // 3: quadsmith.api.GetSoftwareToolRequest
-	(*ListSoftwareToolsRequest)(nil),   // 4: quadsmith.api.ListSoftwareToolsRequest
-	(*ListSoftwareToolsResponse)(nil),  // 5: quadsmith.api.ListSoftwareToolsResponse
-	(*UpdateSoftwareToolRequest)(nil),  // 6: quadsmith.api.UpdateSoftwareToolRequest
-	(*SoftwareTool)(nil),               // 7: quadsmith.api.SoftwareTool
+	(*SoftwareTool)(nil),               // 0: quadsmith.api.SoftwareTool
+	(*CreateSoftwareToolRequest)(nil),  // 1: quadsmith.api.CreateSoftwareToolRequest
+	(*DeleteSoftwareToolRequest)(nil),  // 2: quadsmith.api.DeleteSoftwareToolRequest
+	(*DeleteSoftwareToolResponse)(nil), // 3: quadsmith.api.DeleteSoftwareToolResponse
+	(*GetSoftwareToolRequest)(nil),     // 4: quadsmith.api.GetSoftwareToolRequest
+	(*ListSoftwareToolsRequest)(nil),   // 5: quadsmith.api.ListSoftwareToolsRequest
+	(*ListSoftwareToolsResponse)(nil),  // 6: quadsmith.api.ListSoftwareToolsResponse
+	(*UpdateSoftwareToolRequest)(nil),  // 7: quadsmith.api.UpdateSoftwareToolRequest
 	(*ReferenceLink)(nil),              // 8: quadsmith.api.ReferenceLink
 	(*Media)(nil),                      // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_software_tool_proto_depIdxs = []int32{
-	7,  // 0: quadsmith.api.CreateSoftwareToolRequest.software_tool:type_name -> quadsmith.api.SoftwareTool
-	7,  // 1: quadsmith.api.ListSoftwareToolsResponse.software_tools:type_name -> quadsmith.api.SoftwareTool
-	7,  // 2: quadsmith.api.UpdateSoftwareToolRequest.software_tool:type_name -> quadsmith.api.SoftwareTool
-	8,  // 3: quadsmith.api.SoftwareTool.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 4: quadsmith.api.SoftwareTool.media:type_name -> quadsmith.api.Media
-	3,  // 5: quadsmith.api.SoftwareToolService.GetSoftwareTool:input_type -> quadsmith.api.GetSoftwareToolRequest
-	4,  // 6: quadsmith.api.SoftwareToolService.ListSoftwareTools:input_type -> quadsmith.api.ListSoftwareToolsRequest
-	0,  // 7: quadsmith.api.SoftwareToolService.CreateSoftwareTool:input_type -> quadsmith.api.CreateSoftwareToolRequest
-	6,  // 8: quadsmith.api.SoftwareToolService.UpdateSoftwareTool:input_type -> quadsmith.api.UpdateSoftwareToolRequest
-	1,  // 9: quadsmith.api.SoftwareToolService.DeleteSoftwareTool:input_type -> quadsmith.api.DeleteSoftwareToolRequest
-	7,  // 10: quadsmith.api.SoftwareToolService.GetSoftwareTool:output_type -> quadsmith.api.SoftwareTool
-	5,  // 11: quadsmith.api.SoftwareToolService.ListSoftwareTools:output_type -> quadsmith.api.ListSoftwareToolsResponse
-	7,  // 12: quadsmith.api.SoftwareToolService.CreateSoftwareTool:output_type -> quadsmith.api.SoftwareTool
-	7,  // 13: quadsmith.api.SoftwareToolService.UpdateSoftwareTool:output_type -> quadsmith.api.SoftwareTool
-	2,  // 14: quadsmith.api.SoftwareToolService.DeleteSoftwareTool:output_type -> quadsmith.api.DeleteSoftwareToolResponse
+	8,  // 0: quadsmith.api.SoftwareTool.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 1: quadsmith.api.SoftwareTool.media:type_name -> quadsmith.api.Media
+	0,  // 2: quadsmith.api.CreateSoftwareToolRequest.software_tool:type_name -> quadsmith.api.SoftwareTool
+	0,  // 3: quadsmith.api.ListSoftwareToolsResponse.software_tools:type_name -> quadsmith.api.SoftwareTool
+	0,  // 4: quadsmith.api.UpdateSoftwareToolRequest.software_tool:type_name -> quadsmith.api.SoftwareTool
+	4,  // 5: quadsmith.api.SoftwareToolService.GetSoftwareTool:input_type -> quadsmith.api.GetSoftwareToolRequest
+	5,  // 6: quadsmith.api.SoftwareToolService.ListSoftwareTools:input_type -> quadsmith.api.ListSoftwareToolsRequest
+	1,  // 7: quadsmith.api.SoftwareToolService.CreateSoftwareTool:input_type -> quadsmith.api.CreateSoftwareToolRequest
+	7,  // 8: quadsmith.api.SoftwareToolService.UpdateSoftwareTool:input_type -> quadsmith.api.UpdateSoftwareToolRequest
+	2,  // 9: quadsmith.api.SoftwareToolService.DeleteSoftwareTool:input_type -> quadsmith.api.DeleteSoftwareToolRequest
+	0,  // 10: quadsmith.api.SoftwareToolService.GetSoftwareTool:output_type -> quadsmith.api.SoftwareTool
+	6,  // 11: quadsmith.api.SoftwareToolService.ListSoftwareTools:output_type -> quadsmith.api.ListSoftwareToolsResponse
+	0,  // 12: quadsmith.api.SoftwareToolService.CreateSoftwareTool:output_type -> quadsmith.api.SoftwareTool
+	0,  // 13: quadsmith.api.SoftwareToolService.UpdateSoftwareTool:output_type -> quadsmith.api.SoftwareTool
+	3,  // 14: quadsmith.api.SoftwareToolService.DeleteSoftwareTool:output_type -> quadsmith.api.DeleteSoftwareToolResponse
 	10, // [10:15] is the sub-list for method output_type
 	5,  // [5:10] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
@@ -649,7 +643,7 @@ func file_quadsmith_api_software_tool_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_software_tool_proto_msgTypes[7].OneofWrappers = []any{}
+	file_quadsmith_api_software_tool_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

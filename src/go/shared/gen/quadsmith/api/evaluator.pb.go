@@ -73,58 +73,6 @@ func (SystemMessageSeverity) EnumDescriptor() ([]byte, []int) {
 	return file_quadsmith_api_evaluator_proto_rawDescGZIP(), []int{0}
 }
 
-type SystemMessage struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Severity      SystemMessageSeverity  `protobuf:"varint,1,opt,name=severity,proto3,enum=quadsmith.api.SystemMessageSeverity" json:"severity,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SystemMessage) Reset() {
-	*x = SystemMessage{}
-	mi := &file_quadsmith_api_evaluator_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SystemMessage) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SystemMessage) ProtoMessage() {}
-
-func (x *SystemMessage) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_evaluator_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SystemMessage.ProtoReflect.Descriptor instead.
-func (*SystemMessage) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_evaluator_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *SystemMessage) GetSeverity() SystemMessageSeverity {
-	if x != nil {
-		return x.Severity
-	}
-	return SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED
-}
-
-func (x *SystemMessage) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
 type EvaluateBuildRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Types that are valid to be assigned to BuildSource:
@@ -141,7 +89,7 @@ type EvaluateBuildRequest struct {
 
 func (x *EvaluateBuildRequest) Reset() {
 	*x = EvaluateBuildRequest{}
-	mi := &file_quadsmith_api_evaluator_proto_msgTypes[1]
+	mi := &file_quadsmith_api_evaluator_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -153,7 +101,7 @@ func (x *EvaluateBuildRequest) String() string {
 func (*EvaluateBuildRequest) ProtoMessage() {}
 
 func (x *EvaluateBuildRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_evaluator_proto_msgTypes[1]
+	mi := &file_quadsmith_api_evaluator_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -166,7 +114,7 @@ func (x *EvaluateBuildRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EvaluateBuildRequest.ProtoReflect.Descriptor instead.
 func (*EvaluateBuildRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_evaluator_proto_rawDescGZIP(), []int{1}
+	return file_quadsmith_api_evaluator_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *EvaluateBuildRequest) GetBuildSource() isEvaluateBuildRequest_BuildSource {
@@ -261,7 +209,7 @@ type EvaluateBuildResponse struct {
 
 func (x *EvaluateBuildResponse) Reset() {
 	*x = EvaluateBuildResponse{}
-	mi := &file_quadsmith_api_evaluator_proto_msgTypes[2]
+	mi := &file_quadsmith_api_evaluator_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -273,7 +221,7 @@ func (x *EvaluateBuildResponse) String() string {
 func (*EvaluateBuildResponse) ProtoMessage() {}
 
 func (x *EvaluateBuildResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_evaluator_proto_msgTypes[2]
+	mi := &file_quadsmith_api_evaluator_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -286,7 +234,7 @@ func (x *EvaluateBuildResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EvaluateBuildResponse.ProtoReflect.Descriptor instead.
 func (*EvaluateBuildResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_evaluator_proto_rawDescGZIP(), []int{2}
+	return file_quadsmith_api_evaluator_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *EvaluateBuildResponse) GetAllUpWeightG() float32 {
@@ -406,6 +354,58 @@ func (x *EvaluateBuildResponse) GetCompatibleConnectors() []string {
 		return x.CompatibleConnectors
 	}
 	return nil
+}
+
+type EvaluateComponentsRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Components     *AssembledComponents   `protobuf:"bytes,1,opt,name=components,proto3" json:"components,omitempty"`
+	PayloadWeightG float32                `protobuf:"fixed32,2,opt,name=payload_weight_g,json=payloadWeightG,proto3" json:"payload_weight_g,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *EvaluateComponentsRequest) Reset() {
+	*x = EvaluateComponentsRequest{}
+	mi := &file_quadsmith_api_evaluator_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EvaluateComponentsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EvaluateComponentsRequest) ProtoMessage() {}
+
+func (x *EvaluateComponentsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_evaluator_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EvaluateComponentsRequest.ProtoReflect.Descriptor instead.
+func (*EvaluateComponentsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_evaluator_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *EvaluateComponentsRequest) GetComponents() *AssembledComponents {
+	if x != nil {
+		return x.Components
+	}
+	return nil
+}
+
+func (x *EvaluateComponentsRequest) GetPayloadWeightG() float32 {
+	if x != nil {
+		return x.PayloadWeightG
+	}
+	return 0
 }
 
 type GetBuildElectricalLimitsRequest struct {
@@ -585,58 +585,6 @@ func (x *GetBuildElectricalLimitsResponse) GetCompatibleConnectors() []string {
 	return nil
 }
 
-type EvaluateComponentsRequest struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Components     *AssembledComponents   `protobuf:"bytes,1,opt,name=components,proto3" json:"components,omitempty"`
-	PayloadWeightG float32                `protobuf:"fixed32,2,opt,name=payload_weight_g,json=payloadWeightG,proto3" json:"payload_weight_g,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *EvaluateComponentsRequest) Reset() {
-	*x = EvaluateComponentsRequest{}
-	mi := &file_quadsmith_api_evaluator_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *EvaluateComponentsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*EvaluateComponentsRequest) ProtoMessage() {}
-
-func (x *EvaluateComponentsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_evaluator_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use EvaluateComponentsRequest.ProtoReflect.Descriptor instead.
-func (*EvaluateComponentsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_evaluator_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *EvaluateComponentsRequest) GetComponents() *AssembledComponents {
-	if x != nil {
-		return x.Components
-	}
-	return nil
-}
-
-func (x *EvaluateComponentsRequest) GetPayloadWeightG() float32 {
-	if x != nil {
-		return x.PayloadWeightG
-	}
-	return 0
-}
-
 type GetComponentsElectricalLimitsRequest struct {
 	state              protoimpl.MessageState `protogen:"open.v1"`
 	Components         *AssembledComponents   `protobuf:"bytes,1,opt,name=components,proto3" json:"components,omitempty"`
@@ -647,7 +595,7 @@ type GetComponentsElectricalLimitsRequest struct {
 
 func (x *GetComponentsElectricalLimitsRequest) Reset() {
 	*x = GetComponentsElectricalLimitsRequest{}
-	mi := &file_quadsmith_api_evaluator_proto_msgTypes[6]
+	mi := &file_quadsmith_api_evaluator_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -659,7 +607,7 @@ func (x *GetComponentsElectricalLimitsRequest) String() string {
 func (*GetComponentsElectricalLimitsRequest) ProtoMessage() {}
 
 func (x *GetComponentsElectricalLimitsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_evaluator_proto_msgTypes[6]
+	mi := &file_quadsmith_api_evaluator_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -672,7 +620,7 @@ func (x *GetComponentsElectricalLimitsRequest) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use GetComponentsElectricalLimitsRequest.ProtoReflect.Descriptor instead.
 func (*GetComponentsElectricalLimitsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_evaluator_proto_rawDescGZIP(), []int{6}
+	return file_quadsmith_api_evaluator_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *GetComponentsElectricalLimitsRequest) GetComponents() *AssembledComponents {
@@ -689,14 +637,63 @@ func (x *GetComponentsElectricalLimitsRequest) GetCandidateBatteries() []*Batter
 	return nil
 }
 
+type SystemMessage struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Severity      SystemMessageSeverity  `protobuf:"varint,1,opt,name=severity,proto3,enum=quadsmith.api.SystemMessageSeverity" json:"severity,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SystemMessage) Reset() {
+	*x = SystemMessage{}
+	mi := &file_quadsmith_api_evaluator_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SystemMessage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SystemMessage) ProtoMessage() {}
+
+func (x *SystemMessage) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_evaluator_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SystemMessage.ProtoReflect.Descriptor instead.
+func (*SystemMessage) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_evaluator_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *SystemMessage) GetSeverity() SystemMessageSeverity {
+	if x != nil {
+		return x.Severity
+	}
+	return SystemMessageSeverity_SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED
+}
+
+func (x *SystemMessage) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 var File_quadsmith_api_evaluator_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_evaluator_proto_rawDesc = "" +
 	"\n" +
-	"\x1dquadsmith/api/evaluator.proto\x12\rquadsmith.api\x1a\x1bquadsmith/api/battery.proto\x1a\x19quadsmith/api/build.proto\x1a\x1equadsmith/api/components.proto\"k\n" +
-	"\rSystemMessage\x12@\n" +
-	"\bseverity\x18\x01 \x01(\x0e2$.quadsmith.api.SystemMessageSeverityR\bseverity\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\"\xba\x01\n" +
+	"\x1dquadsmith/api/evaluator.proto\x12\rquadsmith.api\x1a\x1bquadsmith/api/battery.proto\x1a\x19quadsmith/api/build.proto\x1a\x1equadsmith/api/components.proto\"\xba\x01\n" +
 	"\x14EvaluateBuildRequest\x12\x1b\n" +
 	"\bbuild_id\x18\x01 \x01(\tH\x00R\abuildId\x12,\n" +
 	"\x05build\x18\x04 \x01(\v2\x14.quadsmith.api.BuildH\x00R\x05build\x12(\n" +
@@ -725,7 +722,12 @@ const file_quadsmith_api_evaluator_proto_rawDesc = "" +
 	"maxVoltage\x12\"\n" +
 	"\rmax_current_a\x18\x12 \x01(\x02R\vmaxCurrentA\x12\x1c\n" +
 	"\tconnector\x18\x14 \x01(\tR\tconnector\x123\n" +
-	"\x15compatible_connectors\x18\x15 \x03(\tR\x14compatibleConnectors\"|\n" +
+	"\x15compatible_connectors\x18\x15 \x03(\tR\x14compatibleConnectors\"\x89\x01\n" +
+	"\x19EvaluateComponentsRequest\x12B\n" +
+	"\n" +
+	"components\x18\x01 \x01(\v2\".quadsmith.api.AssembledComponentsR\n" +
+	"components\x12(\n" +
+	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\"|\n" +
 	"\x1fGetBuildElectricalLimitsRequest\x12\x1b\n" +
 	"\bbuild_id\x18\x01 \x01(\tH\x00R\abuildId\x12,\n" +
 	"\x05build\x18\x02 \x01(\v2\x14.quadsmith.api.BuildH\x00R\x05buildB\x0e\n" +
@@ -739,17 +741,15 @@ const file_quadsmith_api_evaluator_proto_rawDesc = "" +
 	"\x12default_battery_id\x18\x04 \x01(\tR\x10defaultBatteryId\x12\x19\n" +
 	"\bbuild_id\x18\x05 \x01(\tR\abuildId\x12\x1c\n" +
 	"\tconnector\x18\x06 \x01(\tR\tconnector\x123\n" +
-	"\x15compatible_connectors\x18\a \x03(\tR\x14compatibleConnectors\"\x89\x01\n" +
-	"\x19EvaluateComponentsRequest\x12B\n" +
-	"\n" +
-	"components\x18\x01 \x01(\v2\".quadsmith.api.AssembledComponentsR\n" +
-	"components\x12(\n" +
-	"\x10payload_weight_g\x18\x02 \x01(\x02R\x0epayloadWeightG\"\xb3\x01\n" +
+	"\x15compatible_connectors\x18\a \x03(\tR\x14compatibleConnectors\"\xb3\x01\n" +
 	"$GetComponentsElectricalLimitsRequest\x12B\n" +
 	"\n" +
 	"components\x18\x01 \x01(\v2\".quadsmith.api.AssembledComponentsR\n" +
 	"components\x12G\n" +
-	"\x13candidate_batteries\x18\x02 \x03(\v2\x16.quadsmith.api.BatteryR\x12candidateBatteries*\xaa\x01\n" +
+	"\x13candidate_batteries\x18\x02 \x03(\v2\x16.quadsmith.api.BatteryR\x12candidateBatteries\"k\n" +
+	"\rSystemMessage\x12@\n" +
+	"\bseverity\x18\x01 \x01(\x0e2$.quadsmith.api.SystemMessageSeverityR\bseverity\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage*\xaa\x01\n" +
 	"\x15SystemMessageSeverity\x12'\n" +
 	"#SYSTEM_MESSAGE_SEVERITY_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cSYSTEM_MESSAGE_SEVERITY_INFO\x10\x01\x12#\n" +
@@ -777,32 +777,32 @@ var file_quadsmith_api_evaluator_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_quadsmith_api_evaluator_proto_msgTypes = make([]protoimpl.MessageInfo, 7)
 var file_quadsmith_api_evaluator_proto_goTypes = []any{
 	(SystemMessageSeverity)(0),                   // 0: quadsmith.api.SystemMessageSeverity
-	(*SystemMessage)(nil),                        // 1: quadsmith.api.SystemMessage
-	(*EvaluateBuildRequest)(nil),                 // 2: quadsmith.api.EvaluateBuildRequest
-	(*EvaluateBuildResponse)(nil),                // 3: quadsmith.api.EvaluateBuildResponse
+	(*EvaluateBuildRequest)(nil),                 // 1: quadsmith.api.EvaluateBuildRequest
+	(*EvaluateBuildResponse)(nil),                // 2: quadsmith.api.EvaluateBuildResponse
+	(*EvaluateComponentsRequest)(nil),            // 3: quadsmith.api.EvaluateComponentsRequest
 	(*GetBuildElectricalLimitsRequest)(nil),      // 4: quadsmith.api.GetBuildElectricalLimitsRequest
 	(*GetBuildElectricalLimitsResponse)(nil),     // 5: quadsmith.api.GetBuildElectricalLimitsResponse
-	(*EvaluateComponentsRequest)(nil),            // 6: quadsmith.api.EvaluateComponentsRequest
-	(*GetComponentsElectricalLimitsRequest)(nil), // 7: quadsmith.api.GetComponentsElectricalLimitsRequest
+	(*GetComponentsElectricalLimitsRequest)(nil), // 6: quadsmith.api.GetComponentsElectricalLimitsRequest
+	(*SystemMessage)(nil),                        // 7: quadsmith.api.SystemMessage
 	(*Build)(nil),                                // 8: quadsmith.api.Build
 	(*AssembledComponents)(nil),                  // 9: quadsmith.api.AssembledComponents
 	(*Battery)(nil),                              // 10: quadsmith.api.Battery
 }
 var file_quadsmith_api_evaluator_proto_depIdxs = []int32{
-	0,  // 0: quadsmith.api.SystemMessage.severity:type_name -> quadsmith.api.SystemMessageSeverity
-	8,  // 1: quadsmith.api.EvaluateBuildRequest.build:type_name -> quadsmith.api.Build
-	1,  // 2: quadsmith.api.EvaluateBuildResponse.system_messages:type_name -> quadsmith.api.SystemMessage
+	8,  // 0: quadsmith.api.EvaluateBuildRequest.build:type_name -> quadsmith.api.Build
+	7,  // 1: quadsmith.api.EvaluateBuildResponse.system_messages:type_name -> quadsmith.api.SystemMessage
+	9,  // 2: quadsmith.api.EvaluateComponentsRequest.components:type_name -> quadsmith.api.AssembledComponents
 	8,  // 3: quadsmith.api.GetBuildElectricalLimitsRequest.build:type_name -> quadsmith.api.Build
-	9,  // 4: quadsmith.api.EvaluateComponentsRequest.components:type_name -> quadsmith.api.AssembledComponents
-	9,  // 5: quadsmith.api.GetComponentsElectricalLimitsRequest.components:type_name -> quadsmith.api.AssembledComponents
-	10, // 6: quadsmith.api.GetComponentsElectricalLimitsRequest.candidate_batteries:type_name -> quadsmith.api.Battery
-	2,  // 7: quadsmith.api.EvaluatorService.EvaluateBuild:input_type -> quadsmith.api.EvaluateBuildRequest
+	9,  // 4: quadsmith.api.GetComponentsElectricalLimitsRequest.components:type_name -> quadsmith.api.AssembledComponents
+	10, // 5: quadsmith.api.GetComponentsElectricalLimitsRequest.candidate_batteries:type_name -> quadsmith.api.Battery
+	0,  // 6: quadsmith.api.SystemMessage.severity:type_name -> quadsmith.api.SystemMessageSeverity
+	1,  // 7: quadsmith.api.EvaluatorService.EvaluateBuild:input_type -> quadsmith.api.EvaluateBuildRequest
 	4,  // 8: quadsmith.api.EvaluatorService.GetBuildElectricalLimits:input_type -> quadsmith.api.GetBuildElectricalLimitsRequest
-	6,  // 9: quadsmith.api.EvaluatorService.EvaluateComponents:input_type -> quadsmith.api.EvaluateComponentsRequest
-	7,  // 10: quadsmith.api.EvaluatorService.GetComponentsElectricalLimits:input_type -> quadsmith.api.GetComponentsElectricalLimitsRequest
-	3,  // 11: quadsmith.api.EvaluatorService.EvaluateBuild:output_type -> quadsmith.api.EvaluateBuildResponse
+	3,  // 9: quadsmith.api.EvaluatorService.EvaluateComponents:input_type -> quadsmith.api.EvaluateComponentsRequest
+	6,  // 10: quadsmith.api.EvaluatorService.GetComponentsElectricalLimits:input_type -> quadsmith.api.GetComponentsElectricalLimitsRequest
+	2,  // 11: quadsmith.api.EvaluatorService.EvaluateBuild:output_type -> quadsmith.api.EvaluateBuildResponse
 	5,  // 12: quadsmith.api.EvaluatorService.GetBuildElectricalLimits:output_type -> quadsmith.api.GetBuildElectricalLimitsResponse
-	3,  // 13: quadsmith.api.EvaluatorService.EvaluateComponents:output_type -> quadsmith.api.EvaluateBuildResponse
+	2,  // 13: quadsmith.api.EvaluatorService.EvaluateComponents:output_type -> quadsmith.api.EvaluateBuildResponse
 	5,  // 14: quadsmith.api.EvaluatorService.GetComponentsElectricalLimits:output_type -> quadsmith.api.GetBuildElectricalLimitsResponse
 	11, // [11:15] is the sub-list for method output_type
 	7,  // [7:11] is the sub-list for method input_type
@@ -819,7 +819,7 @@ func file_quadsmith_api_evaluator_proto_init() {
 	file_quadsmith_api_battery_proto_init()
 	file_quadsmith_api_build_proto_init()
 	file_quadsmith_api_components_proto_init()
-	file_quadsmith_api_evaluator_proto_msgTypes[1].OneofWrappers = []any{
+	file_quadsmith_api_evaluator_proto_msgTypes[0].OneofWrappers = []any{
 		(*EvaluateBuildRequest_BuildId)(nil),
 		(*EvaluateBuildRequest_Build)(nil),
 	}

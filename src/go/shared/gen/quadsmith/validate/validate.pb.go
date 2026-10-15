@@ -22,6 +22,50 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type FieldRules struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	String_       *StringRules           `protobuf:"bytes,1,opt,name=string,proto3" json:"string,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *FieldRules) Reset() {
+	*x = FieldRules{}
+	mi := &file_quadsmith_validate_validate_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *FieldRules) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*FieldRules) ProtoMessage() {}
+
+func (x *FieldRules) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_validate_validate_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use FieldRules.ProtoReflect.Descriptor instead.
+func (*FieldRules) Descriptor() ([]byte, []int) {
+	return file_quadsmith_validate_validate_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *FieldRules) GetString_() *StringRules {
+	if x != nil {
+		return x.String_
+	}
+	return nil
+}
+
 type StringRules struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Minimum length in characters (Unicode code points)
@@ -82,7 +126,7 @@ type StringRules struct {
 
 func (x *StringRules) Reset() {
 	*x = StringRules{}
-	mi := &file_quadsmith_validate_validate_proto_msgTypes[0]
+	mi := &file_quadsmith_validate_validate_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -94,7 +138,7 @@ func (x *StringRules) String() string {
 func (*StringRules) ProtoMessage() {}
 
 func (x *StringRules) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_validate_validate_proto_msgTypes[0]
+	mi := &file_quadsmith_validate_validate_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -107,7 +151,7 @@ func (x *StringRules) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StringRules.ProtoReflect.Descriptor instead.
 func (*StringRules) Descriptor() ([]byte, []int) {
-	return file_quadsmith_validate_validate_proto_rawDescGZIP(), []int{0}
+	return file_quadsmith_validate_validate_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *StringRules) GetMinLen() int32 {
@@ -145,50 +189,6 @@ func (x *StringRules) GetNotContains() []string {
 	return nil
 }
 
-type FieldRules struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	String_       *StringRules           `protobuf:"bytes,1,opt,name=string,proto3" json:"string,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *FieldRules) Reset() {
-	*x = FieldRules{}
-	mi := &file_quadsmith_validate_validate_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *FieldRules) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*FieldRules) ProtoMessage() {}
-
-func (x *FieldRules) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_validate_validate_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use FieldRules.ProtoReflect.Descriptor instead.
-func (*FieldRules) Descriptor() ([]byte, []int) {
-	return file_quadsmith_validate_validate_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *FieldRules) GetString_() *StringRules {
-	if x != nil {
-		return x.String_
-	}
-	return nil
-}
-
 var file_quadsmith_validate_validate_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.FieldOptions)(nil),
@@ -210,16 +210,16 @@ var File_quadsmith_validate_validate_proto protoreflect.FileDescriptor
 
 const file_quadsmith_validate_validate_proto_rawDesc = "" +
 	"\n" +
-	"!quadsmith/validate/validate.proto\x12\x12quadsmith.validate\x1a google/protobuf/descriptor.proto\"\x93\x01\n" +
+	"!quadsmith/validate/validate.proto\x12\x12quadsmith.validate\x1a google/protobuf/descriptor.proto\"E\n" +
+	"\n" +
+	"FieldRules\x127\n" +
+	"\x06string\x18\x01 \x01(\v2\x1f.quadsmith.validate.StringRulesR\x06string\"\x93\x01\n" +
 	"\vStringRules\x12\x17\n" +
 	"\amin_len\x18\x01 \x01(\x05R\x06minLen\x12\x17\n" +
 	"\amax_len\x18\x02 \x01(\x05R\x06maxLen\x12\x18\n" +
 	"\apattern\x18\x03 \x01(\tR\apattern\x12\x15\n" +
 	"\x06not_in\x18\x04 \x03(\tR\x05notIn\x12!\n" +
-	"\fnot_contains\x18\x05 \x03(\tR\vnotContains\"E\n" +
-	"\n" +
-	"FieldRules\x127\n" +
-	"\x06string\x18\x01 \x01(\v2\x1f.quadsmith.validate.StringRulesR\x06string:U\n" +
+	"\fnot_contains\x18\x05 \x03(\tR\vnotContains:U\n" +
 	"\x05rules\x12\x1d.google.protobuf.FieldOptions\x18\xa0\x96\x03 \x01(\v2\x1e.quadsmith.validate.FieldRulesR\x05rulesB2Z0quadsmith/shared/gen/quadsmith/validate;validateb\x06proto3"
 
 var (
@@ -236,14 +236,14 @@ func file_quadsmith_validate_validate_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_validate_validate_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_quadsmith_validate_validate_proto_goTypes = []any{
-	(*StringRules)(nil),               // 0: quadsmith.validate.StringRules
-	(*FieldRules)(nil),                // 1: quadsmith.validate.FieldRules
+	(*FieldRules)(nil),                // 0: quadsmith.validate.FieldRules
+	(*StringRules)(nil),               // 1: quadsmith.validate.StringRules
 	(*descriptorpb.FieldOptions)(nil), // 2: google.protobuf.FieldOptions
 }
 var file_quadsmith_validate_validate_proto_depIdxs = []int32{
-	0, // 0: quadsmith.validate.FieldRules.string:type_name -> quadsmith.validate.StringRules
+	1, // 0: quadsmith.validate.FieldRules.string:type_name -> quadsmith.validate.StringRules
 	2, // 1: quadsmith.validate.rules:extendee -> google.protobuf.FieldOptions
-	1, // 2: quadsmith.validate.rules:type_name -> quadsmith.validate.FieldRules
+	0, // 2: quadsmith.validate.rules:type_name -> quadsmith.validate.FieldRules
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	2, // [2:3] is the sub-list for extension type_name

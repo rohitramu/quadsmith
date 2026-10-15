@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_charger: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChtxdWFkc21pdGgvYXBpL2NoYXJnZXIucHJvdG8SDXF1YWRzbWl0aC5hcGkiPwoUQ3JlYXRlQ2hhcmdlclJlcXVlc3QSJwoHY2hhcmdlchgBIAEoCzIWLnF1YWRzbWl0aC5hcGkuQ2hhcmdlciIiChREZWxldGVDaGFyZ2VyUmVxdWVzdBIKCgJpZBgBIAEoCSIsChVEZWxldGVDaGFyZ2VyUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiMAoRR2V0Q2hhcmdlclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJrChNMaXN0Q2hhcmdlcnNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiWQoUTGlzdENoYXJnZXJzUmVzcG9uc2USKAoIY2hhcmdlcnMYASADKAsyFi5xdWFkc21pdGguYXBpLkNoYXJnZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIj8KFFVwZGF0ZUNoYXJnZXJSZXF1ZXN0EicKB2NoYXJnZXIYASABKAsyFi5xdWFkc21pdGguYXBpLkNoYXJnZXIisgcKB0NoYXJnZXISOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSFgoCaWQYAiABKAlCCsLzGAJAAcDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkCEhgKBG5hbWUYBCABKAlCCsLzGAJAAcDwGQISFgoId2VpZ2h0X2cYBSABKAJCBMDwGQISFgoIY2hhbm5lbHMYBiABKA1CBMDwGQISIAoSbWF4X2NoYXJnZV9wb3dlcl93GAcgASgCQgTA8BkCEiIKFG1heF9jaGFyZ2VfY3VycmVudF9hGAggASgCQgTA8BkCEiEKE2lucHV0X3ZvbHRhZ2VfcmFuZ2UYCSABKAlCBMDwGQISIwoVc3VwcG9ydGVkX2NoZW1pc3RyaWVzGAogASgJQgTA8BkCEhkKC21heF9jZWxsc19zGAsgASgNQgTA8BkCEh8KC2Rlc2NyaXB0aW9uGAwgASgJQgrC8xgCQAHA8BkCEkEKD3JlZmVyZW5jZV9saW5rcxgNIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGlua0IKwvMYAkABwPAZAhIuChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYDiABKAlCCsLzGAJAAcDwGQJIAIgBARIvCgVtZWRpYRgPIAMoCzIULnF1YWRzbWl0aC5hcGkuTWVkaWFCCsLzGAJAAcDwGQISIgoJdXNlcl91dWlkGBAgASgJQgrC8xgCQAHA8BkESAGIAQESKAoPYXV0aG9yX3VzZXJuYW1lGBEgASgJQgrC8xgCQAHA8BkCSAKIAQE67gGKtRheCgxtYW51ZmFjdHVyZXIKBG5hbWUKCGNoYW5uZWxzChJtYXhfY2hhcmdlX3Bvd2VyX3cKFG1heF9jaGFyZ2VfY3VycmVudF9hCgttYXhfY2VsbHNfcxIHI2Y1OWUwYpq1GBhjb21wb25lbnRzL2dlYXIvY2hhcmdlcnPC8xgKCghjaGFyZ2Vyc8LwGV4IBRJadXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSBlbnRpdGllcyBXSEVSRSBjb2xsZWN0aW9uID0gJ2NoYXJnZXJzJyBBTkQgdXNlcl91dWlkID0gJDE6OnV1aWQpQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2VCDAoKX3VzZXJfdXVpZEISChBfYXV0aG9yX3VzZXJuYW1lMqkDCg5DaGFyZ2VyU2VydmljZRJGCgpHZXRDaGFyZ2VyEiAucXVhZHNtaXRoLmFwaS5HZXRDaGFyZ2VyUmVxdWVzdBoWLnF1YWRzbWl0aC5hcGkuQ2hhcmdlchJXCgxMaXN0Q2hhcmdlcnMSIi5xdWFkc21pdGguYXBpLkxpc3RDaGFyZ2Vyc1JlcXVlc3QaIy5xdWFkc21pdGguYXBpLkxpc3RDaGFyZ2Vyc1Jlc3BvbnNlEkwKDUNyZWF0ZUNoYXJnZXISIy5xdWFkc21pdGguYXBpLkNyZWF0ZUNoYXJnZXJSZXF1ZXN0GhYucXVhZHNtaXRoLmFwaS5DaGFyZ2VyEkwKDVVwZGF0ZUNoYXJnZXISIy5xdWFkc21pdGguYXBpLlVwZGF0ZUNoYXJnZXJSZXF1ZXN0GhYucXVhZHNtaXRoLmFwaS5DaGFyZ2VyEloKDURlbGV0ZUNoYXJnZXISIy5xdWFkc21pdGguYXBpLkRlbGV0ZUNoYXJnZXJSZXF1ZXN0GiQucXVhZHNtaXRoLmFwaS5EZWxldGVDaGFyZ2VyUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
+    "ChtxdWFkc21pdGgvYXBpL2NoYXJnZXIucHJvdG8SDXF1YWRzbWl0aC5hcGkiqQcKB0NoYXJnZXISOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSFgoCaWQYAiABKAlCCsLzGAJAAcDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkCEhgKBG5hbWUYBCABKAlCCsLzGAJAAcDwGQISFgoId2VpZ2h0X2cYBSABKAJCBMDwGQISFgoIY2hhbm5lbHMYBiABKA1CBMDwGQISIAoSbWF4X2NoYXJnZV9wb3dlcl93GAcgASgCQgTA8BkCEiIKFG1heF9jaGFyZ2VfY3VycmVudF9hGAggASgCQgTA8BkCEiEKE2lucHV0X3ZvbHRhZ2VfcmFuZ2UYCSABKAlCBMDwGQISIwoVc3VwcG9ydGVkX2NoZW1pc3RyaWVzGAogASgJQgTA8BkCEhkKC21heF9jZWxsc19zGAsgASgNQgTA8BkCEh8KC2Rlc2NyaXB0aW9uGAwgASgJQgrC8xgCQAHA8BkCEkEKD3JlZmVyZW5jZV9saW5rcxgNIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGlua0IKwvMYAkABwPAZAhIuChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYDiABKAlCCsLzGAJAAcDwGQJIAIgBARIvCgVtZWRpYRgPIAMoCzIULnF1YWRzbWl0aC5hcGkuTWVkaWFCCsLzGAJAAcDwGQISIgoJdXNlcl91dWlkGBAgASgJQgrC8xgCQAHA8BkESAGIAQESKAoPYXV0aG9yX3VzZXJuYW1lGBEgASgJQgrC8xgCQAHA8BkCSAKIAQE65QGKtRhVCgxtYW51ZmFjdHVyZXIKBG5hbWUKCGNoYW5uZWxzChJtYXhfY2hhcmdlX3Bvd2VyX3cKFG1heF9jaGFyZ2VfY3VycmVudF9hCgttYXhfY2VsbHNfc5q1GBhjb21wb25lbnRzL2dlYXIvY2hhcmdlcnPC8xgKCghjaGFyZ2Vyc8LwGV4IBRJadXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSBlbnRpdGllcyBXSEVSRSBjb2xsZWN0aW9uID0gJ2NoYXJnZXJzJyBBTkQgdXNlcl91dWlkID0gJDE6OnV1aWQpQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2VCDAoKX3VzZXJfdXVpZEISChBfYXV0aG9yX3VzZXJuYW1lIj8KFENyZWF0ZUNoYXJnZXJSZXF1ZXN0EicKB2NoYXJnZXIYASABKAsyFi5xdWFkc21pdGguYXBpLkNoYXJnZXIiIgoURGVsZXRlQ2hhcmdlclJlcXVlc3QSCgoCaWQYASABKAkiLAoVRGVsZXRlQ2hhcmdlclJlc3BvbnNlEhMKC2lzX2FyY2hpdmVkGAEgASgIIjAKEUdldENoYXJnZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiawoTTGlzdENoYXJnZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlkKFExpc3RDaGFyZ2Vyc1Jlc3BvbnNlEigKCGNoYXJnZXJzGAEgAygLMhYucXVhZHNtaXRoLmFwaS5DaGFyZ2VyEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSI/ChRVcGRhdGVDaGFyZ2VyUmVxdWVzdBInCgdjaGFyZ2VyGAEgASgLMhYucXVhZHNtaXRoLmFwaS5DaGFyZ2VyMqkDCg5DaGFyZ2VyU2VydmljZRJGCgpHZXRDaGFyZ2VyEiAucXVhZHNtaXRoLmFwaS5HZXRDaGFyZ2VyUmVxdWVzdBoWLnF1YWRzbWl0aC5hcGkuQ2hhcmdlchJXCgxMaXN0Q2hhcmdlcnMSIi5xdWFkc21pdGguYXBpLkxpc3RDaGFyZ2Vyc1JlcXVlc3QaIy5xdWFkc21pdGguYXBpLkxpc3RDaGFyZ2Vyc1Jlc3BvbnNlEkwKDUNyZWF0ZUNoYXJnZXISIy5xdWFkc21pdGguYXBpLkNyZWF0ZUNoYXJnZXJSZXF1ZXN0GhYucXVhZHNtaXRoLmFwaS5DaGFyZ2VyEkwKDVVwZGF0ZUNoYXJnZXISIy5xdWFkc21pdGguYXBpLlVwZGF0ZUNoYXJnZXJSZXF1ZXN0GhYucXVhZHNtaXRoLmFwaS5DaGFyZ2VyEloKDURlbGV0ZUNoYXJnZXISIy5xdWFkc21pdGguYXBpLkRlbGV0ZUNoYXJnZXJSZXF1ZXN0GiQucXVhZHNtaXRoLmFwaS5EZWxldGVDaGFyZ2VyUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -30,170 +30,6 @@ export const file_quadsmith_api_charger: GenFile =
   );
 
 /**
- * ---------------------------------------------------------
- * 2. RPC Requests & Responses (Callers Precede Callees)
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.CreateChargerRequest
- */
-export type CreateChargerRequest = Message<"quadsmith.api.CreateChargerRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Charger charger = 1;
-   */
-  charger?: Charger | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateChargerRequest.
- * Use `create(CreateChargerRequestSchema)` to create a new message.
- */
-export const CreateChargerRequestSchema: GenMessage<CreateChargerRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_charger, 0);
-
-/**
- * @generated from message quadsmith.api.DeleteChargerRequest
- */
-export type DeleteChargerRequest = Message<"quadsmith.api.DeleteChargerRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteChargerRequest.
- * Use `create(DeleteChargerRequestSchema)` to create a new message.
- */
-export const DeleteChargerRequestSchema: GenMessage<DeleteChargerRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_charger, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteChargerResponse
- */
-export type DeleteChargerResponse = Message<"quadsmith.api.DeleteChargerResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteChargerResponse.
- * Use `create(DeleteChargerResponseSchema)` to create a new message.
- */
-export const DeleteChargerResponseSchema: GenMessage<DeleteChargerResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_charger, 2);
-
-/**
- * @generated from message quadsmith.api.GetChargerRequest
- */
-export type GetChargerRequest = Message<"quadsmith.api.GetChargerRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
-
-/**
- * Describes the message quadsmith.api.GetChargerRequest.
- * Use `create(GetChargerRequestSchema)` to create a new message.
- */
-export const GetChargerRequestSchema: GenMessage<GetChargerRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_charger, 3);
-
-/**
- * @generated from message quadsmith.api.ListChargersRequest
- */
-export type ListChargersRequest = Message<"quadsmith.api.ListChargersRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
-
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
-
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
-
-/**
- * Describes the message quadsmith.api.ListChargersRequest.
- * Use `create(ListChargersRequestSchema)` to create a new message.
- */
-export const ListChargersRequestSchema: GenMessage<ListChargersRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_charger, 4);
-
-/**
- * @generated from message quadsmith.api.ListChargersResponse
- */
-export type ListChargersResponse = Message<"quadsmith.api.ListChargersResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.Charger chargers = 1;
-   */
-  chargers: Charger[];
-
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
-
-/**
- * Describes the message quadsmith.api.ListChargersResponse.
- * Use `create(ListChargersResponseSchema)` to create a new message.
- */
-export const ListChargersResponseSchema: GenMessage<ListChargersResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_charger, 5);
-
-/**
- * @generated from message quadsmith.api.UpdateChargerRequest
- */
-export type UpdateChargerRequest = Message<"quadsmith.api.UpdateChargerRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Charger charger = 1;
-   */
-  charger?: Charger | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateChargerRequest.
- * Use `create(UpdateChargerRequestSchema)` to create a new message.
- */
-export const UpdateChargerRequestSchema: GenMessage<UpdateChargerRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_charger, 6);
-
-/**
- * ---------------------------------------------------------
- * 3. Domain Model (Referenced by Services and Requests above)
- * ---------------------------------------------------------
- *
  * @generated from message quadsmith.api.Charger
  */
 export type Charger = Message<"quadsmith.api.Charger"> & {
@@ -289,13 +125,165 @@ export type Charger = Message<"quadsmith.api.Charger"> & {
  */
 export const ChargerSchema: GenMessage<Charger> =
   /*@__PURE__*/
+  messageDesc(file_quadsmith_api_charger, 0);
+
+/**
+ * @generated from message quadsmith.api.CreateChargerRequest
+ */
+export type CreateChargerRequest = Message<"quadsmith.api.CreateChargerRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.Charger charger = 1;
+   */
+  charger?: Charger | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.CreateChargerRequest.
+ * Use `create(CreateChargerRequestSchema)` to create a new message.
+ */
+export const CreateChargerRequestSchema: GenMessage<CreateChargerRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_charger, 1);
+
+/**
+ * @generated from message quadsmith.api.DeleteChargerRequest
+ */
+export type DeleteChargerRequest = Message<"quadsmith.api.DeleteChargerRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteChargerRequest.
+ * Use `create(DeleteChargerRequestSchema)` to create a new message.
+ */
+export const DeleteChargerRequestSchema: GenMessage<DeleteChargerRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_charger, 2);
+
+/**
+ * @generated from message quadsmith.api.DeleteChargerResponse
+ */
+export type DeleteChargerResponse = Message<"quadsmith.api.DeleteChargerResponse"> & {
+  /**
+   * @generated from field: bool is_archived = 1;
+   */
+  isArchived: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteChargerResponse.
+ * Use `create(DeleteChargerResponseSchema)` to create a new message.
+ */
+export const DeleteChargerResponseSchema: GenMessage<DeleteChargerResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_charger, 3);
+
+/**
+ * @generated from message quadsmith.api.GetChargerRequest
+ */
+export type GetChargerRequest = Message<"quadsmith.api.GetChargerRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.GetChargerRequest.
+ * Use `create(GetChargerRequestSchema)` to create a new message.
+ */
+export const GetChargerRequestSchema: GenMessage<GetChargerRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_charger, 4);
+
+/**
+ * @generated from message quadsmith.api.ListChargersRequest
+ */
+export type ListChargersRequest = Message<"quadsmith.api.ListChargersRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
+
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListChargersRequest.
+ * Use `create(ListChargersRequestSchema)` to create a new message.
+ */
+export const ListChargersRequestSchema: GenMessage<ListChargersRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_charger, 5);
+
+/**
+ * @generated from message quadsmith.api.ListChargersResponse
+ */
+export type ListChargersResponse = Message<"quadsmith.api.ListChargersResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.Charger chargers = 1;
+   */
+  chargers: Charger[];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListChargersResponse.
+ * Use `create(ListChargersResponseSchema)` to create a new message.
+ */
+export const ListChargersResponseSchema: GenMessage<ListChargersResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_charger, 6);
+
+/**
+ * @generated from message quadsmith.api.UpdateChargerRequest
+ */
+export type UpdateChargerRequest = Message<"quadsmith.api.UpdateChargerRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.Charger charger = 1;
+   */
+  charger?: Charger | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.UpdateChargerRequest.
+ * Use `create(UpdateChargerRequestSchema)` to create a new message.
+ */
+export const UpdateChargerRequestSchema: GenMessage<UpdateChargerRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_api_charger, 7);
 
 /**
- * ---------------------------------------------------------
- * 1. gRPC Service (Services First)
- * ---------------------------------------------------------
- *
  * @generated from service quadsmith.api.ChargerService
  */
 export const ChargerService: GenService<{

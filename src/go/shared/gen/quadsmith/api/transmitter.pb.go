@@ -24,368 +24,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
-// ---------------------------------------------------------
-type CreateTransmitterRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Transmitter   *Transmitter           `protobuf:"bytes,1,opt,name=transmitter,proto3" json:"transmitter,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateTransmitterRequest) Reset() {
-	*x = CreateTransmitterRequest{}
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateTransmitterRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateTransmitterRequest) ProtoMessage() {}
-
-func (x *CreateTransmitterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateTransmitterRequest.ProtoReflect.Descriptor instead.
-func (*CreateTransmitterRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *CreateTransmitterRequest) GetTransmitter() *Transmitter {
-	if x != nil {
-		return x.Transmitter
-	}
-	return nil
-}
-
-type DeleteTransmitterRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteTransmitterRequest) Reset() {
-	*x = DeleteTransmitterRequest{}
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteTransmitterRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteTransmitterRequest) ProtoMessage() {}
-
-func (x *DeleteTransmitterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteTransmitterRequest.ProtoReflect.Descriptor instead.
-func (*DeleteTransmitterRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *DeleteTransmitterRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteTransmitterResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteTransmitterResponse) Reset() {
-	*x = DeleteTransmitterResponse{}
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteTransmitterResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteTransmitterResponse) ProtoMessage() {}
-
-func (x *DeleteTransmitterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteTransmitterResponse.ProtoReflect.Descriptor instead.
-func (*DeleteTransmitterResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteTransmitterResponse) GetIsArchived() bool {
-	if x != nil {
-		return x.IsArchived
-	}
-	return false
-}
-
-type GetTransmitterRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetTransmitterRequest) Reset() {
-	*x = GetTransmitterRequest{}
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetTransmitterRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetTransmitterRequest) ProtoMessage() {}
-
-func (x *GetTransmitterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetTransmitterRequest.ProtoReflect.Descriptor instead.
-func (*GetTransmitterRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *GetTransmitterRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *GetTransmitterRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListTransmittersRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListTransmittersRequest) Reset() {
-	*x = ListTransmittersRequest{}
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListTransmittersRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListTransmittersRequest) ProtoMessage() {}
-
-func (x *ListTransmittersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListTransmittersRequest.ProtoReflect.Descriptor instead.
-func (*ListTransmittersRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *ListTransmittersRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListTransmittersRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListTransmittersRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListTransmittersRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListTransmittersRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListTransmittersResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Transmitters  []*Transmitter         `protobuf:"bytes,1,rep,name=transmitters,proto3" json:"transmitters,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListTransmittersResponse) Reset() {
-	*x = ListTransmittersResponse{}
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListTransmittersResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListTransmittersResponse) ProtoMessage() {}
-
-func (x *ListTransmittersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListTransmittersResponse.ProtoReflect.Descriptor instead.
-func (*ListTransmittersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *ListTransmittersResponse) GetTransmitters() []*Transmitter {
-	if x != nil {
-		return x.Transmitters
-	}
-	return nil
-}
-
-func (x *ListTransmittersResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-type UpdateTransmitterRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Transmitter   *Transmitter           `protobuf:"bytes,1,opt,name=transmitter,proto3" json:"transmitter,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateTransmitterRequest) Reset() {
-	*x = UpdateTransmitterRequest{}
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateTransmitterRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateTransmitterRequest) ProtoMessage() {}
-
-func (x *UpdateTransmitterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateTransmitterRequest.ProtoReflect.Descriptor instead.
-func (*UpdateTransmitterRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *UpdateTransmitterRequest) GetTransmitter() *Transmitter {
-	if x != nil {
-		return x.Transmitter
-	}
-	return nil
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 type Transmitter struct {
 	state               protoimpl.MessageState `protogen:"open.v1"`
 	Uuid                string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -411,7 +49,7 @@ type Transmitter struct {
 
 func (x *Transmitter) Reset() {
 	*x = Transmitter{}
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[7]
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -423,7 +61,7 @@ func (x *Transmitter) String() string {
 func (*Transmitter) ProtoMessage() {}
 
 func (x *Transmitter) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_transmitter_proto_msgTypes[7]
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -436,7 +74,7 @@ func (x *Transmitter) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Transmitter.ProtoReflect.Descriptor instead.
 func (*Transmitter) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{7}
+	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Transmitter) GetUuid() string {
@@ -558,33 +196,367 @@ func (x *Transmitter) GetAuthorUsername() string {
 	return ""
 }
 
+type CreateTransmitterRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Transmitter   *Transmitter           `protobuf:"bytes,1,opt,name=transmitter,proto3" json:"transmitter,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateTransmitterRequest) Reset() {
+	*x = CreateTransmitterRequest{}
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateTransmitterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateTransmitterRequest) ProtoMessage() {}
+
+func (x *CreateTransmitterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateTransmitterRequest.ProtoReflect.Descriptor instead.
+func (*CreateTransmitterRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateTransmitterRequest) GetTransmitter() *Transmitter {
+	if x != nil {
+		return x.Transmitter
+	}
+	return nil
+}
+
+type DeleteTransmitterRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteTransmitterRequest) Reset() {
+	*x = DeleteTransmitterRequest{}
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteTransmitterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteTransmitterRequest) ProtoMessage() {}
+
+func (x *DeleteTransmitterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteTransmitterRequest.ProtoReflect.Descriptor instead.
+func (*DeleteTransmitterRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteTransmitterRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteTransmitterResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteTransmitterResponse) Reset() {
+	*x = DeleteTransmitterResponse{}
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteTransmitterResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteTransmitterResponse) ProtoMessage() {}
+
+func (x *DeleteTransmitterResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteTransmitterResponse.ProtoReflect.Descriptor instead.
+func (*DeleteTransmitterResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DeleteTransmitterResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetTransmitterRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetTransmitterRequest) Reset() {
+	*x = GetTransmitterRequest{}
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetTransmitterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTransmitterRequest) ProtoMessage() {}
+
+func (x *GetTransmitterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTransmitterRequest.ProtoReflect.Descriptor instead.
+func (*GetTransmitterRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetTransmitterRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetTransmitterRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListTransmittersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListTransmittersRequest) Reset() {
+	*x = ListTransmittersRequest{}
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListTransmittersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListTransmittersRequest) ProtoMessage() {}
+
+func (x *ListTransmittersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListTransmittersRequest.ProtoReflect.Descriptor instead.
+func (*ListTransmittersRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListTransmittersRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListTransmittersRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListTransmittersRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListTransmittersRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListTransmittersRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListTransmittersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Transmitters  []*Transmitter         `protobuf:"bytes,1,rep,name=transmitters,proto3" json:"transmitters,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListTransmittersResponse) Reset() {
+	*x = ListTransmittersResponse{}
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListTransmittersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListTransmittersResponse) ProtoMessage() {}
+
+func (x *ListTransmittersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListTransmittersResponse.ProtoReflect.Descriptor instead.
+func (*ListTransmittersResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListTransmittersResponse) GetTransmitters() []*Transmitter {
+	if x != nil {
+		return x.Transmitters
+	}
+	return nil
+}
+
+func (x *ListTransmittersResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateTransmitterRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Transmitter   *Transmitter           `protobuf:"bytes,1,opt,name=transmitter,proto3" json:"transmitter,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateTransmitterRequest) Reset() {
+	*x = UpdateTransmitterRequest{}
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateTransmitterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateTransmitterRequest) ProtoMessage() {}
+
+func (x *UpdateTransmitterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_transmitter_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateTransmitterRequest.ProtoReflect.Descriptor instead.
+func (*UpdateTransmitterRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_transmitter_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateTransmitterRequest) GetTransmitter() *Transmitter {
+	if x != nil {
+		return x.Transmitter
+	}
+	return nil
+}
+
 var File_quadsmith_api_transmitter_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_transmitter_proto_rawDesc = "" +
 	"\n" +
-	"\x1fquadsmith/api/transmitter.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"X\n" +
-	"\x18CreateTransmitterRequest\x12<\n" +
-	"\vtransmitter\x18\x01 \x01(\v2\x1a.quadsmith.api.TransmitterR\vtransmitter\"*\n" +
-	"\x18DeleteTransmitterRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"<\n" +
-	"\x19DeleteTransmitterResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"A\n" +
-	"\x15GetTransmitterRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x9b\x01\n" +
-	"\x17ListTransmittersRequest\x12\x16\n" +
-	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
-	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
-	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
-	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x82\x01\n" +
-	"\x18ListTransmittersResponse\x12>\n" +
-	"\ftransmitters\x18\x01 \x03(\v2\x1a.quadsmith.api.TransmitterR\ftransmitters\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"X\n" +
-	"\x18UpdateTransmitterRequest\x12<\n" +
-	"\vtransmitter\x18\x01 \x01(\v2\x1a.quadsmith.api.TransmitterR\vtransmitter\"\xe6\b\n" +
+	"\x1fquadsmith/api/transmitter.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xdd\b\n" +
 	"\vTransmitter\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
 	"\x02id\x18\x02 \x01(\tB\n" +
@@ -615,18 +587,40 @@ const file_quadsmith_api_transmitter_proto_rawDesc = "" +
 	"\tuser_uuid\x18\x10 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
 	"\x0fauthor_username\x18\x11 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xf3\x01\x8a\xb5\x18W\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xea\x01\x8a\xb5\x18N\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\vrf_protocol\n" +
 	"\x10operating_system\n" +
 	"\vgimbal_type\n" +
-	"\fmax_power_mw\x12\a#0ea5e9\x9a\xb5\x18\x1ccomponents/gear/transmitters\xc2\xf3\x18\x0e\n" +
+	"\fmax_power_mw\x9a\xb5\x18\x1ccomponents/gear/transmitters\xc2\xf3\x18\x0e\n" +
 	"\ftransmitters\xc2\xf0\x19b\b\x05\x12^uuid IN (SELECT uuid FROM entities WHERE collection = 'transmitters' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +
-	"\x10_author_username2\xe9\x03\n" +
+	"\x10_author_username\"X\n" +
+	"\x18CreateTransmitterRequest\x12<\n" +
+	"\vtransmitter\x18\x01 \x01(\v2\x1a.quadsmith.api.TransmitterR\vtransmitter\"*\n" +
+	"\x18DeleteTransmitterRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"<\n" +
+	"\x19DeleteTransmitterResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\"A\n" +
+	"\x15GetTransmitterRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x9b\x01\n" +
+	"\x17ListTransmittersRequest\x12\x16\n" +
+	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x82\x01\n" +
+	"\x18ListTransmittersResponse\x12>\n" +
+	"\ftransmitters\x18\x01 \x03(\v2\x1a.quadsmith.api.TransmitterR\ftransmitters\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"X\n" +
+	"\x18UpdateTransmitterRequest\x12<\n" +
+	"\vtransmitter\x18\x01 \x01(\v2\x1a.quadsmith.api.TransmitterR\vtransmitter2\xe9\x03\n" +
 	"\x12TransmitterService\x12R\n" +
 	"\x0eGetTransmitter\x12$.quadsmith.api.GetTransmitterRequest\x1a\x1a.quadsmith.api.Transmitter\x12c\n" +
 	"\x10ListTransmitters\x12&.quadsmith.api.ListTransmittersRequest\x1a'.quadsmith.api.ListTransmittersResponse\x12X\n" +
@@ -648,33 +642,33 @@ func file_quadsmith_api_transmitter_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_api_transmitter_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_transmitter_proto_goTypes = []any{
-	(*CreateTransmitterRequest)(nil),  // 0: quadsmith.api.CreateTransmitterRequest
-	(*DeleteTransmitterRequest)(nil),  // 1: quadsmith.api.DeleteTransmitterRequest
-	(*DeleteTransmitterResponse)(nil), // 2: quadsmith.api.DeleteTransmitterResponse
-	(*GetTransmitterRequest)(nil),     // 3: quadsmith.api.GetTransmitterRequest
-	(*ListTransmittersRequest)(nil),   // 4: quadsmith.api.ListTransmittersRequest
-	(*ListTransmittersResponse)(nil),  // 5: quadsmith.api.ListTransmittersResponse
-	(*UpdateTransmitterRequest)(nil),  // 6: quadsmith.api.UpdateTransmitterRequest
-	(*Transmitter)(nil),               // 7: quadsmith.api.Transmitter
+	(*Transmitter)(nil),               // 0: quadsmith.api.Transmitter
+	(*CreateTransmitterRequest)(nil),  // 1: quadsmith.api.CreateTransmitterRequest
+	(*DeleteTransmitterRequest)(nil),  // 2: quadsmith.api.DeleteTransmitterRequest
+	(*DeleteTransmitterResponse)(nil), // 3: quadsmith.api.DeleteTransmitterResponse
+	(*GetTransmitterRequest)(nil),     // 4: quadsmith.api.GetTransmitterRequest
+	(*ListTransmittersRequest)(nil),   // 5: quadsmith.api.ListTransmittersRequest
+	(*ListTransmittersResponse)(nil),  // 6: quadsmith.api.ListTransmittersResponse
+	(*UpdateTransmitterRequest)(nil),  // 7: quadsmith.api.UpdateTransmitterRequest
 	(*ReferenceLink)(nil),             // 8: quadsmith.api.ReferenceLink
 	(*Media)(nil),                     // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_transmitter_proto_depIdxs = []int32{
-	7,  // 0: quadsmith.api.CreateTransmitterRequest.transmitter:type_name -> quadsmith.api.Transmitter
-	7,  // 1: quadsmith.api.ListTransmittersResponse.transmitters:type_name -> quadsmith.api.Transmitter
-	7,  // 2: quadsmith.api.UpdateTransmitterRequest.transmitter:type_name -> quadsmith.api.Transmitter
-	8,  // 3: quadsmith.api.Transmitter.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 4: quadsmith.api.Transmitter.media:type_name -> quadsmith.api.Media
-	3,  // 5: quadsmith.api.TransmitterService.GetTransmitter:input_type -> quadsmith.api.GetTransmitterRequest
-	4,  // 6: quadsmith.api.TransmitterService.ListTransmitters:input_type -> quadsmith.api.ListTransmittersRequest
-	0,  // 7: quadsmith.api.TransmitterService.CreateTransmitter:input_type -> quadsmith.api.CreateTransmitterRequest
-	6,  // 8: quadsmith.api.TransmitterService.UpdateTransmitter:input_type -> quadsmith.api.UpdateTransmitterRequest
-	1,  // 9: quadsmith.api.TransmitterService.DeleteTransmitter:input_type -> quadsmith.api.DeleteTransmitterRequest
-	7,  // 10: quadsmith.api.TransmitterService.GetTransmitter:output_type -> quadsmith.api.Transmitter
-	5,  // 11: quadsmith.api.TransmitterService.ListTransmitters:output_type -> quadsmith.api.ListTransmittersResponse
-	7,  // 12: quadsmith.api.TransmitterService.CreateTransmitter:output_type -> quadsmith.api.Transmitter
-	7,  // 13: quadsmith.api.TransmitterService.UpdateTransmitter:output_type -> quadsmith.api.Transmitter
-	2,  // 14: quadsmith.api.TransmitterService.DeleteTransmitter:output_type -> quadsmith.api.DeleteTransmitterResponse
+	8,  // 0: quadsmith.api.Transmitter.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 1: quadsmith.api.Transmitter.media:type_name -> quadsmith.api.Media
+	0,  // 2: quadsmith.api.CreateTransmitterRequest.transmitter:type_name -> quadsmith.api.Transmitter
+	0,  // 3: quadsmith.api.ListTransmittersResponse.transmitters:type_name -> quadsmith.api.Transmitter
+	0,  // 4: quadsmith.api.UpdateTransmitterRequest.transmitter:type_name -> quadsmith.api.Transmitter
+	4,  // 5: quadsmith.api.TransmitterService.GetTransmitter:input_type -> quadsmith.api.GetTransmitterRequest
+	5,  // 6: quadsmith.api.TransmitterService.ListTransmitters:input_type -> quadsmith.api.ListTransmittersRequest
+	1,  // 7: quadsmith.api.TransmitterService.CreateTransmitter:input_type -> quadsmith.api.CreateTransmitterRequest
+	7,  // 8: quadsmith.api.TransmitterService.UpdateTransmitter:input_type -> quadsmith.api.UpdateTransmitterRequest
+	2,  // 9: quadsmith.api.TransmitterService.DeleteTransmitter:input_type -> quadsmith.api.DeleteTransmitterRequest
+	0,  // 10: quadsmith.api.TransmitterService.GetTransmitter:output_type -> quadsmith.api.Transmitter
+	6,  // 11: quadsmith.api.TransmitterService.ListTransmitters:output_type -> quadsmith.api.ListTransmittersResponse
+	0,  // 12: quadsmith.api.TransmitterService.CreateTransmitter:output_type -> quadsmith.api.Transmitter
+	0,  // 13: quadsmith.api.TransmitterService.UpdateTransmitter:output_type -> quadsmith.api.Transmitter
+	3,  // 14: quadsmith.api.TransmitterService.DeleteTransmitter:output_type -> quadsmith.api.DeleteTransmitterResponse
 	10, // [10:15] is the sub-list for method output_type
 	5,  // [5:10] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
@@ -689,7 +683,7 @@ func file_quadsmith_api_transmitter_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_transmitter_proto_msgTypes[7].OneofWrappers = []any{}
+	file_quadsmith_api_transmitter_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

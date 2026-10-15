@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_video_transmitter: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiVxdWFkc21pdGgvYXBpL3ZpZGVvX3RyYW5zbWl0dGVyLnByb3RvEg1xdWFkc21pdGguYXBpIlsKHUNyZWF0ZVZpZGVvVHJhbnNtaXR0ZXJSZXF1ZXN0EjoKEXZpZGVvX3RyYW5zbWl0dGVyGAEgASgLMh8ucXVhZHNtaXRoLmFwaS5WaWRlb1RyYW5zbWl0dGVyIisKHURlbGV0ZVZpZGVvVHJhbnNtaXR0ZXJSZXF1ZXN0EgoKAmlkGAEgASgJIjUKHkRlbGV0ZVZpZGVvVHJhbnNtaXR0ZXJSZXNwb25zZRITCgtpc19hcmNoaXZlZBgBIAEoCCI5ChpHZXRWaWRlb1RyYW5zbWl0dGVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJInQKHExpc3RWaWRlb1RyYW5zbWl0dGVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJ1Ch1MaXN0VmlkZW9UcmFuc21pdHRlcnNSZXNwb25zZRI7ChJ2aWRlb190cmFuc21pdHRlcnMYASADKAsyHy5xdWFkc21pdGguYXBpLlZpZGVvVHJhbnNtaXR0ZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIlsKHVVwZGF0ZVZpZGVvVHJhbnNtaXR0ZXJSZXF1ZXN0EjoKEXZpZGVvX3RyYW5zbWl0dGVyGAEgASgLMh8ucXVhZHNtaXRoLmFwaS5WaWRlb1RyYW5zbWl0dGVyIrQIChBWaWRlb1RyYW5zbWl0dGVyEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhYKAmlkGAIgASgJQgrC8xgCQAHA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZAhIYCgRuYW1lGAQgASgJQgrC8xgCQAHA8BkCEh4KEGlzX2ludGVybmFsX29ubHkYBSABKAhCBMDwGQISFgoId2VpZ2h0X2cYBiABKAJCBMDwGQISHAoIcHJvdG9jb2wYByABKAlCCsLzGAIoAcDwGQISGgoMbWF4X3Bvd2VyX213GAggASgNQgTA8BkCEiEKE2lucHV0X3ZvbHRhZ2VfbWluX3YYCSABKAJCBMDwGQISIQoTaW5wdXRfdm9sdGFnZV9tYXhfdhgKIAEoAkIEwPAZAhIbCg1hbnRlbm5hX3V1aWRzGAsgAygJQgTA8BkCEh8KC2Rlc2NyaXB0aW9uGAwgASgJQgrC8xgCQAHA8BkCEkEKD3JlZmVyZW5jZV9saW5rcxgNIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGlua0IKwvMYAkABwPAZAhIuChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYDiABKAlCCsLzGAJAAcDwGQJIAIgBARIvCgVtZWRpYRgPIAMoCzIULnF1YWRzbWl0aC5hcGkuTWVkaWFCCsLzGAJAAcDwGQISFwoJcG9ydF90eXBlGBAgASgJQgTA8BkCEhsKDW1vdW50X3BhdHRlcm4YESABKAlCBMDwGQISIAoSZnJlcXVlbmN5X2JhbmRfbWh6GBIgASgNQgTA8BkCEiAKEmFudGVubmFfY29ubmVjdG9ycxgTIAMoCUIEwPAZAhIiCgl1c2VyX3V1aWQYFCABKAlCCsLzGAJAAcDwGQRIAYgBARIoCg9hdXRob3JfdXNlcm5hbWUYFSABKAlCCsLzGAJAAcDwGQJIAogBATrxAYq1GD8KDG1hbnVmYWN0dXJlcgoEbmFtZQoIcHJvdG9jb2wKDG1heF9wb3dlcl9tdwoId2VpZ2h0X2cSByNlYzQ4OTmatRgmY29tcG9uZW50cy9oYXJkd2FyZS92aWRlby10cmFuc21pdHRlcnPC8xgUChJ2aWRlb190cmFuc21pdHRlcnPC8BloCAUSZHV1aWQgSU4gKFNFTEVDVCB1dWlkIEZST00gZW50aXRpZXMgV0hFUkUgY29sbGVjdGlvbiA9ICd2aWRlby10cmFuc21pdHRlcnMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUyuQQKF1ZpZGVvVHJhbnNtaXR0ZXJTZXJ2aWNlEmEKE0dldFZpZGVvVHJhbnNtaXR0ZXISKS5xdWFkc21pdGguYXBpLkdldFZpZGVvVHJhbnNtaXR0ZXJSZXF1ZXN0Gh8ucXVhZHNtaXRoLmFwaS5WaWRlb1RyYW5zbWl0dGVyEnIKFUxpc3RWaWRlb1RyYW5zbWl0dGVycxIrLnF1YWRzbWl0aC5hcGkuTGlzdFZpZGVvVHJhbnNtaXR0ZXJzUmVxdWVzdBosLnF1YWRzbWl0aC5hcGkuTGlzdFZpZGVvVHJhbnNtaXR0ZXJzUmVzcG9uc2USZwoWQ3JlYXRlVmlkZW9UcmFuc21pdHRlchIsLnF1YWRzbWl0aC5hcGkuQ3JlYXRlVmlkZW9UcmFuc21pdHRlclJlcXVlc3QaHy5xdWFkc21pdGguYXBpLlZpZGVvVHJhbnNtaXR0ZXISZwoWVXBkYXRlVmlkZW9UcmFuc21pdHRlchIsLnF1YWRzbWl0aC5hcGkuVXBkYXRlVmlkZW9UcmFuc21pdHRlclJlcXVlc3QaHy5xdWFkc21pdGguYXBpLlZpZGVvVHJhbnNtaXR0ZXISdQoWRGVsZXRlVmlkZW9UcmFuc21pdHRlchIsLnF1YWRzbWl0aC5hcGkuRGVsZXRlVmlkZW9UcmFuc21pdHRlclJlcXVlc3QaLS5xdWFkc21pdGguYXBpLkRlbGV0ZVZpZGVvVHJhbnNtaXR0ZXJSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
+    "CiVxdWFkc21pdGgvYXBpL3ZpZGVvX3RyYW5zbWl0dGVyLnByb3RvEg1xdWFkc21pdGguYXBpIqsIChBWaWRlb1RyYW5zbWl0dGVyEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhYKAmlkGAIgASgJQgrC8xgCQAHA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZAhIYCgRuYW1lGAQgASgJQgrC8xgCQAHA8BkCEh4KEGlzX2ludGVybmFsX29ubHkYBSABKAhCBMDwGQISFgoId2VpZ2h0X2cYBiABKAJCBMDwGQISHAoIcHJvdG9jb2wYByABKAlCCsLzGAIoAcDwGQISGgoMbWF4X3Bvd2VyX213GAggASgNQgTA8BkCEiEKE2lucHV0X3ZvbHRhZ2VfbWluX3YYCSABKAJCBMDwGQISIQoTaW5wdXRfdm9sdGFnZV9tYXhfdhgKIAEoAkIEwPAZAhIbCg1hbnRlbm5hX3V1aWRzGAsgAygJQgTA8BkCEh8KC2Rlc2NyaXB0aW9uGAwgASgJQgrC8xgCQAHA8BkCEkEKD3JlZmVyZW5jZV9saW5rcxgNIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGlua0IKwvMYAkABwPAZAhIuChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYDiABKAlCCsLzGAJAAcDwGQJIAIgBARIvCgVtZWRpYRgPIAMoCzIULnF1YWRzbWl0aC5hcGkuTWVkaWFCCsLzGAJAAcDwGQISFwoJcG9ydF90eXBlGBAgASgJQgTA8BkCEhsKDW1vdW50X3BhdHRlcm4YESABKAlCBMDwGQISIAoSZnJlcXVlbmN5X2JhbmRfbWh6GBIgASgNQgTA8BkCEiAKEmFudGVubmFfY29ubmVjdG9ycxgTIAMoCUIEwPAZAhIiCgl1c2VyX3V1aWQYFCABKAlCCsLzGAJAAcDwGQRIAYgBARIoCg9hdXRob3JfdXNlcm5hbWUYFSABKAlCCsLzGAJAAcDwGQJIAogBATroAYq1GDYKDG1hbnVmYWN0dXJlcgoEbmFtZQoIcHJvdG9jb2wKDG1heF9wb3dlcl9tdwoId2VpZ2h0X2eatRgmY29tcG9uZW50cy9oYXJkd2FyZS92aWRlby10cmFuc21pdHRlcnPC8xgUChJ2aWRlb190cmFuc21pdHRlcnPC8BloCAUSZHV1aWQgSU4gKFNFTEVDVCB1dWlkIEZST00gZW50aXRpZXMgV0hFUkUgY29sbGVjdGlvbiA9ICd2aWRlby10cmFuc21pdHRlcnMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiWwodQ3JlYXRlVmlkZW9UcmFuc21pdHRlclJlcXVlc3QSOgoRdmlkZW9fdHJhbnNtaXR0ZXIYASABKAsyHy5xdWFkc21pdGguYXBpLlZpZGVvVHJhbnNtaXR0ZXIiKwodRGVsZXRlVmlkZW9UcmFuc21pdHRlclJlcXVlc3QSCgoCaWQYASABKAkiNQoeRGVsZXRlVmlkZW9UcmFuc21pdHRlclJlc3BvbnNlEhMKC2lzX2FyY2hpdmVkGAEgASgIIjkKGkdldFZpZGVvVHJhbnNtaXR0ZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkidAocTGlzdFZpZGVvVHJhbnNtaXR0ZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJInUKHUxpc3RWaWRlb1RyYW5zbWl0dGVyc1Jlc3BvbnNlEjsKEnZpZGVvX3RyYW5zbWl0dGVycxgBIAMoCzIfLnF1YWRzbWl0aC5hcGkuVmlkZW9UcmFuc21pdHRlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiWwodVXBkYXRlVmlkZW9UcmFuc21pdHRlclJlcXVlc3QSOgoRdmlkZW9fdHJhbnNtaXR0ZXIYASABKAsyHy5xdWFkc21pdGguYXBpLlZpZGVvVHJhbnNtaXR0ZXIyuQQKF1ZpZGVvVHJhbnNtaXR0ZXJTZXJ2aWNlEmEKE0dldFZpZGVvVHJhbnNtaXR0ZXISKS5xdWFkc21pdGguYXBpLkdldFZpZGVvVHJhbnNtaXR0ZXJSZXF1ZXN0Gh8ucXVhZHNtaXRoLmFwaS5WaWRlb1RyYW5zbWl0dGVyEnIKFUxpc3RWaWRlb1RyYW5zbWl0dGVycxIrLnF1YWRzbWl0aC5hcGkuTGlzdFZpZGVvVHJhbnNtaXR0ZXJzUmVxdWVzdBosLnF1YWRzbWl0aC5hcGkuTGlzdFZpZGVvVHJhbnNtaXR0ZXJzUmVzcG9uc2USZwoWQ3JlYXRlVmlkZW9UcmFuc21pdHRlchIsLnF1YWRzbWl0aC5hcGkuQ3JlYXRlVmlkZW9UcmFuc21pdHRlclJlcXVlc3QaHy5xdWFkc21pdGguYXBpLlZpZGVvVHJhbnNtaXR0ZXISZwoWVXBkYXRlVmlkZW9UcmFuc21pdHRlchIsLnF1YWRzbWl0aC5hcGkuVXBkYXRlVmlkZW9UcmFuc21pdHRlclJlcXVlc3QaHy5xdWFkc21pdGguYXBpLlZpZGVvVHJhbnNtaXR0ZXISdQoWRGVsZXRlVmlkZW9UcmFuc21pdHRlchIsLnF1YWRzbWl0aC5hcGkuRGVsZXRlVmlkZW9UcmFuc21pdHRlclJlcXVlc3QaLS5xdWFkc21pdGguYXBpLkRlbGV0ZVZpZGVvVHJhbnNtaXR0ZXJSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -30,175 +30,6 @@ export const file_quadsmith_api_video_transmitter: GenFile =
   );
 
 /**
- * ---------------------------------------------------------
- * 2. RPC Requests & Responses (Callers Precede Callees)
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.CreateVideoTransmitterRequest
- */
-export type CreateVideoTransmitterRequest =
-  Message<"quadsmith.api.CreateVideoTransmitterRequest"> & {
-    /**
-     * @generated from field: quadsmith.api.VideoTransmitter video_transmitter = 1;
-     */
-    videoTransmitter?: VideoTransmitter | undefined;
-  };
-
-/**
- * Describes the message quadsmith.api.CreateVideoTransmitterRequest.
- * Use `create(CreateVideoTransmitterRequestSchema)` to create a new message.
- */
-export const CreateVideoTransmitterRequestSchema: GenMessage<CreateVideoTransmitterRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_video_transmitter, 0);
-
-/**
- * @generated from message quadsmith.api.DeleteVideoTransmitterRequest
- */
-export type DeleteVideoTransmitterRequest =
-  Message<"quadsmith.api.DeleteVideoTransmitterRequest"> & {
-    /**
-     * @generated from field: string id = 1;
-     */
-    id: string;
-  };
-
-/**
- * Describes the message quadsmith.api.DeleteVideoTransmitterRequest.
- * Use `create(DeleteVideoTransmitterRequestSchema)` to create a new message.
- */
-export const DeleteVideoTransmitterRequestSchema: GenMessage<DeleteVideoTransmitterRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_video_transmitter, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteVideoTransmitterResponse
- */
-export type DeleteVideoTransmitterResponse =
-  Message<"quadsmith.api.DeleteVideoTransmitterResponse"> & {
-    /**
-     * @generated from field: bool is_archived = 1;
-     */
-    isArchived: boolean;
-  };
-
-/**
- * Describes the message quadsmith.api.DeleteVideoTransmitterResponse.
- * Use `create(DeleteVideoTransmitterResponseSchema)` to create a new message.
- */
-export const DeleteVideoTransmitterResponseSchema: GenMessage<DeleteVideoTransmitterResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_video_transmitter, 2);
-
-/**
- * @generated from message quadsmith.api.GetVideoTransmitterRequest
- */
-export type GetVideoTransmitterRequest = Message<"quadsmith.api.GetVideoTransmitterRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
-
-/**
- * Describes the message quadsmith.api.GetVideoTransmitterRequest.
- * Use `create(GetVideoTransmitterRequestSchema)` to create a new message.
- */
-export const GetVideoTransmitterRequestSchema: GenMessage<GetVideoTransmitterRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_video_transmitter, 3);
-
-/**
- * @generated from message quadsmith.api.ListVideoTransmittersRequest
- */
-export type ListVideoTransmittersRequest = Message<"quadsmith.api.ListVideoTransmittersRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
-
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
-
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
-
-/**
- * Describes the message quadsmith.api.ListVideoTransmittersRequest.
- * Use `create(ListVideoTransmittersRequestSchema)` to create a new message.
- */
-export const ListVideoTransmittersRequestSchema: GenMessage<ListVideoTransmittersRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_video_transmitter, 4);
-
-/**
- * @generated from message quadsmith.api.ListVideoTransmittersResponse
- */
-export type ListVideoTransmittersResponse =
-  Message<"quadsmith.api.ListVideoTransmittersResponse"> & {
-    /**
-     * @generated from field: repeated quadsmith.api.VideoTransmitter video_transmitters = 1;
-     */
-    videoTransmitters: VideoTransmitter[];
-
-    /**
-     * @generated from field: string next_page_token = 2;
-     */
-    nextPageToken: string;
-  };
-
-/**
- * Describes the message quadsmith.api.ListVideoTransmittersResponse.
- * Use `create(ListVideoTransmittersResponseSchema)` to create a new message.
- */
-export const ListVideoTransmittersResponseSchema: GenMessage<ListVideoTransmittersResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_video_transmitter, 5);
-
-/**
- * @generated from message quadsmith.api.UpdateVideoTransmitterRequest
- */
-export type UpdateVideoTransmitterRequest =
-  Message<"quadsmith.api.UpdateVideoTransmitterRequest"> & {
-    /**
-     * @generated from field: quadsmith.api.VideoTransmitter video_transmitter = 1;
-     */
-    videoTransmitter?: VideoTransmitter | undefined;
-  };
-
-/**
- * Describes the message quadsmith.api.UpdateVideoTransmitterRequest.
- * Use `create(UpdateVideoTransmitterRequestSchema)` to create a new message.
- */
-export const UpdateVideoTransmitterRequestSchema: GenMessage<UpdateVideoTransmitterRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_video_transmitter, 6);
-
-/**
- * ---------------------------------------------------------
- * 3. Domain Model (Referenced by Services and Requests above)
- * ---------------------------------------------------------
- *
  * @generated from message quadsmith.api.VideoTransmitter
  */
 export type VideoTransmitter = Message<"quadsmith.api.VideoTransmitter"> & {
@@ -330,13 +161,170 @@ export type VideoTransmitter = Message<"quadsmith.api.VideoTransmitter"> & {
  */
 export const VideoTransmitterSchema: GenMessage<VideoTransmitter> =
   /*@__PURE__*/
+  messageDesc(file_quadsmith_api_video_transmitter, 0);
+
+/**
+ * @generated from message quadsmith.api.CreateVideoTransmitterRequest
+ */
+export type CreateVideoTransmitterRequest =
+  Message<"quadsmith.api.CreateVideoTransmitterRequest"> & {
+    /**
+     * @generated from field: quadsmith.api.VideoTransmitter video_transmitter = 1;
+     */
+    videoTransmitter?: VideoTransmitter | undefined;
+  };
+
+/**
+ * Describes the message quadsmith.api.CreateVideoTransmitterRequest.
+ * Use `create(CreateVideoTransmitterRequestSchema)` to create a new message.
+ */
+export const CreateVideoTransmitterRequestSchema: GenMessage<CreateVideoTransmitterRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_video_transmitter, 1);
+
+/**
+ * @generated from message quadsmith.api.DeleteVideoTransmitterRequest
+ */
+export type DeleteVideoTransmitterRequest =
+  Message<"quadsmith.api.DeleteVideoTransmitterRequest"> & {
+    /**
+     * @generated from field: string id = 1;
+     */
+    id: string;
+  };
+
+/**
+ * Describes the message quadsmith.api.DeleteVideoTransmitterRequest.
+ * Use `create(DeleteVideoTransmitterRequestSchema)` to create a new message.
+ */
+export const DeleteVideoTransmitterRequestSchema: GenMessage<DeleteVideoTransmitterRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_video_transmitter, 2);
+
+/**
+ * @generated from message quadsmith.api.DeleteVideoTransmitterResponse
+ */
+export type DeleteVideoTransmitterResponse =
+  Message<"quadsmith.api.DeleteVideoTransmitterResponse"> & {
+    /**
+     * @generated from field: bool is_archived = 1;
+     */
+    isArchived: boolean;
+  };
+
+/**
+ * Describes the message quadsmith.api.DeleteVideoTransmitterResponse.
+ * Use `create(DeleteVideoTransmitterResponseSchema)` to create a new message.
+ */
+export const DeleteVideoTransmitterResponseSchema: GenMessage<DeleteVideoTransmitterResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_video_transmitter, 3);
+
+/**
+ * @generated from message quadsmith.api.GetVideoTransmitterRequest
+ */
+export type GetVideoTransmitterRequest = Message<"quadsmith.api.GetVideoTransmitterRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.GetVideoTransmitterRequest.
+ * Use `create(GetVideoTransmitterRequestSchema)` to create a new message.
+ */
+export const GetVideoTransmitterRequestSchema: GenMessage<GetVideoTransmitterRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_video_transmitter, 4);
+
+/**
+ * @generated from message quadsmith.api.ListVideoTransmittersRequest
+ */
+export type ListVideoTransmittersRequest = Message<"quadsmith.api.ListVideoTransmittersRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
+
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListVideoTransmittersRequest.
+ * Use `create(ListVideoTransmittersRequestSchema)` to create a new message.
+ */
+export const ListVideoTransmittersRequestSchema: GenMessage<ListVideoTransmittersRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_video_transmitter, 5);
+
+/**
+ * @generated from message quadsmith.api.ListVideoTransmittersResponse
+ */
+export type ListVideoTransmittersResponse =
+  Message<"quadsmith.api.ListVideoTransmittersResponse"> & {
+    /**
+     * @generated from field: repeated quadsmith.api.VideoTransmitter video_transmitters = 1;
+     */
+    videoTransmitters: VideoTransmitter[];
+
+    /**
+     * @generated from field: string next_page_token = 2;
+     */
+    nextPageToken: string;
+  };
+
+/**
+ * Describes the message quadsmith.api.ListVideoTransmittersResponse.
+ * Use `create(ListVideoTransmittersResponseSchema)` to create a new message.
+ */
+export const ListVideoTransmittersResponseSchema: GenMessage<ListVideoTransmittersResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_video_transmitter, 6);
+
+/**
+ * @generated from message quadsmith.api.UpdateVideoTransmitterRequest
+ */
+export type UpdateVideoTransmitterRequest =
+  Message<"quadsmith.api.UpdateVideoTransmitterRequest"> & {
+    /**
+     * @generated from field: quadsmith.api.VideoTransmitter video_transmitter = 1;
+     */
+    videoTransmitter?: VideoTransmitter | undefined;
+  };
+
+/**
+ * Describes the message quadsmith.api.UpdateVideoTransmitterRequest.
+ * Use `create(UpdateVideoTransmitterRequestSchema)` to create a new message.
+ */
+export const UpdateVideoTransmitterRequestSchema: GenMessage<UpdateVideoTransmitterRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_api_video_transmitter, 7);
 
 /**
- * ---------------------------------------------------------
- * 1. gRPC Service (Services First)
- * ---------------------------------------------------------
- *
  * @generated from service quadsmith.api.VideoTransmitterService
  */
 export const VideoTransmitterService: GenService<{

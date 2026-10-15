@@ -9,7 +9,6 @@ type SearchCollectionDef struct {
 	TableName       string
 	DisplayName     string
 	MessageName     string
-	ColorCode       string
 	HasManufacturer bool
 	DefaultColumns  []string
 	Columns         []string
@@ -25,7 +24,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "builds",
 		DisplayName:     "Builds",
 		MessageName:     "Build",
-		ColorCode:       "#3b82f6",
 		HasManufacturer: false,
 		DefaultColumns: []string{
 			"id",
@@ -63,7 +61,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "chargers",
 		DisplayName:     "Chargers",
 		MessageName:     "Charger",
-		ColorCode:       "#f59e0b",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -105,7 +102,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "field_tools",
 		DisplayName:     "FieldTools",
 		MessageName:     "FieldTool",
-		ColorCode:       "#f43f5e",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -139,7 +135,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "goggles",
 		DisplayName:     "Goggles",
 		MessageName:     "Goggles",
-		ColorCode:       "#d946ef",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -180,7 +175,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "transmitters",
 		DisplayName:     "Transmitters",
 		MessageName:     "Transmitter",
-		ColorCode:       "#0ea5e9",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -220,7 +214,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "antennas",
 		DisplayName:     "Antennas",
 		MessageName:     "Antenna",
-		ColorCode:       "#eab308",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -260,7 +253,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "batteries",
 		DisplayName:     "Batteries",
 		MessageName:     "Battery",
-		ColorCode:       "#84cc16",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -299,7 +291,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "cameras",
 		DisplayName:     "Cameras",
 		MessageName:     "Camera",
-		ColorCode:       "#06b6d4",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -340,7 +331,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "electronic_speed_controllers",
 		DisplayName:     "ElectronicSpeedControllers",
 		MessageName:     "ElectronicSpeedController",
-		ColorCode:       "#f97316",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -384,7 +374,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "flight_controllers",
 		DisplayName:     "FlightControllers",
 		MessageName:     "FlightController",
-		ColorCode:       "#3b82f6",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -429,7 +418,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "frames",
 		DisplayName:     "Frames",
 		MessageName:     "Frame",
-		ColorCode:       "#64748b",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -471,7 +459,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "gps_receivers",
 		DisplayName:     "GpsReceivers",
 		MessageName:     "GpsReceiver",
-		ColorCode:       "#10b981",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -509,7 +496,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "motors",
 		DisplayName:     "Motors",
 		MessageName:     "Motor",
-		ColorCode:       "#ef4444",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -549,7 +535,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "propellers",
 		DisplayName:     "Propellers",
 		MessageName:     "Propeller",
-		ColorCode:       "#14b8a6",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -589,7 +574,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "receivers",
 		DisplayName:     "Receivers",
 		MessageName:     "Receiver",
-		ColorCode:       "#a855f7",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -631,7 +615,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "video_transmitters",
 		DisplayName:     "VideoTransmitters",
 		MessageName:     "VideoTransmitter",
-		ColorCode:       "#ec4899",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -676,7 +659,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "electronic_speed_controller_firmwares",
 		DisplayName:     "EscFirmwares",
 		MessageName:     "EscFirmware",
-		ColorCode:       "#10b981",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -714,7 +696,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "flight_controller_firmwares",
 		DisplayName:     "FcFirmwares",
 		MessageName:     "FcFirmware",
-		ColorCode:       "#3b82f6",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -753,7 +734,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "radio_firmwares",
 		DisplayName:     "RadioFirmwares",
 		MessageName:     "RadioFirmware",
-		ColorCode:       "#84cc16",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -790,7 +770,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "software_tools",
 		DisplayName:     "SoftwareTools",
 		MessageName:     "SoftwareTool",
-		ColorCode:       "#a855f7",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",
@@ -827,7 +806,6 @@ var AllSearchCollections = []*SearchCollectionDef{
 		TableName:       "video_transmitter_firmwares",
 		DisplayName:     "VtxFirmwares",
 		MessageName:     "VtxFirmware",
-		ColorCode:       "#ec4899",
 		HasManufacturer: true,
 		DefaultColumns: []string{
 			"manufacturer",

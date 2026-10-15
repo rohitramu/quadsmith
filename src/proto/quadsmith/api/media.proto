@@ -6,12 +6,20 @@ import "quadsmith/data/data.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
+// ---------------------------------------------------------
+// Domain model
+// ---------------------------------------------------------
+
 message Media {
   MediaType type = 1 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   string url = 2 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   optional string title = 3 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   optional string description = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 }
+
+// ---------------------------------------------------------
+// Everything else
+// ---------------------------------------------------------
 
 enum MediaType {
   MEDIA_TYPE_UNSPECIFIED = 0;

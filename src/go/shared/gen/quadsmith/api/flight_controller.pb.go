@@ -24,368 +24,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
-// ---------------------------------------------------------
-type CreateFlightControllerRequest struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	FlightController *FlightController      `protobuf:"bytes,1,opt,name=flight_controller,json=flightController,proto3" json:"flight_controller,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *CreateFlightControllerRequest) Reset() {
-	*x = CreateFlightControllerRequest{}
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateFlightControllerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateFlightControllerRequest) ProtoMessage() {}
-
-func (x *CreateFlightControllerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateFlightControllerRequest.ProtoReflect.Descriptor instead.
-func (*CreateFlightControllerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *CreateFlightControllerRequest) GetFlightController() *FlightController {
-	if x != nil {
-		return x.FlightController
-	}
-	return nil
-}
-
-type DeleteFlightControllerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteFlightControllerRequest) Reset() {
-	*x = DeleteFlightControllerRequest{}
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteFlightControllerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteFlightControllerRequest) ProtoMessage() {}
-
-func (x *DeleteFlightControllerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteFlightControllerRequest.ProtoReflect.Descriptor instead.
-func (*DeleteFlightControllerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *DeleteFlightControllerRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteFlightControllerResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteFlightControllerResponse) Reset() {
-	*x = DeleteFlightControllerResponse{}
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteFlightControllerResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteFlightControllerResponse) ProtoMessage() {}
-
-func (x *DeleteFlightControllerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteFlightControllerResponse.ProtoReflect.Descriptor instead.
-func (*DeleteFlightControllerResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteFlightControllerResponse) GetIsArchived() bool {
-	if x != nil {
-		return x.IsArchived
-	}
-	return false
-}
-
-type GetFlightControllerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetFlightControllerRequest) Reset() {
-	*x = GetFlightControllerRequest{}
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetFlightControllerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetFlightControllerRequest) ProtoMessage() {}
-
-func (x *GetFlightControllerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetFlightControllerRequest.ProtoReflect.Descriptor instead.
-func (*GetFlightControllerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *GetFlightControllerRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *GetFlightControllerRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListFlightControllersRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListFlightControllersRequest) Reset() {
-	*x = ListFlightControllersRequest{}
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListFlightControllersRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListFlightControllersRequest) ProtoMessage() {}
-
-func (x *ListFlightControllersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListFlightControllersRequest.ProtoReflect.Descriptor instead.
-func (*ListFlightControllersRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *ListFlightControllersRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListFlightControllersRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListFlightControllersRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListFlightControllersRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListFlightControllersRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListFlightControllersResponse struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	FlightControllers []*FlightController    `protobuf:"bytes,1,rep,name=flight_controllers,json=flightControllers,proto3" json:"flight_controllers,omitempty"`
-	NextPageToken     string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
-}
-
-func (x *ListFlightControllersResponse) Reset() {
-	*x = ListFlightControllersResponse{}
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListFlightControllersResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListFlightControllersResponse) ProtoMessage() {}
-
-func (x *ListFlightControllersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListFlightControllersResponse.ProtoReflect.Descriptor instead.
-func (*ListFlightControllersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *ListFlightControllersResponse) GetFlightControllers() []*FlightController {
-	if x != nil {
-		return x.FlightControllers
-	}
-	return nil
-}
-
-func (x *ListFlightControllersResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-type UpdateFlightControllerRequest struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	FlightController *FlightController      `protobuf:"bytes,1,opt,name=flight_controller,json=flightController,proto3" json:"flight_controller,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *UpdateFlightControllerRequest) Reset() {
-	*x = UpdateFlightControllerRequest{}
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateFlightControllerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateFlightControllerRequest) ProtoMessage() {}
-
-func (x *UpdateFlightControllerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateFlightControllerRequest.ProtoReflect.Descriptor instead.
-func (*UpdateFlightControllerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *UpdateFlightControllerRequest) GetFlightController() *FlightController {
-	if x != nil {
-		return x.FlightController
-	}
-	return nil
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 type FlightController struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Uuid           string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -428,7 +66,7 @@ type FlightController struct {
 
 func (x *FlightController) Reset() {
 	*x = FlightController{}
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[7]
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -440,7 +78,7 @@ func (x *FlightController) String() string {
 func (*FlightController) ProtoMessage() {}
 
 func (x *FlightController) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[7]
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -453,7 +91,7 @@ func (x *FlightController) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use FlightController.ProtoReflect.Descriptor instead.
 func (*FlightController) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{7}
+	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *FlightController) GetUuid() string {
@@ -617,33 +255,367 @@ func (x *FlightController) GetAuthorUsername() string {
 	return ""
 }
 
+type CreateFlightControllerRequest struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	FlightController *FlightController      `protobuf:"bytes,1,opt,name=flight_controller,json=flightController,proto3" json:"flight_controller,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *CreateFlightControllerRequest) Reset() {
+	*x = CreateFlightControllerRequest{}
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateFlightControllerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateFlightControllerRequest) ProtoMessage() {}
+
+func (x *CreateFlightControllerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateFlightControllerRequest.ProtoReflect.Descriptor instead.
+func (*CreateFlightControllerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateFlightControllerRequest) GetFlightController() *FlightController {
+	if x != nil {
+		return x.FlightController
+	}
+	return nil
+}
+
+type DeleteFlightControllerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteFlightControllerRequest) Reset() {
+	*x = DeleteFlightControllerRequest{}
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteFlightControllerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteFlightControllerRequest) ProtoMessage() {}
+
+func (x *DeleteFlightControllerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteFlightControllerRequest.ProtoReflect.Descriptor instead.
+func (*DeleteFlightControllerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteFlightControllerRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteFlightControllerResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteFlightControllerResponse) Reset() {
+	*x = DeleteFlightControllerResponse{}
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteFlightControllerResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteFlightControllerResponse) ProtoMessage() {}
+
+func (x *DeleteFlightControllerResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteFlightControllerResponse.ProtoReflect.Descriptor instead.
+func (*DeleteFlightControllerResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DeleteFlightControllerResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetFlightControllerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetFlightControllerRequest) Reset() {
+	*x = GetFlightControllerRequest{}
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetFlightControllerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetFlightControllerRequest) ProtoMessage() {}
+
+func (x *GetFlightControllerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetFlightControllerRequest.ProtoReflect.Descriptor instead.
+func (*GetFlightControllerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetFlightControllerRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetFlightControllerRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListFlightControllersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListFlightControllersRequest) Reset() {
+	*x = ListFlightControllersRequest{}
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListFlightControllersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListFlightControllersRequest) ProtoMessage() {}
+
+func (x *ListFlightControllersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListFlightControllersRequest.ProtoReflect.Descriptor instead.
+func (*ListFlightControllersRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListFlightControllersRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListFlightControllersRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListFlightControllersRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListFlightControllersRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListFlightControllersRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListFlightControllersResponse struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	FlightControllers []*FlightController    `protobuf:"bytes,1,rep,name=flight_controllers,json=flightControllers,proto3" json:"flight_controllers,omitempty"`
+	NextPageToken     string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *ListFlightControllersResponse) Reset() {
+	*x = ListFlightControllersResponse{}
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListFlightControllersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListFlightControllersResponse) ProtoMessage() {}
+
+func (x *ListFlightControllersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListFlightControllersResponse.ProtoReflect.Descriptor instead.
+func (*ListFlightControllersResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListFlightControllersResponse) GetFlightControllers() []*FlightController {
+	if x != nil {
+		return x.FlightControllers
+	}
+	return nil
+}
+
+func (x *ListFlightControllersResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateFlightControllerRequest struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	FlightController *FlightController      `protobuf:"bytes,1,opt,name=flight_controller,json=flightController,proto3" json:"flight_controller,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *UpdateFlightControllerRequest) Reset() {
+	*x = UpdateFlightControllerRequest{}
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateFlightControllerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateFlightControllerRequest) ProtoMessage() {}
+
+func (x *UpdateFlightControllerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_flight_controller_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateFlightControllerRequest.ProtoReflect.Descriptor instead.
+func (*UpdateFlightControllerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_flight_controller_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateFlightControllerRequest) GetFlightController() *FlightController {
+	if x != nil {
+		return x.FlightController
+	}
+	return nil
+}
+
 var File_quadsmith_api_flight_controller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_flight_controller_proto_rawDesc = "" +
 	"\n" +
-	"%quadsmith/api/flight_controller.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"m\n" +
-	"\x1dCreateFlightControllerRequest\x12L\n" +
-	"\x11flight_controller\x18\x01 \x01(\v2\x1f.quadsmith.api.FlightControllerR\x10flightController\"/\n" +
-	"\x1dDeleteFlightControllerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"A\n" +
-	"\x1eDeleteFlightControllerResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"F\n" +
-	"\x1aGetFlightControllerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa0\x01\n" +
-	"\x1cListFlightControllersRequest\x12\x16\n" +
-	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
-	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
-	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
-	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x97\x01\n" +
-	"\x1dListFlightControllersResponse\x12N\n" +
-	"\x12flight_controllers\x18\x01 \x03(\v2\x1f.quadsmith.api.FlightControllerR\x11flightControllers\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"m\n" +
-	"\x1dUpdateFlightControllerRequest\x12L\n" +
-	"\x11flight_controller\x18\x01 \x01(\v2\x1f.quadsmith.api.FlightControllerR\x10flightController\"\x9d\r\n" +
+	"%quadsmith/api/flight_controller.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\x94\r\n" +
 	"\x10FlightController\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
 	"\x02id\x18\x02 \x01(\tB\n" +
@@ -679,12 +651,12 @@ const file_quadsmith_api_flight_controller_proto_rawDesc = "" +
 	"\tuser_uuid\x18\x16 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x04R\buserUuid\x88\x01\x01\x128\n" +
 	"\x0fauthor_username\x18\x17 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x05R\x0eauthorUsername\x88\x01\x01:\xea\x01\x8a\xb5\x188\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x05R\x0eauthorUsername\x88\x01\x01:\xe1\x01\x8a\xb5\x18/\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\tprocessor\n" +
 	"\x04gyro\n" +
-	"\bweight_g\x12\a#3b82f6\x9a\xb5\x18&components/hardware/flight-controllers\xc2\xf3\x18\x14\n" +
+	"\bweight_g\x9a\xb5\x18&components/hardware/flight-controllers\xc2\xf3\x18\x14\n" +
 	"\x12flight_controllers\xc2\xf0\x19h\b\x05\x12duuid IN (SELECT uuid FROM entities WHERE collection = 'flight-controllers' AND user_uuid = $1::uuid)B,\n" +
 	"*_internal_electronic_speed_controller_uuidB\x19\n" +
 	"\x17_internal_receiver_uuidB\"\n" +
@@ -692,7 +664,29 @@ const file_quadsmith_api_flight_controller_proto_rawDesc = "" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +
-	"\x10_author_username2\xb9\x04\n" +
+	"\x10_author_username\"m\n" +
+	"\x1dCreateFlightControllerRequest\x12L\n" +
+	"\x11flight_controller\x18\x01 \x01(\v2\x1f.quadsmith.api.FlightControllerR\x10flightController\"/\n" +
+	"\x1dDeleteFlightControllerRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"A\n" +
+	"\x1eDeleteFlightControllerResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\"F\n" +
+	"\x1aGetFlightControllerRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa0\x01\n" +
+	"\x1cListFlightControllersRequest\x12\x16\n" +
+	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x97\x01\n" +
+	"\x1dListFlightControllersResponse\x12N\n" +
+	"\x12flight_controllers\x18\x01 \x03(\v2\x1f.quadsmith.api.FlightControllerR\x11flightControllers\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"m\n" +
+	"\x1dUpdateFlightControllerRequest\x12L\n" +
+	"\x11flight_controller\x18\x01 \x01(\v2\x1f.quadsmith.api.FlightControllerR\x10flightController2\xb9\x04\n" +
 	"\x17FlightControllerService\x12a\n" +
 	"\x13GetFlightController\x12).quadsmith.api.GetFlightControllerRequest\x1a\x1f.quadsmith.api.FlightController\x12r\n" +
 	"\x15ListFlightControllers\x12+.quadsmith.api.ListFlightControllersRequest\x1a,.quadsmith.api.ListFlightControllersResponse\x12g\n" +
@@ -714,33 +708,33 @@ func file_quadsmith_api_flight_controller_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_api_flight_controller_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_flight_controller_proto_goTypes = []any{
-	(*CreateFlightControllerRequest)(nil),  // 0: quadsmith.api.CreateFlightControllerRequest
-	(*DeleteFlightControllerRequest)(nil),  // 1: quadsmith.api.DeleteFlightControllerRequest
-	(*DeleteFlightControllerResponse)(nil), // 2: quadsmith.api.DeleteFlightControllerResponse
-	(*GetFlightControllerRequest)(nil),     // 3: quadsmith.api.GetFlightControllerRequest
-	(*ListFlightControllersRequest)(nil),   // 4: quadsmith.api.ListFlightControllersRequest
-	(*ListFlightControllersResponse)(nil),  // 5: quadsmith.api.ListFlightControllersResponse
-	(*UpdateFlightControllerRequest)(nil),  // 6: quadsmith.api.UpdateFlightControllerRequest
-	(*FlightController)(nil),               // 7: quadsmith.api.FlightController
+	(*FlightController)(nil),               // 0: quadsmith.api.FlightController
+	(*CreateFlightControllerRequest)(nil),  // 1: quadsmith.api.CreateFlightControllerRequest
+	(*DeleteFlightControllerRequest)(nil),  // 2: quadsmith.api.DeleteFlightControllerRequest
+	(*DeleteFlightControllerResponse)(nil), // 3: quadsmith.api.DeleteFlightControllerResponse
+	(*GetFlightControllerRequest)(nil),     // 4: quadsmith.api.GetFlightControllerRequest
+	(*ListFlightControllersRequest)(nil),   // 5: quadsmith.api.ListFlightControllersRequest
+	(*ListFlightControllersResponse)(nil),  // 6: quadsmith.api.ListFlightControllersResponse
+	(*UpdateFlightControllerRequest)(nil),  // 7: quadsmith.api.UpdateFlightControllerRequest
 	(*ReferenceLink)(nil),                  // 8: quadsmith.api.ReferenceLink
 	(*Media)(nil),                          // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_flight_controller_proto_depIdxs = []int32{
-	7,  // 0: quadsmith.api.CreateFlightControllerRequest.flight_controller:type_name -> quadsmith.api.FlightController
-	7,  // 1: quadsmith.api.ListFlightControllersResponse.flight_controllers:type_name -> quadsmith.api.FlightController
-	7,  // 2: quadsmith.api.UpdateFlightControllerRequest.flight_controller:type_name -> quadsmith.api.FlightController
-	8,  // 3: quadsmith.api.FlightController.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 4: quadsmith.api.FlightController.media:type_name -> quadsmith.api.Media
-	3,  // 5: quadsmith.api.FlightControllerService.GetFlightController:input_type -> quadsmith.api.GetFlightControllerRequest
-	4,  // 6: quadsmith.api.FlightControllerService.ListFlightControllers:input_type -> quadsmith.api.ListFlightControllersRequest
-	0,  // 7: quadsmith.api.FlightControllerService.CreateFlightController:input_type -> quadsmith.api.CreateFlightControllerRequest
-	6,  // 8: quadsmith.api.FlightControllerService.UpdateFlightController:input_type -> quadsmith.api.UpdateFlightControllerRequest
-	1,  // 9: quadsmith.api.FlightControllerService.DeleteFlightController:input_type -> quadsmith.api.DeleteFlightControllerRequest
-	7,  // 10: quadsmith.api.FlightControllerService.GetFlightController:output_type -> quadsmith.api.FlightController
-	5,  // 11: quadsmith.api.FlightControllerService.ListFlightControllers:output_type -> quadsmith.api.ListFlightControllersResponse
-	7,  // 12: quadsmith.api.FlightControllerService.CreateFlightController:output_type -> quadsmith.api.FlightController
-	7,  // 13: quadsmith.api.FlightControllerService.UpdateFlightController:output_type -> quadsmith.api.FlightController
-	2,  // 14: quadsmith.api.FlightControllerService.DeleteFlightController:output_type -> quadsmith.api.DeleteFlightControllerResponse
+	8,  // 0: quadsmith.api.FlightController.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 1: quadsmith.api.FlightController.media:type_name -> quadsmith.api.Media
+	0,  // 2: quadsmith.api.CreateFlightControllerRequest.flight_controller:type_name -> quadsmith.api.FlightController
+	0,  // 3: quadsmith.api.ListFlightControllersResponse.flight_controllers:type_name -> quadsmith.api.FlightController
+	0,  // 4: quadsmith.api.UpdateFlightControllerRequest.flight_controller:type_name -> quadsmith.api.FlightController
+	4,  // 5: quadsmith.api.FlightControllerService.GetFlightController:input_type -> quadsmith.api.GetFlightControllerRequest
+	5,  // 6: quadsmith.api.FlightControllerService.ListFlightControllers:input_type -> quadsmith.api.ListFlightControllersRequest
+	1,  // 7: quadsmith.api.FlightControllerService.CreateFlightController:input_type -> quadsmith.api.CreateFlightControllerRequest
+	7,  // 8: quadsmith.api.FlightControllerService.UpdateFlightController:input_type -> quadsmith.api.UpdateFlightControllerRequest
+	2,  // 9: quadsmith.api.FlightControllerService.DeleteFlightController:input_type -> quadsmith.api.DeleteFlightControllerRequest
+	0,  // 10: quadsmith.api.FlightControllerService.GetFlightController:output_type -> quadsmith.api.FlightController
+	6,  // 11: quadsmith.api.FlightControllerService.ListFlightControllers:output_type -> quadsmith.api.ListFlightControllersResponse
+	0,  // 12: quadsmith.api.FlightControllerService.CreateFlightController:output_type -> quadsmith.api.FlightController
+	0,  // 13: quadsmith.api.FlightControllerService.UpdateFlightController:output_type -> quadsmith.api.FlightController
+	3,  // 14: quadsmith.api.FlightControllerService.DeleteFlightController:output_type -> quadsmith.api.DeleteFlightControllerResponse
 	10, // [10:15] is the sub-list for method output_type
 	5,  // [5:10] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
@@ -755,7 +749,7 @@ func file_quadsmith_api_flight_controller_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_flight_controller_proto_msgTypes[7].OneofWrappers = []any{}
+	file_quadsmith_api_flight_controller_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

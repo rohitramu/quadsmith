@@ -7,8 +7,12 @@ import "google/protobuf/descriptor.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/validate;validate";
 
 // ---------------------------------------------------------
-// Validation Rules
+// Domain model
 // ---------------------------------------------------------
+
+message FieldRules {
+  StringRules string = 1;
+}
 
 message StringRules {
   // Minimum length in characters (Unicode code points)
@@ -69,12 +73,8 @@ message StringRules {
   repeated string not_contains = 5;
 }
 
-message FieldRules {
-  StringRules string = 1;
-}
-
 // ---------------------------------------------------------
-// Custom Field Options
+// Everything else
 // ---------------------------------------------------------
 
 extend google.protobuf.FieldOptions {

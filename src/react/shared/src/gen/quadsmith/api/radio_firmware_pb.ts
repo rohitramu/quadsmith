@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_radio_firmware: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiJxdWFkc21pdGgvYXBpL3JhZGlvX2Zpcm13YXJlLnByb3RvEg1xdWFkc21pdGguYXBpIlIKGkNyZWF0ZVJhZGlvRmlybXdhcmVSZXF1ZXN0EjQKDnJhZGlvX2Zpcm13YXJlGAEgASgLMhwucXVhZHNtaXRoLmFwaS5SYWRpb0Zpcm13YXJlIigKGkRlbGV0ZVJhZGlvRmlybXdhcmVSZXF1ZXN0EgoKAmlkGAEgASgJIjIKG0RlbGV0ZVJhZGlvRmlybXdhcmVSZXNwb25zZRITCgtpc19hcmNoaXZlZBgBIAEoCCI2ChdHZXRSYWRpb0Zpcm13YXJlUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJInEKGUxpc3RSYWRpb0Zpcm13YXJlc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJsChpMaXN0UmFkaW9GaXJtd2FyZXNSZXNwb25zZRI1Cg9yYWRpb19maXJtd2FyZXMYASADKAsyHC5xdWFkc21pdGguYXBpLlJhZGlvRmlybXdhcmUSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIlIKGlVwZGF0ZVJhZGlvRmlybXdhcmVSZXF1ZXN0EjQKDnJhZGlvX2Zpcm13YXJlGAEgASgLMhwucXVhZHNtaXRoLmFwaS5SYWRpb0Zpcm13YXJlIrsGCg1SYWRpb0Zpcm13YXJlEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhYKAmlkGAIgASgJQgrC8xgCQAHA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZAhIYCgRuYW1lGAQgASgJQgrC8xgCQAHA8BkCEhUKB3ZlcnNpb24YBSABKAlCBMDwGQISIQoTc3VwcG9ydGVkX3Byb3RvY29scxgGIAEoCUIEwPAZAhIcCg5pc19vcGVuX3NvdXJjZRgHIAEoCEIEwPAZAhIfCgtkZXNjcmlwdGlvbhgIIAEoCUIKwvMYAkABwPAZAhJBCg9yZWZlcmVuY2VfbGlua3MYCSADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCCsLzGAJAAcDwGQISLgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAogASgJQgrC8xgCQAHA8BkCSACIAQESLwoFbWVkaWEYCyADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgrC8xgCQAHA8BkCEiIKCXVzZXJfdXVpZBgMIAEoCUIKwvMYAkABwPAZBEgBiAEBEigKD2F1dGhvcl91c2VybmFtZRgNIAEoCUIKwvMYAkABwPAZAkgCiAEBOvIBirUYSwoMbWFudWZhY3R1cmVyCgRuYW1lCgd2ZXJzaW9uChNzdXBwb3J0ZWRfcHJvdG9jb2xzCg5pc19vcGVuX3NvdXJjZRIHIzg0Y2MxNpq1GCJjb21wb25lbnRzL3NvZnR3YXJlL3JhZGlvLWZpcm13YXJlwvMYEQoPcmFkaW9fZmlybXdhcmVzwvAZZAgFEmB1dWlkIElOIChTRUxFQ1QgdXVpZCBGUk9NIGVudGl0aWVzIFdIRVJFIGNvbGxlY3Rpb24gPSAncmFkaW8tZmlybXdhcmUnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUyiQQKFFJhZGlvRmlybXdhcmVTZXJ2aWNlElgKEEdldFJhZGlvRmlybXdhcmUSJi5xdWFkc21pdGguYXBpLkdldFJhZGlvRmlybXdhcmVSZXF1ZXN0GhwucXVhZHNtaXRoLmFwaS5SYWRpb0Zpcm13YXJlEmkKEkxpc3RSYWRpb0Zpcm13YXJlcxIoLnF1YWRzbWl0aC5hcGkuTGlzdFJhZGlvRmlybXdhcmVzUmVxdWVzdBopLnF1YWRzbWl0aC5hcGkuTGlzdFJhZGlvRmlybXdhcmVzUmVzcG9uc2USXgoTQ3JlYXRlUmFkaW9GaXJtd2FyZRIpLnF1YWRzbWl0aC5hcGkuQ3JlYXRlUmFkaW9GaXJtd2FyZVJlcXVlc3QaHC5xdWFkc21pdGguYXBpLlJhZGlvRmlybXdhcmUSXgoTVXBkYXRlUmFkaW9GaXJtd2FyZRIpLnF1YWRzbWl0aC5hcGkuVXBkYXRlUmFkaW9GaXJtd2FyZVJlcXVlc3QaHC5xdWFkc21pdGguYXBpLlJhZGlvRmlybXdhcmUSbAoTRGVsZXRlUmFkaW9GaXJtd2FyZRIpLnF1YWRzbWl0aC5hcGkuRGVsZXRlUmFkaW9GaXJtd2FyZVJlcXVlc3QaKi5xdWFkc21pdGguYXBpLkRlbGV0ZVJhZGlvRmlybXdhcmVSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
+    "CiJxdWFkc21pdGgvYXBpL3JhZGlvX2Zpcm13YXJlLnByb3RvEg1xdWFkc21pdGguYXBpIrIGCg1SYWRpb0Zpcm13YXJlEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhYKAmlkGAIgASgJQgrC8xgCQAHA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZAhIYCgRuYW1lGAQgASgJQgrC8xgCQAHA8BkCEhUKB3ZlcnNpb24YBSABKAlCBMDwGQISIQoTc3VwcG9ydGVkX3Byb3RvY29scxgGIAEoCUIEwPAZAhIcCg5pc19vcGVuX3NvdXJjZRgHIAEoCEIEwPAZAhIfCgtkZXNjcmlwdGlvbhgIIAEoCUIKwvMYAkABwPAZAhJBCg9yZWZlcmVuY2VfbGlua3MYCSADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCCsLzGAJAAcDwGQISLgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAogASgJQgrC8xgCQAHA8BkCSACIAQESLwoFbWVkaWEYCyADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgrC8xgCQAHA8BkCEiIKCXVzZXJfdXVpZBgMIAEoCUIKwvMYAkABwPAZBEgBiAEBEigKD2F1dGhvcl91c2VybmFtZRgNIAEoCUIKwvMYAkABwPAZAkgCiAEBOukBirUYQgoMbWFudWZhY3R1cmVyCgRuYW1lCgd2ZXJzaW9uChNzdXBwb3J0ZWRfcHJvdG9jb2xzCg5pc19vcGVuX3NvdXJjZZq1GCJjb21wb25lbnRzL3NvZnR3YXJlL3JhZGlvLWZpcm13YXJlwvMYEQoPcmFkaW9fZmlybXdhcmVzwvAZZAgFEmB1dWlkIElOIChTRUxFQ1QgdXVpZCBGUk9NIGVudGl0aWVzIFdIRVJFIGNvbGxlY3Rpb24gPSAncmFkaW8tZmlybXdhcmUnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiUgoaQ3JlYXRlUmFkaW9GaXJtd2FyZVJlcXVlc3QSNAoOcmFkaW9fZmlybXdhcmUYASABKAsyHC5xdWFkc21pdGguYXBpLlJhZGlvRmlybXdhcmUiKAoaRGVsZXRlUmFkaW9GaXJtd2FyZVJlcXVlc3QSCgoCaWQYASABKAkiMgobRGVsZXRlUmFkaW9GaXJtd2FyZVJlc3BvbnNlEhMKC2lzX2FyY2hpdmVkGAEgASgIIjYKF0dldFJhZGlvRmlybXdhcmVSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkicQoZTGlzdFJhZGlvRmlybXdhcmVzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJImwKGkxpc3RSYWRpb0Zpcm13YXJlc1Jlc3BvbnNlEjUKD3JhZGlvX2Zpcm13YXJlcxgBIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmFkaW9GaXJtd2FyZRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiUgoaVXBkYXRlUmFkaW9GaXJtd2FyZVJlcXVlc3QSNAoOcmFkaW9fZmlybXdhcmUYASABKAsyHC5xdWFkc21pdGguYXBpLlJhZGlvRmlybXdhcmUyiQQKFFJhZGlvRmlybXdhcmVTZXJ2aWNlElgKEEdldFJhZGlvRmlybXdhcmUSJi5xdWFkc21pdGguYXBpLkdldFJhZGlvRmlybXdhcmVSZXF1ZXN0GhwucXVhZHNtaXRoLmFwaS5SYWRpb0Zpcm13YXJlEmkKEkxpc3RSYWRpb0Zpcm13YXJlcxIoLnF1YWRzbWl0aC5hcGkuTGlzdFJhZGlvRmlybXdhcmVzUmVxdWVzdBopLnF1YWRzbWl0aC5hcGkuTGlzdFJhZGlvRmlybXdhcmVzUmVzcG9uc2USXgoTQ3JlYXRlUmFkaW9GaXJtd2FyZRIpLnF1YWRzbWl0aC5hcGkuQ3JlYXRlUmFkaW9GaXJtd2FyZVJlcXVlc3QaHC5xdWFkc21pdGguYXBpLlJhZGlvRmlybXdhcmUSXgoTVXBkYXRlUmFkaW9GaXJtd2FyZRIpLnF1YWRzbWl0aC5hcGkuVXBkYXRlUmFkaW9GaXJtd2FyZVJlcXVlc3QaHC5xdWFkc21pdGguYXBpLlJhZGlvRmlybXdhcmUSbAoTRGVsZXRlUmFkaW9GaXJtd2FyZRIpLnF1YWRzbWl0aC5hcGkuRGVsZXRlUmFkaW9GaXJtd2FyZVJlcXVlc3QaKi5xdWFkc21pdGguYXBpLkRlbGV0ZVJhZGlvRmlybXdhcmVSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -30,170 +30,6 @@ export const file_quadsmith_api_radio_firmware: GenFile =
   );
 
 /**
- * ---------------------------------------------------------
- * 2. RPC Requests & Responses (Callers Precede Callees)
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.CreateRadioFirmwareRequest
- */
-export type CreateRadioFirmwareRequest = Message<"quadsmith.api.CreateRadioFirmwareRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.RadioFirmware radio_firmware = 1;
-   */
-  radioFirmware?: RadioFirmware | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateRadioFirmwareRequest.
- * Use `create(CreateRadioFirmwareRequestSchema)` to create a new message.
- */
-export const CreateRadioFirmwareRequestSchema: GenMessage<CreateRadioFirmwareRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_radio_firmware, 0);
-
-/**
- * @generated from message quadsmith.api.DeleteRadioFirmwareRequest
- */
-export type DeleteRadioFirmwareRequest = Message<"quadsmith.api.DeleteRadioFirmwareRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteRadioFirmwareRequest.
- * Use `create(DeleteRadioFirmwareRequestSchema)` to create a new message.
- */
-export const DeleteRadioFirmwareRequestSchema: GenMessage<DeleteRadioFirmwareRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_radio_firmware, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteRadioFirmwareResponse
- */
-export type DeleteRadioFirmwareResponse = Message<"quadsmith.api.DeleteRadioFirmwareResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteRadioFirmwareResponse.
- * Use `create(DeleteRadioFirmwareResponseSchema)` to create a new message.
- */
-export const DeleteRadioFirmwareResponseSchema: GenMessage<DeleteRadioFirmwareResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_radio_firmware, 2);
-
-/**
- * @generated from message quadsmith.api.GetRadioFirmwareRequest
- */
-export type GetRadioFirmwareRequest = Message<"quadsmith.api.GetRadioFirmwareRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
-
-/**
- * Describes the message quadsmith.api.GetRadioFirmwareRequest.
- * Use `create(GetRadioFirmwareRequestSchema)` to create a new message.
- */
-export const GetRadioFirmwareRequestSchema: GenMessage<GetRadioFirmwareRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_radio_firmware, 3);
-
-/**
- * @generated from message quadsmith.api.ListRadioFirmwaresRequest
- */
-export type ListRadioFirmwaresRequest = Message<"quadsmith.api.ListRadioFirmwaresRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
-
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
-
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
-
-/**
- * Describes the message quadsmith.api.ListRadioFirmwaresRequest.
- * Use `create(ListRadioFirmwaresRequestSchema)` to create a new message.
- */
-export const ListRadioFirmwaresRequestSchema: GenMessage<ListRadioFirmwaresRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_radio_firmware, 4);
-
-/**
- * @generated from message quadsmith.api.ListRadioFirmwaresResponse
- */
-export type ListRadioFirmwaresResponse = Message<"quadsmith.api.ListRadioFirmwaresResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.RadioFirmware radio_firmwares = 1;
-   */
-  radioFirmwares: RadioFirmware[];
-
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
-
-/**
- * Describes the message quadsmith.api.ListRadioFirmwaresResponse.
- * Use `create(ListRadioFirmwaresResponseSchema)` to create a new message.
- */
-export const ListRadioFirmwaresResponseSchema: GenMessage<ListRadioFirmwaresResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_radio_firmware, 5);
-
-/**
- * @generated from message quadsmith.api.UpdateRadioFirmwareRequest
- */
-export type UpdateRadioFirmwareRequest = Message<"quadsmith.api.UpdateRadioFirmwareRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.RadioFirmware radio_firmware = 1;
-   */
-  radioFirmware?: RadioFirmware | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateRadioFirmwareRequest.
- * Use `create(UpdateRadioFirmwareRequestSchema)` to create a new message.
- */
-export const UpdateRadioFirmwareRequestSchema: GenMessage<UpdateRadioFirmwareRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_radio_firmware, 6);
-
-/**
- * ---------------------------------------------------------
- * 3. Domain Model (Referenced by Services and Requests above)
- * ---------------------------------------------------------
- *
  * @generated from message quadsmith.api.RadioFirmware
  */
 export type RadioFirmware = Message<"quadsmith.api.RadioFirmware"> & {
@@ -269,13 +105,165 @@ export type RadioFirmware = Message<"quadsmith.api.RadioFirmware"> & {
  */
 export const RadioFirmwareSchema: GenMessage<RadioFirmware> =
   /*@__PURE__*/
+  messageDesc(file_quadsmith_api_radio_firmware, 0);
+
+/**
+ * @generated from message quadsmith.api.CreateRadioFirmwareRequest
+ */
+export type CreateRadioFirmwareRequest = Message<"quadsmith.api.CreateRadioFirmwareRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.RadioFirmware radio_firmware = 1;
+   */
+  radioFirmware?: RadioFirmware | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.CreateRadioFirmwareRequest.
+ * Use `create(CreateRadioFirmwareRequestSchema)` to create a new message.
+ */
+export const CreateRadioFirmwareRequestSchema: GenMessage<CreateRadioFirmwareRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_radio_firmware, 1);
+
+/**
+ * @generated from message quadsmith.api.DeleteRadioFirmwareRequest
+ */
+export type DeleteRadioFirmwareRequest = Message<"quadsmith.api.DeleteRadioFirmwareRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteRadioFirmwareRequest.
+ * Use `create(DeleteRadioFirmwareRequestSchema)` to create a new message.
+ */
+export const DeleteRadioFirmwareRequestSchema: GenMessage<DeleteRadioFirmwareRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_radio_firmware, 2);
+
+/**
+ * @generated from message quadsmith.api.DeleteRadioFirmwareResponse
+ */
+export type DeleteRadioFirmwareResponse = Message<"quadsmith.api.DeleteRadioFirmwareResponse"> & {
+  /**
+   * @generated from field: bool is_archived = 1;
+   */
+  isArchived: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteRadioFirmwareResponse.
+ * Use `create(DeleteRadioFirmwareResponseSchema)` to create a new message.
+ */
+export const DeleteRadioFirmwareResponseSchema: GenMessage<DeleteRadioFirmwareResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_radio_firmware, 3);
+
+/**
+ * @generated from message quadsmith.api.GetRadioFirmwareRequest
+ */
+export type GetRadioFirmwareRequest = Message<"quadsmith.api.GetRadioFirmwareRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.GetRadioFirmwareRequest.
+ * Use `create(GetRadioFirmwareRequestSchema)` to create a new message.
+ */
+export const GetRadioFirmwareRequestSchema: GenMessage<GetRadioFirmwareRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_radio_firmware, 4);
+
+/**
+ * @generated from message quadsmith.api.ListRadioFirmwaresRequest
+ */
+export type ListRadioFirmwaresRequest = Message<"quadsmith.api.ListRadioFirmwaresRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
+
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListRadioFirmwaresRequest.
+ * Use `create(ListRadioFirmwaresRequestSchema)` to create a new message.
+ */
+export const ListRadioFirmwaresRequestSchema: GenMessage<ListRadioFirmwaresRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_radio_firmware, 5);
+
+/**
+ * @generated from message quadsmith.api.ListRadioFirmwaresResponse
+ */
+export type ListRadioFirmwaresResponse = Message<"quadsmith.api.ListRadioFirmwaresResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.RadioFirmware radio_firmwares = 1;
+   */
+  radioFirmwares: RadioFirmware[];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListRadioFirmwaresResponse.
+ * Use `create(ListRadioFirmwaresResponseSchema)` to create a new message.
+ */
+export const ListRadioFirmwaresResponseSchema: GenMessage<ListRadioFirmwaresResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_radio_firmware, 6);
+
+/**
+ * @generated from message quadsmith.api.UpdateRadioFirmwareRequest
+ */
+export type UpdateRadioFirmwareRequest = Message<"quadsmith.api.UpdateRadioFirmwareRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.RadioFirmware radio_firmware = 1;
+   */
+  radioFirmware?: RadioFirmware | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.UpdateRadioFirmwareRequest.
+ * Use `create(UpdateRadioFirmwareRequestSchema)` to create a new message.
+ */
+export const UpdateRadioFirmwareRequestSchema: GenMessage<UpdateRadioFirmwareRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_api_radio_firmware, 7);
 
 /**
- * ---------------------------------------------------------
- * 1. gRPC Service (Services First)
- * ---------------------------------------------------------
- *
  * @generated from service quadsmith.api.RadioFirmwareService
  */
 export const RadioFirmwareService: GenService<{

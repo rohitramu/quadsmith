@@ -388,7 +388,7 @@ describe("LoginPage Component", () => {
     // Avatar preview dynamically updates to initial "R" with palette badge styling
     const avatarPreview = screen.getByTestId("avatar-preview");
     expect(avatarPreview.textContent).toBe("R");
-    expect(avatarPreview.className).toMatch(/bg-teal-100/);
+    expect(avatarPreview.className).toMatch(/bg-purple-100/);
   });
 
   it("updates display image live preview and completes setup successfully", async () => {

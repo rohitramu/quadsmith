@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_frame: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChlxdWFkc21pdGgvYXBpL2ZyYW1lLnByb3RvEg1xdWFkc21pdGguYXBpIjkKEkNyZWF0ZUZyYW1lUmVxdWVzdBIjCgVmcmFtZRgBIAEoCzIULnF1YWRzbWl0aC5hcGkuRnJhbWUiIAoSRGVsZXRlRnJhbWVSZXF1ZXN0EgoKAmlkGAEgASgJIioKE0RlbGV0ZUZyYW1lUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiLgoPR2V0RnJhbWVSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiaQoRTGlzdEZyYW1lc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJTChJMaXN0RnJhbWVzUmVzcG9uc2USJAoGZnJhbWVzGAEgAygLMhQucXVhZHNtaXRoLmFwaS5GcmFtZRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiOQoSVXBkYXRlRnJhbWVSZXF1ZXN0EiMKBWZyYW1lGAEgASgLMhQucXVhZHNtaXRoLmFwaS5GcmFtZSKpBwoFRnJhbWUSOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSFgoCaWQYAiABKAlCCsLzGAJAAcDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkCEhgKBG5hbWUYBCABKAlCCsLzGAJAAcDwGQISFgoId2VpZ2h0X2cYBSABKAJCBMDwGQISGgoMd2hlZWxiYXNlX21tGAYgASgCQgTA8BkCEh4KEG1heF9wcm9wX3NpemVfbW0YByABKAJCBMDwGQISFgoIZ2VvbWV0cnkYCCABKAlCBMDwGQISHwoLZGVzY3JpcHRpb24YCSABKAlCCsLzGAJAAcDwGQISQQoPcmVmZXJlbmNlX2xpbmtzGAogAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgrC8xgCQAHA8BkCEi4KFXByaW1hcnlfZGlzcGxheV9pbWFnZRgLIAEoCUIKwvMYAkABwPAZAkgAiAEBEi8KBW1lZGlhGAwgAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIKwvMYAkABwPAZAhIgCgttb3Rvcl9jb3VudBgNIAEoDUILwvMYAzoBNMDwGQISJQoXY2FtZXJhX21vdW50X2ludGVyZmFjZXMYDiADKAlCBMDwGQISIgoUbW90b3JfbW91bnRfcGF0dGVybnMYDyADKAlCBMDwGQISIgoUYm9hcmRfbW91bnRfcGF0dGVybnMYECADKAlCBMDwGQISIgoJdXNlcl91dWlkGBEgASgJQgrC8xgCQAHA8BkESAGIAQESKAoPYXV0aG9yX3VzZXJuYW1lGBIgASgJQgrC8xgCQAHA8BkCSAKIAQE6wwGKtRg1CgxtYW51ZmFjdHVyZXIKBG5hbWUKDHdoZWVsYmFzZV9tbQoIZ2VvbWV0cnkSByM2NDc0OGKatRgaY29tcG9uZW50cy9oYXJkd2FyZS9mcmFtZXPC8xgICgZmcmFtZXPC8BlcCAUSWHV1aWQgSU4gKFNFTEVDVCB1dWlkIEZST00gZW50aXRpZXMgV0hFUkUgY29sbGVjdGlvbiA9ICdmcmFtZXMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUyiQMKDEZyYW1lU2VydmljZRJACghHZXRGcmFtZRIeLnF1YWRzbWl0aC5hcGkuR2V0RnJhbWVSZXF1ZXN0GhQucXVhZHNtaXRoLmFwaS5GcmFtZRJRCgpMaXN0RnJhbWVzEiAucXVhZHNtaXRoLmFwaS5MaXN0RnJhbWVzUmVxdWVzdBohLnF1YWRzbWl0aC5hcGkuTGlzdEZyYW1lc1Jlc3BvbnNlEkYKC0NyZWF0ZUZyYW1lEiEucXVhZHNtaXRoLmFwaS5DcmVhdGVGcmFtZVJlcXVlc3QaFC5xdWFkc21pdGguYXBpLkZyYW1lEkYKC1VwZGF0ZUZyYW1lEiEucXVhZHNtaXRoLmFwaS5VcGRhdGVGcmFtZVJlcXVlc3QaFC5xdWFkc21pdGguYXBpLkZyYW1lElQKC0RlbGV0ZUZyYW1lEiEucXVhZHNtaXRoLmFwaS5EZWxldGVGcmFtZVJlcXVlc3QaIi5xdWFkc21pdGguYXBpLkRlbGV0ZUZyYW1lUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
+    "ChlxdWFkc21pdGgvYXBpL2ZyYW1lLnByb3RvEg1xdWFkc21pdGguYXBpIqAHCgVGcmFtZRI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIWCgJpZBgCIAEoCUIKwvMYAkABwPAZBBIgCgxtYW51ZmFjdHVyZXIYAyABKAlCCsLzGAIoAcDwGQISGAoEbmFtZRgEIAEoCUIKwvMYAkABwPAZAhIWCgh3ZWlnaHRfZxgFIAEoAkIEwPAZAhIaCgx3aGVlbGJhc2VfbW0YBiABKAJCBMDwGQISHgoQbWF4X3Byb3Bfc2l6ZV9tbRgHIAEoAkIEwPAZAhIWCghnZW9tZXRyeRgIIAEoCUIEwPAZAhIfCgtkZXNjcmlwdGlvbhgJIAEoCUIKwvMYAkABwPAZAhJBCg9yZWZlcmVuY2VfbGlua3MYCiADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCCsLzGAJAAcDwGQISLgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAsgASgJQgrC8xgCQAHA8BkCSACIAQESLwoFbWVkaWEYDCADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgrC8xgCQAHA8BkCEiAKC21vdG9yX2NvdW50GA0gASgNQgvC8xgDOgE0wPAZAhIlChdjYW1lcmFfbW91bnRfaW50ZXJmYWNlcxgOIAMoCUIEwPAZAhIiChRtb3Rvcl9tb3VudF9wYXR0ZXJucxgPIAMoCUIEwPAZAhIiChRib2FyZF9tb3VudF9wYXR0ZXJucxgQIAMoCUIEwPAZAhIiCgl1c2VyX3V1aWQYESABKAlCCsLzGAJAAcDwGQRIAYgBARIoCg9hdXRob3JfdXNlcm5hbWUYEiABKAlCCsLzGAJAAcDwGQJIAogBATq6AYq1GCwKDG1hbnVmYWN0dXJlcgoEbmFtZQoMd2hlZWxiYXNlX21tCghnZW9tZXRyeZq1GBpjb21wb25lbnRzL2hhcmR3YXJlL2ZyYW1lc8LzGAgKBmZyYW1lc8LwGVwIBRJYdXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSBlbnRpdGllcyBXSEVSRSBjb2xsZWN0aW9uID0gJ2ZyYW1lcycgQU5EIHVzZXJfdXVpZCA9ICQxOjp1dWlkKUIYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlQgwKCl91c2VyX3V1aWRCEgoQX2F1dGhvcl91c2VybmFtZSI5ChJDcmVhdGVGcmFtZVJlcXVlc3QSIwoFZnJhbWUYASABKAsyFC5xdWFkc21pdGguYXBpLkZyYW1lIiAKEkRlbGV0ZUZyYW1lUmVxdWVzdBIKCgJpZBgBIAEoCSIqChNEZWxldGVGcmFtZVJlc3BvbnNlEhMKC2lzX2FyY2hpdmVkGAEgASgIIi4KD0dldEZyYW1lUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImkKEUxpc3RGcmFtZXNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiUwoSTGlzdEZyYW1lc1Jlc3BvbnNlEiQKBmZyYW1lcxgBIAMoCzIULnF1YWRzbWl0aC5hcGkuRnJhbWUSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIjkKElVwZGF0ZUZyYW1lUmVxdWVzdBIjCgVmcmFtZRgBIAEoCzIULnF1YWRzbWl0aC5hcGkuRnJhbWUyiQMKDEZyYW1lU2VydmljZRJACghHZXRGcmFtZRIeLnF1YWRzbWl0aC5hcGkuR2V0RnJhbWVSZXF1ZXN0GhQucXVhZHNtaXRoLmFwaS5GcmFtZRJRCgpMaXN0RnJhbWVzEiAucXVhZHNtaXRoLmFwaS5MaXN0RnJhbWVzUmVxdWVzdBohLnF1YWRzbWl0aC5hcGkuTGlzdEZyYW1lc1Jlc3BvbnNlEkYKC0NyZWF0ZUZyYW1lEiEucXVhZHNtaXRoLmFwaS5DcmVhdGVGcmFtZVJlcXVlc3QaFC5xdWFkc21pdGguYXBpLkZyYW1lEkYKC1VwZGF0ZUZyYW1lEiEucXVhZHNtaXRoLmFwaS5VcGRhdGVGcmFtZVJlcXVlc3QaFC5xdWFkc21pdGguYXBpLkZyYW1lElQKC0RlbGV0ZUZyYW1lEiEucXVhZHNtaXRoLmFwaS5EZWxldGVGcmFtZVJlcXVlc3QaIi5xdWFkc21pdGguYXBpLkRlbGV0ZUZyYW1lUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -30,170 +30,6 @@ export const file_quadsmith_api_frame: GenFile =
   );
 
 /**
- * ---------------------------------------------------------
- * 2. RPC Requests & Responses (Callers Precede Callees)
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.CreateFrameRequest
- */
-export type CreateFrameRequest = Message<"quadsmith.api.CreateFrameRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Frame frame = 1;
-   */
-  frame?: Frame | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateFrameRequest.
- * Use `create(CreateFrameRequestSchema)` to create a new message.
- */
-export const CreateFrameRequestSchema: GenMessage<CreateFrameRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 0);
-
-/**
- * @generated from message quadsmith.api.DeleteFrameRequest
- */
-export type DeleteFrameRequest = Message<"quadsmith.api.DeleteFrameRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteFrameRequest.
- * Use `create(DeleteFrameRequestSchema)` to create a new message.
- */
-export const DeleteFrameRequestSchema: GenMessage<DeleteFrameRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteFrameResponse
- */
-export type DeleteFrameResponse = Message<"quadsmith.api.DeleteFrameResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteFrameResponse.
- * Use `create(DeleteFrameResponseSchema)` to create a new message.
- */
-export const DeleteFrameResponseSchema: GenMessage<DeleteFrameResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 2);
-
-/**
- * @generated from message quadsmith.api.GetFrameRequest
- */
-export type GetFrameRequest = Message<"quadsmith.api.GetFrameRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: repeated string columns = 2;
-   */
-  columns: string[];
-};
-
-/**
- * Describes the message quadsmith.api.GetFrameRequest.
- * Use `create(GetFrameRequestSchema)` to create a new message.
- */
-export const GetFrameRequestSchema: GenMessage<GetFrameRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 3);
-
-/**
- * @generated from message quadsmith.api.ListFramesRequest
- */
-export type ListFramesRequest = Message<"quadsmith.api.ListFramesRequest"> & {
-  /**
-   * @generated from field: string filter = 1;
-   */
-  filter: string;
-
-  /**
-   * @generated from field: int32 page_size = 2;
-   */
-  pageSize: number;
-
-  /**
-   * @generated from field: string page_token = 3;
-   */
-  pageToken: string;
-
-  /**
-   * @generated from field: repeated string columns = 4;
-   */
-  columns: string[];
-
-  /**
-   * @generated from field: repeated string sort = 5;
-   */
-  sort: string[];
-};
-
-/**
- * Describes the message quadsmith.api.ListFramesRequest.
- * Use `create(ListFramesRequestSchema)` to create a new message.
- */
-export const ListFramesRequestSchema: GenMessage<ListFramesRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 4);
-
-/**
- * @generated from message quadsmith.api.ListFramesResponse
- */
-export type ListFramesResponse = Message<"quadsmith.api.ListFramesResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.Frame frames = 1;
-   */
-  frames: Frame[];
-
-  /**
-   * @generated from field: string next_page_token = 2;
-   */
-  nextPageToken: string;
-};
-
-/**
- * Describes the message quadsmith.api.ListFramesResponse.
- * Use `create(ListFramesResponseSchema)` to create a new message.
- */
-export const ListFramesResponseSchema: GenMessage<ListFramesResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 5);
-
-/**
- * @generated from message quadsmith.api.UpdateFrameRequest
- */
-export type UpdateFrameRequest = Message<"quadsmith.api.UpdateFrameRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Frame frame = 1;
-   */
-  frame?: Frame | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateFrameRequest.
- * Use `create(UpdateFrameRequestSchema)` to create a new message.
- */
-export const UpdateFrameRequestSchema: GenMessage<UpdateFrameRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 6);
-
-/**
- * ---------------------------------------------------------
- * 3. Domain Model (Referenced by Services and Requests above)
- * ---------------------------------------------------------
- *
  * @generated from message quadsmith.api.Frame
  */
 export type Frame = Message<"quadsmith.api.Frame"> & {
@@ -308,13 +144,165 @@ export type Frame = Message<"quadsmith.api.Frame"> & {
  */
 export const FrameSchema: GenMessage<Frame> =
   /*@__PURE__*/
+  messageDesc(file_quadsmith_api_frame, 0);
+
+/**
+ * @generated from message quadsmith.api.CreateFrameRequest
+ */
+export type CreateFrameRequest = Message<"quadsmith.api.CreateFrameRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.Frame frame = 1;
+   */
+  frame?: Frame | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.CreateFrameRequest.
+ * Use `create(CreateFrameRequestSchema)` to create a new message.
+ */
+export const CreateFrameRequestSchema: GenMessage<CreateFrameRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_frame, 1);
+
+/**
+ * @generated from message quadsmith.api.DeleteFrameRequest
+ */
+export type DeleteFrameRequest = Message<"quadsmith.api.DeleteFrameRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteFrameRequest.
+ * Use `create(DeleteFrameRequestSchema)` to create a new message.
+ */
+export const DeleteFrameRequestSchema: GenMessage<DeleteFrameRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_frame, 2);
+
+/**
+ * @generated from message quadsmith.api.DeleteFrameResponse
+ */
+export type DeleteFrameResponse = Message<"quadsmith.api.DeleteFrameResponse"> & {
+  /**
+   * @generated from field: bool is_archived = 1;
+   */
+  isArchived: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteFrameResponse.
+ * Use `create(DeleteFrameResponseSchema)` to create a new message.
+ */
+export const DeleteFrameResponseSchema: GenMessage<DeleteFrameResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_frame, 3);
+
+/**
+ * @generated from message quadsmith.api.GetFrameRequest
+ */
+export type GetFrameRequest = Message<"quadsmith.api.GetFrameRequest"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: repeated string columns = 2;
+   */
+  columns: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.GetFrameRequest.
+ * Use `create(GetFrameRequestSchema)` to create a new message.
+ */
+export const GetFrameRequestSchema: GenMessage<GetFrameRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_frame, 4);
+
+/**
+ * @generated from message quadsmith.api.ListFramesRequest
+ */
+export type ListFramesRequest = Message<"quadsmith.api.ListFramesRequest"> & {
+  /**
+   * @generated from field: string filter = 1;
+   */
+  filter: string;
+
+  /**
+   * @generated from field: int32 page_size = 2;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 3;
+   */
+  pageToken: string;
+
+  /**
+   * @generated from field: repeated string columns = 4;
+   */
+  columns: string[];
+
+  /**
+   * @generated from field: repeated string sort = 5;
+   */
+  sort: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListFramesRequest.
+ * Use `create(ListFramesRequestSchema)` to create a new message.
+ */
+export const ListFramesRequestSchema: GenMessage<ListFramesRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_frame, 5);
+
+/**
+ * @generated from message quadsmith.api.ListFramesResponse
+ */
+export type ListFramesResponse = Message<"quadsmith.api.ListFramesResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.Frame frames = 1;
+   */
+  frames: Frame[];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListFramesResponse.
+ * Use `create(ListFramesResponseSchema)` to create a new message.
+ */
+export const ListFramesResponseSchema: GenMessage<ListFramesResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_frame, 6);
+
+/**
+ * @generated from message quadsmith.api.UpdateFrameRequest
+ */
+export type UpdateFrameRequest = Message<"quadsmith.api.UpdateFrameRequest"> & {
+  /**
+   * @generated from field: quadsmith.api.Frame frame = 1;
+   */
+  frame?: Frame | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.UpdateFrameRequest.
+ * Use `create(UpdateFrameRequestSchema)` to create a new message.
+ */
+export const UpdateFrameRequestSchema: GenMessage<UpdateFrameRequest> =
+  /*@__PURE__*/
   messageDesc(file_quadsmith_api_frame, 7);
 
 /**
- * ---------------------------------------------------------
- * 1. gRPC Service (Services First)
- * ---------------------------------------------------------
- *
  * @generated from service quadsmith.api.FrameService
  */
 export const FrameService: GenService<{

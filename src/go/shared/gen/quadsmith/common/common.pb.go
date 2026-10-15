@@ -26,10 +26,8 @@ type FrontendOptions struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// The default columns to display in CLI tables and UI collection listings.
 	DefaultColumns []string `protobuf:"bytes,1,rep,name=default_columns,json=defaultColumns,proto3" json:"default_columns,omitempty"`
-	// The primary color code for this resource collection (e.g., hex code "#10b981").
-	ColorCode     string `protobuf:"bytes,2,opt,name=color_code,json=colorCode,proto3" json:"color_code,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
 }
 
 func (x *FrontendOptions) Reset() {
@@ -69,13 +67,6 @@ func (x *FrontendOptions) GetDefaultColumns() []string {
 	return nil
 }
 
-func (x *FrontendOptions) GetColorCode() string {
-	if x != nil {
-		return x.ColorCode
-	}
-	return ""
-}
-
 var file_quadsmith_common_common_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
@@ -111,11 +102,9 @@ var File_quadsmith_common_common_proto protoreflect.FileDescriptor
 
 const file_quadsmith_common_common_proto_rawDesc = "" +
 	"\n" +
-	"\x1dquadsmith/common/common.proto\x12\x10quadsmith.common\x1a google/protobuf/descriptor.proto\"Y\n" +
+	"\x1dquadsmith/common/common.proto\x12\x10quadsmith.common\x1a google/protobuf/descriptor.proto\":\n" +
 	"\x0fFrontendOptions\x12'\n" +
-	"\x0fdefault_columns\x18\x01 \x03(\tR\x0edefaultColumns\x12\x1d\n" +
-	"\n" +
-	"color_code\x18\x02 \x01(\tR\tcolorCode:`\n" +
+	"\x0fdefault_columns\x18\x01 \x03(\tR\x0edefaultColumns:`\n" +
 	"\bfrontend\x12\x1f.google.protobuf.MessageOptions\x18ц\x03 \x01(\v2!.quadsmith.common.FrontendOptionsR\bfrontend:J\n" +
 	"\x0fcollection_path\x12\x1f.google.protobuf.MessageOptions\x18ӆ\x03 \x01(\tR\x0ecollectionPathB.Z,quadsmith/shared/gen/quadsmith/common;commonb\x06proto3"
 

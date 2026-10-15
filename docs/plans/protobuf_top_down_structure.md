@@ -5,8 +5,8 @@
 - [1. Background](#1-background)
 - [2. Goal](#2-goal)
 - [3. Proposal](#3-proposal)
-  - [Top-Down Structural Invariant for All Protobuf Definitions](#top-down-structural-invariant)
-  - [Alphabetical Ordering as Lowest-Precedence Tie-Breaker](#alphabetical-ordering-tie-breaker)
+  - [Deterministic Four-Section Protobuf File Structure](#four-section-structure)
+  - [Message Reference Ordering](#message-reference-ordering)
   - [Modular Per-Binary Configuration Decomposition](#modular-per-binary-configuration-decomposition)
   - [Codified AGENTS.md Rule Specification](#codified-agents-md-rule-specification)
 - [4. Assumptions](#4-assumptions)
@@ -22,19 +22,16 @@ the file, forcing engineers and automated tools to scroll past low-level schemas
 before discovering the primary `service` declaration or root configuration
 messages.
 
-The user clarified the desired architectural convention:
+The user clarified the architectural conventions:
 
-> _"I want the proto files in this repo to have a "top-down" structure. A
-> message that gets used by messages should be below all the messages that use
-> it. This not only applies to messages, but to all proto definitions (enums,
-> services, etc.)."_
-
-Subsequently, two refinements were approved:
-
-1. Apply alphabetical sorting to peer definitions at the same hierarchy tier as
-   a lowest-precedence tie-breaker.
-2. Decompose monolithic configuration schemas into dedicated per-binary `.proto`
-   files within `proto/quadsmith/config/`.
+> _"Proto files should be structured like this:_ _1. Services_ _2. Domain model_
+> _3. Request/response messages_ _4. Everything else_
+>
+> _Remove the numbering of these sections. Remove the explanation of ordering_
+> _(currently in parentheses after the section name)._
+>
+> _Sort messages based on what references them - a message should never be
+> above_ _what references them."_
 
 This document formalizes these rules into a permanent engineering standard.
 
@@ -43,11 +40,12 @@ This document formalizes these rules into a permanent engineering standard.
 ## <a id="2-goal" >2. Goal</a>
 
 Establish a deterministic structural ordering standard for all Protobuf
-definitions (`.proto`) in [AGENTS.md](../../AGENTS.md) that mandates top-down
-layout (callers/parents precede callees/children) as the primary invariant,
-applies alphabetical sorting as the lowest-precedence tie-breaker among peer
-definitions at the same tier, and organizes application configurations into
-modular per-binary proto files.
+definitions (`.proto`) in [AGENTS.md](../../AGENTS.md) that organizes files into
+four standard sections (Services, Domain model, Request/response messages,
+Everything else) with clean unnumbered headers, mandates that a message is never
+above what references it, applies alphabetical sorting as the lowest-precedence
+tie-breaker among peer definitions at the same tier, and organizes application
+configurations into modular per-binary proto files.
 
 ---
 
@@ -55,49 +53,75 @@ modular per-binary proto files.
 
 > **TL;DR:**
 >
-> - Organize Protobuf definitions top-down so callers and parents precede
->   callees and children.
-> - Position shared dependencies, leaf messages, and enums below all referencing
->   definitions.
-> - Sort independent definitions at the same tier alphabetically as a
->   lowest-precedence tie-breaker.
+> - Organize Protobuf definitions into Services, Domain model, Request/response
+>   messages, and Everything else.
+> - Use clean unnumbered section headers without parenthetical ordering
+>   explanations.
+> - Sort messages based on what references them so a message is never above what
+>   references it.
+> - Sort peer definitions at the same tier alphabetically as a lowest-precedence
+>   tie-breaker.
 > - Decompose application configurations into per-binary proto files sharing a
 >   common package.
-> - Codify this deterministic ordering standard in AGENTS.md across the
->   codebase.
 
-Protobuf files follow a top-down hierarchy where readers begin at the highest
-level of conceptual abstraction (services and root messages) and proceed
-downward through increasingly granular components and leaf records. Whenever
-multiple definitions occupy the same hierarchy tier without dependency
-constraints between them, they are arranged in alphabetical order.
+Protobuf files follow a deterministic structure where readers encounter the
+high-level service interface and domain models first, followed by specific
+request and response payloads, and finally shared supporting types, enums, and
+extensions.
 
-### <a id="top-down-structural-invariant" >Top-Down Structural Invariant for All Protobuf Definitions</a>
+### <a id="four-section-structure" >Deterministic Four-Section Protobuf File Structure</a>
 
-Every `.proto` file in the repository must be arranged from highest level of
-abstraction (callers, parents, entrypoints) to lowest level of abstraction
-(callees, children, leaves):
+Every `.proto` file in the repository must be arranged in the following order
+(omitting any section that has no definitions in that file):
 
-1. **Services First**: If a file defines a `service`, the `service` block must
-   appear at the very top of the file, preceding the request and response
-   messages that it invokes.
-2. **Parents Above Children**: A composite message must appear above the
-   sub-messages it references.
-3. **Usage Dictates Position**: If definition $B$ is referenced by definition
-   $A$, $B$ must appear below $A$.
-4. **Shared Dependencies Below All Usages**: If definition $B$ is referenced by
-   multiple definitions $\{A_1, A_2, \dots, A_n\}$, $B$ must appear below the
-   last of those definitions ($\max(\text{line}(A_i))$).
-5. **Enums and Leaf Types Last**: Shared enums and primitive leaf records must
-   appear below all messages that reference them.
+1. `// Services`: RPC `service` interface definitions.
+2. `// Domain model`: Primary entity models, persistence tables, and domain
+   objects.
+3. `// Request/response messages`: RPC request and response payload messages.
+4. `// Everything else`: Shared supporting types, nested data records, enums,
+   and custom protobuf option extensions.
 
-#### <a id="alternatives-top-down" >Alternatives considered</a>
+Section headers use clean, unnumbered comment blocks without parenthetical
+ordering explanations:
+
+```proto
+// ---------------------------------------------------------
+// Services
+// ---------------------------------------------------------
+
+// ---------------------------------------------------------
+// Domain model
+// ---------------------------------------------------------
+
+// ---------------------------------------------------------
+// Request/response messages
+// ---------------------------------------------------------
+
+// ---------------------------------------------------------
+// Everything else
+// ---------------------------------------------------------
+```
+
+#### <a id="alternatives-section-structure" >Alternatives considered</a>
+
+##### <a id="numbered-section-headers" >Numbered Section Headers with Ordering Explanations</a>
+
+Retain numbers (`// 1.`, `// 2.`) and parenthetical ordering explanations (such
+as `(Services First)` or `(Callers Precede Callees)`) in section comment blocks.
+
+**Pros:**
+
+- Explicitly announces the underlying rationale directly in comments.
+
+**Cons:**
+
+- Visual clutter that distracts from reading schema code.
+- Becomes brittle and repetitive across dozens of schema files.
 
 ##### <a id="bottom-up-ordering" >Bottom-Up Ordering (C/C++ Header Style)</a>
 
 Require dependencies to be declared before they are referenced, mimicking C/C++
-forward-declaration requirements. This convention was historically common in
-older programming toolchains.
+forward-declaration requirements.
 
 **Pros:**
 
@@ -109,73 +133,40 @@ older programming toolchains.
   large schema files.
 - Contradicts the user's explicit mandate for top-down architecture.
 
-##### <a id="strict-one-definition-per-file" >Strict One-Definition-Per-File Decomposition</a>
+### <a id="message-reference-ordering" >Message Reference Ordering</a>
 
-Decompose all services, messages, and enums into individual single-item `.proto`
-files, eliminating intra-file ordering ambiguity altogether.
+Sort messages based on what references them — a message should never be above
+what references it:
 
-**Pros:**
+1. **Referenced Below Referencer**: When definition $A$ has a field of type $B$
+   ($A$ references $B$), definition $B$ must appear below definition $A$.
+2. **Never Above Referencers**: A message or enum must never be placed above any
+   message that references it.
+3. **Alphabetical Tie-Breaker**: When multiple messages or definitions exist at
+   the same structural tier without mutual references, sort them in alphabetical
+   order. This operates strictly as a lowest-precedence tie-breaker.
 
-- Guarantees zero ambiguity regarding message order within any given file.
+#### <a id="alternatives-message-ordering" >Alternatives considered</a>
 
-**Cons:**
+##### <a id="strict-global-alphabetical-ordering" >Strict Global Alphabetical Ordering</a>
 
-- Fractures the repository schema into dozens of tiny single-definition files.
-- Introduces substantial import graph overhead and complicates code generation.
-
-### <a id="alphabetical-ordering-tie-breaker" >Alphabetical Ordering as Lowest-Precedence Tie-Breaker</a>
-
-When multiple messages or definitions exist at the same tier or hierarchy level
-without mutual dependency constraints, sort them in alphabetical order. This
-guideline operates strictly as a tie-breaker and takes lowest precedence:
-
-1. **Tier Identification**: Definitions that share identical dependency depths
-   form an equivalence tier.
-2. **Alphabetical Tie-Break**: Within that tier, sort names alphabetically.
-3. **Top-Down Priority**: If definition $X$ alphabetically precedes definition
-   $Y$, but $X$ is referenced by $Y$, the top-down structural invariant strictly
-   overrides alphabetical sorting ($Y$ must precede $X$).
-
-#### <a id="alternatives-alphabetical" >Alternatives considered</a>
-
-##### <a id="strict-alphabetical-ordering" >Strict Global Alphabetical Ordering</a>
-
-Impose pure alphabetical sorting across all definitions regardless of
-caller/callee or parent/child relationships. This eliminates any tier judgment
-calls and simplifies automated lint rules.
+Impose pure alphabetical sorting across all definitions regardless of reference
+relationships.
 
 **Pros:**
 
-- Completely deterministic with trivial linter automation.
+- Completely deterministic with simple linter automation.
 
 **Cons:**
 
-- Scatters parent messages and their immediate children across the entire file.
-- Forces services and primary entrypoint messages into arbitrary alphabetical
-  positions, destroying high-level readability.
-
-##### <a id="arbitrary-tier-ordering" >Arbitrary or Freeform Ordering Within Tiers</a>
-
-Allow definitions at the same tier to be ordered arbitrarily by author
-discretion without alphabetical sorting. This imposes fewer formatting
-constraints during initial schema drafting.
-
-**Pros:**
-
-- Authors can group loosely related sibling messages without strict
-  alphabetization.
-
-**Cons:**
-
-- Leads to subjective placement and frequent churn across pair-programming
-  edits.
-- Fails to provide a clear, deterministic tie-breaker for peer definitions.
+- Scatters referencing messages and their children across the entire file.
+- Violates the rule that a message should never be above what references it.
 
 ### <a id="modular-per-binary-configuration-decomposition" >Modular Per-Binary Configuration Decomposition</a>
 
 Rather than maintaining a monolithic `config.proto` file that conflates server,
 ops, job, web, and CLI configuration schemas, split definitions into dedicated
-per-binary schema files under `proto/quadsmith/config/`:
+per-binary schema files under `src/proto/quadsmith/config/`:
 
 - `common.proto`: Shared infrastructure (`DatabaseConfig`, `ServerConfig`).
 - `server_api.proto`: `ApiServerConfig`, `AuthConfig`, `EmailConfig`,
@@ -199,7 +190,7 @@ Retain all configuration messages in a single `config.proto` file.
 
 **Pros:**
 
-- Requires only one file in `proto/quadsmith/config/`.
+- Requires only one file in `src/proto/quadsmith/config/`.
 
 **Cons:**
 
@@ -214,22 +205,22 @@ The complete rule in [AGENTS.md](../../AGENTS.md) under
 ```markdown
 ## Protobuf Structure & Organization
 
-- **Top-Down Structural Invariant**: All Protobuf files (`.proto`) must be
-  organized strictly "top-down". Any definition (message, enum, service, etc.)
-  that is referenced or used by other definitions must appear below all the
-  definitions that use it.
-  - **Services First**: `service` definitions must appear at the top of the
-    file, preceding the request and response messages they call.
-  - **Callers / Parents Precede Callees / Children**: A message that embeds or
-    references other messages must be placed above the messages it references.
-  - **Shared Dependencies Below All Usages**: If a message or enum is referenced
-    by multiple messages, it must appear below all messages that reference it.
-  - **Enums & Leaf Types**: Enums and shared leaf records must appear below all
-    messages that reference them.
-  - **Alphabetical Ordering (Lowest Precedence)**: When multiple definitions
-    exist at the same structural tier without dependency constraints between
-    them, sort them in alphabetical order. This rule takes lowest precedence and
-    must never violate the top-down structural invariant.
+- **Proto File Section Structure**: All Protobuf files (`.proto`) must be
+  structured with the following section order (omitting any section that has no
+  definitions in that file):
+  1. `// Services`
+  2. `// Domain model`
+  3. `// Request/response messages`
+  4. `// Everything else`
+  - Never number section headers (e.g., do not write `// 1. Services`), and
+    never include parenthetical ordering explanations (e.g., do not write
+    `(Services First)`).
+- **Message Reference Ordering**: Sort messages based on what references them —
+  a message should never be above what references them.
+  - When a message references another definition, the referenced definition must
+    appear below the referencing definition.
+  - When multiple definitions exist at the same tier without references between
+    them, sort them in alphabetical order as a lowest-precedence tie-breaker.
 ```
 
 ---
@@ -239,8 +230,8 @@ The complete rule in [AGENTS.md](../../AGENTS.md) under
 1. The Protobuf compiler (`protoc` / `buf`) supports forward references within
    the same `.proto` file, allowing callers to precede callees without
    compilation errors.
-2. The top-down invariant always takes precedence over alphabetical sorting
+2. The reference ordering rule always takes precedence over alphabetical sorting
    whenever a conflict arises.
-3. Peer messages within the same hierarchy tier that do not reference each other
-   can be sorted alphabetically without altering wire-format compatibility or
-   Protobuf field numbering semantics.
+3. Peer messages within the same section that do not reference each other can be
+   sorted alphabetically without altering wire-format compatibility or Protobuf
+   field numbering semantics.

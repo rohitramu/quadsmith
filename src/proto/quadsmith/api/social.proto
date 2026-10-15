@@ -11,7 +11,7 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// 1. ConnectRPC Social Service (Services First)
+// Services
 // ---------------------------------------------------------
 
 service SocialService {
@@ -59,241 +59,7 @@ service SocialService {
 }
 
 // ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
-// ---------------------------------------------------------
-
-message CreateReviewRequest {
-  string entity_id = 1;
-  optional string collection = 2;
-  bool is_recommended = 3;
-  string body = 4;
-}
-
-message UpdateReviewRequest {
-  string review_id = 1;
-  bool is_recommended = 2;
-  string body = 3;
-}
-
-message DeleteReviewRequest {
-  string review_id = 1;
-}
-
-message ListReviewsRequest {
-  string entity_id = 1;
-  optional string collection = 2;
-  string sort_by = 3; // "helpful", "recent", "positive", "negative"
-  int32 page_size = 4;
-  string page_token = 5;
-}
-
-message ListReviewsResponse {
-  repeated Review reviews = 1;
-  ReviewSummary summary = 2;
-  string next_page_token = 3;
-}
-
-message VoteReviewRequest {
-  string review_id = 1;
-  ReviewVoteType vote_type = 2; // HELPFUL, UNHELPFUL, or UNSPECIFIED to retract
-}
-
-message VoteReviewResponse {
-  int32 helpful_count = 1;
-  int32 unhelpful_count = 2;
-  ReviewVoteType current_user_vote = 3;
-}
-
-message CreateReviewCommentRequest {
-  string review_id = 1;
-  string body = 2;
-}
-
-message DeleteReviewCommentRequest {
-  string comment_uuid = 1;
-}
-
-message ListReviewCommentsRequest {
-  string review_id = 1;
-}
-
-message ListReviewCommentsResponse {
-  repeated ReviewComment comments = 1;
-}
-
-message CreateQuestionRequest {
-  string entity_id = 1;
-  optional string collection = 2;
-  string title = 3;
-  string body = 4;
-}
-
-message UpdateQuestionRequest {
-  string question_id = 1;
-  string title = 2;
-  string body = 3;
-}
-
-message DeleteQuestionRequest {
-  string question_id = 1;
-}
-
-message ListQuestionsRequest {
-  string entity_id = 1;
-  optional string collection = 2;
-  string sort_by = 3; // "score", "recent"
-  string query = 4; // Search filter
-  int32 page_size = 5;
-  string page_token = 6;
-}
-
-message ListQuestionsResponse {
-  repeated Question questions = 1;
-  string next_page_token = 2;
-}
-
-message VoteQuestionRequest {
-  string question_id = 1;
-  int32 vote = 2; // +1, -1, or 0 to retract
-}
-
-message VoteQuestionResponse {
-  int32 net_score = 1;
-  int32 upvote_count = 2;
-  int32 downvote_count = 3;
-  int32 current_user_vote = 4;
-}
-
-message CreateAnswerRequest {
-  string question_id = 1;
-  string body = 2;
-}
-
-message UpdateAnswerRequest {
-  string answer_uuid = 1;
-  string body = 2;
-}
-
-message DeleteAnswerRequest {
-  string answer_uuid = 1;
-}
-
-message ListAnswersRequest {
-  string question_id = 1;
-}
-
-message ListAnswersResponse {
-  repeated Answer answers = 1;
-}
-
-message VoteAnswerRequest {
-  string answer_uuid = 1;
-  int32 vote = 2; // +1, -1, or 0
-}
-
-message VoteAnswerResponse {
-  int32 net_score = 1;
-  int32 upvote_count = 2;
-  int32 downvote_count = 3;
-  int32 current_user_vote = 4;
-}
-
-message AcceptAnswerRequest {
-  string answer_uuid = 1;
-}
-
-message EndorseAnswerRequest {
-  string answer_uuid = 1;
-}
-
-message CreateQuestionCommentRequest {
-  string question_id = 1;
-  string body = 2;
-}
-
-message DeleteQuestionCommentRequest {
-  string comment_uuid = 1;
-}
-
-message CreateAnswerCommentRequest {
-  string answer_uuid = 1;
-  string body = 2;
-}
-
-message DeleteAnswerCommentRequest {
-  string comment_uuid = 1;
-}
-
-message CreateCollectionRequest {
-  string name = 1;
-  string description = 2;
-}
-
-message UpdateCollectionRequest {
-  string collection_id = 1;
-  string name = 2;
-  string description = 3;
-}
-
-message DeleteCollectionRequest {
-  string collection_id = 1;
-}
-
-message GetCollectionRequest {
-  string id = 1; // Can be slug or UUID
-}
-
-message ListUserCollectionsRequest {
-  string user_id = 1; // Username or UUID
-  optional string contains_entity_id = 2;
-  optional string contains_collection = 3;
-}
-
-message ListUserCollectionsResponse {
-  repeated Collection collections = 1;
-}
-
-message ToggleLikeItemRequest {
-  string entity_id = 1;
-  optional string collection = 2;
-}
-
-message ToggleLikeItemResponse {
-  bool is_liked = 1;
-  int32 like_count = 2;
-}
-
-message AddCollectionItemRequest {
-  string collection_id = 1;
-  string entity_id = 2;
-  optional string collection = 3;
-}
-
-message RemoveCollectionItemRequest {
-  string collection_id = 1;
-  string entity_id = 2;
-  optional string collection = 3;
-}
-
-message ListCollectionItemsRequest {
-  string collection_id = 1;
-  int32 page_size = 2;
-  string page_token = 3;
-}
-
-message ListCollectionItemsResponse {
-  Collection collection = 1;
-  repeated CollectionItem items = 2;
-  string next_page_token = 3;
-}
-
-message GetEntitySocialSummaryRequest {
-  string entity_id = 1;
-  optional string collection = 2;
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
+// Domain model
 // ---------------------------------------------------------
 
 message Entity {
@@ -972,7 +738,241 @@ message ReviewSummary {
 }
 
 // ---------------------------------------------------------
-// 4. Enums & Leaf Types (Enums at the bottom)
+// Request/response messages
+// ---------------------------------------------------------
+
+message CreateReviewRequest {
+  string entity_id = 1;
+  optional string collection = 2;
+  bool is_recommended = 3;
+  string body = 4;
+}
+
+message UpdateReviewRequest {
+  string review_id = 1;
+  bool is_recommended = 2;
+  string body = 3;
+}
+
+message DeleteReviewRequest {
+  string review_id = 1;
+}
+
+message ListReviewsRequest {
+  string entity_id = 1;
+  optional string collection = 2;
+  string sort_by = 3; // "helpful", "recent", "positive", "negative"
+  int32 page_size = 4;
+  string page_token = 5;
+}
+
+message ListReviewsResponse {
+  repeated Review reviews = 1;
+  ReviewSummary summary = 2;
+  string next_page_token = 3;
+}
+
+message VoteReviewRequest {
+  string review_id = 1;
+  ReviewVoteType vote_type = 2; // HELPFUL, UNHELPFUL, or UNSPECIFIED to retract
+}
+
+message VoteReviewResponse {
+  int32 helpful_count = 1;
+  int32 unhelpful_count = 2;
+  ReviewVoteType current_user_vote = 3;
+}
+
+message CreateReviewCommentRequest {
+  string review_id = 1;
+  string body = 2;
+}
+
+message DeleteReviewCommentRequest {
+  string comment_uuid = 1;
+}
+
+message ListReviewCommentsRequest {
+  string review_id = 1;
+}
+
+message ListReviewCommentsResponse {
+  repeated ReviewComment comments = 1;
+}
+
+message CreateQuestionRequest {
+  string entity_id = 1;
+  optional string collection = 2;
+  string title = 3;
+  string body = 4;
+}
+
+message UpdateQuestionRequest {
+  string question_id = 1;
+  string title = 2;
+  string body = 3;
+}
+
+message DeleteQuestionRequest {
+  string question_id = 1;
+}
+
+message ListQuestionsRequest {
+  string entity_id = 1;
+  optional string collection = 2;
+  string sort_by = 3; // "score", "recent"
+  string query = 4; // Search filter
+  int32 page_size = 5;
+  string page_token = 6;
+}
+
+message ListQuestionsResponse {
+  repeated Question questions = 1;
+  string next_page_token = 2;
+}
+
+message VoteQuestionRequest {
+  string question_id = 1;
+  int32 vote = 2; // +1, -1, or 0 to retract
+}
+
+message VoteQuestionResponse {
+  int32 net_score = 1;
+  int32 upvote_count = 2;
+  int32 downvote_count = 3;
+  int32 current_user_vote = 4;
+}
+
+message CreateAnswerRequest {
+  string question_id = 1;
+  string body = 2;
+}
+
+message UpdateAnswerRequest {
+  string answer_uuid = 1;
+  string body = 2;
+}
+
+message DeleteAnswerRequest {
+  string answer_uuid = 1;
+}
+
+message ListAnswersRequest {
+  string question_id = 1;
+}
+
+message ListAnswersResponse {
+  repeated Answer answers = 1;
+}
+
+message VoteAnswerRequest {
+  string answer_uuid = 1;
+  int32 vote = 2; // +1, -1, or 0
+}
+
+message VoteAnswerResponse {
+  int32 net_score = 1;
+  int32 upvote_count = 2;
+  int32 downvote_count = 3;
+  int32 current_user_vote = 4;
+}
+
+message AcceptAnswerRequest {
+  string answer_uuid = 1;
+}
+
+message EndorseAnswerRequest {
+  string answer_uuid = 1;
+}
+
+message CreateQuestionCommentRequest {
+  string question_id = 1;
+  string body = 2;
+}
+
+message DeleteQuestionCommentRequest {
+  string comment_uuid = 1;
+}
+
+message CreateAnswerCommentRequest {
+  string answer_uuid = 1;
+  string body = 2;
+}
+
+message DeleteAnswerCommentRequest {
+  string comment_uuid = 1;
+}
+
+message CreateCollectionRequest {
+  string name = 1;
+  string description = 2;
+}
+
+message UpdateCollectionRequest {
+  string collection_id = 1;
+  string name = 2;
+  string description = 3;
+}
+
+message DeleteCollectionRequest {
+  string collection_id = 1;
+}
+
+message GetCollectionRequest {
+  string id = 1; // Can be slug or UUID
+}
+
+message ListUserCollectionsRequest {
+  string user_id = 1; // Username or UUID
+  optional string contains_entity_id = 2;
+  optional string contains_collection = 3;
+}
+
+message ListUserCollectionsResponse {
+  repeated Collection collections = 1;
+}
+
+message ToggleLikeItemRequest {
+  string entity_id = 1;
+  optional string collection = 2;
+}
+
+message ToggleLikeItemResponse {
+  bool is_liked = 1;
+  int32 like_count = 2;
+}
+
+message AddCollectionItemRequest {
+  string collection_id = 1;
+  string entity_id = 2;
+  optional string collection = 3;
+}
+
+message RemoveCollectionItemRequest {
+  string collection_id = 1;
+  string entity_id = 2;
+  optional string collection = 3;
+}
+
+message ListCollectionItemsRequest {
+  string collection_id = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message ListCollectionItemsResponse {
+  Collection collection = 1;
+  repeated CollectionItem items = 2;
+  string next_page_token = 3;
+}
+
+message GetEntitySocialSummaryRequest {
+  string entity_id = 1;
+  optional string collection = 2;
+}
+
+// ---------------------------------------------------------
+// Everything else
 // ---------------------------------------------------------
 
 enum ReviewTier {

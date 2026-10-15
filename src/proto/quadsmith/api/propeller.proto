@@ -11,8 +11,9 @@ import "quadsmith/sql/sql.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// 1. gRPC Service (Services First)
+// Services
 // ---------------------------------------------------------
+
 service PropellerService {
   rpc GetPropeller(GetPropellerRequest) returns (Propeller);
   rpc ListPropellers(ListPropellersRequest) returns (ListPropellersResponse);
@@ -22,45 +23,9 @@ service PropellerService {
 }
 
 // ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
+// Domain model
 // ---------------------------------------------------------
-message CreatePropellerRequest {
-  Propeller propeller = 1;
-}
 
-message DeletePropellerRequest {
-  string id = 1;
-}
-
-message DeletePropellerResponse {
-  bool is_archived = 1;
-}
-
-message GetPropellerRequest {
-  string id = 1;
-  repeated string columns = 2;
-}
-
-message ListPropellersRequest {
-  string filter = 1;
-  int32 page_size = 2;
-  string page_token = 3;
-  repeated string columns = 4;
-  repeated string sort = 5;
-}
-
-message ListPropellersResponse {
-  repeated Propeller propellers = 1;
-  string next_page_token = 2;
-}
-
-message UpdatePropellerRequest {
-  Propeller propeller = 1;
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 message Propeller {
   option (quadsmith.sql.table) = {name: "propellers"};
   option (quadsmith.common.collection_path) = "components/hardware/propellers";
@@ -69,7 +34,6 @@ message Propeller {
     user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'propellers' AND user_uuid = $1::uuid)"
   };
   option (quadsmith.common.frontend) = {
-    color_code: "#14b8a6"
     default_columns: [
       "manufacturer",
       "name",
@@ -141,4 +105,42 @@ message Propeller {
     (quadsmith.sql.column) = {ignore: true},
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
   ];
+}
+
+// ---------------------------------------------------------
+// Request/response messages
+// ---------------------------------------------------------
+
+message CreatePropellerRequest {
+  Propeller propeller = 1;
+}
+
+message DeletePropellerRequest {
+  string id = 1;
+}
+
+message DeletePropellerResponse {
+  bool is_archived = 1;
+}
+
+message GetPropellerRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListPropellersRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+}
+
+message ListPropellersResponse {
+  repeated Propeller propellers = 1;
+  string next_page_token = 2;
+}
+
+message UpdatePropellerRequest {
+  Propeller propeller = 1;
 }

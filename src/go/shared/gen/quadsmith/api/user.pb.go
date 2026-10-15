@@ -951,94 +951,6 @@ func (x *OAuthAccount) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-type GetUserRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // Can be username or UUID
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetUserRequest) Reset() {
-	*x = GetUserRequest{}
-	mi := &file_quadsmith_api_user_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetUserRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetUserRequest) ProtoMessage() {}
-
-func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_user_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetUserRequest.ProtoReflect.Descriptor instead.
-func (*GetUserRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *GetUserRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type GetPublicProfileRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // Can be username or UUID
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetPublicProfileRequest) Reset() {
-	*x = GetPublicProfileRequest{}
-	mi := &file_quadsmith_api_user_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetPublicProfileRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetPublicProfileRequest) ProtoMessage() {}
-
-func (x *GetPublicProfileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_user_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetPublicProfileRequest.ProtoReflect.Descriptor instead.
-func (*GetPublicProfileRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *GetPublicProfileRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
 type CheckUsernameAvailableRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
@@ -1048,7 +960,7 @@ type CheckUsernameAvailableRequest struct {
 
 func (x *CheckUsernameAvailableRequest) Reset() {
 	*x = CheckUsernameAvailableRequest{}
-	mi := &file_quadsmith_api_user_proto_msgTypes[11]
+	mi := &file_quadsmith_api_user_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1060,7 +972,7 @@ func (x *CheckUsernameAvailableRequest) String() string {
 func (*CheckUsernameAvailableRequest) ProtoMessage() {}
 
 func (x *CheckUsernameAvailableRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_user_proto_msgTypes[11]
+	mi := &file_quadsmith_api_user_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1073,7 +985,7 @@ func (x *CheckUsernameAvailableRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckUsernameAvailableRequest.ProtoReflect.Descriptor instead.
 func (*CheckUsernameAvailableRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{11}
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *CheckUsernameAvailableRequest) GetUsername() string {
@@ -1094,7 +1006,7 @@ type CheckUsernameAvailableResponse struct {
 
 func (x *CheckUsernameAvailableResponse) Reset() {
 	*x = CheckUsernameAvailableResponse{}
-	mi := &file_quadsmith_api_user_proto_msgTypes[12]
+	mi := &file_quadsmith_api_user_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1106,7 +1018,7 @@ func (x *CheckUsernameAvailableResponse) String() string {
 func (*CheckUsernameAvailableResponse) ProtoMessage() {}
 
 func (x *CheckUsernameAvailableResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_user_proto_msgTypes[12]
+	mi := &file_quadsmith_api_user_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1119,7 +1031,7 @@ func (x *CheckUsernameAvailableResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckUsernameAvailableResponse.ProtoReflect.Descriptor instead.
 func (*CheckUsernameAvailableResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{12}
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *CheckUsernameAvailableResponse) GetStatus() UsernameAvailabilityStatus {
@@ -1143,6 +1055,146 @@ func (x *CheckUsernameAvailableResponse) GetMessage() string {
 	return ""
 }
 
+type GetPublicProfileRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // Can be username or UUID
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetPublicProfileRequest) Reset() {
+	*x = GetPublicProfileRequest{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetPublicProfileRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetPublicProfileRequest) ProtoMessage() {}
+
+func (x *GetPublicProfileRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetPublicProfileRequest.ProtoReflect.Descriptor instead.
+func (*GetPublicProfileRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *GetPublicProfileRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type GetUserRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // Can be username or UUID
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserRequest) Reset() {
+	*x = GetUserRequest{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserRequest) ProtoMessage() {}
+
+func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserRequest.ProtoReflect.Descriptor instead.
+func (*GetUserRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *GetUserRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type ListUsersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Users         []*SeedUser            `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListUsersResponse) Reset() {
+	*x = ListUsersResponse{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUsersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUsersResponse) ProtoMessage() {}
+
+func (x *ListUsersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUsersResponse.ProtoReflect.Descriptor instead.
+func (*ListUsersResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *ListUsersResponse) GetUsers() []*SeedUser {
+	if x != nil {
+		return x.Users
+	}
+	return nil
+}
+
+func (x *ListUsersResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
 type SeedUser struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	Uuid            string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -1157,7 +1209,7 @@ type SeedUser struct {
 
 func (x *SeedUser) Reset() {
 	*x = SeedUser{}
-	mi := &file_quadsmith_api_user_proto_msgTypes[13]
+	mi := &file_quadsmith_api_user_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1169,7 +1221,7 @@ func (x *SeedUser) String() string {
 func (*SeedUser) ProtoMessage() {}
 
 func (x *SeedUser) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_user_proto_msgTypes[13]
+	mi := &file_quadsmith_api_user_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1182,7 +1234,7 @@ func (x *SeedUser) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SeedUser.ProtoReflect.Descriptor instead.
 func (*SeedUser) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{13}
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *SeedUser) GetUuid() string {
@@ -1225,58 +1277,6 @@ func (x *SeedUser) GetReputationScore() int32 {
 		return x.ReputationScore
 	}
 	return 0
-}
-
-type ListUsersResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Users         []*SeedUser            `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListUsersResponse) Reset() {
-	*x = ListUsersResponse{}
-	mi := &file_quadsmith_api_user_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListUsersResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListUsersResponse) ProtoMessage() {}
-
-func (x *ListUsersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_user_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListUsersResponse.ProtoReflect.Descriptor instead.
-func (*ListUsersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{14}
-}
-
-func (x *ListUsersResponse) GetUsers() []*SeedUser {
-	if x != nil {
-		return x.Users
-	}
-	return nil
-}
-
-func (x *ListUsersResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
 }
 
 var File_quadsmith_api_user_proto protoreflect.FileDescriptor
@@ -1409,27 +1409,27 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"\x10token_expires_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x06R\x0etokenExpiresAt\x12?\n" +
 	"\n" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt:\x1a\xc2\xf3\x18\x10\n" +
-	"\x0eoauth_accounts\xc2\xf0\x19\x02\b\x02\" \n" +
-	"\x0eGetUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\")\n" +
-	"\x17GetPublicProfileRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\";\n" +
+	"\x0eoauth_accounts\xc2\xf0\x19\x02\b\x02\";\n" +
 	"\x1dCheckUsernameAvailableRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\"\x9b\x01\n" +
 	"\x1eCheckUsernameAvailableResponse\x12A\n" +
 	"\x06status\x18\x01 \x01(\x0e2).quadsmith.api.UsernameAvailabilityStatusR\x06status\x12\x1c\n" +
 	"\tavailable\x18\x02 \x01(\bR\tavailable\x12\x18\n" +
-	"\amessage\x18\x03 \x01(\tR\amessage\"\x95\x01\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\")\n" +
+	"\x17GetPublicProfileRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\" \n" +
+	"\x0eGetUserRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"j\n" +
+	"\x11ListUsersResponse\x12-\n" +
+	"\x05users\x18\x01 \x03(\v2\x17.quadsmith.api.SeedUserR\x05users\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x95\x01\n" +
 	"\bSeedUser\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x0e\n" +
 	"\x02id\x18\x02 \x01(\tR\x02id\x12\x14\n" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
 	"\x04role\x18\x04 \x01(\tR\x04role\x12\x10\n" +
 	"\x03bio\x18\x05 \x01(\tR\x03bio\x12)\n" +
-	"\x10reputation_score\x18\x06 \x01(\x05R\x0freputationScore\"j\n" +
-	"\x11ListUsersResponse\x12-\n" +
-	"\x05users\x18\x01 \x03(\v2\x17.quadsmith.api.SeedUserR\x05users\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken*\xce\x01\n" +
+	"\x10reputation_score\x18\x06 \x01(\x05R\x0freputationScore*\xce\x01\n" +
 	"\x1aUsernameAvailabilityStatus\x12,\n" +
 	"(USERNAME_AVAILABILITY_STATUS_UNSPECIFIED\x10\x00\x12*\n" +
 	"&USERNAME_AVAILABILITY_STATUS_AVAILABLE\x10\x01\x12,\n" +
@@ -1465,12 +1465,12 @@ var file_quadsmith_api_user_proto_goTypes = []any{
 	(*EmailOtp)(nil),                       // 7: quadsmith.api.EmailOtp
 	(*UsernameHistory)(nil),                // 8: quadsmith.api.UsernameHistory
 	(*OAuthAccount)(nil),                   // 9: quadsmith.api.OAuthAccount
-	(*GetUserRequest)(nil),                 // 10: quadsmith.api.GetUserRequest
-	(*GetPublicProfileRequest)(nil),        // 11: quadsmith.api.GetPublicProfileRequest
-	(*CheckUsernameAvailableRequest)(nil),  // 12: quadsmith.api.CheckUsernameAvailableRequest
-	(*CheckUsernameAvailableResponse)(nil), // 13: quadsmith.api.CheckUsernameAvailableResponse
-	(*SeedUser)(nil),                       // 14: quadsmith.api.SeedUser
-	(*ListUsersResponse)(nil),              // 15: quadsmith.api.ListUsersResponse
+	(*CheckUsernameAvailableRequest)(nil),  // 10: quadsmith.api.CheckUsernameAvailableRequest
+	(*CheckUsernameAvailableResponse)(nil), // 11: quadsmith.api.CheckUsernameAvailableResponse
+	(*GetPublicProfileRequest)(nil),        // 12: quadsmith.api.GetPublicProfileRequest
+	(*GetUserRequest)(nil),                 // 13: quadsmith.api.GetUserRequest
+	(*ListUsersResponse)(nil),              // 14: quadsmith.api.ListUsersResponse
+	(*SeedUser)(nil),                       // 15: quadsmith.api.SeedUser
 	(*timestamppb.Timestamp)(nil),          // 16: google.protobuf.Timestamp
 }
 var file_quadsmith_api_user_proto_depIdxs = []int32{
@@ -1497,13 +1497,13 @@ var file_quadsmith_api_user_proto_depIdxs = []int32{
 	16, // 20: quadsmith.api.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
 	16, // 21: quadsmith.api.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
 	0,  // 22: quadsmith.api.CheckUsernameAvailableResponse.status:type_name -> quadsmith.api.UsernameAvailabilityStatus
-	14, // 23: quadsmith.api.ListUsersResponse.users:type_name -> quadsmith.api.SeedUser
-	10, // 24: quadsmith.api.UserService.GetUser:input_type -> quadsmith.api.GetUserRequest
-	11, // 25: quadsmith.api.UserService.GetPublicProfile:input_type -> quadsmith.api.GetPublicProfileRequest
-	12, // 26: quadsmith.api.UserService.CheckUsernameAvailable:input_type -> quadsmith.api.CheckUsernameAvailableRequest
+	15, // 23: quadsmith.api.ListUsersResponse.users:type_name -> quadsmith.api.SeedUser
+	13, // 24: quadsmith.api.UserService.GetUser:input_type -> quadsmith.api.GetUserRequest
+	12, // 25: quadsmith.api.UserService.GetPublicProfile:input_type -> quadsmith.api.GetPublicProfileRequest
+	10, // 26: quadsmith.api.UserService.CheckUsernameAvailable:input_type -> quadsmith.api.CheckUsernameAvailableRequest
 	1,  // 27: quadsmith.api.UserService.GetUser:output_type -> quadsmith.api.User
 	5,  // 28: quadsmith.api.UserService.GetPublicProfile:output_type -> quadsmith.api.PublicUserProfile
-	13, // 29: quadsmith.api.UserService.CheckUsernameAvailable:output_type -> quadsmith.api.CheckUsernameAvailableResponse
+	11, // 29: quadsmith.api.UserService.CheckUsernameAvailable:output_type -> quadsmith.api.CheckUsernameAvailableResponse
 	27, // [27:30] is the sub-list for method output_type
 	24, // [24:27] is the sub-list for method input_type
 	24, // [24:24] is the sub-list for extension type_name

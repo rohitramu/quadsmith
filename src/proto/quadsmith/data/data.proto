@@ -7,23 +7,7 @@ import "google/protobuf/descriptor.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/data;data";
 
 // ---------------------------------------------------------
-// Custom Message Options
-// ---------------------------------------------------------
-
-extend google.protobuf.MessageOptions {
-  ExportOptions export = 53000;
-}
-
-// ---------------------------------------------------------
-// Custom Field Options
-// ---------------------------------------------------------
-
-extend google.protobuf.FieldOptions {
-  ContentType content_type = 53000;
-}
-
-// ---------------------------------------------------------
-// Export Configuration
+// Domain model
 // ---------------------------------------------------------
 
 message ExportOptions {
@@ -34,6 +18,10 @@ message ExportOptions {
   // is not a direct `uuid = $1` or `user_uuid = $1` check.
   string user_filter = 2;
 }
+
+// ---------------------------------------------------------
+// Everything else
+// ---------------------------------------------------------
 
 enum ContentType {
   CONTENT_TYPE_UNSPECIFIED = 0;
@@ -64,4 +52,12 @@ enum ExportDomain {
   EXPORT_DOMAIN_COLLECTIONS = 6; // -> collections.json
   EXPORT_DOMAIN_SOCIAL = 7; // -> social.json
   EXPORT_DOMAIN_BLOBS = 8; // -> blobs.json + blobs/
+}
+
+extend google.protobuf.MessageOptions {
+  ExportOptions export = 53000;
+}
+
+extend google.protobuf.FieldOptions {
+  ContentType content_type = 53000;
 }

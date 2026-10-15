@@ -24,368 +24,6 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// ---------------------------------------------------------
-// 2. RPC Requests & Responses (Callers Precede Callees)
-// ---------------------------------------------------------
-type CreateVtxFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	VtxFirmware   *VtxFirmware           `protobuf:"bytes,1,opt,name=vtx_firmware,json=vtxFirmware,proto3" json:"vtx_firmware,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateVtxFirmwareRequest) Reset() {
-	*x = CreateVtxFirmwareRequest{}
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[0]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateVtxFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateVtxFirmwareRequest) ProtoMessage() {}
-
-func (x *CreateVtxFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[0]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateVtxFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*CreateVtxFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *CreateVtxFirmwareRequest) GetVtxFirmware() *VtxFirmware {
-	if x != nil {
-		return x.VtxFirmware
-	}
-	return nil
-}
-
-type DeleteVtxFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteVtxFirmwareRequest) Reset() {
-	*x = DeleteVtxFirmwareRequest{}
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteVtxFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteVtxFirmwareRequest) ProtoMessage() {}
-
-func (x *DeleteVtxFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteVtxFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*DeleteVtxFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *DeleteVtxFirmwareRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteVtxFirmwareResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteVtxFirmwareResponse) Reset() {
-	*x = DeleteVtxFirmwareResponse{}
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteVtxFirmwareResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteVtxFirmwareResponse) ProtoMessage() {}
-
-func (x *DeleteVtxFirmwareResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteVtxFirmwareResponse.ProtoReflect.Descriptor instead.
-func (*DeleteVtxFirmwareResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteVtxFirmwareResponse) GetIsArchived() bool {
-	if x != nil {
-		return x.IsArchived
-	}
-	return false
-}
-
-type GetVtxFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetVtxFirmwareRequest) Reset() {
-	*x = GetVtxFirmwareRequest{}
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetVtxFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetVtxFirmwareRequest) ProtoMessage() {}
-
-func (x *GetVtxFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetVtxFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*GetVtxFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *GetVtxFirmwareRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-func (x *GetVtxFirmwareRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-type ListVtxFirmwaresRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
-	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListVtxFirmwaresRequest) Reset() {
-	*x = ListVtxFirmwaresRequest{}
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListVtxFirmwaresRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListVtxFirmwaresRequest) ProtoMessage() {}
-
-func (x *ListVtxFirmwaresRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListVtxFirmwaresRequest.ProtoReflect.Descriptor instead.
-func (*ListVtxFirmwaresRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *ListVtxFirmwaresRequest) GetFilter() string {
-	if x != nil {
-		return x.Filter
-	}
-	return ""
-}
-
-func (x *ListVtxFirmwaresRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListVtxFirmwaresRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-func (x *ListVtxFirmwaresRequest) GetColumns() []string {
-	if x != nil {
-		return x.Columns
-	}
-	return nil
-}
-
-func (x *ListVtxFirmwaresRequest) GetSort() []string {
-	if x != nil {
-		return x.Sort
-	}
-	return nil
-}
-
-type ListVtxFirmwaresResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	VtxFirmwares  []*VtxFirmware         `protobuf:"bytes,1,rep,name=vtx_firmwares,json=vtxFirmwares,proto3" json:"vtx_firmwares,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListVtxFirmwaresResponse) Reset() {
-	*x = ListVtxFirmwaresResponse{}
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListVtxFirmwaresResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListVtxFirmwaresResponse) ProtoMessage() {}
-
-func (x *ListVtxFirmwaresResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListVtxFirmwaresResponse.ProtoReflect.Descriptor instead.
-func (*ListVtxFirmwaresResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *ListVtxFirmwaresResponse) GetVtxFirmwares() []*VtxFirmware {
-	if x != nil {
-		return x.VtxFirmwares
-	}
-	return nil
-}
-
-func (x *ListVtxFirmwaresResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-type UpdateVtxFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	VtxFirmware   *VtxFirmware           `protobuf:"bytes,1,opt,name=vtx_firmware,json=vtxFirmware,proto3" json:"vtx_firmware,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateVtxFirmwareRequest) Reset() {
-	*x = UpdateVtxFirmwareRequest{}
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[6]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateVtxFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateVtxFirmwareRequest) ProtoMessage() {}
-
-func (x *UpdateVtxFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[6]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateVtxFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*UpdateVtxFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{6}
-}
-
-func (x *UpdateVtxFirmwareRequest) GetVtxFirmware() *VtxFirmware {
-	if x != nil {
-		return x.VtxFirmware
-	}
-	return nil
-}
-
-// ---------------------------------------------------------
-// 3. Domain Model (Referenced by Services and Requests above)
-// ---------------------------------------------------------
 type VtxFirmware struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
 	Uuid                 string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -407,7 +45,7 @@ type VtxFirmware struct {
 
 func (x *VtxFirmware) Reset() {
 	*x = VtxFirmware{}
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[7]
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -419,7 +57,7 @@ func (x *VtxFirmware) String() string {
 func (*VtxFirmware) ProtoMessage() {}
 
 func (x *VtxFirmware) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[7]
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -432,7 +70,7 @@ func (x *VtxFirmware) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VtxFirmware.ProtoReflect.Descriptor instead.
 func (*VtxFirmware) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{7}
+	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *VtxFirmware) GetUuid() string {
@@ -526,33 +164,367 @@ func (x *VtxFirmware) GetAuthorUsername() string {
 	return ""
 }
 
+type CreateVtxFirmwareRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	VtxFirmware   *VtxFirmware           `protobuf:"bytes,1,opt,name=vtx_firmware,json=vtxFirmware,proto3" json:"vtx_firmware,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateVtxFirmwareRequest) Reset() {
+	*x = CreateVtxFirmwareRequest{}
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateVtxFirmwareRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateVtxFirmwareRequest) ProtoMessage() {}
+
+func (x *CreateVtxFirmwareRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateVtxFirmwareRequest.ProtoReflect.Descriptor instead.
+func (*CreateVtxFirmwareRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateVtxFirmwareRequest) GetVtxFirmware() *VtxFirmware {
+	if x != nil {
+		return x.VtxFirmware
+	}
+	return nil
+}
+
+type DeleteVtxFirmwareRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteVtxFirmwareRequest) Reset() {
+	*x = DeleteVtxFirmwareRequest{}
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteVtxFirmwareRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteVtxFirmwareRequest) ProtoMessage() {}
+
+func (x *DeleteVtxFirmwareRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteVtxFirmwareRequest.ProtoReflect.Descriptor instead.
+func (*DeleteVtxFirmwareRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteVtxFirmwareRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteVtxFirmwareResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteVtxFirmwareResponse) Reset() {
+	*x = DeleteVtxFirmwareResponse{}
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteVtxFirmwareResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteVtxFirmwareResponse) ProtoMessage() {}
+
+func (x *DeleteVtxFirmwareResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteVtxFirmwareResponse.ProtoReflect.Descriptor instead.
+func (*DeleteVtxFirmwareResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *DeleteVtxFirmwareResponse) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
+}
+
+type GetVtxFirmwareRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Columns       []string               `protobuf:"bytes,2,rep,name=columns,proto3" json:"columns,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetVtxFirmwareRequest) Reset() {
+	*x = GetVtxFirmwareRequest{}
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetVtxFirmwareRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetVtxFirmwareRequest) ProtoMessage() {}
+
+func (x *GetVtxFirmwareRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetVtxFirmwareRequest.ProtoReflect.Descriptor instead.
+func (*GetVtxFirmwareRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *GetVtxFirmwareRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetVtxFirmwareRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+type ListVtxFirmwaresRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        string                 `protobuf:"bytes,1,opt,name=filter,proto3" json:"filter,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	Columns       []string               `protobuf:"bytes,4,rep,name=columns,proto3" json:"columns,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListVtxFirmwaresRequest) Reset() {
+	*x = ListVtxFirmwaresRequest{}
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListVtxFirmwaresRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListVtxFirmwaresRequest) ProtoMessage() {}
+
+func (x *ListVtxFirmwaresRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListVtxFirmwaresRequest.ProtoReflect.Descriptor instead.
+func (*ListVtxFirmwaresRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *ListVtxFirmwaresRequest) GetFilter() string {
+	if x != nil {
+		return x.Filter
+	}
+	return ""
+}
+
+func (x *ListVtxFirmwaresRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListVtxFirmwaresRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+func (x *ListVtxFirmwaresRequest) GetColumns() []string {
+	if x != nil {
+		return x.Columns
+	}
+	return nil
+}
+
+func (x *ListVtxFirmwaresRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
+type ListVtxFirmwaresResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	VtxFirmwares  []*VtxFirmware         `protobuf:"bytes,1,rep,name=vtx_firmwares,json=vtxFirmwares,proto3" json:"vtx_firmwares,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListVtxFirmwaresResponse) Reset() {
+	*x = ListVtxFirmwaresResponse{}
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListVtxFirmwaresResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListVtxFirmwaresResponse) ProtoMessage() {}
+
+func (x *ListVtxFirmwaresResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListVtxFirmwaresResponse.ProtoReflect.Descriptor instead.
+func (*ListVtxFirmwaresResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *ListVtxFirmwaresResponse) GetVtxFirmwares() []*VtxFirmware {
+	if x != nil {
+		return x.VtxFirmwares
+	}
+	return nil
+}
+
+func (x *ListVtxFirmwaresResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type UpdateVtxFirmwareRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	VtxFirmware   *VtxFirmware           `protobuf:"bytes,1,opt,name=vtx_firmware,json=vtxFirmware,proto3" json:"vtx_firmware,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateVtxFirmwareRequest) Reset() {
+	*x = UpdateVtxFirmwareRequest{}
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateVtxFirmwareRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateVtxFirmwareRequest) ProtoMessage() {}
+
+func (x *UpdateVtxFirmwareRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_vtx_firmware_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateVtxFirmwareRequest.ProtoReflect.Descriptor instead.
+func (*UpdateVtxFirmwareRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_vtx_firmware_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateVtxFirmwareRequest) GetVtxFirmware() *VtxFirmware {
+	if x != nil {
+		return x.VtxFirmware
+	}
+	return nil
+}
+
 var File_quadsmith_api_vtx_firmware_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_vtx_firmware_proto_rawDesc = "" +
 	"\n" +
-	" quadsmith/api/vtx_firmware.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"Y\n" +
-	"\x18CreateVtxFirmwareRequest\x12=\n" +
-	"\fvtx_firmware\x18\x01 \x01(\v2\x1a.quadsmith.api.VtxFirmwareR\vvtxFirmware\"*\n" +
-	"\x18DeleteVtxFirmwareRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"<\n" +
-	"\x19DeleteVtxFirmwareResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"A\n" +
-	"\x15GetVtxFirmwareRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
-	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x9b\x01\n" +
-	"\x17ListVtxFirmwaresRequest\x12\x16\n" +
-	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
-	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
-	"\n" +
-	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
-	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
-	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x83\x01\n" +
-	"\x18ListVtxFirmwaresResponse\x12?\n" +
-	"\rvtx_firmwares\x18\x01 \x03(\v2\x1a.quadsmith.api.VtxFirmwareR\fvtxFirmwares\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"Y\n" +
-	"\x18UpdateVtxFirmwareRequest\x12=\n" +
-	"\fvtx_firmware\x18\x01 \x01(\v2\x1a.quadsmith.api.VtxFirmwareR\vvtxFirmware\"\xd3\a\n" +
+	" quadsmith/api/vtx_firmware.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xca\a\n" +
 	"\vVtxFirmware\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
 	"\x02id\x18\x02 \x01(\tB\n" +
@@ -576,17 +548,39 @@ const file_quadsmith_api_vtx_firmware_proto_rawDesc = "" +
 	"\tuser_uuid\x18\f \x01(\tB\n" +
 	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
 	"\x0fauthor_username\x18\r \x01(\tB\n" +
-	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xf6\x01\x8a\xb5\x18G\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xed\x01\x8a\xb5\x18>\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\aversion\n" +
 	"\bprotocol\n" +
-	"\x15supported_resolutions\x12\a#ec4899\x9a\xb5\x18 components/software/vtx-firmware\xc2\xf3\x18\x1d\n" +
+	"\x15supported_resolutions\x9a\xb5\x18 components/software/vtx-firmware\xc2\xf3\x18\x1d\n" +
 	"\x1bvideo_transmitter_firmwares\xc2\xf0\x19b\b\x05\x12^uuid IN (SELECT uuid FROM entities WHERE collection = 'vtx-firmware' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +
-	"\x10_author_username2\xe9\x03\n" +
+	"\x10_author_username\"Y\n" +
+	"\x18CreateVtxFirmwareRequest\x12=\n" +
+	"\fvtx_firmware\x18\x01 \x01(\v2\x1a.quadsmith.api.VtxFirmwareR\vvtxFirmware\"*\n" +
+	"\x18DeleteVtxFirmwareRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"<\n" +
+	"\x19DeleteVtxFirmwareResponse\x12\x1f\n" +
+	"\vis_archived\x18\x01 \x01(\bR\n" +
+	"isArchived\"A\n" +
+	"\x15GetVtxFirmwareRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
+	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x9b\x01\n" +
+	"\x17ListVtxFirmwaresRequest\x12\x16\n" +
+	"\x06filter\x18\x01 \x01(\tR\x06filter\x12\x1b\n" +
+	"\tpage_size\x18\x02 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x03 \x01(\tR\tpageToken\x12\x18\n" +
+	"\acolumns\x18\x04 \x03(\tR\acolumns\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x83\x01\n" +
+	"\x18ListVtxFirmwaresResponse\x12?\n" +
+	"\rvtx_firmwares\x18\x01 \x03(\v2\x1a.quadsmith.api.VtxFirmwareR\fvtxFirmwares\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"Y\n" +
+	"\x18UpdateVtxFirmwareRequest\x12=\n" +
+	"\fvtx_firmware\x18\x01 \x01(\v2\x1a.quadsmith.api.VtxFirmwareR\vvtxFirmware2\xe9\x03\n" +
 	"\x12VtxFirmwareService\x12R\n" +
 	"\x0eGetVtxFirmware\x12$.quadsmith.api.GetVtxFirmwareRequest\x1a\x1a.quadsmith.api.VtxFirmware\x12c\n" +
 	"\x10ListVtxFirmwares\x12&.quadsmith.api.ListVtxFirmwaresRequest\x1a'.quadsmith.api.ListVtxFirmwaresResponse\x12X\n" +
@@ -608,33 +602,33 @@ func file_quadsmith_api_vtx_firmware_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_api_vtx_firmware_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
 var file_quadsmith_api_vtx_firmware_proto_goTypes = []any{
-	(*CreateVtxFirmwareRequest)(nil),  // 0: quadsmith.api.CreateVtxFirmwareRequest
-	(*DeleteVtxFirmwareRequest)(nil),  // 1: quadsmith.api.DeleteVtxFirmwareRequest
-	(*DeleteVtxFirmwareResponse)(nil), // 2: quadsmith.api.DeleteVtxFirmwareResponse
-	(*GetVtxFirmwareRequest)(nil),     // 3: quadsmith.api.GetVtxFirmwareRequest
-	(*ListVtxFirmwaresRequest)(nil),   // 4: quadsmith.api.ListVtxFirmwaresRequest
-	(*ListVtxFirmwaresResponse)(nil),  // 5: quadsmith.api.ListVtxFirmwaresResponse
-	(*UpdateVtxFirmwareRequest)(nil),  // 6: quadsmith.api.UpdateVtxFirmwareRequest
-	(*VtxFirmware)(nil),               // 7: quadsmith.api.VtxFirmware
+	(*VtxFirmware)(nil),               // 0: quadsmith.api.VtxFirmware
+	(*CreateVtxFirmwareRequest)(nil),  // 1: quadsmith.api.CreateVtxFirmwareRequest
+	(*DeleteVtxFirmwareRequest)(nil),  // 2: quadsmith.api.DeleteVtxFirmwareRequest
+	(*DeleteVtxFirmwareResponse)(nil), // 3: quadsmith.api.DeleteVtxFirmwareResponse
+	(*GetVtxFirmwareRequest)(nil),     // 4: quadsmith.api.GetVtxFirmwareRequest
+	(*ListVtxFirmwaresRequest)(nil),   // 5: quadsmith.api.ListVtxFirmwaresRequest
+	(*ListVtxFirmwaresResponse)(nil),  // 6: quadsmith.api.ListVtxFirmwaresResponse
+	(*UpdateVtxFirmwareRequest)(nil),  // 7: quadsmith.api.UpdateVtxFirmwareRequest
 	(*ReferenceLink)(nil),             // 8: quadsmith.api.ReferenceLink
 	(*Media)(nil),                     // 9: quadsmith.api.Media
 }
 var file_quadsmith_api_vtx_firmware_proto_depIdxs = []int32{
-	7,  // 0: quadsmith.api.CreateVtxFirmwareRequest.vtx_firmware:type_name -> quadsmith.api.VtxFirmware
-	7,  // 1: quadsmith.api.ListVtxFirmwaresResponse.vtx_firmwares:type_name -> quadsmith.api.VtxFirmware
-	7,  // 2: quadsmith.api.UpdateVtxFirmwareRequest.vtx_firmware:type_name -> quadsmith.api.VtxFirmware
-	8,  // 3: quadsmith.api.VtxFirmware.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 4: quadsmith.api.VtxFirmware.media:type_name -> quadsmith.api.Media
-	3,  // 5: quadsmith.api.VtxFirmwareService.GetVtxFirmware:input_type -> quadsmith.api.GetVtxFirmwareRequest
-	4,  // 6: quadsmith.api.VtxFirmwareService.ListVtxFirmwares:input_type -> quadsmith.api.ListVtxFirmwaresRequest
-	0,  // 7: quadsmith.api.VtxFirmwareService.CreateVtxFirmware:input_type -> quadsmith.api.CreateVtxFirmwareRequest
-	6,  // 8: quadsmith.api.VtxFirmwareService.UpdateVtxFirmware:input_type -> quadsmith.api.UpdateVtxFirmwareRequest
-	1,  // 9: quadsmith.api.VtxFirmwareService.DeleteVtxFirmware:input_type -> quadsmith.api.DeleteVtxFirmwareRequest
-	7,  // 10: quadsmith.api.VtxFirmwareService.GetVtxFirmware:output_type -> quadsmith.api.VtxFirmware
-	5,  // 11: quadsmith.api.VtxFirmwareService.ListVtxFirmwares:output_type -> quadsmith.api.ListVtxFirmwaresResponse
-	7,  // 12: quadsmith.api.VtxFirmwareService.CreateVtxFirmware:output_type -> quadsmith.api.VtxFirmware
-	7,  // 13: quadsmith.api.VtxFirmwareService.UpdateVtxFirmware:output_type -> quadsmith.api.VtxFirmware
-	2,  // 14: quadsmith.api.VtxFirmwareService.DeleteVtxFirmware:output_type -> quadsmith.api.DeleteVtxFirmwareResponse
+	8,  // 0: quadsmith.api.VtxFirmware.reference_links:type_name -> quadsmith.api.ReferenceLink
+	9,  // 1: quadsmith.api.VtxFirmware.media:type_name -> quadsmith.api.Media
+	0,  // 2: quadsmith.api.CreateVtxFirmwareRequest.vtx_firmware:type_name -> quadsmith.api.VtxFirmware
+	0,  // 3: quadsmith.api.ListVtxFirmwaresResponse.vtx_firmwares:type_name -> quadsmith.api.VtxFirmware
+	0,  // 4: quadsmith.api.UpdateVtxFirmwareRequest.vtx_firmware:type_name -> quadsmith.api.VtxFirmware
+	4,  // 5: quadsmith.api.VtxFirmwareService.GetVtxFirmware:input_type -> quadsmith.api.GetVtxFirmwareRequest
+	5,  // 6: quadsmith.api.VtxFirmwareService.ListVtxFirmwares:input_type -> quadsmith.api.ListVtxFirmwaresRequest
+	1,  // 7: quadsmith.api.VtxFirmwareService.CreateVtxFirmware:input_type -> quadsmith.api.CreateVtxFirmwareRequest
+	7,  // 8: quadsmith.api.VtxFirmwareService.UpdateVtxFirmware:input_type -> quadsmith.api.UpdateVtxFirmwareRequest
+	2,  // 9: quadsmith.api.VtxFirmwareService.DeleteVtxFirmware:input_type -> quadsmith.api.DeleteVtxFirmwareRequest
+	0,  // 10: quadsmith.api.VtxFirmwareService.GetVtxFirmware:output_type -> quadsmith.api.VtxFirmware
+	6,  // 11: quadsmith.api.VtxFirmwareService.ListVtxFirmwares:output_type -> quadsmith.api.ListVtxFirmwaresResponse
+	0,  // 12: quadsmith.api.VtxFirmwareService.CreateVtxFirmware:output_type -> quadsmith.api.VtxFirmware
+	0,  // 13: quadsmith.api.VtxFirmwareService.UpdateVtxFirmware:output_type -> quadsmith.api.VtxFirmware
+	3,  // 14: quadsmith.api.VtxFirmwareService.DeleteVtxFirmware:output_type -> quadsmith.api.DeleteVtxFirmwareResponse
 	10, // [10:15] is the sub-list for method output_type
 	5,  // [5:10] is the sub-list for method input_type
 	5,  // [5:5] is the sub-list for extension type_name
@@ -649,7 +643,7 @@ func file_quadsmith_api_vtx_firmware_proto_init() {
 	}
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
-	file_quadsmith_api_vtx_firmware_proto_msgTypes[7].OneofWrappers = []any{}
+	file_quadsmith_api_vtx_firmware_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

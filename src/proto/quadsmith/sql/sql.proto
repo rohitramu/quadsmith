@@ -7,7 +7,7 @@ import "google/protobuf/descriptor.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/sql;sql";
 
 // ---------------------------------------------------------
-// Table Options
+// Domain model
 // ---------------------------------------------------------
 
 message TableOptions {
@@ -33,10 +33,6 @@ message UniqueIndex {
   string columns = 2;
   string where = 3;
 }
-
-// ---------------------------------------------------------
-// Column Options
-// ---------------------------------------------------------
 
 message ColumnOptions {
   // The name of the SQL column to generate for this field.
@@ -68,17 +64,13 @@ message ColumnOptions {
 }
 
 // ---------------------------------------------------------
-// Custom Message Options
+// Everything else
 // ---------------------------------------------------------
 
 extend google.protobuf.MessageOptions {
   // SQL table configuration for backend database mapping.
   TableOptions table = 51000;
 }
-
-// ---------------------------------------------------------
-// Custom Field Options
-// ---------------------------------------------------------
 
 extend google.protobuf.FieldOptions {
   // SQL column configuration for backend database mapping.

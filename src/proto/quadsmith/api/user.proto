@@ -10,7 +10,17 @@ import "quadsmith/validate/validate.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
-// User & Profile Models
+// Services
+// ---------------------------------------------------------
+
+service UserService {
+  rpc GetUser(GetUserRequest) returns (User);
+  rpc GetPublicProfile(GetPublicProfileRequest) returns (PublicUserProfile);
+  rpc CheckUsernameAvailable(CheckUsernameAvailableRequest) returns (CheckUsernameAvailableResponse);
+}
+
+// ---------------------------------------------------------
+// Domain model
 // ---------------------------------------------------------
 
 message User {
@@ -316,23 +326,8 @@ message OAuthAccount {
 }
 
 // ---------------------------------------------------------
-// User Service
+// Request/response messages
 // ---------------------------------------------------------
-
-message GetUserRequest {
-  string id = 1; // Can be username or UUID
-}
-
-message GetPublicProfileRequest {
-  string id = 1; // Can be username or UUID
-}
-
-enum UsernameAvailabilityStatus {
-  USERNAME_AVAILABILITY_STATUS_UNSPECIFIED = 0;
-  USERNAME_AVAILABILITY_STATUS_AVAILABLE = 1;
-  USERNAME_AVAILABILITY_STATUS_UNAVAILABLE = 2;
-  USERNAME_AVAILABILITY_STATUS_INVALID = 3;
-}
 
 message CheckUsernameAvailableRequest {
   string username = 1;
@@ -344,6 +339,19 @@ message CheckUsernameAvailableResponse {
   string message = 3;
 }
 
+message GetPublicProfileRequest {
+  string id = 1; // Can be username or UUID
+}
+
+message GetUserRequest {
+  string id = 1; // Can be username or UUID
+}
+
+message ListUsersResponse {
+  repeated SeedUser users = 1;
+  string next_page_token = 2;
+}
+
 message SeedUser {
   string uuid = 1;
   string id = 2;
@@ -353,13 +361,13 @@ message SeedUser {
   int32 reputation_score = 6;
 }
 
-message ListUsersResponse {
-  repeated SeedUser users = 1;
-  string next_page_token = 2;
-}
+// ---------------------------------------------------------
+// Everything else
+// ---------------------------------------------------------
 
-service UserService {
-  rpc GetUser(GetUserRequest) returns (User);
-  rpc GetPublicProfile(GetPublicProfileRequest) returns (PublicUserProfile);
-  rpc CheckUsernameAvailable(CheckUsernameAvailableRequest) returns (CheckUsernameAvailableResponse);
+enum UsernameAvailabilityStatus {
+  USERNAME_AVAILABILITY_STATUS_UNSPECIFIED = 0;
+  USERNAME_AVAILABILITY_STATUS_AVAILABLE = 1;
+  USERNAME_AVAILABILITY_STATUS_UNAVAILABLE = 2;
+  USERNAME_AVAILABILITY_STATUS_INVALID = 3;
 }

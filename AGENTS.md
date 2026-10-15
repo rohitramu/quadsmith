@@ -202,22 +202,22 @@ corroboration checks.
 
 ## Protobuf Structure & Organization
 
-- **Top-Down Structural Invariant**: All Protobuf files (`.proto`) must be
-  organized strictly "top-down". Any definition (message, enum, service, etc.)
-  that is referenced or used by other definitions must appear below all the
-  definitions that use it.
-  - **Services First**: `service` definitions must appear at the top of the
-    file, preceding the request and response messages they call.
-  - **Callers / Parents Precede Callees / Children**: A message that embeds or
-    references other messages must be placed above the messages it references.
-  - **Shared Dependencies Below All Usages**: If a message or enum is referenced
-    by multiple messages, it must appear below all messages that reference it.
-  - **Enums & Leaf Types**: Enums and shared leaf records must appear below all
-    messages that reference them.
-  - **Alphabetical Ordering (Lowest Precedence)**: When multiple definitions
-    exist at the same structural tier without dependency constraints between
-    them, sort them in alphabetical order. This rule takes lowest precedence and
-    must never violate the top-down structural invariant.
+- **Proto File Section Structure**: All Protobuf files (`.proto`) must be
+  structured with the following section order (omitting any section that has no
+  definitions in that file):
+  1. `// Services`
+  2. `// Domain model`
+  3. `// Request/response messages`
+  4. `// Everything else`
+  - Never number section headers (e.g., do not write `// 1. Services`), and
+    never include parenthetical ordering explanations (e.g., do not write
+    `(Services First)`).
+- **Message Reference Ordering**: Sort messages based on what references them —
+  a message should never be above what references them.
+  - When a message references another definition, the referenced definition must
+    appear below the referencing definition.
+  - When multiple definitions exist at the same tier without references between
+    them, sort them in alphabetical order as a lowest-precedence tie-breaker.
 
 ## Path Referencing
 

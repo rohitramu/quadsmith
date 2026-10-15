@@ -12,8 +12,64 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_search: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChpxdWFkc21pdGgvYXBpL3NlYXJjaC5wcm90bxINcXVhZHNtaXRoLmFwaSI+Cg5TZWFyY2hTZWxlY3RvchIMCgRwYXRoGAEgASgJEhMKBmZpbHRlchgCIAEoCUgAiAEBQgkKB19maWx0ZXIiuwIKEFNlYXJjaFJlc3VsdEl0ZW0SCgoCaWQYASABKAkSDAoEdXVpZBgCIAEoCRIMCgRuYW1lGAMgASgJEgwKBHBhdGgYBCABKAkSFwoPY29sbGVjdGlvbl9uYW1lGAUgASgJEiIKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgGIAEoCUgAiAEBEhMKC2Rlc2NyaXB0aW9uGAcgASgJEhMKC21hdGNoX3Njb3JlGAggASgCEj8KCG1ldGFkYXRhGAkgAygLMi0ucXVhZHNtaXRoLmFwaS5TZWFyY2hSZXN1bHRJdGVtLk1ldGFkYXRhRW50cnkaLwoNTWV0YWRhdGFFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2UiXwoNU2VhcmNoUmVxdWVzdBINCgVxdWVyeRgBIAEoCRIwCglzZWxlY3RvcnMYAiADKAsyHS5xdWFkc21pdGguYXBpLlNlYXJjaFNlbGVjdG9yEg0KBWxpbWl0GAMgASgFIkIKDlNlYXJjaFJlc3BvbnNlEjAKB3Jlc3VsdHMYASADKAsyHy5xdWFkc21pdGguYXBpLlNlYXJjaFJlc3VsdEl0ZW0yVgoNU2VhcmNoU2VydmljZRJFCgZTZWFyY2gSHC5xdWFkc21pdGguYXBpLlNlYXJjaFJlcXVlc3QaHS5xdWFkc21pdGguYXBpLlNlYXJjaFJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "ChpxdWFkc21pdGgvYXBpL3NlYXJjaC5wcm90bxINcXVhZHNtaXRoLmFwaSJfCg1TZWFyY2hSZXF1ZXN0Eg0KBXF1ZXJ5GAEgASgJEjAKCXNlbGVjdG9ycxgCIAMoCzIdLnF1YWRzbWl0aC5hcGkuU2VhcmNoU2VsZWN0b3ISDQoFbGltaXQYAyABKAUiQgoOU2VhcmNoUmVzcG9uc2USMAoHcmVzdWx0cxgBIAMoCzIfLnF1YWRzbWl0aC5hcGkuU2VhcmNoUmVzdWx0SXRlbSI+Cg5TZWFyY2hTZWxlY3RvchIMCgRwYXRoGAEgASgJEhMKBmZpbHRlchgCIAEoCUgAiAEBQgkKB19maWx0ZXIiuwIKEFNlYXJjaFJlc3VsdEl0ZW0SCgoCaWQYASABKAkSDAoEdXVpZBgCIAEoCRIMCgRuYW1lGAMgASgJEgwKBHBhdGgYBCABKAkSFwoPY29sbGVjdGlvbl9uYW1lGAUgASgJEiIKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgGIAEoCUgAiAEBEhMKC2Rlc2NyaXB0aW9uGAcgASgJEhMKC21hdGNoX3Njb3JlGAggASgCEj8KCG1ldGFkYXRhGAkgAygLMi0ucXVhZHNtaXRoLmFwaS5TZWFyY2hSZXN1bHRJdGVtLk1ldGFkYXRhRW50cnkaLwoNTWV0YWRhdGFFbnRyeRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2UyVgoNU2VhcmNoU2VydmljZRJFCgZTZWFyY2gSHC5xdWFkc21pdGguYXBpLlNlYXJjaFJlcXVlc3QaHS5xdWFkc21pdGguYXBpLlNlYXJjaFJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
   );
+
+/**
+ * SearchRequest for text completion across collections.
+ *
+ * @generated from message quadsmith.api.SearchRequest
+ */
+export type SearchRequest = Message<"quadsmith.api.SearchRequest"> & {
+  /**
+   * The search text entered by the user (can be empty string for initial combobox load).
+   *
+   * @generated from field: string query = 1;
+   */
+  query: string;
+
+  /**
+   * Optional array of selector objects. If omitted or empty, all registered collections are searched.
+   *
+   * @generated from field: repeated quadsmith.api.SearchSelector selectors = 2;
+   */
+  selectors: SearchSelector[];
+
+  /**
+   * Maximum number of ranked results to return (Default: 10, Maximum: 100).
+   *
+   * @generated from field: int32 limit = 3;
+   */
+  limit: number;
+};
+
+/**
+ * Describes the message quadsmith.api.SearchRequest.
+ * Use `create(SearchRequestSchema)` to create a new message.
+ */
+export const SearchRequestSchema: GenMessage<SearchRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_search, 0);
+
+/**
+ * SearchResponse containing ordered matches across collections.
+ *
+ * @generated from message quadsmith.api.SearchResponse
+ */
+export type SearchResponse = Message<"quadsmith.api.SearchResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.SearchResultItem results = 1;
+   */
+  results: SearchResultItem[];
+};
+
+/**
+ * Describes the message quadsmith.api.SearchResponse.
+ * Use `create(SearchResponseSchema)` to create a new message.
+ */
+export const SearchResponseSchema: GenMessage<SearchResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_search, 1);
 
 /**
  * SearchSelector binds a specific collection path to an optional CEL filter.
@@ -43,7 +99,7 @@ export type SearchSelector = Message<"quadsmith.api.SearchSelector"> & {
  */
 export const SearchSelectorSchema: GenMessage<SearchSelector> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_search, 0);
+  messageDesc(file_quadsmith_api_search, 2);
 
 /**
  * SearchResultItem represents an individual match from any collection.
@@ -120,62 +176,6 @@ export type SearchResultItem = Message<"quadsmith.api.SearchResultItem"> & {
  * Use `create(SearchResultItemSchema)` to create a new message.
  */
 export const SearchResultItemSchema: GenMessage<SearchResultItem> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_search, 1);
-
-/**
- * SearchRequest for text completion across collections.
- *
- * @generated from message quadsmith.api.SearchRequest
- */
-export type SearchRequest = Message<"quadsmith.api.SearchRequest"> & {
-  /**
-   * The search text entered by the user (can be empty string for initial combobox load).
-   *
-   * @generated from field: string query = 1;
-   */
-  query: string;
-
-  /**
-   * Optional array of selector objects. If omitted or empty, all registered collections are searched.
-   *
-   * @generated from field: repeated quadsmith.api.SearchSelector selectors = 2;
-   */
-  selectors: SearchSelector[];
-
-  /**
-   * Maximum number of ranked results to return (Default: 10, Maximum: 100).
-   *
-   * @generated from field: int32 limit = 3;
-   */
-  limit: number;
-};
-
-/**
- * Describes the message quadsmith.api.SearchRequest.
- * Use `create(SearchRequestSchema)` to create a new message.
- */
-export const SearchRequestSchema: GenMessage<SearchRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_search, 2);
-
-/**
- * SearchResponse containing ordered matches across collections.
- *
- * @generated from message quadsmith.api.SearchResponse
- */
-export type SearchResponse = Message<"quadsmith.api.SearchResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.SearchResultItem results = 1;
-   */
-  results: SearchResultItem[];
-};
-
-/**
- * Describes the message quadsmith.api.SearchResponse.
- * Use `create(SearchResponseSchema)` to create a new message.
- */
-export const SearchResponseSchema: GenMessage<SearchResponse> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_search, 3);
 

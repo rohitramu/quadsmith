@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_build: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChlxdWFkc21pdGgvYXBpL2J1aWxkLnByb3RvEg1xdWFkc21pdGguYXBpIn8KFENvbXBvbmVudE1hdGNoRGV0YWlsEhEKCWNvbXBvbmVudBgBIAEoCRITCgtleGFjdF9tYXRjaBgCIAEoCBITCgtkZXNjcmlwdGlvbhgDIAEoCRIWCg5wb2ludHNfYXdhcmRlZBgEIAEoARISCgptYXhfcG9pbnRzGAUgASgBIjkKEkNyZWF0ZUJ1aWxkUmVxdWVzdBIjCgVidWlsZBgBIAEoCzIULnF1YWRzbWl0aC5hcGkuQnVpbGQiIAoSRGVsZXRlQnVpbGRSZXF1ZXN0EgoKAmlkGAEgASgJIioKE0RlbGV0ZUJ1aWxkUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiLgoPR2V0QnVpbGRSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiaQoRTGlzdEJ1aWxkc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJTChJMaXN0QnVpbGRzUmVzcG9uc2USJAoGYnVpbGRzGAEgAygLMhQucXVhZHNtaXRoLmFwaS5CdWlsZBIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiOwoYTGlzdFNpbWlsYXJCdWlsZHNSZXF1ZXN0EhAKCGJ1aWxkX2lkGAEgASgJEg0KBWxpbWl0GAIgASgFIlAKGUxpc3RTaW1pbGFyQnVpbGRzUmVzcG9uc2USMwoOc2ltaWxhcl9idWlsZHMYASADKAsyGy5xdWFkc21pdGguYXBpLlNpbWlsYXJCdWlsZCKJAQoMU2ltaWxhckJ1aWxkEiMKBWJ1aWxkGAEgASgLMhQucXVhZHNtaXRoLmFwaS5CdWlsZBIYChBzaW1pbGFyaXR5X3Njb3JlGAIgASgBEjoKDW1hdGNoX2RldGFpbHMYAyADKAsyIy5xdWFkc21pdGguYXBpLkNvbXBvbmVudE1hdGNoRGV0YWlsIsUICgVCdWlsZBI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIWCgJpZBgCIAEoCUIKwvMYAkABwPAZBBIYCgRuYW1lGAMgASgJQgrC8xgCQAHA8BkCEh8KC2Rlc2NyaXB0aW9uGAQgASgJQgrC8xgCQAHA8BkCEioKCmZyYW1lX3V1aWQYBSABKAlCFsLzGA4aDGZyYW1lcyh1dWlkKcDwGQISKgoKbW90b3JfdXVpZBgGIAEoCUIWwvMYDhoMbW90b3JzKHV1aWQpwPAZAhJCChZmbGlnaHRfY29udHJvbGxlcl91dWlkGAggASgJQiLC8xgaGhhmbGlnaHRfY29udHJvbGxlcnModXVpZCnA8BkCEi8KIWVsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlcl91dWlkcxgJIAMoCUIEwPAZAhIcCg5yZWNlaXZlcl91dWlkcxgKIAMoCUIEwPAZAhIbCg1hbnRlbm5hX3V1aWRzGAsgAygJQgTA8BkCEjIKDnByb3BlbGxlcl91dWlkGAwgASgJQhrC8xgSGhBwcm9wZWxsZXJzKHV1aWQpwPAZAhIaCgxjYW1lcmFfdXVpZHMYDSADKAlCBMDwGQISQgoWdmlkZW9fdHJhbnNtaXR0ZXJfdXVpZBgOIAEoCUIiwvMYGhoYdmlkZW9fdHJhbnNtaXR0ZXJzKHV1aWQpwPAZAhI9ChFncHNfcmVjZWl2ZXJfdXVpZBgPIAEoCUIdwvMYFRoTZ3BzX3JlY2VpdmVycyh1dWlkKcDwGQJIAIgBARJBCg9yZWZlcmVuY2VfbGlua3MYECADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCCsLzGAJAAcDwGQISLgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGBEgASgJQgrC8xgCQAHA8BkCSAGIAQESLwoFbWVkaWEYEiADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgrC8xgCQAHA8BkCEiIKCXVzZXJfdXVpZBgTIAEoCUIKwvMYAkABwPAZBEgCiAEBEigKD2F1dGhvcl91c2VybmFtZRgUIAEoCUIKwvMYAkABwPAZAkgDiAEBOo0BirUYEwoCaWQKBG5hbWUSByMzYjgyZjaatRgGYnVpbGRzwvMYCAoGYnVpbGRzwvAZXAgEElh1dWlkIElOIChTRUxFQ1QgdXVpZCBGUk9NIGVudGl0aWVzIFdIRVJFIGNvbGxlY3Rpb24gPSAnYnVpbGRzJyBBTkQgdXNlcl91dWlkID0gJDE6OnV1aWQpQhQKEl9ncHNfcmVjZWl2ZXJfdXVpZEIYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlQgwKCl91c2VyX3V1aWRCEgoQX2F1dGhvcl91c2VybmFtZTKpAwoMQnVpbGRTZXJ2aWNlEkAKCEdldEJ1aWxkEh4ucXVhZHNtaXRoLmFwaS5HZXRCdWlsZFJlcXVlc3QaFC5xdWFkc21pdGguYXBpLkJ1aWxkElEKCkxpc3RCdWlsZHMSIC5xdWFkc21pdGguYXBpLkxpc3RCdWlsZHNSZXF1ZXN0GiEucXVhZHNtaXRoLmFwaS5MaXN0QnVpbGRzUmVzcG9uc2USRgoLQ3JlYXRlQnVpbGQSIS5xdWFkc21pdGguYXBpLkNyZWF0ZUJ1aWxkUmVxdWVzdBoULnF1YWRzbWl0aC5hcGkuQnVpbGQSVAoLRGVsZXRlQnVpbGQSIS5xdWFkc21pdGguYXBpLkRlbGV0ZUJ1aWxkUmVxdWVzdBoiLnF1YWRzbWl0aC5hcGkuRGVsZXRlQnVpbGRSZXNwb25zZRJmChFMaXN0U2ltaWxhckJ1aWxkcxInLnF1YWRzbWl0aC5hcGkuTGlzdFNpbWlsYXJCdWlsZHNSZXF1ZXN0GigucXVhZHNtaXRoLmFwaS5MaXN0U2ltaWxhckJ1aWxkc1Jlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "ChlxdWFkc21pdGgvYXBpL2J1aWxkLnByb3RvEg1xdWFkc21pdGguYXBpIrwICgVCdWlsZBI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIWCgJpZBgCIAEoCUIKwvMYAkABwPAZBBIYCgRuYW1lGAMgASgJQgrC8xgCQAHA8BkCEh8KC2Rlc2NyaXB0aW9uGAQgASgJQgrC8xgCQAHA8BkCEioKCmZyYW1lX3V1aWQYBSABKAlCFsLzGA4aDGZyYW1lcyh1dWlkKcDwGQISKgoKbW90b3JfdXVpZBgGIAEoCUIWwvMYDhoMbW90b3JzKHV1aWQpwPAZAhJCChZmbGlnaHRfY29udHJvbGxlcl91dWlkGAggASgJQiLC8xgaGhhmbGlnaHRfY29udHJvbGxlcnModXVpZCnA8BkCEi8KIWVsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlcl91dWlkcxgJIAMoCUIEwPAZAhIcCg5yZWNlaXZlcl91dWlkcxgKIAMoCUIEwPAZAhIbCg1hbnRlbm5hX3V1aWRzGAsgAygJQgTA8BkCEjIKDnByb3BlbGxlcl91dWlkGAwgASgJQhrC8xgSGhBwcm9wZWxsZXJzKHV1aWQpwPAZAhIaCgxjYW1lcmFfdXVpZHMYDSADKAlCBMDwGQISQgoWdmlkZW9fdHJhbnNtaXR0ZXJfdXVpZBgOIAEoCUIiwvMYGhoYdmlkZW9fdHJhbnNtaXR0ZXJzKHV1aWQpwPAZAhI9ChFncHNfcmVjZWl2ZXJfdXVpZBgPIAEoCUIdwvMYFRoTZ3BzX3JlY2VpdmVycyh1dWlkKcDwGQJIAIgBARJBCg9yZWZlcmVuY2VfbGlua3MYECADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCCsLzGAJAAcDwGQISLgoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGBEgASgJQgrC8xgCQAHA8BkCSAGIAQESLwoFbWVkaWEYEiADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgrC8xgCQAHA8BkCEiIKCXVzZXJfdXVpZBgTIAEoCUIKwvMYAkABwPAZBEgCiAEBEigKD2F1dGhvcl91c2VybmFtZRgUIAEoCUIKwvMYAkABwPAZAkgDiAEBOoQBirUYCgoCaWQKBG5hbWWatRgGYnVpbGRzwvMYCAoGYnVpbGRzwvAZXAgEElh1dWlkIElOIChTRUxFQ1QgdXVpZCBGUk9NIGVudGl0aWVzIFdIRVJFIGNvbGxlY3Rpb24gPSAnYnVpbGRzJyBBTkQgdXNlcl91dWlkID0gJDE6OnV1aWQpQhQKEl9ncHNfcmVjZWl2ZXJfdXVpZEIYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlQgwKCl91c2VyX3V1aWRCEgoQX2F1dGhvcl91c2VybmFtZSI5ChJDcmVhdGVCdWlsZFJlcXVlc3QSIwoFYnVpbGQYASABKAsyFC5xdWFkc21pdGguYXBpLkJ1aWxkIiAKEkRlbGV0ZUJ1aWxkUmVxdWVzdBIKCgJpZBgBIAEoCSIqChNEZWxldGVCdWlsZFJlc3BvbnNlEhMKC2lzX2FyY2hpdmVkGAEgASgIIi4KD0dldEJ1aWxkUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImkKEUxpc3RCdWlsZHNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiUwoSTGlzdEJ1aWxkc1Jlc3BvbnNlEiQKBmJ1aWxkcxgBIAMoCzIULnF1YWRzbWl0aC5hcGkuQnVpbGQSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIjsKGExpc3RTaW1pbGFyQnVpbGRzUmVxdWVzdBIQCghidWlsZF9pZBgBIAEoCRINCgVsaW1pdBgCIAEoBSJQChlMaXN0U2ltaWxhckJ1aWxkc1Jlc3BvbnNlEjMKDnNpbWlsYXJfYnVpbGRzGAEgAygLMhsucXVhZHNtaXRoLmFwaS5TaW1pbGFyQnVpbGQiiQEKDFNpbWlsYXJCdWlsZBIjCgVidWlsZBgBIAEoCzIULnF1YWRzbWl0aC5hcGkuQnVpbGQSGAoQc2ltaWxhcml0eV9zY29yZRgCIAEoARI6Cg1tYXRjaF9kZXRhaWxzGAMgAygLMiMucXVhZHNtaXRoLmFwaS5Db21wb25lbnRNYXRjaERldGFpbCJ/ChRDb21wb25lbnRNYXRjaERldGFpbBIRCgljb21wb25lbnQYASABKAkSEwoLZXhhY3RfbWF0Y2gYAiABKAgSEwoLZGVzY3JpcHRpb24YAyABKAkSFgoOcG9pbnRzX2F3YXJkZWQYBCABKAESEgoKbWF4X3BvaW50cxgFIAEoATKpAwoMQnVpbGRTZXJ2aWNlEkAKCEdldEJ1aWxkEh4ucXVhZHNtaXRoLmFwaS5HZXRCdWlsZFJlcXVlc3QaFC5xdWFkc21pdGguYXBpLkJ1aWxkElEKCkxpc3RCdWlsZHMSIC5xdWFkc21pdGguYXBpLkxpc3RCdWlsZHNSZXF1ZXN0GiEucXVhZHNtaXRoLmFwaS5MaXN0QnVpbGRzUmVzcG9uc2USRgoLQ3JlYXRlQnVpbGQSIS5xdWFkc21pdGguYXBpLkNyZWF0ZUJ1aWxkUmVxdWVzdBoULnF1YWRzbWl0aC5hcGkuQnVpbGQSVAoLRGVsZXRlQnVpbGQSIS5xdWFkc21pdGguYXBpLkRlbGV0ZUJ1aWxkUmVxdWVzdBoiLnF1YWRzbWl0aC5hcGkuRGVsZXRlQnVpbGRSZXNwb25zZRJmChFMaXN0U2ltaWxhckJ1aWxkcxInLnF1YWRzbWl0aC5hcGkuTGlzdFNpbWlsYXJCdWlsZHNSZXF1ZXN0GigucXVhZHNtaXRoLmFwaS5MaXN0U2ltaWxhckJ1aWxkc1Jlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -30,44 +30,130 @@ export const file_quadsmith_api_build: GenFile =
   );
 
 /**
- * ---------------------------------------------------------
- * 2. RPC Requests & Responses (Callers Precede Callees)
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.ComponentMatchDetail
+ * @generated from message quadsmith.api.Build
  */
-export type ComponentMatchDetail = Message<"quadsmith.api.ComponentMatchDetail"> & {
+export type Build = Message<"quadsmith.api.Build"> & {
   /**
-   * @generated from field: string component = 1;
+   * @generated from field: string uuid = 1;
    */
-  component: string;
+  uuid: string;
 
   /**
-   * @generated from field: bool exact_match = 2;
+   * @generated from field: string id = 2;
    */
-  exactMatch: boolean;
+  id: string;
 
   /**
-   * @generated from field: string description = 3;
+   * @generated from field: string name = 3;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string description = 4;
    */
   description: string;
 
   /**
-   * @generated from field: double points_awarded = 4;
+   * The frame used for this build
+   *
+   * @generated from field: string frame_uuid = 5;
    */
-  pointsAwarded: number;
+  frameUuid: string;
 
   /**
-   * @generated from field: double max_points = 5;
+   * The motor SKU used for this build (assumes 4x for a standard quad)
+   *
+   * @generated from field: string motor_uuid = 6;
    */
-  maxPoints: number;
+  motorUuid: string;
+
+  /**
+   * The central Flight Controller (which may be an AIO board)
+   *
+   * @generated from field: string flight_controller_uuid = 8;
+   */
+  flightControllerUuid: string;
+
+  /**
+   * Array of Electronic Speed Controller boards (e.g. one 4-in-1, or four individual ESCs)
+   *
+   * @generated from field: repeated string electronic_speed_controller_uuids = 9;
+   */
+  electronicSpeedControllerUuids: string[];
+
+  /**
+   * Array of receivers (e.g. primary ELRS, backup crossfire)
+   *
+   * @generated from field: repeated string receiver_uuids = 10;
+   */
+  receiverUuids: string[];
+
+  /**
+   * Array of antennas
+   *
+   * @generated from field: repeated string antenna_uuids = 11;
+   */
+  antennaUuids: string[];
+
+  /**
+   * The propeller SKU used (assumes 4x or 8x depending on motors)
+   *
+   * @generated from field: string propeller_uuid = 12;
+   */
+  propellerUuid: string;
+
+  /**
+   * Array of cameras (e.g. primary FPV cam, secondary action cam)
+   *
+   * @generated from field: repeated string camera_uuids = 13;
+   */
+  cameraUuids: string[];
+
+  /**
+   * The Video Transmitter used for this build
+   *
+   * @generated from field: string video_transmitter_uuid = 14;
+   */
+  videoTransmitterUuid: string;
+
+  /**
+   * Optional GPS Receiver for navigation and rescue return-to-home
+   *
+   * @generated from field: optional string gps_receiver_uuid = 15;
+   */
+  gpsReceiverUuid?: string | undefined;
+
+  /**
+   * @generated from field: repeated quadsmith.api.ReferenceLink reference_links = 16;
+   */
+  referenceLinks: ReferenceLink[];
+
+  /**
+   * @generated from field: optional string primary_display_image = 17;
+   */
+  primaryDisplayImage?: string | undefined;
+
+  /**
+   * @generated from field: repeated quadsmith.api.Media media = 18;
+   */
+  media: Media[];
+
+  /**
+   * @generated from field: optional string user_uuid = 19;
+   */
+  userUuid?: string | undefined;
+
+  /**
+   * @generated from field: optional string author_username = 20;
+   */
+  authorUsername?: string | undefined;
 };
 
 /**
- * Describes the message quadsmith.api.ComponentMatchDetail.
- * Use `create(ComponentMatchDetailSchema)` to create a new message.
+ * Describes the message quadsmith.api.Build.
+ * Use `create(BuildSchema)` to create a new message.
  */
-export const ComponentMatchDetailSchema: GenMessage<ComponentMatchDetail> =
+export const BuildSchema: GenMessage<Build> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_build, 0);
 
@@ -279,142 +365,44 @@ export const SimilarBuildSchema: GenMessage<SimilarBuild> =
   messageDesc(file_quadsmith_api_build, 9);
 
 /**
- * ---------------------------------------------------------
- * 3. Domain Model (Referenced by Services and Requests above)
- * ---------------------------------------------------------
- *
- * @generated from message quadsmith.api.Build
+ * @generated from message quadsmith.api.ComponentMatchDetail
  */
-export type Build = Message<"quadsmith.api.Build"> & {
+export type ComponentMatchDetail = Message<"quadsmith.api.ComponentMatchDetail"> & {
   /**
-   * @generated from field: string uuid = 1;
+   * @generated from field: string component = 1;
    */
-  uuid: string;
+  component: string;
 
   /**
-   * @generated from field: string id = 2;
+   * @generated from field: bool exact_match = 2;
    */
-  id: string;
+  exactMatch: boolean;
 
   /**
-   * @generated from field: string name = 3;
-   */
-  name: string;
-
-  /**
-   * @generated from field: string description = 4;
+   * @generated from field: string description = 3;
    */
   description: string;
 
   /**
-   * The frame used for this build
-   *
-   * @generated from field: string frame_uuid = 5;
+   * @generated from field: double points_awarded = 4;
    */
-  frameUuid: string;
+  pointsAwarded: number;
 
   /**
-   * The motor SKU used for this build (assumes 4x for a standard quad)
-   *
-   * @generated from field: string motor_uuid = 6;
+   * @generated from field: double max_points = 5;
    */
-  motorUuid: string;
-
-  /**
-   * The central Flight Controller (which may be an AIO board)
-   *
-   * @generated from field: string flight_controller_uuid = 8;
-   */
-  flightControllerUuid: string;
-
-  /**
-   * Array of Electronic Speed Controller boards (e.g. one 4-in-1, or four individual ESCs)
-   *
-   * @generated from field: repeated string electronic_speed_controller_uuids = 9;
-   */
-  electronicSpeedControllerUuids: string[];
-
-  /**
-   * Array of receivers (e.g. primary ELRS, backup crossfire)
-   *
-   * @generated from field: repeated string receiver_uuids = 10;
-   */
-  receiverUuids: string[];
-
-  /**
-   * Array of antennas
-   *
-   * @generated from field: repeated string antenna_uuids = 11;
-   */
-  antennaUuids: string[];
-
-  /**
-   * The propeller SKU used (assumes 4x or 8x depending on motors)
-   *
-   * @generated from field: string propeller_uuid = 12;
-   */
-  propellerUuid: string;
-
-  /**
-   * Array of cameras (e.g. primary FPV cam, secondary action cam)
-   *
-   * @generated from field: repeated string camera_uuids = 13;
-   */
-  cameraUuids: string[];
-
-  /**
-   * The Video Transmitter used for this build
-   *
-   * @generated from field: string video_transmitter_uuid = 14;
-   */
-  videoTransmitterUuid: string;
-
-  /**
-   * Optional GPS Receiver for navigation and rescue return-to-home
-   *
-   * @generated from field: optional string gps_receiver_uuid = 15;
-   */
-  gpsReceiverUuid?: string | undefined;
-
-  /**
-   * @generated from field: repeated quadsmith.api.ReferenceLink reference_links = 16;
-   */
-  referenceLinks: ReferenceLink[];
-
-  /**
-   * @generated from field: optional string primary_display_image = 17;
-   */
-  primaryDisplayImage?: string | undefined;
-
-  /**
-   * @generated from field: repeated quadsmith.api.Media media = 18;
-   */
-  media: Media[];
-
-  /**
-   * @generated from field: optional string user_uuid = 19;
-   */
-  userUuid?: string | undefined;
-
-  /**
-   * @generated from field: optional string author_username = 20;
-   */
-  authorUsername?: string | undefined;
+  maxPoints: number;
 };
 
 /**
- * Describes the message quadsmith.api.Build.
- * Use `create(BuildSchema)` to create a new message.
+ * Describes the message quadsmith.api.ComponentMatchDetail.
+ * Use `create(ComponentMatchDetailSchema)` to create a new message.
  */
-export const BuildSchema: GenMessage<Build> =
+export const ComponentMatchDetailSchema: GenMessage<ComponentMatchDetail> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_build, 10);
 
 /**
- * ---------------------------------------------------------
- * 1. gRPC Service (Services First)
- * ---------------------------------------------------------
- *
  * @generated from service quadsmith.api.BuildService
  */
 export const BuildService: GenService<{
