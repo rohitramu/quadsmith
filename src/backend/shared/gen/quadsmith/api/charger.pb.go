@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "quadsmith/shared/gen/quadsmith/common"
+	_ "quadsmith/shared/gen/quadsmith/data"
 	_ "quadsmith/shared/gen/quadsmith/sql"
 	reflect "reflect"
 	sync "sync"
@@ -561,7 +562,7 @@ var File_quadsmith_api_charger_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_charger_proto_rawDesc = "" +
 	"\n" +
-	"\x1bquadsmith/api/charger.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"H\n" +
+	"\x1bquadsmith/api/charger.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"H\n" +
 	"\x14CreateChargerRequest\x120\n" +
 	"\acharger\x18\x01 \x01(\v2\x16.quadsmith.api.ChargerR\acharger\"&\n" +
 	"\x14DeleteChargerRequest\x12\x0e\n" +
@@ -583,26 +584,35 @@ const file_quadsmith_api_charger_proto_rawDesc = "" +
 	"\bchargers\x18\x01 \x03(\v2\x16.quadsmith.api.ChargerR\bchargers\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"H\n" +
 	"\x14UpdateChargerRequest\x120\n" +
-	"\acharger\x18\x01 \x01(\v2\x16.quadsmith.api.ChargerR\acharger\"\xda\a\n" +
-	"\aCharger\x12<\n" +
-	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x1a\n" +
-	"\x04name\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12\x1a\n" +
-	"\bchannels\x18\x06 \x01(\rR\bchannels\x12+\n" +
-	"\x12max_charge_power_w\x18\a \x01(\x02R\x0fmaxChargePowerW\x12/\n" +
-	"\x14max_charge_current_a\x18\b \x01(\x02R\x11maxChargeCurrentA\x12.\n" +
-	"\x13input_voltage_range\x18\t \x01(\tR\x11inputVoltageRange\x123\n" +
+	"\acharger\x18\x01 \x01(\v2\x16.quadsmith.api.ChargerR\acharger\"\x8e\t\n" +
+	"\aCharger\x12@\n" +
+	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
+	"\x02id\x18\x02 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04R\x02id\x12.\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\fmanufacturer\x12\x1e\n" +
+	"\x04name\x18\x04 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x04name\x12\x1f\n" +
+	"\bweight_g\x18\x05 \x01(\x02B\x04\xc0\xf0\x19\x02R\aweightG\x12 \n" +
+	"\bchannels\x18\x06 \x01(\rB\x04\xc0\xf0\x19\x02R\bchannels\x121\n" +
+	"\x12max_charge_power_w\x18\a \x01(\x02B\x04\xc0\xf0\x19\x02R\x0fmaxChargePowerW\x125\n" +
+	"\x14max_charge_current_a\x18\b \x01(\x02B\x04\xc0\xf0\x19\x02R\x11maxChargeCurrentA\x124\n" +
+	"\x13input_voltage_range\x18\t \x01(\tB\x04\xc0\xf0\x19\x02R\x11inputVoltageRange\x129\n" +
 	"\x15supported_chemistries\x18\n" +
-	" \x01(\tR\x14supportedChemistries\x12\x1e\n" +
-	"\vmax_cells_s\x18\v \x01(\rR\tmaxCellsS\x12(\n" +
-	"\vdescription\x18\f \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x12M\n" +
-	"\x0freference_links\x18\r \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
-	"\x15primary_display_image\x18\x0e \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x00R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
-	"\x05media\x18\x0f \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12(\n" +
-	"\tuser_uuid\x18\x10 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x01R\buserUuid\x88\x01\x01\x124\n" +
-	"\x0fauthor_username\x18\x11 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\x0eauthorUsername\x88\x01\x01:\x8c\x01\x8a\xb5\x18^\n" +
+	" \x01(\tB\x04\xc0\xf0\x19\x02R\x14supportedChemistries\x12$\n" +
+	"\vmax_cells_s\x18\v \x01(\rB\x04\xc0\xf0\x19\x02R\tmaxCellsS\x12,\n" +
+	"\vdescription\x18\f \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\vdescription\x12Q\n" +
+	"\x0freference_links\x18\r \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0ereferenceLinks\x12C\n" +
+	"\x15primary_display_image\x18\x0e \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x126\n" +
+	"\x05media\x18\x0f \x03(\v2\x14.quadsmith.api.MediaB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x05media\x12,\n" +
+	"\tuser_uuid\x18\x10 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
+	"\x0fauthor_username\x18\x11 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xee\x01\x8a\xb5\x18^\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\bchannels\n" +
@@ -610,7 +620,7 @@ const file_quadsmith_api_charger_proto_rawDesc = "" +
 	"\x14max_charge_current_a\n" +
 	"\vmax_cells_s\x12\a#f59e0b\x9a\xb5\x18\x18components/gear/chargers\xc2\xf3\x18\n" +
 	"\n" +
-	"\bchargersB\x18\n" +
+	"\bchargers\xc2\xf0\x19^\b\x05\x12Zuuid IN (SELECT uuid FROM entities WHERE collection = 'chargers' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +

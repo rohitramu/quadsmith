@@ -164,6 +164,18 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 			}
 		}
 	}
+
+	// Generate custom/partial unique indexes
+	for _, uidx := range tblOpts.GetUniqueIndexes() {
+		if uidx.GetName() != "" && uidx.GetColumns() != "" {
+			stmt := fmt.Sprintf("CREATE UNIQUE INDEX IF NOT EXISTS %s ON %s (%s)", uidx.GetName(), tableName, uidx.GetColumns())
+			if uidx.GetWhere() != "" {
+				stmt += fmt.Sprintf(" WHERE %s", uidx.GetWhere())
+			}
+			stmt += ";"
+			g.P(stmt)
+		}
+	}
 	g.P()
 	return alters
 }

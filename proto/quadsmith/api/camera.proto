@@ -5,6 +5,7 @@ package quadsmith.api;
 import "quadsmith/api/media.proto";
 import "quadsmith/api/reference_link.proto";
 import "quadsmith/common/common.proto";
+import "quadsmith/data/data.proto";
 import "quadsmith/sql/sql.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
@@ -63,6 +64,10 @@ message UpdateCameraRequest {
 message Camera {
   option (quadsmith.sql.table) = {name: "cameras"};
   option (quadsmith.common.collection_path) = "components/hardware/cameras";
+  option (quadsmith.data.export) = {
+    domain: EXPORT_DOMAIN_COMPONENTS
+    user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'cameras' AND user_uuid = $1::uuid)"
+  };
   option (quadsmith.common.frontend) = {
     color_code: "#06b6d4"
     default_columns: [
@@ -73,34 +78,64 @@ message Camera {
     ]
   };
 
-  string uuid = 1 [(quadsmith.sql.column) = {
-    is_primary_key: true
-    references: "entities(uuid) ON DELETE CASCADE"
-  }];
+  string uuid = 1 [
+    (quadsmith.sql.column) = {
+      is_primary_key: true
+      references: "entities(uuid) ON DELETE CASCADE"
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
-  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+  string id = 2 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
-  bool is_internal_only = 5;
+  string manufacturer = 3 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  string name = 4 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  bool is_internal_only = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
-  float weight_g = 6;
+  float weight_g = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Protocol / signal type (e.g., "Analog", "DJI O3", "DJI O4 Pro", "DJI O4 Lite", "Walksnail Avatar", "HDZero")
-  string protocol = 7;
+  string protocol = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Sensor size (e.g., "1/3 CMOS", "1/1.8 CMOS")
-  string sensor_size = 8;
+  string sensor_size = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Camera mounting interface (e.g., "14mm (Nano)", "19mm (Micro)", "20mm (DJI O3)")
-  string camera_mount_interface = 9;
+  string camera_mount_interface = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Lens focal length or FOV descriptor (e.g., 1.8, 2.1)
-  float lens_size_mm = 10;
-  string description = 11 [(quadsmith.sql.column) = {ignore: true}];
-  repeated ReferenceLink reference_links = 12 [(quadsmith.sql.column) = {ignore: true}];
-  optional string primary_display_image = 13 [(quadsmith.sql.column) = {ignore: true}];
-  repeated Media media = 14 [(quadsmith.sql.column) = {ignore: true}];
-  optional string user_uuid = 15 [(quadsmith.sql.column) = {ignore: true}];
-  optional string author_username = 16 [(quadsmith.sql.column) = {ignore: true}];
+  float lens_size_mm = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string description = 11 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  repeated ReferenceLink reference_links = 12 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  optional string primary_display_image = 13 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  repeated Media media = 14 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  optional string user_uuid = 15 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  optional string author_username = 16 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 }

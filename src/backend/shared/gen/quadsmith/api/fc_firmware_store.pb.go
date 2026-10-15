@@ -209,3 +209,36 @@ func ListFcFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, sorts
 	}
 	return results, nil
 }
+
+func ExportFcFirmwares(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*FcFirmware, error) {
+	query := `SELECT uuid, manufacturer, version, target_architectures, supported_protocols, is_open_source, repository_url FROM flight_controller_firmwares WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'fc-firmware' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*FcFirmware, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 7)
+		scanAssigns := make([]func(), 0, 7)
+		m := &FcFirmware{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.Version
+		scanArgs[3] = &m.TargetArchitectures
+		scanArgs[4] = &m.SupportedProtocols
+		scanArgs[5] = &m.IsOpenSource
+		scanArgs[6] = &m.RepositoryUrl
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.Version != "" || m.TargetArchitectures != "" || m.SupportedProtocols != "" || m.IsOpenSource || m.RepositoryUrl != "" {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

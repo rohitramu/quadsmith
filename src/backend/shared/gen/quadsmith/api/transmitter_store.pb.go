@@ -217,3 +217,38 @@ func ListTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 	}
 	return results, nil
 }
+
+func ExportTransmitters(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Transmitter, error) {
+	query := `SELECT uuid, manufacturer, weight_g, rf_protocol, operating_system, gimbal_type, max_power_mw, channels, battery_type FROM transmitters WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'transmitters' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*Transmitter, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 9)
+		scanAssigns := make([]func(), 0, 9)
+		m := &Transmitter{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.WeightG
+		scanArgs[3] = &m.RfProtocol
+		scanArgs[4] = &m.OperatingSystem
+		scanArgs[5] = &m.GimbalType
+		scanArgs[6] = &m.MaxPowerMw
+		scanArgs[7] = &m.Channels
+		scanArgs[8] = &m.BatteryType
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.WeightG != 0 || m.RfProtocol != "" || m.OperatingSystem != "" || m.GimbalType != "" || m.MaxPowerMw != 0 || m.Channels != 0 || m.BatteryType != "" {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

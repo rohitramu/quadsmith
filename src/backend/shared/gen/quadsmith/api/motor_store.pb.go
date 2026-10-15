@@ -225,3 +225,40 @@ func ListMotors(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 	}
 	return results, nil
 }
+
+func ExportMotors(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Motor, error) {
+	query := `SELECT uuid, manufacturer, weight_g, stator_diameter_mm, stator_height_mm, kv, min_voltage, max_voltage, max_current_a, prop_mount_interfaces, mount_pattern FROM motors WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'motors' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*Motor, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 11)
+		scanAssigns := make([]func(), 0, 11)
+		m := &Motor{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.WeightG
+		scanArgs[3] = &m.StatorDiameterMm
+		scanArgs[4] = &m.StatorHeightMm
+		scanArgs[5] = &m.Kv
+		scanArgs[6] = &m.MinVoltage
+		scanArgs[7] = &m.MaxVoltage
+		scanArgs[8] = &m.MaxCurrentA
+		scanArgs[9] = &m.PropMountInterfaces
+		scanArgs[10] = &m.MountPattern
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.WeightG != 0 || m.StatorDiameterMm != 0 || m.StatorHeightMm != 0 || m.Kv != 0 || m.MinVoltage != 0 || m.MaxVoltage != 0 || m.MaxCurrentA != 0 || len(m.PropMountInterfaces) > 0 || m.MountPattern != "" {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

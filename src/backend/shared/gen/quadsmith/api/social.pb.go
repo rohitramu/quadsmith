@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	_ "quadsmith/shared/gen/quadsmith/data"
 	_ "quadsmith/shared/gen/quadsmith/sql"
 	reflect "reflect"
 	sync "sync"
@@ -136,6 +137,2374 @@ func (ReviewVoteType) EnumDescriptor() ([]byte, []int) {
 	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{1}
 }
 
+type CreateReviewRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
+	IsRecommended bool                   `protobuf:"varint,3,opt,name=is_recommended,json=isRecommended,proto3" json:"is_recommended,omitempty"`
+	Body          string                 `protobuf:"bytes,4,opt,name=body,proto3" json:"body,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateReviewRequest) Reset() {
+	*x = CreateReviewRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateReviewRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateReviewRequest) ProtoMessage() {}
+
+func (x *CreateReviewRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateReviewRequest.ProtoReflect.Descriptor instead.
+func (*CreateReviewRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *CreateReviewRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
+	}
+	return ""
+}
+
+func (x *CreateReviewRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
+	}
+	return ""
+}
+
+func (x *CreateReviewRequest) GetIsRecommended() bool {
+	if x != nil {
+		return x.IsRecommended
+	}
+	return false
+}
+
+func (x *CreateReviewRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+type UpdateReviewRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ReviewId      string                 `protobuf:"bytes,1,opt,name=review_id,json=reviewId,proto3" json:"review_id,omitempty"`
+	IsRecommended bool                   `protobuf:"varint,2,opt,name=is_recommended,json=isRecommended,proto3" json:"is_recommended,omitempty"`
+	Body          string                 `protobuf:"bytes,3,opt,name=body,proto3" json:"body,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateReviewRequest) Reset() {
+	*x = UpdateReviewRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateReviewRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateReviewRequest) ProtoMessage() {}
+
+func (x *UpdateReviewRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateReviewRequest.ProtoReflect.Descriptor instead.
+func (*UpdateReviewRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *UpdateReviewRequest) GetReviewId() string {
+	if x != nil {
+		return x.ReviewId
+	}
+	return ""
+}
+
+func (x *UpdateReviewRequest) GetIsRecommended() bool {
+	if x != nil {
+		return x.IsRecommended
+	}
+	return false
+}
+
+func (x *UpdateReviewRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+type DeleteReviewRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ReviewId      string                 `protobuf:"bytes,1,opt,name=review_id,json=reviewId,proto3" json:"review_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteReviewRequest) Reset() {
+	*x = DeleteReviewRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteReviewRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteReviewRequest) ProtoMessage() {}
+
+func (x *DeleteReviewRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteReviewRequest.ProtoReflect.Descriptor instead.
+func (*DeleteReviewRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *DeleteReviewRequest) GetReviewId() string {
+	if x != nil {
+		return x.ReviewId
+	}
+	return ""
+}
+
+type ListReviewsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
+	SortBy        string                 `protobuf:"bytes,3,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"` // "helpful", "recent", "positive", "negative"
+	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,5,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListReviewsRequest) Reset() {
+	*x = ListReviewsRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListReviewsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListReviewsRequest) ProtoMessage() {}
+
+func (x *ListReviewsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListReviewsRequest.ProtoReflect.Descriptor instead.
+func (*ListReviewsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *ListReviewsRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
+	}
+	return ""
+}
+
+func (x *ListReviewsRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
+	}
+	return ""
+}
+
+func (x *ListReviewsRequest) GetSortBy() string {
+	if x != nil {
+		return x.SortBy
+	}
+	return ""
+}
+
+func (x *ListReviewsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListReviewsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+type ListReviewsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Reviews       []*Review              `protobuf:"bytes,1,rep,name=reviews,proto3" json:"reviews,omitempty"`
+	Summary       *ReviewSummary         `protobuf:"bytes,2,opt,name=summary,proto3" json:"summary,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListReviewsResponse) Reset() {
+	*x = ListReviewsResponse{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListReviewsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListReviewsResponse) ProtoMessage() {}
+
+func (x *ListReviewsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListReviewsResponse.ProtoReflect.Descriptor instead.
+func (*ListReviewsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *ListReviewsResponse) GetReviews() []*Review {
+	if x != nil {
+		return x.Reviews
+	}
+	return nil
+}
+
+func (x *ListReviewsResponse) GetSummary() *ReviewSummary {
+	if x != nil {
+		return x.Summary
+	}
+	return nil
+}
+
+func (x *ListReviewsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type VoteReviewRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ReviewId      string                 `protobuf:"bytes,1,opt,name=review_id,json=reviewId,proto3" json:"review_id,omitempty"`
+	VoteType      ReviewVoteType         `protobuf:"varint,2,opt,name=vote_type,json=voteType,proto3,enum=quadsmith.api.ReviewVoteType" json:"vote_type,omitempty"` // HELPFUL, UNHELPFUL, or UNSPECIFIED to retract
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VoteReviewRequest) Reset() {
+	*x = VoteReviewRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VoteReviewRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VoteReviewRequest) ProtoMessage() {}
+
+func (x *VoteReviewRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VoteReviewRequest.ProtoReflect.Descriptor instead.
+func (*VoteReviewRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *VoteReviewRequest) GetReviewId() string {
+	if x != nil {
+		return x.ReviewId
+	}
+	return ""
+}
+
+func (x *VoteReviewRequest) GetVoteType() ReviewVoteType {
+	if x != nil {
+		return x.VoteType
+	}
+	return ReviewVoteType_REVIEW_VOTE_TYPE_UNSPECIFIED
+}
+
+type VoteReviewResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	HelpfulCount    int32                  `protobuf:"varint,1,opt,name=helpful_count,json=helpfulCount,proto3" json:"helpful_count,omitempty"`
+	UnhelpfulCount  int32                  `protobuf:"varint,2,opt,name=unhelpful_count,json=unhelpfulCount,proto3" json:"unhelpful_count,omitempty"`
+	CurrentUserVote ReviewVoteType         `protobuf:"varint,3,opt,name=current_user_vote,json=currentUserVote,proto3,enum=quadsmith.api.ReviewVoteType" json:"current_user_vote,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *VoteReviewResponse) Reset() {
+	*x = VoteReviewResponse{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VoteReviewResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VoteReviewResponse) ProtoMessage() {}
+
+func (x *VoteReviewResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VoteReviewResponse.ProtoReflect.Descriptor instead.
+func (*VoteReviewResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *VoteReviewResponse) GetHelpfulCount() int32 {
+	if x != nil {
+		return x.HelpfulCount
+	}
+	return 0
+}
+
+func (x *VoteReviewResponse) GetUnhelpfulCount() int32 {
+	if x != nil {
+		return x.UnhelpfulCount
+	}
+	return 0
+}
+
+func (x *VoteReviewResponse) GetCurrentUserVote() ReviewVoteType {
+	if x != nil {
+		return x.CurrentUserVote
+	}
+	return ReviewVoteType_REVIEW_VOTE_TYPE_UNSPECIFIED
+}
+
+type CreateReviewCommentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ReviewId      string                 `protobuf:"bytes,1,opt,name=review_id,json=reviewId,proto3" json:"review_id,omitempty"`
+	Body          string                 `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateReviewCommentRequest) Reset() {
+	*x = CreateReviewCommentRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateReviewCommentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateReviewCommentRequest) ProtoMessage() {}
+
+func (x *CreateReviewCommentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateReviewCommentRequest.ProtoReflect.Descriptor instead.
+func (*CreateReviewCommentRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *CreateReviewCommentRequest) GetReviewId() string {
+	if x != nil {
+		return x.ReviewId
+	}
+	return ""
+}
+
+func (x *CreateReviewCommentRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+type DeleteReviewCommentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CommentUuid   string                 `protobuf:"bytes,1,opt,name=comment_uuid,json=commentUuid,proto3" json:"comment_uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteReviewCommentRequest) Reset() {
+	*x = DeleteReviewCommentRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteReviewCommentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteReviewCommentRequest) ProtoMessage() {}
+
+func (x *DeleteReviewCommentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteReviewCommentRequest.ProtoReflect.Descriptor instead.
+func (*DeleteReviewCommentRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *DeleteReviewCommentRequest) GetCommentUuid() string {
+	if x != nil {
+		return x.CommentUuid
+	}
+	return ""
+}
+
+type ListReviewCommentsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ReviewId      string                 `protobuf:"bytes,1,opt,name=review_id,json=reviewId,proto3" json:"review_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListReviewCommentsRequest) Reset() {
+	*x = ListReviewCommentsRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListReviewCommentsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListReviewCommentsRequest) ProtoMessage() {}
+
+func (x *ListReviewCommentsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListReviewCommentsRequest.ProtoReflect.Descriptor instead.
+func (*ListReviewCommentsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ListReviewCommentsRequest) GetReviewId() string {
+	if x != nil {
+		return x.ReviewId
+	}
+	return ""
+}
+
+type ListReviewCommentsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Comments      []*ReviewComment       `protobuf:"bytes,1,rep,name=comments,proto3" json:"comments,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListReviewCommentsResponse) Reset() {
+	*x = ListReviewCommentsResponse{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListReviewCommentsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListReviewCommentsResponse) ProtoMessage() {}
+
+func (x *ListReviewCommentsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListReviewCommentsResponse.ProtoReflect.Descriptor instead.
+func (*ListReviewCommentsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *ListReviewCommentsResponse) GetComments() []*ReviewComment {
+	if x != nil {
+		return x.Comments
+	}
+	return nil
+}
+
+type CreateQuestionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
+	Title         string                 `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
+	Body          string                 `protobuf:"bytes,4,opt,name=body,proto3" json:"body,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateQuestionRequest) Reset() {
+	*x = CreateQuestionRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateQuestionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateQuestionRequest) ProtoMessage() {}
+
+func (x *CreateQuestionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateQuestionRequest.ProtoReflect.Descriptor instead.
+func (*CreateQuestionRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *CreateQuestionRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
+	}
+	return ""
+}
+
+func (x *CreateQuestionRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
+	}
+	return ""
+}
+
+func (x *CreateQuestionRequest) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *CreateQuestionRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+type UpdateQuestionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QuestionId    string                 `protobuf:"bytes,1,opt,name=question_id,json=questionId,proto3" json:"question_id,omitempty"`
+	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	Body          string                 `protobuf:"bytes,3,opt,name=body,proto3" json:"body,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateQuestionRequest) Reset() {
+	*x = UpdateQuestionRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateQuestionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateQuestionRequest) ProtoMessage() {}
+
+func (x *UpdateQuestionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateQuestionRequest.ProtoReflect.Descriptor instead.
+func (*UpdateQuestionRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *UpdateQuestionRequest) GetQuestionId() string {
+	if x != nil {
+		return x.QuestionId
+	}
+	return ""
+}
+
+func (x *UpdateQuestionRequest) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *UpdateQuestionRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+type DeleteQuestionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QuestionId    string                 `protobuf:"bytes,1,opt,name=question_id,json=questionId,proto3" json:"question_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteQuestionRequest) Reset() {
+	*x = DeleteQuestionRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteQuestionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteQuestionRequest) ProtoMessage() {}
+
+func (x *DeleteQuestionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteQuestionRequest.ProtoReflect.Descriptor instead.
+func (*DeleteQuestionRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *DeleteQuestionRequest) GetQuestionId() string {
+	if x != nil {
+		return x.QuestionId
+	}
+	return ""
+}
+
+type ListQuestionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
+	SortBy        string                 `protobuf:"bytes,3,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"` // "score", "recent"
+	Query         string                 `protobuf:"bytes,4,opt,name=query,proto3" json:"query,omitempty"`                 // Search filter
+	PageSize      int32                  `protobuf:"varint,5,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,6,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListQuestionsRequest) Reset() {
+	*x = ListQuestionsRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListQuestionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListQuestionsRequest) ProtoMessage() {}
+
+func (x *ListQuestionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListQuestionsRequest.ProtoReflect.Descriptor instead.
+func (*ListQuestionsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *ListQuestionsRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
+	}
+	return ""
+}
+
+func (x *ListQuestionsRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
+	}
+	return ""
+}
+
+func (x *ListQuestionsRequest) GetSortBy() string {
+	if x != nil {
+		return x.SortBy
+	}
+	return ""
+}
+
+func (x *ListQuestionsRequest) GetQuery() string {
+	if x != nil {
+		return x.Query
+	}
+	return ""
+}
+
+func (x *ListQuestionsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListQuestionsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+type ListQuestionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Questions     []*Question            `protobuf:"bytes,1,rep,name=questions,proto3" json:"questions,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListQuestionsResponse) Reset() {
+	*x = ListQuestionsResponse{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListQuestionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListQuestionsResponse) ProtoMessage() {}
+
+func (x *ListQuestionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListQuestionsResponse.ProtoReflect.Descriptor instead.
+func (*ListQuestionsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *ListQuestionsResponse) GetQuestions() []*Question {
+	if x != nil {
+		return x.Questions
+	}
+	return nil
+}
+
+func (x *ListQuestionsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type VoteQuestionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QuestionId    string                 `protobuf:"bytes,1,opt,name=question_id,json=questionId,proto3" json:"question_id,omitempty"`
+	Vote          int32                  `protobuf:"varint,2,opt,name=vote,proto3" json:"vote,omitempty"` // +1, -1, or 0 to retract
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VoteQuestionRequest) Reset() {
+	*x = VoteQuestionRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VoteQuestionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VoteQuestionRequest) ProtoMessage() {}
+
+func (x *VoteQuestionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VoteQuestionRequest.ProtoReflect.Descriptor instead.
+func (*VoteQuestionRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *VoteQuestionRequest) GetQuestionId() string {
+	if x != nil {
+		return x.QuestionId
+	}
+	return ""
+}
+
+func (x *VoteQuestionRequest) GetVote() int32 {
+	if x != nil {
+		return x.Vote
+	}
+	return 0
+}
+
+type VoteQuestionResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	NetScore        int32                  `protobuf:"varint,1,opt,name=net_score,json=netScore,proto3" json:"net_score,omitempty"`
+	UpvoteCount     int32                  `protobuf:"varint,2,opt,name=upvote_count,json=upvoteCount,proto3" json:"upvote_count,omitempty"`
+	DownvoteCount   int32                  `protobuf:"varint,3,opt,name=downvote_count,json=downvoteCount,proto3" json:"downvote_count,omitempty"`
+	CurrentUserVote int32                  `protobuf:"varint,4,opt,name=current_user_vote,json=currentUserVote,proto3" json:"current_user_vote,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *VoteQuestionResponse) Reset() {
+	*x = VoteQuestionResponse{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VoteQuestionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VoteQuestionResponse) ProtoMessage() {}
+
+func (x *VoteQuestionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VoteQuestionResponse.ProtoReflect.Descriptor instead.
+func (*VoteQuestionResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *VoteQuestionResponse) GetNetScore() int32 {
+	if x != nil {
+		return x.NetScore
+	}
+	return 0
+}
+
+func (x *VoteQuestionResponse) GetUpvoteCount() int32 {
+	if x != nil {
+		return x.UpvoteCount
+	}
+	return 0
+}
+
+func (x *VoteQuestionResponse) GetDownvoteCount() int32 {
+	if x != nil {
+		return x.DownvoteCount
+	}
+	return 0
+}
+
+func (x *VoteQuestionResponse) GetCurrentUserVote() int32 {
+	if x != nil {
+		return x.CurrentUserVote
+	}
+	return 0
+}
+
+type CreateAnswerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QuestionId    string                 `protobuf:"bytes,1,opt,name=question_id,json=questionId,proto3" json:"question_id,omitempty"`
+	Body          string                 `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateAnswerRequest) Reset() {
+	*x = CreateAnswerRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateAnswerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateAnswerRequest) ProtoMessage() {}
+
+func (x *CreateAnswerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateAnswerRequest.ProtoReflect.Descriptor instead.
+func (*CreateAnswerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *CreateAnswerRequest) GetQuestionId() string {
+	if x != nil {
+		return x.QuestionId
+	}
+	return ""
+}
+
+func (x *CreateAnswerRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+type UpdateAnswerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AnswerUuid    string                 `protobuf:"bytes,1,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
+	Body          string                 `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateAnswerRequest) Reset() {
+	*x = UpdateAnswerRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateAnswerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateAnswerRequest) ProtoMessage() {}
+
+func (x *UpdateAnswerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateAnswerRequest.ProtoReflect.Descriptor instead.
+func (*UpdateAnswerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *UpdateAnswerRequest) GetAnswerUuid() string {
+	if x != nil {
+		return x.AnswerUuid
+	}
+	return ""
+}
+
+func (x *UpdateAnswerRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+type DeleteAnswerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AnswerUuid    string                 `protobuf:"bytes,1,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteAnswerRequest) Reset() {
+	*x = DeleteAnswerRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteAnswerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteAnswerRequest) ProtoMessage() {}
+
+func (x *DeleteAnswerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteAnswerRequest.ProtoReflect.Descriptor instead.
+func (*DeleteAnswerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *DeleteAnswerRequest) GetAnswerUuid() string {
+	if x != nil {
+		return x.AnswerUuid
+	}
+	return ""
+}
+
+type ListAnswersRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QuestionId    string                 `protobuf:"bytes,1,opt,name=question_id,json=questionId,proto3" json:"question_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAnswersRequest) Reset() {
+	*x = ListAnswersRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAnswersRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAnswersRequest) ProtoMessage() {}
+
+func (x *ListAnswersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAnswersRequest.ProtoReflect.Descriptor instead.
+func (*ListAnswersRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *ListAnswersRequest) GetQuestionId() string {
+	if x != nil {
+		return x.QuestionId
+	}
+	return ""
+}
+
+type ListAnswersResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Answers       []*Answer              `protobuf:"bytes,1,rep,name=answers,proto3" json:"answers,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListAnswersResponse) Reset() {
+	*x = ListAnswersResponse{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListAnswersResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListAnswersResponse) ProtoMessage() {}
+
+func (x *ListAnswersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListAnswersResponse.ProtoReflect.Descriptor instead.
+func (*ListAnswersResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *ListAnswersResponse) GetAnswers() []*Answer {
+	if x != nil {
+		return x.Answers
+	}
+	return nil
+}
+
+type VoteAnswerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AnswerUuid    string                 `protobuf:"bytes,1,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
+	Vote          int32                  `protobuf:"varint,2,opt,name=vote,proto3" json:"vote,omitempty"` // +1, -1, or 0
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *VoteAnswerRequest) Reset() {
+	*x = VoteAnswerRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VoteAnswerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VoteAnswerRequest) ProtoMessage() {}
+
+func (x *VoteAnswerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VoteAnswerRequest.ProtoReflect.Descriptor instead.
+func (*VoteAnswerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *VoteAnswerRequest) GetAnswerUuid() string {
+	if x != nil {
+		return x.AnswerUuid
+	}
+	return ""
+}
+
+func (x *VoteAnswerRequest) GetVote() int32 {
+	if x != nil {
+		return x.Vote
+	}
+	return 0
+}
+
+type VoteAnswerResponse struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	NetScore        int32                  `protobuf:"varint,1,opt,name=net_score,json=netScore,proto3" json:"net_score,omitempty"`
+	UpvoteCount     int32                  `protobuf:"varint,2,opt,name=upvote_count,json=upvoteCount,proto3" json:"upvote_count,omitempty"`
+	DownvoteCount   int32                  `protobuf:"varint,3,opt,name=downvote_count,json=downvoteCount,proto3" json:"downvote_count,omitempty"`
+	CurrentUserVote int32                  `protobuf:"varint,4,opt,name=current_user_vote,json=currentUserVote,proto3" json:"current_user_vote,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *VoteAnswerResponse) Reset() {
+	*x = VoteAnswerResponse{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *VoteAnswerResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*VoteAnswerResponse) ProtoMessage() {}
+
+func (x *VoteAnswerResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use VoteAnswerResponse.ProtoReflect.Descriptor instead.
+func (*VoteAnswerResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *VoteAnswerResponse) GetNetScore() int32 {
+	if x != nil {
+		return x.NetScore
+	}
+	return 0
+}
+
+func (x *VoteAnswerResponse) GetUpvoteCount() int32 {
+	if x != nil {
+		return x.UpvoteCount
+	}
+	return 0
+}
+
+func (x *VoteAnswerResponse) GetDownvoteCount() int32 {
+	if x != nil {
+		return x.DownvoteCount
+	}
+	return 0
+}
+
+func (x *VoteAnswerResponse) GetCurrentUserVote() int32 {
+	if x != nil {
+		return x.CurrentUserVote
+	}
+	return 0
+}
+
+type AcceptAnswerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AnswerUuid    string                 `protobuf:"bytes,1,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AcceptAnswerRequest) Reset() {
+	*x = AcceptAnswerRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcceptAnswerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcceptAnswerRequest) ProtoMessage() {}
+
+func (x *AcceptAnswerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcceptAnswerRequest.ProtoReflect.Descriptor instead.
+func (*AcceptAnswerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *AcceptAnswerRequest) GetAnswerUuid() string {
+	if x != nil {
+		return x.AnswerUuid
+	}
+	return ""
+}
+
+type EndorseAnswerRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AnswerUuid    string                 `protobuf:"bytes,1,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *EndorseAnswerRequest) Reset() {
+	*x = EndorseAnswerRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *EndorseAnswerRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*EndorseAnswerRequest) ProtoMessage() {}
+
+func (x *EndorseAnswerRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use EndorseAnswerRequest.ProtoReflect.Descriptor instead.
+func (*EndorseAnswerRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *EndorseAnswerRequest) GetAnswerUuid() string {
+	if x != nil {
+		return x.AnswerUuid
+	}
+	return ""
+}
+
+type CreateQuestionCommentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QuestionId    string                 `protobuf:"bytes,1,opt,name=question_id,json=questionId,proto3" json:"question_id,omitempty"`
+	Body          string                 `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateQuestionCommentRequest) Reset() {
+	*x = CreateQuestionCommentRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[27]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateQuestionCommentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateQuestionCommentRequest) ProtoMessage() {}
+
+func (x *CreateQuestionCommentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[27]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateQuestionCommentRequest.ProtoReflect.Descriptor instead.
+func (*CreateQuestionCommentRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *CreateQuestionCommentRequest) GetQuestionId() string {
+	if x != nil {
+		return x.QuestionId
+	}
+	return ""
+}
+
+func (x *CreateQuestionCommentRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+type DeleteQuestionCommentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CommentUuid   string                 `protobuf:"bytes,1,opt,name=comment_uuid,json=commentUuid,proto3" json:"comment_uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteQuestionCommentRequest) Reset() {
+	*x = DeleteQuestionCommentRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[28]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteQuestionCommentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteQuestionCommentRequest) ProtoMessage() {}
+
+func (x *DeleteQuestionCommentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[28]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteQuestionCommentRequest.ProtoReflect.Descriptor instead.
+func (*DeleteQuestionCommentRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *DeleteQuestionCommentRequest) GetCommentUuid() string {
+	if x != nil {
+		return x.CommentUuid
+	}
+	return ""
+}
+
+type CreateAnswerCommentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	AnswerUuid    string                 `protobuf:"bytes,1,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
+	Body          string                 `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateAnswerCommentRequest) Reset() {
+	*x = CreateAnswerCommentRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[29]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateAnswerCommentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateAnswerCommentRequest) ProtoMessage() {}
+
+func (x *CreateAnswerCommentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[29]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateAnswerCommentRequest.ProtoReflect.Descriptor instead.
+func (*CreateAnswerCommentRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{29}
+}
+
+func (x *CreateAnswerCommentRequest) GetAnswerUuid() string {
+	if x != nil {
+		return x.AnswerUuid
+	}
+	return ""
+}
+
+func (x *CreateAnswerCommentRequest) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+type DeleteAnswerCommentRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CommentUuid   string                 `protobuf:"bytes,1,opt,name=comment_uuid,json=commentUuid,proto3" json:"comment_uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteAnswerCommentRequest) Reset() {
+	*x = DeleteAnswerCommentRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[30]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteAnswerCommentRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteAnswerCommentRequest) ProtoMessage() {}
+
+func (x *DeleteAnswerCommentRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[30]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteAnswerCommentRequest.ProtoReflect.Descriptor instead.
+func (*DeleteAnswerCommentRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{30}
+}
+
+func (x *DeleteAnswerCommentRequest) GetCommentUuid() string {
+	if x != nil {
+		return x.CommentUuid
+	}
+	return ""
+}
+
+type CreateCollectionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateCollectionRequest) Reset() {
+	*x = CreateCollectionRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateCollectionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateCollectionRequest) ProtoMessage() {}
+
+func (x *CreateCollectionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateCollectionRequest.ProtoReflect.Descriptor instead.
+func (*CreateCollectionRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *CreateCollectionRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CreateCollectionRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+type UpdateCollectionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CollectionId  string                 `protobuf:"bytes,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateCollectionRequest) Reset() {
+	*x = UpdateCollectionRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateCollectionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateCollectionRequest) ProtoMessage() {}
+
+func (x *UpdateCollectionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateCollectionRequest.ProtoReflect.Descriptor instead.
+func (*UpdateCollectionRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *UpdateCollectionRequest) GetCollectionId() string {
+	if x != nil {
+		return x.CollectionId
+	}
+	return ""
+}
+
+func (x *UpdateCollectionRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *UpdateCollectionRequest) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+type DeleteCollectionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CollectionId  string                 `protobuf:"bytes,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteCollectionRequest) Reset() {
+	*x = DeleteCollectionRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteCollectionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteCollectionRequest) ProtoMessage() {}
+
+func (x *DeleteCollectionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteCollectionRequest.ProtoReflect.Descriptor instead.
+func (*DeleteCollectionRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{33}
+}
+
+func (x *DeleteCollectionRequest) GetCollectionId() string {
+	if x != nil {
+		return x.CollectionId
+	}
+	return ""
+}
+
+type GetCollectionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // Can be slug or UUID
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCollectionRequest) Reset() {
+	*x = GetCollectionRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCollectionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCollectionRequest) ProtoMessage() {}
+
+func (x *GetCollectionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCollectionRequest.ProtoReflect.Descriptor instead.
+func (*GetCollectionRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *GetCollectionRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type ListUserCollectionsRequest struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	UserId             string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // Username or UUID
+	ContainsEntityId   *string                `protobuf:"bytes,2,opt,name=contains_entity_id,json=containsEntityId,proto3,oneof" json:"contains_entity_id,omitempty"`
+	ContainsCollection *string                `protobuf:"bytes,3,opt,name=contains_collection,json=containsCollection,proto3,oneof" json:"contains_collection,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *ListUserCollectionsRequest) Reset() {
+	*x = ListUserCollectionsRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUserCollectionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUserCollectionsRequest) ProtoMessage() {}
+
+func (x *ListUserCollectionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUserCollectionsRequest.ProtoReflect.Descriptor instead.
+func (*ListUserCollectionsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *ListUserCollectionsRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *ListUserCollectionsRequest) GetContainsEntityId() string {
+	if x != nil && x.ContainsEntityId != nil {
+		return *x.ContainsEntityId
+	}
+	return ""
+}
+
+func (x *ListUserCollectionsRequest) GetContainsCollection() string {
+	if x != nil && x.ContainsCollection != nil {
+		return *x.ContainsCollection
+	}
+	return ""
+}
+
+type ListUserCollectionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Collections   []*Collection          `protobuf:"bytes,1,rep,name=collections,proto3" json:"collections,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListUserCollectionsResponse) Reset() {
+	*x = ListUserCollectionsResponse{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListUserCollectionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListUserCollectionsResponse) ProtoMessage() {}
+
+func (x *ListUserCollectionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListUserCollectionsResponse.ProtoReflect.Descriptor instead.
+func (*ListUserCollectionsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *ListUserCollectionsResponse) GetCollections() []*Collection {
+	if x != nil {
+		return x.Collections
+	}
+	return nil
+}
+
+type ToggleLikeItemRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleLikeItemRequest) Reset() {
+	*x = ToggleLikeItemRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[37]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleLikeItemRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleLikeItemRequest) ProtoMessage() {}
+
+func (x *ToggleLikeItemRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[37]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleLikeItemRequest.ProtoReflect.Descriptor instead.
+func (*ToggleLikeItemRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *ToggleLikeItemRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
+	}
+	return ""
+}
+
+func (x *ToggleLikeItemRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
+	}
+	return ""
+}
+
+type ToggleLikeItemResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsLiked       bool                   `protobuf:"varint,1,opt,name=is_liked,json=isLiked,proto3" json:"is_liked,omitempty"`
+	LikeCount     int32                  `protobuf:"varint,2,opt,name=like_count,json=likeCount,proto3" json:"like_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ToggleLikeItemResponse) Reset() {
+	*x = ToggleLikeItemResponse{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[38]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ToggleLikeItemResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ToggleLikeItemResponse) ProtoMessage() {}
+
+func (x *ToggleLikeItemResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[38]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ToggleLikeItemResponse.ProtoReflect.Descriptor instead.
+func (*ToggleLikeItemResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{38}
+}
+
+func (x *ToggleLikeItemResponse) GetIsLiked() bool {
+	if x != nil {
+		return x.IsLiked
+	}
+	return false
+}
+
+func (x *ToggleLikeItemResponse) GetLikeCount() int32 {
+	if x != nil {
+		return x.LikeCount
+	}
+	return 0
+}
+
+type AddCollectionItemRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CollectionId  string                 `protobuf:"bytes,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
+	EntityId      string                 `protobuf:"bytes,2,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,3,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AddCollectionItemRequest) Reset() {
+	*x = AddCollectionItemRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AddCollectionItemRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AddCollectionItemRequest) ProtoMessage() {}
+
+func (x *AddCollectionItemRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AddCollectionItemRequest.ProtoReflect.Descriptor instead.
+func (*AddCollectionItemRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{39}
+}
+
+func (x *AddCollectionItemRequest) GetCollectionId() string {
+	if x != nil {
+		return x.CollectionId
+	}
+	return ""
+}
+
+func (x *AddCollectionItemRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
+	}
+	return ""
+}
+
+func (x *AddCollectionItemRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
+	}
+	return ""
+}
+
+type RemoveCollectionItemRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CollectionId  string                 `protobuf:"bytes,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
+	EntityId      string                 `protobuf:"bytes,2,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,3,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RemoveCollectionItemRequest) Reset() {
+	*x = RemoveCollectionItemRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RemoveCollectionItemRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RemoveCollectionItemRequest) ProtoMessage() {}
+
+func (x *RemoveCollectionItemRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[40]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RemoveCollectionItemRequest.ProtoReflect.Descriptor instead.
+func (*RemoveCollectionItemRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{40}
+}
+
+func (x *RemoveCollectionItemRequest) GetCollectionId() string {
+	if x != nil {
+		return x.CollectionId
+	}
+	return ""
+}
+
+func (x *RemoveCollectionItemRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
+	}
+	return ""
+}
+
+func (x *RemoveCollectionItemRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
+	}
+	return ""
+}
+
+type ListCollectionItemsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CollectionId  string                 `protobuf:"bytes,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
+	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListCollectionItemsRequest) Reset() {
+	*x = ListCollectionItemsRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[41]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListCollectionItemsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListCollectionItemsRequest) ProtoMessage() {}
+
+func (x *ListCollectionItemsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[41]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListCollectionItemsRequest.ProtoReflect.Descriptor instead.
+func (*ListCollectionItemsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *ListCollectionItemsRequest) GetCollectionId() string {
+	if x != nil {
+		return x.CollectionId
+	}
+	return ""
+}
+
+func (x *ListCollectionItemsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListCollectionItemsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+type ListCollectionItemsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Collection    *Collection            `protobuf:"bytes,1,opt,name=collection,proto3" json:"collection,omitempty"`
+	Items         []*CollectionItem      `protobuf:"bytes,2,rep,name=items,proto3" json:"items,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListCollectionItemsResponse) Reset() {
+	*x = ListCollectionItemsResponse{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListCollectionItemsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListCollectionItemsResponse) ProtoMessage() {}
+
+func (x *ListCollectionItemsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListCollectionItemsResponse.ProtoReflect.Descriptor instead.
+func (*ListCollectionItemsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *ListCollectionItemsResponse) GetCollection() *Collection {
+	if x != nil {
+		return x.Collection
+	}
+	return nil
+}
+
+func (x *ListCollectionItemsResponse) GetItems() []*CollectionItem {
+	if x != nil {
+		return x.Items
+	}
+	return nil
+}
+
+func (x *ListCollectionItemsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type GetEntitySocialSummaryRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
+	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetEntitySocialSummaryRequest) Reset() {
+	*x = GetEntitySocialSummaryRequest{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetEntitySocialSummaryRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetEntitySocialSummaryRequest) ProtoMessage() {}
+
+func (x *GetEntitySocialSummaryRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetEntitySocialSummaryRequest.ProtoReflect.Descriptor instead.
+func (*GetEntitySocialSummaryRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *GetEntitySocialSummaryRequest) GetEntityId() string {
+	if x != nil {
+		return x.EntityId
+	}
+	return ""
+}
+
+func (x *GetEntitySocialSummaryRequest) GetCollection() string {
+	if x != nil && x.Collection != nil {
+		return *x.Collection
+	}
+	return ""
+}
+
 type Entity struct {
 	state                protoimpl.MessageState `protogen:"open.v1"`
 	Uuid                 string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -158,7 +2527,7 @@ type Entity struct {
 
 func (x *Entity) Reset() {
 	*x = Entity{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[0]
+	mi := &file_quadsmith_api_social_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -170,7 +2539,7 @@ func (x *Entity) String() string {
 func (*Entity) ProtoMessage() {}
 
 func (x *Entity) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[0]
+	mi := &file_quadsmith_api_social_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -183,7 +2552,7 @@ func (x *Entity) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Entity.ProtoReflect.Descriptor instead.
 func (*Entity) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{0}
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *Entity) GetUuid() string {
@@ -284,74 +2653,6 @@ func (x *Entity) GetAuthorUsername() string {
 	return ""
 }
 
-type ReviewSummary struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	TotalReviews     int32                  `protobuf:"varint,1,opt,name=total_reviews,json=totalReviews,proto3" json:"total_reviews,omitempty"`
-	RecommendedCount int32                  `protobuf:"varint,2,opt,name=recommended_count,json=recommendedCount,proto3" json:"recommended_count,omitempty"`
-	ScorePercentage  float32                `protobuf:"fixed32,3,opt,name=score_percentage,json=scorePercentage,proto3" json:"score_percentage,omitempty"`
-	Tier             ReviewTier             `protobuf:"varint,4,opt,name=tier,proto3,enum=quadsmith.api.ReviewTier" json:"tier,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *ReviewSummary) Reset() {
-	*x = ReviewSummary{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ReviewSummary) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ReviewSummary) ProtoMessage() {}
-
-func (x *ReviewSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ReviewSummary.ProtoReflect.Descriptor instead.
-func (*ReviewSummary) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *ReviewSummary) GetTotalReviews() int32 {
-	if x != nil {
-		return x.TotalReviews
-	}
-	return 0
-}
-
-func (x *ReviewSummary) GetRecommendedCount() int32 {
-	if x != nil {
-		return x.RecommendedCount
-	}
-	return 0
-}
-
-func (x *ReviewSummary) GetScorePercentage() float32 {
-	if x != nil {
-		return x.ScorePercentage
-	}
-	return 0
-}
-
-func (x *ReviewSummary) GetTier() ReviewTier {
-	if x != nil {
-		return x.Tier
-	}
-	return ReviewTier_REVIEW_TIER_UNSPECIFIED
-}
-
 type Review struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -380,7 +2681,7 @@ type Review struct {
 
 func (x *Review) Reset() {
 	*x = Review{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[2]
+	mi := &file_quadsmith_api_social_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -392,7 +2693,7 @@ func (x *Review) String() string {
 func (*Review) ProtoMessage() {}
 
 func (x *Review) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[2]
+	mi := &file_quadsmith_api_social_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -405,7 +2706,7 @@ func (x *Review) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Review.ProtoReflect.Descriptor instead.
 func (*Review) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{2}
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *Review) GetUuid() string {
@@ -554,7 +2855,7 @@ type ReviewVote struct {
 
 func (x *ReviewVote) Reset() {
 	*x = ReviewVote{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[3]
+	mi := &file_quadsmith_api_social_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -566,7 +2867,7 @@ func (x *ReviewVote) String() string {
 func (*ReviewVote) ProtoMessage() {}
 
 func (x *ReviewVote) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[3]
+	mi := &file_quadsmith_api_social_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -579,7 +2880,7 @@ func (x *ReviewVote) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReviewVote.ProtoReflect.Descriptor instead.
 func (*ReviewVote) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{3}
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *ReviewVote) GetUuid() string {
@@ -635,7 +2936,7 @@ type ReviewComment struct {
 
 func (x *ReviewComment) Reset() {
 	*x = ReviewComment{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[4]
+	mi := &file_quadsmith_api_social_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -647,7 +2948,7 @@ func (x *ReviewComment) String() string {
 func (*ReviewComment) ProtoMessage() {}
 
 func (x *ReviewComment) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[4]
+	mi := &file_quadsmith_api_social_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -660,7 +2961,7 @@ func (x *ReviewComment) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ReviewComment.ProtoReflect.Descriptor instead.
 func (*ReviewComment) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{4}
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *ReviewComment) GetUuid() string {
@@ -756,7 +3057,7 @@ type Question struct {
 
 func (x *Question) Reset() {
 	*x = Question{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[5]
+	mi := &file_quadsmith_api_social_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -768,7 +3069,7 @@ func (x *Question) String() string {
 func (*Question) ProtoMessage() {}
 
 func (x *Question) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[5]
+	mi := &file_quadsmith_api_social_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -781,7 +3082,7 @@ func (x *Question) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Question.ProtoReflect.Descriptor instead.
 func (*Question) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{5}
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *Question) GetUuid() string {
@@ -931,6 +3232,114 @@ func (x *Question) GetEntityId() string {
 	return ""
 }
 
+type QuestionComment struct {
+	state           protoimpl.MessageState `protogen:"open.v1"`
+	Uuid            string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	QuestionUuid    string                 `protobuf:"bytes,2,opt,name=question_uuid,json=questionUuid,proto3" json:"question_uuid,omitempty"`
+	UserUuid        string                 `protobuf:"bytes,3,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
+	Body            string                 `protobuf:"bytes,4,opt,name=body,proto3" json:"body,omitempty"`
+	DeletedAt       *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=deleted_at,json=deletedAt,proto3,oneof" json:"deleted_at,omitempty"`
+	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt       *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	AuthorUsername  string                 `protobuf:"bytes,8,opt,name=author_username,json=authorUsername,proto3" json:"author_username,omitempty"`
+	AuthorAvatarUrl string                 `protobuf:"bytes,9,opt,name=author_avatar_url,json=authorAvatarUrl,proto3" json:"author_avatar_url,omitempty"`
+	unknownFields   protoimpl.UnknownFields
+	sizeCache       protoimpl.SizeCache
+}
+
+func (x *QuestionComment) Reset() {
+	*x = QuestionComment{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[49]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *QuestionComment) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QuestionComment) ProtoMessage() {}
+
+func (x *QuestionComment) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[49]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QuestionComment.ProtoReflect.Descriptor instead.
+func (*QuestionComment) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{49}
+}
+
+func (x *QuestionComment) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+func (x *QuestionComment) GetQuestionUuid() string {
+	if x != nil {
+		return x.QuestionUuid
+	}
+	return ""
+}
+
+func (x *QuestionComment) GetUserUuid() string {
+	if x != nil {
+		return x.UserUuid
+	}
+	return ""
+}
+
+func (x *QuestionComment) GetBody() string {
+	if x != nil {
+		return x.Body
+	}
+	return ""
+}
+
+func (x *QuestionComment) GetDeletedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.DeletedAt
+	}
+	return nil
+}
+
+func (x *QuestionComment) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *QuestionComment) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+func (x *QuestionComment) GetAuthorUsername() string {
+	if x != nil {
+		return x.AuthorUsername
+	}
+	return ""
+}
+
+func (x *QuestionComment) GetAuthorAvatarUrl() string {
+	if x != nil {
+		return x.AuthorAvatarUrl
+	}
+	return ""
+}
+
 type Answer struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Uuid              string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -960,7 +3369,7 @@ type Answer struct {
 
 func (x *Answer) Reset() {
 	*x = Answer{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[6]
+	mi := &file_quadsmith_api_social_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -972,7 +3381,7 @@ func (x *Answer) String() string {
 func (*Answer) ProtoMessage() {}
 
 func (x *Answer) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[6]
+	mi := &file_quadsmith_api_social_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -985,7 +3394,7 @@ func (x *Answer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Answer.ProtoReflect.Descriptor instead.
 func (*Answer) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{6}
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *Answer) GetUuid() string {
@@ -1128,266 +3537,6 @@ func (x *Answer) GetComments() []*AnswerComment {
 	return nil
 }
 
-type QuestionVote struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	QuestionUuid  string                 `protobuf:"bytes,2,opt,name=question_uuid,json=questionUuid,proto3" json:"question_uuid,omitempty"`
-	UserUuid      string                 `protobuf:"bytes,3,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
-	IsUpvote      bool                   `protobuf:"varint,4,opt,name=is_upvote,json=isUpvote,proto3" json:"is_upvote,omitempty"` // true = +1, false = -1
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *QuestionVote) Reset() {
-	*x = QuestionVote{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *QuestionVote) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*QuestionVote) ProtoMessage() {}
-
-func (x *QuestionVote) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use QuestionVote.ProtoReflect.Descriptor instead.
-func (*QuestionVote) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *QuestionVote) GetUuid() string {
-	if x != nil {
-		return x.Uuid
-	}
-	return ""
-}
-
-func (x *QuestionVote) GetQuestionUuid() string {
-	if x != nil {
-		return x.QuestionUuid
-	}
-	return ""
-}
-
-func (x *QuestionVote) GetUserUuid() string {
-	if x != nil {
-		return x.UserUuid
-	}
-	return ""
-}
-
-func (x *QuestionVote) GetIsUpvote() bool {
-	if x != nil {
-		return x.IsUpvote
-	}
-	return false
-}
-
-func (x *QuestionVote) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
-}
-
-type AnswerVote struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	AnswerUuid    string                 `protobuf:"bytes,2,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
-	UserUuid      string                 `protobuf:"bytes,3,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
-	IsUpvote      bool                   `protobuf:"varint,4,opt,name=is_upvote,json=isUpvote,proto3" json:"is_upvote,omitempty"` // true = +1, false = -1
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AnswerVote) Reset() {
-	*x = AnswerVote{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[8]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AnswerVote) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AnswerVote) ProtoMessage() {}
-
-func (x *AnswerVote) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[8]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AnswerVote.ProtoReflect.Descriptor instead.
-func (*AnswerVote) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{8}
-}
-
-func (x *AnswerVote) GetUuid() string {
-	if x != nil {
-		return x.Uuid
-	}
-	return ""
-}
-
-func (x *AnswerVote) GetAnswerUuid() string {
-	if x != nil {
-		return x.AnswerUuid
-	}
-	return ""
-}
-
-func (x *AnswerVote) GetUserUuid() string {
-	if x != nil {
-		return x.UserUuid
-	}
-	return ""
-}
-
-func (x *AnswerVote) GetIsUpvote() bool {
-	if x != nil {
-		return x.IsUpvote
-	}
-	return false
-}
-
-func (x *AnswerVote) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
-}
-
-type QuestionComment struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	Uuid            string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
-	QuestionUuid    string                 `protobuf:"bytes,2,opt,name=question_uuid,json=questionUuid,proto3" json:"question_uuid,omitempty"`
-	UserUuid        string                 `protobuf:"bytes,3,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
-	Body            string                 `protobuf:"bytes,4,opt,name=body,proto3" json:"body,omitempty"`
-	DeletedAt       *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=deleted_at,json=deletedAt,proto3,oneof" json:"deleted_at,omitempty"`
-	CreatedAt       *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt       *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
-	AuthorUsername  string                 `protobuf:"bytes,8,opt,name=author_username,json=authorUsername,proto3" json:"author_username,omitempty"`
-	AuthorAvatarUrl string                 `protobuf:"bytes,9,opt,name=author_avatar_url,json=authorAvatarUrl,proto3" json:"author_avatar_url,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *QuestionComment) Reset() {
-	*x = QuestionComment{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *QuestionComment) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*QuestionComment) ProtoMessage() {}
-
-func (x *QuestionComment) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use QuestionComment.ProtoReflect.Descriptor instead.
-func (*QuestionComment) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *QuestionComment) GetUuid() string {
-	if x != nil {
-		return x.Uuid
-	}
-	return ""
-}
-
-func (x *QuestionComment) GetQuestionUuid() string {
-	if x != nil {
-		return x.QuestionUuid
-	}
-	return ""
-}
-
-func (x *QuestionComment) GetUserUuid() string {
-	if x != nil {
-		return x.UserUuid
-	}
-	return ""
-}
-
-func (x *QuestionComment) GetBody() string {
-	if x != nil {
-		return x.Body
-	}
-	return ""
-}
-
-func (x *QuestionComment) GetDeletedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.DeletedAt
-	}
-	return nil
-}
-
-func (x *QuestionComment) GetCreatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.CreatedAt
-	}
-	return nil
-}
-
-func (x *QuestionComment) GetUpdatedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.UpdatedAt
-	}
-	return nil
-}
-
-func (x *QuestionComment) GetAuthorUsername() string {
-	if x != nil {
-		return x.AuthorUsername
-	}
-	return ""
-}
-
-func (x *QuestionComment) GetAuthorAvatarUrl() string {
-	if x != nil {
-		return x.AuthorAvatarUrl
-	}
-	return ""
-}
-
 type AnswerComment struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	Uuid            string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -1405,7 +3554,7 @@ type AnswerComment struct {
 
 func (x *AnswerComment) Reset() {
 	*x = AnswerComment{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[10]
+	mi := &file_quadsmith_api_social_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1417,7 +3566,7 @@ func (x *AnswerComment) String() string {
 func (*AnswerComment) ProtoMessage() {}
 
 func (x *AnswerComment) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[10]
+	mi := &file_quadsmith_api_social_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1430,7 +3579,7 @@ func (x *AnswerComment) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AnswerComment.ProtoReflect.Descriptor instead.
 func (*AnswerComment) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{10}
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *AnswerComment) GetUuid() string {
@@ -1496,6 +3645,158 @@ func (x *AnswerComment) GetAuthorAvatarUrl() string {
 	return ""
 }
 
+type QuestionVote struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	QuestionUuid  string                 `protobuf:"bytes,2,opt,name=question_uuid,json=questionUuid,proto3" json:"question_uuid,omitempty"`
+	UserUuid      string                 `protobuf:"bytes,3,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
+	IsUpvote      bool                   `protobuf:"varint,4,opt,name=is_upvote,json=isUpvote,proto3" json:"is_upvote,omitempty"` // true = +1, false = -1
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *QuestionVote) Reset() {
+	*x = QuestionVote{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[52]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *QuestionVote) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QuestionVote) ProtoMessage() {}
+
+func (x *QuestionVote) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[52]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QuestionVote.ProtoReflect.Descriptor instead.
+func (*QuestionVote) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{52}
+}
+
+func (x *QuestionVote) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+func (x *QuestionVote) GetQuestionUuid() string {
+	if x != nil {
+		return x.QuestionUuid
+	}
+	return ""
+}
+
+func (x *QuestionVote) GetUserUuid() string {
+	if x != nil {
+		return x.UserUuid
+	}
+	return ""
+}
+
+func (x *QuestionVote) GetIsUpvote() bool {
+	if x != nil {
+		return x.IsUpvote
+	}
+	return false
+}
+
+func (x *QuestionVote) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+type AnswerVote struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	AnswerUuid    string                 `protobuf:"bytes,2,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
+	UserUuid      string                 `protobuf:"bytes,3,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
+	IsUpvote      bool                   `protobuf:"varint,4,opt,name=is_upvote,json=isUpvote,proto3" json:"is_upvote,omitempty"` // true = +1, false = -1
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AnswerVote) Reset() {
+	*x = AnswerVote{}
+	mi := &file_quadsmith_api_social_proto_msgTypes[53]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AnswerVote) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AnswerVote) ProtoMessage() {}
+
+func (x *AnswerVote) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_social_proto_msgTypes[53]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AnswerVote.ProtoReflect.Descriptor instead.
+func (*AnswerVote) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{53}
+}
+
+func (x *AnswerVote) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+func (x *AnswerVote) GetAnswerUuid() string {
+	if x != nil {
+		return x.AnswerUuid
+	}
+	return ""
+}
+
+func (x *AnswerVote) GetUserUuid() string {
+	if x != nil {
+		return x.UserUuid
+	}
+	return ""
+}
+
+func (x *AnswerVote) GetIsUpvote() bool {
+	if x != nil {
+		return x.IsUpvote
+	}
+	return false
+}
+
+func (x *AnswerVote) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
 type UserReputation struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
@@ -1508,7 +3809,7 @@ type UserReputation struct {
 
 func (x *UserReputation) Reset() {
 	*x = UserReputation{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[11]
+	mi := &file_quadsmith_api_social_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1520,7 +3821,7 @@ func (x *UserReputation) String() string {
 func (*UserReputation) ProtoMessage() {}
 
 func (x *UserReputation) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[11]
+	mi := &file_quadsmith_api_social_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1533,7 +3834,7 @@ func (x *UserReputation) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserReputation.ProtoReflect.Descriptor instead.
 func (*UserReputation) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{11}
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *UserReputation) GetUuid() string {
@@ -1585,7 +3886,7 @@ type Collection struct {
 
 func (x *Collection) Reset() {
 	*x = Collection{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[12]
+	mi := &file_quadsmith_api_social_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1597,7 +3898,7 @@ func (x *Collection) String() string {
 func (*Collection) ProtoMessage() {}
 
 func (x *Collection) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[12]
+	mi := &file_quadsmith_api_social_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1610,7 +3911,7 @@ func (x *Collection) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Collection.ProtoReflect.Descriptor instead.
 func (*Collection) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{12}
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *Collection) GetUuid() string {
@@ -1715,7 +4016,7 @@ type CollectionItem struct {
 
 func (x *CollectionItem) Reset() {
 	*x = CollectionItem{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[13]
+	mi := &file_quadsmith_api_social_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1727,7 +4028,7 @@ func (x *CollectionItem) String() string {
 func (*CollectionItem) ProtoMessage() {}
 
 func (x *CollectionItem) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[13]
+	mi := &file_quadsmith_api_social_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1740,7 +4041,7 @@ func (x *CollectionItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CollectionItem.ProtoReflect.Descriptor instead.
 func (*CollectionItem) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{13}
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *CollectionItem) GetUuid() string {
@@ -1819,7 +4120,7 @@ type EntitySocialSummary struct {
 
 func (x *EntitySocialSummary) Reset() {
 	*x = EntitySocialSummary{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[14]
+	mi := &file_quadsmith_api_social_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1831,7 +4132,7 @@ func (x *EntitySocialSummary) String() string {
 func (*EntitySocialSummary) ProtoMessage() {}
 
 func (x *EntitySocialSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[14]
+	mi := &file_quadsmith_api_social_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1844,7 +4145,7 @@ func (x *EntitySocialSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EntitySocialSummary.ProtoReflect.Descriptor instead.
 func (*EntitySocialSummary) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{14}
+	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *EntitySocialSummary) GetIsLiked() bool {
@@ -1882,2344 +4183,30 @@ func (x *EntitySocialSummary) GetIsArchived() bool {
 	return false
 }
 
-type CreateReviewRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
-	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
-	IsRecommended bool                   `protobuf:"varint,3,opt,name=is_recommended,json=isRecommended,proto3" json:"is_recommended,omitempty"`
-	Body          string                 `protobuf:"bytes,4,opt,name=body,proto3" json:"body,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateReviewRequest) Reset() {
-	*x = CreateReviewRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateReviewRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateReviewRequest) ProtoMessage() {}
-
-func (x *CreateReviewRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateReviewRequest.ProtoReflect.Descriptor instead.
-func (*CreateReviewRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{15}
-}
-
-func (x *CreateReviewRequest) GetEntityId() string {
-	if x != nil {
-		return x.EntityId
-	}
-	return ""
-}
-
-func (x *CreateReviewRequest) GetCollection() string {
-	if x != nil && x.Collection != nil {
-		return *x.Collection
-	}
-	return ""
-}
-
-func (x *CreateReviewRequest) GetIsRecommended() bool {
-	if x != nil {
-		return x.IsRecommended
-	}
-	return false
-}
-
-func (x *CreateReviewRequest) GetBody() string {
-	if x != nil {
-		return x.Body
-	}
-	return ""
-}
-
-type UpdateReviewRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ReviewId      string                 `protobuf:"bytes,1,opt,name=review_id,json=reviewId,proto3" json:"review_id,omitempty"`
-	IsRecommended bool                   `protobuf:"varint,2,opt,name=is_recommended,json=isRecommended,proto3" json:"is_recommended,omitempty"`
-	Body          string                 `protobuf:"bytes,3,opt,name=body,proto3" json:"body,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateReviewRequest) Reset() {
-	*x = UpdateReviewRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateReviewRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateReviewRequest) ProtoMessage() {}
-
-func (x *UpdateReviewRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateReviewRequest.ProtoReflect.Descriptor instead.
-func (*UpdateReviewRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{16}
-}
-
-func (x *UpdateReviewRequest) GetReviewId() string {
-	if x != nil {
-		return x.ReviewId
-	}
-	return ""
-}
-
-func (x *UpdateReviewRequest) GetIsRecommended() bool {
-	if x != nil {
-		return x.IsRecommended
-	}
-	return false
-}
-
-func (x *UpdateReviewRequest) GetBody() string {
-	if x != nil {
-		return x.Body
-	}
-	return ""
-}
-
-type DeleteReviewRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ReviewId      string                 `protobuf:"bytes,1,opt,name=review_id,json=reviewId,proto3" json:"review_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteReviewRequest) Reset() {
-	*x = DeleteReviewRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteReviewRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteReviewRequest) ProtoMessage() {}
-
-func (x *DeleteReviewRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteReviewRequest.ProtoReflect.Descriptor instead.
-func (*DeleteReviewRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{17}
-}
-
-func (x *DeleteReviewRequest) GetReviewId() string {
-	if x != nil {
-		return x.ReviewId
-	}
-	return ""
-}
-
-type ListReviewsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
-	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
-	SortBy        string                 `protobuf:"bytes,3,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"` // "helpful", "recent", "positive", "negative"
-	PageSize      int32                  `protobuf:"varint,4,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,5,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListReviewsRequest) Reset() {
-	*x = ListReviewsRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListReviewsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListReviewsRequest) ProtoMessage() {}
-
-func (x *ListReviewsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListReviewsRequest.ProtoReflect.Descriptor instead.
-func (*ListReviewsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{18}
-}
-
-func (x *ListReviewsRequest) GetEntityId() string {
-	if x != nil {
-		return x.EntityId
-	}
-	return ""
-}
-
-func (x *ListReviewsRequest) GetCollection() string {
-	if x != nil && x.Collection != nil {
-		return *x.Collection
-	}
-	return ""
-}
-
-func (x *ListReviewsRequest) GetSortBy() string {
-	if x != nil {
-		return x.SortBy
-	}
-	return ""
-}
-
-func (x *ListReviewsRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListReviewsRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-type ListReviewsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Reviews       []*Review              `protobuf:"bytes,1,rep,name=reviews,proto3" json:"reviews,omitempty"`
-	Summary       *ReviewSummary         `protobuf:"bytes,2,opt,name=summary,proto3" json:"summary,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListReviewsResponse) Reset() {
-	*x = ListReviewsResponse{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListReviewsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListReviewsResponse) ProtoMessage() {}
-
-func (x *ListReviewsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListReviewsResponse.ProtoReflect.Descriptor instead.
-func (*ListReviewsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{19}
-}
-
-func (x *ListReviewsResponse) GetReviews() []*Review {
-	if x != nil {
-		return x.Reviews
-	}
-	return nil
-}
-
-func (x *ListReviewsResponse) GetSummary() *ReviewSummary {
-	if x != nil {
-		return x.Summary
-	}
-	return nil
-}
-
-func (x *ListReviewsResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-type VoteReviewRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ReviewId      string                 `protobuf:"bytes,1,opt,name=review_id,json=reviewId,proto3" json:"review_id,omitempty"`
-	VoteType      ReviewVoteType         `protobuf:"varint,2,opt,name=vote_type,json=voteType,proto3,enum=quadsmith.api.ReviewVoteType" json:"vote_type,omitempty"` // HELPFUL, UNHELPFUL, or UNSPECIFIED to retract
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *VoteReviewRequest) Reset() {
-	*x = VoteReviewRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[20]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *VoteReviewRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*VoteReviewRequest) ProtoMessage() {}
-
-func (x *VoteReviewRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[20]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use VoteReviewRequest.ProtoReflect.Descriptor instead.
-func (*VoteReviewRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{20}
-}
-
-func (x *VoteReviewRequest) GetReviewId() string {
-	if x != nil {
-		return x.ReviewId
-	}
-	return ""
-}
-
-func (x *VoteReviewRequest) GetVoteType() ReviewVoteType {
-	if x != nil {
-		return x.VoteType
-	}
-	return ReviewVoteType_REVIEW_VOTE_TYPE_UNSPECIFIED
-}
-
-type VoteReviewResponse struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	HelpfulCount    int32                  `protobuf:"varint,1,opt,name=helpful_count,json=helpfulCount,proto3" json:"helpful_count,omitempty"`
-	UnhelpfulCount  int32                  `protobuf:"varint,2,opt,name=unhelpful_count,json=unhelpfulCount,proto3" json:"unhelpful_count,omitempty"`
-	CurrentUserVote ReviewVoteType         `protobuf:"varint,3,opt,name=current_user_vote,json=currentUserVote,proto3,enum=quadsmith.api.ReviewVoteType" json:"current_user_vote,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *VoteReviewResponse) Reset() {
-	*x = VoteReviewResponse{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[21]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *VoteReviewResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*VoteReviewResponse) ProtoMessage() {}
-
-func (x *VoteReviewResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[21]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use VoteReviewResponse.ProtoReflect.Descriptor instead.
-func (*VoteReviewResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{21}
-}
-
-func (x *VoteReviewResponse) GetHelpfulCount() int32 {
-	if x != nil {
-		return x.HelpfulCount
-	}
-	return 0
-}
-
-func (x *VoteReviewResponse) GetUnhelpfulCount() int32 {
-	if x != nil {
-		return x.UnhelpfulCount
-	}
-	return 0
-}
-
-func (x *VoteReviewResponse) GetCurrentUserVote() ReviewVoteType {
-	if x != nil {
-		return x.CurrentUserVote
-	}
-	return ReviewVoteType_REVIEW_VOTE_TYPE_UNSPECIFIED
-}
-
-type CreateReviewCommentRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ReviewId      string                 `protobuf:"bytes,1,opt,name=review_id,json=reviewId,proto3" json:"review_id,omitempty"`
-	Body          string                 `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateReviewCommentRequest) Reset() {
-	*x = CreateReviewCommentRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[22]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateReviewCommentRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateReviewCommentRequest) ProtoMessage() {}
-
-func (x *CreateReviewCommentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[22]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateReviewCommentRequest.ProtoReflect.Descriptor instead.
-func (*CreateReviewCommentRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{22}
-}
-
-func (x *CreateReviewCommentRequest) GetReviewId() string {
-	if x != nil {
-		return x.ReviewId
-	}
-	return ""
-}
-
-func (x *CreateReviewCommentRequest) GetBody() string {
-	if x != nil {
-		return x.Body
-	}
-	return ""
-}
-
-type DeleteReviewCommentRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CommentUuid   string                 `protobuf:"bytes,1,opt,name=comment_uuid,json=commentUuid,proto3" json:"comment_uuid,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteReviewCommentRequest) Reset() {
-	*x = DeleteReviewCommentRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteReviewCommentRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteReviewCommentRequest) ProtoMessage() {}
-
-func (x *DeleteReviewCommentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteReviewCommentRequest.ProtoReflect.Descriptor instead.
-func (*DeleteReviewCommentRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{23}
-}
-
-func (x *DeleteReviewCommentRequest) GetCommentUuid() string {
-	if x != nil {
-		return x.CommentUuid
-	}
-	return ""
-}
-
-type ListReviewCommentsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ReviewId      string                 `protobuf:"bytes,1,opt,name=review_id,json=reviewId,proto3" json:"review_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListReviewCommentsRequest) Reset() {
-	*x = ListReviewCommentsRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[24]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListReviewCommentsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListReviewCommentsRequest) ProtoMessage() {}
-
-func (x *ListReviewCommentsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[24]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListReviewCommentsRequest.ProtoReflect.Descriptor instead.
-func (*ListReviewCommentsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{24}
-}
-
-func (x *ListReviewCommentsRequest) GetReviewId() string {
-	if x != nil {
-		return x.ReviewId
-	}
-	return ""
-}
-
-type ListReviewCommentsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Comments      []*ReviewComment       `protobuf:"bytes,1,rep,name=comments,proto3" json:"comments,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListReviewCommentsResponse) Reset() {
-	*x = ListReviewCommentsResponse{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[25]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListReviewCommentsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListReviewCommentsResponse) ProtoMessage() {}
-
-func (x *ListReviewCommentsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[25]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListReviewCommentsResponse.ProtoReflect.Descriptor instead.
-func (*ListReviewCommentsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{25}
-}
-
-func (x *ListReviewCommentsResponse) GetComments() []*ReviewComment {
-	if x != nil {
-		return x.Comments
-	}
-	return nil
-}
-
-type CreateQuestionRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
-	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
-	Title         string                 `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
-	Body          string                 `protobuf:"bytes,4,opt,name=body,proto3" json:"body,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateQuestionRequest) Reset() {
-	*x = CreateQuestionRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[26]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateQuestionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateQuestionRequest) ProtoMessage() {}
-
-func (x *CreateQuestionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[26]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateQuestionRequest.ProtoReflect.Descriptor instead.
-func (*CreateQuestionRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{26}
-}
-
-func (x *CreateQuestionRequest) GetEntityId() string {
-	if x != nil {
-		return x.EntityId
-	}
-	return ""
-}
-
-func (x *CreateQuestionRequest) GetCollection() string {
-	if x != nil && x.Collection != nil {
-		return *x.Collection
-	}
-	return ""
-}
-
-func (x *CreateQuestionRequest) GetTitle() string {
-	if x != nil {
-		return x.Title
-	}
-	return ""
-}
-
-func (x *CreateQuestionRequest) GetBody() string {
-	if x != nil {
-		return x.Body
-	}
-	return ""
-}
-
-type UpdateQuestionRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	QuestionId    string                 `protobuf:"bytes,1,opt,name=question_id,json=questionId,proto3" json:"question_id,omitempty"`
-	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	Body          string                 `protobuf:"bytes,3,opt,name=body,proto3" json:"body,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateQuestionRequest) Reset() {
-	*x = UpdateQuestionRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[27]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateQuestionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateQuestionRequest) ProtoMessage() {}
-
-func (x *UpdateQuestionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[27]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateQuestionRequest.ProtoReflect.Descriptor instead.
-func (*UpdateQuestionRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{27}
-}
-
-func (x *UpdateQuestionRequest) GetQuestionId() string {
-	if x != nil {
-		return x.QuestionId
-	}
-	return ""
-}
-
-func (x *UpdateQuestionRequest) GetTitle() string {
-	if x != nil {
-		return x.Title
-	}
-	return ""
-}
-
-func (x *UpdateQuestionRequest) GetBody() string {
-	if x != nil {
-		return x.Body
-	}
-	return ""
-}
-
-type DeleteQuestionRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	QuestionId    string                 `protobuf:"bytes,1,opt,name=question_id,json=questionId,proto3" json:"question_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteQuestionRequest) Reset() {
-	*x = DeleteQuestionRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[28]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteQuestionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteQuestionRequest) ProtoMessage() {}
-
-func (x *DeleteQuestionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[28]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteQuestionRequest.ProtoReflect.Descriptor instead.
-func (*DeleteQuestionRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{28}
-}
-
-func (x *DeleteQuestionRequest) GetQuestionId() string {
-	if x != nil {
-		return x.QuestionId
-	}
-	return ""
-}
-
-type ListQuestionsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
-	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
-	SortBy        string                 `protobuf:"bytes,3,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"` // "score", "recent"
-	Query         string                 `protobuf:"bytes,4,opt,name=query,proto3" json:"query,omitempty"`                 // Search filter
-	PageSize      int32                  `protobuf:"varint,5,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,6,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListQuestionsRequest) Reset() {
-	*x = ListQuestionsRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[29]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListQuestionsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListQuestionsRequest) ProtoMessage() {}
-
-func (x *ListQuestionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[29]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListQuestionsRequest.ProtoReflect.Descriptor instead.
-func (*ListQuestionsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{29}
-}
-
-func (x *ListQuestionsRequest) GetEntityId() string {
-	if x != nil {
-		return x.EntityId
-	}
-	return ""
-}
-
-func (x *ListQuestionsRequest) GetCollection() string {
-	if x != nil && x.Collection != nil {
-		return *x.Collection
-	}
-	return ""
-}
-
-func (x *ListQuestionsRequest) GetSortBy() string {
-	if x != nil {
-		return x.SortBy
-	}
-	return ""
-}
-
-func (x *ListQuestionsRequest) GetQuery() string {
-	if x != nil {
-		return x.Query
-	}
-	return ""
-}
-
-func (x *ListQuestionsRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListQuestionsRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-type ListQuestionsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Questions     []*Question            `protobuf:"bytes,1,rep,name=questions,proto3" json:"questions,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListQuestionsResponse) Reset() {
-	*x = ListQuestionsResponse{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[30]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListQuestionsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListQuestionsResponse) ProtoMessage() {}
-
-func (x *ListQuestionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[30]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListQuestionsResponse.ProtoReflect.Descriptor instead.
-func (*ListQuestionsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{30}
-}
-
-func (x *ListQuestionsResponse) GetQuestions() []*Question {
-	if x != nil {
-		return x.Questions
-	}
-	return nil
-}
-
-func (x *ListQuestionsResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-type VoteQuestionRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	QuestionId    string                 `protobuf:"bytes,1,opt,name=question_id,json=questionId,proto3" json:"question_id,omitempty"`
-	Vote          int32                  `protobuf:"varint,2,opt,name=vote,proto3" json:"vote,omitempty"` // +1, -1, or 0 to retract
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *VoteQuestionRequest) Reset() {
-	*x = VoteQuestionRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[31]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *VoteQuestionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*VoteQuestionRequest) ProtoMessage() {}
-
-func (x *VoteQuestionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[31]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use VoteQuestionRequest.ProtoReflect.Descriptor instead.
-func (*VoteQuestionRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{31}
-}
-
-func (x *VoteQuestionRequest) GetQuestionId() string {
-	if x != nil {
-		return x.QuestionId
-	}
-	return ""
-}
-
-func (x *VoteQuestionRequest) GetVote() int32 {
-	if x != nil {
-		return x.Vote
-	}
-	return 0
-}
-
-type VoteQuestionResponse struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	NetScore        int32                  `protobuf:"varint,1,opt,name=net_score,json=netScore,proto3" json:"net_score,omitempty"`
-	UpvoteCount     int32                  `protobuf:"varint,2,opt,name=upvote_count,json=upvoteCount,proto3" json:"upvote_count,omitempty"`
-	DownvoteCount   int32                  `protobuf:"varint,3,opt,name=downvote_count,json=downvoteCount,proto3" json:"downvote_count,omitempty"`
-	CurrentUserVote int32                  `protobuf:"varint,4,opt,name=current_user_vote,json=currentUserVote,proto3" json:"current_user_vote,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *VoteQuestionResponse) Reset() {
-	*x = VoteQuestionResponse{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[32]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *VoteQuestionResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*VoteQuestionResponse) ProtoMessage() {}
-
-func (x *VoteQuestionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[32]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use VoteQuestionResponse.ProtoReflect.Descriptor instead.
-func (*VoteQuestionResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{32}
-}
-
-func (x *VoteQuestionResponse) GetNetScore() int32 {
-	if x != nil {
-		return x.NetScore
-	}
-	return 0
-}
-
-func (x *VoteQuestionResponse) GetUpvoteCount() int32 {
-	if x != nil {
-		return x.UpvoteCount
-	}
-	return 0
-}
-
-func (x *VoteQuestionResponse) GetDownvoteCount() int32 {
-	if x != nil {
-		return x.DownvoteCount
-	}
-	return 0
-}
-
-func (x *VoteQuestionResponse) GetCurrentUserVote() int32 {
-	if x != nil {
-		return x.CurrentUserVote
-	}
-	return 0
-}
-
-type CreateAnswerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	QuestionId    string                 `protobuf:"bytes,1,opt,name=question_id,json=questionId,proto3" json:"question_id,omitempty"`
-	Body          string                 `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateAnswerRequest) Reset() {
-	*x = CreateAnswerRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[33]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateAnswerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateAnswerRequest) ProtoMessage() {}
-
-func (x *CreateAnswerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[33]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateAnswerRequest.ProtoReflect.Descriptor instead.
-func (*CreateAnswerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{33}
-}
-
-func (x *CreateAnswerRequest) GetQuestionId() string {
-	if x != nil {
-		return x.QuestionId
-	}
-	return ""
-}
-
-func (x *CreateAnswerRequest) GetBody() string {
-	if x != nil {
-		return x.Body
-	}
-	return ""
-}
-
-type UpdateAnswerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AnswerUuid    string                 `protobuf:"bytes,1,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
-	Body          string                 `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateAnswerRequest) Reset() {
-	*x = UpdateAnswerRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[34]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateAnswerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateAnswerRequest) ProtoMessage() {}
-
-func (x *UpdateAnswerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[34]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateAnswerRequest.ProtoReflect.Descriptor instead.
-func (*UpdateAnswerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{34}
-}
-
-func (x *UpdateAnswerRequest) GetAnswerUuid() string {
-	if x != nil {
-		return x.AnswerUuid
-	}
-	return ""
-}
-
-func (x *UpdateAnswerRequest) GetBody() string {
-	if x != nil {
-		return x.Body
-	}
-	return ""
-}
-
-type DeleteAnswerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AnswerUuid    string                 `protobuf:"bytes,1,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteAnswerRequest) Reset() {
-	*x = DeleteAnswerRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[35]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteAnswerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteAnswerRequest) ProtoMessage() {}
-
-func (x *DeleteAnswerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[35]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteAnswerRequest.ProtoReflect.Descriptor instead.
-func (*DeleteAnswerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{35}
-}
-
-func (x *DeleteAnswerRequest) GetAnswerUuid() string {
-	if x != nil {
-		return x.AnswerUuid
-	}
-	return ""
-}
-
-type ListAnswersRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	QuestionId    string                 `protobuf:"bytes,1,opt,name=question_id,json=questionId,proto3" json:"question_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListAnswersRequest) Reset() {
-	*x = ListAnswersRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[36]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListAnswersRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListAnswersRequest) ProtoMessage() {}
-
-func (x *ListAnswersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[36]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListAnswersRequest.ProtoReflect.Descriptor instead.
-func (*ListAnswersRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{36}
-}
-
-func (x *ListAnswersRequest) GetQuestionId() string {
-	if x != nil {
-		return x.QuestionId
-	}
-	return ""
-}
-
-type ListAnswersResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Answers       []*Answer              `protobuf:"bytes,1,rep,name=answers,proto3" json:"answers,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListAnswersResponse) Reset() {
-	*x = ListAnswersResponse{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[37]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListAnswersResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListAnswersResponse) ProtoMessage() {}
-
-func (x *ListAnswersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[37]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListAnswersResponse.ProtoReflect.Descriptor instead.
-func (*ListAnswersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{37}
-}
-
-func (x *ListAnswersResponse) GetAnswers() []*Answer {
-	if x != nil {
-		return x.Answers
-	}
-	return nil
-}
-
-type VoteAnswerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AnswerUuid    string                 `protobuf:"bytes,1,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
-	Vote          int32                  `protobuf:"varint,2,opt,name=vote,proto3" json:"vote,omitempty"` // +1, -1, or 0
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *VoteAnswerRequest) Reset() {
-	*x = VoteAnswerRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[38]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *VoteAnswerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*VoteAnswerRequest) ProtoMessage() {}
-
-func (x *VoteAnswerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[38]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use VoteAnswerRequest.ProtoReflect.Descriptor instead.
-func (*VoteAnswerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{38}
-}
-
-func (x *VoteAnswerRequest) GetAnswerUuid() string {
-	if x != nil {
-		return x.AnswerUuid
-	}
-	return ""
-}
-
-func (x *VoteAnswerRequest) GetVote() int32 {
-	if x != nil {
-		return x.Vote
-	}
-	return 0
-}
-
-type VoteAnswerResponse struct {
-	state           protoimpl.MessageState `protogen:"open.v1"`
-	NetScore        int32                  `protobuf:"varint,1,opt,name=net_score,json=netScore,proto3" json:"net_score,omitempty"`
-	UpvoteCount     int32                  `protobuf:"varint,2,opt,name=upvote_count,json=upvoteCount,proto3" json:"upvote_count,omitempty"`
-	DownvoteCount   int32                  `protobuf:"varint,3,opt,name=downvote_count,json=downvoteCount,proto3" json:"downvote_count,omitempty"`
-	CurrentUserVote int32                  `protobuf:"varint,4,opt,name=current_user_vote,json=currentUserVote,proto3" json:"current_user_vote,omitempty"`
-	unknownFields   protoimpl.UnknownFields
-	sizeCache       protoimpl.SizeCache
-}
-
-func (x *VoteAnswerResponse) Reset() {
-	*x = VoteAnswerResponse{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[39]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *VoteAnswerResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*VoteAnswerResponse) ProtoMessage() {}
-
-func (x *VoteAnswerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[39]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use VoteAnswerResponse.ProtoReflect.Descriptor instead.
-func (*VoteAnswerResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{39}
-}
-
-func (x *VoteAnswerResponse) GetNetScore() int32 {
-	if x != nil {
-		return x.NetScore
-	}
-	return 0
-}
-
-func (x *VoteAnswerResponse) GetUpvoteCount() int32 {
-	if x != nil {
-		return x.UpvoteCount
-	}
-	return 0
-}
-
-func (x *VoteAnswerResponse) GetDownvoteCount() int32 {
-	if x != nil {
-		return x.DownvoteCount
-	}
-	return 0
-}
-
-func (x *VoteAnswerResponse) GetCurrentUserVote() int32 {
-	if x != nil {
-		return x.CurrentUserVote
-	}
-	return 0
-}
-
-type AcceptAnswerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AnswerUuid    string                 `protobuf:"bytes,1,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AcceptAnswerRequest) Reset() {
-	*x = AcceptAnswerRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[40]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AcceptAnswerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AcceptAnswerRequest) ProtoMessage() {}
-
-func (x *AcceptAnswerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[40]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AcceptAnswerRequest.ProtoReflect.Descriptor instead.
-func (*AcceptAnswerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{40}
-}
-
-func (x *AcceptAnswerRequest) GetAnswerUuid() string {
-	if x != nil {
-		return x.AnswerUuid
-	}
-	return ""
-}
-
-type EndorseAnswerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AnswerUuid    string                 `protobuf:"bytes,1,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *EndorseAnswerRequest) Reset() {
-	*x = EndorseAnswerRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[41]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *EndorseAnswerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*EndorseAnswerRequest) ProtoMessage() {}
-
-func (x *EndorseAnswerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[41]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use EndorseAnswerRequest.ProtoReflect.Descriptor instead.
-func (*EndorseAnswerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{41}
-}
-
-func (x *EndorseAnswerRequest) GetAnswerUuid() string {
-	if x != nil {
-		return x.AnswerUuid
-	}
-	return ""
-}
-
-type CreateQuestionCommentRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	QuestionId    string                 `protobuf:"bytes,1,opt,name=question_id,json=questionId,proto3" json:"question_id,omitempty"`
-	Body          string                 `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateQuestionCommentRequest) Reset() {
-	*x = CreateQuestionCommentRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[42]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateQuestionCommentRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateQuestionCommentRequest) ProtoMessage() {}
-
-func (x *CreateQuestionCommentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[42]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateQuestionCommentRequest.ProtoReflect.Descriptor instead.
-func (*CreateQuestionCommentRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{42}
-}
-
-func (x *CreateQuestionCommentRequest) GetQuestionId() string {
-	if x != nil {
-		return x.QuestionId
-	}
-	return ""
-}
-
-func (x *CreateQuestionCommentRequest) GetBody() string {
-	if x != nil {
-		return x.Body
-	}
-	return ""
-}
-
-type DeleteQuestionCommentRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CommentUuid   string                 `protobuf:"bytes,1,opt,name=comment_uuid,json=commentUuid,proto3" json:"comment_uuid,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteQuestionCommentRequest) Reset() {
-	*x = DeleteQuestionCommentRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[43]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteQuestionCommentRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteQuestionCommentRequest) ProtoMessage() {}
-
-func (x *DeleteQuestionCommentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[43]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteQuestionCommentRequest.ProtoReflect.Descriptor instead.
-func (*DeleteQuestionCommentRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{43}
-}
-
-func (x *DeleteQuestionCommentRequest) GetCommentUuid() string {
-	if x != nil {
-		return x.CommentUuid
-	}
-	return ""
-}
-
-type CreateAnswerCommentRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AnswerUuid    string                 `protobuf:"bytes,1,opt,name=answer_uuid,json=answerUuid,proto3" json:"answer_uuid,omitempty"`
-	Body          string                 `protobuf:"bytes,2,opt,name=body,proto3" json:"body,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateAnswerCommentRequest) Reset() {
-	*x = CreateAnswerCommentRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[44]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateAnswerCommentRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateAnswerCommentRequest) ProtoMessage() {}
-
-func (x *CreateAnswerCommentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[44]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateAnswerCommentRequest.ProtoReflect.Descriptor instead.
-func (*CreateAnswerCommentRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{44}
-}
-
-func (x *CreateAnswerCommentRequest) GetAnswerUuid() string {
-	if x != nil {
-		return x.AnswerUuid
-	}
-	return ""
-}
-
-func (x *CreateAnswerCommentRequest) GetBody() string {
-	if x != nil {
-		return x.Body
-	}
-	return ""
-}
-
-type DeleteAnswerCommentRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CommentUuid   string                 `protobuf:"bytes,1,opt,name=comment_uuid,json=commentUuid,proto3" json:"comment_uuid,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteAnswerCommentRequest) Reset() {
-	*x = DeleteAnswerCommentRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[45]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteAnswerCommentRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteAnswerCommentRequest) ProtoMessage() {}
-
-func (x *DeleteAnswerCommentRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[45]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteAnswerCommentRequest.ProtoReflect.Descriptor instead.
-func (*DeleteAnswerCommentRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{45}
-}
-
-func (x *DeleteAnswerCommentRequest) GetCommentUuid() string {
-	if x != nil {
-		return x.CommentUuid
-	}
-	return ""
-}
-
-type CreateCollectionRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateCollectionRequest) Reset() {
-	*x = CreateCollectionRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[46]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateCollectionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateCollectionRequest) ProtoMessage() {}
-
-func (x *CreateCollectionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[46]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateCollectionRequest.ProtoReflect.Descriptor instead.
-func (*CreateCollectionRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{46}
-}
-
-func (x *CreateCollectionRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *CreateCollectionRequest) GetDescription() string {
-	if x != nil {
-		return x.Description
-	}
-	return ""
-}
-
-type UpdateCollectionRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CollectionId  string                 `protobuf:"bytes,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateCollectionRequest) Reset() {
-	*x = UpdateCollectionRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[47]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateCollectionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateCollectionRequest) ProtoMessage() {}
-
-func (x *UpdateCollectionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[47]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateCollectionRequest.ProtoReflect.Descriptor instead.
-func (*UpdateCollectionRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{47}
-}
-
-func (x *UpdateCollectionRequest) GetCollectionId() string {
-	if x != nil {
-		return x.CollectionId
-	}
-	return ""
-}
-
-func (x *UpdateCollectionRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *UpdateCollectionRequest) GetDescription() string {
-	if x != nil {
-		return x.Description
-	}
-	return ""
-}
-
-type DeleteCollectionRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CollectionId  string                 `protobuf:"bytes,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteCollectionRequest) Reset() {
-	*x = DeleteCollectionRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[48]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteCollectionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteCollectionRequest) ProtoMessage() {}
-
-func (x *DeleteCollectionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[48]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteCollectionRequest.ProtoReflect.Descriptor instead.
-func (*DeleteCollectionRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{48}
-}
-
-func (x *DeleteCollectionRequest) GetCollectionId() string {
-	if x != nil {
-		return x.CollectionId
-	}
-	return ""
-}
-
-type GetCollectionRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"` // Can be slug or UUID
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetCollectionRequest) Reset() {
-	*x = GetCollectionRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[49]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetCollectionRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetCollectionRequest) ProtoMessage() {}
-
-func (x *GetCollectionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[49]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetCollectionRequest.ProtoReflect.Descriptor instead.
-func (*GetCollectionRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{49}
-}
-
-func (x *GetCollectionRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type ListUserCollectionsRequest struct {
-	state              protoimpl.MessageState `protogen:"open.v1"`
-	UserId             string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // Username or UUID
-	ContainsEntityId   *string                `protobuf:"bytes,2,opt,name=contains_entity_id,json=containsEntityId,proto3,oneof" json:"contains_entity_id,omitempty"`
-	ContainsCollection *string                `protobuf:"bytes,3,opt,name=contains_collection,json=containsCollection,proto3,oneof" json:"contains_collection,omitempty"`
-	unknownFields      protoimpl.UnknownFields
-	sizeCache          protoimpl.SizeCache
-}
-
-func (x *ListUserCollectionsRequest) Reset() {
-	*x = ListUserCollectionsRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[50]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListUserCollectionsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListUserCollectionsRequest) ProtoMessage() {}
-
-func (x *ListUserCollectionsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[50]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListUserCollectionsRequest.ProtoReflect.Descriptor instead.
-func (*ListUserCollectionsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{50}
-}
-
-func (x *ListUserCollectionsRequest) GetUserId() string {
-	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *ListUserCollectionsRequest) GetContainsEntityId() string {
-	if x != nil && x.ContainsEntityId != nil {
-		return *x.ContainsEntityId
-	}
-	return ""
-}
-
-func (x *ListUserCollectionsRequest) GetContainsCollection() string {
-	if x != nil && x.ContainsCollection != nil {
-		return *x.ContainsCollection
-	}
-	return ""
-}
-
-type ListUserCollectionsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Collections   []*Collection          `protobuf:"bytes,1,rep,name=collections,proto3" json:"collections,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListUserCollectionsResponse) Reset() {
-	*x = ListUserCollectionsResponse{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[51]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListUserCollectionsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListUserCollectionsResponse) ProtoMessage() {}
-
-func (x *ListUserCollectionsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[51]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListUserCollectionsResponse.ProtoReflect.Descriptor instead.
-func (*ListUserCollectionsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{51}
-}
-
-func (x *ListUserCollectionsResponse) GetCollections() []*Collection {
-	if x != nil {
-		return x.Collections
-	}
-	return nil
-}
-
-type ToggleLikeItemRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
-	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ToggleLikeItemRequest) Reset() {
-	*x = ToggleLikeItemRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[52]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ToggleLikeItemRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ToggleLikeItemRequest) ProtoMessage() {}
-
-func (x *ToggleLikeItemRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[52]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ToggleLikeItemRequest.ProtoReflect.Descriptor instead.
-func (*ToggleLikeItemRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{52}
-}
-
-func (x *ToggleLikeItemRequest) GetEntityId() string {
-	if x != nil {
-		return x.EntityId
-	}
-	return ""
-}
-
-func (x *ToggleLikeItemRequest) GetCollection() string {
-	if x != nil && x.Collection != nil {
-		return *x.Collection
-	}
-	return ""
-}
-
-type ToggleLikeItemResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsLiked       bool                   `protobuf:"varint,1,opt,name=is_liked,json=isLiked,proto3" json:"is_liked,omitempty"`
-	LikeCount     int32                  `protobuf:"varint,2,opt,name=like_count,json=likeCount,proto3" json:"like_count,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ToggleLikeItemResponse) Reset() {
-	*x = ToggleLikeItemResponse{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[53]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ToggleLikeItemResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ToggleLikeItemResponse) ProtoMessage() {}
-
-func (x *ToggleLikeItemResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[53]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ToggleLikeItemResponse.ProtoReflect.Descriptor instead.
-func (*ToggleLikeItemResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{53}
-}
-
-func (x *ToggleLikeItemResponse) GetIsLiked() bool {
-	if x != nil {
-		return x.IsLiked
-	}
-	return false
-}
-
-func (x *ToggleLikeItemResponse) GetLikeCount() int32 {
-	if x != nil {
-		return x.LikeCount
-	}
-	return 0
-}
-
-type AddCollectionItemRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CollectionId  string                 `protobuf:"bytes,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
-	EntityId      string                 `protobuf:"bytes,2,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
-	Collection    *string                `protobuf:"bytes,3,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AddCollectionItemRequest) Reset() {
-	*x = AddCollectionItemRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[54]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AddCollectionItemRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AddCollectionItemRequest) ProtoMessage() {}
-
-func (x *AddCollectionItemRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[54]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AddCollectionItemRequest.ProtoReflect.Descriptor instead.
-func (*AddCollectionItemRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{54}
-}
-
-func (x *AddCollectionItemRequest) GetCollectionId() string {
-	if x != nil {
-		return x.CollectionId
-	}
-	return ""
-}
-
-func (x *AddCollectionItemRequest) GetEntityId() string {
-	if x != nil {
-		return x.EntityId
-	}
-	return ""
-}
-
-func (x *AddCollectionItemRequest) GetCollection() string {
-	if x != nil && x.Collection != nil {
-		return *x.Collection
-	}
-	return ""
-}
-
-type RemoveCollectionItemRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CollectionId  string                 `protobuf:"bytes,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
-	EntityId      string                 `protobuf:"bytes,2,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
-	Collection    *string                `protobuf:"bytes,3,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *RemoveCollectionItemRequest) Reset() {
-	*x = RemoveCollectionItemRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[55]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *RemoveCollectionItemRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*RemoveCollectionItemRequest) ProtoMessage() {}
-
-func (x *RemoveCollectionItemRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[55]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use RemoveCollectionItemRequest.ProtoReflect.Descriptor instead.
-func (*RemoveCollectionItemRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{55}
-}
-
-func (x *RemoveCollectionItemRequest) GetCollectionId() string {
-	if x != nil {
-		return x.CollectionId
-	}
-	return ""
-}
-
-func (x *RemoveCollectionItemRequest) GetEntityId() string {
-	if x != nil {
-		return x.EntityId
-	}
-	return ""
-}
-
-func (x *RemoveCollectionItemRequest) GetCollection() string {
-	if x != nil && x.Collection != nil {
-		return *x.Collection
-	}
-	return ""
-}
-
-type ListCollectionItemsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CollectionId  string                 `protobuf:"bytes,1,opt,name=collection_id,json=collectionId,proto3" json:"collection_id,omitempty"`
-	PageSize      int32                  `protobuf:"varint,2,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
-	PageToken     string                 `protobuf:"bytes,3,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListCollectionItemsRequest) Reset() {
-	*x = ListCollectionItemsRequest{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[56]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListCollectionItemsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListCollectionItemsRequest) ProtoMessage() {}
-
-func (x *ListCollectionItemsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[56]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListCollectionItemsRequest.ProtoReflect.Descriptor instead.
-func (*ListCollectionItemsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{56}
-}
-
-func (x *ListCollectionItemsRequest) GetCollectionId() string {
-	if x != nil {
-		return x.CollectionId
-	}
-	return ""
-}
-
-func (x *ListCollectionItemsRequest) GetPageSize() int32 {
-	if x != nil {
-		return x.PageSize
-	}
-	return 0
-}
-
-func (x *ListCollectionItemsRequest) GetPageToken() string {
-	if x != nil {
-		return x.PageToken
-	}
-	return ""
-}
-
-type ListCollectionItemsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Collection    *Collection            `protobuf:"bytes,1,opt,name=collection,proto3" json:"collection,omitempty"`
-	Items         []*CollectionItem      `protobuf:"bytes,2,rep,name=items,proto3" json:"items,omitempty"`
-	NextPageToken string                 `protobuf:"bytes,3,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListCollectionItemsResponse) Reset() {
-	*x = ListCollectionItemsResponse{}
-	mi := &file_quadsmith_api_social_proto_msgTypes[57]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListCollectionItemsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListCollectionItemsResponse) ProtoMessage() {}
-
-func (x *ListCollectionItemsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_social_proto_msgTypes[57]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListCollectionItemsResponse.ProtoReflect.Descriptor instead.
-func (*ListCollectionItemsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{57}
-}
-
-func (x *ListCollectionItemsResponse) GetCollection() *Collection {
-	if x != nil {
-		return x.Collection
-	}
-	return nil
-}
-
-func (x *ListCollectionItemsResponse) GetItems() []*CollectionItem {
-	if x != nil {
-		return x.Items
-	}
-	return nil
-}
-
-func (x *ListCollectionItemsResponse) GetNextPageToken() string {
-	if x != nil {
-		return x.NextPageToken
-	}
-	return ""
-}
-
-type GetEntitySocialSummaryRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	EntityId      string                 `protobuf:"bytes,1,opt,name=entity_id,json=entityId,proto3" json:"entity_id,omitempty"`
-	Collection    *string                `protobuf:"bytes,2,opt,name=collection,proto3,oneof" json:"collection,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetEntitySocialSummaryRequest) Reset() {
-	*x = GetEntitySocialSummaryRequest{}
+type ReviewSummary struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	TotalReviews     int32                  `protobuf:"varint,1,opt,name=total_reviews,json=totalReviews,proto3" json:"total_reviews,omitempty"`
+	RecommendedCount int32                  `protobuf:"varint,2,opt,name=recommended_count,json=recommendedCount,proto3" json:"recommended_count,omitempty"`
+	ScorePercentage  float32                `protobuf:"fixed32,3,opt,name=score_percentage,json=scorePercentage,proto3" json:"score_percentage,omitempty"`
+	Tier             ReviewTier             `protobuf:"varint,4,opt,name=tier,proto3,enum=quadsmith.api.ReviewTier" json:"tier,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *ReviewSummary) Reset() {
+	*x = ReviewSummary{}
 	mi := &file_quadsmith_api_social_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetEntitySocialSummaryRequest) String() string {
+func (x *ReviewSummary) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetEntitySocialSummaryRequest) ProtoMessage() {}
+func (*ReviewSummary) ProtoMessage() {}
 
-func (x *GetEntitySocialSummaryRequest) ProtoReflect() protoreflect.Message {
+func (x *ReviewSummary) ProtoReflect() protoreflect.Message {
 	mi := &file_quadsmith_api_social_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -4231,279 +4218,44 @@ func (x *GetEntitySocialSummaryRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetEntitySocialSummaryRequest.ProtoReflect.Descriptor instead.
-func (*GetEntitySocialSummaryRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use ReviewSummary.ProtoReflect.Descriptor instead.
+func (*ReviewSummary) Descriptor() ([]byte, []int) {
 	return file_quadsmith_api_social_proto_rawDescGZIP(), []int{58}
 }
 
-func (x *GetEntitySocialSummaryRequest) GetEntityId() string {
+func (x *ReviewSummary) GetTotalReviews() int32 {
 	if x != nil {
-		return x.EntityId
+		return x.TotalReviews
 	}
-	return ""
+	return 0
 }
 
-func (x *GetEntitySocialSummaryRequest) GetCollection() string {
-	if x != nil && x.Collection != nil {
-		return *x.Collection
+func (x *ReviewSummary) GetRecommendedCount() int32 {
+	if x != nil {
+		return x.RecommendedCount
 	}
-	return ""
+	return 0
+}
+
+func (x *ReviewSummary) GetScorePercentage() float32 {
+	if x != nil {
+		return x.ScorePercentage
+	}
+	return 0
+}
+
+func (x *ReviewSummary) GetTier() ReviewTier {
+	if x != nil {
+		return x.Tier
+	}
+	return ReviewTier_REVIEW_TIER_UNSPECIFIED
 }
 
 var File_quadsmith_api_social_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_social_proto_rawDesc = "" +
 	"\n" +
-	"\x1aquadsmith/api/social.proto\x12\rquadsmith.api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x17quadsmith/sql/sql.proto\"\x85\x06\n" +
-	"\x06Entity\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12&\n" +
-	"\n" +
-	"collection\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\n" +
-	"collection\x12\x16\n" +
-	"\x02id\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\x02id\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x05 \x01(\tR\vdescription\x127\n" +
-	"\x15primary_display_image\x18\x06 \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x12E\n" +
-	"\x0freference_links\x18\a \x03(\v2\x1c.quadsmith.api.ReferenceLinkR\x0ereferenceLinks\x12*\n" +
-	"\x05media\x18\b \x03(\v2\x14.quadsmith.api.MediaR\x05media\x124\n" +
-	"\x16author_or_manufacturer\x18\t \x01(\tR\x14authorOrManufacturer\x12.\n" +
-	"\vis_archived\x18\n" +
-	" \x01(\bB\r\xc2\xf3\x18\t(\x01:\x05falseR\n" +
-	"isArchived\x12F\n" +
-	"\n" +
-	"created_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
-	"\n" +
-	"updated_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x125\n" +
-	"\tuser_uuid\x18\r \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01H\x01R\buserUuid\x88\x01\x01\x124\n" +
-	"\x0fauthor_username\x18\x0e \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\x0eauthorUsername\x88\x01\x01:\x1e\xc2\xf3\x18\x1a\n" +
-	"\bentities\x1a\x0ecollection, idB\x18\n" +
-	"\x16_primary_display_imageB\f\n" +
-	"\n" +
-	"_user_uuidB\x12\n" +
-	"\x10_author_username\"\xbb\x01\n" +
-	"\rReviewSummary\x12#\n" +
-	"\rtotal_reviews\x18\x01 \x01(\x05R\ftotalReviews\x12+\n" +
-	"\x11recommended_count\x18\x02 \x01(\x05R\x10recommendedCount\x12)\n" +
-	"\x10score_percentage\x18\x03 \x01(\x02R\x0fscorePercentage\x12-\n" +
-	"\x04tier\x18\x04 \x01(\x0e2\x19.quadsmith.api.ReviewTierR\x04tier\"\xdf\a\n" +
-	"\x06Review\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
-	"\x02id\x18\x02 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x02id\x120\n" +
-	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12I\n" +
-	"\ventity_uuid\x18\x04 \x01(\tB(\xc2\xf3\x18$\x1a entities(uuid) ON DELETE CASCADE(\x01R\n" +
-	"entityUuid\x12%\n" +
-	"\x0eis_recommended\x18\x05 \x01(\bR\risRecommended\x12\x12\n" +
-	"\x04body\x18\x06 \x01(\tR\x04body\x12(\n" +
-	"\tis_edited\x18\a \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\bisEdited\x12>\n" +
-	"\n" +
-	"deleted_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampH\x00R\tdeletedAt\x88\x01\x01\x12F\n" +
-	"\n" +
-	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
-	"\n" +
-	"updated_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12/\n" +
-	"\x0fauthor_username\x18\v \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x122\n" +
-	"\x11author_avatar_url\x18\f \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0fauthorAvatarUrl\x12+\n" +
-	"\rhelpful_count\x18\r \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\fhelpfulCount\x12/\n" +
-	"\x0funhelpful_count\x18\x0e \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\x0eunhelpfulCount\x12+\n" +
-	"\rcomment_count\x18\x0f \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\fcommentCount\x12Q\n" +
-	"\x11current_user_vote\x18\x10 \x01(\x0e2\x1d.quadsmith.api.ReviewVoteTypeB\x06\xc2\xf3\x18\x02@\x01R\x0fcurrentUserVote\x127\n" +
-	"\x18is_author_verified_owner\x18\x11 \x01(\bR\x15isAuthorVerifiedOwner\x12\x1e\n" +
-	"\n" +
-	"collection\x18\x12 \x01(\tR\n" +
-	"collection\x12\x1b\n" +
-	"\tentity_id\x18\x13 \x01(\tR\bentityId:%\xc2\xf3\x18!\n" +
-	"\areviews\x1a\x16user_uuid, entity_uuidB\r\n" +
-	"\v_deleted_at\"\xb7\x02\n" +
-	"\n" +
-	"ReviewVote\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12H\n" +
-	"\vreview_uuid\x18\x02 \x01(\tB'\xc2\xf3\x18#\x1a\x1freviews(uuid) ON DELETE CASCADE(\x01R\n" +
-	"reviewUuid\x120\n" +
-	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x1d\n" +
-	"\n" +
-	"is_helpful\x18\x04 \x01(\bR\tisHelpful\x12F\n" +
-	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt:*\xc2\xf3\x18&\n" +
-	"\freview_votes\x1a\x16user_uuid, review_uuid\"\x96\x04\n" +
-	"\rReviewComment\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12H\n" +
-	"\vreview_uuid\x18\x02 \x01(\tB'\xc2\xf3\x18#\x1a\x1freviews(uuid) ON DELETE CASCADE(\x01R\n" +
-	"reviewUuid\x120\n" +
-	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x12\n" +
-	"\x04body\x18\x04 \x01(\tR\x04body\x12>\n" +
-	"\n" +
-	"deleted_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\tdeletedAt\x88\x01\x01\x12F\n" +
-	"\n" +
-	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
-	"\n" +
-	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12/\n" +
-	"\x0fauthor_username\x18\b \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x122\n" +
-	"\x11author_avatar_url\x18\t \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0fauthorAvatarUrl:\x15\xc2\xf3\x18\x11\n" +
-	"\x0freview_commentsB\r\n" +
-	"\v_deleted_at\"\xf8\a\n" +
-	"\bQuestion\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
-	"\x02id\x18\x02 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x02id\x120\n" +
-	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12I\n" +
-	"\ventity_uuid\x18\x04 \x01(\tB(\xc2\xf3\x18$\x1a entities(uuid) ON DELETE CASCADE(\x01R\n" +
-	"entityUuid\x12\x14\n" +
-	"\x05title\x18\x05 \x01(\tR\x05title\x12\x12\n" +
-	"\x04body\x18\x06 \x01(\tR\x04body\x12&\n" +
-	"\tnet_score\x18\a \x01(\x05B\t\xc2\xf3\x18\x05(\x01:\x010R\bnetScore\x12(\n" +
-	"\tis_edited\x18\b \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\bisEdited\x12>\n" +
-	"\n" +
-	"deleted_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampH\x00R\tdeletedAt\x88\x01\x01\x12F\n" +
-	"\n" +
-	"created_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
-	"\n" +
-	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12/\n" +
-	"\x0fauthor_username\x18\f \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x122\n" +
-	"\x11author_avatar_url\x18\r \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0fauthorAvatarUrl\x12)\n" +
-	"\fupvote_count\x18\x0e \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\vupvoteCount\x12-\n" +
-	"\x0edownvote_count\x18\x0f \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\rdownvoteCount\x12)\n" +
-	"\fanswer_count\x18\x10 \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\vanswerCount\x126\n" +
-	"\x13has_accepted_answer\x18\x11 \x01(\bB\x06\xc2\xf3\x18\x02@\x01R\x11hasAcceptedAnswer\x122\n" +
-	"\x11current_user_vote\x18\x12 \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\x0fcurrentUserVote\x12:\n" +
-	"\bcomments\x18\x13 \x03(\v2\x1e.quadsmith.api.QuestionCommentR\bcomments\x12\x1e\n" +
-	"\n" +
-	"collection\x18\x14 \x01(\tR\n" +
-	"collection\x12\x1b\n" +
-	"\tentity_id\x18\x15 \x01(\tR\bentityId:\x0f\xc2\xf3\x18\v\n" +
-	"\tquestionsB\r\n" +
-	"\v_deleted_at\"\xf1\b\n" +
-	"\x06Answer\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12N\n" +
-	"\rquestion_uuid\x18\x02 \x01(\tB)\xc2\xf3\x18%\x1a!questions(uuid) ON DELETE CASCADE(\x01R\fquestionUuid\x120\n" +
-	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x12\n" +
-	"\x04body\x18\x04 \x01(\tR\x04body\x12&\n" +
-	"\tnet_score\x18\x05 \x01(\x05B\t\xc2\xf3\x18\x05(\x01:\x010R\bnetScore\x12<\n" +
-	"\x14is_accepted_by_asker\x18\x06 \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\x11isAcceptedByAsker\x129\n" +
-	"\x12is_author_endorsed\x18\a \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\x10isAuthorEndorsed\x12(\n" +
-	"\tis_edited\x18\b \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\bisEdited\x12>\n" +
-	"\n" +
-	"deleted_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampH\x00R\tdeletedAt\x88\x01\x01\x12F\n" +
-	"\n" +
-	"created_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
-	"\n" +
-	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12@\n" +
-	"\vaccepted_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampH\x01R\n" +
-	"acceptedAt\x88\x01\x01\x12@\n" +
-	"\vendorsed_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampH\x02R\n" +
-	"endorsedAt\x88\x01\x01\x12/\n" +
-	"\x0fauthor_username\x18\x0e \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x122\n" +
-	"\x11author_avatar_url\x18\x0f \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0fauthorAvatarUrl\x12)\n" +
-	"\fupvote_count\x18\x10 \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\vupvoteCount\x12-\n" +
-	"\x0edownvote_count\x18\x11 \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\rdownvoteCount\x122\n" +
-	"\x11current_user_vote\x18\x12 \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\x0fcurrentUserVote\x12+\n" +
-	"\rcomment_count\x18\x13 \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\fcommentCount\x128\n" +
-	"\bcomments\x18\x14 \x03(\v2\x1c.quadsmith.api.AnswerCommentR\bcomments:\r\xc2\xf3\x18\t\n" +
-	"\aanswersB\r\n" +
-	"\v_deleted_atB\x0e\n" +
-	"\f_accepted_atB\x0e\n" +
-	"\f_endorsed_at\"\xc1\x02\n" +
-	"\fQuestionVote\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12N\n" +
-	"\rquestion_uuid\x18\x02 \x01(\tB)\xc2\xf3\x18%\x1a!questions(uuid) ON DELETE CASCADE(\x01R\fquestionUuid\x120\n" +
-	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x1b\n" +
-	"\tis_upvote\x18\x04 \x01(\bR\bisUpvote\x12F\n" +
-	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt:.\xc2\xf3\x18*\n" +
-	"\x0equestion_votes\x1a\x18user_uuid, question_uuid\"\xb5\x02\n" +
-	"\n" +
-	"AnswerVote\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12H\n" +
-	"\vanswer_uuid\x18\x02 \x01(\tB'\xc2\xf3\x18#\x1a\x1fanswers(uuid) ON DELETE CASCADE(\x01R\n" +
-	"answerUuid\x120\n" +
-	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x1b\n" +
-	"\tis_upvote\x18\x04 \x01(\bR\bisUpvote\x12F\n" +
-	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt:*\xc2\xf3\x18&\n" +
-	"\fanswer_votes\x1a\x16user_uuid, answer_uuid\"\xa0\x04\n" +
-	"\x0fQuestionComment\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12N\n" +
-	"\rquestion_uuid\x18\x02 \x01(\tB)\xc2\xf3\x18%\x1a!questions(uuid) ON DELETE CASCADE(\x01R\fquestionUuid\x120\n" +
-	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x12\n" +
-	"\x04body\x18\x04 \x01(\tR\x04body\x12>\n" +
-	"\n" +
-	"deleted_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\tdeletedAt\x88\x01\x01\x12F\n" +
-	"\n" +
-	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
-	"\n" +
-	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12/\n" +
-	"\x0fauthor_username\x18\b \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x122\n" +
-	"\x11author_avatar_url\x18\t \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0fauthorAvatarUrl:\x17\xc2\xf3\x18\x13\n" +
-	"\x11question_commentsB\r\n" +
-	"\v_deleted_at\"\x96\x04\n" +
-	"\rAnswerComment\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12H\n" +
-	"\vanswer_uuid\x18\x02 \x01(\tB'\xc2\xf3\x18#\x1a\x1fanswers(uuid) ON DELETE CASCADE(\x01R\n" +
-	"answerUuid\x120\n" +
-	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x12\n" +
-	"\x04body\x18\x04 \x01(\tR\x04body\x12>\n" +
-	"\n" +
-	"deleted_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\tdeletedAt\x88\x01\x01\x12F\n" +
-	"\n" +
-	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
-	"\n" +
-	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12/\n" +
-	"\x0fauthor_username\x18\b \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x122\n" +
-	"\x11author_avatar_url\x18\t \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0fauthorAvatarUrl:\x15\xc2\xf3\x18\x11\n" +
-	"\x0fanswer_commentsB\r\n" +
-	"\v_deleted_at\"\xe8\x01\n" +
-	"\x0eUserReputation\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x120\n" +
-	"\tuser_uuid\x18\x02 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x1d\n" +
-	"\x05score\x18\x03 \x01(\x05B\a\xc2\xf3\x18\x03:\x010R\x05score\x12F\n" +
-	"\n" +
-	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt:!\xc2\xf3\x18\x1d\n" +
-	"\x10user_reputations\x1a\tuser_uuid\"\xc2\x04\n" +
-	"\n" +
-	"Collection\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
-	"\x02id\x18\x02 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x02id\x120\n" +
-	"\tuser_uuid\x18\x03 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x12\n" +
-	"\x04name\x18\x04 \x01(\tR\x04name\x12 \n" +
-	"\vdescription\x18\x05 \x01(\tR\vdescription\x12?\n" +
-	"\x14is_system_collection\x18\x06 \x01(\bB\r\xc2\xf3\x18\t(\x01:\x05falseR\x12isSystemCollection\x12F\n" +
-	"\n" +
-	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12F\n" +
-	"\n" +
-	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tupdatedAt\x12/\n" +
-	"\x0fauthor_username\x18\t \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eauthorUsername\x12%\n" +
-	"\n" +
-	"item_count\x18\n" +
-	" \x01(\x05B\x06\xc2\xf3\x18\x02@\x01R\titemCount\x12-\n" +
-	"\x0epreview_images\x18\v \x03(\tB\x06\xc2\xf3\x18\x02@\x01R\rpreviewImages\x12+\n" +
-	"\rcontains_item\x18\f \x01(\bB\x06\xc2\xf3\x18\x02@\x01R\fcontainsItem:\x11\xc2\xf3\x18\r\n" +
-	"\vcollections\"\xc5\x04\n" +
-	"\x0eCollectionItem\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12T\n" +
-	"\x0fcollection_uuid\x18\x02 \x01(\tB+\xc2\xf3\x18'\x1a#collections(uuid) ON DELETE CASCADE(\x01R\x0ecollectionUuid\x12I\n" +
-	"\ventity_uuid\x18\x03 \x01(\tB(\xc2\xf3\x18$\x1a entities(uuid) ON DELETE CASCADE(\x01R\n" +
-	"entityUuid\x12F\n" +
-	"\n" +
-	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt\x12\x1b\n" +
-	"\tentity_id\x18\x05 \x01(\tR\bentityId\x12\x1e\n" +
-	"\n" +
-	"collection\x18\x06 \x01(\tR\n" +
-	"collection\x12\x12\n" +
-	"\x04name\x18\a \x01(\tR\x04name\x127\n" +
-	"\x15primary_display_image\x18\b \x01(\tH\x00R\x13primaryDisplayImage\x88\x01\x01\x129\n" +
-	"\x16author_or_manufacturer\x18\t \x01(\tH\x01R\x14authorOrManufacturer\x88\x01\x01:4\xc2\xf3\x180\n" +
-	"\x10collection_items\x1a\x1ccollection_uuid, entity_uuidB\x18\n" +
-	"\x16_primary_display_imageB\x19\n" +
-	"\x17_author_or_manufacturer\"\xdc\x01\n" +
-	"\x13EntitySocialSummary\x12\x19\n" +
-	"\bis_liked\x18\x01 \x01(\bR\aisLiked\x12\x1d\n" +
-	"\n" +
-	"like_count\x18\x02 \x01(\x05R\tlikeCount\x12C\n" +
-	"\x0ereview_summary\x18\x03 \x01(\v2\x1c.quadsmith.api.ReviewSummaryR\rreviewSummary\x12%\n" +
-	"\x0equestion_count\x18\x04 \x01(\x05R\rquestionCount\x12\x1f\n" +
-	"\vis_archived\x18\x05 \x01(\bR\n" +
-	"isArchived\"\xa1\x01\n" +
+	"\x1aquadsmith/api/social.proto\x12\rquadsmith.api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xa1\x01\n" +
 	"\x13CreateReviewRequest\x12\x1b\n" +
 	"\tentity_id\x18\x01 \x01(\tR\bentityId\x12#\n" +
 	"\n" +
@@ -4689,7 +4441,301 @@ const file_quadsmith_api_social_proto_rawDesc = "" +
 	"\n" +
 	"collection\x18\x02 \x01(\tH\x00R\n" +
 	"collection\x88\x01\x01B\r\n" +
-	"\v_collection*\x89\x02\n" +
+	"\v_collection\"\xcf\x06\n" +
+	"\x06Entity\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12*\n" +
+	"\n" +
+	"collection\x18\x02 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x04R\n" +
+	"collection\x12\x1a\n" +
+	"\x02id\x18\x03 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x04R\x02id\x12\x18\n" +
+	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02R\x04name\x12&\n" +
+	"\vdescription\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x02R\vdescription\x12=\n" +
+	"\x15primary_display_image\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x12K\n" +
+	"\x0freference_links\x18\a \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x04\xc0\xf0\x19\x02R\x0ereferenceLinks\x120\n" +
+	"\x05media\x18\b \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x02R\x05media\x12:\n" +
+	"\x16author_or_manufacturer\x18\t \x01(\tB\x04\xc0\xf0\x19\x02R\x14authorOrManufacturer\x122\n" +
+	"\vis_archived\x18\n" +
+	" \x01(\bB\x11\xc2\xf3\x18\t(\x01:\x05false\xc0\xf0\x19\x02R\n" +
+	"isArchived\x12J\n" +
+	"\n" +
+	"created_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
+	"\n" +
+	"updated_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt\x129\n" +
+	"\tuser_uuid\x18\r \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
+	"\x0fauthor_username\x18\x0e \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:$\xc2\xf3\x18\x1a\n" +
+	"\bentities\x1a\x0ecollection, id\xc2\xf0\x19\x02\b\x05B\x18\n" +
+	"\x16_primary_display_imageB\f\n" +
+	"\n" +
+	"_user_uuidB\x12\n" +
+	"\x10_author_username\"\xbd\b\n" +
+	"\x06Review\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x1c\n" +
+	"\x02id\x18\x02 \x01(\tB\f\xc2\xf3\x18\x04 \x01(\x01\xc0\xf0\x19\x04R\x02id\x124\n" +
+	"\tuser_uuid\x18\x03 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12M\n" +
+	"\ventity_uuid\x18\x04 \x01(\tB,\xc2\xf3\x18$\x1a entities(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\n" +
+	"entityUuid\x12+\n" +
+	"\x0eis_recommended\x18\x05 \x01(\bB\x04\xc0\xf0\x19\x02R\risRecommended\x12\x18\n" +
+	"\x04body\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x02R\x04body\x12,\n" +
+	"\tis_edited\x18\a \x01(\bB\x0f\xc2\xf3\x18\a:\x05false\xc0\xf0\x19\x03R\bisEdited\x12D\n" +
+	"\n" +
+	"deleted_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03H\x00R\tdeletedAt\x88\x01\x01\x12J\n" +
+	"\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
+	"\n" +
+	"updated_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt\x123\n" +
+	"\x0fauthor_username\x18\v \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0eauthorUsername\x126\n" +
+	"\x11author_avatar_url\x18\f \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0fauthorAvatarUrl\x12/\n" +
+	"\rhelpful_count\x18\r \x01(\x05B\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\fhelpfulCount\x123\n" +
+	"\x0funhelpful_count\x18\x0e \x01(\x05B\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\x0eunhelpfulCount\x12/\n" +
+	"\rcomment_count\x18\x0f \x01(\x05B\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\fcommentCount\x12U\n" +
+	"\x11current_user_vote\x18\x10 \x01(\x0e2\x1d.quadsmith.api.ReviewVoteTypeB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\x0fcurrentUserVote\x12=\n" +
+	"\x18is_author_verified_owner\x18\x11 \x01(\bB\x04\xc0\xf0\x19\x03R\x15isAuthorVerifiedOwner\x12$\n" +
+	"\n" +
+	"collection\x18\x12 \x01(\tB\x04\xc0\xf0\x19\x04R\n" +
+	"collection\x12!\n" +
+	"\tentity_id\x18\x13 \x01(\tB\x04\xc0\xf0\x19\x04R\bentityId:+\xc2\xf3\x18!\n" +
+	"\areviews\x1a\x16user_uuid, entity_uuid\xc2\xf0\x19\x02\b\aB\r\n" +
+	"\v_deleted_at\"\xd3\x02\n" +
+	"\n" +
+	"ReviewVote\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12L\n" +
+	"\vreview_uuid\x18\x02 \x01(\tB+\xc2\xf3\x18#\x1a\x1freviews(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\n" +
+	"reviewUuid\x124\n" +
+	"\tuser_uuid\x18\x03 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12#\n" +
+	"\n" +
+	"is_helpful\x18\x04 \x01(\bB\x04\xc0\xf0\x19\x02R\tisHelpful\x12J\n" +
+	"\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt:0\xc2\xf3\x18&\n" +
+	"\freview_votes\x1a\x16user_uuid, review_uuid\xc2\xf0\x19\x02\b\a\"\xc4\x04\n" +
+	"\rReviewComment\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12L\n" +
+	"\vreview_uuid\x18\x02 \x01(\tB+\xc2\xf3\x18#\x1a\x1freviews(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\n" +
+	"reviewUuid\x124\n" +
+	"\tuser_uuid\x18\x03 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12\x18\n" +
+	"\x04body\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02R\x04body\x12D\n" +
+	"\n" +
+	"deleted_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03H\x00R\tdeletedAt\x88\x01\x01\x12J\n" +
+	"\n" +
+	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
+	"\n" +
+	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt\x123\n" +
+	"\x0fauthor_username\x18\b \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0eauthorUsername\x126\n" +
+	"\x11author_avatar_url\x18\t \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0fauthorAvatarUrl:\x1b\xc2\xf3\x18\x11\n" +
+	"\x0freview_comments\xc2\xf0\x19\x02\b\aB\r\n" +
+	"\v_deleted_at\"\xde\b\n" +
+	"\bQuestion\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x1c\n" +
+	"\x02id\x18\x02 \x01(\tB\f\xc2\xf3\x18\x04 \x01(\x01\xc0\xf0\x19\x04R\x02id\x124\n" +
+	"\tuser_uuid\x18\x03 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12M\n" +
+	"\ventity_uuid\x18\x04 \x01(\tB,\xc2\xf3\x18$\x1a entities(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\n" +
+	"entityUuid\x12\x1a\n" +
+	"\x05title\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x02R\x05title\x12\x18\n" +
+	"\x04body\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x02R\x04body\x12*\n" +
+	"\tnet_score\x18\a \x01(\x05B\r\xc2\xf3\x18\x05(\x01:\x010\xc0\xf0\x19\x03R\bnetScore\x12,\n" +
+	"\tis_edited\x18\b \x01(\bB\x0f\xc2\xf3\x18\a:\x05false\xc0\xf0\x19\x03R\bisEdited\x12D\n" +
+	"\n" +
+	"deleted_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03H\x00R\tdeletedAt\x88\x01\x01\x12J\n" +
+	"\n" +
+	"created_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
+	"\n" +
+	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt\x123\n" +
+	"\x0fauthor_username\x18\f \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0eauthorUsername\x126\n" +
+	"\x11author_avatar_url\x18\r \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0fauthorAvatarUrl\x12-\n" +
+	"\fupvote_count\x18\x0e \x01(\x05B\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\vupvoteCount\x121\n" +
+	"\x0edownvote_count\x18\x0f \x01(\x05B\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\rdownvoteCount\x12-\n" +
+	"\fanswer_count\x18\x10 \x01(\x05B\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\vanswerCount\x12:\n" +
+	"\x13has_accepted_answer\x18\x11 \x01(\bB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\x11hasAcceptedAnswer\x126\n" +
+	"\x11current_user_vote\x18\x12 \x01(\x05B\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\x0fcurrentUserVote\x12@\n" +
+	"\bcomments\x18\x13 \x03(\v2\x1e.quadsmith.api.QuestionCommentB\x04\xc0\xf0\x19\x02R\bcomments\x12$\n" +
+	"\n" +
+	"collection\x18\x14 \x01(\tB\x04\xc0\xf0\x19\x04R\n" +
+	"collection\x12!\n" +
+	"\tentity_id\x18\x15 \x01(\tB\x04\xc0\xf0\x19\x04R\bentityId:\x15\xc2\xf3\x18\v\n" +
+	"\tquestions\xc2\xf0\x19\x02\b\aB\r\n" +
+	"\v_deleted_at\"\xce\x04\n" +
+	"\x0fQuestionComment\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12R\n" +
+	"\rquestion_uuid\x18\x02 \x01(\tB-\xc2\xf3\x18%\x1a!questions(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\fquestionUuid\x124\n" +
+	"\tuser_uuid\x18\x03 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12\x18\n" +
+	"\x04body\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02R\x04body\x12D\n" +
+	"\n" +
+	"deleted_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03H\x00R\tdeletedAt\x88\x01\x01\x12J\n" +
+	"\n" +
+	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
+	"\n" +
+	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt\x123\n" +
+	"\x0fauthor_username\x18\b \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0eauthorUsername\x126\n" +
+	"\x11author_avatar_url\x18\t \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0fauthorAvatarUrl:\x1d\xc2\xf3\x18\x13\n" +
+	"\x11question_comments\xc2\xf0\x19\x02\b\aB\r\n" +
+	"\v_deleted_at\"\xd1\t\n" +
+	"\x06Answer\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12R\n" +
+	"\rquestion_uuid\x18\x02 \x01(\tB-\xc2\xf3\x18%\x1a!questions(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\fquestionUuid\x124\n" +
+	"\tuser_uuid\x18\x03 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12\x18\n" +
+	"\x04body\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02R\x04body\x12*\n" +
+	"\tnet_score\x18\x05 \x01(\x05B\r\xc2\xf3\x18\x05(\x01:\x010\xc0\xf0\x19\x03R\bnetScore\x12@\n" +
+	"\x14is_accepted_by_asker\x18\x06 \x01(\bB\x0f\xc2\xf3\x18\a:\x05false\xc0\xf0\x19\x03R\x11isAcceptedByAsker\x12=\n" +
+	"\x12is_author_endorsed\x18\a \x01(\bB\x0f\xc2\xf3\x18\a:\x05false\xc0\xf0\x19\x03R\x10isAuthorEndorsed\x12,\n" +
+	"\tis_edited\x18\b \x01(\bB\x0f\xc2\xf3\x18\a:\x05false\xc0\xf0\x19\x03R\bisEdited\x12D\n" +
+	"\n" +
+	"deleted_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03H\x00R\tdeletedAt\x88\x01\x01\x12J\n" +
+	"\n" +
+	"created_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
+	"\n" +
+	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt\x12F\n" +
+	"\vaccepted_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03H\x01R\n" +
+	"acceptedAt\x88\x01\x01\x12F\n" +
+	"\vendorsed_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03H\x02R\n" +
+	"endorsedAt\x88\x01\x01\x123\n" +
+	"\x0fauthor_username\x18\x0e \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0eauthorUsername\x126\n" +
+	"\x11author_avatar_url\x18\x0f \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0fauthorAvatarUrl\x12-\n" +
+	"\fupvote_count\x18\x10 \x01(\x05B\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\vupvoteCount\x121\n" +
+	"\x0edownvote_count\x18\x11 \x01(\x05B\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\rdownvoteCount\x126\n" +
+	"\x11current_user_vote\x18\x12 \x01(\x05B\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\x0fcurrentUserVote\x12/\n" +
+	"\rcomment_count\x18\x13 \x01(\x05B\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\fcommentCount\x12>\n" +
+	"\bcomments\x18\x14 \x03(\v2\x1c.quadsmith.api.AnswerCommentB\x04\xc0\xf0\x19\x02R\bcomments:\x13\xc2\xf3\x18\t\n" +
+	"\aanswers\xc2\xf0\x19\x02\b\aB\r\n" +
+	"\v_deleted_atB\x0e\n" +
+	"\f_accepted_atB\x0e\n" +
+	"\f_endorsed_at\"\xc4\x04\n" +
+	"\rAnswerComment\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12L\n" +
+	"\vanswer_uuid\x18\x02 \x01(\tB+\xc2\xf3\x18#\x1a\x1fanswers(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\n" +
+	"answerUuid\x124\n" +
+	"\tuser_uuid\x18\x03 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12\x18\n" +
+	"\x04body\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02R\x04body\x12D\n" +
+	"\n" +
+	"deleted_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03H\x00R\tdeletedAt\x88\x01\x01\x12J\n" +
+	"\n" +
+	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
+	"\n" +
+	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt\x123\n" +
+	"\x0fauthor_username\x18\b \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0eauthorUsername\x126\n" +
+	"\x11author_avatar_url\x18\t \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0fauthorAvatarUrl:\x1b\xc2\xf3\x18\x11\n" +
+	"\x0fanswer_comments\xc2\xf0\x19\x02\b\aB\r\n" +
+	"\v_deleted_at\"\xdd\x02\n" +
+	"\fQuestionVote\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12R\n" +
+	"\rquestion_uuid\x18\x02 \x01(\tB-\xc2\xf3\x18%\x1a!questions(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\fquestionUuid\x124\n" +
+	"\tuser_uuid\x18\x03 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12!\n" +
+	"\tis_upvote\x18\x04 \x01(\bB\x04\xc0\xf0\x19\x02R\bisUpvote\x12J\n" +
+	"\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt:4\xc2\xf3\x18*\n" +
+	"\x0equestion_votes\x1a\x18user_uuid, question_uuid\xc2\xf0\x19\x02\b\a\"\xd1\x02\n" +
+	"\n" +
+	"AnswerVote\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12L\n" +
+	"\vanswer_uuid\x18\x02 \x01(\tB+\xc2\xf3\x18#\x1a\x1fanswers(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\n" +
+	"answerUuid\x124\n" +
+	"\tuser_uuid\x18\x03 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12!\n" +
+	"\tis_upvote\x18\x04 \x01(\bB\x04\xc0\xf0\x19\x02R\bisUpvote\x12J\n" +
+	"\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt:0\xc2\xf3\x18&\n" +
+	"\fanswer_votes\x1a\x16user_uuid, answer_uuid\xc2\xf0\x19\x02\b\a\"\xfe\x01\n" +
+	"\x0eUserReputation\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x124\n" +
+	"\tuser_uuid\x18\x02 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12!\n" +
+	"\x05score\x18\x03 \x01(\x05B\v\xc2\xf3\x18\x03:\x010\xc0\xf0\x19\x03R\x05score\x12J\n" +
+	"\n" +
+	"updated_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt:'\xc2\xf3\x18\x1d\n" +
+	"\x10user_reputations\x1a\tuser_uuid\xc2\xf0\x19\x02\b\x02\"\xfc\x04\n" +
+	"\n" +
+	"Collection\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x1c\n" +
+	"\x02id\x18\x02 \x01(\tB\f\xc2\xf3\x18\x04 \x01(\x01\xc0\xf0\x19\x04R\x02id\x124\n" +
+	"\tuser_uuid\x18\x03 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12\x18\n" +
+	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02R\x04name\x12&\n" +
+	"\vdescription\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x02R\vdescription\x12C\n" +
+	"\x14is_system_collection\x18\x06 \x01(\bB\x11\xc2\xf3\x18\t(\x01:\x05false\xc0\xf0\x19\x03R\x12isSystemCollection\x12J\n" +
+	"\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
+	"\n" +
+	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt\x123\n" +
+	"\x0fauthor_username\x18\t \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0eauthorUsername\x12)\n" +
+	"\n" +
+	"item_count\x18\n" +
+	" \x01(\x05B\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\titemCount\x121\n" +
+	"\x0epreview_images\x18\v \x03(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\rpreviewImages\x12/\n" +
+	"\rcontains_item\x18\f \x01(\bB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\fcontainsItem:\x17\xc2\xf3\x18\r\n" +
+	"\vcollections\xc2\xf0\x19\x02\b\x06\"\xc8\x05\n" +
+	"\x0eCollectionItem\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12X\n" +
+	"\x0fcollection_uuid\x18\x02 \x01(\tB/\xc2\xf3\x18'\x1a#collections(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\x0ecollectionUuid\x12M\n" +
+	"\ventity_uuid\x18\x03 \x01(\tB,\xc2\xf3\x18$\x1a entities(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\n" +
+	"entityUuid\x12J\n" +
+	"\n" +
+	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12!\n" +
+	"\tentity_id\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x04R\bentityId\x12$\n" +
+	"\n" +
+	"collection\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x04R\n" +
+	"collection\x12\x18\n" +
+	"\x04name\x18\a \x01(\tB\x04\xc0\xf0\x19\x02R\x04name\x12=\n" +
+	"\x15primary_display_image\x18\b \x01(\tB\x04\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x12?\n" +
+	"\x16author_or_manufacturer\x18\t \x01(\tB\x04\xc0\xf0\x19\x02H\x01R\x14authorOrManufacturer\x88\x01\x01:\x88\x01\xc2\xf3\x180\n" +
+	"\x10collection_items\x1a\x1ccollection_uuid, entity_uuid\xc2\xf0\x19P\b\x06\x12Lcollection_uuid IN (SELECT uuid FROM collections WHERE user_uuid = $1::uuid)B\x18\n" +
+	"\x16_primary_display_imageB\x19\n" +
+	"\x17_author_or_manufacturer\"\xdc\x01\n" +
+	"\x13EntitySocialSummary\x12\x19\n" +
+	"\bis_liked\x18\x01 \x01(\bR\aisLiked\x12\x1d\n" +
+	"\n" +
+	"like_count\x18\x02 \x01(\x05R\tlikeCount\x12C\n" +
+	"\x0ereview_summary\x18\x03 \x01(\v2\x1c.quadsmith.api.ReviewSummaryR\rreviewSummary\x12%\n" +
+	"\x0equestion_count\x18\x04 \x01(\x05R\rquestionCount\x12\x1f\n" +
+	"\vis_archived\x18\x05 \x01(\bR\n" +
+	"isArchived\"\xbb\x01\n" +
+	"\rReviewSummary\x12#\n" +
+	"\rtotal_reviews\x18\x01 \x01(\x05R\ftotalReviews\x12+\n" +
+	"\x11recommended_count\x18\x02 \x01(\x05R\x10recommendedCount\x12)\n" +
+	"\x10score_percentage\x18\x03 \x01(\x02R\x0fscorePercentage\x12-\n" +
+	"\x04tier\x18\x04 \x01(\x0e2\x19.quadsmith.api.ReviewTierR\x04tier*\x89\x02\n" +
 	"\n" +
 	"ReviewTier\x12\x1b\n" +
 	"\x17REVIEW_TIER_UNSPECIFIED\x10\x00\x12'\n" +
@@ -4759,184 +4805,184 @@ var file_quadsmith_api_social_proto_msgTypes = make([]protoimpl.MessageInfo, 59)
 var file_quadsmith_api_social_proto_goTypes = []any{
 	(ReviewTier)(0),                       // 0: quadsmith.api.ReviewTier
 	(ReviewVoteType)(0),                   // 1: quadsmith.api.ReviewVoteType
-	(*Entity)(nil),                        // 2: quadsmith.api.Entity
-	(*ReviewSummary)(nil),                 // 3: quadsmith.api.ReviewSummary
-	(*Review)(nil),                        // 4: quadsmith.api.Review
-	(*ReviewVote)(nil),                    // 5: quadsmith.api.ReviewVote
-	(*ReviewComment)(nil),                 // 6: quadsmith.api.ReviewComment
-	(*Question)(nil),                      // 7: quadsmith.api.Question
-	(*Answer)(nil),                        // 8: quadsmith.api.Answer
-	(*QuestionVote)(nil),                  // 9: quadsmith.api.QuestionVote
-	(*AnswerVote)(nil),                    // 10: quadsmith.api.AnswerVote
-	(*QuestionComment)(nil),               // 11: quadsmith.api.QuestionComment
-	(*AnswerComment)(nil),                 // 12: quadsmith.api.AnswerComment
-	(*UserReputation)(nil),                // 13: quadsmith.api.UserReputation
-	(*Collection)(nil),                    // 14: quadsmith.api.Collection
-	(*CollectionItem)(nil),                // 15: quadsmith.api.CollectionItem
-	(*EntitySocialSummary)(nil),           // 16: quadsmith.api.EntitySocialSummary
-	(*CreateReviewRequest)(nil),           // 17: quadsmith.api.CreateReviewRequest
-	(*UpdateReviewRequest)(nil),           // 18: quadsmith.api.UpdateReviewRequest
-	(*DeleteReviewRequest)(nil),           // 19: quadsmith.api.DeleteReviewRequest
-	(*ListReviewsRequest)(nil),            // 20: quadsmith.api.ListReviewsRequest
-	(*ListReviewsResponse)(nil),           // 21: quadsmith.api.ListReviewsResponse
-	(*VoteReviewRequest)(nil),             // 22: quadsmith.api.VoteReviewRequest
-	(*VoteReviewResponse)(nil),            // 23: quadsmith.api.VoteReviewResponse
-	(*CreateReviewCommentRequest)(nil),    // 24: quadsmith.api.CreateReviewCommentRequest
-	(*DeleteReviewCommentRequest)(nil),    // 25: quadsmith.api.DeleteReviewCommentRequest
-	(*ListReviewCommentsRequest)(nil),     // 26: quadsmith.api.ListReviewCommentsRequest
-	(*ListReviewCommentsResponse)(nil),    // 27: quadsmith.api.ListReviewCommentsResponse
-	(*CreateQuestionRequest)(nil),         // 28: quadsmith.api.CreateQuestionRequest
-	(*UpdateQuestionRequest)(nil),         // 29: quadsmith.api.UpdateQuestionRequest
-	(*DeleteQuestionRequest)(nil),         // 30: quadsmith.api.DeleteQuestionRequest
-	(*ListQuestionsRequest)(nil),          // 31: quadsmith.api.ListQuestionsRequest
-	(*ListQuestionsResponse)(nil),         // 32: quadsmith.api.ListQuestionsResponse
-	(*VoteQuestionRequest)(nil),           // 33: quadsmith.api.VoteQuestionRequest
-	(*VoteQuestionResponse)(nil),          // 34: quadsmith.api.VoteQuestionResponse
-	(*CreateAnswerRequest)(nil),           // 35: quadsmith.api.CreateAnswerRequest
-	(*UpdateAnswerRequest)(nil),           // 36: quadsmith.api.UpdateAnswerRequest
-	(*DeleteAnswerRequest)(nil),           // 37: quadsmith.api.DeleteAnswerRequest
-	(*ListAnswersRequest)(nil),            // 38: quadsmith.api.ListAnswersRequest
-	(*ListAnswersResponse)(nil),           // 39: quadsmith.api.ListAnswersResponse
-	(*VoteAnswerRequest)(nil),             // 40: quadsmith.api.VoteAnswerRequest
-	(*VoteAnswerResponse)(nil),            // 41: quadsmith.api.VoteAnswerResponse
-	(*AcceptAnswerRequest)(nil),           // 42: quadsmith.api.AcceptAnswerRequest
-	(*EndorseAnswerRequest)(nil),          // 43: quadsmith.api.EndorseAnswerRequest
-	(*CreateQuestionCommentRequest)(nil),  // 44: quadsmith.api.CreateQuestionCommentRequest
-	(*DeleteQuestionCommentRequest)(nil),  // 45: quadsmith.api.DeleteQuestionCommentRequest
-	(*CreateAnswerCommentRequest)(nil),    // 46: quadsmith.api.CreateAnswerCommentRequest
-	(*DeleteAnswerCommentRequest)(nil),    // 47: quadsmith.api.DeleteAnswerCommentRequest
-	(*CreateCollectionRequest)(nil),       // 48: quadsmith.api.CreateCollectionRequest
-	(*UpdateCollectionRequest)(nil),       // 49: quadsmith.api.UpdateCollectionRequest
-	(*DeleteCollectionRequest)(nil),       // 50: quadsmith.api.DeleteCollectionRequest
-	(*GetCollectionRequest)(nil),          // 51: quadsmith.api.GetCollectionRequest
-	(*ListUserCollectionsRequest)(nil),    // 52: quadsmith.api.ListUserCollectionsRequest
-	(*ListUserCollectionsResponse)(nil),   // 53: quadsmith.api.ListUserCollectionsResponse
-	(*ToggleLikeItemRequest)(nil),         // 54: quadsmith.api.ToggleLikeItemRequest
-	(*ToggleLikeItemResponse)(nil),        // 55: quadsmith.api.ToggleLikeItemResponse
-	(*AddCollectionItemRequest)(nil),      // 56: quadsmith.api.AddCollectionItemRequest
-	(*RemoveCollectionItemRequest)(nil),   // 57: quadsmith.api.RemoveCollectionItemRequest
-	(*ListCollectionItemsRequest)(nil),    // 58: quadsmith.api.ListCollectionItemsRequest
-	(*ListCollectionItemsResponse)(nil),   // 59: quadsmith.api.ListCollectionItemsResponse
-	(*GetEntitySocialSummaryRequest)(nil), // 60: quadsmith.api.GetEntitySocialSummaryRequest
+	(*CreateReviewRequest)(nil),           // 2: quadsmith.api.CreateReviewRequest
+	(*UpdateReviewRequest)(nil),           // 3: quadsmith.api.UpdateReviewRequest
+	(*DeleteReviewRequest)(nil),           // 4: quadsmith.api.DeleteReviewRequest
+	(*ListReviewsRequest)(nil),            // 5: quadsmith.api.ListReviewsRequest
+	(*ListReviewsResponse)(nil),           // 6: quadsmith.api.ListReviewsResponse
+	(*VoteReviewRequest)(nil),             // 7: quadsmith.api.VoteReviewRequest
+	(*VoteReviewResponse)(nil),            // 8: quadsmith.api.VoteReviewResponse
+	(*CreateReviewCommentRequest)(nil),    // 9: quadsmith.api.CreateReviewCommentRequest
+	(*DeleteReviewCommentRequest)(nil),    // 10: quadsmith.api.DeleteReviewCommentRequest
+	(*ListReviewCommentsRequest)(nil),     // 11: quadsmith.api.ListReviewCommentsRequest
+	(*ListReviewCommentsResponse)(nil),    // 12: quadsmith.api.ListReviewCommentsResponse
+	(*CreateQuestionRequest)(nil),         // 13: quadsmith.api.CreateQuestionRequest
+	(*UpdateQuestionRequest)(nil),         // 14: quadsmith.api.UpdateQuestionRequest
+	(*DeleteQuestionRequest)(nil),         // 15: quadsmith.api.DeleteQuestionRequest
+	(*ListQuestionsRequest)(nil),          // 16: quadsmith.api.ListQuestionsRequest
+	(*ListQuestionsResponse)(nil),         // 17: quadsmith.api.ListQuestionsResponse
+	(*VoteQuestionRequest)(nil),           // 18: quadsmith.api.VoteQuestionRequest
+	(*VoteQuestionResponse)(nil),          // 19: quadsmith.api.VoteQuestionResponse
+	(*CreateAnswerRequest)(nil),           // 20: quadsmith.api.CreateAnswerRequest
+	(*UpdateAnswerRequest)(nil),           // 21: quadsmith.api.UpdateAnswerRequest
+	(*DeleteAnswerRequest)(nil),           // 22: quadsmith.api.DeleteAnswerRequest
+	(*ListAnswersRequest)(nil),            // 23: quadsmith.api.ListAnswersRequest
+	(*ListAnswersResponse)(nil),           // 24: quadsmith.api.ListAnswersResponse
+	(*VoteAnswerRequest)(nil),             // 25: quadsmith.api.VoteAnswerRequest
+	(*VoteAnswerResponse)(nil),            // 26: quadsmith.api.VoteAnswerResponse
+	(*AcceptAnswerRequest)(nil),           // 27: quadsmith.api.AcceptAnswerRequest
+	(*EndorseAnswerRequest)(nil),          // 28: quadsmith.api.EndorseAnswerRequest
+	(*CreateQuestionCommentRequest)(nil),  // 29: quadsmith.api.CreateQuestionCommentRequest
+	(*DeleteQuestionCommentRequest)(nil),  // 30: quadsmith.api.DeleteQuestionCommentRequest
+	(*CreateAnswerCommentRequest)(nil),    // 31: quadsmith.api.CreateAnswerCommentRequest
+	(*DeleteAnswerCommentRequest)(nil),    // 32: quadsmith.api.DeleteAnswerCommentRequest
+	(*CreateCollectionRequest)(nil),       // 33: quadsmith.api.CreateCollectionRequest
+	(*UpdateCollectionRequest)(nil),       // 34: quadsmith.api.UpdateCollectionRequest
+	(*DeleteCollectionRequest)(nil),       // 35: quadsmith.api.DeleteCollectionRequest
+	(*GetCollectionRequest)(nil),          // 36: quadsmith.api.GetCollectionRequest
+	(*ListUserCollectionsRequest)(nil),    // 37: quadsmith.api.ListUserCollectionsRequest
+	(*ListUserCollectionsResponse)(nil),   // 38: quadsmith.api.ListUserCollectionsResponse
+	(*ToggleLikeItemRequest)(nil),         // 39: quadsmith.api.ToggleLikeItemRequest
+	(*ToggleLikeItemResponse)(nil),        // 40: quadsmith.api.ToggleLikeItemResponse
+	(*AddCollectionItemRequest)(nil),      // 41: quadsmith.api.AddCollectionItemRequest
+	(*RemoveCollectionItemRequest)(nil),   // 42: quadsmith.api.RemoveCollectionItemRequest
+	(*ListCollectionItemsRequest)(nil),    // 43: quadsmith.api.ListCollectionItemsRequest
+	(*ListCollectionItemsResponse)(nil),   // 44: quadsmith.api.ListCollectionItemsResponse
+	(*GetEntitySocialSummaryRequest)(nil), // 45: quadsmith.api.GetEntitySocialSummaryRequest
+	(*Entity)(nil),                        // 46: quadsmith.api.Entity
+	(*Review)(nil),                        // 47: quadsmith.api.Review
+	(*ReviewVote)(nil),                    // 48: quadsmith.api.ReviewVote
+	(*ReviewComment)(nil),                 // 49: quadsmith.api.ReviewComment
+	(*Question)(nil),                      // 50: quadsmith.api.Question
+	(*QuestionComment)(nil),               // 51: quadsmith.api.QuestionComment
+	(*Answer)(nil),                        // 52: quadsmith.api.Answer
+	(*AnswerComment)(nil),                 // 53: quadsmith.api.AnswerComment
+	(*QuestionVote)(nil),                  // 54: quadsmith.api.QuestionVote
+	(*AnswerVote)(nil),                    // 55: quadsmith.api.AnswerVote
+	(*UserReputation)(nil),                // 56: quadsmith.api.UserReputation
+	(*Collection)(nil),                    // 57: quadsmith.api.Collection
+	(*CollectionItem)(nil),                // 58: quadsmith.api.CollectionItem
+	(*EntitySocialSummary)(nil),           // 59: quadsmith.api.EntitySocialSummary
+	(*ReviewSummary)(nil),                 // 60: quadsmith.api.ReviewSummary
 	(*ReferenceLink)(nil),                 // 61: quadsmith.api.ReferenceLink
 	(*Media)(nil),                         // 62: quadsmith.api.Media
 	(*timestamppb.Timestamp)(nil),         // 63: google.protobuf.Timestamp
 }
 var file_quadsmith_api_social_proto_depIdxs = []int32{
-	61, // 0: quadsmith.api.Entity.reference_links:type_name -> quadsmith.api.ReferenceLink
-	62, // 1: quadsmith.api.Entity.media:type_name -> quadsmith.api.Media
-	63, // 2: quadsmith.api.Entity.created_at:type_name -> google.protobuf.Timestamp
-	63, // 3: quadsmith.api.Entity.updated_at:type_name -> google.protobuf.Timestamp
-	0,  // 4: quadsmith.api.ReviewSummary.tier:type_name -> quadsmith.api.ReviewTier
-	63, // 5: quadsmith.api.Review.deleted_at:type_name -> google.protobuf.Timestamp
-	63, // 6: quadsmith.api.Review.created_at:type_name -> google.protobuf.Timestamp
-	63, // 7: quadsmith.api.Review.updated_at:type_name -> google.protobuf.Timestamp
-	1,  // 8: quadsmith.api.Review.current_user_vote:type_name -> quadsmith.api.ReviewVoteType
-	63, // 9: quadsmith.api.ReviewVote.created_at:type_name -> google.protobuf.Timestamp
-	63, // 10: quadsmith.api.ReviewComment.deleted_at:type_name -> google.protobuf.Timestamp
-	63, // 11: quadsmith.api.ReviewComment.created_at:type_name -> google.protobuf.Timestamp
-	63, // 12: quadsmith.api.ReviewComment.updated_at:type_name -> google.protobuf.Timestamp
-	63, // 13: quadsmith.api.Question.deleted_at:type_name -> google.protobuf.Timestamp
-	63, // 14: quadsmith.api.Question.created_at:type_name -> google.protobuf.Timestamp
-	63, // 15: quadsmith.api.Question.updated_at:type_name -> google.protobuf.Timestamp
-	11, // 16: quadsmith.api.Question.comments:type_name -> quadsmith.api.QuestionComment
-	63, // 17: quadsmith.api.Answer.deleted_at:type_name -> google.protobuf.Timestamp
-	63, // 18: quadsmith.api.Answer.created_at:type_name -> google.protobuf.Timestamp
-	63, // 19: quadsmith.api.Answer.updated_at:type_name -> google.protobuf.Timestamp
-	63, // 20: quadsmith.api.Answer.accepted_at:type_name -> google.protobuf.Timestamp
-	63, // 21: quadsmith.api.Answer.endorsed_at:type_name -> google.protobuf.Timestamp
-	12, // 22: quadsmith.api.Answer.comments:type_name -> quadsmith.api.AnswerComment
-	63, // 23: quadsmith.api.QuestionVote.created_at:type_name -> google.protobuf.Timestamp
-	63, // 24: quadsmith.api.AnswerVote.created_at:type_name -> google.protobuf.Timestamp
-	63, // 25: quadsmith.api.QuestionComment.deleted_at:type_name -> google.protobuf.Timestamp
-	63, // 26: quadsmith.api.QuestionComment.created_at:type_name -> google.protobuf.Timestamp
-	63, // 27: quadsmith.api.QuestionComment.updated_at:type_name -> google.protobuf.Timestamp
-	63, // 28: quadsmith.api.AnswerComment.deleted_at:type_name -> google.protobuf.Timestamp
-	63, // 29: quadsmith.api.AnswerComment.created_at:type_name -> google.protobuf.Timestamp
-	63, // 30: quadsmith.api.AnswerComment.updated_at:type_name -> google.protobuf.Timestamp
-	63, // 31: quadsmith.api.UserReputation.updated_at:type_name -> google.protobuf.Timestamp
-	63, // 32: quadsmith.api.Collection.created_at:type_name -> google.protobuf.Timestamp
-	63, // 33: quadsmith.api.Collection.updated_at:type_name -> google.protobuf.Timestamp
-	63, // 34: quadsmith.api.CollectionItem.created_at:type_name -> google.protobuf.Timestamp
-	3,  // 35: quadsmith.api.EntitySocialSummary.review_summary:type_name -> quadsmith.api.ReviewSummary
-	4,  // 36: quadsmith.api.ListReviewsResponse.reviews:type_name -> quadsmith.api.Review
-	3,  // 37: quadsmith.api.ListReviewsResponse.summary:type_name -> quadsmith.api.ReviewSummary
-	1,  // 38: quadsmith.api.VoteReviewRequest.vote_type:type_name -> quadsmith.api.ReviewVoteType
-	1,  // 39: quadsmith.api.VoteReviewResponse.current_user_vote:type_name -> quadsmith.api.ReviewVoteType
-	6,  // 40: quadsmith.api.ListReviewCommentsResponse.comments:type_name -> quadsmith.api.ReviewComment
-	7,  // 41: quadsmith.api.ListQuestionsResponse.questions:type_name -> quadsmith.api.Question
-	8,  // 42: quadsmith.api.ListAnswersResponse.answers:type_name -> quadsmith.api.Answer
-	14, // 43: quadsmith.api.ListUserCollectionsResponse.collections:type_name -> quadsmith.api.Collection
-	14, // 44: quadsmith.api.ListCollectionItemsResponse.collection:type_name -> quadsmith.api.Collection
-	15, // 45: quadsmith.api.ListCollectionItemsResponse.items:type_name -> quadsmith.api.CollectionItem
-	17, // 46: quadsmith.api.SocialService.CreateReview:input_type -> quadsmith.api.CreateReviewRequest
-	18, // 47: quadsmith.api.SocialService.UpdateReview:input_type -> quadsmith.api.UpdateReviewRequest
-	19, // 48: quadsmith.api.SocialService.DeleteReview:input_type -> quadsmith.api.DeleteReviewRequest
-	20, // 49: quadsmith.api.SocialService.ListReviews:input_type -> quadsmith.api.ListReviewsRequest
-	22, // 50: quadsmith.api.SocialService.VoteReview:input_type -> quadsmith.api.VoteReviewRequest
-	24, // 51: quadsmith.api.SocialService.CreateReviewComment:input_type -> quadsmith.api.CreateReviewCommentRequest
-	25, // 52: quadsmith.api.SocialService.DeleteReviewComment:input_type -> quadsmith.api.DeleteReviewCommentRequest
-	26, // 53: quadsmith.api.SocialService.ListReviewComments:input_type -> quadsmith.api.ListReviewCommentsRequest
-	28, // 54: quadsmith.api.SocialService.CreateQuestion:input_type -> quadsmith.api.CreateQuestionRequest
-	29, // 55: quadsmith.api.SocialService.UpdateQuestion:input_type -> quadsmith.api.UpdateQuestionRequest
-	30, // 56: quadsmith.api.SocialService.DeleteQuestion:input_type -> quadsmith.api.DeleteQuestionRequest
-	31, // 57: quadsmith.api.SocialService.ListQuestions:input_type -> quadsmith.api.ListQuestionsRequest
-	33, // 58: quadsmith.api.SocialService.VoteQuestion:input_type -> quadsmith.api.VoteQuestionRequest
-	35, // 59: quadsmith.api.SocialService.CreateAnswer:input_type -> quadsmith.api.CreateAnswerRequest
-	36, // 60: quadsmith.api.SocialService.UpdateAnswer:input_type -> quadsmith.api.UpdateAnswerRequest
-	37, // 61: quadsmith.api.SocialService.DeleteAnswer:input_type -> quadsmith.api.DeleteAnswerRequest
-	38, // 62: quadsmith.api.SocialService.ListAnswers:input_type -> quadsmith.api.ListAnswersRequest
-	40, // 63: quadsmith.api.SocialService.VoteAnswer:input_type -> quadsmith.api.VoteAnswerRequest
-	42, // 64: quadsmith.api.SocialService.AcceptAnswer:input_type -> quadsmith.api.AcceptAnswerRequest
-	43, // 65: quadsmith.api.SocialService.EndorseAnswer:input_type -> quadsmith.api.EndorseAnswerRequest
-	44, // 66: quadsmith.api.SocialService.CreateQuestionComment:input_type -> quadsmith.api.CreateQuestionCommentRequest
-	45, // 67: quadsmith.api.SocialService.DeleteQuestionComment:input_type -> quadsmith.api.DeleteQuestionCommentRequest
-	46, // 68: quadsmith.api.SocialService.CreateAnswerComment:input_type -> quadsmith.api.CreateAnswerCommentRequest
-	47, // 69: quadsmith.api.SocialService.DeleteAnswerComment:input_type -> quadsmith.api.DeleteAnswerCommentRequest
-	48, // 70: quadsmith.api.SocialService.CreateCollection:input_type -> quadsmith.api.CreateCollectionRequest
-	49, // 71: quadsmith.api.SocialService.UpdateCollection:input_type -> quadsmith.api.UpdateCollectionRequest
-	50, // 72: quadsmith.api.SocialService.DeleteCollection:input_type -> quadsmith.api.DeleteCollectionRequest
-	51, // 73: quadsmith.api.SocialService.GetCollection:input_type -> quadsmith.api.GetCollectionRequest
-	52, // 74: quadsmith.api.SocialService.ListUserCollections:input_type -> quadsmith.api.ListUserCollectionsRequest
-	54, // 75: quadsmith.api.SocialService.ToggleLikeItem:input_type -> quadsmith.api.ToggleLikeItemRequest
-	56, // 76: quadsmith.api.SocialService.AddCollectionItem:input_type -> quadsmith.api.AddCollectionItemRequest
-	57, // 77: quadsmith.api.SocialService.RemoveCollectionItem:input_type -> quadsmith.api.RemoveCollectionItemRequest
-	58, // 78: quadsmith.api.SocialService.ListCollectionItems:input_type -> quadsmith.api.ListCollectionItemsRequest
-	60, // 79: quadsmith.api.SocialService.GetEntitySocialSummary:input_type -> quadsmith.api.GetEntitySocialSummaryRequest
-	4,  // 80: quadsmith.api.SocialService.CreateReview:output_type -> quadsmith.api.Review
-	4,  // 81: quadsmith.api.SocialService.UpdateReview:output_type -> quadsmith.api.Review
-	3,  // 82: quadsmith.api.SocialService.DeleteReview:output_type -> quadsmith.api.ReviewSummary
-	21, // 83: quadsmith.api.SocialService.ListReviews:output_type -> quadsmith.api.ListReviewsResponse
-	23, // 84: quadsmith.api.SocialService.VoteReview:output_type -> quadsmith.api.VoteReviewResponse
-	6,  // 85: quadsmith.api.SocialService.CreateReviewComment:output_type -> quadsmith.api.ReviewComment
-	6,  // 86: quadsmith.api.SocialService.DeleteReviewComment:output_type -> quadsmith.api.ReviewComment
-	27, // 87: quadsmith.api.SocialService.ListReviewComments:output_type -> quadsmith.api.ListReviewCommentsResponse
-	7,  // 88: quadsmith.api.SocialService.CreateQuestion:output_type -> quadsmith.api.Question
-	7,  // 89: quadsmith.api.SocialService.UpdateQuestion:output_type -> quadsmith.api.Question
-	7,  // 90: quadsmith.api.SocialService.DeleteQuestion:output_type -> quadsmith.api.Question
-	32, // 91: quadsmith.api.SocialService.ListQuestions:output_type -> quadsmith.api.ListQuestionsResponse
-	34, // 92: quadsmith.api.SocialService.VoteQuestion:output_type -> quadsmith.api.VoteQuestionResponse
-	8,  // 93: quadsmith.api.SocialService.CreateAnswer:output_type -> quadsmith.api.Answer
-	8,  // 94: quadsmith.api.SocialService.UpdateAnswer:output_type -> quadsmith.api.Answer
-	8,  // 95: quadsmith.api.SocialService.DeleteAnswer:output_type -> quadsmith.api.Answer
-	39, // 96: quadsmith.api.SocialService.ListAnswers:output_type -> quadsmith.api.ListAnswersResponse
-	41, // 97: quadsmith.api.SocialService.VoteAnswer:output_type -> quadsmith.api.VoteAnswerResponse
-	8,  // 98: quadsmith.api.SocialService.AcceptAnswer:output_type -> quadsmith.api.Answer
-	8,  // 99: quadsmith.api.SocialService.EndorseAnswer:output_type -> quadsmith.api.Answer
-	11, // 100: quadsmith.api.SocialService.CreateQuestionComment:output_type -> quadsmith.api.QuestionComment
-	11, // 101: quadsmith.api.SocialService.DeleteQuestionComment:output_type -> quadsmith.api.QuestionComment
-	12, // 102: quadsmith.api.SocialService.CreateAnswerComment:output_type -> quadsmith.api.AnswerComment
-	12, // 103: quadsmith.api.SocialService.DeleteAnswerComment:output_type -> quadsmith.api.AnswerComment
-	14, // 104: quadsmith.api.SocialService.CreateCollection:output_type -> quadsmith.api.Collection
-	14, // 105: quadsmith.api.SocialService.UpdateCollection:output_type -> quadsmith.api.Collection
-	14, // 106: quadsmith.api.SocialService.DeleteCollection:output_type -> quadsmith.api.Collection
-	14, // 107: quadsmith.api.SocialService.GetCollection:output_type -> quadsmith.api.Collection
-	53, // 108: quadsmith.api.SocialService.ListUserCollections:output_type -> quadsmith.api.ListUserCollectionsResponse
-	55, // 109: quadsmith.api.SocialService.ToggleLikeItem:output_type -> quadsmith.api.ToggleLikeItemResponse
-	15, // 110: quadsmith.api.SocialService.AddCollectionItem:output_type -> quadsmith.api.CollectionItem
-	15, // 111: quadsmith.api.SocialService.RemoveCollectionItem:output_type -> quadsmith.api.CollectionItem
-	59, // 112: quadsmith.api.SocialService.ListCollectionItems:output_type -> quadsmith.api.ListCollectionItemsResponse
-	16, // 113: quadsmith.api.SocialService.GetEntitySocialSummary:output_type -> quadsmith.api.EntitySocialSummary
+	47, // 0: quadsmith.api.ListReviewsResponse.reviews:type_name -> quadsmith.api.Review
+	60, // 1: quadsmith.api.ListReviewsResponse.summary:type_name -> quadsmith.api.ReviewSummary
+	1,  // 2: quadsmith.api.VoteReviewRequest.vote_type:type_name -> quadsmith.api.ReviewVoteType
+	1,  // 3: quadsmith.api.VoteReviewResponse.current_user_vote:type_name -> quadsmith.api.ReviewVoteType
+	49, // 4: quadsmith.api.ListReviewCommentsResponse.comments:type_name -> quadsmith.api.ReviewComment
+	50, // 5: quadsmith.api.ListQuestionsResponse.questions:type_name -> quadsmith.api.Question
+	52, // 6: quadsmith.api.ListAnswersResponse.answers:type_name -> quadsmith.api.Answer
+	57, // 7: quadsmith.api.ListUserCollectionsResponse.collections:type_name -> quadsmith.api.Collection
+	57, // 8: quadsmith.api.ListCollectionItemsResponse.collection:type_name -> quadsmith.api.Collection
+	58, // 9: quadsmith.api.ListCollectionItemsResponse.items:type_name -> quadsmith.api.CollectionItem
+	61, // 10: quadsmith.api.Entity.reference_links:type_name -> quadsmith.api.ReferenceLink
+	62, // 11: quadsmith.api.Entity.media:type_name -> quadsmith.api.Media
+	63, // 12: quadsmith.api.Entity.created_at:type_name -> google.protobuf.Timestamp
+	63, // 13: quadsmith.api.Entity.updated_at:type_name -> google.protobuf.Timestamp
+	63, // 14: quadsmith.api.Review.deleted_at:type_name -> google.protobuf.Timestamp
+	63, // 15: quadsmith.api.Review.created_at:type_name -> google.protobuf.Timestamp
+	63, // 16: quadsmith.api.Review.updated_at:type_name -> google.protobuf.Timestamp
+	1,  // 17: quadsmith.api.Review.current_user_vote:type_name -> quadsmith.api.ReviewVoteType
+	63, // 18: quadsmith.api.ReviewVote.created_at:type_name -> google.protobuf.Timestamp
+	63, // 19: quadsmith.api.ReviewComment.deleted_at:type_name -> google.protobuf.Timestamp
+	63, // 20: quadsmith.api.ReviewComment.created_at:type_name -> google.protobuf.Timestamp
+	63, // 21: quadsmith.api.ReviewComment.updated_at:type_name -> google.protobuf.Timestamp
+	63, // 22: quadsmith.api.Question.deleted_at:type_name -> google.protobuf.Timestamp
+	63, // 23: quadsmith.api.Question.created_at:type_name -> google.protobuf.Timestamp
+	63, // 24: quadsmith.api.Question.updated_at:type_name -> google.protobuf.Timestamp
+	51, // 25: quadsmith.api.Question.comments:type_name -> quadsmith.api.QuestionComment
+	63, // 26: quadsmith.api.QuestionComment.deleted_at:type_name -> google.protobuf.Timestamp
+	63, // 27: quadsmith.api.QuestionComment.created_at:type_name -> google.protobuf.Timestamp
+	63, // 28: quadsmith.api.QuestionComment.updated_at:type_name -> google.protobuf.Timestamp
+	63, // 29: quadsmith.api.Answer.deleted_at:type_name -> google.protobuf.Timestamp
+	63, // 30: quadsmith.api.Answer.created_at:type_name -> google.protobuf.Timestamp
+	63, // 31: quadsmith.api.Answer.updated_at:type_name -> google.protobuf.Timestamp
+	63, // 32: quadsmith.api.Answer.accepted_at:type_name -> google.protobuf.Timestamp
+	63, // 33: quadsmith.api.Answer.endorsed_at:type_name -> google.protobuf.Timestamp
+	53, // 34: quadsmith.api.Answer.comments:type_name -> quadsmith.api.AnswerComment
+	63, // 35: quadsmith.api.AnswerComment.deleted_at:type_name -> google.protobuf.Timestamp
+	63, // 36: quadsmith.api.AnswerComment.created_at:type_name -> google.protobuf.Timestamp
+	63, // 37: quadsmith.api.AnswerComment.updated_at:type_name -> google.protobuf.Timestamp
+	63, // 38: quadsmith.api.QuestionVote.created_at:type_name -> google.protobuf.Timestamp
+	63, // 39: quadsmith.api.AnswerVote.created_at:type_name -> google.protobuf.Timestamp
+	63, // 40: quadsmith.api.UserReputation.updated_at:type_name -> google.protobuf.Timestamp
+	63, // 41: quadsmith.api.Collection.created_at:type_name -> google.protobuf.Timestamp
+	63, // 42: quadsmith.api.Collection.updated_at:type_name -> google.protobuf.Timestamp
+	63, // 43: quadsmith.api.CollectionItem.created_at:type_name -> google.protobuf.Timestamp
+	60, // 44: quadsmith.api.EntitySocialSummary.review_summary:type_name -> quadsmith.api.ReviewSummary
+	0,  // 45: quadsmith.api.ReviewSummary.tier:type_name -> quadsmith.api.ReviewTier
+	2,  // 46: quadsmith.api.SocialService.CreateReview:input_type -> quadsmith.api.CreateReviewRequest
+	3,  // 47: quadsmith.api.SocialService.UpdateReview:input_type -> quadsmith.api.UpdateReviewRequest
+	4,  // 48: quadsmith.api.SocialService.DeleteReview:input_type -> quadsmith.api.DeleteReviewRequest
+	5,  // 49: quadsmith.api.SocialService.ListReviews:input_type -> quadsmith.api.ListReviewsRequest
+	7,  // 50: quadsmith.api.SocialService.VoteReview:input_type -> quadsmith.api.VoteReviewRequest
+	9,  // 51: quadsmith.api.SocialService.CreateReviewComment:input_type -> quadsmith.api.CreateReviewCommentRequest
+	10, // 52: quadsmith.api.SocialService.DeleteReviewComment:input_type -> quadsmith.api.DeleteReviewCommentRequest
+	11, // 53: quadsmith.api.SocialService.ListReviewComments:input_type -> quadsmith.api.ListReviewCommentsRequest
+	13, // 54: quadsmith.api.SocialService.CreateQuestion:input_type -> quadsmith.api.CreateQuestionRequest
+	14, // 55: quadsmith.api.SocialService.UpdateQuestion:input_type -> quadsmith.api.UpdateQuestionRequest
+	15, // 56: quadsmith.api.SocialService.DeleteQuestion:input_type -> quadsmith.api.DeleteQuestionRequest
+	16, // 57: quadsmith.api.SocialService.ListQuestions:input_type -> quadsmith.api.ListQuestionsRequest
+	18, // 58: quadsmith.api.SocialService.VoteQuestion:input_type -> quadsmith.api.VoteQuestionRequest
+	20, // 59: quadsmith.api.SocialService.CreateAnswer:input_type -> quadsmith.api.CreateAnswerRequest
+	21, // 60: quadsmith.api.SocialService.UpdateAnswer:input_type -> quadsmith.api.UpdateAnswerRequest
+	22, // 61: quadsmith.api.SocialService.DeleteAnswer:input_type -> quadsmith.api.DeleteAnswerRequest
+	23, // 62: quadsmith.api.SocialService.ListAnswers:input_type -> quadsmith.api.ListAnswersRequest
+	25, // 63: quadsmith.api.SocialService.VoteAnswer:input_type -> quadsmith.api.VoteAnswerRequest
+	27, // 64: quadsmith.api.SocialService.AcceptAnswer:input_type -> quadsmith.api.AcceptAnswerRequest
+	28, // 65: quadsmith.api.SocialService.EndorseAnswer:input_type -> quadsmith.api.EndorseAnswerRequest
+	29, // 66: quadsmith.api.SocialService.CreateQuestionComment:input_type -> quadsmith.api.CreateQuestionCommentRequest
+	30, // 67: quadsmith.api.SocialService.DeleteQuestionComment:input_type -> quadsmith.api.DeleteQuestionCommentRequest
+	31, // 68: quadsmith.api.SocialService.CreateAnswerComment:input_type -> quadsmith.api.CreateAnswerCommentRequest
+	32, // 69: quadsmith.api.SocialService.DeleteAnswerComment:input_type -> quadsmith.api.DeleteAnswerCommentRequest
+	33, // 70: quadsmith.api.SocialService.CreateCollection:input_type -> quadsmith.api.CreateCollectionRequest
+	34, // 71: quadsmith.api.SocialService.UpdateCollection:input_type -> quadsmith.api.UpdateCollectionRequest
+	35, // 72: quadsmith.api.SocialService.DeleteCollection:input_type -> quadsmith.api.DeleteCollectionRequest
+	36, // 73: quadsmith.api.SocialService.GetCollection:input_type -> quadsmith.api.GetCollectionRequest
+	37, // 74: quadsmith.api.SocialService.ListUserCollections:input_type -> quadsmith.api.ListUserCollectionsRequest
+	39, // 75: quadsmith.api.SocialService.ToggleLikeItem:input_type -> quadsmith.api.ToggleLikeItemRequest
+	41, // 76: quadsmith.api.SocialService.AddCollectionItem:input_type -> quadsmith.api.AddCollectionItemRequest
+	42, // 77: quadsmith.api.SocialService.RemoveCollectionItem:input_type -> quadsmith.api.RemoveCollectionItemRequest
+	43, // 78: quadsmith.api.SocialService.ListCollectionItems:input_type -> quadsmith.api.ListCollectionItemsRequest
+	45, // 79: quadsmith.api.SocialService.GetEntitySocialSummary:input_type -> quadsmith.api.GetEntitySocialSummaryRequest
+	47, // 80: quadsmith.api.SocialService.CreateReview:output_type -> quadsmith.api.Review
+	47, // 81: quadsmith.api.SocialService.UpdateReview:output_type -> quadsmith.api.Review
+	60, // 82: quadsmith.api.SocialService.DeleteReview:output_type -> quadsmith.api.ReviewSummary
+	6,  // 83: quadsmith.api.SocialService.ListReviews:output_type -> quadsmith.api.ListReviewsResponse
+	8,  // 84: quadsmith.api.SocialService.VoteReview:output_type -> quadsmith.api.VoteReviewResponse
+	49, // 85: quadsmith.api.SocialService.CreateReviewComment:output_type -> quadsmith.api.ReviewComment
+	49, // 86: quadsmith.api.SocialService.DeleteReviewComment:output_type -> quadsmith.api.ReviewComment
+	12, // 87: quadsmith.api.SocialService.ListReviewComments:output_type -> quadsmith.api.ListReviewCommentsResponse
+	50, // 88: quadsmith.api.SocialService.CreateQuestion:output_type -> quadsmith.api.Question
+	50, // 89: quadsmith.api.SocialService.UpdateQuestion:output_type -> quadsmith.api.Question
+	50, // 90: quadsmith.api.SocialService.DeleteQuestion:output_type -> quadsmith.api.Question
+	17, // 91: quadsmith.api.SocialService.ListQuestions:output_type -> quadsmith.api.ListQuestionsResponse
+	19, // 92: quadsmith.api.SocialService.VoteQuestion:output_type -> quadsmith.api.VoteQuestionResponse
+	52, // 93: quadsmith.api.SocialService.CreateAnswer:output_type -> quadsmith.api.Answer
+	52, // 94: quadsmith.api.SocialService.UpdateAnswer:output_type -> quadsmith.api.Answer
+	52, // 95: quadsmith.api.SocialService.DeleteAnswer:output_type -> quadsmith.api.Answer
+	24, // 96: quadsmith.api.SocialService.ListAnswers:output_type -> quadsmith.api.ListAnswersResponse
+	26, // 97: quadsmith.api.SocialService.VoteAnswer:output_type -> quadsmith.api.VoteAnswerResponse
+	52, // 98: quadsmith.api.SocialService.AcceptAnswer:output_type -> quadsmith.api.Answer
+	52, // 99: quadsmith.api.SocialService.EndorseAnswer:output_type -> quadsmith.api.Answer
+	51, // 100: quadsmith.api.SocialService.CreateQuestionComment:output_type -> quadsmith.api.QuestionComment
+	51, // 101: quadsmith.api.SocialService.DeleteQuestionComment:output_type -> quadsmith.api.QuestionComment
+	53, // 102: quadsmith.api.SocialService.CreateAnswerComment:output_type -> quadsmith.api.AnswerComment
+	53, // 103: quadsmith.api.SocialService.DeleteAnswerComment:output_type -> quadsmith.api.AnswerComment
+	57, // 104: quadsmith.api.SocialService.CreateCollection:output_type -> quadsmith.api.Collection
+	57, // 105: quadsmith.api.SocialService.UpdateCollection:output_type -> quadsmith.api.Collection
+	57, // 106: quadsmith.api.SocialService.DeleteCollection:output_type -> quadsmith.api.Collection
+	57, // 107: quadsmith.api.SocialService.GetCollection:output_type -> quadsmith.api.Collection
+	38, // 108: quadsmith.api.SocialService.ListUserCollections:output_type -> quadsmith.api.ListUserCollectionsResponse
+	40, // 109: quadsmith.api.SocialService.ToggleLikeItem:output_type -> quadsmith.api.ToggleLikeItemResponse
+	58, // 110: quadsmith.api.SocialService.AddCollectionItem:output_type -> quadsmith.api.CollectionItem
+	58, // 111: quadsmith.api.SocialService.RemoveCollectionItem:output_type -> quadsmith.api.CollectionItem
+	44, // 112: quadsmith.api.SocialService.ListCollectionItems:output_type -> quadsmith.api.ListCollectionItemsResponse
+	59, // 113: quadsmith.api.SocialService.GetEntitySocialSummary:output_type -> quadsmith.api.EntitySocialSummary
 	80, // [80:114] is the sub-list for method output_type
 	46, // [46:80] is the sub-list for method input_type
 	46, // [46:46] is the sub-list for extension type_name
@@ -4952,22 +4998,22 @@ func file_quadsmith_api_social_proto_init() {
 	file_quadsmith_api_media_proto_init()
 	file_quadsmith_api_reference_link_proto_init()
 	file_quadsmith_api_social_proto_msgTypes[0].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[2].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[4].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[5].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[6].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[9].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[10].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[13].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[15].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[18].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[26].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[29].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[3].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[11].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[14].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[35].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[37].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[39].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[40].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[43].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[44].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[45].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[47].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[48].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[49].OneofWrappers = []any{}
 	file_quadsmith_api_social_proto_msgTypes[50].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[52].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[54].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[55].OneofWrappers = []any{}
-	file_quadsmith_api_social_proto_msgTypes[58].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[51].OneofWrappers = []any{}
+	file_quadsmith_api_social_proto_msgTypes[56].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

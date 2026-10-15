@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "quadsmith/shared/gen/quadsmith/common"
+	_ "quadsmith/shared/gen/quadsmith/data"
 	_ "quadsmith/shared/gen/quadsmith/sql"
 	reflect "reflect"
 	sync "sync"
@@ -601,7 +602,7 @@ var File_quadsmith_api_video_transmitter_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_video_transmitter_proto_rawDesc = "" +
 	"\n" +
-	"%quadsmith/api/video_transmitter.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"m\n" +
+	"%quadsmith/api/video_transmitter.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"m\n" +
 	"\x1dCreateVideoTransmitterRequest\x12L\n" +
 	"\x11video_transmitter\x18\x01 \x01(\v2\x1f.quadsmith.api.VideoTransmitterR\x10videoTransmitter\"/\n" +
 	"\x1dDeleteVideoTransmitterRequest\x12\x0e\n" +
@@ -623,37 +624,48 @@ const file_quadsmith_api_video_transmitter_proto_rawDesc = "" +
 	"\x12video_transmitters\x18\x01 \x03(\v2\x1f.quadsmith.api.VideoTransmitterR\x11videoTransmitters\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"m\n" +
 	"\x1dUpdateVideoTransmitterRequest\x12L\n" +
-	"\x11video_transmitter\x18\x01 \x01(\v2\x1f.quadsmith.api.VideoTransmitterR\x10videoTransmitter\"\xef\b\n" +
-	"\x10VideoTransmitter\x12<\n" +
-	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x1a\n" +
-	"\x04name\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12(\n" +
-	"\x10is_internal_only\x18\x05 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
-	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\"\n" +
-	"\bprotocol\x18\a \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\bprotocol\x12 \n" +
-	"\fmax_power_mw\x18\b \x01(\rR\n" +
-	"maxPowerMw\x12-\n" +
-	"\x13input_voltage_min_v\x18\t \x01(\x02R\x10inputVoltageMinV\x12-\n" +
+	"\x11video_transmitter\x18\x01 \x01(\v2\x1f.quadsmith.api.VideoTransmitterR\x10videoTransmitter\"\xc3\n" +
+	"\n" +
+	"\x10VideoTransmitter\x12@\n" +
+	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
+	"\x02id\x18\x02 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04R\x02id\x12.\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\fmanufacturer\x12\x1e\n" +
+	"\x04name\x18\x04 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x04name\x12.\n" +
+	"\x10is_internal_only\x18\x05 \x01(\bB\x04\xc0\xf0\x19\x02R\x0eisInternalOnly\x12\x1f\n" +
+	"\bweight_g\x18\x06 \x01(\x02B\x04\xc0\xf0\x19\x02R\aweightG\x12&\n" +
+	"\bprotocol\x18\a \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\bprotocol\x12&\n" +
+	"\fmax_power_mw\x18\b \x01(\rB\x04\xc0\xf0\x19\x02R\n" +
+	"maxPowerMw\x123\n" +
+	"\x13input_voltage_min_v\x18\t \x01(\x02B\x04\xc0\xf0\x19\x02R\x10inputVoltageMinV\x123\n" +
 	"\x13input_voltage_max_v\x18\n" +
-	" \x01(\x02R\x10inputVoltageMaxV\x12#\n" +
-	"\rantenna_uuids\x18\v \x03(\tR\fantennaUuids\x12(\n" +
-	"\vdescription\x18\f \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x12M\n" +
-	"\x0freference_links\x18\r \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
-	"\x15primary_display_image\x18\x0e \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x00R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
-	"\x05media\x18\x0f \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12\x1b\n" +
-	"\tport_type\x18\x10 \x01(\tR\bportType\x12#\n" +
-	"\rmount_pattern\x18\x11 \x01(\tR\fmountPattern\x12,\n" +
-	"\x12frequency_band_mhz\x18\x12 \x01(\rR\x10frequencyBandMhz\x12-\n" +
-	"\x12antenna_connectors\x18\x13 \x03(\tR\x11antennaConnectors\x12(\n" +
-	"\tuser_uuid\x18\x14 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x01R\buserUuid\x88\x01\x01\x124\n" +
-	"\x0fauthor_username\x18\x15 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\x0eauthorUsername\x88\x01\x01:\x85\x01\x8a\xb5\x18?\n" +
+	" \x01(\x02B\x04\xc0\xf0\x19\x02R\x10inputVoltageMaxV\x12)\n" +
+	"\rantenna_uuids\x18\v \x03(\tB\x04\xc0\xf0\x19\x02R\fantennaUuids\x12,\n" +
+	"\vdescription\x18\f \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\vdescription\x12Q\n" +
+	"\x0freference_links\x18\r \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0ereferenceLinks\x12C\n" +
+	"\x15primary_display_image\x18\x0e \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x126\n" +
+	"\x05media\x18\x0f \x03(\v2\x14.quadsmith.api.MediaB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x05media\x12!\n" +
+	"\tport_type\x18\x10 \x01(\tB\x04\xc0\xf0\x19\x02R\bportType\x12)\n" +
+	"\rmount_pattern\x18\x11 \x01(\tB\x04\xc0\xf0\x19\x02R\fmountPattern\x122\n" +
+	"\x12frequency_band_mhz\x18\x12 \x01(\rB\x04\xc0\xf0\x19\x02R\x10frequencyBandMhz\x123\n" +
+	"\x12antenna_connectors\x18\x13 \x03(\tB\x04\xc0\xf0\x19\x02R\x11antennaConnectors\x12,\n" +
+	"\tuser_uuid\x18\x14 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
+	"\x0fauthor_username\x18\x15 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xf1\x01\x8a\xb5\x18?\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\bprotocol\n" +
 	"\fmax_power_mw\n" +
 	"\bweight_g\x12\a#ec4899\x9a\xb5\x18&components/hardware/video-transmitters\xc2\xf3\x18\x14\n" +
-	"\x12video_transmittersB\x18\n" +
+	"\x12video_transmitters\xc2\xf0\x19h\b\x05\x12duuid IN (SELECT uuid FROM entities WHERE collection = 'video-transmitters' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +

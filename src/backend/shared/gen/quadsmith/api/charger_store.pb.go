@@ -217,3 +217,38 @@ func ListChargers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []
 	}
 	return results, nil
 }
+
+func ExportChargers(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Charger, error) {
+	query := `SELECT uuid, manufacturer, weight_g, channels, max_charge_power_w, max_charge_current_a, input_voltage_range, supported_chemistries, max_cells_s FROM chargers WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'chargers' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*Charger, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 9)
+		scanAssigns := make([]func(), 0, 9)
+		m := &Charger{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.WeightG
+		scanArgs[3] = &m.Channels
+		scanArgs[4] = &m.MaxChargePowerW
+		scanArgs[5] = &m.MaxChargeCurrentA
+		scanArgs[6] = &m.InputVoltageRange
+		scanArgs[7] = &m.SupportedChemistries
+		scanArgs[8] = &m.MaxCellsS
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.WeightG != 0 || m.Channels != 0 || m.MaxChargePowerW != 0 || m.MaxChargeCurrentA != 0 || m.InputVoltageRange != "" || m.SupportedChemistries != "" || m.MaxCellsS != 0 {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

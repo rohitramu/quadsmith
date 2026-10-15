@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	_ "quadsmith/shared/gen/quadsmith/data"
 	_ "quadsmith/shared/gen/quadsmith/sql"
 	reflect "reflect"
 	sync "sync"
@@ -225,30 +226,36 @@ var File_quadsmith_api_blob_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_blob_proto_rawDesc = "" +
 	"\n" +
-	"\x18quadsmith/api/blob.proto\x12\rquadsmith.api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17quadsmith/sql/sql.proto\"\xc4\x02\n" +
-	"\x04Blob\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x18\n" +
-	"\x02id\x18\x02 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x02id\x12\x1a\n" +
-	"\bfilename\x18\x03 \x01(\tR\bfilename\x12#\n" +
-	"\tmime_type\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\bmimeType\x12\x1d\n" +
+	"\x18quadsmith/api/blob.proto\x12\rquadsmith.api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xee\x02\n" +
+	"\x04Blob\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x1c\n" +
+	"\x02id\x18\x02 \x01(\tB\f\xc2\xf3\x18\x04 \x01(\x01\xc0\xf0\x19\x04R\x02id\x12 \n" +
+	"\bfilename\x18\x03 \x01(\tB\x04\xc0\xf0\x19\x02R\bfilename\x12'\n" +
+	"\tmime_type\x18\x04 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\bmimeType\x12#\n" +
 	"\n" +
-	"size_bytes\x18\x05 \x01(\x03R\tsizeBytes\x12!\n" +
-	"\x05bytes\x18\x06 \x01(\fB\v\xc2\xf3\x18\a2\x05BYTEAR\x05bytes\x12.\n" +
-	"\tuser_uuid\x18\a \x01(\tB\x11\xc2\xf3\x18\r\x1a\vusers(uuid)R\buserUuid\x12F\n" +
+	"size_bytes\x18\x05 \x01(\x03B\x04\xc0\xf0\x19\x03R\tsizeBytes\x12%\n" +
+	"\x05bytes\x18\x06 \x01(\fB\x0f\xc2\xf3\x18\a2\x05BYTEA\xc0\xf0\x19\x02R\x05bytes\x122\n" +
+	"\tuser_uuid\x18\a \x01(\tB\x15\xc2\xf3\x18\r\x1a\vusers(uuid)\xc0\xf0\x19\x04R\buserUuid\x12J\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt:\v\xc2\xf3\x18\a\n" +
-	"\x05blobs\"\xdb\x02\n" +
-	"\rBlobReference\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02 \x01R\x02id\x12@\n" +
-	"\tblob_uuid\x18\x03 \x01(\tB#\xc2\xf3\x18\x1f\x1a\x1dblobs(uuid) ON DELETE CASCADER\bblobUuid\x12'\n" +
-	"\ventity_type\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\n" +
-	"entityType\x12'\n" +
-	"\ventity_uuid\x18\x05 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\n" +
-	"entityUuid\x12F\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt:\x11\xc2\xf3\x18\a\n" +
+	"\x05blobs\xc2\xf0\x19\x02\b\b\"\xf9\x02\n" +
+	"\rBlobReference\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
+	"\x02id\x18\x02 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02 \x01\xc0\xf0\x19\x04R\x02id\x12D\n" +
+	"\tblob_uuid\x18\x03 \x01(\tB'\xc2\xf3\x18\x1f\x1a\x1dblobs(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\bblobUuid\x12+\n" +
+	"\ventity_type\x18\x04 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x04R\n" +
+	"entityType\x12+\n" +
+	"\ventity_uuid\x18\x05 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x04R\n" +
+	"entityUuid\x12J\n" +
 	"\n" +
-	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt::\xc2\xf3\x186\n" +
-	"\x0fblob_references\x1a#blob_uuid, entity_type, entity_uuidB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x04R\tcreatedAt:@\xc2\xf3\x186\n" +
+	"\x0fblob_references\x1a#blob_uuid, entity_type, entity_uuid\xc2\xf0\x19\x02\b\x01B(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_blob_proto_rawDescOnce sync.Once

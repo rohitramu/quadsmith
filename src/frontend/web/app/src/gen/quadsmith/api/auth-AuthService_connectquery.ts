@@ -105,6 +105,16 @@ export const changeUsername = AuthService.method.changeUsername;
 export const listArchivedUsernames = AuthService.method.listArchivedUsernames;
 
 /**
+ * @generated from rpc quadsmith.api.AuthService.SendDataExportVerification
+ */
+export const sendDataExportVerification = AuthService.method.sendDataExportVerification;
+
+/**
+ * @generated from rpc quadsmith.api.AuthService.VerifyDataExport
+ */
+export const verifyDataExport = AuthService.method.verifyDataExport;
+
+/**
  * @generated from rpc quadsmith.api.AuthService.SendDeleteAccountVerification
  */
 export const sendDeleteAccountVerification = AuthService.method.sendDeleteAccountVerification;

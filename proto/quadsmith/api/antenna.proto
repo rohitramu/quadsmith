@@ -5,6 +5,7 @@ package quadsmith.api;
 import "quadsmith/api/media.proto";
 import "quadsmith/api/reference_link.proto";
 import "quadsmith/common/common.proto";
+import "quadsmith/data/data.proto";
 import "quadsmith/sql/sql.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
@@ -63,6 +64,10 @@ message UpdateAntennaRequest {
 message Antenna {
   option (quadsmith.sql.table) = {name: "antennas"};
   option (quadsmith.common.collection_path) = "components/hardware/antennas";
+  option (quadsmith.data.export) = {
+    domain: EXPORT_DOMAIN_COMPONENTS
+    user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'antennas' AND user_uuid = $1::uuid)"
+  };
   option (quadsmith.common.frontend) = {
     color_code: "#eab308"
     default_columns: [
@@ -75,37 +80,67 @@ message Antenna {
     ]
   };
 
-  string uuid = 1 [(quadsmith.sql.column) = {
-    is_primary_key: true
-    references: "entities(uuid) ON DELETE CASCADE"
-  }];
+  string uuid = 1 [
+    (quadsmith.sql.column) = {
+      is_primary_key: true
+      references: "entities(uuid) ON DELETE CASCADE"
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
-  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+  string id = 2 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
-  bool is_internal_only = 5;
+  string manufacturer = 3 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  string name = 4 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  bool is_internal_only = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
-  float weight_g = 6;
+  float weight_g = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // E.g., "U.FL", "MMCX", "SMA", "RP-SMA"
-  string connector = 7;
+  string connector = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // E.g., "RHCP", "LHCP", "Linear"
-  string polarization = 8;
+  string polarization = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Center frequency in GHz (e.g., 5.8, 2.4, 0.9)
-  uint32 frequency_band_mhz = 9;
+  uint32 frequency_band_mhz = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Length in millimeters (e.g., 60, 100, 150)
-  float length_mm = 10;
+  float length_mm = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Gain in dBi (e.g., 2.5, 3.0)
-  float gain_dbi = 11;
-  string description = 12 [(quadsmith.sql.column) = {ignore: true}];
-  repeated ReferenceLink reference_links = 13 [(quadsmith.sql.column) = {ignore: true}];
-  optional string primary_display_image = 14 [(quadsmith.sql.column) = {ignore: true}];
-  repeated Media media = 15 [(quadsmith.sql.column) = {ignore: true}];
-  optional string user_uuid = 16 [(quadsmith.sql.column) = {ignore: true}];
-  optional string author_username = 17 [(quadsmith.sql.column) = {ignore: true}];
+  float gain_dbi = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string description = 12 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  repeated ReferenceLink reference_links = 13 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  optional string primary_display_image = 14 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  repeated Media media = 15 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  optional string user_uuid = 16 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  optional string author_username = 17 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 }

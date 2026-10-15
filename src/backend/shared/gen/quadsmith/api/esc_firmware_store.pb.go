@@ -205,3 +205,35 @@ func ListEscFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 	}
 	return results, nil
 }
+
+func ExportEscFirmwares(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*EscFirmware, error) {
+	query := `SELECT uuid, manufacturer, version, protocols, pwm_frequency_range, is_open_source FROM electronic_speed_controller_firmwares WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'esc-firmware' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*EscFirmware, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 6)
+		scanAssigns := make([]func(), 0, 6)
+		m := &EscFirmware{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.Version
+		scanArgs[3] = &m.Protocols
+		scanArgs[4] = &m.PwmFrequencyRange
+		scanArgs[5] = &m.IsOpenSource
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.Version != "" || m.Protocols != "" || m.PwmFrequencyRange != "" || m.IsOpenSource {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

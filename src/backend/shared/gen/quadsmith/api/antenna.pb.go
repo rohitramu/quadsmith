@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "quadsmith/shared/gen/quadsmith/common"
+	_ "quadsmith/shared/gen/quadsmith/data"
 	_ "quadsmith/shared/gen/quadsmith/sql"
 	reflect "reflect"
 	sync "sync"
@@ -566,7 +567,7 @@ var File_quadsmith_api_antenna_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_antenna_proto_rawDesc = "" +
 	"\n" +
-	"\x1bquadsmith/api/antenna.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"H\n" +
+	"\x1bquadsmith/api/antenna.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"H\n" +
 	"\x14CreateAntennaRequest\x120\n" +
 	"\aantenna\x18\x01 \x01(\v2\x16.quadsmith.api.AntennaR\aantenna\"&\n" +
 	"\x14DeleteAntennaRequest\x12\x0e\n" +
@@ -588,26 +589,35 @@ const file_quadsmith_api_antenna_proto_rawDesc = "" +
 	"\bantennas\x18\x01 \x03(\v2\x16.quadsmith.api.AntennaR\bantennas\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"H\n" +
 	"\x14UpdateAntennaRequest\x120\n" +
-	"\aantenna\x18\x01 \x01(\v2\x16.quadsmith.api.AntennaR\aantenna\"\xa7\a\n" +
-	"\aAntenna\x12<\n" +
-	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x1a\n" +
-	"\x04name\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12(\n" +
-	"\x10is_internal_only\x18\x05 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
-	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\x1c\n" +
-	"\tconnector\x18\a \x01(\tR\tconnector\x12\"\n" +
-	"\fpolarization\x18\b \x01(\tR\fpolarization\x12,\n" +
-	"\x12frequency_band_mhz\x18\t \x01(\rR\x10frequencyBandMhz\x12\x1b\n" +
+	"\aantenna\x18\x01 \x01(\v2\x16.quadsmith.api.AntennaR\aantenna\"\xdb\b\n" +
+	"\aAntenna\x12@\n" +
+	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
+	"\x02id\x18\x02 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04R\x02id\x12.\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\fmanufacturer\x12\x1e\n" +
+	"\x04name\x18\x04 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x04name\x12.\n" +
+	"\x10is_internal_only\x18\x05 \x01(\bB\x04\xc0\xf0\x19\x02R\x0eisInternalOnly\x12\x1f\n" +
+	"\bweight_g\x18\x06 \x01(\x02B\x04\xc0\xf0\x19\x02R\aweightG\x12\"\n" +
+	"\tconnector\x18\a \x01(\tB\x04\xc0\xf0\x19\x02R\tconnector\x12(\n" +
+	"\fpolarization\x18\b \x01(\tB\x04\xc0\xf0\x19\x02R\fpolarization\x122\n" +
+	"\x12frequency_band_mhz\x18\t \x01(\rB\x04\xc0\xf0\x19\x02R\x10frequencyBandMhz\x12!\n" +
 	"\tlength_mm\x18\n" +
-	" \x01(\x02R\blengthMm\x12\x19\n" +
-	"\bgain_dbi\x18\v \x01(\x02R\againDbi\x12(\n" +
-	"\vdescription\x18\f \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x12M\n" +
-	"\x0freference_links\x18\r \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
-	"\x15primary_display_image\x18\x0e \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x00R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
-	"\x05media\x18\x0f \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12(\n" +
-	"\tuser_uuid\x18\x10 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x01R\buserUuid\x88\x01\x01\x124\n" +
-	"\x0fauthor_username\x18\x11 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\x0eauthorUsername\x88\x01\x01:\x86\x01\x8a\xb5\x18T\n" +
+	" \x01(\x02B\x04\xc0\xf0\x19\x02R\blengthMm\x12\x1f\n" +
+	"\bgain_dbi\x18\v \x01(\x02B\x04\xc0\xf0\x19\x02R\againDbi\x12,\n" +
+	"\vdescription\x18\f \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\vdescription\x12Q\n" +
+	"\x0freference_links\x18\r \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0ereferenceLinks\x12C\n" +
+	"\x15primary_display_image\x18\x0e \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x126\n" +
+	"\x05media\x18\x0f \x03(\v2\x14.quadsmith.api.MediaB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x05media\x12,\n" +
+	"\tuser_uuid\x18\x10 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
+	"\x0fauthor_username\x18\x11 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xe8\x01\x8a\xb5\x18T\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\tconnector\n" +
@@ -615,7 +625,7 @@ const file_quadsmith_api_antenna_proto_rawDesc = "" +
 	"\x12frequency_band_mhz\n" +
 	"\bgain_dbi\x12\a#eab308\x9a\xb5\x18\x1ccomponents/hardware/antennas\xc2\xf3\x18\n" +
 	"\n" +
-	"\bantennasB\x18\n" +
+	"\bantennas\xc2\xf0\x19^\b\x05\x12Zuuid IN (SELECT uuid FROM entities WHERE collection = 'antennas' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +

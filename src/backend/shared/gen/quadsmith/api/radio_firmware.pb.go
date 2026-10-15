@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "quadsmith/shared/gen/quadsmith/common"
+	_ "quadsmith/shared/gen/quadsmith/data"
 	_ "quadsmith/shared/gen/quadsmith/sql"
 	reflect "reflect"
 	sync "sync"
@@ -529,7 +530,7 @@ var File_quadsmith_api_radio_firmware_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_radio_firmware_proto_rawDesc = "" +
 	"\n" +
-	"\"quadsmith/api/radio_firmware.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"a\n" +
+	"\"quadsmith/api/radio_firmware.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"a\n" +
 	"\x1aCreateRadioFirmwareRequest\x12C\n" +
 	"\x0eradio_firmware\x18\x01 \x01(\v2\x1c.quadsmith.api.RadioFirmwareR\rradioFirmware\",\n" +
 	"\x1aDeleteRadioFirmwareRequest\x12\x0e\n" +
@@ -551,28 +552,37 @@ const file_quadsmith_api_radio_firmware_proto_rawDesc = "" +
 	"\x0fradio_firmwares\x18\x01 \x03(\v2\x1c.quadsmith.api.RadioFirmwareR\x0eradioFirmwares\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"a\n" +
 	"\x1aUpdateRadioFirmwareRequest\x12C\n" +
-	"\x0eradio_firmware\x18\x01 \x01(\v2\x1c.quadsmith.api.RadioFirmwareR\rradioFirmware\"\xb5\x06\n" +
-	"\rRadioFirmware\x12<\n" +
-	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x1a\n" +
-	"\x04name\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12\x18\n" +
-	"\aversion\x18\x05 \x01(\tR\aversion\x12/\n" +
-	"\x13supported_protocols\x18\x06 \x01(\tR\x12supportedProtocols\x12$\n" +
-	"\x0eis_open_source\x18\a \x01(\bR\fisOpenSource\x12(\n" +
-	"\vdescription\x18\b \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x12M\n" +
-	"\x0freference_links\x18\t \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
+	"\x0eradio_firmware\x18\x01 \x01(\v2\x1c.quadsmith.api.RadioFirmwareR\rradioFirmware\"\xd7\a\n" +
+	"\rRadioFirmware\x12@\n" +
+	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
+	"\x02id\x18\x02 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04R\x02id\x12.\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\fmanufacturer\x12\x1e\n" +
+	"\x04name\x18\x04 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x04name\x12\x1e\n" +
+	"\aversion\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x02R\aversion\x125\n" +
+	"\x13supported_protocols\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x02R\x12supportedProtocols\x12*\n" +
+	"\x0eis_open_source\x18\a \x01(\bB\x04\xc0\xf0\x19\x02R\fisOpenSource\x12,\n" +
+	"\vdescription\x18\b \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\vdescription\x12Q\n" +
+	"\x0freference_links\x18\t \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0ereferenceLinks\x12C\n" +
 	"\x15primary_display_image\x18\n" +
-	" \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x00R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
-	"\x05media\x18\v \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12(\n" +
-	"\tuser_uuid\x18\f \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x01R\buserUuid\x88\x01\x01\x124\n" +
-	"\x0fauthor_username\x18\r \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\x0eauthorUsername\x88\x01\x01:\x8a\x01\x8a\xb5\x18K\n" +
+	" \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x126\n" +
+	"\x05media\x18\v \x03(\v2\x14.quadsmith.api.MediaB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x05media\x12,\n" +
+	"\tuser_uuid\x18\f \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
+	"\x0fauthor_username\x18\r \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xf2\x01\x8a\xb5\x18K\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\aversion\n" +
 	"\x13supported_protocols\n" +
 	"\x0eis_open_source\x12\a#84cc16\x9a\xb5\x18\"components/software/radio-firmware\xc2\xf3\x18\x11\n" +
-	"\x0fradio_firmwaresB\x18\n" +
+	"\x0fradio_firmwares\xc2\xf0\x19d\b\x05\x12`uuid IN (SELECT uuid FROM entities WHERE collection = 'radio-firmware' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +

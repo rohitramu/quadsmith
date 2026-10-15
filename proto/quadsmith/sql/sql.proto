@@ -23,6 +23,15 @@ message TableOptions {
   // Composite UNIQUE constraints.
   // Example: unique_constraints: "user_uuid, build_uuid"
   repeated string unique_constraints = 3;
+
+  // Partial or expression UNIQUE indexes.
+  repeated UniqueIndex unique_indexes = 4;
+}
+
+message UniqueIndex {
+  string name = 1;
+  string columns = 2;
+  string where = 3;
 }
 
 // ---------------------------------------------------------

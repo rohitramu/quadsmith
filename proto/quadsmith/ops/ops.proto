@@ -3,78 +3,13 @@ syntax = "proto3";
 package quadsmith.ops;
 
 import "google/protobuf/timestamp.proto";
+import "quadsmith/data/data.proto";
 import "quadsmith/sql/sql.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/ops;ops";
 
 // ---------------------------------------------------------
-// JIT Grants (SQL Table in quadsmith_ops)
-// ---------------------------------------------------------
-
-message JitGrantRecord {
-  option (quadsmith.sql.table) = {name: "jit_grants"};
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-  string token_hash = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string operator = 4;
-  string operator_type = 5; // 'HUMAN' or 'ROBOT'
-  string reason = 6;
-  string operation = 7 [(quadsmith.sql.column) = {default_value: "'*'"}];
-  string status = 8 [(quadsmith.sql.column) = {
-    create_index: true
-    default_value: "'ACTIVE'"
-  }];
-  int32 hours = 9;
-  google.protobuf.Timestamp expires_at = 10;
-  google.protobuf.Timestamp created_at = 11 [(quadsmith.sql.column) = {default_value: "NOW()"}];
-  google.protobuf.Timestamp extended_at = 12;
-  google.protobuf.Timestamp revoked_at = 13;
-}
-
-// ---------------------------------------------------------
-// Internal Tokens (SQL Table in quadsmith_ops)
-// ---------------------------------------------------------
-
-message InternalTokenRecord {
-  option (quadsmith.sql.table) = {name: "internal_tokens"};
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-  string name = 3;
-  string type = 4; // 'HUMAN' or 'ROBOT'
-  string group_name = 5;
-  string token_hash = 6 [(quadsmith.sql.column) = {create_index: true}];
-  google.protobuf.Timestamp expires_at = 7;
-  google.protobuf.Timestamp created_at = 8 [(quadsmith.sql.column) = {default_value: "NOW()"}];
-  google.protobuf.Timestamp revoked_at = 9;
-}
-
-// ---------------------------------------------------------
-// Internal API Calls / Audit Log (SQL Table in quadsmith_ops)
-// ---------------------------------------------------------
-
-message InternalApiCallRecord {
-  option (quadsmith.sql.table) = {name: "internal_api_calls"};
-
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
-  string method = 3;
-  string caller = 4 [(quadsmith.sql.column) = {create_index: true}];
-  string caller_type = 5;
-  string group_name = 6;
-  optional string jit_grant_id = 7;
-  string status = 8;
-  optional string error_message = 9;
-  int64 duration_ms = 10;
-  google.protobuf.Timestamp created_at = 11 [(quadsmith.sql.column) = {
-    create_index: true
-    default_value: "NOW()"
-  }];
-}
-
-// ---------------------------------------------------------
-// Ops Service Definition
+// 1. Ops Service Definition (Services First)
 // ---------------------------------------------------------
 
 service OpsService {
@@ -117,7 +52,7 @@ service OpsService {
 }
 
 // ---------------------------------------------------------
-// Messages
+// 2. RPC Requests & Responses (Callers Precede Callees)
 // ---------------------------------------------------------
 
 message GetSystemDiagnosticsRequest {}
@@ -133,12 +68,6 @@ message GetSystemDiagnosticsResponse {
 }
 
 message GetDatabaseStatsRequest {}
-
-message TableStat {
-  string table_name = 1;
-  int64 row_count = 2;
-  int64 total_size_bytes = 3;
-}
 
 message GetDatabaseStatsResponse {
   string database_name = 1;
@@ -182,14 +111,6 @@ message CleanupOrphanedBlobsRequest {}
 
 message CleanupOrphanedBlobsResponse {
   int64 cleaned_count = 1;
-}
-
-message ScheduledJobDef {
-  string name = 1;
-  string procedure = 2;
-  string interval = 3;
-  google.protobuf.Timestamp last_run_at = 4;
-  string last_status = 5;
 }
 
 message ListScheduledJobsRequest {}
@@ -242,24 +163,10 @@ message GetCurrentOperatorResponse {
   optional JitGrantRecord active_jit_grant = 5;
 }
 
-message IamUserSummary {
-  string operator = 1;
-  string type = 2;
-  string group_name = 3;
-  google.protobuf.Timestamp last_active_at = 4;
-  bool has_active_jit = 5;
-}
-
 message ListIamUsersRequest {}
 
 message ListIamUsersResponse {
   repeated IamUserSummary users = 1;
-}
-
-message IamGroupSummary {
-  string name = 1;
-  string description = 2;
-  repeated string allowed_methods = 3;
 }
 
 message ListIamGroupsRequest {}
@@ -328,4 +235,139 @@ message RevokeJitGrantRequest {
 
 message RevokeJitGrantResponse {
   bool success = 1;
+}
+
+// ---------------------------------------------------------
+// 3. Operations Records & Tables (Callees)
+// ---------------------------------------------------------
+
+message JitGrantRecord {
+  option (quadsmith.sql.table) = {name: "jit_grants"};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string id = 2 [
+    (quadsmith.sql.column) = {is_unique: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string token_hash = 3 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_SECRET
+  ];
+  string operator = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string operator_type = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE]; // 'HUMAN' or 'ROBOT'
+  string reason = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string operation = 7 [
+    (quadsmith.sql.column) = {default_value: "'*'"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  string status = 8 [
+    (quadsmith.sql.column) = {
+      create_index: true
+      default_value: "'ACTIVE'"
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  int32 hours = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  google.protobuf.Timestamp expires_at = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  google.protobuf.Timestamp created_at = 11 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  google.protobuf.Timestamp extended_at = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  google.protobuf.Timestamp revoked_at = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+}
+
+message InternalTokenRecord {
+  option (quadsmith.sql.table) = {name: "internal_tokens"};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string id = 2 [
+    (quadsmith.sql.column) = {is_unique: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string name = 3 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string type = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE]; // 'HUMAN' or 'ROBOT'
+  string group_name = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string token_hash = 6 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_SECRET
+  ];
+  google.protobuf.Timestamp expires_at = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  google.protobuf.Timestamp created_at = 8 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  google.protobuf.Timestamp revoked_at = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+}
+
+message InternalApiCallRecord {
+  option (quadsmith.sql.table) = {name: "internal_api_calls"};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string id = 2 [
+    (quadsmith.sql.column) = {is_unique: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string method = 3 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string caller = 4 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  string caller_type = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string group_name = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  optional string jit_grant_id = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string status = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  optional string error_message = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  int64 duration_ms = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  google.protobuf.Timestamp created_at = 11 [
+    (quadsmith.sql.column) = {
+      create_index: true
+      default_value: "NOW()"
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+}
+
+// ---------------------------------------------------------
+// 4. Summaries & Leaf Types
+// ---------------------------------------------------------
+
+message IamGroupSummary {
+  string name = 1;
+  string description = 2;
+  repeated string allowed_methods = 3;
+}
+
+message IamUserSummary {
+  string operator = 1;
+  string type = 2;
+  string group_name = 3;
+  google.protobuf.Timestamp last_active_at = 4;
+  bool has_active_jit = 5;
+}
+
+message ScheduledJobDef {
+  string name = 1;
+  string procedure = 2;
+  string interval = 3;
+  google.protobuf.Timestamp last_run_at = 4;
+  string last_status = 5;
+}
+
+message TableStat {
+  string table_name = 1;
+  int64 row_count = 2;
+  int64 total_size_bytes = 3;
 }

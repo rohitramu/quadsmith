@@ -53,6 +53,7 @@ func main() {
 		}
 		proxy := httputil.NewSingleHostReverseProxy(targetURL)
 		mux.Handle("/quadsmith.api.", proxy)
+		mux.Handle("/api/account/export", proxy)
 		mux.Handle("/api/blobs", proxy)
 		mux.Handle("/api/blobs/", proxy)
 		mux.Handle("/blobs/", proxy)

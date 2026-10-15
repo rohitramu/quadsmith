@@ -9,6 +9,7 @@ package api
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	_ "quadsmith/shared/gen/quadsmith/data"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -148,12 +149,12 @@ var File_quadsmith_api_media_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_media_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/api/media.proto\x12\rquadsmith.api\"\xa3\x01\n" +
-	"\x05Media\x12,\n" +
-	"\x04type\x18\x01 \x01(\x0e2\x18.quadsmith.api.MediaTypeR\x04type\x12\x10\n" +
-	"\x03url\x18\x02 \x01(\tR\x03url\x12\x19\n" +
-	"\x05title\x18\x03 \x01(\tH\x00R\x05title\x88\x01\x01\x12%\n" +
-	"\vdescription\x18\x04 \x01(\tH\x01R\vdescription\x88\x01\x01B\b\n" +
+	"\x19quadsmith/api/media.proto\x12\rquadsmith.api\x1a\x19quadsmith/data/data.proto\"\xbb\x01\n" +
+	"\x05Media\x122\n" +
+	"\x04type\x18\x01 \x01(\x0e2\x18.quadsmith.api.MediaTypeB\x04\xc0\xf0\x19\x02R\x04type\x12\x16\n" +
+	"\x03url\x18\x02 \x01(\tB\x04\xc0\xf0\x19\x02R\x03url\x12\x1f\n" +
+	"\x05title\x18\x03 \x01(\tB\x04\xc0\xf0\x19\x02H\x00R\x05title\x88\x01\x01\x12+\n" +
+	"\vdescription\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02H\x01R\vdescription\x88\x01\x01B\b\n" +
 	"\x06_titleB\x0e\n" +
 	"\f_description*\x84\x01\n" +
 	"\tMediaType\x12\x1a\n" +

@@ -146,7 +146,7 @@ echo "Starting Job Server..."\n\
 echo "Starting Web Server (:3000)..."\n\
 ./server-web --config /app/src/frontend/web/config/sandbox.textproto > /var/log/server-web.log 2>&1 &\n\
 echo "Pre-seeded users:"\n\
-psql -U postgres -d quadsmith_api -tAc "SELECT concat(\047  - \047, email, \047 (@\047, id, \047)\047) FROM users WHERE deleted_at IS NULL ORDER BY email;"\n\
+psql -U postgres -d quadsmith_api -tAc "SELECT concat(\047  - \047, ue.email, \047 (@\047, u.id, \047)\047) FROM users u JOIN user_emails ue ON ue.user_uuid = u.uuid WHERE u.deleted_at IS NULL AND ue.is_primary = true ORDER BY ue.email;"\n\
 exec ./server-api --config /app/src/backend/server-api/config/sandbox.textproto\n' > /app/sandbox-entrypoint.sh
 
 RUN chmod +x /app/sandbox-entrypoint.sh

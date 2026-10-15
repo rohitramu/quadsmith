@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "quadsmith/shared/gen/quadsmith/common"
+	_ "quadsmith/shared/gen/quadsmith/data"
 	_ "quadsmith/shared/gen/quadsmith/sql"
 	reflect "reflect"
 	sync "sync"
@@ -569,7 +570,7 @@ var File_quadsmith_api_goggles_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_goggles_proto_rawDesc = "" +
 	"\n" +
-	"\x1bquadsmith/api/goggles.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"H\n" +
+	"\x1bquadsmith/api/goggles.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"H\n" +
 	"\x14CreateGogglesRequest\x120\n" +
 	"\agoggles\x18\x01 \x01(\v2\x16.quadsmith.api.GogglesR\agoggles\"&\n" +
 	"\x14DeleteGogglesRequest\x12\x0e\n" +
@@ -591,30 +592,39 @@ const file_quadsmith_api_goggles_proto_rawDesc = "" +
 	"\agoggles\x18\x01 \x03(\v2\x16.quadsmith.api.GogglesR\agoggles\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"H\n" +
 	"\x14UpdateGogglesRequest\x120\n" +
-	"\agoggles\x18\x01 \x01(\v2\x16.quadsmith.api.GogglesR\agoggles\"\xb9\a\n" +
-	"\aGoggles\x12<\n" +
-	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x1a\n" +
-	"\x04name\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12%\n" +
-	"\x0evideo_protocol\x18\x06 \x01(\tR\rvideoProtocol\x12!\n" +
-	"\fdisplay_type\x18\a \x01(\tR\vdisplayType\x12\x1e\n" +
+	"\agoggles\x18\x01 \x01(\v2\x16.quadsmith.api.GogglesR\agoggles\"\xf3\b\n" +
+	"\aGoggles\x12@\n" +
+	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
+	"\x02id\x18\x02 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04R\x02id\x12.\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\fmanufacturer\x12\x1e\n" +
+	"\x04name\x18\x04 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x04name\x12\x1f\n" +
+	"\bweight_g\x18\x05 \x01(\x02B\x04\xc0\xf0\x19\x02R\aweightG\x12+\n" +
+	"\x0evideo_protocol\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x02R\rvideoProtocol\x12'\n" +
+	"\fdisplay_type\x18\a \x01(\tB\x04\xc0\xf0\x19\x02R\vdisplayType\x12$\n" +
 	"\n" +
-	"resolution\x18\b \x01(\tR\n" +
-	"resolution\x12\x17\n" +
-	"\afov_deg\x18\t \x01(\x02R\x06fovDeg\x12 \n" +
+	"resolution\x18\b \x01(\tB\x04\xc0\xf0\x19\x02R\n" +
+	"resolution\x12\x1d\n" +
+	"\afov_deg\x18\t \x01(\x02B\x04\xc0\xf0\x19\x02R\x06fovDeg\x12&\n" +
 	"\fipd_range_mm\x18\n" +
-	" \x01(\tR\n" +
-	"ipdRangeMm\x12#\n" +
-	"\rvoltage_range\x18\v \x01(\tR\fvoltageRange\x12#\n" +
-	"\rdvr_supported\x18\f \x01(\bR\fdvrSupported\x12(\n" +
-	"\vdescription\x18\r \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x12M\n" +
-	"\x0freference_links\x18\x0e \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
-	"\x15primary_display_image\x18\x0f \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x00R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
-	"\x05media\x18\x10 \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12(\n" +
-	"\tuser_uuid\x18\x11 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x01R\buserUuid\x88\x01\x01\x124\n" +
-	"\x0fauthor_username\x18\x12 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\x0eauthorUsername\x88\x01\x01:|\x8a\xb5\x18P\n" +
+	" \x01(\tB\x04\xc0\xf0\x19\x02R\n" +
+	"ipdRangeMm\x12)\n" +
+	"\rvoltage_range\x18\v \x01(\tB\x04\xc0\xf0\x19\x02R\fvoltageRange\x12)\n" +
+	"\rdvr_supported\x18\f \x01(\bB\x04\xc0\xf0\x19\x02R\fdvrSupported\x12,\n" +
+	"\vdescription\x18\r \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\vdescription\x12Q\n" +
+	"\x0freference_links\x18\x0e \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0ereferenceLinks\x12C\n" +
+	"\x15primary_display_image\x18\x0f \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x126\n" +
+	"\x05media\x18\x10 \x03(\v2\x14.quadsmith.api.MediaB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x05media\x12,\n" +
+	"\tuser_uuid\x18\x11 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
+	"\x0fauthor_username\x18\x12 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xdd\x01\x8a\xb5\x18P\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\x0evideo_protocol\n" +
@@ -622,7 +632,7 @@ const file_quadsmith_api_goggles_proto_rawDesc = "" +
 	"\n" +
 	"resolution\n" +
 	"\afov_deg\x12\a#d946ef\x9a\xb5\x18\x17components/gear/goggles\xc2\xf3\x18\t\n" +
-	"\agogglesB\x18\n" +
+	"\agoggles\xc2\xf0\x19]\b\x05\x12Yuuid IN (SELECT uuid FROM entities WHERE collection = 'goggles' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +

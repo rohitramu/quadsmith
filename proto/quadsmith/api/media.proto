@@ -2,7 +2,16 @@ syntax = "proto3";
 
 package quadsmith.api;
 
+import "quadsmith/data/data.proto";
+
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
+
+message Media {
+  MediaType type = 1 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string url = 2 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional string title = 3 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional string description = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+}
 
 enum MediaType {
   MEDIA_TYPE_UNSPECIFIED = 0;
@@ -10,11 +19,4 @@ enum MediaType {
   MEDIA_TYPE_YOUTUBE = 2;
   MEDIA_TYPE_MODEL_3D = 3;
   MEDIA_TYPE_VIDEO = 4;
-}
-
-message Media {
-  MediaType type = 1;
-  string url = 2;
-  optional string title = 3;
-  optional string description = 4;
 }

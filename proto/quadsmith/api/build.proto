@@ -5,6 +5,7 @@ package quadsmith.api;
 import "quadsmith/api/media.proto";
 import "quadsmith/api/reference_link.proto";
 import "quadsmith/common/common.proto";
+import "quadsmith/data/data.proto";
 import "quadsmith/sql/sql.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
@@ -82,6 +83,10 @@ message SimilarBuild {
 message Build {
   option (quadsmith.sql.table) = {name: "builds"};
   option (quadsmith.common.collection_path) = "builds";
+  option (quadsmith.data.export) = {
+    domain: EXPORT_DOMAIN_BUILDS
+    user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'builds' AND user_uuid = $1::uuid)"
+  };
   option (quadsmith.common.frontend) = {
     color_code: "#3b82f6"
     default_columns: [
@@ -90,56 +95,101 @@ message Build {
     ]
   };
 
-  string uuid = 1 [(quadsmith.sql.column) = {
-    is_primary_key: true
-    references: "entities(uuid) ON DELETE CASCADE"
-  }];
+  string uuid = 1 [
+    (quadsmith.sql.column) = {
+      is_primary_key: true
+      references: "entities(uuid) ON DELETE CASCADE"
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
-  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
-  string name = 3 [(quadsmith.sql.column) = {ignore: true}];
-  string description = 4 [(quadsmith.sql.column) = {ignore: true}];
+  string id = 2 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string name = 3 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  string description = 4 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // -------------------------------------------------------
   // Bill of Materials (Foreign Keys to Hardware tables)
   // -------------------------------------------------------
 
   // The frame used for this build
-  string frame_uuid = 5 [(quadsmith.sql.column) = {references: "frames(uuid)"}];
+  string frame_uuid = 5 [
+    (quadsmith.sql.column) = {references: "frames(uuid)"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // The motor SKU used for this build (assumes 4x for a standard quad)
-  string motor_uuid = 6 [(quadsmith.sql.column) = {references: "motors(uuid)"}];
+  string motor_uuid = 6 [
+    (quadsmith.sql.column) = {references: "motors(uuid)"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // -------------------------------------------------------
   // Electronics & Subsystems
   // -------------------------------------------------------
 
   // The central Flight Controller (which may be an AIO board)
-  string flight_controller_uuid = 8 [(quadsmith.sql.column) = {references: "flight_controllers(uuid)"}];
+  string flight_controller_uuid = 8 [
+    (quadsmith.sql.column) = {references: "flight_controllers(uuid)"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // Array of Electronic Speed Controller boards (e.g. one 4-in-1, or four individual ESCs)
-  repeated string electronic_speed_controller_uuids = 9;
+  repeated string electronic_speed_controller_uuids = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Array of receivers (e.g. primary ELRS, backup crossfire)
-  repeated string receiver_uuids = 10;
+  repeated string receiver_uuids = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Array of antennas
-  repeated string antenna_uuids = 11;
+  repeated string antenna_uuids = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // The propeller SKU used (assumes 4x or 8x depending on motors)
-  string propeller_uuid = 12 [(quadsmith.sql.column) = {references: "propellers(uuid)"}];
+  string propeller_uuid = 12 [
+    (quadsmith.sql.column) = {references: "propellers(uuid)"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // Array of cameras (e.g. primary FPV cam, secondary action cam)
-  repeated string camera_uuids = 13;
+  repeated string camera_uuids = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // The Video Transmitter used for this build
-  string video_transmitter_uuid = 14 [(quadsmith.sql.column) = {references: "video_transmitters(uuid)"}];
+  string video_transmitter_uuid = 14 [
+    (quadsmith.sql.column) = {references: "video_transmitters(uuid)"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // Optional GPS Receiver for navigation and rescue return-to-home
-  optional string gps_receiver_uuid = 15 [(quadsmith.sql.column) = {references: "gps_receivers(uuid)"}];
+  optional string gps_receiver_uuid = 15 [
+    (quadsmith.sql.column) = {references: "gps_receivers(uuid)"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
-  repeated ReferenceLink reference_links = 16 [(quadsmith.sql.column) = {ignore: true}];
-  optional string primary_display_image = 17 [(quadsmith.sql.column) = {ignore: true}];
-  repeated Media media = 18 [(quadsmith.sql.column) = {ignore: true}];
-  optional string user_uuid = 19 [(quadsmith.sql.column) = {ignore: true}];
-  optional string author_username = 20 [(quadsmith.sql.column) = {ignore: true}];
+  repeated ReferenceLink reference_links = 16 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  optional string primary_display_image = 17 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  repeated Media media = 18 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  optional string user_uuid = 19 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  optional string author_username = 20 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 }

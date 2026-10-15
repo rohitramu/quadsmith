@@ -9,6 +9,42 @@ import "quadsmith/validate/validate.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 // ---------------------------------------------------------
+// Authentication Service
+// ---------------------------------------------------------
+
+service AuthService {
+  rpc SendEmailOtp(SendEmailOtpRequest) returns (SendEmailOtpResponse);
+  rpc VerifyEmailOtp(VerifyEmailOtpRequest) returns (AuthResponse);
+  rpc VerifyMagicLink(VerifyMagicLinkRequest) returns (AuthResponse);
+  rpc GetLoginChallengeDetails(GetLoginChallengeDetailsRequest) returns (GetLoginChallengeDetailsResponse);
+  rpc ApproveLoginChallenge(ApproveLoginChallengeRequest) returns (ApproveLoginChallengeResponse);
+  rpc DenyLoginChallenge(DenyLoginChallengeRequest) returns (DenyLoginChallengeResponse);
+  rpc GetLoginChallengeStatus(GetLoginChallengeStatusRequest) returns (GetLoginChallengeStatusResponse);
+  rpc CompleteAccountSetup(CompleteAccountSetupRequest) returns (AuthResponse);
+  rpc RefreshToken(RefreshTokenRequest) returns (AuthResponse);
+  rpc GetCurrentUser(GetCurrentUserRequest) returns (User);
+  rpc UpdateProfile(UpdateProfileRequest) returns (UserProfile);
+  rpc Logout(LogoutRequest) returns (LogoutResponse);
+
+  rpc ListUserEmails(ListUserEmailsRequest) returns (ListUserEmailsResponse);
+  rpc SendAddEmailOtp(SendAddEmailOtpRequest) returns (SendEmailOtpResponse);
+  rpc VerifyAddEmailOtp(VerifyAddEmailOtpRequest) returns (VerifyAddEmailOtpResponse);
+  rpc MergeAccount(MergeAccountRequest) returns (MergeAccountResponse);
+  rpc SetPrimaryEmail(SetPrimaryEmailRequest) returns (SetPrimaryEmailResponse);
+  rpc RemoveUserEmail(RemoveUserEmailRequest) returns (RemoveUserEmailResponse);
+
+  rpc ChangeUsername(ChangeUsernameRequest) returns (ChangeUsernameResponse);
+  rpc ListArchivedUsernames(ListArchivedUsernamesRequest) returns (ListArchivedUsernamesResponse);
+
+  rpc SendDataExportVerification(SendDataExportVerificationRequest) returns (SendDataExportVerificationResponse);
+  rpc VerifyDataExport(VerifyDataExportRequest) returns (VerifyDataExportResponse);
+
+  rpc SendDeleteAccountVerification(SendDeleteAccountVerificationRequest) returns (SendDeleteAccountVerificationResponse);
+  rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResponse);
+  rpc CancelAccountDeletion(CancelAccountDeletionRequest) returns (CancelAccountDeletionResponse);
+}
+
+// ---------------------------------------------------------
 // Authentication Requests & Responses
 // ---------------------------------------------------------
 
@@ -294,34 +330,33 @@ message CancelAccountDeletionResponse {
 }
 
 // ---------------------------------------------------------
-// Authentication Service
+// Data Export Requests & Responses
 // ---------------------------------------------------------
 
-service AuthService {
-  rpc SendEmailOtp(SendEmailOtpRequest) returns (SendEmailOtpResponse);
-  rpc VerifyEmailOtp(VerifyEmailOtpRequest) returns (AuthResponse);
-  rpc VerifyMagicLink(VerifyMagicLinkRequest) returns (AuthResponse);
-  rpc GetLoginChallengeDetails(GetLoginChallengeDetailsRequest) returns (GetLoginChallengeDetailsResponse);
-  rpc ApproveLoginChallenge(ApproveLoginChallengeRequest) returns (ApproveLoginChallengeResponse);
-  rpc DenyLoginChallenge(DenyLoginChallengeRequest) returns (DenyLoginChallengeResponse);
-  rpc GetLoginChallengeStatus(GetLoginChallengeStatusRequest) returns (GetLoginChallengeStatusResponse);
-  rpc CompleteAccountSetup(CompleteAccountSetupRequest) returns (AuthResponse);
-  rpc RefreshToken(RefreshTokenRequest) returns (AuthResponse);
-  rpc GetCurrentUser(GetCurrentUserRequest) returns (User);
-  rpc UpdateProfile(UpdateProfileRequest) returns (UserProfile);
-  rpc Logout(LogoutRequest) returns (LogoutResponse);
+message SendDataExportVerificationRequest {}
 
-  rpc ListUserEmails(ListUserEmailsRequest) returns (ListUserEmailsResponse);
-  rpc SendAddEmailOtp(SendAddEmailOtpRequest) returns (SendEmailOtpResponse);
-  rpc VerifyAddEmailOtp(VerifyAddEmailOtpRequest) returns (VerifyAddEmailOtpResponse);
-  rpc MergeAccount(MergeAccountRequest) returns (MergeAccountResponse);
-  rpc SetPrimaryEmail(SetPrimaryEmailRequest) returns (SetPrimaryEmailResponse);
-  rpc RemoveUserEmail(RemoveUserEmailRequest) returns (RemoveUserEmailResponse);
+message SendDataExportVerificationResponse {
+  bool success = 1;
+  string message = 2;
+  string primary_email = 3;
+  int32 cooldown_seconds = 4;
+  string challenge_id = 5;
+  google.protobuf.Timestamp expires_at = 6;
+}
 
-  rpc ChangeUsername(ChangeUsernameRequest) returns (ChangeUsernameResponse);
-  rpc ListArchivedUsernames(ListArchivedUsernamesRequest) returns (ListArchivedUsernamesResponse);
+message VerifyDataExportRequest {
+  optional string challenge_id = 1;
+  oneof verification {
+    string code = 2;
+    string magic_token = 3;
+  }
+}
 
-  rpc SendDeleteAccountVerification(SendDeleteAccountVerificationRequest) returns (SendDeleteAccountVerificationResponse);
-  rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResponse);
-  rpc CancelAccountDeletion(CancelAccountDeletionRequest) returns (CancelAccountDeletionResponse);
+message VerifyDataExportResponse {
+  bool success = 1;
+  string message = 2;
+  string export_token = 3;
+  string download_url = 4;
+  string filename = 5;
+  google.protobuf.Timestamp expires_at = 6;
 }

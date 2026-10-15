@@ -5,6 +5,7 @@ package quadsmith.api;
 import "quadsmith/api/media.proto";
 import "quadsmith/api/reference_link.proto";
 import "quadsmith/common/common.proto";
+import "quadsmith/data/data.proto";
 import "quadsmith/sql/sql.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
@@ -63,6 +64,10 @@ message UpdateFrameRequest {
 message Frame {
   option (quadsmith.sql.table) = {name: "frames"};
   option (quadsmith.common.collection_path) = "components/hardware/frames";
+  option (quadsmith.data.export) = {
+    domain: EXPORT_DOMAIN_COMPONENTS
+    user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'frames' AND user_uuid = $1::uuid)"
+  };
   option (quadsmith.common.frontend) = {
     color_code: "#64748b"
     default_columns: [
@@ -73,42 +78,75 @@ message Frame {
     ]
   };
 
-  string uuid = 1 [(quadsmith.sql.column) = {
-    is_primary_key: true
-    references: "entities(uuid) ON DELETE CASCADE"
-  }];
+  string uuid = 1 [
+    (quadsmith.sql.column) = {
+      is_primary_key: true
+      references: "entities(uuid) ON DELETE CASCADE"
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
-  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+  string id = 2 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
+  string manufacturer = 3 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  string name = 4 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
-  float weight_g = 5;
+  float weight_g = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // The diagonal distance between motors in millimeters
-  float wheelbase_mm = 6;
+  float wheelbase_mm = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Maximum propeller size supported
-  float max_prop_size_mm = 7;
+  float max_prop_size_mm = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // E.g., "True X", "Squashed X", "Deadcat"
-  string geometry = 8;
-  string description = 9 [(quadsmith.sql.column) = {ignore: true}];
-  repeated ReferenceLink reference_links = 10 [(quadsmith.sql.column) = {ignore: true}];
-  optional string primary_display_image = 11 [(quadsmith.sql.column) = {ignore: true}];
-  repeated Media media = 12 [(quadsmith.sql.column) = {ignore: true}];
+  string geometry = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string description = 9 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  repeated ReferenceLink reference_links = 10 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  optional string primary_display_image = 11 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  repeated Media media = 12 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // Number of motors configured by this frame (e.g., 4 for standard quadcopters, 8 for coaxial X8 cinelifters)
-  uint32 motor_count = 13 [(quadsmith.sql.column) = {default_value: "4"}];
+  uint32 motor_count = 13 [
+    (quadsmith.sql.column) = {default_value: "4"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // Camera mount interfaces supported by this frame (e.g., ["14mm (Nano)"], ["19mm (Micro)"], ["20mm (DJI O3)"])
-  repeated string camera_mount_interfaces = 14;
+  repeated string camera_mount_interfaces = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Motor mounting bolt patterns supported by this frame (e.g., ["16x16mm", "19x19mm"], ["9x9mm", "12x12mm"], ["3-hole 6.6mm"])
-  repeated string motor_mount_patterns = 15;
+  repeated string motor_mount_patterns = 15 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Board mounting patterns supported by this frame (e.g., ["30.5x30.5mm", "20x20mm"], ["25.5x25.5mm"], ["16x16mm"])
-  repeated string board_mount_patterns = 16;
-  optional string user_uuid = 17 [(quadsmith.sql.column) = {ignore: true}];
-  optional string author_username = 18 [(quadsmith.sql.column) = {ignore: true}];
+  repeated string board_mount_patterns = 16 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional string user_uuid = 17 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  optional string author_username = 18 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 }

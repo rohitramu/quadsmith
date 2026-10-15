@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	_ "quadsmith/shared/gen/quadsmith/data"
 	_ "quadsmith/shared/gen/quadsmith/sql"
 	_ "quadsmith/shared/gen/quadsmith/validate"
 	reflect "reflect"
@@ -86,7 +87,7 @@ type User struct {
 	// - Rejects consecutive underscores ("__") and reserved brands ("quadsmith", "quad_smith") via `not_contains`.
 	// (See `_validate.proto` for comprehensive documentation on RE2 regex restrictions and ReDoS guarantees).
 	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"` // Verified email (private)
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"` // Verified primary email (populated for API responses, not persisted in users table)
 	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`   // "USER", "ADMIN"
 	LastRenamedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=last_renamed_at,json=lastRenamedAt,proto3" json:"last_renamed_at,omitempty"`
 	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=deleted_at,json=deletedAt,proto3" json:"deleted_at,omitempty"`
@@ -1282,50 +1283,57 @@ var File_quadsmith_api_user_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_user_proto_rawDesc = "" +
 	"\n" +
-	"\x18quadsmith/api/user.proto\x12\rquadsmith.api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x17quadsmith/sql/sql.proto\x1a!quadsmith/validate/validate.proto\"\x9f\x04\n" +
-	"\x04User\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12~\n" +
-	"\x02id\x18\x02 \x01(\tBn\xc2\xf3\x18\x04 \x01(\x01\x82\xb2\x19b\n" +
+	"\x18quadsmith/api/user.proto\x12\rquadsmith.api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\x1a!quadsmith/validate/validate.proto\"\xd2\x04\n" +
+	"\x04User\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x82\x01\n" +
+	"\x02id\x18\x02 \x01(\tBr\xc2\xf3\x18\x04 \x01(\x01\x82\xb2\x19b\n" +
 	"`\b\x03\x10\x14\x1a\x1e^[a-z][a-z0-9_]{1,18}[a-z0-9]$\"\x05admin\"\x04root\"\x06system\"\x03bot\"\x05robot*\x02__*\tquadsmith*\n" +
-	"quad_smithR\x02id\x12\x1e\n" +
-	"\x05email\x18\x03 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x05email\x12 \n" +
-	"\x04role\x18\x04 \x01(\tB\f\xc2\xf3\x18\b:\x06'USER'R\x04role\x12B\n" +
-	"\x0flast_renamed_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\rlastRenamedAt\x129\n" +
+	"quad_smith\xc0\xf0\x19\x02R\x02id\x12 \n" +
+	"\x05email\x18\x03 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x01R\x05email\x12$\n" +
+	"\x04role\x18\x04 \x01(\tB\x10\xc2\xf3\x18\b:\x06'USER'\xc0\xf0\x19\x04R\x04role\x12H\n" +
+	"\x0flast_renamed_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\rlastRenamedAt\x12?\n" +
 	"\n" +
-	"deleted_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tdeletedAt\x127\n" +
-	"\tbanned_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\bbannedAt\x129\n" +
+	"deleted_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tdeletedAt\x12=\n" +
+	"\tbanned_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\bbannedAt\x12?\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt\x12?\n" +
 	"\n" +
-	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt:\v\xc2\xf3\x18\a\n" +
-	"\x05users\"\xde\x01\n" +
-	"\vUserProfile\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x122\n" +
-	"\tuser_uuid\x18\x02 \x01(\tB\x15\xc2\xf3\x18\x11\x1a\vusers(uuid) \x01(\x01R\buserUuid\x12\x1d\n" +
+	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tupdatedAt:\x11\xc2\xf3\x18\a\n" +
+	"\x05users\xc2\xf0\x19\x02\b\x02\"\xfe\x01\n" +
+	"\vUserProfile\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x126\n" +
+	"\tuser_uuid\x18\x02 \x01(\tB\x19\xc2\xf3\x18\x11\x1a\vusers(uuid) \x01(\x01\xc0\xf0\x19\x04R\buserUuid\x12#\n" +
 	"\n" +
-	"avatar_url\x18\x03 \x01(\tR\tavatarUrl\x12\x10\n" +
-	"\x03bio\x18\x04 \x01(\tR\x03bio\x129\n" +
+	"avatar_url\x18\x03 \x01(\tB\x04\xc0\xf0\x19\x02R\tavatarUrl\x12\x16\n" +
+	"\x03bio\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02R\x03bio\x12?\n" +
 	"\n" +
-	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt:\x13\xc2\xf3\x18\x0f\n" +
-	"\ruser_profiles\"\xdb\x02\n" +
-	"\tUserEmail\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x120\n" +
-	"\tuser_uuid\x18\x02 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x1e\n" +
-	"\x05email\x18\x03 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\x05email\x12*\n" +
+	"updated_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tupdatedAt:\x19\xc2\xf3\x18\x0f\n" +
+	"\ruser_profiles\xc2\xf0\x19\x02\b\x02\"\xc5\x03\n" +
+	"\tUserEmail\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x124\n" +
+	"\tuser_uuid\x18\x02 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12\"\n" +
+	"\x05email\x18\x03 \x01(\tB\f\xc2\xf3\x18\x04 \x01(\x01\xc0\xf0\x19\x01R\x05email\x12.\n" +
 	"\n" +
-	"is_primary\x18\x04 \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\tisPrimary\x129\n" +
+	"is_primary\x18\x04 \x01(\bB\x0f\xc2\xf3\x18\a:\x05false\xc0\xf0\x19\x01R\tisPrimary\x12?\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x125\n" +
-	"\x10verified_via_otp\x18\x06 \x01(\bB\v\xc2\xf3\x18\a:\x05falseR\x0everifiedViaOtp\x12/\n" +
-	"\x0foauth_providers\x18\a \x03(\tB\x06\xc2\xf3\x18\x02@\x01R\x0eoauthProviders:\x11\xc2\xf3\x18\r\n" +
-	"\vuser_emails\"\xf4\x02\n" +
-	"\x15UserEmailOAuthAccount\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12S\n" +
-	"\x0fuser_email_uuid\x18\x02 \x01(\tB+\xc2\xf3\x18'\x1a#user_emails(uuid) ON DELETE CASCADE(\x01R\ruserEmailUuid\x12\\\n" +
-	"\x12oauth_account_uuid\x18\x03 \x01(\tB.\xc2\xf3\x18*\x1a&oauth_accounts(uuid) ON DELETE CASCADE(\x01R\x10oauthAccountUuid\x12F\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt\x129\n" +
+	"\x10verified_via_otp\x18\x06 \x01(\bB\x0f\xc2\xf3\x18\a:\x05false\xc0\xf0\x19\x03R\x0everifiedViaOtp\x123\n" +
+	"\x0foauth_providers\x18\a \x03(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x03R\x0eoauthProviders:]\xc2\xf3\x18S\n" +
+	"\vuser_emails\"D\n" +
+	"$idx_user_emails_one_primary_per_user\x12\tuser_uuid\x1a\x11is_primary = true\xc2\xf0\x19\x02\b\x02\"\xd9\x03\n" +
+	"\x15UserEmailOAuthAccount\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12W\n" +
+	"\x0fuser_email_uuid\x18\x02 \x01(\tB/\xc2\xf3\x18'\x1a#user_emails(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\ruserEmailUuid\x12`\n" +
+	"\x12oauth_account_uuid\x18\x03 \x01(\tB2\xc2\xf3\x18*\x1a&oauth_accounts(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\x10oauthAccountUuid\x12J\n" +
 	"\n" +
-	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\v\xc2\xf3\x18\a:\x05NOW()R\tcreatedAt:D\xc2\xf3\x18@\n" +
-	"\x19user_email_oauth_accounts\x1a#user_email_uuid, oauth_account_uuid\"\xdb\x01\n" +
+	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt:\x98\x01\xc2\xf3\x18@\n" +
+	"\x19user_email_oauth_accounts\x1a#user_email_uuid, oauth_account_uuid\xc2\xf0\x19P\b\x02\x12Luser_email_uuid IN (SELECT uuid FROM user_emails WHERE user_uuid = $1::uuid)\"\xdb\x01\n" +
 	"\x11PublicUserProfile\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1d\n" +
 	"\n" +
@@ -1335,68 +1343,73 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x1f\n" +
 	"\vbuild_count\x18\x05 \x01(\x05R\n" +
 	"buildCount\x12)\n" +
-	"\x10reputation_score\x18\x06 \x01(\x05R\x0freputationScore\"\xf0\x02\n" +
-	"\fRefreshToken\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x120\n" +
-	"\tuser_uuid\x18\x02 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12'\n" +
+	"\x10reputation_score\x18\x06 \x01(\x05R\x0freputationScore\"\x9a\x03\n" +
+	"\fRefreshToken\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x124\n" +
+	"\tuser_uuid\x18\x02 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12+\n" +
 	"\n" +
-	"token_hash\x18\x03 \x01(\tB\b\xc2\xf3\x18\x04 \x01(\x01R\ttokenHash\x129\n" +
+	"token_hash\x18\x03 \x01(\tB\f\xc2\xf3\x18\x04 \x01(\x01\xc0\xf0\x19\x06R\ttokenHash\x12?\n" +
 	"\n" +
-	"expires_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\x12<\n" +
-	"\flast_used_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"lastUsedAt\x12\x1f\n" +
-	"\vdevice_hint\x18\x06 \x01(\tR\n" +
-	"deviceHint\x129\n" +
+	"expires_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\texpiresAt\x12B\n" +
+	"\flast_used_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\n" +
+	"lastUsedAt\x12%\n" +
+	"\vdevice_hint\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x03R\n" +
+	"deviceHint\x12?\n" +
 	"\n" +
-	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt:\x14\xc2\xf3\x18\x10\n" +
-	"\x0erefresh_tokens\"\xb9\x06\n" +
-	"\bEmailOtp\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x12\x1c\n" +
-	"\x05email\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\x05email\x12\x1b\n" +
-	"\tcode_hash\x18\x03 \x01(\tR\bcodeHash\x129\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt:\x1a\xc2\xf3\x18\x10\n" +
+	"\x0erefresh_tokens\xc2\xf0\x19\x02\b\x03\"\xab\b\n" +
+	"\bEmailOtp\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12 \n" +
+	"\x05email\x18\x02 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x01R\x05email\x12!\n" +
+	"\tcode_hash\x18\x03 \x01(\tB\x04\xc0\xf0\x19\x06R\bcodeHash\x12?\n" +
 	"\n" +
-	"expires_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\x123\n" +
-	"\aused_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\x06usedAt\x120\n" +
-	"\x0ffailed_attempts\x18\x06 \x01(\x05B\a\xc2\xf3\x18\x03:\x010R\x0efailedAttempts\x129\n" +
+	"expires_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\texpiresAt\x129\n" +
+	"\aused_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\x06usedAt\x124\n" +
+	"\x0ffailed_attempts\x18\x06 \x01(\x05B\v\xc2\xf3\x18\x03:\x010\xc0\xf0\x19\x05R\x0efailedAttempts\x12?\n" +
 	"\n" +
-	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x126\n" +
-	"\x11challenge_id_hash\x18\b \x01(\tB\n" +
-	"\xc2\xf3\x18\x06(\x01:\x02''R\x0fchallengeIdHash\x12'\n" +
-	"\apurpose\x18\t \x01(\tB\r\xc2\xf3\x18\t:\a'login'R\apurpose\x12K\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt\x12:\n" +
+	"\x11challenge_id_hash\x18\b \x01(\tB\x0e\xc2\xf3\x18\x06(\x01:\x02''\xc0\xf0\x19\x06R\x0fchallengeIdHash\x12+\n" +
+	"\apurpose\x18\t \x01(\tB\x11\xc2\xf3\x18\t:\a'login'\xc0\xf0\x19\x03R\apurpose\x12O\n" +
 	"\x16requested_by_user_uuid\x18\n" +
-	" \x01(\tB\x11\xc2\xf3\x18\r\x1a\vusers(uuid)H\x00R\x13requestedByUserUuid\x88\x01\x01\x12'\n" +
+	" \x01(\tB\x15\xc2\xf3\x18\r\x1a\vusers(uuid)\xc0\xf0\x19\x04H\x00R\x13requestedByUserUuid\x88\x01\x01\x12+\n" +
 	"\n" +
-	"ip_address\x18\v \x01(\tB\b\xc2\xf3\x18\x04:\x02''R\tipAddress\x12'\n" +
+	"ip_address\x18\v \x01(\tB\f\xc2\xf3\x18\x04:\x02''\xc0\xf0\x19\x03R\tipAddress\x12+\n" +
 	"\n" +
-	"user_agent\x18\f \x01(\tB\b\xc2\xf3\x18\x04:\x02''R\tuserAgent\x12-\n" +
-	"\rlocation_hint\x18\r \x01(\tB\b\xc2\xf3\x18\x04:\x02''R\flocationHint\x12'\n" +
-	"\x06status\x18\x0e \x01(\tB\x0f\xc2\xf3\x18\v:\t'pending'R\x06status\x12;\n" +
-	"\vapproved_at\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampR\n" +
-	"approvedAt\x127\n" +
-	"\tdenied_at\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampR\bdeniedAt:\x10\xc2\xf3\x18\f\n" +
+	"user_agent\x18\f \x01(\tB\f\xc2\xf3\x18\x04:\x02''\xc0\xf0\x19\x03R\tuserAgent\x121\n" +
+	"\rlocation_hint\x18\r \x01(\tB\f\xc2\xf3\x18\x04:\x02''\xc0\xf0\x19\x03R\flocationHint\x12+\n" +
+	"\x06status\x18\x0e \x01(\tB\x13\xc2\xf3\x18\v:\t'pending'\xc0\xf0\x19\x03R\x06status\x12A\n" +
+	"\vapproved_at\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\n" +
+	"approvedAt\x12=\n" +
+	"\tdenied_at\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\bdeniedAt:\xb5\x01\xc2\xf3\x18\f\n" +
 	"\n" +
-	"email_otpsB\x19\n" +
-	"\x17_requested_by_user_uuid\"\x89\x03\n" +
-	"\x0fUsernameHistory\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x120\n" +
-	"\tuser_uuid\x18\x02 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12)\n" +
-	"\fold_username\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\voldUsername\x129\n" +
+	"email_otps\xc2\xf0\x19\xa0\x01\b\x03\x12\x9b\x01requested_by_user_uuid = $1::uuid OR (email IN (SELECT email FROM user_emails WHERE user_uuid = $1::uuid) AND (used_at IS NOT NULL OR status = 'approved'))B\x19\n" +
+	"\x17_requested_by_user_uuid\"\xab\x03\n" +
+	"\x0fUsernameHistory\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x124\n" +
+	"\tuser_uuid\x18\x02 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12-\n" +
+	"\fold_username\x18\x03 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\voldUsername\x12?\n" +
 	"\n" +
-	"renamed_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\trenamedAt\x12U\n" +
-	"\x11first_archived_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\r\xc2\xf3\x18\t(\x01:\x05NOW()R\x0ffirstArchivedAt\x12Q\n" +
-	"\x17release_warning_sent_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\x14releaseWarningSentAt:\x18\xc2\xf3\x18\x14\n" +
-	"\x12username_histories\"\x87\x03\n" +
-	"\fOAuthAccount\x12\x1a\n" +
-	"\x04uuid\x18\x01 \x01(\tB\x06\xc2\xf3\x18\x02\x10\x01R\x04uuid\x120\n" +
-	"\tuser_uuid\x18\x02 \x01(\tB\x13\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01R\buserUuid\x12\x1a\n" +
-	"\bprovider\x18\x03 \x01(\tR\bprovider\x12.\n" +
-	"\x13provider_account_id\x18\x04 \x01(\tR\x11providerAccountId\x12!\n" +
-	"\faccess_token\x18\x05 \x01(\tR\vaccessToken\x12#\n" +
-	"\rrefresh_token\x18\x06 \x01(\tR\frefreshToken\x12D\n" +
-	"\x10token_expires_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\x0etokenExpiresAt\x129\n" +
+	"renamed_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\trenamedAt\x12Y\n" +
+	"\x11first_archived_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x11\xc2\xf3\x18\t(\x01:\x05NOW()\xc0\xf0\x19\x03R\x0ffirstArchivedAt\x12W\n" +
+	"\x17release_warning_sent_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\x14releaseWarningSentAt:\x1e\xc2\xf3\x18\x14\n" +
+	"\x12username_histories\xc2\xf0\x19\x02\b\x02\"\xb9\x03\n" +
+	"\fOAuthAccount\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x124\n" +
+	"\tuser_uuid\x18\x02 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12 \n" +
+	"\bprovider\x18\x03 \x01(\tB\x04\xc0\xf0\x19\x03R\bprovider\x124\n" +
+	"\x13provider_account_id\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x03R\x11providerAccountId\x12'\n" +
+	"\faccess_token\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x06R\vaccessToken\x12)\n" +
+	"\rrefresh_token\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x06R\frefreshToken\x12J\n" +
+	"\x10token_expires_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x06R\x0etokenExpiresAt\x12?\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt:\x14\xc2\xf3\x18\x10\n" +
-	"\x0eoauth_accounts\" \n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt:\x1a\xc2\xf3\x18\x10\n" +
+	"\x0eoauth_accounts\xc2\xf0\x19\x02\b\x02\" \n" +
 	"\x0eGetUserRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\")\n" +
 	"\x17GetPublicProfileRequest\x12\x0e\n" +

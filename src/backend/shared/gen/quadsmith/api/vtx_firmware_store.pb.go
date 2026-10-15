@@ -201,3 +201,34 @@ func ListVtxFirmwares(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 	}
 	return results, nil
 }
+
+func ExportVtxFirmwares(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*VtxFirmware, error) {
+	query := `SELECT uuid, manufacturer, version, protocol, supported_resolutions FROM video_transmitter_firmwares WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'vtx-firmware' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*VtxFirmware, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 5)
+		scanAssigns := make([]func(), 0, 5)
+		m := &VtxFirmware{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.Version
+		scanArgs[3] = &m.Protocol
+		scanArgs[4] = &m.SupportedResolutions
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.Version != "" || m.Protocol != "" || m.SupportedResolutions != "" {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

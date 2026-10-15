@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "quadsmith/shared/gen/quadsmith/common"
+	_ "quadsmith/shared/gen/quadsmith/data"
 	_ "quadsmith/shared/gen/quadsmith/sql"
 	reflect "reflect"
 	sync "sync"
@@ -775,7 +776,7 @@ var File_quadsmith_api_build_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_build_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/api/build.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"\xbd\x01\n" +
+	"\x19quadsmith/api/build.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xbd\x01\n" +
 	"\x14ComponentMatchDetail\x12\x1c\n" +
 	"\tcomponent\x18\x01 \x01(\tR\tcomponent\x12\x1f\n" +
 	"\vexact_match\x18\x02 \x01(\bR\n" +
@@ -812,33 +813,42 @@ const file_quadsmith_api_build_proto_rawDesc = "" +
 	"\fSimilarBuild\x12*\n" +
 	"\x05build\x18\x01 \x01(\v2\x14.quadsmith.api.BuildR\x05build\x12)\n" +
 	"\x10similarity_score\x18\x02 \x01(\x01R\x0fsimilarityScore\x12H\n" +
-	"\rmatch_details\x18\x03 \x03(\v2#.quadsmith.api.ComponentMatchDetailR\fmatchDetails\"\x9f\t\n" +
-	"\x05Build\x12<\n" +
-	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12\x1a\n" +
-	"\x04name\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12(\n" +
-	"\vdescription\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x121\n" +
+	"\rmatch_details\x18\x03 \x03(\v2#.quadsmith.api.ComponentMatchDetailR\fmatchDetails\"\xd4\n" +
 	"\n" +
-	"frame_uuid\x18\x05 \x01(\tB\x12\xc2\xf3\x18\x0e\x1a\fframes(uuid)R\tframeUuid\x121\n" +
+	"\x05Build\x12@\n" +
+	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
+	"\x02id\x18\x02 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04R\x02id\x12\x1e\n" +
+	"\x04name\x18\x03 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x04name\x12,\n" +
+	"\vdescription\x18\x04 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\vdescription\x125\n" +
 	"\n" +
-	"motor_uuid\x18\x06 \x01(\tB\x12\xc2\xf3\x18\x0e\x1a\fmotors(uuid)R\tmotorUuid\x12T\n" +
-	"\x16flight_controller_uuid\x18\b \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18flight_controllers(uuid)R\x14flightControllerUuid\x12I\n" +
-	"!electronic_speed_controller_uuids\x18\t \x03(\tR\x1eelectronicSpeedControllerUuids\x12%\n" +
+	"frame_uuid\x18\x05 \x01(\tB\x16\xc2\xf3\x18\x0e\x1a\fframes(uuid)\xc0\xf0\x19\x02R\tframeUuid\x125\n" +
+	"\n" +
+	"motor_uuid\x18\x06 \x01(\tB\x16\xc2\xf3\x18\x0e\x1a\fmotors(uuid)\xc0\xf0\x19\x02R\tmotorUuid\x12X\n" +
+	"\x16flight_controller_uuid\x18\b \x01(\tB\"\xc2\xf3\x18\x1a\x1a\x18flight_controllers(uuid)\xc0\xf0\x19\x02R\x14flightControllerUuid\x12O\n" +
+	"!electronic_speed_controller_uuids\x18\t \x03(\tB\x04\xc0\xf0\x19\x02R\x1eelectronicSpeedControllerUuids\x12+\n" +
 	"\x0ereceiver_uuids\x18\n" +
-	" \x03(\tR\rreceiverUuids\x12#\n" +
-	"\rantenna_uuids\x18\v \x03(\tR\fantennaUuids\x12=\n" +
-	"\x0epropeller_uuid\x18\f \x01(\tB\x16\xc2\xf3\x18\x12\x1a\x10propellers(uuid)R\rpropellerUuid\x12!\n" +
-	"\fcamera_uuids\x18\r \x03(\tR\vcameraUuids\x12T\n" +
-	"\x16video_transmitter_uuid\x18\x0e \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)R\x14videoTransmitterUuid\x12J\n" +
-	"\x11gps_receiver_uuid\x18\x0f \x01(\tB\x19\xc2\xf3\x18\x15\x1a\x13gps_receivers(uuid)H\x00R\x0fgpsReceiverUuid\x88\x01\x01\x12M\n" +
-	"\x0freference_links\x18\x10 \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
-	"\x15primary_display_image\x18\x11 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x01R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
-	"\x05media\x18\x12 \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12(\n" +
-	"\tuser_uuid\x18\x13 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\buserUuid\x88\x01\x01\x124\n" +
-	"\x0fauthor_username\x18\x14 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x03R\x0eauthorUsername\x88\x01\x01:-\x8a\xb5\x18\x13\n" +
+	" \x03(\tB\x04\xc0\xf0\x19\x02R\rreceiverUuids\x12)\n" +
+	"\rantenna_uuids\x18\v \x03(\tB\x04\xc0\xf0\x19\x02R\fantennaUuids\x12A\n" +
+	"\x0epropeller_uuid\x18\f \x01(\tB\x1a\xc2\xf3\x18\x12\x1a\x10propellers(uuid)\xc0\xf0\x19\x02R\rpropellerUuid\x12'\n" +
+	"\fcamera_uuids\x18\r \x03(\tB\x04\xc0\xf0\x19\x02R\vcameraUuids\x12X\n" +
+	"\x16video_transmitter_uuid\x18\x0e \x01(\tB\"\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)\xc0\xf0\x19\x02R\x14videoTransmitterUuid\x12N\n" +
+	"\x11gps_receiver_uuid\x18\x0f \x01(\tB\x1d\xc2\xf3\x18\x15\x1a\x13gps_receivers(uuid)\xc0\xf0\x19\x02H\x00R\x0fgpsReceiverUuid\x88\x01\x01\x12Q\n" +
+	"\x0freference_links\x18\x10 \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0ereferenceLinks\x12C\n" +
+	"\x15primary_display_image\x18\x11 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x01R\x13primaryDisplayImage\x88\x01\x01\x126\n" +
+	"\x05media\x18\x12 \x03(\v2\x14.quadsmith.api.MediaB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x05media\x12,\n" +
+	"\tuser_uuid\x18\x13 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x02R\buserUuid\x88\x01\x01\x128\n" +
+	"\x0fauthor_username\x18\x14 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x03R\x0eauthorUsername\x88\x01\x01:\x8d\x01\x8a\xb5\x18\x13\n" +
 	"\x02id\n" +
 	"\x04name\x12\a#3b82f6\x9a\xb5\x18\x06builds\xc2\xf3\x18\b\n" +
-	"\x06buildsB\x14\n" +
+	"\x06builds\xc2\xf0\x19\\\b\x04\x12Xuuid IN (SELECT uuid FROM entities WHERE collection = 'builds' AND user_uuid = $1::uuid)B\x14\n" +
 	"\x12_gps_receiver_uuidB\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +

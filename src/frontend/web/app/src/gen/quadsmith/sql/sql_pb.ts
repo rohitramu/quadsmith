@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_sql_sql: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChdxdWFkc21pdGgvc3FsL3NxbC5wcm90bxINcXVhZHNtaXRoLnNxbCJICgxUYWJsZU9wdGlvbnMSDAoEbmFtZRgBIAEoCRIOCgZjaGVja3MYAiADKAkSGgoSdW5pcXVlX2NvbnN0cmFpbnRzGAMgAygJIq4BCg1Db2x1bW5PcHRpb25zEgwKBG5hbWUYASABKAkSFgoOaXNfcHJpbWFyeV9rZXkYAiABKAgSEgoKcmVmZXJlbmNlcxgDIAEoCRIRCglpc191bmlxdWUYBCABKAgSFAoMY3JlYXRlX2luZGV4GAUgASgIEhMKC2NvbHVtbl90eXBlGAYgASgJEhUKDWRlZmF1bHRfdmFsdWUYByABKAkSDgoGaWdub3JlGAggASgIOlQKBXRhYmxlEh8uZ29vZ2xlLnByb3RvYnVmLk1lc3NhZ2VPcHRpb25zGLiOAyABKAsyGy5xdWFkc21pdGguc3FsLlRhYmxlT3B0aW9uc1IFdGFibGU6VQoGY29sdW1uEh0uZ29vZ2xlLnByb3RvYnVmLkZpZWxkT3B0aW9ucxi4jgMgASgLMhwucXVhZHNtaXRoLnNxbC5Db2x1bW5PcHRpb25zUgZjb2x1bW5CKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL3NxbDtzcWxiBnByb3RvMw",
+    "ChdxdWFkc21pdGgvc3FsL3NxbC5wcm90bxINcXVhZHNtaXRoLnNxbCJ8CgxUYWJsZU9wdGlvbnMSDAoEbmFtZRgBIAEoCRIOCgZjaGVja3MYAiADKAkSGgoSdW5pcXVlX2NvbnN0cmFpbnRzGAMgAygJEjIKDnVuaXF1ZV9pbmRleGVzGAQgAygLMhoucXVhZHNtaXRoLnNxbC5VbmlxdWVJbmRleCI7CgtVbmlxdWVJbmRleBIMCgRuYW1lGAEgASgJEg8KB2NvbHVtbnMYAiABKAkSDQoFd2hlcmUYAyABKAkirgEKDUNvbHVtbk9wdGlvbnMSDAoEbmFtZRgBIAEoCRIWCg5pc19wcmltYXJ5X2tleRgCIAEoCBISCgpyZWZlcmVuY2VzGAMgASgJEhEKCWlzX3VuaXF1ZRgEIAEoCBIUCgxjcmVhdGVfaW5kZXgYBSABKAgSEwoLY29sdW1uX3R5cGUYBiABKAkSFQoNZGVmYXVsdF92YWx1ZRgHIAEoCRIOCgZpZ25vcmUYCCABKAg6VAoFdGFibGUSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMYuI4DIAEoCzIbLnF1YWRzbWl0aC5zcWwuVGFibGVPcHRpb25zUgV0YWJsZTpVCgZjb2x1bW4SHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLiOAyABKAsyHC5xdWFkc21pdGguc3FsLkNvbHVtbk9wdGlvbnNSBmNvbHVtbkIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvc3FsO3NxbGIGcHJvdG8z",
     [file_google_protobuf_descriptor],
   );
 
@@ -46,6 +46,13 @@ export type TableOptions = Message<"quadsmith.sql.TableOptions"> & {
    * @generated from field: repeated string unique_constraints = 3;
    */
   uniqueConstraints: string[];
+
+  /**
+   * Partial or expression UNIQUE indexes.
+   *
+   * @generated from field: repeated quadsmith.sql.UniqueIndex unique_indexes = 4;
+   */
+  uniqueIndexes: UniqueIndex[];
 };
 
 /**
@@ -55,6 +62,34 @@ export type TableOptions = Message<"quadsmith.sql.TableOptions"> & {
 export const TableOptionsSchema: GenMessage<TableOptions> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_sql_sql, 0);
+
+/**
+ * @generated from message quadsmith.sql.UniqueIndex
+ */
+export type UniqueIndex = Message<"quadsmith.sql.UniqueIndex"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string columns = 2;
+   */
+  columns: string;
+
+  /**
+   * @generated from field: string where = 3;
+   */
+  where: string;
+};
+
+/**
+ * Describes the message quadsmith.sql.UniqueIndex.
+ * Use `create(UniqueIndexSchema)` to create a new message.
+ */
+export const UniqueIndexSchema: GenMessage<UniqueIndex> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_sql_sql, 1);
 
 /**
  * @generated from message quadsmith.sql.ColumnOptions
@@ -126,7 +161,7 @@ export type ColumnOptions = Message<"quadsmith.sql.ColumnOptions"> & {
  */
 export const ColumnOptionsSchema: GenMessage<ColumnOptions> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_sql_sql, 1);
+  messageDesc(file_quadsmith_sql_sql, 2);
 
 /**
  * SQL table configuration for backend database mapping.

@@ -5,6 +5,7 @@ package quadsmith.api;
 import "quadsmith/api/media.proto";
 import "quadsmith/api/reference_link.proto";
 import "quadsmith/common/common.proto";
+import "quadsmith/data/data.proto";
 import "quadsmith/sql/sql.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
@@ -63,6 +64,10 @@ message UpdateTransmitterRequest {
 message Transmitter {
   option (quadsmith.sql.table) = {name: "transmitters"};
   option (quadsmith.common.collection_path) = "components/gear/transmitters";
+  option (quadsmith.data.export) = {
+    domain: EXPORT_DOMAIN_COMPONENTS
+    user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'transmitters' AND user_uuid = $1::uuid)"
+  };
   option (quadsmith.common.frontend) = {
     color_code: "#0ea5e9"
     default_columns: [
@@ -75,24 +80,54 @@ message Transmitter {
     ]
   };
 
-  string uuid = 1 [(quadsmith.sql.column) = {
-    is_primary_key: true
-    references: "entities(uuid) ON DELETE CASCADE"
-  }];
-  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
-  float weight_g = 5;
-  string rf_protocol = 6;
-  string operating_system = 7;
-  string gimbal_type = 8;
-  uint32 max_power_mw = 9;
-  uint32 channels = 10;
-  string battery_type = 11;
-  string description = 12 [(quadsmith.sql.column) = {ignore: true}];
-  repeated ReferenceLink reference_links = 13 [(quadsmith.sql.column) = {ignore: true}];
-  optional string primary_display_image = 14 [(quadsmith.sql.column) = {ignore: true}];
-  repeated Media media = 15 [(quadsmith.sql.column) = {ignore: true}];
-  optional string user_uuid = 16 [(quadsmith.sql.column) = {ignore: true}];
-  optional string author_username = 17 [(quadsmith.sql.column) = {ignore: true}];
+  string uuid = 1 [
+    (quadsmith.sql.column) = {
+      is_primary_key: true
+      references: "entities(uuid) ON DELETE CASCADE"
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string id = 2 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string manufacturer = 3 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  string name = 4 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  float weight_g = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string rf_protocol = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string operating_system = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string gimbal_type = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  uint32 max_power_mw = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  uint32 channels = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string battery_type = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string description = 12 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  repeated ReferenceLink reference_links = 13 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  optional string primary_display_image = 14 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  repeated Media media = 15 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  optional string user_uuid = 16 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  optional string author_username = 17 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 }

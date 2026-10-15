@@ -221,3 +221,39 @@ func ListElectronicSpeedControllers(ctx context.Context, db *pgxpool.Pool, cols 
 	}
 	return results, nil
 }
+
+func ExportElectronicSpeedControllers(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*ElectronicSpeedController, error) {
+	query := `SELECT uuid, manufacturer, is_internal_only, weight_g, max_motors, motor_current_max_a, motor_current_burst_a, firmware, min_voltage, max_voltage FROM electronic_speed_controllers WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'electronic-speed-controllers' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*ElectronicSpeedController, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 10)
+		scanAssigns := make([]func(), 0, 10)
+		m := &ElectronicSpeedController{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.IsInternalOnly
+		scanArgs[3] = &m.WeightG
+		scanArgs[4] = &m.MaxMotors
+		scanArgs[5] = &m.MotorCurrentMaxA
+		scanArgs[6] = &m.MotorCurrentBurstA
+		scanArgs[7] = &m.Firmware
+		scanArgs[8] = &m.MinVoltage
+		scanArgs[9] = &m.MaxVoltage
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.IsInternalOnly || m.WeightG != 0 || m.MaxMotors != 0 || m.MotorCurrentMaxA != 0 || m.MotorCurrentBurstA != 0 || m.Firmware != "" || m.MinVoltage != 0 || m.MaxVoltage != 0 {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

@@ -4,6 +4,7 @@
 
 import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import { file_quadsmith_data_data } from "../data/data_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
@@ -12,7 +13,8 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_media: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChlxdWFkc21pdGgvYXBpL21lZGlhLnByb3RvEg1xdWFkc21pdGguYXBpIoQBCgVNZWRpYRImCgR0eXBlGAEgASgOMhgucXVhZHNtaXRoLmFwaS5NZWRpYVR5cGUSCwoDdXJsGAIgASgJEhIKBXRpdGxlGAMgASgJSACIAQESGAoLZGVzY3JpcHRpb24YBCABKAlIAYgBAUIICgZfdGl0bGVCDgoMX2Rlc2NyaXB0aW9uKoQBCglNZWRpYVR5cGUSGgoWTUVESUFfVFlQRV9VTlNQRUNJRklFRBAAEhQKEE1FRElBX1RZUEVfSU1BR0UQARIWChJNRURJQV9UWVBFX1lPVVRVQkUQAhIXChNNRURJQV9UWVBFX01PREVMXzNEEAMSFAoQTUVESUFfVFlQRV9WSURFTxAEQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "ChlxdWFkc21pdGgvYXBpL21lZGlhLnByb3RvEg1xdWFkc21pdGguYXBpIpwBCgVNZWRpYRIsCgR0eXBlGAEgASgOMhgucXVhZHNtaXRoLmFwaS5NZWRpYVR5cGVCBMDwGQISEQoDdXJsGAIgASgJQgTA8BkCEhgKBXRpdGxlGAMgASgJQgTA8BkCSACIAQESHgoLZGVzY3JpcHRpb24YBCABKAlCBMDwGQJIAYgBAUIICgZfdGl0bGVCDgoMX2Rlc2NyaXB0aW9uKoQBCglNZWRpYVR5cGUSGgoWTUVESUFfVFlQRV9VTlNQRUNJRklFRBAAEhQKEE1FRElBX1RZUEVfSU1BR0UQARIWChJNRURJQV9UWVBFX1lPVVRVQkUQAhIXChNNRURJQV9UWVBFX01PREVMXzNEEAMSFAoQTUVESUFfVFlQRV9WSURFTxAEQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    [file_quadsmith_data_data],
   );
 
 /**

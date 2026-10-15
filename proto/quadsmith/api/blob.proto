@@ -3,6 +3,7 @@ syntax = "proto3";
 package quadsmith.api;
 
 import "google/protobuf/timestamp.proto";
+import "quadsmith/data/data.proto";
 import "quadsmith/sql/sql.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
@@ -13,33 +14,52 @@ option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 message Blob {
   option (quadsmith.sql.table) = {name: "blobs"};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_BLOBS};
 
   // UUIDv7 primary key
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
   // Content-addressable SHA-256 hex hash (unique identifier)
-  string id = 2 [(quadsmith.sql.column) = {
-    is_unique: true
-    create_index: true
-  }];
+  string id = 2 [
+    (quadsmith.sql.column) = {
+      is_unique: true
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
   // Original client-supplied filename (e.g., "gopro_mount.stl")
-  string filename = 3;
+  string filename = 3 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // IANA MIME type (e.g., "model/stl", "image/png", "video/mp4")
-  string mime_type = 4 [(quadsmith.sql.column) = {create_index: true}];
+  string mime_type = 4 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // Exact file size in bytes
-  int64 size_bytes = 5;
+  int64 size_bytes = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
 
   // Raw binary payload
-  bytes bytes = 6 [(quadsmith.sql.column) = {column_type: "BYTEA"}];
+  bytes bytes = 6 [
+    (quadsmith.sql.column) = {column_type: "BYTEA"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // User who uploaded the blob (foreign key to users table)
-  string user_uuid = 7 [(quadsmith.sql.column) = {references: "users(uuid)"}];
+  string user_uuid = 7 [
+    (quadsmith.sql.column) = {references: "users(uuid)"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
   // Upload timestamp
-  google.protobuf.Timestamp created_at = 8 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp created_at = 8 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
 }
 
 message BlobReference {
@@ -47,22 +67,41 @@ message BlobReference {
     name: "blob_references"
     unique_constraints: "blob_uuid, entity_type, entity_uuid"
   };
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
 
   // UUIDv7 primary key
-  string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true}];
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
   // Unique identifier for the reference
-  string id = 2 [(quadsmith.sql.column) = {is_unique: true}];
+  string id = 2 [
+    (quadsmith.sql.column) = {is_unique: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
   // Foreign key to the target blob
-  string blob_uuid = 3 [(quadsmith.sql.column) = {references: "blobs(uuid) ON DELETE CASCADE"}];
+  string blob_uuid = 3 [
+    (quadsmith.sql.column) = {references: "blobs(uuid) ON DELETE CASCADE"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
   // Entity category: "build", "component", "user_avatar"
-  string entity_type = 4 [(quadsmith.sql.column) = {create_index: true}];
+  string entity_type = 4 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
   // Foreign key uuid of the referencing entity
-  string entity_uuid = 5 [(quadsmith.sql.column) = {create_index: true}];
+  string entity_uuid = 5 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
   // Linkage timestamp
-  google.protobuf.Timestamp created_at = 6 [(quadsmith.sql.column) = {default_value: "NOW()"}];
+  google.protobuf.Timestamp created_at = 6 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 }

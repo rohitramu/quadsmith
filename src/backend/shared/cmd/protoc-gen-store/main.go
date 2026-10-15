@@ -10,6 +10,7 @@ import (
 	"google.golang.org/protobuf/types/pluginpb"
 
 	commonpb "quadsmith/shared/gen/quadsmith/common"
+	datapb "quadsmith/shared/gen/quadsmith/data"
 	sqlpb "quadsmith/shared/gen/quadsmith/sql"
 )
 
@@ -44,6 +45,36 @@ func getCollectionPath(msg *protogen.Message) string {
 		}
 	}
 	return ""
+}
+
+func getExportOptions(msg *protogen.Message) *datapb.ExportOptions {
+	opts := msg.Desc.Options()
+	if proto.HasExtension(opts, datapb.E_Export) {
+		if expOpts, ok := proto.GetExtension(opts, datapb.E_Export).(*datapb.ExportOptions); ok && expOpts != nil {
+			return expOpts
+		}
+	}
+	return nil
+}
+
+func getFieldContentType(field *protogen.Field) datapb.ContentType {
+	opts := field.Desc.Options()
+	if proto.HasExtension(opts, datapb.E_ContentType) {
+		if ct, ok := proto.GetExtension(opts, datapb.E_ContentType).(datapb.ContentType); ok {
+			return ct
+		}
+	}
+	return datapb.ContentType_CONTENT_TYPE_UNSPECIFIED
+}
+
+func isUserField(ct datapb.ContentType) bool {
+	return ct == datapb.ContentType_CONTENT_TYPE_USER_PROVIDED_PRIVATE ||
+		ct == datapb.ContentType_CONTENT_TYPE_USER_PROVIDED_PUBLIC ||
+		ct == datapb.ContentType_CONTENT_TYPE_USER_OBSERVED
+}
+
+func isExportableContentType(ct datapb.ContentType) bool {
+	return isUserField(ct) || ct == datapb.ContentType_CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
 }
 
 func generateFile(gen *protogen.Plugin, file *protogen.File) {
@@ -485,4 +516,131 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("	return results, nil")
 	g.P("}")
 	g.P()
+
+	// --- EXPORT ---
+	expOpt := getExportOptions(msg)
+	if expOpt != nil && expOpt.Domain != datapb.ExportDomain_EXPORT_DOMAIN_NONE {
+		var exportFields []*protogen.Field
+		var exportColNames []string
+		hasUserField := false
+
+		for _, field := range activeFields {
+			ct := getFieldContentType(field)
+			if isExportableContentType(ct) {
+				exportFields = append(exportFields, field)
+				colName := string(field.Desc.Name())
+				if proto.HasExtension(field.Desc.Options(), sqlpb.E_Column) {
+					if co, ok := proto.GetExtension(field.Desc.Options(), sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
+						if co.Name != "" {
+							colName = co.Name
+						}
+					}
+				}
+				exportColNames = append(exportColNames, colName)
+				if isUserField(ct) {
+					hasUserField = true
+				}
+			}
+		}
+
+		if hasUserField && len(exportColNames) > 0 {
+			exportColsStr := strings.Join(exportColNames, ", ")
+			userWhere := ""
+			if expOpt.UserFilter != "" {
+				userWhere = expOpt.UserFilter
+			} else if tableName == "users" {
+				userWhere = "uuid = $1::uuid"
+			} else {
+				for _, f := range activeFields {
+					if string(f.Desc.Name()) == "user_uuid" {
+						userWhere = "user_uuid = $1::uuid"
+						break
+					}
+				}
+			}
+
+			if userWhere != "" {
+				g.P("func Export", pluralName, "(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*", msgName, ", error) {")
+				g.P("	query := `SELECT ", exportColsStr, " FROM ", tableName, " WHERE ", userWhere, " ORDER BY uuid ASC`")
+				g.P("	rows, err := db.Query(ctx, query, userUUID)")
+				g.P("	if err != nil {")
+				g.P("		return nil, err")
+				g.P("	}")
+				g.P("	defer rows.Close()")
+				g.P("	results := make([]*", msgName, ", 0)")
+				g.P("	for rows.Next() {")
+				g.P("		scanArgs := make([]interface{}, ", len(exportFields), ")")
+				g.P("		scanAssigns := make([]func(), 0, ", len(exportFields), ")")
+				g.P("		m := &", msgName, "{}")
+				for k, field := range exportFields {
+					goName := field.GoName
+					colName := exportColNames[k]
+					if isTimestampField(field) {
+						g.P("		var v", k, " *time.Time")
+						g.P("		scanArgs[", k, "] = &v", k)
+						g.P("		scanAssigns = append(scanAssigns, func() {")
+						g.P("			if v", k, " != nil {")
+						g.P("				m.", goName, " = timestamppb.New(*v", k, ")")
+						g.P("			}")
+						g.P("		})")
+					} else if field.Desc.HasPresence() {
+						g.P("		scanArgs[", k, "] = &m.", goName)
+					} else if strings.HasSuffix(colName, "uuid") && colName != "uuid" && !field.Desc.IsList() {
+						g.P("		var v", k, " *string")
+						g.P("		scanArgs[", k, "] = &v", k)
+						g.P("		scanAssigns = append(scanAssigns, func() {")
+						g.P("			if v", k, " != nil {")
+						g.P("				m.", goName, " = *v", k)
+						g.P("			}")
+						g.P("		})")
+					} else {
+						g.P("		scanArgs[", k, "] = &m.", goName)
+					}
+				}
+				g.P("		err := rows.Scan(scanArgs...)")
+				g.P("		if err != nil {")
+				g.P("			return nil, err")
+				g.P("		}")
+				g.P("		for _, assign := range scanAssigns {")
+				g.P("			assign()")
+				g.P("		}")
+				var checkUserConditions []string
+				for _, field := range exportFields {
+					ct := getFieldContentType(field)
+					if !isUserField(ct) {
+						continue
+					}
+					goName := field.GoName
+					if isTimestampField(field) {
+						checkUserConditions = append(checkUserConditions, "m."+goName+" != nil")
+					} else if field.Desc.IsList() {
+						checkUserConditions = append(checkUserConditions, "len(m."+goName+") > 0")
+					} else if field.Desc.Kind() == protoreflect.StringKind {
+						if field.Desc.HasPresence() {
+							checkUserConditions = append(checkUserConditions, "(m."+goName+" != nil && *m."+goName+" != \"\")")
+						} else {
+							checkUserConditions = append(checkUserConditions, "m."+goName+" != \"\"")
+						}
+					} else if field.Desc.Kind() == protoreflect.BoolKind {
+						checkUserConditions = append(checkUserConditions, "m."+goName)
+					} else if field.Desc.Kind() == protoreflect.BytesKind {
+						checkUserConditions = append(checkUserConditions, "len(m."+goName+") > 0")
+					} else {
+						checkUserConditions = append(checkUserConditions, "m."+goName+" != 0")
+					}
+				}
+				if len(checkUserConditions) > 0 {
+					g.P("		if ", strings.Join(checkUserConditions, " || "), " {")
+					g.P("			results = append(results, m)")
+					g.P("		}")
+				} else {
+					g.P("		results = append(results, m)")
+				}
+				g.P("	}")
+				g.P("	return results, nil")
+				g.P("}")
+				g.P()
+			}
+		}
+	}
 }

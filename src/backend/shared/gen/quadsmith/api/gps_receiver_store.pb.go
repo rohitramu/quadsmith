@@ -217,3 +217,38 @@ func ListGpsReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 	}
 	return results, nil
 }
+
+func ExportGpsReceivers(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*GpsReceiver, error) {
+	query := `SELECT uuid, manufacturer, is_internal_only, weight_g, chipset, protocol, compass, input_voltage_min_v, input_voltage_max_v FROM gps_receivers WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'gps-receivers' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*GpsReceiver, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 9)
+		scanAssigns := make([]func(), 0, 9)
+		m := &GpsReceiver{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.IsInternalOnly
+		scanArgs[3] = &m.WeightG
+		scanArgs[4] = &m.Chipset
+		scanArgs[5] = &m.Protocol
+		scanArgs[6] = &m.Compass
+		scanArgs[7] = &m.InputVoltageMinV
+		scanArgs[8] = &m.InputVoltageMaxV
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.IsInternalOnly || m.WeightG != 0 || m.Chipset != "" || m.Protocol != "" || (m.Compass != nil && *m.Compass != "") || m.InputVoltageMinV != 0 || m.InputVoltageMaxV != 0 {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

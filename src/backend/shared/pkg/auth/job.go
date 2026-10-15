@@ -13,9 +13,10 @@ import (
 // (23 days elapsed, 7 days remaining) and dispatches warning notifications.
 func HandleUsernameReleaseWarning(ctx context.Context, pool *pgxpool.Pool) error {
 	rows, err := pool.Query(ctx, `
-		SELECT hh.uuid, hh.old_username, hh.user_uuid, COALESCE(hh.first_archived_at, hh.renamed_at), u.email
+		SELECT hh.uuid, hh.old_username, hh.user_uuid, COALESCE(hh.first_archived_at, hh.renamed_at), COALESCE(ue.email, '')
 		FROM username_histories hh
 		JOIN users u ON u.uuid = hh.user_uuid
+		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
 		WHERE COALESCE(hh.first_archived_at, hh.renamed_at) + INTERVAL '23 days' <= NOW()
 		  AND COALESCE(hh.first_archived_at, hh.renamed_at) + INTERVAL '30 days' > NOW()
 		  AND hh.release_warning_sent_at IS NULL
@@ -133,7 +134,7 @@ func HandlePurgeSoftDeletedAccounts(ctx context.Context, pool *pgxpool.Pool) (in
 
 		// 1. Anonymize user handle, releasing original username to the public pool
 		newHandle := "deleted-" + u.uuid
-		_, err = tx.Exec(ctx, `UPDATE users SET id = $1, email = $2, updated_at = NOW() WHERE uuid = $3`, newHandle, newHandle+"@deleted.quadsmith.internal", u.uuid)
+		_, err = tx.Exec(ctx, `UPDATE users SET id = $1, updated_at = NOW() WHERE uuid = $2`, newHandle, u.uuid)
 		if err != nil {
 			_ = tx.Rollback(ctx)
 			log.Printf("[PurgeJob] Failed to anonymize user %s: %v", u.uuid, err)

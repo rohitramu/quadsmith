@@ -9,6 +9,9 @@ import type {
   ApproveLoginChallengeResponse,
   DenyLoginChallengeResponse,
   GetLoginChallengeStatusResponse,
+  SendDataExportVerificationResponse,
+  VerifyDataExportRequest,
+  VerifyDataExportResponse,
 } from "../gen/quadsmith/api/auth_pb";
 import { UserService } from "../gen/quadsmith/api/user_pb";
 import type {
@@ -96,6 +99,12 @@ export interface AuthContextType {
     available: boolean;
     message: string;
   }>;
+  sendDataExportVerification: () => Promise<SendDataExportVerificationResponse>;
+  verifyDataExport: (
+    challengeId?: string | null,
+    code?: string | null,
+    magicToken?: string | null,
+  ) => Promise<VerifyDataExportResponse>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -517,6 +526,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const sendDataExportVerification = async (): Promise<SendDataExportVerificationResponse> => {
+    return await authClient.sendDataExportVerification({});
+  };
+
+  const verifyDataExport = async (
+    challengeId?: string | null,
+    code?: string | null,
+    magicToken?: string | null,
+  ): Promise<VerifyDataExportResponse> => {
+    let verification: VerifyDataExportRequest["verification"];
+    if (code) {
+      verification = { case: "code", value: code };
+    } else if (magicToken) {
+      verification = { case: "magicToken", value: magicToken };
+    } else {
+      throw new Error("Verification code or magic token is required");
+    }
+
+    return await authClient.verifyDataExport({
+      challengeId: challengeId || undefined,
+      verification,
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -546,6 +579,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         changeUsername,
         listArchivedUsernames,
         checkUsernameAvailable,
+        sendDataExportVerification,
+        verifyDataExport,
       }}
     >
       {children}

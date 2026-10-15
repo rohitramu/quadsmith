@@ -5,6 +5,7 @@ package quadsmith.api;
 import "quadsmith/api/media.proto";
 import "quadsmith/api/reference_link.proto";
 import "quadsmith/common/common.proto";
+import "quadsmith/data/data.proto";
 import "quadsmith/sql/sql.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
@@ -63,6 +64,10 @@ message UpdatePropellerRequest {
 message Propeller {
   option (quadsmith.sql.table) = {name: "propellers"};
   option (quadsmith.common.collection_path) = "components/hardware/propellers";
+  option (quadsmith.data.export) = {
+    domain: EXPORT_DOMAIN_COMPONENTS
+    user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'propellers' AND user_uuid = $1::uuid)"
+  };
   option (quadsmith.common.frontend) = {
     color_code: "#14b8a6"
     default_columns: [
@@ -74,36 +79,66 @@ message Propeller {
     ]
   };
 
-  string uuid = 1 [(quadsmith.sql.column) = {
-    is_primary_key: true
-    references: "entities(uuid) ON DELETE CASCADE"
-  }];
+  string uuid = 1 [
+    (quadsmith.sql.column) = {
+      is_primary_key: true
+      references: "entities(uuid) ON DELETE CASCADE"
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
-  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+  string id = 2 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
+  string manufacturer = 3 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  string name = 4 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
-  float weight_g = 5;
+  float weight_g = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // E.g., 5.1, 7.0, 3.0
-  float diameter_mm = 6;
+  float diameter_mm = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // E.g., 4.3, 3.1
-  float pitch_mm = 7;
+  float pitch_mm = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Number of blades (e.g., 2, 3, 4)
-  uint32 blades = 8;
+  uint32 blades = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // E.g., "Polycarbonate", "Carbon Fiber"
-  string material = 9;
-  string description = 10 [(quadsmith.sql.column) = {ignore: true}];
-  repeated ReferenceLink reference_links = 11 [(quadsmith.sql.column) = {ignore: true}];
-  optional string primary_display_image = 12 [(quadsmith.sql.column) = {ignore: true}];
-  repeated Media media = 13 [(quadsmith.sql.column) = {ignore: true}];
+  string material = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string description = 10 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  repeated ReferenceLink reference_links = 11 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  optional string primary_display_image = 12 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  repeated Media media = 13 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // Propeller mounting interface (e.g., "M5", "1.5mm T-Mount", "2mm T-Mount", "1.5mm Press-Fit", "1mm Press-Fit", "0.8mm Press-Fit")
-  string prop_mount_interface = 14;
-  optional string user_uuid = 15 [(quadsmith.sql.column) = {ignore: true}];
-  optional string author_username = 16 [(quadsmith.sql.column) = {ignore: true}];
+  string prop_mount_interface = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional string user_uuid = 15 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  optional string author_username = 16 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 }

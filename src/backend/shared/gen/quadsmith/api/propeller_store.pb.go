@@ -213,3 +213,37 @@ func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 	}
 	return results, nil
 }
+
+func ExportPropellers(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Propeller, error) {
+	query := `SELECT uuid, manufacturer, weight_g, diameter_mm, pitch_mm, blades, material, prop_mount_interface FROM propellers WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'propellers' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*Propeller, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 8)
+		scanAssigns := make([]func(), 0, 8)
+		m := &Propeller{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.WeightG
+		scanArgs[3] = &m.DiameterMm
+		scanArgs[4] = &m.PitchMm
+		scanArgs[5] = &m.Blades
+		scanArgs[6] = &m.Material
+		scanArgs[7] = &m.PropMountInterface
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.WeightG != 0 || m.DiameterMm != 0 || m.PitchMm != 0 || m.Blades != 0 || m.Material != "" || m.PropMountInterface != "" {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

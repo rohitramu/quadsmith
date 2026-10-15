@@ -221,3 +221,39 @@ func ListGoggles(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 	}
 	return results, nil
 }
+
+func ExportGoggles(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Goggles, error) {
+	query := `SELECT uuid, manufacturer, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported FROM goggles WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'goggles' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*Goggles, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 10)
+		scanAssigns := make([]func(), 0, 10)
+		m := &Goggles{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.WeightG
+		scanArgs[3] = &m.VideoProtocol
+		scanArgs[4] = &m.DisplayType
+		scanArgs[5] = &m.Resolution
+		scanArgs[6] = &m.FovDeg
+		scanArgs[7] = &m.IpdRangeMm
+		scanArgs[8] = &m.VoltageRange
+		scanArgs[9] = &m.DvrSupported
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.WeightG != 0 || m.VideoProtocol != "" || m.DisplayType != "" || m.Resolution != "" || m.FovDeg != 0 || m.IpdRangeMm != "" || m.VoltageRange != "" || m.DvrSupported {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

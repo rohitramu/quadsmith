@@ -73,9 +73,10 @@ func AuthenticateHTTPRequest(ctx context.Context, pool *pgxpool.Pool, r *http.Re
 		tokenHash := HashToken(c.Value)
 		var sessionUUID, userUUID, username, email, role string
 		err := pool.QueryRow(ctx, `
-			SELECT r.uuid, u.uuid, u.id, u.email, u.role
+			SELECT r.uuid, u.uuid, u.id, COALESCE(ue.email, ''), u.role
 			FROM refresh_tokens r
 			JOIN users u ON u.uuid = r.user_uuid
+			LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
 			WHERE r.token_hash = $1 AND r.expires_at > NOW() AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
 			LIMIT 1`, tokenHash).Scan(&sessionUUID, &userUUID, &username, &email, &role)
 		if err == nil {

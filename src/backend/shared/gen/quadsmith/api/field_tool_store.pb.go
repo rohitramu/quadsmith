@@ -201,3 +201,34 @@ func ListFieldTools(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 	}
 	return results, nil
 }
+
+func ExportFieldTools(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*FieldTool, error) {
+	query := `SELECT uuid, manufacturer, weight_g, tool_type, power_source FROM field_tools WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'field-tools' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*FieldTool, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 5)
+		scanAssigns := make([]func(), 0, 5)
+		m := &FieldTool{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.WeightG
+		scanArgs[3] = &m.ToolType
+		scanArgs[4] = &m.PowerSource
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.WeightG != 0 || m.ToolType != "" || m.PowerSource != "" {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

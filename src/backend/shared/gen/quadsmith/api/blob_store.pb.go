@@ -227,6 +227,52 @@ func ListBlobs(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []str
 	return results, nil
 }
 
+func ExportBlobs(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Blob, error) {
+	query := `SELECT uuid, id, filename, mime_type, size_bytes, bytes, user_uuid, created_at FROM blobs WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*Blob, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 8)
+		scanAssigns := make([]func(), 0, 8)
+		m := &Blob{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Id
+		scanArgs[2] = &m.Filename
+		scanArgs[3] = &m.MimeType
+		scanArgs[4] = &m.SizeBytes
+		scanArgs[5] = &m.Bytes
+		var v6 *string
+		scanArgs[6] = &v6
+		scanAssigns = append(scanAssigns, func() {
+			if v6 != nil {
+				m.UserUuid = *v6
+			}
+		})
+		var v7 *time.Time
+		scanArgs[7] = &v7
+		scanAssigns = append(scanAssigns, func() {
+			if v7 != nil {
+				m.CreatedAt = timestamppb.New(*v7)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Filename != "" || m.MimeType != "" || m.SizeBytes != 0 || len(m.Bytes) > 0 || m.CreatedAt != nil {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}
+
 func CreateBlobReference(ctx context.Context, tx pgx.Tx, m *BlobReference) error {
 	query := `INSERT INTO blob_references (uuid, id, blob_uuid, entity_type, entity_uuid, created_at) VALUES ($1, $2, $3, $4, $5, $6)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {

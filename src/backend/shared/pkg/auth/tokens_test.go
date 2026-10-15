@@ -196,3 +196,53 @@ func TestSetupTokenSigningAndVerification(t *testing.T) {
 		t.Fatalf("expected expired setup token verification to fail")
 	}
 }
+
+func TestExportTokenSigningAndVerification(t *testing.T) {
+	userUUID := NewUUIDv7()
+	userID := "pilot_fpv"
+
+	token, err := SignExportToken(userUUID, userID)
+	if err != nil {
+		t.Fatalf("SignExportToken failed: %v", err)
+	}
+
+	claims, err := VerifyExportToken(token)
+	if err != nil {
+		t.Fatalf("VerifyExportToken failed: %v", err)
+	}
+
+	if claims.UserUUID != userUUID {
+		t.Errorf("expected UserUUID %s, got %s", userUUID, claims.UserUUID)
+	}
+	if claims.UserID != userID {
+		t.Errorf("expected UserID %s, got %s", userID, claims.UserID)
+	}
+	if claims.Purpose != "export_data_download" {
+		t.Errorf("expected Purpose 'export_data_download', got %s", claims.Purpose)
+	}
+
+	// Tampered export token
+	tampered := token[:len(token)-5] + "eeeee"
+	_, err = VerifyExportToken(tampered)
+	if err == nil {
+		t.Fatalf("expected tampered export token verification to fail")
+	}
+
+	// Expired export token
+	expClaims := ExportTokenClaims{
+		UserUUID: userUUID,
+		UserID:   userID,
+		Purpose:  "export_data_download",
+		Exp:      time.Now().Add(-1 * time.Minute).Unix(),
+	}
+	claimsJSON, _ := json.Marshal(expClaims)
+	payload := base64.RawURLEncoding.EncodeToString(claimsJSON)
+	sig := hmacSHA256([]byte(payload), deriveKey("export_token"))
+	sigB64 := base64.RawURLEncoding.EncodeToString(sig)
+	expiredToken := payload + "." + sigB64
+
+	_, err = VerifyExportToken(expiredToken)
+	if err == nil {
+		t.Fatalf("expected expired export token verification to fail")
+	}
+}

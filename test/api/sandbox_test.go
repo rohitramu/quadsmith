@@ -393,7 +393,7 @@ func TestSandboxAuth_ResendEmailOtpGeneratesFreshCodeAndBindsChallenge(t *testin
 
 	// Clean up any existing records for this email
 	_, _ = pool.Exec(ctx, `DELETE FROM email_otps WHERE email = $1`, testEmail)
-	_, _ = pool.Exec(ctx, `DELETE FROM users WHERE LOWER(email) = LOWER($1) OR LOWER(id) = 'pilot_resend_tester'`, testEmail)
+	_, _ = pool.Exec(ctx, `DELETE FROM users WHERE uuid IN (SELECT user_uuid FROM user_emails WHERE LOWER(email) = LOWER($1)) OR LOWER(id) = 'pilot_resend_tester'`, testEmail)
 
 	// 1. Initial send
 	res, err := authClient.SendEmailOtp(ctx, connect.NewRequest(&pb.SendEmailOtpRequest{
@@ -532,14 +532,14 @@ func TestSandboxAuth_ResendEmailOtpGeneratesFreshCodeAndBindsChallenge(t *testin
 		t.Fatalf("expected SetupToken to be present for new user, got empty")
 	}
 
-	// Verify no user record was prematurely created in users table
+	// Verify no user record was prematurely created in user_emails table
 	var prematureUserCount int
-	err = pool.QueryRow(ctx, `SELECT COUNT(*) FROM users WHERE LOWER(email) = LOWER($1)`, testEmail).Scan(&prematureUserCount)
+	err = pool.QueryRow(ctx, `SELECT COUNT(*) FROM user_emails WHERE LOWER(email) = LOWER($1)`, testEmail).Scan(&prematureUserCount)
 	if err != nil {
-		t.Fatalf("failed to query users table: %v", err)
+		t.Fatalf("failed to query user_emails table: %v", err)
 	}
 	if prematureUserCount != 0 {
-		t.Fatalf("expected 0 user rows in users before Account Setup, got %d", prematureUserCount)
+		t.Fatalf("expected 0 user rows in user_emails before Account Setup, got %d", prematureUserCount)
 	}
 
 	// Verify challenge is marked used in DB
@@ -572,7 +572,7 @@ func TestSandboxAuth_ResendEmailOtpGeneratesFreshCodeAndBindsChallenge(t *testin
 
 	// Verify user now exists in users table
 	var finalUserCount int
-	err = pool.QueryRow(ctx, `SELECT COUNT(*) FROM users WHERE LOWER(email) = LOWER($1) AND id = 'pilot_resend_tester'`, testEmail).Scan(&finalUserCount)
+	err = pool.QueryRow(ctx, `SELECT COUNT(*) FROM users u JOIN user_emails ue ON ue.user_uuid = u.uuid WHERE LOWER(ue.email) = LOWER($1) AND u.id = 'pilot_resend_tester'`, testEmail).Scan(&finalUserCount)
 	if err != nil {
 		t.Fatalf("failed to query users table: %v", err)
 	}
@@ -608,7 +608,7 @@ func TestSandboxAuth_LockoutAfter3FailedCodesPerIP(t *testing.T) {
 
 	// Clean up any existing records
 	_, _ = pool.Exec(ctx, `DELETE FROM email_otps WHERE LOWER(email) IN (LOWER($1), LOWER($2))`, testEmail1, testEmail2)
-	_, _ = pool.Exec(ctx, `DELETE FROM users WHERE LOWER(email) IN (LOWER($1), LOWER($2))`, testEmail1, testEmail2)
+	_, _ = pool.Exec(ctx, `DELETE FROM users WHERE uuid IN (SELECT user_uuid FROM user_emails WHERE LOWER(email) IN (LOWER($1), LOWER($2)))`, testEmail1, testEmail2)
 
 	failOneCodeChallenge := func(ip string, email string, codeNum int) (bool, int32) {
 		reqSend := connect.NewRequest(&pb.SendEmailOtpRequest{
@@ -775,9 +775,9 @@ func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
 
 	// Seed User A
 	_, err = pool.Exec(ctx, `
-		INSERT INTO users (uuid, id, email, role, created_at, updated_at)
-		VALUES ($1, $2, $3, 'user', NOW(), NOW())`,
-		userAUUID, userAId, userAEmail)
+		INSERT INTO users (uuid, id, role, created_at, updated_at)
+		VALUES ($1, $2, 'user', NOW(), NOW())`,
+		userAUUID, userAId)
 	if err != nil {
 		t.Fatalf("failed to seed user A: %v", err)
 	}
@@ -792,9 +792,9 @@ func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
 
 	// Seed User B with 2 emails and an email_otp referencing user_b
 	_, err = pool.Exec(ctx, `
-		INSERT INTO users (uuid, id, email, role, created_at, updated_at)
-		VALUES ($1, $2, $3, 'user', NOW(), NOW())`,
-		userBUUID, userBId, userBEmail1)
+		INSERT INTO users (uuid, id, role, created_at, updated_at)
+		VALUES ($1, $2, 'user', NOW(), NOW())`,
+		userBUUID, userBId)
 	if err != nil {
 		t.Fatalf("failed to seed user B: %v", err)
 	}
@@ -956,7 +956,7 @@ func TestSandboxAuth_CrossDeviceMagicLinkApproval(t *testing.T) {
 
 	testEmail := "crossdev_pilot@fpv.build"
 	_, _ = pool.Exec(ctx, `DELETE FROM email_otps WHERE email = $1`, testEmail)
-	_, _ = pool.Exec(ctx, `DELETE FROM users WHERE LOWER(email) = LOWER($1)`, testEmail)
+	_, _ = pool.Exec(ctx, `DELETE FROM users WHERE uuid IN (SELECT user_uuid FROM user_emails WHERE LOWER(email) = LOWER($1))`, testEmail)
 
 	// 1. Device A sends OTP
 	deviceAIP := "192.168.1.105"
@@ -1302,9 +1302,9 @@ func TestSandboxAuth_AccountDeletionGracePeriodAndResurrection(t *testing.T) {
 
 	// Seed user
 	_, err = pool.Exec(ctx, `
-		INSERT INTO users (uuid, id, email, role, created_at, updated_at)
-		VALUES ($1, $2, $3, 'USER', NOW(), NOW())`,
-		userUUID, username, userEmail)
+		INSERT INTO users (uuid, id, role, created_at, updated_at)
+		VALUES ($1, $2, 'USER', NOW(), NOW())`,
+		userUUID, username)
 	if err != nil {
 		t.Fatalf("failed to seed user: %v", err)
 	}

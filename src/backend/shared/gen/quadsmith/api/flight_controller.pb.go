@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "quadsmith/shared/gen/quadsmith/common"
+	_ "quadsmith/shared/gen/quadsmith/data"
 	_ "quadsmith/shared/gen/quadsmith/sql"
 	reflect "reflect"
 	sync "sync"
@@ -620,7 +621,7 @@ var File_quadsmith_api_flight_controller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_flight_controller_proto_rawDesc = "" +
 	"\n" +
-	"%quadsmith/api/flight_controller.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"m\n" +
+	"%quadsmith/api/flight_controller.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"m\n" +
 	"\x1dCreateFlightControllerRequest\x12L\n" +
 	"\x11flight_controller\x18\x01 \x01(\v2\x1f.quadsmith.api.FlightControllerR\x10flightController\"/\n" +
 	"\x1dDeleteFlightControllerRequest\x12\x0e\n" +
@@ -642,40 +643,49 @@ const file_quadsmith_api_flight_controller_proto_rawDesc = "" +
 	"\x12flight_controllers\x18\x01 \x03(\v2\x1f.quadsmith.api.FlightControllerR\x11flightControllers\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"m\n" +
 	"\x1dUpdateFlightControllerRequest\x12L\n" +
-	"\x11flight_controller\x18\x01 \x01(\v2\x1f.quadsmith.api.FlightControllerR\x10flightController\"\xc0\v\n" +
-	"\x10FlightController\x12<\n" +
-	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x1a\n" +
-	"\x04name\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12(\n" +
-	"\x10is_internal_only\x18\x05 \x01(\bR\x0eisInternalOnly\x12\x19\n" +
-	"\bweight_g\x18\x06 \x01(\x02R\aweightG\x12\x1c\n" +
-	"\tprocessor\x18\a \x01(\tR\tprocessor\x12\x12\n" +
-	"\x04gyro\x18\b \x01(\tR\x04gyro\x12\x87\x01\n" +
-	")internal_electronic_speed_controller_uuid\x18\t \x01(\tB(\xc2\xf3\x18$\x1a\"electronic_speed_controllers(uuid)H\x00R%internalElectronicSpeedControllerUuid\x88\x01\x01\x12P\n" +
+	"\x11flight_controller\x18\x01 \x01(\v2\x1f.quadsmith.api.FlightControllerR\x10flightController\"\x9d\r\n" +
+	"\x10FlightController\x12@\n" +
+	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
+	"\x02id\x18\x02 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04R\x02id\x12.\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\fmanufacturer\x12\x1e\n" +
+	"\x04name\x18\x04 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x04name\x12.\n" +
+	"\x10is_internal_only\x18\x05 \x01(\bB\x04\xc0\xf0\x19\x02R\x0eisInternalOnly\x12\x1f\n" +
+	"\bweight_g\x18\x06 \x01(\x02B\x04\xc0\xf0\x19\x02R\aweightG\x12\"\n" +
+	"\tprocessor\x18\a \x01(\tB\x04\xc0\xf0\x19\x02R\tprocessor\x12\x18\n" +
+	"\x04gyro\x18\b \x01(\tB\x04\xc0\xf0\x19\x02R\x04gyro\x12\x8b\x01\n" +
+	")internal_electronic_speed_controller_uuid\x18\t \x01(\tB,\xc2\xf3\x18$\x1a\"electronic_speed_controllers(uuid)\xc0\xf0\x19\x02H\x00R%internalElectronicSpeedControllerUuid\x88\x01\x01\x12T\n" +
 	"\x16internal_receiver_uuid\x18\n" +
-	" \x01(\tB\x15\xc2\xf3\x18\x11\x1a\x0freceivers(uuid)H\x01R\x14internalReceiverUuid\x88\x01\x01\x12j\n" +
-	"\x1finternal_video_transmitter_uuid\x18\v \x01(\tB\x1e\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)H\x02R\x1cinternalVideoTransmitterUuid\x88\x01\x01\x12(\n" +
-	"\vdescription\x18\f \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x12M\n" +
-	"\x0freference_links\x18\r \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
-	"\x15primary_display_image\x18\x0e \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x03R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
-	"\x05media\x18\x0f \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12\x1f\n" +
-	"\vmin_voltage\x18\x10 \x01(\x02R\n" +
-	"minVoltage\x12\x1f\n" +
-	"\vmax_voltage\x18\x11 \x01(\x02R\n" +
-	"maxVoltage\x12\x1b\n" +
-	"\tvtx_ports\x18\x12 \x03(\tR\bvtxPorts\x12)\n" +
-	"\x11vtx_voltage_min_v\x18\x13 \x01(\x02R\x0evtxVoltageMinV\x12)\n" +
-	"\x11vtx_voltage_max_v\x18\x14 \x01(\x02R\x0evtxVoltageMaxV\x12#\n" +
-	"\rmount_pattern\x18\x15 \x01(\tR\fmountPattern\x12(\n" +
-	"\tuser_uuid\x18\x16 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x04R\buserUuid\x88\x01\x01\x124\n" +
-	"\x0fauthor_username\x18\x17 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x05R\x0eauthorUsername\x88\x01\x01:~\x8a\xb5\x188\n" +
+	" \x01(\tB\x19\xc2\xf3\x18\x11\x1a\x0freceivers(uuid)\xc0\xf0\x19\x02H\x01R\x14internalReceiverUuid\x88\x01\x01\x12n\n" +
+	"\x1finternal_video_transmitter_uuid\x18\v \x01(\tB\"\xc2\xf3\x18\x1a\x1a\x18video_transmitters(uuid)\xc0\xf0\x19\x02H\x02R\x1cinternalVideoTransmitterUuid\x88\x01\x01\x12,\n" +
+	"\vdescription\x18\f \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\vdescription\x12Q\n" +
+	"\x0freference_links\x18\r \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0ereferenceLinks\x12C\n" +
+	"\x15primary_display_image\x18\x0e \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x03R\x13primaryDisplayImage\x88\x01\x01\x126\n" +
+	"\x05media\x18\x0f \x03(\v2\x14.quadsmith.api.MediaB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x05media\x12%\n" +
+	"\vmin_voltage\x18\x10 \x01(\x02B\x04\xc0\xf0\x19\x02R\n" +
+	"minVoltage\x12%\n" +
+	"\vmax_voltage\x18\x11 \x01(\x02B\x04\xc0\xf0\x19\x02R\n" +
+	"maxVoltage\x12!\n" +
+	"\tvtx_ports\x18\x12 \x03(\tB\x04\xc0\xf0\x19\x02R\bvtxPorts\x12/\n" +
+	"\x11vtx_voltage_min_v\x18\x13 \x01(\x02B\x04\xc0\xf0\x19\x02R\x0evtxVoltageMinV\x12/\n" +
+	"\x11vtx_voltage_max_v\x18\x14 \x01(\x02B\x04\xc0\xf0\x19\x02R\x0evtxVoltageMaxV\x12)\n" +
+	"\rmount_pattern\x18\x15 \x01(\tB\x04\xc0\xf0\x19\x02R\fmountPattern\x12,\n" +
+	"\tuser_uuid\x18\x16 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x04R\buserUuid\x88\x01\x01\x128\n" +
+	"\x0fauthor_username\x18\x17 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x05R\x0eauthorUsername\x88\x01\x01:\xea\x01\x8a\xb5\x188\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\tprocessor\n" +
 	"\x04gyro\n" +
 	"\bweight_g\x12\a#3b82f6\x9a\xb5\x18&components/hardware/flight-controllers\xc2\xf3\x18\x14\n" +
-	"\x12flight_controllersB,\n" +
+	"\x12flight_controllers\xc2\xf0\x19h\b\x05\x12duuid IN (SELECT uuid FROM entities WHERE collection = 'flight-controllers' AND user_uuid = $1::uuid)B,\n" +
 	"*_internal_electronic_speed_controller_uuidB\x19\n" +
 	"\x17_internal_receiver_uuidB\"\n" +
 	" _internal_video_transmitter_uuidB\x18\n" +

@@ -675,9 +675,9 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 	defer tx.Rollback(ctx)
 
 	_, err = tx.Exec(ctx, `
-		INSERT INTO users (uuid, id, email, role, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $5, $5)`,
-		userUUID, username, email, role, now)
+		INSERT INTO users (uuid, id, role, created_at, updated_at)
+		VALUES ($1, $2, $3, $4, $4)`,
+		userUUID, username, role, now)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user: %w", err))
 	}
@@ -716,14 +716,9 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 func (s *AuthService) userExistsForEmail(ctx context.Context, email string) (bool, error) {
 	var count int
 	err := s.db.QueryRow(ctx, `
-		SELECT COUNT(*) FROM (
-			SELECT 1 FROM user_emails ue
-			JOIN users u ON u.uuid = ue.user_uuid
-			WHERE LOWER(ue.email) = LOWER($1) AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
-			UNION
-			SELECT 1 FROM users u
-			WHERE LOWER(u.email) = LOWER($1) AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
-		) sub`, email).Scan(&count)
+		SELECT COUNT(*) FROM user_emails ue
+		JOIN users u ON u.uuid = ue.user_uuid
+		WHERE LOWER(ue.email) = LOWER($1) AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())`, email).Scan(&count)
 	if err != nil {
 		return false, err
 	}
@@ -782,8 +777,10 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 	var username, email, role string
 	var lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
 	err = s.db.QueryRow(ctx, `
-		SELECT uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at
-		FROM users WHERE uuid = $1`, userUUID).Scan(
+		SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
+		FROM users u
+		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
+		WHERE u.uuid = $1`, userUUID).Scan(
 		&user.Uuid, &username, &email, &role,
 		&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 	if err != nil {
@@ -845,8 +842,10 @@ func (s *AuthService) GetCurrentUser(ctx context.Context, _ *connect.Request[pb.
 	var user pb.User
 	var lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
 	err := s.db.QueryRow(ctx, `
-		SELECT uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at
-		FROM users WHERE uuid = $1`, userCtx.UserUUID).Scan(
+		SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
+		FROM users u
+		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
+		WHERE u.uuid = $1`, userCtx.UserUUID).Scan(
 		&user.Uuid, &user.Id, &user.Email, &user.Role,
 		&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 	if err != nil {
@@ -1191,10 +1190,6 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 	var otherUserUUID, otherUsername string
 	err := s.db.QueryRow(ctx, `
 		SELECT u.uuid, u.id
-		FROM users u
-		WHERE LOWER(u.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
-		UNION
-		SELECT u.uuid, u.id
 		FROM user_emails ue
 		JOIN users u ON u.uuid = ue.user_uuid
 		WHERE LOWER(ue.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
@@ -1224,11 +1219,7 @@ func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Reques
 
 		var otherEmails []string
 		mailRows, err := s.db.Query(ctx, `
-			SELECT DISTINCT email FROM (
-				SELECT email FROM user_emails WHERE user_uuid = $1
-				UNION
-				SELECT email FROM users WHERE uuid = $1
-			) sub ORDER BY email ASC`, otherUserUUID)
+			SELECT email FROM user_emails WHERE user_uuid = $1 ORDER BY email ASC`, otherUserUUID)
 		if err == nil {
 			defer mailRows.Close()
 			for mailRows.Next() {
@@ -1347,10 +1338,6 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 
 		err := s.db.QueryRow(ctx, `
 			SELECT u.uuid
-			FROM users u
-			WHERE LOWER(u.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
-			UNION
-			SELECT u.uuid
 			FROM user_emails ue
 			JOIN users u ON u.uuid = ue.user_uuid
 			WHERE LOWER(ue.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
@@ -1361,7 +1348,11 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 	}
 
 	var otherUsername, otherEmail string
-	err := s.db.QueryRow(ctx, `SELECT id, email FROM users WHERE uuid = $1`, otherUserUUID).Scan(&otherUsername, &otherEmail)
+	err := s.db.QueryRow(ctx, `
+		SELECT u.id, COALESCE(ue.email, '')
+		FROM users u
+		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
+		WHERE u.uuid = $1`, otherUserUUID).Scan(&otherUsername, &otherEmail)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("account to merge was not found"))
 	}
@@ -1387,14 +1378,10 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to transfer builds: %w", err))
 	}
 
-	// 3. Collect all email addresses belonging to the other account (both user_emails and users.email)
+	// 3. Collect all email addresses belonging to the other account
 	var emailsToTransfer []string
 	mailRows, err := tx.Query(ctx, `
-		SELECT DISTINCT email FROM (
-			SELECT email FROM user_emails WHERE user_uuid = $1
-			UNION
-			SELECT email FROM users WHERE uuid = $1
-		) sub`, otherUserUUID)
+		SELECT DISTINCT email FROM user_emails WHERE user_uuid = $1`, otherUserUUID)
 	if err == nil {
 		defer mailRows.Close()
 		for mailRows.Next() {
@@ -1521,9 +1508,9 @@ func (s *AuthService) SetPrimaryEmail(ctx context.Context, req *connect.Request[
 
 	_, err = tx.Exec(ctx, `
 		UPDATE users
-		SET email = $1, updated_at = NOW()
-		WHERE uuid = $2`,
-		targetEmail, userCtx.UserUUID)
+		SET updated_at = NOW()
+		WHERE uuid = $1`,
+		userCtx.UserUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -2327,7 +2314,7 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 
 	// 1. Try finding user via user_emails
 	err := s.db.QueryRow(ctx, `
-		SELECT u.uuid, u.id, u.email, u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
+		SELECT u.uuid, u.id, ue.email, u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
 		FROM user_emails ue
 		JOIN users u ON u.uuid = ue.user_uuid
 		WHERE LOWER(ue.email) = LOWER($1) AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
@@ -2336,25 +2323,15 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 
 	if errors.Is(err, pgx.ErrNoRows) {
-		// Fallback: check users table directly
-		err = s.db.QueryRow(ctx, `
-			SELECT uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at
-			FROM users
-			WHERE LOWER(email) = LOWER($1) AND (deleted_at IS NULL OR deleted_at + INTERVAL '30 days' > NOW())`, email).Scan(
-			&userUUID, &username, &user.Email, &role,
-			&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
-	}
-
-	if errors.Is(err, pgx.ErrNoRows) {
 		userUUID = NewUUIDv7()
 		username = s.generateUniqueUsername(ctx, email)
 		role = "USER"
 		now := time.Now()
 
 		_, err = s.db.Exec(ctx, `
-			INSERT INTO users (uuid, id, email, role, created_at, updated_at)
-			VALUES ($1, $2, $3, $4, $5, $5)`,
-			userUUID, username, email, role, now)
+			INSERT INTO users (uuid, id, role, created_at, updated_at)
+			VALUES ($1, $2, $3, $4, $4)`,
+			userUUID, username, role, now)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user: %w", err))
 		}
@@ -2573,7 +2550,7 @@ func (s *AuthService) SendDeleteAccountVerification(ctx context.Context, req *co
 	// Verify username matches authenticated caller's identity
 	var currentUsername, primaryEmail string
 	err := s.db.QueryRow(ctx, `
-		SELECT u.id, COALESCE(ue.email, u.email)
+		SELECT u.id, COALESCE(ue.email, '')
 		FROM users u
 		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
 		WHERE u.uuid = $1 AND u.deleted_at IS NULL`, userCtx.UserUUID).Scan(&currentUsername, &primaryEmail)
@@ -2825,8 +2802,10 @@ func (s *AuthService) CancelAccountDeletion(ctx context.Context, _ *connect.Requ
 	var user pb.User
 	var lastRenamedAt, bannedAt, createdAt, updatedAt *time.Time
 	err = s.db.QueryRow(ctx, `
-		SELECT uuid, id, email, role, last_renamed_at, banned_at, created_at, updated_at
-		FROM users WHERE uuid = $1`, userCtx.UserUUID).Scan(
+		SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.banned_at, u.created_at, u.updated_at
+		FROM users u
+		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
+		WHERE u.uuid = $1`, userCtx.UserUUID).Scan(
 		&user.Uuid, &user.Id, &user.Email, &user.Role,
 		&lastRenamedAt, &bannedAt, &createdAt, &updatedAt)
 	if err != nil {
@@ -2846,6 +2825,240 @@ func (s *AuthService) CancelAccountDeletion(ctx context.Context, _ *connect.Requ
 		Success: true,
 		Message: "Your account has been successfully restored",
 		User:    &user,
+	}), nil
+}
+
+// ---------------------------------------------------------
+// Data Export Verification
+// ---------------------------------------------------------
+
+// SendDataExportVerification initiates a self-service GDPR data export challenge.
+func (s *AuthService) SendDataExportVerification(ctx context.Context, req *connect.Request[pb.SendDataExportVerificationRequest]) (*connect.Response[pb.SendDataExportVerificationResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+
+	var primaryEmail string
+	err := s.db.QueryRow(ctx, `
+		SELECT COALESCE(ue.email, '')
+		FROM users u
+		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
+		WHERE u.uuid = $1 AND u.deleted_at IS NULL`, userCtx.UserUUID).Scan(&primaryEmail)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("active user not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if primaryEmail == "" {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("no verified primary email address found on account"))
+	}
+
+	// Rate limit per IP
+	clientIP := getClientIP(req)
+	if err := CheckIPRateLimit(clientIP); err != nil {
+		return nil, connect.NewError(connect.CodeResourceExhausted, err)
+	}
+
+	cooldown, err := CheckEmailCooldown(ctx, s.db, primaryEmail)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if cooldown > 0 {
+		connErr := connect.NewError(connect.CodeResourceExhausted, fmt.Errorf("please wait %d seconds before requesting another code", cooldown))
+		if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
+			Message:           fmt.Sprintf("Please wait %d seconds before requesting another code", cooldown),
+			RemainingAttempts: 0,
+			MaxAttempts:       MaxOtpAttempts,
+			IsExhausted:       false,
+			CooldownSeconds:   cooldown,
+		}); detailErr == nil {
+			connErr.AddDetail(detail)
+		}
+		return nil, connErr
+	}
+
+	// Invalidate previous unconsumed export_data OTP challenges for this user/email
+	_, _ = s.db.Exec(ctx, `
+		UPDATE email_otps
+		SET used_at = NOW()
+		WHERE (email = $1 OR requested_by_user_uuid = $2) AND purpose = 'export_data' AND used_at IS NULL`,
+		primaryEmail, userCtx.UserUUID)
+
+	otpCode, codeHash, err := GenerateOTP()
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate otp: %w", err))
+	}
+
+	challengeToken, challengeHash, err := GenerateChallengeToken()
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate challenge token: %w", err))
+	}
+
+	otpUUID := NewUUIDv7()
+	now := time.Now()
+	expiresAt := now.Add(s.cfg.MagicLinkTTL)
+
+	_, err = s.db.Exec(ctx, `
+		INSERT INTO email_otps (uuid, email, challenge_id_hash, code_hash, purpose, requested_by_user_uuid, expires_at, created_at, failed_attempts)
+		VALUES ($1, $2, $3, $4, 'export_data', $5, $6, $7, 0)`,
+		otpUUID, primaryEmail, challengeHash, codeHash, userCtx.UserUUID, expiresAt, now)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save data export challenge: %w", err))
+	}
+
+	magicToken, err := SignMagicLinkToken(otpUUID, primaryEmail, "export_data", userCtx.UserUUID, expiresAt)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate magic link token: %w", err))
+	}
+
+	baseURL := s.getBaseURL(req)
+	magicLinkURL := fmt.Sprintf("%s/account?export_data_token=%s", baseURL, magicToken)
+
+	// Send verification email synchronously with strict 5s timeout
+	emailCtx, emailCancel := context.WithTimeout(ctx, 5*time.Second)
+	defer emailCancel()
+
+	if err := s.emailSender.SendVerification(emailCtx, primaryEmail, otpCode, magicLinkURL, "GDPR Data Archive Export", s.cfg.OtpTTL); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to deliver verification email: %w", err))
+	}
+
+	return connect.NewResponse(&pb.SendDataExportVerificationResponse{
+		Success:         true,
+		Message:         "Data export verification code and magic link sent to your primary email",
+		PrimaryEmail:    primaryEmail,
+		CooldownSeconds: int32(s.cfg.EmailCooldown.Seconds()),
+		ChallengeId:     challengeToken,
+		ExpiresAt:       timestamppb.New(expiresAt),
+	}), nil
+}
+
+// VerifyDataExport verifies an export challenge (OTP code or magic token) and issues a signed export token.
+func (s *AuthService) VerifyDataExport(ctx context.Context, req *connect.Request[pb.VerifyDataExportRequest]) (*connect.Response[pb.VerifyDataExportResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+
+	userUUID := userCtx.UserUUID
+	var username string
+	err := s.db.QueryRow(ctx, `SELECT id FROM users WHERE uuid = $1 AND deleted_at IS NULL`, userUUID).Scan(&username)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("active user not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	code := strings.TrimSpace(req.Msg.GetCode())
+	magicToken := strings.TrimSpace(req.Msg.GetMagicToken())
+	challengeID := strings.TrimSpace(req.Msg.GetChallengeId())
+
+	if code == "" && magicToken == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("verification code or magic token required"))
+	}
+
+	if code != "" {
+		if challengeID == "" {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("challenge_id required when verifying with code"))
+		}
+		challengeHash := HashToken(challengeID)
+
+		var otpUUID, codeHash string
+		var failedAttempts int
+		var expiresAt time.Time
+
+		err := s.db.QueryRow(ctx, `
+			SELECT uuid, code_hash, failed_attempts, expires_at
+			FROM email_otps
+			WHERE challenge_id_hash = $1
+			  AND purpose = 'export_data'
+			  AND requested_by_user_uuid = $2
+			  AND used_at IS NULL
+			ORDER BY created_at DESC
+			LIMIT 1`, challengeHash, userUUID).Scan(&otpUUID, &codeHash, &failedAttempts, &expiresAt)
+		if err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid or expired data export challenge"))
+			}
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+
+		if time.Now().After(expiresAt) {
+			return nil, connect.NewError(connect.CodeDeadlineExceeded, errors.New("verification code has expired"))
+		}
+
+		if failedAttempts >= MaxOtpAttempts {
+			return nil, connect.NewError(connect.CodeResourceExhausted, errors.New("too many failed attempts; please request a new verification code"))
+		}
+
+		if !VerifyOTP(code, codeHash) {
+			failedAttempts++
+			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET failed_attempts = $1 WHERE uuid = $2`, failedAttempts, otpUUID)
+			remaining := MaxOtpAttempts - failedAttempts
+			if remaining <= 0 {
+				return nil, connect.NewError(connect.CodeResourceExhausted, errors.New("too many failed attempts; please request a new verification code"))
+			}
+			connErr := connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid verification code; %d attempt(s) remaining", remaining))
+			if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
+				Message:           fmt.Sprintf("Invalid verification code; %d attempt(s) remaining", remaining),
+				RemainingAttempts: int32(remaining),
+				MaxAttempts:       MaxOtpAttempts,
+				IsExhausted:       false,
+				CooldownSeconds:   0,
+			}); detailErr == nil {
+				connErr.AddDetail(detail)
+			}
+			return nil, connErr
+		}
+
+		// Mark challenge used and approved
+		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW(), status = 'approved', approved_at = NOW() WHERE uuid = $1`, otpUUID)
+	} else if magicToken != "" {
+		claims, err := VerifyMagicLinkToken(magicToken)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid or expired magic link: %w", err))
+		}
+		if claims.Purpose != "export_data" {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid token purpose"))
+		}
+		if claims.RequesterUserUUID != userUUID {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("magic link was issued to a different user"))
+		}
+
+		var usedAt *time.Time
+		err = s.db.QueryRow(ctx, `SELECT used_at FROM email_otps WHERE uuid = $1`, claims.OtpUUID).Scan(&usedAt)
+		if err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("challenge record not found"))
+			}
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		if usedAt != nil {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("magic link has already been used"))
+		}
+
+		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW(), status = 'approved', approved_at = NOW() WHERE uuid = $1`, claims.OtpUUID)
+	}
+
+	exportToken, err := SignExportToken(userUUID, username)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign export token: %w", err))
+	}
+
+	dateStr := time.Now().UTC().Format("2006-01-02")
+	filename := fmt.Sprintf("quadsmith-export-%s-%s.zip", username, dateStr)
+	downloadURL := fmt.Sprintf("/api/account/export?token=%s", exportToken)
+	expiresAt := time.Now().Add(ExportTokenTTL)
+
+	return connect.NewResponse(&pb.VerifyDataExportResponse{
+		Success:     true,
+		Message:     "Data export authorized",
+		ExportToken: exportToken,
+		DownloadUrl: downloadURL,
+		Filename:    filename,
+		ExpiresAt:   timestamppb.New(expiresAt),
 	}), nil
 }
 
@@ -2871,18 +3084,20 @@ func (s *UserService) GetUser(ctx context.Context, req *connect.Request[pb.GetUs
 	var user pb.User
 	var lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
 	err := s.db.QueryRow(ctx, `
-		SELECT uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at
-		FROM users
-		WHERE (id = $1 OR uuid::text = $1) AND deleted_at IS NULL`, id).Scan(
+		SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
+		FROM users u
+		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
+		WHERE (u.id = $1 OR u.uuid::text = $1) AND u.deleted_at IS NULL`, id).Scan(
 		&user.Uuid, &user.Id, &user.Email, &user.Role,
 		&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			// Check if this was a recent username within the 30-day hold window
 			err = s.db.QueryRow(ctx, `
-				SELECT u.uuid, u.id, u.email, u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
+				SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
 				FROM username_histories hh
 				JOIN users u ON u.uuid = hh.user_uuid
+				LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
 				WHERE LOWER(hh.old_username) = LOWER($1) AND u.deleted_at IS NULL AND COALESCE(hh.first_archived_at, hh.renamed_at) >= NOW() - INTERVAL '30 days'
 				ORDER BY hh.renamed_at DESC
 				LIMIT 1`, id).Scan(

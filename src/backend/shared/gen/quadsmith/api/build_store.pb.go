@@ -385,3 +385,70 @@ func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 	}
 	return results, nil
 }
+
+func ExportBuilds(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Build, error) {
+	query := `SELECT uuid, frame_uuid, motor_uuid, flight_controller_uuid, electronic_speed_controller_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, video_transmitter_uuid, gps_receiver_uuid FROM builds WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'builds' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*Build, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 11)
+		scanAssigns := make([]func(), 0, 11)
+		m := &Build{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.FrameUuid = *v1
+			}
+		})
+		var v2 *string
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.MotorUuid = *v2
+			}
+		})
+		var v3 *string
+		scanArgs[3] = &v3
+		scanAssigns = append(scanAssigns, func() {
+			if v3 != nil {
+				m.FlightControllerUuid = *v3
+			}
+		})
+		scanArgs[4] = &m.ElectronicSpeedControllerUuids
+		scanArgs[5] = &m.ReceiverUuids
+		scanArgs[6] = &m.AntennaUuids
+		var v7 *string
+		scanArgs[7] = &v7
+		scanAssigns = append(scanAssigns, func() {
+			if v7 != nil {
+				m.PropellerUuid = *v7
+			}
+		})
+		scanArgs[8] = &m.CameraUuids
+		var v9 *string
+		scanArgs[9] = &v9
+		scanAssigns = append(scanAssigns, func() {
+			if v9 != nil {
+				m.VideoTransmitterUuid = *v9
+			}
+		})
+		scanArgs[10] = &m.GpsReceiverUuid
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.FrameUuid != "" || m.MotorUuid != "" || m.FlightControllerUuid != "" || len(m.ElectronicSpeedControllerUuids) > 0 || len(m.ReceiverUuids) > 0 || len(m.AntennaUuids) > 0 || m.PropellerUuid != "" || len(m.CameraUuids) > 0 || m.VideoTransmitterUuid != "" || (m.GpsReceiverUuid != nil && *m.GpsReceiverUuid != "") {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

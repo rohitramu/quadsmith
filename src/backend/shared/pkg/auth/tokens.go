@@ -359,3 +359,63 @@ func VerifyMergeTicket(ticketStr string) (*MergeTicketClaims, error) {
 	}
 	return &claims, nil
 }
+
+// ExportTokenClaims contains claims for authorizing GDPR data archive downloads
+type ExportTokenClaims struct {
+	UserUUID string `json:"user_uuid"`
+	UserID   string `json:"user_id"` // username
+	Purpose  string `json:"purpose"`
+	Exp      int64  `json:"exp"`
+}
+
+const ExportTokenTTL = 15 * time.Minute
+
+// SignExportToken creates an HMAC-SHA256 signed token authorizing a user to download their GDPR data archive
+func SignExportToken(userUUID, userID string) (string, error) {
+	claims := ExportTokenClaims{
+		UserUUID: userUUID,
+		UserID:   userID,
+		Purpose:  "export_data_download",
+		Exp:      time.Now().Add(ExportTokenTTL).Unix(),
+	}
+	claimsJSON, err := json.Marshal(claims)
+	if err != nil {
+		return "", err
+	}
+	payload := base64.RawURLEncoding.EncodeToString(claimsJSON)
+	sig := hmacSHA256([]byte(payload), deriveKey("export_token"))
+	sigB64 := base64.RawURLEncoding.EncodeToString(sig)
+	return payload + "." + sigB64, nil
+}
+
+// VerifyExportToken verifies an export download token and returns its claims
+func VerifyExportToken(tokenStr string) (*ExportTokenClaims, error) {
+	parts := strings.Split(tokenStr, ".")
+	if len(parts) != 2 {
+		return nil, errors.New("invalid export token format")
+	}
+	payload, sigB64 := parts[0], parts[1]
+	expectedSig := hmacSHA256([]byte(payload), deriveKey("export_token"))
+	actualSig, err := base64.RawURLEncoding.DecodeString(sigB64)
+	if err != nil {
+		return nil, errors.New("invalid signature encoding")
+	}
+	if !hmac.Equal(expectedSig, actualSig) {
+		return nil, errors.New("invalid export token signature")
+	}
+	claimsJSON, err := base64.RawURLEncoding.DecodeString(payload)
+	if err != nil {
+		return nil, errors.New("invalid payload encoding")
+	}
+	var claims ExportTokenClaims
+	if err := json.Unmarshal(claimsJSON, &claims); err != nil {
+		return nil, errors.New("invalid claims json")
+	}
+	if claims.Purpose != "export_data_download" {
+		return nil, errors.New("invalid export token purpose")
+	}
+	if time.Now().Unix() > claims.Exp {
+		return nil, errors.New("export token has expired. Please verify your email again")
+	}
+	return &claims, nil
+}

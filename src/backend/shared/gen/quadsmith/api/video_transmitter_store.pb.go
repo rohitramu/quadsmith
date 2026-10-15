@@ -243,3 +243,42 @@ func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string,
 	}
 	return results, nil
 }
+
+func ExportVideoTransmitters(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*VideoTransmitter, error) {
+	query := `SELECT uuid, manufacturer, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, port_type, mount_pattern, frequency_band_mhz, antenna_connectors FROM video_transmitters WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'video-transmitters' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*VideoTransmitter, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 13)
+		scanAssigns := make([]func(), 0, 13)
+		m := &VideoTransmitter{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.IsInternalOnly
+		scanArgs[3] = &m.WeightG
+		scanArgs[4] = &m.Protocol
+		scanArgs[5] = &m.MaxPowerMw
+		scanArgs[6] = &m.InputVoltageMinV
+		scanArgs[7] = &m.InputVoltageMaxV
+		scanArgs[8] = &m.AntennaUuids
+		scanArgs[9] = &m.PortType
+		scanArgs[10] = &m.MountPattern
+		scanArgs[11] = &m.FrequencyBandMhz
+		scanArgs[12] = &m.AntennaConnectors
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.IsInternalOnly || m.WeightG != 0 || m.Protocol != "" || m.MaxPowerMw != 0 || m.InputVoltageMinV != 0 || m.InputVoltageMaxV != 0 || len(m.AntennaUuids) > 0 || m.PortType != "" || m.MountPattern != "" || m.FrequencyBandMhz != 0 || len(m.AntennaConnectors) > 0 {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

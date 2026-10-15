@@ -271,3 +271,44 @@ func ListFlightControllers(ctx context.Context, db *pgxpool.Pool, cols []string,
 	}
 	return results, nil
 }
+
+func ExportFlightControllers(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*FlightController, error) {
+	query := `SELECT uuid, manufacturer, is_internal_only, weight_g, processor, gyro, internal_electronic_speed_controller_uuid, internal_receiver_uuid, internal_video_transmitter_uuid, min_voltage, max_voltage, vtx_ports, vtx_voltage_min_v, vtx_voltage_max_v, mount_pattern FROM flight_controllers WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'flight-controllers' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*FlightController, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 15)
+		scanAssigns := make([]func(), 0, 15)
+		m := &FlightController{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.IsInternalOnly
+		scanArgs[3] = &m.WeightG
+		scanArgs[4] = &m.Processor
+		scanArgs[5] = &m.Gyro
+		scanArgs[6] = &m.InternalElectronicSpeedControllerUuid
+		scanArgs[7] = &m.InternalReceiverUuid
+		scanArgs[8] = &m.InternalVideoTransmitterUuid
+		scanArgs[9] = &m.MinVoltage
+		scanArgs[10] = &m.MaxVoltage
+		scanArgs[11] = &m.VtxPorts
+		scanArgs[12] = &m.VtxVoltageMinV
+		scanArgs[13] = &m.VtxVoltageMaxV
+		scanArgs[14] = &m.MountPattern
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.IsInternalOnly || m.WeightG != 0 || m.Processor != "" || m.Gyro != "" || (m.InternalElectronicSpeedControllerUuid != nil && *m.InternalElectronicSpeedControllerUuid != "") || (m.InternalReceiverUuid != nil && *m.InternalReceiverUuid != "") || (m.InternalVideoTransmitterUuid != nil && *m.InternalVideoTransmitterUuid != "") || m.MinVoltage != 0 || m.MaxVoltage != 0 || len(m.VtxPorts) > 0 || m.VtxVoltageMinV != 0 || m.VtxVoltageMaxV != 0 || m.MountPattern != "" {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

@@ -876,6 +876,45 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           nextAllowedArchiveRenameAt: undefined,
         };
       },
+      sendDataExportVerification: () => ({
+        success: true,
+        message: "Data export verification code and magic link sent to your primary email",
+        primaryEmail: "alex@quadsmith.dev",
+        cooldownSeconds: 20,
+        challengeId: "mock-export-challenge-id",
+        expiresAt: { seconds: BigInt(Math.floor((Date.now() + 15 * 60 * 1000) / 1000)), nanos: 0 },
+      }),
+      verifyDataExport: (req) => {
+        if (req.verification.case === "code" && req.verification.value !== "123456") {
+          throw new ConnectError(
+            "Invalid verification code; 2 attempt(s) remaining",
+            Code.InvalidArgument,
+            undefined,
+            [
+              {
+                desc: OtpVerificationErrorSchema,
+                value: {
+                  remainingAttempts: 2,
+                  isExhausted: false,
+                  cooldownSeconds: 0,
+                  message: "Invalid verification code; 2 attempt(s) remaining",
+                },
+              },
+            ],
+          );
+        }
+        return {
+          success: true,
+          message: "Data export authorized",
+          exportToken: "mock-signed-export-token",
+          downloadUrl: "/api/account/export?token=mock-signed-export-token",
+          filename: "quadsmith-data-fpv_pilot-2026-10-14.zip",
+          expiresAt: {
+            seconds: BigInt(Math.floor((Date.now() + 15 * 60 * 1000) / 1000)),
+            nanos: 0,
+          },
+        };
+      },
       ...(options.authService || {}),
     });
 

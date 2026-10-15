@@ -261,6 +261,57 @@ func ListEntities(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []
 	return results, nil
 }
 
+func ExportEntities(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Entity, error) {
+	query := `SELECT uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at, user_uuid FROM entities WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*Entity, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 13)
+		scanAssigns := make([]func(), 0, 13)
+		m := &Entity{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Collection
+		scanArgs[2] = &m.Id
+		scanArgs[3] = &m.Name
+		scanArgs[4] = &m.Description
+		scanArgs[5] = &m.PrimaryDisplayImage
+		scanArgs[6] = &m.ReferenceLinks
+		scanArgs[7] = &m.Media
+		scanArgs[8] = &m.AuthorOrManufacturer
+		scanArgs[9] = &m.IsArchived
+		var v10 *time.Time
+		scanArgs[10] = &v10
+		scanAssigns = append(scanAssigns, func() {
+			if v10 != nil {
+				m.CreatedAt = timestamppb.New(*v10)
+			}
+		})
+		var v11 *time.Time
+		scanArgs[11] = &v11
+		scanAssigns = append(scanAssigns, func() {
+			if v11 != nil {
+				m.UpdatedAt = timestamppb.New(*v11)
+			}
+		})
+		scanArgs[12] = &m.UserUuid
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Name != "" || m.Description != "" || (m.PrimaryDisplayImage != nil && *m.PrimaryDisplayImage != "") || len(m.ReferenceLinks) > 0 || len(m.Media) > 0 || m.AuthorOrManufacturer != "" || m.IsArchived || m.CreatedAt != nil || m.UpdatedAt != nil {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}
+
 func CreateReview(ctx context.Context, tx pgx.Tx, m *Review) error {
 	query := `INSERT INTO reviews (uuid, id, user_uuid, entity_uuid, is_recommended, body, is_edited, deleted_at, created_at, updated_at, is_author_verified_owner, collection, entity_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
@@ -562,6 +613,75 @@ func ListReviews(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 	return results, nil
 }
 
+func ExportReviews(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Review, error) {
+	query := `SELECT uuid, id, user_uuid, entity_uuid, is_recommended, body, is_edited, deleted_at, created_at, updated_at, is_author_verified_owner, collection, entity_id FROM reviews WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*Review, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 13)
+		scanAssigns := make([]func(), 0, 13)
+		m := &Review{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Id
+		var v2 *string
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.UserUuid = *v2
+			}
+		})
+		var v3 *string
+		scanArgs[3] = &v3
+		scanAssigns = append(scanAssigns, func() {
+			if v3 != nil {
+				m.EntityUuid = *v3
+			}
+		})
+		scanArgs[4] = &m.IsRecommended
+		scanArgs[5] = &m.Body
+		scanArgs[6] = &m.IsEdited
+		var v7 *time.Time
+		scanArgs[7] = &v7
+		scanAssigns = append(scanAssigns, func() {
+			if v7 != nil {
+				m.DeletedAt = timestamppb.New(*v7)
+			}
+		})
+		var v8 *time.Time
+		scanArgs[8] = &v8
+		scanAssigns = append(scanAssigns, func() {
+			if v8 != nil {
+				m.CreatedAt = timestamppb.New(*v8)
+			}
+		})
+		var v9 *time.Time
+		scanArgs[9] = &v9
+		scanAssigns = append(scanAssigns, func() {
+			if v9 != nil {
+				m.UpdatedAt = timestamppb.New(*v9)
+			}
+		})
+		scanArgs[10] = &m.IsAuthorVerifiedOwner
+		scanArgs[11] = &m.Collection
+		scanArgs[12] = &m.EntityId
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.IsRecommended || m.Body != "" || m.IsEdited || m.DeletedAt != nil || m.CreatedAt != nil || m.UpdatedAt != nil || m.IsAuthorVerifiedOwner {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}
+
 func CreateReviewVote(ctx context.Context, tx pgx.Tx, m *ReviewVote) error {
 	query := `INSERT INTO review_votes (uuid, review_uuid, user_uuid, is_helpful, created_at) VALUES ($1, $2, $3, $4, $5)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
@@ -783,6 +903,55 @@ func ListReviewVotes(ctx context.Context, db *pgxpool.Pool, cols []string, sorts
 			assign()
 		}
 		results = append(results, m)
+	}
+	return results, nil
+}
+
+func ExportReviewVotes(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*ReviewVote, error) {
+	query := `SELECT uuid, review_uuid, user_uuid, is_helpful, created_at FROM review_votes WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*ReviewVote, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 5)
+		scanAssigns := make([]func(), 0, 5)
+		m := &ReviewVote{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.ReviewUuid = *v1
+			}
+		})
+		var v2 *string
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.UserUuid = *v2
+			}
+		})
+		scanArgs[3] = &m.IsHelpful
+		var v4 *time.Time
+		scanArgs[4] = &v4
+		scanAssigns = append(scanAssigns, func() {
+			if v4 != nil {
+				m.CreatedAt = timestamppb.New(*v4)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.IsHelpful || m.CreatedAt != nil {
+			results = append(results, m)
+		}
 	}
 	return results, nil
 }
@@ -1060,6 +1229,69 @@ func ListReviewComments(ctx context.Context, db *pgxpool.Pool, cols []string, so
 			assign()
 		}
 		results = append(results, m)
+	}
+	return results, nil
+}
+
+func ExportReviewComments(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*ReviewComment, error) {
+	query := `SELECT uuid, review_uuid, user_uuid, body, deleted_at, created_at, updated_at FROM review_comments WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*ReviewComment, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 7)
+		scanAssigns := make([]func(), 0, 7)
+		m := &ReviewComment{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.ReviewUuid = *v1
+			}
+		})
+		var v2 *string
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.UserUuid = *v2
+			}
+		})
+		scanArgs[3] = &m.Body
+		var v4 *time.Time
+		scanArgs[4] = &v4
+		scanAssigns = append(scanAssigns, func() {
+			if v4 != nil {
+				m.DeletedAt = timestamppb.New(*v4)
+			}
+		})
+		var v5 *time.Time
+		scanArgs[5] = &v5
+		scanAssigns = append(scanAssigns, func() {
+			if v5 != nil {
+				m.CreatedAt = timestamppb.New(*v5)
+			}
+		})
+		var v6 *time.Time
+		scanArgs[6] = &v6
+		scanAssigns = append(scanAssigns, func() {
+			if v6 != nil {
+				m.UpdatedAt = timestamppb.New(*v6)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Body != "" || m.DeletedAt != nil || m.CreatedAt != nil || m.UpdatedAt != nil {
+			results = append(results, m)
+		}
 	}
 	return results, nil
 }
@@ -1365,6 +1597,416 @@ func ListQuestions(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 			assign()
 		}
 		results = append(results, m)
+	}
+	return results, nil
+}
+
+func ExportQuestions(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Question, error) {
+	query := `SELECT uuid, id, user_uuid, entity_uuid, title, body, net_score, is_edited, deleted_at, created_at, updated_at, comments, collection, entity_id FROM questions WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*Question, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 14)
+		scanAssigns := make([]func(), 0, 14)
+		m := &Question{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Id
+		var v2 *string
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.UserUuid = *v2
+			}
+		})
+		var v3 *string
+		scanArgs[3] = &v3
+		scanAssigns = append(scanAssigns, func() {
+			if v3 != nil {
+				m.EntityUuid = *v3
+			}
+		})
+		scanArgs[4] = &m.Title
+		scanArgs[5] = &m.Body
+		scanArgs[6] = &m.NetScore
+		scanArgs[7] = &m.IsEdited
+		var v8 *time.Time
+		scanArgs[8] = &v8
+		scanAssigns = append(scanAssigns, func() {
+			if v8 != nil {
+				m.DeletedAt = timestamppb.New(*v8)
+			}
+		})
+		var v9 *time.Time
+		scanArgs[9] = &v9
+		scanAssigns = append(scanAssigns, func() {
+			if v9 != nil {
+				m.CreatedAt = timestamppb.New(*v9)
+			}
+		})
+		var v10 *time.Time
+		scanArgs[10] = &v10
+		scanAssigns = append(scanAssigns, func() {
+			if v10 != nil {
+				m.UpdatedAt = timestamppb.New(*v10)
+			}
+		})
+		scanArgs[11] = &m.Comments
+		scanArgs[12] = &m.Collection
+		scanArgs[13] = &m.EntityId
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Title != "" || m.Body != "" || m.NetScore != 0 || m.IsEdited || m.DeletedAt != nil || m.CreatedAt != nil || m.UpdatedAt != nil || len(m.Comments) > 0 {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}
+
+func CreateQuestionComment(ctx context.Context, tx pgx.Tx, m *QuestionComment) error {
+	query := `INSERT INTO question_comments (uuid, question_uuid, user_uuid, body, deleted_at, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.QuestionUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.UserUuid), m.Body, func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.DeletedAt), func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.CreatedAt), func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.UpdatedAt))
+	return err
+}
+
+func GetQuestionComment(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*QuestionComment, error) {
+	validCols := map[string]bool{"uuid": true, "question_uuid": true, "user_uuid": true, "body": true, "deleted_at": true, "created_at": true, "updated_at": true}
+	colsStr := "uuid, question_uuid, user_uuid, body, deleted_at, created_at, updated_at"
+	if len(cols) > 0 {
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
+	} else {
+		cols = []string{"uuid", "question_uuid", "user_uuid", "body", "deleted_at", "created_at", "updated_at"}
+	}
+	query := `SELECT ` + colsStr + ` FROM question_comments WHERE uuid::text = $1 LIMIT 1`
+	scanArgs := make([]interface{}, len(cols))
+	scanAssigns := make([]func(), 0, len(cols))
+	m := &QuestionComment{}
+	for i, col := range cols {
+		switch col {
+		case "uuid":
+			scanArgs[i] = &m.Uuid
+		case "question_uuid":
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.QuestionUuid = *v
+				}
+			})
+		case "user_uuid":
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.UserUuid = *v
+				}
+			})
+		case "body":
+			scanArgs[i] = &m.Body
+		case "deleted_at":
+			var v *time.Time
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.DeletedAt = timestamppb.New(*v)
+				}
+			})
+		case "created_at":
+			var v *time.Time
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.CreatedAt = timestamppb.New(*v)
+				}
+			})
+		case "updated_at":
+			var v *time.Time
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.UpdatedAt = timestamppb.New(*v)
+				}
+			})
+		default:
+			var dummy interface{}
+			scanArgs[i] = &dummy
+		}
+	}
+
+	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
+	if err != nil {
+		return nil, err
+	}
+	for _, assign := range scanAssigns {
+		assign()
+	}
+	return m, nil
+}
+
+func UpdateQuestionComment(ctx context.Context, tx pgx.Tx, m *QuestionComment) error {
+	query := `UPDATE question_comments SET question_uuid = $2, user_uuid = $3, body = $4, deleted_at = $5, created_at = $6, updated_at = $7 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.QuestionUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.UserUuid), m.Body, func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.DeletedAt), func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.CreatedAt), func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.UpdatedAt))
+	return err
+}
+
+func DeleteQuestionComment(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
+	query := `DELETE FROM question_comments WHERE uuid::text = $1`
+	_, err := tx.Exec(ctx, query, idOrUuid)
+	return err
+}
+
+func ListQuestionComments(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*QuestionComment, error) {
+	validCols := map[string]bool{"uuid": true, "question_uuid": true, "user_uuid": true, "body": true, "deleted_at": true, "created_at": true, "updated_at": true}
+	colsStr := "uuid, question_uuid, user_uuid, body, deleted_at, created_at, updated_at"
+	if len(cols) > 0 {
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
+	} else {
+		cols = []string{"uuid", "question_uuid", "user_uuid", "body", "deleted_at", "created_at", "updated_at"}
+	}
+	query := `SELECT ` + colsStr + ` FROM question_comments`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	var orderClauses []string
+	hasIdSort := false
+	if len(sorts) > 0 {
+		for _, s := range sorts {
+			col := s
+			dir := "ASC NULLS LAST"
+			if strings.HasPrefix(s, "^") {
+				col = s[1:]
+				dir = "DESC NULLS LAST"
+			}
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidSortColumn(col)
+			}
+			if col == "id" || col == "uuid" {
+				hasIdSort = true
+			}
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
+		}
+	}
+	if !hasIdSort {
+		orderClauses = append(orderClauses, "uuid ASC")
+	}
+	query += " ORDER BY " + strings.Join(orderClauses, ", ")
+	if limit > 0 {
+		query += fmt.Sprintf(" LIMIT $%d", len(args)+1)
+		args = append(args, limit)
+	}
+	if offset > 0 {
+		query += fmt.Sprintf(" OFFSET $%d", len(args)+1)
+		args = append(args, offset)
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*QuestionComment, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, len(cols))
+		scanAssigns := make([]func(), 0, len(cols))
+		m := &QuestionComment{}
+		for i, col := range cols {
+			switch col {
+			case "uuid":
+				scanArgs[i] = &m.Uuid
+			case "question_uuid":
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.QuestionUuid = *v
+					}
+				})
+			case "user_uuid":
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.UserUuid = *v
+					}
+				})
+			case "body":
+				scanArgs[i] = &m.Body
+			case "deleted_at":
+				var v *time.Time
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.DeletedAt = timestamppb.New(*v)
+					}
+				})
+			case "created_at":
+				var v *time.Time
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.CreatedAt = timestamppb.New(*v)
+					}
+				})
+			case "updated_at":
+				var v *time.Time
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.UpdatedAt = timestamppb.New(*v)
+					}
+				})
+			default:
+				var dummy interface{}
+				scanArgs[i] = &dummy
+			}
+		}
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		results = append(results, m)
+	}
+	return results, nil
+}
+
+func ExportQuestionComments(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*QuestionComment, error) {
+	query := `SELECT uuid, question_uuid, user_uuid, body, deleted_at, created_at, updated_at FROM question_comments WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*QuestionComment, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 7)
+		scanAssigns := make([]func(), 0, 7)
+		m := &QuestionComment{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.QuestionUuid = *v1
+			}
+		})
+		var v2 *string
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.UserUuid = *v2
+			}
+		})
+		scanArgs[3] = &m.Body
+		var v4 *time.Time
+		scanArgs[4] = &v4
+		scanAssigns = append(scanAssigns, func() {
+			if v4 != nil {
+				m.DeletedAt = timestamppb.New(*v4)
+			}
+		})
+		var v5 *time.Time
+		scanArgs[5] = &v5
+		scanAssigns = append(scanAssigns, func() {
+			if v5 != nil {
+				m.CreatedAt = timestamppb.New(*v5)
+			}
+		})
+		var v6 *time.Time
+		scanArgs[6] = &v6
+		scanAssigns = append(scanAssigns, func() {
+			if v6 != nil {
+				m.UpdatedAt = timestamppb.New(*v6)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Body != "" || m.DeletedAt != nil || m.CreatedAt != nil || m.UpdatedAt != nil {
+			results = append(results, m)
+		}
 	}
 	return results, nil
 }
@@ -1718,219 +2360,74 @@ func ListAnswers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 	return results, nil
 }
 
-func CreateQuestionVote(ctx context.Context, tx pgx.Tx, m *QuestionVote) error {
-	query := `INSERT INTO question_votes (uuid, question_uuid, user_uuid, is_upvote, created_at) VALUES ($1, $2, $3, $4, $5)`
-	_, err := tx.Exec(ctx, query, func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.Uuid), func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.QuestionUuid), func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.UserUuid), m.IsUpvote, func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.CreatedAt))
-	return err
-}
-
-func GetQuestionVote(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*QuestionVote, error) {
-	validCols := map[string]bool{"uuid": true, "question_uuid": true, "user_uuid": true, "is_upvote": true, "created_at": true}
-	colsStr := "uuid, question_uuid, user_uuid, is_upvote, created_at"
-	if len(cols) > 0 {
-		safeCols := make([]string, 0, len(cols))
-		for _, col := range cols {
-			if !validCols[col] {
-				return nil, pagination.ErrInvalidColumn(col)
-			}
-			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
-		}
-		colsStr = strings.Join(safeCols, ", ")
-	} else {
-		cols = []string{"uuid", "question_uuid", "user_uuid", "is_upvote", "created_at"}
-	}
-	query := `SELECT ` + colsStr + ` FROM question_votes WHERE uuid::text = $1 LIMIT 1`
-	scanArgs := make([]interface{}, len(cols))
-	scanAssigns := make([]func(), 0, len(cols))
-	m := &QuestionVote{}
-	for i, col := range cols {
-		switch col {
-		case "uuid":
-			scanArgs[i] = &m.Uuid
-		case "question_uuid":
-			var v *string
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.QuestionUuid = *v
-				}
-			})
-		case "user_uuid":
-			var v *string
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.UserUuid = *v
-				}
-			})
-		case "is_upvote":
-			scanArgs[i] = &m.IsUpvote
-		case "created_at":
-			var v *time.Time
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.CreatedAt = timestamppb.New(*v)
-				}
-			})
-		default:
-			var dummy interface{}
-			scanArgs[i] = &dummy
-		}
-	}
-
-	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
-	if err != nil {
-		return nil, err
-	}
-	for _, assign := range scanAssigns {
-		assign()
-	}
-	return m, nil
-}
-
-func UpdateQuestionVote(ctx context.Context, tx pgx.Tx, m *QuestionVote) error {
-	query := `UPDATE question_votes SET question_uuid = $2, user_uuid = $3, is_upvote = $4, created_at = $5 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.QuestionUuid), func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.UserUuid), m.IsUpvote, func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.CreatedAt))
-	return err
-}
-
-func DeleteQuestionVote(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM question_votes WHERE uuid::text = $1`
-	_, err := tx.Exec(ctx, query, idOrUuid)
-	return err
-}
-
-func ListQuestionVotes(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*QuestionVote, error) {
-	validCols := map[string]bool{"uuid": true, "question_uuid": true, "user_uuid": true, "is_upvote": true, "created_at": true}
-	colsStr := "uuid, question_uuid, user_uuid, is_upvote, created_at"
-	if len(cols) > 0 {
-		safeCols := make([]string, 0, len(cols))
-		for _, col := range cols {
-			if !validCols[col] {
-				return nil, pagination.ErrInvalidColumn(col)
-			}
-			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
-		}
-		colsStr = strings.Join(safeCols, ", ")
-	} else {
-		cols = []string{"uuid", "question_uuid", "user_uuid", "is_upvote", "created_at"}
-	}
-	query := `SELECT ` + colsStr + ` FROM question_votes`
-	if whereClause != "" {
-		query += " WHERE " + whereClause
-	}
-	var orderClauses []string
-	hasIdSort := false
-	if len(sorts) > 0 {
-		for _, s := range sorts {
-			col := s
-			dir := "ASC NULLS LAST"
-			if strings.HasPrefix(s, "^") {
-				col = s[1:]
-				dir = "DESC NULLS LAST"
-			}
-			if !validCols[col] {
-				return nil, pagination.ErrInvalidSortColumn(col)
-			}
-			if col == "id" || col == "uuid" {
-				hasIdSort = true
-			}
-			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
-		}
-	}
-	if !hasIdSort {
-		orderClauses = append(orderClauses, "uuid ASC")
-	}
-	query += " ORDER BY " + strings.Join(orderClauses, ", ")
-	if limit > 0 {
-		query += fmt.Sprintf(" LIMIT $%d", len(args)+1)
-		args = append(args, limit)
-	}
-	if offset > 0 {
-		query += fmt.Sprintf(" OFFSET $%d", len(args)+1)
-		args = append(args, offset)
-	}
-	rows, err := db.Query(ctx, query, args...)
+func ExportAnswers(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Answer, error) {
+	query := `SELECT uuid, question_uuid, user_uuid, body, net_score, is_accepted_by_asker, is_author_endorsed, is_edited, deleted_at, created_at, updated_at, accepted_at, endorsed_at, comments FROM answers WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	results := make([]*QuestionVote, 0)
+	results := make([]*Answer, 0)
 	for rows.Next() {
-		scanArgs := make([]interface{}, len(cols))
-		scanAssigns := make([]func(), 0, len(cols))
-		m := &QuestionVote{}
-		for i, col := range cols {
-			switch col {
-			case "uuid":
-				scanArgs[i] = &m.Uuid
-			case "question_uuid":
-				var v *string
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.QuestionUuid = *v
-					}
-				})
-			case "user_uuid":
-				var v *string
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.UserUuid = *v
-					}
-				})
-			case "is_upvote":
-				scanArgs[i] = &m.IsUpvote
-			case "created_at":
-				var v *time.Time
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.CreatedAt = timestamppb.New(*v)
-					}
-				})
-			default:
-				var dummy interface{}
-				scanArgs[i] = &dummy
+		scanArgs := make([]interface{}, 14)
+		scanAssigns := make([]func(), 0, 14)
+		m := &Answer{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.QuestionUuid = *v1
 			}
-		}
+		})
+		var v2 *string
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.UserUuid = *v2
+			}
+		})
+		scanArgs[3] = &m.Body
+		scanArgs[4] = &m.NetScore
+		scanArgs[5] = &m.IsAcceptedByAsker
+		scanArgs[6] = &m.IsAuthorEndorsed
+		scanArgs[7] = &m.IsEdited
+		var v8 *time.Time
+		scanArgs[8] = &v8
+		scanAssigns = append(scanAssigns, func() {
+			if v8 != nil {
+				m.DeletedAt = timestamppb.New(*v8)
+			}
+		})
+		var v9 *time.Time
+		scanArgs[9] = &v9
+		scanAssigns = append(scanAssigns, func() {
+			if v9 != nil {
+				m.CreatedAt = timestamppb.New(*v9)
+			}
+		})
+		var v10 *time.Time
+		scanArgs[10] = &v10
+		scanAssigns = append(scanAssigns, func() {
+			if v10 != nil {
+				m.UpdatedAt = timestamppb.New(*v10)
+			}
+		})
+		var v11 *time.Time
+		scanArgs[11] = &v11
+		scanAssigns = append(scanAssigns, func() {
+			if v11 != nil {
+				m.AcceptedAt = timestamppb.New(*v11)
+			}
+		})
+		var v12 *time.Time
+		scanArgs[12] = &v12
+		scanAssigns = append(scanAssigns, func() {
+			if v12 != nil {
+				m.EndorsedAt = timestamppb.New(*v12)
+			}
+		})
+		scanArgs[13] = &m.Comments
 		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
@@ -1938,509 +2435,9 @@ func ListQuestionVotes(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 		for _, assign := range scanAssigns {
 			assign()
 		}
-		results = append(results, m)
-	}
-	return results, nil
-}
-
-func CreateAnswerVote(ctx context.Context, tx pgx.Tx, m *AnswerVote) error {
-	query := `INSERT INTO answer_votes (uuid, answer_uuid, user_uuid, is_upvote, created_at) VALUES ($1, $2, $3, $4, $5)`
-	_, err := tx.Exec(ctx, query, func(s string) interface{} {
-		if s == "" {
-			return nil
+		if m.Body != "" || m.NetScore != 0 || m.IsAcceptedByAsker || m.IsAuthorEndorsed || m.IsEdited || m.DeletedAt != nil || m.CreatedAt != nil || m.UpdatedAt != nil || m.AcceptedAt != nil || m.EndorsedAt != nil || len(m.Comments) > 0 {
+			results = append(results, m)
 		}
-		return s
-	}(m.Uuid), func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.AnswerUuid), func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.UserUuid), m.IsUpvote, func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.CreatedAt))
-	return err
-}
-
-func GetAnswerVote(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*AnswerVote, error) {
-	validCols := map[string]bool{"uuid": true, "answer_uuid": true, "user_uuid": true, "is_upvote": true, "created_at": true}
-	colsStr := "uuid, answer_uuid, user_uuid, is_upvote, created_at"
-	if len(cols) > 0 {
-		safeCols := make([]string, 0, len(cols))
-		for _, col := range cols {
-			if !validCols[col] {
-				return nil, pagination.ErrInvalidColumn(col)
-			}
-			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
-		}
-		colsStr = strings.Join(safeCols, ", ")
-	} else {
-		cols = []string{"uuid", "answer_uuid", "user_uuid", "is_upvote", "created_at"}
-	}
-	query := `SELECT ` + colsStr + ` FROM answer_votes WHERE uuid::text = $1 LIMIT 1`
-	scanArgs := make([]interface{}, len(cols))
-	scanAssigns := make([]func(), 0, len(cols))
-	m := &AnswerVote{}
-	for i, col := range cols {
-		switch col {
-		case "uuid":
-			scanArgs[i] = &m.Uuid
-		case "answer_uuid":
-			var v *string
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.AnswerUuid = *v
-				}
-			})
-		case "user_uuid":
-			var v *string
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.UserUuid = *v
-				}
-			})
-		case "is_upvote":
-			scanArgs[i] = &m.IsUpvote
-		case "created_at":
-			var v *time.Time
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.CreatedAt = timestamppb.New(*v)
-				}
-			})
-		default:
-			var dummy interface{}
-			scanArgs[i] = &dummy
-		}
-	}
-
-	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
-	if err != nil {
-		return nil, err
-	}
-	for _, assign := range scanAssigns {
-		assign()
-	}
-	return m, nil
-}
-
-func UpdateAnswerVote(ctx context.Context, tx pgx.Tx, m *AnswerVote) error {
-	query := `UPDATE answer_votes SET answer_uuid = $2, user_uuid = $3, is_upvote = $4, created_at = $5 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.AnswerUuid), func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.UserUuid), m.IsUpvote, func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.CreatedAt))
-	return err
-}
-
-func DeleteAnswerVote(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM answer_votes WHERE uuid::text = $1`
-	_, err := tx.Exec(ctx, query, idOrUuid)
-	return err
-}
-
-func ListAnswerVotes(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*AnswerVote, error) {
-	validCols := map[string]bool{"uuid": true, "answer_uuid": true, "user_uuid": true, "is_upvote": true, "created_at": true}
-	colsStr := "uuid, answer_uuid, user_uuid, is_upvote, created_at"
-	if len(cols) > 0 {
-		safeCols := make([]string, 0, len(cols))
-		for _, col := range cols {
-			if !validCols[col] {
-				return nil, pagination.ErrInvalidColumn(col)
-			}
-			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
-		}
-		colsStr = strings.Join(safeCols, ", ")
-	} else {
-		cols = []string{"uuid", "answer_uuid", "user_uuid", "is_upvote", "created_at"}
-	}
-	query := `SELECT ` + colsStr + ` FROM answer_votes`
-	if whereClause != "" {
-		query += " WHERE " + whereClause
-	}
-	var orderClauses []string
-	hasIdSort := false
-	if len(sorts) > 0 {
-		for _, s := range sorts {
-			col := s
-			dir := "ASC NULLS LAST"
-			if strings.HasPrefix(s, "^") {
-				col = s[1:]
-				dir = "DESC NULLS LAST"
-			}
-			if !validCols[col] {
-				return nil, pagination.ErrInvalidSortColumn(col)
-			}
-			if col == "id" || col == "uuid" {
-				hasIdSort = true
-			}
-			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
-		}
-	}
-	if !hasIdSort {
-		orderClauses = append(orderClauses, "uuid ASC")
-	}
-	query += " ORDER BY " + strings.Join(orderClauses, ", ")
-	if limit > 0 {
-		query += fmt.Sprintf(" LIMIT $%d", len(args)+1)
-		args = append(args, limit)
-	}
-	if offset > 0 {
-		query += fmt.Sprintf(" OFFSET $%d", len(args)+1)
-		args = append(args, offset)
-	}
-	rows, err := db.Query(ctx, query, args...)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	results := make([]*AnswerVote, 0)
-	for rows.Next() {
-		scanArgs := make([]interface{}, len(cols))
-		scanAssigns := make([]func(), 0, len(cols))
-		m := &AnswerVote{}
-		for i, col := range cols {
-			switch col {
-			case "uuid":
-				scanArgs[i] = &m.Uuid
-			case "answer_uuid":
-				var v *string
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.AnswerUuid = *v
-					}
-				})
-			case "user_uuid":
-				var v *string
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.UserUuid = *v
-					}
-				})
-			case "is_upvote":
-				scanArgs[i] = &m.IsUpvote
-			case "created_at":
-				var v *time.Time
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.CreatedAt = timestamppb.New(*v)
-					}
-				})
-			default:
-				var dummy interface{}
-				scanArgs[i] = &dummy
-			}
-		}
-		err := rows.Scan(scanArgs...)
-		if err != nil {
-			return nil, err
-		}
-		for _, assign := range scanAssigns {
-			assign()
-		}
-		results = append(results, m)
-	}
-	return results, nil
-}
-
-func CreateQuestionComment(ctx context.Context, tx pgx.Tx, m *QuestionComment) error {
-	query := `INSERT INTO question_comments (uuid, question_uuid, user_uuid, body, deleted_at, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7)`
-	_, err := tx.Exec(ctx, query, func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.Uuid), func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.QuestionUuid), func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.UserUuid), m.Body, func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.DeletedAt), func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.CreatedAt), func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.UpdatedAt))
-	return err
-}
-
-func GetQuestionComment(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*QuestionComment, error) {
-	validCols := map[string]bool{"uuid": true, "question_uuid": true, "user_uuid": true, "body": true, "deleted_at": true, "created_at": true, "updated_at": true}
-	colsStr := "uuid, question_uuid, user_uuid, body, deleted_at, created_at, updated_at"
-	if len(cols) > 0 {
-		safeCols := make([]string, 0, len(cols))
-		for _, col := range cols {
-			if !validCols[col] {
-				return nil, pagination.ErrInvalidColumn(col)
-			}
-			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
-		}
-		colsStr = strings.Join(safeCols, ", ")
-	} else {
-		cols = []string{"uuid", "question_uuid", "user_uuid", "body", "deleted_at", "created_at", "updated_at"}
-	}
-	query := `SELECT ` + colsStr + ` FROM question_comments WHERE uuid::text = $1 LIMIT 1`
-	scanArgs := make([]interface{}, len(cols))
-	scanAssigns := make([]func(), 0, len(cols))
-	m := &QuestionComment{}
-	for i, col := range cols {
-		switch col {
-		case "uuid":
-			scanArgs[i] = &m.Uuid
-		case "question_uuid":
-			var v *string
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.QuestionUuid = *v
-				}
-			})
-		case "user_uuid":
-			var v *string
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.UserUuid = *v
-				}
-			})
-		case "body":
-			scanArgs[i] = &m.Body
-		case "deleted_at":
-			var v *time.Time
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.DeletedAt = timestamppb.New(*v)
-				}
-			})
-		case "created_at":
-			var v *time.Time
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.CreatedAt = timestamppb.New(*v)
-				}
-			})
-		case "updated_at":
-			var v *time.Time
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.UpdatedAt = timestamppb.New(*v)
-				}
-			})
-		default:
-			var dummy interface{}
-			scanArgs[i] = &dummy
-		}
-	}
-
-	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
-	if err != nil {
-		return nil, err
-	}
-	for _, assign := range scanAssigns {
-		assign()
-	}
-	return m, nil
-}
-
-func UpdateQuestionComment(ctx context.Context, tx pgx.Tx, m *QuestionComment) error {
-	query := `UPDATE question_comments SET question_uuid = $2, user_uuid = $3, body = $4, deleted_at = $5, created_at = $6, updated_at = $7 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.QuestionUuid), func(s string) interface{} {
-		if s == "" {
-			return nil
-		}
-		return s
-	}(m.UserUuid), m.Body, func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.DeletedAt), func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.CreatedAt), func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.UpdatedAt))
-	return err
-}
-
-func DeleteQuestionComment(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
-	query := `DELETE FROM question_comments WHERE uuid::text = $1`
-	_, err := tx.Exec(ctx, query, idOrUuid)
-	return err
-}
-
-func ListQuestionComments(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*QuestionComment, error) {
-	validCols := map[string]bool{"uuid": true, "question_uuid": true, "user_uuid": true, "body": true, "deleted_at": true, "created_at": true, "updated_at": true}
-	colsStr := "uuid, question_uuid, user_uuid, body, deleted_at, created_at, updated_at"
-	if len(cols) > 0 {
-		safeCols := make([]string, 0, len(cols))
-		for _, col := range cols {
-			if !validCols[col] {
-				return nil, pagination.ErrInvalidColumn(col)
-			}
-			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
-		}
-		colsStr = strings.Join(safeCols, ", ")
-	} else {
-		cols = []string{"uuid", "question_uuid", "user_uuid", "body", "deleted_at", "created_at", "updated_at"}
-	}
-	query := `SELECT ` + colsStr + ` FROM question_comments`
-	if whereClause != "" {
-		query += " WHERE " + whereClause
-	}
-	var orderClauses []string
-	hasIdSort := false
-	if len(sorts) > 0 {
-		for _, s := range sorts {
-			col := s
-			dir := "ASC NULLS LAST"
-			if strings.HasPrefix(s, "^") {
-				col = s[1:]
-				dir = "DESC NULLS LAST"
-			}
-			if !validCols[col] {
-				return nil, pagination.ErrInvalidSortColumn(col)
-			}
-			if col == "id" || col == "uuid" {
-				hasIdSort = true
-			}
-			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
-		}
-	}
-	if !hasIdSort {
-		orderClauses = append(orderClauses, "uuid ASC")
-	}
-	query += " ORDER BY " + strings.Join(orderClauses, ", ")
-	if limit > 0 {
-		query += fmt.Sprintf(" LIMIT $%d", len(args)+1)
-		args = append(args, limit)
-	}
-	if offset > 0 {
-		query += fmt.Sprintf(" OFFSET $%d", len(args)+1)
-		args = append(args, offset)
-	}
-	rows, err := db.Query(ctx, query, args...)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	results := make([]*QuestionComment, 0)
-	for rows.Next() {
-		scanArgs := make([]interface{}, len(cols))
-		scanAssigns := make([]func(), 0, len(cols))
-		m := &QuestionComment{}
-		for i, col := range cols {
-			switch col {
-			case "uuid":
-				scanArgs[i] = &m.Uuid
-			case "question_uuid":
-				var v *string
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.QuestionUuid = *v
-					}
-				})
-			case "user_uuid":
-				var v *string
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.UserUuid = *v
-					}
-				})
-			case "body":
-				scanArgs[i] = &m.Body
-			case "deleted_at":
-				var v *time.Time
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.DeletedAt = timestamppb.New(*v)
-					}
-				})
-			case "created_at":
-				var v *time.Time
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.CreatedAt = timestamppb.New(*v)
-					}
-				})
-			case "updated_at":
-				var v *time.Time
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.UpdatedAt = timestamppb.New(*v)
-					}
-				})
-			default:
-				var dummy interface{}
-				scanArgs[i] = &dummy
-			}
-		}
-		err := rows.Scan(scanArgs...)
-		if err != nil {
-			return nil, err
-		}
-		for _, assign := range scanAssigns {
-			assign()
-		}
-		results = append(results, m)
 	}
 	return results, nil
 }
@@ -2722,6 +2719,617 @@ func ListAnswerComments(ctx context.Context, db *pgxpool.Pool, cols []string, so
 	return results, nil
 }
 
+func ExportAnswerComments(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*AnswerComment, error) {
+	query := `SELECT uuid, answer_uuid, user_uuid, body, deleted_at, created_at, updated_at FROM answer_comments WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*AnswerComment, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 7)
+		scanAssigns := make([]func(), 0, 7)
+		m := &AnswerComment{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.AnswerUuid = *v1
+			}
+		})
+		var v2 *string
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.UserUuid = *v2
+			}
+		})
+		scanArgs[3] = &m.Body
+		var v4 *time.Time
+		scanArgs[4] = &v4
+		scanAssigns = append(scanAssigns, func() {
+			if v4 != nil {
+				m.DeletedAt = timestamppb.New(*v4)
+			}
+		})
+		var v5 *time.Time
+		scanArgs[5] = &v5
+		scanAssigns = append(scanAssigns, func() {
+			if v5 != nil {
+				m.CreatedAt = timestamppb.New(*v5)
+			}
+		})
+		var v6 *time.Time
+		scanArgs[6] = &v6
+		scanAssigns = append(scanAssigns, func() {
+			if v6 != nil {
+				m.UpdatedAt = timestamppb.New(*v6)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Body != "" || m.DeletedAt != nil || m.CreatedAt != nil || m.UpdatedAt != nil {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}
+
+func CreateQuestionVote(ctx context.Context, tx pgx.Tx, m *QuestionVote) error {
+	query := `INSERT INTO question_votes (uuid, question_uuid, user_uuid, is_upvote, created_at) VALUES ($1, $2, $3, $4, $5)`
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.QuestionUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.UserUuid), m.IsUpvote, func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.CreatedAt))
+	return err
+}
+
+func GetQuestionVote(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*QuestionVote, error) {
+	validCols := map[string]bool{"uuid": true, "question_uuid": true, "user_uuid": true, "is_upvote": true, "created_at": true}
+	colsStr := "uuid, question_uuid, user_uuid, is_upvote, created_at"
+	if len(cols) > 0 {
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
+	} else {
+		cols = []string{"uuid", "question_uuid", "user_uuid", "is_upvote", "created_at"}
+	}
+	query := `SELECT ` + colsStr + ` FROM question_votes WHERE uuid::text = $1 LIMIT 1`
+	scanArgs := make([]interface{}, len(cols))
+	scanAssigns := make([]func(), 0, len(cols))
+	m := &QuestionVote{}
+	for i, col := range cols {
+		switch col {
+		case "uuid":
+			scanArgs[i] = &m.Uuid
+		case "question_uuid":
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.QuestionUuid = *v
+				}
+			})
+		case "user_uuid":
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.UserUuid = *v
+				}
+			})
+		case "is_upvote":
+			scanArgs[i] = &m.IsUpvote
+		case "created_at":
+			var v *time.Time
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.CreatedAt = timestamppb.New(*v)
+				}
+			})
+		default:
+			var dummy interface{}
+			scanArgs[i] = &dummy
+		}
+	}
+
+	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
+	if err != nil {
+		return nil, err
+	}
+	for _, assign := range scanAssigns {
+		assign()
+	}
+	return m, nil
+}
+
+func UpdateQuestionVote(ctx context.Context, tx pgx.Tx, m *QuestionVote) error {
+	query := `UPDATE question_votes SET question_uuid = $2, user_uuid = $3, is_upvote = $4, created_at = $5 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.QuestionUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.UserUuid), m.IsUpvote, func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.CreatedAt))
+	return err
+}
+
+func DeleteQuestionVote(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
+	query := `DELETE FROM question_votes WHERE uuid::text = $1`
+	_, err := tx.Exec(ctx, query, idOrUuid)
+	return err
+}
+
+func ListQuestionVotes(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*QuestionVote, error) {
+	validCols := map[string]bool{"uuid": true, "question_uuid": true, "user_uuid": true, "is_upvote": true, "created_at": true}
+	colsStr := "uuid, question_uuid, user_uuid, is_upvote, created_at"
+	if len(cols) > 0 {
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
+	} else {
+		cols = []string{"uuid", "question_uuid", "user_uuid", "is_upvote", "created_at"}
+	}
+	query := `SELECT ` + colsStr + ` FROM question_votes`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	var orderClauses []string
+	hasIdSort := false
+	if len(sorts) > 0 {
+		for _, s := range sorts {
+			col := s
+			dir := "ASC NULLS LAST"
+			if strings.HasPrefix(s, "^") {
+				col = s[1:]
+				dir = "DESC NULLS LAST"
+			}
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidSortColumn(col)
+			}
+			if col == "id" || col == "uuid" {
+				hasIdSort = true
+			}
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
+		}
+	}
+	if !hasIdSort {
+		orderClauses = append(orderClauses, "uuid ASC")
+	}
+	query += " ORDER BY " + strings.Join(orderClauses, ", ")
+	if limit > 0 {
+		query += fmt.Sprintf(" LIMIT $%d", len(args)+1)
+		args = append(args, limit)
+	}
+	if offset > 0 {
+		query += fmt.Sprintf(" OFFSET $%d", len(args)+1)
+		args = append(args, offset)
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*QuestionVote, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, len(cols))
+		scanAssigns := make([]func(), 0, len(cols))
+		m := &QuestionVote{}
+		for i, col := range cols {
+			switch col {
+			case "uuid":
+				scanArgs[i] = &m.Uuid
+			case "question_uuid":
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.QuestionUuid = *v
+					}
+				})
+			case "user_uuid":
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.UserUuid = *v
+					}
+				})
+			case "is_upvote":
+				scanArgs[i] = &m.IsUpvote
+			case "created_at":
+				var v *time.Time
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.CreatedAt = timestamppb.New(*v)
+					}
+				})
+			default:
+				var dummy interface{}
+				scanArgs[i] = &dummy
+			}
+		}
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		results = append(results, m)
+	}
+	return results, nil
+}
+
+func ExportQuestionVotes(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*QuestionVote, error) {
+	query := `SELECT uuid, question_uuid, user_uuid, is_upvote, created_at FROM question_votes WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*QuestionVote, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 5)
+		scanAssigns := make([]func(), 0, 5)
+		m := &QuestionVote{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.QuestionUuid = *v1
+			}
+		})
+		var v2 *string
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.UserUuid = *v2
+			}
+		})
+		scanArgs[3] = &m.IsUpvote
+		var v4 *time.Time
+		scanArgs[4] = &v4
+		scanAssigns = append(scanAssigns, func() {
+			if v4 != nil {
+				m.CreatedAt = timestamppb.New(*v4)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.IsUpvote || m.CreatedAt != nil {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}
+
+func CreateAnswerVote(ctx context.Context, tx pgx.Tx, m *AnswerVote) error {
+	query := `INSERT INTO answer_votes (uuid, answer_uuid, user_uuid, is_upvote, created_at) VALUES ($1, $2, $3, $4, $5)`
+	_, err := tx.Exec(ctx, query, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.Uuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.AnswerUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.UserUuid), m.IsUpvote, func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.CreatedAt))
+	return err
+}
+
+func GetAnswerVote(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*AnswerVote, error) {
+	validCols := map[string]bool{"uuid": true, "answer_uuid": true, "user_uuid": true, "is_upvote": true, "created_at": true}
+	colsStr := "uuid, answer_uuid, user_uuid, is_upvote, created_at"
+	if len(cols) > 0 {
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
+	} else {
+		cols = []string{"uuid", "answer_uuid", "user_uuid", "is_upvote", "created_at"}
+	}
+	query := `SELECT ` + colsStr + ` FROM answer_votes WHERE uuid::text = $1 LIMIT 1`
+	scanArgs := make([]interface{}, len(cols))
+	scanAssigns := make([]func(), 0, len(cols))
+	m := &AnswerVote{}
+	for i, col := range cols {
+		switch col {
+		case "uuid":
+			scanArgs[i] = &m.Uuid
+		case "answer_uuid":
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.AnswerUuid = *v
+				}
+			})
+		case "user_uuid":
+			var v *string
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.UserUuid = *v
+				}
+			})
+		case "is_upvote":
+			scanArgs[i] = &m.IsUpvote
+		case "created_at":
+			var v *time.Time
+			scanArgs[i] = &v
+			scanAssigns = append(scanAssigns, func() {
+				if v != nil {
+					m.CreatedAt = timestamppb.New(*v)
+				}
+			})
+		default:
+			var dummy interface{}
+			scanArgs[i] = &dummy
+		}
+	}
+
+	err := db.QueryRow(ctx, query, idOrUuid).Scan(scanArgs...)
+	if err != nil {
+		return nil, err
+	}
+	for _, assign := range scanAssigns {
+		assign()
+	}
+	return m, nil
+}
+
+func UpdateAnswerVote(ctx context.Context, tx pgx.Tx, m *AnswerVote) error {
+	query := `UPDATE answer_votes SET answer_uuid = $2, user_uuid = $3, is_upvote = $4, created_at = $5 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.AnswerUuid), func(s string) interface{} {
+		if s == "" {
+			return nil
+		}
+		return s
+	}(m.UserUuid), m.IsUpvote, func(ts *timestamppb.Timestamp) interface{} {
+		if ts == nil {
+			return nil
+		}
+		return ts.AsTime()
+	}(m.CreatedAt))
+	return err
+}
+
+func DeleteAnswerVote(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
+	query := `DELETE FROM answer_votes WHERE uuid::text = $1`
+	_, err := tx.Exec(ctx, query, idOrUuid)
+	return err
+}
+
+func ListAnswerVotes(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*AnswerVote, error) {
+	validCols := map[string]bool{"uuid": true, "answer_uuid": true, "user_uuid": true, "is_upvote": true, "created_at": true}
+	colsStr := "uuid, answer_uuid, user_uuid, is_upvote, created_at"
+	if len(cols) > 0 {
+		safeCols := make([]string, 0, len(cols))
+		for _, col := range cols {
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidColumn(col)
+			}
+			safeCols = append(safeCols, pgx.Identifier{col}.Sanitize())
+		}
+		colsStr = strings.Join(safeCols, ", ")
+	} else {
+		cols = []string{"uuid", "answer_uuid", "user_uuid", "is_upvote", "created_at"}
+	}
+	query := `SELECT ` + colsStr + ` FROM answer_votes`
+	if whereClause != "" {
+		query += " WHERE " + whereClause
+	}
+	var orderClauses []string
+	hasIdSort := false
+	if len(sorts) > 0 {
+		for _, s := range sorts {
+			col := s
+			dir := "ASC NULLS LAST"
+			if strings.HasPrefix(s, "^") {
+				col = s[1:]
+				dir = "DESC NULLS LAST"
+			}
+			if !validCols[col] {
+				return nil, pagination.ErrInvalidSortColumn(col)
+			}
+			if col == "id" || col == "uuid" {
+				hasIdSort = true
+			}
+			orderClauses = append(orderClauses, pgx.Identifier{col}.Sanitize()+" "+dir)
+		}
+	}
+	if !hasIdSort {
+		orderClauses = append(orderClauses, "uuid ASC")
+	}
+	query += " ORDER BY " + strings.Join(orderClauses, ", ")
+	if limit > 0 {
+		query += fmt.Sprintf(" LIMIT $%d", len(args)+1)
+		args = append(args, limit)
+	}
+	if offset > 0 {
+		query += fmt.Sprintf(" OFFSET $%d", len(args)+1)
+		args = append(args, offset)
+	}
+	rows, err := db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*AnswerVote, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, len(cols))
+		scanAssigns := make([]func(), 0, len(cols))
+		m := &AnswerVote{}
+		for i, col := range cols {
+			switch col {
+			case "uuid":
+				scanArgs[i] = &m.Uuid
+			case "answer_uuid":
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.AnswerUuid = *v
+					}
+				})
+			case "user_uuid":
+				var v *string
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.UserUuid = *v
+					}
+				})
+			case "is_upvote":
+				scanArgs[i] = &m.IsUpvote
+			case "created_at":
+				var v *time.Time
+				scanArgs[i] = &v
+				scanAssigns = append(scanAssigns, func() {
+					if v != nil {
+						m.CreatedAt = timestamppb.New(*v)
+					}
+				})
+			default:
+				var dummy interface{}
+				scanArgs[i] = &dummy
+			}
+		}
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		results = append(results, m)
+	}
+	return results, nil
+}
+
+func ExportAnswerVotes(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*AnswerVote, error) {
+	query := `SELECT uuid, answer_uuid, user_uuid, is_upvote, created_at FROM answer_votes WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*AnswerVote, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 5)
+		scanAssigns := make([]func(), 0, 5)
+		m := &AnswerVote{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.AnswerUuid = *v1
+			}
+		})
+		var v2 *string
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.UserUuid = *v2
+			}
+		})
+		scanArgs[3] = &m.IsUpvote
+		var v4 *time.Time
+		scanArgs[4] = &v4
+		scanAssigns = append(scanAssigns, func() {
+			if v4 != nil {
+				m.CreatedAt = timestamppb.New(*v4)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.IsUpvote || m.CreatedAt != nil {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}
+
 func CreateUserReputation(ctx context.Context, tx pgx.Tx, m *UserReputation) error {
 	query := `INSERT INTO user_reputations (uuid, user_uuid, score, updated_at) VALUES ($1, $2, $3, $4)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
@@ -2917,6 +3525,48 @@ func ListUserReputations(ctx context.Context, db *pgxpool.Pool, cols []string, s
 			assign()
 		}
 		results = append(results, m)
+	}
+	return results, nil
+}
+
+func ExportUserReputations(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*UserReputation, error) {
+	query := `SELECT uuid, user_uuid, score, updated_at FROM user_reputations WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*UserReputation, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 4)
+		scanAssigns := make([]func(), 0, 4)
+		m := &UserReputation{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.UserUuid = *v1
+			}
+		})
+		scanArgs[2] = &m.Score
+		var v3 *time.Time
+		scanArgs[3] = &v3
+		scanAssigns = append(scanAssigns, func() {
+			if v3 != nil {
+				m.UpdatedAt = timestamppb.New(*v3)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Score != 0 || m.UpdatedAt != nil {
+			results = append(results, m)
+		}
 	}
 	return results, nil
 }
@@ -3158,6 +3808,58 @@ func ListCollections(ctx context.Context, db *pgxpool.Pool, cols []string, sorts
 	return results, nil
 }
 
+func ExportCollections(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Collection, error) {
+	query := `SELECT uuid, id, user_uuid, name, description, is_system_collection, created_at, updated_at FROM collections WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*Collection, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 8)
+		scanAssigns := make([]func(), 0, 8)
+		m := &Collection{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Id
+		var v2 *string
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.UserUuid = *v2
+			}
+		})
+		scanArgs[3] = &m.Name
+		scanArgs[4] = &m.Description
+		scanArgs[5] = &m.IsSystemCollection
+		var v6 *time.Time
+		scanArgs[6] = &v6
+		scanAssigns = append(scanAssigns, func() {
+			if v6 != nil {
+				m.CreatedAt = timestamppb.New(*v6)
+			}
+		})
+		var v7 *time.Time
+		scanArgs[7] = &v7
+		scanAssigns = append(scanAssigns, func() {
+			if v7 != nil {
+				m.UpdatedAt = timestamppb.New(*v7)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Name != "" || m.Description != "" || m.IsSystemCollection || m.CreatedAt != nil || m.UpdatedAt != nil {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}
+
 func CreateCollectionItem(ctx context.Context, tx pgx.Tx, m *CollectionItem) error {
 	query := `INSERT INTO collection_items (uuid, collection_uuid, entity_uuid, created_at, entity_id, collection, name, primary_display_image, author_or_manufacturer) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
@@ -3395,6 +4097,59 @@ func ListCollectionItems(ctx context.Context, db *pgxpool.Pool, cols []string, s
 			assign()
 		}
 		results = append(results, m)
+	}
+	return results, nil
+}
+
+func ExportCollectionItems(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*CollectionItem, error) {
+	query := `SELECT uuid, collection_uuid, entity_uuid, created_at, entity_id, collection, name, primary_display_image, author_or_manufacturer FROM collection_items WHERE collection_uuid IN (SELECT uuid FROM collections WHERE user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*CollectionItem, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 9)
+		scanAssigns := make([]func(), 0, 9)
+		m := &CollectionItem{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.CollectionUuid = *v1
+			}
+		})
+		var v2 *string
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.EntityUuid = *v2
+			}
+		})
+		var v3 *time.Time
+		scanArgs[3] = &v3
+		scanAssigns = append(scanAssigns, func() {
+			if v3 != nil {
+				m.CreatedAt = timestamppb.New(*v3)
+			}
+		})
+		scanArgs[4] = &m.EntityId
+		scanArgs[5] = &m.Collection
+		scanArgs[6] = &m.Name
+		scanArgs[7] = &m.PrimaryDisplayImage
+		scanArgs[8] = &m.AuthorOrManufacturer
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.CreatedAt != nil || m.Name != "" || (m.PrimaryDisplayImage != nil && *m.PrimaryDisplayImage != "") || (m.AuthorOrManufacturer != nil && *m.AuthorOrManufacturer != "") {
+			results = append(results, m)
+		}
 	}
 	return results, nil
 }

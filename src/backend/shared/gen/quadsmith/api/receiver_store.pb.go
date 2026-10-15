@@ -223,3 +223,37 @@ func ListReceivers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 	}
 	return results, nil
 }
+
+func ExportReceivers(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Receiver, error) {
+	query := `SELECT uuid, manufacturer, is_internal_only, weight_g, protocol, frequency_band_mhz, has_telemetry, antenna_uuids FROM receivers WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'receivers' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*Receiver, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 8)
+		scanAssigns := make([]func(), 0, 8)
+		m := &Receiver{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.IsInternalOnly
+		scanArgs[3] = &m.WeightG
+		scanArgs[4] = &m.Protocol
+		scanArgs[5] = &m.FrequencyBandMhz
+		scanArgs[6] = &m.HasTelemetry
+		scanArgs[7] = &m.AntennaUuids
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.IsInternalOnly || m.WeightG != 0 || m.Protocol != "" || m.FrequencyBandMhz != 0 || m.HasTelemetry || len(m.AntennaUuids) > 0 {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

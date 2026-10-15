@@ -24,6 +24,7 @@ import (
 	"quadsmith/shared/pkg/engines/evaluator"
 	"quadsmith/shared/pkg/engines/linkpreview"
 	"quadsmith/shared/pkg/engines/search"
+	"quadsmith/shared/pkg/export"
 	"quadsmith/shared/pkg/social"
 
 	pb "quadsmith/shared/gen/quadsmith/api"
@@ -137,6 +138,9 @@ func main() {
 	mux.Handle("/api/blobs", blobHandler)
 	mux.Handle("/api/blobs/", blobHandler)
 	mux.Handle("/blobs/", blobHandler)
+
+	// GDPR account data export streaming endpoint
+	mux.Handle("/api/account/export", export.NewExportHandler(pool))
 
 	// Health check
 	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {

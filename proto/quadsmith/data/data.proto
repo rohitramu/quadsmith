@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package quadsmith.data;
+
+import "google/protobuf/descriptor.proto";
+
+option go_package = "quadsmith/shared/gen/quadsmith/data;data";
+
+// ---------------------------------------------------------
+// Custom Message Options
+// ---------------------------------------------------------
+
+extend google.protobuf.MessageOptions {
+  ExportOptions export = 53000;
+}
+
+// ---------------------------------------------------------
+// Custom Field Options
+// ---------------------------------------------------------
+
+extend google.protobuf.FieldOptions {
+  ContentType content_type = 53000;
+}
+
+// ---------------------------------------------------------
+// Export Configuration
+// ---------------------------------------------------------
+
+message ExportOptions {
+  // Archive file domain that owns this table in the GDPR export.
+  ExportDomain domain = 1;
+
+  // Optional SQL WHERE predicate (using $1 for user_uuid) when row ownership
+  // is not a direct `uuid = $1` or `user_uuid = $1` check.
+  string user_filter = 2;
+}
+
+enum ContentType {
+  CONTENT_TYPE_UNSPECIFIED = 0;
+  // User-provided private data (GDPR Art. 15 & Art. 20, e.g. email addresses).
+  CONTENT_TYPE_USER_PROVIDED_PRIVATE = 1;
+  // User-provided public data (GDPR Art. 15 & Art. 20, e.g. User.id, bio, builds).
+  CONTENT_TYPE_USER_PROVIDED_PUBLIC = 2;
+  // Observed personal data (GDPR Art. 15, e.g. created_at, ip_address, score).
+  CONTENT_TYPE_USER_OBSERVED = 3;
+  // System-generated public metadata (e.g. `uuid` primary/foreign keys and
+  // system-generated `id` slugs). Included alongside exported `USER_*` fields to
+  // preserve relational links and identifiers, but never triggers exporting an
+  // object on its own.
+  CONTENT_TYPE_SYSTEM_METADATA_PUBLIC = 4;
+  // Internal system state and anti-abuse counters (omitted from user export).
+  CONTENT_TYPE_SYSTEM_METADATA_PRIVATE = 5;
+  // Cryptographic hashes and secret tokens (strictly redacted from export).
+  CONTENT_TYPE_SYSTEM_SECRET = 6;
+}
+
+enum ExportDomain {
+  EXPORT_DOMAIN_UNSPECIFIED = 0;
+  EXPORT_DOMAIN_NONE = 1; // System/ops tables not exported in user archives
+  EXPORT_DOMAIN_ACCOUNT = 2; // -> account.json
+  EXPORT_DOMAIN_SECURITY = 3; // -> security.json
+  EXPORT_DOMAIN_BUILDS = 4; // -> builds.json
+  EXPORT_DOMAIN_COMPONENTS = 5; // -> components.json
+  EXPORT_DOMAIN_COLLECTIONS = 6; // -> collections.json
+  EXPORT_DOMAIN_SOCIAL = 7; // -> social.json
+  EXPORT_DOMAIN_BLOBS = 8; // -> blobs.json + blobs/
+}

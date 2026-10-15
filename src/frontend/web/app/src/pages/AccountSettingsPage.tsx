@@ -43,11 +43,14 @@ export function AccountSettingsPage() {
     changeUsername,
     listArchivedUsernames,
     checkUsernameAvailable,
+    sendDataExportVerification,
+    verifyDataExport,
   } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const mergeToken = searchParams.get("merge_token");
   const addEmailToken = searchParams.get("add_email_token");
+  const exportDataToken = searchParams.get("export_data_token");
 
   const currentTheme =
     (typeof localStorage !== "undefined" && localStorage.getItem("theme")) ||
@@ -269,6 +272,206 @@ export function AccountSettingsPage() {
       };
     }
   }, [mergeToken, addEmailToken, verifyAddEmailOtp, refreshEmails, searchParams, setSearchParams]);
+
+  // Data Export state
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isExportSending, setIsExportSending] = useState(false);
+  const [isExportVerifying, setIsExportVerifying] = useState(false);
+  const [exportChallengeId, setExportChallengeId] = useState<string | null>(null);
+  const [exportPrimaryEmail, setExportPrimaryEmail] = useState<string>("");
+  const [exportCooldown, setExportCooldown] = useState(0);
+  const [exportError, setExportError] = useState<string | null>(null);
+  const [exportSuccessMessage, setExportSuccessMessage] = useState<string | null>(null);
+  const [exportRemainingAttempts, setExportRemainingAttempts] = useState<number | null>(null);
+  const [isExportExhausted, setIsExportExhausted] = useState(false);
+  const [isExportRateLimited, setIsExportRateLimited] = useState(false);
+  const [exportDigits, setExportDigits] = useState<string[]>(["", "", "", "", "", ""]);
+  const exportInputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  useEffect(() => {
+    if (exportCooldown <= 0) return;
+    const timer = setInterval(() => {
+      setExportCooldown((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [exportCooldown]);
+
+  useEffect(() => {
+    if (!exportDataToken) return;
+
+    let active = true;
+    (async () => {
+      try {
+        setIsExportVerifying(true);
+        const res = await verifyDataExport(undefined, undefined, exportDataToken);
+        if (active && res.success && res.downloadUrl) {
+          const link = document.createElement("a");
+          link.href = res.downloadUrl;
+          link.setAttribute("download", res.filename || "quadsmith-data-export.zip");
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+
+          setExportSuccessMessage(
+            `Your data download (${res.filename || "export.zip"}) has started.`,
+          );
+          searchParams.delete("export_data_token");
+          setSearchParams(searchParams, { replace: true });
+        }
+      } catch (err) {
+        if (active) {
+          const message = err instanceof Error ? err.message : "Failed to verify magic link";
+          setExportError(message);
+          setIsExportModalOpen(true);
+        }
+      } finally {
+        if (active) {
+          setIsExportVerifying(false);
+        }
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [exportDataToken, verifyDataExport, searchParams, setSearchParams]);
+
+  const handleOpenExportModal = async () => {
+    setIsExportModalOpen(true);
+    setExportError(null);
+    setExportSuccessMessage(null);
+    setExportDigits(["", "", "", "", "", ""]);
+    setExportRemainingAttempts(null);
+    setIsExportExhausted(false);
+    setIsExportRateLimited(false);
+    setIsExportSending(true);
+
+    try {
+      const res = await sendDataExportVerification();
+      if (res.success) {
+        setExportChallengeId(res.challengeId);
+        setExportPrimaryEmail(res.primaryEmail || "");
+        if (res.cooldownSeconds) {
+          setExportCooldown(res.cooldownSeconds);
+        }
+        setTimeout(() => {
+          exportInputRefs.current[0]?.focus();
+        }, 100);
+      }
+    } catch (err: unknown) {
+      if (err instanceof ConnectError) {
+        setExportError(err.rawMessage);
+      } else {
+        setExportError(err instanceof Error ? err.message : "Failed to initiate data export");
+      }
+    } finally {
+      setIsExportSending(false);
+    }
+  };
+
+  const handleVerifyExportOtp = async (codeToVerify?: string) => {
+    const code = codeToVerify || exportDigits.join("");
+    if (code.length !== 6) {
+      setExportError("Please enter all 6 digits of your verification code.");
+      return;
+    }
+
+    setIsExportVerifying(true);
+    setExportError(null);
+
+    try {
+      const res = await verifyDataExport(exportChallengeId, code, undefined);
+      if (res.success && res.downloadUrl) {
+        setIsExportModalOpen(false);
+
+        const link = document.createElement("a");
+        link.href = res.downloadUrl;
+        link.setAttribute("download", res.filename || "quadsmith-data-export.zip");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        setExportSuccessMessage(
+          `Your data download (${res.filename || "export.zip"}) has started.`,
+        );
+      }
+    } catch (err: unknown) {
+      if (err instanceof ConnectError) {
+        const errorDetail = err.findDetails(OtpVerificationErrorSchema)[0];
+        if (errorDetail) {
+          setExportError(errorDetail.message || err.rawMessage);
+          setExportRemainingAttempts(errorDetail.remainingAttempts);
+          if (errorDetail.isExhausted) {
+            setIsExportExhausted(true);
+          }
+          if (errorDetail.cooldownSeconds > 0) {
+            setIsExportRateLimited(true);
+          }
+        } else {
+          setExportError(err.rawMessage);
+        }
+      } else {
+        setExportError(err instanceof Error ? err.message : "Verification failed");
+      }
+    } finally {
+      setIsExportVerifying(false);
+    }
+  };
+
+  const handleExportOtpChange = (index: number, val: string) => {
+    const cleaned = val.replace(/\D/g, "");
+    if (!cleaned) {
+      const newDigits = [...exportDigits];
+      newDigits[index] = "";
+      setExportDigits(newDigits);
+      return;
+    }
+
+    const char = cleaned.slice(-1);
+    const newDigits = [...exportDigits];
+    newDigits[index] = char;
+    setExportDigits(newDigits);
+
+    if (index < 5) {
+      exportInputRefs.current[index + 1]?.focus();
+    } else {
+      const fullCode = newDigits.join("");
+      if (fullCode.length === 6) {
+        handleVerifyExportOtp(fullCode);
+      }
+    }
+  };
+
+  const handleExportKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace") {
+      if (!exportDigits[index] && index > 0) {
+        exportInputRefs.current[index - 1]?.focus();
+      }
+    } else if (e.key === "ArrowLeft" && index > 0) {
+      exportInputRefs.current[index - 1]?.focus();
+    } else if (e.key === "ArrowRight" && index < 5) {
+      exportInputRefs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleExportPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    if (!pasted) return;
+
+    const newDigits = [...exportDigits];
+    for (let i = 0; i < pasted.length; i++) {
+      newDigits[i] = pasted[i];
+    }
+    setExportDigits(newDigits);
+
+    const nextIndex = Math.min(pasted.length, 5);
+    exportInputRefs.current[nextIndex]?.focus();
+
+    if (pasted.length === 6) {
+      handleVerifyExportOtp(pasted);
+    }
+  };
 
   // Email Action feedback
   const [emailActionLoading, setEmailActionLoading] = useState<string | null>(null);
@@ -846,13 +1049,9 @@ export function AccountSettingsPage() {
                   <td className="py-3 pr-4">
                     <div className="flex items-center gap-2 font-sans font-medium text-zinc-900 dark:text-zinc-100">
                       <span>{em.email}</span>
-                      {em.isPrimary ? (
+                      {em.isPrimary && (
                         <span className="px-2 py-0.5 rounded text-[10px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
                           Primary
-                        </span>
-                      ) : (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
-                          Secondary
                         </span>
                       )}
                     </div>
@@ -931,17 +1130,33 @@ export function AccountSettingsPage() {
                 </span>
               )}
             </div>
-            <input
-              type="url"
-              placeholder="https://example.com/avatar.jpg"
-              value={avatarUrl}
-              onChange={(e) => setAvatarUrl(e.target.value)}
-              className={`w-full px-3.5 py-2.5 rounded-xl border text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none transition-colors ${
-                isAvatarModified
-                  ? "border-amber-500/60 dark:border-amber-500/50 bg-amber-500/5 ring-1 ring-amber-500/30 focus:ring-2 focus:ring-amber-500"
-                  : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:ring-2 focus:ring-blue-500"
-              }`}
-            />
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full shrink-0 overflow-hidden flex items-center justify-center font-bold text-sm bg-blue-500/10 text-blue-500 border border-zinc-200 dark:border-zinc-800 shadow-xs">
+                {avatarUrl ? (
+                  <img
+                    src={avatarUrl}
+                    alt={user?.id || "Avatar"}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLElement).style.display = "none";
+                    }}
+                  />
+                ) : (
+                  <span>{initial}</span>
+                )}
+              </div>
+              <input
+                type="url"
+                placeholder="https://example.com/avatar.jpg"
+                value={avatarUrl}
+                onChange={(e) => setAvatarUrl(e.target.value)}
+                className={`flex-1 px-3.5 py-2.5 rounded-xl border text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none transition-colors ${
+                  isAvatarModified
+                    ? "border-amber-500/60 dark:border-amber-500/50 bg-amber-500/5 ring-1 ring-amber-500/30 focus:ring-2 focus:ring-amber-500"
+                    : "border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-950 focus:ring-2 focus:ring-blue-500"
+                }`}
+              />
+            </div>
             <p className="text-[11px] text-zinc-400 mt-1">
               Leave blank to automatically generate an initial with adaptive category chip colors.
             </p>
@@ -999,6 +1214,32 @@ export function AccountSettingsPage() {
           </button>
         </div>
       </form>
+
+      {/* Section 3: Data & Privacy */}
+      <section className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-6 space-y-4 shadow-2xs">
+        <div className="flex items-center justify-between gap-4">
+          <h2 className="text-sm font-bold flex items-center gap-2">
+            <Lock size={16} className="text-blue-500" />
+            <span>Data &amp; Privacy</span>
+          </h2>
+
+          <button
+            type="button"
+            data-testid="download-data-button"
+            onClick={handleOpenExportModal}
+            className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 transition shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0"
+          >
+            <span>Download My Data</span>
+          </button>
+        </div>
+
+        {exportSuccessMessage && (
+          <div className="p-3.5 rounded-xl border border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs flex items-center gap-2">
+            <CheckCircle2 size={16} className="text-emerald-500 shrink-0" />
+            <span>{exportSuccessMessage}</span>
+          </div>
+        )}
+      </section>
 
       {/* Modal: Add Email Address Dialog (mirrors login flow) */}
       {isAddEmailOpen && (
@@ -1778,6 +2019,170 @@ export function AccountSettingsPage() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Export Data OTP Verification Dialog */}
+      {isExportModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
+          <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl p-8 space-y-6 relative">
+            <button
+              type="button"
+              onClick={() => setIsExportModalOpen(false)}
+              className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition cursor-pointer"
+              aria-label="Close"
+            >
+              <X size={18} />
+            </button>
+
+            {isExportSending ? (
+              <div className="text-center py-8 space-y-4">
+                <Loader2 size={32} className="animate-spin text-blue-500 mx-auto" />
+                <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                  Sending verification challenge to your primary email...
+                </p>
+              </div>
+            ) : (
+              <>
+                <div className="text-center space-y-3">
+                  <div className="flex justify-center">
+                    <img
+                      src={currentTheme === "dark" ? logoDark : logoLight}
+                      alt="Quadsmith"
+                      className="h-10 w-auto"
+                    />
+                  </div>
+                  <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
+                    Verify your email
+                  </h1>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
+                    We sent a single-use verification code to{" "}
+                    {exportPrimaryEmail || "your primary email"}
+                  </p>
+                </div>
+
+                <div className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-zinc-700 dark:text-zinc-300 text-xs space-y-2 text-center">
+                  <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
+                    Enter the <strong>6-digit code</strong> sent to your email below.
+                  </p>
+                  <div className="flex items-center justify-center gap-2">
+                    <div className="h-px bg-blue-500/20 flex-1"></div>
+                    <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
+                      OR
+                    </span>
+                    <div className="h-px bg-blue-500/20 flex-1"></div>
+                  </div>
+                  <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
+                    Click the link in the email.
+                  </p>
+                </div>
+
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                      Verification Code
+                    </label>
+                    {exportRemainingAttempts !== null &&
+                      exportRemainingAttempts > 0 &&
+                      !isExportExhausted &&
+                      !isExportRateLimited && (
+                        <span
+                          className={`text-[10px] font-mono font-bold ${
+                            exportRemainingAttempts === 1 ? "text-rose-500" : "text-amber-500"
+                          }`}
+                        >
+                          {exportRemainingAttempts} attempt
+                          {exportRemainingAttempts === 1 ? "" : "s"} left
+                        </span>
+                      )}
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2">
+                    {exportDigits.map((digit, index) => (
+                      <input
+                        key={index}
+                        ref={(el) => {
+                          exportInputRefs.current[index] = el;
+                        }}
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        autoComplete={index === 0 ? "one-time-code" : "off"}
+                        maxLength={1}
+                        value={digit}
+                        disabled={isExportExhausted || isExportRateLimited || isExportVerifying}
+                        onChange={(e) => handleExportOtpChange(index, e.target.value)}
+                        onKeyDown={(e) => handleExportKeyDown(index, e)}
+                        onPaste={handleExportPaste}
+                        className={`w-12 h-14 text-center font-mono text-2xl font-bold rounded-xl border bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none transition ${
+                          isExportExhausted || isExportRateLimited
+                            ? "opacity-40 border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
+                            : "border-zinc-300 dark:border-zinc-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                        }`}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {exportError && (
+                  <div
+                    data-testid="otp-error-banner"
+                    className={`p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${
+                      isExportExhausted || isExportRateLimited
+                        ? "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
+                        : exportRemainingAttempts === 2
+                          ? "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300"
+                          : exportRemainingAttempts === 1
+                            ? "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-400"
+                            : "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
+                    }`}
+                  >
+                    {isExportExhausted || isExportRateLimited ? (
+                      <Lock size={16} className="text-red-500 shrink-0 mt-0.5" />
+                    ) : exportRemainingAttempts === 2 ? (
+                      <AlertTriangle size={16} className="text-amber-500 shrink-0 mt-0.5" />
+                    ) : (
+                      <AlertTriangle size={16} className="text-rose-500 shrink-0 mt-0.5" />
+                    )}
+                    <div className="space-y-0.5 flex-1">
+                      <p className="font-semibold">{exportError}</p>
+                      {exportRemainingAttempts !== null && exportRemainingAttempts > 0 && (
+                        <p className="text-[11px] opacity-90">
+                          {exportRemainingAttempts === 1
+                            ? "Final attempt remaining before this code is invalidated."
+                            : `${exportRemainingAttempts} attempts remaining before this code is invalidated.`}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between pt-1">
+                  <button
+                    type="button"
+                    onClick={() => setIsExportModalOpen(false)}
+                    className="px-4 py-2 rounded-xl text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition cursor-pointer"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    disabled={
+                      isExportVerifying ||
+                      isExportExhausted ||
+                      isExportRateLimited ||
+                      exportDigits.join("").length !== 6
+                    }
+                    onClick={() => handleVerifyExportOtp()}
+                    className="px-5 py-2.5 rounded-xl font-semibold text-xs text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed transition shadow-sm flex items-center gap-1.5 cursor-pointer"
+                  >
+                    {isExportVerifying && <Loader2 size={14} className="animate-spin" />}
+                    <span>Verify &amp; Download</span>
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

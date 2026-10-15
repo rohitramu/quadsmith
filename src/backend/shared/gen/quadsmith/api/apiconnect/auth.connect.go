@@ -92,6 +92,12 @@ const (
 	// AuthServiceListArchivedUsernamesProcedure is the fully-qualified name of the AuthService's
 	// ListArchivedUsernames RPC.
 	AuthServiceListArchivedUsernamesProcedure = "/quadsmith.api.AuthService/ListArchivedUsernames"
+	// AuthServiceSendDataExportVerificationProcedure is the fully-qualified name of the AuthService's
+	// SendDataExportVerification RPC.
+	AuthServiceSendDataExportVerificationProcedure = "/quadsmith.api.AuthService/SendDataExportVerification"
+	// AuthServiceVerifyDataExportProcedure is the fully-qualified name of the AuthService's
+	// VerifyDataExport RPC.
+	AuthServiceVerifyDataExportProcedure = "/quadsmith.api.AuthService/VerifyDataExport"
 	// AuthServiceSendDeleteAccountVerificationProcedure is the fully-qualified name of the
 	// AuthService's SendDeleteAccountVerification RPC.
 	AuthServiceSendDeleteAccountVerificationProcedure = "/quadsmith.api.AuthService/SendDeleteAccountVerification"
@@ -125,6 +131,8 @@ type AuthServiceClient interface {
 	RemoveUserEmail(context.Context, *connect.Request[api.RemoveUserEmailRequest]) (*connect.Response[api.RemoveUserEmailResponse], error)
 	ChangeUsername(context.Context, *connect.Request[api.ChangeUsernameRequest]) (*connect.Response[api.ChangeUsernameResponse], error)
 	ListArchivedUsernames(context.Context, *connect.Request[api.ListArchivedUsernamesRequest]) (*connect.Response[api.ListArchivedUsernamesResponse], error)
+	SendDataExportVerification(context.Context, *connect.Request[api.SendDataExportVerificationRequest]) (*connect.Response[api.SendDataExportVerificationResponse], error)
+	VerifyDataExport(context.Context, *connect.Request[api.VerifyDataExportRequest]) (*connect.Response[api.VerifyDataExportResponse], error)
 	SendDeleteAccountVerification(context.Context, *connect.Request[api.SendDeleteAccountVerificationRequest]) (*connect.Response[api.SendDeleteAccountVerificationResponse], error)
 	DeleteAccount(context.Context, *connect.Request[api.DeleteAccountRequest]) (*connect.Response[api.DeleteAccountResponse], error)
 	CancelAccountDeletion(context.Context, *connect.Request[api.CancelAccountDeletionRequest]) (*connect.Response[api.CancelAccountDeletionResponse], error)
@@ -261,6 +269,18 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("ListArchivedUsernames")),
 			connect.WithClientOptions(opts...),
 		),
+		sendDataExportVerification: connect.NewClient[api.SendDataExportVerificationRequest, api.SendDataExportVerificationResponse](
+			httpClient,
+			baseURL+AuthServiceSendDataExportVerificationProcedure,
+			connect.WithSchema(authServiceMethods.ByName("SendDataExportVerification")),
+			connect.WithClientOptions(opts...),
+		),
+		verifyDataExport: connect.NewClient[api.VerifyDataExportRequest, api.VerifyDataExportResponse](
+			httpClient,
+			baseURL+AuthServiceVerifyDataExportProcedure,
+			connect.WithSchema(authServiceMethods.ByName("VerifyDataExport")),
+			connect.WithClientOptions(opts...),
+		),
 		sendDeleteAccountVerification: connect.NewClient[api.SendDeleteAccountVerificationRequest, api.SendDeleteAccountVerificationResponse](
 			httpClient,
 			baseURL+AuthServiceSendDeleteAccountVerificationProcedure,
@@ -304,6 +324,8 @@ type authServiceClient struct {
 	removeUserEmail               *connect.Client[api.RemoveUserEmailRequest, api.RemoveUserEmailResponse]
 	changeUsername                *connect.Client[api.ChangeUsernameRequest, api.ChangeUsernameResponse]
 	listArchivedUsernames         *connect.Client[api.ListArchivedUsernamesRequest, api.ListArchivedUsernamesResponse]
+	sendDataExportVerification    *connect.Client[api.SendDataExportVerificationRequest, api.SendDataExportVerificationResponse]
+	verifyDataExport              *connect.Client[api.VerifyDataExportRequest, api.VerifyDataExportResponse]
 	sendDeleteAccountVerification *connect.Client[api.SendDeleteAccountVerificationRequest, api.SendDeleteAccountVerificationResponse]
 	deleteAccount                 *connect.Client[api.DeleteAccountRequest, api.DeleteAccountResponse]
 	cancelAccountDeletion         *connect.Client[api.CancelAccountDeletionRequest, api.CancelAccountDeletionResponse]
@@ -409,6 +431,16 @@ func (c *authServiceClient) ListArchivedUsernames(ctx context.Context, req *conn
 	return c.listArchivedUsernames.CallUnary(ctx, req)
 }
 
+// SendDataExportVerification calls quadsmith.api.AuthService.SendDataExportVerification.
+func (c *authServiceClient) SendDataExportVerification(ctx context.Context, req *connect.Request[api.SendDataExportVerificationRequest]) (*connect.Response[api.SendDataExportVerificationResponse], error) {
+	return c.sendDataExportVerification.CallUnary(ctx, req)
+}
+
+// VerifyDataExport calls quadsmith.api.AuthService.VerifyDataExport.
+func (c *authServiceClient) VerifyDataExport(ctx context.Context, req *connect.Request[api.VerifyDataExportRequest]) (*connect.Response[api.VerifyDataExportResponse], error) {
+	return c.verifyDataExport.CallUnary(ctx, req)
+}
+
 // SendDeleteAccountVerification calls quadsmith.api.AuthService.SendDeleteAccountVerification.
 func (c *authServiceClient) SendDeleteAccountVerification(ctx context.Context, req *connect.Request[api.SendDeleteAccountVerificationRequest]) (*connect.Response[api.SendDeleteAccountVerificationResponse], error) {
 	return c.sendDeleteAccountVerification.CallUnary(ctx, req)
@@ -446,6 +478,8 @@ type AuthServiceHandler interface {
 	RemoveUserEmail(context.Context, *connect.Request[api.RemoveUserEmailRequest]) (*connect.Response[api.RemoveUserEmailResponse], error)
 	ChangeUsername(context.Context, *connect.Request[api.ChangeUsernameRequest]) (*connect.Response[api.ChangeUsernameResponse], error)
 	ListArchivedUsernames(context.Context, *connect.Request[api.ListArchivedUsernamesRequest]) (*connect.Response[api.ListArchivedUsernamesResponse], error)
+	SendDataExportVerification(context.Context, *connect.Request[api.SendDataExportVerificationRequest]) (*connect.Response[api.SendDataExportVerificationResponse], error)
+	VerifyDataExport(context.Context, *connect.Request[api.VerifyDataExportRequest]) (*connect.Response[api.VerifyDataExportResponse], error)
 	SendDeleteAccountVerification(context.Context, *connect.Request[api.SendDeleteAccountVerificationRequest]) (*connect.Response[api.SendDeleteAccountVerificationResponse], error)
 	DeleteAccount(context.Context, *connect.Request[api.DeleteAccountRequest]) (*connect.Response[api.DeleteAccountResponse], error)
 	CancelAccountDeletion(context.Context, *connect.Request[api.CancelAccountDeletionRequest]) (*connect.Response[api.CancelAccountDeletionResponse], error)
@@ -578,6 +612,18 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(authServiceMethods.ByName("ListArchivedUsernames")),
 		connect.WithHandlerOptions(opts...),
 	)
+	authServiceSendDataExportVerificationHandler := connect.NewUnaryHandler(
+		AuthServiceSendDataExportVerificationProcedure,
+		svc.SendDataExportVerification,
+		connect.WithSchema(authServiceMethods.ByName("SendDataExportVerification")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceVerifyDataExportHandler := connect.NewUnaryHandler(
+		AuthServiceVerifyDataExportProcedure,
+		svc.VerifyDataExport,
+		connect.WithSchema(authServiceMethods.ByName("VerifyDataExport")),
+		connect.WithHandlerOptions(opts...),
+	)
 	authServiceSendDeleteAccountVerificationHandler := connect.NewUnaryHandler(
 		AuthServiceSendDeleteAccountVerificationProcedure,
 		svc.SendDeleteAccountVerification,
@@ -638,6 +684,10 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 			authServiceChangeUsernameHandler.ServeHTTP(w, r)
 		case AuthServiceListArchivedUsernamesProcedure:
 			authServiceListArchivedUsernamesHandler.ServeHTTP(w, r)
+		case AuthServiceSendDataExportVerificationProcedure:
+			authServiceSendDataExportVerificationHandler.ServeHTTP(w, r)
+		case AuthServiceVerifyDataExportProcedure:
+			authServiceVerifyDataExportHandler.ServeHTTP(w, r)
 		case AuthServiceSendDeleteAccountVerificationProcedure:
 			authServiceSendDeleteAccountVerificationHandler.ServeHTTP(w, r)
 		case AuthServiceDeleteAccountProcedure:
@@ -731,6 +781,14 @@ func (UnimplementedAuthServiceHandler) ChangeUsername(context.Context, *connect.
 
 func (UnimplementedAuthServiceHandler) ListArchivedUsernames(context.Context, *connect.Request[api.ListArchivedUsernamesRequest]) (*connect.Response[api.ListArchivedUsernamesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.ListArchivedUsernames is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) SendDataExportVerification(context.Context, *connect.Request[api.SendDataExportVerificationRequest]) (*connect.Response[api.SendDataExportVerificationResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.SendDataExportVerification is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) VerifyDataExport(context.Context, *connect.Request[api.VerifyDataExportRequest]) (*connect.Response[api.VerifyDataExportResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.VerifyDataExport is not implemented"))
 }
 
 func (UnimplementedAuthServiceHandler) SendDeleteAccountVerification(context.Context, *connect.Request[api.SendDeleteAccountVerificationRequest]) (*connect.Response[api.SendDeleteAccountVerificationResponse], error) {

@@ -221,3 +221,39 @@ func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 	}
 	return results, nil
 }
+
+func ExportBatteries(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Battery, error) {
+	query := `SELECT uuid, manufacturer, weight_g, capacity_mah, cell_count_s, chemistry, connector, min_voltage, max_voltage, max_current_a FROM batteries WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'batteries' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*Battery, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 10)
+		scanAssigns := make([]func(), 0, 10)
+		m := &Battery{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Manufacturer
+		scanArgs[2] = &m.WeightG
+		scanArgs[3] = &m.CapacityMah
+		scanArgs[4] = &m.CellCountS
+		scanArgs[5] = &m.Chemistry
+		scanArgs[6] = &m.Connector
+		scanArgs[7] = &m.MinVoltage
+		scanArgs[8] = &m.MaxVoltage
+		scanArgs[9] = &m.MaxCurrentA
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Manufacturer != "" || m.WeightG != 0 || m.CapacityMah != 0 || m.CellCountS != 0 || m.Chemistry != "" || m.Connector != "" || m.MinVoltage != 0 || m.MaxVoltage != 0 || m.MaxCurrentA != 0 {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}

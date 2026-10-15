@@ -18,7 +18,6 @@ CREATE TABLE IF NOT EXISTS users (
   uuid UUID NOT NULL,
   PRIMARY KEY (uuid),
   id TEXT UNIQUE NOT NULL,
-  email TEXT UNIQUE NOT NULL,
   role TEXT DEFAULT 'USER' NOT NULL,
   last_renamed_at TIMESTAMPTZ,
   deleted_at TIMESTAMPTZ,
@@ -28,8 +27,6 @@ CREATE TABLE IF NOT EXISTS users (
 );
 
 CREATE INDEX IF NOT EXISTS idx_users_id ON users (id);
-
-CREATE INDEX IF NOT EXISTS idx_users_email ON users (email);
 
 CREATE TABLE IF NOT EXISTS user_profiles (
   uuid UUID NOT NULL,
@@ -55,6 +52,10 @@ CREATE TABLE IF NOT EXISTS user_emails (
 CREATE INDEX IF NOT EXISTS idx_user_emails_user_uuid ON user_emails (user_uuid);
 
 CREATE INDEX IF NOT EXISTS idx_user_emails_email ON user_emails (email);
+
+CREATE UNIQUE INDEX IF NOT EXISTS idx_user_emails_one_primary_per_user ON user_emails (user_uuid)
+WHERE
+  is_primary = true;
 
 CREATE TABLE IF NOT EXISTS user_email_oauth_accounts (
   uuid UUID NOT NULL,
@@ -539,6 +540,21 @@ CREATE INDEX IF NOT EXISTS idx_questions_entity_uuid ON questions (entity_uuid);
 
 CREATE INDEX IF NOT EXISTS idx_questions_net_score ON questions (net_score);
 
+CREATE TABLE IF NOT EXISTS question_comments (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  question_uuid UUID NOT NULL,
+  user_uuid UUID NOT NULL,
+  body TEXT NOT NULL,
+  deleted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_question_comments_question_uuid ON question_comments (question_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_question_comments_user_uuid ON question_comments (user_uuid);
+
 CREATE TABLE IF NOT EXISTS answers (
   uuid UUID NOT NULL,
   PRIMARY KEY (uuid),
@@ -562,6 +578,21 @@ CREATE INDEX IF NOT EXISTS idx_answers_question_uuid ON answers (question_uuid);
 CREATE INDEX IF NOT EXISTS idx_answers_user_uuid ON answers (user_uuid);
 
 CREATE INDEX IF NOT EXISTS idx_answers_net_score ON answers (net_score);
+
+CREATE TABLE IF NOT EXISTS answer_comments (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  answer_uuid UUID NOT NULL,
+  user_uuid UUID NOT NULL,
+  body TEXT NOT NULL,
+  deleted_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_answer_comments_answer_uuid ON answer_comments (answer_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_answer_comments_user_uuid ON answer_comments (user_uuid);
 
 CREATE TABLE IF NOT EXISTS question_votes (
   uuid UUID NOT NULL,
@@ -590,36 +621,6 @@ CREATE TABLE IF NOT EXISTS answer_votes (
 CREATE INDEX IF NOT EXISTS idx_answer_votes_answer_uuid ON answer_votes (answer_uuid);
 
 CREATE INDEX IF NOT EXISTS idx_answer_votes_user_uuid ON answer_votes (user_uuid);
-
-CREATE TABLE IF NOT EXISTS question_comments (
-  uuid UUID NOT NULL,
-  PRIMARY KEY (uuid),
-  question_uuid UUID NOT NULL,
-  user_uuid UUID NOT NULL,
-  body TEXT NOT NULL,
-  deleted_at TIMESTAMPTZ,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_question_comments_question_uuid ON question_comments (question_uuid);
-
-CREATE INDEX IF NOT EXISTS idx_question_comments_user_uuid ON question_comments (user_uuid);
-
-CREATE TABLE IF NOT EXISTS answer_comments (
-  uuid UUID NOT NULL,
-  PRIMARY KEY (uuid),
-  answer_uuid UUID NOT NULL,
-  user_uuid UUID NOT NULL,
-  body TEXT NOT NULL,
-  deleted_at TIMESTAMPTZ,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_answer_comments_answer_uuid ON answer_comments (answer_uuid);
-
-CREATE INDEX IF NOT EXISTS idx_answer_comments_user_uuid ON answer_comments (user_uuid);
 
 CREATE TABLE IF NOT EXISTS user_reputations (
   uuid UUID NOT NULL,
@@ -844,11 +845,23 @@ ADD CONSTRAINT fk_questions_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (
 ALTER TABLE questions
 ADD CONSTRAINT fk_questions_entity_uuid FOREIGN KEY (entity_uuid) REFERENCES entities (uuid) ON DELETE CASCADE;
 
+ALTER TABLE question_comments
+ADD CONSTRAINT fk_question_comments_question_uuid FOREIGN KEY (question_uuid) REFERENCES questions (uuid) ON DELETE CASCADE;
+
+ALTER TABLE question_comments
+ADD CONSTRAINT fk_question_comments_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
 ALTER TABLE answers
 ADD CONSTRAINT fk_answers_question_uuid FOREIGN KEY (question_uuid) REFERENCES questions (uuid) ON DELETE CASCADE;
 
 ALTER TABLE answers
 ADD CONSTRAINT fk_answers_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE answer_comments
+ADD CONSTRAINT fk_answer_comments_answer_uuid FOREIGN KEY (answer_uuid) REFERENCES answers (uuid) ON DELETE CASCADE;
+
+ALTER TABLE answer_comments
+ADD CONSTRAINT fk_answer_comments_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE question_votes
 ADD CONSTRAINT fk_question_votes_question_uuid FOREIGN KEY (question_uuid) REFERENCES questions (uuid) ON DELETE CASCADE;
@@ -861,18 +874,6 @@ ADD CONSTRAINT fk_answer_votes_answer_uuid FOREIGN KEY (answer_uuid) REFERENCES 
 
 ALTER TABLE answer_votes
 ADD CONSTRAINT fk_answer_votes_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
-
-ALTER TABLE question_comments
-ADD CONSTRAINT fk_question_comments_question_uuid FOREIGN KEY (question_uuid) REFERENCES questions (uuid) ON DELETE CASCADE;
-
-ALTER TABLE question_comments
-ADD CONSTRAINT fk_question_comments_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
-
-ALTER TABLE answer_comments
-ADD CONSTRAINT fk_answer_comments_answer_uuid FOREIGN KEY (answer_uuid) REFERENCES answers (uuid) ON DELETE CASCADE;
-
-ALTER TABLE answer_comments
-ADD CONSTRAINT fk_answer_comments_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
 
 ALTER TABLE user_reputations
 ADD CONSTRAINT fk_user_reputations_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);

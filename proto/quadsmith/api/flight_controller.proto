@@ -5,6 +5,7 @@ package quadsmith.api;
 import "quadsmith/api/media.proto";
 import "quadsmith/api/reference_link.proto";
 import "quadsmith/common/common.proto";
+import "quadsmith/data/data.proto";
 import "quadsmith/sql/sql.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/api;api";
@@ -63,6 +64,10 @@ message UpdateFlightControllerRequest {
 message FlightController {
   option (quadsmith.sql.table) = {name: "flight_controllers"};
   option (quadsmith.common.collection_path) = "components/hardware/flight-controllers";
+  option (quadsmith.data.export) = {
+    domain: EXPORT_DOMAIN_COMPONENTS
+    user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'flight-controllers' AND user_uuid = $1::uuid)"
+  };
   option (quadsmith.common.frontend) = {
     color_code: "#3b82f6"
     default_columns: [
@@ -74,59 +79,98 @@ message FlightController {
     ]
   };
 
-  string uuid = 1 [(quadsmith.sql.column) = {
-    is_primary_key: true
-    references: "entities(uuid) ON DELETE CASCADE"
-  }];
+  string uuid = 1 [
+    (quadsmith.sql.column) = {
+      is_primary_key: true
+      references: "entities(uuid) ON DELETE CASCADE"
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
-  string id = 2 [(quadsmith.sql.column) = {ignore: true}];
+  string id = 2 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 
-  string manufacturer = 3 [(quadsmith.sql.column) = {create_index: true}];
-  string name = 4 [(quadsmith.sql.column) = {ignore: true}];
-  bool is_internal_only = 5;
+  string manufacturer = 3 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  string name = 4 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  bool is_internal_only = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
-  float weight_g = 6;
+  float weight_g = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // The MCU processor (e.g., "F411", "F405", "H743")
-  string processor = 7;
+  string processor = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // The gyro chip (e.g., "MPU6000", "BMI270")
-  string gyro = 8;
+  string gyro = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // -------------------------------------------------------
   // Integrated Components (AIO Support)
   // -------------------------------------------------------
 
   // If this board has an integrated Electronic Speed Controller, reference it here
-  optional string internal_electronic_speed_controller_uuid = 9 [(quadsmith.sql.column) = {references: "electronic_speed_controllers(uuid)"}];
+  optional string internal_electronic_speed_controller_uuid = 9 [
+    (quadsmith.sql.column) = {references: "electronic_speed_controllers(uuid)"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // If this board has an integrated SPI or Serial Receiver
-  optional string internal_receiver_uuid = 10 [(quadsmith.sql.column) = {references: "receivers(uuid)"}];
+  optional string internal_receiver_uuid = 10 [
+    (quadsmith.sql.column) = {references: "receivers(uuid)"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // If this board has an integrated Video Transmitter
-  optional string internal_video_transmitter_uuid = 11 [(quadsmith.sql.column) = {references: "video_transmitters(uuid)"}];
-  string description = 12 [(quadsmith.sql.column) = {ignore: true}];
-  repeated ReferenceLink reference_links = 13 [(quadsmith.sql.column) = {ignore: true}];
-  optional string primary_display_image = 14 [(quadsmith.sql.column) = {ignore: true}];
-  repeated Media media = 15 [(quadsmith.sql.column) = {ignore: true}];
+  optional string internal_video_transmitter_uuid = 11 [
+    (quadsmith.sql.column) = {references: "video_transmitters(uuid)"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  string description = 12 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  repeated ReferenceLink reference_links = 13 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  optional string primary_display_image = 14 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  repeated Media media = 15 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 
   // Minimum operating input voltage (volts)
-  float min_voltage = 16;
+  float min_voltage = 16 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Maximum operating input voltage (volts)
-  float max_voltage = 17;
+  float max_voltage = 17 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Ports/pin interfaces available for VTX connection (e.g., ["JST-SH 6-Pin", "Solder Pads"], ["Analog Solder Pads"])
-  repeated string vtx_ports = 18;
+  repeated string vtx_ports = 18 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Minimum voltage available to power a VTX (volts) - e.g. 5.0 for 5V BEC, 3.1 for 1S
-  float vtx_voltage_min_v = 19;
+  float vtx_voltage_min_v = 19 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Maximum voltage available to power a VTX (volts) - e.g. 5.0 for 5V-only whoop FC, 10.0 or 26.0 for FC with 9V/10V BEC or VBAT
-  float vtx_voltage_max_v = 20;
+  float vtx_voltage_max_v = 20 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Board mounting pattern (e.g., "30.5x30.5mm", "20x20mm", "25.5x25.5mm", "16x16mm")
-  string mount_pattern = 21;
-  optional string user_uuid = 22 [(quadsmith.sql.column) = {ignore: true}];
-  optional string author_username = 23 [(quadsmith.sql.column) = {ignore: true}];
+  string mount_pattern = 21 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional string user_uuid = 22 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  optional string author_username = 23 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 }

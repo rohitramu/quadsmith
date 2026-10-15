@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"os"
@@ -433,6 +434,112 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 			return nil
 		},
 	}
+	var exportOutput string
+	var exportCode string
+
+	accountExportCmd := &cobra.Command{
+		Use:   "export",
+		Short: "Export a complete GDPR personal data archive (.zip)",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx := context.Background()
+
+			cfg, err := loadCLIConfig()
+			if err != nil || (cfg.AccessToken == "" && os.Getenv("QS_ACCESS_TOKEN") == "") {
+				return errors.New("authentication required. Please run 'qs login' first")
+			}
+
+			reader := bufio.NewReader(os.Stdin)
+
+			fmt.Println("Initiating GDPR data archive export...")
+			sendRes, err := authClient.SendDataExportVerification(ctx, connect.NewRequest(&pb.SendDataExportVerificationRequest{}))
+			if err != nil {
+				return fmt.Errorf("failed to initiate data export challenge: %w", err)
+			}
+
+			challengeID := sendRes.Msg.ChallengeId
+			primaryEmail := sendRes.Msg.PrimaryEmail
+			if primaryEmail == "" {
+				primaryEmail = "your primary email"
+			}
+
+			code := strings.TrimSpace(exportCode)
+			if code == "" {
+				fmt.Printf("Verification code sent to %s.\n", primaryEmail)
+				fmt.Print("Enter the 6-digit verification code: ")
+				input, err := reader.ReadString('\n')
+				if err != nil {
+					return err
+				}
+				code = strings.TrimSpace(input)
+			}
+			if code == "" {
+				return errors.New("verification code cannot be empty")
+			}
+
+			verifyRes, err := authClient.VerifyDataExport(ctx, connect.NewRequest(&pb.VerifyDataExportRequest{
+				ChallengeId: &challengeID,
+				Verification: &pb.VerifyDataExportRequest_Code{
+					Code: code,
+				},
+			}))
+			if err != nil {
+				return fmt.Errorf("failed to verify data export: %w", err)
+			}
+
+			exportToken := verifyRes.Msg.ExportToken
+			downloadURL := verifyRes.Msg.DownloadUrl
+			suggestedFilename := verifyRes.Msg.Filename
+			if suggestedFilename == "" {
+				suggestedFilename = fmt.Sprintf("quadsmith-data-%s.zip", time.Now().UTC().Format("2006-01-02"))
+			}
+
+			outputPath := exportOutput
+			if outputPath == "" {
+				outputPath = suggestedFilename
+			}
+
+			baseURL := strings.TrimRight(targetURL, "/")
+			if active := GetActiveTargetURL(); active != "" {
+				baseURL = strings.TrimRight(active, "/")
+			}
+			fullURL := fmt.Sprintf("%s%s", baseURL, downloadURL)
+
+			req, err := http.NewRequestWithContext(ctx, http.MethodGet, fullURL, nil)
+			if err != nil {
+				return fmt.Errorf("failed to create download request: %w", err)
+			}
+			req.Header.Set("Authorization", "Bearer "+exportToken)
+
+			resp, err := httpClient.Do(req)
+			if err != nil {
+				return fmt.Errorf("failed to download archive: %w", err)
+			}
+			defer resp.Body.Close()
+
+			if resp.StatusCode != http.StatusOK {
+				bodyBytes, _ := io.ReadAll(resp.Body)
+				return fmt.Errorf("download failed (HTTP %d): %s", resp.StatusCode, string(bodyBytes))
+			}
+
+			outFile, err := os.OpenFile(outputPath, os.O_CREATE|os.O_WRONLY|os.O_TRUNC, 0644)
+			if err != nil {
+				return fmt.Errorf("failed to create output file: %w", err)
+			}
+			defer outFile.Close()
+
+			written, err := io.Copy(outFile, resp.Body)
+			if err != nil {
+				return fmt.Errorf("failed to save archive: %w", err)
+			}
+
+			fmt.Printf("✓ Data archive saved to %s (%d bytes)\n", outputPath, written)
+			return nil
+		},
+	}
+	accountExportCmd.Flags().StringVarP(&exportOutput, "output", "o", "", "Destination file path for the .zip archive")
+	accountExportCmd.Flags().StringVar(&exportCode, "code", "", "6-digit verification code sent to your primary email")
+	accountCmd.AddCommand(accountExportCmd)
+
 	accountCmd.AddCommand(accountMergeCmd)
 	rootCmd.AddCommand(accountCmd)
 

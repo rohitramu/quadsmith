@@ -45,7 +45,7 @@ describe("AccountSettingsPage Component", () => {
     });
 
     expect(screen.getAllByText("Primary").length).toBeGreaterThan(0);
-    expect(screen.getByText("Secondary")).toBeInTheDocument();
+    expect(screen.queryByText("Secondary")).not.toBeInTheDocument();
     expect(screen.getByText("Make Primary")).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /remove alex\.secondary@example\.com/i }),
@@ -293,6 +293,37 @@ describe("AccountSettingsPage Component", () => {
     await waitFor(() => {
       expect(screen.getByText("Saved successfully")).toBeInTheDocument();
       expect(saveBtn).toBeDisabled();
+    });
+  });
+
+  it("renders Data & Privacy section with Download My Data button and handles OTP export flow", async () => {
+    renderApp("/account");
+
+    expect(await screen.findByText("Data & Privacy")).toBeInTheDocument();
+    const downloadBtn = screen.getByTestId("download-data-button");
+    expect(downloadBtn).toBeInTheDocument();
+    expect(downloadBtn).toHaveTextContent("Download My Data");
+
+    // Click button to open OTP modal
+    fireEvent.click(downloadBtn);
+
+    expect(await screen.findByRole("heading", { name: /verify your email/i })).toBeInTheDocument();
+    expect(screen.getByText(/we sent a single-use verification code to/i)).toBeInTheDocument();
+
+    // Verify modal inputs are rendered
+    const inputs = screen.getAllByRole("textbox");
+    const otpInputs = inputs.filter((el) => (el as HTMLInputElement).maxLength === 1);
+    expect(otpInputs.length).toBe(6);
+
+    // Enter valid 6-digit code
+    for (let i = 0; i < 6; i++) {
+      fireEvent.change(otpInputs[i], { target: { value: "123456"[i] } });
+    }
+
+    // Modal closes and success message appears
+    await waitFor(() => {
+      expect(screen.queryByRole("heading", { name: /verify your email/i })).not.toBeInTheDocument();
+      expect(screen.getByText(/your data download .* has started/i)).toBeInTheDocument();
     });
   });
 });

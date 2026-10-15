@@ -10,6 +10,7 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	_ "quadsmith/shared/gen/quadsmith/common"
+	_ "quadsmith/shared/gen/quadsmith/data"
 	_ "quadsmith/shared/gen/quadsmith/sql"
 	reflect "reflect"
 	sync "sync"
@@ -576,7 +577,7 @@ var File_quadsmith_api_frame_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_frame_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/api/frame.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x17quadsmith/sql/sql.proto\"@\n" +
+	"\x19quadsmith/api/frame.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"@\n" +
 	"\x12CreateFrameRequest\x12*\n" +
 	"\x05frame\x18\x01 \x01(\v2\x14.quadsmith.api.FrameR\x05frame\"$\n" +
 	"\x12DeleteFrameRequest\x12\x0e\n" +
@@ -598,33 +599,42 @@ const file_quadsmith_api_frame_proto_rawDesc = "" +
 	"\x06frames\x18\x01 \x03(\v2\x14.quadsmith.api.FrameR\x06frames\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"@\n" +
 	"\x12UpdateFrameRequest\x12*\n" +
-	"\x05frame\x18\x01 \x01(\v2\x14.quadsmith.api.FrameR\x05frame\"\xdd\a\n" +
-	"\x05Frame\x12<\n" +
-	"\x04uuid\x18\x01 \x01(\tB(\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADER\x04uuid\x12\x16\n" +
-	"\x02id\x18\x02 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x02id\x12*\n" +
-	"\fmanufacturer\x18\x03 \x01(\tB\x06\xc2\xf3\x18\x02(\x01R\fmanufacturer\x12\x1a\n" +
-	"\x04name\x18\x04 \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\x04name\x12\x19\n" +
-	"\bweight_g\x18\x05 \x01(\x02R\aweightG\x12!\n" +
-	"\fwheelbase_mm\x18\x06 \x01(\x02R\vwheelbaseMm\x12'\n" +
-	"\x10max_prop_size_mm\x18\a \x01(\x02R\rmaxPropSizeMm\x12\x1a\n" +
-	"\bgeometry\x18\b \x01(\tR\bgeometry\x12(\n" +
-	"\vdescription\x18\t \x01(\tB\x06\xc2\xf3\x18\x02@\x01R\vdescription\x12M\n" +
+	"\x05frame\x18\x01 \x01(\v2\x14.quadsmith.api.FrameR\x05frame\"\x94\t\n" +
+	"\x05Frame\x12@\n" +
+	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
+	"\x02id\x18\x02 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04R\x02id\x12.\n" +
+	"\fmanufacturer\x18\x03 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\fmanufacturer\x12\x1e\n" +
+	"\x04name\x18\x04 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x04name\x12\x1f\n" +
+	"\bweight_g\x18\x05 \x01(\x02B\x04\xc0\xf0\x19\x02R\aweightG\x12'\n" +
+	"\fwheelbase_mm\x18\x06 \x01(\x02B\x04\xc0\xf0\x19\x02R\vwheelbaseMm\x12-\n" +
+	"\x10max_prop_size_mm\x18\a \x01(\x02B\x04\xc0\xf0\x19\x02R\rmaxPropSizeMm\x12 \n" +
+	"\bgeometry\x18\b \x01(\tB\x04\xc0\xf0\x19\x02R\bgeometry\x12,\n" +
+	"\vdescription\x18\t \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\vdescription\x12Q\n" +
 	"\x0freference_links\x18\n" +
-	" \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x06\xc2\xf3\x18\x02@\x01R\x0ereferenceLinks\x12?\n" +
-	"\x15primary_display_image\x18\v \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x00R\x13primaryDisplayImage\x88\x01\x01\x122\n" +
-	"\x05media\x18\f \x03(\v2\x14.quadsmith.api.MediaB\x06\xc2\xf3\x18\x02@\x01R\x05media\x12(\n" +
-	"\vmotor_count\x18\r \x01(\rB\a\xc2\xf3\x18\x03:\x014R\n" +
-	"motorCount\x126\n" +
-	"\x17camera_mount_interfaces\x18\x0e \x03(\tR\x15cameraMountInterfaces\x120\n" +
-	"\x14motor_mount_patterns\x18\x0f \x03(\tR\x12motorMountPatterns\x120\n" +
-	"\x14board_mount_patterns\x18\x10 \x03(\tR\x12boardMountPatterns\x12(\n" +
-	"\tuser_uuid\x18\x11 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x01R\buserUuid\x88\x01\x01\x124\n" +
-	"\x0fauthor_username\x18\x12 \x01(\tB\x06\xc2\xf3\x18\x02@\x01H\x02R\x0eauthorUsername\x88\x01\x01:c\x8a\xb5\x185\n" +
+	" \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x0ereferenceLinks\x12C\n" +
+	"\x15primary_display_image\x18\v \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x126\n" +
+	"\x05media\x18\f \x03(\v2\x14.quadsmith.api.MediaB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02R\x05media\x12,\n" +
+	"\vmotor_count\x18\r \x01(\rB\v\xc2\xf3\x18\x03:\x014\xc0\xf0\x19\x02R\n" +
+	"motorCount\x12<\n" +
+	"\x17camera_mount_interfaces\x18\x0e \x03(\tB\x04\xc0\xf0\x19\x02R\x15cameraMountInterfaces\x126\n" +
+	"\x14motor_mount_patterns\x18\x0f \x03(\tB\x04\xc0\xf0\x19\x02R\x12motorMountPatterns\x126\n" +
+	"\x14board_mount_patterns\x18\x10 \x03(\tB\x04\xc0\xf0\x19\x02R\x12boardMountPatterns\x12,\n" +
+	"\tuser_uuid\x18\x11 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x128\n" +
+	"\x0fauthor_username\x18\x12 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xc3\x01\x8a\xb5\x185\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\fwheelbase_mm\n" +
 	"\bgeometry\x12\a#64748b\x9a\xb5\x18\x1acomponents/hardware/frames\xc2\xf3\x18\b\n" +
-	"\x06framesB\x18\n" +
+	"\x06frames\xc2\xf0\x19\\\b\x05\x12Xuuid IN (SELECT uuid FROM entities WHERE collection = 'frames' AND user_uuid = $1::uuid)B\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuidB\x12\n" +

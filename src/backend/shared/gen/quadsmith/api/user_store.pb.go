@@ -13,13 +13,13 @@ import (
 )
 
 func CreateUser(ctx context.Context, tx pgx.Tx, m *User) error {
-	query := `INSERT INTO users (uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
+	query := `INSERT INTO users (uuid, id, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Email, m.Role, func(ts *timestamppb.Timestamp) interface{} {
+	}(m.Uuid), m.Id, m.Role, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -49,8 +49,8 @@ func CreateUser(ctx context.Context, tx pgx.Tx, m *User) error {
 }
 
 func GetUser(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*User, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "email": true, "role": true, "last_renamed_at": true, "deleted_at": true, "banned_at": true, "created_at": true, "updated_at": true}
-	colsStr := "uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at"
+	validCols := map[string]bool{"uuid": true, "id": true, "role": true, "last_renamed_at": true, "deleted_at": true, "banned_at": true, "created_at": true, "updated_at": true}
+	colsStr := "uuid, id, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -61,7 +61,7 @@ func GetUser(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []stri
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "email", "role", "last_renamed_at", "deleted_at", "banned_at", "created_at", "updated_at"}
+		cols = []string{"uuid", "id", "role", "last_renamed_at", "deleted_at", "banned_at", "created_at", "updated_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM users WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -73,8 +73,6 @@ func GetUser(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []stri
 			scanArgs[i] = &m.Uuid
 		case "id":
 			scanArgs[i] = &m.Id
-		case "email":
-			scanArgs[i] = &m.Email
 		case "role":
 			scanArgs[i] = &m.Role
 		case "last_renamed_at":
@@ -134,8 +132,8 @@ func GetUser(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []stri
 }
 
 func UpdateUser(ctx context.Context, tx pgx.Tx, m *User) error {
-	query := `UPDATE users SET email = $2, role = $3, last_renamed_at = $4, deleted_at = $5, banned_at = $6, created_at = $7, updated_at = $8 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Email, m.Role, func(ts *timestamppb.Timestamp) interface{} {
+	query := `UPDATE users SET role = $2, last_renamed_at = $3, deleted_at = $4, banned_at = $5, created_at = $6, updated_at = $7 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Role, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -171,8 +169,8 @@ func DeleteUser(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListUsers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*User, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "email": true, "role": true, "last_renamed_at": true, "deleted_at": true, "banned_at": true, "created_at": true, "updated_at": true}
-	colsStr := "uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at"
+	validCols := map[string]bool{"uuid": true, "id": true, "role": true, "last_renamed_at": true, "deleted_at": true, "banned_at": true, "created_at": true, "updated_at": true}
+	colsStr := "uuid, id, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -183,7 +181,7 @@ func ListUsers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []str
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "email", "role", "last_renamed_at", "deleted_at", "banned_at", "created_at", "updated_at"}
+		cols = []string{"uuid", "id", "role", "last_renamed_at", "deleted_at", "banned_at", "created_at", "updated_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM users`
 	if whereClause != "" {
@@ -236,8 +234,6 @@ func ListUsers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []str
 				scanArgs[i] = &m.Uuid
 			case "id":
 				scanArgs[i] = &m.Id
-			case "email":
-				scanArgs[i] = &m.Email
 			case "role":
 				scanArgs[i] = &m.Role
 			case "last_renamed_at":
@@ -293,6 +289,63 @@ func ListUsers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []str
 			assign()
 		}
 		results = append(results, m)
+	}
+	return results, nil
+}
+
+func ExportUsers(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*User, error) {
+	query := `SELECT uuid, id, role, last_renamed_at, deleted_at, created_at, updated_at FROM users WHERE uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*User, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 7)
+		scanAssigns := make([]func(), 0, 7)
+		m := &User{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Id
+		scanArgs[2] = &m.Role
+		var v3 *time.Time
+		scanArgs[3] = &v3
+		scanAssigns = append(scanAssigns, func() {
+			if v3 != nil {
+				m.LastRenamedAt = timestamppb.New(*v3)
+			}
+		})
+		var v4 *time.Time
+		scanArgs[4] = &v4
+		scanAssigns = append(scanAssigns, func() {
+			if v4 != nil {
+				m.DeletedAt = timestamppb.New(*v4)
+			}
+		})
+		var v5 *time.Time
+		scanArgs[5] = &v5
+		scanAssigns = append(scanAssigns, func() {
+			if v5 != nil {
+				m.CreatedAt = timestamppb.New(*v5)
+			}
+		})
+		var v6 *time.Time
+		scanArgs[6] = &v6
+		scanAssigns = append(scanAssigns, func() {
+			if v6 != nil {
+				m.UpdatedAt = timestamppb.New(*v6)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Id != "" || m.LastRenamedAt != nil || m.DeletedAt != nil || m.CreatedAt != nil || m.UpdatedAt != nil {
+			results = append(results, m)
+		}
 	}
 	return results, nil
 }
@@ -500,6 +553,49 @@ func ListUserProfiles(ctx context.Context, db *pgxpool.Pool, cols []string, sort
 	return results, nil
 }
 
+func ExportUserProfiles(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*UserProfile, error) {
+	query := `SELECT uuid, user_uuid, avatar_url, bio, updated_at FROM user_profiles WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*UserProfile, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 5)
+		scanAssigns := make([]func(), 0, 5)
+		m := &UserProfile{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.UserUuid = *v1
+			}
+		})
+		scanArgs[2] = &m.AvatarUrl
+		scanArgs[3] = &m.Bio
+		var v4 *time.Time
+		scanArgs[4] = &v4
+		scanAssigns = append(scanAssigns, func() {
+			if v4 != nil {
+				m.UpdatedAt = timestamppb.New(*v4)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.AvatarUrl != "" || m.Bio != "" || m.UpdatedAt != nil {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}
+
 func CreateUserEmail(ctx context.Context, tx pgx.Tx, m *UserEmail) error {
 	query := `INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at, verified_via_otp) VALUES ($1, $2, $3, $4, $5, $6)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
@@ -703,6 +799,50 @@ func ListUserEmails(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 			assign()
 		}
 		results = append(results, m)
+	}
+	return results, nil
+}
+
+func ExportUserEmails(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*UserEmail, error) {
+	query := `SELECT uuid, user_uuid, email, is_primary, created_at, verified_via_otp FROM user_emails WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*UserEmail, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 6)
+		scanAssigns := make([]func(), 0, 6)
+		m := &UserEmail{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.UserUuid = *v1
+			}
+		})
+		scanArgs[2] = &m.Email
+		scanArgs[3] = &m.IsPrimary
+		var v4 *time.Time
+		scanArgs[4] = &v4
+		scanAssigns = append(scanAssigns, func() {
+			if v4 != nil {
+				m.CreatedAt = timestamppb.New(*v4)
+			}
+		})
+		scanArgs[5] = &m.VerifiedViaOtp
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Email != "" || m.IsPrimary || m.CreatedAt != nil || m.VerifiedViaOtp {
+			results = append(results, m)
+		}
 	}
 	return results, nil
 }
@@ -924,6 +1064,54 @@ func ListUserEmailOAuthAccounts(ctx context.Context, db *pgxpool.Pool, cols []st
 			assign()
 		}
 		results = append(results, m)
+	}
+	return results, nil
+}
+
+func ExportUserEmailOAuthAccounts(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*UserEmailOAuthAccount, error) {
+	query := `SELECT uuid, user_email_uuid, oauth_account_uuid, created_at FROM user_email_oauth_accounts WHERE user_email_uuid IN (SELECT uuid FROM user_emails WHERE user_uuid = $1::uuid) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*UserEmailOAuthAccount, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 4)
+		scanAssigns := make([]func(), 0, 4)
+		m := &UserEmailOAuthAccount{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.UserEmailUuid = *v1
+			}
+		})
+		var v2 *string
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.OauthAccountUuid = *v2
+			}
+		})
+		var v3 *time.Time
+		scanArgs[3] = &v3
+		scanAssigns = append(scanAssigns, func() {
+			if v3 != nil {
+				m.CreatedAt = timestamppb.New(*v3)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.CreatedAt != nil {
+			results = append(results, m)
+		}
 	}
 	return results, nil
 }
@@ -1179,6 +1367,62 @@ func ListRefreshTokens(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 			assign()
 		}
 		results = append(results, m)
+	}
+	return results, nil
+}
+
+func ExportRefreshTokens(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*RefreshToken, error) {
+	query := `SELECT uuid, user_uuid, expires_at, last_used_at, device_hint, created_at FROM refresh_tokens WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*RefreshToken, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 6)
+		scanAssigns := make([]func(), 0, 6)
+		m := &RefreshToken{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.UserUuid = *v1
+			}
+		})
+		var v2 *time.Time
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.ExpiresAt = timestamppb.New(*v2)
+			}
+		})
+		var v3 *time.Time
+		scanArgs[3] = &v3
+		scanAssigns = append(scanAssigns, func() {
+			if v3 != nil {
+				m.LastUsedAt = timestamppb.New(*v3)
+			}
+		})
+		scanArgs[4] = &m.DeviceHint
+		var v5 *time.Time
+		scanArgs[5] = &v5
+		scanAssigns = append(scanAssigns, func() {
+			if v5 != nil {
+				m.CreatedAt = timestamppb.New(*v5)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.ExpiresAt != nil || m.LastUsedAt != nil || m.DeviceHint != "" || m.CreatedAt != nil {
+			results = append(results, m)
+		}
 	}
 	return results, nil
 }
@@ -1506,6 +1750,61 @@ func ListEmailOtps(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 	return results, nil
 }
 
+func ExportEmailOtps(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*EmailOtp, error) {
+	query := `SELECT uuid, email, used_at, created_at, purpose, requested_by_user_uuid, ip_address, user_agent, location_hint, status, approved_at FROM email_otps WHERE requested_by_user_uuid = $1::uuid OR (email IN (SELECT email FROM user_emails WHERE user_uuid = $1::uuid) AND (used_at IS NOT NULL OR status = 'approved')) ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*EmailOtp, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 11)
+		scanAssigns := make([]func(), 0, 11)
+		m := &EmailOtp{}
+		scanArgs[0] = &m.Uuid
+		scanArgs[1] = &m.Email
+		var v2 *time.Time
+		scanArgs[2] = &v2
+		scanAssigns = append(scanAssigns, func() {
+			if v2 != nil {
+				m.UsedAt = timestamppb.New(*v2)
+			}
+		})
+		var v3 *time.Time
+		scanArgs[3] = &v3
+		scanAssigns = append(scanAssigns, func() {
+			if v3 != nil {
+				m.CreatedAt = timestamppb.New(*v3)
+			}
+		})
+		scanArgs[4] = &m.Purpose
+		scanArgs[5] = &m.RequestedByUserUuid
+		scanArgs[6] = &m.IpAddress
+		scanArgs[7] = &m.UserAgent
+		scanArgs[8] = &m.LocationHint
+		scanArgs[9] = &m.Status
+		var v10 *time.Time
+		scanArgs[10] = &v10
+		scanAssigns = append(scanAssigns, func() {
+			if v10 != nil {
+				m.ApprovedAt = timestamppb.New(*v10)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Email != "" || m.UsedAt != nil || m.CreatedAt != nil || m.Purpose != "" || m.IpAddress != "" || m.UserAgent != "" || m.LocationHint != "" || m.Status != "" || m.ApprovedAt != nil {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}
+
 func CreateUsernameHistory(ctx context.Context, tx pgx.Tx, m *UsernameHistory) error {
 	query := `INSERT INTO username_histories (uuid, user_uuid, old_username, renamed_at, first_archived_at, release_warning_sent_at) VALUES ($1, $2, $3, $4, $5, $6)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
@@ -1757,6 +2056,55 @@ func ListUsernameHistories(ctx context.Context, db *pgxpool.Pool, cols []string,
 	return results, nil
 }
 
+func ExportUsernameHistories(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*UsernameHistory, error) {
+	query := `SELECT uuid, user_uuid, old_username, renamed_at, first_archived_at FROM username_histories WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*UsernameHistory, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 5)
+		scanAssigns := make([]func(), 0, 5)
+		m := &UsernameHistory{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.UserUuid = *v1
+			}
+		})
+		scanArgs[2] = &m.OldUsername
+		var v3 *time.Time
+		scanArgs[3] = &v3
+		scanAssigns = append(scanAssigns, func() {
+			if v3 != nil {
+				m.RenamedAt = timestamppb.New(*v3)
+			}
+		})
+		var v4 *time.Time
+		scanArgs[4] = &v4
+		scanAssigns = append(scanAssigns, func() {
+			if v4 != nil {
+				m.FirstArchivedAt = timestamppb.New(*v4)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.OldUsername != "" || m.RenamedAt != nil || m.FirstArchivedAt != nil {
+			results = append(results, m)
+		}
+	}
+	return results, nil
+}
+
 func CreateOAuthAccount(ctx context.Context, tx pgx.Tx, m *OAuthAccount) error {
 	query := `INSERT INTO oauth_accounts (uuid, user_uuid, provider, provider_account_id, access_token, refresh_token, token_expires_at, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
@@ -1990,6 +2338,49 @@ func ListOAuthAccounts(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 			assign()
 		}
 		results = append(results, m)
+	}
+	return results, nil
+}
+
+func ExportOAuthAccounts(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*OAuthAccount, error) {
+	query := `SELECT uuid, user_uuid, provider, provider_account_id, created_at FROM oauth_accounts WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	rows, err := db.Query(ctx, query, userUUID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	results := make([]*OAuthAccount, 0)
+	for rows.Next() {
+		scanArgs := make([]interface{}, 5)
+		scanAssigns := make([]func(), 0, 5)
+		m := &OAuthAccount{}
+		scanArgs[0] = &m.Uuid
+		var v1 *string
+		scanArgs[1] = &v1
+		scanAssigns = append(scanAssigns, func() {
+			if v1 != nil {
+				m.UserUuid = *v1
+			}
+		})
+		scanArgs[2] = &m.Provider
+		scanArgs[3] = &m.ProviderAccountId
+		var v4 *time.Time
+		scanArgs[4] = &v4
+		scanAssigns = append(scanAssigns, func() {
+			if v4 != nil {
+				m.CreatedAt = timestamppb.New(*v4)
+			}
+		})
+		err := rows.Scan(scanArgs...)
+		if err != nil {
+			return nil, err
+		}
+		for _, assign := range scanAssigns {
+			assign()
+		}
+		if m.Provider != "" || m.ProviderAccountId != "" || m.CreatedAt != nil {
+			results = append(results, m)
+		}
 	}
 	return results, nil
 }

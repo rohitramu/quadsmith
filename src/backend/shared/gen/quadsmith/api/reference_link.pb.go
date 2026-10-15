@@ -9,6 +9,7 @@ package api
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	_ "quadsmith/shared/gen/quadsmith/data"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -137,10 +138,10 @@ var File_quadsmith_api_reference_link_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_reference_link_proto_rawDesc = "" +
 	"\n" +
-	"\"quadsmith/api/reference_link.proto\x12\rquadsmith.api\"Y\n" +
-	"\rReferenceLink\x126\n" +
-	"\x05types\x18\x01 \x03(\x0e2 .quadsmith.api.ReferenceLinkTypeR\x05types\x12\x10\n" +
-	"\x03url\x18\x02 \x01(\tR\x03url*\xeb\x01\n" +
+	"\"quadsmith/api/reference_link.proto\x12\rquadsmith.api\x1a\x19quadsmith/data/data.proto\"e\n" +
+	"\rReferenceLink\x12<\n" +
+	"\x05types\x18\x01 \x03(\x0e2 .quadsmith.api.ReferenceLinkTypeB\x04\xc0\xf0\x19\x02R\x05types\x12\x16\n" +
+	"\x03url\x18\x02 \x01(\tB\x04\xc0\xf0\x19\x02R\x03url*\xeb\x01\n" +
 	"\x11ReferenceLinkType\x12#\n" +
 	"\x1fREFERENCE_LINK_TYPE_UNSPECIFIED\x10\x00\x12 \n" +
 	"\x1cREFERENCE_LINK_TYPE_PURCHASE\x10\x01\x12$\n" +
