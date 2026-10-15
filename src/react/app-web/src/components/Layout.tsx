@@ -139,8 +139,18 @@ export function Layout() {
         setTheme(e.newValue);
       }
     };
+    const handleCustom = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail === "light" || detail === "dark") {
+        setTheme(detail);
+      }
+    };
     window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
+    window.addEventListener("qs-theme-change", handleCustom);
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      window.removeEventListener("qs-theme-change", handleCustom);
+    };
   }, []);
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");

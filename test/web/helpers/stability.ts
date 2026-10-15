@@ -33,6 +33,9 @@ export async function preparePageForSnapshot(
         document.documentElement.classList.remove("dark");
       }
       window.dispatchEvent(
+        new CustomEvent("qs-theme-change", { detail: targetTheme }),
+      );
+      window.dispatchEvent(
         new StorageEvent("storage", {
           key: "theme",
           newValue: targetTheme,
@@ -43,6 +46,12 @@ export async function preparePageForSnapshot(
       // ignore
     }
   }, theme);
+
+  if (theme === "dark") {
+    await page.waitForFunction(() => document.documentElement.classList.contains("dark"));
+  } else {
+    await page.waitForFunction(() => !document.documentElement.classList.contains("dark"));
+  }
 
   // Disable CSS animations, keyframes, transitions, and smooth scrolling
   if (disableAnimations) {
