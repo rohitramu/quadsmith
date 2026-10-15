@@ -65,6 +65,21 @@ export const updateProfile = AuthService.method.updateProfile;
 export const logout = AuthService.method.logout;
 
 /**
+ * @generated from rpc quadsmith.api.AuthService.ListActiveSessions
+ */
+export const listActiveSessions = AuthService.method.listActiveSessions;
+
+/**
+ * @generated from rpc quadsmith.api.AuthService.RevokeSession
+ */
+export const revokeSession = AuthService.method.revokeSession;
+
+/**
+ * @generated from rpc quadsmith.api.AuthService.RevokeOtherSessions
+ */
+export const revokeOtherSessions = AuthService.method.revokeOtherSessions;
+
+/**
  * @generated from rpc quadsmith.api.AuthService.ListUserEmails
  */
 export const listUserEmails = AuthService.method.listUserEmails;

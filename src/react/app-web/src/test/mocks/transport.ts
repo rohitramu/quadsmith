@@ -24,6 +24,7 @@ import {
   ArchivedUsernameSchema,
   OtpVerificationErrorSchema,
   LoginChallengeStatus,
+  SessionSchema,
 } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import {
   UserService,
@@ -57,6 +58,7 @@ import {
   mockCollectionItem1,
   mockEntitySocialSummary1,
   mockSimilarBuilds,
+  mockSessions,
 } from "./fixtures";
 
 export interface MockTransportOptions {
@@ -66,6 +68,7 @@ export interface MockTransportOptions {
   builds?: typeof mockBuilds;
   batteries?: typeof mockBatteries;
   userEmails?: typeof mockUserEmails;
+  userSessions?: typeof mockSessions;
   reviews?: typeof mockReviews;
   questions?: typeof mockQuestions;
   collections?: typeof mockCollections;
@@ -107,6 +110,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     isAuthenticated = true,
   } = options;
   const userEmails = (options.userEmails ?? mockUserEmails).map((e) => create(UserEmailSchema, e));
+  const userSessions = (options.userSessions ?? mockSessions).map((s) => create(SessionSchema, s));
 
   const collectionItemsSet = new Map<string, Set<string>>();
   if (mockCollectionItem1.collectionUuid) {
@@ -729,6 +733,30 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         bio: req.bio ?? mockProfile.bio,
       }),
       logout: () => ({ success: true }),
+      listActiveSessions: () => ({
+        sessions: userSessions,
+      }),
+      revokeSession: (req) => {
+        const idx = userSessions.findIndex((s) => s.uuid === req.sessionUuid);
+        if (idx !== -1) {
+          userSessions.splice(idx, 1);
+        }
+        return {
+          success: true,
+          message: "Session revoked",
+        };
+      },
+      revokeOtherSessions: () => {
+        const initialCount = userSessions.length;
+        const current = userSessions.filter((s) => s.isCurrent);
+        userSessions.length = 0;
+        userSessions.push(...current);
+        return {
+          success: true,
+          revokedCount: initialCount - current.length,
+          message: `${initialCount - current.length} session(s) revoked`,
+        };
+      },
       listUserEmails: () => ({
         emails: userEmails,
       }),

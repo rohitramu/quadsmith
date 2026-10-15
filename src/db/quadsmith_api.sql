@@ -78,6 +78,8 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
   expires_at TIMESTAMPTZ,
   last_used_at TIMESTAMPTZ,
   device_hint TEXT NOT NULL,
+  ip_address TEXT DEFAULT '' NOT NULL,
+  location_hint TEXT DEFAULT '' NOT NULL,
   created_at TIMESTAMPTZ
 );
 

@@ -19,9 +19,12 @@ import {
   UserX,
   Package,
   AlertTriangle,
+  Shield,
+  Laptop,
+  Smartphone,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import type { ArchivedUsername } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
+import type { ArchivedUsername, Session } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import { OtpVerificationErrorSchema } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import { UsernameAvailabilityStatus } from "@quadsmith/shared/gen/quadsmith/api/user_pb";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
@@ -33,6 +36,10 @@ export function AccountSettingsPage() {
     user,
     profile,
     emails,
+    sessions,
+    refreshSessions,
+    revokeSession,
+    revokeOtherSessions,
     updateProfile,
     logout,
     refreshEmails,
@@ -52,6 +59,15 @@ export function AccountSettingsPage() {
   const mergeToken = searchParams.get("merge_token");
   const addEmailToken = searchParams.get("add_email_token");
   const exportDataToken = searchParams.get("export_data_token");
+
+  // Active Sessions state
+  const [sessionToRevoke, setSessionToRevoke] = useState<Session | null>(null);
+  const [isRevokingSession, setIsRevokingSession] = useState(false);
+  const [revokeSessionError, setRevokeSessionError] = useState<string | null>(null);
+
+  const [isSignOutAllModalOpen, setIsSignOutAllModalOpen] = useState(false);
+  const [isRevokingOtherSessions, setIsRevokingOtherSessions] = useState(false);
+  const [signOutAllError, setSignOutAllError] = useState<string | null>(null);
 
   const currentTheme =
     (typeof localStorage !== "undefined" && localStorage.getItem("theme")) ||
@@ -76,7 +92,8 @@ export function AccountSettingsPage() {
 
   useEffect(() => {
     refreshEmails();
-  }, [refreshEmails]);
+    refreshSessions();
+  }, [refreshEmails, refreshSessions]);
 
   // Profile form state
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatarUrl || "");
@@ -823,6 +840,67 @@ export function AccountSettingsPage() {
     });
   };
 
+  const isMobileDevice = (deviceHint: string): boolean => {
+    const lower = (deviceHint || "").toLowerCase();
+    return (
+      lower.includes("ios") ||
+      lower.includes("android") ||
+      lower.includes("mobile") ||
+      lower.includes("iphone") ||
+      lower.includes("ipad")
+    );
+  };
+
+  const formatSessionActivity = (lastActiveDate?: Date | null, isCurrent?: boolean): string => {
+    if (isCurrent) return "Active now";
+    if (!lastActiveDate) return "Active recently";
+    const diffMs = Date.now() - lastActiveDate.getTime();
+    const diffMins = Math.floor(diffMs / 60000);
+    if (diffMins < 5) return "Active now";
+    if (diffMins < 60) return `Active ${diffMins}m ago`;
+    const diffHours = Math.floor(diffMins / 60);
+    if (diffHours < 24) return `Active ${diffHours}h ago`;
+    const diffDays = Math.floor(diffHours / 24);
+    return `Active ${diffDays}d ago`;
+  };
+
+  const activeNowCount = (sessions || []).filter((s) => {
+    if (s.isCurrent) return true;
+    if (!s.lastActiveAt || !s.lastActiveAt.seconds) return false;
+    return Date.now() - Number(s.lastActiveAt.seconds) * 1000 < 5 * 60 * 1000;
+  }).length;
+
+  const hasOtherSessions = (sessions || []).some((s) => !s.isCurrent);
+
+  const handleConfirmRevokeSession = async () => {
+    if (!sessionToRevoke) return;
+    setIsRevokingSession(true);
+    setRevokeSessionError(null);
+    try {
+      await revokeSession(sessionToRevoke.uuid);
+      setSessionToRevoke(null);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to revoke session";
+      setRevokeSessionError(msg);
+    } finally {
+      setIsRevokingSession(false);
+    }
+  };
+
+  const handleConfirmSignOutAllOther = async () => {
+    setIsRevokingOtherSessions(true);
+    setSignOutAllError(null);
+    try {
+      await revokeOtherSessions();
+      setIsSignOutAllModalOpen(false);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to sign out other sessions";
+      setSignOutAllError(msg);
+    } finally {
+      setIsRevokingOtherSessions(false);
+    }
+  };
+
   const openChangeUsernameModal = async () => {
     setIsChangeUsernameOpen(true);
     setNewUsernameInput("");
@@ -1108,7 +1186,193 @@ export function AccountSettingsPage() {
         </div>
       </section>
 
-      {/* Section 2: Profile Details Form */}
+      {/* Section 2: Active Sessions */}
+      <section className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-6 space-y-4 shadow-2xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="text-sm font-bold flex items-center gap-2">
+                <Shield size={16} className="text-blue-500" />
+                <span>Active Sessions</span>
+              </h2>
+              {sessions.length > 0 && (
+                <span className="px-2 py-0.2 rounded-full text-[10px] font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700">
+                  {sessions.length} {sessions.length === 1 ? "Session" : "Sessions"}
+                  {activeNowCount > 1 ? ` (${activeNowCount} Active Now)` : ""}
+                </span>
+              )}
+            </div>
+            <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+              Devices and browsers currently logged into your account. Multiple devices may be
+              active simultaneously.
+            </p>
+          </div>
+
+          {/* Bulk Action Button */}
+          {hasOtherSessions && (
+            <button
+              type="button"
+              onClick={() => {
+                setSignOutAllError(null);
+                setIsSignOutAllModalOpen(true);
+              }}
+              className="px-3 py-1.5 rounded-xl text-xs font-semibold text-rose-600 dark:text-rose-400 border border-rose-500/30 bg-rose-500/10 hover:bg-rose-500/20 transition flex items-center gap-1.5 self-start sm:self-auto shadow-2xs cursor-pointer shrink-0"
+            >
+              <LogOut size={14} />
+              <span>Sign Out All Other Sessions</span>
+            </button>
+          )}
+        </div>
+
+        {/* Scrollable Container (> 3 sessions) */}
+        <div className="session-scroll-list max-h-[224px] overflow-y-auto pr-1.5 space-y-2">
+          {sessions.length === 0 ? (
+            <div className="text-xs text-zinc-500 py-3 text-center">
+              No active sessions recorded.
+            </div>
+          ) : (
+            sessions.map((sess) => {
+              const isCurrent = sess.isCurrent;
+              const isMobile = isMobileDevice(sess.deviceHint);
+              const isActiveNow =
+                isCurrent ||
+                (sess.lastActiveAt &&
+                  sess.lastActiveAt.seconds &&
+                  Date.now() - Number(sess.lastActiveAt.seconds) * 1000 < 5 * 60 * 1000);
+
+              if (isCurrent) {
+                return (
+                  <div
+                    key={sess.uuid}
+                    className="px-3.5 py-2.5 rounded-xl border-2 border-emerald-500/40 bg-emerald-500/5 dark:bg-emerald-950/20 flex items-center justify-between gap-3 transition-all shadow-2xs"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="p-1.5 rounded-lg bg-emerald-500/15 border border-emerald-500/30 text-emerald-600 dark:text-emerald-400 shrink-0">
+                        {isMobile ? <Smartphone size={16} /> : <Laptop size={16} />}
+                      </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap">
+                          <span className="font-bold text-xs text-zinc-900 dark:text-zinc-100 truncate">
+                            {sess.deviceHint || "Unknown Device"}
+                          </span>
+                          <span className="inline-flex items-center gap-1 px-1.5 py-0.2 rounded text-[9px] font-bold uppercase tracking-wider bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 shrink-0">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                            This Device
+                          </span>
+                          <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold shrink-0">
+                            • Active now
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 dark:text-zinc-400 truncate mt-0.5">
+                          {sess.ipAddress && (
+                            <>
+                              <span className="font-mono text-zinc-700 dark:text-zinc-300">
+                                {sess.ipAddress}
+                              </span>
+                              <span>•</span>
+                            </>
+                          )}
+                          <span className="truncate">
+                            {sess.locationHint || "Unknown Location"}
+                          </span>
+                          {sess.createdAt && sess.createdAt.seconds && (
+                            <>
+                              <span>•</span>
+                              <span className="text-zinc-400 dark:text-zinc-500">
+                                Signed in {formatTimestamp(sess.createdAt)}
+                              </span>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="shrink-0 flex items-center">
+                      <span className="text-[11px] text-zinc-400 italic font-mono px-2 py-0.5">
+                        Current
+                      </span>
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <div
+                  key={sess.uuid}
+                  className="px-3.5 py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-950/40 hover:border-zinc-300 dark:hover:border-zinc-700 flex items-center justify-between gap-3 transition-all"
+                >
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="p-1.5 rounded-lg bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-300 shrink-0">
+                      {isMobile ? <Smartphone size={16} /> : <Laptop size={16} />}
+                    </div>
+                    <div className="min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-semibold text-xs text-zinc-900 dark:text-zinc-100 truncate">
+                          {sess.deviceHint || "Unknown Device"}
+                        </span>
+                        {isMobile && (
+                          <span className="px-1.5 py-0.2 rounded text-[9px] font-medium bg-zinc-200/60 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 shrink-0">
+                            Mobile
+                          </span>
+                        )}
+                        {isActiveNow ? (
+                          <span className="inline-flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium shrink-0">
+                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            Active now
+                          </span>
+                        ) : (
+                          <span className="text-xs text-zinc-400 dark:text-zinc-500 shrink-0">
+                            •{" "}
+                            {formatSessionActivity(
+                              sess.lastActiveAt?.seconds
+                                ? new Date(Number(sess.lastActiveAt.seconds) * 1000)
+                                : null,
+                              false,
+                            )}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-1.5 text-[11px] text-zinc-500 dark:text-zinc-400 truncate mt-0.5">
+                        {sess.ipAddress && (
+                          <>
+                            <span className="font-mono text-zinc-700 dark:text-zinc-300">
+                              {sess.ipAddress}
+                            </span>
+                            <span>•</span>
+                          </>
+                        )}
+                        <span className="truncate">{sess.locationHint || "Unknown Location"}</span>
+                        {sess.createdAt && sess.createdAt.seconds && (
+                          <>
+                            <span>•</span>
+                            <span className="text-zinc-400 dark:text-zinc-500">
+                              Signed in {formatTimestamp(sess.createdAt)}
+                            </span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setRevokeSessionError(null);
+                      setSessionToRevoke(sess);
+                    }}
+                    className="px-2.5 py-1 rounded-lg text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:text-rose-600 dark:hover:text-rose-400 border border-zinc-300 dark:border-zinc-700 hover:border-rose-400 dark:hover:border-rose-500/50 bg-white dark:bg-zinc-900 hover:bg-rose-50 dark:hover:bg-rose-950/30 transition flex items-center gap-1 shadow-2xs cursor-pointer shrink-0"
+                  >
+                    <X size={12} />
+                    <span>Revoke</span>
+                  </button>
+                </div>
+              );
+            })
+          )}
+        </div>
+      </section>
+
+      {/* Section 3: Profile Details Form */}
       <form
         onSubmit={handleSave}
         className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-6 space-y-6 shadow-2xs"
@@ -2211,6 +2475,122 @@ export function AccountSettingsPage() {
                 </div>
               </>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Confirm Revoke Session */}
+      {sessionToRevoke && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
+          <div
+            role="dialog"
+            aria-label="Revoke Session"
+            className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl p-6 space-y-5"
+          >
+            <div className="flex items-start gap-3">
+              <div className="p-2.5 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 shrink-0">
+                <AlertTriangle size={20} />
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
+                  Revoke Session?
+                </h4>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                  This will immediately log out{" "}
+                  <strong className="text-zinc-800 dark:text-zinc-200 font-mono">
+                    {sessionToRevoke.deviceHint || "Unknown Device"}
+                  </strong>
+                  {sessionToRevoke.ipAddress ? ` (${sessionToRevoke.ipAddress})` : ""}. Any active
+                  work on that device will require re-authentication.
+                </p>
+              </div>
+            </div>
+
+            {revokeSessionError && (
+              <div className="p-3 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400 text-xs flex items-start gap-2">
+                <AlertCircle size={15} className="shrink-0 mt-0.5" />
+                <div className="leading-relaxed text-[11px]">{revokeSessionError}</div>
+              </div>
+            )}
+
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setSessionToRevoke(null);
+                  setRevokeSessionError(null);
+                }}
+                disabled={isRevokingSession}
+                className="px-4 py-2 rounded-xl text-xs font-semibold border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition cursor-pointer disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmRevokeSession}
+                disabled={isRevokingSession}
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-rose-600 hover:bg-rose-500 transition shadow-2xs cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+              >
+                {isRevokingSession && <Loader2 size={13} className="animate-spin" />}
+                <span>Revoke Session</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal: Confirm Sign Out All Other Sessions */}
+      {isSignOutAllModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
+          <div
+            role="dialog"
+            aria-label="Sign Out All Other Sessions"
+            className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl p-6 space-y-5"
+          >
+            <div className="flex items-start gap-3">
+              <div className="p-2.5 rounded-xl bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 shrink-0">
+                <LogOut size={20} />
+              </div>
+              <div className="space-y-1">
+                <h4 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
+                  Sign Out All Other Sessions?
+                </h4>
+                <p className="text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed">
+                  All active login sessions on your other devices will be immediately revoked. Your
+                  current browser session on this device will remain active.
+                </p>
+              </div>
+            </div>
+
+            {signOutAllError && (
+              <div className="p-3 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400 text-xs flex items-start gap-2">
+                <AlertCircle size={15} className="shrink-0 mt-0.5" />
+                <div className="leading-relaxed text-[11px]">{signOutAllError}</div>
+              </div>
+            )}
+
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsSignOutAllModalOpen(false);
+                  setSignOutAllError(null);
+                }}
+                disabled={isRevokingOtherSessions}
+                className="px-4 py-2 rounded-xl text-xs font-semibold border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition cursor-pointer disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmSignOutAllOther}
+                disabled={isRevokingOtherSessions}
+                className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-rose-600 hover:bg-rose-500 transition shadow-2xs cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+              >
+                {isRevokingOtherSessions && <Loader2 size={13} className="animate-spin" />}
+                <span>Sign Out Others</span>
+              </button>
+            </div>
           </div>
         </div>
       )}

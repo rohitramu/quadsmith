@@ -346,7 +346,8 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 		}), nil
 	}
 
-	return s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"))
+	locationHint := extractLocationHint(req.Header(), clientIP)
+	return s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"), clientIP, locationHint)
 }
 
 func (s *AuthService) VerifyMagicLink(ctx context.Context, req *connect.Request[pb.VerifyMagicLinkRequest]) (*connect.Response[pb.AuthResponse], error) {
@@ -408,7 +409,8 @@ func (s *AuthService) VerifyMagicLink(ctx context.Context, req *connect.Request[
 		}), nil
 	}
 
-	return s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"))
+	locationHint := extractLocationHint(req.Header(), clientIP)
+	return s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"), clientIP, locationHint)
 }
 
 func (s *AuthService) GetLoginChallengeDetails(ctx context.Context, req *connect.Request[pb.GetLoginChallengeDetailsRequest]) (*connect.Response[pb.GetLoginChallengeDetailsResponse], error) {
@@ -593,7 +595,8 @@ func (s *AuthService) GetLoginChallengeStatus(ctx context.Context, req *connect.
 			}), nil
 		}
 
-		authRes, err := s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"))
+		locationHint := extractLocationHint(req.Header(), clientIP)
+		authRes, err := s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"), clientIP, locationHint)
 		if err != nil {
 			return nil, err
 		}
@@ -710,7 +713,8 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 		return nil, connect.NewError(connect.CodeResourceExhausted, err)
 	}
 
-	return s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"))
+	locationHint := extractLocationHint(req.Header(), clientIP)
+	return s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"), clientIP, locationHint)
 }
 
 func (s *AuthService) userExistsForEmail(ctx context.Context, email string) (bool, error) {
@@ -764,10 +768,24 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 
 	// sliding window: roll expiration forward to NOW() + RefreshTokenTTL
 	newExpiresAt := time.Now().Add(s.cfg.RefreshTokenTTL)
-	_, err = s.db.Exec(ctx, `
-		UPDATE refresh_tokens
-		SET expires_at = $1, last_used_at = NOW()
-		WHERE uuid = $2`, newExpiresAt, sessionUUID)
+	clientIP := getClientIP(req)
+	locationHint := extractLocationHint(req.Header(), clientIP)
+	if clientIP != "" && locationHint != "" && locationHint != "Unknown Location" {
+		_, err = s.db.Exec(ctx, `
+			UPDATE refresh_tokens
+			SET expires_at = $1, last_used_at = NOW(), ip_address = $3, location_hint = $4
+			WHERE uuid = $2`, newExpiresAt, sessionUUID, clientIP, locationHint)
+	} else if clientIP != "" {
+		_, err = s.db.Exec(ctx, `
+			UPDATE refresh_tokens
+			SET expires_at = $1, last_used_at = NOW(), ip_address = $3
+			WHERE uuid = $2`, newExpiresAt, sessionUUID, clientIP)
+	} else {
+		_, err = s.db.Exec(ctx, `
+			UPDATE refresh_tokens
+			SET expires_at = $1, last_used_at = NOW()
+			WHERE uuid = $2`, newExpiresAt, sessionUUID)
+	}
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -930,6 +948,133 @@ func (s *AuthService) Logout(ctx context.Context, req *connect.Request[pb.Logout
 	res.Header().Set("Set-Cookie", clearCookie.String())
 
 	return res, nil
+}
+
+func (s *AuthService) ListActiveSessions(ctx context.Context, _ *connect.Request[pb.ListActiveSessionsRequest]) (*connect.Response[pb.ListActiveSessionsResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+
+	rows, err := s.db.Query(ctx, `
+		SELECT uuid, device_hint, ip_address, location_hint, created_at, last_used_at
+		FROM refresh_tokens
+		WHERE user_uuid = $1 AND (expires_at IS NULL OR expires_at > NOW())
+		ORDER BY (uuid = $2) DESC, COALESCE(last_used_at, created_at) DESC`,
+		userCtx.UserUUID, userCtx.SessionUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to query sessions: %w", err))
+	}
+	defer rows.Close()
+
+	var sessions []*pb.Session
+	for rows.Next() {
+		var sessionUUID, deviceHint, ipAddress, locationHint string
+		var createdAt, lastUsedAt *time.Time
+		if err := rows.Scan(&sessionUUID, &deviceHint, &ipAddress, &locationHint, &createdAt, &lastUsedAt); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to scan session: %w", err))
+		}
+
+		sess := &pb.Session{
+			Uuid:         sessionUUID,
+			DeviceHint:   deviceHint,
+			IpAddress:    ipAddress,
+			LocationHint: locationHint,
+			IsCurrent:    userCtx.SessionUUID != "" && sessionUUID == userCtx.SessionUUID,
+		}
+		if createdAt != nil {
+			sess.CreatedAt = timestamppb.New(*createdAt)
+		}
+		if lastUsedAt != nil {
+			sess.LastActiveAt = timestamppb.New(*lastUsedAt)
+		} else if createdAt != nil {
+			sess.LastActiveAt = timestamppb.New(*createdAt)
+		}
+		sessions = append(sessions, sess)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("error reading sessions: %w", err))
+	}
+
+	return connect.NewResponse(&pb.ListActiveSessionsResponse{
+		Sessions: sessions,
+	}), nil
+}
+
+func (s *AuthService) RevokeSession(ctx context.Context, req *connect.Request[pb.RevokeSessionRequest]) (*connect.Response[pb.RevokeSessionResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+
+	sessionUUID := strings.TrimSpace(req.Msg.GetSessionUuid())
+	if sessionUUID == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("session_uuid is required"))
+	}
+
+	tag, err := s.db.Exec(ctx, `
+		DELETE FROM refresh_tokens
+		WHERE uuid = $1 AND user_uuid = $2`,
+		sessionUUID, userCtx.UserUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to revoke session: %w", err))
+	}
+	if tag.RowsAffected() == 0 {
+		return nil, connect.NewError(connect.CodeNotFound, errors.New("session not found"))
+	}
+
+	res := connect.NewResponse(&pb.RevokeSessionResponse{
+		Success: true,
+		Message: "Session revoked successfully",
+	})
+	if userCtx.SessionUUID != "" && sessionUUID == userCtx.SessionUUID {
+		clearCookie := &http.Cookie{
+			Name:     "qs_session",
+			Value:    "",
+			Path:     "/",
+			MaxAge:   -1,
+			HttpOnly: true,
+			SameSite: http.SameSiteLaxMode,
+		}
+		res.Header().Set("Set-Cookie", clearCookie.String())
+	}
+	return res, nil
+}
+
+func (s *AuthService) RevokeOtherSessions(ctx context.Context, _ *connect.Request[pb.RevokeOtherSessionsRequest]) (*connect.Response[pb.RevokeOtherSessionsResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+
+	var tag any
+	var count int32
+	if userCtx.SessionUUID != "" {
+		cmdTag, err := s.db.Exec(ctx, `
+			DELETE FROM refresh_tokens
+			WHERE user_uuid = $1 AND uuid != $2`,
+			userCtx.UserUUID, userCtx.SessionUUID)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to revoke other sessions: %w", err))
+		}
+		count = int32(cmdTag.RowsAffected())
+	} else {
+		cmdTag, err := s.db.Exec(ctx, `
+			DELETE FROM refresh_tokens
+			WHERE user_uuid = $1`,
+			userCtx.UserUUID)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to revoke other sessions: %w", err))
+		}
+		count = int32(cmdTag.RowsAffected())
+	}
+	_ = tag
+
+	return connect.NewResponse(&pb.RevokeOtherSessionsResponse{
+		Success:      true,
+		RevokedCount: count,
+		Message:      fmt.Sprintf("%d other session(s) revoked successfully", count),
+	}), nil
 }
 
 func (s *AuthService) ListUserEmails(ctx context.Context, req *connect.Request[pb.ListUserEmailsRequest]) (*connect.Response[pb.ListUserEmailsResponse], error) {
@@ -2133,6 +2278,12 @@ func parseDeviceHint(ua string) string {
 	if ua == "" {
 		return "Web Browser"
 	}
+	if strings.Contains(ua, "qs") || strings.Contains(ua, "Quadsmith") {
+		return "Quadsmith CLI"
+	}
+	if strings.Contains(ua, " on ") || (!strings.Contains(ua, "Mozilla/") && !strings.Contains(ua, "Go-http-client") && len(ua) < 40) {
+		return ua
+	}
 	osName := ""
 	switch {
 	case strings.Contains(ua, "iPhone") || strings.Contains(ua, "iPad") || strings.Contains(ua, "iOS"):
@@ -2307,7 +2458,7 @@ func extractChallengeID(reqChallenge string, header http.Header) string {
 	return ""
 }
 
-func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint string) (*connect.Response[pb.AuthResponse], error) {
+func (s *AuthService) issueAuthSession(ctx context.Context, email, userAgent, clientIP, locationHint string) (*connect.Response[pb.AuthResponse], error) {
 	var user pb.User
 	var userUUID, username, role string
 	var lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
@@ -2402,12 +2553,13 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, deviceHint st
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
+	deviceHint := parseDeviceHint(userAgent)
 	now := time.Now()
 	expiresAt := now.Add(s.cfg.RefreshTokenTTL)
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO refresh_tokens (uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, created_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $5)`,
-		sessionUUID, userUUID, tokenHash, expiresAt, now, deviceHint)
+		INSERT INTO refresh_tokens (uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, ip_address, location_hint, created_at)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $5)`,
+		sessionUUID, userUUID, tokenHash, expiresAt, now, deviceHint, clientIP, locationHint)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save session: %w", err))
 	}

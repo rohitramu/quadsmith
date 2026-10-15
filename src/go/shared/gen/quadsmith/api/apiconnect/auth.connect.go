@@ -68,6 +68,15 @@ const (
 	AuthServiceUpdateProfileProcedure = "/quadsmith.api.AuthService/UpdateProfile"
 	// AuthServiceLogoutProcedure is the fully-qualified name of the AuthService's Logout RPC.
 	AuthServiceLogoutProcedure = "/quadsmith.api.AuthService/Logout"
+	// AuthServiceListActiveSessionsProcedure is the fully-qualified name of the AuthService's
+	// ListActiveSessions RPC.
+	AuthServiceListActiveSessionsProcedure = "/quadsmith.api.AuthService/ListActiveSessions"
+	// AuthServiceRevokeSessionProcedure is the fully-qualified name of the AuthService's RevokeSession
+	// RPC.
+	AuthServiceRevokeSessionProcedure = "/quadsmith.api.AuthService/RevokeSession"
+	// AuthServiceRevokeOtherSessionsProcedure is the fully-qualified name of the AuthService's
+	// RevokeOtherSessions RPC.
+	AuthServiceRevokeOtherSessionsProcedure = "/quadsmith.api.AuthService/RevokeOtherSessions"
 	// AuthServiceListUserEmailsProcedure is the fully-qualified name of the AuthService's
 	// ListUserEmails RPC.
 	AuthServiceListUserEmailsProcedure = "/quadsmith.api.AuthService/ListUserEmails"
@@ -123,6 +132,9 @@ type AuthServiceClient interface {
 	GetCurrentUser(context.Context, *connect.Request[api.GetCurrentUserRequest]) (*connect.Response[api.User], error)
 	UpdateProfile(context.Context, *connect.Request[api.UpdateProfileRequest]) (*connect.Response[api.UserProfile], error)
 	Logout(context.Context, *connect.Request[api.LogoutRequest]) (*connect.Response[api.LogoutResponse], error)
+	ListActiveSessions(context.Context, *connect.Request[api.ListActiveSessionsRequest]) (*connect.Response[api.ListActiveSessionsResponse], error)
+	RevokeSession(context.Context, *connect.Request[api.RevokeSessionRequest]) (*connect.Response[api.RevokeSessionResponse], error)
+	RevokeOtherSessions(context.Context, *connect.Request[api.RevokeOtherSessionsRequest]) (*connect.Response[api.RevokeOtherSessionsResponse], error)
 	ListUserEmails(context.Context, *connect.Request[api.ListUserEmailsRequest]) (*connect.Response[api.ListUserEmailsResponse], error)
 	SendAddEmailOtp(context.Context, *connect.Request[api.SendAddEmailOtpRequest]) (*connect.Response[api.SendEmailOtpResponse], error)
 	VerifyAddEmailOtp(context.Context, *connect.Request[api.VerifyAddEmailOtpRequest]) (*connect.Response[api.VerifyAddEmailOtpResponse], error)
@@ -221,6 +233,24 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("Logout")),
 			connect.WithClientOptions(opts...),
 		),
+		listActiveSessions: connect.NewClient[api.ListActiveSessionsRequest, api.ListActiveSessionsResponse](
+			httpClient,
+			baseURL+AuthServiceListActiveSessionsProcedure,
+			connect.WithSchema(authServiceMethods.ByName("ListActiveSessions")),
+			connect.WithClientOptions(opts...),
+		),
+		revokeSession: connect.NewClient[api.RevokeSessionRequest, api.RevokeSessionResponse](
+			httpClient,
+			baseURL+AuthServiceRevokeSessionProcedure,
+			connect.WithSchema(authServiceMethods.ByName("RevokeSession")),
+			connect.WithClientOptions(opts...),
+		),
+		revokeOtherSessions: connect.NewClient[api.RevokeOtherSessionsRequest, api.RevokeOtherSessionsResponse](
+			httpClient,
+			baseURL+AuthServiceRevokeOtherSessionsProcedure,
+			connect.WithSchema(authServiceMethods.ByName("RevokeOtherSessions")),
+			connect.WithClientOptions(opts...),
+		),
 		listUserEmails: connect.NewClient[api.ListUserEmailsRequest, api.ListUserEmailsResponse](
 			httpClient,
 			baseURL+AuthServiceListUserEmailsProcedure,
@@ -316,6 +346,9 @@ type authServiceClient struct {
 	getCurrentUser                *connect.Client[api.GetCurrentUserRequest, api.User]
 	updateProfile                 *connect.Client[api.UpdateProfileRequest, api.UserProfile]
 	logout                        *connect.Client[api.LogoutRequest, api.LogoutResponse]
+	listActiveSessions            *connect.Client[api.ListActiveSessionsRequest, api.ListActiveSessionsResponse]
+	revokeSession                 *connect.Client[api.RevokeSessionRequest, api.RevokeSessionResponse]
+	revokeOtherSessions           *connect.Client[api.RevokeOtherSessionsRequest, api.RevokeOtherSessionsResponse]
 	listUserEmails                *connect.Client[api.ListUserEmailsRequest, api.ListUserEmailsResponse]
 	sendAddEmailOtp               *connect.Client[api.SendAddEmailOtpRequest, api.SendEmailOtpResponse]
 	verifyAddEmailOtp             *connect.Client[api.VerifyAddEmailOtpRequest, api.VerifyAddEmailOtpResponse]
@@ -389,6 +422,21 @@ func (c *authServiceClient) UpdateProfile(ctx context.Context, req *connect.Requ
 // Logout calls quadsmith.api.AuthService.Logout.
 func (c *authServiceClient) Logout(ctx context.Context, req *connect.Request[api.LogoutRequest]) (*connect.Response[api.LogoutResponse], error) {
 	return c.logout.CallUnary(ctx, req)
+}
+
+// ListActiveSessions calls quadsmith.api.AuthService.ListActiveSessions.
+func (c *authServiceClient) ListActiveSessions(ctx context.Context, req *connect.Request[api.ListActiveSessionsRequest]) (*connect.Response[api.ListActiveSessionsResponse], error) {
+	return c.listActiveSessions.CallUnary(ctx, req)
+}
+
+// RevokeSession calls quadsmith.api.AuthService.RevokeSession.
+func (c *authServiceClient) RevokeSession(ctx context.Context, req *connect.Request[api.RevokeSessionRequest]) (*connect.Response[api.RevokeSessionResponse], error) {
+	return c.revokeSession.CallUnary(ctx, req)
+}
+
+// RevokeOtherSessions calls quadsmith.api.AuthService.RevokeOtherSessions.
+func (c *authServiceClient) RevokeOtherSessions(ctx context.Context, req *connect.Request[api.RevokeOtherSessionsRequest]) (*connect.Response[api.RevokeOtherSessionsResponse], error) {
+	return c.revokeOtherSessions.CallUnary(ctx, req)
 }
 
 // ListUserEmails calls quadsmith.api.AuthService.ListUserEmails.
@@ -470,6 +518,9 @@ type AuthServiceHandler interface {
 	GetCurrentUser(context.Context, *connect.Request[api.GetCurrentUserRequest]) (*connect.Response[api.User], error)
 	UpdateProfile(context.Context, *connect.Request[api.UpdateProfileRequest]) (*connect.Response[api.UserProfile], error)
 	Logout(context.Context, *connect.Request[api.LogoutRequest]) (*connect.Response[api.LogoutResponse], error)
+	ListActiveSessions(context.Context, *connect.Request[api.ListActiveSessionsRequest]) (*connect.Response[api.ListActiveSessionsResponse], error)
+	RevokeSession(context.Context, *connect.Request[api.RevokeSessionRequest]) (*connect.Response[api.RevokeSessionResponse], error)
+	RevokeOtherSessions(context.Context, *connect.Request[api.RevokeOtherSessionsRequest]) (*connect.Response[api.RevokeOtherSessionsResponse], error)
 	ListUserEmails(context.Context, *connect.Request[api.ListUserEmailsRequest]) (*connect.Response[api.ListUserEmailsResponse], error)
 	SendAddEmailOtp(context.Context, *connect.Request[api.SendAddEmailOtpRequest]) (*connect.Response[api.SendEmailOtpResponse], error)
 	VerifyAddEmailOtp(context.Context, *connect.Request[api.VerifyAddEmailOtpRequest]) (*connect.Response[api.VerifyAddEmailOtpResponse], error)
@@ -562,6 +613,24 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		AuthServiceLogoutProcedure,
 		svc.Logout,
 		connect.WithSchema(authServiceMethods.ByName("Logout")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceListActiveSessionsHandler := connect.NewUnaryHandler(
+		AuthServiceListActiveSessionsProcedure,
+		svc.ListActiveSessions,
+		connect.WithSchema(authServiceMethods.ByName("ListActiveSessions")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceRevokeSessionHandler := connect.NewUnaryHandler(
+		AuthServiceRevokeSessionProcedure,
+		svc.RevokeSession,
+		connect.WithSchema(authServiceMethods.ByName("RevokeSession")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceRevokeOtherSessionsHandler := connect.NewUnaryHandler(
+		AuthServiceRevokeOtherSessionsProcedure,
+		svc.RevokeOtherSessions,
+		connect.WithSchema(authServiceMethods.ByName("RevokeOtherSessions")),
 		connect.WithHandlerOptions(opts...),
 	)
 	authServiceListUserEmailsHandler := connect.NewUnaryHandler(
@@ -668,6 +737,12 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 			authServiceUpdateProfileHandler.ServeHTTP(w, r)
 		case AuthServiceLogoutProcedure:
 			authServiceLogoutHandler.ServeHTTP(w, r)
+		case AuthServiceListActiveSessionsProcedure:
+			authServiceListActiveSessionsHandler.ServeHTTP(w, r)
+		case AuthServiceRevokeSessionProcedure:
+			authServiceRevokeSessionHandler.ServeHTTP(w, r)
+		case AuthServiceRevokeOtherSessionsProcedure:
+			authServiceRevokeOtherSessionsHandler.ServeHTTP(w, r)
 		case AuthServiceListUserEmailsProcedure:
 			authServiceListUserEmailsHandler.ServeHTTP(w, r)
 		case AuthServiceSendAddEmailOtpProcedure:
@@ -749,6 +824,18 @@ func (UnimplementedAuthServiceHandler) UpdateProfile(context.Context, *connect.R
 
 func (UnimplementedAuthServiceHandler) Logout(context.Context, *connect.Request[api.LogoutRequest]) (*connect.Response[api.LogoutResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.Logout is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) ListActiveSessions(context.Context, *connect.Request[api.ListActiveSessionsRequest]) (*connect.Response[api.ListActiveSessionsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.ListActiveSessions is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) RevokeSession(context.Context, *connect.Request[api.RevokeSessionRequest]) (*connect.Response[api.RevokeSessionResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.RevokeSession is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) RevokeOtherSessions(context.Context, *connect.Request[api.RevokeOtherSessionsRequest]) (*connect.Response[api.RevokeOtherSessionsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.RevokeOtherSessions is not implemented"))
 }
 
 func (UnimplementedAuthServiceHandler) ListUserEmails(context.Context, *connect.Request[api.ListUserEmailsRequest]) (*connect.Response[api.ListUserEmailsResponse], error) {

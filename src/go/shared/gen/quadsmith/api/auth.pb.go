@@ -1006,6 +1006,370 @@ func (x *LogoutResponse) GetSuccess() bool {
 	return false
 }
 
+type ListActiveSessionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListActiveSessionsRequest) Reset() {
+	*x = ListActiveSessionsRequest{}
+	mi := &file_quadsmith_api_auth_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListActiveSessionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListActiveSessionsRequest) ProtoMessage() {}
+
+func (x *ListActiveSessionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_auth_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListActiveSessionsRequest.ProtoReflect.Descriptor instead.
+func (*ListActiveSessionsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{18}
+}
+
+type ListActiveSessionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Sessions      []*Session             `protobuf:"bytes,1,rep,name=sessions,proto3" json:"sessions,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListActiveSessionsResponse) Reset() {
+	*x = ListActiveSessionsResponse{}
+	mi := &file_quadsmith_api_auth_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListActiveSessionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListActiveSessionsResponse) ProtoMessage() {}
+
+func (x *ListActiveSessionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_auth_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListActiveSessionsResponse.ProtoReflect.Descriptor instead.
+func (*ListActiveSessionsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ListActiveSessionsResponse) GetSessions() []*Session {
+	if x != nil {
+		return x.Sessions
+	}
+	return nil
+}
+
+type Session struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	DeviceHint    string                 `protobuf:"bytes,2,opt,name=device_hint,json=deviceHint,proto3" json:"device_hint,omitempty"`
+	IpAddress     string                 `protobuf:"bytes,3,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
+	LocationHint  string                 `protobuf:"bytes,4,opt,name=location_hint,json=locationHint,proto3" json:"location_hint,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	LastActiveAt  *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=last_active_at,json=lastActiveAt,proto3" json:"last_active_at,omitempty"`
+	IsCurrent     bool                   `protobuf:"varint,7,opt,name=is_current,json=isCurrent,proto3" json:"is_current,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Session) Reset() {
+	*x = Session{}
+	mi := &file_quadsmith_api_auth_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Session) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Session) ProtoMessage() {}
+
+func (x *Session) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_auth_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Session.ProtoReflect.Descriptor instead.
+func (*Session) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *Session) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+func (x *Session) GetDeviceHint() string {
+	if x != nil {
+		return x.DeviceHint
+	}
+	return ""
+}
+
+func (x *Session) GetIpAddress() string {
+	if x != nil {
+		return x.IpAddress
+	}
+	return ""
+}
+
+func (x *Session) GetLocationHint() string {
+	if x != nil {
+		return x.LocationHint
+	}
+	return ""
+}
+
+func (x *Session) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *Session) GetLastActiveAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.LastActiveAt
+	}
+	return nil
+}
+
+func (x *Session) GetIsCurrent() bool {
+	if x != nil {
+		return x.IsCurrent
+	}
+	return false
+}
+
+type RevokeSessionRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SessionUuid   string                 `protobuf:"bytes,1,opt,name=session_uuid,json=sessionUuid,proto3" json:"session_uuid,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeSessionRequest) Reset() {
+	*x = RevokeSessionRequest{}
+	mi := &file_quadsmith_api_auth_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeSessionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeSessionRequest) ProtoMessage() {}
+
+func (x *RevokeSessionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_auth_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeSessionRequest.ProtoReflect.Descriptor instead.
+func (*RevokeSessionRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *RevokeSessionRequest) GetSessionUuid() string {
+	if x != nil {
+		return x.SessionUuid
+	}
+	return ""
+}
+
+type RevokeSessionResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeSessionResponse) Reset() {
+	*x = RevokeSessionResponse{}
+	mi := &file_quadsmith_api_auth_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeSessionResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeSessionResponse) ProtoMessage() {}
+
+func (x *RevokeSessionResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_auth_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeSessionResponse.ProtoReflect.Descriptor instead.
+func (*RevokeSessionResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *RevokeSessionResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *RevokeSessionResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type RevokeOtherSessionsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeOtherSessionsRequest) Reset() {
+	*x = RevokeOtherSessionsRequest{}
+	mi := &file_quadsmith_api_auth_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeOtherSessionsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeOtherSessionsRequest) ProtoMessage() {}
+
+func (x *RevokeOtherSessionsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_auth_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeOtherSessionsRequest.ProtoReflect.Descriptor instead.
+func (*RevokeOtherSessionsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{23}
+}
+
+type RevokeOtherSessionsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	RevokedCount  int32                  `protobuf:"varint,2,opt,name=revoked_count,json=revokedCount,proto3" json:"revoked_count,omitempty"`
+	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RevokeOtherSessionsResponse) Reset() {
+	*x = RevokeOtherSessionsResponse{}
+	mi := &file_quadsmith_api_auth_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RevokeOtherSessionsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RevokeOtherSessionsResponse) ProtoMessage() {}
+
+func (x *RevokeOtherSessionsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_auth_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RevokeOtherSessionsResponse.ProtoReflect.Descriptor instead.
+func (*RevokeOtherSessionsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *RevokeOtherSessionsResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *RevokeOtherSessionsResponse) GetRevokedCount() int32 {
+	if x != nil {
+		return x.RevokedCount
+	}
+	return 0
+}
+
+func (x *RevokeOtherSessionsResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
 type ListUserEmailsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
@@ -1014,7 +1378,7 @@ type ListUserEmailsRequest struct {
 
 func (x *ListUserEmailsRequest) Reset() {
 	*x = ListUserEmailsRequest{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[18]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1026,7 +1390,7 @@ func (x *ListUserEmailsRequest) String() string {
 func (*ListUserEmailsRequest) ProtoMessage() {}
 
 func (x *ListUserEmailsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[18]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1039,7 +1403,7 @@ func (x *ListUserEmailsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListUserEmailsRequest.ProtoReflect.Descriptor instead.
 func (*ListUserEmailsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{18}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{25}
 }
 
 type ListUserEmailsResponse struct {
@@ -1051,7 +1415,7 @@ type ListUserEmailsResponse struct {
 
 func (x *ListUserEmailsResponse) Reset() {
 	*x = ListUserEmailsResponse{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[19]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1063,7 +1427,7 @@ func (x *ListUserEmailsResponse) String() string {
 func (*ListUserEmailsResponse) ProtoMessage() {}
 
 func (x *ListUserEmailsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[19]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1076,7 +1440,7 @@ func (x *ListUserEmailsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListUserEmailsResponse.ProtoReflect.Descriptor instead.
 func (*ListUserEmailsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{19}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *ListUserEmailsResponse) GetEmails() []*UserEmail {
@@ -1095,7 +1459,7 @@ type SendAddEmailOtpRequest struct {
 
 func (x *SendAddEmailOtpRequest) Reset() {
 	*x = SendAddEmailOtpRequest{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[20]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1107,7 +1471,7 @@ func (x *SendAddEmailOtpRequest) String() string {
 func (*SendAddEmailOtpRequest) ProtoMessage() {}
 
 func (x *SendAddEmailOtpRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[20]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1120,7 +1484,7 @@ func (x *SendAddEmailOtpRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendAddEmailOtpRequest.ProtoReflect.Descriptor instead.
 func (*SendAddEmailOtpRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{20}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *SendAddEmailOtpRequest) GetEmail() string {
@@ -1142,7 +1506,7 @@ type VerifyAddEmailOtpRequest struct {
 
 func (x *VerifyAddEmailOtpRequest) Reset() {
 	*x = VerifyAddEmailOtpRequest{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[21]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1154,7 +1518,7 @@ func (x *VerifyAddEmailOtpRequest) String() string {
 func (*VerifyAddEmailOtpRequest) ProtoMessage() {}
 
 func (x *VerifyAddEmailOtpRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[21]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1167,7 +1531,7 @@ func (x *VerifyAddEmailOtpRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VerifyAddEmailOtpRequest.ProtoReflect.Descriptor instead.
 func (*VerifyAddEmailOtpRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{21}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *VerifyAddEmailOtpRequest) GetEmail() string {
@@ -1215,7 +1579,7 @@ type VerifyAddEmailOtpResponse struct {
 
 func (x *VerifyAddEmailOtpResponse) Reset() {
 	*x = VerifyAddEmailOtpResponse{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[22]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1227,7 +1591,7 @@ func (x *VerifyAddEmailOtpResponse) String() string {
 func (*VerifyAddEmailOtpResponse) ProtoMessage() {}
 
 func (x *VerifyAddEmailOtpResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[22]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1240,7 +1604,7 @@ func (x *VerifyAddEmailOtpResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VerifyAddEmailOtpResponse.ProtoReflect.Descriptor instead.
 func (*VerifyAddEmailOtpResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{22}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{29}
 }
 
 func (x *VerifyAddEmailOtpResponse) GetSuccess() bool {
@@ -1319,7 +1683,7 @@ type MergeAccountRequest struct {
 
 func (x *MergeAccountRequest) Reset() {
 	*x = MergeAccountRequest{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[23]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1331,7 +1695,7 @@ func (x *MergeAccountRequest) String() string {
 func (*MergeAccountRequest) ProtoMessage() {}
 
 func (x *MergeAccountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[23]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1344,7 +1708,7 @@ func (x *MergeAccountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MergeAccountRequest.ProtoReflect.Descriptor instead.
 func (*MergeAccountRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{23}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *MergeAccountRequest) GetEmail() string {
@@ -1395,7 +1759,7 @@ type MergeAccountResponse struct {
 
 func (x *MergeAccountResponse) Reset() {
 	*x = MergeAccountResponse{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[24]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[31]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1407,7 +1771,7 @@ func (x *MergeAccountResponse) String() string {
 func (*MergeAccountResponse) ProtoMessage() {}
 
 func (x *MergeAccountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[24]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[31]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1420,7 +1784,7 @@ func (x *MergeAccountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MergeAccountResponse.ProtoReflect.Descriptor instead.
 func (*MergeAccountResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{24}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{31}
 }
 
 func (x *MergeAccountResponse) GetSuccess() bool {
@@ -1467,7 +1831,7 @@ type SetPrimaryEmailRequest struct {
 
 func (x *SetPrimaryEmailRequest) Reset() {
 	*x = SetPrimaryEmailRequest{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[25]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[32]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1479,7 +1843,7 @@ func (x *SetPrimaryEmailRequest) String() string {
 func (*SetPrimaryEmailRequest) ProtoMessage() {}
 
 func (x *SetPrimaryEmailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[25]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[32]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1492,7 +1856,7 @@ func (x *SetPrimaryEmailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetPrimaryEmailRequest.ProtoReflect.Descriptor instead.
 func (*SetPrimaryEmailRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{25}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{32}
 }
 
 func (x *SetPrimaryEmailRequest) GetEmail() string {
@@ -1512,7 +1876,7 @@ type SetPrimaryEmailResponse struct {
 
 func (x *SetPrimaryEmailResponse) Reset() {
 	*x = SetPrimaryEmailResponse{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[26]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[33]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1524,7 +1888,7 @@ func (x *SetPrimaryEmailResponse) String() string {
 func (*SetPrimaryEmailResponse) ProtoMessage() {}
 
 func (x *SetPrimaryEmailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[26]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[33]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1537,7 +1901,7 @@ func (x *SetPrimaryEmailResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetPrimaryEmailResponse.ProtoReflect.Descriptor instead.
 func (*SetPrimaryEmailResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{26}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{33}
 }
 
 func (x *SetPrimaryEmailResponse) GetSuccess() bool {
@@ -1563,7 +1927,7 @@ type RemoveUserEmailRequest struct {
 
 func (x *RemoveUserEmailRequest) Reset() {
 	*x = RemoveUserEmailRequest{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[27]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[34]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1575,7 +1939,7 @@ func (x *RemoveUserEmailRequest) String() string {
 func (*RemoveUserEmailRequest) ProtoMessage() {}
 
 func (x *RemoveUserEmailRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[27]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[34]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1588,7 +1952,7 @@ func (x *RemoveUserEmailRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveUserEmailRequest.ProtoReflect.Descriptor instead.
 func (*RemoveUserEmailRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{27}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{34}
 }
 
 func (x *RemoveUserEmailRequest) GetEmail() string {
@@ -1608,7 +1972,7 @@ type RemoveUserEmailResponse struct {
 
 func (x *RemoveUserEmailResponse) Reset() {
 	*x = RemoveUserEmailResponse{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[28]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[35]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1620,7 +1984,7 @@ func (x *RemoveUserEmailResponse) String() string {
 func (*RemoveUserEmailResponse) ProtoMessage() {}
 
 func (x *RemoveUserEmailResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[28]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[35]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1633,7 +1997,7 @@ func (x *RemoveUserEmailResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RemoveUserEmailResponse.ProtoReflect.Descriptor instead.
 func (*RemoveUserEmailResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{28}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{35}
 }
 
 func (x *RemoveUserEmailResponse) GetSuccess() bool {
@@ -1659,7 +2023,7 @@ type ChangeUsernameRequest struct {
 
 func (x *ChangeUsernameRequest) Reset() {
 	*x = ChangeUsernameRequest{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[29]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[36]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1671,7 +2035,7 @@ func (x *ChangeUsernameRequest) String() string {
 func (*ChangeUsernameRequest) ProtoMessage() {}
 
 func (x *ChangeUsernameRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[29]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[36]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1684,7 +2048,7 @@ func (x *ChangeUsernameRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangeUsernameRequest.ProtoReflect.Descriptor instead.
 func (*ChangeUsernameRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{29}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{36}
 }
 
 func (x *ChangeUsernameRequest) GetNewUsername() string {
@@ -1707,7 +2071,7 @@ type ChangeUsernameResponse struct {
 
 func (x *ChangeUsernameResponse) Reset() {
 	*x = ChangeUsernameResponse{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[30]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1719,7 +2083,7 @@ func (x *ChangeUsernameResponse) String() string {
 func (*ChangeUsernameResponse) ProtoMessage() {}
 
 func (x *ChangeUsernameResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[30]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1732,7 +2096,7 @@ func (x *ChangeUsernameResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ChangeUsernameResponse.ProtoReflect.Descriptor instead.
 func (*ChangeUsernameResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{30}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *ChangeUsernameResponse) GetSuccess() bool {
@@ -1778,7 +2142,7 @@ type ListArchivedUsernamesRequest struct {
 
 func (x *ListArchivedUsernamesRequest) Reset() {
 	*x = ListArchivedUsernamesRequest{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[31]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1790,7 +2154,7 @@ func (x *ListArchivedUsernamesRequest) String() string {
 func (*ListArchivedUsernamesRequest) ProtoMessage() {}
 
 func (x *ListArchivedUsernamesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[31]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1803,7 +2167,7 @@ func (x *ListArchivedUsernamesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListArchivedUsernamesRequest.ProtoReflect.Descriptor instead.
 func (*ListArchivedUsernamesRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{31}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{38}
 }
 
 type ListArchivedUsernamesResponse struct {
@@ -1817,7 +2181,7 @@ type ListArchivedUsernamesResponse struct {
 
 func (x *ListArchivedUsernamesResponse) Reset() {
 	*x = ListArchivedUsernamesResponse{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[32]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1829,7 +2193,7 @@ func (x *ListArchivedUsernamesResponse) String() string {
 func (*ListArchivedUsernamesResponse) ProtoMessage() {}
 
 func (x *ListArchivedUsernamesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[32]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1842,7 +2206,7 @@ func (x *ListArchivedUsernamesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListArchivedUsernamesResponse.ProtoReflect.Descriptor instead.
 func (*ListArchivedUsernamesResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{32}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *ListArchivedUsernamesResponse) GetArchivedUsernames() []*ArchivedUsername {
@@ -1881,7 +2245,7 @@ type ArchivedUsername struct {
 
 func (x *ArchivedUsername) Reset() {
 	*x = ArchivedUsername{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[33]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1893,7 +2257,7 @@ func (x *ArchivedUsername) String() string {
 func (*ArchivedUsername) ProtoMessage() {}
 
 func (x *ArchivedUsername) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[33]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1906,7 +2270,7 @@ func (x *ArchivedUsername) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ArchivedUsername.ProtoReflect.Descriptor instead.
 func (*ArchivedUsername) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{33}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *ArchivedUsername) GetUsername() string {
@@ -1967,7 +2331,7 @@ type SendDeleteAccountVerificationRequest struct {
 
 func (x *SendDeleteAccountVerificationRequest) Reset() {
 	*x = SendDeleteAccountVerificationRequest{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[34]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1979,7 +2343,7 @@ func (x *SendDeleteAccountVerificationRequest) String() string {
 func (*SendDeleteAccountVerificationRequest) ProtoMessage() {}
 
 func (x *SendDeleteAccountVerificationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[34]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1992,7 +2356,7 @@ func (x *SendDeleteAccountVerificationRequest) ProtoReflect() protoreflect.Messa
 
 // Deprecated: Use SendDeleteAccountVerificationRequest.ProtoReflect.Descriptor instead.
 func (*SendDeleteAccountVerificationRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{34}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *SendDeleteAccountVerificationRequest) GetUsername() string {
@@ -2014,7 +2378,7 @@ type SendDeleteAccountVerificationResponse struct {
 
 func (x *SendDeleteAccountVerificationResponse) Reset() {
 	*x = SendDeleteAccountVerificationResponse{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[35]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2026,7 +2390,7 @@ func (x *SendDeleteAccountVerificationResponse) String() string {
 func (*SendDeleteAccountVerificationResponse) ProtoMessage() {}
 
 func (x *SendDeleteAccountVerificationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[35]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2039,7 +2403,7 @@ func (x *SendDeleteAccountVerificationResponse) ProtoReflect() protoreflect.Mess
 
 // Deprecated: Use SendDeleteAccountVerificationResponse.ProtoReflect.Descriptor instead.
 func (*SendDeleteAccountVerificationResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{35}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *SendDeleteAccountVerificationResponse) GetSuccess() bool {
@@ -2085,7 +2449,7 @@ type DeleteAccountRequest struct {
 
 func (x *DeleteAccountRequest) Reset() {
 	*x = DeleteAccountRequest{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[36]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2097,7 +2461,7 @@ func (x *DeleteAccountRequest) String() string {
 func (*DeleteAccountRequest) ProtoMessage() {}
 
 func (x *DeleteAccountRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[36]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2110,7 +2474,7 @@ func (x *DeleteAccountRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteAccountRequest.ProtoReflect.Descriptor instead.
 func (*DeleteAccountRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{36}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *DeleteAccountRequest) GetUsername() string {
@@ -2179,7 +2543,7 @@ type DeleteAccountResponse struct {
 
 func (x *DeleteAccountResponse) Reset() {
 	*x = DeleteAccountResponse{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[37]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2191,7 +2555,7 @@ func (x *DeleteAccountResponse) String() string {
 func (*DeleteAccountResponse) ProtoMessage() {}
 
 func (x *DeleteAccountResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[37]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2204,7 +2568,7 @@ func (x *DeleteAccountResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteAccountResponse.ProtoReflect.Descriptor instead.
 func (*DeleteAccountResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{37}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *DeleteAccountResponse) GetSuccess() bool {
@@ -2236,7 +2600,7 @@ type CancelAccountDeletionRequest struct {
 
 func (x *CancelAccountDeletionRequest) Reset() {
 	*x = CancelAccountDeletionRequest{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[38]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2248,7 +2612,7 @@ func (x *CancelAccountDeletionRequest) String() string {
 func (*CancelAccountDeletionRequest) ProtoMessage() {}
 
 func (x *CancelAccountDeletionRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[38]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2261,7 +2625,7 @@ func (x *CancelAccountDeletionRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelAccountDeletionRequest.ProtoReflect.Descriptor instead.
 func (*CancelAccountDeletionRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{38}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{45}
 }
 
 type CancelAccountDeletionResponse struct {
@@ -2275,7 +2639,7 @@ type CancelAccountDeletionResponse struct {
 
 func (x *CancelAccountDeletionResponse) Reset() {
 	*x = CancelAccountDeletionResponse{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[39]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2287,7 +2651,7 @@ func (x *CancelAccountDeletionResponse) String() string {
 func (*CancelAccountDeletionResponse) ProtoMessage() {}
 
 func (x *CancelAccountDeletionResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[39]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2300,7 +2664,7 @@ func (x *CancelAccountDeletionResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CancelAccountDeletionResponse.ProtoReflect.Descriptor instead.
 func (*CancelAccountDeletionResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{39}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *CancelAccountDeletionResponse) GetSuccess() bool {
@@ -2332,7 +2696,7 @@ type SendDataExportVerificationRequest struct {
 
 func (x *SendDataExportVerificationRequest) Reset() {
 	*x = SendDataExportVerificationRequest{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[40]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2344,7 +2708,7 @@ func (x *SendDataExportVerificationRequest) String() string {
 func (*SendDataExportVerificationRequest) ProtoMessage() {}
 
 func (x *SendDataExportVerificationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[40]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2357,7 +2721,7 @@ func (x *SendDataExportVerificationRequest) ProtoReflect() protoreflect.Message 
 
 // Deprecated: Use SendDataExportVerificationRequest.ProtoReflect.Descriptor instead.
 func (*SendDataExportVerificationRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{40}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{47}
 }
 
 type SendDataExportVerificationResponse struct {
@@ -2374,7 +2738,7 @@ type SendDataExportVerificationResponse struct {
 
 func (x *SendDataExportVerificationResponse) Reset() {
 	*x = SendDataExportVerificationResponse{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[41]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2386,7 +2750,7 @@ func (x *SendDataExportVerificationResponse) String() string {
 func (*SendDataExportVerificationResponse) ProtoMessage() {}
 
 func (x *SendDataExportVerificationResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[41]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2399,7 +2763,7 @@ func (x *SendDataExportVerificationResponse) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use SendDataExportVerificationResponse.ProtoReflect.Descriptor instead.
 func (*SendDataExportVerificationResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{41}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *SendDataExportVerificationResponse) GetSuccess() bool {
@@ -2458,7 +2822,7 @@ type VerifyDataExportRequest struct {
 
 func (x *VerifyDataExportRequest) Reset() {
 	*x = VerifyDataExportRequest{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[42]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2470,7 +2834,7 @@ func (x *VerifyDataExportRequest) String() string {
 func (*VerifyDataExportRequest) ProtoMessage() {}
 
 func (x *VerifyDataExportRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[42]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2483,7 +2847,7 @@ func (x *VerifyDataExportRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VerifyDataExportRequest.ProtoReflect.Descriptor instead.
 func (*VerifyDataExportRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{42}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *VerifyDataExportRequest) GetChallengeId() string {
@@ -2548,7 +2912,7 @@ type VerifyDataExportResponse struct {
 
 func (x *VerifyDataExportResponse) Reset() {
 	*x = VerifyDataExportResponse{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[43]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2560,7 +2924,7 @@ func (x *VerifyDataExportResponse) String() string {
 func (*VerifyDataExportResponse) ProtoMessage() {}
 
 func (x *VerifyDataExportResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[43]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2573,7 +2937,7 @@ func (x *VerifyDataExportResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VerifyDataExportResponse.ProtoReflect.Descriptor instead.
 func (*VerifyDataExportResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{43}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *VerifyDataExportResponse) GetSuccess() bool {
@@ -2634,7 +2998,7 @@ type AuthResponse struct {
 
 func (x *AuthResponse) Reset() {
 	*x = AuthResponse{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[44]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2646,7 +3010,7 @@ func (x *AuthResponse) String() string {
 func (*AuthResponse) ProtoMessage() {}
 
 func (x *AuthResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[44]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2659,7 +3023,7 @@ func (x *AuthResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use AuthResponse.ProtoReflect.Descriptor instead.
 func (*AuthResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{44}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *AuthResponse) GetAccessToken() string {
@@ -2731,7 +3095,7 @@ type OtpVerificationError struct {
 
 func (x *OtpVerificationError) Reset() {
 	*x = OtpVerificationError{}
-	mi := &file_quadsmith_api_auth_proto_msgTypes[45]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2743,7 +3107,7 @@ func (x *OtpVerificationError) String() string {
 func (*OtpVerificationError) ProtoMessage() {}
 
 func (x *OtpVerificationError) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_auth_proto_msgTypes[45]
+	mi := &file_quadsmith_api_auth_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2756,7 +3120,7 @@ func (x *OtpVerificationError) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OtpVerificationError.ProtoReflect.Descriptor instead.
 func (*OtpVerificationError) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{45}
+	return file_quadsmith_api_auth_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *OtpVerificationError) GetMessage() string {
@@ -2867,7 +3231,32 @@ const file_quadsmith_api_auth_proto_rawDesc = "" +
 	"\rrefresh_token\x18\x01 \x01(\tH\x00R\frefreshToken\x88\x01\x01B\x10\n" +
 	"\x0e_refresh_token\"*\n" +
 	"\x0eLogoutResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x17\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"\x1b\n" +
+	"\x19ListActiveSessionsRequest\"P\n" +
+	"\x1aListActiveSessionsResponse\x122\n" +
+	"\bsessions\x18\x01 \x03(\v2\x16.quadsmith.api.SessionR\bsessions\"\x9e\x02\n" +
+	"\aSession\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x1f\n" +
+	"\vdevice_hint\x18\x02 \x01(\tR\n" +
+	"deviceHint\x12\x1d\n" +
+	"\n" +
+	"ip_address\x18\x03 \x01(\tR\tipAddress\x12#\n" +
+	"\rlocation_hint\x18\x04 \x01(\tR\flocationHint\x129\n" +
+	"\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12@\n" +
+	"\x0elast_active_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\flastActiveAt\x12\x1d\n" +
+	"\n" +
+	"is_current\x18\a \x01(\bR\tisCurrent\"9\n" +
+	"\x14RevokeSessionRequest\x12!\n" +
+	"\fsession_uuid\x18\x01 \x01(\tR\vsessionUuid\"K\n" +
+	"\x15RevokeSessionResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\"\x1c\n" +
+	"\x1aRevokeOtherSessionsRequest\"v\n" +
+	"\x1bRevokeOtherSessionsResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12#\n" +
+	"\rrevoked_count\x18\x02 \x01(\x05R\frevokedCount\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\"\x17\n" +
 	"\x15ListUserEmailsRequest\"J\n" +
 	"\x16ListUserEmailsResponse\x120\n" +
 	"\x06emails\x18\x01 \x03(\v2\x18.quadsmith.api.UserEmailR\x06emails\".\n" +
@@ -3012,7 +3401,7 @@ const file_quadsmith_api_auth_proto_rawDesc = "" +
 	"\x1eLOGIN_CHALLENGE_STATUS_PENDING\x10\x01\x12#\n" +
 	"\x1fLOGIN_CHALLENGE_STATUS_APPROVED\x10\x02\x12!\n" +
 	"\x1dLOGIN_CHALLENGE_STATUS_DENIED\x10\x03\x12\"\n" +
-	"\x1eLOGIN_CHALLENGE_STATUS_EXPIRED\x10\x042\xdc\x13\n" +
+	"\x1eLOGIN_CHALLENGE_STATUS_EXPIRED\x10\x042\x91\x16\n" +
 	"\vAuthService\x12W\n" +
 	"\fSendEmailOtp\x12\".quadsmith.api.SendEmailOtpRequest\x1a#.quadsmith.api.SendEmailOtpResponse\x12S\n" +
 	"\x0eVerifyEmailOtp\x12$.quadsmith.api.VerifyEmailOtpRequest\x1a\x1b.quadsmith.api.AuthResponse\x12U\n" +
@@ -3025,7 +3414,10 @@ const file_quadsmith_api_auth_proto_rawDesc = "" +
 	"\fRefreshToken\x12\".quadsmith.api.RefreshTokenRequest\x1a\x1b.quadsmith.api.AuthResponse\x12K\n" +
 	"\x0eGetCurrentUser\x12$.quadsmith.api.GetCurrentUserRequest\x1a\x13.quadsmith.api.User\x12P\n" +
 	"\rUpdateProfile\x12#.quadsmith.api.UpdateProfileRequest\x1a\x1a.quadsmith.api.UserProfile\x12E\n" +
-	"\x06Logout\x12\x1c.quadsmith.api.LogoutRequest\x1a\x1d.quadsmith.api.LogoutResponse\x12]\n" +
+	"\x06Logout\x12\x1c.quadsmith.api.LogoutRequest\x1a\x1d.quadsmith.api.LogoutResponse\x12i\n" +
+	"\x12ListActiveSessions\x12(.quadsmith.api.ListActiveSessionsRequest\x1a).quadsmith.api.ListActiveSessionsResponse\x12Z\n" +
+	"\rRevokeSession\x12#.quadsmith.api.RevokeSessionRequest\x1a$.quadsmith.api.RevokeSessionResponse\x12l\n" +
+	"\x13RevokeOtherSessions\x12).quadsmith.api.RevokeOtherSessionsRequest\x1a*.quadsmith.api.RevokeOtherSessionsResponse\x12]\n" +
 	"\x0eListUserEmails\x12$.quadsmith.api.ListUserEmailsRequest\x1a%.quadsmith.api.ListUserEmailsResponse\x12]\n" +
 	"\x0fSendAddEmailOtp\x12%.quadsmith.api.SendAddEmailOtpRequest\x1a#.quadsmith.api.SendEmailOtpResponse\x12f\n" +
 	"\x11VerifyAddEmailOtp\x12'.quadsmith.api.VerifyAddEmailOtpRequest\x1a(.quadsmith.api.VerifyAddEmailOtpResponse\x12W\n" +
@@ -3053,7 +3445,7 @@ func file_quadsmith_api_auth_proto_rawDescGZIP() []byte {
 }
 
 var file_quadsmith_api_auth_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_quadsmith_api_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 46)
+var file_quadsmith_api_auth_proto_msgTypes = make([]protoimpl.MessageInfo, 53)
 var file_quadsmith_api_auth_proto_goTypes = []any{
 	(LoginChallengeStatus)(0),                     // 0: quadsmith.api.LoginChallengeStatus
 	(*SendEmailOtpRequest)(nil),                   // 1: quadsmith.api.SendEmailOtpRequest
@@ -3074,119 +3466,135 @@ var file_quadsmith_api_auth_proto_goTypes = []any{
 	(*UpdateProfileRequest)(nil),                  // 16: quadsmith.api.UpdateProfileRequest
 	(*LogoutRequest)(nil),                         // 17: quadsmith.api.LogoutRequest
 	(*LogoutResponse)(nil),                        // 18: quadsmith.api.LogoutResponse
-	(*ListUserEmailsRequest)(nil),                 // 19: quadsmith.api.ListUserEmailsRequest
-	(*ListUserEmailsResponse)(nil),                // 20: quadsmith.api.ListUserEmailsResponse
-	(*SendAddEmailOtpRequest)(nil),                // 21: quadsmith.api.SendAddEmailOtpRequest
-	(*VerifyAddEmailOtpRequest)(nil),              // 22: quadsmith.api.VerifyAddEmailOtpRequest
-	(*VerifyAddEmailOtpResponse)(nil),             // 23: quadsmith.api.VerifyAddEmailOtpResponse
-	(*MergeAccountRequest)(nil),                   // 24: quadsmith.api.MergeAccountRequest
-	(*MergeAccountResponse)(nil),                  // 25: quadsmith.api.MergeAccountResponse
-	(*SetPrimaryEmailRequest)(nil),                // 26: quadsmith.api.SetPrimaryEmailRequest
-	(*SetPrimaryEmailResponse)(nil),               // 27: quadsmith.api.SetPrimaryEmailResponse
-	(*RemoveUserEmailRequest)(nil),                // 28: quadsmith.api.RemoveUserEmailRequest
-	(*RemoveUserEmailResponse)(nil),               // 29: quadsmith.api.RemoveUserEmailResponse
-	(*ChangeUsernameRequest)(nil),                 // 30: quadsmith.api.ChangeUsernameRequest
-	(*ChangeUsernameResponse)(nil),                // 31: quadsmith.api.ChangeUsernameResponse
-	(*ListArchivedUsernamesRequest)(nil),          // 32: quadsmith.api.ListArchivedUsernamesRequest
-	(*ListArchivedUsernamesResponse)(nil),         // 33: quadsmith.api.ListArchivedUsernamesResponse
-	(*ArchivedUsername)(nil),                      // 34: quadsmith.api.ArchivedUsername
-	(*SendDeleteAccountVerificationRequest)(nil),  // 35: quadsmith.api.SendDeleteAccountVerificationRequest
-	(*SendDeleteAccountVerificationResponse)(nil), // 36: quadsmith.api.SendDeleteAccountVerificationResponse
-	(*DeleteAccountRequest)(nil),                  // 37: quadsmith.api.DeleteAccountRequest
-	(*DeleteAccountResponse)(nil),                 // 38: quadsmith.api.DeleteAccountResponse
-	(*CancelAccountDeletionRequest)(nil),          // 39: quadsmith.api.CancelAccountDeletionRequest
-	(*CancelAccountDeletionResponse)(nil),         // 40: quadsmith.api.CancelAccountDeletionResponse
-	(*SendDataExportVerificationRequest)(nil),     // 41: quadsmith.api.SendDataExportVerificationRequest
-	(*SendDataExportVerificationResponse)(nil),    // 42: quadsmith.api.SendDataExportVerificationResponse
-	(*VerifyDataExportRequest)(nil),               // 43: quadsmith.api.VerifyDataExportRequest
-	(*VerifyDataExportResponse)(nil),              // 44: quadsmith.api.VerifyDataExportResponse
-	(*AuthResponse)(nil),                          // 45: quadsmith.api.AuthResponse
-	(*OtpVerificationError)(nil),                  // 46: quadsmith.api.OtpVerificationError
-	(*timestamppb.Timestamp)(nil),                 // 47: google.protobuf.Timestamp
-	(*UserEmail)(nil),                             // 48: quadsmith.api.UserEmail
-	(*User)(nil),                                  // 49: quadsmith.api.User
-	(*UserProfile)(nil),                           // 50: quadsmith.api.UserProfile
+	(*ListActiveSessionsRequest)(nil),             // 19: quadsmith.api.ListActiveSessionsRequest
+	(*ListActiveSessionsResponse)(nil),            // 20: quadsmith.api.ListActiveSessionsResponse
+	(*Session)(nil),                               // 21: quadsmith.api.Session
+	(*RevokeSessionRequest)(nil),                  // 22: quadsmith.api.RevokeSessionRequest
+	(*RevokeSessionResponse)(nil),                 // 23: quadsmith.api.RevokeSessionResponse
+	(*RevokeOtherSessionsRequest)(nil),            // 24: quadsmith.api.RevokeOtherSessionsRequest
+	(*RevokeOtherSessionsResponse)(nil),           // 25: quadsmith.api.RevokeOtherSessionsResponse
+	(*ListUserEmailsRequest)(nil),                 // 26: quadsmith.api.ListUserEmailsRequest
+	(*ListUserEmailsResponse)(nil),                // 27: quadsmith.api.ListUserEmailsResponse
+	(*SendAddEmailOtpRequest)(nil),                // 28: quadsmith.api.SendAddEmailOtpRequest
+	(*VerifyAddEmailOtpRequest)(nil),              // 29: quadsmith.api.VerifyAddEmailOtpRequest
+	(*VerifyAddEmailOtpResponse)(nil),             // 30: quadsmith.api.VerifyAddEmailOtpResponse
+	(*MergeAccountRequest)(nil),                   // 31: quadsmith.api.MergeAccountRequest
+	(*MergeAccountResponse)(nil),                  // 32: quadsmith.api.MergeAccountResponse
+	(*SetPrimaryEmailRequest)(nil),                // 33: quadsmith.api.SetPrimaryEmailRequest
+	(*SetPrimaryEmailResponse)(nil),               // 34: quadsmith.api.SetPrimaryEmailResponse
+	(*RemoveUserEmailRequest)(nil),                // 35: quadsmith.api.RemoveUserEmailRequest
+	(*RemoveUserEmailResponse)(nil),               // 36: quadsmith.api.RemoveUserEmailResponse
+	(*ChangeUsernameRequest)(nil),                 // 37: quadsmith.api.ChangeUsernameRequest
+	(*ChangeUsernameResponse)(nil),                // 38: quadsmith.api.ChangeUsernameResponse
+	(*ListArchivedUsernamesRequest)(nil),          // 39: quadsmith.api.ListArchivedUsernamesRequest
+	(*ListArchivedUsernamesResponse)(nil),         // 40: quadsmith.api.ListArchivedUsernamesResponse
+	(*ArchivedUsername)(nil),                      // 41: quadsmith.api.ArchivedUsername
+	(*SendDeleteAccountVerificationRequest)(nil),  // 42: quadsmith.api.SendDeleteAccountVerificationRequest
+	(*SendDeleteAccountVerificationResponse)(nil), // 43: quadsmith.api.SendDeleteAccountVerificationResponse
+	(*DeleteAccountRequest)(nil),                  // 44: quadsmith.api.DeleteAccountRequest
+	(*DeleteAccountResponse)(nil),                 // 45: quadsmith.api.DeleteAccountResponse
+	(*CancelAccountDeletionRequest)(nil),          // 46: quadsmith.api.CancelAccountDeletionRequest
+	(*CancelAccountDeletionResponse)(nil),         // 47: quadsmith.api.CancelAccountDeletionResponse
+	(*SendDataExportVerificationRequest)(nil),     // 48: quadsmith.api.SendDataExportVerificationRequest
+	(*SendDataExportVerificationResponse)(nil),    // 49: quadsmith.api.SendDataExportVerificationResponse
+	(*VerifyDataExportRequest)(nil),               // 50: quadsmith.api.VerifyDataExportRequest
+	(*VerifyDataExportResponse)(nil),              // 51: quadsmith.api.VerifyDataExportResponse
+	(*AuthResponse)(nil),                          // 52: quadsmith.api.AuthResponse
+	(*OtpVerificationError)(nil),                  // 53: quadsmith.api.OtpVerificationError
+	(*timestamppb.Timestamp)(nil),                 // 54: google.protobuf.Timestamp
+	(*UserEmail)(nil),                             // 55: quadsmith.api.UserEmail
+	(*User)(nil),                                  // 56: quadsmith.api.User
+	(*UserProfile)(nil),                           // 57: quadsmith.api.UserProfile
 }
 var file_quadsmith_api_auth_proto_depIdxs = []int32{
-	47, // 0: quadsmith.api.GetLoginChallengeDetailsResponse.created_at:type_name -> google.protobuf.Timestamp
-	47, // 1: quadsmith.api.GetLoginChallengeDetailsResponse.expires_at:type_name -> google.protobuf.Timestamp
+	54, // 0: quadsmith.api.GetLoginChallengeDetailsResponse.created_at:type_name -> google.protobuf.Timestamp
+	54, // 1: quadsmith.api.GetLoginChallengeDetailsResponse.expires_at:type_name -> google.protobuf.Timestamp
 	0,  // 2: quadsmith.api.GetLoginChallengeDetailsResponse.status:type_name -> quadsmith.api.LoginChallengeStatus
 	0,  // 3: quadsmith.api.GetLoginChallengeStatusResponse.status:type_name -> quadsmith.api.LoginChallengeStatus
-	45, // 4: quadsmith.api.GetLoginChallengeStatusResponse.auth_response:type_name -> quadsmith.api.AuthResponse
-	48, // 5: quadsmith.api.ListUserEmailsResponse.emails:type_name -> quadsmith.api.UserEmail
-	49, // 6: quadsmith.api.ChangeUsernameResponse.user:type_name -> quadsmith.api.User
-	47, // 7: quadsmith.api.ChangeUsernameResponse.next_allowed_new_rename_at:type_name -> google.protobuf.Timestamp
-	47, // 8: quadsmith.api.ChangeUsernameResponse.next_allowed_archive_rename_at:type_name -> google.protobuf.Timestamp
-	34, // 9: quadsmith.api.ListArchivedUsernamesResponse.archived_usernames:type_name -> quadsmith.api.ArchivedUsername
-	47, // 10: quadsmith.api.ListArchivedUsernamesResponse.next_allowed_new_rename_at:type_name -> google.protobuf.Timestamp
-	47, // 11: quadsmith.api.ListArchivedUsernamesResponse.next_allowed_archive_rename_at:type_name -> google.protobuf.Timestamp
-	47, // 12: quadsmith.api.ArchivedUsername.first_archived_at:type_name -> google.protobuf.Timestamp
-	47, // 13: quadsmith.api.ArchivedUsername.renamed_at:type_name -> google.protobuf.Timestamp
-	47, // 14: quadsmith.api.ArchivedUsername.release_at:type_name -> google.protobuf.Timestamp
-	47, // 15: quadsmith.api.ArchivedUsername.next_reclaim_allowed_at:type_name -> google.protobuf.Timestamp
-	47, // 16: quadsmith.api.SendDeleteAccountVerificationResponse.expires_at:type_name -> google.protobuf.Timestamp
-	47, // 17: quadsmith.api.DeleteAccountResponse.scheduled_purge_at:type_name -> google.protobuf.Timestamp
-	49, // 18: quadsmith.api.CancelAccountDeletionResponse.user:type_name -> quadsmith.api.User
-	47, // 19: quadsmith.api.SendDataExportVerificationResponse.expires_at:type_name -> google.protobuf.Timestamp
-	47, // 20: quadsmith.api.VerifyDataExportResponse.expires_at:type_name -> google.protobuf.Timestamp
-	49, // 21: quadsmith.api.AuthResponse.user:type_name -> quadsmith.api.User
-	50, // 22: quadsmith.api.AuthResponse.profile:type_name -> quadsmith.api.UserProfile
-	47, // 23: quadsmith.api.AuthResponse.scheduled_purge_at:type_name -> google.protobuf.Timestamp
-	1,  // 24: quadsmith.api.AuthService.SendEmailOtp:input_type -> quadsmith.api.SendEmailOtpRequest
-	3,  // 25: quadsmith.api.AuthService.VerifyEmailOtp:input_type -> quadsmith.api.VerifyEmailOtpRequest
-	4,  // 26: quadsmith.api.AuthService.VerifyMagicLink:input_type -> quadsmith.api.VerifyMagicLinkRequest
-	5,  // 27: quadsmith.api.AuthService.GetLoginChallengeDetails:input_type -> quadsmith.api.GetLoginChallengeDetailsRequest
-	7,  // 28: quadsmith.api.AuthService.ApproveLoginChallenge:input_type -> quadsmith.api.ApproveLoginChallengeRequest
-	9,  // 29: quadsmith.api.AuthService.DenyLoginChallenge:input_type -> quadsmith.api.DenyLoginChallengeRequest
-	11, // 30: quadsmith.api.AuthService.GetLoginChallengeStatus:input_type -> quadsmith.api.GetLoginChallengeStatusRequest
-	13, // 31: quadsmith.api.AuthService.CompleteAccountSetup:input_type -> quadsmith.api.CompleteAccountSetupRequest
-	14, // 32: quadsmith.api.AuthService.RefreshToken:input_type -> quadsmith.api.RefreshTokenRequest
-	15, // 33: quadsmith.api.AuthService.GetCurrentUser:input_type -> quadsmith.api.GetCurrentUserRequest
-	16, // 34: quadsmith.api.AuthService.UpdateProfile:input_type -> quadsmith.api.UpdateProfileRequest
-	17, // 35: quadsmith.api.AuthService.Logout:input_type -> quadsmith.api.LogoutRequest
-	19, // 36: quadsmith.api.AuthService.ListUserEmails:input_type -> quadsmith.api.ListUserEmailsRequest
-	21, // 37: quadsmith.api.AuthService.SendAddEmailOtp:input_type -> quadsmith.api.SendAddEmailOtpRequest
-	22, // 38: quadsmith.api.AuthService.VerifyAddEmailOtp:input_type -> quadsmith.api.VerifyAddEmailOtpRequest
-	24, // 39: quadsmith.api.AuthService.MergeAccount:input_type -> quadsmith.api.MergeAccountRequest
-	26, // 40: quadsmith.api.AuthService.SetPrimaryEmail:input_type -> quadsmith.api.SetPrimaryEmailRequest
-	28, // 41: quadsmith.api.AuthService.RemoveUserEmail:input_type -> quadsmith.api.RemoveUserEmailRequest
-	30, // 42: quadsmith.api.AuthService.ChangeUsername:input_type -> quadsmith.api.ChangeUsernameRequest
-	32, // 43: quadsmith.api.AuthService.ListArchivedUsernames:input_type -> quadsmith.api.ListArchivedUsernamesRequest
-	41, // 44: quadsmith.api.AuthService.SendDataExportVerification:input_type -> quadsmith.api.SendDataExportVerificationRequest
-	43, // 45: quadsmith.api.AuthService.VerifyDataExport:input_type -> quadsmith.api.VerifyDataExportRequest
-	35, // 46: quadsmith.api.AuthService.SendDeleteAccountVerification:input_type -> quadsmith.api.SendDeleteAccountVerificationRequest
-	37, // 47: quadsmith.api.AuthService.DeleteAccount:input_type -> quadsmith.api.DeleteAccountRequest
-	39, // 48: quadsmith.api.AuthService.CancelAccountDeletion:input_type -> quadsmith.api.CancelAccountDeletionRequest
-	2,  // 49: quadsmith.api.AuthService.SendEmailOtp:output_type -> quadsmith.api.SendEmailOtpResponse
-	45, // 50: quadsmith.api.AuthService.VerifyEmailOtp:output_type -> quadsmith.api.AuthResponse
-	45, // 51: quadsmith.api.AuthService.VerifyMagicLink:output_type -> quadsmith.api.AuthResponse
-	6,  // 52: quadsmith.api.AuthService.GetLoginChallengeDetails:output_type -> quadsmith.api.GetLoginChallengeDetailsResponse
-	8,  // 53: quadsmith.api.AuthService.ApproveLoginChallenge:output_type -> quadsmith.api.ApproveLoginChallengeResponse
-	10, // 54: quadsmith.api.AuthService.DenyLoginChallenge:output_type -> quadsmith.api.DenyLoginChallengeResponse
-	12, // 55: quadsmith.api.AuthService.GetLoginChallengeStatus:output_type -> quadsmith.api.GetLoginChallengeStatusResponse
-	45, // 56: quadsmith.api.AuthService.CompleteAccountSetup:output_type -> quadsmith.api.AuthResponse
-	45, // 57: quadsmith.api.AuthService.RefreshToken:output_type -> quadsmith.api.AuthResponse
-	49, // 58: quadsmith.api.AuthService.GetCurrentUser:output_type -> quadsmith.api.User
-	50, // 59: quadsmith.api.AuthService.UpdateProfile:output_type -> quadsmith.api.UserProfile
-	18, // 60: quadsmith.api.AuthService.Logout:output_type -> quadsmith.api.LogoutResponse
-	20, // 61: quadsmith.api.AuthService.ListUserEmails:output_type -> quadsmith.api.ListUserEmailsResponse
-	2,  // 62: quadsmith.api.AuthService.SendAddEmailOtp:output_type -> quadsmith.api.SendEmailOtpResponse
-	23, // 63: quadsmith.api.AuthService.VerifyAddEmailOtp:output_type -> quadsmith.api.VerifyAddEmailOtpResponse
-	25, // 64: quadsmith.api.AuthService.MergeAccount:output_type -> quadsmith.api.MergeAccountResponse
-	27, // 65: quadsmith.api.AuthService.SetPrimaryEmail:output_type -> quadsmith.api.SetPrimaryEmailResponse
-	29, // 66: quadsmith.api.AuthService.RemoveUserEmail:output_type -> quadsmith.api.RemoveUserEmailResponse
-	31, // 67: quadsmith.api.AuthService.ChangeUsername:output_type -> quadsmith.api.ChangeUsernameResponse
-	33, // 68: quadsmith.api.AuthService.ListArchivedUsernames:output_type -> quadsmith.api.ListArchivedUsernamesResponse
-	42, // 69: quadsmith.api.AuthService.SendDataExportVerification:output_type -> quadsmith.api.SendDataExportVerificationResponse
-	44, // 70: quadsmith.api.AuthService.VerifyDataExport:output_type -> quadsmith.api.VerifyDataExportResponse
-	36, // 71: quadsmith.api.AuthService.SendDeleteAccountVerification:output_type -> quadsmith.api.SendDeleteAccountVerificationResponse
-	38, // 72: quadsmith.api.AuthService.DeleteAccount:output_type -> quadsmith.api.DeleteAccountResponse
-	40, // 73: quadsmith.api.AuthService.CancelAccountDeletion:output_type -> quadsmith.api.CancelAccountDeletionResponse
-	49, // [49:74] is the sub-list for method output_type
-	24, // [24:49] is the sub-list for method input_type
-	24, // [24:24] is the sub-list for extension type_name
-	24, // [24:24] is the sub-list for extension extendee
-	0,  // [0:24] is the sub-list for field type_name
+	52, // 4: quadsmith.api.GetLoginChallengeStatusResponse.auth_response:type_name -> quadsmith.api.AuthResponse
+	21, // 5: quadsmith.api.ListActiveSessionsResponse.sessions:type_name -> quadsmith.api.Session
+	54, // 6: quadsmith.api.Session.created_at:type_name -> google.protobuf.Timestamp
+	54, // 7: quadsmith.api.Session.last_active_at:type_name -> google.protobuf.Timestamp
+	55, // 8: quadsmith.api.ListUserEmailsResponse.emails:type_name -> quadsmith.api.UserEmail
+	56, // 9: quadsmith.api.ChangeUsernameResponse.user:type_name -> quadsmith.api.User
+	54, // 10: quadsmith.api.ChangeUsernameResponse.next_allowed_new_rename_at:type_name -> google.protobuf.Timestamp
+	54, // 11: quadsmith.api.ChangeUsernameResponse.next_allowed_archive_rename_at:type_name -> google.protobuf.Timestamp
+	41, // 12: quadsmith.api.ListArchivedUsernamesResponse.archived_usernames:type_name -> quadsmith.api.ArchivedUsername
+	54, // 13: quadsmith.api.ListArchivedUsernamesResponse.next_allowed_new_rename_at:type_name -> google.protobuf.Timestamp
+	54, // 14: quadsmith.api.ListArchivedUsernamesResponse.next_allowed_archive_rename_at:type_name -> google.protobuf.Timestamp
+	54, // 15: quadsmith.api.ArchivedUsername.first_archived_at:type_name -> google.protobuf.Timestamp
+	54, // 16: quadsmith.api.ArchivedUsername.renamed_at:type_name -> google.protobuf.Timestamp
+	54, // 17: quadsmith.api.ArchivedUsername.release_at:type_name -> google.protobuf.Timestamp
+	54, // 18: quadsmith.api.ArchivedUsername.next_reclaim_allowed_at:type_name -> google.protobuf.Timestamp
+	54, // 19: quadsmith.api.SendDeleteAccountVerificationResponse.expires_at:type_name -> google.protobuf.Timestamp
+	54, // 20: quadsmith.api.DeleteAccountResponse.scheduled_purge_at:type_name -> google.protobuf.Timestamp
+	56, // 21: quadsmith.api.CancelAccountDeletionResponse.user:type_name -> quadsmith.api.User
+	54, // 22: quadsmith.api.SendDataExportVerificationResponse.expires_at:type_name -> google.protobuf.Timestamp
+	54, // 23: quadsmith.api.VerifyDataExportResponse.expires_at:type_name -> google.protobuf.Timestamp
+	56, // 24: quadsmith.api.AuthResponse.user:type_name -> quadsmith.api.User
+	57, // 25: quadsmith.api.AuthResponse.profile:type_name -> quadsmith.api.UserProfile
+	54, // 26: quadsmith.api.AuthResponse.scheduled_purge_at:type_name -> google.protobuf.Timestamp
+	1,  // 27: quadsmith.api.AuthService.SendEmailOtp:input_type -> quadsmith.api.SendEmailOtpRequest
+	3,  // 28: quadsmith.api.AuthService.VerifyEmailOtp:input_type -> quadsmith.api.VerifyEmailOtpRequest
+	4,  // 29: quadsmith.api.AuthService.VerifyMagicLink:input_type -> quadsmith.api.VerifyMagicLinkRequest
+	5,  // 30: quadsmith.api.AuthService.GetLoginChallengeDetails:input_type -> quadsmith.api.GetLoginChallengeDetailsRequest
+	7,  // 31: quadsmith.api.AuthService.ApproveLoginChallenge:input_type -> quadsmith.api.ApproveLoginChallengeRequest
+	9,  // 32: quadsmith.api.AuthService.DenyLoginChallenge:input_type -> quadsmith.api.DenyLoginChallengeRequest
+	11, // 33: quadsmith.api.AuthService.GetLoginChallengeStatus:input_type -> quadsmith.api.GetLoginChallengeStatusRequest
+	13, // 34: quadsmith.api.AuthService.CompleteAccountSetup:input_type -> quadsmith.api.CompleteAccountSetupRequest
+	14, // 35: quadsmith.api.AuthService.RefreshToken:input_type -> quadsmith.api.RefreshTokenRequest
+	15, // 36: quadsmith.api.AuthService.GetCurrentUser:input_type -> quadsmith.api.GetCurrentUserRequest
+	16, // 37: quadsmith.api.AuthService.UpdateProfile:input_type -> quadsmith.api.UpdateProfileRequest
+	17, // 38: quadsmith.api.AuthService.Logout:input_type -> quadsmith.api.LogoutRequest
+	19, // 39: quadsmith.api.AuthService.ListActiveSessions:input_type -> quadsmith.api.ListActiveSessionsRequest
+	22, // 40: quadsmith.api.AuthService.RevokeSession:input_type -> quadsmith.api.RevokeSessionRequest
+	24, // 41: quadsmith.api.AuthService.RevokeOtherSessions:input_type -> quadsmith.api.RevokeOtherSessionsRequest
+	26, // 42: quadsmith.api.AuthService.ListUserEmails:input_type -> quadsmith.api.ListUserEmailsRequest
+	28, // 43: quadsmith.api.AuthService.SendAddEmailOtp:input_type -> quadsmith.api.SendAddEmailOtpRequest
+	29, // 44: quadsmith.api.AuthService.VerifyAddEmailOtp:input_type -> quadsmith.api.VerifyAddEmailOtpRequest
+	31, // 45: quadsmith.api.AuthService.MergeAccount:input_type -> quadsmith.api.MergeAccountRequest
+	33, // 46: quadsmith.api.AuthService.SetPrimaryEmail:input_type -> quadsmith.api.SetPrimaryEmailRequest
+	35, // 47: quadsmith.api.AuthService.RemoveUserEmail:input_type -> quadsmith.api.RemoveUserEmailRequest
+	37, // 48: quadsmith.api.AuthService.ChangeUsername:input_type -> quadsmith.api.ChangeUsernameRequest
+	39, // 49: quadsmith.api.AuthService.ListArchivedUsernames:input_type -> quadsmith.api.ListArchivedUsernamesRequest
+	48, // 50: quadsmith.api.AuthService.SendDataExportVerification:input_type -> quadsmith.api.SendDataExportVerificationRequest
+	50, // 51: quadsmith.api.AuthService.VerifyDataExport:input_type -> quadsmith.api.VerifyDataExportRequest
+	42, // 52: quadsmith.api.AuthService.SendDeleteAccountVerification:input_type -> quadsmith.api.SendDeleteAccountVerificationRequest
+	44, // 53: quadsmith.api.AuthService.DeleteAccount:input_type -> quadsmith.api.DeleteAccountRequest
+	46, // 54: quadsmith.api.AuthService.CancelAccountDeletion:input_type -> quadsmith.api.CancelAccountDeletionRequest
+	2,  // 55: quadsmith.api.AuthService.SendEmailOtp:output_type -> quadsmith.api.SendEmailOtpResponse
+	52, // 56: quadsmith.api.AuthService.VerifyEmailOtp:output_type -> quadsmith.api.AuthResponse
+	52, // 57: quadsmith.api.AuthService.VerifyMagicLink:output_type -> quadsmith.api.AuthResponse
+	6,  // 58: quadsmith.api.AuthService.GetLoginChallengeDetails:output_type -> quadsmith.api.GetLoginChallengeDetailsResponse
+	8,  // 59: quadsmith.api.AuthService.ApproveLoginChallenge:output_type -> quadsmith.api.ApproveLoginChallengeResponse
+	10, // 60: quadsmith.api.AuthService.DenyLoginChallenge:output_type -> quadsmith.api.DenyLoginChallengeResponse
+	12, // 61: quadsmith.api.AuthService.GetLoginChallengeStatus:output_type -> quadsmith.api.GetLoginChallengeStatusResponse
+	52, // 62: quadsmith.api.AuthService.CompleteAccountSetup:output_type -> quadsmith.api.AuthResponse
+	52, // 63: quadsmith.api.AuthService.RefreshToken:output_type -> quadsmith.api.AuthResponse
+	56, // 64: quadsmith.api.AuthService.GetCurrentUser:output_type -> quadsmith.api.User
+	57, // 65: quadsmith.api.AuthService.UpdateProfile:output_type -> quadsmith.api.UserProfile
+	18, // 66: quadsmith.api.AuthService.Logout:output_type -> quadsmith.api.LogoutResponse
+	20, // 67: quadsmith.api.AuthService.ListActiveSessions:output_type -> quadsmith.api.ListActiveSessionsResponse
+	23, // 68: quadsmith.api.AuthService.RevokeSession:output_type -> quadsmith.api.RevokeSessionResponse
+	25, // 69: quadsmith.api.AuthService.RevokeOtherSessions:output_type -> quadsmith.api.RevokeOtherSessionsResponse
+	27, // 70: quadsmith.api.AuthService.ListUserEmails:output_type -> quadsmith.api.ListUserEmailsResponse
+	2,  // 71: quadsmith.api.AuthService.SendAddEmailOtp:output_type -> quadsmith.api.SendEmailOtpResponse
+	30, // 72: quadsmith.api.AuthService.VerifyAddEmailOtp:output_type -> quadsmith.api.VerifyAddEmailOtpResponse
+	32, // 73: quadsmith.api.AuthService.MergeAccount:output_type -> quadsmith.api.MergeAccountResponse
+	34, // 74: quadsmith.api.AuthService.SetPrimaryEmail:output_type -> quadsmith.api.SetPrimaryEmailResponse
+	36, // 75: quadsmith.api.AuthService.RemoveUserEmail:output_type -> quadsmith.api.RemoveUserEmailResponse
+	38, // 76: quadsmith.api.AuthService.ChangeUsername:output_type -> quadsmith.api.ChangeUsernameResponse
+	40, // 77: quadsmith.api.AuthService.ListArchivedUsernames:output_type -> quadsmith.api.ListArchivedUsernamesResponse
+	49, // 78: quadsmith.api.AuthService.SendDataExportVerification:output_type -> quadsmith.api.SendDataExportVerificationResponse
+	51, // 79: quadsmith.api.AuthService.VerifyDataExport:output_type -> quadsmith.api.VerifyDataExportResponse
+	43, // 80: quadsmith.api.AuthService.SendDeleteAccountVerification:output_type -> quadsmith.api.SendDeleteAccountVerificationResponse
+	45, // 81: quadsmith.api.AuthService.DeleteAccount:output_type -> quadsmith.api.DeleteAccountResponse
+	47, // 82: quadsmith.api.AuthService.CancelAccountDeletion:output_type -> quadsmith.api.CancelAccountDeletionResponse
+	55, // [55:83] is the sub-list for method output_type
+	27, // [27:55] is the sub-list for method input_type
+	27, // [27:27] is the sub-list for extension type_name
+	27, // [27:27] is the sub-list for extension extendee
+	0,  // [0:27] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_auth_proto_init() }
@@ -3201,25 +3609,25 @@ func file_quadsmith_api_auth_proto_init() {
 	file_quadsmith_api_auth_proto_msgTypes[12].OneofWrappers = []any{}
 	file_quadsmith_api_auth_proto_msgTypes[15].OneofWrappers = []any{}
 	file_quadsmith_api_auth_proto_msgTypes[16].OneofWrappers = []any{}
-	file_quadsmith_api_auth_proto_msgTypes[21].OneofWrappers = []any{}
-	file_quadsmith_api_auth_proto_msgTypes[22].OneofWrappers = []any{}
-	file_quadsmith_api_auth_proto_msgTypes[23].OneofWrappers = []any{}
-	file_quadsmith_api_auth_proto_msgTypes[36].OneofWrappers = []any{
+	file_quadsmith_api_auth_proto_msgTypes[28].OneofWrappers = []any{}
+	file_quadsmith_api_auth_proto_msgTypes[29].OneofWrappers = []any{}
+	file_quadsmith_api_auth_proto_msgTypes[30].OneofWrappers = []any{}
+	file_quadsmith_api_auth_proto_msgTypes[43].OneofWrappers = []any{
 		(*DeleteAccountRequest_Code)(nil),
 		(*DeleteAccountRequest_MagicToken)(nil),
 	}
-	file_quadsmith_api_auth_proto_msgTypes[42].OneofWrappers = []any{
+	file_quadsmith_api_auth_proto_msgTypes[49].OneofWrappers = []any{
 		(*VerifyDataExportRequest_Code)(nil),
 		(*VerifyDataExportRequest_MagicToken)(nil),
 	}
-	file_quadsmith_api_auth_proto_msgTypes[44].OneofWrappers = []any{}
+	file_quadsmith_api_auth_proto_msgTypes[51].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_auth_proto_rawDesc), len(file_quadsmith_api_auth_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   46,
+			NumMessages:   53,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

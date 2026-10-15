@@ -8,6 +8,7 @@ import {
 import { ReferenceLinkType } from "@quadsmith/shared/gen/quadsmith/api/reference_link_pb";
 import { MediaType } from "@quadsmith/shared/gen/quadsmith/api/media_pb";
 import { UserEmailSchema, type UserEmail } from "@quadsmith/shared/gen/quadsmith/api/user_pb";
+import { SessionSchema, type Session } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import {
   ReviewSchema,
   type Review,
@@ -733,3 +734,42 @@ export const mockEntitySocialSummary1: EntitySocialSummary = create(EntitySocial
   reviewSummary: mockReviewSummary1,
   questionCount: 3,
 });
+
+export const mockSessions: Session[] = [
+  create(SessionSchema, {
+    uuid: "session-1",
+    deviceHint: "Chrome on macOS",
+    ipAddress: "192.168.1.42",
+    locationHint: "San Francisco, US",
+    createdAt: { seconds: 1728950400n, nanos: 0 },
+    lastActiveAt: { seconds: BigInt(Math.floor(Date.now() / 1000)), nanos: 0 },
+    isCurrent: true,
+  }),
+  create(SessionSchema, {
+    uuid: "session-2",
+    deviceHint: "Safari on iOS",
+    ipAddress: "172.56.21.89",
+    locationHint: "San Jose, US",
+    createdAt: { seconds: 1728950400n, nanos: 0 },
+    lastActiveAt: { seconds: BigInt(Math.floor(Date.now() / 1000)), nanos: 0 },
+    isCurrent: false,
+  }),
+  create(SessionSchema, {
+    uuid: "session-3",
+    deviceHint: "Firefox on Linux",
+    ipAddress: "10.0.0.15",
+    locationHint: "Local Network",
+    createdAt: { seconds: 1728432000n, nanos: 0 },
+    lastActiveAt: { seconds: 1728432000n, nanos: 0 },
+    isCurrent: false,
+  }),
+  create(SessionSchema, {
+    uuid: "session-4",
+    deviceHint: "Chrome on Android",
+    ipAddress: "198.51.100.22",
+    locationHint: "Portland, US",
+    createdAt: { seconds: 1728345600n, nanos: 0 },
+    lastActiveAt: { seconds: 1728345600n, nanos: 0 },
+    isCurrent: false,
+  }),
+];

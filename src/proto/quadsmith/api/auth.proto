@@ -26,6 +26,10 @@ service AuthService {
   rpc UpdateProfile(UpdateProfileRequest) returns (UserProfile);
   rpc Logout(LogoutRequest) returns (LogoutResponse);
 
+  rpc ListActiveSessions(ListActiveSessionsRequest) returns (ListActiveSessionsResponse);
+  rpc RevokeSession(RevokeSessionRequest) returns (RevokeSessionResponse);
+  rpc RevokeOtherSessions(RevokeOtherSessionsRequest) returns (RevokeOtherSessionsResponse);
+
   rpc ListUserEmails(ListUserEmailsRequest) returns (ListUserEmailsResponse);
   rpc SendAddEmailOtp(SendAddEmailOtpRequest) returns (SendEmailOtpResponse);
   rpc VerifyAddEmailOtp(VerifyAddEmailOtpRequest) returns (VerifyAddEmailOtpResponse);
@@ -150,6 +154,39 @@ message LogoutRequest {
 
 message LogoutResponse {
   bool success = 1;
+}
+
+message ListActiveSessionsRequest {}
+
+message ListActiveSessionsResponse {
+  repeated Session sessions = 1;
+}
+
+message Session {
+  string uuid = 1;
+  string device_hint = 2;
+  string ip_address = 3;
+  string location_hint = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp last_active_at = 6;
+  bool is_current = 7;
+}
+
+message RevokeSessionRequest {
+  string session_uuid = 1;
+}
+
+message RevokeSessionResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message RevokeOtherSessionsRequest {}
+
+message RevokeOtherSessionsResponse {
+  bool success = 1;
+  int32 revoked_count = 2;
+  string message = 3;
 }
 
 message ListUserEmailsRequest {}

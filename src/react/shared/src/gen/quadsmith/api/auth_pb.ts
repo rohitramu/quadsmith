@@ -17,7 +17,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_auth: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChhxdWFkc21pdGgvYXBpL2F1dGgucHJvdG8SDXF1YWRzbWl0aC5hcGkiJAoTU2VuZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCSKbAQoUU2VuZEVtYWlsT3RwUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhgKEGNvb2xkb3duX3NlY29uZHMYAyABKAUSGwoTaXNfZXhpc3RpbmdfYWNjb3VudBgEIAEoCBIZCgxjaGFsbGVuZ2VfaWQYBSABKAlIAIgBAUIPCg1fY2hhbGxlbmdlX2lkImAKFVZlcmlmeUVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCRIMCgRjb2RlGAIgASgJEhkKDGNoYWxsZW5nZV9pZBgDIAEoCUgAiAEBQg8KDV9jaGFsbGVuZ2VfaWQiJwoWVmVyaWZ5TWFnaWNMaW5rUmVxdWVzdBINCgV0b2tlbhgBIAEoCSIwCh9HZXRMb2dpbkNoYWxsZW5nZURldGFpbHNSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIoYCCiBHZXRMb2dpbkNoYWxsZW5nZURldGFpbHNSZXNwb25zZRINCgVlbWFpbBgBIAEoCRISCgppcF9hZGRyZXNzGAIgASgJEhUKDWxvY2F0aW9uX2hpbnQYAyABKAkSEwoLZGV2aWNlX2hpbnQYBCABKAkSLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKZXhwaXJlc19hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMwoGc3RhdHVzGAcgASgOMiMucXVhZHNtaXRoLmFwaS5Mb2dpbkNoYWxsZW5nZVN0YXR1cyItChxBcHByb3ZlTG9naW5DaGFsbGVuZ2VSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIkEKHUFwcHJvdmVMb2dpbkNoYWxsZW5nZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSIqChlEZW55TG9naW5DaGFsbGVuZ2VSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIj4KGkRlbnlMb2dpbkNoYWxsZW5nZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSI2Ch5HZXRMb2dpbkNoYWxsZW5nZVN0YXR1c1JlcXVlc3QSFAoMY2hhbGxlbmdlX2lkGAEgASgJIqEBCh9HZXRMb2dpbkNoYWxsZW5nZVN0YXR1c1Jlc3BvbnNlEjMKBnN0YXR1cxgBIAEoDjIjLnF1YWRzbWl0aC5hcGkuTG9naW5DaGFsbGVuZ2VTdGF0dXMSNwoNYXV0aF9yZXNwb25zZRgCIAEoCzIbLnF1YWRzbWl0aC5hcGkuQXV0aFJlc3BvbnNlSACIAQFCEAoOX2F1dGhfcmVzcG9uc2Ui1AEKG0NvbXBsZXRlQWNjb3VudFNldHVwUmVxdWVzdBITCgtzZXR1cF90b2tlbhgBIAEoCRJ4Cgh1c2VybmFtZRgCIAEoCUJmgrIZYgpgCAMQFBoeXlthLXpdW2EtejAtOV9dezEsMTh9W2EtejAtOV0kIgVhZG1pbiIEcm9vdCIGc3lzdGVtIgNib3QiBXJvYm90KgJfXyoJcXVhZHNtaXRoKgpxdWFkX3NtaXRoEhcKCmF2YXRhcl91cmwYAyABKAlIAIgBAUINCgtfYXZhdGFyX3VybCIsChNSZWZyZXNoVG9rZW5SZXF1ZXN0EhUKDXJlZnJlc2hfdG9rZW4YASABKAkiFwoVR2V0Q3VycmVudFVzZXJSZXF1ZXN0IlgKFFVwZGF0ZVByb2ZpbGVSZXF1ZXN0EhcKCmF2YXRhcl91cmwYASABKAlIAIgBARIQCgNiaW8YAiABKAlIAYgBAUINCgtfYXZhdGFyX3VybEIGCgRfYmlvIj0KDUxvZ291dFJlcXVlc3QSGgoNcmVmcmVzaF90b2tlbhgBIAEoCUgAiAEBQhAKDl9yZWZyZXNoX3Rva2VuIiEKDkxvZ291dFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiFwoVTGlzdFVzZXJFbWFpbHNSZXF1ZXN0IkIKFkxpc3RVc2VyRW1haWxzUmVzcG9uc2USKAoGZW1haWxzGAEgAygLMhgucXVhZHNtaXRoLmFwaS5Vc2VyRW1haWwiJwoWU2VuZEFkZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCSJyChhWZXJpZnlBZGRFbWFpbE90cFJlcXVlc3QSDQoFZW1haWwYASABKAkSDAoEY29kZRgCIAEoCRINCgV0b2tlbhgDIAEoCRIZCgxjaGFsbGVuZ2VfaWQYBCABKAlIAIgBAUIPCg1fY2hhbGxlbmdlX2lkIokCChlWZXJpZnlBZGRFbWFpbE90cFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIWCg5tZXJnZV9yZXF1aXJlZBgDIAEoCBIbChNvdGhlcl91c2VyX3VzZXJuYW1lGAQgASgJEhkKEW90aGVyX2J1aWxkX2NvdW50GAUgASgFEhkKEW90aGVyX2J1aWxkX25hbWVzGAYgAygJEhQKDG90aGVyX2VtYWlscxgHIAMoCRIdChVvdGhlcl9vYXV0aF9wcm92aWRlcnMYCCADKAkSGQoMbWVyZ2VfdGlja2V0GAkgASgJSACIAQFCDwoNX21lcmdlX3RpY2tldCKZAQoTTWVyZ2VBY2NvdW50UmVxdWVzdBINCgVlbWFpbBgBIAEoCRIMCgRjb2RlGAIgASgJEg0KBXRva2VuGAMgASgJEhkKDG1lcmdlX3RpY2tldBgEIAEoCUgAiAEBEhkKDGNoYWxsZW5nZV9pZBgFIAEoCUgBiAEBQg8KDV9tZXJnZV90aWNrZXRCDwoNX2NoYWxsZW5nZV9pZCKJAQoUTWVyZ2VBY2NvdW50UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEh8KF3RyYW5zZmVycmVkX2J1aWxkX2NvdW50GAMgASgFEhcKD21lcmdlZF91c2VybmFtZRgEIAEoCRIVCg1tZXJnZWRfZW1haWxzGAUgAygJIicKFlNldFByaW1hcnlFbWFpbFJlcXVlc3QSDQoFZW1haWwYASABKAkiOwoXU2V0UHJpbWFyeUVtYWlsUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJIicKFlJlbW92ZVVzZXJFbWFpbFJlcXVlc3QSDQoFZW1haWwYASABKAkiOwoXUmVtb3ZlVXNlckVtYWlsUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJIpUBChVDaGFuZ2VVc2VybmFtZVJlcXVlc3QSfAoMbmV3X3VzZXJuYW1lGAEgASgJQmaCshliCmAIAxAUGh5eW2Etel1bYS16MC05X117MSwxOH1bYS16MC05XSQiBWFkbWluIgRyb290IgZzeXN0ZW0iA2JvdCIFcm9ib3QqAl9fKglxdWFkc21pdGgqCnF1YWRfc21pdGgi4QEKFkNoYW5nZVVzZXJuYW1lUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiEKBHVzZXIYAyABKAsyEy5xdWFkc21pdGguYXBpLlVzZXISPgoabmV4dF9hbGxvd2VkX25ld19yZW5hbWVfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEkIKHm5leHRfYWxsb3dlZF9hcmNoaXZlX3JlbmFtZV9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiHgocTGlzdEFyY2hpdmVkVXNlcm5hbWVzUmVxdWVzdCLgAQodTGlzdEFyY2hpdmVkVXNlcm5hbWVzUmVzcG9uc2USOwoSYXJjaGl2ZWRfdXNlcm5hbWVzGAEgAygLMh8ucXVhZHNtaXRoLmFwaS5BcmNoaXZlZFVzZXJuYW1lEj4KGm5leHRfYWxsb3dlZF9uZXdfcmVuYW1lX2F0GAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBJCCh5uZXh0X2FsbG93ZWRfYXJjaGl2ZV9yZW5hbWVfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIqkCChBBcmNoaXZlZFVzZXJuYW1lEhAKCHVzZXJuYW1lGAEgASgJEjUKEWZpcnN0X2FyY2hpdmVkX2F0GAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpyZW5hbWVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpyZWxlYXNlX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIWCg5kYXlzX3JlbWFpbmluZxgFIAEoBRIXCg9jYW5fcmVjbGFpbV9ub3cYBiABKAgSOwoXbmV4dF9yZWNsYWltX2FsbG93ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIkQKJFNlbmREZWxldGVBY2NvdW50VmVyaWZpY2F0aW9uUmVxdWVzdBIcCgh1c2VybmFtZRgBIAEoCUIKgrIZBgoECAMQFCKPAQolU2VuZERlbGV0ZUFjY291bnRWZXJpZmljYXRpb25SZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSFAoMY2hhbGxlbmdlX2lkGAMgASgJEi4KCmV4cGlyZXNfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wInUKFERlbGV0ZUFjY291bnRSZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJEhQKDGNoYWxsZW5nZV9pZBgCIAEoCRIOCgRjb2RlGAMgASgJSAASFQoLbWFnaWNfdG9rZW4YBCABKAlIAEIOCgx2ZXJpZmljYXRpb24icQoVRGVsZXRlQWNjb3VudFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRI2ChJzY2hlZHVsZWRfcHVyZ2VfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIh4KHENhbmNlbEFjY291bnREZWxldGlvblJlcXVlc3QiZAodQ2FuY2VsQWNjb3VudERlbGV0aW9uUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiEKBHVzZXIYAyABKAsyEy5xdWFkc21pdGguYXBpLlVzZXIiIwohU2VuZERhdGFFeHBvcnRWZXJpZmljYXRpb25SZXF1ZXN0Ir0BCiJTZW5kRGF0YUV4cG9ydFZlcmlmaWNhdGlvblJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIVCg1wcmltYXJ5X2VtYWlsGAMgASgJEhgKEGNvb2xkb3duX3NlY29uZHMYBCABKAUSFAoMY2hhbGxlbmdlX2lkGAUgASgJEi4KCmV4cGlyZXNfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wInwKF1ZlcmlmeURhdGFFeHBvcnRSZXF1ZXN0EhkKDGNoYWxsZW5nZV9pZBgBIAEoCUgBiAEBEg4KBGNvZGUYAiABKAlIABIVCgttYWdpY190b2tlbhgDIAEoCUgAQg4KDHZlcmlmaWNhdGlvbkIPCg1fY2hhbGxlbmdlX2lkIqoBChhWZXJpZnlEYXRhRXhwb3J0UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhQKDGV4cG9ydF90b2tlbhgDIAEoCRIUCgxkb3dubG9hZF91cmwYBCABKAkSEAoIZmlsZW5hbWUYBSABKAkSLgoKZXhwaXJlc19hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAixAIKDEF1dGhSZXNwb25zZRIUCgxhY2Nlc3NfdG9rZW4YASABKAkSFQoNcmVmcmVzaF90b2tlbhgCIAEoCRIhCgR1c2VyGAMgASgLMhMucXVhZHNtaXRoLmFwaS5Vc2VyEisKB3Byb2ZpbGUYBCABKAsyGi5xdWFkc21pdGguYXBpLlVzZXJQcm9maWxlEh4KFmFjY291bnRfc2V0dXBfcmVxdWlyZWQYBSABKAgSEwoLc2V0dXBfdG9rZW4YBiABKAkSGwoOYWNjb3VudF9zdGF0dXMYByABKAlIAIgBARI7ChJzY2hlZHVsZWRfcHVyZ2VfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAGIAQFCEQoPX2FjY291bnRfc3RhdHVzQhUKE19zY2hlZHVsZWRfcHVyZ2VfYXQiiQEKFE90cFZlcmlmaWNhdGlvbkVycm9yEg8KB21lc3NhZ2UYASABKAkSGgoScmVtYWluaW5nX2F0dGVtcHRzGAIgASgFEhQKDG1heF9hdHRlbXB0cxgDIAEoBRIUCgxpc19leGhhdXN0ZWQYBCABKAgSGAoQY29vbGRvd25fc2Vjb25kcxgFIAEoBSrOAQoUTG9naW5DaGFsbGVuZ2VTdGF0dXMSJgoiTE9HSU5fQ0hBTExFTkdFX1NUQVRVU19VTlNQRUNJRklFRBAAEiIKHkxPR0lOX0NIQUxMRU5HRV9TVEFUVVNfUEVORElORxABEiMKH0xPR0lOX0NIQUxMRU5HRV9TVEFUVVNfQVBQUk9WRUQQAhIhCh1MT0dJTl9DSEFMTEVOR0VfU1RBVFVTX0RFTklFRBADEiIKHkxPR0lOX0NIQUxMRU5HRV9TVEFUVVNfRVhQSVJFRBAEMtwTCgtBdXRoU2VydmljZRJXCgxTZW5kRW1haWxPdHASIi5xdWFkc21pdGguYXBpLlNlbmRFbWFpbE90cFJlcXVlc3QaIy5xdWFkc21pdGguYXBpLlNlbmRFbWFpbE90cFJlc3BvbnNlElMKDlZlcmlmeUVtYWlsT3RwEiQucXVhZHNtaXRoLmFwaS5WZXJpZnlFbWFpbE90cFJlcXVlc3QaGy5xdWFkc21pdGguYXBpLkF1dGhSZXNwb25zZRJVCg9WZXJpZnlNYWdpY0xpbmsSJS5xdWFkc21pdGguYXBpLlZlcmlmeU1hZ2ljTGlua1JlcXVlc3QaGy5xdWFkc21pdGguYXBpLkF1dGhSZXNwb25zZRJ7ChhHZXRMb2dpbkNoYWxsZW5nZURldGFpbHMSLi5xdWFkc21pdGguYXBpLkdldExvZ2luQ2hhbGxlbmdlRGV0YWlsc1JlcXVlc3QaLy5xdWFkc21pdGguYXBpLkdldExvZ2luQ2hhbGxlbmdlRGV0YWlsc1Jlc3BvbnNlEnIKFUFwcHJvdmVMb2dpbkNoYWxsZW5nZRIrLnF1YWRzbWl0aC5hcGkuQXBwcm92ZUxvZ2luQ2hhbGxlbmdlUmVxdWVzdBosLnF1YWRzbWl0aC5hcGkuQXBwcm92ZUxvZ2luQ2hhbGxlbmdlUmVzcG9uc2USaQoSRGVueUxvZ2luQ2hhbGxlbmdlEigucXVhZHNtaXRoLmFwaS5EZW55TG9naW5DaGFsbGVuZ2VSZXF1ZXN0GikucXVhZHNtaXRoLmFwaS5EZW55TG9naW5DaGFsbGVuZ2VSZXNwb25zZRJ4ChdHZXRMb2dpbkNoYWxsZW5nZVN0YXR1cxItLnF1YWRzbWl0aC5hcGkuR2V0TG9naW5DaGFsbGVuZ2VTdGF0dXNSZXF1ZXN0Gi4ucXVhZHNtaXRoLmFwaS5HZXRMb2dpbkNoYWxsZW5nZVN0YXR1c1Jlc3BvbnNlEl8KFENvbXBsZXRlQWNjb3VudFNldHVwEioucXVhZHNtaXRoLmFwaS5Db21wbGV0ZUFjY291bnRTZXR1cFJlcXVlc3QaGy5xdWFkc21pdGguYXBpLkF1dGhSZXNwb25zZRJPCgxSZWZyZXNoVG9rZW4SIi5xdWFkc21pdGguYXBpLlJlZnJlc2hUb2tlblJlcXVlc3QaGy5xdWFkc21pdGguYXBpLkF1dGhSZXNwb25zZRJLCg5HZXRDdXJyZW50VXNlchIkLnF1YWRzbWl0aC5hcGkuR2V0Q3VycmVudFVzZXJSZXF1ZXN0GhMucXVhZHNtaXRoLmFwaS5Vc2VyElAKDVVwZGF0ZVByb2ZpbGUSIy5xdWFkc21pdGguYXBpLlVwZGF0ZVByb2ZpbGVSZXF1ZXN0GhoucXVhZHNtaXRoLmFwaS5Vc2VyUHJvZmlsZRJFCgZMb2dvdXQSHC5xdWFkc21pdGguYXBpLkxvZ291dFJlcXVlc3QaHS5xdWFkc21pdGguYXBpLkxvZ291dFJlc3BvbnNlEl0KDkxpc3RVc2VyRW1haWxzEiQucXVhZHNtaXRoLmFwaS5MaXN0VXNlckVtYWlsc1JlcXVlc3QaJS5xdWFkc21pdGguYXBpLkxpc3RVc2VyRW1haWxzUmVzcG9uc2USXQoPU2VuZEFkZEVtYWlsT3RwEiUucXVhZHNtaXRoLmFwaS5TZW5kQWRkRW1haWxPdHBSZXF1ZXN0GiMucXVhZHNtaXRoLmFwaS5TZW5kRW1haWxPdHBSZXNwb25zZRJmChFWZXJpZnlBZGRFbWFpbE90cBInLnF1YWRzbWl0aC5hcGkuVmVyaWZ5QWRkRW1haWxPdHBSZXF1ZXN0GigucXVhZHNtaXRoLmFwaS5WZXJpZnlBZGRFbWFpbE90cFJlc3BvbnNlElcKDE1lcmdlQWNjb3VudBIiLnF1YWRzbWl0aC5hcGkuTWVyZ2VBY2NvdW50UmVxdWVzdBojLnF1YWRzbWl0aC5hcGkuTWVyZ2VBY2NvdW50UmVzcG9uc2USYAoPU2V0UHJpbWFyeUVtYWlsEiUucXVhZHNtaXRoLmFwaS5TZXRQcmltYXJ5RW1haWxSZXF1ZXN0GiYucXVhZHNtaXRoLmFwaS5TZXRQcmltYXJ5RW1haWxSZXNwb25zZRJgCg9SZW1vdmVVc2VyRW1haWwSJS5xdWFkc21pdGguYXBpLlJlbW92ZVVzZXJFbWFpbFJlcXVlc3QaJi5xdWFkc21pdGguYXBpLlJlbW92ZVVzZXJFbWFpbFJlc3BvbnNlEl0KDkNoYW5nZVVzZXJuYW1lEiQucXVhZHNtaXRoLmFwaS5DaGFuZ2VVc2VybmFtZVJlcXVlc3QaJS5xdWFkc21pdGguYXBpLkNoYW5nZVVzZXJuYW1lUmVzcG9uc2UScgoVTGlzdEFyY2hpdmVkVXNlcm5hbWVzEisucXVhZHNtaXRoLmFwaS5MaXN0QXJjaGl2ZWRVc2VybmFtZXNSZXF1ZXN0GiwucXVhZHNtaXRoLmFwaS5MaXN0QXJjaGl2ZWRVc2VybmFtZXNSZXNwb25zZRKBAQoaU2VuZERhdGFFeHBvcnRWZXJpZmljYXRpb24SMC5xdWFkc21pdGguYXBpLlNlbmREYXRhRXhwb3J0VmVyaWZpY2F0aW9uUmVxdWVzdBoxLnF1YWRzbWl0aC5hcGkuU2VuZERhdGFFeHBvcnRWZXJpZmljYXRpb25SZXNwb25zZRJjChBWZXJpZnlEYXRhRXhwb3J0EiYucXVhZHNtaXRoLmFwaS5WZXJpZnlEYXRhRXhwb3J0UmVxdWVzdBonLnF1YWRzbWl0aC5hcGkuVmVyaWZ5RGF0YUV4cG9ydFJlc3BvbnNlEooBCh1TZW5kRGVsZXRlQWNjb3VudFZlcmlmaWNhdGlvbhIzLnF1YWRzbWl0aC5hcGkuU2VuZERlbGV0ZUFjY291bnRWZXJpZmljYXRpb25SZXF1ZXN0GjQucXVhZHNtaXRoLmFwaS5TZW5kRGVsZXRlQWNjb3VudFZlcmlmaWNhdGlvblJlc3BvbnNlEloKDURlbGV0ZUFjY291bnQSIy5xdWFkc21pdGguYXBpLkRlbGV0ZUFjY291bnRSZXF1ZXN0GiQucXVhZHNtaXRoLmFwaS5EZWxldGVBY2NvdW50UmVzcG9uc2UScgoVQ2FuY2VsQWNjb3VudERlbGV0aW9uEisucXVhZHNtaXRoLmFwaS5DYW5jZWxBY2NvdW50RGVsZXRpb25SZXF1ZXN0GiwucXVhZHNtaXRoLmFwaS5DYW5jZWxBY2NvdW50RGVsZXRpb25SZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
+    "ChhxdWFkc21pdGgvYXBpL2F1dGgucHJvdG8SDXF1YWRzbWl0aC5hcGkiJAoTU2VuZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCSKbAQoUU2VuZEVtYWlsT3RwUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhgKEGNvb2xkb3duX3NlY29uZHMYAyABKAUSGwoTaXNfZXhpc3RpbmdfYWNjb3VudBgEIAEoCBIZCgxjaGFsbGVuZ2VfaWQYBSABKAlIAIgBAUIPCg1fY2hhbGxlbmdlX2lkImAKFVZlcmlmeUVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCRIMCgRjb2RlGAIgASgJEhkKDGNoYWxsZW5nZV9pZBgDIAEoCUgAiAEBQg8KDV9jaGFsbGVuZ2VfaWQiJwoWVmVyaWZ5TWFnaWNMaW5rUmVxdWVzdBINCgV0b2tlbhgBIAEoCSIwCh9HZXRMb2dpbkNoYWxsZW5nZURldGFpbHNSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIoYCCiBHZXRMb2dpbkNoYWxsZW5nZURldGFpbHNSZXNwb25zZRINCgVlbWFpbBgBIAEoCRISCgppcF9hZGRyZXNzGAIgASgJEhUKDWxvY2F0aW9uX2hpbnQYAyABKAkSEwoLZGV2aWNlX2hpbnQYBCABKAkSLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKZXhwaXJlc19hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMwoGc3RhdHVzGAcgASgOMiMucXVhZHNtaXRoLmFwaS5Mb2dpbkNoYWxsZW5nZVN0YXR1cyItChxBcHByb3ZlTG9naW5DaGFsbGVuZ2VSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIkEKHUFwcHJvdmVMb2dpbkNoYWxsZW5nZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSIqChlEZW55TG9naW5DaGFsbGVuZ2VSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIj4KGkRlbnlMb2dpbkNoYWxsZW5nZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSI2Ch5HZXRMb2dpbkNoYWxsZW5nZVN0YXR1c1JlcXVlc3QSFAoMY2hhbGxlbmdlX2lkGAEgASgJIqEBCh9HZXRMb2dpbkNoYWxsZW5nZVN0YXR1c1Jlc3BvbnNlEjMKBnN0YXR1cxgBIAEoDjIjLnF1YWRzbWl0aC5hcGkuTG9naW5DaGFsbGVuZ2VTdGF0dXMSNwoNYXV0aF9yZXNwb25zZRgCIAEoCzIbLnF1YWRzbWl0aC5hcGkuQXV0aFJlc3BvbnNlSACIAQFCEAoOX2F1dGhfcmVzcG9uc2Ui1AEKG0NvbXBsZXRlQWNjb3VudFNldHVwUmVxdWVzdBITCgtzZXR1cF90b2tlbhgBIAEoCRJ4Cgh1c2VybmFtZRgCIAEoCUJmgrIZYgpgCAMQFBoeXlthLXpdW2EtejAtOV9dezEsMTh9W2EtejAtOV0kIgVhZG1pbiIEcm9vdCIGc3lzdGVtIgNib3QiBXJvYm90KgJfXyoJcXVhZHNtaXRoKgpxdWFkX3NtaXRoEhcKCmF2YXRhcl91cmwYAyABKAlIAIgBAUINCgtfYXZhdGFyX3VybCIsChNSZWZyZXNoVG9rZW5SZXF1ZXN0EhUKDXJlZnJlc2hfdG9rZW4YASABKAkiFwoVR2V0Q3VycmVudFVzZXJSZXF1ZXN0IlgKFFVwZGF0ZVByb2ZpbGVSZXF1ZXN0EhcKCmF2YXRhcl91cmwYASABKAlIAIgBARIQCgNiaW8YAiABKAlIAYgBAUINCgtfYXZhdGFyX3VybEIGCgRfYmlvIj0KDUxvZ291dFJlcXVlc3QSGgoNcmVmcmVzaF90b2tlbhgBIAEoCUgAiAEBQhAKDl9yZWZyZXNoX3Rva2VuIiEKDkxvZ291dFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiGwoZTGlzdEFjdGl2ZVNlc3Npb25zUmVxdWVzdCJGChpMaXN0QWN0aXZlU2Vzc2lvbnNSZXNwb25zZRIoCghzZXNzaW9ucxgBIAMoCzIWLnF1YWRzbWl0aC5hcGkuU2Vzc2lvbiLPAQoHU2Vzc2lvbhIMCgR1dWlkGAEgASgJEhMKC2RldmljZV9oaW50GAIgASgJEhIKCmlwX2FkZHJlc3MYAyABKAkSFQoNbG9jYXRpb25faGludBgEIAEoCRIuCgpjcmVhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCg5sYXN0X2FjdGl2ZV9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASEgoKaXNfY3VycmVudBgHIAEoCCIsChRSZXZva2VTZXNzaW9uUmVxdWVzdBIUCgxzZXNzaW9uX3V1aWQYASABKAkiOQoVUmV2b2tlU2Vzc2lvblJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSIcChpSZXZva2VPdGhlclNlc3Npb25zUmVxdWVzdCJWChtSZXZva2VPdGhlclNlc3Npb25zUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIVCg1yZXZva2VkX2NvdW50GAIgASgFEg8KB21lc3NhZ2UYAyABKAkiFwoVTGlzdFVzZXJFbWFpbHNSZXF1ZXN0IkIKFkxpc3RVc2VyRW1haWxzUmVzcG9uc2USKAoGZW1haWxzGAEgAygLMhgucXVhZHNtaXRoLmFwaS5Vc2VyRW1haWwiJwoWU2VuZEFkZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCSJyChhWZXJpZnlBZGRFbWFpbE90cFJlcXVlc3QSDQoFZW1haWwYASABKAkSDAoEY29kZRgCIAEoCRINCgV0b2tlbhgDIAEoCRIZCgxjaGFsbGVuZ2VfaWQYBCABKAlIAIgBAUIPCg1fY2hhbGxlbmdlX2lkIokCChlWZXJpZnlBZGRFbWFpbE90cFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIWCg5tZXJnZV9yZXF1aXJlZBgDIAEoCBIbChNvdGhlcl91c2VyX3VzZXJuYW1lGAQgASgJEhkKEW90aGVyX2J1aWxkX2NvdW50GAUgASgFEhkKEW90aGVyX2J1aWxkX25hbWVzGAYgAygJEhQKDG90aGVyX2VtYWlscxgHIAMoCRIdChVvdGhlcl9vYXV0aF9wcm92aWRlcnMYCCADKAkSGQoMbWVyZ2VfdGlja2V0GAkgASgJSACIAQFCDwoNX21lcmdlX3RpY2tldCKZAQoTTWVyZ2VBY2NvdW50UmVxdWVzdBINCgVlbWFpbBgBIAEoCRIMCgRjb2RlGAIgASgJEg0KBXRva2VuGAMgASgJEhkKDG1lcmdlX3RpY2tldBgEIAEoCUgAiAEBEhkKDGNoYWxsZW5nZV9pZBgFIAEoCUgBiAEBQg8KDV9tZXJnZV90aWNrZXRCDwoNX2NoYWxsZW5nZV9pZCKJAQoUTWVyZ2VBY2NvdW50UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEh8KF3RyYW5zZmVycmVkX2J1aWxkX2NvdW50GAMgASgFEhcKD21lcmdlZF91c2VybmFtZRgEIAEoCRIVCg1tZXJnZWRfZW1haWxzGAUgAygJIicKFlNldFByaW1hcnlFbWFpbFJlcXVlc3QSDQoFZW1haWwYASABKAkiOwoXU2V0UHJpbWFyeUVtYWlsUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJIicKFlJlbW92ZVVzZXJFbWFpbFJlcXVlc3QSDQoFZW1haWwYASABKAkiOwoXUmVtb3ZlVXNlckVtYWlsUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJIpUBChVDaGFuZ2VVc2VybmFtZVJlcXVlc3QSfAoMbmV3X3VzZXJuYW1lGAEgASgJQmaCshliCmAIAxAUGh5eW2Etel1bYS16MC05X117MSwxOH1bYS16MC05XSQiBWFkbWluIgRyb290IgZzeXN0ZW0iA2JvdCIFcm9ib3QqAl9fKglxdWFkc21pdGgqCnF1YWRfc21pdGgi4QEKFkNoYW5nZVVzZXJuYW1lUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiEKBHVzZXIYAyABKAsyEy5xdWFkc21pdGguYXBpLlVzZXISPgoabmV4dF9hbGxvd2VkX25ld19yZW5hbWVfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEkIKHm5leHRfYWxsb3dlZF9hcmNoaXZlX3JlbmFtZV9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiHgocTGlzdEFyY2hpdmVkVXNlcm5hbWVzUmVxdWVzdCLgAQodTGlzdEFyY2hpdmVkVXNlcm5hbWVzUmVzcG9uc2USOwoSYXJjaGl2ZWRfdXNlcm5hbWVzGAEgAygLMh8ucXVhZHNtaXRoLmFwaS5BcmNoaXZlZFVzZXJuYW1lEj4KGm5leHRfYWxsb3dlZF9uZXdfcmVuYW1lX2F0GAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBJCCh5uZXh0X2FsbG93ZWRfYXJjaGl2ZV9yZW5hbWVfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIqkCChBBcmNoaXZlZFVzZXJuYW1lEhAKCHVzZXJuYW1lGAEgASgJEjUKEWZpcnN0X2FyY2hpdmVkX2F0GAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpyZW5hbWVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpyZWxlYXNlX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIWCg5kYXlzX3JlbWFpbmluZxgFIAEoBRIXCg9jYW5fcmVjbGFpbV9ub3cYBiABKAgSOwoXbmV4dF9yZWNsYWltX2FsbG93ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIkQKJFNlbmREZWxldGVBY2NvdW50VmVyaWZpY2F0aW9uUmVxdWVzdBIcCgh1c2VybmFtZRgBIAEoCUIKgrIZBgoECAMQFCKPAQolU2VuZERlbGV0ZUFjY291bnRWZXJpZmljYXRpb25SZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSFAoMY2hhbGxlbmdlX2lkGAMgASgJEi4KCmV4cGlyZXNfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wInUKFERlbGV0ZUFjY291bnRSZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJEhQKDGNoYWxsZW5nZV9pZBgCIAEoCRIOCgRjb2RlGAMgASgJSAASFQoLbWFnaWNfdG9rZW4YBCABKAlIAEIOCgx2ZXJpZmljYXRpb24icQoVRGVsZXRlQWNjb3VudFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRI2ChJzY2hlZHVsZWRfcHVyZ2VfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIh4KHENhbmNlbEFjY291bnREZWxldGlvblJlcXVlc3QiZAodQ2FuY2VsQWNjb3VudERlbGV0aW9uUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiEKBHVzZXIYAyABKAsyEy5xdWFkc21pdGguYXBpLlVzZXIiIwohU2VuZERhdGFFeHBvcnRWZXJpZmljYXRpb25SZXF1ZXN0Ir0BCiJTZW5kRGF0YUV4cG9ydFZlcmlmaWNhdGlvblJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIVCg1wcmltYXJ5X2VtYWlsGAMgASgJEhgKEGNvb2xkb3duX3NlY29uZHMYBCABKAUSFAoMY2hhbGxlbmdlX2lkGAUgASgJEi4KCmV4cGlyZXNfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wInwKF1ZlcmlmeURhdGFFeHBvcnRSZXF1ZXN0EhkKDGNoYWxsZW5nZV9pZBgBIAEoCUgBiAEBEg4KBGNvZGUYAiABKAlIABIVCgttYWdpY190b2tlbhgDIAEoCUgAQg4KDHZlcmlmaWNhdGlvbkIPCg1fY2hhbGxlbmdlX2lkIqoBChhWZXJpZnlEYXRhRXhwb3J0UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhQKDGV4cG9ydF90b2tlbhgDIAEoCRIUCgxkb3dubG9hZF91cmwYBCABKAkSEAoIZmlsZW5hbWUYBSABKAkSLgoKZXhwaXJlc19hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAixAIKDEF1dGhSZXNwb25zZRIUCgxhY2Nlc3NfdG9rZW4YASABKAkSFQoNcmVmcmVzaF90b2tlbhgCIAEoCRIhCgR1c2VyGAMgASgLMhMucXVhZHNtaXRoLmFwaS5Vc2VyEisKB3Byb2ZpbGUYBCABKAsyGi5xdWFkc21pdGguYXBpLlVzZXJQcm9maWxlEh4KFmFjY291bnRfc2V0dXBfcmVxdWlyZWQYBSABKAgSEwoLc2V0dXBfdG9rZW4YBiABKAkSGwoOYWNjb3VudF9zdGF0dXMYByABKAlIAIgBARI7ChJzY2hlZHVsZWRfcHVyZ2VfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAGIAQFCEQoPX2FjY291bnRfc3RhdHVzQhUKE19zY2hlZHVsZWRfcHVyZ2VfYXQiiQEKFE90cFZlcmlmaWNhdGlvbkVycm9yEg8KB21lc3NhZ2UYASABKAkSGgoScmVtYWluaW5nX2F0dGVtcHRzGAIgASgFEhQKDG1heF9hdHRlbXB0cxgDIAEoBRIUCgxpc19leGhhdXN0ZWQYBCABKAgSGAoQY29vbGRvd25fc2Vjb25kcxgFIAEoBSrOAQoUTG9naW5DaGFsbGVuZ2VTdGF0dXMSJgoiTE9HSU5fQ0hBTExFTkdFX1NUQVRVU19VTlNQRUNJRklFRBAAEiIKHkxPR0lOX0NIQUxMRU5HRV9TVEFUVVNfUEVORElORxABEiMKH0xPR0lOX0NIQUxMRU5HRV9TVEFUVVNfQVBQUk9WRUQQAhIhCh1MT0dJTl9DSEFMTEVOR0VfU1RBVFVTX0RFTklFRBADEiIKHkxPR0lOX0NIQUxMRU5HRV9TVEFUVVNfRVhQSVJFRBAEMpEWCgtBdXRoU2VydmljZRJXCgxTZW5kRW1haWxPdHASIi5xdWFkc21pdGguYXBpLlNlbmRFbWFpbE90cFJlcXVlc3QaIy5xdWFkc21pdGguYXBpLlNlbmRFbWFpbE90cFJlc3BvbnNlElMKDlZlcmlmeUVtYWlsT3RwEiQucXVhZHNtaXRoLmFwaS5WZXJpZnlFbWFpbE90cFJlcXVlc3QaGy5xdWFkc21pdGguYXBpLkF1dGhSZXNwb25zZRJVCg9WZXJpZnlNYWdpY0xpbmsSJS5xdWFkc21pdGguYXBpLlZlcmlmeU1hZ2ljTGlua1JlcXVlc3QaGy5xdWFkc21pdGguYXBpLkF1dGhSZXNwb25zZRJ7ChhHZXRMb2dpbkNoYWxsZW5nZURldGFpbHMSLi5xdWFkc21pdGguYXBpLkdldExvZ2luQ2hhbGxlbmdlRGV0YWlsc1JlcXVlc3QaLy5xdWFkc21pdGguYXBpLkdldExvZ2luQ2hhbGxlbmdlRGV0YWlsc1Jlc3BvbnNlEnIKFUFwcHJvdmVMb2dpbkNoYWxsZW5nZRIrLnF1YWRzbWl0aC5hcGkuQXBwcm92ZUxvZ2luQ2hhbGxlbmdlUmVxdWVzdBosLnF1YWRzbWl0aC5hcGkuQXBwcm92ZUxvZ2luQ2hhbGxlbmdlUmVzcG9uc2USaQoSRGVueUxvZ2luQ2hhbGxlbmdlEigucXVhZHNtaXRoLmFwaS5EZW55TG9naW5DaGFsbGVuZ2VSZXF1ZXN0GikucXVhZHNtaXRoLmFwaS5EZW55TG9naW5DaGFsbGVuZ2VSZXNwb25zZRJ4ChdHZXRMb2dpbkNoYWxsZW5nZVN0YXR1cxItLnF1YWRzbWl0aC5hcGkuR2V0TG9naW5DaGFsbGVuZ2VTdGF0dXNSZXF1ZXN0Gi4ucXVhZHNtaXRoLmFwaS5HZXRMb2dpbkNoYWxsZW5nZVN0YXR1c1Jlc3BvbnNlEl8KFENvbXBsZXRlQWNjb3VudFNldHVwEioucXVhZHNtaXRoLmFwaS5Db21wbGV0ZUFjY291bnRTZXR1cFJlcXVlc3QaGy5xdWFkc21pdGguYXBpLkF1dGhSZXNwb25zZRJPCgxSZWZyZXNoVG9rZW4SIi5xdWFkc21pdGguYXBpLlJlZnJlc2hUb2tlblJlcXVlc3QaGy5xdWFkc21pdGguYXBpLkF1dGhSZXNwb25zZRJLCg5HZXRDdXJyZW50VXNlchIkLnF1YWRzbWl0aC5hcGkuR2V0Q3VycmVudFVzZXJSZXF1ZXN0GhMucXVhZHNtaXRoLmFwaS5Vc2VyElAKDVVwZGF0ZVByb2ZpbGUSIy5xdWFkc21pdGguYXBpLlVwZGF0ZVByb2ZpbGVSZXF1ZXN0GhoucXVhZHNtaXRoLmFwaS5Vc2VyUHJvZmlsZRJFCgZMb2dvdXQSHC5xdWFkc21pdGguYXBpLkxvZ291dFJlcXVlc3QaHS5xdWFkc21pdGguYXBpLkxvZ291dFJlc3BvbnNlEmkKEkxpc3RBY3RpdmVTZXNzaW9ucxIoLnF1YWRzbWl0aC5hcGkuTGlzdEFjdGl2ZVNlc3Npb25zUmVxdWVzdBopLnF1YWRzbWl0aC5hcGkuTGlzdEFjdGl2ZVNlc3Npb25zUmVzcG9uc2USWgoNUmV2b2tlU2Vzc2lvbhIjLnF1YWRzbWl0aC5hcGkuUmV2b2tlU2Vzc2lvblJlcXVlc3QaJC5xdWFkc21pdGguYXBpLlJldm9rZVNlc3Npb25SZXNwb25zZRJsChNSZXZva2VPdGhlclNlc3Npb25zEikucXVhZHNtaXRoLmFwaS5SZXZva2VPdGhlclNlc3Npb25zUmVxdWVzdBoqLnF1YWRzbWl0aC5hcGkuUmV2b2tlT3RoZXJTZXNzaW9uc1Jlc3BvbnNlEl0KDkxpc3RVc2VyRW1haWxzEiQucXVhZHNtaXRoLmFwaS5MaXN0VXNlckVtYWlsc1JlcXVlc3QaJS5xdWFkc21pdGguYXBpLkxpc3RVc2VyRW1haWxzUmVzcG9uc2USXQoPU2VuZEFkZEVtYWlsT3RwEiUucXVhZHNtaXRoLmFwaS5TZW5kQWRkRW1haWxPdHBSZXF1ZXN0GiMucXVhZHNtaXRoLmFwaS5TZW5kRW1haWxPdHBSZXNwb25zZRJmChFWZXJpZnlBZGRFbWFpbE90cBInLnF1YWRzbWl0aC5hcGkuVmVyaWZ5QWRkRW1haWxPdHBSZXF1ZXN0GigucXVhZHNtaXRoLmFwaS5WZXJpZnlBZGRFbWFpbE90cFJlc3BvbnNlElcKDE1lcmdlQWNjb3VudBIiLnF1YWRzbWl0aC5hcGkuTWVyZ2VBY2NvdW50UmVxdWVzdBojLnF1YWRzbWl0aC5hcGkuTWVyZ2VBY2NvdW50UmVzcG9uc2USYAoPU2V0UHJpbWFyeUVtYWlsEiUucXVhZHNtaXRoLmFwaS5TZXRQcmltYXJ5RW1haWxSZXF1ZXN0GiYucXVhZHNtaXRoLmFwaS5TZXRQcmltYXJ5RW1haWxSZXNwb25zZRJgCg9SZW1vdmVVc2VyRW1haWwSJS5xdWFkc21pdGguYXBpLlJlbW92ZVVzZXJFbWFpbFJlcXVlc3QaJi5xdWFkc21pdGguYXBpLlJlbW92ZVVzZXJFbWFpbFJlc3BvbnNlEl0KDkNoYW5nZVVzZXJuYW1lEiQucXVhZHNtaXRoLmFwaS5DaGFuZ2VVc2VybmFtZVJlcXVlc3QaJS5xdWFkc21pdGguYXBpLkNoYW5nZVVzZXJuYW1lUmVzcG9uc2UScgoVTGlzdEFyY2hpdmVkVXNlcm5hbWVzEisucXVhZHNtaXRoLmFwaS5MaXN0QXJjaGl2ZWRVc2VybmFtZXNSZXF1ZXN0GiwucXVhZHNtaXRoLmFwaS5MaXN0QXJjaGl2ZWRVc2VybmFtZXNSZXNwb25zZRKBAQoaU2VuZERhdGFFeHBvcnRWZXJpZmljYXRpb24SMC5xdWFkc21pdGguYXBpLlNlbmREYXRhRXhwb3J0VmVyaWZpY2F0aW9uUmVxdWVzdBoxLnF1YWRzbWl0aC5hcGkuU2VuZERhdGFFeHBvcnRWZXJpZmljYXRpb25SZXNwb25zZRJjChBWZXJpZnlEYXRhRXhwb3J0EiYucXVhZHNtaXRoLmFwaS5WZXJpZnlEYXRhRXhwb3J0UmVxdWVzdBonLnF1YWRzbWl0aC5hcGkuVmVyaWZ5RGF0YUV4cG9ydFJlc3BvbnNlEooBCh1TZW5kRGVsZXRlQWNjb3VudFZlcmlmaWNhdGlvbhIzLnF1YWRzbWl0aC5hcGkuU2VuZERlbGV0ZUFjY291bnRWZXJpZmljYXRpb25SZXF1ZXN0GjQucXVhZHNtaXRoLmFwaS5TZW5kRGVsZXRlQWNjb3VudFZlcmlmaWNhdGlvblJlc3BvbnNlEloKDURlbGV0ZUFjY291bnQSIy5xdWFkc21pdGguYXBpLkRlbGV0ZUFjY291bnRSZXF1ZXN0GiQucXVhZHNtaXRoLmFwaS5EZWxldGVBY2NvdW50UmVzcG9uc2UScgoVQ2FuY2VsQWNjb3VudERlbGV0aW9uEisucXVhZHNtaXRoLmFwaS5DYW5jZWxBY2NvdW50RGVsZXRpb25SZXF1ZXN0GiwucXVhZHNtaXRoLmFwaS5DYW5jZWxBY2NvdW50RGVsZXRpb25SZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
     [file_google_protobuf_timestamp, file_quadsmith_api_user, file_quadsmith_validate_validate],
   );
 
@@ -436,6 +436,167 @@ export const LogoutResponseSchema: GenMessage<LogoutResponse> =
   messageDesc(file_quadsmith_api_auth, 17);
 
 /**
+ * @generated from message quadsmith.api.ListActiveSessionsRequest
+ */
+export type ListActiveSessionsRequest = Message<"quadsmith.api.ListActiveSessionsRequest"> & {};
+
+/**
+ * Describes the message quadsmith.api.ListActiveSessionsRequest.
+ * Use `create(ListActiveSessionsRequestSchema)` to create a new message.
+ */
+export const ListActiveSessionsRequestSchema: GenMessage<ListActiveSessionsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 18);
+
+/**
+ * @generated from message quadsmith.api.ListActiveSessionsResponse
+ */
+export type ListActiveSessionsResponse = Message<"quadsmith.api.ListActiveSessionsResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.Session sessions = 1;
+   */
+  sessions: Session[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListActiveSessionsResponse.
+ * Use `create(ListActiveSessionsResponseSchema)` to create a new message.
+ */
+export const ListActiveSessionsResponseSchema: GenMessage<ListActiveSessionsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 19);
+
+/**
+ * @generated from message quadsmith.api.Session
+ */
+export type Session = Message<"quadsmith.api.Session"> & {
+  /**
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
+
+  /**
+   * @generated from field: string device_hint = 2;
+   */
+  deviceHint: string;
+
+  /**
+   * @generated from field: string ip_address = 3;
+   */
+  ipAddress: string;
+
+  /**
+   * @generated from field: string location_hint = 4;
+   */
+  locationHint: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 5;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp last_active_at = 6;
+   */
+  lastActiveAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: bool is_current = 7;
+   */
+  isCurrent: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.Session.
+ * Use `create(SessionSchema)` to create a new message.
+ */
+export const SessionSchema: GenMessage<Session> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 20);
+
+/**
+ * @generated from message quadsmith.api.RevokeSessionRequest
+ */
+export type RevokeSessionRequest = Message<"quadsmith.api.RevokeSessionRequest"> & {
+  /**
+   * @generated from field: string session_uuid = 1;
+   */
+  sessionUuid: string;
+};
+
+/**
+ * Describes the message quadsmith.api.RevokeSessionRequest.
+ * Use `create(RevokeSessionRequestSchema)` to create a new message.
+ */
+export const RevokeSessionRequestSchema: GenMessage<RevokeSessionRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 21);
+
+/**
+ * @generated from message quadsmith.api.RevokeSessionResponse
+ */
+export type RevokeSessionResponse = Message<"quadsmith.api.RevokeSessionResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.api.RevokeSessionResponse.
+ * Use `create(RevokeSessionResponseSchema)` to create a new message.
+ */
+export const RevokeSessionResponseSchema: GenMessage<RevokeSessionResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 22);
+
+/**
+ * @generated from message quadsmith.api.RevokeOtherSessionsRequest
+ */
+export type RevokeOtherSessionsRequest = Message<"quadsmith.api.RevokeOtherSessionsRequest"> & {};
+
+/**
+ * Describes the message quadsmith.api.RevokeOtherSessionsRequest.
+ * Use `create(RevokeOtherSessionsRequestSchema)` to create a new message.
+ */
+export const RevokeOtherSessionsRequestSchema: GenMessage<RevokeOtherSessionsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 23);
+
+/**
+ * @generated from message quadsmith.api.RevokeOtherSessionsResponse
+ */
+export type RevokeOtherSessionsResponse = Message<"quadsmith.api.RevokeOtherSessionsResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: int32 revoked_count = 2;
+   */
+  revokedCount: number;
+
+  /**
+   * @generated from field: string message = 3;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.api.RevokeOtherSessionsResponse.
+ * Use `create(RevokeOtherSessionsResponseSchema)` to create a new message.
+ */
+export const RevokeOtherSessionsResponseSchema: GenMessage<RevokeOtherSessionsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 24);
+
+/**
  * @generated from message quadsmith.api.ListUserEmailsRequest
  */
 export type ListUserEmailsRequest = Message<"quadsmith.api.ListUserEmailsRequest"> & {};
@@ -446,7 +607,7 @@ export type ListUserEmailsRequest = Message<"quadsmith.api.ListUserEmailsRequest
  */
 export const ListUserEmailsRequestSchema: GenMessage<ListUserEmailsRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 18);
+  messageDesc(file_quadsmith_api_auth, 25);
 
 /**
  * @generated from message quadsmith.api.ListUserEmailsResponse
@@ -464,7 +625,7 @@ export type ListUserEmailsResponse = Message<"quadsmith.api.ListUserEmailsRespon
  */
 export const ListUserEmailsResponseSchema: GenMessage<ListUserEmailsResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 19);
+  messageDesc(file_quadsmith_api_auth, 26);
 
 /**
  * @generated from message quadsmith.api.SendAddEmailOtpRequest
@@ -482,7 +643,7 @@ export type SendAddEmailOtpRequest = Message<"quadsmith.api.SendAddEmailOtpReque
  */
 export const SendAddEmailOtpRequestSchema: GenMessage<SendAddEmailOtpRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 20);
+  messageDesc(file_quadsmith_api_auth, 27);
 
 /**
  * @generated from message quadsmith.api.VerifyAddEmailOtpRequest
@@ -515,7 +676,7 @@ export type VerifyAddEmailOtpRequest = Message<"quadsmith.api.VerifyAddEmailOtpR
  */
 export const VerifyAddEmailOtpRequestSchema: GenMessage<VerifyAddEmailOtpRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 21);
+  messageDesc(file_quadsmith_api_auth, 28);
 
 /**
  * @generated from message quadsmith.api.VerifyAddEmailOtpResponse
@@ -573,7 +734,7 @@ export type VerifyAddEmailOtpResponse = Message<"quadsmith.api.VerifyAddEmailOtp
  */
 export const VerifyAddEmailOtpResponseSchema: GenMessage<VerifyAddEmailOtpResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 22);
+  messageDesc(file_quadsmith_api_auth, 29);
 
 /**
  * @generated from message quadsmith.api.MergeAccountRequest
@@ -611,7 +772,7 @@ export type MergeAccountRequest = Message<"quadsmith.api.MergeAccountRequest"> &
  */
 export const MergeAccountRequestSchema: GenMessage<MergeAccountRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 23);
+  messageDesc(file_quadsmith_api_auth, 30);
 
 /**
  * @generated from message quadsmith.api.MergeAccountResponse
@@ -649,7 +810,7 @@ export type MergeAccountResponse = Message<"quadsmith.api.MergeAccountResponse">
  */
 export const MergeAccountResponseSchema: GenMessage<MergeAccountResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 24);
+  messageDesc(file_quadsmith_api_auth, 31);
 
 /**
  * @generated from message quadsmith.api.SetPrimaryEmailRequest
@@ -667,7 +828,7 @@ export type SetPrimaryEmailRequest = Message<"quadsmith.api.SetPrimaryEmailReque
  */
 export const SetPrimaryEmailRequestSchema: GenMessage<SetPrimaryEmailRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 25);
+  messageDesc(file_quadsmith_api_auth, 32);
 
 /**
  * @generated from message quadsmith.api.SetPrimaryEmailResponse
@@ -690,7 +851,7 @@ export type SetPrimaryEmailResponse = Message<"quadsmith.api.SetPrimaryEmailResp
  */
 export const SetPrimaryEmailResponseSchema: GenMessage<SetPrimaryEmailResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 26);
+  messageDesc(file_quadsmith_api_auth, 33);
 
 /**
  * @generated from message quadsmith.api.RemoveUserEmailRequest
@@ -708,7 +869,7 @@ export type RemoveUserEmailRequest = Message<"quadsmith.api.RemoveUserEmailReque
  */
 export const RemoveUserEmailRequestSchema: GenMessage<RemoveUserEmailRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 27);
+  messageDesc(file_quadsmith_api_auth, 34);
 
 /**
  * @generated from message quadsmith.api.RemoveUserEmailResponse
@@ -731,7 +892,7 @@ export type RemoveUserEmailResponse = Message<"quadsmith.api.RemoveUserEmailResp
  */
 export const RemoveUserEmailResponseSchema: GenMessage<RemoveUserEmailResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 28);
+  messageDesc(file_quadsmith_api_auth, 35);
 
 /**
  * @generated from message quadsmith.api.ChangeUsernameRequest
@@ -749,7 +910,7 @@ export type ChangeUsernameRequest = Message<"quadsmith.api.ChangeUsernameRequest
  */
 export const ChangeUsernameRequestSchema: GenMessage<ChangeUsernameRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 29);
+  messageDesc(file_quadsmith_api_auth, 36);
 
 /**
  * @generated from message quadsmith.api.ChangeUsernameResponse
@@ -787,7 +948,7 @@ export type ChangeUsernameResponse = Message<"quadsmith.api.ChangeUsernameRespon
  */
 export const ChangeUsernameResponseSchema: GenMessage<ChangeUsernameResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 30);
+  messageDesc(file_quadsmith_api_auth, 37);
 
 /**
  * @generated from message quadsmith.api.ListArchivedUsernamesRequest
@@ -801,7 +962,7 @@ export type ListArchivedUsernamesRequest =
  */
 export const ListArchivedUsernamesRequestSchema: GenMessage<ListArchivedUsernamesRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 31);
+  messageDesc(file_quadsmith_api_auth, 38);
 
 /**
  * @generated from message quadsmith.api.ListArchivedUsernamesResponse
@@ -830,7 +991,7 @@ export type ListArchivedUsernamesResponse =
  */
 export const ListArchivedUsernamesResponseSchema: GenMessage<ListArchivedUsernamesResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 32);
+  messageDesc(file_quadsmith_api_auth, 39);
 
 /**
  * @generated from message quadsmith.api.ArchivedUsername
@@ -878,7 +1039,7 @@ export type ArchivedUsername = Message<"quadsmith.api.ArchivedUsername"> & {
  */
 export const ArchivedUsernameSchema: GenMessage<ArchivedUsername> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 33);
+  messageDesc(file_quadsmith_api_auth, 40);
 
 /**
  * @generated from message quadsmith.api.SendDeleteAccountVerificationRequest
@@ -897,7 +1058,7 @@ export type SendDeleteAccountVerificationRequest =
  */
 export const SendDeleteAccountVerificationRequestSchema: GenMessage<SendDeleteAccountVerificationRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 34);
+  messageDesc(file_quadsmith_api_auth, 41);
 
 /**
  * @generated from message quadsmith.api.SendDeleteAccountVerificationResponse
@@ -931,7 +1092,7 @@ export type SendDeleteAccountVerificationResponse =
  */
 export const SendDeleteAccountVerificationResponseSchema: GenMessage<SendDeleteAccountVerificationResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 35);
+  messageDesc(file_quadsmith_api_auth, 42);
 
 /**
  * @generated from message quadsmith.api.DeleteAccountRequest
@@ -974,7 +1135,7 @@ export type DeleteAccountRequest = Message<"quadsmith.api.DeleteAccountRequest">
  */
 export const DeleteAccountRequestSchema: GenMessage<DeleteAccountRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 36);
+  messageDesc(file_quadsmith_api_auth, 43);
 
 /**
  * @generated from message quadsmith.api.DeleteAccountResponse
@@ -1002,7 +1163,7 @@ export type DeleteAccountResponse = Message<"quadsmith.api.DeleteAccountResponse
  */
 export const DeleteAccountResponseSchema: GenMessage<DeleteAccountResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 37);
+  messageDesc(file_quadsmith_api_auth, 44);
 
 /**
  * @generated from message quadsmith.api.CancelAccountDeletionRequest
@@ -1016,7 +1177,7 @@ export type CancelAccountDeletionRequest =
  */
 export const CancelAccountDeletionRequestSchema: GenMessage<CancelAccountDeletionRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 38);
+  messageDesc(file_quadsmith_api_auth, 45);
 
 /**
  * @generated from message quadsmith.api.CancelAccountDeletionResponse
@@ -1045,7 +1206,7 @@ export type CancelAccountDeletionResponse =
  */
 export const CancelAccountDeletionResponseSchema: GenMessage<CancelAccountDeletionResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 39);
+  messageDesc(file_quadsmith_api_auth, 46);
 
 /**
  * @generated from message quadsmith.api.SendDataExportVerificationRequest
@@ -1059,7 +1220,7 @@ export type SendDataExportVerificationRequest =
  */
 export const SendDataExportVerificationRequestSchema: GenMessage<SendDataExportVerificationRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 40);
+  messageDesc(file_quadsmith_api_auth, 47);
 
 /**
  * @generated from message quadsmith.api.SendDataExportVerificationResponse
@@ -1103,7 +1264,7 @@ export type SendDataExportVerificationResponse =
  */
 export const SendDataExportVerificationResponseSchema: GenMessage<SendDataExportVerificationResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 41);
+  messageDesc(file_quadsmith_api_auth, 48);
 
 /**
  * @generated from message quadsmith.api.VerifyDataExportRequest
@@ -1141,7 +1302,7 @@ export type VerifyDataExportRequest = Message<"quadsmith.api.VerifyDataExportReq
  */
 export const VerifyDataExportRequestSchema: GenMessage<VerifyDataExportRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 42);
+  messageDesc(file_quadsmith_api_auth, 49);
 
 /**
  * @generated from message quadsmith.api.VerifyDataExportResponse
@@ -1184,7 +1345,7 @@ export type VerifyDataExportResponse = Message<"quadsmith.api.VerifyDataExportRe
  */
 export const VerifyDataExportResponseSchema: GenMessage<VerifyDataExportResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 43);
+  messageDesc(file_quadsmith_api_auth, 50);
 
 /**
  * @generated from message quadsmith.api.AuthResponse
@@ -1237,7 +1398,7 @@ export type AuthResponse = Message<"quadsmith.api.AuthResponse"> & {
  */
 export const AuthResponseSchema: GenMessage<AuthResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 44);
+  messageDesc(file_quadsmith_api_auth, 51);
 
 /**
  * @generated from message quadsmith.api.OtpVerificationError
@@ -1275,7 +1436,7 @@ export type OtpVerificationError = Message<"quadsmith.api.OtpVerificationError">
  */
 export const OtpVerificationErrorSchema: GenMessage<OtpVerificationError> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 45);
+  messageDesc(file_quadsmith_api_auth, 52);
 
 /**
  * @generated from enum quadsmith.api.LoginChallengeStatus
@@ -1413,6 +1574,30 @@ export const AuthService: GenService<{
     methodKind: "unary";
     input: typeof LogoutRequestSchema;
     output: typeof LogoutResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.AuthService.ListActiveSessions
+   */
+  listActiveSessions: {
+    methodKind: "unary";
+    input: typeof ListActiveSessionsRequestSchema;
+    output: typeof ListActiveSessionsResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.AuthService.RevokeSession
+   */
+  revokeSession: {
+    methodKind: "unary";
+    input: typeof RevokeSessionRequestSchema;
+    output: typeof RevokeSessionResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.AuthService.RevokeOtherSessions
+   */
+  revokeOtherSessions: {
+    methodKind: "unary";
+    input: typeof RevokeOtherSessionsRequestSchema;
+    output: typeof RevokeOtherSessionsResponseSchema;
   };
   /**
    * @generated from rpc quadsmith.api.AuthService.ListUserEmails

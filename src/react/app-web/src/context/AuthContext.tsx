@@ -12,6 +12,7 @@ import type {
   SendDataExportVerificationResponse,
   VerifyDataExportRequest,
   VerifyDataExportResponse,
+  Session,
 } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import { UserService } from "@quadsmith/shared/gen/quadsmith/api/user_pb";
 import type {
@@ -54,6 +55,10 @@ export interface AuthContextType {
   logout: () => Promise<void>;
   refreshSession: () => Promise<void>;
   refreshEmails: () => Promise<void>;
+  sessions: Session[];
+  refreshSessions: () => Promise<void>;
+  revokeSession: (sessionUuid: string) => Promise<void>;
+  revokeOtherSessions: () => Promise<{ revokedCount: number }>;
   sendAddEmailOtp: (email: string) => Promise<{
     success: boolean;
     cooldownSeconds: number;
@@ -115,6 +120,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [emails, setEmails] = useState<UserEmail[]>([]);
+  const [sessions, setSessions] = useState<Session[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [challengeId, setChallengeId] = useState<string | null>(() => {
     try {
@@ -226,11 +232,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [authClient]);
 
+  const refreshSessions = useCallback(async () => {
+    try {
+      const res = await authClient.listActiveSessions({});
+      setSessions(res.sessions || []);
+    } catch {
+      // ignore
+    }
+  }, [authClient]);
+
   useEffect(() => {
     if (user) {
       refreshEmails();
+      refreshSessions();
     }
-  }, [user, refreshEmails]);
+  }, [user, refreshEmails, refreshSessions]);
+
+  const revokeSession = async (sessionUuid: string) => {
+    await authClient.revokeSession({ sessionUuid });
+    await refreshSessions();
+  };
+
+  const revokeOtherSessions = async () => {
+    const res = await authClient.revokeOtherSessions({});
+    await refreshSessions();
+    return { revokedCount: res.revokedCount };
+  };
 
   const sendEmailOtp = async (email: string) => {
     const res = await authClient.sendEmailOtp({ email });
@@ -571,6 +598,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         logout,
         refreshSession,
         refreshEmails,
+        sessions,
+        refreshSessions,
+        revokeSession,
+        revokeOtherSessions,
         sendAddEmailOtp,
         verifyAddEmailOtp,
         mergeAccount,

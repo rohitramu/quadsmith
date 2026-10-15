@@ -362,4 +362,100 @@ describe("AccountSettingsPage Component", () => {
       expect(screen.getByText(/your data download .* has started/i)).toBeInTheDocument();
     });
   });
+
+  it("renders Active Sessions section with This Device badge, session count, and scrollable container", async () => {
+    renderApp("/account");
+
+    expect(await screen.findByRole("heading", { name: /active sessions/i })).toBeInTheDocument();
+    expect(await screen.findByText(/4 Sessions/i)).toBeInTheDocument();
+
+    // Verify current device card
+    expect(screen.getByText("Chrome on macOS")).toBeInTheDocument();
+    expect(screen.getByText("This Device")).toBeInTheDocument();
+    expect(screen.getByText("Current")).toBeInTheDocument();
+
+    // Verify remote sessions
+    expect(screen.getByText("Safari on iOS")).toBeInTheDocument();
+    expect(screen.getByText("Firefox on Linux")).toBeInTheDocument();
+    expect(screen.getByText("Chrome on Android")).toBeInTheDocument();
+
+    // Bulk sign out button is present
+    expect(
+      screen.getByRole("button", { name: /sign out all other sessions/i }),
+    ).toBeInTheDocument();
+
+    // Verify scrollable container styling
+    const scrollContainer = document.querySelector(".session-scroll-list");
+    expect(scrollContainer).toBeInTheDocument();
+    expect(scrollContainer).toHaveClass("max-h-[224px]");
+    expect(scrollContainer).toHaveClass("overflow-y-auto");
+  });
+
+  it("allows revoking a single remote session through confirmation modal", async () => {
+    renderApp("/account");
+
+    expect(await screen.findByRole("heading", { name: /active sessions/i })).toBeInTheDocument();
+    expect(await screen.findByText("Safari on iOS")).toBeInTheDocument();
+
+    // Find revoke buttons (should be 3 since current device has none)
+    const revokeButtons = screen.getAllByRole("button", { name: /revoke/i });
+    expect(revokeButtons.length).toBe(3);
+
+    // Click revoke on first remote session (Safari on iOS)
+    fireEvent.click(revokeButtons[0]);
+
+    // Modal appears
+    const modal = await screen.findByRole("dialog", { name: /revoke session/i });
+    expect(within(modal).getByText(/safari on ios/i)).toBeInTheDocument();
+    expect(within(modal).getByText(/172\.56\.21\.89/i)).toBeInTheDocument();
+
+    // Confirm revocation
+    const confirmBtn = within(modal).getByRole("button", { name: /^revoke session$/i });
+    fireEvent.click(confirmBtn);
+
+    // Modal closes and session is removed
+    await waitFor(() => {
+      expect(screen.queryByRole("dialog", { name: /revoke session/i })).not.toBeInTheDocument();
+      expect(screen.queryByText("Safari on iOS")).not.toBeInTheDocument();
+    });
+  });
+
+  it("allows signing out all other sessions through bulk confirmation modal", async () => {
+    renderApp("/account");
+
+    expect(await screen.findByRole("heading", { name: /active sessions/i })).toBeInTheDocument();
+
+    const signOutAllBtn = await screen.findByRole("button", {
+      name: /sign out all other sessions/i,
+    });
+    fireEvent.click(signOutAllBtn);
+
+    // Modal appears
+    expect(
+      await screen.findByRole("dialog", { name: /sign out all other sessions/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /all active login sessions on your other devices will be immediately revoked/i,
+      ),
+    ).toBeInTheDocument();
+
+    // Confirm bulk sign out
+    const confirmBtn = screen.getByRole("button", { name: /sign out others/i });
+    fireEvent.click(confirmBtn);
+
+    // Modal closes, other sessions removed, current device remains, bulk button disappears
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("dialog", { name: /sign out all other sessions/i }),
+      ).not.toBeInTheDocument();
+      expect(screen.getByText("Chrome on macOS")).toBeInTheDocument();
+      expect(screen.queryByText("Safari on iOS")).not.toBeInTheDocument();
+      expect(screen.queryByText("Firefox on Linux")).not.toBeInTheDocument();
+      expect(screen.queryByText("Chrome on Android")).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", { name: /sign out all other sessions/i }),
+      ).not.toBeInTheDocument();
+    });
+  });
 });
