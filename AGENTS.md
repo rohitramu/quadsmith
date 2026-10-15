@@ -227,6 +227,18 @@ corroboration checks.
 
 ## Development & Sandbox Execution
 
+- **Long-Running Commands & Non-Blocking Execution**:
+  - Never execute potentially long-running commands (e.g., full test suites
+    `make test` / `make test-e2e`, Docker container builds, heavy code
+    compilation, or benchmark scripts) with large synchronous wait windows that
+    risk hanging indefinitely.
+  - Always dispatch potentially long-running commands to the background using a
+    short initial wait (`WaitMsBeforeAsync: 500ms–2000ms`) so execution
+    immediately transitions to a background task, or configure `IsDaemon: true`
+    for standing background services.
+  - Monitor background tasks asynchronously with reasonable timeouts (e.g. using
+    `schedule` timers, status checks, or reactive task completion notifications)
+    so operations never hang undetected or block turns indefinitely.
 - **Server & Sandbox Long-Running Daemon Processes**:
   - Whenever starting the server directly or indirectly (e.g., via
     `make sandbox`, `test/start_sandbox.sh`, `docker run ... quadsmith-sandbox`,
