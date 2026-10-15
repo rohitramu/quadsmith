@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { getOption, hasOption } from "@bufbuild/protobuf";
 import { file_quadsmith_api_user } from "@quadsmith/shared/gen/quadsmith/api/user_pb";

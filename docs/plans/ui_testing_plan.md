@@ -145,9 +145,18 @@ browser-dependent globals:
 
 ### <a id="sub-second-local-and-ci-integration-suite" >Sub-Second Local and CI Integration Suite</a>
 
-The test runner is configured to ensure the entire test suite executes in under
-two seconds. Test execution is wired directly into the root
-[`Makefile`](../../Makefile) under `make test`:
+The test runner is configured to ensure the entire test suite executes rapidly.
+Test execution is wired directly into the root [`Makefile`](../../Makefile)
+under `make test`:
+
+- **Selective Execution Environments**: Pure utility and non-DOM test suites
+  (such as regex validations, color maps, and formatters) specify
+  `// @vitest-environment node`, bypassing JSDOM bootstrap overhead.
+- **Worker Thread Pooling**: Vitest utilizes `pool: "threads"` to execute test
+  suites concurrently across worker threads without process spawn thrashing.
+- **Accelerated Polling**: Dynamic background polling loops (such as
+  cross-device login challenges) utilize shortened intervals when
+  `MODE === 'test'`, preventing real-time sleep delays during test execution.
 
 ```makefile
 test: generate

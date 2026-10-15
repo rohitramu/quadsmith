@@ -218,7 +218,7 @@ test-ui-e2e:
 		-e HOST_UID=$$(id -u) \
 		-e HOST_GID=$$(id -g) \
 		$${PLAYWRIGHT_WORKERS:+-e PLAYWRIGHT_WORKERS=$${PLAYWRIGHT_WORKERS}} \
-		quadsmith-web-e2e $(TOOL_ARGS)
+		quadsmith-web-e2e $(if $(PROJECT),--project $(PROJECT)) $(TOOL_ARGS)
 
 update-snapshots:
 	@echo "--- Building Web E2E Container ---"
@@ -234,7 +234,7 @@ update-snapshots:
 		-e HOST_GID=$$(id -g) \
 		$${PLAYWRIGHT_WORKERS:+-e PLAYWRIGHT_WORKERS=$${PLAYWRIGHT_WORKERS}} \
 		-e UPDATE_SNAPSHOTS=true \
-		quadsmith-web-e2e $(TOOL_ARGS)
+		quadsmith-web-e2e $(if $(PROJECT),--project $(PROJECT)) $(TOOL_ARGS)
 
 clean:
 	@echo "--- Cleaning Workspace ---"

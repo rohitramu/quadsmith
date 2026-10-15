@@ -1,3 +1,4 @@
+// @vitest-environment node
 import { describe, it, expect } from "vitest";
 import { getAvatarPalette, getInitial, AVATAR_PALETTES } from "@quadsmith/shared";
 

@@ -184,27 +184,30 @@ export function LoginPage() {
       return;
     }
 
-    const interval = setInterval(async () => {
-      try {
-        const res = await getLoginChallengeStatus();
-        if (res.status === LoginChallengeStatus.APPROVED) {
-          if (res.authResponse?.accountSetupRequired && res.authResponse.setupToken) {
-            setSetupToken(res.authResponse.setupToken);
-            setStep("setup");
-          } else {
-            setIsSuccess(true);
-            navigate(redirectUrl, { replace: true });
+    const interval = setInterval(
+      async () => {
+        try {
+          const res = await getLoginChallengeStatus();
+          if (res.status === LoginChallengeStatus.APPROVED) {
+            if (res.authResponse?.accountSetupRequired && res.authResponse.setupToken) {
+              setSetupToken(res.authResponse.setupToken);
+              setStep("setup");
+            } else {
+              setIsSuccess(true);
+              navigate(redirectUrl, { replace: true });
+            }
+          } else if (res.status === LoginChallengeStatus.DENIED) {
+            setIsDenied(true);
+            setOtpDigits(["", "", "", "", "", ""]);
+            setHintDigits(["", "", "", "", "", ""]);
+            setErrorMsg("Login request was denied.");
           }
-        } else if (res.status === LoginChallengeStatus.DENIED) {
-          setIsDenied(true);
-          setOtpDigits(["", "", "", "", "", ""]);
-          setHintDigits(["", "", "", "", "", ""]);
-          setErrorMsg("Login request was denied.");
+        } catch {
+          // Ignore transient polling network errors
         }
-      } catch {
-        // Ignore transient polling network errors
-      }
-    }, 2000);
+      },
+      import.meta.env.MODE === "test" ? 50 : 2000,
+    );
 
     return () => clearInterval(interval);
   }, [
