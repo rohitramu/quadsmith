@@ -144,7 +144,12 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 	}
 
 	for _, uq := range tblOpts.GetUniqueConstraints() {
-		defs = append(defs, fmt.Sprintf("UNIQUE (%s)", uq))
+		cleanUq := strings.ReplaceAll(strings.ReplaceAll(uq, ", ", "_"), ",", "_")
+		cName := fmt.Sprintf("%s_%s_key", tableName, cleanUq)
+		if len(cName) > 63 {
+			cName = cName[:63]
+		}
+		defs = append(defs, fmt.Sprintf("CONSTRAINT %s UNIQUE (%s)", cName, uq))
 	}
 
 	g.P("    ", strings.Join(defs, ",\n    "))

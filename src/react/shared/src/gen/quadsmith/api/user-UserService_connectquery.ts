@@ -18,3 +18,23 @@ export const getPublicProfile = UserService.method.getPublicProfile;
  * @generated from rpc quadsmith.api.UserService.CheckUsernameAvailable
  */
 export const checkUsernameAvailable = UserService.method.checkUsernameAvailable;
+
+/**
+ * @generated from rpc quadsmith.api.UserService.BanUser
+ */
+export const banUser = UserService.method.banUser;
+
+/**
+ * @generated from rpc quadsmith.api.UserService.UnbanUser
+ */
+export const unbanUser = UserService.method.unbanUser;
+
+/**
+ * @generated from rpc quadsmith.api.UserService.ListBans
+ */
+export const listBans = UserService.method.listBans;
+
+/**
+ * @generated from rpc quadsmith.api.UserService.GetUserBanStatus
+ */
+export const getUserBanStatus = UserService.method.getUserBanStatus;

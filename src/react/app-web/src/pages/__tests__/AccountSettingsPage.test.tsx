@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { screen, fireEvent, waitFor, within } from "@testing-library/react";
 import { renderApp } from "../../test/test-utils";
 import { mockUser } from "../../test/mocks/fixtures";
@@ -6,8 +6,13 @@ import { mockUser } from "../../test/mocks/fixtures";
 describe("AccountSettingsPage Component", () => {
   beforeEach(() => {
     mockUser.id = "fpv_pilot";
+    delete mockUser.activeBan;
     localStorage.setItem("qs_access_token", "mock-jwt-token");
     vi.spyOn(window, "confirm").mockImplementation(() => true);
+  });
+
+  afterEach(() => {
+    delete mockUser.activeBan;
   });
 
   it("renders account settings with username, profile link, and logout button", async () => {
@@ -332,10 +337,10 @@ describe("AccountSettingsPage Component", () => {
     });
   });
 
-  it("renders Data & Privacy section with Download My Data button and handles OTP export flow", async () => {
+  it("renders Privacy section with Download My Data button and handles OTP export flow", async () => {
     renderApp("/account");
 
-    expect(await screen.findByText("Data & Privacy")).toBeInTheDocument();
+    expect(await screen.findByText("Privacy")).toBeInTheDocument();
     const downloadBtn = screen.getByTestId("download-data-button");
     expect(downloadBtn).toBeInTheDocument();
     expect(downloadBtn).toHaveTextContent("Download My Data");
@@ -456,6 +461,78 @@ describe("AccountSettingsPage Component", () => {
       expect(
         screen.queryByRole("button", { name: /sign out all other sessions/i }),
       ).not.toBeInTheDocument();
+    });
+  });
+
+  describe("banned account behavior", () => {
+    beforeEach(() => {
+      mockUser.activeBan = {
+        uuid: "018f0000-0000-7000-0000-000000000055",
+        userUuid: mockUser.uuid,
+        reason: "Repeated spam and abusive language in reviews",
+        notes: "Internal staff note",
+        createdAt: { seconds: BigInt(Math.floor(Date.now() / 1000)) },
+        expiresAt: { seconds: BigInt(Math.floor(Date.now() / 1000) + 86400 * 7) },
+      };
+    });
+
+    afterEach(() => {
+      delete mockUser.activeBan;
+    });
+
+    it("displays prominent ban warning banner, disables handle change, and locks email modifications while keeping bio editable and sessions functional", async () => {
+      renderApp("/account");
+
+      // Verify Ban Banner
+      expect(await screen.findByText("Account Suspended")).toBeInTheDocument();
+      expect(
+        screen.getByText(/repeated spam and abusive language in reviews/i),
+      ).toBeInTheDocument();
+      expect(screen.getByText("TEMPORARY")).toBeInTheDocument();
+
+      // Verify Handle Locked
+      expect(screen.getByText("Handle locked")).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /^change$/i })).not.toBeInTheDocument();
+
+      // Verify Add Email is hidden
+      expect(screen.queryByRole("button", { name: /add email/i })).not.toBeInTheDocument();
+
+      // Verify Make Primary and Remove buttons are absent, replaced by Read-only status
+      expect(screen.getByText("Read-only (Suspended)")).toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /make primary/i })).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("button", {
+          name: /remove alex\.secondary@example\.com/i,
+        }),
+      ).not.toBeInTheDocument();
+
+      // Verify Bio is still editable and saveable
+      const bioTextarea = screen.getByPlaceholderText(/tell other users about your flying style/i);
+      expect(bioTextarea).toBeEnabled();
+      fireEvent.change(bioTextarea, { target: { value: "Updated bio while restricted." } });
+      const saveBtn = screen.getByRole("button", { name: /^save$/i });
+      expect(saveBtn).toBeEnabled();
+
+      // Verify Active Sessions is still rendered
+      expect(screen.getByRole("heading", { name: /active sessions/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: /sign out all other sessions/i }),
+      ).toBeInTheDocument();
+    });
+
+    it("renders AccountRestrictedPage when banned user accesses other pages", async () => {
+      renderApp("/builds");
+
+      expect(
+        await screen.findByRole("heading", { name: /account access restricted/i }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByText(/your quadsmith account has been suspended by community moderation/i),
+      ).toBeInTheDocument();
+      expect(screen.getByText("Repeated spam and abusive language in reviews")).toBeInTheDocument();
+      expect(
+        screen.getAllByRole("link", { name: /account settings/i }).length,
+      ).toBeGreaterThanOrEqual(1);
     });
   });
 });

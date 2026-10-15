@@ -120,6 +120,31 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("please enter a valid email address"))
 	}
 
+	// Check if email address is suspended and has no active account
+	var isEmailBanned bool
+	_ = s.db.QueryRow(ctx, `
+		SELECT EXISTS (
+			SELECT 1 FROM banned_emails be
+			JOIN bans b ON b.uuid = be.ban_uuid
+			WHERE LOWER(be.email) = LOWER($1)
+			  AND b.revoked_at IS NULL
+			  AND (b.expires_at IS NULL OR b.expires_at > NOW())
+		)`, email).Scan(&isEmailBanned)
+
+	if isEmailBanned {
+		var hasActiveUser bool
+		_ = s.db.QueryRow(ctx, `
+			SELECT EXISTS (
+				SELECT 1 FROM user_emails ue
+				JOIN users u ON u.uuid = ue.user_uuid
+				WHERE LOWER(ue.email) = LOWER($1)
+				  AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
+			)`, email).Scan(&hasActiveUser)
+		if !hasActiveUser {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("email address is suspended"))
+		}
+	}
+
 	clientIP := getClientIP(req)
 	if err := CheckIPRateLimit(clientIP); err != nil {
 		return nil, connect.NewError(connect.CodeResourceExhausted, err)
@@ -729,6 +754,83 @@ func (s *AuthService) userExistsForEmail(ctx context.Context, email string) (boo
 	return count > 0, nil
 }
 
+func getActiveBanForUser(ctx context.Context, db *pgxpool.Pool, userUUID string) (*pb.Ban, error) {
+	var ban pb.Ban
+	var expiresAt, createdAt, revokedAt *time.Time
+	var revokedByUserUUID, revokeReason *string
+	err := db.QueryRow(ctx, `
+		SELECT uuid, user_uuid, banned_by_user_uuid, reason, internal_notes, expires_at, created_at, revoked_at, revoked_by_user_uuid, revoke_reason
+		FROM bans
+		WHERE user_uuid = $1::uuid
+		  AND revoked_at IS NULL
+		  AND (expires_at IS NULL OR expires_at > NOW())
+		ORDER BY created_at DESC
+		LIMIT 1`, userUUID).Scan(
+		&ban.Uuid, &ban.UserUuid, &ban.BannedByUserUuid, &ban.Reason, &ban.InternalNotes,
+		&expiresAt, &createdAt, &revokedAt, &revokedByUserUUID, &revokeReason)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	if expiresAt != nil {
+		ban.ExpiresAt = timestamppb.New(*expiresAt)
+	}
+	if createdAt != nil {
+		ban.CreatedAt = timestamppb.New(*createdAt)
+	}
+	if revokedAt != nil {
+		ban.RevokedAt = timestamppb.New(*revokedAt)
+	}
+	if revokedByUserUUID != nil {
+		ban.RevokedByUserUuid = revokedByUserUUID
+	}
+	if revokeReason != nil {
+		ban.RevokeReason = *revokeReason
+	}
+	return &ban, nil
+}
+
+func getActiveBanForEmail(ctx context.Context, db *pgxpool.Pool, email string) (*pb.Ban, error) {
+	var ban pb.Ban
+	var expiresAt, createdAt, revokedAt *time.Time
+	var revokedByUserUUID, revokeReason *string
+	err := db.QueryRow(ctx, `
+		SELECT b.uuid, b.user_uuid, b.banned_by_user_uuid, b.reason, b.internal_notes, b.expires_at, b.created_at, b.revoked_at, b.revoked_by_user_uuid, b.revoke_reason
+		FROM banned_emails be
+		JOIN bans b ON b.uuid = be.ban_uuid
+		WHERE LOWER(be.email) = LOWER($1)
+		  AND b.revoked_at IS NULL
+		  AND (b.expires_at IS NULL OR b.expires_at > NOW())
+		ORDER BY b.created_at DESC
+		LIMIT 1`, email).Scan(
+		&ban.Uuid, &ban.UserUuid, &ban.BannedByUserUuid, &ban.Reason, &ban.InternalNotes,
+		&expiresAt, &createdAt, &revokedAt, &revokedByUserUUID, &revokeReason)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, nil
+		}
+		return nil, err
+	}
+	if expiresAt != nil {
+		ban.ExpiresAt = timestamppb.New(*expiresAt)
+	}
+	if createdAt != nil {
+		ban.CreatedAt = timestamppb.New(*createdAt)
+	}
+	if revokedAt != nil {
+		ban.RevokedAt = timestamppb.New(*revokedAt)
+	}
+	if revokedByUserUUID != nil {
+		ban.RevokedByUserUuid = revokedByUserUUID
+	}
+	if revokeReason != nil {
+		ban.RevokeReason = *revokeReason
+	}
+	return &ban, nil
+}
+
 func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.RefreshTokenRequest]) (*connect.Response[pb.AuthResponse], error) {
 	token := req.Msg.GetRefreshToken()
 	if token == "" {
@@ -793,14 +895,14 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 	// Fetch User
 	var user pb.User
 	var username, email, role string
-	var lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
+	var lastRenamedAt, deletedAt, createdAt, updatedAt *time.Time
 	err = s.db.QueryRow(ctx, `
-		SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
+		SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.deleted_at, u.created_at, u.updated_at
 		FROM users u
 		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
 		WHERE u.uuid = $1`, userUUID).Scan(
 		&user.Uuid, &username, &email, &role,
-		&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+		&lastRenamedAt, &deletedAt, &createdAt, &updatedAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -812,6 +914,14 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 	}
 	if updatedAt != nil {
 		user.UpdatedAt = timestamppb.New(*updatedAt)
+	}
+
+	activeBan, err := getActiveBanForUser(ctx, s.db, userUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if activeBan != nil {
+		user.ActiveBan = activeBan
 	}
 
 	// Fetch Profile
@@ -830,11 +940,25 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
+	var accountStatus *string
+	var scheduledPurgeAt *timestamppb.Timestamp
+	if activeBan != nil {
+		status := "BANNED"
+		accountStatus = &status
+	} else if deletedAt != nil {
+		status := "PENDING_DELETION"
+		accountStatus = &status
+		scheduledPurgeAt = timestamppb.New(deletedAt.Add(30 * 24 * time.Hour))
+	}
+
 	res := connect.NewResponse(&pb.AuthResponse{
-		AccessToken:  accessToken,
-		RefreshToken: token,
-		User:         &user,
-		Profile:      &profile,
+		AccessToken:      accessToken,
+		RefreshToken:     token,
+		User:             &user,
+		Profile:          &profile,
+		AccountStatus:    accountStatus,
+		ScheduledPurgeAt: scheduledPurgeAt,
+		ActiveBan:        activeBan,
 	})
 
 	cookie := &http.Cookie{
@@ -858,14 +982,14 @@ func (s *AuthService) GetCurrentUser(ctx context.Context, _ *connect.Request[pb.
 	}
 
 	var user pb.User
-	var lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
+	var lastRenamedAt, deletedAt, createdAt, updatedAt *time.Time
 	err := s.db.QueryRow(ctx, `
-		SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
+		SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.deleted_at, u.created_at, u.updated_at
 		FROM users u
 		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
 		WHERE u.uuid = $1`, userCtx.UserUUID).Scan(
 		&user.Uuid, &user.Id, &user.Email, &user.Role,
-		&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+		&lastRenamedAt, &deletedAt, &createdAt, &updatedAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
 	}
@@ -880,6 +1004,14 @@ func (s *AuthService) GetCurrentUser(ctx context.Context, _ *connect.Request[pb.
 	}
 	if updatedAt != nil {
 		user.UpdatedAt = timestamppb.New(*updatedAt)
+	}
+
+	activeBan, err := getActiveBanForUser(ctx, s.db, userCtx.UserUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if activeBan != nil {
+		user.ActiveBan = activeBan
 	}
 
 	return connect.NewResponse(&user), nil
@@ -2116,12 +2248,14 @@ func (s *AuthService) ChangeUsername(ctx context.Context, req *connect.Request[p
 
 	// Fetch updated user to return
 	var user pb.User
-	var newLastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
+	var newLastRenamedAt, deletedAt, createdAt, updatedAt *time.Time
 	err = s.db.QueryRow(ctx, `
-		SELECT uuid, id, email, role, last_renamed_at, deleted_at, banned_at, created_at, updated_at
-		FROM users WHERE uuid = $1`, userCtx.UserUUID).Scan(
+		SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.deleted_at, u.created_at, u.updated_at
+		FROM users u
+		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
+		WHERE u.uuid = $1`, userCtx.UserUUID).Scan(
 		&user.Uuid, &user.Id, &user.Email, &user.Role,
-		&newLastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+		&newLastRenamedAt, &deletedAt, &createdAt, &updatedAt)
 	if err == nil {
 		if newLastRenamedAt != nil {
 			user.LastRenamedAt = timestamppb.New(*newLastRenamedAt)
@@ -2461,19 +2595,33 @@ func extractChallengeID(reqChallenge string, header http.Header) string {
 func (s *AuthService) issueAuthSession(ctx context.Context, email, userAgent, clientIP, locationHint string) (*connect.Response[pb.AuthResponse], error) {
 	var user pb.User
 	var userUUID, username, role string
-	var lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
+	var lastRenamedAt, deletedAt, createdAt, updatedAt *time.Time
 
 	// 1. Try finding user via user_emails
 	err := s.db.QueryRow(ctx, `
-		SELECT u.uuid, u.id, ue.email, u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
+		SELECT u.uuid, u.id, ue.email, u.role, u.last_renamed_at, u.deleted_at, u.created_at, u.updated_at
 		FROM user_emails ue
 		JOIN users u ON u.uuid = ue.user_uuid
 		WHERE LOWER(ue.email) = LOWER($1) AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
 		LIMIT 1`, email).Scan(
 		&userUUID, &username, &user.Email, &role,
-		&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+		&lastRenamedAt, &deletedAt, &createdAt, &updatedAt)
 
 	if errors.Is(err, pgx.ErrNoRows) {
+		// Defense-in-depth: do not allow creating a new user if email is suspended
+		var isEmailBanned bool
+		_ = s.db.QueryRow(ctx, `
+			SELECT EXISTS (
+				SELECT 1 FROM banned_emails be
+				JOIN bans b ON b.uuid = be.ban_uuid
+				WHERE LOWER(be.email) = LOWER($1)
+				  AND b.revoked_at IS NULL
+				  AND (b.expires_at IS NULL OR b.expires_at > NOW())
+			)`, email).Scan(&isEmailBanned)
+		if isEmailBanned {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("email address is suspended"))
+		}
+
 		userUUID = NewUUIDv7()
 		username = s.generateUniqueUsername(ctx, email)
 		role = "USER"
@@ -2537,6 +2685,14 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, userAgent, cl
 		}
 	}
 
+	activeBan, err := getActiveBanForUser(ctx, s.db, userUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if activeBan != nil {
+		user.ActiveBan = activeBan
+	}
+
 	var profile pb.UserProfile
 	var profileUpdatedAt *time.Time
 	_ = s.db.QueryRow(ctx, `
@@ -2571,7 +2727,10 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, userAgent, cl
 
 	var accountStatus *string
 	var scheduledPurgeAt *timestamppb.Timestamp
-	if deletedAt != nil {
+	if activeBan != nil {
+		status := "BANNED"
+		accountStatus = &status
+	} else if deletedAt != nil {
 		status := "PENDING_DELETION"
 		accountStatus = &status
 		scheduledPurgeAt = timestamppb.New(deletedAt.Add(30 * 24 * time.Hour))
@@ -2584,6 +2743,7 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, userAgent, cl
 		Profile:          &profile,
 		AccountStatus:    accountStatus,
 		ScheduledPurgeAt: scheduledPurgeAt,
+		ActiveBan:        activeBan,
 	})
 
 	cookie := &http.Cookie{
@@ -2952,14 +3112,14 @@ func (s *AuthService) CancelAccountDeletion(ctx context.Context, _ *connect.Requ
 
 	// Fetch updated user
 	var user pb.User
-	var lastRenamedAt, bannedAt, createdAt, updatedAt *time.Time
+	var lastRenamedAt, createdAt, updatedAt *time.Time
 	err = s.db.QueryRow(ctx, `
-		SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.banned_at, u.created_at, u.updated_at
+		SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.created_at, u.updated_at
 		FROM users u
 		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
 		WHERE u.uuid = $1`, userCtx.UserUUID).Scan(
 		&user.Uuid, &user.Id, &user.Email, &user.Role,
-		&lastRenamedAt, &bannedAt, &createdAt, &updatedAt)
+		&lastRenamedAt, &createdAt, &updatedAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -3234,19 +3394,19 @@ func (s *UserService) GetUser(ctx context.Context, req *connect.Request[pb.GetUs
 	}
 
 	var user pb.User
-	var lastRenamedAt, deletedAt, bannedAt, createdAt, updatedAt *time.Time
+	var lastRenamedAt, deletedAt, createdAt, updatedAt *time.Time
 	err := s.db.QueryRow(ctx, `
-		SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
+		SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.deleted_at, u.created_at, u.updated_at
 		FROM users u
 		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
 		WHERE (u.id = $1 OR u.uuid::text = $1) AND u.deleted_at IS NULL`, id).Scan(
 		&user.Uuid, &user.Id, &user.Email, &user.Role,
-		&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+		&lastRenamedAt, &deletedAt, &createdAt, &updatedAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			// Check if this was a recent username within the 30-day hold window
 			err = s.db.QueryRow(ctx, `
-				SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.deleted_at, u.banned_at, u.created_at, u.updated_at
+				SELECT u.uuid, u.id, COALESCE(ue.email, ''), u.role, u.last_renamed_at, u.deleted_at, u.created_at, u.updated_at
 				FROM username_histories hh
 				JOIN users u ON u.uuid = hh.user_uuid
 				LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
@@ -3254,7 +3414,7 @@ func (s *UserService) GetUser(ctx context.Context, req *connect.Request[pb.GetUs
 				ORDER BY hh.renamed_at DESC
 				LIMIT 1`, id).Scan(
 				&user.Uuid, &user.Id, &user.Email, &user.Role,
-				&lastRenamedAt, &deletedAt, &bannedAt, &createdAt, &updatedAt)
+				&lastRenamedAt, &deletedAt, &createdAt, &updatedAt)
 			if err != nil {
 				if errors.Is(err, pgx.ErrNoRows) {
 					return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
@@ -3283,6 +3443,14 @@ func (s *UserService) GetUser(ctx context.Context, req *connect.Request[pb.GetUs
 	}
 	if updatedAt != nil {
 		user.UpdatedAt = timestamppb.New(*updatedAt)
+	}
+
+	activeBan, err := getActiveBanForUser(ctx, s.db, user.Uuid)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if activeBan != nil {
+		user.ActiveBan = activeBan
 	}
 	return connect.NewResponse(&user), nil
 }
@@ -3424,5 +3592,321 @@ func (s *UserService) CheckUsernameAvailable(ctx context.Context, req *connect.R
 		Status:    pb.UsernameAvailabilityStatus_USERNAME_AVAILABILITY_STATUS_AVAILABLE,
 		Available: true,
 		Message:   "Username is available",
+	}), nil
+}
+
+func (s *UserService) BanUser(ctx context.Context, req *connect.Request[pb.BanUserRequest]) (*connect.Response[pb.BanUserResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+	if userCtx.Role != "ADMIN" {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("admin privileges required"))
+	}
+
+	targetID := strings.TrimSpace(req.Msg.GetUserId())
+	if targetID == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("user id or username required"))
+	}
+
+	reason := strings.TrimSpace(req.Msg.GetReason())
+	if reason == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("ban reason required"))
+	}
+	internalNotes := strings.TrimSpace(req.Msg.GetInternalNotes())
+
+	var targetUUID, targetRole, targetHandle string
+	err := s.db.QueryRow(ctx, `
+		SELECT uuid, role, id FROM users
+		WHERE LOWER(id) = LOWER($1) OR uuid::text = $1
+		LIMIT 1`, targetID).Scan(&targetUUID, &targetRole, &targetHandle)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("target user not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	if targetUUID == userCtx.UserUUID {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("cannot ban yourself"))
+	}
+	if targetRole == "ADMIN" {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot ban an administrator"))
+	}
+
+	existingBan, err := getActiveBanForUser(ctx, s.db, targetUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if existingBan != nil {
+		return nil, connect.NewError(connect.CodeAlreadyExists, errors.New("user already has an active ban"))
+	}
+
+	banUUID := NewUUIDv7()
+	var expiresAt *time.Time
+	if req.Msg.ExpiresAt != nil {
+		t := req.Msg.ExpiresAt.AsTime()
+		expiresAt = &t
+	}
+
+	tx, err := s.db.Begin(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to begin transaction: %w", err))
+	}
+	defer func() { _ = tx.Rollback(ctx) }()
+
+	now := time.Now()
+	_, err = tx.Exec(ctx, `
+		INSERT INTO bans (uuid, user_uuid, banned_by_user_uuid, reason, internal_notes, expires_at, created_at, revoke_reason)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, '')`,
+		banUUID, targetUUID, userCtx.UserUUID, reason, internalNotes, expiresAt, now)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to insert ban: %w", err))
+	}
+
+	rows, err := tx.Query(ctx, `SELECT email FROM user_emails WHERE user_uuid = $1`, targetUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to query user emails: %w", err))
+	}
+	defer rows.Close()
+
+	var emails []string
+	for rows.Next() {
+		var email string
+		if err := rows.Scan(&email); err == nil {
+			emails = append(emails, email)
+		}
+	}
+	rows.Close()
+
+	for _, email := range emails {
+		bannedEmailUUID := NewUUIDv7()
+		_, err = tx.Exec(ctx, `
+			INSERT INTO banned_emails (uuid, ban_uuid, email, created_at)
+			VALUES ($1, $2, $3, $4)`,
+			bannedEmailUUID, banUUID, email, now)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to insert banned email: %w", err))
+		}
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to commit ban transaction: %w", err))
+	}
+
+	ban := &pb.Ban{
+		Uuid:             banUUID,
+		UserUuid:         targetUUID,
+		BannedByUserUuid: userCtx.UserUUID,
+		Reason:           reason,
+		InternalNotes:    internalNotes,
+		CreatedAt:        timestamppb.New(now),
+	}
+	if expiresAt != nil {
+		ban.ExpiresAt = timestamppb.New(*expiresAt)
+	}
+
+	return connect.NewResponse(&pb.BanUserResponse{
+		Success: true,
+		Message: fmt.Sprintf("User @%s successfully banned", targetHandle),
+		Ban:     ban,
+	}), nil
+}
+
+func (s *UserService) UnbanUser(ctx context.Context, req *connect.Request[pb.UnbanUserRequest]) (*connect.Response[pb.UnbanUserResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+	if userCtx.Role != "ADMIN" {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("admin privileges required"))
+	}
+
+	targetID := strings.TrimSpace(req.Msg.GetUserId())
+	if targetID == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("user id or username required"))
+	}
+
+	revokeReason := strings.TrimSpace(req.Msg.GetRevokeReason())
+	if revokeReason == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("revoke reason required"))
+	}
+
+	var targetUUID, targetHandle string
+	err := s.db.QueryRow(ctx, `
+		SELECT uuid, id FROM users
+		WHERE LOWER(id) = LOWER($1) OR uuid::text = $1
+		LIMIT 1`, targetID).Scan(&targetUUID, &targetHandle)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("target user not found"))
+		}
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	activeBan, err := getActiveBanForUser(ctx, s.db, targetUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if activeBan == nil {
+		return nil, connect.NewError(connect.CodeNotFound, errors.New("no active ban found for user"))
+	}
+
+	now := time.Now()
+	_, err = s.db.Exec(ctx, `
+		UPDATE bans
+		SET revoked_at = $1, revoked_by_user_uuid = $2, revoke_reason = $3
+		WHERE uuid = $4`,
+		now, userCtx.UserUUID, revokeReason, activeBan.Uuid)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to unban user: %w", err))
+	}
+
+	activeBan.RevokedAt = timestamppb.New(now)
+	activeBan.RevokedByUserUuid = &userCtx.UserUUID
+	activeBan.RevokeReason = revokeReason
+
+	return connect.NewResponse(&pb.UnbanUserResponse{
+		Success: true,
+		Message: fmt.Sprintf("User @%s successfully unbanned", targetHandle),
+		Ban:     activeBan,
+	}), nil
+}
+
+func (s *UserService) ListBans(ctx context.Context, req *connect.Request[pb.ListBansRequest]) (*connect.Response[pb.ListBansResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+	if userCtx.Role != "ADMIN" {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("admin privileges required"))
+	}
+
+	pageSize := req.Msg.GetPageSize()
+	if pageSize <= 0 {
+		pageSize = 50
+	} else if pageSize > 100 {
+		pageSize = 100
+	}
+
+	var targetUserUUID *string
+	if req.Msg.UserId != nil && strings.TrimSpace(*req.Msg.UserId) != "" {
+		targetID := strings.TrimSpace(*req.Msg.UserId)
+		var tuuid string
+		err := s.db.QueryRow(ctx, `
+			SELECT uuid::text FROM users
+			WHERE LOWER(id) = LOWER($1) OR uuid::text = $1
+			LIMIT 1`, targetID).Scan(&tuuid)
+		if err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
+			}
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		targetUserUUID = &tuuid
+	}
+
+	query := `
+		SELECT uuid, user_uuid, banned_by_user_uuid, reason, internal_notes, expires_at, created_at, revoked_at, revoked_by_user_uuid, revoke_reason
+		FROM bans
+		WHERE 1=1`
+	args := []any{}
+	argIdx := 1
+
+	if targetUserUUID != nil {
+		query += fmt.Sprintf(" AND user_uuid = $%d::uuid", argIdx)
+		args = append(args, *targetUserUUID)
+		argIdx++
+	}
+
+	if req.Msg.GetActiveOnly() {
+		query += " AND revoked_at IS NULL AND (expires_at IS NULL OR expires_at > NOW())"
+	}
+
+	query += fmt.Sprintf(" ORDER BY created_at DESC LIMIT %d", pageSize)
+
+	rows, err := s.db.Query(ctx, query, args...)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	defer rows.Close()
+
+	bans := make([]*pb.Ban, 0)
+	for rows.Next() {
+		var ban pb.Ban
+		var expiresAt, createdAt, revokedAt *time.Time
+		var revokedByUserUUID, revokeReason *string
+		if err := rows.Scan(
+			&ban.Uuid, &ban.UserUuid, &ban.BannedByUserUuid, &ban.Reason, &ban.InternalNotes,
+			&expiresAt, &createdAt, &revokedAt, &revokedByUserUUID, &revokeReason); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		if expiresAt != nil {
+			ban.ExpiresAt = timestamppb.New(*expiresAt)
+		}
+		if createdAt != nil {
+			ban.CreatedAt = timestamppb.New(*createdAt)
+		}
+		if revokedAt != nil {
+			ban.RevokedAt = timestamppb.New(*revokedAt)
+		}
+		if revokedByUserUUID != nil {
+			ban.RevokedByUserUuid = revokedByUserUUID
+		}
+		if revokeReason != nil {
+			ban.RevokeReason = *revokeReason
+		}
+		bans = append(bans, &ban)
+	}
+
+	return connect.NewResponse(&pb.ListBansResponse{
+		Bans: bans,
+	}), nil
+}
+
+func (s *UserService) GetUserBanStatus(ctx context.Context, req *connect.Request[pb.GetUserBanStatusRequest]) (*connect.Response[pb.GetUserBanStatusResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+
+	targetID := strings.TrimSpace(req.Msg.GetUserId())
+	var targetUUID string
+
+	if targetID == "" {
+		targetUUID = userCtx.UserUUID
+	} else {
+		err := s.db.QueryRow(ctx, `
+			SELECT uuid::text FROM users
+			WHERE LOWER(id) = LOWER($1) OR uuid::text = $1
+			LIMIT 1`, targetID).Scan(&targetUUID)
+		if err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
+			}
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+	}
+
+	// Privacy: Users may only inspect their own ban status; admins may inspect anyone
+	if userCtx.Role != "ADMIN" && userCtx.UserUUID != targetUUID {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("permission denied"))
+	}
+
+	ban, err := getActiveBanForUser(ctx, s.db, targetUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	if ban != nil {
+		return connect.NewResponse(&pb.GetUserBanStatusResponse{
+			IsBanned:  true,
+			ActiveBan: ban,
+		}), nil
+	}
+
+	return connect.NewResponse(&pb.GetUserBanStatusResponse{
+		IsBanned:  false,
+		ActiveBan: nil,
 	}), nil
 }

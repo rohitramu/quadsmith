@@ -17,7 +17,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_user: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChhxdWFkc21pdGgvYXBpL3VzZXIucHJvdG8SDXF1YWRzbWl0aC5hcGkigAQKBFVzZXISGAoEdXVpZBgBIAEoCUIKwvMYAhABwPAZBBJ+CgJpZBgCIAEoCUJywvMYBCABKAGCshliCmAIAxAUGh5eW2Etel1bYS16MC05X117MSwxOH1bYS16MC05XSQiBWFkbWluIgRyb290IgZzeXN0ZW0iA2JvdCIFcm9ib3QqAl9fKglxdWFkc21pdGgqCnF1YWRfc21pdGjA8BkCEhkKBWVtYWlsGAMgASgJQgrC8xgCQAHA8BkBEh4KBHJvbGUYBCABKAlCEMLzGAg6BidVU0VSJ8DwGQQSOQoPbGFzdF9yZW5hbWVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxI0CgpkZWxldGVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxIzCgliYW5uZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkFEjQKCmNyZWF0ZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkDEjQKCnVwZGF0ZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkDOhHC8xgHCgV1c2Vyc8LwGQIIAiLTAQoLVXNlclByb2ZpbGUSGAoEdXVpZBgBIAEoCUIKwvMYAhABwPAZBBIsCgl1c2VyX3V1aWQYAiABKAlCGcLzGBEaC3VzZXJzKHV1aWQpIAEoAcDwGQQSGAoKYXZhdGFyX3VybBgDIAEoCUIEwPAZAhIRCgNiaW8YBCABKAlCBMDwGQISNAoKdXBkYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQM6GcLzGA8KDXVzZXJfcHJvZmlsZXPC8BkCCAIi+AIKCVVzZXJFbWFpbBIYCgR1dWlkGAEgASgJQgrC8xgCEAHA8BkEEioKCXVzZXJfdXVpZBgCIAEoCUIXwvMYDxoLdXNlcnModXVpZCkoAcDwGQQSGwoFZW1haWwYAyABKAlCDMLzGAQgASgBwPAZARIjCgppc19wcmltYXJ5GAQgASgIQg/C8xgHOgVmYWxzZcDwGQESNAoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQMSKQoQdmVyaWZpZWRfdmlhX290cBgGIAEoCEIPwvMYBzoFZmFsc2XA8BkDEiMKD29hdXRoX3Byb3ZpZGVycxgHIAMoCUIKwvMYAkABwPAZAzpdwvMYUwoLdXNlcl9lbWFpbHMiRAokaWR4X3VzZXJfZW1haWxzX29uZV9wcmltYXJ5X3Blcl91c2VyEgl1c2VyX3V1aWQaEWlzX3ByaW1hcnkgPSB0cnVlwvAZAggCIqcDChVVc2VyRW1haWxPQXV0aEFjY291bnQSGAoEdXVpZBgBIAEoCUIKwvMYAhABwPAZBBJICg91c2VyX2VtYWlsX3V1aWQYAiABKAlCL8LzGCcaI3VzZXJfZW1haWxzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFKAHA8BkEEk4KEm9hdXRoX2FjY291bnRfdXVpZBgDIAEoCUIywvMYKhomb2F1dGhfYWNjb3VudHModXVpZCkgT04gREVMRVRFIENBU0NBREUoAcDwGQQSPwoKY3JlYXRlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCD8LzGAc6BU5PVygpwPAZAzqYAcLzGEAKGXVzZXJfZW1haWxfb2F1dGhfYWNjb3VudHMaI3VzZXJfZW1haWxfdXVpZCwgb2F1dGhfYWNjb3VudF91dWlkwvAZUAgCEkx1c2VyX2VtYWlsX3V1aWQgSU4gKFNFTEVDVCB1dWlkIEZST00gdXNlcl9lbWFpbHMgV0hFUkUgdXNlcl91dWlkID0gJDE6OnV1aWQpIp8BChFQdWJsaWNVc2VyUHJvZmlsZRIKCgJpZBgBIAEoCRISCgphdmF0YXJfdXJsGAIgASgJEgsKA2JpbxgDIAEoCRIuCgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBITCgtidWlsZF9jb3VudBgFIAEoBRIYChByZXB1dGF0aW9uX3Njb3JlGAYgASgFItECCgxSZWZyZXNoVG9rZW4SGAoEdXVpZBgBIAEoCUIKwvMYAhABwPAZBBIqCgl1c2VyX3V1aWQYAiABKAlCF8LzGA8aC3VzZXJzKHV1aWQpKAHA8BkEEiAKCnRva2VuX2hhc2gYAyABKAlCDMLzGAQgASgBwPAZBhI0CgpleHBpcmVzX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxI2CgxsYXN0X3VzZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkDEhkKC2RldmljZV9oaW50GAYgASgJQgTA8BkDEjQKCmNyZWF0ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkDOhrC8xgQCg5yZWZyZXNoX3Rva2Vuc8LwGQIIAyL1BgoIRW1haWxPdHASGAoEdXVpZBgBIAEoCUIKwvMYAhABwPAZBBIZCgVlbWFpbBgCIAEoCUIKwvMYAigBwPAZARIXCgljb2RlX2hhc2gYAyABKAlCBMDwGQYSNAoKZXhwaXJlc19hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQUSMQoHdXNlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQMSJAoPZmFpbGVkX2F0dGVtcHRzGAYgASgFQgvC8xgDOgEwwPAZBRI0CgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxIpChFjaGFsbGVuZ2VfaWRfaGFzaBgIIAEoCUIOwvMYBigBOgInJ8DwGQYSIgoHcHVycG9zZRgJIAEoCUIRwvMYCToHJ2xvZ2luJ8DwGQMSOgoWcmVxdWVzdGVkX2J5X3VzZXJfdXVpZBgKIAEoCUIVwvMYDRoLdXNlcnModXVpZCnA8BkESACIAQESIAoKaXBfYWRkcmVzcxgLIAEoCUIMwvMYBDoCJyfA8BkDEiAKCnVzZXJfYWdlbnQYDCABKAlCDMLzGAQ6AicnwPAZAxIjCg1sb2NhdGlvbl9oaW50GA0gASgJQgzC8xgEOgInJ8DwGQMSIwoGc3RhdHVzGA4gASgJQhPC8xgLOgkncGVuZGluZyfA8BkDEjUKC2FwcHJvdmVkX2F0GA8gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxIzCglkZW5pZWRfYXQYECABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkFOrUBwvMYDAoKZW1haWxfb3Rwc8LwGaABCAMSmwFyZXF1ZXN0ZWRfYnlfdXNlcl91dWlkID0gJDE6OnV1aWQgT1IgKGVtYWlsIElOIChTRUxFQ1QgZW1haWwgRlJPTSB1c2VyX2VtYWlscyBXSEVSRSB1c2VyX3V1aWQgPSAkMTo6dXVpZCkgQU5EICh1c2VkX2F0IElTIE5PVCBOVUxMIE9SIHN0YXR1cyA9ICdhcHByb3ZlZCcpKUIZChdfcmVxdWVzdGVkX2J5X3VzZXJfdXVpZCLcAgoPVXNlcm5hbWVIaXN0b3J5EhgKBHV1aWQYASABKAlCCsLzGAIQAcDwGQQSKgoJdXNlcl91dWlkGAIgASgJQhfC8xgPGgt1c2Vycyh1dWlkKSgBwPAZBBIgCgxvbGRfdXNlcm5hbWUYAyABKAlCCsLzGAIoAcDwGQISNAoKcmVuYW1lZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQMSSAoRZmlyc3RfYXJjaGl2ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQhHC8xgJKAE6BU5PVygpwPAZAxJBChdyZWxlYXNlX3dhcm5pbmdfc2VudF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQU6HsLzGBQKEnVzZXJuYW1lX2hpc3Rvcmllc8LwGQIIAiLWAgoMT0F1dGhBY2NvdW50EhgKBHV1aWQYASABKAlCCsLzGAIQAcDwGQQSKgoJdXNlcl91dWlkGAIgASgJQhfC8xgPGgt1c2Vycyh1dWlkKSgBwPAZBBIWCghwcm92aWRlchgDIAEoCUIEwPAZAxIhChNwcm92aWRlcl9hY2NvdW50X2lkGAQgASgJQgTA8BkDEhoKDGFjY2Vzc190b2tlbhgFIAEoCUIEwPAZBhIbCg1yZWZyZXNoX3Rva2VuGAYgASgJQgTA8BkGEjoKEHRva2VuX2V4cGlyZXNfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkGEjQKCmNyZWF0ZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkDOhrC8xgQCg5vYXV0aF9hY2NvdW50c8LwGQIIAiIxCh1DaGVja1VzZXJuYW1lQXZhaWxhYmxlUmVxdWVzdBIQCgh1c2VybmFtZRgBIAEoCSJ/Ch5DaGVja1VzZXJuYW1lQXZhaWxhYmxlUmVzcG9uc2USOQoGc3RhdHVzGAEgASgOMikucXVhZHNtaXRoLmFwaS5Vc2VybmFtZUF2YWlsYWJpbGl0eVN0YXR1cxIRCglhdmFpbGFibGUYAiABKAgSDwoHbWVzc2FnZRgDIAEoCSIlChdHZXRQdWJsaWNQcm9maWxlUmVxdWVzdBIKCgJpZBgBIAEoCSIcCg5HZXRVc2VyUmVxdWVzdBIKCgJpZBgBIAEoCSJUChFMaXN0VXNlcnNSZXNwb25zZRImCgV1c2VycxgBIAMoCzIXLnF1YWRzbWl0aC5hcGkuU2VlZFVzZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJImgKCFNlZWRVc2VyEgwKBHV1aWQYASABKAkSCgoCaWQYAiABKAkSDQoFZW1haWwYAyABKAkSDAoEcm9sZRgEIAEoCRILCgNiaW8YBSABKAkSGAoQcmVwdXRhdGlvbl9zY29yZRgGIAEoBSrOAQoaVXNlcm5hbWVBdmFpbGFiaWxpdHlTdGF0dXMSLAooVVNFUk5BTUVfQVZBSUxBQklMSVRZX1NUQVRVU19VTlNQRUNJRklFRBAAEioKJlVTRVJOQU1FX0FWQUlMQUJJTElUWV9TVEFUVVNfQVZBSUxBQkxFEAESLAooVVNFUk5BTUVfQVZBSUxBQklMSVRZX1NUQVRVU19VTkFWQUlMQUJMRRACEigKJFVTRVJOQU1FX0FWQUlMQUJJTElUWV9TVEFUVVNfSU5WQUxJRBADMqECCgtVc2VyU2VydmljZRI9CgdHZXRVc2VyEh0ucXVhZHNtaXRoLmFwaS5HZXRVc2VyUmVxdWVzdBoTLnF1YWRzbWl0aC5hcGkuVXNlchJcChBHZXRQdWJsaWNQcm9maWxlEiYucXVhZHNtaXRoLmFwaS5HZXRQdWJsaWNQcm9maWxlUmVxdWVzdBogLnF1YWRzbWl0aC5hcGkuUHVibGljVXNlclByb2ZpbGUSdQoWQ2hlY2tVc2VybmFtZUF2YWlsYWJsZRIsLnF1YWRzbWl0aC5hcGkuQ2hlY2tVc2VybmFtZUF2YWlsYWJsZVJlcXVlc3QaLS5xdWFkc21pdGguYXBpLkNoZWNrVXNlcm5hbWVBdmFpbGFibGVSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
+    "ChhxdWFkc21pdGgvYXBpL3VzZXIucHJvdG8SDXF1YWRzbWl0aC5hcGki/wMKBFVzZXISGAoEdXVpZBgBIAEoCUIKwvMYAhABwPAZBBJ+CgJpZBgCIAEoCUJywvMYBCABKAGCshliCmAIAxAUGh5eW2Etel1bYS16MC05X117MSwxOH1bYS16MC05XSQiBWFkbWluIgRyb290IgZzeXN0ZW0iA2JvdCIFcm9ib3QqAl9fKglxdWFkc21pdGgqCnF1YWRfc21pdGjA8BkCEhkKBWVtYWlsGAMgASgJQgrC8xgCQAHA8BkBEh4KBHJvbGUYBCABKAlCEMLzGAg6BidVU0VSJ8DwGQQSOQoPbGFzdF9yZW5hbWVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxI0CgpkZWxldGVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxI0CgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxI0Cgp1cGRhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxIyCgphY3RpdmVfYmFuGAkgASgLMhIucXVhZHNtaXRoLmFwaS5CYW5CCsLzGAJAAcDwGQQ6EcLzGAcKBXVzZXJzwvAZAggCItMBCgtVc2VyUHJvZmlsZRIYCgR1dWlkGAEgASgJQgrC8xgCEAHA8BkEEiwKCXVzZXJfdXVpZBgCIAEoCUIZwvMYERoLdXNlcnModXVpZCkgASgBwPAZBBIYCgphdmF0YXJfdXJsGAMgASgJQgTA8BkCEhEKA2JpbxgEIAEoCUIEwPAZAhI0Cgp1cGRhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAzoZwvMYDwoNdXNlcl9wcm9maWxlc8LwGQIIAiL4AgoJVXNlckVtYWlsEhgKBHV1aWQYASABKAlCCsLzGAIQAcDwGQQSKgoJdXNlcl91dWlkGAIgASgJQhfC8xgPGgt1c2Vycyh1dWlkKSgBwPAZBBIbCgVlbWFpbBgDIAEoCUIMwvMYBCABKAHA8BkBEiMKCmlzX3ByaW1hcnkYBCABKAhCD8LzGAc6BWZhbHNlwPAZARI0CgpjcmVhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxIpChB2ZXJpZmllZF92aWFfb3RwGAYgASgIQg/C8xgHOgVmYWxzZcDwGQMSIwoPb2F1dGhfcHJvdmlkZXJzGAcgAygJQgrC8xgCQAHA8BkDOl3C8xhTCgt1c2VyX2VtYWlscyJECiRpZHhfdXNlcl9lbWFpbHNfb25lX3ByaW1hcnlfcGVyX3VzZXISCXVzZXJfdXVpZBoRaXNfcHJpbWFyeSA9IHRydWXC8BkCCAIipwMKFVVzZXJFbWFpbE9BdXRoQWNjb3VudBIYCgR1dWlkGAEgASgJQgrC8xgCEAHA8BkEEkgKD3VzZXJfZW1haWxfdXVpZBgCIAEoCUIvwvMYJxojdXNlcl9lbWFpbHModXVpZCkgT04gREVMRVRFIENBU0NBREUoAcDwGQQSTgoSb2F1dGhfYWNjb3VudF91dWlkGAMgASgJQjLC8xgqGiZvYXV0aF9hY2NvdW50cyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERSgBwPAZBBI/CgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIPwvMYBzoFTk9XKCnA8BkDOpgBwvMYQAoZdXNlcl9lbWFpbF9vYXV0aF9hY2NvdW50cxojdXNlcl9lbWFpbF91dWlkLCBvYXV0aF9hY2NvdW50X3V1aWTC8BlQCAISTHVzZXJfZW1haWxfdXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSB1c2VyX2VtYWlscyBXSEVSRSB1c2VyX3V1aWQgPSAkMTo6dXVpZCkinwEKEVB1YmxpY1VzZXJQcm9maWxlEgoKAmlkGAEgASgJEhIKCmF2YXRhcl91cmwYAiABKAkSCwoDYmlvGAMgASgJEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhMKC2J1aWxkX2NvdW50GAUgASgFEhgKEHJlcHV0YXRpb25fc2NvcmUYBiABKAUimAMKDFJlZnJlc2hUb2tlbhIYCgR1dWlkGAEgASgJQgrC8xgCEAHA8BkEEioKCXVzZXJfdXVpZBgCIAEoCUIXwvMYDxoLdXNlcnModXVpZCkoAcDwGQQSIAoKdG9rZW5faGFzaBgDIAEoCUIMwvMYBCABKAHA8BkGEjQKCmV4cGlyZXNfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkDEjYKDGxhc3RfdXNlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQMSGQoLZGV2aWNlX2hpbnQYBiABKAlCBMDwGQMSIAoKaXBfYWRkcmVzcxgIIAEoCUIMwvMYBDoCJyfA8BkDEiMKDWxvY2F0aW9uX2hpbnQYCSABKAlCDMLzGAQ6AicnwPAZAxI0CgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAzoawvMYEAoOcmVmcmVzaF90b2tlbnPC8BkCCAMi9QYKCEVtYWlsT3RwEhgKBHV1aWQYASABKAlCCsLzGAIQAcDwGQQSGQoFZW1haWwYAiABKAlCCsLzGAIoAcDwGQESFwoJY29kZV9oYXNoGAMgASgJQgTA8BkGEjQKCmV4cGlyZXNfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkFEjEKB3VzZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkDEiQKD2ZhaWxlZF9hdHRlbXB0cxgGIAEoBUILwvMYAzoBMMDwGQUSNAoKY3JlYXRlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQMSKQoRY2hhbGxlbmdlX2lkX2hhc2gYCCABKAlCDsLzGAYoAToCJyfA8BkGEiIKB3B1cnBvc2UYCSABKAlCEcLzGAk6Bydsb2dpbifA8BkDEjoKFnJlcXVlc3RlZF9ieV91c2VyX3V1aWQYCiABKAlCFcLzGA0aC3VzZXJzKHV1aWQpwPAZBEgAiAEBEiAKCmlwX2FkZHJlc3MYCyABKAlCDMLzGAQ6AicnwPAZAxIgCgp1c2VyX2FnZW50GAwgASgJQgzC8xgEOgInJ8DwGQMSIwoNbG9jYXRpb25faGludBgNIAEoCUIMwvMYBDoCJyfA8BkDEiMKBnN0YXR1cxgOIAEoCUITwvMYCzoJJ3BlbmRpbmcnwPAZAxI1CgthcHByb3ZlZF9hdBgPIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQMSMwoJZGVuaWVkX2F0GBAgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZBTq1AcLzGAwKCmVtYWlsX290cHPC8BmgAQgDEpsBcmVxdWVzdGVkX2J5X3VzZXJfdXVpZCA9ICQxOjp1dWlkIE9SIChlbWFpbCBJTiAoU0VMRUNUIGVtYWlsIEZST00gdXNlcl9lbWFpbHMgV0hFUkUgdXNlcl91dWlkID0gJDE6OnV1aWQpIEFORCAodXNlZF9hdCBJUyBOT1QgTlVMTCBPUiBzdGF0dXMgPSAnYXBwcm92ZWQnKSlCGQoXX3JlcXVlc3RlZF9ieV91c2VyX3V1aWQi3AIKD1VzZXJuYW1lSGlzdG9yeRIYCgR1dWlkGAEgASgJQgrC8xgCEAHA8BkEEioKCXVzZXJfdXVpZBgCIAEoCUIXwvMYDxoLdXNlcnModXVpZCkoAcDwGQQSIAoMb2xkX3VzZXJuYW1lGAMgASgJQgrC8xgCKAHA8BkCEjQKCnJlbmFtZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkDEkgKEWZpcnN0X2FyY2hpdmVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIRwvMYCSgBOgVOT1coKcDwGQMSQQoXcmVsZWFzZV93YXJuaW5nX3NlbnRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkFOh7C8xgUChJ1c2VybmFtZV9oaXN0b3JpZXPC8BkCCAIi1gIKDE9BdXRoQWNjb3VudBIYCgR1dWlkGAEgASgJQgrC8xgCEAHA8BkEEioKCXVzZXJfdXVpZBgCIAEoCUIXwvMYDxoLdXNlcnModXVpZCkoAcDwGQQSFgoIcHJvdmlkZXIYAyABKAlCBMDwGQMSIQoTcHJvdmlkZXJfYWNjb3VudF9pZBgEIAEoCUIEwPAZAxIaCgxhY2Nlc3NfdG9rZW4YBSABKAlCBMDwGQYSGwoNcmVmcmVzaF90b2tlbhgGIAEoCUIEwPAZBhI6ChB0b2tlbl9leHBpcmVzX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZBhI0CgpjcmVhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAzoawvMYEAoOb2F1dGhfYWNjb3VudHPC8BkCCAIinQQKA0JhbhIYCgR1dWlkGAEgASgJQgrC8xgCEAHA8BkEEioKCXVzZXJfdXVpZBgCIAEoCUIXwvMYDxoLdXNlcnModXVpZCkoAcDwGQQSNAoTYmFubmVkX2J5X3VzZXJfdXVpZBgDIAEoCUIXwvMYDxoLdXNlcnModXVpZCkoAcDwGQQSFAoGcmVhc29uGAQgASgJQgTA8BkEEhwKDmludGVybmFsX25vdGVzGAUgASgJQgTA8BkFEjQKCmV4cGlyZXNfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkEEj8KCmNyZWF0ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQg/C8xgHOgVOT1coKcDwGQMSNAoKcmV2b2tlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQQSOAoUcmV2b2tlZF9ieV91c2VyX3V1aWQYCSABKAlCFcLzGA0aC3VzZXJzKHV1aWQpwPAZBEgAiAEBEhsKDXJldm9rZV9yZWFzb24YCiABKAlCBMDwGQQSIQoNYmFubmVkX2VtYWlscxgLIAMoCUIKwvMYAkABwPAZATomwvMYBgoEYmFuc8LwGRgIAxIUdXNlcl91dWlkID0gJDE6OnV1aWRCFwoVX3Jldm9rZWRfYnlfdXNlcl91dWlkIpoCCgtCYW5uZWRFbWFpbBIYCgR1dWlkGAEgASgJQgrC8xgCEAHA8BkEEjoKCGJhbl91dWlkGAIgASgJQijC8xggGhxiYW5zKHV1aWQpIE9OIERFTEVURSBDQVNDQURFKAHA8BkEEhkKBWVtYWlsGAMgASgJQgrC8xgCKAHA8BkBEj8KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQg/C8xgHOgVOT1coKcDwGQM6WcLzGA8KDWJhbm5lZF9lbWFpbHPC8BlCCAMSPmJhbl91dWlkIElOIChTRUxFQ1QgdXVpZCBGUk9NIGJhbnMgV0hFUkUgdXNlcl91dWlkID0gJDE6OnV1aWQpIo0BCg5CYW5Vc2VyUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEg4KBnJlYXNvbhgCIAEoCRIWCg5pbnRlcm5hbF9ub3RlcxgDIAEoCRIzCgpleHBpcmVzX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgAiAEBQg0KC19leHBpcmVzX2F0IlQKD0JhblVzZXJSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSHwoDYmFuGAMgASgLMhIucXVhZHNtaXRoLmFwaS5CYW4iMQodQ2hlY2tVc2VybmFtZUF2YWlsYWJsZVJlcXVlc3QSEAoIdXNlcm5hbWUYASABKAkifwoeQ2hlY2tVc2VybmFtZUF2YWlsYWJsZVJlc3BvbnNlEjkKBnN0YXR1cxgBIAEoDjIpLnF1YWRzbWl0aC5hcGkuVXNlcm5hbWVBdmFpbGFiaWxpdHlTdGF0dXMSEQoJYXZhaWxhYmxlGAIgASgIEg8KB21lc3NhZ2UYAyABKAkiJQoXR2V0UHVibGljUHJvZmlsZVJlcXVlc3QSCgoCaWQYASABKAkiKgoXR2V0VXNlckJhblN0YXR1c1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCSJpChhHZXRVc2VyQmFuU3RhdHVzUmVzcG9uc2USEQoJaXNfYmFubmVkGAEgASgIEisKCmFjdGl2ZV9iYW4YAiABKAsyEi5xdWFkc21pdGguYXBpLkJhbkgAiAEBQg0KC19hY3RpdmVfYmFuIhwKDkdldFVzZXJSZXF1ZXN0EgoKAmlkGAEgASgJIm8KD0xpc3RCYW5zUmVxdWVzdBIUCgd1c2VyX2lkGAEgASgJSACIAQESEwoLYWN0aXZlX29ubHkYAiABKAgSEQoJcGFnZV9zaXplGAMgASgFEhIKCnBhZ2VfdG9rZW4YBCABKAlCCgoIX3VzZXJfaWQiTQoQTGlzdEJhbnNSZXNwb25zZRIgCgRiYW5zGAEgAygLMhIucXVhZHNtaXRoLmFwaS5CYW4SFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIlQKEUxpc3RVc2Vyc1Jlc3BvbnNlEiYKBXVzZXJzGAEgAygLMhcucXVhZHNtaXRoLmFwaS5TZWVkVXNlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiaAoIU2VlZFVzZXISDAoEdXVpZBgBIAEoCRIKCgJpZBgCIAEoCRINCgVlbWFpbBgDIAEoCRIMCgRyb2xlGAQgASgJEgsKA2JpbxgFIAEoCRIYChByZXB1dGF0aW9uX3Njb3JlGAYgASgFIjoKEFVuYmFuVXNlclJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIVCg1yZXZva2VfcmVhc29uGAIgASgJIlYKEVVuYmFuVXNlclJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIfCgNiYW4YAyABKAsyEi5xdWFkc21pdGguYXBpLkJhbirOAQoaVXNlcm5hbWVBdmFpbGFiaWxpdHlTdGF0dXMSLAooVVNFUk5BTUVfQVZBSUxBQklMSVRZX1NUQVRVU19VTlNQRUNJRklFRBAAEioKJlVTRVJOQU1FX0FWQUlMQUJJTElUWV9TVEFUVVNfQVZBSUxBQkxFEAESLAooVVNFUk5BTUVfQVZBSUxBQklMSVRZX1NUQVRVU19VTkFWQUlMQUJMRRACEigKJFVTRVJOQU1FX0FWQUlMQUJJTElUWV9TVEFUVVNfSU5WQUxJRBADMu0ECgtVc2VyU2VydmljZRI9CgdHZXRVc2VyEh0ucXVhZHNtaXRoLmFwaS5HZXRVc2VyUmVxdWVzdBoTLnF1YWRzbWl0aC5hcGkuVXNlchJcChBHZXRQdWJsaWNQcm9maWxlEiYucXVhZHNtaXRoLmFwaS5HZXRQdWJsaWNQcm9maWxlUmVxdWVzdBogLnF1YWRzbWl0aC5hcGkuUHVibGljVXNlclByb2ZpbGUSdQoWQ2hlY2tVc2VybmFtZUF2YWlsYWJsZRIsLnF1YWRzbWl0aC5hcGkuQ2hlY2tVc2VybmFtZUF2YWlsYWJsZVJlcXVlc3QaLS5xdWFkc21pdGguYXBpLkNoZWNrVXNlcm5hbWVBdmFpbGFibGVSZXNwb25zZRJICgdCYW5Vc2VyEh0ucXVhZHNtaXRoLmFwaS5CYW5Vc2VyUmVxdWVzdBoeLnF1YWRzbWl0aC5hcGkuQmFuVXNlclJlc3BvbnNlEk4KCVVuYmFuVXNlchIfLnF1YWRzbWl0aC5hcGkuVW5iYW5Vc2VyUmVxdWVzdBogLnF1YWRzbWl0aC5hcGkuVW5iYW5Vc2VyUmVzcG9uc2USSwoITGlzdEJhbnMSHi5xdWFkc21pdGguYXBpLkxpc3RCYW5zUmVxdWVzdBofLnF1YWRzbWl0aC5hcGkuTGlzdEJhbnNSZXNwb25zZRJjChBHZXRVc2VyQmFuU3RhdHVzEiYucXVhZHNtaXRoLmFwaS5HZXRVc2VyQmFuU3RhdHVzUmVxdWVzdBonLnF1YWRzbWl0aC5hcGkuR2V0VXNlckJhblN0YXR1c1Jlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
     [
       file_google_protobuf_timestamp,
       file_quadsmith_data_data,
@@ -72,19 +72,19 @@ export type User = Message<"quadsmith.api.User"> & {
   deletedAt?: Timestamp | undefined;
 
   /**
-   * @generated from field: google.protobuf.Timestamp banned_at = 7;
-   */
-  bannedAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at = 8;
+   * @generated from field: google.protobuf.Timestamp created_at = 7;
    */
   createdAt?: Timestamp | undefined;
 
   /**
-   * @generated from field: google.protobuf.Timestamp updated_at = 9;
+   * @generated from field: google.protobuf.Timestamp updated_at = 8;
    */
   updatedAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: quadsmith.api.Ban active_ban = 9;
+   */
+  activeBan?: Ban | undefined;
 };
 
 /**
@@ -292,6 +292,16 @@ export type RefreshToken = Message<"quadsmith.api.RefreshToken"> & {
   deviceHint: string;
 
   /**
+   * @generated from field: string ip_address = 8;
+   */
+  ipAddress: string;
+
+  /**
+   * @generated from field: string location_hint = 9;
+   */
+  locationHint: string;
+
+  /**
    * @generated from field: google.protobuf.Timestamp created_at = 7;
    */
   createdAt?: Timestamp | undefined;
@@ -497,6 +507,174 @@ export const OAuthAccountSchema: GenMessage<OAuthAccount> =
   messageDesc(file_quadsmith_api_user, 8);
 
 /**
+ * @generated from message quadsmith.api.Ban
+ */
+export type Ban = Message<"quadsmith.api.Ban"> & {
+  /**
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
+
+  /**
+   * @generated from field: string user_uuid = 2;
+   */
+  userUuid: string;
+
+  /**
+   * @generated from field: string banned_by_user_uuid = 3;
+   */
+  bannedByUserUuid: string;
+
+  /**
+   * @generated from field: string reason = 4;
+   */
+  reason: string;
+
+  /**
+   * @generated from field: string internal_notes = 5;
+   */
+  internalNotes: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp expires_at = 6;
+   */
+  expiresAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 7;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp revoked_at = 8;
+   */
+  revokedAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: optional string revoked_by_user_uuid = 9;
+   */
+  revokedByUserUuid?: string | undefined;
+
+  /**
+   * @generated from field: string revoke_reason = 10;
+   */
+  revokeReason: string;
+
+  /**
+   * @generated from field: repeated string banned_emails = 11;
+   */
+  bannedEmails: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.Ban.
+ * Use `create(BanSchema)` to create a new message.
+ */
+export const BanSchema: GenMessage<Ban> = /*@__PURE__*/ messageDesc(file_quadsmith_api_user, 9);
+
+/**
+ * @generated from message quadsmith.api.BannedEmail
+ */
+export type BannedEmail = Message<"quadsmith.api.BannedEmail"> & {
+  /**
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
+
+  /**
+   * @generated from field: string ban_uuid = 2;
+   */
+  banUuid: string;
+
+  /**
+   * @generated from field: string email = 3;
+   */
+  email: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 4;
+   */
+  createdAt?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.BannedEmail.
+ * Use `create(BannedEmailSchema)` to create a new message.
+ */
+export const BannedEmailSchema: GenMessage<BannedEmail> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_user, 10);
+
+/**
+ * @generated from message quadsmith.api.BanUserRequest
+ */
+export type BanUserRequest = Message<"quadsmith.api.BanUserRequest"> & {
+  /**
+   * Username or UUID of user to ban
+   *
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+
+  /**
+   * Public reason visible to banned user
+   *
+   * @generated from field: string reason = 2;
+   */
+  reason: string;
+
+  /**
+   * Private admin moderation notes
+   *
+   * @generated from field: string internal_notes = 3;
+   */
+  internalNotes: string;
+
+  /**
+   * Nullable for permanent bans
+   *
+   * @generated from field: optional google.protobuf.Timestamp expires_at = 4;
+   */
+  expiresAt?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.BanUserRequest.
+ * Use `create(BanUserRequestSchema)` to create a new message.
+ */
+export const BanUserRequestSchema: GenMessage<BanUserRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_user, 11);
+
+/**
+ * @generated from message quadsmith.api.BanUserResponse
+ */
+export type BanUserResponse = Message<"quadsmith.api.BanUserResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+
+  /**
+   * @generated from field: quadsmith.api.Ban ban = 3;
+   */
+  ban?: Ban | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.BanUserResponse.
+ * Use `create(BanUserResponseSchema)` to create a new message.
+ */
+export const BanUserResponseSchema: GenMessage<BanUserResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_user, 12);
+
+/**
  * @generated from message quadsmith.api.CheckUsernameAvailableRequest
  */
 export type CheckUsernameAvailableRequest =
@@ -513,7 +691,7 @@ export type CheckUsernameAvailableRequest =
  */
 export const CheckUsernameAvailableRequestSchema: GenMessage<CheckUsernameAvailableRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 9);
+  messageDesc(file_quadsmith_api_user, 13);
 
 /**
  * @generated from message quadsmith.api.CheckUsernameAvailableResponse
@@ -542,7 +720,7 @@ export type CheckUsernameAvailableResponse =
  */
 export const CheckUsernameAvailableResponseSchema: GenMessage<CheckUsernameAvailableResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 10);
+  messageDesc(file_quadsmith_api_user, 14);
 
 /**
  * @generated from message quadsmith.api.GetPublicProfileRequest
@@ -562,7 +740,50 @@ export type GetPublicProfileRequest = Message<"quadsmith.api.GetPublicProfileReq
  */
 export const GetPublicProfileRequestSchema: GenMessage<GetPublicProfileRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 11);
+  messageDesc(file_quadsmith_api_user, 15);
+
+/**
+ * @generated from message quadsmith.api.GetUserBanStatusRequest
+ */
+export type GetUserBanStatusRequest = Message<"quadsmith.api.GetUserBanStatusRequest"> & {
+  /**
+   * Username or UUID (can inspect self, or any user if ADMIN)
+   *
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+};
+
+/**
+ * Describes the message quadsmith.api.GetUserBanStatusRequest.
+ * Use `create(GetUserBanStatusRequestSchema)` to create a new message.
+ */
+export const GetUserBanStatusRequestSchema: GenMessage<GetUserBanStatusRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_user, 16);
+
+/**
+ * @generated from message quadsmith.api.GetUserBanStatusResponse
+ */
+export type GetUserBanStatusResponse = Message<"quadsmith.api.GetUserBanStatusResponse"> & {
+  /**
+   * @generated from field: bool is_banned = 1;
+   */
+  isBanned: boolean;
+
+  /**
+   * @generated from field: optional quadsmith.api.Ban active_ban = 2;
+   */
+  activeBan?: Ban | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.GetUserBanStatusResponse.
+ * Use `create(GetUserBanStatusResponseSchema)` to create a new message.
+ */
+export const GetUserBanStatusResponseSchema: GenMessage<GetUserBanStatusResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_user, 17);
 
 /**
  * @generated from message quadsmith.api.GetUserRequest
@@ -582,7 +803,65 @@ export type GetUserRequest = Message<"quadsmith.api.GetUserRequest"> & {
  */
 export const GetUserRequestSchema: GenMessage<GetUserRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 12);
+  messageDesc(file_quadsmith_api_user, 18);
+
+/**
+ * @generated from message quadsmith.api.ListBansRequest
+ */
+export type ListBansRequest = Message<"quadsmith.api.ListBansRequest"> & {
+  /**
+   * Filter by user (optional)
+   *
+   * @generated from field: optional string user_id = 1;
+   */
+  userId?: string | undefined;
+
+  /**
+   * @generated from field: bool active_only = 2;
+   */
+  activeOnly: boolean;
+
+  /**
+   * @generated from field: int32 page_size = 3;
+   */
+  pageSize: number;
+
+  /**
+   * @generated from field: string page_token = 4;
+   */
+  pageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListBansRequest.
+ * Use `create(ListBansRequestSchema)` to create a new message.
+ */
+export const ListBansRequestSchema: GenMessage<ListBansRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_user, 19);
+
+/**
+ * @generated from message quadsmith.api.ListBansResponse
+ */
+export type ListBansResponse = Message<"quadsmith.api.ListBansResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.Ban bans = 1;
+   */
+  bans: Ban[];
+
+  /**
+   * @generated from field: string next_page_token = 2;
+   */
+  nextPageToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ListBansResponse.
+ * Use `create(ListBansResponseSchema)` to create a new message.
+ */
+export const ListBansResponseSchema: GenMessage<ListBansResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_user, 20);
 
 /**
  * @generated from message quadsmith.api.ListUsersResponse
@@ -605,7 +884,7 @@ export type ListUsersResponse = Message<"quadsmith.api.ListUsersResponse"> & {
  */
 export const ListUsersResponseSchema: GenMessage<ListUsersResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 13);
+  messageDesc(file_quadsmith_api_user, 21);
 
 /**
  * @generated from message quadsmith.api.SeedUser
@@ -648,7 +927,62 @@ export type SeedUser = Message<"quadsmith.api.SeedUser"> & {
  */
 export const SeedUserSchema: GenMessage<SeedUser> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 14);
+  messageDesc(file_quadsmith_api_user, 22);
+
+/**
+ * @generated from message quadsmith.api.UnbanUserRequest
+ */
+export type UnbanUserRequest = Message<"quadsmith.api.UnbanUserRequest"> & {
+  /**
+   * Username or UUID of user to unban
+   *
+   * @generated from field: string user_id = 1;
+   */
+  userId: string;
+
+  /**
+   * Reason for unbanning
+   *
+   * @generated from field: string revoke_reason = 2;
+   */
+  revokeReason: string;
+};
+
+/**
+ * Describes the message quadsmith.api.UnbanUserRequest.
+ * Use `create(UnbanUserRequestSchema)` to create a new message.
+ */
+export const UnbanUserRequestSchema: GenMessage<UnbanUserRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_user, 23);
+
+/**
+ * @generated from message quadsmith.api.UnbanUserResponse
+ */
+export type UnbanUserResponse = Message<"quadsmith.api.UnbanUserResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+
+  /**
+   * @generated from field: quadsmith.api.Ban ban = 3;
+   */
+  ban?: Ban | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.UnbanUserResponse.
+ * Use `create(UnbanUserResponseSchema)` to create a new message.
+ */
+export const UnbanUserResponseSchema: GenMessage<UnbanUserResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_user, 24);
 
 /**
  * @generated from enum quadsmith.api.UsernameAvailabilityStatus
@@ -709,5 +1043,37 @@ export const UserService: GenService<{
     methodKind: "unary";
     input: typeof CheckUsernameAvailableRequestSchema;
     output: typeof CheckUsernameAvailableResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.UserService.BanUser
+   */
+  banUser: {
+    methodKind: "unary";
+    input: typeof BanUserRequestSchema;
+    output: typeof BanUserResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.UserService.UnbanUser
+   */
+  unbanUser: {
+    methodKind: "unary";
+    input: typeof UnbanUserRequestSchema;
+    output: typeof UnbanUserResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.UserService.ListBans
+   */
+  listBans: {
+    methodKind: "unary";
+    input: typeof ListBansRequestSchema;
+    output: typeof ListBansResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.api.UserService.GetUserBanStatus
+   */
+  getUserBanStatus: {
+    methodKind: "unary";
+    input: typeof GetUserBanStatusRequestSchema;
+    output: typeof GetUserBanStatusResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_user, 0);

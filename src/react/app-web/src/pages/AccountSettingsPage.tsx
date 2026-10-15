@@ -1032,8 +1032,51 @@ export function AccountSettingsPage() {
     ? Math.max(1, Math.ceil((nextAllowedNewRenameAt.getTime() - Date.now()) / (24 * 3600 * 1000)))
     : 0;
 
+  const isBanned = Boolean(user?.activeBan);
+
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+      {/* Prominent Ban Alert Banner */}
+      {isBanned && user?.activeBan && (
+        <div
+          data-testid="ban-alert-banner"
+          className="rounded-2xl border border-rose-500/30 bg-rose-500/10 dark:bg-rose-950/30 p-5 flex items-start gap-4 shadow-sm"
+        >
+          <div className="w-10 h-10 rounded-xl bg-rose-500/20 text-rose-600 dark:text-rose-400 flex items-center justify-center shrink-0 mt-0.5">
+            <AlertTriangle size={20} />
+          </div>
+          <div className="space-y-1 text-xs flex-1">
+            <div className="font-bold text-rose-700 dark:text-rose-300 text-sm flex items-center gap-2">
+              <span>Account Suspended</span>
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-rose-500/20 text-rose-600 dark:text-rose-400">
+                {user.activeBan.expiresAt ? "TEMPORARY" : "INDEFINITE"}
+              </span>
+            </div>
+            <p className="text-zinc-700 dark:text-zinc-300 leading-relaxed">
+              Your account functionality has been restricted due to:{" "}
+              <em className="font-medium text-rose-700 dark:text-rose-300">
+                &ldquo;{user.activeBan.reason}&rdquo;
+              </em>
+            </p>
+            {user.activeBan.expiresAt && (
+              <p className="text-zinc-600 dark:text-zinc-400">
+                Suspension expires:{" "}
+                <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                  {new Date(Number(user.activeBan.expiresAt.seconds) * 1000).toLocaleDateString(
+                    undefined,
+                    { year: "numeric", month: "long", day: "numeric" },
+                  )}
+                </span>
+              </p>
+            )}
+            <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+              Handle changes and new email associations are locked. You maintain the right to update
+              your bio, manage active login sessions, export data, or delete your account.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-6">
         <div className="flex items-center gap-4">
@@ -1057,13 +1100,20 @@ export function AccountSettingsPage() {
                 Username:{" "}
                 <span className="font-semibold text-zinc-800 dark:text-zinc-200">@{user?.id}</span>
               </p>
-              <button
-                type="button"
-                onClick={openChangeUsernameModal}
-                className="px-2 py-0.5 text-[11px] font-semibold text-blue-600 dark:text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 rounded-md transition flex items-center gap-1 shadow-2xs cursor-pointer"
-              >
-                Change Username
-              </button>
+              {!isBanned ? (
+                <button
+                  type="button"
+                  onClick={openChangeUsernameModal}
+                  className="px-2 py-0.5 text-[11px] font-semibold text-blue-600 dark:text-blue-400 bg-blue-500/10 hover:bg-blue-500/20 border border-blue-500/20 rounded-md transition flex items-center gap-1 shadow-2xs cursor-pointer"
+                >
+                  Change Username
+                </button>
+              ) : (
+                <span className="px-2 py-0.5 text-[11px] font-medium text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800/60 rounded-md flex items-center gap-1">
+                  <Lock size={10} />
+                  Handle locked
+                </span>
+              )}
             </div>
           </div>
         </div>
@@ -1101,14 +1151,21 @@ export function AccountSettingsPage() {
               your account.
             </p>
           </div>
-          <button
-            type="button"
-            onClick={openAddEmailModal}
-            className="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition flex items-center gap-1.5 self-start sm:self-auto shadow-sm cursor-pointer"
-          >
-            <Plus size={14} />
-            <span>Add Email</span>
-          </button>
+          {!isBanned ? (
+            <button
+              type="button"
+              onClick={openAddEmailModal}
+              className="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-blue-600 hover:bg-blue-500 text-white transition flex items-center gap-1.5 self-start sm:self-auto shadow-sm cursor-pointer"
+            >
+              <Plus size={14} />
+              <span>Add Email</span>
+            </button>
+          ) : (
+            <span className="px-3 py-1 rounded-xl text-xs font-medium text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800/60 border border-zinc-200 dark:border-zinc-800 flex items-center gap-1.5">
+              <Lock size={12} />
+              <span>Email additions locked</span>
+            </span>
+          )}
         </div>
 
         {addEmailSuccess && (
@@ -1148,6 +1205,10 @@ export function AccountSettingsPage() {
                     {em.isPrimary ? (
                       <span className="text-zinc-400 dark:text-zinc-600 text-[11px] italic">
                         Default login address
+                      </span>
+                    ) : isBanned ? (
+                      <span className="text-zinc-400 dark:text-zinc-600 text-[11px] italic">
+                        Read-only (Suspended)
                       </span>
                     ) : (
                       <>
@@ -1486,12 +1547,12 @@ export function AccountSettingsPage() {
         </div>
       </form>
 
-      {/* Section 3: Data & Privacy */}
+      {/* Section 3: Privacy */}
       <section className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-6 space-y-4 shadow-2xs">
         <div className="flex items-center justify-between gap-4">
           <h2 className="text-sm font-bold flex items-center gap-2">
             <Lock size={16} className="text-blue-500" />
-            <span>Data &amp; Privacy</span>
+            <span>Privacy</span>
           </h2>
 
           <button

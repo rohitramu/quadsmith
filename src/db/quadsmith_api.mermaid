@@ -17,7 +17,6 @@ erDiagram
         TEXT role
         TIMESTAMPTZ last_renamed_at
         TIMESTAMPTZ deleted_at
-        TIMESTAMPTZ banned_at
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
     }
@@ -501,6 +500,26 @@ erDiagram
         TEXT supported_resolutions
     }
 
+    bans {
+        UUID uuid PK
+        UUID user_uuid FK
+        UUID banned_by_user_uuid FK
+        TEXT reason
+        TEXT internal_notes
+        TIMESTAMPTZ expires_at
+        TIMESTAMPTZ created_at
+        TIMESTAMPTZ revoked_at
+        UUID revoked_by_user_uuid FK
+        TEXT revoke_reason
+    }
+
+    banned_emails {
+        UUID uuid PK
+        UUID ban_uuid FK
+        TEXT email
+        TIMESTAMPTZ created_at
+    }
+
     builds ||--o| frames : has
     builds ||--o| motors : has
     builds ||--o| flight_controllers : has
@@ -512,6 +531,8 @@ erDiagram
     flight_controllers ||--o| video_transmitters : internal_video_transmitter
     users ||--o| user_profiles : has
     users ||--o| user_reputations : has
+    users ||--o{ bans : moderated
+    bans ||--o{ banned_emails : snapshots
     entities ||--o| antennas : inherits
     entities ||--o| batteries : inherits
     entities ||--o| builds : inherits

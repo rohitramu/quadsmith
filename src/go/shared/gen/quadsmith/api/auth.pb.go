@@ -2992,6 +2992,7 @@ type AuthResponse struct {
 	SetupToken           string                 `protobuf:"bytes,6,opt,name=setup_token,json=setupToken,proto3" json:"setup_token,omitempty"`
 	AccountStatus        *string                `protobuf:"bytes,7,opt,name=account_status,json=accountStatus,proto3,oneof" json:"account_status,omitempty"`
 	ScheduledPurgeAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=scheduled_purge_at,json=scheduledPurgeAt,proto3,oneof" json:"scheduled_purge_at,omitempty"`
+	ActiveBan            *Ban                   `protobuf:"bytes,9,opt,name=active_ban,json=activeBan,proto3,oneof" json:"active_ban,omitempty"`
 	unknownFields        protoimpl.UnknownFields
 	sizeCache            protoimpl.SizeCache
 }
@@ -3078,6 +3079,13 @@ func (x *AuthResponse) GetAccountStatus() string {
 func (x *AuthResponse) GetScheduledPurgeAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.ScheduledPurgeAt
+	}
+	return nil
+}
+
+func (x *AuthResponse) GetActiveBan() *Ban {
+	if x != nil {
+		return x.ActiveBan
 	}
 	return nil
 }
@@ -3377,7 +3385,7 @@ const file_quadsmith_api_auth_proto_rawDesc = "" +
 	"\fdownload_url\x18\x04 \x01(\tR\vdownloadUrl\x12\x1a\n" +
 	"\bfilename\x18\x05 \x01(\tR\bfilename\x129\n" +
 	"\n" +
-	"expires_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\"\xb1\x03\n" +
+	"expires_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\"\xf8\x03\n" +
 	"\fAuthResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x12'\n" +
@@ -3387,9 +3395,12 @@ const file_quadsmith_api_auth_proto_rawDesc = "" +
 	"\vsetup_token\x18\x06 \x01(\tR\n" +
 	"setupToken\x12*\n" +
 	"\x0eaccount_status\x18\a \x01(\tH\x00R\raccountStatus\x88\x01\x01\x12M\n" +
-	"\x12scheduled_purge_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampH\x01R\x10scheduledPurgeAt\x88\x01\x01B\x11\n" +
+	"\x12scheduled_purge_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampH\x01R\x10scheduledPurgeAt\x88\x01\x01\x126\n" +
+	"\n" +
+	"active_ban\x18\t \x01(\v2\x12.quadsmith.api.BanH\x02R\tactiveBan\x88\x01\x01B\x11\n" +
 	"\x0f_account_statusB\x15\n" +
-	"\x13_scheduled_purge_at\"\xd0\x01\n" +
+	"\x13_scheduled_purge_atB\r\n" +
+	"\v_active_ban\"\xd0\x01\n" +
 	"\x14OtpVerificationError\x12\x18\n" +
 	"\amessage\x18\x01 \x01(\tR\amessage\x12-\n" +
 	"\x12remaining_attempts\x18\x02 \x01(\x05R\x11remainingAttempts\x12!\n" +
@@ -3505,6 +3516,7 @@ var file_quadsmith_api_auth_proto_goTypes = []any{
 	(*UserEmail)(nil),                             // 55: quadsmith.api.UserEmail
 	(*User)(nil),                                  // 56: quadsmith.api.User
 	(*UserProfile)(nil),                           // 57: quadsmith.api.UserProfile
+	(*Ban)(nil),                                   // 58: quadsmith.api.Ban
 }
 var file_quadsmith_api_auth_proto_depIdxs = []int32{
 	54, // 0: quadsmith.api.GetLoginChallengeDetailsResponse.created_at:type_name -> google.protobuf.Timestamp
@@ -3534,67 +3546,68 @@ var file_quadsmith_api_auth_proto_depIdxs = []int32{
 	56, // 24: quadsmith.api.AuthResponse.user:type_name -> quadsmith.api.User
 	57, // 25: quadsmith.api.AuthResponse.profile:type_name -> quadsmith.api.UserProfile
 	54, // 26: quadsmith.api.AuthResponse.scheduled_purge_at:type_name -> google.protobuf.Timestamp
-	1,  // 27: quadsmith.api.AuthService.SendEmailOtp:input_type -> quadsmith.api.SendEmailOtpRequest
-	3,  // 28: quadsmith.api.AuthService.VerifyEmailOtp:input_type -> quadsmith.api.VerifyEmailOtpRequest
-	4,  // 29: quadsmith.api.AuthService.VerifyMagicLink:input_type -> quadsmith.api.VerifyMagicLinkRequest
-	5,  // 30: quadsmith.api.AuthService.GetLoginChallengeDetails:input_type -> quadsmith.api.GetLoginChallengeDetailsRequest
-	7,  // 31: quadsmith.api.AuthService.ApproveLoginChallenge:input_type -> quadsmith.api.ApproveLoginChallengeRequest
-	9,  // 32: quadsmith.api.AuthService.DenyLoginChallenge:input_type -> quadsmith.api.DenyLoginChallengeRequest
-	11, // 33: quadsmith.api.AuthService.GetLoginChallengeStatus:input_type -> quadsmith.api.GetLoginChallengeStatusRequest
-	13, // 34: quadsmith.api.AuthService.CompleteAccountSetup:input_type -> quadsmith.api.CompleteAccountSetupRequest
-	14, // 35: quadsmith.api.AuthService.RefreshToken:input_type -> quadsmith.api.RefreshTokenRequest
-	15, // 36: quadsmith.api.AuthService.GetCurrentUser:input_type -> quadsmith.api.GetCurrentUserRequest
-	16, // 37: quadsmith.api.AuthService.UpdateProfile:input_type -> quadsmith.api.UpdateProfileRequest
-	17, // 38: quadsmith.api.AuthService.Logout:input_type -> quadsmith.api.LogoutRequest
-	19, // 39: quadsmith.api.AuthService.ListActiveSessions:input_type -> quadsmith.api.ListActiveSessionsRequest
-	22, // 40: quadsmith.api.AuthService.RevokeSession:input_type -> quadsmith.api.RevokeSessionRequest
-	24, // 41: quadsmith.api.AuthService.RevokeOtherSessions:input_type -> quadsmith.api.RevokeOtherSessionsRequest
-	26, // 42: quadsmith.api.AuthService.ListUserEmails:input_type -> quadsmith.api.ListUserEmailsRequest
-	28, // 43: quadsmith.api.AuthService.SendAddEmailOtp:input_type -> quadsmith.api.SendAddEmailOtpRequest
-	29, // 44: quadsmith.api.AuthService.VerifyAddEmailOtp:input_type -> quadsmith.api.VerifyAddEmailOtpRequest
-	31, // 45: quadsmith.api.AuthService.MergeAccount:input_type -> quadsmith.api.MergeAccountRequest
-	33, // 46: quadsmith.api.AuthService.SetPrimaryEmail:input_type -> quadsmith.api.SetPrimaryEmailRequest
-	35, // 47: quadsmith.api.AuthService.RemoveUserEmail:input_type -> quadsmith.api.RemoveUserEmailRequest
-	37, // 48: quadsmith.api.AuthService.ChangeUsername:input_type -> quadsmith.api.ChangeUsernameRequest
-	39, // 49: quadsmith.api.AuthService.ListArchivedUsernames:input_type -> quadsmith.api.ListArchivedUsernamesRequest
-	48, // 50: quadsmith.api.AuthService.SendDataExportVerification:input_type -> quadsmith.api.SendDataExportVerificationRequest
-	50, // 51: quadsmith.api.AuthService.VerifyDataExport:input_type -> quadsmith.api.VerifyDataExportRequest
-	42, // 52: quadsmith.api.AuthService.SendDeleteAccountVerification:input_type -> quadsmith.api.SendDeleteAccountVerificationRequest
-	44, // 53: quadsmith.api.AuthService.DeleteAccount:input_type -> quadsmith.api.DeleteAccountRequest
-	46, // 54: quadsmith.api.AuthService.CancelAccountDeletion:input_type -> quadsmith.api.CancelAccountDeletionRequest
-	2,  // 55: quadsmith.api.AuthService.SendEmailOtp:output_type -> quadsmith.api.SendEmailOtpResponse
-	52, // 56: quadsmith.api.AuthService.VerifyEmailOtp:output_type -> quadsmith.api.AuthResponse
-	52, // 57: quadsmith.api.AuthService.VerifyMagicLink:output_type -> quadsmith.api.AuthResponse
-	6,  // 58: quadsmith.api.AuthService.GetLoginChallengeDetails:output_type -> quadsmith.api.GetLoginChallengeDetailsResponse
-	8,  // 59: quadsmith.api.AuthService.ApproveLoginChallenge:output_type -> quadsmith.api.ApproveLoginChallengeResponse
-	10, // 60: quadsmith.api.AuthService.DenyLoginChallenge:output_type -> quadsmith.api.DenyLoginChallengeResponse
-	12, // 61: quadsmith.api.AuthService.GetLoginChallengeStatus:output_type -> quadsmith.api.GetLoginChallengeStatusResponse
-	52, // 62: quadsmith.api.AuthService.CompleteAccountSetup:output_type -> quadsmith.api.AuthResponse
-	52, // 63: quadsmith.api.AuthService.RefreshToken:output_type -> quadsmith.api.AuthResponse
-	56, // 64: quadsmith.api.AuthService.GetCurrentUser:output_type -> quadsmith.api.User
-	57, // 65: quadsmith.api.AuthService.UpdateProfile:output_type -> quadsmith.api.UserProfile
-	18, // 66: quadsmith.api.AuthService.Logout:output_type -> quadsmith.api.LogoutResponse
-	20, // 67: quadsmith.api.AuthService.ListActiveSessions:output_type -> quadsmith.api.ListActiveSessionsResponse
-	23, // 68: quadsmith.api.AuthService.RevokeSession:output_type -> quadsmith.api.RevokeSessionResponse
-	25, // 69: quadsmith.api.AuthService.RevokeOtherSessions:output_type -> quadsmith.api.RevokeOtherSessionsResponse
-	27, // 70: quadsmith.api.AuthService.ListUserEmails:output_type -> quadsmith.api.ListUserEmailsResponse
-	2,  // 71: quadsmith.api.AuthService.SendAddEmailOtp:output_type -> quadsmith.api.SendEmailOtpResponse
-	30, // 72: quadsmith.api.AuthService.VerifyAddEmailOtp:output_type -> quadsmith.api.VerifyAddEmailOtpResponse
-	32, // 73: quadsmith.api.AuthService.MergeAccount:output_type -> quadsmith.api.MergeAccountResponse
-	34, // 74: quadsmith.api.AuthService.SetPrimaryEmail:output_type -> quadsmith.api.SetPrimaryEmailResponse
-	36, // 75: quadsmith.api.AuthService.RemoveUserEmail:output_type -> quadsmith.api.RemoveUserEmailResponse
-	38, // 76: quadsmith.api.AuthService.ChangeUsername:output_type -> quadsmith.api.ChangeUsernameResponse
-	40, // 77: quadsmith.api.AuthService.ListArchivedUsernames:output_type -> quadsmith.api.ListArchivedUsernamesResponse
-	49, // 78: quadsmith.api.AuthService.SendDataExportVerification:output_type -> quadsmith.api.SendDataExportVerificationResponse
-	51, // 79: quadsmith.api.AuthService.VerifyDataExport:output_type -> quadsmith.api.VerifyDataExportResponse
-	43, // 80: quadsmith.api.AuthService.SendDeleteAccountVerification:output_type -> quadsmith.api.SendDeleteAccountVerificationResponse
-	45, // 81: quadsmith.api.AuthService.DeleteAccount:output_type -> quadsmith.api.DeleteAccountResponse
-	47, // 82: quadsmith.api.AuthService.CancelAccountDeletion:output_type -> quadsmith.api.CancelAccountDeletionResponse
-	55, // [55:83] is the sub-list for method output_type
-	27, // [27:55] is the sub-list for method input_type
-	27, // [27:27] is the sub-list for extension type_name
-	27, // [27:27] is the sub-list for extension extendee
-	0,  // [0:27] is the sub-list for field type_name
+	58, // 27: quadsmith.api.AuthResponse.active_ban:type_name -> quadsmith.api.Ban
+	1,  // 28: quadsmith.api.AuthService.SendEmailOtp:input_type -> quadsmith.api.SendEmailOtpRequest
+	3,  // 29: quadsmith.api.AuthService.VerifyEmailOtp:input_type -> quadsmith.api.VerifyEmailOtpRequest
+	4,  // 30: quadsmith.api.AuthService.VerifyMagicLink:input_type -> quadsmith.api.VerifyMagicLinkRequest
+	5,  // 31: quadsmith.api.AuthService.GetLoginChallengeDetails:input_type -> quadsmith.api.GetLoginChallengeDetailsRequest
+	7,  // 32: quadsmith.api.AuthService.ApproveLoginChallenge:input_type -> quadsmith.api.ApproveLoginChallengeRequest
+	9,  // 33: quadsmith.api.AuthService.DenyLoginChallenge:input_type -> quadsmith.api.DenyLoginChallengeRequest
+	11, // 34: quadsmith.api.AuthService.GetLoginChallengeStatus:input_type -> quadsmith.api.GetLoginChallengeStatusRequest
+	13, // 35: quadsmith.api.AuthService.CompleteAccountSetup:input_type -> quadsmith.api.CompleteAccountSetupRequest
+	14, // 36: quadsmith.api.AuthService.RefreshToken:input_type -> quadsmith.api.RefreshTokenRequest
+	15, // 37: quadsmith.api.AuthService.GetCurrentUser:input_type -> quadsmith.api.GetCurrentUserRequest
+	16, // 38: quadsmith.api.AuthService.UpdateProfile:input_type -> quadsmith.api.UpdateProfileRequest
+	17, // 39: quadsmith.api.AuthService.Logout:input_type -> quadsmith.api.LogoutRequest
+	19, // 40: quadsmith.api.AuthService.ListActiveSessions:input_type -> quadsmith.api.ListActiveSessionsRequest
+	22, // 41: quadsmith.api.AuthService.RevokeSession:input_type -> quadsmith.api.RevokeSessionRequest
+	24, // 42: quadsmith.api.AuthService.RevokeOtherSessions:input_type -> quadsmith.api.RevokeOtherSessionsRequest
+	26, // 43: quadsmith.api.AuthService.ListUserEmails:input_type -> quadsmith.api.ListUserEmailsRequest
+	28, // 44: quadsmith.api.AuthService.SendAddEmailOtp:input_type -> quadsmith.api.SendAddEmailOtpRequest
+	29, // 45: quadsmith.api.AuthService.VerifyAddEmailOtp:input_type -> quadsmith.api.VerifyAddEmailOtpRequest
+	31, // 46: quadsmith.api.AuthService.MergeAccount:input_type -> quadsmith.api.MergeAccountRequest
+	33, // 47: quadsmith.api.AuthService.SetPrimaryEmail:input_type -> quadsmith.api.SetPrimaryEmailRequest
+	35, // 48: quadsmith.api.AuthService.RemoveUserEmail:input_type -> quadsmith.api.RemoveUserEmailRequest
+	37, // 49: quadsmith.api.AuthService.ChangeUsername:input_type -> quadsmith.api.ChangeUsernameRequest
+	39, // 50: quadsmith.api.AuthService.ListArchivedUsernames:input_type -> quadsmith.api.ListArchivedUsernamesRequest
+	48, // 51: quadsmith.api.AuthService.SendDataExportVerification:input_type -> quadsmith.api.SendDataExportVerificationRequest
+	50, // 52: quadsmith.api.AuthService.VerifyDataExport:input_type -> quadsmith.api.VerifyDataExportRequest
+	42, // 53: quadsmith.api.AuthService.SendDeleteAccountVerification:input_type -> quadsmith.api.SendDeleteAccountVerificationRequest
+	44, // 54: quadsmith.api.AuthService.DeleteAccount:input_type -> quadsmith.api.DeleteAccountRequest
+	46, // 55: quadsmith.api.AuthService.CancelAccountDeletion:input_type -> quadsmith.api.CancelAccountDeletionRequest
+	2,  // 56: quadsmith.api.AuthService.SendEmailOtp:output_type -> quadsmith.api.SendEmailOtpResponse
+	52, // 57: quadsmith.api.AuthService.VerifyEmailOtp:output_type -> quadsmith.api.AuthResponse
+	52, // 58: quadsmith.api.AuthService.VerifyMagicLink:output_type -> quadsmith.api.AuthResponse
+	6,  // 59: quadsmith.api.AuthService.GetLoginChallengeDetails:output_type -> quadsmith.api.GetLoginChallengeDetailsResponse
+	8,  // 60: quadsmith.api.AuthService.ApproveLoginChallenge:output_type -> quadsmith.api.ApproveLoginChallengeResponse
+	10, // 61: quadsmith.api.AuthService.DenyLoginChallenge:output_type -> quadsmith.api.DenyLoginChallengeResponse
+	12, // 62: quadsmith.api.AuthService.GetLoginChallengeStatus:output_type -> quadsmith.api.GetLoginChallengeStatusResponse
+	52, // 63: quadsmith.api.AuthService.CompleteAccountSetup:output_type -> quadsmith.api.AuthResponse
+	52, // 64: quadsmith.api.AuthService.RefreshToken:output_type -> quadsmith.api.AuthResponse
+	56, // 65: quadsmith.api.AuthService.GetCurrentUser:output_type -> quadsmith.api.User
+	57, // 66: quadsmith.api.AuthService.UpdateProfile:output_type -> quadsmith.api.UserProfile
+	18, // 67: quadsmith.api.AuthService.Logout:output_type -> quadsmith.api.LogoutResponse
+	20, // 68: quadsmith.api.AuthService.ListActiveSessions:output_type -> quadsmith.api.ListActiveSessionsResponse
+	23, // 69: quadsmith.api.AuthService.RevokeSession:output_type -> quadsmith.api.RevokeSessionResponse
+	25, // 70: quadsmith.api.AuthService.RevokeOtherSessions:output_type -> quadsmith.api.RevokeOtherSessionsResponse
+	27, // 71: quadsmith.api.AuthService.ListUserEmails:output_type -> quadsmith.api.ListUserEmailsResponse
+	2,  // 72: quadsmith.api.AuthService.SendAddEmailOtp:output_type -> quadsmith.api.SendEmailOtpResponse
+	30, // 73: quadsmith.api.AuthService.VerifyAddEmailOtp:output_type -> quadsmith.api.VerifyAddEmailOtpResponse
+	32, // 74: quadsmith.api.AuthService.MergeAccount:output_type -> quadsmith.api.MergeAccountResponse
+	34, // 75: quadsmith.api.AuthService.SetPrimaryEmail:output_type -> quadsmith.api.SetPrimaryEmailResponse
+	36, // 76: quadsmith.api.AuthService.RemoveUserEmail:output_type -> quadsmith.api.RemoveUserEmailResponse
+	38, // 77: quadsmith.api.AuthService.ChangeUsername:output_type -> quadsmith.api.ChangeUsernameResponse
+	40, // 78: quadsmith.api.AuthService.ListArchivedUsernames:output_type -> quadsmith.api.ListArchivedUsernamesResponse
+	49, // 79: quadsmith.api.AuthService.SendDataExportVerification:output_type -> quadsmith.api.SendDataExportVerificationResponse
+	51, // 80: quadsmith.api.AuthService.VerifyDataExport:output_type -> quadsmith.api.VerifyDataExportResponse
+	43, // 81: quadsmith.api.AuthService.SendDeleteAccountVerification:output_type -> quadsmith.api.SendDeleteAccountVerificationResponse
+	45, // 82: quadsmith.api.AuthService.DeleteAccount:output_type -> quadsmith.api.DeleteAccountResponse
+	47, // 83: quadsmith.api.AuthService.CancelAccountDeletion:output_type -> quadsmith.api.CancelAccountDeletionResponse
+	56, // [56:84] is the sub-list for method output_type
+	28, // [28:56] is the sub-list for method input_type
+	28, // [28:28] is the sub-list for extension type_name
+	28, // [28:28] is the sub-list for extension extendee
+	0,  // [0:28] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_auth_proto_init() }

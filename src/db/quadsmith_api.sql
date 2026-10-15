@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS users (
   role TEXT DEFAULT 'USER' NOT NULL,
   last_renamed_at TIMESTAMPTZ,
   deleted_at TIMESTAMPTZ,
-  banned_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ,
   updated_at TIMESTAMPTZ
 );
@@ -63,7 +62,7 @@ CREATE TABLE IF NOT EXISTS user_email_oauth_accounts (
   user_email_uuid UUID NOT NULL,
   oauth_account_uuid UUID NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE (user_email_uuid, oauth_account_uuid)
+  CONSTRAINT user_email_oauth_accounts_user_email_uuid_oauth_account_uuid_ke UNIQUE (user_email_uuid, oauth_account_uuid)
 );
 
 CREATE INDEX IF NOT EXISTS idx_user_email_oauth_accounts_user_email_uuid ON user_email_oauth_accounts (user_email_uuid);
@@ -141,6 +140,36 @@ CREATE TABLE IF NOT EXISTS oauth_accounts (
 
 CREATE INDEX IF NOT EXISTS idx_oauth_accounts_user_uuid ON oauth_accounts (user_uuid);
 
+CREATE TABLE IF NOT EXISTS bans (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  user_uuid UUID NOT NULL,
+  banned_by_user_uuid UUID NOT NULL,
+  reason TEXT NOT NULL,
+  internal_notes TEXT NOT NULL,
+  expires_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  revoked_at TIMESTAMPTZ,
+  revoked_by_user_uuid UUID,
+  revoke_reason TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_bans_user_uuid ON bans (user_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_bans_banned_by_user_uuid ON bans (banned_by_user_uuid);
+
+CREATE TABLE IF NOT EXISTS banned_emails (
+  uuid UUID NOT NULL,
+  PRIMARY KEY (uuid),
+  ban_uuid UUID NOT NULL,
+  email TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_banned_emails_ban_uuid ON banned_emails (ban_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_banned_emails_email ON banned_emails (email);
+
 CREATE TABLE IF NOT EXISTS batteries (
   uuid UUID NOT NULL,
   PRIMARY KEY (uuid),
@@ -183,7 +212,7 @@ CREATE TABLE IF NOT EXISTS blob_references (
   entity_type TEXT NOT NULL,
   entity_uuid UUID NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE (blob_uuid, entity_type, entity_uuid)
+  CONSTRAINT blob_references_blob_uuid_entity_type_entity_uuid_key UNIQUE (blob_uuid, entity_type, entity_uuid)
 );
 
 CREATE INDEX IF NOT EXISTS idx_blob_references_entity_type ON blob_references (entity_type);
@@ -452,7 +481,7 @@ CREATE TABLE IF NOT EXISTS entities (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   user_uuid UUID,
-  UNIQUE (collection, id)
+  CONSTRAINT entities_collection_id_key UNIQUE (collection, id)
 );
 
 CREATE INDEX IF NOT EXISTS idx_entities_collection ON entities (collection);
@@ -478,7 +507,7 @@ CREATE TABLE IF NOT EXISTS reviews (
   is_author_verified_owner BOOLEAN NOT NULL,
   collection TEXT NOT NULL,
   entity_id TEXT NOT NULL,
-  UNIQUE (user_uuid, entity_uuid)
+  CONSTRAINT reviews_user_uuid_entity_uuid_key UNIQUE (user_uuid, entity_uuid)
 );
 
 CREATE INDEX IF NOT EXISTS idx_reviews_id ON reviews (id);
@@ -494,7 +523,7 @@ CREATE TABLE IF NOT EXISTS review_votes (
   user_uuid UUID NOT NULL,
   is_helpful BOOLEAN NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE (user_uuid, review_uuid)
+  CONSTRAINT review_votes_user_uuid_review_uuid_key UNIQUE (user_uuid, review_uuid)
 );
 
 CREATE INDEX IF NOT EXISTS idx_review_votes_review_uuid ON review_votes (review_uuid);
@@ -603,7 +632,7 @@ CREATE TABLE IF NOT EXISTS question_votes (
   user_uuid UUID NOT NULL,
   is_upvote BOOLEAN NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE (user_uuid, question_uuid)
+  CONSTRAINT question_votes_user_uuid_question_uuid_key UNIQUE (user_uuid, question_uuid)
 );
 
 CREATE INDEX IF NOT EXISTS idx_question_votes_question_uuid ON question_votes (question_uuid);
@@ -617,7 +646,7 @@ CREATE TABLE IF NOT EXISTS answer_votes (
   user_uuid UUID NOT NULL,
   is_upvote BOOLEAN NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE (user_uuid, answer_uuid)
+  CONSTRAINT answer_votes_user_uuid_answer_uuid_key UNIQUE (user_uuid, answer_uuid)
 );
 
 CREATE INDEX IF NOT EXISTS idx_answer_votes_answer_uuid ON answer_votes (answer_uuid);
@@ -630,7 +659,7 @@ CREATE TABLE IF NOT EXISTS user_reputations (
   user_uuid UUID NOT NULL,
   score INTEGER DEFAULT 0 NOT NULL,
   updated_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE (user_uuid)
+  CONSTRAINT user_reputations_user_uuid_key UNIQUE (user_uuid)
 );
 
 CREATE INDEX IF NOT EXISTS idx_user_reputations_user_uuid ON user_reputations (user_uuid);
@@ -664,7 +693,7 @@ CREATE TABLE IF NOT EXISTS collection_items (
   name TEXT NOT NULL,
   primary_display_image TEXT,
   author_or_manufacturer TEXT,
-  UNIQUE (collection_uuid, entity_uuid)
+  CONSTRAINT collection_items_collection_uuid_entity_uuid_key UNIQUE (collection_uuid, entity_uuid)
 );
 
 CREATE INDEX IF NOT EXISTS idx_collection_items_collection_uuid ON collection_items (collection_uuid);
@@ -735,6 +764,18 @@ ADD CONSTRAINT fk_username_histories_user_uuid FOREIGN KEY (user_uuid) REFERENCE
 
 ALTER TABLE oauth_accounts
 ADD CONSTRAINT fk_oauth_accounts_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE bans
+ADD CONSTRAINT fk_bans_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE bans
+ADD CONSTRAINT fk_bans_banned_by_user_uuid FOREIGN KEY (banned_by_user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE bans
+ADD CONSTRAINT fk_bans_revoked_by_user_uuid FOREIGN KEY (revoked_by_user_uuid) REFERENCES users (uuid);
+
+ALTER TABLE banned_emails
+ADD CONSTRAINT fk_banned_emails_ban_uuid FOREIGN KEY (ban_uuid) REFERENCES bans (uuid) ON DELETE CASCADE;
 
 ALTER TABLE batteries
 ADD CONSTRAINT fk_batteries_uuid FOREIGN KEY (uuid) REFERENCES entities (uuid) ON DELETE CASCADE;

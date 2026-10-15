@@ -231,6 +231,11 @@ func newRootCmd() *cobra.Command {
 	}
 	cliCfg := getEmbeddedConfig()
 	targetURL := cliCfg.GetApiUrl()
+	if envURL := os.Getenv("QS_CLI_API_URL"); envURL != "" {
+		targetURL = envURL
+	} else if envURL := os.Getenv("QS_API_URL"); envURL != "" {
+		targetURL = envURL
+	}
 	if overrideTargetURL != "" {
 		targetURL = overrideTargetURL
 	}
@@ -242,6 +247,11 @@ func newRootCmd() *cobra.Command {
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
 			cmd.SilenceUsage = true
 			target := cliCfg.GetApiUrl()
+			if envURL := os.Getenv("QS_CLI_API_URL"); envURL != "" {
+				target = envURL
+			} else if envURL := os.Getenv("QS_API_URL"); envURL != "" {
+				target = envURL
+			}
 			if overrideTargetURL != "" {
 				target = overrideTargetURL
 			}
@@ -812,6 +822,7 @@ func newRootCmd() *cobra.Command {
 
 	initAuthCommands(rootCmd, targetURL, httpClient)
 	initBlobCommands(rootCmd, targetURL, httpClient)
+	initUserCommands(rootCmd, targetURL, httpClient)
 
 	return rootCmd
 }

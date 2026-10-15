@@ -21,6 +21,7 @@ import {
   GEAR_COLLECTIONS,
   getCollectionPath,
 } from "../lib/hardwareCollections";
+import { AccountRestrictedPage } from "../pages/AccountRestrictedPage";
 
 import { getCollectionColor } from "@quadsmith/shared";
 import { CollectionBadge } from "@quadsmith/shared";
@@ -139,13 +140,20 @@ export function Layout() {
       {/* Top Navbar */}
       <header className="sticky top-0 z-50 flex items-center h-16 px-4 border-b border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
         {/* Logo */}
-        <Link to="/" className="flex items-center hover:opacity-90 transition-opacity w-64">
-          <img
-            src={theme === "dark" ? logoDark : logoLight}
-            alt="Quadsmith"
-            className="h-11 w-auto"
-          />
-        </Link>
+        <div className="flex items-center gap-2.5 w-64">
+          <Link to="/" className="flex items-center hover:opacity-90 transition-opacity">
+            <img
+              src={theme === "dark" ? logoDark : logoLight}
+              alt="Quadsmith"
+              className="h-11 w-auto"
+            />
+          </Link>
+          {user?.activeBan && (
+            <span className="px-2 py-0.5 rounded-full text-[10px] font-bold tracking-wide uppercase bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20 shrink-0">
+              Suspended
+            </span>
+          )}
+        </div>
 
         {/* Search Bar with Autocomplete Dropdown */}
         <div ref={searchContainerRef} className="flex-1 max-w-2xl mx-auto px-4 relative">
@@ -545,7 +553,11 @@ export function Layout() {
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto">
           <div className="p-8">
-            <Outlet />
+            {user?.activeBan && location.pathname !== "/account" ? (
+              <AccountRestrictedPage />
+            ) : (
+              <Outlet />
+            )}
           </div>
         </main>
       </div>

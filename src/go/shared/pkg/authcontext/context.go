@@ -18,6 +18,7 @@ type UserContext struct {
 	Email       string
 	Role        string
 	SessionUUID string
+	IsBanned    bool
 }
 
 // WithUserContext injects UserContext into context.Context

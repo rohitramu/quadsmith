@@ -115,6 +115,31 @@ func IsPublicProcedure(procedure string) bool {
 	return false
 }
 
+var allowedBannedProcedures = map[string]bool{
+	// AuthService
+	apiconnect.AuthServiceRefreshTokenProcedure:                  true,
+	apiconnect.AuthServiceLogoutProcedure:                        true,
+	apiconnect.AuthServiceUpdateProfileProcedure:                 true,
+	apiconnect.AuthServiceListActiveSessionsProcedure:            true,
+	apiconnect.AuthServiceRevokeSessionProcedure:                 true,
+	apiconnect.AuthServiceRevokeOtherSessionsProcedure:           true,
+	apiconnect.AuthServiceGetCurrentUserProcedure:                true,
+	apiconnect.AuthServiceListUserEmailsProcedure:                true,
+	apiconnect.AuthServiceSendDataExportVerificationProcedure:    true,
+	apiconnect.AuthServiceVerifyDataExportProcedure:              true,
+	apiconnect.AuthServiceSendDeleteAccountVerificationProcedure: true,
+	apiconnect.AuthServiceDeleteAccountProcedure:                 true,
+	apiconnect.AuthServiceCancelAccountDeletionProcedure:         true,
+
+	// UserService
+	apiconnect.UserServiceGetUserBanStatusProcedure: true,
+}
+
+// IsAllowedBannedProcedure checks whether a ConnectRPC procedure may be accessed by a banned user.
+func IsAllowedBannedProcedure(procedure string) bool {
+	return allowedBannedProcedures[procedure]
+}
+
 // NewAuthInterceptor creates a ConnectRPC unary interceptor for authentication
 func NewAuthInterceptor(pool *pgxpool.Pool) connect.UnaryInterceptorFunc {
 	return func(next connect.UnaryFunc) connect.UnaryFunc {
@@ -124,9 +149,23 @@ func NewAuthInterceptor(pool *pgxpool.Pool) connect.UnaryInterceptorFunc {
 			httpReq := &http.Request{Header: header}
 			userCtx := AuthenticateHTTPRequest(ctx, pool, httpReq)
 
-			// If authenticated, inject user context
+			// If authenticated, inject user context and check active ban
 			if userCtx != nil {
+				var isBanned bool
+				_ = pool.QueryRow(ctx, `
+					SELECT EXISTS (
+						SELECT 1 FROM bans
+						WHERE user_uuid = $1::uuid
+						  AND revoked_at IS NULL
+						  AND (expires_at IS NULL OR expires_at > NOW())
+					)`, userCtx.UserUUID).Scan(&isBanned)
+				userCtx.IsBanned = isBanned
 				ctx = WithUserContext(ctx, userCtx)
+
+				// If user is banned, restrict access strictly to allowed procedures
+				if isBanned && !allowedBannedProcedures[procedure] {
+					return nil, connect.NewError(connect.CodePermissionDenied, errors.New("account suspended: access restricted to account settings"))
+				}
 			}
 
 			// 3. Enforce authentication on protected endpoints

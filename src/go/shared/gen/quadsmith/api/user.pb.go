@@ -91,9 +91,9 @@ type User struct {
 	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`   // "USER", "ADMIN"
 	LastRenamedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=last_renamed_at,json=lastRenamedAt,proto3" json:"last_renamed_at,omitempty"`
 	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=deleted_at,json=deletedAt,proto3" json:"deleted_at,omitempty"`
-	BannedAt      *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=banned_at,json=bannedAt,proto3" json:"banned_at,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	ActiveBan     *Ban                   `protobuf:"bytes,9,opt,name=active_ban,json=activeBan,proto3" json:"active_ban,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -170,13 +170,6 @@ func (x *User) GetDeletedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-func (x *User) GetBannedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.BannedAt
-	}
-	return nil
-}
-
 func (x *User) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
@@ -187,6 +180,13 @@ func (x *User) GetCreatedAt() *timestamppb.Timestamp {
 func (x *User) GetUpdatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.UpdatedAt
+	}
+	return nil
+}
+
+func (x *User) GetActiveBan() *Ban {
+	if x != nil {
+		return x.ActiveBan
 	}
 	return nil
 }
@@ -519,6 +519,8 @@ type RefreshToken struct {
 	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
 	LastUsedAt    *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=last_used_at,json=lastUsedAt,proto3" json:"last_used_at,omitempty"`
 	DeviceHint    string                 `protobuf:"bytes,6,opt,name=device_hint,json=deviceHint,proto3" json:"device_hint,omitempty"`
+	IpAddress     string                 `protobuf:"bytes,8,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
+	LocationHint  string                 `protobuf:"bytes,9,opt,name=location_hint,json=locationHint,proto3" json:"location_hint,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -592,6 +594,20 @@ func (x *RefreshToken) GetLastUsedAt() *timestamppb.Timestamp {
 func (x *RefreshToken) GetDeviceHint() string {
 	if x != nil {
 		return x.DeviceHint
+	}
+	return ""
+}
+
+func (x *RefreshToken) GetIpAddress() string {
+	if x != nil {
+		return x.IpAddress
+	}
+	return ""
+}
+
+func (x *RefreshToken) GetLocationHint() string {
+	if x != nil {
+		return x.LocationHint
 	}
 	return ""
 }
@@ -951,6 +967,326 @@ func (x *OAuthAccount) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+type Ban struct {
+	state             protoimpl.MessageState `protogen:"open.v1"`
+	Uuid              string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	UserUuid          string                 `protobuf:"bytes,2,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
+	BannedByUserUuid  string                 `protobuf:"bytes,3,opt,name=banned_by_user_uuid,json=bannedByUserUuid,proto3" json:"banned_by_user_uuid,omitempty"`
+	Reason            string                 `protobuf:"bytes,4,opt,name=reason,proto3" json:"reason,omitempty"`
+	InternalNotes     string                 `protobuf:"bytes,5,opt,name=internal_notes,json=internalNotes,proto3" json:"internal_notes,omitempty"`
+	ExpiresAt         *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	RevokedAt         *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=revoked_at,json=revokedAt,proto3" json:"revoked_at,omitempty"`
+	RevokedByUserUuid *string                `protobuf:"bytes,9,opt,name=revoked_by_user_uuid,json=revokedByUserUuid,proto3,oneof" json:"revoked_by_user_uuid,omitempty"`
+	RevokeReason      string                 `protobuf:"bytes,10,opt,name=revoke_reason,json=revokeReason,proto3" json:"revoke_reason,omitempty"`
+	BannedEmails      []string               `protobuf:"bytes,11,rep,name=banned_emails,json=bannedEmails,proto3" json:"banned_emails,omitempty"`
+	unknownFields     protoimpl.UnknownFields
+	sizeCache         protoimpl.SizeCache
+}
+
+func (x *Ban) Reset() {
+	*x = Ban{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Ban) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Ban) ProtoMessage() {}
+
+func (x *Ban) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Ban.ProtoReflect.Descriptor instead.
+func (*Ban) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *Ban) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+func (x *Ban) GetUserUuid() string {
+	if x != nil {
+		return x.UserUuid
+	}
+	return ""
+}
+
+func (x *Ban) GetBannedByUserUuid() string {
+	if x != nil {
+		return x.BannedByUserUuid
+	}
+	return ""
+}
+
+func (x *Ban) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+func (x *Ban) GetInternalNotes() string {
+	if x != nil {
+		return x.InternalNotes
+	}
+	return ""
+}
+
+func (x *Ban) GetExpiresAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return nil
+}
+
+func (x *Ban) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *Ban) GetRevokedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.RevokedAt
+	}
+	return nil
+}
+
+func (x *Ban) GetRevokedByUserUuid() string {
+	if x != nil && x.RevokedByUserUuid != nil {
+		return *x.RevokedByUserUuid
+	}
+	return ""
+}
+
+func (x *Ban) GetRevokeReason() string {
+	if x != nil {
+		return x.RevokeReason
+	}
+	return ""
+}
+
+func (x *Ban) GetBannedEmails() []string {
+	if x != nil {
+		return x.BannedEmails
+	}
+	return nil
+}
+
+type BannedEmail struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	BanUuid       string                 `protobuf:"bytes,2,opt,name=ban_uuid,json=banUuid,proto3" json:"ban_uuid,omitempty"`
+	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BannedEmail) Reset() {
+	*x = BannedEmail{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BannedEmail) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BannedEmail) ProtoMessage() {}
+
+func (x *BannedEmail) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BannedEmail.ProtoReflect.Descriptor instead.
+func (*BannedEmail) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *BannedEmail) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
+}
+
+func (x *BannedEmail) GetBanUuid() string {
+	if x != nil {
+		return x.BanUuid
+	}
+	return ""
+}
+
+func (x *BannedEmail) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
+func (x *BannedEmail) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+type BanUserRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                      // Username or UUID of user to ban
+	Reason        string                 `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`                                    // Public reason visible to banned user
+	InternalNotes string                 `protobuf:"bytes,3,opt,name=internal_notes,json=internalNotes,proto3" json:"internal_notes,omitempty"` // Private admin moderation notes
+	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=expires_at,json=expiresAt,proto3,oneof" json:"expires_at,omitempty"`       // Nullable for permanent bans
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BanUserRequest) Reset() {
+	*x = BanUserRequest{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BanUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BanUserRequest) ProtoMessage() {}
+
+func (x *BanUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BanUserRequest.ProtoReflect.Descriptor instead.
+func (*BanUserRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *BanUserRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *BanUserRequest) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+func (x *BanUserRequest) GetInternalNotes() string {
+	if x != nil {
+		return x.InternalNotes
+	}
+	return ""
+}
+
+func (x *BanUserRequest) GetExpiresAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return nil
+}
+
+type BanUserResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Ban           *Ban                   `protobuf:"bytes,3,opt,name=ban,proto3" json:"ban,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BanUserResponse) Reset() {
+	*x = BanUserResponse{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BanUserResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BanUserResponse) ProtoMessage() {}
+
+func (x *BanUserResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BanUserResponse.ProtoReflect.Descriptor instead.
+func (*BanUserResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *BanUserResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *BanUserResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *BanUserResponse) GetBan() *Ban {
+	if x != nil {
+		return x.Ban
+	}
+	return nil
+}
+
 type CheckUsernameAvailableRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
@@ -960,7 +1296,7 @@ type CheckUsernameAvailableRequest struct {
 
 func (x *CheckUsernameAvailableRequest) Reset() {
 	*x = CheckUsernameAvailableRequest{}
-	mi := &file_quadsmith_api_user_proto_msgTypes[9]
+	mi := &file_quadsmith_api_user_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -972,7 +1308,7 @@ func (x *CheckUsernameAvailableRequest) String() string {
 func (*CheckUsernameAvailableRequest) ProtoMessage() {}
 
 func (x *CheckUsernameAvailableRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_user_proto_msgTypes[9]
+	mi := &file_quadsmith_api_user_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -985,7 +1321,7 @@ func (x *CheckUsernameAvailableRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckUsernameAvailableRequest.ProtoReflect.Descriptor instead.
 func (*CheckUsernameAvailableRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{9}
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *CheckUsernameAvailableRequest) GetUsername() string {
@@ -1006,7 +1342,7 @@ type CheckUsernameAvailableResponse struct {
 
 func (x *CheckUsernameAvailableResponse) Reset() {
 	*x = CheckUsernameAvailableResponse{}
-	mi := &file_quadsmith_api_user_proto_msgTypes[10]
+	mi := &file_quadsmith_api_user_proto_msgTypes[14]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1018,7 +1354,7 @@ func (x *CheckUsernameAvailableResponse) String() string {
 func (*CheckUsernameAvailableResponse) ProtoMessage() {}
 
 func (x *CheckUsernameAvailableResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_user_proto_msgTypes[10]
+	mi := &file_quadsmith_api_user_proto_msgTypes[14]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1031,7 +1367,7 @@ func (x *CheckUsernameAvailableResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CheckUsernameAvailableResponse.ProtoReflect.Descriptor instead.
 func (*CheckUsernameAvailableResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{10}
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *CheckUsernameAvailableResponse) GetStatus() UsernameAvailabilityStatus {
@@ -1064,7 +1400,7 @@ type GetPublicProfileRequest struct {
 
 func (x *GetPublicProfileRequest) Reset() {
 	*x = GetPublicProfileRequest{}
-	mi := &file_quadsmith_api_user_proto_msgTypes[11]
+	mi := &file_quadsmith_api_user_proto_msgTypes[15]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1076,7 +1412,7 @@ func (x *GetPublicProfileRequest) String() string {
 func (*GetPublicProfileRequest) ProtoMessage() {}
 
 func (x *GetPublicProfileRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_user_proto_msgTypes[11]
+	mi := &file_quadsmith_api_user_proto_msgTypes[15]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1089,7 +1425,7 @@ func (x *GetPublicProfileRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPublicProfileRequest.ProtoReflect.Descriptor instead.
 func (*GetPublicProfileRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{11}
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *GetPublicProfileRequest) GetId() string {
@@ -1097,6 +1433,102 @@ func (x *GetPublicProfileRequest) GetId() string {
 		return x.Id
 	}
 	return ""
+}
+
+type GetUserBanStatusRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"` // Username or UUID (can inspect self, or any user if ADMIN)
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserBanStatusRequest) Reset() {
+	*x = GetUserBanStatusRequest{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserBanStatusRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserBanStatusRequest) ProtoMessage() {}
+
+func (x *GetUserBanStatusRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserBanStatusRequest.ProtoReflect.Descriptor instead.
+func (*GetUserBanStatusRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *GetUserBanStatusRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+type GetUserBanStatusResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	IsBanned      bool                   `protobuf:"varint,1,opt,name=is_banned,json=isBanned,proto3" json:"is_banned,omitempty"`
+	ActiveBan     *Ban                   `protobuf:"bytes,2,opt,name=active_ban,json=activeBan,proto3,oneof" json:"active_ban,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetUserBanStatusResponse) Reset() {
+	*x = GetUserBanStatusResponse{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetUserBanStatusResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetUserBanStatusResponse) ProtoMessage() {}
+
+func (x *GetUserBanStatusResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetUserBanStatusResponse.ProtoReflect.Descriptor instead.
+func (*GetUserBanStatusResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *GetUserBanStatusResponse) GetIsBanned() bool {
+	if x != nil {
+		return x.IsBanned
+	}
+	return false
+}
+
+func (x *GetUserBanStatusResponse) GetActiveBan() *Ban {
+	if x != nil {
+		return x.ActiveBan
+	}
+	return nil
 }
 
 type GetUserRequest struct {
@@ -1108,7 +1540,7 @@ type GetUserRequest struct {
 
 func (x *GetUserRequest) Reset() {
 	*x = GetUserRequest{}
-	mi := &file_quadsmith_api_user_proto_msgTypes[12]
+	mi := &file_quadsmith_api_user_proto_msgTypes[18]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1120,7 +1552,7 @@ func (x *GetUserRequest) String() string {
 func (*GetUserRequest) ProtoMessage() {}
 
 func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_user_proto_msgTypes[12]
+	mi := &file_quadsmith_api_user_proto_msgTypes[18]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1133,12 +1565,132 @@ func (x *GetUserRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetUserRequest.ProtoReflect.Descriptor instead.
 func (*GetUserRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{12}
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *GetUserRequest) GetId() string {
 	if x != nil {
 		return x.Id
+	}
+	return ""
+}
+
+type ListBansRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        *string                `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3,oneof" json:"user_id,omitempty"` // Filter by user (optional)
+	ActiveOnly    bool                   `protobuf:"varint,2,opt,name=active_only,json=activeOnly,proto3" json:"active_only,omitempty"`
+	PageSize      int32                  `protobuf:"varint,3,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string                 `protobuf:"bytes,4,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBansRequest) Reset() {
+	*x = ListBansRequest{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBansRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBansRequest) ProtoMessage() {}
+
+func (x *ListBansRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBansRequest.ProtoReflect.Descriptor instead.
+func (*ListBansRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ListBansRequest) GetUserId() string {
+	if x != nil && x.UserId != nil {
+		return *x.UserId
+	}
+	return ""
+}
+
+func (x *ListBansRequest) GetActiveOnly() bool {
+	if x != nil {
+		return x.ActiveOnly
+	}
+	return false
+}
+
+func (x *ListBansRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListBansRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+type ListBansResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Bans          []*Ban                 `protobuf:"bytes,1,rep,name=bans,proto3" json:"bans,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListBansResponse) Reset() {
+	*x = ListBansResponse{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListBansResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListBansResponse) ProtoMessage() {}
+
+func (x *ListBansResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListBansResponse.ProtoReflect.Descriptor instead.
+func (*ListBansResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *ListBansResponse) GetBans() []*Ban {
+	if x != nil {
+		return x.Bans
+	}
+	return nil
+}
+
+func (x *ListBansResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
 	}
 	return ""
 }
@@ -1153,7 +1705,7 @@ type ListUsersResponse struct {
 
 func (x *ListUsersResponse) Reset() {
 	*x = ListUsersResponse{}
-	mi := &file_quadsmith_api_user_proto_msgTypes[13]
+	mi := &file_quadsmith_api_user_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1165,7 +1717,7 @@ func (x *ListUsersResponse) String() string {
 func (*ListUsersResponse) ProtoMessage() {}
 
 func (x *ListUsersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_user_proto_msgTypes[13]
+	mi := &file_quadsmith_api_user_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1178,7 +1730,7 @@ func (x *ListUsersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListUsersResponse.ProtoReflect.Descriptor instead.
 func (*ListUsersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{13}
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ListUsersResponse) GetUsers() []*SeedUser {
@@ -1209,7 +1761,7 @@ type SeedUser struct {
 
 func (x *SeedUser) Reset() {
 	*x = SeedUser{}
-	mi := &file_quadsmith_api_user_proto_msgTypes[14]
+	mi := &file_quadsmith_api_user_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1221,7 +1773,7 @@ func (x *SeedUser) String() string {
 func (*SeedUser) ProtoMessage() {}
 
 func (x *SeedUser) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_user_proto_msgTypes[14]
+	mi := &file_quadsmith_api_user_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1234,7 +1786,7 @@ func (x *SeedUser) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SeedUser.ProtoReflect.Descriptor instead.
 func (*SeedUser) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{14}
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *SeedUser) GetUuid() string {
@@ -1279,6 +1831,118 @@ func (x *SeedUser) GetReputationScore() int32 {
 	return 0
 }
 
+type UnbanUserRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                   // Username or UUID of user to unban
+	RevokeReason  string                 `protobuf:"bytes,2,opt,name=revoke_reason,json=revokeReason,proto3" json:"revoke_reason,omitempty"` // Reason for unbanning
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UnbanUserRequest) Reset() {
+	*x = UnbanUserRequest{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnbanUserRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnbanUserRequest) ProtoMessage() {}
+
+func (x *UnbanUserRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnbanUserRequest.ProtoReflect.Descriptor instead.
+func (*UnbanUserRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *UnbanUserRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *UnbanUserRequest) GetRevokeReason() string {
+	if x != nil {
+		return x.RevokeReason
+	}
+	return ""
+}
+
+type UnbanUserResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Ban           *Ban                   `protobuf:"bytes,3,opt,name=ban,proto3" json:"ban,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UnbanUserResponse) Reset() {
+	*x = UnbanUserResponse{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[24]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UnbanUserResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UnbanUserResponse) ProtoMessage() {}
+
+func (x *UnbanUserResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[24]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UnbanUserResponse.ProtoReflect.Descriptor instead.
+func (*UnbanUserResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{24}
+}
+
+func (x *UnbanUserResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *UnbanUserResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *UnbanUserResponse) GetBan() *Ban {
+	if x != nil {
+		return x.Ban
+	}
+	return nil
+}
+
 var File_quadsmith_api_user_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_user_proto_rawDesc = "" +
@@ -1295,12 +1959,14 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"\x04role\x18\x04 \x01(\tB\x10\xc2\xf3\x18\b:\x06'USER'\xc0\xf0\x19\x04R\x04role\x12H\n" +
 	"\x0flast_renamed_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\rlastRenamedAt\x12?\n" +
 	"\n" +
-	"deleted_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tdeletedAt\x12=\n" +
-	"\tbanned_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\bbannedAt\x12?\n" +
+	"deleted_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tdeletedAt\x12?\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt\x12?\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt\x12?\n" +
 	"\n" +
-	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tupdatedAt:\x11\xc2\xf3\x18\a\n" +
+	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tupdatedAt\x12=\n" +
+	"\n" +
+	"active_ban\x18\t \x01(\v2\x12.quadsmith.api.BanB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x04R\tactiveBan:\x11\xc2\xf3\x18\a\n" +
 	"\x05users\xc2\xf0\x19\x02\b\x02\"\xfe\x01\n" +
 	"\vUserProfile\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
@@ -1343,7 +2009,7 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x1f\n" +
 	"\vbuild_count\x18\x05 \x01(\x05R\n" +
 	"buildCount\x12)\n" +
-	"\x10reputation_score\x18\x06 \x01(\x05R\x0freputationScore\"\x9a\x03\n" +
+	"\x10reputation_score\x18\x06 \x01(\x05R\x0freputationScore\"\xfa\x03\n" +
 	"\fRefreshToken\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x124\n" +
@@ -1355,7 +2021,10 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"\flast_used_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\n" +
 	"lastUsedAt\x12%\n" +
 	"\vdevice_hint\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x03R\n" +
-	"deviceHint\x12?\n" +
+	"deviceHint\x12+\n" +
+	"\n" +
+	"ip_address\x18\b \x01(\tB\f\xc2\xf3\x18\x04:\x02''\xc0\xf0\x19\x03R\tipAddress\x121\n" +
+	"\rlocation_hint\x18\t \x01(\tB\f\xc2\xf3\x18\x04:\x02''\xc0\xf0\x19\x03R\flocationHint\x12?\n" +
 	"\n" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt:\x1a\xc2\xf3\x18\x10\n" +
 	"\x0erefresh_tokens\xc2\xf0\x19\x02\b\x03\"\xab\b\n" +
@@ -1409,7 +2078,47 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"\x10token_expires_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x06R\x0etokenExpiresAt\x12?\n" +
 	"\n" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt:\x1a\xc2\xf3\x18\x10\n" +
-	"\x0eoauth_accounts\xc2\xf0\x19\x02\b\x02\";\n" +
+	"\x0eoauth_accounts\xc2\xf0\x19\x02\b\x02\"\xa6\x05\n" +
+	"\x03Ban\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x124\n" +
+	"\tuser_uuid\x18\x02 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12F\n" +
+	"\x13banned_by_user_uuid\x18\x03 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\x10bannedByUserUuid\x12\x1c\n" +
+	"\x06reason\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x04R\x06reason\x12+\n" +
+	"\x0einternal_notes\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x05R\rinternalNotes\x12?\n" +
+	"\n" +
+	"expires_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x04R\texpiresAt\x12J\n" +
+	"\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12?\n" +
+	"\n" +
+	"revoked_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x04R\trevokedAt\x12K\n" +
+	"\x14revoked_by_user_uuid\x18\t \x01(\tB\x15\xc2\xf3\x18\r\x1a\vusers(uuid)\xc0\xf0\x19\x04H\x00R\x11revokedByUserUuid\x88\x01\x01\x12)\n" +
+	"\rrevoke_reason\x18\n" +
+	" \x01(\tB\x04\xc0\xf0\x19\x04R\frevokeReason\x12/\n" +
+	"\rbanned_emails\x18\v \x03(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x01R\fbannedEmails:&\xc2\xf3\x18\x06\n" +
+	"\x04bans\xc2\xf0\x19\x18\b\x03\x12\x14user_uuid = $1::uuidB\x17\n" +
+	"\x15_revoked_by_user_uuid\"\xbb\x02\n" +
+	"\vBannedEmail\x12\x1e\n" +
+	"\x04uuid\x18\x01 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12C\n" +
+	"\bban_uuid\x18\x02 \x01(\tB(\xc2\xf3\x18 \x1a\x1cbans(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04R\abanUuid\x12 \n" +
+	"\x05email\x18\x03 \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x01R\x05email\x12J\n" +
+	"\n" +
+	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt:Y\xc2\xf3\x18\x0f\n" +
+	"\rbanned_emails\xc2\xf0\x19B\b\x03\x12>ban_uuid IN (SELECT uuid FROM bans WHERE user_uuid = $1::uuid)\"\xb7\x01\n" +
+	"\x0eBanUserRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x16\n" +
+	"\x06reason\x18\x02 \x01(\tR\x06reason\x12%\n" +
+	"\x0einternal_notes\x18\x03 \x01(\tR\rinternalNotes\x12>\n" +
+	"\n" +
+	"expires_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\texpiresAt\x88\x01\x01B\r\n" +
+	"\v_expires_at\"k\n" +
+	"\x0fBanUserResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12$\n" +
+	"\x03ban\x18\x03 \x01(\v2\x12.quadsmith.api.BanR\x03ban\";\n" +
 	"\x1dCheckUsernameAvailableRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\"\x9b\x01\n" +
 	"\x1eCheckUsernameAvailableResponse\x12A\n" +
@@ -1417,9 +2126,28 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"\tavailable\x18\x02 \x01(\bR\tavailable\x12\x18\n" +
 	"\amessage\x18\x03 \x01(\tR\amessage\")\n" +
 	"\x17GetPublicProfileRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\" \n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"2\n" +
+	"\x17GetUserBanStatusRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"~\n" +
+	"\x18GetUserBanStatusResponse\x12\x1b\n" +
+	"\tis_banned\x18\x01 \x01(\bR\bisBanned\x126\n" +
+	"\n" +
+	"active_ban\x18\x02 \x01(\v2\x12.quadsmith.api.BanH\x00R\tactiveBan\x88\x01\x01B\r\n" +
+	"\v_active_ban\" \n" +
 	"\x0eGetUserRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"j\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\x98\x01\n" +
+	"\x0fListBansRequest\x12\x1c\n" +
+	"\auser_id\x18\x01 \x01(\tH\x00R\x06userId\x88\x01\x01\x12\x1f\n" +
+	"\vactive_only\x18\x02 \x01(\bR\n" +
+	"activeOnly\x12\x1b\n" +
+	"\tpage_size\x18\x03 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\x04 \x01(\tR\tpageTokenB\n" +
+	"\n" +
+	"\b_user_id\"b\n" +
+	"\x10ListBansResponse\x12&\n" +
+	"\x04bans\x18\x01 \x03(\v2\x12.quadsmith.api.BanR\x04bans\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"j\n" +
 	"\x11ListUsersResponse\x12-\n" +
 	"\x05users\x18\x01 \x03(\v2\x17.quadsmith.api.SeedUserR\x05users\x12&\n" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x95\x01\n" +
@@ -1429,16 +2157,27 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
 	"\x04role\x18\x04 \x01(\tR\x04role\x12\x10\n" +
 	"\x03bio\x18\x05 \x01(\tR\x03bio\x12)\n" +
-	"\x10reputation_score\x18\x06 \x01(\x05R\x0freputationScore*\xce\x01\n" +
+	"\x10reputation_score\x18\x06 \x01(\x05R\x0freputationScore\"P\n" +
+	"\x10UnbanUserRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12#\n" +
+	"\rrevoke_reason\x18\x02 \x01(\tR\frevokeReason\"m\n" +
+	"\x11UnbanUserResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12$\n" +
+	"\x03ban\x18\x03 \x01(\v2\x12.quadsmith.api.BanR\x03ban*\xce\x01\n" +
 	"\x1aUsernameAvailabilityStatus\x12,\n" +
 	"(USERNAME_AVAILABILITY_STATUS_UNSPECIFIED\x10\x00\x12*\n" +
 	"&USERNAME_AVAILABILITY_STATUS_AVAILABLE\x10\x01\x12,\n" +
 	"(USERNAME_AVAILABILITY_STATUS_UNAVAILABLE\x10\x02\x12(\n" +
-	"$USERNAME_AVAILABILITY_STATUS_INVALID\x10\x032\xa1\x02\n" +
+	"$USERNAME_AVAILABILITY_STATUS_INVALID\x10\x032\xed\x04\n" +
 	"\vUserService\x12=\n" +
 	"\aGetUser\x12\x1d.quadsmith.api.GetUserRequest\x1a\x13.quadsmith.api.User\x12\\\n" +
 	"\x10GetPublicProfile\x12&.quadsmith.api.GetPublicProfileRequest\x1a .quadsmith.api.PublicUserProfile\x12u\n" +
-	"\x16CheckUsernameAvailable\x12,.quadsmith.api.CheckUsernameAvailableRequest\x1a-.quadsmith.api.CheckUsernameAvailableResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"\x16CheckUsernameAvailable\x12,.quadsmith.api.CheckUsernameAvailableRequest\x1a-.quadsmith.api.CheckUsernameAvailableResponse\x12H\n" +
+	"\aBanUser\x12\x1d.quadsmith.api.BanUserRequest\x1a\x1e.quadsmith.api.BanUserResponse\x12N\n" +
+	"\tUnbanUser\x12\x1f.quadsmith.api.UnbanUserRequest\x1a .quadsmith.api.UnbanUserResponse\x12K\n" +
+	"\bListBans\x12\x1e.quadsmith.api.ListBansRequest\x1a\x1f.quadsmith.api.ListBansResponse\x12c\n" +
+	"\x10GetUserBanStatus\x12&.quadsmith.api.GetUserBanStatusRequest\x1a'.quadsmith.api.GetUserBanStatusResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_user_proto_rawDescOnce sync.Once
@@ -1453,7 +2192,7 @@ func file_quadsmith_api_user_proto_rawDescGZIP() []byte {
 }
 
 var file_quadsmith_api_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_quadsmith_api_user_proto_msgTypes = make([]protoimpl.MessageInfo, 15)
+var file_quadsmith_api_user_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
 var file_quadsmith_api_user_proto_goTypes = []any{
 	(UsernameAvailabilityStatus)(0),        // 0: quadsmith.api.UsernameAvailabilityStatus
 	(*User)(nil),                           // 1: quadsmith.api.User
@@ -1465,50 +2204,77 @@ var file_quadsmith_api_user_proto_goTypes = []any{
 	(*EmailOtp)(nil),                       // 7: quadsmith.api.EmailOtp
 	(*UsernameHistory)(nil),                // 8: quadsmith.api.UsernameHistory
 	(*OAuthAccount)(nil),                   // 9: quadsmith.api.OAuthAccount
-	(*CheckUsernameAvailableRequest)(nil),  // 10: quadsmith.api.CheckUsernameAvailableRequest
-	(*CheckUsernameAvailableResponse)(nil), // 11: quadsmith.api.CheckUsernameAvailableResponse
-	(*GetPublicProfileRequest)(nil),        // 12: quadsmith.api.GetPublicProfileRequest
-	(*GetUserRequest)(nil),                 // 13: quadsmith.api.GetUserRequest
-	(*ListUsersResponse)(nil),              // 14: quadsmith.api.ListUsersResponse
-	(*SeedUser)(nil),                       // 15: quadsmith.api.SeedUser
-	(*timestamppb.Timestamp)(nil),          // 16: google.protobuf.Timestamp
+	(*Ban)(nil),                            // 10: quadsmith.api.Ban
+	(*BannedEmail)(nil),                    // 11: quadsmith.api.BannedEmail
+	(*BanUserRequest)(nil),                 // 12: quadsmith.api.BanUserRequest
+	(*BanUserResponse)(nil),                // 13: quadsmith.api.BanUserResponse
+	(*CheckUsernameAvailableRequest)(nil),  // 14: quadsmith.api.CheckUsernameAvailableRequest
+	(*CheckUsernameAvailableResponse)(nil), // 15: quadsmith.api.CheckUsernameAvailableResponse
+	(*GetPublicProfileRequest)(nil),        // 16: quadsmith.api.GetPublicProfileRequest
+	(*GetUserBanStatusRequest)(nil),        // 17: quadsmith.api.GetUserBanStatusRequest
+	(*GetUserBanStatusResponse)(nil),       // 18: quadsmith.api.GetUserBanStatusResponse
+	(*GetUserRequest)(nil),                 // 19: quadsmith.api.GetUserRequest
+	(*ListBansRequest)(nil),                // 20: quadsmith.api.ListBansRequest
+	(*ListBansResponse)(nil),               // 21: quadsmith.api.ListBansResponse
+	(*ListUsersResponse)(nil),              // 22: quadsmith.api.ListUsersResponse
+	(*SeedUser)(nil),                       // 23: quadsmith.api.SeedUser
+	(*UnbanUserRequest)(nil),               // 24: quadsmith.api.UnbanUserRequest
+	(*UnbanUserResponse)(nil),              // 25: quadsmith.api.UnbanUserResponse
+	(*timestamppb.Timestamp)(nil),          // 26: google.protobuf.Timestamp
 }
 var file_quadsmith_api_user_proto_depIdxs = []int32{
-	16, // 0: quadsmith.api.User.last_renamed_at:type_name -> google.protobuf.Timestamp
-	16, // 1: quadsmith.api.User.deleted_at:type_name -> google.protobuf.Timestamp
-	16, // 2: quadsmith.api.User.banned_at:type_name -> google.protobuf.Timestamp
-	16, // 3: quadsmith.api.User.created_at:type_name -> google.protobuf.Timestamp
-	16, // 4: quadsmith.api.User.updated_at:type_name -> google.protobuf.Timestamp
-	16, // 5: quadsmith.api.UserProfile.updated_at:type_name -> google.protobuf.Timestamp
-	16, // 6: quadsmith.api.UserEmail.created_at:type_name -> google.protobuf.Timestamp
-	16, // 7: quadsmith.api.UserEmailOAuthAccount.created_at:type_name -> google.protobuf.Timestamp
-	16, // 8: quadsmith.api.PublicUserProfile.created_at:type_name -> google.protobuf.Timestamp
-	16, // 9: quadsmith.api.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
-	16, // 10: quadsmith.api.RefreshToken.last_used_at:type_name -> google.protobuf.Timestamp
-	16, // 11: quadsmith.api.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
-	16, // 12: quadsmith.api.EmailOtp.expires_at:type_name -> google.protobuf.Timestamp
-	16, // 13: quadsmith.api.EmailOtp.used_at:type_name -> google.protobuf.Timestamp
-	16, // 14: quadsmith.api.EmailOtp.created_at:type_name -> google.protobuf.Timestamp
-	16, // 15: quadsmith.api.EmailOtp.approved_at:type_name -> google.protobuf.Timestamp
-	16, // 16: quadsmith.api.EmailOtp.denied_at:type_name -> google.protobuf.Timestamp
-	16, // 17: quadsmith.api.UsernameHistory.renamed_at:type_name -> google.protobuf.Timestamp
-	16, // 18: quadsmith.api.UsernameHistory.first_archived_at:type_name -> google.protobuf.Timestamp
-	16, // 19: quadsmith.api.UsernameHistory.release_warning_sent_at:type_name -> google.protobuf.Timestamp
-	16, // 20: quadsmith.api.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
-	16, // 21: quadsmith.api.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
-	0,  // 22: quadsmith.api.CheckUsernameAvailableResponse.status:type_name -> quadsmith.api.UsernameAvailabilityStatus
-	15, // 23: quadsmith.api.ListUsersResponse.users:type_name -> quadsmith.api.SeedUser
-	13, // 24: quadsmith.api.UserService.GetUser:input_type -> quadsmith.api.GetUserRequest
-	12, // 25: quadsmith.api.UserService.GetPublicProfile:input_type -> quadsmith.api.GetPublicProfileRequest
-	10, // 26: quadsmith.api.UserService.CheckUsernameAvailable:input_type -> quadsmith.api.CheckUsernameAvailableRequest
-	1,  // 27: quadsmith.api.UserService.GetUser:output_type -> quadsmith.api.User
-	5,  // 28: quadsmith.api.UserService.GetPublicProfile:output_type -> quadsmith.api.PublicUserProfile
-	11, // 29: quadsmith.api.UserService.CheckUsernameAvailable:output_type -> quadsmith.api.CheckUsernameAvailableResponse
-	27, // [27:30] is the sub-list for method output_type
-	24, // [24:27] is the sub-list for method input_type
-	24, // [24:24] is the sub-list for extension type_name
-	24, // [24:24] is the sub-list for extension extendee
-	0,  // [0:24] is the sub-list for field type_name
+	26, // 0: quadsmith.api.User.last_renamed_at:type_name -> google.protobuf.Timestamp
+	26, // 1: quadsmith.api.User.deleted_at:type_name -> google.protobuf.Timestamp
+	26, // 2: quadsmith.api.User.created_at:type_name -> google.protobuf.Timestamp
+	26, // 3: quadsmith.api.User.updated_at:type_name -> google.protobuf.Timestamp
+	10, // 4: quadsmith.api.User.active_ban:type_name -> quadsmith.api.Ban
+	26, // 5: quadsmith.api.UserProfile.updated_at:type_name -> google.protobuf.Timestamp
+	26, // 6: quadsmith.api.UserEmail.created_at:type_name -> google.protobuf.Timestamp
+	26, // 7: quadsmith.api.UserEmailOAuthAccount.created_at:type_name -> google.protobuf.Timestamp
+	26, // 8: quadsmith.api.PublicUserProfile.created_at:type_name -> google.protobuf.Timestamp
+	26, // 9: quadsmith.api.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
+	26, // 10: quadsmith.api.RefreshToken.last_used_at:type_name -> google.protobuf.Timestamp
+	26, // 11: quadsmith.api.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
+	26, // 12: quadsmith.api.EmailOtp.expires_at:type_name -> google.protobuf.Timestamp
+	26, // 13: quadsmith.api.EmailOtp.used_at:type_name -> google.protobuf.Timestamp
+	26, // 14: quadsmith.api.EmailOtp.created_at:type_name -> google.protobuf.Timestamp
+	26, // 15: quadsmith.api.EmailOtp.approved_at:type_name -> google.protobuf.Timestamp
+	26, // 16: quadsmith.api.EmailOtp.denied_at:type_name -> google.protobuf.Timestamp
+	26, // 17: quadsmith.api.UsernameHistory.renamed_at:type_name -> google.protobuf.Timestamp
+	26, // 18: quadsmith.api.UsernameHistory.first_archived_at:type_name -> google.protobuf.Timestamp
+	26, // 19: quadsmith.api.UsernameHistory.release_warning_sent_at:type_name -> google.protobuf.Timestamp
+	26, // 20: quadsmith.api.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
+	26, // 21: quadsmith.api.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
+	26, // 22: quadsmith.api.Ban.expires_at:type_name -> google.protobuf.Timestamp
+	26, // 23: quadsmith.api.Ban.created_at:type_name -> google.protobuf.Timestamp
+	26, // 24: quadsmith.api.Ban.revoked_at:type_name -> google.protobuf.Timestamp
+	26, // 25: quadsmith.api.BannedEmail.created_at:type_name -> google.protobuf.Timestamp
+	26, // 26: quadsmith.api.BanUserRequest.expires_at:type_name -> google.protobuf.Timestamp
+	10, // 27: quadsmith.api.BanUserResponse.ban:type_name -> quadsmith.api.Ban
+	0,  // 28: quadsmith.api.CheckUsernameAvailableResponse.status:type_name -> quadsmith.api.UsernameAvailabilityStatus
+	10, // 29: quadsmith.api.GetUserBanStatusResponse.active_ban:type_name -> quadsmith.api.Ban
+	10, // 30: quadsmith.api.ListBansResponse.bans:type_name -> quadsmith.api.Ban
+	23, // 31: quadsmith.api.ListUsersResponse.users:type_name -> quadsmith.api.SeedUser
+	10, // 32: quadsmith.api.UnbanUserResponse.ban:type_name -> quadsmith.api.Ban
+	19, // 33: quadsmith.api.UserService.GetUser:input_type -> quadsmith.api.GetUserRequest
+	16, // 34: quadsmith.api.UserService.GetPublicProfile:input_type -> quadsmith.api.GetPublicProfileRequest
+	14, // 35: quadsmith.api.UserService.CheckUsernameAvailable:input_type -> quadsmith.api.CheckUsernameAvailableRequest
+	12, // 36: quadsmith.api.UserService.BanUser:input_type -> quadsmith.api.BanUserRequest
+	24, // 37: quadsmith.api.UserService.UnbanUser:input_type -> quadsmith.api.UnbanUserRequest
+	20, // 38: quadsmith.api.UserService.ListBans:input_type -> quadsmith.api.ListBansRequest
+	17, // 39: quadsmith.api.UserService.GetUserBanStatus:input_type -> quadsmith.api.GetUserBanStatusRequest
+	1,  // 40: quadsmith.api.UserService.GetUser:output_type -> quadsmith.api.User
+	5,  // 41: quadsmith.api.UserService.GetPublicProfile:output_type -> quadsmith.api.PublicUserProfile
+	15, // 42: quadsmith.api.UserService.CheckUsernameAvailable:output_type -> quadsmith.api.CheckUsernameAvailableResponse
+	13, // 43: quadsmith.api.UserService.BanUser:output_type -> quadsmith.api.BanUserResponse
+	25, // 44: quadsmith.api.UserService.UnbanUser:output_type -> quadsmith.api.UnbanUserResponse
+	21, // 45: quadsmith.api.UserService.ListBans:output_type -> quadsmith.api.ListBansResponse
+	18, // 46: quadsmith.api.UserService.GetUserBanStatus:output_type -> quadsmith.api.GetUserBanStatusResponse
+	40, // [40:47] is the sub-list for method output_type
+	33, // [33:40] is the sub-list for method input_type
+	33, // [33:33] is the sub-list for extension type_name
+	33, // [33:33] is the sub-list for extension extendee
+	0,  // [0:33] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_user_proto_init() }
@@ -1517,13 +2283,17 @@ func file_quadsmith_api_user_proto_init() {
 		return
 	}
 	file_quadsmith_api_user_proto_msgTypes[6].OneofWrappers = []any{}
+	file_quadsmith_api_user_proto_msgTypes[9].OneofWrappers = []any{}
+	file_quadsmith_api_user_proto_msgTypes[11].OneofWrappers = []any{}
+	file_quadsmith_api_user_proto_msgTypes[17].OneofWrappers = []any{}
+	file_quadsmith_api_user_proto_msgTypes[19].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_user_proto_rawDesc), len(file_quadsmith_api_user_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   15,
+			NumMessages:   25,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

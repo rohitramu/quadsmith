@@ -372,6 +372,7 @@ message AuthResponse {
   string setup_token = 6;
   optional string account_status = 7;
   optional google.protobuf.Timestamp scheduled_purge_at = 8;
+  optional Ban active_ban = 9;
 }
 
 // ---------------------------------------------------------

@@ -17,6 +17,11 @@ service UserService {
   rpc GetUser(GetUserRequest) returns (User);
   rpc GetPublicProfile(GetPublicProfileRequest) returns (PublicUserProfile);
   rpc CheckUsernameAvailable(CheckUsernameAvailableRequest) returns (CheckUsernameAvailableResponse);
+
+  rpc BanUser(BanUserRequest) returns (BanUserResponse);
+  rpc UnbanUser(UnbanUserRequest) returns (UnbanUserResponse);
+  rpc ListBans(ListBansRequest) returns (ListBansResponse);
+  rpc GetUserBanStatus(GetUserBanStatusRequest) returns (GetUserBanStatusResponse);
 }
 
 // ---------------------------------------------------------
@@ -72,9 +77,12 @@ message User {
 
   google.protobuf.Timestamp last_renamed_at = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
   google.protobuf.Timestamp deleted_at = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
-  google.protobuf.Timestamp banned_at = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  google.protobuf.Timestamp created_at = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
-  google.protobuf.Timestamp updated_at = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+  google.protobuf.Timestamp created_at = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+  google.protobuf.Timestamp updated_at = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+  Ban active_ban = 9 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 }
 
 message UserProfile {
@@ -211,6 +219,14 @@ message RefreshToken {
   google.protobuf.Timestamp expires_at = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
   google.protobuf.Timestamp last_used_at = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
   string device_hint = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+  string ip_address = 8 [
+    (quadsmith.sql.column) = {default_value: "''"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  string location_hint = 9 [
+    (quadsmith.sql.column) = {default_value: "''"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
   google.protobuf.Timestamp created_at = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
 }
 
@@ -325,9 +341,94 @@ message OAuthAccount {
   google.protobuf.Timestamp created_at = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
 }
 
+message Ban {
+  option (quadsmith.sql.table) = {name: "bans"};
+  option (quadsmith.data.export) = {
+    domain: EXPORT_DOMAIN_SECURITY
+    user_filter: "user_uuid = $1::uuid"
+  };
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string user_uuid = 2 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string banned_by_user_uuid = 3 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string reason = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  string internal_notes = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  google.protobuf.Timestamp expires_at = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  google.protobuf.Timestamp created_at = 7 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  google.protobuf.Timestamp revoked_at = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  optional string revoked_by_user_uuid = 9 [
+    (quadsmith.sql.column) = {references: "users(uuid)"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string revoke_reason = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  repeated string banned_emails = 11 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PRIVATE
+  ];
+}
+
+message BannedEmail {
+  option (quadsmith.sql.table) = {name: "banned_emails"};
+  option (quadsmith.data.export) = {
+    domain: EXPORT_DOMAIN_SECURITY
+    user_filter: "ban_uuid IN (SELECT uuid FROM bans WHERE user_uuid = $1::uuid)"
+  };
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string ban_uuid = 2 [
+    (quadsmith.sql.column) = {
+      references: "bans(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string email = 3 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PRIVATE
+  ];
+  google.protobuf.Timestamp created_at = 4 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+}
+
 // ---------------------------------------------------------
 // Request/response messages
 // ---------------------------------------------------------
+
+message BanUserRequest {
+  string user_id = 1; // Username or UUID of user to ban
+  string reason = 2; // Public reason visible to banned user
+  string internal_notes = 3; // Private admin moderation notes
+  optional google.protobuf.Timestamp expires_at = 4; // Nullable for permanent bans
+}
+
+message BanUserResponse {
+  bool success = 1;
+  string message = 2;
+  Ban ban = 3;
+}
 
 message CheckUsernameAvailableRequest {
   string username = 1;
@@ -343,8 +444,29 @@ message GetPublicProfileRequest {
   string id = 1; // Can be username or UUID
 }
 
+message GetUserBanStatusRequest {
+  string user_id = 1; // Username or UUID (can inspect self, or any user if ADMIN)
+}
+
+message GetUserBanStatusResponse {
+  bool is_banned = 1;
+  optional Ban active_ban = 2;
+}
+
 message GetUserRequest {
   string id = 1; // Can be username or UUID
+}
+
+message ListBansRequest {
+  optional string user_id = 1; // Filter by user (optional)
+  bool active_only = 2;
+  int32 page_size = 3;
+  string page_token = 4;
+}
+
+message ListBansResponse {
+  repeated Ban bans = 1;
+  string next_page_token = 2;
 }
 
 message ListUsersResponse {
@@ -359,6 +481,17 @@ message SeedUser {
   string role = 4;
   string bio = 5;
   int32 reputation_score = 6;
+}
+
+message UnbanUserRequest {
+  string user_id = 1; // Username or UUID of user to unban
+  string revoke_reason = 2; // Reason for unbanning
+}
+
+message UnbanUserResponse {
+  bool success = 1;
+  string message = 2;
+  Ban ban = 3;
 }
 
 // ---------------------------------------------------------
