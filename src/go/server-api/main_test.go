@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"net/http"
 	"net/http/httptest"
 	"path/filepath"
@@ -112,5 +113,13 @@ func TestAPIServer_CORS(t *testing.T) {
 				}
 			}
 		})
+	}
+}
+
+func TestAPIServer_PrintPreSeededUsers_NilPool(t *testing.T) {
+	var buf bytes.Buffer
+	printPreSeededUsers(&buf, nil)
+	if buf.Len() != 0 {
+		t.Errorf("expected empty output for nil pool, got %q", buf.String())
 	}
 }

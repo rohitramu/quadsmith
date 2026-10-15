@@ -18,4 +18,12 @@ echo "--- Building Sandbox Container Images ---"
 docker compose -f test/sandbox/docker-compose.yaml build
 
 echo "--- Starting Quadsmith Sandbox (Web on $PORT, Ops on $OPS_PORT, API on $API_PORT, DB on $DB_PORT) ---"
+if [ -f "test/sandbox/db/seed_data/users.textproto" ]; then
+    echo "Pre-seeded users:"
+    awk '
+        /^[[:space:]]*id:[[:space:]]*"/ { gsub(/^[[:space:]]*id:[[:space:]]*"|"[[:space:]]*$/, ""); id=$0 }
+        /^[[:space:]]*email:[[:space:]]*"/ { gsub(/^[[:space:]]*email:[[:space:]]*"|"[[:space:]]*$/, ""); email=$0 }
+        /^[[:space:]]*}/ { if (email != "" && id != "") { print "  - " email " (@" id ")"; email=""; id="" } }
+    ' test/sandbox/db/seed_data/users.textproto | sort
+fi
 docker compose -f test/sandbox/docker-compose.yaml up

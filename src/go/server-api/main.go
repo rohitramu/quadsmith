@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
@@ -162,6 +163,9 @@ func main() {
 
 	port := strconv.Itoa(int(cfg.Server.GetPort()))
 	fmt.Printf("Starting Quadsmith API Server on port %s...\n", port)
+	if cfg.GetEnvironment() != "prod" {
+		printPreSeededUsers(os.Stdout, pool)
+	}
 
 	maxBytes := cfg.Server.GetMaxRequestBytes()
 	if maxBytes <= 0 {
@@ -256,4 +260,50 @@ func newCORSMiddleware() *cors.Cors {
 		},
 		AllowCredentials: true,
 	})
+}
+
+func printPreSeededUsers(w io.Writer, pool *pgxpool.Pool) {
+	if pool == nil {
+		return
+	}
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	rows, err := pool.Query(ctx, `
+		SELECT COALESCE(ue.email, ''), u.id
+		FROM users u
+		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
+		WHERE u.deleted_at IS NULL
+		ORDER BY ue.email, u.id
+	`)
+	if err != nil {
+		log.Printf("Warning: failed to query pre-seeded users: %v\n", err)
+		return
+	}
+	defer rows.Close()
+
+	type userEntry struct {
+		email string
+		id    string
+	}
+	var users []userEntry
+	for rows.Next() {
+		var u userEntry
+		if err := rows.Scan(&u.email, &u.id); err == nil && (u.email != "" || u.id != "") {
+			users = append(users, u)
+		}
+	}
+
+	if len(users) > 0 {
+		fmt.Fprintln(w, "Pre-seeded users:")
+		for _, u := range users {
+			if u.email != "" {
+				fmt.Fprintf(w, "  - %s (@%s)\n", u.email, u.id)
+			} else {
+				fmt.Fprintf(w, "  - @%s\n", u.id)
+			}
+		}
+	} else {
+		fmt.Fprintln(w, "Pre-seeded users: (none)")
+	}
 }
