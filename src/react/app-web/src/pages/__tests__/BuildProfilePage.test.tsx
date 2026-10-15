@@ -451,12 +451,17 @@ describe("BuildProfilePage Component", () => {
     expect(rightHoverCard.style.top).toBe("300px");
   });
 
-  it("renders Build Similar button linking to /builds/new?from=<id>", async () => {
+  it("renders Build Similar button linking to /builds/new?from=<id> with Forge styling and hammer icon", async () => {
     renderBuildProfile();
 
     const buildSimilarLink = await screen.findByRole("link", { name: /build similar/i });
     expect(buildSimilarLink).toBeInTheDocument();
     expect(buildSimilarLink).toHaveAttribute("href", "/builds/new?from=bando-basher-5-inch");
+    expect(buildSimilarLink.className).toContain("from-orange-600");
+    expect(buildSimilarLink.className).toContain("to-amber-500");
+    const svgIcon = buildSimilarLink.querySelector("svg");
+    expect(svgIcon).toBeInTheDocument();
+    expect(svgIcon).toHaveClass("lucide-hammer");
   });
 
   it("renders Edit Build button when the logged-in user is the creator", async () => {

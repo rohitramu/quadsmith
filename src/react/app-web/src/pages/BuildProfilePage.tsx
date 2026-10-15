@@ -54,7 +54,7 @@ import {
   Minus,
   RefreshCw,
   Search,
-  Copy,
+  Hammer,
   Edit,
 } from "lucide-react";
 
@@ -540,20 +540,24 @@ export function BuildProfilePage() {
             )}
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2 sm:gap-2.5 shrink-0 pt-1">
             <Link
               to={`/builds/new?from=${build.id || buildId}`}
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-medium transition-colors cursor-pointer"
+              className="inline-flex items-center gap-2 px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl bg-gradient-to-r from-orange-600 via-orange-500 to-amber-500 hover:from-orange-500 hover:via-orange-400 hover:to-amber-400 active:from-orange-700 active:to-amber-600 text-white font-semibold text-xs sm:text-sm shadow-md shadow-orange-500/20 hover:shadow-lg hover:shadow-orange-500/30 active:scale-95 transition-all cursor-pointer group"
+              title="Open this build configuration in The Forge as a baseline"
             >
-              <Copy size={14} className="text-zinc-500" />
+              <Hammer
+                size={16}
+                className="text-white group-hover:-rotate-12 transition-transform shrink-0"
+              />
               <span>Build Similar</span>
             </Link>
             {isCreator && (
               <Link
                 to={`/builds/${build.id || buildId}/edit`}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-xs font-medium transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs sm:text-sm font-medium text-zinc-700 dark:text-zinc-300 shadow-2xs transition-colors cursor-pointer"
               >
-                <Edit size={14} className="text-zinc-500" />
+                <Edit size={15} className="text-zinc-400" />
                 <span>Edit Build</span>
               </Link>
             )}

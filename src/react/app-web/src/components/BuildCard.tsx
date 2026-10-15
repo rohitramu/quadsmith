@@ -16,7 +16,7 @@ import {
   Radio,
   Camera,
   Compass,
-  Copy,
+  Hammer,
 } from "lucide-react";
 import { useState } from "react";
 import { getCollectionColor } from "@quadsmith/shared";
@@ -473,10 +473,13 @@ export function BuildCard({
           <div className="flex items-center gap-3">
             <Link
               to={`/builds/new?from=${build.id || build.uuid}`}
-              className="flex items-center gap-1 text-xs font-semibold text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors"
-              title="Build similar aircraft starting with these components"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/20 hover:border-orange-500/30 text-xs font-semibold transition-all group/forge"
+              title="Open this build configuration in The Forge to build a similar aircraft"
             >
-              <Copy size={12} />
+              <Hammer
+                size={12}
+                className="text-orange-600 dark:text-orange-400 group-hover/forge:-rotate-12 transition-transform shrink-0"
+              />
               <span>Build Similar</span>
             </Link>
             <Link
