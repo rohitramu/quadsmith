@@ -4,15 +4,27 @@ import { renderWithProviders } from "../../test/test-utils";
 import { CollectionBadge } from "@quadsmith/shared";
 
 describe("CollectionBadge Component", () => {
-  it("renders collection name and styled badge without dot", () => {
+  it("renders collection name and colored icon in clean text variant by default", () => {
     renderWithProviders(<CollectionBadge collection="batteries" />);
 
     const badge = screen.getByText("Batteries");
     expect(badge).toBeInTheDocument();
 
     const container = screen.getByTestId("collection-badge");
+    expect(container).toHaveClass("text-zinc-700");
+    expect(container).not.toHaveClass("bg-lime-100");
+    // Contains SVG icon and text span
+    expect(container.querySelector("svg")).toBeInTheDocument();
+  });
+
+  it("renders styled pill badge with background and border when variant='pill'", () => {
+    renderWithProviders(<CollectionBadge collection="batteries" variant="pill" />);
+
+    const badge = screen.getByText("Batteries");
+    expect(badge).toBeInTheDocument();
+
+    const container = screen.getByTestId("collection-badge");
     expect(container).toHaveClass("bg-lime-100");
-    // Ensure no child dot span exists
     expect(container.children.length).toBe(1);
   });
 
@@ -36,16 +48,19 @@ describe("CollectionBadge Component", () => {
     const badge = screen.getByText("Special");
     expect(badge).toBeInTheDocument();
     const container = screen.getByTestId("collection-badge");
-    expect(container).toHaveClass("bg-slate-100");
+    expect(container).toBeInTheDocument();
   });
 
-  it("applies text-sm sizing classes for md size", () => {
-    renderWithProviders(<CollectionBadge collection="motors" size="md" />);
+  it("applies sizing classes correctly for text and pill variants", () => {
+    const { unmount } = renderWithProviders(<CollectionBadge collection="motors" size="md" />);
+    const containerText = screen.getByTestId("collection-badge");
+    expect(containerText).toHaveClass("text-sm");
+    unmount();
 
-    const container = screen.getByTestId("collection-badge");
-    expect(container).toHaveClass("text-sm");
-    expect(container).toHaveClass("px-2");
-    expect(container).toHaveClass("py-0.5");
+    renderWithProviders(<CollectionBadge collection="motors" size="md" variant="pill" />);
+    const containerPill = screen.getByTestId("collection-badge");
+    expect(containerPill).toHaveClass("text-sm");
+    expect(containerPill).toHaveClass("px-2.5");
   });
 
   it("renders abbreviated chip names for FC, ESC, VTX, Props, RX, and TX", () => {

@@ -406,12 +406,11 @@ export function SocialReviewSection({
                     )}
                     <div>
                       <div className="flex items-center gap-2">
-                        <UserBadge username={review.authorUsername} size="sm" />
-                        {review.isAuthorVerifiedOwner && (
-                          <span className="px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-mono">
-                            Verified Owner
-                          </span>
-                        )}
+                        <UserBadge
+                          username={review.authorUsername}
+                          size="sm"
+                          isAuthor={review.isAuthorVerifiedOwner}
+                        />
                       </div>
                       <div className="text-[11px] text-zinc-400">
                         Reviewed on {formatRelativeDate(review.createdAt?.seconds)}

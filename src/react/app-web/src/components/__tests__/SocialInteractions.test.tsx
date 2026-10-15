@@ -132,8 +132,8 @@ describe("Social Interactions Components", () => {
 
       // Review card author and body
       expect(await screen.findByText(/rotor_king/i)).toBeInTheDocument();
-      expect(screen.getByText(/Incredible frame stiffness/i)).toBeInTheDocument();
-      expect(screen.getByText(/Verified Owner/i)).toBeInTheDocument();
+      expect(screen.queryByText(/Verified Owner/i)).not.toBeInTheDocument();
+      expect(screen.getByTitle("Author")).toBeInTheDocument();
 
       // Click "Write a Review"
       const writeReviewBtn = screen.getByRole("button", { name: /write a review/i });

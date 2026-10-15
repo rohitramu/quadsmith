@@ -6,7 +6,7 @@ import { UserBadge } from "../UserBadge";
 import { getAvatarPalette } from "@quadsmith/shared";
 
 describe("UserBadge Component", () => {
-  it("renders with hash-generated palette for a valid username", () => {
+  it("renders with hash-generated palette for a valid username as standard peer (borderless)", () => {
     const palette = getAvatarPalette("alex");
     renderWithProviders(
       <Routes>
@@ -18,11 +18,14 @@ describe("UserBadge Component", () => {
     const badge = screen.getByTestId("user-badge");
     expect(badge).toBeInTheDocument();
     expect(badge).toHaveTextContent("@alex");
-    // Verify palette border class is present
-    expect(badge.className).toContain(palette.borderClass.split(" ")[0]);
+    // Standard peer has borderless styling
+    expect(badge.className).toContain("border-transparent");
+    expect(badge.className).toContain("shadow-none");
+    expect(badge.className).toContain("font-medium");
+    expect(badge.className).toContain(palette.bgClass.split(" ")[0]);
   });
 
-  it("renders with prefix text when provided", () => {
+  it("renders with prefix text when provided, outside the pill badge", () => {
     renderWithProviders(
       <Routes>
         <Route
@@ -34,7 +37,52 @@ describe("UserBadge Component", () => {
     );
 
     const badge = screen.getByTestId("user-badge");
-    expect(badge).toHaveTextContent("Added by @rotor_king");
+    expect(badge).toHaveTextContent("@rotor_king");
+    expect(badge).not.toHaveTextContent("Added by");
+
+    const container = screen.getByTestId("user-badge-container");
+    expect(container).toHaveTextContent("Added by @rotor_king");
+    expect(container.firstChild).toHaveTextContent("Added by");
+    expect(container.firstChild).toHaveClass("text-zinc-500");
+  });
+
+  it("renders with gold border and Author title when isAuthor is true", () => {
+    renderWithProviders(
+      <Routes>
+        <Route
+          path="/"
+          element={<UserBadge username="rotor_king" isAuthor={true} withHoverCard={false} />}
+        />
+      </Routes>,
+      { route: "/" },
+    );
+
+    const badge = screen.getByTestId("user-badge");
+    expect(badge).toHaveAttribute("title", "Author");
+    expect(badge.className).toContain("border-[#ca8a04]");
+    expect(badge.className).toContain("dark:border-[#fbbf24]");
+    expect(badge.className).toContain("shadow-none");
+  });
+
+  it("renders with signature border, halo shadow, bold font, and You title when isSelf is true", () => {
+    const palette = getAvatarPalette("alex");
+    renderWithProviders(
+      <Routes>
+        <Route
+          path="/"
+          element={<UserBadge username="alex" isSelf={true} size="sm" withHoverCard={false} />}
+        />
+      </Routes>,
+      { route: "/" },
+    );
+
+    const badge = screen.getByTestId("user-badge");
+    expect(badge).toHaveAttribute("title", "You");
+    expect(badge.className).toContain("font-bold");
+    expect(badge.className).toContain("px-2.5");
+    expect(badge.className).toContain("py-1");
+    expect(badge.className).toContain(palette.borderClass.split(" ")[0]);
+    expect(badge.className).toContain("shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)]");
   });
 
   it("respects withAt=false", () => {

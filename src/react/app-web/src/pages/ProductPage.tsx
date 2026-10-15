@@ -146,11 +146,18 @@ function ProductDetailView({
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <span className="px-2.5 py-0.5 rounded-md text-xs font-semibold bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-400">
-                    {srvDef?.singularLabel || collection.name}
-                  </span>
+                  <CollectionBadge
+                    collection={collection.id}
+                    label={srvDef?.singularLabel || collection.name}
+                    size="sm"
+                  />
                   {item.authorUsername && (
-                    <UserBadge username={item.authorUsername} prefix="Added by " size="sm" />
+                    <UserBadge
+                      username={item.authorUsername}
+                      prefix="Added by "
+                      size="sm"
+                      isAuthor={true}
+                    />
                   )}
                 </div>
                 <h1 className="text-3xl font-bold">{item.name || item.id}</h1>
