@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { useQuery, useMutation } from "@connectrpc/connect-query";
-import { UserHoverCard } from "./UserHoverCard";
+import { UserBadge } from "./UserBadge";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   listReviews,
@@ -407,20 +406,7 @@ export function SocialReviewSection({
                     )}
                     <div>
                       <div className="flex items-center gap-2">
-                        {review.authorUsername ? (
-                          <UserHoverCard username={review.authorUsername}>
-                            <Link
-                              to={`/users/${review.authorUsername}`}
-                              className="font-bold text-sm text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
-                            >
-                              {review.authorUsername}
-                            </Link>
-                          </UserHoverCard>
-                        ) : (
-                          <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                            User
-                          </span>
-                        )}
+                        <UserBadge username={review.authorUsername} size="sm" />
                         {review.isAuthorVerifiedOwner && (
                           <span className="px-1.5 py-0.5 rounded bg-blue-500/10 text-blue-600 dark:text-blue-400 text-[10px] font-mono">
                             Verified Owner
@@ -612,18 +598,7 @@ function ReviewCommentsThread({
             className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800/80 text-xs space-y-1"
           >
             <div className="flex items-center justify-between text-zinc-500">
-              {c.authorUsername ? (
-                <UserHoverCard username={c.authorUsername}>
-                  <Link
-                    to={`/users/${c.authorUsername}`}
-                    className="font-bold text-zinc-800 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 hover:underline"
-                  >
-                    @{c.authorUsername}
-                  </Link>
-                </UserHoverCard>
-              ) : (
-                <span className="font-bold text-zinc-800 dark:text-zinc-200">@User</span>
-              )}
+              <UserBadge username={c.authorUsername} size="xs" />
               <div className="flex items-center gap-2">
                 <span className="text-[10px] text-zinc-400">
                   {formatRelativeDate(c.createdAt?.seconds)}

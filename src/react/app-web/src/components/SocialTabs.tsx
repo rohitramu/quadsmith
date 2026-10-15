@@ -18,6 +18,7 @@ import {
 import { SocialReviewSection } from "./SocialReviewSection";
 import { SocialQaSection } from "./SocialQaSection";
 import { SimilarBuildsTab } from "./SimilarBuildsTab";
+import { UserBadge } from "./UserBadge";
 import { SaveToCollectionModal } from "./SaveToCollectionModal";
 import { listSimilarBuilds } from "@quadsmith/shared/gen/quadsmith/api/build-BuildService_connectquery";
 import { Link } from "react-router-dom";
@@ -279,9 +280,13 @@ export function SocialTabs({
                         <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
                           {col.name}
                         </h4>
-                        <p className="text-[10px] text-zinc-500">
-                          {col.isSystemCollection ? "Default Likes" : `@${col.authorUsername}`}
-                        </p>
+                        <div className="text-[10px] text-zinc-500 mt-0.5">
+                          {col.isSystemCollection ? (
+                            <span>Default Likes</span>
+                          ) : (
+                            <UserBadge username={col.authorUsername} size="xs" />
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>

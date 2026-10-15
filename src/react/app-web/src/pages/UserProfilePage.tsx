@@ -29,6 +29,7 @@ import { ALL_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
 import { ComponentFormModal } from "../components/ComponentFormModal";
 import { getAvatarPalette, getInitial } from "@quadsmith/shared";
 import { BuildCard } from "../components/BuildCard";
+import { UserBadge } from "../components/UserBadge";
 import { useAuth } from "../context/AuthContext";
 import { useDocumentMeta } from "@quadsmith/shared";
 
@@ -669,11 +670,13 @@ export function UserProfilePage() {
                             <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-blue-500 transition-colors truncate">
                               {col.name}
                             </h4>
-                            <p className="text-[10px] text-zinc-400 truncate">
-                              {col.isSystemCollection
-                                ? "System Collection"
-                                : `@${col.authorUsername}`}
-                            </p>
+                            <div className="text-[10px] text-zinc-400 truncate mt-0.5">
+                              {col.isSystemCollection ? (
+                                <span>System Collection</span>
+                              ) : (
+                                <UserBadge username={col.authorUsername} size="xs" />
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
