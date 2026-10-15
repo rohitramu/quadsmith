@@ -43,8 +43,6 @@ const (
 	UserServiceCheckUsernameAvailableProcedure = "/quadsmith.api.UserService/CheckUsernameAvailable"
 	// UserServiceBanUserProcedure is the fully-qualified name of the UserService's BanUser RPC.
 	UserServiceBanUserProcedure = "/quadsmith.api.UserService/BanUser"
-	// UserServiceUnbanUserProcedure is the fully-qualified name of the UserService's UnbanUser RPC.
-	UserServiceUnbanUserProcedure = "/quadsmith.api.UserService/UnbanUser"
 	// UserServiceUpdateBanProcedure is the fully-qualified name of the UserService's UpdateBan RPC.
 	UserServiceUpdateBanProcedure = "/quadsmith.api.UserService/UpdateBan"
 	// UserServiceListBansProcedure is the fully-qualified name of the UserService's ListBans RPC.
@@ -60,7 +58,6 @@ type UserServiceClient interface {
 	GetPublicProfile(context.Context, *connect.Request[api.GetPublicProfileRequest]) (*connect.Response[api.PublicUserProfile], error)
 	CheckUsernameAvailable(context.Context, *connect.Request[api.CheckUsernameAvailableRequest]) (*connect.Response[api.CheckUsernameAvailableResponse], error)
 	BanUser(context.Context, *connect.Request[api.BanUserRequest]) (*connect.Response[api.BanUserResponse], error)
-	UnbanUser(context.Context, *connect.Request[api.UnbanUserRequest]) (*connect.Response[api.UnbanUserResponse], error)
 	UpdateBan(context.Context, *connect.Request[api.UpdateBanRequest]) (*connect.Response[api.UpdateBanResponse], error)
 	ListBans(context.Context, *connect.Request[api.ListBansRequest]) (*connect.Response[api.ListBansResponse], error)
 	GetUserBanStatus(context.Context, *connect.Request[api.GetUserBanStatusRequest]) (*connect.Response[api.GetUserBanStatusResponse], error)
@@ -101,12 +98,6 @@ func NewUserServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(userServiceMethods.ByName("BanUser")),
 			connect.WithClientOptions(opts...),
 		),
-		unbanUser: connect.NewClient[api.UnbanUserRequest, api.UnbanUserResponse](
-			httpClient,
-			baseURL+UserServiceUnbanUserProcedure,
-			connect.WithSchema(userServiceMethods.ByName("UnbanUser")),
-			connect.WithClientOptions(opts...),
-		),
 		updateBan: connect.NewClient[api.UpdateBanRequest, api.UpdateBanResponse](
 			httpClient,
 			baseURL+UserServiceUpdateBanProcedure,
@@ -134,7 +125,6 @@ type userServiceClient struct {
 	getPublicProfile       *connect.Client[api.GetPublicProfileRequest, api.PublicUserProfile]
 	checkUsernameAvailable *connect.Client[api.CheckUsernameAvailableRequest, api.CheckUsernameAvailableResponse]
 	banUser                *connect.Client[api.BanUserRequest, api.BanUserResponse]
-	unbanUser              *connect.Client[api.UnbanUserRequest, api.UnbanUserResponse]
 	updateBan              *connect.Client[api.UpdateBanRequest, api.UpdateBanResponse]
 	listBans               *connect.Client[api.ListBansRequest, api.ListBansResponse]
 	getUserBanStatus       *connect.Client[api.GetUserBanStatusRequest, api.GetUserBanStatusResponse]
@@ -160,11 +150,6 @@ func (c *userServiceClient) BanUser(ctx context.Context, req *connect.Request[ap
 	return c.banUser.CallUnary(ctx, req)
 }
 
-// UnbanUser calls quadsmith.api.UserService.UnbanUser.
-func (c *userServiceClient) UnbanUser(ctx context.Context, req *connect.Request[api.UnbanUserRequest]) (*connect.Response[api.UnbanUserResponse], error) {
-	return c.unbanUser.CallUnary(ctx, req)
-}
-
 // UpdateBan calls quadsmith.api.UserService.UpdateBan.
 func (c *userServiceClient) UpdateBan(ctx context.Context, req *connect.Request[api.UpdateBanRequest]) (*connect.Response[api.UpdateBanResponse], error) {
 	return c.updateBan.CallUnary(ctx, req)
@@ -186,7 +171,6 @@ type UserServiceHandler interface {
 	GetPublicProfile(context.Context, *connect.Request[api.GetPublicProfileRequest]) (*connect.Response[api.PublicUserProfile], error)
 	CheckUsernameAvailable(context.Context, *connect.Request[api.CheckUsernameAvailableRequest]) (*connect.Response[api.CheckUsernameAvailableResponse], error)
 	BanUser(context.Context, *connect.Request[api.BanUserRequest]) (*connect.Response[api.BanUserResponse], error)
-	UnbanUser(context.Context, *connect.Request[api.UnbanUserRequest]) (*connect.Response[api.UnbanUserResponse], error)
 	UpdateBan(context.Context, *connect.Request[api.UpdateBanRequest]) (*connect.Response[api.UpdateBanResponse], error)
 	ListBans(context.Context, *connect.Request[api.ListBansRequest]) (*connect.Response[api.ListBansResponse], error)
 	GetUserBanStatus(context.Context, *connect.Request[api.GetUserBanStatusRequest]) (*connect.Response[api.GetUserBanStatusResponse], error)
@@ -223,12 +207,6 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(userServiceMethods.ByName("BanUser")),
 		connect.WithHandlerOptions(opts...),
 	)
-	userServiceUnbanUserHandler := connect.NewUnaryHandler(
-		UserServiceUnbanUserProcedure,
-		svc.UnbanUser,
-		connect.WithSchema(userServiceMethods.ByName("UnbanUser")),
-		connect.WithHandlerOptions(opts...),
-	)
 	userServiceUpdateBanHandler := connect.NewUnaryHandler(
 		UserServiceUpdateBanProcedure,
 		svc.UpdateBan,
@@ -257,8 +235,6 @@ func NewUserServiceHandler(svc UserServiceHandler, opts ...connect.HandlerOption
 			userServiceCheckUsernameAvailableHandler.ServeHTTP(w, r)
 		case UserServiceBanUserProcedure:
 			userServiceBanUserHandler.ServeHTTP(w, r)
-		case UserServiceUnbanUserProcedure:
-			userServiceUnbanUserHandler.ServeHTTP(w, r)
 		case UserServiceUpdateBanProcedure:
 			userServiceUpdateBanHandler.ServeHTTP(w, r)
 		case UserServiceListBansProcedure:
@@ -288,10 +264,6 @@ func (UnimplementedUserServiceHandler) CheckUsernameAvailable(context.Context, *
 
 func (UnimplementedUserServiceHandler) BanUser(context.Context, *connect.Request[api.BanUserRequest]) (*connect.Response[api.BanUserResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.UserService.BanUser is not implemented"))
-}
-
-func (UnimplementedUserServiceHandler) UnbanUser(context.Context, *connect.Request[api.UnbanUserRequest]) (*connect.Response[api.UnbanUserResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.UserService.UnbanUser is not implemented"))
 }
 
 func (UnimplementedUserServiceHandler) UpdateBan(context.Context, *connect.Request[api.UpdateBanRequest]) (*connect.Response[api.UpdateBanResponse], error) {

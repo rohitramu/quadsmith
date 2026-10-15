@@ -20,7 +20,6 @@ import (
 type mockUserService struct {
 	apiconnect.UnimplementedUserServiceHandler
 	banUserFunc          func(ctx context.Context, req *connect.Request[pb.BanUserRequest]) (*connect.Response[pb.BanUserResponse], error)
-	unbanUserFunc        func(ctx context.Context, req *connect.Request[pb.UnbanUserRequest]) (*connect.Response[pb.UnbanUserResponse], error)
 	updateBanFunc        func(ctx context.Context, req *connect.Request[pb.UpdateBanRequest]) (*connect.Response[pb.UpdateBanResponse], error)
 	listBansFunc         func(ctx context.Context, req *connect.Request[pb.ListBansRequest]) (*connect.Response[pb.ListBansResponse], error)
 	getUserBanStatusFunc func(ctx context.Context, req *connect.Request[pb.GetUserBanStatusRequest]) (*connect.Response[pb.GetUserBanStatusResponse], error)
@@ -31,13 +30,6 @@ func (m *mockUserService) BanUser(ctx context.Context, req *connect.Request[pb.B
 		return m.banUserFunc(ctx, req)
 	}
 	return m.UnimplementedUserServiceHandler.BanUser(ctx, req)
-}
-
-func (m *mockUserService) UnbanUser(ctx context.Context, req *connect.Request[pb.UnbanUserRequest]) (*connect.Response[pb.UnbanUserResponse], error) {
-	if m.unbanUserFunc != nil {
-		return m.unbanUserFunc(ctx, req)
-	}
-	return m.UnimplementedUserServiceHandler.UnbanUser(ctx, req)
 }
 
 func (m *mockUserService) UpdateBan(ctx context.Context, req *connect.Request[pb.UpdateBanRequest]) (*connect.Response[pb.UpdateBanResponse], error) {
@@ -93,7 +85,7 @@ func TestParseDurationOrDays(t *testing.T) {
 	}
 }
 
-func TestCLI_UserBans_Create(t *testing.T) {
+func TestCLI_UserBans_New(t *testing.T) {
 	calledTarget := ""
 	calledReason := ""
 	calledNotes := ""
@@ -118,19 +110,33 @@ func TestCLI_UserBans_Create(t *testing.T) {
 		mux.Handle(apiconnect.NewUserServiceHandler(mock))
 	})
 
+	// 1. Primary command 'new'
 	cmd := newRootCmd()
 	var outBuf bytes.Buffer
 	cmd.SetOut(&outBuf)
-	cmd.SetArgs([]string{"user", "bans", "create", "fpv_pilot", "--reason", "Spamming reviews", "--notes", "Repeated report"})
+	cmd.SetArgs([]string{"user", "bans", "new", "fpv_pilot", "--reason", "Spamming reviews", "--notes", "Repeated report"})
 	err := cmd.Execute()
 	if err != nil {
-		t.Fatalf("create failed: %v", err)
+		t.Fatalf("new failed: %v", err)
 	}
 	if calledTarget != "fpv_pilot" || calledReason != "Spamming reviews" || calledNotes != "Repeated report" {
 		t.Errorf("unexpected call args: target=%q, reason=%q, notes=%q", calledTarget, calledReason, calledNotes)
 	}
 	if !strings.Contains(outBuf.String(), "successfully banned") {
 		t.Errorf("expected success message, got: %s", outBuf.String())
+	}
+
+	// 2. Alias command 'create'
+	cmd2 := newRootCmd()
+	var outBuf2 bytes.Buffer
+	cmd2.SetOut(&outBuf2)
+	cmd2.SetArgs([]string{"user", "bans", "create", "fpv_pilot_2", "--reason", "Abusive language"})
+	err2 := cmd2.Execute()
+	if err2 != nil {
+		t.Fatalf("create alias failed: %v", err2)
+	}
+	if calledTarget != "fpv_pilot_2" || calledReason != "Abusive language" {
+		t.Errorf("unexpected call args on create alias: target=%q, reason=%q", calledTarget, calledReason)
 	}
 }
 

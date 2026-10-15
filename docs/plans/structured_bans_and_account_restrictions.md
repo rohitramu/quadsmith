@@ -80,7 +80,7 @@ flowchart TD
     subgraph Admin Moderation
         Admin["Admin Pilot (qs user ban / UserService.BanUser)"] --> CreateBan["INSERT INTO bans"]
         CreateBan --> SnapshotEmails["INSERT INTO banned_emails (all user emails)"]
-        AdminUnban["Admin Pilot (qs user unban / UserService.UnbanUser)"] --> RevokeBan["UPDATE bans SET revoked_at = NOW(), revoked_by, revoke_reason"]
+        AdminUnban["Admin Pilot (qs user bans update --revoke / UserService.UpdateBan)"] --> RevokeBan["UPDATE bans SET revoked_at = NOW(), revoked_by, revoke_reason"]
     end
 
     subgraph User Experience
@@ -239,8 +239,8 @@ Lifecycle behavior:
      is immediately rejected with `CodePermissionDenied` and message
      `"email address is suspended"`.
 4. **Reversible Reinstatement**:
-   - When an administrator unbans the user (`UnbanUser`), setting
-     `bans.revoked_at = NOW()` immediately deactivates the ban for all
+   - When an administrator revokes the ban (`UpdateBan` with `revoke = true`),
+     setting `bans.revoked_at = NOW()` immediately deactivates the ban for all
      associated emails in `banned_emails`, restoring registration rights.
 
 #### <a id="alternatives-considered-banned-emails" >Alternatives considered</a>
@@ -355,7 +355,7 @@ service UserService {
 
   // Administrative Moderation RPCs (guarded by ADMIN role)
   rpc BanUser(BanUserRequest) returns (BanUserResponse);
-  rpc UnbanUser(UnbanUserRequest) returns (UnbanUserResponse);
+  rpc UpdateBan(UpdateBanRequest) returns (UpdateBanResponse);
   rpc ListBans(ListBansRequest) returns (ListBansResponse);
   rpc GetUserBanStatus(GetUserBanStatusRequest) returns (GetUserBanStatusResponse);
 }
@@ -441,23 +441,14 @@ message BanUserResponse {
   Ban ban = 3;
 }
 
-message UnbanUserRequest {
-  string user_id = 1; // Username or UUID of user to unban
-  string revoke_reason = 2; // Reason for unbanning
-}
-
-message UnbanUserResponse {
-  bool success = 1;
-  string message = 2;
-  Ban ban = 3;
-}
-
 message UpdateBanRequest {
   string user_id = 1; // Username or UUID of user to update
   optional string reason = 2; // Updated public infraction reason
   optional string internal_notes = 3; // Updated private staff notes
   optional google.protobuf.Timestamp expires_at = 4; // Updated expiration timestamp
   bool clear_expires_at = 5; // Set true to convert temporary ban into permanent ban
+  optional bool revoke = 6; // Set true to lift/revoke the ban immediately
+  optional string revoke_reason = 7; // Moderator reason for lifting/revoking the ban
 }
 
 message UpdateBanResponse {
@@ -575,13 +566,14 @@ another route, displaying a brief temporary toast notification.
 Administrative pilots managing Quadsmith use the `qs` CLI in
 [`src/go/cli`](../../src/go/cli) to enforce moderation actions following the
 standard entity collection interface
-`qs user bans [get|list|create|update] <username|uuid>` where the target
-identifier consistently follows the operation name:
+`qs user bans [get|list|new|update] <username|uuid>` where the target identifier
+consistently follows the operation name:
 
-1. **Create Ban**:
+1. **New Ban**:
 
    ```bash
-   qs user bans create <username|uuid> --reason "Spamming commercial links" [--expires-in 7d|30d] [--notes "Reported by multiple pilots"]
+   qs user bans new <username|uuid> --reason "Spamming commercial links" [--expires-in 7d|30d] [--notes "Reported by multiple pilots"]
+   # (alias: qs user bans create <username|uuid> ...)
    ```
 
 2. **Get Active Ban Details**:
@@ -603,11 +595,11 @@ identifier consistently follows the operation name:
    ```
 
 Because the `bans` collection serves as an immutable moderation audit log, it
-strictly allows `create` and `update` mutation operations (omitting `delete`).
-Active bans are modified or revoked via `update`, and the `list` operation
-supports standard sorting, column projection, CEL filtering, pagination limits,
-and output formatting (`--json` and `--yaml`) flags common to all Quadsmith
-entity collections. All commands require `Role == "ADMIN"`.
+strictly allows `new` (with `create` alias) and `update` mutation operations
+(omitting `delete`). Active bans are modified or revoked via `update`, and the
+`list` operation supports standard sorting, column projection, CEL filtering,
+pagination limits, and output formatting (`--json` and `--yaml`) flags common to
+all Quadsmith entity collections. All commands require `Role == "ADMIN"`.
 
 #### <a id="alternatives-considered-cli-placement" >Alternatives considered</a>
 
@@ -703,7 +695,7 @@ banned user believe everything is functioning normally.
 ## <a id="5-assumptions" >5. Assumptions</a>
 
 1. Only accounts with `role = 'ADMIN'` are authorized to invoke `BanUser`,
-   `UnbanUser`, and `ListBans`.
+   `UpdateBan`, and `ListBans`.
 2. Banned accounts retain verified email addresses and OAuth associations to
    allow authentication and unbanning.
 3. Public communal content created prior to the ban remains visible without

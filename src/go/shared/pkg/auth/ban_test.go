@@ -46,7 +46,6 @@ func TestAllowedBannedProcedures(t *testing.T) {
 		apiconnect.BuildServiceCreateBuildProcedure,
 		apiconnect.BuildServiceDeleteBuildProcedure,
 		apiconnect.UserServiceBanUserProcedure,
-		apiconnect.UserServiceUnbanUserProcedure,
 		apiconnect.UserServiceUpdateBanProcedure,
 		apiconnect.UserServiceListBansProcedure,
 	}
@@ -74,18 +73,7 @@ func TestUserServiceModeration_Unauthenticated(t *testing.T) {
 		t.Fatalf("expected CodeUnauthenticated, got %v", connect.CodeOf(err))
 	}
 
-	// 2. UnbanUser
-	_, err = svc.UnbanUser(ctx, connect.NewRequest(&pb.UnbanUserRequest{
-		UserId: "test-user",
-	}))
-	if err == nil {
-		t.Fatal("expected unauthenticated error for UnbanUser, got nil")
-	}
-	if connect.CodeOf(err) != connect.CodeUnauthenticated {
-		t.Fatalf("expected CodeUnauthenticated, got %v", connect.CodeOf(err))
-	}
-
-	// 3. UpdateBan
+	// 2. UpdateBan
 	_, err = svc.UpdateBan(ctx, connect.NewRequest(&pb.UpdateBanRequest{
 		UserId: "test-user",
 	}))
@@ -140,14 +128,6 @@ func TestUserServiceModeration_Validation(t *testing.T) {
 	}))
 	if err == nil || connect.CodeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("expected CodeInvalidArgument for empty reason, got %v", err)
-	}
-
-	// UnbanUser: missing user identifier
-	_, err = svc.UnbanUser(ctx, connect.NewRequest(&pb.UnbanUserRequest{
-		UserId: "   ",
-	}))
-	if err == nil || connect.CodeOf(err) != connect.CodeInvalidArgument {
-		t.Fatalf("expected CodeInvalidArgument for empty user_id in UnbanUser, got %v", err)
 	}
 
 	// UpdateBan: missing user identifier

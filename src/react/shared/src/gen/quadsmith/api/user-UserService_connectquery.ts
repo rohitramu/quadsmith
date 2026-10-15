@@ -25,11 +25,6 @@ export const checkUsernameAvailable = UserService.method.checkUsernameAvailable;
 export const banUser = UserService.method.banUser;
 
 /**
- * @generated from rpc quadsmith.api.UserService.UnbanUser
- */
-export const unbanUser = UserService.method.unbanUser;
-
-/**
  * @generated from rpc quadsmith.api.UserService.UpdateBan
  */
 export const updateBan = UserService.method.updateBan;

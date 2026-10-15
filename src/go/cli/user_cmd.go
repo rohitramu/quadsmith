@@ -224,10 +224,11 @@ func initUserCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 		return filtered, cobra.ShellCompDirectiveNoFileComp
 	})
 
-	createCmd := &cobra.Command{
-		Use:   "create <username|uuid>",
-		Short: "Ban a user and suspend all linked email addresses",
-		Args:  cobra.ExactArgs(1),
+	newCmd := &cobra.Command{
+		Use:     "new <username|uuid>",
+		Aliases: []string{"create"},
+		Short:   "Ban a user and suspend all linked email addresses",
+		Args:    cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			target := strings.TrimSpace(args[0])
 			reason, _ := cmd.Flags().GetString("reason")
@@ -286,11 +287,11 @@ func initUserCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 			return nil
 		},
 	}
-	createCmd.Flags().StringVar(&banReason, "reason", "", "Infraction reason (required)")
-	_ = createCmd.MarkFlagRequired("reason")
-	createCmd.Flags().StringVar(&banNotes, "notes", "", "Internal administrator moderation notes")
-	createCmd.Flags().StringVar(&banExpiresIn, "expires-in", "", "Ban duration (e.g. 24h, 7d, 30d; omit for permanent)")
-	createCmd.Flags().BoolVar(&banYAML, "yaml", false, "Output in YAML format")
+	newCmd.Flags().StringVar(&banReason, "reason", "", "Infraction reason (required)")
+	_ = newCmd.MarkFlagRequired("reason")
+	newCmd.Flags().StringVar(&banNotes, "notes", "", "Internal administrator moderation notes")
+	newCmd.Flags().StringVar(&banExpiresIn, "expires-in", "", "Ban duration (e.g. 24h, 7d, 30d; omit for permanent)")
+	newCmd.Flags().BoolVar(&banYAML, "yaml", false, "Output in YAML format")
 
 	updateCmd := &cobra.Command{
 		Use:   "update <username|uuid>",
@@ -391,7 +392,7 @@ func initUserCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 	}
 	bansCmd.AddCommand(getCmd)
 	bansCmd.AddCommand(listCmd)
-	bansCmd.AddCommand(createCmd)
+	bansCmd.AddCommand(newCmd)
 	bansCmd.AddCommand(updateCmd)
 
 	userCmd.AddCommand(bansCmd)

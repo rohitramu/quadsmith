@@ -19,7 +19,6 @@ service UserService {
   rpc CheckUsernameAvailable(CheckUsernameAvailableRequest) returns (CheckUsernameAvailableResponse);
 
   rpc BanUser(BanUserRequest) returns (BanUserResponse);
-  rpc UnbanUser(UnbanUserRequest) returns (UnbanUserResponse);
   rpc UpdateBan(UpdateBanRequest) returns (UpdateBanResponse);
   rpc ListBans(ListBansRequest) returns (ListBansResponse);
   rpc GetUserBanStatus(GetUserBanStatusRequest) returns (GetUserBanStatusResponse);
@@ -481,17 +480,6 @@ message SeedUser {
   string role = 4;
   string bio = 5;
   int32 reputation_score = 6;
-}
-
-message UnbanUserRequest {
-  string user_id = 1; // Username or UUID of user to unban
-  string revoke_reason = 2; // Reason for unbanning
-}
-
-message UnbanUserResponse {
-  bool success = 1;
-  string message = 2;
-  Ban ban = 3;
 }
 
 message UpdateBanRequest {

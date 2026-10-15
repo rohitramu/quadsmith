@@ -3715,66 +3715,6 @@ func (s *UserService) BanUser(ctx context.Context, req *connect.Request[pb.BanUs
 	}), nil
 }
 
-func (s *UserService) UnbanUser(ctx context.Context, req *connect.Request[pb.UnbanUserRequest]) (*connect.Response[pb.UnbanUserResponse], error) {
-	userCtx := UserContextFromContext(ctx)
-	if userCtx == nil {
-		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
-	}
-	if userCtx.Role != "ADMIN" {
-		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("admin privileges required"))
-	}
-
-	targetID := strings.TrimSpace(req.Msg.GetUserId())
-	if targetID == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("user id or username required"))
-	}
-
-	revokeReason := strings.TrimSpace(req.Msg.GetRevokeReason())
-	if revokeReason == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("revoke reason required"))
-	}
-
-	var targetUUID, targetHandle string
-	err := s.db.QueryRow(ctx, `
-		SELECT uuid, id FROM users
-		WHERE LOWER(id) = LOWER($1) OR uuid::text = $1
-		LIMIT 1`, targetID).Scan(&targetUUID, &targetHandle)
-	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, connect.NewError(connect.CodeNotFound, errors.New("target user not found"))
-		}
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-
-	activeBan, err := getActiveBanForUser(ctx, s.db, targetUUID)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-	if activeBan == nil {
-		return nil, connect.NewError(connect.CodeNotFound, errors.New("no active ban found for user"))
-	}
-
-	now := time.Now()
-	_, err = s.db.Exec(ctx, `
-		UPDATE bans
-		SET revoked_at = $1, revoked_by_user_uuid = $2, revoke_reason = $3
-		WHERE uuid = $4`,
-		now, userCtx.UserUUID, revokeReason, activeBan.Uuid)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to unban user: %w", err))
-	}
-
-	activeBan.RevokedAt = timestamppb.New(now)
-	activeBan.RevokedByUserUuid = &userCtx.UserUUID
-	activeBan.RevokeReason = revokeReason
-
-	return connect.NewResponse(&pb.UnbanUserResponse{
-		Success: true,
-		Message: fmt.Sprintf("User @%s successfully unbanned", targetHandle),
-		Ban:     activeBan,
-	}), nil
-}
-
 func (s *UserService) UpdateBan(ctx context.Context, req *connect.Request[pb.UpdateBanRequest]) (*connect.Response[pb.UpdateBanResponse], error) {
 	userCtx := UserContextFromContext(ctx)
 	if userCtx == nil {
