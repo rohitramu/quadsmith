@@ -398,7 +398,6 @@ message Ban {
     (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
   string revoke_reason = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
-  repeated string banned_emails = 11 [(quadsmith.sql.column) = {ignore: true}];
 }
 
 message BannedEmail {
@@ -448,6 +447,20 @@ message UnbanUserRequest {
 }
 
 message UnbanUserResponse {
+  bool success = 1;
+  string message = 2;
+  Ban ban = 3;
+}
+
+message UpdateBanRequest {
+  string user_id = 1; // Username or UUID of user to update
+  optional string reason = 2; // Updated public infraction reason
+  optional string internal_notes = 3; // Updated private staff notes
+  optional google.protobuf.Timestamp expires_at = 4; // Updated expiration timestamp
+  bool clear_expires_at = 5; // Set true to convert temporary ban into permanent ban
+}
+
+message UpdateBanResponse {
   bool success = 1;
   string message = 2;
   Ban ban = 3;
@@ -560,34 +573,43 @@ another route, displaying a brief temporary toast notification.
 ### <a id="cli-moderation-tooling-in-qs" >CLI Moderation Tooling in qs</a>
 
 Administrative pilots managing Quadsmith use the `qs` CLI in
-[`src/go/cli`](../../src/go/cli) to enforce moderation actions:
+[`src/go/cli`](../../src/go/cli) to enforce moderation actions following the
+standard entity collection interface
+`qs user bans <username|uuid> [get|list|create|update|delete]`:
 
-1. **Ban Command**:
-
-   ```bash
-   qs user ban <username> --reason "Spamming commercial links" [--duration 7d|30d|permanent] [--notes "Reported by multiple pilots"]
-   ```
-
-2. **Unban Command**:
+1. **Create Ban**:
 
    ```bash
-   qs user unban <username> --reason "Appeal accepted by moderation team"
+   qs user bans <username|uuid> create --reason "Spamming commercial links" [--expires-in 7d|30d] [--notes "Reported by multiple pilots"]
    ```
 
-3. **List Bans**:
+2. **Get Active Ban Details**:
 
    ```bash
-   qs user bans [--user <username>] [--active-only]
+   qs user bans <username|uuid> get
    ```
 
-4. **Inspect Ban Status**:
+3. **List Ban History**:
 
    ```bash
-   qs user ban-status <username>
+   qs user bans <username|uuid> list [--active-only] [--limit 50]
    ```
 
-All commands verify `Role == "ADMIN"` and format output cleanly in human or JSON
-mode.
+4. **Update Active Ban**:
+
+   ```bash
+   qs user bans <username|uuid> update [--reason "..."] [--expires-in 14d] [--permanent] [--notes "..."]
+   ```
+
+5. **Delete (Unban) Active Ban**:
+
+   ```bash
+   qs user bans <username|uuid> delete [--reason "Appeal accepted by moderation team"]
+   ```
+
+All commands verify `Role == "ADMIN"`, support both `<username|uuid> <action>`
+and `<action> <username|uuid>` argument orderings, and format output cleanly in
+human tabular or `--json` / `--yaml` mode.
 
 #### <a id="alternatives-considered-cli-placement" >Alternatives considered</a>
 

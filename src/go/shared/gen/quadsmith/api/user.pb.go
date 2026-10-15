@@ -979,7 +979,6 @@ type Ban struct {
 	RevokedAt         *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=revoked_at,json=revokedAt,proto3" json:"revoked_at,omitempty"`
 	RevokedByUserUuid *string                `protobuf:"bytes,9,opt,name=revoked_by_user_uuid,json=revokedByUserUuid,proto3,oneof" json:"revoked_by_user_uuid,omitempty"`
 	RevokeReason      string                 `protobuf:"bytes,10,opt,name=revoke_reason,json=revokeReason,proto3" json:"revoke_reason,omitempty"`
-	BannedEmails      []string               `protobuf:"bytes,11,rep,name=banned_emails,json=bannedEmails,proto3" json:"banned_emails,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -1082,13 +1081,6 @@ func (x *Ban) GetRevokeReason() string {
 		return x.RevokeReason
 	}
 	return ""
-}
-
-func (x *Ban) GetBannedEmails() []string {
-	if x != nil {
-		return x.BannedEmails
-	}
-	return nil
 }
 
 type BannedEmail struct {
@@ -1943,6 +1935,142 @@ func (x *UnbanUserResponse) GetBan() *Ban {
 	return nil
 }
 
+type UpdateBanRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	UserId         string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`                            // Username or UUID of user to update
+	Reason         *string                `protobuf:"bytes,2,opt,name=reason,proto3,oneof" json:"reason,omitempty"`                                    // Updated public infraction reason
+	InternalNotes  *string                `protobuf:"bytes,3,opt,name=internal_notes,json=internalNotes,proto3,oneof" json:"internal_notes,omitempty"` // Updated private staff notes
+	ExpiresAt      *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=expires_at,json=expiresAt,proto3,oneof" json:"expires_at,omitempty"`             // Updated expiration timestamp
+	ClearExpiresAt bool                   `protobuf:"varint,5,opt,name=clear_expires_at,json=clearExpiresAt,proto3" json:"clear_expires_at,omitempty"` // Set true to convert temporary ban into permanent ban
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *UpdateBanRequest) Reset() {
+	*x = UpdateBanRequest{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[25]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateBanRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateBanRequest) ProtoMessage() {}
+
+func (x *UpdateBanRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[25]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateBanRequest.ProtoReflect.Descriptor instead.
+func (*UpdateBanRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{25}
+}
+
+func (x *UpdateBanRequest) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *UpdateBanRequest) GetReason() string {
+	if x != nil && x.Reason != nil {
+		return *x.Reason
+	}
+	return ""
+}
+
+func (x *UpdateBanRequest) GetInternalNotes() string {
+	if x != nil && x.InternalNotes != nil {
+		return *x.InternalNotes
+	}
+	return ""
+}
+
+func (x *UpdateBanRequest) GetExpiresAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return nil
+}
+
+func (x *UpdateBanRequest) GetClearExpiresAt() bool {
+	if x != nil {
+		return x.ClearExpiresAt
+	}
+	return false
+}
+
+type UpdateBanResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Ban           *Ban                   `protobuf:"bytes,3,opt,name=ban,proto3" json:"ban,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateBanResponse) Reset() {
+	*x = UpdateBanResponse{}
+	mi := &file_quadsmith_api_user_proto_msgTypes[26]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateBanResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateBanResponse) ProtoMessage() {}
+
+func (x *UpdateBanResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_api_user_proto_msgTypes[26]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateBanResponse.ProtoReflect.Descriptor instead.
+func (*UpdateBanResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_api_user_proto_rawDescGZIP(), []int{26}
+}
+
+func (x *UpdateBanResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *UpdateBanResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *UpdateBanResponse) GetBan() *Ban {
+	if x != nil {
+		return x.Ban
+	}
+	return nil
+}
+
 var File_quadsmith_api_user_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_user_proto_rawDesc = "" +
@@ -2078,7 +2206,7 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"\x10token_expires_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x06R\x0etokenExpiresAt\x12?\n" +
 	"\n" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt:\x1a\xc2\xf3\x18\x10\n" +
-	"\x0eoauth_accounts\xc2\xf0\x19\x02\b\x02\"\xa6\x05\n" +
+	"\x0eoauth_accounts\xc2\xf0\x19\x02\b\x02\"\xf5\x04\n" +
 	"\x03Ban\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x124\n" +
@@ -2094,9 +2222,7 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"revoked_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x04R\trevokedAt\x12K\n" +
 	"\x14revoked_by_user_uuid\x18\t \x01(\tB\x15\xc2\xf3\x18\r\x1a\vusers(uuid)\xc0\xf0\x19\x04H\x00R\x11revokedByUserUuid\x88\x01\x01\x12)\n" +
 	"\rrevoke_reason\x18\n" +
-	" \x01(\tB\x04\xc0\xf0\x19\x04R\frevokeReason\x12/\n" +
-	"\rbanned_emails\x18\v \x03(\tB\n" +
-	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x01R\fbannedEmails:&\xc2\xf3\x18\x06\n" +
+	" \x01(\tB\x04\xc0\xf0\x19\x04R\frevokeReason:&\xc2\xf3\x18\x06\n" +
 	"\x04bans\xc2\xf0\x19\x18\b\x03\x12\x14user_uuid = $1::uuidB\x17\n" +
 	"\x15_revoked_by_user_uuid\"\xbb\x02\n" +
 	"\vBannedEmail\x12\x1e\n" +
@@ -2164,18 +2290,33 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"\x11UnbanUserResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12$\n" +
+	"\x03ban\x18\x03 \x01(\v2\x12.quadsmith.api.BanR\x03ban\"\x8b\x02\n" +
+	"\x10UpdateBanRequest\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1b\n" +
+	"\x06reason\x18\x02 \x01(\tH\x00R\x06reason\x88\x01\x01\x12*\n" +
+	"\x0einternal_notes\x18\x03 \x01(\tH\x01R\rinternalNotes\x88\x01\x01\x12>\n" +
+	"\n" +
+	"expires_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampH\x02R\texpiresAt\x88\x01\x01\x12(\n" +
+	"\x10clear_expires_at\x18\x05 \x01(\bR\x0eclearExpiresAtB\t\n" +
+	"\a_reasonB\x11\n" +
+	"\x0f_internal_notesB\r\n" +
+	"\v_expires_at\"m\n" +
+	"\x11UpdateBanResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12$\n" +
 	"\x03ban\x18\x03 \x01(\v2\x12.quadsmith.api.BanR\x03ban*\xce\x01\n" +
 	"\x1aUsernameAvailabilityStatus\x12,\n" +
 	"(USERNAME_AVAILABILITY_STATUS_UNSPECIFIED\x10\x00\x12*\n" +
 	"&USERNAME_AVAILABILITY_STATUS_AVAILABLE\x10\x01\x12,\n" +
 	"(USERNAME_AVAILABILITY_STATUS_UNAVAILABLE\x10\x02\x12(\n" +
-	"$USERNAME_AVAILABILITY_STATUS_INVALID\x10\x032\xed\x04\n" +
+	"$USERNAME_AVAILABILITY_STATUS_INVALID\x10\x032\xbd\x05\n" +
 	"\vUserService\x12=\n" +
 	"\aGetUser\x12\x1d.quadsmith.api.GetUserRequest\x1a\x13.quadsmith.api.User\x12\\\n" +
 	"\x10GetPublicProfile\x12&.quadsmith.api.GetPublicProfileRequest\x1a .quadsmith.api.PublicUserProfile\x12u\n" +
 	"\x16CheckUsernameAvailable\x12,.quadsmith.api.CheckUsernameAvailableRequest\x1a-.quadsmith.api.CheckUsernameAvailableResponse\x12H\n" +
 	"\aBanUser\x12\x1d.quadsmith.api.BanUserRequest\x1a\x1e.quadsmith.api.BanUserResponse\x12N\n" +
-	"\tUnbanUser\x12\x1f.quadsmith.api.UnbanUserRequest\x1a .quadsmith.api.UnbanUserResponse\x12K\n" +
+	"\tUnbanUser\x12\x1f.quadsmith.api.UnbanUserRequest\x1a .quadsmith.api.UnbanUserResponse\x12N\n" +
+	"\tUpdateBan\x12\x1f.quadsmith.api.UpdateBanRequest\x1a .quadsmith.api.UpdateBanResponse\x12K\n" +
 	"\bListBans\x12\x1e.quadsmith.api.ListBansRequest\x1a\x1f.quadsmith.api.ListBansResponse\x12c\n" +
 	"\x10GetUserBanStatus\x12&.quadsmith.api.GetUserBanStatusRequest\x1a'.quadsmith.api.GetUserBanStatusResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
@@ -2192,7 +2333,7 @@ func file_quadsmith_api_user_proto_rawDescGZIP() []byte {
 }
 
 var file_quadsmith_api_user_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_quadsmith_api_user_proto_msgTypes = make([]protoimpl.MessageInfo, 25)
+var file_quadsmith_api_user_proto_msgTypes = make([]protoimpl.MessageInfo, 27)
 var file_quadsmith_api_user_proto_goTypes = []any{
 	(UsernameAvailabilityStatus)(0),        // 0: quadsmith.api.UsernameAvailabilityStatus
 	(*User)(nil),                           // 1: quadsmith.api.User
@@ -2220,61 +2361,67 @@ var file_quadsmith_api_user_proto_goTypes = []any{
 	(*SeedUser)(nil),                       // 23: quadsmith.api.SeedUser
 	(*UnbanUserRequest)(nil),               // 24: quadsmith.api.UnbanUserRequest
 	(*UnbanUserResponse)(nil),              // 25: quadsmith.api.UnbanUserResponse
-	(*timestamppb.Timestamp)(nil),          // 26: google.protobuf.Timestamp
+	(*UpdateBanRequest)(nil),               // 26: quadsmith.api.UpdateBanRequest
+	(*UpdateBanResponse)(nil),              // 27: quadsmith.api.UpdateBanResponse
+	(*timestamppb.Timestamp)(nil),          // 28: google.protobuf.Timestamp
 }
 var file_quadsmith_api_user_proto_depIdxs = []int32{
-	26, // 0: quadsmith.api.User.last_renamed_at:type_name -> google.protobuf.Timestamp
-	26, // 1: quadsmith.api.User.deleted_at:type_name -> google.protobuf.Timestamp
-	26, // 2: quadsmith.api.User.created_at:type_name -> google.protobuf.Timestamp
-	26, // 3: quadsmith.api.User.updated_at:type_name -> google.protobuf.Timestamp
+	28, // 0: quadsmith.api.User.last_renamed_at:type_name -> google.protobuf.Timestamp
+	28, // 1: quadsmith.api.User.deleted_at:type_name -> google.protobuf.Timestamp
+	28, // 2: quadsmith.api.User.created_at:type_name -> google.protobuf.Timestamp
+	28, // 3: quadsmith.api.User.updated_at:type_name -> google.protobuf.Timestamp
 	10, // 4: quadsmith.api.User.active_ban:type_name -> quadsmith.api.Ban
-	26, // 5: quadsmith.api.UserProfile.updated_at:type_name -> google.protobuf.Timestamp
-	26, // 6: quadsmith.api.UserEmail.created_at:type_name -> google.protobuf.Timestamp
-	26, // 7: quadsmith.api.UserEmailOAuthAccount.created_at:type_name -> google.protobuf.Timestamp
-	26, // 8: quadsmith.api.PublicUserProfile.created_at:type_name -> google.protobuf.Timestamp
-	26, // 9: quadsmith.api.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
-	26, // 10: quadsmith.api.RefreshToken.last_used_at:type_name -> google.protobuf.Timestamp
-	26, // 11: quadsmith.api.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
-	26, // 12: quadsmith.api.EmailOtp.expires_at:type_name -> google.protobuf.Timestamp
-	26, // 13: quadsmith.api.EmailOtp.used_at:type_name -> google.protobuf.Timestamp
-	26, // 14: quadsmith.api.EmailOtp.created_at:type_name -> google.protobuf.Timestamp
-	26, // 15: quadsmith.api.EmailOtp.approved_at:type_name -> google.protobuf.Timestamp
-	26, // 16: quadsmith.api.EmailOtp.denied_at:type_name -> google.protobuf.Timestamp
-	26, // 17: quadsmith.api.UsernameHistory.renamed_at:type_name -> google.protobuf.Timestamp
-	26, // 18: quadsmith.api.UsernameHistory.first_archived_at:type_name -> google.protobuf.Timestamp
-	26, // 19: quadsmith.api.UsernameHistory.release_warning_sent_at:type_name -> google.protobuf.Timestamp
-	26, // 20: quadsmith.api.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
-	26, // 21: quadsmith.api.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
-	26, // 22: quadsmith.api.Ban.expires_at:type_name -> google.protobuf.Timestamp
-	26, // 23: quadsmith.api.Ban.created_at:type_name -> google.protobuf.Timestamp
-	26, // 24: quadsmith.api.Ban.revoked_at:type_name -> google.protobuf.Timestamp
-	26, // 25: quadsmith.api.BannedEmail.created_at:type_name -> google.protobuf.Timestamp
-	26, // 26: quadsmith.api.BanUserRequest.expires_at:type_name -> google.protobuf.Timestamp
+	28, // 5: quadsmith.api.UserProfile.updated_at:type_name -> google.protobuf.Timestamp
+	28, // 6: quadsmith.api.UserEmail.created_at:type_name -> google.protobuf.Timestamp
+	28, // 7: quadsmith.api.UserEmailOAuthAccount.created_at:type_name -> google.protobuf.Timestamp
+	28, // 8: quadsmith.api.PublicUserProfile.created_at:type_name -> google.protobuf.Timestamp
+	28, // 9: quadsmith.api.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
+	28, // 10: quadsmith.api.RefreshToken.last_used_at:type_name -> google.protobuf.Timestamp
+	28, // 11: quadsmith.api.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
+	28, // 12: quadsmith.api.EmailOtp.expires_at:type_name -> google.protobuf.Timestamp
+	28, // 13: quadsmith.api.EmailOtp.used_at:type_name -> google.protobuf.Timestamp
+	28, // 14: quadsmith.api.EmailOtp.created_at:type_name -> google.protobuf.Timestamp
+	28, // 15: quadsmith.api.EmailOtp.approved_at:type_name -> google.protobuf.Timestamp
+	28, // 16: quadsmith.api.EmailOtp.denied_at:type_name -> google.protobuf.Timestamp
+	28, // 17: quadsmith.api.UsernameHistory.renamed_at:type_name -> google.protobuf.Timestamp
+	28, // 18: quadsmith.api.UsernameHistory.first_archived_at:type_name -> google.protobuf.Timestamp
+	28, // 19: quadsmith.api.UsernameHistory.release_warning_sent_at:type_name -> google.protobuf.Timestamp
+	28, // 20: quadsmith.api.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
+	28, // 21: quadsmith.api.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
+	28, // 22: quadsmith.api.Ban.expires_at:type_name -> google.protobuf.Timestamp
+	28, // 23: quadsmith.api.Ban.created_at:type_name -> google.protobuf.Timestamp
+	28, // 24: quadsmith.api.Ban.revoked_at:type_name -> google.protobuf.Timestamp
+	28, // 25: quadsmith.api.BannedEmail.created_at:type_name -> google.protobuf.Timestamp
+	28, // 26: quadsmith.api.BanUserRequest.expires_at:type_name -> google.protobuf.Timestamp
 	10, // 27: quadsmith.api.BanUserResponse.ban:type_name -> quadsmith.api.Ban
 	0,  // 28: quadsmith.api.CheckUsernameAvailableResponse.status:type_name -> quadsmith.api.UsernameAvailabilityStatus
 	10, // 29: quadsmith.api.GetUserBanStatusResponse.active_ban:type_name -> quadsmith.api.Ban
 	10, // 30: quadsmith.api.ListBansResponse.bans:type_name -> quadsmith.api.Ban
 	23, // 31: quadsmith.api.ListUsersResponse.users:type_name -> quadsmith.api.SeedUser
 	10, // 32: quadsmith.api.UnbanUserResponse.ban:type_name -> quadsmith.api.Ban
-	19, // 33: quadsmith.api.UserService.GetUser:input_type -> quadsmith.api.GetUserRequest
-	16, // 34: quadsmith.api.UserService.GetPublicProfile:input_type -> quadsmith.api.GetPublicProfileRequest
-	14, // 35: quadsmith.api.UserService.CheckUsernameAvailable:input_type -> quadsmith.api.CheckUsernameAvailableRequest
-	12, // 36: quadsmith.api.UserService.BanUser:input_type -> quadsmith.api.BanUserRequest
-	24, // 37: quadsmith.api.UserService.UnbanUser:input_type -> quadsmith.api.UnbanUserRequest
-	20, // 38: quadsmith.api.UserService.ListBans:input_type -> quadsmith.api.ListBansRequest
-	17, // 39: quadsmith.api.UserService.GetUserBanStatus:input_type -> quadsmith.api.GetUserBanStatusRequest
-	1,  // 40: quadsmith.api.UserService.GetUser:output_type -> quadsmith.api.User
-	5,  // 41: quadsmith.api.UserService.GetPublicProfile:output_type -> quadsmith.api.PublicUserProfile
-	15, // 42: quadsmith.api.UserService.CheckUsernameAvailable:output_type -> quadsmith.api.CheckUsernameAvailableResponse
-	13, // 43: quadsmith.api.UserService.BanUser:output_type -> quadsmith.api.BanUserResponse
-	25, // 44: quadsmith.api.UserService.UnbanUser:output_type -> quadsmith.api.UnbanUserResponse
-	21, // 45: quadsmith.api.UserService.ListBans:output_type -> quadsmith.api.ListBansResponse
-	18, // 46: quadsmith.api.UserService.GetUserBanStatus:output_type -> quadsmith.api.GetUserBanStatusResponse
-	40, // [40:47] is the sub-list for method output_type
-	33, // [33:40] is the sub-list for method input_type
-	33, // [33:33] is the sub-list for extension type_name
-	33, // [33:33] is the sub-list for extension extendee
-	0,  // [0:33] is the sub-list for field type_name
+	28, // 33: quadsmith.api.UpdateBanRequest.expires_at:type_name -> google.protobuf.Timestamp
+	10, // 34: quadsmith.api.UpdateBanResponse.ban:type_name -> quadsmith.api.Ban
+	19, // 35: quadsmith.api.UserService.GetUser:input_type -> quadsmith.api.GetUserRequest
+	16, // 36: quadsmith.api.UserService.GetPublicProfile:input_type -> quadsmith.api.GetPublicProfileRequest
+	14, // 37: quadsmith.api.UserService.CheckUsernameAvailable:input_type -> quadsmith.api.CheckUsernameAvailableRequest
+	12, // 38: quadsmith.api.UserService.BanUser:input_type -> quadsmith.api.BanUserRequest
+	24, // 39: quadsmith.api.UserService.UnbanUser:input_type -> quadsmith.api.UnbanUserRequest
+	26, // 40: quadsmith.api.UserService.UpdateBan:input_type -> quadsmith.api.UpdateBanRequest
+	20, // 41: quadsmith.api.UserService.ListBans:input_type -> quadsmith.api.ListBansRequest
+	17, // 42: quadsmith.api.UserService.GetUserBanStatus:input_type -> quadsmith.api.GetUserBanStatusRequest
+	1,  // 43: quadsmith.api.UserService.GetUser:output_type -> quadsmith.api.User
+	5,  // 44: quadsmith.api.UserService.GetPublicProfile:output_type -> quadsmith.api.PublicUserProfile
+	15, // 45: quadsmith.api.UserService.CheckUsernameAvailable:output_type -> quadsmith.api.CheckUsernameAvailableResponse
+	13, // 46: quadsmith.api.UserService.BanUser:output_type -> quadsmith.api.BanUserResponse
+	25, // 47: quadsmith.api.UserService.UnbanUser:output_type -> quadsmith.api.UnbanUserResponse
+	27, // 48: quadsmith.api.UserService.UpdateBan:output_type -> quadsmith.api.UpdateBanResponse
+	21, // 49: quadsmith.api.UserService.ListBans:output_type -> quadsmith.api.ListBansResponse
+	18, // 50: quadsmith.api.UserService.GetUserBanStatus:output_type -> quadsmith.api.GetUserBanStatusResponse
+	43, // [43:51] is the sub-list for method output_type
+	35, // [35:43] is the sub-list for method input_type
+	35, // [35:35] is the sub-list for extension type_name
+	35, // [35:35] is the sub-list for extension extendee
+	0,  // [0:35] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_user_proto_init() }
@@ -2287,13 +2434,14 @@ func file_quadsmith_api_user_proto_init() {
 	file_quadsmith_api_user_proto_msgTypes[11].OneofWrappers = []any{}
 	file_quadsmith_api_user_proto_msgTypes[17].OneofWrappers = []any{}
 	file_quadsmith_api_user_proto_msgTypes[19].OneofWrappers = []any{}
+	file_quadsmith_api_user_proto_msgTypes[25].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_user_proto_rawDesc), len(file_quadsmith_api_user_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   25,
+			NumMessages:   27,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -20,6 +20,7 @@ service UserService {
 
   rpc BanUser(BanUserRequest) returns (BanUserResponse);
   rpc UnbanUser(UnbanUserRequest) returns (UnbanUserResponse);
+  rpc UpdateBan(UpdateBanRequest) returns (UpdateBanResponse);
   rpc ListBans(ListBansRequest) returns (ListBansResponse);
   rpc GetUserBanStatus(GetUserBanStatusRequest) returns (GetUserBanStatusResponse);
 }
@@ -379,10 +380,6 @@ message Ban {
     (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
   string revoke_reason = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
-  repeated string banned_emails = 11 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PRIVATE
-  ];
 }
 
 message BannedEmail {
@@ -489,6 +486,20 @@ message UnbanUserRequest {
 }
 
 message UnbanUserResponse {
+  bool success = 1;
+  string message = 2;
+  Ban ban = 3;
+}
+
+message UpdateBanRequest {
+  string user_id = 1; // Username or UUID of user to update
+  optional string reason = 2; // Updated public infraction reason
+  optional string internal_notes = 3; // Updated private staff notes
+  optional google.protobuf.Timestamp expires_at = 4; // Updated expiration timestamp
+  bool clear_expires_at = 5; // Set true to convert temporary ban into permanent ban
+}
+
+message UpdateBanResponse {
   bool success = 1;
   string message = 2;
   Ban ban = 3;

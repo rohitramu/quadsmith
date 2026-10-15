@@ -43,12 +43,11 @@ func TestAllowedBannedProcedures(t *testing.T) {
 		apiconnect.AuthServiceRemoveUserEmailProcedure,
 		apiconnect.SocialServiceCreateReviewProcedure,
 		apiconnect.SocialServiceCreateQuestionProcedure,
-		apiconnect.SocialServiceCreateAnswerProcedure,
 		apiconnect.BuildServiceCreateBuildProcedure,
-		apiconnect.BuildServiceUpdateBuildProcedure,
 		apiconnect.BuildServiceDeleteBuildProcedure,
 		apiconnect.UserServiceBanUserProcedure,
 		apiconnect.UserServiceUnbanUserProcedure,
+		apiconnect.UserServiceUpdateBanProcedure,
 		apiconnect.UserServiceListBansProcedure,
 	}
 
@@ -86,7 +85,18 @@ func TestUserServiceModeration_Unauthenticated(t *testing.T) {
 		t.Fatalf("expected CodeUnauthenticated, got %v", connect.CodeOf(err))
 	}
 
-	// 3. ListBans
+	// 3. UpdateBan
+	_, err = svc.UpdateBan(ctx, connect.NewRequest(&pb.UpdateBanRequest{
+		UserId: "test-user",
+	}))
+	if err == nil {
+		t.Fatal("expected unauthenticated error for UpdateBan, got nil")
+	}
+	if connect.CodeOf(err) != connect.CodeUnauthenticated {
+		t.Fatalf("expected CodeUnauthenticated, got %v", connect.CodeOf(err))
+	}
+
+	// 4. ListBans
 	_, err = svc.ListBans(ctx, connect.NewRequest(&pb.ListBansRequest{}))
 	if err == nil {
 		t.Fatal("expected unauthenticated error for ListBans, got nil")
@@ -95,7 +105,7 @@ func TestUserServiceModeration_Unauthenticated(t *testing.T) {
 		t.Fatalf("expected CodeUnauthenticated, got %v", connect.CodeOf(err))
 	}
 
-	// 4. GetUserBanStatus without identifier and unauthenticated
+	// 5. GetUserBanStatus without identifier and unauthenticated
 	_, err = svc.GetUserBanStatus(ctx, connect.NewRequest(&pb.GetUserBanStatusRequest{}))
 	if err == nil {
 		t.Fatal("expected unauthenticated error for GetUserBanStatus without args, got nil")
@@ -138,5 +148,13 @@ func TestUserServiceModeration_Validation(t *testing.T) {
 	}))
 	if err == nil || connect.CodeOf(err) != connect.CodeInvalidArgument {
 		t.Fatalf("expected CodeInvalidArgument for empty user_id in UnbanUser, got %v", err)
+	}
+
+	// UpdateBan: missing user identifier
+	_, err = svc.UpdateBan(ctx, connect.NewRequest(&pb.UpdateBanRequest{
+		UserId: "   ",
+	}))
+	if err == nil || connect.CodeOf(err) != connect.CodeInvalidArgument {
+		t.Fatalf("expected CodeInvalidArgument for empty user_id in UpdateBan, got %v", err)
 	}
 }

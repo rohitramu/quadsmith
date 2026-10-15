@@ -30,6 +30,11 @@ export const banUser = UserService.method.banUser;
 export const unbanUser = UserService.method.unbanUser;
 
 /**
+ * @generated from rpc quadsmith.api.UserService.UpdateBan
+ */
+export const updateBan = UserService.method.updateBan;
+
+/**
  * @generated from rpc quadsmith.api.UserService.ListBans
  */
 export const listBans = UserService.method.listBans;

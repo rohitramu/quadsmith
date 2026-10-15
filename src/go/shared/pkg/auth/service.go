@@ -3773,6 +3773,117 @@ func (s *UserService) UnbanUser(ctx context.Context, req *connect.Request[pb.Unb
 	}), nil
 }
 
+func (s *UserService) UpdateBan(ctx context.Context, req *connect.Request[pb.UpdateBanRequest]) (*connect.Response[pb.UpdateBanResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+	if userCtx.Role != "ADMIN" {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("admin privileges required"))
+	}
+
+	targetID := strings.TrimSpace(req.Msg.GetUserId())
+	if targetID == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("user id or username required"))
+	}
+
+	// 1. Resolve user
+	var targetUUID, targetHandle string
+	err := s.db.QueryRow(ctx, `
+		SELECT uuid::text, id
+		FROM users
+		WHERE uuid::text = $1 OR LOWER(id) = LOWER($1)
+	`, targetID).Scan(&targetUUID, &targetHandle)
+	if errors.Is(err, pgx.ErrNoRows) {
+		var banUserUUID string
+		err2 := s.db.QueryRow(ctx, `
+			SELECT b.user_uuid::text, u.id
+			FROM bans b
+			JOIN users u ON u.uuid = b.user_uuid
+			WHERE b.uuid::text = $1
+		`, targetID).Scan(&banUserUUID, &targetHandle)
+		if errors.Is(err2, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user or ban %q not found", targetID))
+		}
+		targetUUID = banUserUUID
+	} else if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("database query error: %w", err))
+	}
+
+	// 2. Fetch current active ban
+	var banUUID string
+	var currReason, currNotes string
+	var currExpiresAt *time.Time
+	var createdAt time.Time
+	var bannedByUUID string
+
+	err = s.db.QueryRow(ctx, `
+		SELECT uuid::text, banned_by_user_uuid::text, reason, internal_notes, expires_at, created_at
+		FROM bans
+		WHERE user_uuid = $1::uuid
+		  AND revoked_at IS NULL
+		  AND (expires_at IS NULL OR expires_at > NOW())
+		ORDER BY created_at DESC
+		LIMIT 1
+	`, targetUUID).Scan(&banUUID, &bannedByUUID, &currReason, &currNotes, &currExpiresAt, &createdAt)
+	if errors.Is(err, pgx.ErrNoRows) {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("no active ban found for user @%s", targetHandle))
+	} else if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to lookup active ban: %w", err))
+	}
+
+	// Apply updates
+	newReason := currReason
+	if req.Msg.Reason != nil {
+		trimmed := strings.TrimSpace(req.Msg.GetReason())
+		if trimmed != "" {
+			newReason = trimmed
+		}
+	}
+
+	newNotes := currNotes
+	if req.Msg.InternalNotes != nil {
+		newNotes = strings.TrimSpace(req.Msg.GetInternalNotes())
+	}
+
+	newExpiresAt := currExpiresAt
+	if req.Msg.GetClearExpiresAt() {
+		newExpiresAt = nil
+	} else if req.Msg.ExpiresAt != nil {
+		t := req.Msg.ExpiresAt.AsTime()
+		newExpiresAt = &t
+	}
+
+	_, err = s.db.Exec(ctx, `
+		UPDATE bans
+		SET reason = $2,
+		    internal_notes = $3,
+		    expires_at = $4
+		WHERE uuid = $1::uuid
+	`, banUUID, newReason, newNotes, newExpiresAt)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update ban: %w", err))
+	}
+
+	resBan := &pb.Ban{
+		Uuid:             banUUID,
+		UserUuid:         targetUUID,
+		BannedByUserUuid: bannedByUUID,
+		Reason:           newReason,
+		InternalNotes:    newNotes,
+		CreatedAt:        timestamppb.New(createdAt),
+	}
+	if newExpiresAt != nil {
+		resBan.ExpiresAt = timestamppb.New(*newExpiresAt)
+	}
+
+	return connect.NewResponse(&pb.UpdateBanResponse{
+		Success: true,
+		Message: fmt.Sprintf("Ban on @%s successfully updated", targetHandle),
+		Ban:     resBan,
+	}), nil
+}
+
 func (s *UserService) ListBans(ctx context.Context, req *connect.Request[pb.ListBansRequest]) (*connect.Response[pb.ListBansResponse], error) {
 	userCtx := UserContextFromContext(ctx)
 	if userCtx == nil {
