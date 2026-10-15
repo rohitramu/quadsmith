@@ -4,6 +4,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 )
 
 func TestOTPGenerationAndVerification(t *testing.T) {
@@ -178,14 +180,19 @@ func TestLocationHintAndLocalIP(t *testing.T) {
 
 func TestPublicProceduresIncludeCrossDeviceEndpoints(t *testing.T) {
 	required := []string{
-		"/quadsmith.AuthService/GetLoginChallengeDetails",
-		"/quadsmith.AuthService/ApproveLoginChallenge",
-		"/quadsmith.AuthService/DenyLoginChallenge",
-		"/quadsmith.AuthService/GetLoginChallengeStatus",
+		apiconnect.AuthServiceGetLoginChallengeDetailsProcedure,
+		apiconnect.AuthServiceApproveLoginChallengeProcedure,
+		apiconnect.AuthServiceDenyLoginChallengeProcedure,
+		apiconnect.AuthServiceGetLoginChallengeStatusProcedure,
+		apiconnect.AuthServiceSendEmailOtpProcedure,
+		apiconnect.AuthServiceVerifyEmailOtpProcedure,
 	}
 	for _, proc := range required {
 		if !publicProcedures[proc] {
 			t.Errorf("expected procedure %q to be in publicProcedures, but was missing", proc)
+		}
+		if !IsPublicProcedure(proc) {
+			t.Errorf("expected procedure %q to be allowed by IsPublicProcedure, but was rejected", proc)
 		}
 	}
 }

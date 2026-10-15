@@ -8,29 +8,111 @@ import (
 
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
+
+	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 )
 
 var publicProcedures = map[string]bool{
-	"/quadsmith.AuthService/SendEmailOtp":             true,
-	"/quadsmith.AuthService/VerifyEmailOtp":           true,
-	"/quadsmith.AuthService/VerifyMagicLink":          true,
-	"/quadsmith.AuthService/GetLoginChallengeDetails": true,
-	"/quadsmith.AuthService/ApproveLoginChallenge":    true,
-	"/quadsmith.AuthService/DenyLoginChallenge":       true,
-	"/quadsmith.AuthService/GetLoginChallengeStatus":  true,
-	"/quadsmith.AuthService/CompleteAccountSetup":     true,
-	"/quadsmith.AuthService/RefreshToken":             true,
-	"/quadsmith.UserService/CheckUsernameAvailable":   true,
+	// AuthService public endpoints
+	apiconnect.AuthServiceSendEmailOtpProcedure:             true,
+	apiconnect.AuthServiceVerifyEmailOtpProcedure:           true,
+	apiconnect.AuthServiceVerifyMagicLinkProcedure:          true,
+	apiconnect.AuthServiceGetLoginChallengeDetailsProcedure: true,
+	apiconnect.AuthServiceApproveLoginChallengeProcedure:    true,
+	apiconnect.AuthServiceDenyLoginChallengeProcedure:       true,
+	apiconnect.AuthServiceGetLoginChallengeStatusProcedure:  true,
+	apiconnect.AuthServiceCompleteAccountSetupProcedure:     true,
+	apiconnect.AuthServiceRefreshTokenProcedure:             true,
+
+	// UserService public endpoints
+	apiconnect.UserServiceCheckUsernameAvailableProcedure: true,
+	apiconnect.UserServiceGetPublicProfileProcedure:       true,
 
 	// Public social queries
-	"/quadsmith.SocialService/ListReviews":            true,
-	"/quadsmith.SocialService/ListReviewComments":     true,
-	"/quadsmith.SocialService/ListQuestions":          true,
-	"/quadsmith.SocialService/ListAnswers":            true,
-	"/quadsmith.SocialService/GetEntitySocialSummary": true,
-	"/quadsmith.SocialService/GetCollection":          true,
-	"/quadsmith.SocialService/ListUserCollections":    true,
-	"/quadsmith.SocialService/ListCollectionItems":    true,
+	apiconnect.SocialServiceListReviewsProcedure:            true,
+	apiconnect.SocialServiceListReviewCommentsProcedure:     true,
+	apiconnect.SocialServiceListQuestionsProcedure:          true,
+	apiconnect.SocialServiceListAnswersProcedure:            true,
+	apiconnect.SocialServiceGetEntitySocialSummaryProcedure: true,
+	apiconnect.SocialServiceGetCollectionProcedure:          true,
+	apiconnect.SocialServiceListUserCollectionsProcedure:    true,
+	apiconnect.SocialServiceListCollectionItemsProcedure:    true,
+
+	// Search, Evaluator, Compatibility, Link Preview
+	apiconnect.SearchServiceSearchProcedure:                           true,
+	apiconnect.EvaluatorServiceEvaluateBuildProcedure:                 true,
+	apiconnect.EvaluatorServiceGetBuildElectricalLimitsProcedure:      true,
+	apiconnect.EvaluatorServiceEvaluateComponentsProcedure:            true,
+	apiconnect.EvaluatorServiceGetComponentsElectricalLimitsProcedure: true,
+	apiconnect.CompatibilityServiceCheckCompatibilityProcedure:        true,
+	apiconnect.LinkPreviewServiceGetLinkPreviewProcedure:              true,
+
+	// Build service
+	apiconnect.BuildServiceGetBuildProcedure:   true,
+	apiconnect.BuildServiceListBuildsProcedure: true,
+
+	// Component & Hardware Catalog (Get and List)
+	apiconnect.MotorServiceGetMotorProcedure:                                           true,
+	apiconnect.MotorServiceListMotorsProcedure:                                         true,
+	apiconnect.FrameServiceGetFrameProcedure:                                           true,
+	apiconnect.FrameServiceListFramesProcedure:                                         true,
+	apiconnect.BatteryServiceGetBatteryProcedure:                                       true,
+	apiconnect.BatteryServiceListBatteriesProcedure:                                    true,
+	apiconnect.ElectronicSpeedControllerServiceGetElectronicSpeedControllerProcedure:   true,
+	apiconnect.ElectronicSpeedControllerServiceListElectronicSpeedControllersProcedure: true,
+	apiconnect.FlightControllerServiceGetFlightControllerProcedure:                     true,
+	apiconnect.FlightControllerServiceListFlightControllersProcedure:                   true,
+	apiconnect.ReceiverServiceGetReceiverProcedure:                                     true,
+	apiconnect.ReceiverServiceListReceiversProcedure:                                   true,
+	apiconnect.VideoTransmitterServiceGetVideoTransmitterProcedure:                     true,
+	apiconnect.VideoTransmitterServiceListVideoTransmittersProcedure:                   true,
+	apiconnect.AntennaServiceGetAntennaProcedure:                                       true,
+	apiconnect.AntennaServiceListAntennasProcedure:                                     true,
+	apiconnect.CameraServiceGetCameraProcedure:                                         true,
+	apiconnect.CameraServiceListCamerasProcedure:                                       true,
+	apiconnect.PropellerServiceGetPropellerProcedure:                                   true,
+	apiconnect.PropellerServiceListPropellersProcedure:                                 true,
+	apiconnect.GpsReceiverServiceGetGpsReceiverProcedure:                               true,
+	apiconnect.GpsReceiverServiceListGpsReceiversProcedure:                             true,
+	apiconnect.FcFirmwareServiceGetFcFirmwareProcedure:                                 true,
+	apiconnect.FcFirmwareServiceListFcFirmwaresProcedure:                               true,
+	apiconnect.EscFirmwareServiceGetEscFirmwareProcedure:                               true,
+	apiconnect.EscFirmwareServiceListEscFirmwaresProcedure:                             true,
+	apiconnect.VtxFirmwareServiceGetVtxFirmwareProcedure:                               true,
+	apiconnect.VtxFirmwareServiceListVtxFirmwaresProcedure:                             true,
+	apiconnect.RadioFirmwareServiceGetRadioFirmwareProcedure:                           true,
+	apiconnect.RadioFirmwareServiceListRadioFirmwaresProcedure:                         true,
+	apiconnect.SoftwareToolServiceGetSoftwareToolProcedure:                             true,
+	apiconnect.SoftwareToolServiceListSoftwareToolsProcedure:                           true,
+	apiconnect.TransmitterServiceGetTransmitterProcedure:                               true,
+	apiconnect.TransmitterServiceListTransmittersProcedure:                             true,
+	apiconnect.GogglesServiceGetGogglesProcedure:                                       true,
+	apiconnect.GogglesServiceListGogglesProcedure:                                      true,
+	apiconnect.ChargerServiceGetChargerProcedure:                                       true,
+	apiconnect.ChargerServiceListChargersProcedure:                                     true,
+	apiconnect.FieldToolServiceGetFieldToolProcedure:                                   true,
+	apiconnect.FieldToolServiceListFieldToolsProcedure:                                 true,
+}
+
+// IsPublicProcedure checks whether a ConnectRPC procedure may be accessed anonymously.
+func IsPublicProcedure(procedure string) bool {
+	if publicProcedures[procedure] {
+		return true
+	}
+	// Fallback heuristic: Any Get* or List* method on domain services (excluding AuthService and UserService)
+	if strings.HasPrefix(procedure, "/quadsmith.api.") {
+		parts := strings.Split(procedure, "/")
+		if len(parts) == 3 {
+			service := parts[1]
+			method := parts[2]
+			if service != "quadsmith.api.AuthService" && service != "quadsmith.api.UserService" {
+				if strings.HasPrefix(method, "Get") || strings.HasPrefix(method, "List") {
+					return true
+				}
+			}
+		}
+	}
+	return false
 }
 
 // NewAuthInterceptor creates a ConnectRPC unary interceptor for authentication
@@ -48,7 +130,7 @@ func NewAuthInterceptor(pool *pgxpool.Pool) connect.UnaryInterceptorFunc {
 			}
 
 			// 3. Enforce authentication on protected endpoints
-			if !publicProcedures[procedure] && userCtx == nil {
+			if !IsPublicProcedure(procedure) && userCtx == nil {
 				return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 			}
 

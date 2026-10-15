@@ -8,7 +8,9 @@ export interface CreateApiTransportOptions {
 
 export function getStoredAccessToken(storageKey: string = "qs_access_token"): string | null {
   if (typeof window === "undefined" || !window.localStorage) return null;
-  return localStorage.getItem(storageKey);
+  const token = localStorage.getItem(storageKey);
+  if (!token || token === "null" || token === "undefined" || token.trim() === "") return null;
+  return token;
 }
 
 export function setStoredAccessToken(
