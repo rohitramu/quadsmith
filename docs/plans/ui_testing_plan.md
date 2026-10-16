@@ -87,7 +87,8 @@ verifies layout rendering, theme switching (dark/light mode toggles and
 `localStorage` persistence), sidebar navigation, catalog grids, and data table
 interactions in milliseconds.
 
-#### <a id="alternatives-considered-headless-dom-execution" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-headless-dom-execution" ><strong>Alternatives considered</strong></a></summary>
 
 Executing all unit, component, and routing tests inside real browser automation
 instances using tools like Playwright or Cypress.
@@ -104,6 +105,8 @@ instances using tools like Playwright or Cypress.
 - Requires running live backend daemon processes or web servers, impeding rapid
   iteration during standard development workflows.
 
+</details>
+
 ### <a id="type-safe-connectrpc-in-memory-mock-router-transports" >Type-Safe ConnectRPC In-Memory Mock Router Transports</a>
 
 Rather than intercepting network requests with raw HTTP mocks or JSON fixture
@@ -113,7 +116,8 @@ The router transport routes client RPC queries (`ListMotors`, `GetMotor`,
 `ListFrames`) directly to in-memory TypeScript handlers, returning valid
 responses, pagination tokens, or error codes.
 
-#### <a id="alternatives-considered-mock-router-transports" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-mock-router-transports" ><strong>Alternatives considered</strong></a></summary>
 
 Using network-level mocking libraries such as Mock Service Worker (MSW) or
 mocking `fetch` calls directly.
@@ -128,6 +132,8 @@ mocking `fetch` calls directly.
 - Requires maintaining loose JSON fixture files that silently drift from
   generated Protobuf contracts when schemas change.
 - Eliminates compile-time type safety across API boundaries.
+
+</details>
 
 ### <a id="application-decoupling-for-isolated-route-navigation-testing" >Application Decoupling for Isolated Route Navigation Testing</a>
 

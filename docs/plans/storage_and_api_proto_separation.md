@@ -268,7 +268,8 @@ shared definition of the `entities`-inherited field set (`id`, `name`,
   and the generated `ExportBuilds` and `Export<Component>s` functions remain
   100% unchanged.
 
-#### <a id="alternatives-considered-inherits" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-inherits" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="moving-all-21-catalog-and-build-table-definitions-into-quadsmithstore" >Moving All 21 Catalog and Build Table Definitions into `quadsmith.store`</a>
 
@@ -346,6 +347,8 @@ non-entity services (`UserService`, `AuthService`, `SocialService`,
   Social, Blob, Entity, and Ops tables whose physical columns diverge from the
   API view models.
 
+</details>
+
 ### <a id="dedicated-internal-storage-proto-package-quadsmithstore-for-auth-user-social-blob-and-ops-tables" >Dedicated Internal Storage Proto Package (`quadsmith.store`) for Auth, User, Social, Blob, and Ops Tables</a>
 
 We introduce `src/proto/quadsmith/store/` (`package quadsmith.store`,
@@ -372,7 +375,8 @@ In Go, internal packages import `storepb "quadsmith/shared/gen/quadsmith/store"`
 alongside `pb "quadsmith/shared/gen/quadsmith/api"` following the `*pb` aliasing
 rules in [`AGENTS.md`](../../AGENTS.md).
 
-#### <a id="alternatives-considered-store-package" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-store-package" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="keeping-storage-messages-in-quadsmithapi-with-separate-view-model-messages" >Keeping Storage Messages in `quadsmith.api` with Separate View Model Messages</a>
 
@@ -392,6 +396,8 @@ package.
   namespace and generated TypeScript client code.
 - Forces awkward `*Row` or `*View` suffixes onto public API message names in
   `quadsmith.api`.
+
+</details>
 
 ### <a id="normalized-social-storage-schema-and-removal-of-dead-sql-columns" >Normalized Social Storage Schema and Removal of Dead SQL Columns</a>
 
@@ -428,7 +434,8 @@ single-purpose definitions:
   `upvote_count`, `current_user_vote`, `collection`, `entity_id`, `comments`,
   etc.) with zero `quadsmith.sql` or `quadsmith.data` annotations.
 
-#### <a id="alternatives-considered-social-normalization" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-social-normalization" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="retaining-is-author-verified-owner-column-on-reviews-table" >Retaining `is_author_verified_owner` on the `reviews` SQL Table</a>
 
@@ -445,6 +452,8 @@ Keeping `bool is_author_verified_owner` on `store.Review` and in
 - Preserves a dead `BOOLEAN NOT NULL` column in PostgreSQL that is hardcoded to
   `false` on insert and never read by `GetReview`, `UpdateReview`, or
   `ListReviews`.
+
+</details>
 
 ### <a id="elimination-of-ignore-true-and-strict-1-1-table-to-column-invariant" >Elimination of `ignore: true` and Strict 1:1 Table-to-Column Invariant</a>
 
@@ -480,7 +489,8 @@ table). If an API message needs computed or joined view-only fields, its
 physical table schema must live in `quadsmith.store` while the view model lives
 in `quadsmith.api` or `quadsmith.ops`.
 
-#### <a id="alternatives-considered-ignore-removal" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-ignore-removal" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="retaining-ignore-true-for-future-computed-fields-on-table-protos" >Retaining `ignore: true` for Future Computed Fields on Table Protos</a>
 
@@ -497,6 +507,8 @@ all 208 current occurrences.
 - Re-invites the exact schema-erosion anti-pattern that produced 208 ignored
   fields and accidental database columns when developers forgot to add
   `ignore: true`.
+
+</details>
 
 ### <a id="generator-gdpr-schema-check-and-export-pipeline-alignment" >Generator, GDPR Schema Check, and Export Pipeline Alignment</a>
 
@@ -554,7 +566,8 @@ cleanly:
      (`quadsmith/shared/gen/quadsmith/api`) for all 20 component types and
      `Build`.
 
-#### <a id="alternatives-considered-generator-alignment" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-generator-alignment" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="explicit-database-file-option-in-sqlproto-instead-of-package-level-mapping" >Explicit `database` File Option in `sql.proto` Instead of Package-Level Mapping</a>
 
@@ -574,9 +587,12 @@ defines SQL tables.
   `quadsmith.store` + `quadsmith.api`, and `quadsmith_ops` for operations tables
   in `quadsmith/store/ops.proto`).
 
+</details>
+
 ---
 
-## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+<details>
+<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
 
 ### <a id="networked-data-plane-microservice-server-data-and-control-plane-api-split" >Networked Data Plane Microservice (`server-data`) and Control Plane API Split</a>
 
@@ -682,6 +698,8 @@ Deleting [`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go) and
   code generator to prevent unclassified database columns from slipping in.
 - Requires manually synchronizing column additions across `.sql` files, `.proto`
   files, and Go store queries.
+
+</details>
 
 ---
 

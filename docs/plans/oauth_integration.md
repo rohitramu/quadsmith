@@ -206,7 +206,8 @@ enum OAuthPurpose {
 }
 ```
 
-#### <a id="alternatives-considered-handshake-architecture" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-handshake-architecture" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="pure-backend-http-redirect-endpoints" >Pure Backend HTTP Redirect Endpoints</a>
 
@@ -229,6 +230,8 @@ parameters.
   by unit tests in
   [`src/react/app-web/src/test/mocks/transport.ts`](../../src/react/app-web/src/test/mocks/transport.ts).
 
+</details>
+
 ### <a id="provider-scopes-real-email-extraction-and-multi-email-import" >Provider Scopes, Real Email Extraction, and Multi-Email Import</a>
 
 A new provider client package in `src/go/shared/pkg/auth/oauth.go` will
@@ -240,7 +243,8 @@ implement strict real-email extraction for each provider:
 | **GitHub**  | `read:user user:email` | Token: `https://github.com/login/oauth/access_token`<br>Profile: `https://api.github.com/user`<br>Emails: `https://api.github.com/user/emails` | Query [`GET /user/emails`](https://docs.github.com/en/rest/users/emails) so private GitHub emails are still returned. Filter for `verified == true` and exclude `@users.noreply.github.com`. Import **all** verified real emails, marking GitHub's `primary: true` address as the primary email. |
 | **Discord** | `identify email`       | Token: `https://discord.com/api/v10/oauth2/token`<br>Profile: `https://discord.com/api/v10/users/@me`                                          | Require `email != ""` and `verified == true` on the [Discord User object](https://discord.com/developers/docs/resources/user#user-object) (rejecting unverified Discord accounts). Construct avatar URL from `id` and `avatar` hash.                                                             |
 
-#### <a id="alternatives-considered-multi-email-import" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-multi-email-import" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="import-only-primary-github-email" >Import Only Primary GitHub Email</a>
 
@@ -260,6 +264,8 @@ except the single `primary: true` entry.
   GitHub multi-email payloads.
 - Prevents users from signing in via Email OTP or magic link using their
   secondary verified GitHub email addresses.
+
+</details>
 
 ### <a id="account-matching-explicit-merge-confirmation-and-new-user-setup" >Account Matching, Explicit Merge Confirmation, and New-User Setup</a>
 
@@ -309,7 +315,8 @@ applies deterministic account resolution:
     [`AccountSettingsPage.tsx`](../../src/react/app-web/src/pages/AccountSettingsPage.tsx#L1303-L1500)
     opens the existing **Confirm Account Merge** dialog.
 
-#### <a id="alternatives-considered-account-matching-and-setup" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-account-matching-and-setup" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="silent-multi-account-auto-merging" >Silent Multi-Account Auto-Merging</a>
 
@@ -338,6 +345,8 @@ handle or skipping the Account Setup screen by auto-generating a username.
 
 - Encourages users to accept auto-suggested handles without deliberate review,
   which is undesirable given Quadsmith's 30-day username rename cooldown.
+
+</details>
 
 ### <a id="associated-emails-provenance-badges-and-inline-unlinking" >Associated Emails Provenance Badges and Inline Unlinking</a>
 
@@ -372,7 +381,8 @@ without adding a separate "Connected Accounts" section:
   `ADD_EMAIL` mode on the email input step, it displays an `"OR LINK VIA OAUTH"`
   divider followed by **Google**, **GitHub**, and **Discord** buttons.
 
-#### <a id="alternatives-considered-account-settings-ui" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-account-settings-ui" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="dedicated-connected-accounts-section" >Dedicated Connected Accounts Section</a>
 
@@ -403,6 +413,8 @@ without an `×` button, allowing removal only via the row-level Trash button.
 
 - Makes it impossible to unlink an OAuth provider from a primary email that is
   also verified via Email OTP without first changing the primary email.
+
+</details>
 
 ### <a id="stateless-oauth-database-schema-and-uniqueness-constraints" >Stateless OAuth Database Schema and Uniqueness Constraints</a>
 
@@ -450,7 +462,8 @@ message OAuthAccount {
 }
 ```
 
-#### <a id="alternatives-considered-oauth-schema" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-oauth-schema" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="retain-provider-tokens-in-database" >Retain Provider Tokens in Database</a>
 
@@ -466,6 +479,8 @@ Keeping `access_token`, `refresh_token`, and `token_expires_at` on
 
 - Stores third-party bearer secrets in PostgreSQL despite Quadsmith having no
   background provider API calls after login.
+
+</details>
 
 ### <a id="cross-device-cli-oauth-authentication" >Cross-Device CLI OAuth Authentication</a>
 
@@ -490,7 +505,8 @@ three enhancements:
    - Calls `UnlinkOAuth` so users can disconnect `google`, `github`, or
      `discord` directly from the terminal.
 
-#### <a id="alternatives-considered-cli-oauth" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-cli-oauth" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="ephemeral-localhost-callback-listener" >Ephemeral Localhost HTTP Callback Listener</a>
 
@@ -507,6 +523,8 @@ passing that localhost URL as the OAuth `redirect_uri`.
   `127.0.0.1` is unreachable from the user's browser.
 - Rejected by GitHub and Discord OAuth apps unless `http://127.0.0.1` loopback
   redirect URIs are separately registered and maintained.
+
+</details>
 
 ### <a id="declarative-server-configuration-and-sandbox-mock-oauth-mode" >Declarative Server Configuration and Sandbox Mock OAuth Mode</a>
 
@@ -551,7 +569,8 @@ or test-specified persona codes) that `CompleteOAuth` resolves in-memory without
 external network calls, enabling full offline development and Playwright E2E
 test coverage.
 
-#### <a id="alternatives-considered-oauth-config" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-oauth-config" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="external-credentials-only-in-config" >External Credentials Only in Config</a>
 
@@ -567,9 +586,12 @@ in all environments without a `mock` configuration mode.
 - Breaks offline sandbox testing and prevents automated CI/Playwright tests from
   verifying OAuth sign-in, multi-email import, and account merging.
 
+</details>
+
 ---
 
-## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+<details>
+<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
 
 ### <a id="integrating-microsoft-apple-meta-reddit-or-steam-oauth" >Integrating Microsoft, Apple, Meta, Reddit, or Steam OAuth</a>
 
@@ -591,6 +613,8 @@ Reddit, or Steam.
 - Microsoft personal accounts permit phone-only signups and unverified external
   email aliases (`xms_edov` edge cases), while Outlook/Hotmail users are already
   served by Quadsmith's passwordless Email OTP / Magic Link flow.
+
+</details>
 
 ---
 

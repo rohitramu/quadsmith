@@ -92,6 +92,9 @@ following structure for every plan document:
 - **Blank Lines for Headings, Lists & Code Blocks**: Bulleted lists, headings
   (except on the very first line of the file), and code blocks must have a blank
   line before and after them.
+- **Collapsible Details Blocks**: Always leave a clean blank line immediately
+  after `</summary>` and before `</details>` so contained Markdown elements
+  (subheadings, lists, code blocks) parse cleanly.
 - **Line Wrapping at 80 Characters**: Lines should wrap at 80 characters
   whenever possible.
 - **Custom Anchors for All Headings**: Every heading must have a unique anchor
@@ -138,8 +141,9 @@ following structure for every plan document:
    screenshots, UI concept images, artifacts, or code snippets with path
    references as appropriate).
 
-   - Under each design decision sub-heading, an `#### Alternatives considered`
-     section with 1 sub-heading per alternative
+   - Under each design decision sub-heading, a nested collapsible
+     `<details><summary><a id="custom-anchor-text" ><strong>Alternatives considered</strong></a></summary> ... </details>`
+     block with 1 sub-heading per alternative
      (`##### <a id="custom-anchor-text" >Alternative Name</a>`). Each
      alternative must include:
 
@@ -152,7 +156,9 @@ following structure for every plan document:
 
 4. **Alternatives considered (optional)**: A sibling section following the
    Proposal for evaluating alternative high-level (conceptually broad)
-   approaches. Contains 1 sub-heading per alternative
+   approaches inside a collapsible
+   `<details><summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary> ... </details>`
+   block. Contains 1 sub-heading per alternative
    (`### <a id="custom-anchor-text" >Alternative Name</a>`) with an unbulleted
    ~2 sentence summary, unbulleted `**Pros:**` with bulleted items, and
    unbulleted `**Cons:**` with bulleted items.
@@ -184,6 +190,9 @@ Snippet to add to [AGENTS.md](../../AGENTS.md#L37-L57) under
     - **Blank Lines for Headings, Lists & Code Blocks**: Bulleted lists,
       headings (except on the very first line of the file), and code blocks must
       have a blank line before and after them.
+    - **Collapsible Details Blocks**: Always leave a clean blank line
+      immediately after `</summary>` and before `</details>` so contained
+      Markdown elements (subheadings, lists, code blocks) parse cleanly.
     - **Line Wrapping at 80 Characters**: Lines should wrap at 80 characters
       whenever possible.
     - **Custom Anchors for All Headings**: Every heading must have a unique
@@ -214,18 +223,21 @@ Snippet to add to [AGENTS.md](../../AGENTS.md#L37-L57) under
       (`### <a id="custom-anchor-text" >Design Decision</a>`) with the proposal
       explanation directly under it (using diagrams, tables, images, UI
       screenshots, UI concept images, artifacts, or code snippets with path
-      references as appropriate), and nested
-      `#### <a id="custom-anchor-text" >Alternatives considered</a>` (unbulleted
-      ~2 sentence summary, unbulleted `**Pros:**` and `**Cons:**` labels with
-      bulleted items).
+      references as appropriate), and nested collapsible
+      `<details><summary><a id="custom-anchor-text" ><strong>Alternatives considered</strong></a></summary> ... </details>`
+      (unbulleted ~2 sentence summary, unbulleted `**Pros:**` and `**Cons:**`
+      labels with bulleted items).
     - **4. Alternatives considered (optional)**: High-level conceptual
-      alternatives.
+      alternatives inside a collapsible
+      `<details><summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary> ... </details>`
+      block.
     - **5. Assumptions (optional)**: Numbered list.
     - **6. Future work (optional)**: 1 sub-heading per idea.
     - **7. Open questions (optional)**: Numbered list.
 ```
 
-#### <a id="alternatives-considered-design-decision-1" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-design-decision-1" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="loose-section-suggestions" >Loose Section Suggestions</a>
 
@@ -257,6 +269,8 @@ Always include all 7 sections even when empty by adding placeholder text such as
 - Adds noisy, valueless boilerplate to documents.
 - Distracts reviewers with empty sections.
 
+</details>
+
 ### <a id="design-decision-2-plan-lifecycle-artifacts-to-docs-plans" >Design Decision 2: Plan Lifecycle (Artifacts to `docs/plans/`)</a>
 
 Define the two-stage lifecycle for all plans:
@@ -275,7 +289,8 @@ Define the two-stage lifecycle for all plans:
    repository-relative paths (e.g., `../../AGENTS.md`) to maintain portability
    across git clones and web viewers.
 
-#### <a id="alternatives-considered-design-decision-2" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-design-decision-2" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="direct-authoring-in-docs-plans" >Direct Authoring in `docs/plans/`</a>
 
@@ -307,6 +322,8 @@ during planning review.
 - Causes "file not found" errors when clicked in the Antigravity preview,
   because relative links resolve against the artifact directory
   (`.gemini/.../brain/`) rather than the workspace root.
+
+</details>
 
 ### <a id="design-decision-3-git-commit-workflow-integration" >Design Decision 3: Git Commit Workflow Integration</a>
 
@@ -367,7 +384,8 @@ Snippet to add to [AGENTS.md](../../AGENTS.md#L12-L18) under
       before force-pushing.
 ```
 
-#### <a id="alternatives-considered-design-decision-3" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-design-decision-3" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="embed-full-plan-in-commit-message" >Embed Full Plan in Commit Message</a>
 
@@ -398,6 +416,8 @@ on the branch; always create a new commit.
 
 - Pollutes branch history with fragmented "fix" commits instead of a clean,
   cohesive initial implementation.
+
+</details>
 
 ### <a id="design-decision-4-plan-maintenance-superseding-and-archival" >Design Decision 4: Plan Maintenance, Superseding, and Archival</a>
 
@@ -437,7 +457,8 @@ Snippet to add to [AGENTS.md](../../AGENTS.md#L58-L65) under
     user.
 ```
 
-#### <a id="alternatives-considered-design-decision-4" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-design-decision-4" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="edit-superseded-plans-in-place" >Edit Superseded Plans In-Place</a>
 
@@ -469,6 +490,8 @@ have been replaced.
 - Increases the risk of agents or developers referencing outdated
   specifications.
 
+</details>
+
 ### <a id="design-decision-5-self-execution-for-this-change" >Design Decision 5: Self-Execution for this Change</a>
 
 To apply these rules:
@@ -482,7 +505,8 @@ To apply these rules:
    TL;DR.
 5. Push to remote.
 
-#### <a id="alternatives-considered-design-decision-5" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-design-decision-5" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="update-agents-md-without-saving-this-plan-to-docs-plans" >Update `AGENTS.md` without Saving this Plan to `docs/plans/`</a>
 
@@ -498,9 +522,12 @@ minimizes the number of files touched during the task.
 - Misses the opportunity to establish the first reference document following the
   new standard.
 
+</details>
+
 ---
 
-## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+<details>
+<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
 
 ### <a id="pr-driven-plans" >PR-Driven Plans</a>
 
@@ -516,6 +543,8 @@ the repository, relying on
 
 - Inaccessible when working offline or inspecting local history.
 - Hard to version alongside code refactors.
+
+</details>
 
 ---
 

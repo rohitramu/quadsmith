@@ -182,7 +182,8 @@ message InternalApiCallRecord {
   reflect `jit_grant_uuid` and the foreign key relationship
   `jit_grants ||--o{ internal_api_calls : authorizes`.
 
-#### <a id="alternatives-considered-jit-grant-uuid" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-jit-grant-uuid" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="add-foreign-key-on-jit-grant-id-text" >Add a Foreign Key Constraint Directly on `jit_grant_id TEXT`</a>
 
@@ -234,6 +235,8 @@ Treat `internal_api_calls` as an unlinked flat text log with no foreign key to
 - `jit_grants` are never hard-deleted (they transition to `EXPIRED` or `REVOKED`
   in [`ops/service.go`](../../src/go/server-ops/pkg/ops/service.go)), so
   sacrificing referential integrity provides no practical benefit.
+
+</details>
 
 ### <a id="design-decision-2-remove-accidental-denormalized-columns-on-social-tables" >Design Decision 2: Remove Accidental Denormalized Columns on Social Tables</a>
 
@@ -325,7 +328,8 @@ We:
   `ExportReviewVotes`, `ExportQuestionVotes`, and `ExportAnswerVotes` export
   their canonical UUIDs and timestamps.
 
-#### <a id="alternatives-considered-social-denormalization" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-social-denormalization" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="composite-fk-on-collection-and-entity-id" >Keep Denormalized Columns and Add Composite Foreign Keys</a>
 
@@ -363,6 +367,8 @@ Maintain the denormalized columns on `reviews`, `questions`, and
   query runs), meaning the join or projection adds zero measurable overhead.
 - Introduces hidden procedural SQL triggers outside the declarative
   `protoc-gen-sql` workflow.
+
+</details>
 
 ### <a id="design-decision-3-enforce-relational-foreign-keys-on-blob-references" >Design Decision 3: Enforce Relational Foreign Keys on `blob_references`</a>
 
@@ -415,7 +421,8 @@ We implement a two-part design for blob references:
    (`Cache-Control: public, max-age=31536000, immutable`) keyed by the
    content-addressable SHA-256 hash.
 
-#### <a id="alternatives-considered-blob-references" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-blob-references" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="keep-unconstrained-polymorphic-entity-uuid" >Keep Unconstrained `entity_uuid` on `blob_references`</a>
 
@@ -453,6 +460,8 @@ Replace `user_profiles.avatar_url` and `entities.primary_display_image` with
   `entities.media`.
 - Still requires `blob_references` for multi-item `entities.media` galleries.
 
+</details>
+
 ### <a id="design-decision-4-retain-hardware-firmware-and-os-columns-as-domain-attributes" >Design Decision 4: Retain Hardware Firmware and OS Columns as Domain Attributes</a>
 
 [`electronic_speed_controllers.firmware`](../../src/db/quadsmith_api.sql#L276)
@@ -481,7 +490,8 @@ tables:
   run Betaflight, INAV, ArduPilot, or Quicksilver depending on the pilot's
   preference.
 
-#### <a id="alternatives-considered-hardware-firmware" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-hardware-firmware" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="replace-esc-firmware-with-uuid-fk" >Replace `electronic_speed_controllers.firmware` with `esc_firmware_uuid`</a>
 
@@ -518,6 +528,8 @@ Add `esc_firmware_uuids UUID[]` on `electronic_speed_controllers` and
   elements without custom triggers.
 - Adds unnecessary relational complexity to hardware catalog entries where
   compatibility checks only need the protocol/family string.
+
+</details>
 
 ### <a id="design-decision-5-preserve-pre-account-and-post-purge-text-email-snapshots-email-otps-banned-emails" >Design Decision 5: Preserve Pre-Account and Post-Purge `TEXT` Email Snapshots (`email_otps`, `banned_emails`)</a>
 
@@ -556,7 +568,8 @@ store `TEXT` email strings rather than `user_email_uuid` foreign keys:
    `banned_emails` must outlive `user_emails` to permanently block
    re-registration under those email addresses.
 
-#### <a id="alternatives-considered-email-storage" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-email-storage" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="replace-banned-emails-email-with-user-email-uuid" >Replace `banned_emails.email` with `user_email_uuid REFERENCES user_emails(uuid)`</a>
 
@@ -590,6 +603,8 @@ Create a stub `users` and `user_emails` row before sending any OTP challenge so
   visitor mistypes an email address or abandons the login/signup screen before
   completing `VerifyEmailOtp`.
 
+</details>
+
 ### <a id="design-decision-6-retain-operator-principal-names-with-optional-token-uuid-linkage" >Design Decision 6: Retain Operator Principal Names with Optional Token UUID Linkage</a>
 
 In [`quadsmith_ops.sql`](../../src/db/quadsmith_ops.sql),
@@ -606,7 +621,8 @@ over time while their JIT grants apply across sessions to their operator
 principal name, `jit_grants.operator` and `internal_api_calls.caller` remain
 `TEXT` principal identifiers.
 
-#### <a id="alternatives-considered-ops-principals" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-ops-principals" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="create-dedicated-operators-table" >Create a Dedicated `operators` Table in `quadsmith_ops.sql`</a>
 
@@ -627,9 +643,12 @@ and `internal_api_calls.caller` with
 - Adds an extra table and join to a lightweight internal operations database
   that only has three tables.
 
+</details>
+
 ---
 
-## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+<details>
+<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
 
 ### <a id="status-quo-no-schema-changes" >Status Quo (Make No Schema Changes)</a>
 
@@ -674,6 +693,8 @@ and creating an `operators` table in `quadsmith_ops.sql`.
 - Breaks post-purge ban enforcement (`banned_emails`) when `user_emails` rows
   are deleted after 30 days under GDPR retention rules, and requires startup
   config-to-DB syncing for ops bootstrap tokens.
+
+</details>
 
 ---
 

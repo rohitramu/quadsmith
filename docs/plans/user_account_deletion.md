@@ -131,7 +131,8 @@ This two-step sequence ensures that an attacker who compromises an active web
 session cannot delete the victim's account without gaining access to the
 victim's external primary mailbox.
 
-#### <a id="alternatives-considered-deletion-safeguards" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-deletion-safeguards" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="single-click-confirmation-modal" >Single-Click Confirmation Modal</a>
 
@@ -167,6 +168,8 @@ destructive actions.
 - Incompatible with Quadsmith's passwordless authentication architecture.
 - Cannot be satisfied by OAuth-only users who do not possess a password.
 
+</details>
+
 ### <a id="in-place-handle-retention-lifecycle-option-3" >In-Place Handle Retention Lifecycle (Option 3)</a>
 
 When account deletion is verified, Quadsmith places the account into a 30-day
@@ -193,7 +196,8 @@ Why Option 3 is simpler and architecturally superior:
   endpoint returns a `NOT_FOUND` or deactivation message, shielding the
   soft-deleted user's profile from the public.
 
-#### <a id="alternatives-considered-handle-retention" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-handle-retention" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="option-1-immediate-handle-release" >Option 1: Immediate Handle Release</a>
 
@@ -232,6 +236,8 @@ handle back from `username_histories` to `users.id`.
 - Requires coordinating two separate timestamps across `users` and
   `username_histories`.
 
+</details>
+
 ### <a id="architectural-relationship-usersdeleted_at-and-username_histories" >Architectural Relationship: `users.deleted_at` and `username_histories`</a>
 
 A core design consideration is clarifying the functional boundary between
@@ -260,7 +266,8 @@ A core design consideration is clarifying the functional boundary between
    - Only when the 30-day grace period fully expires does the scrubber alter
      `users.id`.
 
-#### <a id="alternatives-considered-relationship-to-username-histories" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-relationship-to-username-histories" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="dual-timestamp-history-synchronization" >Dual-Timestamp History Synchronization</a>
 
@@ -279,6 +286,8 @@ cancellation or purge must update both tables in parallel.
   places.
 - Introduces synchronization drift if an update succeeds in one table but fails
   in the other.
+
+</details>
 
 ### <a id="single-source-of-truth-grace-period-and-1-line-resurrection" >Single-Source-of-Truth Grace Period and 1-Line Resurrection</a>
 
@@ -316,7 +325,8 @@ sub-millisecond resurrection with zero data migration or schema gymnastics:
      in place during the grace period, the account is instantly and completely
      restored with zero risk of broken foreign keys or lost associations.
 
-#### <a id="alternatives-considered-resurrection-flow" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-resurrection-flow" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="automatic-login-resurrection" >Automatic Login Resurrection</a>
 
@@ -336,6 +346,8 @@ login.
   export data.
 - Overrides a deliberate deletion decision without explicit confirmation from
   the user.
+
+</details>
 
 ### <a id="automated-30-day-purge-scrubber-worker" >Automated 30-Day Purge Scrubber Worker</a>
 
@@ -394,7 +406,8 @@ Key architectural outcomes:
   remains present as an anonymous placeholder (`deleted-<uuid>`), preserving all
   foreign keys in published aircraft builds, questions, and replies.
 
-#### <a id="alternatives-considered-purge-scrubber" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-purge-scrubber" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="hard-cascading-deletion" >Hard Cascading Deletion</a>
 
@@ -414,6 +427,8 @@ record. All builds, posts, and comments are permanently wiped.
 - Corrupts community Q&A threads by orphaning discussions and breaking reply
   chains.
 
+</details>
+
 ### <a id="preserving-communal-content-with-anonymized-attribution" >Preserving Communal Content with Anonymized Attribution</a>
 
 Quadsmith is a collaborative engineering and hardware knowledge platform.
@@ -430,7 +445,8 @@ rely on shared wiring schematics and flight configurations:
    - Private, unpublished draft builds are pruned during the 30-day scrubber
      execution.
 
-#### <a id="alternatives-considered-communal-content" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-communal-content" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="user-elected-per-build-deletion" >User-Elected Per-Build Deletion</a>
 
@@ -449,6 +465,8 @@ deletion. Each selected build is deleted while unselected builds are anonymized.
 - Introduces complex, cluttered UI into an already critical security modal.
 - Risks breaking community builds that reference or fork the deleted
   configurations.
+
+</details>
 
 ### <a id="protobuf-api-specifications-and-rpc-contracts" >Protobuf API Specifications and RPC Contracts</a>
 
@@ -500,7 +518,8 @@ service AuthService {
 }
 ```
 
-#### <a id="alternatives-considered-rpc-specifications" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-rpc-specifications" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="dedicated-senddeleteaccountverification-rpc" >Dedicated SendDeleteAccountVerification RPC</a>
 
@@ -518,9 +537,12 @@ and response message schemas instead of the unified `SendEmailOtp` procedure.
 - Fragments frontend implementation across separate React components and state.
 - Violates the universal Email Verification architecture across Quadsmith.
 
+</details>
+
 ---
 
-## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+<details>
+<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
 
 ### <a id="immediate-hard-deletion-without-grace-period" >Immediate Hard Deletion Without Grace Period</a>
 
@@ -576,6 +598,8 @@ restoration moves the handle back from the reservation table into `users.id`.
   single-source-of-truth principle.
 - Introduces synchronization drift if cancellation or purge logic fails across
   tables.
+
+</details>
 
 ---
 

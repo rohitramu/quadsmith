@@ -149,7 +149,8 @@ below the **Profile Details** card:
     fallback when blank or invalid), and renders **Bio** as a multi-line
     `<textarea>`.
 
-#### <a id="alternatives-considered-ui-placement" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-ui-placement" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="public-profile-page-owner-only-button" >Public Profile Page Owner-Only Button</a>
 
@@ -186,6 +187,8 @@ Both buttons trigger the same verification modal component.
 - Duplicates privacy action controls across two different pages in the UI.
 - Clutters the public profile header alongside the existing "Account Settings"
   navigation button.
+
+</details>
 
 ### <a id="out-of-band-email-verification-and-signed-export-token" >Out-of-Band Email Verification and Signed Export Token</a>
 
@@ -237,7 +240,8 @@ Verification step using the universal challenge architecture in
    - Returns `export_token` and `download_url` (`/api/account/export?token=...`)
      in `VerifyEmailOtpResponse`.
 
-#### <a id="alternatives-considered-verification-flow" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-verification-flow" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="immediate-single-click-download-with-active-session" >Immediate Single-Click Download with Active Session</a>
 
@@ -275,6 +279,8 @@ complete. The user cannot download the archive directly in the modal.
   expired `.zip` files.
 - Introduces unnecessary queueing delay for typical user archives that stream in
   under one second.
+
+</details>
 
 ### <a id="declarative-data-classification-with-quadsmithdata-protobuf-options" >Declarative Data Classification with `quadsmith.data` Protobuf Options</a>
 
@@ -382,7 +388,8 @@ enforces five invariants across all Protobuf files during `make test`:
    `CONTENT_TYPE_SYSTEM_SECRET` (zero `USER_*` fields, and therefore excluded
    from export by Rule 4).
 
-#### <a id="alternatives-considered-data-classification" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-data-classification" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="hardcoded-sql-projection-queries-in-go" >Hardcoded SQL Projection Queries in Go</a>
 
@@ -441,6 +448,8 @@ export) without failing `schemacheck`. Only exported fields require annotations.
 - Removes the compile-time forcing function that requires engineers to classify
   every new database column.
 
+</details>
+
 ### <a id="compile-time-export-code-generation-in-protoc-gen-store" >Compile-Time Export Code Generation in `protoc-gen-store`</a>
 
 Using the `quadsmith.data` annotations,
@@ -495,7 +504,8 @@ generates a type-safe `Export<PluralName>` function in `*_store.pb.go` for every
    - Otherwise, if the table has a `user_uuid` column, it uses
      `user_uuid = $1::uuid`.
 
-#### <a id="alternatives-considered-codegen" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-codegen" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="runtime-descriptor-reflection-exporter" >Runtime Descriptor Reflection Exporter</a>
 
@@ -537,6 +547,8 @@ columns. Referenced records are expanded inline during export.
 - Breaks when a referenced table (such as `answers` or `oauth_accounts`) lacks a
   human-readable `id` column, and adds complex multi-join query overhead.
 
+</details>
+
 ### <a id="streaming-zip-archive-endpoint-and-modular-json-layout" >Streaming ZIP Archive Endpoint and Modular JSON Layout</a>
 
 ConnectRPC endpoints in
@@ -572,7 +584,8 @@ serves the archive via a dedicated HTTP endpoint:
 | `social.json`                          | `EXPORT_DOMAIN_SOCIAL`      | `ExportReviews`, `ExportReviewVotes`, `ExportReviewComments`, `ExportQuestions`, `ExportAnswers`, `ExportQuestionVotes`, `ExportAnswerVotes`, `ExportQuestionComments`, `ExportAnswerComments` |
 | `blobs.json` + `blobs/<id>_<filename>` | `EXPORT_DOMAIN_BLOBS`       | `ExportBlobs` (metadata written to `blobs.json`; raw `bytes` streamed into `blobs/<id>_<sanitized_filename>`)                                                                                  |
 
-#### <a id="alternatives-considered-zip-layout" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-zip-layout" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="single-monolithic-json-file-download" >Single Monolithic JSON File Download</a>
 
@@ -628,6 +641,8 @@ entire `.zip` archive is assembled in memory and serialized into Protobuf.
 - Prevents streaming browser file downloads with native `Content-Disposition`
   progress reporting.
 
+</details>
+
 ### <a id="exhaustive-gdpr-data-scope-and-surgical-security-filtering" >Exhaustive GDPR Data Scope and Surgical Security Filtering</a>
 
 To satisfy both [GDPR Article 15](https://gdpr-info.eu/art-15-gdpr/) (Right of
@@ -654,7 +669,8 @@ transient, in-flight authentication challenges as internal operational data:
    - On `OAuthAccount`, `access_token`, `refresh_token`, and `token_expires_at`
      are marked `CONTENT_TYPE_SYSTEM_SECRET`.
 
-#### <a id="alternatives-considered-data-scope" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-data-scope" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="omitting-security-json-entirely" >Omitting security.json Entirely</a>
 
@@ -692,6 +708,8 @@ addresses in `security.json` alongside `RefreshToken`.
 - Mixes transient protocol handshake buffers with durable session history.
 - Risks exposing IP/device metadata from mistyped third-party requests or
   anti-abuse counters.
+
+</details>
 
 ### <a id="single-source-of-truth-email-storage-and-primary-email-constraint" >Single-Source-of-Truth Email Storage and Primary Email Constraint</a>
 
@@ -742,7 +760,8 @@ the redundant `users.email` SQL column in
      `RemoveUserEmail` (forbidding deletion of the `is_primary = true` row),
      every active user is guaranteed to have **1 and only 1** primary email.
 
-#### <a id="alternatives-considered-email-storage" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-email-storage" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="dual-write-primary-email-on-users-table" >Dual-Write Primary Email on Users Table</a>
 
@@ -786,6 +805,8 @@ to the active primary row.
   purge.
 - Requires nullable or deferred foreign-key handling when purging `user_emails`
   for tombstoned `deleted-<uuid>` accounts.
+
+</details>
 
 ### <a id="protobuf-api-specifications-and-rpc-contracts" >Protobuf API Specifications and RPC Contracts</a>
 
@@ -842,7 +863,8 @@ message VerifyEmailOtpResponse {
 }
 ```
 
-#### <a id="alternatives-considered-protobuf-contracts" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-protobuf-contracts" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="dedicated-separate-rpcs-for-every-verification-purpose" >Dedicated Separate RPCs for Every Verification Purpose</a>
 
@@ -861,6 +883,8 @@ its own distinct request and response message types.
 - Proliferates duplicate RPCs with identical rate limiting, hashing, and TTLs.
 - Fragments frontend implementation across separate React components and state.
 - Violates the universal Email Verification architecture across Quadsmith.
+
+</details>
 
 ### <a id="cli-parity-with-qs-account-export" >CLI Parity with `qs account export`</a>
 
@@ -885,7 +909,8 @@ subcommand group with `qs account export`:
   5. Prints the saved file path and byte size upon completion (supporting
      `--format json` and `--format textproto` structured output modes).
 
-#### <a id="alternatives-considered-cli-parity" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-cli-parity" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="web-only-export-via-account-settings-ui" >Web-Only Export via Account Settings UI</a>
 
@@ -905,9 +930,12 @@ data.
 - Prevents automated E2E CLI testing and terminal-first workflows for exporting
   user archives.
 
+</details>
+
 ---
 
-## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+<details>
+<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
 
 ### <a id="asynchronous-s3-object-storage-export-pipeline" >Asynchronous S3 Object Storage Export Pipeline</a>
 
@@ -948,6 +976,8 @@ window.
   own data.
 - Fails to fulfill the self-service user experience goal on the Account Settings
   page.
+
+</details>
 
 ---
 

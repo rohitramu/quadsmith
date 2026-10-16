@@ -129,7 +129,8 @@ It accepts a dynamic `BASE_URL` environment variable:
   rasterization uniformity across different developer host operating systems
   (macOS, Linux, Windows) and CI workers.
 
-#### <a id="alternatives-considered-containerized-runner" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-containerized-runner" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="host-only-playwright-cli-execution" >Host-Only Playwright CLI Execution</a>
 
@@ -165,6 +166,8 @@ regression plugins.
 - Poor multi-tab, multi-origin, and mobile viewport emulation compared to
   Playwright.
 
+</details>
+
 ### <a id="test-suite-organization-and-directory-structure-in-testweb" >Test Suite Organization and Directory Structure in test/web</a>
 
 All E2E, visual regression, and resilience test files, Playwright configuration,
@@ -197,7 +200,8 @@ test/web/
 └── web_test.go                 # Existing Go HTTP healthz and SPA fallback test
 ```
 
-#### <a id="alternatives-considered-directory-structure" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-directory-structure" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="co-locating-e2e-inside-srcreactapp-webe2e" >Co-locating E2E Inside src/react/app-web/e2e</a>
 
@@ -227,6 +231,8 @@ Creating a new `/e2e` top-level directory at the repository root.
 - Quadsmith already centralizes integration and sandbox test suites under
   `test/` (`test/api/`, `test/sandbox/`, `test/web/`). Adding another root
   folder fragments test organization.
+
+</details>
 
 ### <a id="visual-regression-snapshot-configuration-and-diff-stability" >Visual Regression Snapshot Configuration and Diff Stability</a>
 
@@ -268,7 +274,8 @@ prevent flaky tests:
      environment variable (e.g., `PLAYWRIGHT_WORKERS=1` for single-threaded
      debugging or explicit worker counts).
 
-#### <a id="alternatives-considered-snapshot-diffing" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-snapshot-diffing" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="unrestricted-cpu-core-workers" >Unrestricted CPU-Core Worker Allocation</a>
 
@@ -313,6 +320,8 @@ Routing screenshot diffs to a cloud-hosted visual testing SaaS service.
 - Violates the hermetic, self-contained open-source testing principle of
   Quadsmith.
 
+</details>
+
 ### <a id="comprehensive-user-journey-and-surface-test-coverage" >Comprehensive User Journey and Surface Test Coverage</a>
 
 The E2E suite covers the platform's core interactive user flows and visual
@@ -356,7 +365,8 @@ surfaces using deterministic seed data provided by
      verifies the 30-day grace period notice, and exercises confirmation and
      cancellation actions.
 
-#### <a id="alternatives-considered-test-coverage" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-test-coverage" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="shallow-smoke-testing-only" >Shallow Smoke Testing Only</a>
 
@@ -371,6 +381,8 @@ flows (such as The Forge wizard or login form).
 
 - Fails to detect regressions in complex multi-step interactive state machines,
   form validations, or conditional wizard logic.
+
+</details>
 
 ### <a id="negative-scenarios-failure-handling-and-resiliency-testing" >Negative Scenarios, Failure Handling, and Resiliency Testing</a>
 
@@ -441,7 +453,8 @@ enforcement, and network fault injections:
      cleanly, no unhandled white-screen crashes occur, and clicking "Retry"
      after restoring the route successfully recovers the UI.
 
-#### <a id="alternatives-considered-failure-testing" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-failure-testing" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="relying-strictly-on-vitest-for-error-states" >Relying Strictly on Vitest for Error States</a>
 
@@ -457,6 +470,8 @@ strictly focused on happy-path flows.
 - Fails to verify real browser network failure behavior, visual styling of error
   banners, disabled button cursor styles, or DOM recovery after connection
   drops.
+
+</details>
 
 ### <a id="snapshot-storage-volume-mounts-and-update-workflow" >Snapshot Storage, Volume Mounts, and Update Workflow</a>
 
@@ -486,7 +501,8 @@ To enable seamless iteration while keeping the repository clean:
    - When tests fail, developers can inspect the full HTML report and visual
      diff viewer directly from the host at `.tmp/playwright-report/index.html`.
 
-#### <a id="alternatives-considered-snapshot-storage" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-snapshot-storage" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="git-lfs-snapshot-storage" >Git LFS Snapshot Storage</a>
 
@@ -502,6 +518,8 @@ Storing all baseline PNG screenshots in Git Large File Storage (Git LFS).
   configuration.
 - For Quadsmith's optimized PNG snapshots (~15-30KB each), standard Git handles
   hundreds of snapshots with minimal overhead.
+
+</details>
 
 ### <a id="sandbox-makefile-and-ci-integration" >Sandbox, Makefile, and CI Integration</a>
 
@@ -557,7 +575,8 @@ and CI workflows:
      uploaded via `actions/upload-artifact` using sanitized shard identifiers
      (e.g., `playwright-report-shard-1`) for immediate debugging.
 
-#### <a id="alternatives-considered-makefile-integration" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-makefile-integration" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="separate-make-test-from-test-e2e" >Separate make test from test-e2e</a>
 
@@ -572,6 +591,8 @@ E2E in `make test`.
 
 - Increases the likelihood that developers skip E2E tests, allowing visual
   regressions to land on `main`.
+
+</details>
 
 ---
 

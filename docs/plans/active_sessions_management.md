@@ -80,7 +80,8 @@ login codes, active device sessions) logically together in the upper half of the
 page, keeping cosmetic public profile customization (avatar, bio) and privacy
 exports in dedicated sections below.
 
-#### <a id="alternatives-considered-placement" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-placement" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="alt-tabbed-security-page" >Tabbed Security Page Navigation</a>
 
@@ -113,6 +114,8 @@ Profile and Data & Privacy.
   controls.
 - Forces users to scroll past public profile forms to inspect security events.
 
+</details>
+
 ### <a id="compact-session-cards-and-auto-scrollable-container" >Compact Session Cards and Auto-Scrollable Container</a>
 
 The Active Sessions component uses a space-efficient design that scales
@@ -143,7 +146,8 @@ gracefully as the user accumulates multiple device logins:
      an emerald border contour, soft emerald background fill, and a pulsing
      emerald badge (`● This Device`).
 
-#### <a id="alternatives-considered-presentation" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-presentation" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="alt-taller-unbounded-list" >Taller 3-Row Layout Without Height Limit</a>
 
@@ -175,6 +179,8 @@ Location, IP, Last Active, and Action.
 - Degrades poorly on mobile viewports, requiring horizontal scrolling.
 - Less visual hierarchy for distinguishing the current active device.
 
+</details>
+
 ### <a id="revocation-workflows-and-current-session-isolation" >Revocation Workflows and Current Session Isolation</a>
 
 The revocation workflow ensures users cannot accidentally lock themselves out
@@ -198,7 +204,8 @@ while providing decisive control over other devices:
    - The backend deletes all `refresh_tokens` for the user where
      `uuid != currentSessionUUID`.
 
-#### <a id="alternatives-considered-revocation" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-revocation" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="alt-self-revocation-in-list" >Direct Current Session Revocation Inside List</a>
 
@@ -225,6 +232,8 @@ Provide only individual session revocation buttons without a bulk action.
 
 - Tedious for users with many stale mobile or desktop logins.
 - Lacks a fast "panic button" if an account is suspected to be compromised.
+
+</details>
 
 ### <a id="database-schema-and-ip-location-tracking" >Database Schema and IP/Location Tracking</a>
 
@@ -256,7 +265,8 @@ In
 `locationHint := extractLocationHint(req.Header(), clientIP)` and inserts them
 into `refresh_tokens`. In `RefreshToken`, `last_used_at` is updated to `NOW()`.
 
-#### <a id="alternatives-considered-database" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-database" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="alt-omit-ip-location-schema" >Omit IP and Location from Schema</a>
 
@@ -270,6 +280,8 @@ Store only `device_hint` without extending the database schema.
 
 - Prevents displaying IP and geographic location hints, degrading security
   transparency.
+
+</details>
 
 ### <a id="protobuf-api-and-connectrpc-service-contracts" >Protobuf API and ConnectRPC Service Contracts</a>
 
@@ -318,7 +330,8 @@ message RevokeOtherSessionsResponse {
 }
 ```
 
-#### <a id="alternatives-considered-api" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-api" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="alt-separate-session-service" >Dedicated SessionService Protocol</a>
 
@@ -332,6 +345,8 @@ Create a brand-new `SessionService` in a separate `session.proto` file.
 
 - Over-fragments the auth domain model when all session issuance, refresh, and
   revocation logic is already anchored in `AuthService`.
+
+</details>
 
 ---
 

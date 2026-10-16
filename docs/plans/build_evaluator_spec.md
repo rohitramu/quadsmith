@@ -72,7 +72,8 @@ inertia summations:
 
 $$I_{zz} = 4 \times M_{arm} \times r^2 + I_{core}$$
 
-#### <a id="alternatives-considered-point-mass-modeling" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-point-mass-modeling" ><strong>Alternatives considered</strong></a></summary>
 
 Using full 3D CAD mesh geometry and finite element analysis (FEA) to compute
 exact volume and mass distributions.
@@ -87,6 +88,8 @@ exact volume and mass distributions.
 - Impractical for community-driven catalogs where manufacturers rarely publish
   complete 3D STEP or STL models.
 - Computationally prohibitive for interactive web and API evaluations.
+
+</details>
 
 ### <a id="analytical-aerodynamic-thrust-and-voltage-sag-modeling" >Analytical Aerodynamic Thrust and Voltage Sag Modeling</a>
 
@@ -109,7 +112,8 @@ Configuration modifiers adjust static output: ducted propeller ducts grant a
 $+15\%$ static thrust increase, while pusher configurations apply a $-5\%$
 penalty due to arm wake turbulence.
 
-#### <a id="alternatives-considered-aerodynamic-thrust-modeling" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-aerodynamic-thrust-modeling" ><strong>Alternatives considered</strong></a></summary>
 
 Empirical bench test lookup tables compiled from physical thrust stand
 measurements.
@@ -124,6 +128,8 @@ measurements.
 - Fails completely for newly released, unmeasured, or uncommon motor-propeller
   combinations.
 - Requires maintaining massive, brittle external test datasets.
+
+</details>
 
 ### <a id="aerodynamic-and-electrical-power-consumption-modeling" >Aerodynamic and Electrical Power Consumption Modeling</a>
 

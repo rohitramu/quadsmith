@@ -57,7 +57,8 @@ soft-mount spacers, and bespoke wiring harnesses that overcome catalog physical
 or electrical constraints. The system acts as an advisory assistant rather than
 a restrictive gatekeeper.
 
-#### <a id="alternatives-considered-permissive-build-persistence" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-permissive-build-persistence" ><strong>Alternatives considered</strong></a></summary>
 
 Strict persistence gating that rejects saving or publishing builds containing
 unresolved `DEFINITE_INCOMPATIBILITY` diagnostics.
@@ -74,6 +75,8 @@ unresolved `DEFINITE_INCOMPATIBILITY` diagnostics.
 - Frustrates users when catalog specifications contain minor discrepancies or
   unlisted hardware tolerances.
 
+</details>
+
 ### <a id="stateless-arbitrary-component-evaluation-api" >Stateless Arbitrary Component Evaluation API</a>
 
 The backend exposes a standalone endpoint (e.g.,
@@ -84,7 +87,8 @@ specific motor fits a chosen frame before adding it to an aircraft). The backend
 executes a single batch query to resolve specifications and known override
 issues, runs the evaluation in memory, and returns the diagnostics payload.
 
-#### <a id="alternatives-considered-stateless-evaluation-api" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-stateless-evaluation-api" ><strong>Alternatives considered</strong></a></summary>
 
 Requiring a persistent `Build` record in the database before running
 compatibility checks.
@@ -100,6 +104,8 @@ compatibility checks.
   in the frontend builder.
 - Disallows ad-hoc pairwise component checking (e.g., comparing a motor and an
   ESC in isolation).
+
+</details>
 
 ### <a id="modular-rule-checker-encapsulation-and-telemetry-grouping" >Modular Rule Checker Encapsulation and Telemetry Grouping</a>
 

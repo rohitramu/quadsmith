@@ -150,7 +150,8 @@ Key architectural benefits of this structure:
      components (`shared/`), they configure standard npm/pnpm workspaces without
      affecting the Go workspace.
 
-#### <a id="alternatives-considered-directory-reorg" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-directory-reorg" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="role-based-backend-and-frontend-directory-split" >Role-Based Backend and Frontend Directory Split</a>
 
@@ -182,6 +183,8 @@ Name the frontend tree `src/web/` instead of `src/react/`.
 - Asymmetric with `src/go/`, which names the implementation language.
 - Obscures the specific React 19 toolchain powering the frontend applications.
 
+</details>
+
 ### <a id="per-app-production-container-packaging" >Per-App Production Container Packaging</a>
 
 Each server application under [`src/go`](../../src/go) will own its dedicated,
@@ -208,7 +211,8 @@ will be removed.
      and `src/go/server-web/config`.
    - Exposes port 3000 / 443.
 
-#### <a id="alternatives-considered-per-app-dockerfiles" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-per-app-dockerfiles" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="single-multi-stage-dockerfile" >Single Root Multi-Stage Dockerfile</a>
 
@@ -225,6 +229,8 @@ select output images.
 - Violates self-containment by decoupling deployment specifications from app
   folders.
 - Forces all service packaging modifications to touch a single shared file.
+
+</details>
 
 ### <a id="pre-seeded-docker-compose-sandbox-and-test-harness" >Pre-Seeded Docker Compose Sandbox and Test Harness</a>
 
@@ -252,7 +258,8 @@ The test harness scripts [`test/start_sandbox.sh`](../../test/start_sandbox.sh)
 and [`test/run_sandbox_tests.sh`](../../test/run_sandbox_tests.sh) will be
 refactored to orchestrate `docker compose -f test/sandbox/docker-compose.yaml`.
 
-#### <a id="alternatives-considered-compose-sandbox" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-compose-sandbox" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="retain-monolithic-test-dockerfile" >Retain Monolithic test/Dockerfile</a>
 
@@ -280,6 +287,8 @@ Boot a blank `postgres:15-alpine` container and run a separate seeder service.
 
 - Imposes an 82% performance penalty (~9.2s startup) on every test run.
 - Introduces startup race conditions between Postgres init and client services.
+
+</details>
 
 ### <a id="scheduled-account-purge-daemon-registration-and-configurable-cadence" >Scheduled Account Purge Daemon Registration and Configurable Cadence</a>
 
@@ -309,7 +318,8 @@ schedules {
 }
 ```
 
-#### <a id="alternatives-considered-purge-cadence" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-purge-cadence" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="daily-twenty-four-hour-purge" >Daily 24-Hour Purge Cadence</a>
 
@@ -323,6 +333,8 @@ Run the purge scrubber once every 24 hours.
 
 - Accounts that clear the 30-day grace period remain held in an inactive state
   for up to an extra day before final handle release.
+
+</details>
 
 ### <a id="continuous-integration-workflow-and-build-verification" >Continuous Integration Workflow and Build Verification</a>
 
@@ -341,7 +353,8 @@ The GitHub Actions workflow in
   [`Makefile`](../../Makefile).
 - Ensure `make generate`, `make build`, and `make test` pass hermetically.
 
-#### <a id="alternatives-considered-ci-sync" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-ci-sync" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="ci-docker-in-docker-compose" >Running Full Compose in CI Build Step</a>
 
@@ -356,9 +369,12 @@ Execute `make test-e2e` on every pull request push.
 - Increases CI cycle duration compared to in-memory unit tests and hermetic Go
   package testing.
 
+</details>
+
 ---
 
-## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+<details>
+<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
 
 ### <a id="centralized-deploy-directory" >Centralized Deploy Directory</a>
 
@@ -393,6 +409,8 @@ merge minimal environment overlays using `proto.Merge` at runtime.
 - Violates Quadsmith's core principle of zero runtime magic and fully explicit
   configuration declarations.
 - Complicates build-time configuration verification tools (`check-config`).
+
+</details>
 
 ---
 

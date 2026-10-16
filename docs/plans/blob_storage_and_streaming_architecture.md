@@ -126,7 +126,8 @@ data transfer:
    - `GET /api/blobs/{id}/metadata`: Lightweight HTTP JSON metadata endpoint for
      direct inspection.
 
-#### <a id="alternatives-considered-control-plane-separation" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-control-plane-separation" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="alt-monolithic-connectrpc-data-plane" >Monolithic ConnectRPC Data Plane for All Transfers</a>
 
@@ -164,6 +165,8 @@ file transfers, eschewing ConnectRPC entirely for blob management.
   logic is defined in Protobuf and exposed via ConnectRPC.
 - Loses type-safe Protobuf code generation, schema validation, and reflection
   tools for metadata entities.
+
+</details>
 
 ### <a id="plain-http-media-streaming-and-byte-range-slicing" >Plain HTTP Media Streaming & Byte-Range Slicing</a>
 
@@ -223,7 +226,8 @@ preclude the use of framed RPC protocols:
 | **Kernel Zero-Copy Transfer**             | Supported (`sendfile` / `splice`)                       | Unsupported (requires Protobuf message encoding) |
 | **3D Asset & Image Loading**              | Native (`<img>`, Three.js `STLLoader`, `3MFLoader`)     | Requires custom fetch, ArrayBuffer conversion    |
 
-#### <a id="alternatives-considered-media-streaming" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-media-streaming" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="alt-media-source-extensions-client-streaming" >Client-Side ConnectRPC Stream Consumption via Media Source Extensions</a>
 
@@ -262,6 +266,8 @@ construct a JavaScript `Blob`, and attach it to a `<video>` element using
   consumption.
 - Disables seeking ahead of the download position.
 
+</details>
+
 ### <a id="content-addressed-sha-256-deduplication-and-immutable-edge-caching" >Content-Addressed SHA-256 Deduplication & Immutable Edge Caching</a>
 
 Quadsmith uses content-addressable storage for all binary blobs:
@@ -293,7 +299,8 @@ Quadsmith uses content-addressable storage for all binary blobs:
    - In contrast, ConnectRPC streaming calls use HTTP `POST` requests, which
      standard CDNs and browser HTTP caches treat as uncacheable.
 
-#### <a id="alternatives-considered-caching" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-caching" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="alt-mutable-entity-scoped-blob-urls" >Mutable Entity-Scoped Blob URLs</a>
 
@@ -311,6 +318,8 @@ Serve media using semantic, entity-bound paths such as
 - Requires active CDN cache purging whenever an entity's media is updated.
 - Prevents deduplication when multiple entities share identical assets (e.g.,
   common 3D printable STL files).
+
+</details>
 
 ### <a id="multipart-and-raw-binary-upload-pipeline" >Multipart & Raw Binary Upload Pipeline</a>
 
@@ -338,7 +347,8 @@ for dual ingestion mechanisms:
    - Rejects unsupported file formats immediately with
      `415 Unsupported Media Type`.
 
-#### <a id="alternatives-considered-upload-pipeline" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-upload-pipeline" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="alt-connectrpc-client-streaming-upload" >ConnectRPC Client-Streaming Upload RPC</a>
 
@@ -360,6 +370,8 @@ clients stream Protobuf-wrapped chunks.
   standard HTTP command-line tools (cURL, Postman).
 - Introduces unnecessary Base64 encoding overhead (+33% payload size) if a
   client falls back to JSON-encoded Connect protocol.
+
+</details>
 
 ---
 

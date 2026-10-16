@@ -141,7 +141,8 @@ There are three ways an application can bridge this protocol requirement:
      emails with no monthly subscription fee (and are free for 62,000
      emails/month on EC2). Resend offers 3,000 emails/month free.
 
-#### <a id="alternatives-considered-protocol-requirement" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-protocol-requirement" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="direct-to-mx-socket-delivery" >Direct-to-MX Socket Delivery</a>
 
@@ -159,6 +160,8 @@ external mail services by handling protocol delivery internally.
 - Outbound port 25 is blocked by default across cloud providers to prevent spam.
 - Greylisting delays of 5–15 minutes break the 3-minute verification code TTL.
 - Lack of established IP reputation causes Gmail and Outlook to discard emails.
+
+</details>
 
 ### <a id="email-ownership-verification-hybrid-oauth-and-email-verification" >Email Ownership Verification: Hybrid OAuth and Email Verification</a>
 
@@ -178,7 +181,8 @@ implements a hybrid authentication strategy:
      dispatched via an SMTP relay.
    - Guarantees universal access for users without OAuth accounts.
 
-#### <a id="alternatives-considered-ownership-verification" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-ownership-verification" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="oauth-only-authentication" >OAuth-Only Authentication</a>
 
@@ -231,6 +235,8 @@ passwords and email verification codes.
 - Cannot associate an account with an email address without an initial email
   verification step.
 
+</details>
+
 ### <a id="universal-email-verification-flow-dual-code-and-magic-link" >Universal Email Verification Flow: Dual Code and Magic Link</a>
 
 To maintain consistency and maximum user convenience, all email challenge
@@ -255,7 +261,8 @@ Flow**:
      in `email_verifications` as `used_at = NOW()`, instantly invalidating the
      other method and preventing replay attacks.
 
-#### <a id="alternatives-considered-verification-flow" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-verification-flow" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="disparate-code-only-or-link-only-challenges" >Disparate Code-Only or Link-Only Challenges</a>
 
@@ -274,6 +281,8 @@ workflow implements a bespoke challenge layout and verification handler.
 - Forces mobile users into manual code typing when 1-click verification is
   available.
 - Duplicates verification endpoints and database models across disparate flows.
+
+</details>
 
 ### <a id="oauth-email-provenance-tracking-via-junction-architecture" >OAuth Email Provenance Tracking via Junction Architecture</a>
 
@@ -361,7 +370,8 @@ message UserEmailOAuthAccount {
    GROUP BY ue.uuid;
    ```
 
-#### <a id="alternatives-considered-provenance-tracking" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-provenance-tracking" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="direct-foreign-key-on-oauth-accounts" >Direct Foreign Key on OAuth Accounts</a>
 
@@ -379,6 +389,8 @@ can associate with at most one email address.
 - Restricts an OAuth account to associating with strictly one email address.
 - Cannot ingest multiple verified secondary addresses returned by providers like
   GitHub.
+
+</details>
 
 ### <a id="unlinking-lifecycle-and-primary-email-safeguards" >Unlinking Lifecycle and Primary Email Safeguards</a>
 
@@ -399,7 +411,8 @@ When a user unlinks an external OAuth provider (e.g. unlinking GitHub):
    - If the email is a secondary address, it is automatically removed from
      `user_emails`.
 
-#### <a id="alternatives-considered-unlinking-lifecycle" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-unlinking-lifecycle" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="indefinite-retention-of-unlinked-emails" >Indefinite Retention of Unlinked Emails</a>
 
@@ -418,6 +431,8 @@ in `user_emails` indefinitely.
 - Retains unverified email records that the user may no longer control.
 - Creates stale identity records that can prevent the unlinked address from
   being used on other accounts.
+
+</details>
 
 ### <a id="standard-smtp-protocol-abstraction-emailsender" >Standard SMTP Protocol Abstraction (`EmailSender`)</a>
 
@@ -444,7 +459,8 @@ contexts. In development and testing environments, `ConsoleEmailSender` will
 continue to log formatted credentials to stdout without attempting network
 connections.
 
-#### <a id="alternatives-considered-protocol-abstraction" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-protocol-abstraction" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="vendor-proprietary-http-sdk-integration" >Vendor-Proprietary HTTP SDK Integration</a>
 
@@ -463,6 +479,8 @@ HTTP POST requests directly to commercial SaaS APIs.
   API.
 - Prevents switching to open-source self-hosted MTAs or standard SMTP relays
   without refactoring.
+
+</details>
 
 ### <a id="transactional-smtp-relay-over-direct-self-hosted-mx-delivery" >Transactional SMTP Relay over Direct Self-Hosted MX Delivery</a>
 
@@ -493,7 +511,8 @@ tiers (Resend provides 3,000 emails/month free; Amazon SES provides 62,000
 emails/month free on EC2 or charges $0.10 per 1,000 emails with zero monthly
 minimum).
 
-#### <a id="alternatives-considered-delivery-targets" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-delivery-targets" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="dedicated-self-hosted-mta-container" >Dedicated Self-Hosted MTA Container</a>
 
@@ -512,6 +531,8 @@ full DKIM/SPF/DMARC alignment.
 - High risk of verification code expiry caused by recipient greylisting delays.
 - Substantial engineering overhead maintaining IP reputation, TLS certs, and
   bounce loops.
+
+</details>
 
 ### <a id="synchronous-rpc-dispatch-with-strict-5-second-timeout" >Synchronous RPC Dispatch with Strict 5-Second Timeout</a>
 
@@ -532,7 +553,8 @@ or if the SMTP relay is experiencing an outage, preventing false-positive
 "Verification code sent" notifications when the message failed to leave the
 server.
 
-#### <a id="alternatives-considered-dispatch-timing" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-dispatch-timing" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="asynchronous-fire-and-forget-dispatch" >Asynchronous Fire-and-Forget Dispatch</a>
 
@@ -552,6 +574,8 @@ network delivery.
   fails.
 - Prevents immediate error display if the user inputs an address with invalid MX
   records.
+
+</details>
 
 ### <a id="declarative-configuration-in-configproto" >Declarative Configuration in `config.proto`</a>
 
@@ -581,7 +605,8 @@ environment variable interpolation (e.g. `${QS_SMTP_HOST}`, `${QS_SMTP_PASS}`).
 In `test.textproto` and `sandbox.textproto`, `provider` is set to `"console"`.
 In `prod.textproto`, `provider` is set to `"smtp"`.
 
-#### <a id="alternatives-considered-smtp-config" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-smtp-config" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="unstructured-environment-variable-configuration" >Unstructured Environment Variable Configuration</a>
 
@@ -599,6 +624,8 @@ at runtime without defining schema structures in `config.proto`.
 - Bypasses server startup schema validation, allowing missing credential bugs to
   reach production.
 
+</details>
+
 ### <a id="multipart-html-plaintext-mime-email-templates" >Multipart HTML & Plaintext MIME Email Templates</a>
 
 Format verification emails as RFC 2046 multipart/alternative MIME messages
@@ -611,7 +638,8 @@ containing both plaintext and HTML bodies. The email will feature:
   15 minutes").
 - Security advisory notice advising users not to share codes.
 
-#### <a id="alternatives-considered-mime-templates" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-mime-templates" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="plaintext-only-email-transmissions" >Plaintext-Only Email Transmissions</a>
 
@@ -629,9 +657,12 @@ plaintext bodies without multipart MIME or HTML formatting.
 - Appears less authentic and credible to non-technical users for security
   challenges.
 
+</details>
+
 ---
 
-## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+<details>
+<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
 
 ### <a id="proprietary-saas-vendor-sdks" >Proprietary SaaS Vendor SDKs</a>
 
@@ -708,6 +739,8 @@ messages confirm the sender's email address without sending outbound emails.
   message.
 - Vulnerable to email spoofing unless complex inbound DKIM verification is
   implemented.
+
+</details>
 
 ---
 

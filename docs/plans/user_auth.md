@@ -122,7 +122,8 @@ Users authenticate without static passwords via two pathways:
   platforms (Google, GitHub, Discord). OAuth accounts link provider account IDs
   and automatically ingest user avatars and verified email addresses.
 
-#### <a id="alternatives-considered-passwordless-auth" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-passwordless-auth" ><strong>Alternatives considered</strong></a></summary>
 
 Traditional password-based authentication with salt and bcrypt hashing.
 
@@ -136,6 +137,8 @@ Traditional password-based authentication with salt and bcrypt hashing.
   passwords.
 - Requires complex password reset flows, email confirmation links, and
   progressive hashing upgrade mechanisms.
+
+</details>
 
 ### <a id="hybrid-jwt-access-tokens-and-revocable-db-refresh-tokens" >Hybrid JWT Access Tokens and Revocable DB Refresh Tokens</a>
 
@@ -152,7 +155,8 @@ Session state uses a two-tier token model:
   their ability to obtain new access tokens, forcing re-authentication once the
   current 1-hour JWT expires.
 
-#### <a id="alternatives-considered-hybrid-jwt-tokens" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-hybrid-jwt-tokens" ><strong>Alternatives considered</strong></a></summary>
 
 Pure stateless JWTs without database-backed refresh tokens.
 
@@ -164,6 +168,8 @@ Pure stateless JWTs without database-backed refresh tokens.
 
 - Cannot revoke compromised sessions or enforce immediate user bans without
   maintaining distributed token blocklists.
+
+</details>
 
 ### <a id="two-tier-per-code-and-per-ip-throttling-safeguards" >Two-Tier Per-Code and Per-IP Throttling Safeguards</a>
 
@@ -230,7 +236,8 @@ To balance privacy rights with community knowledge preservation:
   account clears `deleted_at` and restores profile ownership. Accounts marked
   with `banned_at` are permanently barred from resurrection.
 
-#### <a id="alternatives-considered-soft-deletion-lifecycle" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-soft-deletion-lifecycle" ><strong>Alternatives considered</strong></a></summary>
 
 Hard cascading deletion that purges user records and all associated builds,
 questions, and answers.
@@ -243,6 +250,8 @@ questions, and answers.
 
 - Corrupts community troubleshooting threads, creating orphaned replies, broken
   links, and missing build configurations.
+
+</details>
 
 ---
 

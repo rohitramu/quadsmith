@@ -130,7 +130,8 @@ WHERE user_uuid = $1 AND collection != 'builds' AND is_archived = false
 ORDER BY created_at DESC;
 ```
 
-#### <a id="alternatives-considered-tpt" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-tpt" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="denormalized-dual-write" >Denormalized Dual-Write Mirroring</a>
 
@@ -163,6 +164,8 @@ social collections by joining polymorphic table references.
 - Requires a 20-table `UNION ALL` across all catalog tables to render a user's
   profile.
 
+</details>
+
 ### <a id="creator-owned-with-administrator-override-model" >Creator-Owned with Administrator Override Model</a>
 
 Every component and build in Quadsmith is created by a user and records the
@@ -181,7 +184,8 @@ originate from user contributions.
   archive a component. Unauthorized delete attempts return
   `CodePermissionDenied`.
 
-#### <a id="alternatives-considered-ownership" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-ownership" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="open-community-wiki" >Open Community Wiki</a>
 
@@ -232,6 +236,8 @@ Store `author_username` redundantly alongside `user_uuid` in `entities`,
   references to use foreign key UUIDs.
 - Unnecessary write-side overhead because read queries already join `users` to
   project avatar URLs and active profiles.
+
+</details>
 
 ### <a id="20-collection-scope-and-per-resource-connectrpc-crud-api" >20-Collection Scope and Per-Resource ConnectRPC CRUD API</a>
 
@@ -327,7 +333,8 @@ generate standard `Create<Type>`, `Update<Type>`, and `Delete<Type>` methods for
 all messages with table and collection options, performing the atomic
 `entities` + `<subtype_table>` transaction.
 
-#### <a id="alternatives-considered-scope-rpc" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-scope-rpc" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="hardware-only-scope" >Hardware-Only Scope</a>
 
@@ -361,6 +368,8 @@ handling all component types.
   AIP guidelines.
 - Forces clients and generator scripts to navigate fragile nested `oneof`s and
   weakens static compile-time type safety.
+
+</details>
 
 ### <a id="steam-style-hybrid-deletion-and-archive-visibility" >Steam-Style Hybrid Deletion and Archive Visibility</a>
 
@@ -411,7 +420,8 @@ references and protect historical builds:
   so historical builds, review threads, and shared links render properly. An
   `[Archived]` or `[Delisted]` status badge is prominently displayed.
 
-#### <a id="alternatives-considered-deletion" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-deletion" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="strict-deletion-blocking" >Strict Deletion Blocking</a>
 
@@ -442,6 +452,8 @@ referencing builds.
 - Corrupts other pilots' saved builds, breaks bill-of-materials integrity, and
   crashes the compatibility evaluator engine.
 
+</details>
+
 ### <a id="deterministic-id-slug-generation-and-immutable-urls" >Deterministic ID Slug Generation and Immutable URLs</a>
 
 Component IDs serve as public URL slugs (e.g.
@@ -462,7 +474,8 @@ Component IDs serve as public URL slugs (e.g.
   break. Physical and electrical specifications, names, images, and links remain
   fully editable.
 
-#### <a id="alternatives-considered-slugs" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-slugs" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="mutable-slug-updates" >Mutable Slug Updates</a>
 
@@ -489,6 +502,8 @@ Require users to manually specify an ID slug for every component they create.
 
 - Adds unnecessary friction to the creation process compared to auto-generating
   from manufacturer and model name.
+
+</details>
 
 ### <a id="strict-domain-validation-and-author-attribution" >Strict Domain Validation and Author Attribution</a>
 
@@ -517,7 +532,8 @@ electrical safety checks:
     components display the author's username (`Added by @username`) with a
     clickable link to their user profile.
 
-#### <a id="alternatives-considered-validation" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-validation" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="schema-type-validation-only" >Schema Type Validation Only</a>
 
@@ -548,6 +564,8 @@ differentiate platform-seeded components from user-created items.
   users.
 - Adds unnecessary visual noise to data tables.
 - Imposes an artificial hierarchy on community-maintained hardware entries.
+
+</details>
 
 ### <a id="responsive-dynamic-modal-forms-forge-quick-add-profile-tab-and-full-cli-crud" >Responsive Dynamic Modal Forms, Forge Quick-Add, Profile Tab, and Full CLI CRUD</a>
 
@@ -597,7 +615,8 @@ qs components hardware motors update tmotor-f80-pro-1900kv --max-current 55.0
 qs components hardware motors delete tmotor-f80-pro-1900kv
 ```
 
-#### <a id="alternatives-considered-ui" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-ui" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="dedicated-full-page-forms" >Dedicated Full-Page Forms</a>
 
@@ -626,9 +645,12 @@ the Go CLI as read-only.
 - Violates Quadsmith's core architectural principle of full parity between the
   Web UI, CLI, and ConnectRPC APIs.
 
+</details>
+
 ---
 
-## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+<details>
+<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
 
 ### <a id="monolithic-jsonb-component-store" >Monolithic JSONB Component Store</a>
 
@@ -647,6 +669,8 @@ operators.
 - Sacrifices strict relational schema constraints and compile-time type safety.
 - Significantly slows complex compatibility queries and numerical filter
   evaluations compared to native B-tree indexed relational columns.
+
+</details>
 
 ---
 

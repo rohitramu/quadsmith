@@ -130,7 +130,8 @@ across all entity types:
 - **Rapid Component Variants**: Pilots can quickly author new KV, cell count, or
   dimension variants in under 10 seconds without repetitive data entry.
 
-#### <a id="alternatives-considered-architectural-approach" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-architectural-approach" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="approach-a-full-suggest-edit-workflow-with-moderation-queue" >Approach A: Full Suggest Edit Workflow with Moderation Queue</a>
 
@@ -148,6 +149,8 @@ diffs that require author or admin approval.
 - Does not solve the Forge Step 0 template problem.
 - Heavyweight complexity: requires suggestion database tables, review APIs,
   email notifications, diff visualization, and merge conflict resolution.
+
+</details>
 
 ### <a id="universal-automatic-id-slug-generation" >Universal Automatic ID Slug Generation</a>
 
@@ -169,7 +172,8 @@ ID slugs are strictly system-generated and immutable:
 - **Immutability**: Once assigned, slugs remain immutable on updates to protect
   external links, bookmarks, and API references.
 
-#### <a id="alternatives-considered-slug-generation" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-slug-generation" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="manual-custom-id-slugs" >Manual Custom ID Slugs</a>
 
@@ -184,6 +188,8 @@ Allow users to optionally type a custom URL slug in form inputs.
 - Adds visual clutter to creation modals.
 - Introduces user errors (spaces, illegal characters, uppercase letters).
 - Increases collision probability with primary key UUID patterns.
+
+</details>
 
 ### <a id="complete-elimination-of-forge-step-0-and-direct-step-1-entry" >Complete Elimination of Forge Step 0 and Direct Step 1 Entry</a>
 
@@ -217,7 +223,8 @@ Step 0 is removed entirely from The Forge:
      `selectNoTemplate`, and `applyTemplate` from
      [`ForgeContext.tsx`](src/react/app-web/src/components/forge/ForgeContext.tsx).
 
-#### <a id="alternatives-considered-step-numbering" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-step-numbering" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="renumber-steps-0-to-11" >Renumber Steps from 0 to 11 (Frame as Step 0)</a>
 
@@ -231,6 +238,8 @@ Renumber Frame as Step 0 and Review as Step 11.
 
 - Confusing for users to see "Step 0" as their physical frame in UI badges.
 - Step 1 is the natural starting point for human users.
+
+</details>
 
 ### <a id="dedicated-creator-build-editing-via-builds-buildid-edit-and-updatebuild-rpc" >Dedicated Creator Build Editing via /builds/:buildId/edit and UpdateBuild RPC</a>
 
@@ -289,7 +298,8 @@ message UpdateBuildRequest {
    - Clicking submits via `BuildService.UpdateBuild({ build: { ... } })` and
      navigates back to `/builds/${buildId}` on success.
 
-#### <a id="alternatives-considered-edit-routing" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-edit-routing" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="query-parameter-editing-edit-over-dedicated-route" >Query Parameter Editing (?edit=) Over Dedicated Route</a>
 
@@ -304,6 +314,8 @@ Route edit sessions via `/builds/new?edit=<buildId>`.
 - Semantic mismatch: `/builds/new` indicates creating a _new_ resource, not
   updating an existing one.
 - Dedicated `/builds/:buildId/edit` is standard REST/AIP URL design.
+
+</details>
 
 ### <a id="url-driven-build-similar-flow-and-multi-step-pre-population" >URL-Driven 'Build Similar' Flow and Multi-Step Pre-population</a>
 
@@ -333,7 +345,8 @@ When a user initiates "Build Similar":
      allowing them to immediately swap any part or jump straight to Step 12 to
      save as a new build via `CreateBuild`.
 
-#### <a id="alternatives-considered-in-wizard-loader" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-in-wizard-loader" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="in-wizard-baseline-selector-retention" >In-Wizard Baseline Selector Retention</a>
 
@@ -348,6 +361,8 @@ Retain a "Load from Build..." button inside The Forge header toolbar.
 - Adds redundant UI controls to The Forge header.
 - The user explicitly preferred pure URL-driven loading from feed and profile
   pages.
+
+</details>
 
 ### <a id="catalog-component-create-similar-with-fully-editable-specs" >Catalog Component 'Create Similar' with Fully Editable Specs</a>
 
@@ -395,7 +410,8 @@ For the 20 catalog component collections:
 
 ---
 
-## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+<details>
+<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
 
 All major design alternatives and their pros/cons have been documented in the
 nested sub-sections above:
@@ -405,6 +421,8 @@ nested sub-sections above:
 - [Renumber Steps from 0 to 11](#renumber-steps-0-to-11)
 - [Query Parameter Editing (?edit=) Over Dedicated Route](#query-parameter-editing-edit-over-dedicated-route)
 - [In-Wizard Baseline Selector Retention](#in-wizard-baseline-selector-retention)
+
+</details>
 
 ---
 

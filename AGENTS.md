@@ -118,6 +118,9 @@ corroboration checks.
     - **Table Boundaries**: Markdown tables must always have a clean, regular
       empty blank line before and after them. Never place `&nbsp;` immediately
       after a table, which breaks table termination and merges text into cells.
+    - **Collapsible Details Blocks**: Always leave a clean blank line
+      immediately after `</summary>` and before `</details>` so contained
+      Markdown elements (subheadings, lists, code blocks) parse cleanly.
     - **Line Wrapping at 80 Characters**: Lines should wrap at 80 characters
       whenever possible.
     - **Custom Anchors for All Headings**: Every heading must have a unique
@@ -148,16 +151,18 @@ corroboration checks.
       design decision (`### <a id="custom-anchor-text" >Design Decision</a>`)
       with the proposal explanation directly under it (using diagrams, tables,
       images, UI screenshots, UI concept images, artifacts, or code snippets
-      with path references as appropriate), and nested
-      `#### <a id="custom-anchor-text" >Alternatives considered</a>` containing
-      1 sub-heading per alternative
+      with path references as appropriate), and nested collapsible
+      `<details><summary><a id="custom-anchor-text" ><strong>Alternatives considered</strong></a></summary> ... </details>`
+      containing 1 sub-heading per alternative
       (`##### <a id="custom-anchor-text" >Alternative Name</a>`), each with an
       unbulleted ~2 sentence summary explaining the alternative, an unbulleted
       `**Pros:**` label, a blank line, a bulleted list of pros compared to the
       proposal, a blank line, an unbulleted `**Cons:**` label, a blank line, and
       a bulleted list of cons compared to the proposal.
     - **4. Alternatives considered (optional)**: High-level conceptual
-      alternatives, containing 1 sub-heading per alternative
+      alternatives inside a collapsible
+      `<details><summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary> ... </details>`
+      block, containing 1 sub-heading per alternative
       (`### <a id="custom-anchor-text" >Alternative Name</a>`), each with an
       unbulleted ~2 sentence summary explaining the alternative, an unbulleted
       `**Pros:**` label, a blank line, a bulleted list of pros, a blank line, an

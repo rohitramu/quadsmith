@@ -191,7 +191,8 @@ coupled with a dimmed backdrop (`bg-slate-950/70 backdrop-blur-xs`).
   header bar wraps its primary navigation controls in a semantic `<nav>`
   element.
 
-#### <a id="alternatives-considered-mobile-navigation" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-mobile-navigation" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="fixed-bottom-navigation-tab-bar" >Fixed Bottom Navigation Tab Bar</a>
 
@@ -240,6 +241,8 @@ constraint.
   or wrap single words into vertical character columns when a browser window is
   dragged abnormally narrow.
 
+</details>
+
 ### <a id="single-row-header-responsive-search-hints-and-slash-shortcut" >Single-Row Header, Responsive Search Hints, and Slash Shortcut</a>
 
 In
@@ -275,7 +278,8 @@ are replaced with responsive sizing (`w-auto md:w-64 shrink-0`):
   component and build matches span the full mobile viewport width without
   clipping inside the narrow input box.
 
-#### <a id="alternatives-considered-mobile-header" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-mobile-header" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="search-icon-button-opening-modal-overlay" >Search Icon Button Opening Modal Overlay</a>
 
@@ -305,6 +309,8 @@ across all pages on mobile.
 - Permanently consumes `~104px` of vertical screen height on every page across
   the application.
 
+</details>
+
 ### <a id="unified-responsive-spec-card-grid-and-toolbar-sorting-in-component-catalogs" >Unified Responsive Spec Card Grid and Toolbar Sorting in Component Catalogs</a>
 
 In
@@ -331,7 +337,8 @@ action button label is streamlined to `+ Add New`:
   table header cells, sorting is equally discoverable on mobile, tablet, and
   desktop.
 
-#### <a id="alternatives-considered-catalog-cards" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-catalog-cards" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="mobile-cards-with-traditional-desktop-table" >Mobile Cards with Traditional Desktop Table</a>
 
@@ -380,6 +387,8 @@ Default to the responsive Card Grid on all viewports while providing a
   [`CollectionPage.tsx`](../../src/react/app-web/src/pages/CollectionPage.tsx)
   for marginal benefit.
 
+</details>
+
 ### <a id="custom-styled-dropdown-menus-and-theme-aware-scrollbars" >Custom-Styled Dropdown Menus and Theme-Aware Scrollbars</a>
 
 To eliminate unstyled native OS `<select>` menus and default browser scrollbars:
@@ -411,7 +420,8 @@ To eliminate unstyled native OS `<select>` menus and default browser scrollbars:
     tokens so page scrollbars, dropdown menus, slide-over drawers, and
     horizontal tab bars match Quadsmith's design system.
 
-#### <a id="alternatives-considered-dropdowns-and-scrollbars" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-dropdowns-and-scrollbars" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="native-select-elements-with-appearance-none-css" >Native Select Elements with appearance-none CSS</a>
 
@@ -427,6 +437,8 @@ open `<option>` popup menu to the operating system.
 - The open `<option>` list is still rendered by the OS window manager and cannot
   be styled with custom borders, padding, checkmarks, or dark/light theme tokens
   across browsers.
+
+</details>
 
 ### <a id="compact-collapsible-build-progress-and-live-telemetry-bar-in-the-forge" >Compact Collapsible Build Progress and Live Telemetry Bar in The Forge</a>
 
@@ -454,7 +466,8 @@ Telemetry Bar** (`lg:hidden`) positioned directly above the active step card:
   `lg:col-span-7` picker and `lg:col-span-5` sticky right-hand Selected Parts &
   Live Evaluator sidebar remain unchanged.
 
-#### <a id="alternatives-considered-forge-wizard" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-forge-wizard" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="sticky-bottom-sheet-drawer-in-the-forge" >Sticky Bottom Sheet Drawer in The Forge</a>
 
@@ -484,6 +497,8 @@ Add a 3-tab bar (`[ 1. Pick Part ]`, `[ 2. Selected Parts ]`,
 
 - Hides live `Dry Weight` and `TWR` updates while picking components unless the
   user manually switches tabs after every selection.
+
+</details>
 
 ### <a id="touch-aware-hover-card-suppression-and-tap-to-toggle-popovers" >Touch-Aware Hover Card Suppression and Tap-to-Toggle Popovers</a>
 
@@ -517,7 +532,8 @@ links. We split popover behavior into two explicit interaction categories:
      `Saved Collections`, `Account Settings`, and `Sign Out` via click/tap as
      well as hover.
 
-#### <a id="alternatives-considered-touch-interactions" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-touch-interactions" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="first-tap-previews-second-tap-navigates" >First-Tap Previews, Second-Tap Navigates</a>
 
@@ -547,6 +563,8 @@ to open a preview modal.
 
 - Clutters dense mobile cards with repetitive `(i)` buttons when all key specs
   are already shown inline on the card.
+
+</details>
 
 ### <a id="user-profile-page-consistent-add-actions-and-authoritative-component-styling" >User Profile Page: Consistent Add Actions and Authoritative Component Styling</a>
 
@@ -599,7 +617,8 @@ metadata suffered from stark inconsistencies:
        motors, Propeller for props) and authoritative color rather than a
        monochrome `Cpu` chip.
 
-#### <a id="alternatives-considered-user-profile-actions" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-user-profile-actions" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="divergent-action-labels-with-category-prefixes" >Divergent Action Labels with Category Prefixes</a>
 
@@ -632,6 +651,8 @@ community submissions from official factory catalog components.
 - Makes the profile component list look drab and incomplete, and contradicts the
   color-coded visual hierarchy used on every other catalog and collection screen
   in Quadsmith.
+
+</details>
 
 ### <a id="responsive-reflow-for-detail-pages-social-tabs-and-account-settings" >Responsive Reflow for Detail Pages, Social Tabs, and Account Settings</a>
 
@@ -686,7 +707,8 @@ cards:
   - Use responsive slot sizing (`w-10 h-12 sm:w-12 sm:h-14`) so 6-digit OTP
     inputs fit inside mobile modals with zero overflow.
 
-#### <a id="alternatives-considered-detail-pages" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-detail-pages" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="two-by-two-grid-for-social-and-profile-tabs" >2x2 Grid for Social and Profile Tabs</a>
 
@@ -701,6 +723,8 @@ mobile viewports.
 
 - Breaks the visual metaphor of a bottom-bordered tab bar and consumes double
   the vertical space above the tab content.
+
+</details>
 
 ### <a id="unit-test-and-playwright-visual-regression-baseline-updates" >Unit Test and Playwright Visual Regression Baseline Updates</a>
 
@@ -733,7 +757,8 @@ mobile viewports.
     `make test-e2e-update` and inspect the resulting mobile and desktop
     screenshots to confirm zero text clipping or layout crushing.
 
-#### <a id="alternatives-considered-testing-updates" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-testing-updates" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="disable-mobile-visual-snapshots-during-reflow" >Disable Mobile Visual Snapshots During Reflow</a>
 
@@ -750,9 +775,12 @@ on DOM visibility assertions.
   [e2e_and_visual_regression_testing.md](e2e_and_visual_regression_testing.md),
   which caught the mobile layout regressions in the first place.
 
+</details>
+
 ---
 
-## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+<details>
+<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
 
 ### <a id="separate-mobile-subdomain-or-dedicated-mobile-route-tree" >Separate Mobile Subdomain or Dedicated Mobile Route Tree</a>
 
@@ -783,6 +811,8 @@ down on mobile screens.
 
 - Produces microscopic, unreadable text (`~4px` effective font size) and tiny
   touch targets that require constant pinch-to-zoom.
+
+</details>
 
 ---
 

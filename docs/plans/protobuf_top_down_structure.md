@@ -102,7 +102,8 @@ ordering explanations:
 // ---------------------------------------------------------
 ```
 
-#### <a id="alternatives-section-structure" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-section-structure" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="numbered-section-headers" >Numbered Section Headers with Ordering Explanations</a>
 
@@ -133,6 +134,8 @@ forward-declaration requirements.
   large schema files.
 - Contradicts the user's explicit mandate for top-down architecture.
 
+</details>
+
 ### <a id="message-reference-ordering" >Message Reference Ordering</a>
 
 Sort messages based on what references them — a message should never be above
@@ -146,7 +149,8 @@ what references it:
    the same structural tier without mutual references, sort them in alphabetical
    order. This operates strictly as a lowest-precedence tie-breaker.
 
-#### <a id="alternatives-message-ordering" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-message-ordering" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="strict-global-alphabetical-ordering" >Strict Global Alphabetical Ordering</a>
 
@@ -161,6 +165,8 @@ relationships.
 
 - Scatters referencing messages and their children across the entire file.
 - Violates the rule that a message should never be above what references it.
+
+</details>
 
 ### <a id="modular-per-binary-configuration-decomposition" >Modular Per-Binary Configuration Decomposition</a>
 
@@ -182,7 +188,8 @@ All files share `package quadsmith.config;` and target the same Go package
 (`quadsmith/shared/gen/quadsmith/config;config`), preserving complete
 source-level compatibility across all existing Go and TypeScript call sites.
 
-#### <a id="alternatives-decomposition" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-decomposition" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="monolithic-single-config-file" >Monolithic Single Config File</a>
 
@@ -196,6 +203,8 @@ Retain all configuration messages in a single `config.proto` file.
 
 - Forces unrelated binaries to share a single sprawling schema file.
 - Conflates top-down ordering across distinct application domains.
+
+</details>
 
 ### <a id="codified-agents-md-rule-specification" >Codified AGENTS.md Rule Specification</a>
 

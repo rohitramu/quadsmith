@@ -143,7 +143,8 @@ Key architectural rules:
   pilot, whereas `internal_notes` is strictly restricted to callers with
   `role = 'ADMIN'`.
 
-#### <a id="alternatives-considered-database-schema" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-database-schema" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="denormalized-banned-boolean-on-users" >Denormalized Banned Boolean on Users</a>
 
@@ -179,6 +180,8 @@ credentials immediately.
 - Destroys reversible audit data if a ban is successfully appealed.
 - Disables self-service GDPR data export and account deletion rights for the
   pilot.
+
+</details>
 
 ### <a id="persistent-banned-emails-across-account-deletion" >Persistent Banned Emails Across Account Deletion</a>
 
@@ -243,7 +246,8 @@ Lifecycle behavior:
      setting `bans.revoked_at = NOW()` immediately deactivates the ban for all
      associated emails in `banned_emails`, restoring registration rights.
 
-#### <a id="alternatives-considered-banned-emails" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-banned-emails" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="retaining-user-emails-rows-for-banned-users" >Retaining user_emails Rows for Banned Users</a>
 
@@ -274,6 +278,8 @@ Storing only the primary email address directly as a `TEXT` column on `bans`.
 - Drops all secondary/additional email addresses associated with the account,
   allowing the banned pilot to immediately re-register using any secondary
   address.
+
+</details>
 
 ### <a id="fine-grained-account-enforcement-and-interceptor-controls" >Fine-Grained Account Enforcement and Interceptor Controls</a>
 
@@ -323,7 +329,8 @@ inspect their linked emails, and manage their authentication sessions:
      (`GetPublicProfile`), builds, or comments, the backend behaves identically
      to normal. Ban status is not leaked to third parties.
 
-#### <a id="alternatives-considered-interceptor-enforcement" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-interceptor-enforcement" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="immediate-token-revocation-and-login-blocking" >Immediate Token Revocation and Login Blocking</a>
 
@@ -340,6 +347,8 @@ login attempts with `CodePermissionDenied`.
 - Prevents the pilot from understanding why they were suspended.
 - Blocks legal compliance features like GDPR self-service data export and
   voluntary account deletion.
+
+</details>
 
 ### <a id="administrative-moderation-protobuf-contracts-in-userservice" >Administrative Moderation Protobuf Contracts in UserService</a>
 
@@ -483,7 +492,8 @@ message GetUserBanStatusResponse {
 }
 ```
 
-#### <a id="alternatives-considered-protobuf-services" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-protobuf-services" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="separate-moderationservice-package" >Separate ModerationService Package</a>
 
@@ -499,6 +509,8 @@ Placing ban and unban procedures in a dedicated `ModerationService` in
 
 - Proliferates micro-services and Connect handlers for a small set of methods.
 - Requires configuring and deploying an additional RPC route in server routing.
+
+</details>
 
 ### <a id="dedicated-lock-screen-and-account-settings-banned-state" >Dedicated Lock Screen and Account Settings Banned State</a>
 
@@ -548,7 +560,8 @@ two dedicated components for suspended accounts:
 +--------------------------------------------------------------------------+
 ```
 
-#### <a id="alternatives-considered-frontend-presentation" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-frontend-presentation" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="toast-notification-with-silent-redirect" >Toast Notification with Silent Redirect</a>
 
@@ -564,6 +577,8 @@ another route, displaying a brief temporary toast notification.
 
 - Confusing UX as navigation links appear broken or glitchy to the user.
 - Fails to clearly explain why navigation was intercepted.
+
+</details>
 
 ### <a id="cli-moderation-tooling-in-qs" >CLI Moderation Tooling in qs</a>
 
@@ -605,7 +620,8 @@ strictly allows `new` (with `create` alias) and `update` mutation operations
 pagination limits, and output formatting (`--json` and `--yaml`) flags common to
 all Quadsmith entity collections. All commands require `Role == "ADMIN"`.
 
-#### <a id="alternatives-considered-cli-placement" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-cli-placement" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="delete-mutation-for-unbanning" >Delete Mutation for Unbanning</a>
 
@@ -640,6 +656,8 @@ rather than `qs`.
   from moderating accounts.
 - Inconvenient for developer workflows and quick testing in the local sandbox.
 
+</details>
+
 ### <a id="post-purge-username-hold-alignment" >Post-Purge Username Hold Alignment</a>
 
 In alignment with
@@ -659,7 +677,8 @@ In alignment with
    - Bans never initiate account purges, ensuring permanent bans remain fully
      reversible by administrators without data loss.
 
-#### <a id="alternatives-considered-purge-alignment" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-purge-alignment" ><strong>Alternatives considered</strong></a></summary>
 
 ##### <a id="additional-30-day-post-purge-cooldown-in-username-histories" >Additional 30-Day Post-Purge Cooldown in username_histories</a>
 
@@ -676,9 +695,12 @@ inserting into `username_histories`.
 - Extends total handle lockup to 60 days, delaying legitimate re-registration.
 - Disaligns the purge execution from handle release.
 
+</details>
+
 ---
 
-## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+<details>
+<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
 
 ### <a id="temporary-shadow-banning" >Temporary Shadow Banning</a>
 
@@ -693,6 +715,8 @@ banned user believe everything is functioning normally.
 
 - Deceptive and violates Quadsmith's open engineering principles.
 - Creates severe debugging and customer support overhead.
+
+</details>
 
 ---
 

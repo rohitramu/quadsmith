@@ -68,7 +68,8 @@ CHECK (num_nonnulls(build_uuid, entity_uuid) = 1)
 This guarantees referential integrity, supports native cascading deletes, and
 allows foreign key joins without dynamic table lookups.
 
-#### <a id="alternatives-considered-polymorphic-relational-fk" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-polymorphic-relational-fk" ><strong>Alternatives considered</strong></a></summary>
 
 Generic polymorphic target columns storing a string `target_type` (e.g.,
 `'BUILD'`, `'COMPONENT'`) and a target UUID.
@@ -84,6 +85,8 @@ Generic polymorphic target columns storing a string `target_type` (e.g.,
   constraints.
 - Prevents database-level cascading deletes when builds or catalog components
   are pruned.
+
+</details>
 
 ### <a id="steam-style-binary-review-subsystem" >Steam-Style Binary Review Subsystem</a>
 
@@ -117,7 +120,8 @@ Displayed alongside qualitative tiers:
 Review readers can flag reviews as **Helpful** or **Unhelpful** to drive "Most
 Helpful" sorting without influencing the target entity's positive percentage.
 
-#### <a id="alternatives-considered-steam-style-binary-reviews" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-steam-style-binary-reviews" ><strong>Alternatives considered</strong></a></summary>
 
 Traditional 1-to-5 star rating systems.
 
@@ -130,6 +134,8 @@ Traditional 1-to-5 star rating systems.
 - Suffers from chronic 5-star inflation, rendering intermediate 2, 3, and 4-star
   ratings ambiguous and difficult to calibrate.
 - Blurs the line between general satisfaction and specific technical defects.
+
+</details>
 
 ### <a id="stackoverflow-style-technical-qa-subsystem" >StackOverflow-Style Technical Q&A Subsystem</a>
 
@@ -147,7 +153,8 @@ section:
   3. Net score ($\text{Upvotes} - \text{Downvotes}$)
   4. Chronological recency
 
-#### <a id="alternatives-considered-stackoverflow-style-qa" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-stackoverflow-style-qa" ><strong>Alternatives considered</strong></a></summary>
 
 A single, flat chronological comments thread beneath builds and components.
 
@@ -160,6 +167,8 @@ A single, flat chronological comments thread beneath builds and components.
 - Causes valuable wiring solutions, PID tuning tips, and fitment answers to be
   buried under casual comments.
 - Lacks mechanisms to elevate proven solutions or endorse technical accuracy.
+
+</details>
 
 ### <a id="dual-authority-answer-endorsement-badges" >Dual-Authority Answer Endorsement Badges</a>
 
@@ -212,7 +221,8 @@ are derived directly from relational vote records and endorsement events:
   24-hour window.
 - **Reputation Floor**: Total reputation cannot drop below `0`.
 
-#### <a id="alternatives-considered-reputation-karma-economy" >Alternatives considered</a>
+<details>
+<summary><a id="alternatives-considered-reputation-karma-economy" ><strong>Alternatives considered</strong></a></summary>
 
 Free, unconstrained downvoting with zero voter cost and no unlock threshold.
 
@@ -224,6 +234,8 @@ Free, unconstrained downvoting with zero voter cost and no unlock threshold.
 
 - Encourages retaliatory vote brigading and toxic pile-ons from throwaway
   accounts.
+
+</details>
 
 ### <a id="public-multi-item-collections-and-system-likes" >Public Multi-Item Collections and System Likes</a>
 
