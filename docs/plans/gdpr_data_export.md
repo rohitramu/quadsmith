@@ -222,7 +222,8 @@ Verification step using the universal challenge architecture in
      an active session is present. Upon user confirmation,
      `AuthService.ApproveLoginChallenge` marks the challenge approved and
      returns `VerifyEmailOtpResponse` containing the signed export token,
-     triggering a direct `.zip` download on Device B.
+     rendering a direct `.zip` download link on Device B while Device A
+     automatically initiates the download.
    - **Device A Reactive Completion**: While `EmailVerificationForm` displays
      the OTP input step, it continuously polls
      `AuthService.GetLoginChallengeStatus(challenge_id)`. Once approved on

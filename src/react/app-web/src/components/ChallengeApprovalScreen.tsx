@@ -105,12 +105,6 @@ export function ChallengeApprovalScreen({
         const filename = res.verifyResponse.filename || "quadsmith-data-export.zip";
         const finalUrl = rawUrl.startsWith("http") ? rawUrl : `${getApiBaseUrl()}${rawUrl}`;
         setDownloadLinkInfo({ url: finalUrl, filename });
-        const link = document.createElement("a");
-        link.href = finalUrl;
-        link.setAttribute("download", filename);
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
       }
       setApprovalState("approved");
       onApprovedRef.current?.(res);
