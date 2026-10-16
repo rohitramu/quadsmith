@@ -417,14 +417,16 @@ func (s *SocialService) ListReviews(ctx context.Context, req *connect.Request[pb
 		currentCallerUUID = u.UserUUID
 	}
 
-	orderClause := "ORDER BY (helpful_count - unhelpful_count) DESC, r.created_at DESC"
+	const netHelpfulOrderExpr = "(COALESCE(SUM(CASE WHEN v.is_helpful = true THEN 1 ELSE 0 END), 0) - COALESCE(SUM(CASE WHEN v.is_helpful = false THEN 1 ELSE 0 END), 0))"
+
+	orderClause := fmt.Sprintf("ORDER BY %s DESC, r.created_at DESC", netHelpfulOrderExpr)
 	switch req.Msg.GetSortBy() {
 	case "recent":
 		orderClause = "ORDER BY r.created_at DESC"
 	case "positive":
-		orderClause = "ORDER BY r.is_recommended DESC, (helpful_count - unhelpful_count) DESC"
+		orderClause = fmt.Sprintf("ORDER BY r.is_recommended DESC, %s DESC, r.created_at DESC", netHelpfulOrderExpr)
 	case "negative":
-		orderClause = "ORDER BY r.is_recommended ASC, (helpful_count - unhelpful_count) DESC"
+		orderClause = fmt.Sprintf("ORDER BY r.is_recommended ASC, %s DESC, r.created_at DESC", netHelpfulOrderExpr)
 	}
 
 	query := fmt.Sprintf(`
