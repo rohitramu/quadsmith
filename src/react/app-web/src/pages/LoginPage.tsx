@@ -41,6 +41,7 @@ export function LoginPage() {
   const [isOAuthProcessing, setIsOAuthProcessing] = useState(Boolean(oauthCode && oauthState));
   const [isOAuthLoading, setIsOAuthLoading] = useState(false);
   const [cliLoginApproved, setCliLoginApproved] = useState(false);
+  const [isCliOAuthFlow, setIsCliOAuthFlow] = useState(false);
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -124,12 +125,28 @@ export function LoginPage() {
     };
   }, []);
 
-  // If already logged in, redirect immediately (unless viewing an approval magic link)
+  // If already logged in, redirect immediately (unless viewing an approval magic link or completing OAuth)
   useEffect(() => {
-    if (isAuthenticated && !magicToken) {
+    if (
+      isAuthenticated &&
+      !magicToken &&
+      !oauthCode &&
+      !oauthState &&
+      !cliLoginApproved &&
+      !isCliOAuthFlow
+    ) {
       navigate(redirectUrl, { replace: true });
     }
-  }, [isAuthenticated, magicToken, navigate, redirectUrl]);
+  }, [
+    isAuthenticated,
+    magicToken,
+    oauthCode,
+    oauthState,
+    cliLoginApproved,
+    isCliOAuthFlow,
+    navigate,
+    redirectUrl,
+  ]);
 
   // When sign-in page opens or returns to email step, focus email input
   useEffect(() => {
@@ -180,6 +197,7 @@ export function LoginPage() {
     isRateLimited,
     getLoginChallengeStatus,
     navigate,
+    redirectUrl,
   ]);
 
   // OAuth Callback Handler
@@ -195,6 +213,10 @@ export function LoginPage() {
         const res = await completeOAuth(oauthCode, oauthState);
         if (!active) return;
 
+        if (res.purpose === OAuthPurpose.OAUTH_PURPOSE_CLI_LOGIN) {
+          setIsCliOAuthFlow(true);
+        }
+
         const setupRequired = res.authResponse?.accountSetupRequired;
         const sToken = res.authResponse?.setupToken;
         if (setupRequired && sToken) {
@@ -207,8 +229,24 @@ export function LoginPage() {
         } else if (res.purpose === OAuthPurpose.OAUTH_PURPOSE_CLI_LOGIN) {
           setCliLoginApproved(true);
           setIsOAuthProcessing(false);
+        } else if (res.mergeRequired && res.mergeTicket) {
+          sessionStorage.setItem(
+            "qs_pending_oauth_merge",
+            JSON.stringify({
+              email: res.primaryEmail || res.otherEmails?.[0] || "",
+              otherUsername: res.otherUserUsername || "user",
+              otherBuildCount: res.otherBuildCount || 0,
+              otherBuildNames: res.otherBuildNames || [],
+              otherEmails: res.otherEmails || [],
+              otherOauthProviders: res.otherOauthProviders || [],
+              mergeTicket: res.mergeTicket,
+            }),
+          );
+          navigate("/account", { replace: true });
         } else {
-          navigate(redirectUrl, { replace: true });
+          const postLoginRedirect = sessionStorage.getItem("qs_oauth_redirect") || redirectUrl;
+          sessionStorage.removeItem("qs_oauth_redirect");
+          navigate(postLoginRedirect, { replace: true });
         }
       } catch (err: unknown) {
         if (!active) return;
@@ -237,7 +275,12 @@ export function LoginPage() {
     setIsOAuthLoading(true);
     setErrorMsg(null);
     try {
-      const res = await startOAuth(provider, OAuthPurpose.OAUTH_PURPOSE_LOGIN, redirectUrl);
+      if (redirectUrl && redirectUrl !== "/") {
+        sessionStorage.setItem("qs_oauth_redirect", redirectUrl);
+      } else {
+        sessionStorage.removeItem("qs_oauth_redirect");
+      }
+      const res = await startOAuth(provider, OAuthPurpose.OAUTH_PURPOSE_LOGIN, "/login");
       window.location.href = res.authorizationUrl;
     } catch (err: unknown) {
       if (err instanceof ConnectError) {
@@ -367,10 +410,12 @@ export function LoginPage() {
         username.trim().toLowerCase(),
         avatarUrl.trim() || undefined,
       );
-      if (searchParams.get("challenge_id")) {
+      if (isCliOAuthFlow || searchParams.get("challenge_id")) {
         setCliLoginApproved(true);
       } else {
-        navigate(redirectUrl, { replace: true });
+        const postLoginRedirect = sessionStorage.getItem("qs_oauth_redirect") || redirectUrl;
+        sessionStorage.removeItem("qs_oauth_redirect");
+        navigate(postLoginRedirect, { replace: true });
       }
     } catch (err: unknown) {
       if (err instanceof ConnectError) {

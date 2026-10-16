@@ -215,6 +215,10 @@ func (c *providerOAuthClient) GetAuthorizationURL(provider pb.OAuthProvider, sta
 		v.Set("redirect_uri", redirectURI)
 		v.Set("scope", "read:user user:email")
 		v.Set("state", state)
+		if codeChallenge != "" {
+			v.Set("code_challenge", codeChallenge)
+			v.Set("code_challenge_method", "S256")
+		}
 		return "https://github.com/login/oauth/authorize?" + v.Encode(), nil
 
 	case pb.OAuthProvider_OAUTH_PROVIDER_DISCORD:
@@ -229,6 +233,10 @@ func (c *providerOAuthClient) GetAuthorizationURL(provider pb.OAuthProvider, sta
 		v.Set("scope", "identify email")
 		v.Set("state", state)
 		v.Set("prompt", "consent")
+		if codeChallenge != "" {
+			v.Set("code_challenge", codeChallenge)
+			v.Set("code_challenge_method", "S256")
+		}
 		return "https://discord.com/api/oauth2/authorize?" + v.Encode(), nil
 
 	default:
@@ -241,9 +249,9 @@ func (c *providerOAuthClient) ExchangeCode(ctx context.Context, provider pb.OAut
 	case pb.OAuthProvider_OAUTH_PROVIDER_GOOGLE:
 		return c.exchangeGoogle(ctx, code, codeVerifier, redirectURI)
 	case pb.OAuthProvider_OAUTH_PROVIDER_GITHUB:
-		return c.exchangeGitHub(ctx, code, redirectURI)
+		return c.exchangeGitHub(ctx, code, codeVerifier, redirectURI)
 	case pb.OAuthProvider_OAUTH_PROVIDER_DISCORD:
-		return c.exchangeDiscord(ctx, code, redirectURI)
+		return c.exchangeDiscord(ctx, code, codeVerifier, redirectURI)
 	default:
 		return nil, fmt.Errorf("unsupported oauth provider: %v", provider)
 	}
@@ -331,7 +339,7 @@ func (c *providerOAuthClient) exchangeGoogle(ctx context.Context, code, codeVeri
 	}, nil
 }
 
-func (c *providerOAuthClient) exchangeGitHub(ctx context.Context, code, redirectURI string) (*OAuthIdentity, error) {
+func (c *providerOAuthClient) exchangeGitHub(ctx context.Context, code, codeVerifier, redirectURI string) (*OAuthIdentity, error) {
 	cred := c.cfg.GetGithub()
 	if cred == nil || cred.GetClientId() == "" || cred.GetClientSecret() == "" {
 		return nil, errors.New("github oauth credentials not configured")
@@ -342,6 +350,9 @@ func (c *providerOAuthClient) exchangeGitHub(ctx context.Context, code, redirect
 	data.Set("client_secret", cred.GetClientSecret())
 	data.Set("code", code)
 	data.Set("redirect_uri", redirectURI)
+	if codeVerifier != "" {
+		data.Set("code_verifier", codeVerifier)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", "https://github.com/login/oauth/access_token", strings.NewReader(data.Encode()))
 	if err != nil {
@@ -465,7 +476,7 @@ func (c *providerOAuthClient) exchangeGitHub(ctx context.Context, code, redirect
 	}, nil
 }
 
-func (c *providerOAuthClient) exchangeDiscord(ctx context.Context, code, redirectURI string) (*OAuthIdentity, error) {
+func (c *providerOAuthClient) exchangeDiscord(ctx context.Context, code, codeVerifier, redirectURI string) (*OAuthIdentity, error) {
 	cred := c.cfg.GetDiscord()
 	if cred == nil || cred.GetClientId() == "" || cred.GetClientSecret() == "" {
 		return nil, errors.New("discord oauth credentials not configured")
@@ -477,6 +488,9 @@ func (c *providerOAuthClient) exchangeDiscord(ctx context.Context, code, redirec
 	data.Set("grant_type", "authorization_code")
 	data.Set("code", code)
 	data.Set("redirect_uri", redirectURI)
+	if codeVerifier != "" {
+		data.Set("code_verifier", codeVerifier)
+	}
 
 	req, err := http.NewRequestWithContext(ctx, "POST", "https://discord.com/api/v10/oauth2/token", strings.NewReader(data.Encode()))
 	if err != nil {

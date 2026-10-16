@@ -94,11 +94,7 @@ export function EmailVerificationForm({
 
   const handleOAuthLink = async (provider: OAuthProvider) => {
     try {
-      const res = await startOAuth(
-        provider,
-        OAuthPurpose.OAUTH_PURPOSE_ADD_EMAIL,
-        "/settings/account",
-      );
+      const res = await startOAuth(provider, OAuthPurpose.OAUTH_PURPOSE_ADD_EMAIL, "/account");
       window.location.href = res.authorizationUrl;
     } catch (err: unknown) {
       if (err instanceof Error) {

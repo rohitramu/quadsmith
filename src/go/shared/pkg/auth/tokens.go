@@ -409,21 +409,39 @@ func VerifyOAuthState(stateStr string) (*OAuthStateClaims, error) {
 
 // MergeTicketClaims defines the cryptographically signed authorization ticket for account merges
 type MergeTicketClaims struct {
-	SourceUserUUID string `json:"source_user_uuid"`
-	TargetUserUUID string `json:"target_user_uuid"`
-	Email          string `json:"email"`
-	Exp            int64  `json:"exp"`
-	Purpose        string `json:"purpose"`
+	SourceUserUUID    string   `json:"source_user_uuid"`
+	TargetUserUUID    string   `json:"target_user_uuid"`
+	Email             string   `json:"email"`
+	VerifiedEmails    []string `json:"verified_emails,omitempty"`
+	Provider          string   `json:"provider,omitempty"`
+	ProviderAccountID string   `json:"provider_account_id,omitempty"`
+	Exp               int64    `json:"exp"`
+	Purpose           string   `json:"purpose"`
 }
 
 // SignMergeTicket creates a signed ticket proving that an authenticated user verified ownership of an existing account's email
 func SignMergeTicket(sourceUserUUID, targetUserUUID, email string, exp time.Time) (string, error) {
+	return SignOAuthMergeTicket(sourceUserUUID, targetUserUUID, email, nil, "", "", exp)
+}
+
+// SignOAuthMergeTicket creates a signed merge ticket with optional OAuth identity provenance
+func SignOAuthMergeTicket(sourceUserUUID, targetUserUUID, email string, verifiedEmails []string, provider, providerAccountID string, exp time.Time) (string, error) {
+	cleanEmails := make([]string, 0, len(verifiedEmails))
+	for _, e := range verifiedEmails {
+		norm := strings.ToLower(strings.TrimSpace(e))
+		if norm != "" && !slices.Contains(cleanEmails, norm) {
+			cleanEmails = append(cleanEmails, norm)
+		}
+	}
 	claims := MergeTicketClaims{
-		SourceUserUUID: sourceUserUUID,
-		TargetUserUUID: targetUserUUID,
-		Email:          strings.ToLower(strings.TrimSpace(email)),
-		Exp:            exp.Unix(),
-		Purpose:        "account_merge",
+		SourceUserUUID:    sourceUserUUID,
+		TargetUserUUID:    targetUserUUID,
+		Email:             strings.ToLower(strings.TrimSpace(email)),
+		VerifiedEmails:    cleanEmails,
+		Provider:          provider,
+		ProviderAccountID: providerAccountID,
+		Exp:               exp.Unix(),
+		Purpose:           "account_merge",
 	}
 	claimsJSON, err := json.Marshal(claims)
 	if err != nil {

@@ -23,6 +23,8 @@ var publicProcedures = map[string]bool{
 	apiconnect.AuthServiceGetLoginChallengeStatusProcedure:  true,
 	apiconnect.AuthServiceCompleteAccountSetupProcedure:     true,
 	apiconnect.AuthServiceRefreshTokenProcedure:             true,
+	apiconnect.AuthServiceStartOAuthProcedure:               true,
+	apiconnect.AuthServiceCompleteOAuthProcedure:            true,
 
 	// UserService public endpoints
 	apiconnect.UserServiceCheckUsernameAvailableProcedure: true,
@@ -129,6 +131,8 @@ var allowedBannedProcedures = map[string]bool{
 	apiconnect.AuthServiceListUserEmailsProcedure:        true,
 	apiconnect.AuthServiceDeleteAccountProcedure:         true,
 	apiconnect.AuthServiceCancelAccountDeletionProcedure: true,
+	apiconnect.AuthServiceStartOAuthProcedure:            true,
+	apiconnect.AuthServiceCompleteOAuthProcedure:         true,
 
 	// UserService
 	apiconnect.UserServiceGetUserBanStatusProcedure: true,

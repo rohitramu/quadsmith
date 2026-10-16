@@ -662,6 +662,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const completeOAuth = useCallback(
     async (code: string, state: string): Promise<CompleteOAuthResponse> => {
       const res = await authClient.completeOAuth({ code, state });
+      if (res.mergeTicket) {
+        setMergeTicket(res.mergeTicket);
+      }
       if (res.authResponse?.accessToken) {
         setAccessToken(res.authResponse.accessToken);
         if (res.authResponse.user) {

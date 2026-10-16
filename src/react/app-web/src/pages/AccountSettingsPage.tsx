@@ -143,9 +143,33 @@ export function AccountSettingsPage() {
   const [mergeOtherOauthProviders, setMergeOtherOauthProviders] = useState<string[]>([]);
   const [verifiedMergeCode, setVerifiedMergeCode] = useState("");
   const [verifiedMergeToken, setVerifiedMergeToken] = useState("");
+  const [verifiedMergeTicket, setVerifiedMergeTicket] = useState("");
   const [isExecutingMerge, setIsExecutingMerge] = useState(false);
   const [mergeError, setMergeError] = useState<string | null>(null);
   const [transferredBuilds, setTransferredBuilds] = useState<number>(0);
+
+  // Check for pending multi-account OAuth merge forwarded from LoginPage
+  useEffect(() => {
+    const raw = sessionStorage.getItem("qs_pending_oauth_merge");
+    if (!raw) return;
+    sessionStorage.removeItem("qs_pending_oauth_merge");
+    try {
+      const pending = JSON.parse(raw);
+      if (pending && pending.mergeTicket) {
+        setMergeEmail(pending.email || "");
+        setMergeOtherUsername(pending.otherUsername || "user");
+        setMergeOtherBuildCount(pending.otherBuildCount || 0);
+        setMergeOtherBuildNames(pending.otherBuildNames || []);
+        setMergeOtherEmails(pending.otherEmails || []);
+        setMergeOtherOauthProviders(pending.otherOauthProviders || []);
+        setVerifiedMergeTicket(pending.mergeTicket);
+        setMergeModalStep("summary");
+        setIsMergeModalOpen(true);
+      }
+    } catch {
+      // Ignore invalid JSON
+    }
+  }, []);
 
   // Magic link auto-merge or auto-add-email
   useEffect(() => {
@@ -242,13 +266,13 @@ export function AccountSettingsPage() {
         const res = await completeOAuth(oauthCode!, oauthState!);
         if (!isMounted) return;
         if (res.mergeRequired) {
-          setMergeEmail(res.otherEmails?.[0] || "");
+          setMergeEmail(res.primaryEmail || res.otherEmails?.[0] || "");
           setMergeOtherUsername(res.otherUserUsername || "user");
           setMergeOtherBuildCount(res.otherBuildCount || 0);
           setMergeOtherBuildNames(res.otherBuildNames || []);
           setMergeOtherEmails(res.otherEmails || []);
           setMergeOtherOauthProviders(res.otherOauthProviders || []);
-          setVerifiedMergeToken(res.mergeTicket || "");
+          setVerifiedMergeTicket(res.mergeTicket || "");
           setMergeModalStep("summary");
           setIsMergeModalOpen(true);
         } else {
@@ -371,6 +395,7 @@ export function AccountSettingsPage() {
         mergeEmail.trim(),
         verifiedMergeCode || undefined,
         verifiedMergeToken || undefined,
+        verifiedMergeTicket || undefined,
       );
       setTransferredBuilds(res.transferredBuildCount || 0);
       if (res.mergedEmails && res.mergedEmails.length > 0) {

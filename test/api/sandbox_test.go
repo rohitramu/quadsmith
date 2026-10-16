@@ -1492,3 +1492,205 @@ func TestSandboxAuth_AccountDeletionGracePeriodAndResurrection(t *testing.T) {
 		t.Errorf("expected username to be available after purge, got: %+v", availAfterPurge.Msg)
 	}
 }
+
+func TestOAuthIntegration(t *testing.T) {
+	apiUrl := getAPIURL()
+	client := &http.Client{Timeout: 2 * time.Second}
+	_, err := client.Get(apiUrl)
+	if err != nil {
+		t.Fatalf("Sandbox not running at %s: %v", apiUrl, err)
+	}
+
+	ctx := context.Background()
+	authClient := apiconnect.NewAuthServiceClient(http.DefaultClient, apiUrl)
+
+	dbUrl := getDBURL()
+	pool, err := pgxpool.New(ctx, dbUrl)
+	if err != nil {
+		t.Fatalf("failed to connect to db: %v", err)
+	}
+	defer pool.Close()
+
+	// Clean up any leftover test emails/users
+	_, _ = pool.Exec(ctx, `DELETE FROM user_emails WHERE email IN ('pilot.github@example.com', 'pilot.secondary@example.com', 'pilot.discord@example.com', 'other.oauth@example.com')`)
+	_, _ = pool.Exec(ctx, `DELETE FROM user_profiles WHERE user_uuid IN (SELECT uuid FROM users WHERE id IN ('oauth_gh_pilot', 'oauth_other_pilot'))`)
+	_, _ = pool.Exec(ctx, `DELETE FROM refresh_tokens WHERE user_uuid IN (SELECT uuid FROM users WHERE id IN ('oauth_gh_pilot', 'oauth_other_pilot'))`)
+	_, _ = pool.Exec(ctx, `DELETE FROM oauth_accounts WHERE user_uuid IN (SELECT uuid FROM users WHERE id IN ('oauth_gh_pilot', 'oauth_other_pilot'))`)
+	_, _ = pool.Exec(ctx, `DELETE FROM username_histories WHERE user_uuid IN (SELECT uuid FROM users WHERE id IN ('oauth_gh_pilot', 'oauth_other_pilot'))`)
+	_, _ = pool.Exec(ctx, `DELETE FROM users WHERE id IN ('oauth_gh_pilot', 'oauth_other_pilot')`)
+
+	// 1. Unauthenticated StartOAuth (GitHub Login) through NewAuthInterceptor
+	startRes, err := authClient.StartOAuth(ctx, connect.NewRequest(&pb.StartOAuthRequest{
+		Provider:     pb.OAuthProvider_OAUTH_PROVIDER_GITHUB,
+		Purpose:      pb.OAuthPurpose_OAUTH_PURPOSE_LOGIN,
+		RedirectPath: "/login",
+	}))
+	if err != nil {
+		t.Fatalf("StartOAuth failed: %v", err)
+	}
+	if startRes.Msg.State == "" || !strings.Contains(startRes.Msg.AuthorizationUrl, "code=mock_github_default") {
+		t.Fatalf("unexpected StartOAuth response: %+v", startRes.Msg)
+	}
+
+	// 2. Unauthenticated CompleteOAuth (Case A: Brand-new user -> AccountSetupRequired)
+	completeRes, err := authClient.CompleteOAuth(ctx, connect.NewRequest(&pb.CompleteOAuthRequest{
+		Code:  "mock_github_default",
+		State: startRes.Msg.State,
+	}))
+	if err != nil {
+		t.Fatalf("CompleteOAuth failed: %v", err)
+	}
+	if !completeRes.Msg.Success || completeRes.Msg.AuthResponse == nil || !completeRes.Msg.AuthResponse.AccountSetupRequired {
+		t.Fatalf("expected AccountSetupRequired = true, got: %+v", completeRes.Msg)
+	}
+
+	// 3. CompleteAccountSetup creates user + links GitHub + both verified emails
+	setupRes, err := authClient.CompleteAccountSetup(ctx, connect.NewRequest(&pb.CompleteAccountSetupRequest{
+		SetupToken: completeRes.Msg.AuthResponse.SetupToken,
+		Username:   "oauth_gh_pilot",
+	}))
+	if err != nil {
+		t.Fatalf("CompleteAccountSetup failed: %v", err)
+	}
+	accessToken := setupRes.Msg.AccessToken
+	if accessToken == "" {
+		t.Fatalf("expected accessToken from CompleteAccountSetup")
+	}
+
+	// 4. ListUserEmails verifies both primary and secondary GitHub emails and OAuth provenance
+	listReq := connect.NewRequest(&pb.ListUserEmailsRequest{})
+	listReq.Header().Set("Authorization", "Bearer "+accessToken)
+	listRes, err := authClient.ListUserEmails(ctx, listReq)
+	if err != nil {
+		t.Fatalf("ListUserEmails failed: %v", err)
+	}
+	if len(listRes.Msg.Emails) != 2 {
+		t.Fatalf("expected 2 emails from GitHub OAuth signup, got %d", len(listRes.Msg.Emails))
+	}
+	for _, em := range listRes.Msg.Emails {
+		if em.VerifiedViaOtp {
+			t.Errorf("expected VerifiedViaOtp = false for OAuth-created email %s", em.Email)
+		}
+		if len(em.OauthProviders) != 1 || em.OauthProviders[0] != "github" {
+			t.Errorf("expected OauthProviders = [github] for %s, got %v", em.Email, em.OauthProviders)
+		}
+	}
+
+	// 5. UnlinkOAuth(GITHUB) must be blocked by primary email safeguard
+	unlinkReq := connect.NewRequest(&pb.UnlinkOAuthRequest{
+		Provider: pb.OAuthProvider_OAUTH_PROVIDER_GITHUB,
+	})
+	unlinkReq.Header().Set("Authorization", "Bearer "+accessToken)
+	_, err = authClient.UnlinkOAuth(ctx, unlinkReq)
+	if err == nil || connect.CodeOf(err) != connect.CodeFailedPrecondition {
+		t.Fatalf("expected FailedPrecondition when unlinking sole primary email provider, got: %v", err)
+	}
+
+	// 6. Link Discord (OAUTH_PURPOSE_ADD_EMAIL) and then Unlink Discord (prunes orphaned secondary email)
+	startDiscordReq := connect.NewRequest(&pb.StartOAuthRequest{
+		Provider:     pb.OAuthProvider_OAUTH_PROVIDER_DISCORD,
+		Purpose:      pb.OAuthPurpose_OAUTH_PURPOSE_ADD_EMAIL,
+		RedirectPath: "/account",
+	})
+	startDiscordReq.Header().Set("Authorization", "Bearer "+accessToken)
+	startDiscordRes, err := authClient.StartOAuth(ctx, startDiscordReq)
+	if err != nil {
+		t.Fatalf("StartOAuth Discord ADD_EMAIL failed: %v", err)
+	}
+
+	compDiscordReq := connect.NewRequest(&pb.CompleteOAuthRequest{
+		Code:  "mock_discord_default",
+		State: startDiscordRes.Msg.State,
+	})
+	compDiscordReq.Header().Set("Authorization", "Bearer "+accessToken)
+	compDiscordRes, err := authClient.CompleteOAuth(ctx, compDiscordReq)
+	if err != nil || !compDiscordRes.Msg.Success {
+		t.Fatalf("CompleteOAuth Discord ADD_EMAIL failed: %v, res: %+v", err, compDiscordRes)
+	}
+
+	unlinkDiscordReq := connect.NewRequest(&pb.UnlinkOAuthRequest{
+		Provider: pb.OAuthProvider_OAUTH_PROVIDER_DISCORD,
+	})
+	unlinkDiscordReq.Header().Set("Authorization", "Bearer "+accessToken)
+	if _, err := authClient.UnlinkOAuth(ctx, unlinkDiscordReq); err != nil {
+		t.Fatalf("UnlinkOAuth Discord failed: %v", err)
+	}
+
+	listResAfterUnlink, err := authClient.ListUserEmails(ctx, listReq)
+	if err != nil {
+		t.Fatalf("ListUserEmails after unlink failed: %v", err)
+	}
+	if len(listResAfterUnlink.Msg.Emails) != 2 {
+		t.Fatalf("expected orphaned Discord secondary email to be pruned leaving 2 emails, got %d", len(listResAfterUnlink.Msg.Emails))
+	}
+
+	// 7. Seed a second account and test OAuth-triggered MergeAccount preserving OAuth provenance
+	otherUserUUID := "018f0000-0000-7000-8000-0000000000f1"
+	_, err = pool.Exec(ctx, `
+		INSERT INTO users (uuid, id, role, created_at, updated_at)
+		VALUES ($1, 'oauth_other_pilot', 'USER', NOW(), NOW())`, otherUserUUID)
+	if err != nil {
+		t.Fatalf("failed to seed oauth_other_pilot: %v", err)
+	}
+	_, err = pool.Exec(ctx, `
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
+		VALUES ('018f0000-0000-7000-8000-0000000000f2', $1, 'other.oauth@example.com', true, true, NOW())`, otherUserUUID)
+	if err != nil {
+		t.Fatalf("failed to seed other.oauth@example.com: %v", err)
+	}
+
+	startGoogleReq := connect.NewRequest(&pb.StartOAuthRequest{
+		Provider:     pb.OAuthProvider_OAUTH_PROVIDER_GOOGLE,
+		Purpose:      pb.OAuthPurpose_OAUTH_PURPOSE_ADD_EMAIL,
+		RedirectPath: "/account",
+	})
+	startGoogleReq.Header().Set("Authorization", "Bearer "+accessToken)
+	startGoogleRes, err := authClient.StartOAuth(ctx, startGoogleReq)
+	if err != nil {
+		t.Fatalf("StartOAuth Google ADD_EMAIL failed: %v", err)
+	}
+
+	compGoogleReq := connect.NewRequest(&pb.CompleteOAuthRequest{
+		Code:  "mock:google:g_acc_999:other.oauth@example.com",
+		State: startGoogleRes.Msg.State,
+	})
+	compGoogleReq.Header().Set("Authorization", "Bearer "+accessToken)
+	compGoogleRes, err := authClient.CompleteOAuth(ctx, compGoogleReq)
+	if err != nil {
+		t.Fatalf("CompleteOAuth Google conflict check failed: %v", err)
+	}
+	if !compGoogleRes.Msg.MergeRequired || compGoogleRes.Msg.GetMergeTicket() == "" {
+		t.Fatalf("expected MergeRequired = true with MergeTicket, got: %+v", compGoogleRes.Msg)
+	}
+
+	mergeTicket := compGoogleRes.Msg.GetMergeTicket()
+	mergeReq := connect.NewRequest(&pb.MergeAccountRequest{
+		Email:       "other.oauth@example.com",
+		MergeTicket: &mergeTicket,
+	})
+	mergeReq.Header().Set("Authorization", "Bearer "+accessToken)
+	mergeRes, err := authClient.MergeAccount(ctx, mergeReq)
+	if err != nil || !mergeRes.Msg.Success {
+		t.Fatalf("MergeAccount with OAuth merge ticket failed: %v", err)
+	}
+
+	listResAfterMerge, err := authClient.ListUserEmails(ctx, listReq)
+	if err != nil {
+		t.Fatalf("ListUserEmails after merge failed: %v", err)
+	}
+	foundMergedEmail := false
+	for _, em := range listResAfterMerge.Msg.Emails {
+		if em.Email == "other.oauth@example.com" {
+			foundMergedEmail = true
+			if !em.VerifiedViaOtp {
+				t.Errorf("expected merged email other.oauth@example.com to preserve VerifiedViaOtp = true")
+			}
+			if len(em.OauthProviders) != 1 || em.OauthProviders[0] != "google" {
+				t.Errorf("expected merged email other.oauth@example.com to have OauthProviders = [google], got %v", em.OauthProviders)
+			}
+		}
+	}
+	if !foundMergedEmail {
+		t.Errorf("expected other.oauth@example.com to be present on account after merge")
+	}
+}

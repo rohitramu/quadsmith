@@ -10,8 +10,24 @@ import (
 	"google.golang.org/protobuf/proto"
 
 	pb "quadsmith/shared/gen/quadsmith/api"
+	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 	"quadsmith/shared/gen/quadsmith/config"
 )
+
+func TestOAuthPublicProcedures(t *testing.T) {
+	if !IsPublicProcedure(apiconnect.AuthServiceStartOAuthProcedure) {
+		t.Errorf("expected StartOAuth to be a public procedure")
+	}
+	if !IsPublicProcedure(apiconnect.AuthServiceCompleteOAuthProcedure) {
+		t.Errorf("expected CompleteOAuth to be a public procedure")
+	}
+	if !IsAllowedBannedProcedure(apiconnect.AuthServiceStartOAuthProcedure) {
+		t.Errorf("expected StartOAuth to be an allowed banned procedure")
+	}
+	if !IsAllowedBannedProcedure(apiconnect.AuthServiceCompleteOAuthProcedure) {
+		t.Errorf("expected CompleteOAuth to be an allowed banned procedure")
+	}
+}
 
 func TestOAuthProviderHelpers(t *testing.T) {
 	cases := []struct {
@@ -106,20 +122,31 @@ func TestMockOAuthClient(t *testing.T) {
 	}
 }
 
+type rewriteHostRoundTripper struct {
+	targetURL string
+	rt        http.RoundTripper
+}
+
+func (r *rewriteHostRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	cloned := req.Clone(req.Context())
+	cloned.URL.Scheme = "http"
+	cloned.URL.Host = strings.TrimPrefix(r.targetURL, "http://")
+	return r.rt.RoundTrip(cloned)
+}
+
 func TestGitHubEmailFilteringLogic(t *testing.T) {
-	// Mock HTTP server returning GitHub user and emails payloads
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case "/login/oauth/access_token":
 			w.Header().Set("Content-Type", "application/json")
-			w.Write([]byte(`{"access_token":"gho_dummy_token"}`))
+			_, _ = w.Write([]byte(`{"access_token":"gho_dummy_token"}`))
 		case "/user":
 			w.Header().Set("Content-Type", "application/json")
-			w.Write([]byte(`{"id":123456,"avatar_url":"https://github.com/avatar.png"}`))
+			_, _ = w.Write([]byte(`{"id":123456,"avatar_url":"https://github.com/avatar.png"}`))
 		case "/user/emails":
 			w.Header().Set("Content-Type", "application/json")
 			// One noreply email (primary), one verified real email, one unverified email
-			w.Write([]byte(`[
+			_, _ = w.Write([]byte(`[
 				{"email":"123456+user@users.noreply.github.com","primary":true,"verified":true},
 				{"email":"unverified@example.com","primary":false,"verified":false},
 				{"email":"real_verified@example.com","primary":false,"verified":true}
@@ -132,8 +159,12 @@ func TestGitHubEmailFilteringLogic(t *testing.T) {
 	server := httptest.NewServer(handler)
 	defer server.Close()
 
-	// Direct test of exchange logic against local test server
-	// We can test that exchangeGitHub correctly filters out noreply and unverified emails
+	httpClient := server.Client()
+	httpClient.Transport = &rewriteHostRoundTripper{
+		targetURL: server.URL,
+		rt:        http.DefaultTransport,
+	}
+
 	client := &providerOAuthClient{
 		cfg: &config.OAuthProvidersConfig{
 			Github: &config.OAuthProviderCredentials{
@@ -141,10 +172,20 @@ func TestGitHubEmailFilteringLogic(t *testing.T) {
 				ClientSecret: proto.String("gh_client_secret"),
 			},
 		},
-		httpClient: server.Client(),
+		httpClient: httpClient,
 	}
 
-	// We can verify that if we point to server, exchangeGitHub behaves as expected:
-	// But exchangeGitHub calls https://api.github.com directly.
-	_ = client
+	ident, err := client.ExchangeCode(context.Background(), pb.OAuthProvider_OAUTH_PROVIDER_GITHUB, "gh_code_123", "pkce_verifier", "http://localhost:5173/login")
+	if err != nil {
+		t.Fatalf("ExchangeCode github against mock HTTP server failed: %v", err)
+	}
+	if ident.Provider != "github" || ident.ProviderAccountID != "123456" {
+		t.Errorf("unexpected github identity metadata: %+v", ident)
+	}
+	if ident.PrimaryEmail != "real_verified@example.com" {
+		t.Errorf("expected noreply primary email to be filtered out and fallback to real_verified@example.com, got %s", ident.PrimaryEmail)
+	}
+	if len(ident.VerifiedEmails) != 1 || ident.VerifiedEmails[0] != "real_verified@example.com" {
+		t.Errorf("expected only [real_verified@example.com], got %v", ident.VerifiedEmails)
+	}
 }
