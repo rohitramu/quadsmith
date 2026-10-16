@@ -597,7 +597,7 @@ message UserReputation {
     name: "user_reputations"
     unique_constraints: ["user_uuid"]
   };
-  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_ACCOUNT};
 
   string uuid = 1 [
     (quadsmith.sql.column) = {is_primary_key: true},

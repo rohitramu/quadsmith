@@ -306,7 +306,7 @@ func ExportFlightControllers(ctx context.Context, db *pgxpool.Pool, userUUID str
 		for _, assign := range scanAssigns {
 			assign()
 		}
-		if m.Manufacturer != "" || m.IsInternalOnly || m.WeightG != 0 || m.Processor != "" || m.Gyro != "" || (m.InternalElectronicSpeedControllerUuid != nil && *m.InternalElectronicSpeedControllerUuid != "") || (m.InternalReceiverUuid != nil && *m.InternalReceiverUuid != "") || (m.InternalVideoTransmitterUuid != nil && *m.InternalVideoTransmitterUuid != "") || m.MinVoltage != 0 || m.MaxVoltage != 0 || len(m.VtxPorts) > 0 || m.VtxVoltageMinV != 0 || m.VtxVoltageMaxV != 0 || m.MountPattern != "" {
+		if m.Manufacturer != "" || m.IsInternalOnly || m.WeightG != 0 || m.Processor != "" || m.Gyro != "" || m.MinVoltage != 0 || m.MaxVoltage != 0 || len(m.VtxPorts) > 0 || m.VtxVoltageMinV != 0 || m.VtxVoltageMaxV != 0 || m.MountPattern != "" {
 			results = append(results, m)
 		}
 	}

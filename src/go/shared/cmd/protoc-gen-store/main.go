@@ -523,27 +523,36 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		var exportFields []*protogen.Field
 		var exportColNames []string
 		hasUserField := false
+		hasNonUUIDField := false
 
 		for _, field := range activeFields {
 			ct := getFieldContentType(field)
 			if isExportableContentType(ct) {
 				exportFields = append(exportFields, field)
 				colName := string(field.Desc.Name())
+				isPK := false
+				isRef := false
 				if proto.HasExtension(field.Desc.Options(), sqlpb.E_Column) {
 					if co, ok := proto.GetExtension(field.Desc.Options(), sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
 						if co.Name != "" {
 							colName = co.Name
 						}
+						isPK = co.IsPrimaryKey
+						isRef = co.References != ""
 					}
 				}
 				exportColNames = append(exportColNames, colName)
 				if isUserField(ct) {
 					hasUserField = true
 				}
+				isUUID := colName == "uuid" || strings.HasSuffix(colName, "_uuid") || isPK || isRef
+				if !isUUID {
+					hasNonUUIDField = true
+				}
 			}
 		}
 
-		if hasUserField && len(exportColNames) > 0 {
+		if hasUserField && hasNonUUIDField && len(exportColNames) > 0 {
 			exportColsStr := strings.Join(exportColNames, ", ")
 			userWhere := ""
 			if expOpt.UserFilter != "" {
@@ -605,9 +614,13 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 				g.P("			assign()")
 				g.P("		}")
 				var checkUserConditions []string
-				for _, field := range exportFields {
+				for k, field := range exportFields {
 					ct := getFieldContentType(field)
 					if !isUserField(ct) {
+						continue
+					}
+					colName := exportColNames[k]
+					if colName == "uuid" || strings.HasSuffix(colName, "_uuid") {
 						continue
 					}
 					goName := field.GoName

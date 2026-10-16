@@ -464,12 +464,18 @@ generates a type-safe `Export<PluralName>` function in `*_store.pb.go` for every
      exported (i.e., no empty or metadata-only skeleton objects):
      - **Compile-Time Table Exclusion**: `protoc-gen-store` skips generating
        `Export<PluralName>` for any message that has zero `USER_*` fields
-       (`USER_PROVIDED_PRIVATE`, `USER_PROVIDED_PUBLIC`, or `USER_OBSERVED`).
+       (`USER_PROVIDED_PRIVATE`, `USER_PROVIDED_PUBLIC`, or `USER_OBSERVED`) or
+       where all exportable fields are UUID keys (primary key or foreign keys).
+       For example, `UserReputation` retains `domain: EXPORT_DOMAIN_ACCOUNT` for
+       domain taxonomy, but because its score and timestamp fields are private
+       system metadata, its only remaining exportable columns are `uuid` and
+       `user_uuid`, so it is automatically excluded from code generation and
+       export archives.
      - **Runtime Row & Sub-Message Pruning**: Before appending a scanned record
        to the exported slice (or serializing an embedded sub-message such as
-       `Media` or `ReferenceLink`), if all `USER_*` fields on that object are
-       empty/unset, the object is omitted so no empty or metadata-only objects
-       ever appear in the exported JSON.
+       `Media` or `ReferenceLink`), if all non-UUID `USER_*` fields on that
+       object are empty/unset, the object is omitted so no empty or
+       metadata-only objects ever appear in the exported JSON.
 3. **Zero-Join Single-Table Queries**:
    - Every generated
      `Export<PluralName>(ctx context.Context, db *pgxpool.Pool, userUUID string)`

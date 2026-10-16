@@ -446,7 +446,7 @@ func ExportBuilds(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Bu
 		for _, assign := range scanAssigns {
 			assign()
 		}
-		if m.FrameUuid != "" || m.MotorUuid != "" || m.FlightControllerUuid != "" || len(m.ElectronicSpeedControllerUuids) > 0 || len(m.ReceiverUuids) > 0 || len(m.AntennaUuids) > 0 || m.PropellerUuid != "" || len(m.CameraUuids) > 0 || m.VideoTransmitterUuid != "" || (m.GpsReceiverUuid != nil && *m.GpsReceiverUuid != "") {
+		if len(m.ElectronicSpeedControllerUuids) > 0 || len(m.ReceiverUuids) > 0 || len(m.AntennaUuids) > 0 || len(m.CameraUuids) > 0 {
 			results = append(results, m)
 		}
 	}
