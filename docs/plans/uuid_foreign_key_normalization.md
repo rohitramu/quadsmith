@@ -183,7 +183,7 @@ message InternalApiCallRecord {
   `jit_grants ||--o{ internal_api_calls : authorizes`.
 
 <details>
-<summary><a id="alternatives-considered-jit-grant-uuid" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="add-foreign-key-on-jit-grant-id-text" >Add a Foreign Key Constraint Directly on `jit_grant_id TEXT`</a>
 
@@ -329,7 +329,7 @@ We:
   their canonical UUIDs and timestamps.
 
 <details>
-<summary><a id="alternatives-considered-social-denormalization" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="composite-fk-on-collection-and-entity-id" >Keep Denormalized Columns and Add Composite Foreign Keys</a>
 
@@ -422,7 +422,7 @@ We implement a two-part design for blob references:
    content-addressable SHA-256 hash.
 
 <details>
-<summary><a id="alternatives-considered-blob-references" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="keep-unconstrained-polymorphic-entity-uuid" >Keep Unconstrained `entity_uuid` on `blob_references`</a>
 
@@ -491,7 +491,7 @@ tables:
   preference.
 
 <details>
-<summary><a id="alternatives-considered-hardware-firmware" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="replace-esc-firmware-with-uuid-fk" >Replace `electronic_speed_controllers.firmware` with `esc_firmware_uuid`</a>
 
@@ -569,7 +569,7 @@ store `TEXT` email strings rather than `user_email_uuid` foreign keys:
    re-registration under those email addresses.
 
 <details>
-<summary><a id="alternatives-considered-email-storage" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="replace-banned-emails-email-with-user-email-uuid" >Replace `banned_emails.email` with `user_email_uuid REFERENCES user_emails(uuid)`</a>
 
@@ -622,7 +622,7 @@ principal name, `jit_grants.operator` and `internal_api_calls.caller` remain
 `TEXT` principal identifiers.
 
 <details>
-<summary><a id="alternatives-considered-ops-principals" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="create-dedicated-operators-table" >Create a Dedicated `operators` Table in `quadsmith_ops.sql`</a>
 
@@ -647,8 +647,10 @@ and `internal_api_calls.caller` with
 
 ---
 
+## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+
 <details>
-<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ### <a id="status-quo-no-schema-changes" >Status Quo (Make No Schema Changes)</a>
 

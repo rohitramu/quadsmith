@@ -192,7 +192,7 @@ coupled with a dimmed backdrop (`bg-slate-950/70 backdrop-blur-xs`).
   element.
 
 <details>
-<summary><a id="alternatives-considered-mobile-navigation" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="fixed-bottom-navigation-tab-bar" >Fixed Bottom Navigation Tab Bar</a>
 
@@ -279,7 +279,7 @@ are replaced with responsive sizing (`w-auto md:w-64 shrink-0`):
   clipping inside the narrow input box.
 
 <details>
-<summary><a id="alternatives-considered-mobile-header" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="search-icon-button-opening-modal-overlay" >Search Icon Button Opening Modal Overlay</a>
 
@@ -338,7 +338,7 @@ action button label is streamlined to `+ Add New`:
   desktop.
 
 <details>
-<summary><a id="alternatives-considered-catalog-cards" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="mobile-cards-with-traditional-desktop-table" >Mobile Cards with Traditional Desktop Table</a>
 
@@ -421,7 +421,7 @@ To eliminate unstyled native OS `<select>` menus and default browser scrollbars:
     horizontal tab bars match Quadsmith's design system.
 
 <details>
-<summary><a id="alternatives-considered-dropdowns-and-scrollbars" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="native-select-elements-with-appearance-none-css" >Native Select Elements with appearance-none CSS</a>
 
@@ -467,7 +467,7 @@ Telemetry Bar** (`lg:hidden`) positioned directly above the active step card:
   Live Evaluator sidebar remain unchanged.
 
 <details>
-<summary><a id="alternatives-considered-forge-wizard" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="sticky-bottom-sheet-drawer-in-the-forge" >Sticky Bottom Sheet Drawer in The Forge</a>
 
@@ -533,7 +533,7 @@ links. We split popover behavior into two explicit interaction categories:
      well as hover.
 
 <details>
-<summary><a id="alternatives-considered-touch-interactions" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="first-tap-previews-second-tap-navigates" >First-Tap Previews, Second-Tap Navigates</a>
 
@@ -618,7 +618,7 @@ metadata suffered from stark inconsistencies:
        monochrome `Cpu` chip.
 
 <details>
-<summary><a id="alternatives-considered-user-profile-actions" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="divergent-action-labels-with-category-prefixes" >Divergent Action Labels with Category Prefixes</a>
 
@@ -708,7 +708,7 @@ cards:
     inputs fit inside mobile modals with zero overflow.
 
 <details>
-<summary><a id="alternatives-considered-detail-pages" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="two-by-two-grid-for-social-and-profile-tabs" >2x2 Grid for Social and Profile Tabs</a>
 
@@ -758,7 +758,7 @@ mobile viewports.
     screenshots to confirm zero text clipping or layout crushing.
 
 <details>
-<summary><a id="alternatives-considered-testing-updates" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="disable-mobile-visual-snapshots-during-reflow" >Disable Mobile Visual Snapshots During Reflow</a>
 
@@ -779,8 +779,10 @@ on DOM visibility assertions.
 
 ---
 
+## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+
 <details>
-<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ### <a id="separate-mobile-subdomain-or-dedicated-mobile-route-tree" >Separate Mobile Subdomain or Dedicated Mobile Route Tree</a>
 

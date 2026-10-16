@@ -88,7 +88,7 @@ verifies layout rendering, theme switching (dark/light mode toggles and
 interactions in milliseconds.
 
 <details>
-<summary><a id="alternatives-considered-headless-dom-execution" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 Executing all unit, component, and routing tests inside real browser automation
 instances using tools like Playwright or Cypress.
@@ -117,7 +117,7 @@ The router transport routes client RPC queries (`ListMotors`, `GetMotor`,
 responses, pagination tokens, or error codes.
 
 <details>
-<summary><a id="alternatives-considered-mock-router-transports" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 Using network-level mocking libraries such as Mock Service Worker (MSW) or
 mocking `fetch` calls directly.

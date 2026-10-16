@@ -103,7 +103,7 @@ ordering explanations:
 ```
 
 <details>
-<summary><a id="alternatives-section-structure" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="numbered-section-headers" >Numbered Section Headers with Ordering Explanations</a>
 
@@ -150,7 +150,7 @@ what references it:
    order. This operates strictly as a lowest-precedence tie-breaker.
 
 <details>
-<summary><a id="alternatives-message-ordering" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="strict-global-alphabetical-ordering" >Strict Global Alphabetical Ordering</a>
 
@@ -189,7 +189,7 @@ All files share `package quadsmith.config;` and target the same Go package
 source-level compatibility across all existing Go and TypeScript call sites.
 
 <details>
-<summary><a id="alternatives-decomposition" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="monolithic-single-config-file" >Monolithic Single Config File</a>
 

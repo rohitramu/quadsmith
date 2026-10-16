@@ -81,7 +81,7 @@ page, keeping cosmetic public profile customization (avatar, bio) and privacy
 exports in dedicated sections below.
 
 <details>
-<summary><a id="alternatives-considered-placement" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="alt-tabbed-security-page" >Tabbed Security Page Navigation</a>
 
@@ -147,7 +147,7 @@ gracefully as the user accumulates multiple device logins:
      emerald badge (`● This Device`).
 
 <details>
-<summary><a id="alternatives-considered-presentation" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="alt-taller-unbounded-list" >Taller 3-Row Layout Without Height Limit</a>
 
@@ -205,7 +205,7 @@ while providing decisive control over other devices:
      `uuid != currentSessionUUID`.
 
 <details>
-<summary><a id="alternatives-considered-revocation" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="alt-self-revocation-in-list" >Direct Current Session Revocation Inside List</a>
 
@@ -266,7 +266,7 @@ In
 into `refresh_tokens`. In `RefreshToken`, `last_used_at` is updated to `NOW()`.
 
 <details>
-<summary><a id="alternatives-considered-database" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="alt-omit-ip-location-schema" >Omit IP and Location from Schema</a>
 
@@ -331,7 +331,7 @@ message RevokeOtherSessionsResponse {
 ```
 
 <details>
-<summary><a id="alternatives-considered-api" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="alt-separate-session-service" >Dedicated SessionService Protocol</a>
 

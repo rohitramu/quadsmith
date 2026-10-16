@@ -123,7 +123,7 @@ Users authenticate without static passwords via two pathways:
   and automatically ingest user avatars and verified email addresses.
 
 <details>
-<summary><a id="alternatives-considered-passwordless-auth" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 Traditional password-based authentication with salt and bcrypt hashing.
 
@@ -156,7 +156,7 @@ Session state uses a two-tier token model:
   current 1-hour JWT expires.
 
 <details>
-<summary><a id="alternatives-considered-hybrid-jwt-tokens" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 Pure stateless JWTs without database-backed refresh tokens.
 
@@ -237,7 +237,7 @@ To balance privacy rights with community knowledge preservation:
   with `banned_at` are permanently barred from resurrection.
 
 <details>
-<summary><a id="alternatives-considered-soft-deletion-lifecycle" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 Hard cascading deletion that purges user records and all associated builds,
 questions, and answers.

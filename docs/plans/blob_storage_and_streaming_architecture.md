@@ -127,7 +127,7 @@ data transfer:
      direct inspection.
 
 <details>
-<summary><a id="alternatives-considered-control-plane-separation" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="alt-monolithic-connectrpc-data-plane" >Monolithic ConnectRPC Data Plane for All Transfers</a>
 
@@ -227,7 +227,7 @@ preclude the use of framed RPC protocols:
 | **3D Asset & Image Loading**              | Native (`<img>`, Three.js `STLLoader`, `3MFLoader`)     | Requires custom fetch, ArrayBuffer conversion    |
 
 <details>
-<summary><a id="alternatives-considered-media-streaming" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="alt-media-source-extensions-client-streaming" >Client-Side ConnectRPC Stream Consumption via Media Source Extensions</a>
 
@@ -300,7 +300,7 @@ Quadsmith uses content-addressable storage for all binary blobs:
      standard CDNs and browser HTTP caches treat as uncacheable.
 
 <details>
-<summary><a id="alternatives-considered-caching" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="alt-mutable-entity-scoped-blob-urls" >Mutable Entity-Scoped Blob URLs</a>
 
@@ -348,7 +348,7 @@ for dual ingestion mechanisms:
      `415 Unsupported Media Type`.
 
 <details>
-<summary><a id="alternatives-considered-upload-pipeline" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="alt-connectrpc-client-streaming-upload" >ConnectRPC Client-Streaming Upload RPC</a>
 

@@ -144,7 +144,7 @@ Key architectural rules:
   `role = 'ADMIN'`.
 
 <details>
-<summary><a id="alternatives-considered-database-schema" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="denormalized-banned-boolean-on-users" >Denormalized Banned Boolean on Users</a>
 
@@ -247,7 +247,7 @@ Lifecycle behavior:
      associated emails in `banned_emails`, restoring registration rights.
 
 <details>
-<summary><a id="alternatives-considered-banned-emails" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="retaining-user-emails-rows-for-banned-users" >Retaining user_emails Rows for Banned Users</a>
 
@@ -330,7 +330,7 @@ inspect their linked emails, and manage their authentication sessions:
      to normal. Ban status is not leaked to third parties.
 
 <details>
-<summary><a id="alternatives-considered-interceptor-enforcement" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="immediate-token-revocation-and-login-blocking" >Immediate Token Revocation and Login Blocking</a>
 
@@ -493,7 +493,7 @@ message GetUserBanStatusResponse {
 ```
 
 <details>
-<summary><a id="alternatives-considered-protobuf-services" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="separate-moderationservice-package" >Separate ModerationService Package</a>
 
@@ -561,7 +561,7 @@ two dedicated components for suspended accounts:
 ```
 
 <details>
-<summary><a id="alternatives-considered-frontend-presentation" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="toast-notification-with-silent-redirect" >Toast Notification with Silent Redirect</a>
 
@@ -621,7 +621,7 @@ pagination limits, and output formatting (`--json` and `--yaml`) flags common to
 all Quadsmith entity collections. All commands require `Role == "ADMIN"`.
 
 <details>
-<summary><a id="alternatives-considered-cli-placement" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="delete-mutation-for-unbanning" >Delete Mutation for Unbanning</a>
 
@@ -678,7 +678,7 @@ In alignment with
      reversible by administrators without data loss.
 
 <details>
-<summary><a id="alternatives-considered-purge-alignment" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="additional-30-day-post-purge-cooldown-in-username-histories" >Additional 30-Day Post-Purge Cooldown in username_histories</a>
 
@@ -699,8 +699,10 @@ inserting into `username_histories`.
 
 ---
 
+## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+
 <details>
-<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ### <a id="temporary-shadow-banning" >Temporary Shadow Banning</a>
 

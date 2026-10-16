@@ -150,7 +150,7 @@ below the **Profile Details** card:
     `<textarea>`.
 
 <details>
-<summary><a id="alternatives-considered-ui-placement" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="public-profile-page-owner-only-button" >Public Profile Page Owner-Only Button</a>
 
@@ -241,7 +241,7 @@ Verification step using the universal challenge architecture in
      in `VerifyEmailOtpResponse`.
 
 <details>
-<summary><a id="alternatives-considered-verification-flow" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="immediate-single-click-download-with-active-session" >Immediate Single-Click Download with Active Session</a>
 
@@ -389,7 +389,7 @@ enforces five invariants across all Protobuf files during `make test`:
    from export by Rule 4).
 
 <details>
-<summary><a id="alternatives-considered-data-classification" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="hardcoded-sql-projection-queries-in-go" >Hardcoded SQL Projection Queries in Go</a>
 
@@ -505,7 +505,7 @@ generates a type-safe `Export<PluralName>` function in `*_store.pb.go` for every
      `user_uuid = $1::uuid`.
 
 <details>
-<summary><a id="alternatives-considered-codegen" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="runtime-descriptor-reflection-exporter" >Runtime Descriptor Reflection Exporter</a>
 
@@ -585,7 +585,7 @@ serves the archive via a dedicated HTTP endpoint:
 | `blobs.json` + `blobs/<id>_<filename>` | `EXPORT_DOMAIN_BLOBS`       | `ExportBlobs` (metadata written to `blobs.json`; raw `bytes` streamed into `blobs/<id>_<sanitized_filename>`)                                                                                  |
 
 <details>
-<summary><a id="alternatives-considered-zip-layout" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="single-monolithic-json-file-download" >Single Monolithic JSON File Download</a>
 
@@ -670,7 +670,7 @@ transient, in-flight authentication challenges as internal operational data:
      are marked `CONTENT_TYPE_SYSTEM_SECRET`.
 
 <details>
-<summary><a id="alternatives-considered-data-scope" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="omitting-security-json-entirely" >Omitting security.json Entirely</a>
 
@@ -761,7 +761,7 @@ the redundant `users.email` SQL column in
      every active user is guaranteed to have **1 and only 1** primary email.
 
 <details>
-<summary><a id="alternatives-considered-email-storage" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="dual-write-primary-email-on-users-table" >Dual-Write Primary Email on Users Table</a>
 
@@ -864,7 +864,7 @@ message VerifyEmailOtpResponse {
 ```
 
 <details>
-<summary><a id="alternatives-considered-protobuf-contracts" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="dedicated-separate-rpcs-for-every-verification-purpose" >Dedicated Separate RPCs for Every Verification Purpose</a>
 
@@ -910,7 +910,7 @@ subcommand group with `qs account export`:
      `--format json` and `--format textproto` structured output modes).
 
 <details>
-<summary><a id="alternatives-considered-cli-parity" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="web-only-export-via-account-settings-ui" >Web-Only Export via Account Settings UI</a>
 
@@ -934,8 +934,10 @@ data.
 
 ---
 
+## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+
 <details>
-<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ### <a id="asynchronous-s3-object-storage-export-pipeline" >Asynchronous S3 Object Storage Export Pipeline</a>
 

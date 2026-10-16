@@ -73,7 +73,7 @@ inertia summations:
 $$I_{zz} = 4 \times M_{arm} \times r^2 + I_{core}$$
 
 <details>
-<summary><a id="alternatives-considered-point-mass-modeling" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 Using full 3D CAD mesh geometry and finite element analysis (FEA) to compute
 exact volume and mass distributions.
@@ -113,7 +113,7 @@ $+15\%$ static thrust increase, while pusher configurations apply a $-5\%$
 penalty due to arm wake turbulence.
 
 <details>
-<summary><a id="alternatives-considered-aerodynamic-thrust-modeling" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 Empirical bench test lookup tables compiled from physical thrust stand
 measurements.

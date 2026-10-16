@@ -142,7 +142,7 @@ There are three ways an application can bridge this protocol requirement:
      emails/month on EC2). Resend offers 3,000 emails/month free.
 
 <details>
-<summary><a id="alternatives-considered-protocol-requirement" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="direct-to-mx-socket-delivery" >Direct-to-MX Socket Delivery</a>
 
@@ -182,7 +182,7 @@ implements a hybrid authentication strategy:
    - Guarantees universal access for users without OAuth accounts.
 
 <details>
-<summary><a id="alternatives-considered-ownership-verification" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="oauth-only-authentication" >OAuth-Only Authentication</a>
 
@@ -262,7 +262,7 @@ Flow**:
      other method and preventing replay attacks.
 
 <details>
-<summary><a id="alternatives-considered-verification-flow" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="disparate-code-only-or-link-only-challenges" >Disparate Code-Only or Link-Only Challenges</a>
 
@@ -371,7 +371,7 @@ message UserEmailOAuthAccount {
    ```
 
 <details>
-<summary><a id="alternatives-considered-provenance-tracking" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="direct-foreign-key-on-oauth-accounts" >Direct Foreign Key on OAuth Accounts</a>
 
@@ -412,7 +412,7 @@ When a user unlinks an external OAuth provider (e.g. unlinking GitHub):
      `user_emails`.
 
 <details>
-<summary><a id="alternatives-considered-unlinking-lifecycle" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="indefinite-retention-of-unlinked-emails" >Indefinite Retention of Unlinked Emails</a>
 
@@ -460,7 +460,7 @@ continue to log formatted credentials to stdout without attempting network
 connections.
 
 <details>
-<summary><a id="alternatives-considered-protocol-abstraction" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="vendor-proprietary-http-sdk-integration" >Vendor-Proprietary HTTP SDK Integration</a>
 
@@ -512,7 +512,7 @@ emails/month free on EC2 or charges $0.10 per 1,000 emails with zero monthly
 minimum).
 
 <details>
-<summary><a id="alternatives-considered-delivery-targets" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="dedicated-self-hosted-mta-container" >Dedicated Self-Hosted MTA Container</a>
 
@@ -554,7 +554,7 @@ or if the SMTP relay is experiencing an outage, preventing false-positive
 server.
 
 <details>
-<summary><a id="alternatives-considered-dispatch-timing" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="asynchronous-fire-and-forget-dispatch" >Asynchronous Fire-and-Forget Dispatch</a>
 
@@ -606,7 +606,7 @@ In `test.textproto` and `sandbox.textproto`, `provider` is set to `"console"`.
 In `prod.textproto`, `provider` is set to `"smtp"`.
 
 <details>
-<summary><a id="alternatives-considered-smtp-config" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="unstructured-environment-variable-configuration" >Unstructured Environment Variable Configuration</a>
 
@@ -639,7 +639,7 @@ containing both plaintext and HTML bodies. The email will feature:
 - Security advisory notice advising users not to share codes.
 
 <details>
-<summary><a id="alternatives-considered-mime-templates" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="plaintext-only-email-transmissions" >Plaintext-Only Email Transmissions</a>
 
@@ -661,8 +661,10 @@ plaintext bodies without multipart MIME or HTML formatting.
 
 ---
 
+## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+
 <details>
-<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ### <a id="proprietary-saas-vendor-sdks" >Proprietary SaaS Vendor SDKs</a>
 

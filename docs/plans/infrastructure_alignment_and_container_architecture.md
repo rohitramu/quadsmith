@@ -151,7 +151,7 @@ Key architectural benefits of this structure:
      affecting the Go workspace.
 
 <details>
-<summary><a id="alternatives-considered-directory-reorg" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="role-based-backend-and-frontend-directory-split" >Role-Based Backend and Frontend Directory Split</a>
 
@@ -212,7 +212,7 @@ will be removed.
    - Exposes port 3000 / 443.
 
 <details>
-<summary><a id="alternatives-considered-per-app-dockerfiles" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="single-multi-stage-dockerfile" >Single Root Multi-Stage Dockerfile</a>
 
@@ -259,7 +259,7 @@ and [`test/run_sandbox_tests.sh`](../../test/run_sandbox_tests.sh) will be
 refactored to orchestrate `docker compose -f test/sandbox/docker-compose.yaml`.
 
 <details>
-<summary><a id="alternatives-considered-compose-sandbox" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="retain-monolithic-test-dockerfile" >Retain Monolithic test/Dockerfile</a>
 
@@ -319,7 +319,7 @@ schedules {
 ```
 
 <details>
-<summary><a id="alternatives-considered-purge-cadence" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="daily-twenty-four-hour-purge" >Daily 24-Hour Purge Cadence</a>
 
@@ -354,7 +354,7 @@ The GitHub Actions workflow in
 - Ensure `make generate`, `make build`, and `make test` pass hermetically.
 
 <details>
-<summary><a id="alternatives-considered-ci-sync" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="ci-docker-in-docker-compose" >Running Full Compose in CI Build Step</a>
 
@@ -373,8 +373,10 @@ Execute `make test-e2e` on every pull request push.
 
 ---
 
+## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+
 <details>
-<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ### <a id="centralized-deploy-directory" >Centralized Deploy Directory</a>
 

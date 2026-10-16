@@ -131,7 +131,7 @@ ORDER BY created_at DESC;
 ```
 
 <details>
-<summary><a id="alternatives-considered-tpt" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="denormalized-dual-write" >Denormalized Dual-Write Mirroring</a>
 
@@ -185,7 +185,7 @@ originate from user contributions.
   `CodePermissionDenied`.
 
 <details>
-<summary><a id="alternatives-considered-ownership" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="open-community-wiki" >Open Community Wiki</a>
 
@@ -334,7 +334,7 @@ all messages with table and collection options, performing the atomic
 `entities` + `<subtype_table>` transaction.
 
 <details>
-<summary><a id="alternatives-considered-scope-rpc" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="hardware-only-scope" >Hardware-Only Scope</a>
 
@@ -421,7 +421,7 @@ references and protect historical builds:
   `[Archived]` or `[Delisted]` status badge is prominently displayed.
 
 <details>
-<summary><a id="alternatives-considered-deletion" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="strict-deletion-blocking" >Strict Deletion Blocking</a>
 
@@ -475,7 +475,7 @@ Component IDs serve as public URL slugs (e.g.
   fully editable.
 
 <details>
-<summary><a id="alternatives-considered-slugs" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="mutable-slug-updates" >Mutable Slug Updates</a>
 
@@ -533,7 +533,7 @@ electrical safety checks:
     clickable link to their user profile.
 
 <details>
-<summary><a id="alternatives-considered-validation" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="schema-type-validation-only" >Schema Type Validation Only</a>
 
@@ -616,7 +616,7 @@ qs components hardware motors delete tmotor-f80-pro-1900kv
 ```
 
 <details>
-<summary><a id="alternatives-considered-ui" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="dedicated-full-page-forms" >Dedicated Full-Page Forms</a>
 
@@ -649,8 +649,10 @@ the Go CLI as read-only.
 
 ---
 
+## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+
 <details>
-<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ### <a id="monolithic-jsonb-component-store" >Monolithic JSONB Component Store</a>
 

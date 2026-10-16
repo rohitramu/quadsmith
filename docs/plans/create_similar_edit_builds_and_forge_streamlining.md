@@ -131,7 +131,7 @@ across all entity types:
   dimension variants in under 10 seconds without repetitive data entry.
 
 <details>
-<summary><a id="alternatives-considered-architectural-approach" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="approach-a-full-suggest-edit-workflow-with-moderation-queue" >Approach A: Full Suggest Edit Workflow with Moderation Queue</a>
 
@@ -173,7 +173,7 @@ ID slugs are strictly system-generated and immutable:
   external links, bookmarks, and API references.
 
 <details>
-<summary><a id="alternatives-considered-slug-generation" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="manual-custom-id-slugs" >Manual Custom ID Slugs</a>
 
@@ -224,7 +224,7 @@ Step 0 is removed entirely from The Forge:
      [`ForgeContext.tsx`](src/react/app-web/src/components/forge/ForgeContext.tsx).
 
 <details>
-<summary><a id="alternatives-considered-step-numbering" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="renumber-steps-0-to-11" >Renumber Steps from 0 to 11 (Frame as Step 0)</a>
 
@@ -299,7 +299,7 @@ message UpdateBuildRequest {
      navigates back to `/builds/${buildId}` on success.
 
 <details>
-<summary><a id="alternatives-considered-edit-routing" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="query-parameter-editing-edit-over-dedicated-route" >Query Parameter Editing (?edit=) Over Dedicated Route</a>
 
@@ -346,7 +346,7 @@ When a user initiates "Build Similar":
      save as a new build via `CreateBuild`.
 
 <details>
-<summary><a id="alternatives-considered-in-wizard-loader" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="in-wizard-baseline-selector-retention" >In-Wizard Baseline Selector Retention</a>
 
@@ -410,8 +410,10 @@ For the 20 catalog component collections:
 
 ---
 
+## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+
 <details>
-<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 All major design alternatives and their pros/cons have been documented in the
 nested sub-sections above:

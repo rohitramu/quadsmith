@@ -269,7 +269,7 @@ shared definition of the `entities`-inherited field set (`id`, `name`,
   100% unchanged.
 
 <details>
-<summary><a id="alternatives-considered-inherits" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="moving-all-21-catalog-and-build-table-definitions-into-quadsmithstore" >Moving All 21 Catalog and Build Table Definitions into `quadsmith.store`</a>
 
@@ -376,7 +376,7 @@ alongside `pb "quadsmith/shared/gen/quadsmith/api"` following the `*pb` aliasing
 rules in [`AGENTS.md`](../../AGENTS.md).
 
 <details>
-<summary><a id="alternatives-considered-store-package" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="keeping-storage-messages-in-quadsmithapi-with-separate-view-model-messages" >Keeping Storage Messages in `quadsmith.api` with Separate View Model Messages</a>
 
@@ -435,7 +435,7 @@ single-purpose definitions:
   etc.) with zero `quadsmith.sql` or `quadsmith.data` annotations.
 
 <details>
-<summary><a id="alternatives-considered-social-normalization" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="retaining-is-author-verified-owner-column-on-reviews-table" >Retaining `is_author_verified_owner` on the `reviews` SQL Table</a>
 
@@ -490,7 +490,7 @@ physical table schema must live in `quadsmith.store` while the view model lives
 in `quadsmith.api` or `quadsmith.ops`.
 
 <details>
-<summary><a id="alternatives-considered-ignore-removal" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="retaining-ignore-true-for-future-computed-fields-on-table-protos" >Retaining `ignore: true` for Future Computed Fields on Table Protos</a>
 
@@ -567,7 +567,7 @@ cleanly:
      `Build`.
 
 <details>
-<summary><a id="alternatives-considered-generator-alignment" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="explicit-database-file-option-in-sqlproto-instead-of-package-level-mapping" >Explicit `database` File Option in `sql.proto` Instead of Package-Level Mapping</a>
 
@@ -591,8 +591,10 @@ defines SQL tables.
 
 ---
 
+## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+
 <details>
-<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ### <a id="networked-data-plane-microservice-server-data-and-control-plane-api-split" >Networked Data Plane Microservice (`server-data`) and Control Plane API Split</a>
 

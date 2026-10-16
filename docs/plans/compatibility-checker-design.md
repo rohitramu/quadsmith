@@ -58,7 +58,7 @@ or electrical constraints. The system acts as an advisory assistant rather than
 a restrictive gatekeeper.
 
 <details>
-<summary><a id="alternatives-considered-permissive-build-persistence" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 Strict persistence gating that rejects saving or publishing builds containing
 unresolved `DEFINITE_INCOMPATIBILITY` diagnostics.
@@ -88,7 +88,7 @@ executes a single batch query to resolve specifications and known override
 issues, runs the evaluation in memory, and returns the diagnostics payload.
 
 <details>
-<summary><a id="alternatives-considered-stateless-evaluation-api" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 Requiring a persistent `Build` record in the database before running
 compatibility checks.

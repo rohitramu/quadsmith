@@ -69,7 +69,7 @@ This guarantees referential integrity, supports native cascading deletes, and
 allows foreign key joins without dynamic table lookups.
 
 <details>
-<summary><a id="alternatives-considered-polymorphic-relational-fk" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 Generic polymorphic target columns storing a string `target_type` (e.g.,
 `'BUILD'`, `'COMPONENT'`) and a target UUID.
@@ -121,7 +121,7 @@ Review readers can flag reviews as **Helpful** or **Unhelpful** to drive "Most
 Helpful" sorting without influencing the target entity's positive percentage.
 
 <details>
-<summary><a id="alternatives-considered-steam-style-binary-reviews" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 Traditional 1-to-5 star rating systems.
 
@@ -154,7 +154,7 @@ section:
   4. Chronological recency
 
 <details>
-<summary><a id="alternatives-considered-stackoverflow-style-qa" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 A single, flat chronological comments thread beneath builds and components.
 
@@ -222,7 +222,7 @@ are derived directly from relational vote records and endorsement events:
 - **Reputation Floor**: Total reputation cannot drop below `0`.
 
 <details>
-<summary><a id="alternatives-considered-reputation-karma-economy" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 Free, unconstrained downvoting with zero voter cost and no unlock threshold.
 

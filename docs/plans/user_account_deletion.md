@@ -132,7 +132,7 @@ session cannot delete the victim's account without gaining access to the
 victim's external primary mailbox.
 
 <details>
-<summary><a id="alternatives-considered-deletion-safeguards" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="single-click-confirmation-modal" >Single-Click Confirmation Modal</a>
 
@@ -197,7 +197,7 @@ Why Option 3 is simpler and architecturally superior:
   soft-deleted user's profile from the public.
 
 <details>
-<summary><a id="alternatives-considered-handle-retention" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="option-1-immediate-handle-release" >Option 1: Immediate Handle Release</a>
 
@@ -267,7 +267,7 @@ A core design consideration is clarifying the functional boundary between
      `users.id`.
 
 <details>
-<summary><a id="alternatives-considered-relationship-to-username-histories" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="dual-timestamp-history-synchronization" >Dual-Timestamp History Synchronization</a>
 
@@ -326,7 +326,7 @@ sub-millisecond resurrection with zero data migration or schema gymnastics:
      restored with zero risk of broken foreign keys or lost associations.
 
 <details>
-<summary><a id="alternatives-considered-resurrection-flow" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="automatic-login-resurrection" >Automatic Login Resurrection</a>
 
@@ -407,7 +407,7 @@ Key architectural outcomes:
   foreign keys in published aircraft builds, questions, and replies.
 
 <details>
-<summary><a id="alternatives-considered-purge-scrubber" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="hard-cascading-deletion" >Hard Cascading Deletion</a>
 
@@ -446,7 +446,7 @@ rely on shared wiring schematics and flight configurations:
      execution.
 
 <details>
-<summary><a id="alternatives-considered-communal-content" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="user-elected-per-build-deletion" >User-Elected Per-Build Deletion</a>
 
@@ -519,7 +519,7 @@ service AuthService {
 ```
 
 <details>
-<summary><a id="alternatives-considered-rpc-specifications" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="dedicated-senddeleteaccountverification-rpc" >Dedicated SendDeleteAccountVerification RPC</a>
 
@@ -541,8 +541,10 @@ and response message schemas instead of the unified `SendEmailOtp` procedure.
 
 ---
 
+## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+
 <details>
-<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ### <a id="immediate-hard-deletion-without-grace-period" >Immediate Hard Deletion Without Grace Period</a>
 

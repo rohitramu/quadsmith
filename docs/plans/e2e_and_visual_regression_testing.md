@@ -130,7 +130,7 @@ It accepts a dynamic `BASE_URL` environment variable:
   (macOS, Linux, Windows) and CI workers.
 
 <details>
-<summary><a id="alternatives-considered-containerized-runner" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="host-only-playwright-cli-execution" >Host-Only Playwright CLI Execution</a>
 
@@ -201,7 +201,7 @@ test/web/
 ```
 
 <details>
-<summary><a id="alternatives-considered-directory-structure" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="co-locating-e2e-inside-srcreactapp-webe2e" >Co-locating E2E Inside src/react/app-web/e2e</a>
 
@@ -275,7 +275,7 @@ prevent flaky tests:
      debugging or explicit worker counts).
 
 <details>
-<summary><a id="alternatives-considered-snapshot-diffing" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="unrestricted-cpu-core-workers" >Unrestricted CPU-Core Worker Allocation</a>
 
@@ -366,7 +366,7 @@ surfaces using deterministic seed data provided by
      cancellation actions.
 
 <details>
-<summary><a id="alternatives-considered-test-coverage" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="shallow-smoke-testing-only" >Shallow Smoke Testing Only</a>
 
@@ -454,7 +454,7 @@ enforcement, and network fault injections:
      after restoring the route successfully recovers the UI.
 
 <details>
-<summary><a id="alternatives-considered-failure-testing" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="relying-strictly-on-vitest-for-error-states" >Relying Strictly on Vitest for Error States</a>
 
@@ -502,7 +502,7 @@ To enable seamless iteration while keeping the repository clean:
      diff viewer directly from the host at `.tmp/playwright-report/index.html`.
 
 <details>
-<summary><a id="alternatives-considered-snapshot-storage" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="git-lfs-snapshot-storage" >Git LFS Snapshot Storage</a>
 
@@ -576,7 +576,7 @@ and CI workflows:
      (e.g., `playwright-report-shard-1`) for immediate debugging.
 
 <details>
-<summary><a id="alternatives-considered-makefile-integration" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="separate-make-test-from-test-e2e" >Separate make test from test-e2e</a>
 
