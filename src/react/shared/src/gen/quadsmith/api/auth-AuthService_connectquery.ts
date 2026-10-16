@@ -85,16 +85,6 @@ export const revokeOtherSessions = AuthService.method.revokeOtherSessions;
 export const listUserEmails = AuthService.method.listUserEmails;
 
 /**
- * @generated from rpc quadsmith.api.AuthService.SendAddEmailOtp
- */
-export const sendAddEmailOtp = AuthService.method.sendAddEmailOtp;
-
-/**
- * @generated from rpc quadsmith.api.AuthService.VerifyAddEmailOtp
- */
-export const verifyAddEmailOtp = AuthService.method.verifyAddEmailOtp;
-
-/**
  * @generated from rpc quadsmith.api.AuthService.MergeAccount
  */
 export const mergeAccount = AuthService.method.mergeAccount;
@@ -118,21 +108,6 @@ export const changeUsername = AuthService.method.changeUsername;
  * @generated from rpc quadsmith.api.AuthService.ListArchivedUsernames
  */
 export const listArchivedUsernames = AuthService.method.listArchivedUsernames;
-
-/**
- * @generated from rpc quadsmith.api.AuthService.SendDataExportVerification
- */
-export const sendDataExportVerification = AuthService.method.sendDataExportVerification;
-
-/**
- * @generated from rpc quadsmith.api.AuthService.VerifyDataExport
- */
-export const verifyDataExport = AuthService.method.verifyDataExport;
-
-/**
- * @generated from rpc quadsmith.api.AuthService.SendDeleteAccountVerification
- */
-export const sendDeleteAccountVerification = AuthService.method.sendDeleteAccountVerification;
 
 /**
  * @generated from rpc quadsmith.api.AuthService.DeleteAccount

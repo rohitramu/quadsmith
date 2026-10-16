@@ -17,32 +17,117 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_auth: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChhxdWFkc21pdGgvYXBpL2F1dGgucHJvdG8SDXF1YWRzbWl0aC5hcGkiJAoTU2VuZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCSKbAQoUU2VuZEVtYWlsT3RwUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhgKEGNvb2xkb3duX3NlY29uZHMYAyABKAUSGwoTaXNfZXhpc3RpbmdfYWNjb3VudBgEIAEoCBIZCgxjaGFsbGVuZ2VfaWQYBSABKAlIAIgBAUIPCg1fY2hhbGxlbmdlX2lkImAKFVZlcmlmeUVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCRIMCgRjb2RlGAIgASgJEhkKDGNoYWxsZW5nZV9pZBgDIAEoCUgAiAEBQg8KDV9jaGFsbGVuZ2VfaWQiJwoWVmVyaWZ5TWFnaWNMaW5rUmVxdWVzdBINCgV0b2tlbhgBIAEoCSIwCh9HZXRMb2dpbkNoYWxsZW5nZURldGFpbHNSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIoYCCiBHZXRMb2dpbkNoYWxsZW5nZURldGFpbHNSZXNwb25zZRINCgVlbWFpbBgBIAEoCRISCgppcF9hZGRyZXNzGAIgASgJEhUKDWxvY2F0aW9uX2hpbnQYAyABKAkSEwoLZGV2aWNlX2hpbnQYBCABKAkSLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKZXhwaXJlc19hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMwoGc3RhdHVzGAcgASgOMiMucXVhZHNtaXRoLmFwaS5Mb2dpbkNoYWxsZW5nZVN0YXR1cyItChxBcHByb3ZlTG9naW5DaGFsbGVuZ2VSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIkEKHUFwcHJvdmVMb2dpbkNoYWxsZW5nZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSIqChlEZW55TG9naW5DaGFsbGVuZ2VSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIj4KGkRlbnlMb2dpbkNoYWxsZW5nZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSI2Ch5HZXRMb2dpbkNoYWxsZW5nZVN0YXR1c1JlcXVlc3QSFAoMY2hhbGxlbmdlX2lkGAEgASgJIqEBCh9HZXRMb2dpbkNoYWxsZW5nZVN0YXR1c1Jlc3BvbnNlEjMKBnN0YXR1cxgBIAEoDjIjLnF1YWRzbWl0aC5hcGkuTG9naW5DaGFsbGVuZ2VTdGF0dXMSNwoNYXV0aF9yZXNwb25zZRgCIAEoCzIbLnF1YWRzbWl0aC5hcGkuQXV0aFJlc3BvbnNlSACIAQFCEAoOX2F1dGhfcmVzcG9uc2Ui1AEKG0NvbXBsZXRlQWNjb3VudFNldHVwUmVxdWVzdBITCgtzZXR1cF90b2tlbhgBIAEoCRJ4Cgh1c2VybmFtZRgCIAEoCUJmgrIZYgpgCAMQFBoeXlthLXpdW2EtejAtOV9dezEsMTh9W2EtejAtOV0kIgVhZG1pbiIEcm9vdCIGc3lzdGVtIgNib3QiBXJvYm90KgJfXyoJcXVhZHNtaXRoKgpxdWFkX3NtaXRoEhcKCmF2YXRhcl91cmwYAyABKAlIAIgBAUINCgtfYXZhdGFyX3VybCIsChNSZWZyZXNoVG9rZW5SZXF1ZXN0EhUKDXJlZnJlc2hfdG9rZW4YASABKAkiFwoVR2V0Q3VycmVudFVzZXJSZXF1ZXN0IlgKFFVwZGF0ZVByb2ZpbGVSZXF1ZXN0EhcKCmF2YXRhcl91cmwYASABKAlIAIgBARIQCgNiaW8YAiABKAlIAYgBAUINCgtfYXZhdGFyX3VybEIGCgRfYmlvIj0KDUxvZ291dFJlcXVlc3QSGgoNcmVmcmVzaF90b2tlbhgBIAEoCUgAiAEBQhAKDl9yZWZyZXNoX3Rva2VuIiEKDkxvZ291dFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiGwoZTGlzdEFjdGl2ZVNlc3Npb25zUmVxdWVzdCJGChpMaXN0QWN0aXZlU2Vzc2lvbnNSZXNwb25zZRIoCghzZXNzaW9ucxgBIAMoCzIWLnF1YWRzbWl0aC5hcGkuU2Vzc2lvbiLPAQoHU2Vzc2lvbhIMCgR1dWlkGAEgASgJEhMKC2RldmljZV9oaW50GAIgASgJEhIKCmlwX2FkZHJlc3MYAyABKAkSFQoNbG9jYXRpb25faGludBgEIAEoCRIuCgpjcmVhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIyCg5sYXN0X2FjdGl2ZV9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASEgoKaXNfY3VycmVudBgHIAEoCCIsChRSZXZva2VTZXNzaW9uUmVxdWVzdBIUCgxzZXNzaW9uX3V1aWQYASABKAkiOQoVUmV2b2tlU2Vzc2lvblJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSIcChpSZXZva2VPdGhlclNlc3Npb25zUmVxdWVzdCJWChtSZXZva2VPdGhlclNlc3Npb25zUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIVCg1yZXZva2VkX2NvdW50GAIgASgFEg8KB21lc3NhZ2UYAyABKAkiFwoVTGlzdFVzZXJFbWFpbHNSZXF1ZXN0IkIKFkxpc3RVc2VyRW1haWxzUmVzcG9uc2USKAoGZW1haWxzGAEgAygLMhgucXVhZHNtaXRoLmFwaS5Vc2VyRW1haWwiJwoWU2VuZEFkZEVtYWlsT3RwUmVxdWVzdBINCgVlbWFpbBgBIAEoCSJyChhWZXJpZnlBZGRFbWFpbE90cFJlcXVlc3QSDQoFZW1haWwYASABKAkSDAoEY29kZRgCIAEoCRINCgV0b2tlbhgDIAEoCRIZCgxjaGFsbGVuZ2VfaWQYBCABKAlIAIgBAUIPCg1fY2hhbGxlbmdlX2lkIokCChlWZXJpZnlBZGRFbWFpbE90cFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIWCg5tZXJnZV9yZXF1aXJlZBgDIAEoCBIbChNvdGhlcl91c2VyX3VzZXJuYW1lGAQgASgJEhkKEW90aGVyX2J1aWxkX2NvdW50GAUgASgFEhkKEW90aGVyX2J1aWxkX25hbWVzGAYgAygJEhQKDG90aGVyX2VtYWlscxgHIAMoCRIdChVvdGhlcl9vYXV0aF9wcm92aWRlcnMYCCADKAkSGQoMbWVyZ2VfdGlja2V0GAkgASgJSACIAQFCDwoNX21lcmdlX3RpY2tldCKZAQoTTWVyZ2VBY2NvdW50UmVxdWVzdBINCgVlbWFpbBgBIAEoCRIMCgRjb2RlGAIgASgJEg0KBXRva2VuGAMgASgJEhkKDG1lcmdlX3RpY2tldBgEIAEoCUgAiAEBEhkKDGNoYWxsZW5nZV9pZBgFIAEoCUgBiAEBQg8KDV9tZXJnZV90aWNrZXRCDwoNX2NoYWxsZW5nZV9pZCKJAQoUTWVyZ2VBY2NvdW50UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEh8KF3RyYW5zZmVycmVkX2J1aWxkX2NvdW50GAMgASgFEhcKD21lcmdlZF91c2VybmFtZRgEIAEoCRIVCg1tZXJnZWRfZW1haWxzGAUgAygJIicKFlNldFByaW1hcnlFbWFpbFJlcXVlc3QSDQoFZW1haWwYASABKAkiOwoXU2V0UHJpbWFyeUVtYWlsUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJIicKFlJlbW92ZVVzZXJFbWFpbFJlcXVlc3QSDQoFZW1haWwYASABKAkiOwoXUmVtb3ZlVXNlckVtYWlsUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJIpUBChVDaGFuZ2VVc2VybmFtZVJlcXVlc3QSfAoMbmV3X3VzZXJuYW1lGAEgASgJQmaCshliCmAIAxAUGh5eW2Etel1bYS16MC05X117MSwxOH1bYS16MC05XSQiBWFkbWluIgRyb290IgZzeXN0ZW0iA2JvdCIFcm9ib3QqAl9fKglxdWFkc21pdGgqCnF1YWRfc21pdGgi4QEKFkNoYW5nZVVzZXJuYW1lUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiEKBHVzZXIYAyABKAsyEy5xdWFkc21pdGguYXBpLlVzZXISPgoabmV4dF9hbGxvd2VkX25ld19yZW5hbWVfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEkIKHm5leHRfYWxsb3dlZF9hcmNoaXZlX3JlbmFtZV9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAiHgocTGlzdEFyY2hpdmVkVXNlcm5hbWVzUmVxdWVzdCLgAQodTGlzdEFyY2hpdmVkVXNlcm5hbWVzUmVzcG9uc2USOwoSYXJjaGl2ZWRfdXNlcm5hbWVzGAEgAygLMh8ucXVhZHNtaXRoLmFwaS5BcmNoaXZlZFVzZXJuYW1lEj4KGm5leHRfYWxsb3dlZF9uZXdfcmVuYW1lX2F0GAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBJCCh5uZXh0X2FsbG93ZWRfYXJjaGl2ZV9yZW5hbWVfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIqkCChBBcmNoaXZlZFVzZXJuYW1lEhAKCHVzZXJuYW1lGAEgASgJEjUKEWZpcnN0X2FyY2hpdmVkX2F0GAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpyZW5hbWVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpyZWxlYXNlX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIWCg5kYXlzX3JlbWFpbmluZxgFIAEoBRIXCg9jYW5fcmVjbGFpbV9ub3cYBiABKAgSOwoXbmV4dF9yZWNsYWltX2FsbG93ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIkQKJFNlbmREZWxldGVBY2NvdW50VmVyaWZpY2F0aW9uUmVxdWVzdBIcCgh1c2VybmFtZRgBIAEoCUIKgrIZBgoECAMQFCKPAQolU2VuZERlbGV0ZUFjY291bnRWZXJpZmljYXRpb25SZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSFAoMY2hhbGxlbmdlX2lkGAMgASgJEi4KCmV4cGlyZXNfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wInUKFERlbGV0ZUFjY291bnRSZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJEhQKDGNoYWxsZW5nZV9pZBgCIAEoCRIOCgRjb2RlGAMgASgJSAASFQoLbWFnaWNfdG9rZW4YBCABKAlIAEIOCgx2ZXJpZmljYXRpb24icQoVRGVsZXRlQWNjb3VudFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRI2ChJzY2hlZHVsZWRfcHVyZ2VfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIh4KHENhbmNlbEFjY291bnREZWxldGlvblJlcXVlc3QiZAodQ2FuY2VsQWNjb3VudERlbGV0aW9uUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEiEKBHVzZXIYAyABKAsyEy5xdWFkc21pdGguYXBpLlVzZXIiIwohU2VuZERhdGFFeHBvcnRWZXJpZmljYXRpb25SZXF1ZXN0Ir0BCiJTZW5kRGF0YUV4cG9ydFZlcmlmaWNhdGlvblJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIVCg1wcmltYXJ5X2VtYWlsGAMgASgJEhgKEGNvb2xkb3duX3NlY29uZHMYBCABKAUSFAoMY2hhbGxlbmdlX2lkGAUgASgJEi4KCmV4cGlyZXNfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wInwKF1ZlcmlmeURhdGFFeHBvcnRSZXF1ZXN0EhkKDGNoYWxsZW5nZV9pZBgBIAEoCUgBiAEBEg4KBGNvZGUYAiABKAlIABIVCgttYWdpY190b2tlbhgDIAEoCUgAQg4KDHZlcmlmaWNhdGlvbkIPCg1fY2hhbGxlbmdlX2lkIqoBChhWZXJpZnlEYXRhRXhwb3J0UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhQKDGV4cG9ydF90b2tlbhgDIAEoCRIUCgxkb3dubG9hZF91cmwYBCABKAkSEAoIZmlsZW5hbWUYBSABKAkSLgoKZXhwaXJlc19hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAigAMKDEF1dGhSZXNwb25zZRIUCgxhY2Nlc3NfdG9rZW4YASABKAkSFQoNcmVmcmVzaF90b2tlbhgCIAEoCRIhCgR1c2VyGAMgASgLMhMucXVhZHNtaXRoLmFwaS5Vc2VyEisKB3Byb2ZpbGUYBCABKAsyGi5xdWFkc21pdGguYXBpLlVzZXJQcm9maWxlEh4KFmFjY291bnRfc2V0dXBfcmVxdWlyZWQYBSABKAgSEwoLc2V0dXBfdG9rZW4YBiABKAkSGwoOYWNjb3VudF9zdGF0dXMYByABKAlIAIgBARI7ChJzY2hlZHVsZWRfcHVyZ2VfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAGIAQESKwoKYWN0aXZlX2JhbhgJIAEoCzISLnF1YWRzbWl0aC5hcGkuQmFuSAKIAQFCEQoPX2FjY291bnRfc3RhdHVzQhUKE19zY2hlZHVsZWRfcHVyZ2VfYXRCDQoLX2FjdGl2ZV9iYW4iiQEKFE90cFZlcmlmaWNhdGlvbkVycm9yEg8KB21lc3NhZ2UYASABKAkSGgoScmVtYWluaW5nX2F0dGVtcHRzGAIgASgFEhQKDG1heF9hdHRlbXB0cxgDIAEoBRIUCgxpc19leGhhdXN0ZWQYBCABKAgSGAoQY29vbGRvd25fc2Vjb25kcxgFIAEoBSrOAQoUTG9naW5DaGFsbGVuZ2VTdGF0dXMSJgoiTE9HSU5fQ0hBTExFTkdFX1NUQVRVU19VTlNQRUNJRklFRBAAEiIKHkxPR0lOX0NIQUxMRU5HRV9TVEFUVVNfUEVORElORxABEiMKH0xPR0lOX0NIQUxMRU5HRV9TVEFUVVNfQVBQUk9WRUQQAhIhCh1MT0dJTl9DSEFMTEVOR0VfU1RBVFVTX0RFTklFRBADEiIKHkxPR0lOX0NIQUxMRU5HRV9TVEFUVVNfRVhQSVJFRBAEMpEWCgtBdXRoU2VydmljZRJXCgxTZW5kRW1haWxPdHASIi5xdWFkc21pdGguYXBpLlNlbmRFbWFpbE90cFJlcXVlc3QaIy5xdWFkc21pdGguYXBpLlNlbmRFbWFpbE90cFJlc3BvbnNlElMKDlZlcmlmeUVtYWlsT3RwEiQucXVhZHNtaXRoLmFwaS5WZXJpZnlFbWFpbE90cFJlcXVlc3QaGy5xdWFkc21pdGguYXBpLkF1dGhSZXNwb25zZRJVCg9WZXJpZnlNYWdpY0xpbmsSJS5xdWFkc21pdGguYXBpLlZlcmlmeU1hZ2ljTGlua1JlcXVlc3QaGy5xdWFkc21pdGguYXBpLkF1dGhSZXNwb25zZRJ7ChhHZXRMb2dpbkNoYWxsZW5nZURldGFpbHMSLi5xdWFkc21pdGguYXBpLkdldExvZ2luQ2hhbGxlbmdlRGV0YWlsc1JlcXVlc3QaLy5xdWFkc21pdGguYXBpLkdldExvZ2luQ2hhbGxlbmdlRGV0YWlsc1Jlc3BvbnNlEnIKFUFwcHJvdmVMb2dpbkNoYWxsZW5nZRIrLnF1YWRzbWl0aC5hcGkuQXBwcm92ZUxvZ2luQ2hhbGxlbmdlUmVxdWVzdBosLnF1YWRzbWl0aC5hcGkuQXBwcm92ZUxvZ2luQ2hhbGxlbmdlUmVzcG9uc2USaQoSRGVueUxvZ2luQ2hhbGxlbmdlEigucXVhZHNtaXRoLmFwaS5EZW55TG9naW5DaGFsbGVuZ2VSZXF1ZXN0GikucXVhZHNtaXRoLmFwaS5EZW55TG9naW5DaGFsbGVuZ2VSZXNwb25zZRJ4ChdHZXRMb2dpbkNoYWxsZW5nZVN0YXR1cxItLnF1YWRzbWl0aC5hcGkuR2V0TG9naW5DaGFsbGVuZ2VTdGF0dXNSZXF1ZXN0Gi4ucXVhZHNtaXRoLmFwaS5HZXRMb2dpbkNoYWxsZW5nZVN0YXR1c1Jlc3BvbnNlEl8KFENvbXBsZXRlQWNjb3VudFNldHVwEioucXVhZHNtaXRoLmFwaS5Db21wbGV0ZUFjY291bnRTZXR1cFJlcXVlc3QaGy5xdWFkc21pdGguYXBpLkF1dGhSZXNwb25zZRJPCgxSZWZyZXNoVG9rZW4SIi5xdWFkc21pdGguYXBpLlJlZnJlc2hUb2tlblJlcXVlc3QaGy5xdWFkc21pdGguYXBpLkF1dGhSZXNwb25zZRJLCg5HZXRDdXJyZW50VXNlchIkLnF1YWRzbWl0aC5hcGkuR2V0Q3VycmVudFVzZXJSZXF1ZXN0GhMucXVhZHNtaXRoLmFwaS5Vc2VyElAKDVVwZGF0ZVByb2ZpbGUSIy5xdWFkc21pdGguYXBpLlVwZGF0ZVByb2ZpbGVSZXF1ZXN0GhoucXVhZHNtaXRoLmFwaS5Vc2VyUHJvZmlsZRJFCgZMb2dvdXQSHC5xdWFkc21pdGguYXBpLkxvZ291dFJlcXVlc3QaHS5xdWFkc21pdGguYXBpLkxvZ291dFJlc3BvbnNlEmkKEkxpc3RBY3RpdmVTZXNzaW9ucxIoLnF1YWRzbWl0aC5hcGkuTGlzdEFjdGl2ZVNlc3Npb25zUmVxdWVzdBopLnF1YWRzbWl0aC5hcGkuTGlzdEFjdGl2ZVNlc3Npb25zUmVzcG9uc2USWgoNUmV2b2tlU2Vzc2lvbhIjLnF1YWRzbWl0aC5hcGkuUmV2b2tlU2Vzc2lvblJlcXVlc3QaJC5xdWFkc21pdGguYXBpLlJldm9rZVNlc3Npb25SZXNwb25zZRJsChNSZXZva2VPdGhlclNlc3Npb25zEikucXVhZHNtaXRoLmFwaS5SZXZva2VPdGhlclNlc3Npb25zUmVxdWVzdBoqLnF1YWRzbWl0aC5hcGkuUmV2b2tlT3RoZXJTZXNzaW9uc1Jlc3BvbnNlEl0KDkxpc3RVc2VyRW1haWxzEiQucXVhZHNtaXRoLmFwaS5MaXN0VXNlckVtYWlsc1JlcXVlc3QaJS5xdWFkc21pdGguYXBpLkxpc3RVc2VyRW1haWxzUmVzcG9uc2USXQoPU2VuZEFkZEVtYWlsT3RwEiUucXVhZHNtaXRoLmFwaS5TZW5kQWRkRW1haWxPdHBSZXF1ZXN0GiMucXVhZHNtaXRoLmFwaS5TZW5kRW1haWxPdHBSZXNwb25zZRJmChFWZXJpZnlBZGRFbWFpbE90cBInLnF1YWRzbWl0aC5hcGkuVmVyaWZ5QWRkRW1haWxPdHBSZXF1ZXN0GigucXVhZHNtaXRoLmFwaS5WZXJpZnlBZGRFbWFpbE90cFJlc3BvbnNlElcKDE1lcmdlQWNjb3VudBIiLnF1YWRzbWl0aC5hcGkuTWVyZ2VBY2NvdW50UmVxdWVzdBojLnF1YWRzbWl0aC5hcGkuTWVyZ2VBY2NvdW50UmVzcG9uc2USYAoPU2V0UHJpbWFyeUVtYWlsEiUucXVhZHNtaXRoLmFwaS5TZXRQcmltYXJ5RW1haWxSZXF1ZXN0GiYucXVhZHNtaXRoLmFwaS5TZXRQcmltYXJ5RW1haWxSZXNwb25zZRJgCg9SZW1vdmVVc2VyRW1haWwSJS5xdWFkc21pdGguYXBpLlJlbW92ZVVzZXJFbWFpbFJlcXVlc3QaJi5xdWFkc21pdGguYXBpLlJlbW92ZVVzZXJFbWFpbFJlc3BvbnNlEl0KDkNoYW5nZVVzZXJuYW1lEiQucXVhZHNtaXRoLmFwaS5DaGFuZ2VVc2VybmFtZVJlcXVlc3QaJS5xdWFkc21pdGguYXBpLkNoYW5nZVVzZXJuYW1lUmVzcG9uc2UScgoVTGlzdEFyY2hpdmVkVXNlcm5hbWVzEisucXVhZHNtaXRoLmFwaS5MaXN0QXJjaGl2ZWRVc2VybmFtZXNSZXF1ZXN0GiwucXVhZHNtaXRoLmFwaS5MaXN0QXJjaGl2ZWRVc2VybmFtZXNSZXNwb25zZRKBAQoaU2VuZERhdGFFeHBvcnRWZXJpZmljYXRpb24SMC5xdWFkc21pdGguYXBpLlNlbmREYXRhRXhwb3J0VmVyaWZpY2F0aW9uUmVxdWVzdBoxLnF1YWRzbWl0aC5hcGkuU2VuZERhdGFFeHBvcnRWZXJpZmljYXRpb25SZXNwb25zZRJjChBWZXJpZnlEYXRhRXhwb3J0EiYucXVhZHNtaXRoLmFwaS5WZXJpZnlEYXRhRXhwb3J0UmVxdWVzdBonLnF1YWRzbWl0aC5hcGkuVmVyaWZ5RGF0YUV4cG9ydFJlc3BvbnNlEooBCh1TZW5kRGVsZXRlQWNjb3VudFZlcmlmaWNhdGlvbhIzLnF1YWRzbWl0aC5hcGkuU2VuZERlbGV0ZUFjY291bnRWZXJpZmljYXRpb25SZXF1ZXN0GjQucXVhZHNtaXRoLmFwaS5TZW5kRGVsZXRlQWNjb3VudFZlcmlmaWNhdGlvblJlc3BvbnNlEloKDURlbGV0ZUFjY291bnQSIy5xdWFkc21pdGguYXBpLkRlbGV0ZUFjY291bnRSZXF1ZXN0GiQucXVhZHNtaXRoLmFwaS5EZWxldGVBY2NvdW50UmVzcG9uc2UScgoVQ2FuY2VsQWNjb3VudERlbGV0aW9uEisucXVhZHNtaXRoLmFwaS5DYW5jZWxBY2NvdW50RGVsZXRpb25SZXF1ZXN0GiwucXVhZHNtaXRoLmFwaS5DYW5jZWxBY2NvdW50RGVsZXRpb25SZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
+    "ChhxdWFkc21pdGgvYXBpL2F1dGgucHJvdG8SDXF1YWRzbWl0aC5hcGkiLQocQXBwcm92ZUxvZ2luQ2hhbGxlbmdlUmVxdWVzdBINCgV0b2tlbhgBIAEoCSJBCh1BcHByb3ZlTG9naW5DaGFsbGVuZ2VSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkiHgocQ2FuY2VsQWNjb3VudERlbGV0aW9uUmVxdWVzdCJkCh1DYW5jZWxBY2NvdW50RGVsZXRpb25SZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSIQoEdXNlchgDIAEoCzITLnF1YWRzbWl0aC5hcGkuVXNlciKVAQoVQ2hhbmdlVXNlcm5hbWVSZXF1ZXN0EnwKDG5ld191c2VybmFtZRgBIAEoCUJmgrIZYgpgCAMQFBoeXlthLXpdW2EtejAtOV9dezEsMTh9W2EtejAtOV0kIgVhZG1pbiIEcm9vdCIGc3lzdGVtIgNib3QiBXJvYm90KgJfXyoJcXVhZHNtaXRoKgpxdWFkX3NtaXRoIuEBChZDaGFuZ2VVc2VybmFtZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIhCgR1c2VyGAMgASgLMhMucXVhZHNtaXRoLmFwaS5Vc2VyEj4KGm5leHRfYWxsb3dlZF9uZXdfcmVuYW1lX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBJCCh5uZXh0X2FsbG93ZWRfYXJjaGl2ZV9yZW5hbWVfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wItQBChtDb21wbGV0ZUFjY291bnRTZXR1cFJlcXVlc3QSEwoLc2V0dXBfdG9rZW4YASABKAkSeAoIdXNlcm5hbWUYAiABKAlCZoKyGWIKYAgDEBQaHl5bYS16XVthLXowLTlfXXsxLDE4fVthLXowLTldJCIFYWRtaW4iBHJvb3QiBnN5c3RlbSIDYm90IgVyb2JvdCoCX18qCXF1YWRzbWl0aCoKcXVhZF9zbWl0aBIXCgphdmF0YXJfdXJsGAMgASgJSACIAQFCDQoLX2F2YXRhcl91cmwimgEKFERlbGV0ZUFjY291bnRSZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJEhkKDGNoYWxsZW5nZV9pZBgCIAEoCUgAiAEBEhEKBGNvZGUYAyABKAlIAYgBARIYCgttYWdpY190b2tlbhgEIAEoCUgCiAEBQg8KDV9jaGFsbGVuZ2VfaWRCBwoFX2NvZGVCDgoMX21hZ2ljX3Rva2VuInEKFURlbGV0ZUFjY291bnRSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSNgoSc2NoZWR1bGVkX3B1cmdlX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCIqChlEZW55TG9naW5DaGFsbGVuZ2VSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIj4KGkRlbnlMb2dpbkNoYWxsZW5nZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSIXChVHZXRDdXJyZW50VXNlclJlcXVlc3QiMAofR2V0TG9naW5DaGFsbGVuZ2VEZXRhaWxzUmVxdWVzdBINCgV0b2tlbhgBIAEoCSKGAgogR2V0TG9naW5DaGFsbGVuZ2VEZXRhaWxzUmVzcG9uc2USDQoFZW1haWwYASABKAkSEgoKaXBfYWRkcmVzcxgCIAEoCRIVCg1sb2NhdGlvbl9oaW50GAMgASgJEhMKC2RldmljZV9oaW50GAQgASgJEi4KCmNyZWF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmV4cGlyZXNfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjMKBnN0YXR1cxgHIAEoDjIjLnF1YWRzbWl0aC5hcGkuTG9naW5DaGFsbGVuZ2VTdGF0dXMiNgoeR2V0TG9naW5DaGFsbGVuZ2VTdGF0dXNSZXF1ZXN0EhQKDGNoYWxsZW5nZV9pZBgBIAEoCSKhAQofR2V0TG9naW5DaGFsbGVuZ2VTdGF0dXNSZXNwb25zZRIzCgZzdGF0dXMYASABKA4yIy5xdWFkc21pdGguYXBpLkxvZ2luQ2hhbGxlbmdlU3RhdHVzEjcKDWF1dGhfcmVzcG9uc2UYAiABKAsyGy5xdWFkc21pdGguYXBpLkF1dGhSZXNwb25zZUgAiAEBQhAKDl9hdXRoX3Jlc3BvbnNlIoADCgxBdXRoUmVzcG9uc2USFAoMYWNjZXNzX3Rva2VuGAEgASgJEhUKDXJlZnJlc2hfdG9rZW4YAiABKAkSIQoEdXNlchgDIAEoCzITLnF1YWRzbWl0aC5hcGkuVXNlchIrCgdwcm9maWxlGAQgASgLMhoucXVhZHNtaXRoLmFwaS5Vc2VyUHJvZmlsZRIeChZhY2NvdW50X3NldHVwX3JlcXVpcmVkGAUgASgIEhMKC3NldHVwX3Rva2VuGAYgASgJEhsKDmFjY291bnRfc3RhdHVzGAcgASgJSACIAQESOwoSc2NoZWR1bGVkX3B1cmdlX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgBiAEBEisKCmFjdGl2ZV9iYW4YCSABKAsyEi5xdWFkc21pdGguYXBpLkJhbkgCiAEBQhEKD19hY2NvdW50X3N0YXR1c0IVChNfc2NoZWR1bGVkX3B1cmdlX2F0Qg0KC19hY3RpdmVfYmFuIhsKGUxpc3RBY3RpdmVTZXNzaW9uc1JlcXVlc3QiRgoaTGlzdEFjdGl2ZVNlc3Npb25zUmVzcG9uc2USKAoIc2Vzc2lvbnMYASADKAsyFi5xdWFkc21pdGguYXBpLlNlc3Npb24izwEKB1Nlc3Npb24SDAoEdXVpZBgBIAEoCRITCgtkZXZpY2VfaGludBgCIAEoCRISCgppcF9hZGRyZXNzGAMgASgJEhUKDWxvY2F0aW9uX2hpbnQYBCABKAkSLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASMgoObGFzdF9hY3RpdmVfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhIKCmlzX2N1cnJlbnQYByABKAgiHgocTGlzdEFyY2hpdmVkVXNlcm5hbWVzUmVxdWVzdCLgAQodTGlzdEFyY2hpdmVkVXNlcm5hbWVzUmVzcG9uc2USOwoSYXJjaGl2ZWRfdXNlcm5hbWVzGAEgAygLMh8ucXVhZHNtaXRoLmFwaS5BcmNoaXZlZFVzZXJuYW1lEj4KGm5leHRfYWxsb3dlZF9uZXdfcmVuYW1lX2F0GAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBJCCh5uZXh0X2FsbG93ZWRfYXJjaGl2ZV9yZW5hbWVfYXQYAyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIqkCChBBcmNoaXZlZFVzZXJuYW1lEhAKCHVzZXJuYW1lGAEgASgJEjUKEWZpcnN0X2FyY2hpdmVkX2F0GAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpyZW5hbWVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpyZWxlYXNlX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIWCg5kYXlzX3JlbWFpbmluZxgFIAEoBRIXCg9jYW5fcmVjbGFpbV9ub3cYBiABKAgSOwoXbmV4dF9yZWNsYWltX2FsbG93ZWRfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIhcKFUxpc3RVc2VyRW1haWxzUmVxdWVzdCJCChZMaXN0VXNlckVtYWlsc1Jlc3BvbnNlEigKBmVtYWlscxgBIAMoCzIYLnF1YWRzbWl0aC5hcGkuVXNlckVtYWlsIj0KDUxvZ291dFJlcXVlc3QSGgoNcmVmcmVzaF90b2tlbhgBIAEoCUgAiAEBQhAKDl9yZWZyZXNoX3Rva2VuIiEKDkxvZ291dFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgimQEKE01lcmdlQWNjb3VudFJlcXVlc3QSDQoFZW1haWwYASABKAkSDAoEY29kZRgCIAEoCRINCgV0b2tlbhgDIAEoCRIZCgxtZXJnZV90aWNrZXQYBCABKAlIAIgBARIZCgxjaGFsbGVuZ2VfaWQYBSABKAlIAYgBAUIPCg1fbWVyZ2VfdGlja2V0Qg8KDV9jaGFsbGVuZ2VfaWQiiQEKFE1lcmdlQWNjb3VudFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIfChd0cmFuc2ZlcnJlZF9idWlsZF9jb3VudBgDIAEoBRIXCg9tZXJnZWRfdXNlcm5hbWUYBCABKAkSFQoNbWVyZ2VkX2VtYWlscxgFIAMoCSIsChNSZWZyZXNoVG9rZW5SZXF1ZXN0EhUKDXJlZnJlc2hfdG9rZW4YASABKAkiJwoWUmVtb3ZlVXNlckVtYWlsUmVxdWVzdBINCgVlbWFpbBgBIAEoCSI7ChdSZW1vdmVVc2VyRW1haWxSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkiHAoaUmV2b2tlT3RoZXJTZXNzaW9uc1JlcXVlc3QiVgobUmV2b2tlT3RoZXJTZXNzaW9uc1Jlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSFQoNcmV2b2tlZF9jb3VudBgCIAEoBRIPCgdtZXNzYWdlGAMgASgJIiwKFFJldm9rZVNlc3Npb25SZXF1ZXN0EhQKDHNlc3Npb25fdXVpZBgBIAEoCSI5ChVSZXZva2VTZXNzaW9uUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJIlUKE1NlbmRFbWFpbE90cFJlcXVlc3QSDQoFZW1haWwYASABKAkSLwoHcHVycG9zZRgCIAEoDjIeLnF1YWRzbWl0aC5hcGkuRW1haWxPdHBQdXJwb3NlIu4BChRTZW5kRW1haWxPdHBSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSGAoQY29vbGRvd25fc2Vjb25kcxgDIAEoBRIbChNpc19leGlzdGluZ19hY2NvdW50GAQgASgIEhkKDGNoYWxsZW5nZV9pZBgFIAEoCUgAiAEBEg0KBWVtYWlsGAYgASgJEjMKCmV4cGlyZXNfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAGIAQFCDwoNX2NoYWxsZW5nZV9pZEINCgtfZXhwaXJlc19hdCInChZTZXRQcmltYXJ5RW1haWxSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJIjsKF1NldFByaW1hcnlFbWFpbFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCSJYChRVcGRhdGVQcm9maWxlUmVxdWVzdBIXCgphdmF0YXJfdXJsGAEgASgJSACIAQESEAoDYmlvGAIgASgJSAGIAQFCDQoLX2F2YXRhcl91cmxCBgoEX2JpbyKvAQoVVmVyaWZ5RW1haWxPdHBSZXF1ZXN0Eg0KBWVtYWlsGAEgASgJEgwKBGNvZGUYAiABKAkSGQoMY2hhbGxlbmdlX2lkGAMgASgJSACIAQESEgoFdG9rZW4YBCABKAlIAYgBARIvCgdwdXJwb3NlGAUgASgOMh4ucXVhZHNtaXRoLmFwaS5FbWFpbE90cFB1cnBvc2VCDwoNX2NoYWxsZW5nZV9pZEIICgZfdG9rZW4ilQcKFlZlcmlmeUVtYWlsT3RwUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEi8KB3B1cnBvc2UYAyABKA4yHi5xdWFkc21pdGguYXBpLkVtYWlsT3RwUHVycG9zZRISCgVlbWFpbBgEIAEoCUgAiAEBEhQKDGFjY2Vzc190b2tlbhgFIAEoCRIVCg1yZWZyZXNoX3Rva2VuGAYgASgJEiEKBHVzZXIYByABKAsyEy5xdWFkc21pdGguYXBpLlVzZXISKwoHcHJvZmlsZRgIIAEoCzIaLnF1YWRzbWl0aC5hcGkuVXNlclByb2ZpbGUSHgoWYWNjb3VudF9zZXR1cF9yZXF1aXJlZBgJIAEoCBITCgtzZXR1cF90b2tlbhgKIAEoCRIbCg5hY2NvdW50X3N0YXR1cxgLIAEoCUgBiAEBEisKCmFjdGl2ZV9iYW4YDCABKAsyEi5xdWFkc21pdGguYXBpLkJhbkgCiAEBEhYKDm1lcmdlX3JlcXVpcmVkGA0gASgIEhkKDG1lcmdlX3RpY2tldBgOIAEoCUgDiAEBEhsKE290aGVyX3VzZXJfdXNlcm5hbWUYDyABKAkSGQoRb3RoZXJfYnVpbGRfY291bnQYECABKAUSGQoRb3RoZXJfYnVpbGRfbmFtZXMYESADKAkSFAoMb3RoZXJfZW1haWxzGBIgAygJEh0KFW90aGVyX29hdXRoX3Byb3ZpZGVycxgTIAMoCRIZCgxleHBvcnRfdG9rZW4YFCABKAlIBIgBARIZCgxkb3dubG9hZF91cmwYFSABKAlIBYgBARIVCghmaWxlbmFtZRgWIAEoCUgGiAEBEjoKEWV4cG9ydF9leHBpcmVzX2F0GBcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgHiAEBEjsKEnNjaGVkdWxlZF9wdXJnZV9hdBgYIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBICIgBAUIICgZfZW1haWxCEQoPX2FjY291bnRfc3RhdHVzQg0KC19hY3RpdmVfYmFuQg8KDV9tZXJnZV90aWNrZXRCDwoNX2V4cG9ydF90b2tlbkIPCg1fZG93bmxvYWRfdXJsQgsKCV9maWxlbmFtZUIUChJfZXhwb3J0X2V4cGlyZXNfYXRCFQoTX3NjaGVkdWxlZF9wdXJnZV9hdCInChZWZXJpZnlNYWdpY0xpbmtSZXF1ZXN0Eg0KBXRva2VuGAEgASgJIokBChRPdHBWZXJpZmljYXRpb25FcnJvchIPCgdtZXNzYWdlGAEgASgJEhoKEnJlbWFpbmluZ19hdHRlbXB0cxgCIAEoBRIUCgxtYXhfYXR0ZW1wdHMYAyABKAUSFAoMaXNfZXhoYXVzdGVkGAQgASgIEhgKEGNvb2xkb3duX3NlY29uZHMYBSABKAUquwEKD0VtYWlsT3RwUHVycG9zZRIhCh1FTUFJTF9PVFBfUFVSUE9TRV9VTlNQRUNJRklFRBAAEhsKF0VNQUlMX09UUF9QVVJQT1NFX0xPR0lOEAESHwobRU1BSUxfT1RQX1BVUlBPU0VfQUREX0VNQUlMEAISIQodRU1BSUxfT1RQX1BVUlBPU0VfRVhQT1JUX0RBVEEQAxIkCiBFTUFJTF9PVFBfUFVSUE9TRV9ERUxFVEVfQUNDT1VOVBAEKs4BChRMb2dpbkNoYWxsZW5nZVN0YXR1cxImCiJMT0dJTl9DSEFMTEVOR0VfU1RBVFVTX1VOU1BFQ0lGSUVEEAASIgoeTE9HSU5fQ0hBTExFTkdFX1NUQVRVU19QRU5ESU5HEAESIwofTE9HSU5fQ0hBTExFTkdFX1NUQVRVU19BUFBST1ZFRBACEiEKHUxPR0lOX0NIQUxMRU5HRV9TVEFUVVNfREVOSUVEEAMSIgoeTE9HSU5fQ0hBTExFTkdFX1NUQVRVU19FWFBJUkVEEAQy6BEKC0F1dGhTZXJ2aWNlElcKDFNlbmRFbWFpbE90cBIiLnF1YWRzbWl0aC5hcGkuU2VuZEVtYWlsT3RwUmVxdWVzdBojLnF1YWRzbWl0aC5hcGkuU2VuZEVtYWlsT3RwUmVzcG9uc2USXQoOVmVyaWZ5RW1haWxPdHASJC5xdWFkc21pdGguYXBpLlZlcmlmeUVtYWlsT3RwUmVxdWVzdBolLnF1YWRzbWl0aC5hcGkuVmVyaWZ5RW1haWxPdHBSZXNwb25zZRJfCg9WZXJpZnlNYWdpY0xpbmsSJS5xdWFkc21pdGguYXBpLlZlcmlmeU1hZ2ljTGlua1JlcXVlc3QaJS5xdWFkc21pdGguYXBpLlZlcmlmeUVtYWlsT3RwUmVzcG9uc2USewoYR2V0TG9naW5DaGFsbGVuZ2VEZXRhaWxzEi4ucXVhZHNtaXRoLmFwaS5HZXRMb2dpbkNoYWxsZW5nZURldGFpbHNSZXF1ZXN0Gi8ucXVhZHNtaXRoLmFwaS5HZXRMb2dpbkNoYWxsZW5nZURldGFpbHNSZXNwb25zZRJyChVBcHByb3ZlTG9naW5DaGFsbGVuZ2USKy5xdWFkc21pdGguYXBpLkFwcHJvdmVMb2dpbkNoYWxsZW5nZVJlcXVlc3QaLC5xdWFkc21pdGguYXBpLkFwcHJvdmVMb2dpbkNoYWxsZW5nZVJlc3BvbnNlEmkKEkRlbnlMb2dpbkNoYWxsZW5nZRIoLnF1YWRzbWl0aC5hcGkuRGVueUxvZ2luQ2hhbGxlbmdlUmVxdWVzdBopLnF1YWRzbWl0aC5hcGkuRGVueUxvZ2luQ2hhbGxlbmdlUmVzcG9uc2USeAoXR2V0TG9naW5DaGFsbGVuZ2VTdGF0dXMSLS5xdWFkc21pdGguYXBpLkdldExvZ2luQ2hhbGxlbmdlU3RhdHVzUmVxdWVzdBouLnF1YWRzbWl0aC5hcGkuR2V0TG9naW5DaGFsbGVuZ2VTdGF0dXNSZXNwb25zZRJfChRDb21wbGV0ZUFjY291bnRTZXR1cBIqLnF1YWRzbWl0aC5hcGkuQ29tcGxldGVBY2NvdW50U2V0dXBSZXF1ZXN0GhsucXVhZHNtaXRoLmFwaS5BdXRoUmVzcG9uc2USTwoMUmVmcmVzaFRva2VuEiIucXVhZHNtaXRoLmFwaS5SZWZyZXNoVG9rZW5SZXF1ZXN0GhsucXVhZHNtaXRoLmFwaS5BdXRoUmVzcG9uc2USSwoOR2V0Q3VycmVudFVzZXISJC5xdWFkc21pdGguYXBpLkdldEN1cnJlbnRVc2VyUmVxdWVzdBoTLnF1YWRzbWl0aC5hcGkuVXNlchJQCg1VcGRhdGVQcm9maWxlEiMucXVhZHNtaXRoLmFwaS5VcGRhdGVQcm9maWxlUmVxdWVzdBoaLnF1YWRzbWl0aC5hcGkuVXNlclByb2ZpbGUSRQoGTG9nb3V0EhwucXVhZHNtaXRoLmFwaS5Mb2dvdXRSZXF1ZXN0Gh0ucXVhZHNtaXRoLmFwaS5Mb2dvdXRSZXNwb25zZRJpChJMaXN0QWN0aXZlU2Vzc2lvbnMSKC5xdWFkc21pdGguYXBpLkxpc3RBY3RpdmVTZXNzaW9uc1JlcXVlc3QaKS5xdWFkc21pdGguYXBpLkxpc3RBY3RpdmVTZXNzaW9uc1Jlc3BvbnNlEloKDVJldm9rZVNlc3Npb24SIy5xdWFkc21pdGguYXBpLlJldm9rZVNlc3Npb25SZXF1ZXN0GiQucXVhZHNtaXRoLmFwaS5SZXZva2VTZXNzaW9uUmVzcG9uc2USbAoTUmV2b2tlT3RoZXJTZXNzaW9ucxIpLnF1YWRzbWl0aC5hcGkuUmV2b2tlT3RoZXJTZXNzaW9uc1JlcXVlc3QaKi5xdWFkc21pdGguYXBpLlJldm9rZU90aGVyU2Vzc2lvbnNSZXNwb25zZRJdCg5MaXN0VXNlckVtYWlscxIkLnF1YWRzbWl0aC5hcGkuTGlzdFVzZXJFbWFpbHNSZXF1ZXN0GiUucXVhZHNtaXRoLmFwaS5MaXN0VXNlckVtYWlsc1Jlc3BvbnNlElcKDE1lcmdlQWNjb3VudBIiLnF1YWRzbWl0aC5hcGkuTWVyZ2VBY2NvdW50UmVxdWVzdBojLnF1YWRzbWl0aC5hcGkuTWVyZ2VBY2NvdW50UmVzcG9uc2USYAoPU2V0UHJpbWFyeUVtYWlsEiUucXVhZHNtaXRoLmFwaS5TZXRQcmltYXJ5RW1haWxSZXF1ZXN0GiYucXVhZHNtaXRoLmFwaS5TZXRQcmltYXJ5RW1haWxSZXNwb25zZRJgCg9SZW1vdmVVc2VyRW1haWwSJS5xdWFkc21pdGguYXBpLlJlbW92ZVVzZXJFbWFpbFJlcXVlc3QaJi5xdWFkc21pdGguYXBpLlJlbW92ZVVzZXJFbWFpbFJlc3BvbnNlEl0KDkNoYW5nZVVzZXJuYW1lEiQucXVhZHNtaXRoLmFwaS5DaGFuZ2VVc2VybmFtZVJlcXVlc3QaJS5xdWFkc21pdGguYXBpLkNoYW5nZVVzZXJuYW1lUmVzcG9uc2UScgoVTGlzdEFyY2hpdmVkVXNlcm5hbWVzEisucXVhZHNtaXRoLmFwaS5MaXN0QXJjaGl2ZWRVc2VybmFtZXNSZXF1ZXN0GiwucXVhZHNtaXRoLmFwaS5MaXN0QXJjaGl2ZWRVc2VybmFtZXNSZXNwb25zZRJaCg1EZWxldGVBY2NvdW50EiMucXVhZHNtaXRoLmFwaS5EZWxldGVBY2NvdW50UmVxdWVzdBokLnF1YWRzbWl0aC5hcGkuRGVsZXRlQWNjb3VudFJlc3BvbnNlEnIKFUNhbmNlbEFjY291bnREZWxldGlvbhIrLnF1YWRzbWl0aC5hcGkuQ2FuY2VsQWNjb3VudERlbGV0aW9uUmVxdWVzdBosLnF1YWRzbWl0aC5hcGkuQ2FuY2VsQWNjb3VudERlbGV0aW9uUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
     [file_google_protobuf_timestamp, file_quadsmith_api_user, file_quadsmith_validate_validate],
   );
 
 /**
- * @generated from message quadsmith.api.SendEmailOtpRequest
+ * @generated from message quadsmith.api.ApproveLoginChallengeRequest
  */
-export type SendEmailOtpRequest = Message<"quadsmith.api.SendEmailOtpRequest"> & {
+export type ApproveLoginChallengeRequest = Message<"quadsmith.api.ApproveLoginChallengeRequest"> & {
   /**
-   * @generated from field: string email = 1;
+   * @generated from field: string token = 1;
    */
-  email: string;
+  token: string;
 };
 
 /**
- * Describes the message quadsmith.api.SendEmailOtpRequest.
- * Use `create(SendEmailOtpRequestSchema)` to create a new message.
+ * Describes the message quadsmith.api.ApproveLoginChallengeRequest.
+ * Use `create(ApproveLoginChallengeRequestSchema)` to create a new message.
  */
-export const SendEmailOtpRequestSchema: GenMessage<SendEmailOtpRequest> =
+export const ApproveLoginChallengeRequestSchema: GenMessage<ApproveLoginChallengeRequest> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_auth, 0);
 
 /**
- * @generated from message quadsmith.api.SendEmailOtpResponse
+ * @generated from message quadsmith.api.ApproveLoginChallengeResponse
  */
-export type SendEmailOtpResponse = Message<"quadsmith.api.SendEmailOtpResponse"> & {
+export type ApproveLoginChallengeResponse =
+  Message<"quadsmith.api.ApproveLoginChallengeResponse"> & {
+    /**
+     * @generated from field: bool success = 1;
+     */
+    success: boolean;
+
+    /**
+     * @generated from field: string message = 2;
+     */
+    message: string;
+  };
+
+/**
+ * Describes the message quadsmith.api.ApproveLoginChallengeResponse.
+ * Use `create(ApproveLoginChallengeResponseSchema)` to create a new message.
+ */
+export const ApproveLoginChallengeResponseSchema: GenMessage<ApproveLoginChallengeResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 1);
+
+/**
+ * @generated from message quadsmith.api.CancelAccountDeletionRequest
+ */
+export type CancelAccountDeletionRequest =
+  Message<"quadsmith.api.CancelAccountDeletionRequest"> & {};
+
+/**
+ * Describes the message quadsmith.api.CancelAccountDeletionRequest.
+ * Use `create(CancelAccountDeletionRequestSchema)` to create a new message.
+ */
+export const CancelAccountDeletionRequestSchema: GenMessage<CancelAccountDeletionRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 2);
+
+/**
+ * @generated from message quadsmith.api.CancelAccountDeletionResponse
+ */
+export type CancelAccountDeletionResponse =
+  Message<"quadsmith.api.CancelAccountDeletionResponse"> & {
+    /**
+     * @generated from field: bool success = 1;
+     */
+    success: boolean;
+
+    /**
+     * @generated from field: string message = 2;
+     */
+    message: string;
+
+    /**
+     * @generated from field: quadsmith.api.User user = 3;
+     */
+    user?: User | undefined;
+  };
+
+/**
+ * Describes the message quadsmith.api.CancelAccountDeletionResponse.
+ * Use `create(CancelAccountDeletionResponseSchema)` to create a new message.
+ */
+export const CancelAccountDeletionResponseSchema: GenMessage<CancelAccountDeletionResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 3);
+
+/**
+ * @generated from message quadsmith.api.ChangeUsernameRequest
+ */
+export type ChangeUsernameRequest = Message<"quadsmith.api.ChangeUsernameRequest"> & {
+  /**
+   * @generated from field: string new_username = 1;
+   */
+  newUsername: string;
+};
+
+/**
+ * Describes the message quadsmith.api.ChangeUsernameRequest.
+ * Use `create(ChangeUsernameRequestSchema)` to create a new message.
+ */
+export const ChangeUsernameRequestSchema: GenMessage<ChangeUsernameRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 4);
+
+/**
+ * @generated from message quadsmith.api.ChangeUsernameResponse
+ */
+export type ChangeUsernameResponse = Message<"quadsmith.api.ChangeUsernameResponse"> & {
   /**
    * @generated from field: bool success = 1;
    */
@@ -54,61 +139,122 @@ export type SendEmailOtpResponse = Message<"quadsmith.api.SendEmailOtpResponse">
   message: string;
 
   /**
-   * @generated from field: int32 cooldown_seconds = 3;
+   * @generated from field: quadsmith.api.User user = 3;
    */
-  cooldownSeconds: number;
+  user?: User | undefined;
 
   /**
-   * @generated from field: bool is_existing_account = 4;
+   * @generated from field: google.protobuf.Timestamp next_allowed_new_rename_at = 4;
    */
-  isExistingAccount: boolean;
+  nextAllowedNewRenameAt?: Timestamp | undefined;
 
   /**
-   * @generated from field: optional string challenge_id = 5;
+   * @generated from field: google.protobuf.Timestamp next_allowed_archive_rename_at = 5;
    */
-  challengeId?: string | undefined;
+  nextAllowedArchiveRenameAt?: Timestamp | undefined;
 };
 
 /**
- * Describes the message quadsmith.api.SendEmailOtpResponse.
- * Use `create(SendEmailOtpResponseSchema)` to create a new message.
+ * Describes the message quadsmith.api.ChangeUsernameResponse.
+ * Use `create(ChangeUsernameResponseSchema)` to create a new message.
  */
-export const SendEmailOtpResponseSchema: GenMessage<SendEmailOtpResponse> =
+export const ChangeUsernameResponseSchema: GenMessage<ChangeUsernameResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 1);
+  messageDesc(file_quadsmith_api_auth, 5);
 
 /**
- * @generated from message quadsmith.api.VerifyEmailOtpRequest
+ * @generated from message quadsmith.api.CompleteAccountSetupRequest
  */
-export type VerifyEmailOtpRequest = Message<"quadsmith.api.VerifyEmailOtpRequest"> & {
+export type CompleteAccountSetupRequest = Message<"quadsmith.api.CompleteAccountSetupRequest"> & {
   /**
-   * @generated from field: string email = 1;
+   * @generated from field: string setup_token = 1;
    */
-  email: string;
+  setupToken: string;
 
   /**
-   * @generated from field: string code = 2;
+   * @generated from field: string username = 2;
    */
-  code: string;
+  username: string;
 
   /**
-   * @generated from field: optional string challenge_id = 3;
+   * @generated from field: optional string avatar_url = 3;
    */
-  challengeId?: string | undefined;
+  avatarUrl?: string | undefined;
 };
 
 /**
- * Describes the message quadsmith.api.VerifyEmailOtpRequest.
- * Use `create(VerifyEmailOtpRequestSchema)` to create a new message.
+ * Describes the message quadsmith.api.CompleteAccountSetupRequest.
+ * Use `create(CompleteAccountSetupRequestSchema)` to create a new message.
  */
-export const VerifyEmailOtpRequestSchema: GenMessage<VerifyEmailOtpRequest> =
+export const CompleteAccountSetupRequestSchema: GenMessage<CompleteAccountSetupRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 2);
+  messageDesc(file_quadsmith_api_auth, 6);
 
 /**
- * @generated from message quadsmith.api.VerifyMagicLinkRequest
+ * @generated from message quadsmith.api.DeleteAccountRequest
  */
-export type VerifyMagicLinkRequest = Message<"quadsmith.api.VerifyMagicLinkRequest"> & {
+export type DeleteAccountRequest = Message<"quadsmith.api.DeleteAccountRequest"> & {
+  /**
+   * @generated from field: string username = 1;
+   */
+  username: string;
+
+  /**
+   * @generated from field: optional string challenge_id = 2;
+   */
+  challengeId?: string | undefined;
+
+  /**
+   * @generated from field: optional string code = 3;
+   */
+  code?: string | undefined;
+
+  /**
+   * @generated from field: optional string magic_token = 4;
+   */
+  magicToken?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteAccountRequest.
+ * Use `create(DeleteAccountRequestSchema)` to create a new message.
+ */
+export const DeleteAccountRequestSchema: GenMessage<DeleteAccountRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 7);
+
+/**
+ * @generated from message quadsmith.api.DeleteAccountResponse
+ */
+export type DeleteAccountResponse = Message<"quadsmith.api.DeleteAccountResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp scheduled_purge_at = 3;
+   */
+  scheduledPurgeAt?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.DeleteAccountResponse.
+ * Use `create(DeleteAccountResponseSchema)` to create a new message.
+ */
+export const DeleteAccountResponseSchema: GenMessage<DeleteAccountResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 8);
+
+/**
+ * @generated from message quadsmith.api.DenyLoginChallengeRequest
+ */
+export type DenyLoginChallengeRequest = Message<"quadsmith.api.DenyLoginChallengeRequest"> & {
   /**
    * @generated from field: string token = 1;
    */
@@ -116,12 +262,48 @@ export type VerifyMagicLinkRequest = Message<"quadsmith.api.VerifyMagicLinkReque
 };
 
 /**
- * Describes the message quadsmith.api.VerifyMagicLinkRequest.
- * Use `create(VerifyMagicLinkRequestSchema)` to create a new message.
+ * Describes the message quadsmith.api.DenyLoginChallengeRequest.
+ * Use `create(DenyLoginChallengeRequestSchema)` to create a new message.
  */
-export const VerifyMagicLinkRequestSchema: GenMessage<VerifyMagicLinkRequest> =
+export const DenyLoginChallengeRequestSchema: GenMessage<DenyLoginChallengeRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 3);
+  messageDesc(file_quadsmith_api_auth, 9);
+
+/**
+ * @generated from message quadsmith.api.DenyLoginChallengeResponse
+ */
+export type DenyLoginChallengeResponse = Message<"quadsmith.api.DenyLoginChallengeResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.api.DenyLoginChallengeResponse.
+ * Use `create(DenyLoginChallengeResponseSchema)` to create a new message.
+ */
+export const DenyLoginChallengeResponseSchema: GenMessage<DenyLoginChallengeResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 10);
+
+/**
+ * @generated from message quadsmith.api.GetCurrentUserRequest
+ */
+export type GetCurrentUserRequest = Message<"quadsmith.api.GetCurrentUserRequest"> & {};
+
+/**
+ * Describes the message quadsmith.api.GetCurrentUserRequest.
+ * Use `create(GetCurrentUserRequestSchema)` to create a new message.
+ */
+export const GetCurrentUserRequestSchema: GenMessage<GetCurrentUserRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 11);
 
 /**
  * @generated from message quadsmith.api.GetLoginChallengeDetailsRequest
@@ -140,7 +322,7 @@ export type GetLoginChallengeDetailsRequest =
  */
 export const GetLoginChallengeDetailsRequestSchema: GenMessage<GetLoginChallengeDetailsRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 4);
+  messageDesc(file_quadsmith_api_auth, 12);
 
 /**
  * @generated from message quadsmith.api.GetLoginChallengeDetailsResponse
@@ -189,90 +371,7 @@ export type GetLoginChallengeDetailsResponse =
  */
 export const GetLoginChallengeDetailsResponseSchema: GenMessage<GetLoginChallengeDetailsResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 5);
-
-/**
- * @generated from message quadsmith.api.ApproveLoginChallengeRequest
- */
-export type ApproveLoginChallengeRequest = Message<"quadsmith.api.ApproveLoginChallengeRequest"> & {
-  /**
-   * @generated from field: string token = 1;
-   */
-  token: string;
-};
-
-/**
- * Describes the message quadsmith.api.ApproveLoginChallengeRequest.
- * Use `create(ApproveLoginChallengeRequestSchema)` to create a new message.
- */
-export const ApproveLoginChallengeRequestSchema: GenMessage<ApproveLoginChallengeRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 6);
-
-/**
- * @generated from message quadsmith.api.ApproveLoginChallengeResponse
- */
-export type ApproveLoginChallengeResponse =
-  Message<"quadsmith.api.ApproveLoginChallengeResponse"> & {
-    /**
-     * @generated from field: bool success = 1;
-     */
-    success: boolean;
-
-    /**
-     * @generated from field: string message = 2;
-     */
-    message: string;
-  };
-
-/**
- * Describes the message quadsmith.api.ApproveLoginChallengeResponse.
- * Use `create(ApproveLoginChallengeResponseSchema)` to create a new message.
- */
-export const ApproveLoginChallengeResponseSchema: GenMessage<ApproveLoginChallengeResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 7);
-
-/**
- * @generated from message quadsmith.api.DenyLoginChallengeRequest
- */
-export type DenyLoginChallengeRequest = Message<"quadsmith.api.DenyLoginChallengeRequest"> & {
-  /**
-   * @generated from field: string token = 1;
-   */
-  token: string;
-};
-
-/**
- * Describes the message quadsmith.api.DenyLoginChallengeRequest.
- * Use `create(DenyLoginChallengeRequestSchema)` to create a new message.
- */
-export const DenyLoginChallengeRequestSchema: GenMessage<DenyLoginChallengeRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 8);
-
-/**
- * @generated from message quadsmith.api.DenyLoginChallengeResponse
- */
-export type DenyLoginChallengeResponse = Message<"quadsmith.api.DenyLoginChallengeResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
-};
-
-/**
- * Describes the message quadsmith.api.DenyLoginChallengeResponse.
- * Use `create(DenyLoginChallengeResponseSchema)` to create a new message.
- */
-export const DenyLoginChallengeResponseSchema: GenMessage<DenyLoginChallengeResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 9);
+  messageDesc(file_quadsmith_api_auth, 13);
 
 /**
  * @generated from message quadsmith.api.GetLoginChallengeStatusRequest
@@ -291,7 +390,7 @@ export type GetLoginChallengeStatusRequest =
  */
 export const GetLoginChallengeStatusRequestSchema: GenMessage<GetLoginChallengeStatusRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 10);
+  messageDesc(file_quadsmith_api_auth, 14);
 
 /**
  * @generated from message quadsmith.api.GetLoginChallengeStatusResponse
@@ -315,1037 +414,7 @@ export type GetLoginChallengeStatusResponse =
  */
 export const GetLoginChallengeStatusResponseSchema: GenMessage<GetLoginChallengeStatusResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 11);
-
-/**
- * @generated from message quadsmith.api.CompleteAccountSetupRequest
- */
-export type CompleteAccountSetupRequest = Message<"quadsmith.api.CompleteAccountSetupRequest"> & {
-  /**
-   * @generated from field: string setup_token = 1;
-   */
-  setupToken: string;
-
-  /**
-   * @generated from field: string username = 2;
-   */
-  username: string;
-
-  /**
-   * @generated from field: optional string avatar_url = 3;
-   */
-  avatarUrl?: string | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CompleteAccountSetupRequest.
- * Use `create(CompleteAccountSetupRequestSchema)` to create a new message.
- */
-export const CompleteAccountSetupRequestSchema: GenMessage<CompleteAccountSetupRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 12);
-
-/**
- * @generated from message quadsmith.api.RefreshTokenRequest
- */
-export type RefreshTokenRequest = Message<"quadsmith.api.RefreshTokenRequest"> & {
-  /**
-   * @generated from field: string refresh_token = 1;
-   */
-  refreshToken: string;
-};
-
-/**
- * Describes the message quadsmith.api.RefreshTokenRequest.
- * Use `create(RefreshTokenRequestSchema)` to create a new message.
- */
-export const RefreshTokenRequestSchema: GenMessage<RefreshTokenRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 13);
-
-/**
- * @generated from message quadsmith.api.GetCurrentUserRequest
- */
-export type GetCurrentUserRequest = Message<"quadsmith.api.GetCurrentUserRequest"> & {};
-
-/**
- * Describes the message quadsmith.api.GetCurrentUserRequest.
- * Use `create(GetCurrentUserRequestSchema)` to create a new message.
- */
-export const GetCurrentUserRequestSchema: GenMessage<GetCurrentUserRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 14);
-
-/**
- * @generated from message quadsmith.api.UpdateProfileRequest
- */
-export type UpdateProfileRequest = Message<"quadsmith.api.UpdateProfileRequest"> & {
-  /**
-   * @generated from field: optional string avatar_url = 1;
-   */
-  avatarUrl?: string | undefined;
-
-  /**
-   * @generated from field: optional string bio = 2;
-   */
-  bio?: string | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateProfileRequest.
- * Use `create(UpdateProfileRequestSchema)` to create a new message.
- */
-export const UpdateProfileRequestSchema: GenMessage<UpdateProfileRequest> =
-  /*@__PURE__*/
   messageDesc(file_quadsmith_api_auth, 15);
-
-/**
- * @generated from message quadsmith.api.LogoutRequest
- */
-export type LogoutRequest = Message<"quadsmith.api.LogoutRequest"> & {
-  /**
-   * @generated from field: optional string refresh_token = 1;
-   */
-  refreshToken?: string | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.LogoutRequest.
- * Use `create(LogoutRequestSchema)` to create a new message.
- */
-export const LogoutRequestSchema: GenMessage<LogoutRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 16);
-
-/**
- * @generated from message quadsmith.api.LogoutResponse
- */
-export type LogoutResponse = Message<"quadsmith.api.LogoutResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.LogoutResponse.
- * Use `create(LogoutResponseSchema)` to create a new message.
- */
-export const LogoutResponseSchema: GenMessage<LogoutResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 17);
-
-/**
- * @generated from message quadsmith.api.ListActiveSessionsRequest
- */
-export type ListActiveSessionsRequest = Message<"quadsmith.api.ListActiveSessionsRequest"> & {};
-
-/**
- * Describes the message quadsmith.api.ListActiveSessionsRequest.
- * Use `create(ListActiveSessionsRequestSchema)` to create a new message.
- */
-export const ListActiveSessionsRequestSchema: GenMessage<ListActiveSessionsRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 18);
-
-/**
- * @generated from message quadsmith.api.ListActiveSessionsResponse
- */
-export type ListActiveSessionsResponse = Message<"quadsmith.api.ListActiveSessionsResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.Session sessions = 1;
-   */
-  sessions: Session[];
-};
-
-/**
- * Describes the message quadsmith.api.ListActiveSessionsResponse.
- * Use `create(ListActiveSessionsResponseSchema)` to create a new message.
- */
-export const ListActiveSessionsResponseSchema: GenMessage<ListActiveSessionsResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 19);
-
-/**
- * @generated from message quadsmith.api.Session
- */
-export type Session = Message<"quadsmith.api.Session"> & {
-  /**
-   * @generated from field: string uuid = 1;
-   */
-  uuid: string;
-
-  /**
-   * @generated from field: string device_hint = 2;
-   */
-  deviceHint: string;
-
-  /**
-   * @generated from field: string ip_address = 3;
-   */
-  ipAddress: string;
-
-  /**
-   * @generated from field: string location_hint = 4;
-   */
-  locationHint: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at = 5;
-   */
-  createdAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp last_active_at = 6;
-   */
-  lastActiveAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: bool is_current = 7;
-   */
-  isCurrent: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.Session.
- * Use `create(SessionSchema)` to create a new message.
- */
-export const SessionSchema: GenMessage<Session> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 20);
-
-/**
- * @generated from message quadsmith.api.RevokeSessionRequest
- */
-export type RevokeSessionRequest = Message<"quadsmith.api.RevokeSessionRequest"> & {
-  /**
-   * @generated from field: string session_uuid = 1;
-   */
-  sessionUuid: string;
-};
-
-/**
- * Describes the message quadsmith.api.RevokeSessionRequest.
- * Use `create(RevokeSessionRequestSchema)` to create a new message.
- */
-export const RevokeSessionRequestSchema: GenMessage<RevokeSessionRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 21);
-
-/**
- * @generated from message quadsmith.api.RevokeSessionResponse
- */
-export type RevokeSessionResponse = Message<"quadsmith.api.RevokeSessionResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
-};
-
-/**
- * Describes the message quadsmith.api.RevokeSessionResponse.
- * Use `create(RevokeSessionResponseSchema)` to create a new message.
- */
-export const RevokeSessionResponseSchema: GenMessage<RevokeSessionResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 22);
-
-/**
- * @generated from message quadsmith.api.RevokeOtherSessionsRequest
- */
-export type RevokeOtherSessionsRequest = Message<"quadsmith.api.RevokeOtherSessionsRequest"> & {};
-
-/**
- * Describes the message quadsmith.api.RevokeOtherSessionsRequest.
- * Use `create(RevokeOtherSessionsRequestSchema)` to create a new message.
- */
-export const RevokeOtherSessionsRequestSchema: GenMessage<RevokeOtherSessionsRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 23);
-
-/**
- * @generated from message quadsmith.api.RevokeOtherSessionsResponse
- */
-export type RevokeOtherSessionsResponse = Message<"quadsmith.api.RevokeOtherSessionsResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: int32 revoked_count = 2;
-   */
-  revokedCount: number;
-
-  /**
-   * @generated from field: string message = 3;
-   */
-  message: string;
-};
-
-/**
- * Describes the message quadsmith.api.RevokeOtherSessionsResponse.
- * Use `create(RevokeOtherSessionsResponseSchema)` to create a new message.
- */
-export const RevokeOtherSessionsResponseSchema: GenMessage<RevokeOtherSessionsResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 24);
-
-/**
- * @generated from message quadsmith.api.ListUserEmailsRequest
- */
-export type ListUserEmailsRequest = Message<"quadsmith.api.ListUserEmailsRequest"> & {};
-
-/**
- * Describes the message quadsmith.api.ListUserEmailsRequest.
- * Use `create(ListUserEmailsRequestSchema)` to create a new message.
- */
-export const ListUserEmailsRequestSchema: GenMessage<ListUserEmailsRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 25);
-
-/**
- * @generated from message quadsmith.api.ListUserEmailsResponse
- */
-export type ListUserEmailsResponse = Message<"quadsmith.api.ListUserEmailsResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.api.UserEmail emails = 1;
-   */
-  emails: UserEmail[];
-};
-
-/**
- * Describes the message quadsmith.api.ListUserEmailsResponse.
- * Use `create(ListUserEmailsResponseSchema)` to create a new message.
- */
-export const ListUserEmailsResponseSchema: GenMessage<ListUserEmailsResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 26);
-
-/**
- * @generated from message quadsmith.api.SendAddEmailOtpRequest
- */
-export type SendAddEmailOtpRequest = Message<"quadsmith.api.SendAddEmailOtpRequest"> & {
-  /**
-   * @generated from field: string email = 1;
-   */
-  email: string;
-};
-
-/**
- * Describes the message quadsmith.api.SendAddEmailOtpRequest.
- * Use `create(SendAddEmailOtpRequestSchema)` to create a new message.
- */
-export const SendAddEmailOtpRequestSchema: GenMessage<SendAddEmailOtpRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 27);
-
-/**
- * @generated from message quadsmith.api.VerifyAddEmailOtpRequest
- */
-export type VerifyAddEmailOtpRequest = Message<"quadsmith.api.VerifyAddEmailOtpRequest"> & {
-  /**
-   * @generated from field: string email = 1;
-   */
-  email: string;
-
-  /**
-   * @generated from field: string code = 2;
-   */
-  code: string;
-
-  /**
-   * @generated from field: string token = 3;
-   */
-  token: string;
-
-  /**
-   * @generated from field: optional string challenge_id = 4;
-   */
-  challengeId?: string | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.VerifyAddEmailOtpRequest.
- * Use `create(VerifyAddEmailOtpRequestSchema)` to create a new message.
- */
-export const VerifyAddEmailOtpRequestSchema: GenMessage<VerifyAddEmailOtpRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 28);
-
-/**
- * @generated from message quadsmith.api.VerifyAddEmailOtpResponse
- */
-export type VerifyAddEmailOtpResponse = Message<"quadsmith.api.VerifyAddEmailOtpResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
-
-  /**
-   * @generated from field: bool merge_required = 3;
-   */
-  mergeRequired: boolean;
-
-  /**
-   * @generated from field: string other_user_username = 4;
-   */
-  otherUserUsername: string;
-
-  /**
-   * @generated from field: int32 other_build_count = 5;
-   */
-  otherBuildCount: number;
-
-  /**
-   * @generated from field: repeated string other_build_names = 6;
-   */
-  otherBuildNames: string[];
-
-  /**
-   * @generated from field: repeated string other_emails = 7;
-   */
-  otherEmails: string[];
-
-  /**
-   * @generated from field: repeated string other_oauth_providers = 8;
-   */
-  otherOauthProviders: string[];
-
-  /**
-   * @generated from field: optional string merge_ticket = 9;
-   */
-  mergeTicket?: string | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.VerifyAddEmailOtpResponse.
- * Use `create(VerifyAddEmailOtpResponseSchema)` to create a new message.
- */
-export const VerifyAddEmailOtpResponseSchema: GenMessage<VerifyAddEmailOtpResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 29);
-
-/**
- * @generated from message quadsmith.api.MergeAccountRequest
- */
-export type MergeAccountRequest = Message<"quadsmith.api.MergeAccountRequest"> & {
-  /**
-   * @generated from field: string email = 1;
-   */
-  email: string;
-
-  /**
-   * @generated from field: string code = 2;
-   */
-  code: string;
-
-  /**
-   * @generated from field: string token = 3;
-   */
-  token: string;
-
-  /**
-   * @generated from field: optional string merge_ticket = 4;
-   */
-  mergeTicket?: string | undefined;
-
-  /**
-   * @generated from field: optional string challenge_id = 5;
-   */
-  challengeId?: string | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.MergeAccountRequest.
- * Use `create(MergeAccountRequestSchema)` to create a new message.
- */
-export const MergeAccountRequestSchema: GenMessage<MergeAccountRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 30);
-
-/**
- * @generated from message quadsmith.api.MergeAccountResponse
- */
-export type MergeAccountResponse = Message<"quadsmith.api.MergeAccountResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
-
-  /**
-   * @generated from field: int32 transferred_build_count = 3;
-   */
-  transferredBuildCount: number;
-
-  /**
-   * @generated from field: string merged_username = 4;
-   */
-  mergedUsername: string;
-
-  /**
-   * @generated from field: repeated string merged_emails = 5;
-   */
-  mergedEmails: string[];
-};
-
-/**
- * Describes the message quadsmith.api.MergeAccountResponse.
- * Use `create(MergeAccountResponseSchema)` to create a new message.
- */
-export const MergeAccountResponseSchema: GenMessage<MergeAccountResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 31);
-
-/**
- * @generated from message quadsmith.api.SetPrimaryEmailRequest
- */
-export type SetPrimaryEmailRequest = Message<"quadsmith.api.SetPrimaryEmailRequest"> & {
-  /**
-   * @generated from field: string email = 1;
-   */
-  email: string;
-};
-
-/**
- * Describes the message quadsmith.api.SetPrimaryEmailRequest.
- * Use `create(SetPrimaryEmailRequestSchema)` to create a new message.
- */
-export const SetPrimaryEmailRequestSchema: GenMessage<SetPrimaryEmailRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 32);
-
-/**
- * @generated from message quadsmith.api.SetPrimaryEmailResponse
- */
-export type SetPrimaryEmailResponse = Message<"quadsmith.api.SetPrimaryEmailResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
-};
-
-/**
- * Describes the message quadsmith.api.SetPrimaryEmailResponse.
- * Use `create(SetPrimaryEmailResponseSchema)` to create a new message.
- */
-export const SetPrimaryEmailResponseSchema: GenMessage<SetPrimaryEmailResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 33);
-
-/**
- * @generated from message quadsmith.api.RemoveUserEmailRequest
- */
-export type RemoveUserEmailRequest = Message<"quadsmith.api.RemoveUserEmailRequest"> & {
-  /**
-   * @generated from field: string email = 1;
-   */
-  email: string;
-};
-
-/**
- * Describes the message quadsmith.api.RemoveUserEmailRequest.
- * Use `create(RemoveUserEmailRequestSchema)` to create a new message.
- */
-export const RemoveUserEmailRequestSchema: GenMessage<RemoveUserEmailRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 34);
-
-/**
- * @generated from message quadsmith.api.RemoveUserEmailResponse
- */
-export type RemoveUserEmailResponse = Message<"quadsmith.api.RemoveUserEmailResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
-};
-
-/**
- * Describes the message quadsmith.api.RemoveUserEmailResponse.
- * Use `create(RemoveUserEmailResponseSchema)` to create a new message.
- */
-export const RemoveUserEmailResponseSchema: GenMessage<RemoveUserEmailResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 35);
-
-/**
- * @generated from message quadsmith.api.ChangeUsernameRequest
- */
-export type ChangeUsernameRequest = Message<"quadsmith.api.ChangeUsernameRequest"> & {
-  /**
-   * @generated from field: string new_username = 1;
-   */
-  newUsername: string;
-};
-
-/**
- * Describes the message quadsmith.api.ChangeUsernameRequest.
- * Use `create(ChangeUsernameRequestSchema)` to create a new message.
- */
-export const ChangeUsernameRequestSchema: GenMessage<ChangeUsernameRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 36);
-
-/**
- * @generated from message quadsmith.api.ChangeUsernameResponse
- */
-export type ChangeUsernameResponse = Message<"quadsmith.api.ChangeUsernameResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
-
-  /**
-   * @generated from field: quadsmith.api.User user = 3;
-   */
-  user?: User | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp next_allowed_new_rename_at = 4;
-   */
-  nextAllowedNewRenameAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp next_allowed_archive_rename_at = 5;
-   */
-  nextAllowedArchiveRenameAt?: Timestamp | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.ChangeUsernameResponse.
- * Use `create(ChangeUsernameResponseSchema)` to create a new message.
- */
-export const ChangeUsernameResponseSchema: GenMessage<ChangeUsernameResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 37);
-
-/**
- * @generated from message quadsmith.api.ListArchivedUsernamesRequest
- */
-export type ListArchivedUsernamesRequest =
-  Message<"quadsmith.api.ListArchivedUsernamesRequest"> & {};
-
-/**
- * Describes the message quadsmith.api.ListArchivedUsernamesRequest.
- * Use `create(ListArchivedUsernamesRequestSchema)` to create a new message.
- */
-export const ListArchivedUsernamesRequestSchema: GenMessage<ListArchivedUsernamesRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 38);
-
-/**
- * @generated from message quadsmith.api.ListArchivedUsernamesResponse
- */
-export type ListArchivedUsernamesResponse =
-  Message<"quadsmith.api.ListArchivedUsernamesResponse"> & {
-    /**
-     * @generated from field: repeated quadsmith.api.ArchivedUsername archived_usernames = 1;
-     */
-    archivedUsernames: ArchivedUsername[];
-
-    /**
-     * @generated from field: google.protobuf.Timestamp next_allowed_new_rename_at = 2;
-     */
-    nextAllowedNewRenameAt?: Timestamp | undefined;
-
-    /**
-     * @generated from field: google.protobuf.Timestamp next_allowed_archive_rename_at = 3;
-     */
-    nextAllowedArchiveRenameAt?: Timestamp | undefined;
-  };
-
-/**
- * Describes the message quadsmith.api.ListArchivedUsernamesResponse.
- * Use `create(ListArchivedUsernamesResponseSchema)` to create a new message.
- */
-export const ListArchivedUsernamesResponseSchema: GenMessage<ListArchivedUsernamesResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 39);
-
-/**
- * @generated from message quadsmith.api.ArchivedUsername
- */
-export type ArchivedUsername = Message<"quadsmith.api.ArchivedUsername"> & {
-  /**
-   * @generated from field: string username = 1;
-   */
-  username: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp first_archived_at = 2;
-   */
-  firstArchivedAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp renamed_at = 3;
-   */
-  renamedAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp release_at = 4;
-   */
-  releaseAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: int32 days_remaining = 5;
-   */
-  daysRemaining: number;
-
-  /**
-   * @generated from field: bool can_reclaim_now = 6;
-   */
-  canReclaimNow: boolean;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp next_reclaim_allowed_at = 7;
-   */
-  nextReclaimAllowedAt?: Timestamp | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.ArchivedUsername.
- * Use `create(ArchivedUsernameSchema)` to create a new message.
- */
-export const ArchivedUsernameSchema: GenMessage<ArchivedUsername> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 40);
-
-/**
- * @generated from message quadsmith.api.SendDeleteAccountVerificationRequest
- */
-export type SendDeleteAccountVerificationRequest =
-  Message<"quadsmith.api.SendDeleteAccountVerificationRequest"> & {
-    /**
-     * @generated from field: string username = 1;
-     */
-    username: string;
-  };
-
-/**
- * Describes the message quadsmith.api.SendDeleteAccountVerificationRequest.
- * Use `create(SendDeleteAccountVerificationRequestSchema)` to create a new message.
- */
-export const SendDeleteAccountVerificationRequestSchema: GenMessage<SendDeleteAccountVerificationRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 41);
-
-/**
- * @generated from message quadsmith.api.SendDeleteAccountVerificationResponse
- */
-export type SendDeleteAccountVerificationResponse =
-  Message<"quadsmith.api.SendDeleteAccountVerificationResponse"> & {
-    /**
-     * @generated from field: bool success = 1;
-     */
-    success: boolean;
-
-    /**
-     * @generated from field: string message = 2;
-     */
-    message: string;
-
-    /**
-     * @generated from field: string challenge_id = 3;
-     */
-    challengeId: string;
-
-    /**
-     * @generated from field: google.protobuf.Timestamp expires_at = 4;
-     */
-    expiresAt?: Timestamp | undefined;
-  };
-
-/**
- * Describes the message quadsmith.api.SendDeleteAccountVerificationResponse.
- * Use `create(SendDeleteAccountVerificationResponseSchema)` to create a new message.
- */
-export const SendDeleteAccountVerificationResponseSchema: GenMessage<SendDeleteAccountVerificationResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 42);
-
-/**
- * @generated from message quadsmith.api.DeleteAccountRequest
- */
-export type DeleteAccountRequest = Message<"quadsmith.api.DeleteAccountRequest"> & {
-  /**
-   * @generated from field: string username = 1;
-   */
-  username: string;
-
-  /**
-   * @generated from field: string challenge_id = 2;
-   */
-  challengeId: string;
-
-  /**
-   * @generated from oneof quadsmith.api.DeleteAccountRequest.verification
-   */
-  verification:
-    | {
-        /**
-         * @generated from field: string code = 3;
-         */
-        value: string;
-        case: "code";
-      }
-    | {
-        /**
-         * @generated from field: string magic_token = 4;
-         */
-        value: string;
-        case: "magicToken";
-      }
-    | { case: undefined; value?: undefined };
-};
-
-/**
- * Describes the message quadsmith.api.DeleteAccountRequest.
- * Use `create(DeleteAccountRequestSchema)` to create a new message.
- */
-export const DeleteAccountRequestSchema: GenMessage<DeleteAccountRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 43);
-
-/**
- * @generated from message quadsmith.api.DeleteAccountResponse
- */
-export type DeleteAccountResponse = Message<"quadsmith.api.DeleteAccountResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp scheduled_purge_at = 3;
-   */
-  scheduledPurgeAt?: Timestamp | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteAccountResponse.
- * Use `create(DeleteAccountResponseSchema)` to create a new message.
- */
-export const DeleteAccountResponseSchema: GenMessage<DeleteAccountResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 44);
-
-/**
- * @generated from message quadsmith.api.CancelAccountDeletionRequest
- */
-export type CancelAccountDeletionRequest =
-  Message<"quadsmith.api.CancelAccountDeletionRequest"> & {};
-
-/**
- * Describes the message quadsmith.api.CancelAccountDeletionRequest.
- * Use `create(CancelAccountDeletionRequestSchema)` to create a new message.
- */
-export const CancelAccountDeletionRequestSchema: GenMessage<CancelAccountDeletionRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 45);
-
-/**
- * @generated from message quadsmith.api.CancelAccountDeletionResponse
- */
-export type CancelAccountDeletionResponse =
-  Message<"quadsmith.api.CancelAccountDeletionResponse"> & {
-    /**
-     * @generated from field: bool success = 1;
-     */
-    success: boolean;
-
-    /**
-     * @generated from field: string message = 2;
-     */
-    message: string;
-
-    /**
-     * @generated from field: quadsmith.api.User user = 3;
-     */
-    user?: User | undefined;
-  };
-
-/**
- * Describes the message quadsmith.api.CancelAccountDeletionResponse.
- * Use `create(CancelAccountDeletionResponseSchema)` to create a new message.
- */
-export const CancelAccountDeletionResponseSchema: GenMessage<CancelAccountDeletionResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 46);
-
-/**
- * @generated from message quadsmith.api.SendDataExportVerificationRequest
- */
-export type SendDataExportVerificationRequest =
-  Message<"quadsmith.api.SendDataExportVerificationRequest"> & {};
-
-/**
- * Describes the message quadsmith.api.SendDataExportVerificationRequest.
- * Use `create(SendDataExportVerificationRequestSchema)` to create a new message.
- */
-export const SendDataExportVerificationRequestSchema: GenMessage<SendDataExportVerificationRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 47);
-
-/**
- * @generated from message quadsmith.api.SendDataExportVerificationResponse
- */
-export type SendDataExportVerificationResponse =
-  Message<"quadsmith.api.SendDataExportVerificationResponse"> & {
-    /**
-     * @generated from field: bool success = 1;
-     */
-    success: boolean;
-
-    /**
-     * @generated from field: string message = 2;
-     */
-    message: string;
-
-    /**
-     * @generated from field: string primary_email = 3;
-     */
-    primaryEmail: string;
-
-    /**
-     * @generated from field: int32 cooldown_seconds = 4;
-     */
-    cooldownSeconds: number;
-
-    /**
-     * @generated from field: string challenge_id = 5;
-     */
-    challengeId: string;
-
-    /**
-     * @generated from field: google.protobuf.Timestamp expires_at = 6;
-     */
-    expiresAt?: Timestamp | undefined;
-  };
-
-/**
- * Describes the message quadsmith.api.SendDataExportVerificationResponse.
- * Use `create(SendDataExportVerificationResponseSchema)` to create a new message.
- */
-export const SendDataExportVerificationResponseSchema: GenMessage<SendDataExportVerificationResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 48);
-
-/**
- * @generated from message quadsmith.api.VerifyDataExportRequest
- */
-export type VerifyDataExportRequest = Message<"quadsmith.api.VerifyDataExportRequest"> & {
-  /**
-   * @generated from field: optional string challenge_id = 1;
-   */
-  challengeId?: string | undefined;
-
-  /**
-   * @generated from oneof quadsmith.api.VerifyDataExportRequest.verification
-   */
-  verification:
-    | {
-        /**
-         * @generated from field: string code = 2;
-         */
-        value: string;
-        case: "code";
-      }
-    | {
-        /**
-         * @generated from field: string magic_token = 3;
-         */
-        value: string;
-        case: "magicToken";
-      }
-    | { case: undefined; value?: undefined };
-};
-
-/**
- * Describes the message quadsmith.api.VerifyDataExportRequest.
- * Use `create(VerifyDataExportRequestSchema)` to create a new message.
- */
-export const VerifyDataExportRequestSchema: GenMessage<VerifyDataExportRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 49);
-
-/**
- * @generated from message quadsmith.api.VerifyDataExportResponse
- */
-export type VerifyDataExportResponse = Message<"quadsmith.api.VerifyDataExportResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
-
-  /**
-   * @generated from field: string export_token = 3;
-   */
-  exportToken: string;
-
-  /**
-   * @generated from field: string download_url = 4;
-   */
-  downloadUrl: string;
-
-  /**
-   * @generated from field: string filename = 5;
-   */
-  filename: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp expires_at = 6;
-   */
-  expiresAt?: Timestamp | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.VerifyDataExportResponse.
- * Use `create(VerifyDataExportResponseSchema)` to create a new message.
- */
-export const VerifyDataExportResponseSchema: GenMessage<VerifyDataExportResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 50);
 
 /**
  * @generated from message quadsmith.api.AuthResponse
@@ -1403,7 +472,793 @@ export type AuthResponse = Message<"quadsmith.api.AuthResponse"> & {
  */
 export const AuthResponseSchema: GenMessage<AuthResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 51);
+  messageDesc(file_quadsmith_api_auth, 16);
+
+/**
+ * @generated from message quadsmith.api.ListActiveSessionsRequest
+ */
+export type ListActiveSessionsRequest = Message<"quadsmith.api.ListActiveSessionsRequest"> & {};
+
+/**
+ * Describes the message quadsmith.api.ListActiveSessionsRequest.
+ * Use `create(ListActiveSessionsRequestSchema)` to create a new message.
+ */
+export const ListActiveSessionsRequestSchema: GenMessage<ListActiveSessionsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 17);
+
+/**
+ * @generated from message quadsmith.api.ListActiveSessionsResponse
+ */
+export type ListActiveSessionsResponse = Message<"quadsmith.api.ListActiveSessionsResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.Session sessions = 1;
+   */
+  sessions: Session[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListActiveSessionsResponse.
+ * Use `create(ListActiveSessionsResponseSchema)` to create a new message.
+ */
+export const ListActiveSessionsResponseSchema: GenMessage<ListActiveSessionsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 18);
+
+/**
+ * @generated from message quadsmith.api.Session
+ */
+export type Session = Message<"quadsmith.api.Session"> & {
+  /**
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
+
+  /**
+   * @generated from field: string device_hint = 2;
+   */
+  deviceHint: string;
+
+  /**
+   * @generated from field: string ip_address = 3;
+   */
+  ipAddress: string;
+
+  /**
+   * @generated from field: string location_hint = 4;
+   */
+  locationHint: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 5;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp last_active_at = 6;
+   */
+  lastActiveAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: bool is_current = 7;
+   */
+  isCurrent: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.Session.
+ * Use `create(SessionSchema)` to create a new message.
+ */
+export const SessionSchema: GenMessage<Session> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 19);
+
+/**
+ * @generated from message quadsmith.api.ListArchivedUsernamesRequest
+ */
+export type ListArchivedUsernamesRequest =
+  Message<"quadsmith.api.ListArchivedUsernamesRequest"> & {};
+
+/**
+ * Describes the message quadsmith.api.ListArchivedUsernamesRequest.
+ * Use `create(ListArchivedUsernamesRequestSchema)` to create a new message.
+ */
+export const ListArchivedUsernamesRequestSchema: GenMessage<ListArchivedUsernamesRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 20);
+
+/**
+ * @generated from message quadsmith.api.ListArchivedUsernamesResponse
+ */
+export type ListArchivedUsernamesResponse =
+  Message<"quadsmith.api.ListArchivedUsernamesResponse"> & {
+    /**
+     * @generated from field: repeated quadsmith.api.ArchivedUsername archived_usernames = 1;
+     */
+    archivedUsernames: ArchivedUsername[];
+
+    /**
+     * @generated from field: google.protobuf.Timestamp next_allowed_new_rename_at = 2;
+     */
+    nextAllowedNewRenameAt?: Timestamp | undefined;
+
+    /**
+     * @generated from field: google.protobuf.Timestamp next_allowed_archive_rename_at = 3;
+     */
+    nextAllowedArchiveRenameAt?: Timestamp | undefined;
+  };
+
+/**
+ * Describes the message quadsmith.api.ListArchivedUsernamesResponse.
+ * Use `create(ListArchivedUsernamesResponseSchema)` to create a new message.
+ */
+export const ListArchivedUsernamesResponseSchema: GenMessage<ListArchivedUsernamesResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 21);
+
+/**
+ * @generated from message quadsmith.api.ArchivedUsername
+ */
+export type ArchivedUsername = Message<"quadsmith.api.ArchivedUsername"> & {
+  /**
+   * @generated from field: string username = 1;
+   */
+  username: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp first_archived_at = 2;
+   */
+  firstArchivedAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp renamed_at = 3;
+   */
+  renamedAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp release_at = 4;
+   */
+  releaseAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: int32 days_remaining = 5;
+   */
+  daysRemaining: number;
+
+  /**
+   * @generated from field: bool can_reclaim_now = 6;
+   */
+  canReclaimNow: boolean;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp next_reclaim_allowed_at = 7;
+   */
+  nextReclaimAllowedAt?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.ArchivedUsername.
+ * Use `create(ArchivedUsernameSchema)` to create a new message.
+ */
+export const ArchivedUsernameSchema: GenMessage<ArchivedUsername> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 22);
+
+/**
+ * @generated from message quadsmith.api.ListUserEmailsRequest
+ */
+export type ListUserEmailsRequest = Message<"quadsmith.api.ListUserEmailsRequest"> & {};
+
+/**
+ * Describes the message quadsmith.api.ListUserEmailsRequest.
+ * Use `create(ListUserEmailsRequestSchema)` to create a new message.
+ */
+export const ListUserEmailsRequestSchema: GenMessage<ListUserEmailsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 23);
+
+/**
+ * @generated from message quadsmith.api.ListUserEmailsResponse
+ */
+export type ListUserEmailsResponse = Message<"quadsmith.api.ListUserEmailsResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.api.UserEmail emails = 1;
+   */
+  emails: UserEmail[];
+};
+
+/**
+ * Describes the message quadsmith.api.ListUserEmailsResponse.
+ * Use `create(ListUserEmailsResponseSchema)` to create a new message.
+ */
+export const ListUserEmailsResponseSchema: GenMessage<ListUserEmailsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 24);
+
+/**
+ * @generated from message quadsmith.api.LogoutRequest
+ */
+export type LogoutRequest = Message<"quadsmith.api.LogoutRequest"> & {
+  /**
+   * @generated from field: optional string refresh_token = 1;
+   */
+  refreshToken?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.LogoutRequest.
+ * Use `create(LogoutRequestSchema)` to create a new message.
+ */
+export const LogoutRequestSchema: GenMessage<LogoutRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 25);
+
+/**
+ * @generated from message quadsmith.api.LogoutResponse
+ */
+export type LogoutResponse = Message<"quadsmith.api.LogoutResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+};
+
+/**
+ * Describes the message quadsmith.api.LogoutResponse.
+ * Use `create(LogoutResponseSchema)` to create a new message.
+ */
+export const LogoutResponseSchema: GenMessage<LogoutResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 26);
+
+/**
+ * @generated from message quadsmith.api.MergeAccountRequest
+ */
+export type MergeAccountRequest = Message<"quadsmith.api.MergeAccountRequest"> & {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+
+  /**
+   * @generated from field: string code = 2;
+   */
+  code: string;
+
+  /**
+   * @generated from field: string token = 3;
+   */
+  token: string;
+
+  /**
+   * @generated from field: optional string merge_ticket = 4;
+   */
+  mergeTicket?: string | undefined;
+
+  /**
+   * @generated from field: optional string challenge_id = 5;
+   */
+  challengeId?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.MergeAccountRequest.
+ * Use `create(MergeAccountRequestSchema)` to create a new message.
+ */
+export const MergeAccountRequestSchema: GenMessage<MergeAccountRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 27);
+
+/**
+ * @generated from message quadsmith.api.MergeAccountResponse
+ */
+export type MergeAccountResponse = Message<"quadsmith.api.MergeAccountResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+
+  /**
+   * @generated from field: int32 transferred_build_count = 3;
+   */
+  transferredBuildCount: number;
+
+  /**
+   * @generated from field: string merged_username = 4;
+   */
+  mergedUsername: string;
+
+  /**
+   * @generated from field: repeated string merged_emails = 5;
+   */
+  mergedEmails: string[];
+};
+
+/**
+ * Describes the message quadsmith.api.MergeAccountResponse.
+ * Use `create(MergeAccountResponseSchema)` to create a new message.
+ */
+export const MergeAccountResponseSchema: GenMessage<MergeAccountResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 28);
+
+/**
+ * @generated from message quadsmith.api.RefreshTokenRequest
+ */
+export type RefreshTokenRequest = Message<"quadsmith.api.RefreshTokenRequest"> & {
+  /**
+   * @generated from field: string refresh_token = 1;
+   */
+  refreshToken: string;
+};
+
+/**
+ * Describes the message quadsmith.api.RefreshTokenRequest.
+ * Use `create(RefreshTokenRequestSchema)` to create a new message.
+ */
+export const RefreshTokenRequestSchema: GenMessage<RefreshTokenRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 29);
+
+/**
+ * @generated from message quadsmith.api.RemoveUserEmailRequest
+ */
+export type RemoveUserEmailRequest = Message<"quadsmith.api.RemoveUserEmailRequest"> & {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+};
+
+/**
+ * Describes the message quadsmith.api.RemoveUserEmailRequest.
+ * Use `create(RemoveUserEmailRequestSchema)` to create a new message.
+ */
+export const RemoveUserEmailRequestSchema: GenMessage<RemoveUserEmailRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 30);
+
+/**
+ * @generated from message quadsmith.api.RemoveUserEmailResponse
+ */
+export type RemoveUserEmailResponse = Message<"quadsmith.api.RemoveUserEmailResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.api.RemoveUserEmailResponse.
+ * Use `create(RemoveUserEmailResponseSchema)` to create a new message.
+ */
+export const RemoveUserEmailResponseSchema: GenMessage<RemoveUserEmailResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 31);
+
+/**
+ * @generated from message quadsmith.api.RevokeOtherSessionsRequest
+ */
+export type RevokeOtherSessionsRequest = Message<"quadsmith.api.RevokeOtherSessionsRequest"> & {};
+
+/**
+ * Describes the message quadsmith.api.RevokeOtherSessionsRequest.
+ * Use `create(RevokeOtherSessionsRequestSchema)` to create a new message.
+ */
+export const RevokeOtherSessionsRequestSchema: GenMessage<RevokeOtherSessionsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 32);
+
+/**
+ * @generated from message quadsmith.api.RevokeOtherSessionsResponse
+ */
+export type RevokeOtherSessionsResponse = Message<"quadsmith.api.RevokeOtherSessionsResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: int32 revoked_count = 2;
+   */
+  revokedCount: number;
+
+  /**
+   * @generated from field: string message = 3;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.api.RevokeOtherSessionsResponse.
+ * Use `create(RevokeOtherSessionsResponseSchema)` to create a new message.
+ */
+export const RevokeOtherSessionsResponseSchema: GenMessage<RevokeOtherSessionsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 33);
+
+/**
+ * @generated from message quadsmith.api.RevokeSessionRequest
+ */
+export type RevokeSessionRequest = Message<"quadsmith.api.RevokeSessionRequest"> & {
+  /**
+   * @generated from field: string session_uuid = 1;
+   */
+  sessionUuid: string;
+};
+
+/**
+ * Describes the message quadsmith.api.RevokeSessionRequest.
+ * Use `create(RevokeSessionRequestSchema)` to create a new message.
+ */
+export const RevokeSessionRequestSchema: GenMessage<RevokeSessionRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 34);
+
+/**
+ * @generated from message quadsmith.api.RevokeSessionResponse
+ */
+export type RevokeSessionResponse = Message<"quadsmith.api.RevokeSessionResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.api.RevokeSessionResponse.
+ * Use `create(RevokeSessionResponseSchema)` to create a new message.
+ */
+export const RevokeSessionResponseSchema: GenMessage<RevokeSessionResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 35);
+
+/**
+ * @generated from message quadsmith.api.SendEmailOtpRequest
+ */
+export type SendEmailOtpRequest = Message<"quadsmith.api.SendEmailOtpRequest"> & {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+
+  /**
+   * @generated from field: quadsmith.api.EmailOtpPurpose purpose = 2;
+   */
+  purpose: EmailOtpPurpose;
+};
+
+/**
+ * Describes the message quadsmith.api.SendEmailOtpRequest.
+ * Use `create(SendEmailOtpRequestSchema)` to create a new message.
+ */
+export const SendEmailOtpRequestSchema: GenMessage<SendEmailOtpRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 36);
+
+/**
+ * @generated from message quadsmith.api.SendEmailOtpResponse
+ */
+export type SendEmailOtpResponse = Message<"quadsmith.api.SendEmailOtpResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+
+  /**
+   * @generated from field: int32 cooldown_seconds = 3;
+   */
+  cooldownSeconds: number;
+
+  /**
+   * @generated from field: bool is_existing_account = 4;
+   */
+  isExistingAccount: boolean;
+
+  /**
+   * @generated from field: optional string challenge_id = 5;
+   */
+  challengeId?: string | undefined;
+
+  /**
+   * @generated from field: string email = 6;
+   */
+  email: string;
+
+  /**
+   * @generated from field: optional google.protobuf.Timestamp expires_at = 7;
+   */
+  expiresAt?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.SendEmailOtpResponse.
+ * Use `create(SendEmailOtpResponseSchema)` to create a new message.
+ */
+export const SendEmailOtpResponseSchema: GenMessage<SendEmailOtpResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 37);
+
+/**
+ * @generated from message quadsmith.api.SetPrimaryEmailRequest
+ */
+export type SetPrimaryEmailRequest = Message<"quadsmith.api.SetPrimaryEmailRequest"> & {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+};
+
+/**
+ * Describes the message quadsmith.api.SetPrimaryEmailRequest.
+ * Use `create(SetPrimaryEmailRequestSchema)` to create a new message.
+ */
+export const SetPrimaryEmailRequestSchema: GenMessage<SetPrimaryEmailRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 38);
+
+/**
+ * @generated from message quadsmith.api.SetPrimaryEmailResponse
+ */
+export type SetPrimaryEmailResponse = Message<"quadsmith.api.SetPrimaryEmailResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.api.SetPrimaryEmailResponse.
+ * Use `create(SetPrimaryEmailResponseSchema)` to create a new message.
+ */
+export const SetPrimaryEmailResponseSchema: GenMessage<SetPrimaryEmailResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 39);
+
+/**
+ * @generated from message quadsmith.api.UpdateProfileRequest
+ */
+export type UpdateProfileRequest = Message<"quadsmith.api.UpdateProfileRequest"> & {
+  /**
+   * @generated from field: optional string avatar_url = 1;
+   */
+  avatarUrl?: string | undefined;
+
+  /**
+   * @generated from field: optional string bio = 2;
+   */
+  bio?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.UpdateProfileRequest.
+ * Use `create(UpdateProfileRequestSchema)` to create a new message.
+ */
+export const UpdateProfileRequestSchema: GenMessage<UpdateProfileRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 40);
+
+/**
+ * @generated from message quadsmith.api.VerifyEmailOtpRequest
+ */
+export type VerifyEmailOtpRequest = Message<"quadsmith.api.VerifyEmailOtpRequest"> & {
+  /**
+   * @generated from field: string email = 1;
+   */
+  email: string;
+
+  /**
+   * @generated from field: string code = 2;
+   */
+  code: string;
+
+  /**
+   * @generated from field: optional string challenge_id = 3;
+   */
+  challengeId?: string | undefined;
+
+  /**
+   * @generated from field: optional string token = 4;
+   */
+  token?: string | undefined;
+
+  /**
+   * @generated from field: quadsmith.api.EmailOtpPurpose purpose = 5;
+   */
+  purpose: EmailOtpPurpose;
+};
+
+/**
+ * Describes the message quadsmith.api.VerifyEmailOtpRequest.
+ * Use `create(VerifyEmailOtpRequestSchema)` to create a new message.
+ */
+export const VerifyEmailOtpRequestSchema: GenMessage<VerifyEmailOtpRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 41);
+
+/**
+ * @generated from message quadsmith.api.VerifyEmailOtpResponse
+ */
+export type VerifyEmailOtpResponse = Message<"quadsmith.api.VerifyEmailOtpResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+
+  /**
+   * @generated from field: quadsmith.api.EmailOtpPurpose purpose = 3;
+   */
+  purpose: EmailOtpPurpose;
+
+  /**
+   * @generated from field: optional string email = 4;
+   */
+  email?: string | undefined;
+
+  /**
+   * Auth / session credentials (LOGIN)
+   *
+   * @generated from field: string access_token = 5;
+   */
+  accessToken: string;
+
+  /**
+   * @generated from field: string refresh_token = 6;
+   */
+  refreshToken: string;
+
+  /**
+   * @generated from field: quadsmith.api.User user = 7;
+   */
+  user?: User | undefined;
+
+  /**
+   * @generated from field: quadsmith.api.UserProfile profile = 8;
+   */
+  profile?: UserProfile | undefined;
+
+  /**
+   * @generated from field: bool account_setup_required = 9;
+   */
+  accountSetupRequired: boolean;
+
+  /**
+   * @generated from field: string setup_token = 10;
+   */
+  setupToken: string;
+
+  /**
+   * @generated from field: optional string account_status = 11;
+   */
+  accountStatus?: string | undefined;
+
+  /**
+   * @generated from field: optional quadsmith.api.Ban active_ban = 12;
+   */
+  activeBan?: Ban | undefined;
+
+  /**
+   * Add Email / Merge details (ADD_EMAIL)
+   *
+   * @generated from field: bool merge_required = 13;
+   */
+  mergeRequired: boolean;
+
+  /**
+   * @generated from field: optional string merge_ticket = 14;
+   */
+  mergeTicket?: string | undefined;
+
+  /**
+   * @generated from field: string other_user_username = 15;
+   */
+  otherUserUsername: string;
+
+  /**
+   * @generated from field: int32 other_build_count = 16;
+   */
+  otherBuildCount: number;
+
+  /**
+   * @generated from field: repeated string other_build_names = 17;
+   */
+  otherBuildNames: string[];
+
+  /**
+   * @generated from field: repeated string other_emails = 18;
+   */
+  otherEmails: string[];
+
+  /**
+   * @generated from field: repeated string other_oauth_providers = 19;
+   */
+  otherOauthProviders: string[];
+
+  /**
+   * Data Export details (EXPORT_DATA)
+   *
+   * @generated from field: optional string export_token = 20;
+   */
+  exportToken?: string | undefined;
+
+  /**
+   * @generated from field: optional string download_url = 21;
+   */
+  downloadUrl?: string | undefined;
+
+  /**
+   * @generated from field: optional string filename = 22;
+   */
+  filename?: string | undefined;
+
+  /**
+   * @generated from field: optional google.protobuf.Timestamp export_expires_at = 23;
+   */
+  exportExpiresAt?: Timestamp | undefined;
+
+  /**
+   * Delete Account details (DELETE_ACCOUNT)
+   *
+   * @generated from field: optional google.protobuf.Timestamp scheduled_purge_at = 24;
+   */
+  scheduledPurgeAt?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message quadsmith.api.VerifyEmailOtpResponse.
+ * Use `create(VerifyEmailOtpResponseSchema)` to create a new message.
+ */
+export const VerifyEmailOtpResponseSchema: GenMessage<VerifyEmailOtpResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 42);
+
+/**
+ * @generated from message quadsmith.api.VerifyMagicLinkRequest
+ */
+export type VerifyMagicLinkRequest = Message<"quadsmith.api.VerifyMagicLinkRequest"> & {
+  /**
+   * @generated from field: string token = 1;
+   */
+  token: string;
+};
+
+/**
+ * Describes the message quadsmith.api.VerifyMagicLinkRequest.
+ * Use `create(VerifyMagicLinkRequestSchema)` to create a new message.
+ */
+export const VerifyMagicLinkRequestSchema: GenMessage<VerifyMagicLinkRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_auth, 43);
 
 /**
  * @generated from message quadsmith.api.OtpVerificationError
@@ -1441,7 +1296,44 @@ export type OtpVerificationError = Message<"quadsmith.api.OtpVerificationError">
  */
 export const OtpVerificationErrorSchema: GenMessage<OtpVerificationError> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_auth, 52);
+  messageDesc(file_quadsmith_api_auth, 44);
+
+/**
+ * @generated from enum quadsmith.api.EmailOtpPurpose
+ */
+export enum EmailOtpPurpose {
+  /**
+   * @generated from enum value: EMAIL_OTP_PURPOSE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: EMAIL_OTP_PURPOSE_LOGIN = 1;
+   */
+  LOGIN = 1,
+
+  /**
+   * @generated from enum value: EMAIL_OTP_PURPOSE_ADD_EMAIL = 2;
+   */
+  ADD_EMAIL = 2,
+
+  /**
+   * @generated from enum value: EMAIL_OTP_PURPOSE_EXPORT_DATA = 3;
+   */
+  EXPORT_DATA = 3,
+
+  /**
+   * @generated from enum value: EMAIL_OTP_PURPOSE_DELETE_ACCOUNT = 4;
+   */
+  DELETE_ACCOUNT = 4,
+}
+
+/**
+ * Describes the enum quadsmith.api.EmailOtpPurpose.
+ */
+export const EmailOtpPurposeSchema: GenEnum<EmailOtpPurpose> =
+  /*@__PURE__*/
+  enumDesc(file_quadsmith_api_auth, 0);
 
 /**
  * @generated from enum quadsmith.api.LoginChallengeStatus
@@ -1478,7 +1370,7 @@ export enum LoginChallengeStatus {
  */
 export const LoginChallengeStatusSchema: GenEnum<LoginChallengeStatus> =
   /*@__PURE__*/
-  enumDesc(file_quadsmith_api_auth, 0);
+  enumDesc(file_quadsmith_api_auth, 1);
 
 /**
  * @generated from service quadsmith.api.AuthService
@@ -1498,7 +1390,7 @@ export const AuthService: GenService<{
   verifyEmailOtp: {
     methodKind: "unary";
     input: typeof VerifyEmailOtpRequestSchema;
-    output: typeof AuthResponseSchema;
+    output: typeof VerifyEmailOtpResponseSchema;
   };
   /**
    * @generated from rpc quadsmith.api.AuthService.VerifyMagicLink
@@ -1506,7 +1398,7 @@ export const AuthService: GenService<{
   verifyMagicLink: {
     methodKind: "unary";
     input: typeof VerifyMagicLinkRequestSchema;
-    output: typeof AuthResponseSchema;
+    output: typeof VerifyEmailOtpResponseSchema;
   };
   /**
    * @generated from rpc quadsmith.api.AuthService.GetLoginChallengeDetails
@@ -1613,22 +1505,6 @@ export const AuthService: GenService<{
     output: typeof ListUserEmailsResponseSchema;
   };
   /**
-   * @generated from rpc quadsmith.api.AuthService.SendAddEmailOtp
-   */
-  sendAddEmailOtp: {
-    methodKind: "unary";
-    input: typeof SendAddEmailOtpRequestSchema;
-    output: typeof SendEmailOtpResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.AuthService.VerifyAddEmailOtp
-   */
-  verifyAddEmailOtp: {
-    methodKind: "unary";
-    input: typeof VerifyAddEmailOtpRequestSchema;
-    output: typeof VerifyAddEmailOtpResponseSchema;
-  };
-  /**
    * @generated from rpc quadsmith.api.AuthService.MergeAccount
    */
   mergeAccount: {
@@ -1667,30 +1543,6 @@ export const AuthService: GenService<{
     methodKind: "unary";
     input: typeof ListArchivedUsernamesRequestSchema;
     output: typeof ListArchivedUsernamesResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.AuthService.SendDataExportVerification
-   */
-  sendDataExportVerification: {
-    methodKind: "unary";
-    input: typeof SendDataExportVerificationRequestSchema;
-    output: typeof SendDataExportVerificationResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.AuthService.VerifyDataExport
-   */
-  verifyDataExport: {
-    methodKind: "unary";
-    input: typeof VerifyDataExportRequestSchema;
-    output: typeof VerifyDataExportResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.AuthService.SendDeleteAccountVerification
-   */
-  sendDeleteAccountVerification: {
-    methodKind: "unary";
-    input: typeof SendDeleteAccountVerificationRequestSchema;
-    output: typeof SendDeleteAccountVerificationResponseSchema;
   };
   /**
    * @generated from rpc quadsmith.api.AuthService.DeleteAccount

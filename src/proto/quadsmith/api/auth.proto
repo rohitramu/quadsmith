@@ -14,8 +14,8 @@ option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 
 service AuthService {
   rpc SendEmailOtp(SendEmailOtpRequest) returns (SendEmailOtpResponse);
-  rpc VerifyEmailOtp(VerifyEmailOtpRequest) returns (AuthResponse);
-  rpc VerifyMagicLink(VerifyMagicLinkRequest) returns (AuthResponse);
+  rpc VerifyEmailOtp(VerifyEmailOtpRequest) returns (VerifyEmailOtpResponse);
+  rpc VerifyMagicLink(VerifyMagicLinkRequest) returns (VerifyEmailOtpResponse);
   rpc GetLoginChallengeDetails(GetLoginChallengeDetailsRequest) returns (GetLoginChallengeDetailsResponse);
   rpc ApproveLoginChallenge(ApproveLoginChallengeRequest) returns (ApproveLoginChallengeResponse);
   rpc DenyLoginChallenge(DenyLoginChallengeRequest) returns (DenyLoginChallengeResponse);
@@ -31,8 +31,6 @@ service AuthService {
   rpc RevokeOtherSessions(RevokeOtherSessionsRequest) returns (RevokeOtherSessionsResponse);
 
   rpc ListUserEmails(ListUserEmailsRequest) returns (ListUserEmailsResponse);
-  rpc SendAddEmailOtp(SendAddEmailOtpRequest) returns (SendEmailOtpResponse);
-  rpc VerifyAddEmailOtp(VerifyAddEmailOtpRequest) returns (VerifyAddEmailOtpResponse);
   rpc MergeAccount(MergeAccountRequest) returns (MergeAccountResponse);
   rpc SetPrimaryEmail(SetPrimaryEmailRequest) returns (SetPrimaryEmailResponse);
   rpc RemoveUserEmail(RemoveUserEmailRequest) returns (RemoveUserEmailResponse);
@@ -40,10 +38,6 @@ service AuthService {
   rpc ChangeUsername(ChangeUsernameRequest) returns (ChangeUsernameResponse);
   rpc ListArchivedUsernames(ListArchivedUsernamesRequest) returns (ListArchivedUsernamesResponse);
 
-  rpc SendDataExportVerification(SendDataExportVerificationRequest) returns (SendDataExportVerificationResponse);
-  rpc VerifyDataExport(VerifyDataExportRequest) returns (VerifyDataExportResponse);
-
-  rpc SendDeleteAccountVerification(SendDeleteAccountVerificationRequest) returns (SendDeleteAccountVerificationResponse);
   rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResponse);
   rpc CancelAccountDeletion(CancelAccountDeletionRequest) returns (CancelAccountDeletionResponse);
 }
@@ -51,42 +45,6 @@ service AuthService {
 // ---------------------------------------------------------
 // Request/response messages
 // ---------------------------------------------------------
-
-message SendEmailOtpRequest {
-  string email = 1;
-}
-
-message SendEmailOtpResponse {
-  bool success = 1;
-  string message = 2;
-  int32 cooldown_seconds = 3;
-  bool is_existing_account = 4;
-  optional string challenge_id = 5;
-}
-
-message VerifyEmailOtpRequest {
-  string email = 1;
-  string code = 2;
-  optional string challenge_id = 3;
-}
-
-message VerifyMagicLinkRequest {
-  string token = 1;
-}
-
-message GetLoginChallengeDetailsRequest {
-  string token = 1;
-}
-
-message GetLoginChallengeDetailsResponse {
-  string email = 1;
-  string ip_address = 2;
-  string location_hint = 3;
-  string device_hint = 4;
-  google.protobuf.Timestamp created_at = 5;
-  google.protobuf.Timestamp expires_at = 6;
-  LoginChallengeStatus status = 7;
-}
 
 message ApproveLoginChallengeRequest {
   string token = 1;
@@ -97,159 +55,12 @@ message ApproveLoginChallengeResponse {
   string message = 2;
 }
 
-message DenyLoginChallengeRequest {
-  string token = 1;
-}
+message CancelAccountDeletionRequest {}
 
-message DenyLoginChallengeResponse {
+message CancelAccountDeletionResponse {
   bool success = 1;
   string message = 2;
-}
-
-message GetLoginChallengeStatusRequest {
-  string challenge_id = 1;
-}
-
-message GetLoginChallengeStatusResponse {
-  LoginChallengeStatus status = 1;
-  optional AuthResponse auth_response = 2;
-}
-
-message CompleteAccountSetupRequest {
-  string setup_token = 1;
-  string username = 2 [(quadsmith.validate.rules).string = {
-    min_len: 3
-    max_len: 20
-    pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"
-    not_in: [
-      "admin",
-      "root",
-      "system",
-      "bot",
-      "robot"
-    ]
-    not_contains: [
-      "__",
-      "quadsmith",
-      "quad_smith"
-    ]
-  }];
-  optional string avatar_url = 3;
-}
-
-message RefreshTokenRequest {
-  string refresh_token = 1;
-}
-
-message GetCurrentUserRequest {}
-
-message UpdateProfileRequest {
-  optional string avatar_url = 1;
-  optional string bio = 2;
-}
-
-message LogoutRequest {
-  optional string refresh_token = 1;
-}
-
-message LogoutResponse {
-  bool success = 1;
-}
-
-message ListActiveSessionsRequest {}
-
-message ListActiveSessionsResponse {
-  repeated Session sessions = 1;
-}
-
-message Session {
-  string uuid = 1;
-  string device_hint = 2;
-  string ip_address = 3;
-  string location_hint = 4;
-  google.protobuf.Timestamp created_at = 5;
-  google.protobuf.Timestamp last_active_at = 6;
-  bool is_current = 7;
-}
-
-message RevokeSessionRequest {
-  string session_uuid = 1;
-}
-
-message RevokeSessionResponse {
-  bool success = 1;
-  string message = 2;
-}
-
-message RevokeOtherSessionsRequest {}
-
-message RevokeOtherSessionsResponse {
-  bool success = 1;
-  int32 revoked_count = 2;
-  string message = 3;
-}
-
-message ListUserEmailsRequest {}
-
-message ListUserEmailsResponse {
-  repeated UserEmail emails = 1;
-}
-
-message SendAddEmailOtpRequest {
-  string email = 1;
-}
-
-message VerifyAddEmailOtpRequest {
-  string email = 1;
-  string code = 2;
-  string token = 3;
-  optional string challenge_id = 4;
-}
-
-message VerifyAddEmailOtpResponse {
-  bool success = 1;
-  string message = 2;
-  bool merge_required = 3;
-  string other_user_username = 4;
-  int32 other_build_count = 5;
-  repeated string other_build_names = 6;
-  repeated string other_emails = 7;
-  repeated string other_oauth_providers = 8;
-  optional string merge_ticket = 9;
-}
-
-message MergeAccountRequest {
-  string email = 1;
-  string code = 2;
-  string token = 3;
-  optional string merge_ticket = 4;
-  optional string challenge_id = 5;
-}
-
-message MergeAccountResponse {
-  bool success = 1;
-  string message = 2;
-  int32 transferred_build_count = 3;
-  string merged_username = 4;
-  repeated string merged_emails = 5;
-}
-
-message SetPrimaryEmailRequest {
-  string email = 1;
-}
-
-message SetPrimaryEmailResponse {
-  bool success = 1;
-  string message = 2;
-}
-
-message RemoveUserEmailRequest {
-  string email = 1;
-}
-
-message RemoveUserEmailResponse {
-  bool success = 1;
-  string message = 2;
+  User user = 3;
 }
 
 message ChangeUsernameRequest {
@@ -280,6 +91,103 @@ message ChangeUsernameResponse {
   google.protobuf.Timestamp next_allowed_archive_rename_at = 5;
 }
 
+message CompleteAccountSetupRequest {
+  string setup_token = 1;
+  string username = 2 [(quadsmith.validate.rules).string = {
+    min_len: 3
+    max_len: 20
+    pattern: "^[a-z][a-z0-9_]{1,18}[a-z0-9]$"
+    not_in: [
+      "admin",
+      "root",
+      "system",
+      "bot",
+      "robot"
+    ]
+    not_contains: [
+      "__",
+      "quadsmith",
+      "quad_smith"
+    ]
+  }];
+  optional string avatar_url = 3;
+}
+
+message DeleteAccountRequest {
+  string username = 1;
+  optional string challenge_id = 2;
+  optional string code = 3;
+  optional string magic_token = 4;
+}
+
+message DeleteAccountResponse {
+  bool success = 1;
+  string message = 2;
+  google.protobuf.Timestamp scheduled_purge_at = 3;
+}
+
+message DenyLoginChallengeRequest {
+  string token = 1;
+}
+
+message DenyLoginChallengeResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetCurrentUserRequest {}
+
+message GetLoginChallengeDetailsRequest {
+  string token = 1;
+}
+
+message GetLoginChallengeDetailsResponse {
+  string email = 1;
+  string ip_address = 2;
+  string location_hint = 3;
+  string device_hint = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp expires_at = 6;
+  LoginChallengeStatus status = 7;
+}
+
+message GetLoginChallengeStatusRequest {
+  string challenge_id = 1;
+}
+
+message GetLoginChallengeStatusResponse {
+  LoginChallengeStatus status = 1;
+  optional AuthResponse auth_response = 2;
+}
+
+message AuthResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  User user = 3;
+  UserProfile profile = 4;
+  bool account_setup_required = 5;
+  string setup_token = 6;
+  optional string account_status = 7;
+  optional google.protobuf.Timestamp scheduled_purge_at = 8;
+  optional Ban active_ban = 9;
+}
+
+message ListActiveSessionsRequest {}
+
+message ListActiveSessionsResponse {
+  repeated Session sessions = 1;
+}
+
+message Session {
+  string uuid = 1;
+  string device_hint = 2;
+  string ip_address = 3;
+  string location_hint = 4;
+  google.protobuf.Timestamp created_at = 5;
+  google.protobuf.Timestamp last_active_at = 6;
+  bool is_current = 7;
+}
+
 message ListArchivedUsernamesRequest {}
 
 message ListArchivedUsernamesResponse {
@@ -298,86 +206,153 @@ message ArchivedUsername {
   google.protobuf.Timestamp next_reclaim_allowed_at = 7;
 }
 
-message SendDeleteAccountVerificationRequest {
-  string username = 1 [(quadsmith.validate.rules).string = {
-    min_len: 3
-    max_len: 20
-  }];
+message ListUserEmailsRequest {}
+
+message ListUserEmailsResponse {
+  repeated UserEmail emails = 1;
 }
 
-message SendDeleteAccountVerificationResponse {
+message LogoutRequest {
+  optional string refresh_token = 1;
+}
+
+message LogoutResponse {
+  bool success = 1;
+}
+
+message MergeAccountRequest {
+  string email = 1;
+  string code = 2;
+  string token = 3;
+  optional string merge_ticket = 4;
+  optional string challenge_id = 5;
+}
+
+message MergeAccountResponse {
   bool success = 1;
   string message = 2;
-  string challenge_id = 3;
-  google.protobuf.Timestamp expires_at = 4;
+  int32 transferred_build_count = 3;
+  string merged_username = 4;
+  repeated string merged_emails = 5;
 }
 
-message DeleteAccountRequest {
-  string username = 1;
-  string challenge_id = 2;
-  oneof verification {
-    string code = 3;
-    string magic_token = 4;
-  }
+message RefreshTokenRequest {
+  string refresh_token = 1;
 }
 
-message DeleteAccountResponse {
+message RemoveUserEmailRequest {
+  string email = 1;
+}
+
+message RemoveUserEmailResponse {
   bool success = 1;
   string message = 2;
-  google.protobuf.Timestamp scheduled_purge_at = 3;
 }
 
-message CancelAccountDeletionRequest {}
+message RevokeOtherSessionsRequest {}
 
-message CancelAccountDeletionResponse {
+message RevokeOtherSessionsResponse {
+  bool success = 1;
+  int32 revoked_count = 2;
+  string message = 3;
+}
+
+message RevokeSessionRequest {
+  string session_uuid = 1;
+}
+
+message RevokeSessionResponse {
   bool success = 1;
   string message = 2;
-  User user = 3;
 }
 
-message SendDataExportVerificationRequest {}
+message SendEmailOtpRequest {
+  string email = 1;
+  EmailOtpPurpose purpose = 2;
+}
 
-message SendDataExportVerificationResponse {
+message SendEmailOtpResponse {
   bool success = 1;
   string message = 2;
-  string primary_email = 3;
-  int32 cooldown_seconds = 4;
-  string challenge_id = 5;
-  google.protobuf.Timestamp expires_at = 6;
+  int32 cooldown_seconds = 3;
+  bool is_existing_account = 4;
+  optional string challenge_id = 5;
+  string email = 6;
+  optional google.protobuf.Timestamp expires_at = 7;
 }
 
-message VerifyDataExportRequest {
-  optional string challenge_id = 1;
-  oneof verification {
-    string code = 2;
-    string magic_token = 3;
-  }
+message SetPrimaryEmailRequest {
+  string email = 1;
 }
 
-message VerifyDataExportResponse {
+message SetPrimaryEmailResponse {
   bool success = 1;
   string message = 2;
-  string export_token = 3;
-  string download_url = 4;
-  string filename = 5;
-  google.protobuf.Timestamp expires_at = 6;
 }
 
-message AuthResponse {
-  string access_token = 1;
-  string refresh_token = 2;
-  User user = 3;
-  UserProfile profile = 4;
-  bool account_setup_required = 5;
-  string setup_token = 6;
-  optional string account_status = 7;
-  optional google.protobuf.Timestamp scheduled_purge_at = 8;
-  optional Ban active_ban = 9;
+message UpdateProfileRequest {
+  optional string avatar_url = 1;
+  optional string bio = 2;
+}
+
+message VerifyEmailOtpRequest {
+  string email = 1;
+  string code = 2;
+  optional string challenge_id = 3;
+  optional string token = 4;
+  EmailOtpPurpose purpose = 5;
+}
+
+message VerifyEmailOtpResponse {
+  bool success = 1;
+  string message = 2;
+  EmailOtpPurpose purpose = 3;
+  optional string email = 4;
+
+  // Auth / session credentials (LOGIN)
+  string access_token = 5;
+  string refresh_token = 6;
+  User user = 7;
+  UserProfile profile = 8;
+  bool account_setup_required = 9;
+  string setup_token = 10;
+  optional string account_status = 11;
+  optional Ban active_ban = 12;
+
+  // Add Email / Merge details (ADD_EMAIL)
+  bool merge_required = 13;
+  optional string merge_ticket = 14;
+  string other_user_username = 15;
+  int32 other_build_count = 16;
+  repeated string other_build_names = 17;
+  repeated string other_emails = 18;
+  repeated string other_oauth_providers = 19;
+
+  // Data Export details (EXPORT_DATA)
+  optional string export_token = 20;
+  optional string download_url = 21;
+  optional string filename = 22;
+  optional google.protobuf.Timestamp export_expires_at = 23;
+
+  // Delete Account details (DELETE_ACCOUNT)
+  optional google.protobuf.Timestamp scheduled_purge_at = 24;
+}
+
+message VerifyMagicLinkRequest {
+  string token = 1;
 }
 
 // ---------------------------------------------------------
 // Everything else
 // ---------------------------------------------------------
+
+enum EmailOtpPurpose {
+  EMAIL_OTP_PURPOSE_UNSPECIFIED = 0;
+  EMAIL_OTP_PURPOSE_LOGIN = 1;
+  EMAIL_OTP_PURPOSE_ADD_EMAIL = 2;
+  EMAIL_OTP_PURPOSE_EXPORT_DATA = 3;
+  EMAIL_OTP_PURPOSE_DELETE_ACCOUNT = 4;
+}
 
 enum LoginChallengeStatus {
   LOGIN_CHALLENGE_STATUS_UNSPECIFIED = 0;

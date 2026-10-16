@@ -115,35 +115,110 @@ func (s *AuthService) SetEmailSender(sender email.EmailSender) {
 	s.emailSender = sender
 }
 
+func purposeToDBString(p pb.EmailOtpPurpose) string {
+	switch p {
+	case pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL:
+		return "add_email"
+	case pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_EXPORT_DATA:
+		return "export_data"
+	case pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_DELETE_ACCOUNT:
+		return "delete_account"
+	default:
+		return "login"
+	}
+}
+
+func purposeFromDBString(s string) pb.EmailOtpPurpose {
+	switch s {
+	case "add_email":
+		return pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL
+	case "export_data":
+		return pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_EXPORT_DATA
+	case "delete_account":
+		return pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_DELETE_ACCOUNT
+	default:
+		return pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_LOGIN
+	}
+}
+
 func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.SendEmailOtpRequest]) (*connect.Response[pb.SendEmailOtpResponse], error) {
-	email := strings.ToLower(strings.TrimSpace(req.Msg.GetEmail()))
-	emailRegex := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$`)
-	if !emailRegex.MatchString(email) {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("please enter a valid email address"))
+	purpose := req.Msg.GetPurpose()
+	if purpose == pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_UNSPECIFIED {
+		purpose = pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_LOGIN
 	}
 
-	// Check if email address is suspended and has no active account
-	var isEmailBanned bool
-	_ = s.db.QueryRow(ctx, `
-		SELECT EXISTS (
-			SELECT 1 FROM banned_emails be
-			JOIN bans b ON b.uuid = be.ban_uuid
-			WHERE LOWER(be.email) = LOWER($1)
-			  AND b.revoked_at IS NULL
-			  AND (b.expires_at IS NULL OR b.expires_at > NOW())
-		)`, email).Scan(&isEmailBanned)
+	purposeStr := purposeToDBString(purpose)
+	email := strings.ToLower(strings.TrimSpace(req.Msg.GetEmail()))
 
-	if isEmailBanned {
-		var hasActiveUser bool
+	userCtx := UserContextFromContext(ctx)
+
+	// If purpose is export_data or delete_account and email is empty, resolve primary email
+	if purpose == pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_EXPORT_DATA || purpose == pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_DELETE_ACCOUNT {
+		if userCtx == nil {
+			return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+		}
+		if email == "" {
+			_ = s.db.QueryRow(ctx, `
+				SELECT COALESCE(ue.email, '')
+				FROM users u
+				LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
+				WHERE u.uuid = $1 AND u.deleted_at IS NULL`, userCtx.UserUUID).Scan(&email)
+			if email == "" && userCtx.Email != "" {
+				email = userCtx.Email
+			}
+			if email == "" {
+				return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("no email found on account"))
+			}
+		}
+	}
+
+	if purpose == pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL {
+		if userCtx == nil {
+			return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+		}
+		if email == "" || !strings.Contains(email, "@") {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("valid email address required"))
+		}
+		var alreadyAssociated bool
+		err := s.db.QueryRow(ctx, `
+			SELECT EXISTS(
+				SELECT 1 FROM user_emails
+				WHERE user_uuid = $1 AND LOWER(email) = LOWER($2)
+			)`, userCtx.UserUUID, email).Scan(&alreadyAssociated)
+		if err == nil && alreadyAssociated {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("this email address is already associated with your account"))
+		}
+	}
+
+	if purpose == pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_LOGIN {
+		emailRegex := regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$`)
+		if !emailRegex.MatchString(email) {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("please enter a valid email address"))
+		}
+
+		// Check if email address is suspended and has no active account
+		var isEmailBanned bool
 		_ = s.db.QueryRow(ctx, `
 			SELECT EXISTS (
-				SELECT 1 FROM user_emails ue
-				JOIN users u ON u.uuid = ue.user_uuid
-				WHERE LOWER(ue.email) = LOWER($1)
-				  AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
-			)`, email).Scan(&hasActiveUser)
-		if !hasActiveUser {
-			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("email address is suspended"))
+				SELECT 1 FROM banned_emails be
+				JOIN bans b ON b.uuid = be.ban_uuid
+				WHERE LOWER(be.email) = LOWER($1)
+				  AND b.revoked_at IS NULL
+				  AND (b.expires_at IS NULL OR b.expires_at > NOW())
+			)`, email).Scan(&isEmailBanned)
+
+		if isEmailBanned {
+			var hasActiveUser bool
+			_ = s.db.QueryRow(ctx, `
+				SELECT EXISTS (
+					SELECT 1 FROM user_emails ue
+					JOIN users u ON u.uuid = ue.user_uuid
+					WHERE LOWER(ue.email) = LOWER($1)
+					  AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
+				)`, email).Scan(&hasActiveUser)
+			if !hasActiveUser {
+				return nil, connect.NewError(connect.CodePermissionDenied, errors.New("email address is suspended"))
+			}
 		}
 	}
 
@@ -170,8 +245,16 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 		return nil, connErr
 	}
 
-	// Invalidate any existing active challenges for this email so previous codes cannot be used
-	_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE email = $1 AND used_at IS NULL`, email)
+	// Invalidate any existing active challenges for this email and purpose
+	if userCtx != nil && (purpose == pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_EXPORT_DATA || purpose == pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_DELETE_ACCOUNT) {
+		_, _ = s.db.Exec(ctx, `
+			UPDATE email_otps
+			SET used_at = NOW()
+			WHERE (email = $1 OR requested_by_user_uuid = $2) AND purpose = $3 AND used_at IS NULL`,
+			email, userCtx.UserUUID, purposeStr)
+	} else {
+		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE email = $1 AND purpose = $2 AND used_at IS NULL`, email, purposeStr)
+	}
 
 	otpCode, codeHash, err := GenerateOTP()
 	if err != nil {
@@ -189,61 +272,103 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 	userAgent := req.Header().Get("User-Agent")
 	locationHint := extractLocationHint(req.Header(), clientIP)
 
+	var reqUserUUID *string
+	if userCtx != nil {
+		u := userCtx.UserUUID
+		reqUserUUID = &u
+	}
+
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO email_otps (uuid, email, challenge_id_hash, code_hash, purpose, expires_at, created_at, failed_attempts, ip_address, user_agent, location_hint, status)
-		VALUES ($1, $2, $3, $4, 'login', $5, $6, 0, $7, $8, $9, 'pending')`,
-		otpUUID, email, challengeHash, codeHash, expiresAt, now, clientIP, userAgent, locationHint)
+		INSERT INTO email_otps (uuid, email, challenge_id_hash, code_hash, purpose, requested_by_user_uuid, expires_at, created_at, failed_attempts, ip_address, user_agent, location_hint, status)
+		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, 0, $9, $10, $11, 'pending')`,
+		otpUUID, email, challengeHash, codeHash, purposeStr, reqUserUUID, expiresAt, now, clientIP, userAgent, locationHint)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save otp challenge: %w", err))
 	}
 
-	magicToken, err := SignMagicLinkToken(otpUUID, email, "login", "", expiresAt)
+	requesterUUIDStr := ""
+	if userCtx != nil {
+		requesterUUIDStr = userCtx.UserUUID
+	}
+	magicToken, err := SignMagicLinkToken(otpUUID, email, purposeStr, requesterUUIDStr, expiresAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate magic link token: %w", err))
 	}
 
 	baseURL := s.getBaseURL(req)
-	magicLinkURL := fmt.Sprintf("%s/login/verify?token=%s", baseURL, magicToken)
+	var magicLinkURL string
+	var emailAction string
+	var successMessage string
+
+	switch purpose {
+	case pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL:
+		magicLinkURL = fmt.Sprintf("%s/account?add_email_token=%s", baseURL, magicToken)
+		emailAction = "add_email"
+		successMessage = "Verification code sent to email"
+	case pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_EXPORT_DATA:
+		magicLinkURL = fmt.Sprintf("%s/account?export_data_token=%s", baseURL, magicToken)
+		emailAction = "GDPR Data Archive Export"
+		successMessage = "Data export verification code and magic link sent to your primary email"
+	case pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_DELETE_ACCOUNT:
+		magicLinkURL = fmt.Sprintf("%s/account?delete_account_token=%s", baseURL, magicToken)
+		emailAction = "Account Deletion Confirmation"
+		successMessage = "Account deletion confirmation code sent to your primary email"
+	default:
+		magicLinkURL = fmt.Sprintf("%s/login/verify?token=%s", baseURL, magicToken)
+		emailAction = "login"
+		successMessage = "Verification code sent to your email"
+	}
 
 	ctxTimeout, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
 
 	if s.emailSender != nil {
-		if err := s.emailSender.SendVerification(ctxTimeout, email, otpCode, magicLinkURL, "login", s.cfg.OtpTTL); err != nil {
+		if err := s.emailSender.SendVerification(ctxTimeout, email, otpCode, magicLinkURL, emailAction, s.cfg.OtpTTL); err != nil {
 			return nil, connect.NewError(connect.CodeUnavailable, fmt.Errorf("unable to deliver verification email: %w", err))
 		}
 	} else if s.cfg.DevPrintOTP {
 		fmt.Printf("\n=======================================================\n")
 		fmt.Printf("[AUTH] Email OTP for %s: %s (valid for %v)\n", email, otpCode, s.cfg.OtpTTL)
+		fmt.Printf("[AUTH] Purpose: %s\n", purposeStr)
 		fmt.Printf("[AUTH] Challenge Token: %s\n", challengeToken)
 		fmt.Printf("[AUTH] Magic Link: %s (valid for %v)\n", magicLinkURL, s.cfg.MagicLinkTTL)
 		fmt.Printf("=======================================================\n\n")
 	}
 
-	exists, err := s.userExistsForEmail(ctx, email)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
+	exists := false
+	if purpose == pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_LOGIN {
+		exists, err = s.userExistsForEmail(ctx, email)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
 	}
 
 	res := connect.NewResponse(&pb.SendEmailOtpResponse{
 		Success:           true,
-		Message:           "Verification code sent to your email",
+		Message:           successMessage,
 		CooldownSeconds:   int32(s.cfg.EmailCooldown.Seconds()),
 		ChallengeId:       &challengeToken,
 		IsExistingAccount: exists,
+		Email:             email,
+		ExpiresAt:         timestamppb.New(expiresAt),
 	})
 	s.setChallengeCookie(res.Header(), challengeToken)
 	return res, nil
 }
 
-func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[pb.VerifyEmailOtpRequest]) (*connect.Response[pb.AuthResponse], error) {
+func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[pb.VerifyEmailOtpRequest]) (*connect.Response[pb.VerifyEmailOtpResponse], error) {
+	token := strings.TrimSpace(req.Msg.GetToken())
 	email := strings.ToLower(strings.TrimSpace(req.Msg.GetEmail()))
 	code := strings.TrimSpace(req.Msg.GetCode())
-	if email == "" || code == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("email and 6-digit code are required"))
+	reqPurpose := req.Msg.GetPurpose()
+
+	userCtx := UserContextFromContext(ctx)
+	clientIP := getClientIP(req)
+
+	if token == "" && (email == "" || code == "") {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("email and 6-digit code (or magic link token) are required"))
 	}
 
-	clientIP := getClientIP(req)
 	if err := CheckIPRateLimit(clientIP); err != nil {
 		connErr := connect.NewError(connect.CodeResourceExhausted, err)
 		if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
@@ -258,48 +383,128 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 		return nil, connErr
 	}
 
-	challengeID := extractChallengeID(req.Msg.GetChallengeId(), req.Header())
-	if challengeID == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("challenge session expired or missing. Please request a new verification code"))
-	}
-	challengeHash := HashToken(challengeID)
-
-	// Atomic attempt reservation in PostgreSQL (eliminates concurrency race conditions)
 	var otpUUID string
-	var codeHash string
-	var failedAttempts int32
-	var createdAt time.Time
+	var purposeStr string
+	var effectivePurpose pb.EmailOtpPurpose
 
-	err := s.db.QueryRow(ctx, `
-		UPDATE email_otps
-		SET failed_attempts = failed_attempts + 1
-		WHERE email = $1 AND challenge_id_hash = $2 AND purpose = 'login' AND used_at IS NULL AND failed_attempts < $3
-		RETURNING uuid, code_hash, failed_attempts, created_at`,
-		email, challengeHash, MaxOtpAttempts).Scan(&otpUUID, &codeHash, &failedAttempts, &createdAt)
+	if token != "" {
+		claims, err := VerifyMagicLinkToken(token)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid or expired magic link: %w", err))
+		}
 
-	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			// Query existing challenge row to return helpful status
-			var existingUUID string
-			var existingFailures int32
-			var existingUsedAt *time.Time
-			checkErr := s.db.QueryRow(ctx, `
-				SELECT uuid, failed_attempts, used_at
-				FROM email_otps
-				WHERE email = $1 AND challenge_id_hash = $2
-				ORDER BY created_at DESC
-				LIMIT 1`, email, challengeHash).Scan(&existingUUID, &existingFailures, &existingUsedAt)
+		purposeStr = claims.Purpose
+		effectivePurpose = purposeFromDBString(purposeStr)
+		if reqPurpose != pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_UNSPECIFIED && effectivePurpose != reqPurpose {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid magic link purpose"))
+		}
 
-			if checkErr != nil {
+		if (purposeStr == "add_email" || purposeStr == "export_data" || purposeStr == "delete_account") && userCtx != nil {
+			if claims.RequesterUserUUID != "" && claims.RequesterUserUUID != userCtx.UserUUID {
+				return nil, connect.NewError(connect.CodePermissionDenied, errors.New("this magic link was issued to a different account session"))
+			}
+		}
+
+		if email == "" {
+			email = claims.Email
+		} else if strings.ToLower(email) != strings.ToLower(claims.Email) {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("magic link token email mismatch"))
+		}
+		otpUUID = claims.OtpUUID
+
+		var createdAt time.Time
+		var usedAt *time.Time
+		err = s.db.QueryRow(ctx, `SELECT created_at, used_at FROM email_otps WHERE uuid = $1`, otpUUID).Scan(&createdAt, &usedAt)
+		if err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				return nil, connect.NewError(connect.CodeNotFound, errors.New("magic link challenge not found"))
+			}
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		if usedAt != nil {
+			return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("this magic link has already been used. Please request a new code"))
+		}
+		if time.Since(createdAt) > s.cfg.MagicLinkTTL {
+			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
+			return nil, connect.NewError(connect.CodeDeadlineExceeded, errors.New("magic link has expired. Please request a new code"))
+		}
+	} else {
+		// Code verification
+		effectivePurpose = reqPurpose
+		if effectivePurpose == pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_UNSPECIFIED {
+			effectivePurpose = pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_LOGIN
+		}
+		purposeStr = purposeToDBString(effectivePurpose)
+
+		challengeID := extractChallengeID(req.Msg.GetChallengeId(), req.Header())
+		if challengeID == "" {
+			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("challenge session expired or missing. Please request a new verification code"))
+		}
+		challengeHash := HashToken(challengeID)
+
+		var codeHash string
+		var failedAttempts int32
+		var createdAt time.Time
+
+		var err error
+		if userCtx != nil && (purposeStr == "export_data" || purposeStr == "delete_account") {
+			err = s.db.QueryRow(ctx, `
+				UPDATE email_otps
+				SET failed_attempts = failed_attempts + 1
+				WHERE challenge_id_hash = $1 AND purpose = $2 AND requested_by_user_uuid = $3 AND used_at IS NULL AND failed_attempts < $4
+				RETURNING uuid, code_hash, failed_attempts, created_at`,
+				challengeHash, purposeStr, userCtx.UserUUID, MaxOtpAttempts).Scan(&otpUUID, &codeHash, &failedAttempts, &createdAt)
+		} else if userCtx != nil && purposeStr == "add_email" {
+			err = s.db.QueryRow(ctx, `
+				UPDATE email_otps
+				SET failed_attempts = failed_attempts + 1
+				WHERE email = $1 AND challenge_id_hash = $2 AND purpose = $3 AND requested_by_user_uuid = $4 AND used_at IS NULL AND failed_attempts < $5
+				RETURNING uuid, code_hash, failed_attempts, created_at`,
+				email, challengeHash, purposeStr, userCtx.UserUUID, MaxOtpAttempts).Scan(&otpUUID, &codeHash, &failedAttempts, &createdAt)
+		} else {
+			err = s.db.QueryRow(ctx, `
+				UPDATE email_otps
+				SET failed_attempts = failed_attempts + 1
+				WHERE email = $1 AND challenge_id_hash = $2 AND purpose = $3 AND used_at IS NULL AND failed_attempts < $4
+				RETURNING uuid, code_hash, failed_attempts, created_at`,
+				email, challengeHash, purposeStr, MaxOtpAttempts).Scan(&otpUUID, &codeHash, &failedAttempts, &createdAt)
+		}
+
+		if err != nil {
+			if errors.Is(err, pgx.ErrNoRows) {
+				var existingUUID string
+				var existingFailures int32
+				var existingUsedAt *time.Time
+				checkErr := s.db.QueryRow(ctx, `
+					SELECT uuid, failed_attempts, used_at
+					FROM email_otps
+					WHERE challenge_id_hash = $1 AND purpose = $2
+					ORDER BY created_at DESC
+					LIMIT 1`, challengeHash, purposeStr).Scan(&existingUUID, &existingFailures, &existingUsedAt)
+				if checkErr == nil {
+					if existingUsedAt != nil {
+						return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("this verification challenge has already been used or expired. Please request a new code"))
+					}
+					if existingFailures >= MaxOtpAttempts {
+						_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, existingUUID)
+						return s.returnOtpError("Verification challenge exhausted. Please request a new code after the cooldown period.", 0, true, int32(ExhaustedCooldown.Seconds()))
+					}
+				}
 				return nil, connect.NewError(connect.CodeNotFound, errors.New("no active verification challenge found. Please request a new code"))
 			}
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
 
-			if existingUsedAt != nil {
-				return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("this verification challenge has already been used or expired. Please request a new code"))
-			}
+		if time.Since(createdAt) > s.cfg.OtpTTL {
+			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
+			return nil, connect.NewError(connect.CodeDeadlineExceeded, fmt.Errorf("verification code has expired (%v limit). Please request a new code", s.cfg.OtpTTL))
+		}
 
-			if existingFailures >= MaxOtpAttempts {
-				_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, existingUUID)
+		if !VerifyOTP(code, codeHash) {
+			remaining := int32(MaxOtpAttempts - failedAttempts)
+			if remaining <= 0 {
+				_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
+				RecordIPFailure(clientIP)
 				if err := CheckIPRateLimit(clientIP); err != nil {
 					connErr := connect.NewError(connect.CodeResourceExhausted, err)
 					if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
@@ -313,131 +518,225 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 					}
 					return nil, connErr
 				}
-				return s.returnOtpError("Verification challenge exhausted. Please request a new code after the cooldown period.", 0, true, int32(ExhaustedCooldown.Seconds()))
+				return s.returnOtpError("Incorrect code. You have 0 attempts left.\nPlease request a new code after the cooldown period.", 0, true, int32(ExhaustedCooldown.Seconds()))
 			}
-
-			return nil, connect.NewError(connect.CodeNotFound, errors.New("no active verification challenge found. Please request a new code"))
+			msg := fmt.Sprintf("Incorrect code. You have %d %s left", remaining, pluralAttempts(remaining))
+			return s.returnOtpError(msg, remaining, false, 0)
 		}
-		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	// Verify OTP lifespan
-	if time.Since(createdAt) > s.cfg.OtpTTL {
-		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
-		return nil, connect.NewError(connect.CodeDeadlineExceeded, fmt.Errorf("verification code has expired (%v limit). Please request a new code", s.cfg.OtpTTL))
-	}
-
-	if !VerifyOTP(code, codeHash) {
-		remaining := int32(MaxOtpAttempts - failedAttempts)
-		if remaining <= 0 {
-			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
-			RecordIPFailure(clientIP)
-			if err := CheckIPRateLimit(clientIP); err != nil {
-				connErr := connect.NewError(connect.CodeResourceExhausted, err)
-				if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
-					Message:           err.Error(),
-					RemainingAttempts: 0,
-					MaxAttempts:       MaxOtpAttempts,
-					IsExhausted:       true,
-					CooldownSeconds:   int32(IPLockoutDuration.Seconds()),
-				}); detailErr == nil {
-					connErr.AddDetail(detail)
-				}
-				return nil, connErr
-			}
-			return s.returnOtpError("Incorrect code. You have 0 attempts left.\nPlease request a new code after the cooldown period.", 0, true, int32(ExhaustedCooldown.Seconds()))
-		}
-		msg := fmt.Sprintf("Incorrect code. You have %d %s left", remaining, pluralAttempts(remaining))
-		return s.returnOtpError(msg, remaining, false, 0)
-	}
-
-	// Verification succeeded: mark challenge consumed
+	// Verification succeeded: mark challenge consumed and approved
 	RecordIPSuccess(clientIP)
-	if err := CheckAndRecordIPSignIn(clientIP, email); err != nil {
-		return nil, connect.NewError(connect.CodeResourceExhausted, err)
-	}
-	_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
+	_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW(), status = 'approved', approved_at = NOW() WHERE uuid = $1`, otpUUID)
 
-	exists, err := s.userExistsForEmail(ctx, email)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-	if !exists {
-		setupToken, err := SignSetupToken(email)
-		if err != nil {
-			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign setup token: %w", err))
+	switch effectivePurpose {
+	case pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL:
+		if userCtx == nil {
+			return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 		}
-		return connect.NewResponse(&pb.AuthResponse{
-			AccountSetupRequired: true,
-			SetupToken:           setupToken,
-		}), nil
-	}
+		// Check if this email is registered to ANOTHER account
+		var otherUserUUID, otherUsername string
+		err := s.db.QueryRow(ctx, `
+			SELECT u.uuid, u.id
+			FROM user_emails ue
+			JOIN users u ON u.uuid = ue.user_uuid
+			WHERE LOWER(ue.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
+			LIMIT 1`, email, userCtx.UserUUID).Scan(&otherUserUUID, &otherUsername)
 
-	locationHint := extractLocationHint(req.Header(), clientIP)
-	return s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"), clientIP, locationHint)
+		if err == nil && otherUserUUID != "" {
+			mergeTicket, err := SignMergeTicket(userCtx.UserUUID, otherUserUUID, email, time.Now().Add(15*time.Minute))
+			if err != nil {
+				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign merge ticket: %w", err))
+			}
+
+			var buildCount int
+			_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false`, otherUserUUID).Scan(&buildCount)
+
+			var buildNames []string
+			rows, err := s.db.Query(ctx, `SELECT name FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false ORDER BY name ASC LIMIT 10`, otherUserUUID)
+			if err == nil {
+				defer rows.Close()
+				for rows.Next() {
+					var bName string
+					if err := rows.Scan(&bName); err == nil {
+						buildNames = append(buildNames, bName)
+					}
+				}
+			}
+
+			var otherEmails []string
+			mailRows, err := s.db.Query(ctx, `SELECT email FROM user_emails WHERE user_uuid = $1 ORDER BY email ASC`, otherUserUUID)
+			if err == nil {
+				defer mailRows.Close()
+				for mailRows.Next() {
+					var em string
+					if err := mailRows.Scan(&em); err == nil && em != "" {
+						otherEmails = append(otherEmails, em)
+					}
+				}
+			}
+			if email != "" && !slices.Contains(otherEmails, email) {
+				otherEmails = append(otherEmails, email)
+			}
+
+			var oauthProviders []string
+			oaRows, err := s.db.Query(ctx, `SELECT provider FROM oauth_accounts WHERE user_uuid = $1 ORDER BY provider ASC`, otherUserUUID)
+			if err == nil {
+				defer oaRows.Close()
+				for oaRows.Next() {
+					var prov string
+					if err := oaRows.Scan(&prov); err == nil {
+						oauthProviders = append(oauthProviders, prov)
+					}
+				}
+			}
+
+			return connect.NewResponse(&pb.VerifyEmailOtpResponse{
+				Success:             true,
+				Purpose:             pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
+				Email:               &email,
+				MergeRequired:       true,
+				OtherUserUsername:   otherUsername,
+				OtherBuildCount:     int32(buildCount),
+				OtherBuildNames:     buildNames,
+				OtherEmails:         otherEmails,
+				OtherOauthProviders: oauthProviders,
+				MergeTicket:         &mergeTicket,
+				Message:             fmt.Sprintf("This email belongs to account @%s (%d builds). Merging required to transfer data.", otherUsername, buildCount),
+			}), nil
+		}
+
+		newUUID := NewUUIDv7()
+		_, err = s.db.Exec(ctx, `
+			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
+			VALUES ($1, $2, $3, false, true, NOW())
+			ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false, verified_via_otp = true`,
+			newUUID, userCtx.UserUUID, email)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to add email: %w", err))
+		}
+
+		return connect.NewResponse(&pb.VerifyEmailOtpResponse{
+			Success:       true,
+			Purpose:       pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
+			Email:         &email,
+			MergeRequired: false,
+			Message:       "Email successfully added to your account",
+		}), nil
+
+	case pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_EXPORT_DATA:
+		if userCtx == nil {
+			return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+		}
+		var username string
+		err := s.db.QueryRow(ctx, `SELECT id FROM users WHERE uuid = $1 AND deleted_at IS NULL`, userCtx.UserUUID).Scan(&username)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeNotFound, errors.New("active user not found"))
+		}
+
+		exportToken, err := SignExportToken(userCtx.UserUUID, username)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign export token: %w", err))
+		}
+
+		dateStr := time.Now().UTC().Format("2006-01-02")
+		filename := fmt.Sprintf("quadsmith-export-%s-%s.zip", username, dateStr)
+		downloadURL := fmt.Sprintf("/api/account/export?token=%s", exportToken)
+		exportExpiresAt := time.Now().Add(ExportTokenTTL)
+
+		return connect.NewResponse(&pb.VerifyEmailOtpResponse{
+			Success:         true,
+			Purpose:         pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_EXPORT_DATA,
+			Email:           &email,
+			Message:         "Data export authorized",
+			ExportToken:     &exportToken,
+			DownloadUrl:     &downloadURL,
+			Filename:        &filename,
+			ExportExpiresAt: timestamppb.New(exportExpiresAt),
+		}), nil
+
+	case pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_DELETE_ACCOUNT:
+		if userCtx == nil {
+			return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+		}
+		now := time.Now()
+		purgeAt := now.Add(30 * 24 * time.Hour)
+		_, err := s.db.Exec(ctx, `UPDATE users SET deleted_at = $1 WHERE uuid = $2`, now, userCtx.UserUUID)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to schedule account deletion: %w", err))
+		}
+		_, _ = s.db.Exec(ctx, `DELETE FROM refresh_tokens WHERE user_uuid = $1`, userCtx.UserUUID)
+
+		return connect.NewResponse(&pb.VerifyEmailOtpResponse{
+			Success:          true,
+			Purpose:          pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_DELETE_ACCOUNT,
+			Email:            &email,
+			Message:          "Account deletion scheduled. Your account will be permanently purged in 30 days.",
+			ScheduledPurgeAt: timestamppb.New(purgeAt),
+		}), nil
+
+	default: // LOGIN
+		if err := CheckAndRecordIPSignIn(clientIP, email); err != nil {
+			return nil, connect.NewError(connect.CodeResourceExhausted, err)
+		}
+
+		exists, err := s.userExistsForEmail(ctx, email)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		if !exists {
+			setupToken, err := SignSetupToken(email)
+			if err != nil {
+				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign setup token: %w", err))
+			}
+			return connect.NewResponse(&pb.VerifyEmailOtpResponse{
+				Success:              true,
+				Purpose:              pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_LOGIN,
+				Email:                &email,
+				AccountSetupRequired: true,
+				SetupToken:           setupToken,
+			}), nil
+		}
+
+		locationHint := extractLocationHint(req.Header(), clientIP)
+		authRes, err := s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"), clientIP, locationHint)
+		if err != nil {
+			return nil, err
+		}
+
+		res := connect.NewResponse(&pb.VerifyEmailOtpResponse{
+			Success:              true,
+			Purpose:              pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_LOGIN,
+			Email:                &email,
+			AccessToken:          authRes.Msg.AccessToken,
+			RefreshToken:         authRes.Msg.RefreshToken,
+			User:                 authRes.Msg.User,
+			Profile:              authRes.Msg.Profile,
+			AccountSetupRequired: authRes.Msg.AccountSetupRequired,
+			SetupToken:           authRes.Msg.SetupToken,
+			AccountStatus:        authRes.Msg.AccountStatus,
+			ActiveBan:            authRes.Msg.ActiveBan,
+			ScheduledPurgeAt:     authRes.Msg.ScheduledPurgeAt,
+		})
+		for k, v := range authRes.Header() {
+			res.Header()[k] = v
+		}
+		return res, nil
+	}
 }
 
-func (s *AuthService) VerifyMagicLink(ctx context.Context, req *connect.Request[pb.VerifyMagicLinkRequest]) (*connect.Response[pb.AuthResponse], error) {
+func (s *AuthService) VerifyMagicLink(ctx context.Context, req *connect.Request[pb.VerifyMagicLinkRequest]) (*connect.Response[pb.VerifyEmailOtpResponse], error) {
 	token := strings.TrimSpace(req.Msg.GetToken())
 	if token == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("magic link token required"))
 	}
-
-	claims, err := VerifyMagicLinkToken(token)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid or expired magic link: %w", err))
+	verifyReq := connect.NewRequest(&pb.VerifyEmailOtpRequest{
+		Token: &token,
+	})
+	for k, v := range req.Header() {
+		verifyReq.Header()[k] = v
 	}
-
-	var createdAt time.Time
-	var usedAt *time.Time
-	var purpose string
-	err = s.db.QueryRow(ctx, `SELECT created_at, used_at, purpose FROM email_otps WHERE uuid = $1`, claims.OtpUUID).Scan(&createdAt, &usedAt, &purpose)
-	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, connect.NewError(connect.CodeNotFound, errors.New("magic link challenge not found"))
-		}
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-
-	if usedAt != nil {
-		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("this magic link has already been used. Please request a new code"))
-	}
-
-	if claims.Purpose != "" && purpose != claims.Purpose {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid magic link purpose"))
-	}
-
-	if time.Since(createdAt) > s.cfg.MagicLinkTTL {
-		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, claims.OtpUUID)
-		return nil, connect.NewError(connect.CodeDeadlineExceeded, errors.New("magic link has expired. Please request a new code"))
-	}
-
-	_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, claims.OtpUUID)
-
-	clientIP := getClientIP(req)
-	RecordIPSuccess(clientIP)
-	if err := CheckAndRecordIPSignIn(clientIP, claims.Email); err != nil {
-		return nil, connect.NewError(connect.CodeResourceExhausted, err)
-	}
-
-	email := claims.Email
-	exists, err := s.userExistsForEmail(ctx, email)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-	if !exists {
-		setupToken, err := SignSetupToken(email)
-		if err != nil {
-			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign setup token: %w", err))
-		}
-		return connect.NewResponse(&pb.AuthResponse{
-			AccountSetupRequired: true,
-			SetupToken:           setupToken,
-		}), nil
-	}
-
-	locationHint := extractLocationHint(req.Header(), clientIP)
-	return s.issueAuthSession(ctx, email, req.Header().Get("User-Agent"), clientIP, locationHint)
+	return s.VerifyEmailOtp(ctx, verifyReq)
 }
 
 func (s *AuthService) GetLoginChallengeDetails(ctx context.Context, req *connect.Request[pb.GetLoginChallengeDetailsRequest]) (*connect.Response[pb.GetLoginChallengeDetailsResponse], error) {
@@ -1259,302 +1558,6 @@ func (s *AuthService) ListUserEmails(ctx context.Context, req *connect.Request[p
 	return connect.NewResponse(&pb.ListUserEmailsResponse{Emails: emails}), nil
 }
 
-func (s *AuthService) SendAddEmailOtp(ctx context.Context, req *connect.Request[pb.SendAddEmailOtpRequest]) (*connect.Response[pb.SendEmailOtpResponse], error) {
-	userCtx := UserContextFromContext(ctx)
-	if userCtx == nil {
-		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
-	}
-
-	email := strings.ToLower(strings.TrimSpace(req.Msg.GetEmail()))
-	if email == "" || !strings.Contains(email, "@") {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("valid email address required"))
-	}
-
-	// Check if already associated with CURRENT user
-	var alreadyAssociated bool
-	err := s.db.QueryRow(ctx, `
-		SELECT EXISTS(
-			SELECT 1 FROM user_emails
-			WHERE user_uuid = $1 AND LOWER(email) = LOWER($2)
-		)`, userCtx.UserUUID, email).Scan(&alreadyAssociated)
-	if err == nil && alreadyAssociated {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("this email address is already associated with your account"))
-	}
-
-	// Rate limit per IP
-	clientIP := getClientIP(req)
-	if err := CheckIPRateLimit(clientIP); err != nil {
-		return nil, connect.NewError(connect.CodeResourceExhausted, err)
-	}
-
-	cooldown, err := CheckEmailCooldown(ctx, s.db, email, s.cfg.EmailCooldown)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-	if cooldown > 0 {
-		connErr := connect.NewError(connect.CodeResourceExhausted, fmt.Errorf("please wait %d seconds before requesting another code", cooldown))
-		if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
-			Message:           fmt.Sprintf("Please wait %d seconds before requesting another code", cooldown),
-			RemainingAttempts: 0,
-			MaxAttempts:       MaxOtpAttempts,
-			IsExhausted:       false,
-			CooldownSeconds:   cooldown,
-		}); detailErr == nil {
-			connErr.AddDetail(detail)
-		}
-		return nil, connErr
-	}
-
-	// Invalidate previous unconsumed OTP challenges for this email
-	_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE email = $1 AND used_at IS NULL`, email)
-
-	otpCode, codeHash, err := GenerateOTP()
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate otp: %w", err))
-	}
-
-	challengeToken, challengeHash, err := GenerateChallengeToken()
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate challenge token: %w", err))
-	}
-
-	otpUUID := NewUUIDv7()
-	now := time.Now()
-	expiresAt := now.Add(s.cfg.MagicLinkTTL)
-
-	_, err = s.db.Exec(ctx, `
-		INSERT INTO email_otps (uuid, email, challenge_id_hash, code_hash, purpose, requested_by_user_uuid, expires_at, created_at, failed_attempts)
-		VALUES ($1, $2, $3, $4, 'add_email', $5, $6, $7, 0)`,
-		otpUUID, email, challengeHash, codeHash, userCtx.UserUUID, expiresAt, now)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save otp challenge: %w", err))
-	}
-
-	magicToken, err := SignMagicLinkToken(otpUUID, email, "add_email", userCtx.UserUUID, expiresAt)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate magic link token: %w", err))
-	}
-
-	baseURL := s.getBaseURL(req)
-	magicLinkURL := fmt.Sprintf("%s/account?add_email_token=%s", baseURL, magicToken)
-
-	ctxTimeout, cancel := context.WithTimeout(ctx, 5*time.Second)
-	defer cancel()
-
-	if s.emailSender != nil {
-		if err := s.emailSender.SendVerification(ctxTimeout, email, otpCode, magicLinkURL, "add_email", s.cfg.OtpTTL); err != nil {
-			return nil, connect.NewError(connect.CodeUnavailable, fmt.Errorf("unable to deliver verification email: %w", err))
-		}
-	} else if s.cfg.DevPrintOTP {
-		fmt.Printf("\n=======================================================\n")
-		fmt.Printf("[AUTH] Add Email OTP for %s: %s (valid for %v)\n", email, otpCode, s.cfg.OtpTTL)
-		fmt.Printf("[AUTH] Challenge Token: %s\n", challengeToken)
-		fmt.Printf("[AUTH] Add Email Magic Link: %s (valid for %v)\n", magicLinkURL, s.cfg.MagicLinkTTL)
-		fmt.Printf("=======================================================\n\n")
-	}
-
-	res := connect.NewResponse(&pb.SendEmailOtpResponse{
-		Success:           true,
-		Message:           "Verification code sent to email",
-		CooldownSeconds:   int32(s.cfg.EmailCooldown.Seconds()),
-		IsExistingAccount: false,
-		ChallengeId:       &challengeToken,
-	})
-	s.setChallengeCookie(res.Header(), challengeToken)
-	return res, nil
-}
-
-func (s *AuthService) VerifyAddEmailOtp(ctx context.Context, req *connect.Request[pb.VerifyAddEmailOtpRequest]) (*connect.Response[pb.VerifyAddEmailOtpResponse], error) {
-	userCtx := UserContextFromContext(ctx)
-	if userCtx == nil {
-		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
-	}
-
-	email := strings.ToLower(strings.TrimSpace(req.Msg.GetEmail()))
-	code := strings.TrimSpace(req.Msg.GetCode())
-	token := strings.TrimSpace(req.Msg.GetToken())
-
-	clientIP := getClientIP(req)
-	if err := CheckIPRateLimit(clientIP); err != nil {
-		return nil, connect.NewError(connect.CodeResourceExhausted, err)
-	}
-
-	var otpUUID string
-	if token != "" {
-		claims, err := VerifyMagicLinkToken(token)
-		if err != nil {
-			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid or expired magic link: %w", err))
-		}
-		if claims.Purpose != "add_email" {
-			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid magic link purpose"))
-		}
-		if claims.RequesterUserUUID != userCtx.UserUUID {
-			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("this magic link was issued to a different account session"))
-		}
-		if email == "" {
-			email = claims.Email
-		} else if strings.ToLower(email) != strings.ToLower(claims.Email) {
-			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("magic link token email mismatch"))
-		}
-		otpUUID = claims.OtpUUID
-
-		var createdAt time.Time
-		var usedAt *time.Time
-		err = s.db.QueryRow(ctx, `SELECT created_at, used_at FROM email_otps WHERE uuid = $1`, otpUUID).Scan(&createdAt, &usedAt)
-		if err != nil {
-			if errors.Is(err, pgx.ErrNoRows) {
-				return nil, connect.NewError(connect.CodeNotFound, errors.New("magic link challenge not found"))
-			}
-			return nil, connect.NewError(connect.CodeInternal, err)
-		}
-		if usedAt != nil {
-			return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("this magic link has already been used"))
-		}
-		if time.Since(createdAt) > s.cfg.MagicLinkTTL {
-			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
-			return nil, connect.NewError(connect.CodeDeadlineExceeded, errors.New("magic link has expired"))
-		}
-	} else {
-		if email == "" || code == "" {
-			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("email and 6-digit code (or magic link token) are required"))
-		}
-
-		challengeID := extractChallengeID(req.Msg.GetChallengeId(), req.Header())
-		if challengeID == "" {
-			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("challenge session expired or missing. Please request a new verification code"))
-		}
-		challengeHash := HashToken(challengeID)
-
-		var codeHash string
-		var failedAttempts int32
-		var createdAt time.Time
-
-		err := s.db.QueryRow(ctx, `
-			UPDATE email_otps
-			SET failed_attempts = failed_attempts + 1
-			WHERE email = $1 AND challenge_id_hash = $2 AND purpose = 'add_email' AND requested_by_user_uuid = $3 AND used_at IS NULL AND failed_attempts < $4
-			RETURNING uuid, code_hash, failed_attempts, created_at`,
-			email, challengeHash, userCtx.UserUUID, MaxOtpAttempts).Scan(&otpUUID, &codeHash, &failedAttempts, &createdAt)
-
-		if err != nil {
-			if errors.Is(err, pgx.ErrNoRows) {
-				return nil, connect.NewError(connect.CodeNotFound, errors.New("no active verification challenge found. Please request a new code"))
-			}
-			return nil, connect.NewError(connect.CodeInternal, err)
-		}
-
-		if time.Since(createdAt) > s.cfg.OtpTTL {
-			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
-			return nil, connect.NewError(connect.CodeDeadlineExceeded, errors.New("verification code has expired"))
-		}
-
-		if !VerifyOTP(code, codeHash) {
-			remaining := int32(MaxOtpAttempts - failedAttempts)
-			if remaining <= 0 {
-				_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
-				RecordIPFailure(clientIP)
-				if err := CheckIPRateLimit(clientIP); err != nil {
-					return nil, connect.NewError(connect.CodeResourceExhausted, err)
-				}
-				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("incorrect code. You have 0 attempts left.\nPlease request a new code after the cooldown period."))
-			}
-			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("incorrect code. %d %s left", remaining, pluralAttempts(remaining)))
-		}
-	}
-
-	RecordIPSuccess(clientIP)
-	_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW() WHERE uuid = $1`, otpUUID)
-
-	// Check if this email is registered to ANOTHER account
-	var otherUserUUID, otherUsername string
-	err := s.db.QueryRow(ctx, `
-		SELECT u.uuid, u.id
-		FROM user_emails ue
-		JOIN users u ON u.uuid = ue.user_uuid
-		WHERE LOWER(ue.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
-		LIMIT 1`, email, userCtx.UserUUID).Scan(&otherUserUUID, &otherUsername)
-
-	if err == nil && otherUserUUID != "" {
-		// Another account was found! Issue signed merge ticket
-		mergeTicket, err := SignMergeTicket(userCtx.UserUUID, otherUserUUID, email, time.Now().Add(15*time.Minute))
-		if err != nil {
-			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign merge ticket: %w", err))
-		}
-
-		var buildCount int
-		_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false`, otherUserUUID).Scan(&buildCount)
-
-		var buildNames []string
-		rows, err := s.db.Query(ctx, `SELECT name FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false ORDER BY name ASC LIMIT 10`, otherUserUUID)
-		if err == nil {
-			defer rows.Close()
-			for rows.Next() {
-				var bName string
-				if err := rows.Scan(&bName); err == nil {
-					buildNames = append(buildNames, bName)
-				}
-			}
-		}
-
-		var otherEmails []string
-		mailRows, err := s.db.Query(ctx, `
-			SELECT email FROM user_emails WHERE user_uuid = $1 ORDER BY email ASC`, otherUserUUID)
-		if err == nil {
-			defer mailRows.Close()
-			for mailRows.Next() {
-				var em string
-				if err := mailRows.Scan(&em); err == nil && em != "" {
-					otherEmails = append(otherEmails, em)
-				}
-			}
-		}
-		if email != "" && !slices.Contains(otherEmails, email) {
-			otherEmails = append(otherEmails, email)
-		}
-
-		var oauthProviders []string
-		oaRows, err := s.db.Query(ctx, `SELECT provider FROM oauth_accounts WHERE user_uuid = $1 ORDER BY provider ASC`, otherUserUUID)
-		if err == nil {
-			defer oaRows.Close()
-			for oaRows.Next() {
-				var prov string
-				if err := oaRows.Scan(&prov); err == nil {
-					oauthProviders = append(oauthProviders, prov)
-				}
-			}
-		}
-
-		return connect.NewResponse(&pb.VerifyAddEmailOtpResponse{
-			Success:             true,
-			MergeRequired:       true,
-			OtherUserUsername:   otherUsername,
-			OtherBuildCount:     int32(buildCount),
-			OtherBuildNames:     buildNames,
-			OtherEmails:         otherEmails,
-			OtherOauthProviders: oauthProviders,
-			MergeTicket:         &mergeTicket,
-			Message:             fmt.Sprintf("This email belongs to account @%s (%d builds). Merging required to transfer data.", otherUsername, buildCount),
-		}), nil
-	}
-
-	// No other account found -> Add directly to current user's emails
-	newUUID := NewUUIDv7()
-	_, err = s.db.Exec(ctx, `
-		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
-		VALUES ($1, $2, $3, false, true, NOW())
-		ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false, verified_via_otp = true`,
-		newUUID, userCtx.UserUUID, email)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to add email: %w", err))
-	}
-
-	return connect.NewResponse(&pb.VerifyAddEmailOtpResponse{
-		Success:       true,
-		MergeRequired: false,
-		Message:       "Email successfully added to your account",
-	}), nil
-}
-
 func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.MergeAccountRequest]) (*connect.Response[pb.MergeAccountResponse], error) {
 	userCtx := UserContextFromContext(ctx)
 	if userCtx == nil {
@@ -2303,7 +2306,7 @@ func (s *AuthService) ChangeUsername(ctx context.Context, req *connect.Request[p
 // Helper Methods
 // ---------------------------------------------------------
 
-func (s *AuthService) returnOtpError(msg string, remaining int32, isExhausted bool, cooldownSeconds int32) (*connect.Response[pb.AuthResponse], error) {
+func (s *AuthService) returnOtpError(msg string, remaining int32, isExhausted bool, cooldownSeconds int32) (*connect.Response[pb.VerifyEmailOtpResponse], error) {
 	detail, _ := connect.NewErrorDetail(&pb.OtpVerificationError{
 		Message:           msg,
 		RemainingAttempts: remaining,
@@ -2849,113 +2852,6 @@ func (s *AuthService) generateUniqueUsername(ctx context.Context, email string) 
 	}
 }
 
-// SendDeleteAccountVerification initiates account deletion by dispatching an out-of-band email verification challenge.
-func (s *AuthService) SendDeleteAccountVerification(ctx context.Context, req *connect.Request[pb.SendDeleteAccountVerificationRequest]) (*connect.Response[pb.SendDeleteAccountVerificationResponse], error) {
-	userCtx := UserContextFromContext(ctx)
-	if userCtx == nil {
-		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
-	}
-
-	username := strings.ToLower(strings.TrimSpace(req.Msg.GetUsername()))
-	if username == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("username is required"))
-	}
-
-	// Verify username matches authenticated caller's identity
-	var currentUsername, primaryEmail string
-	err := s.db.QueryRow(ctx, `
-		SELECT u.id, COALESCE(ue.email, '')
-		FROM users u
-		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
-		WHERE u.uuid = $1 AND u.deleted_at IS NULL`, userCtx.UserUUID).Scan(&currentUsername, &primaryEmail)
-	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, connect.NewError(connect.CodeNotFound, errors.New("active user not found"))
-		}
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-
-	if !strings.EqualFold(username, currentUsername) {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("username does not match your account"))
-	}
-
-	// Rate limit per IP
-	clientIP := getClientIP(req)
-	if err := CheckIPRateLimit(clientIP); err != nil {
-		return nil, connect.NewError(connect.CodeResourceExhausted, err)
-	}
-
-	cooldown, err := CheckEmailCooldown(ctx, s.db, primaryEmail, s.cfg.EmailCooldown)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-	if cooldown > 0 {
-		connErr := connect.NewError(connect.CodeResourceExhausted, fmt.Errorf("please wait %d seconds before requesting another code", cooldown))
-		if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
-			Message:           fmt.Sprintf("Please wait %d seconds before requesting another code", cooldown),
-			RemainingAttempts: 0,
-			MaxAttempts:       MaxOtpAttempts,
-			IsExhausted:       false,
-			CooldownSeconds:   cooldown,
-		}); detailErr == nil {
-			connErr.AddDetail(detail)
-		}
-		return nil, connErr
-	}
-
-	// Invalidate previous unconsumed delete_account OTP challenges for this user/email
-	_, _ = s.db.Exec(ctx, `
-		UPDATE email_otps
-		SET used_at = NOW()
-		WHERE (email = $1 OR requested_by_user_uuid = $2) AND purpose = 'delete_account' AND used_at IS NULL`,
-		primaryEmail, userCtx.UserUUID)
-
-	otpCode, codeHash, err := GenerateOTP()
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate otp: %w", err))
-	}
-
-	challengeToken, challengeHash, err := GenerateChallengeToken()
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate challenge token: %w", err))
-	}
-
-	otpUUID := NewUUIDv7()
-	now := time.Now()
-	expiresAt := now.Add(s.cfg.MagicLinkTTL)
-
-	_, err = s.db.Exec(ctx, `
-		INSERT INTO email_otps (uuid, email, challenge_id_hash, code_hash, purpose, requested_by_user_uuid, expires_at, created_at, failed_attempts)
-		VALUES ($1, $2, $3, $4, 'delete_account', $5, $6, $7, 0)`,
-		otpUUID, primaryEmail, challengeHash, codeHash, userCtx.UserUUID, expiresAt, now)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save delete account challenge: %w", err))
-	}
-
-	magicToken, err := SignMagicLinkToken(otpUUID, primaryEmail, "delete_account", userCtx.UserUUID, expiresAt)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate magic link token: %w", err))
-	}
-
-	baseURL := s.getBaseURL(req)
-	magicLinkURL := fmt.Sprintf("%s/delete-account?token=%s", baseURL, magicToken)
-
-	// Send verification email synchronously with strict 5s timeout
-	emailCtx, emailCancel := context.WithTimeout(ctx, 5*time.Second)
-	defer emailCancel()
-
-	if err := s.emailSender.SendVerification(emailCtx, primaryEmail, otpCode, magicLinkURL, "Account Deletion Confirmation", s.cfg.OtpTTL); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to deliver verification email: %w", err))
-	}
-
-	return connect.NewResponse(&pb.SendDeleteAccountVerificationResponse{
-		Success:     true,
-		Message:     "Account deletion verification code and link sent to your primary email",
-		ChallengeId: challengeToken,
-		ExpiresAt:   timestamppb.New(expiresAt),
-	}), nil
-}
-
 // DeleteAccount verifies the deletion challenge (code or magic token) and marks the account as soft-deleted.
 func (s *AuthService) DeleteAccount(ctx context.Context, req *connect.Request[pb.DeleteAccountRequest]) (*connect.Response[pb.DeleteAccountResponse], error) {
 	userCtx := UserContextFromContext(ctx)
@@ -3139,240 +3035,6 @@ func (s *AuthService) CancelAccountDeletion(ctx context.Context, _ *connect.Requ
 		Success: true,
 		Message: "Your account has been successfully restored",
 		User:    &user,
-	}), nil
-}
-
-// ---------------------------------------------------------
-// Data Export Verification
-// ---------------------------------------------------------
-
-// SendDataExportVerification initiates a self-service GDPR data export challenge.
-func (s *AuthService) SendDataExportVerification(ctx context.Context, req *connect.Request[pb.SendDataExportVerificationRequest]) (*connect.Response[pb.SendDataExportVerificationResponse], error) {
-	userCtx := UserContextFromContext(ctx)
-	if userCtx == nil {
-		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
-	}
-
-	var primaryEmail string
-	err := s.db.QueryRow(ctx, `
-		SELECT COALESCE(ue.email, '')
-		FROM users u
-		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
-		WHERE u.uuid = $1 AND u.deleted_at IS NULL`, userCtx.UserUUID).Scan(&primaryEmail)
-	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, connect.NewError(connect.CodeNotFound, errors.New("active user not found"))
-		}
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-	if primaryEmail == "" {
-		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("no verified primary email address found on account"))
-	}
-
-	// Rate limit per IP
-	clientIP := getClientIP(req)
-	if err := CheckIPRateLimit(clientIP); err != nil {
-		return nil, connect.NewError(connect.CodeResourceExhausted, err)
-	}
-
-	cooldown, err := CheckEmailCooldown(ctx, s.db, primaryEmail, s.cfg.EmailCooldown)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-	if cooldown > 0 {
-		connErr := connect.NewError(connect.CodeResourceExhausted, fmt.Errorf("please wait %d seconds before requesting another code", cooldown))
-		if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
-			Message:           fmt.Sprintf("Please wait %d seconds before requesting another code", cooldown),
-			RemainingAttempts: 0,
-			MaxAttempts:       MaxOtpAttempts,
-			IsExhausted:       false,
-			CooldownSeconds:   cooldown,
-		}); detailErr == nil {
-			connErr.AddDetail(detail)
-		}
-		return nil, connErr
-	}
-
-	// Invalidate previous unconsumed export_data OTP challenges for this user/email
-	_, _ = s.db.Exec(ctx, `
-		UPDATE email_otps
-		SET used_at = NOW()
-		WHERE (email = $1 OR requested_by_user_uuid = $2) AND purpose = 'export_data' AND used_at IS NULL`,
-		primaryEmail, userCtx.UserUUID)
-
-	otpCode, codeHash, err := GenerateOTP()
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate otp: %w", err))
-	}
-
-	challengeToken, challengeHash, err := GenerateChallengeToken()
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate challenge token: %w", err))
-	}
-
-	otpUUID := NewUUIDv7()
-	now := time.Now()
-	expiresAt := now.Add(s.cfg.MagicLinkTTL)
-
-	_, err = s.db.Exec(ctx, `
-		INSERT INTO email_otps (uuid, email, challenge_id_hash, code_hash, purpose, requested_by_user_uuid, expires_at, created_at, failed_attempts)
-		VALUES ($1, $2, $3, $4, 'export_data', $5, $6, $7, 0)`,
-		otpUUID, primaryEmail, challengeHash, codeHash, userCtx.UserUUID, expiresAt, now)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save data export challenge: %w", err))
-	}
-
-	magicToken, err := SignMagicLinkToken(otpUUID, primaryEmail, "export_data", userCtx.UserUUID, expiresAt)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate magic link token: %w", err))
-	}
-
-	baseURL := s.getBaseURL(req)
-	magicLinkURL := fmt.Sprintf("%s/account?export_data_token=%s", baseURL, magicToken)
-
-	// Send verification email synchronously with strict 5s timeout
-	emailCtx, emailCancel := context.WithTimeout(ctx, 5*time.Second)
-	defer emailCancel()
-
-	if err := s.emailSender.SendVerification(emailCtx, primaryEmail, otpCode, magicLinkURL, "GDPR Data Archive Export", s.cfg.OtpTTL); err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to deliver verification email: %w", err))
-	}
-
-	return connect.NewResponse(&pb.SendDataExportVerificationResponse{
-		Success:         true,
-		Message:         "Data export verification code and magic link sent to your primary email",
-		PrimaryEmail:    primaryEmail,
-		CooldownSeconds: int32(s.cfg.EmailCooldown.Seconds()),
-		ChallengeId:     challengeToken,
-		ExpiresAt:       timestamppb.New(expiresAt),
-	}), nil
-}
-
-// VerifyDataExport verifies an export challenge (OTP code or magic token) and issues a signed export token.
-func (s *AuthService) VerifyDataExport(ctx context.Context, req *connect.Request[pb.VerifyDataExportRequest]) (*connect.Response[pb.VerifyDataExportResponse], error) {
-	userCtx := UserContextFromContext(ctx)
-	if userCtx == nil {
-		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
-	}
-
-	userUUID := userCtx.UserUUID
-	var username string
-	err := s.db.QueryRow(ctx, `SELECT id FROM users WHERE uuid = $1 AND deleted_at IS NULL`, userUUID).Scan(&username)
-	if err != nil {
-		if errors.Is(err, pgx.ErrNoRows) {
-			return nil, connect.NewError(connect.CodeNotFound, errors.New("active user not found"))
-		}
-		return nil, connect.NewError(connect.CodeInternal, err)
-	}
-
-	code := strings.TrimSpace(req.Msg.GetCode())
-	magicToken := strings.TrimSpace(req.Msg.GetMagicToken())
-	challengeID := strings.TrimSpace(req.Msg.GetChallengeId())
-
-	if code == "" && magicToken == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("verification code or magic token required"))
-	}
-
-	if code != "" {
-		if challengeID == "" {
-			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("challenge_id required when verifying with code"))
-		}
-		challengeHash := HashToken(challengeID)
-
-		var otpUUID, codeHash string
-		var failedAttempts int
-		var expiresAt time.Time
-
-		err := s.db.QueryRow(ctx, `
-			SELECT uuid, code_hash, failed_attempts, expires_at
-			FROM email_otps
-			WHERE challenge_id_hash = $1
-			  AND purpose = 'export_data'
-			  AND requested_by_user_uuid = $2
-			  AND used_at IS NULL
-			ORDER BY created_at DESC
-			LIMIT 1`, challengeHash, userUUID).Scan(&otpUUID, &codeHash, &failedAttempts, &expiresAt)
-		if err != nil {
-			if errors.Is(err, pgx.ErrNoRows) {
-				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid or expired data export challenge"))
-			}
-			return nil, connect.NewError(connect.CodeInternal, err)
-		}
-
-		if time.Now().After(expiresAt) {
-			return nil, connect.NewError(connect.CodeDeadlineExceeded, errors.New("verification code has expired"))
-		}
-
-		if failedAttempts >= MaxOtpAttempts {
-			return nil, connect.NewError(connect.CodeResourceExhausted, errors.New("too many failed attempts; please request a new verification code"))
-		}
-
-		if !VerifyOTP(code, codeHash) {
-			failedAttempts++
-			_, _ = s.db.Exec(ctx, `UPDATE email_otps SET failed_attempts = $1 WHERE uuid = $2`, failedAttempts, otpUUID)
-			remaining := MaxOtpAttempts - failedAttempts
-			if remaining <= 0 {
-				return nil, connect.NewError(connect.CodeResourceExhausted, errors.New("too many failed attempts; please request a new verification code"))
-			}
-			connErr := connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid verification code; %d attempt(s) remaining", remaining))
-			if detail, detailErr := connect.NewErrorDetail(&pb.OtpVerificationError{
-				Message:           fmt.Sprintf("Invalid verification code; %d attempt(s) remaining", remaining),
-				RemainingAttempts: int32(remaining),
-				MaxAttempts:       MaxOtpAttempts,
-				IsExhausted:       false,
-				CooldownSeconds:   0,
-			}); detailErr == nil {
-				connErr.AddDetail(detail)
-			}
-			return nil, connErr
-		}
-
-		// Mark challenge used and approved
-		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW(), status = 'approved', approved_at = NOW() WHERE uuid = $1`, otpUUID)
-	} else if magicToken != "" {
-		claims, err := VerifyMagicLinkToken(magicToken)
-		if err != nil {
-			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid or expired magic link: %w", err))
-		}
-		if claims.Purpose != "export_data" {
-			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("invalid token purpose"))
-		}
-		if claims.RequesterUserUUID != userUUID {
-			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("magic link was issued to a different user"))
-		}
-
-		var usedAt *time.Time
-		err = s.db.QueryRow(ctx, `SELECT used_at FROM email_otps WHERE uuid = $1`, claims.OtpUUID).Scan(&usedAt)
-		if err != nil {
-			if errors.Is(err, pgx.ErrNoRows) {
-				return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("challenge record not found"))
-			}
-			return nil, connect.NewError(connect.CodeInternal, err)
-		}
-		if usedAt != nil {
-			return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("magic link has already been used"))
-		}
-
-		_, _ = s.db.Exec(ctx, `UPDATE email_otps SET used_at = NOW(), status = 'approved', approved_at = NOW() WHERE uuid = $1`, claims.OtpUUID)
-	}
-
-	exportToken, err := SignExportToken(userUUID, username)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign export token: %w", err))
-	}
-
-	dateStr := time.Now().UTC().Format("2006-01-02")
-	filename := fmt.Sprintf("quadsmith-export-%s-%s.zip", username, dateStr)
-	downloadURL := fmt.Sprintf("/api/account/export?token=%s", exportToken)
-	expiresAt := time.Now().Add(ExportTokenTTL)
-
-	return connect.NewResponse(&pb.VerifyDataExportResponse{
-		Success:     true,
-		Message:     "Data export authorized",
-		ExportToken: exportToken,
-		DownloadUrl: downloadURL,
-		Filename:    filename,
-		ExpiresAt:   timestamppb.New(expiresAt),
 	}), nil
 }
 

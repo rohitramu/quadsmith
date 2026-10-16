@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { ConnectError, Code } from "@connectrpc/connect";
 import {
   User as UserIcon,
   LogOut,
@@ -9,7 +8,6 @@ import {
   ExternalLink,
   Mail,
   ArrowRightLeft,
-  ArrowLeft,
   Lock,
   Plus,
   X,
@@ -25,10 +23,9 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import type { ArchivedUsername, Session } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
-import { OtpVerificationErrorSchema } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
+import { EmailOtpPurpose } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import { UsernameAvailabilityStatus } from "@quadsmith/shared/gen/quadsmith/api/user_pb";
-import logoDark from "../assets/quadsmith-logo-dark.svg";
-import logoLight from "../assets/quadsmith-logo-light.svg";
+import { EmailVerificationModal } from "../components/EmailVerificationModal";
 import { getAvatarPalette, getInitial, getApiBaseUrl } from "@quadsmith/shared";
 
 export function AccountSettingsPage() {
@@ -43,7 +40,6 @@ export function AccountSettingsPage() {
     updateProfile,
     logout,
     refreshEmails,
-    sendAddEmailOtp,
     verifyAddEmailOtp,
     mergeAccount,
     setPrimaryEmail,
@@ -51,7 +47,6 @@ export function AccountSettingsPage() {
     changeUsername,
     listArchivedUsernames,
     checkUsernameAvailable,
-    sendDataExportVerification,
     verifyDataExport,
   } = useAuth();
   const navigate = useNavigate();
@@ -68,13 +63,6 @@ export function AccountSettingsPage() {
   const [isSignOutAllModalOpen, setIsSignOutAllModalOpen] = useState(false);
   const [isRevokingOtherSessions, setIsRevokingOtherSessions] = useState(false);
   const [signOutAllError, setSignOutAllError] = useState<string | null>(null);
-
-  const currentTheme =
-    (typeof localStorage !== "undefined" && localStorage.getItem("theme")) ||
-    (typeof document !== "undefined" && document.documentElement.classList.contains("dark")
-      ? "dark"
-      : "light") ||
-    "dark";
 
   // Change Username Modal state
   const [isChangeUsernameOpen, setIsChangeUsernameOpen] = useState(false);
@@ -126,73 +114,16 @@ export function AccountSettingsPage() {
   const isBioModified = bio.trim() !== (initialValues.bio || "").trim();
   const isDirty = isAvatarModified || isBioModified;
 
-  // Add Email Modal state (mirrors login flow)
+  // Add Email Modal state
   const [isAddEmailOpen, setIsAddEmailOpen] = useState(false);
-  const [addStep, setAddStep] = useState<"email" | "otp">("email");
-  const [newEmail, setNewEmail] = useState("");
-  const [addOtpDigits, setAddOtpDigits] = useState<string[]>(["", "", "", "", "", ""]);
-  const [addHintDigits, setAddHintDigits] = useState<string[]>(["", "", "", "", "", ""]);
-  const [isSendingAddOtp, setIsSendingAddOtp] = useState(false);
-  const [isVerifyingAddOtp, setIsVerifyingAddOtp] = useState(false);
-  const [addEmailError, setAddEmailError] = useState<string | null>(null);
   const [addEmailSuccess, setAddEmailSuccess] = useState<string | null>(null);
-  const [addRemainingAttempts, setAddRemainingAttempts] = useState<number | null>(null);
-  const [isAddExhausted, setIsAddExhausted] = useState(false);
-  const [isAddRateLimited, setIsAddRateLimited] = useState(false);
-  const [addCooldown, setAddCooldown] = useState(0);
-  const [addExhaustedCooldown, setAddExhaustedCooldown] = useState(0);
-  const [addRateLimitCooldown, setAddRateLimitCooldown] = useState(0);
-  const addOtpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
-
-  // Add Email Cooldown timer
-  useEffect(() => {
-    if (addCooldown <= 0) return;
-    const timer = setInterval(() => {
-      setAddCooldown((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [addCooldown]);
-
-  // Add Email Exhausted Cooldown timer
-  useEffect(() => {
-    if (addExhaustedCooldown <= 0) return;
-    const timer = setInterval(() => {
-      setAddExhaustedCooldown((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [addExhaustedCooldown]);
-
-  // Add Email Rate Limit Cooldown timer
-  useEffect(() => {
-    if (addRateLimitCooldown <= 0) return;
-    const timer = setInterval(() => {
-      setAddRateLimitCooldown((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [addRateLimitCooldown]);
 
   const openAddEmailModal = () => {
     setIsAddEmailOpen(true);
-    setAddStep("email");
-    setNewEmail("");
-    setAddOtpDigits(["", "", "", "", "", ""]);
-    setAddHintDigits(["", "", "", "", "", ""]);
-    setAddEmailError(null);
-    setAddRemainingAttempts(null);
-    setIsAddExhausted(false);
-    setIsAddRateLimited(false);
-    setAddCooldown(0);
-    setAddExhaustedCooldown(0);
-    setAddRateLimitCooldown(0);
   };
 
   const closeAddEmailModal = () => {
     setIsAddEmailOpen(false);
-    setAddStep("email");
-    setNewEmail("");
-    setAddOtpDigits(["", "", "", "", "", ""]);
-    setAddHintDigits(["", "", "", "", "", ""]);
-    setAddEmailError(null);
   };
 
   // Merge Account Modal state
@@ -295,28 +226,13 @@ export function AccountSettingsPage() {
     }
   }, [mergeToken, addEmailToken, verifyAddEmailOtp, refreshEmails, searchParams, setSearchParams]);
 
+  // Email Action feedback
+  const [emailActionLoading, setEmailActionLoading] = useState<string | null>(null);
+  const [emailActionError, setEmailActionError] = useState<string | null>(null);
+
   // Data Export state
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
-  const [isExportSending, setIsExportSending] = useState(false);
-  const [isExportVerifying, setIsExportVerifying] = useState(false);
-  const [exportChallengeId, setExportChallengeId] = useState<string | null>(null);
-  const [exportPrimaryEmail, setExportPrimaryEmail] = useState<string>("");
-  const [exportCooldown, setExportCooldown] = useState(0);
-  const [exportError, setExportError] = useState<string | null>(null);
   const [exportSuccessMessage, setExportSuccessMessage] = useState<string | null>(null);
-  const [exportRemainingAttempts, setExportRemainingAttempts] = useState<number | null>(null);
-  const [isExportExhausted, setIsExportExhausted] = useState(false);
-  const [isExportRateLimited, setIsExportRateLimited] = useState(false);
-  const [exportDigits, setExportDigits] = useState<string[]>(["", "", "", "", "", ""]);
-  const exportInputRefs = useRef<(HTMLInputElement | null)[]>([]);
-
-  useEffect(() => {
-    if (exportCooldown <= 0) return;
-    const timer = setInterval(() => {
-      setExportCooldown((prev) => (prev > 0 ? prev - 1 : 0));
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [exportCooldown]);
 
   useEffect(() => {
     if (!exportDataToken) return;
@@ -324,7 +240,6 @@ export function AccountSettingsPage() {
     let active = true;
     (async () => {
       try {
-        setIsExportVerifying(true);
         const res = await verifyDataExport(undefined, undefined, exportDataToken);
         if (active && res.success && res.downloadUrl) {
           const link = document.createElement("a");
@@ -344,12 +259,7 @@ export function AccountSettingsPage() {
       } catch (err) {
         if (active) {
           const message = err instanceof Error ? err.message : "Failed to verify magic link";
-          setExportError(message);
-          setIsExportModalOpen(true);
-        }
-      } finally {
-        if (active) {
-          setIsExportVerifying(false);
+          setEmailActionError(message);
         }
       }
     })();
@@ -359,147 +269,10 @@ export function AccountSettingsPage() {
     };
   }, [exportDataToken, verifyDataExport, searchParams, setSearchParams]);
 
-  const handleOpenExportModal = async () => {
-    setIsExportModalOpen(true);
-    setExportError(null);
+  const handleOpenExportModal = () => {
     setExportSuccessMessage(null);
-    setExportDigits(["", "", "", "", "", ""]);
-    setExportRemainingAttempts(null);
-    setIsExportExhausted(false);
-    setIsExportRateLimited(false);
-    setIsExportSending(true);
-
-    try {
-      const res = await sendDataExportVerification();
-      if (res.success) {
-        setExportChallengeId(res.challengeId);
-        setExportPrimaryEmail(res.primaryEmail || "");
-        if (res.cooldownSeconds) {
-          setExportCooldown(res.cooldownSeconds);
-        }
-        setTimeout(() => {
-          exportInputRefs.current[0]?.focus();
-        }, 100);
-      }
-    } catch (err: unknown) {
-      if (err instanceof ConnectError) {
-        setExportError(err.rawMessage);
-      } else {
-        setExportError(err instanceof Error ? err.message : "Failed to initiate data export");
-      }
-    } finally {
-      setIsExportSending(false);
-    }
+    setIsExportModalOpen(true);
   };
-
-  const handleVerifyExportOtp = async (codeToVerify?: string) => {
-    const code = codeToVerify || exportDigits.join("");
-    if (code.length !== 6) {
-      setExportError("Please enter all 6 digits of your verification code.");
-      return;
-    }
-
-    setIsExportVerifying(true);
-    setExportError(null);
-
-    try {
-      const res = await verifyDataExport(exportChallengeId, code, undefined);
-      if (res.success && res.downloadUrl) {
-        setIsExportModalOpen(false);
-
-        const link = document.createElement("a");
-        const rawUrl = res.downloadUrl;
-        link.href = rawUrl.startsWith("http") ? rawUrl : `${getApiBaseUrl()}${rawUrl}`;
-        link.setAttribute("download", res.filename || "quadsmith-data-export.zip");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        setExportSuccessMessage(
-          `Your data download (${res.filename || "export.zip"}) has started.`,
-        );
-      }
-    } catch (err: unknown) {
-      if (err instanceof ConnectError) {
-        const errorDetail = err.findDetails(OtpVerificationErrorSchema)[0];
-        if (errorDetail) {
-          setExportError(errorDetail.message || err.rawMessage);
-          setExportRemainingAttempts(errorDetail.remainingAttempts);
-          if (errorDetail.isExhausted) {
-            setIsExportExhausted(true);
-          }
-          if (errorDetail.cooldownSeconds > 0) {
-            setIsExportRateLimited(true);
-          }
-        } else {
-          setExportError(err.rawMessage);
-        }
-      } else {
-        setExportError(err instanceof Error ? err.message : "Verification failed");
-      }
-    } finally {
-      setIsExportVerifying(false);
-    }
-  };
-
-  const handleExportOtpChange = (index: number, val: string) => {
-    const cleaned = val.replace(/\D/g, "");
-    if (!cleaned) {
-      const newDigits = [...exportDigits];
-      newDigits[index] = "";
-      setExportDigits(newDigits);
-      return;
-    }
-
-    const char = cleaned.slice(-1);
-    const newDigits = [...exportDigits];
-    newDigits[index] = char;
-    setExportDigits(newDigits);
-
-    if (index < 5) {
-      exportInputRefs.current[index + 1]?.focus();
-    } else {
-      const fullCode = newDigits.join("");
-      if (fullCode.length === 6) {
-        handleVerifyExportOtp(fullCode);
-      }
-    }
-  };
-
-  const handleExportKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace") {
-      if (!exportDigits[index] && index > 0) {
-        exportInputRefs.current[index - 1]?.focus();
-      }
-    } else if (e.key === "ArrowLeft" && index > 0) {
-      exportInputRefs.current[index - 1]?.focus();
-    } else if (e.key === "ArrowRight" && index < 5) {
-      exportInputRefs.current[index + 1]?.focus();
-    }
-  };
-
-  const handleExportPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
-    if (!pasted) return;
-
-    const newDigits = [...exportDigits];
-    for (let i = 0; i < pasted.length; i++) {
-      newDigits[i] = pasted[i];
-    }
-    setExportDigits(newDigits);
-
-    const nextIndex = Math.min(pasted.length, 5);
-    exportInputRefs.current[nextIndex]?.focus();
-
-    if (pasted.length === 6) {
-      handleVerifyExportOtp(pasted);
-    }
-  };
-
-  // Email Action feedback
-  const [emailActionLoading, setEmailActionLoading] = useState<string | null>(null);
-  const [emailActionError, setEmailActionError] = useState<string | null>(null);
 
   const palette = getAvatarPalette(user?.uuid);
   const initial = getInitial(user?.id);
@@ -538,206 +311,6 @@ export function AccountSettingsPage() {
   const handleLogout = async () => {
     await logout();
     navigate("/login", { replace: true });
-  };
-
-  // Handle Add Email - Send Code (Step 1)
-  const handleSendAddCode = async (e?: React.FormEvent) => {
-    if (e) e.preventDefault();
-    const cleanEmail = newEmail.trim().toLowerCase();
-    if (!cleanEmail) {
-      setAddEmailError("Please enter an email address");
-      return;
-    }
-    if (isSendingAddOtp || addCooldown > 0 || (isAddRateLimited && addRateLimitCooldown > 0)) {
-      return;
-    }
-
-    setIsSendingAddOtp(true);
-    setAddEmailError(null);
-    try {
-      const res = await sendAddEmailOtp(cleanEmail);
-      setAddStep("otp");
-      setAddCooldown(res.cooldownSeconds || 20);
-      setAddExhaustedCooldown(0);
-      setAddRateLimitCooldown(0);
-      setAddOtpDigits(["", "", "", "", "", ""]);
-      setAddHintDigits(["", "", "", "", "", ""]);
-      setIsAddExhausted(false);
-      setIsAddRateLimited(false);
-      setAddRemainingAttempts(null);
-      setTimeout(() => addOtpInputRefs.current[0]?.focus(), 100);
-    } catch (err: unknown) {
-      if (err instanceof ConnectError) {
-        if (
-          err.code === Code.ResourceExhausted &&
-          (err.rawMessage.toLowerCase().includes("too many") ||
-            err.rawMessage.toLowerCase().includes("minutes"))
-        ) {
-          setIsAddRateLimited(true);
-          const detail = err.findDetails(OtpVerificationErrorSchema)[0];
-          let cd = detail?.cooldownSeconds;
-          if (!cd) {
-            const matchMin = err.rawMessage.match(/(\d+)\s*minutes?/i);
-            const matchSec = err.rawMessage.match(/(\d+)\s*seconds?/i);
-            cd = matchMin
-              ? parseInt(matchMin[1], 10) * 60
-              : matchSec
-                ? parseInt(matchSec[1], 10)
-                : 3600;
-          }
-          setAddRateLimitCooldown(cd);
-          setAddEmailError(err.rawMessage);
-          return;
-        }
-      }
-      if (err instanceof Error) {
-        setAddEmailError(err.message);
-      } else {
-        setAddEmailError("Failed to send verification code. Please try again.");
-      }
-    } finally {
-      setIsSendingAddOtp(false);
-    }
-  };
-
-  // Handle Add Email - Verify Code (Step 2)
-  const handleVerifyAddCode = async (explicitCode?: string) => {
-    const code = explicitCode || addOtpDigits.join("");
-    if (code.length !== 6) {
-      setAddEmailError("Please enter all 6 digits of the verification code");
-      return;
-    }
-    if (isVerifyingAddOtp) return;
-
-    setIsVerifyingAddOtp(true);
-    setAddEmailError(null);
-    try {
-      const res = await verifyAddEmailOtp(newEmail.trim().toLowerCase(), code);
-      if (res.mergeRequired) {
-        setMergeEmail(newEmail.trim().toLowerCase());
-        setMergeOtherUsername(res.otherUserUsername || "user");
-        setMergeOtherBuildCount(res.otherBuildCount || 0);
-        setMergeOtherBuildNames(res.otherBuildNames || []);
-        setMergeOtherEmails(res.otherEmails || []);
-        setMergeOtherOauthProviders(res.otherOauthProviders || []);
-        setVerifiedMergeCode(code);
-        setVerifiedMergeToken(res.mergeTicket || "");
-        setMergeError(null);
-        setMergeModalStep("summary");
-        setIsMergeModalOpen(true);
-        setIsAddEmailOpen(false);
-        return;
-      }
-      setAddEmailSuccess(`Successfully added ${newEmail.trim()} to your account.`);
-      setTimeout(() => setAddEmailSuccess(null), 4000);
-      setIsAddEmailOpen(false);
-      setNewEmail("");
-      setAddOtpDigits(["", "", "", "", "", ""]);
-      setAddHintDigits(["", "", "", "", "", ""]);
-    } catch (err: unknown) {
-      // Clear fields and show incorrect code as faded placeholder hints
-      setAddHintDigits(code.split(""));
-      setAddOtpDigits(["", "", "", "", "", ""]);
-      setTimeout(() => addOtpInputRefs.current[0]?.focus(), 10);
-
-      if (err instanceof ConnectError) {
-        if (
-          err.code === Code.ResourceExhausted &&
-          (err.rawMessage.toLowerCase().includes("too many") ||
-            err.rawMessage.toLowerCase().includes("minutes"))
-        ) {
-          setIsAddRateLimited(true);
-          const detail = err.findDetails(OtpVerificationErrorSchema)[0];
-          let cd = detail?.cooldownSeconds;
-          if (!cd) {
-            const matchMin = err.rawMessage.match(/(\d+)\s*minutes?/i);
-            const matchSec = err.rawMessage.match(/(\d+)\s*seconds?/i);
-            cd = matchMin
-              ? parseInt(matchMin[1], 10) * 60
-              : matchSec
-                ? parseInt(matchSec[1], 10)
-                : 3600;
-          }
-          setAddRateLimitCooldown(cd);
-          setAddEmailError(err.rawMessage);
-          return;
-        }
-        const detail = err.findDetails(OtpVerificationErrorSchema)[0];
-        if (detail) {
-          setAddRemainingAttempts(detail.remainingAttempts);
-          setIsAddExhausted(detail.isExhausted);
-          if (detail.isExhausted) {
-            setAddExhaustedCooldown(detail.cooldownSeconds || 15);
-          }
-          setAddEmailError(detail.message);
-        } else {
-          setAddEmailError(err.rawMessage);
-        }
-      } else if (err instanceof Error) {
-        setAddEmailError(err.message);
-      } else {
-        setAddEmailError("Verification failed. Please check the code and try again.");
-      }
-    } finally {
-      setIsVerifyingAddOtp(false);
-    }
-  };
-
-  const handleAddOtpChange = (index: number, value: string) => {
-    const clean = value.replace(/\D/g, "");
-    if (!clean && value !== "") return;
-
-    const newDigits = [...addOtpDigits];
-
-    if (clean.length > 1) {
-      const chars = clean.slice(0, 6).split("");
-      chars.forEach((c, i) => {
-        newDigits[i] = c;
-      });
-      setAddOtpDigits(newDigits);
-      const nextIndex = Math.min(chars.length, 5);
-      addOtpInputRefs.current[nextIndex]?.focus();
-      const code = newDigits.join("");
-      if (code.length === 6 && !isVerifyingAddOtp) {
-        handleVerifyAddCode(code);
-      }
-      return;
-    }
-
-    newDigits[index] = clean;
-    setAddOtpDigits(newDigits);
-
-    // Auto-advance
-    if (clean && index < 5) {
-      addOtpInputRefs.current[index + 1]?.focus();
-    }
-
-    const code = newDigits.join("");
-    if (code.length === 6 && !isVerifyingAddOtp) {
-      handleVerifyAddCode(code);
-    }
-  };
-
-  const handleAddKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace" && !addOtpDigits[index] && index > 0) {
-      addOtpInputRefs.current[index - 1]?.focus();
-    }
-  };
-
-  const handleAddPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
-    if (!pasted) return;
-    const newDigits = [...addOtpDigits];
-    pasted.split("").forEach((c, i) => {
-      newDigits[i] = c;
-    });
-    setAddOtpDigits(newDigits);
-    const nextIndex = Math.min(pasted.length, 5);
-    addOtpInputRefs.current[nextIndex]?.focus();
-    if (pasted.length === 6 && !isVerifyingAddOtp) {
-      handleVerifyAddCode(pasted);
-    }
   };
 
   // Step 2: Confirm Merge after reviewing the impact summary
@@ -1693,305 +1266,40 @@ export function AccountSettingsPage() {
         </div>
       )}
 
-      {/* Modal: Add Email Address Dialog (mirrors login flow) */}
-      {isAddEmailOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl p-8 space-y-6 relative">
-            {/* Close button in top-right */}
-            <button
-              type="button"
-              onClick={closeAddEmailModal}
-              className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition cursor-pointer"
-              aria-label="Close"
-            >
-              <X size={18} />
-            </button>
-
-            {addStep === "email" ? (
-              <>
-                {/* Header Logo & Title */}
-                <div className="text-center space-y-3">
-                  <div className="flex justify-center">
-                    <img
-                      src={currentTheme === "dark" ? logoDark : logoLight}
-                      alt="Quadsmith"
-                      className="h-10 w-auto"
-                    />
-                  </div>
-                  <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-                    Add Email Address
-                  </h1>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    Associate a new email address with your Quadsmith account.
-                  </p>
-                </div>
-
-                <div className="space-y-4">
-                  {addEmailError && (
-                    <div
-                      data-testid="otp-error-banner"
-                      className="p-3.5 rounded-xl border border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400 text-xs flex items-start gap-2.5"
-                    >
-                      {isAddRateLimited ? (
-                        <Lock size={16} className="text-red-500 shrink-0 mt-0.5" />
-                      ) : (
-                        <AlertTriangle size={16} className="text-red-500 shrink-0 mt-0.5" />
-                      )}
-                      <div className="space-y-0.5 flex-1">
-                        <p className="font-semibold">{addEmailError}</p>
-                      </div>
-                    </div>
-                  )}
-
-                  <form onSubmit={handleSendAddCode} className="space-y-4">
-                    <div>
-                      <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5">
-                        Email Address
-                      </label>
-                      <div className="relative">
-                        <Mail
-                          className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400"
-                          size={16}
-                        />
-                        <input
-                          type="email"
-                          required
-                          placeholder="alex@quadsmith.dev"
-                          value={newEmail}
-                          onChange={(e) => setNewEmail(e.target.value)}
-                          className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-                    </div>
-
-                    {(() => {
-                      const isSendDisabled =
-                        isSendingAddOtp ||
-                        !newEmail.trim() ||
-                        addCooldown > 0 ||
-                        (isAddRateLimited && addRateLimitCooldown > 0);
-
-                      return (
-                        <button
-                          type="submit"
-                          disabled={isSendDisabled}
-                          className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
-                            isSendDisabled
-                              ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
-                              : "text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 cursor-pointer"
-                          }`}
-                        >
-                          {isSendingAddOtp ? (
-                            <>
-                              <Loader2 size={16} className="animate-spin" />
-                              <span>Sending code...</span>
-                            </>
-                          ) : isAddRateLimited && addRateLimitCooldown > 0 ? (
-                            <span>
-                              Send Verification Code ({Math.floor(addRateLimitCooldown / 60)}m
-                              {addRateLimitCooldown % 60}s)
-                            </span>
-                          ) : addCooldown > 0 ? (
-                            <span>Send Verification Code ({addCooldown}s)</span>
-                          ) : !newEmail.trim() ? (
-                            <span>Send Verification Code</span>
-                          ) : (
-                            <>
-                              <span>Send Verification Code</span>
-                              <span>&rarr;</span>
-                            </>
-                          )}
-                        </button>
-                      );
-                    })()}
-                  </form>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* Step 2: OTP Verification Screen */}
-                <div className="space-y-6">
-                  {/* Header */}
-                  <div className="text-center space-y-3">
-                    <div className="flex justify-center">
-                      <img
-                        src={currentTheme === "dark" ? logoDark : logoLight}
-                        alt="Quadsmith"
-                        className="h-10 w-auto"
-                      />
-                    </div>
-                    <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-                      Verify your email
-                    </h1>
-                    <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                      We sent a single-use verification code to {newEmail}
-                    </p>
-                  </div>
-
-                  {/* Dual-path instructions */}
-                  <div className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-zinc-700 dark:text-zinc-300 text-xs space-y-2 text-center">
-                    <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
-                      Enter the <strong>6-digit code</strong> sent to your email below.
-                    </p>
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="h-px bg-blue-500/20 flex-1"></div>
-                      <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-                        OR
-                      </span>
-                      <div className="h-px bg-blue-500/20 flex-1"></div>
-                    </div>
-                    <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
-                      Click the link in the email.
-                    </p>
-                  </div>
-
-                  {/* 6 Digit Inputs */}
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
-                        Verification Code
-                      </label>
-                      {addRemainingAttempts !== null &&
-                        addRemainingAttempts > 0 &&
-                        !isAddExhausted &&
-                        !isAddRateLimited && (
-                          <span
-                            className={`text-[10px] font-mono font-bold ${
-                              addRemainingAttempts === 1 ? "text-rose-500" : "text-amber-500"
-                            }`}
-                          >
-                            {addRemainingAttempts} attempt
-                            {addRemainingAttempts === 1 ? "" : "s"} left
-                          </span>
-                        )}
-                    </div>
-
-                    <div className="flex items-center justify-between gap-2">
-                      {addOtpDigits.map((digit, index) => (
-                        <input
-                          key={index}
-                          ref={(el) => {
-                            addOtpInputRefs.current[index] = el;
-                          }}
-                          type="text"
-                          inputMode="numeric"
-                          pattern="[0-9]*"
-                          autoComplete={index === 0 ? "one-time-code" : "off"}
-                          maxLength={1}
-                          placeholder={addHintDigits[index] || ""}
-                          value={digit}
-                          disabled={isAddExhausted || isAddRateLimited || isVerifyingAddOtp}
-                          onChange={(e) => handleAddOtpChange(index, e.target.value)}
-                          onKeyDown={(e) => handleAddKeyDown(index, e)}
-                          onPaste={handleAddPaste}
-                          className={`w-12 h-14 text-center font-mono text-2xl font-bold rounded-xl border bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none transition ${
-                            isAddExhausted || isAddRateLimited
-                              ? "opacity-40 border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
-                              : "border-zinc-300 dark:border-zinc-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                          }`}
-                        />
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Error / Attempt Warning Banner */}
-                  {addEmailError && (
-                    <div
-                      data-testid="otp-error-banner"
-                      className={`p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${
-                        isAddExhausted || isAddRateLimited
-                          ? "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
-                          : addRemainingAttempts === 2
-                            ? "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300"
-                            : addRemainingAttempts === 1
-                              ? "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-400"
-                              : "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
-                      }`}
-                    >
-                      {isAddExhausted || isAddRateLimited ? (
-                        <Lock size={16} className="text-red-500 shrink-0 mt-0.5" />
-                      ) : addRemainingAttempts === 2 ? (
-                        <AlertTriangle size={16} className="text-amber-500 shrink-0 mt-0.5" />
-                      ) : (
-                        <AlertTriangle size={16} className="text-rose-500 shrink-0 mt-0.5" />
-                      )}
-                      <div className="space-y-0.5 flex-1">
-                        <p className="font-semibold">{addEmailError}</p>
-                        {addRemainingAttempts !== null && addRemainingAttempts > 0 && (
-                          <p className="text-[11px] opacity-90">
-                            {addRemainingAttempts === 1
-                              ? "Final attempt remaining before this code is invalidated."
-                              : `${addRemainingAttempts} attempts remaining for this verification challenge.`}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Action Buttons & Status */}
-                  <div className="space-y-2.5">
-                    {isVerifyingAddOtp && (
-                      <div className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400">
-                        <Loader2 size={16} className="animate-spin" />
-                        <span>Verifying code...</span>
-                      </div>
-                    )}
-
-                    {(isAddExhausted || isAddRateLimited) &&
-                      (() => {
-                        const isReqDisabled =
-                          (isAddRateLimited
-                            ? addRateLimitCooldown > 0
-                            : addExhaustedCooldown > 0) || isSendingAddOtp;
-                        return (
-                          <button
-                            type="button"
-                            onClick={() => handleSendAddCode()}
-                            disabled={isReqDisabled}
-                            className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
-                              isReqDisabled
-                                ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
-                                : "text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 cursor-pointer"
-                            }`}
-                          >
-                            <span>
-                              {isAddRateLimited
-                                ? addRateLimitCooldown > 0
-                                  ? `Request New Verification Code (${Math.floor(addRateLimitCooldown / 60)}m${addRateLimitCooldown % 60}s)`
-                                  : "Request New Verification Code"
-                                : addExhaustedCooldown > 0
-                                  ? `Request New Verification Code (${addExhaustedCooldown}s)`
-                                  : "Request New Verification Code"}
-                            </span>
-                          </button>
-                        );
-                      })()}
-
-                    {/* Back Option */}
-                    <div className="flex items-center text-xs pt-1">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setAddStep("email");
-                          setAddEmailError(null);
-                          setAddOtpDigits(["", "", "", "", "", ""]);
-                          setAddHintDigits(["", "", "", "", "", ""]);
-                          setIsAddExhausted(false);
-                          setIsAddRateLimited(false);
-                        }}
-                        className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 flex items-center gap-1 transition cursor-pointer"
-                      >
-                        <ArrowLeft size={13} />
-                        <span>Back</span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+      {/* Modal: Add Email Address Dialog (uses unified EmailVerificationModal) */}
+      <EmailVerificationModal
+        isOpen={isAddEmailOpen}
+        onClose={closeAddEmailModal}
+        purpose={EmailOtpPurpose.ADD_EMAIL}
+        requireEmailInput={true}
+        title="Add Email Address"
+        subtitle="Associate a new email address with your Quadsmith account."
+        onSuccess={(res, verifiedEmail) => {
+          closeAddEmailModal();
+          if (res.mergeRequired) {
+            setMergeEmail(res.otherEmails?.[0] || "");
+            setMergeOtherUsername(res.otherUserUsername || "user");
+            setMergeOtherBuildCount(res.otherBuildCount || 0);
+            setMergeOtherBuildNames(res.otherBuildNames || []);
+            setMergeOtherEmails(res.otherEmails || []);
+            setMergeOtherOauthProviders(res.otherOauthProviders || []);
+            setVerifiedMergeCode("");
+            setVerifiedMergeToken(res.mergeTicket || "");
+            setMergeError(null);
+            setMergeModalStep("summary");
+            setIsMergeModalOpen(true);
+          } else {
+            const added = verifiedEmail;
+            setAddEmailSuccess(
+              added
+                ? `Successfully added ${added} to your account.`
+                : res.message || "Email verified and added to your account successfully.",
+            );
+            setTimeout(() => setAddEmailSuccess(null), 4000);
+            refreshEmails();
+          }
+        }}
+      />
 
       {/* Modal: Account Merging Dialog (triggered when an existing account email is entered) */}
       {isMergeModalOpen && (
@@ -2223,7 +1531,6 @@ export function AccountSettingsPage() {
                   type="button"
                   onClick={() => {
                     setIsMergeModalOpen(false);
-                    setNewEmail("");
                   }}
                   className="px-5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold transition shadow-sm"
                 >
@@ -2496,169 +1803,36 @@ export function AccountSettingsPage() {
         </div>
       )}
 
-      {/* Modal: Export Data OTP Verification Dialog */}
-      {isExportModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs">
-          <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl p-8 space-y-6 relative">
-            <button
-              type="button"
-              onClick={() => setIsExportModalOpen(false)}
-              className="absolute top-4 right-4 p-1.5 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition cursor-pointer"
-              aria-label="Close"
-            >
-              <X size={18} />
-            </button>
+      {/* Modal: Export Data OTP Verification Dialog (uses unified EmailVerificationModal) */}
+      <EmailVerificationModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        purpose={EmailOtpPurpose.EXPORT_DATA}
+        email={emails.find((e) => e.isPrimary)?.email || user?.email || ""}
+        autoSend={true}
+        title="Verify your email"
+        subtitle={
+          emails.find((e) => e.isPrimary)?.email
+            ? `We sent a single-use verification code to ${emails.find((e) => e.isPrimary)?.email}`
+            : "We sent a single-use verification code to your primary email"
+        }
+        onSuccess={(res) => {
+          setIsExportModalOpen(false);
+          if (res.downloadUrl) {
+            const link = document.createElement("a");
+            const rawUrl = res.downloadUrl;
+            link.href = rawUrl.startsWith("http") ? rawUrl : `${getApiBaseUrl()}${rawUrl}`;
+            link.setAttribute("download", res.filename || "quadsmith-data-export.zip");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
 
-            {isExportSending ? (
-              <div className="text-center py-8 space-y-4">
-                <Loader2 size={32} className="animate-spin text-blue-500 mx-auto" />
-                <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                  Sending verification challenge to your primary email...
-                </p>
-              </div>
-            ) : (
-              <>
-                <div className="text-center space-y-3">
-                  <div className="flex justify-center">
-                    <img
-                      src={currentTheme === "dark" ? logoDark : logoLight}
-                      alt="Quadsmith"
-                      className="h-10 w-auto"
-                    />
-                  </div>
-                  <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-                    Verify your email
-                  </h1>
-                  <p className="text-xs text-zinc-500 dark:text-zinc-400">
-                    We sent a single-use verification code to{" "}
-                    {exportPrimaryEmail || "your primary email"}
-                  </p>
-                </div>
-
-                <div className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-zinc-700 dark:text-zinc-300 text-xs space-y-2 text-center">
-                  <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
-                    Enter the <strong>6-digit code</strong> sent to your email below.
-                  </p>
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="h-px bg-blue-500/20 flex-1"></div>
-                    <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 uppercase tracking-wider">
-                      OR
-                    </span>
-                    <div className="h-px bg-blue-500/20 flex-1"></div>
-                  </div>
-                  <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
-                    Click the link in the email.
-                  </p>
-                </div>
-
-                <div>
-                  <div className="flex items-center justify-between mb-2">
-                    <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
-                      Verification Code
-                    </label>
-                    {exportRemainingAttempts !== null &&
-                      exportRemainingAttempts > 0 &&
-                      !isExportExhausted &&
-                      !isExportRateLimited && (
-                        <span
-                          className={`text-[10px] font-mono font-bold ${
-                            exportRemainingAttempts === 1 ? "text-rose-500" : "text-amber-500"
-                          }`}
-                        >
-                          {exportRemainingAttempts} attempt
-                          {exportRemainingAttempts === 1 ? "" : "s"} left
-                        </span>
-                      )}
-                  </div>
-
-                  <div className="flex items-center justify-between gap-2">
-                    {exportDigits.map((digit, index) => (
-                      <input
-                        key={index}
-                        ref={(el) => {
-                          exportInputRefs.current[index] = el;
-                        }}
-                        type="text"
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        autoComplete={index === 0 ? "one-time-code" : "off"}
-                        maxLength={1}
-                        value={digit}
-                        disabled={isExportExhausted || isExportRateLimited || isExportVerifying}
-                        onChange={(e) => handleExportOtpChange(index, e.target.value)}
-                        onKeyDown={(e) => handleExportKeyDown(index, e)}
-                        onPaste={handleExportPaste}
-                        className={`w-12 h-14 text-center font-mono text-2xl font-bold rounded-xl border bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none transition ${
-                          isExportExhausted || isExportRateLimited
-                            ? "opacity-40 border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
-                            : "border-zinc-300 dark:border-zinc-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                {exportError && (
-                  <div
-                    data-testid="otp-error-banner"
-                    className={`p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${
-                      isExportExhausted || isExportRateLimited
-                        ? "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
-                        : exportRemainingAttempts === 2
-                          ? "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300"
-                          : exportRemainingAttempts === 1
-                            ? "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-400"
-                            : "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
-                    }`}
-                  >
-                    {isExportExhausted || isExportRateLimited ? (
-                      <Lock size={16} className="text-red-500 shrink-0 mt-0.5" />
-                    ) : exportRemainingAttempts === 2 ? (
-                      <AlertTriangle size={16} className="text-amber-500 shrink-0 mt-0.5" />
-                    ) : (
-                      <AlertTriangle size={16} className="text-rose-500 shrink-0 mt-0.5" />
-                    )}
-                    <div className="space-y-0.5 flex-1">
-                      <p className="font-semibold">{exportError}</p>
-                      {exportRemainingAttempts !== null && exportRemainingAttempts > 0 && (
-                        <p className="text-[11px] opacity-90">
-                          {exportRemainingAttempts === 1
-                            ? "Final attempt remaining before this code is invalidated."
-                            : `${exportRemainingAttempts} attempts remaining before this code is invalidated.`}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between pt-1">
-                  <button
-                    type="button"
-                    onClick={() => setIsExportModalOpen(false)}
-                    className="px-4 py-2 rounded-xl text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 transition cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    disabled={
-                      isExportVerifying ||
-                      isExportExhausted ||
-                      isExportRateLimited ||
-                      exportDigits.join("").length !== 6
-                    }
-                    onClick={() => handleVerifyExportOtp()}
-                    className="px-5 py-2.5 rounded-xl font-semibold text-xs text-white bg-blue-600 hover:bg-blue-500 disabled:opacity-40 disabled:cursor-not-allowed transition shadow-sm flex items-center gap-1.5 cursor-pointer"
-                  >
-                    {isExportVerifying && <Loader2 size={14} className="animate-spin" />}
-                    <span>Verify &amp; Download</span>
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+            setExportSuccessMessage(
+              `Your data download (${res.filename || "export.zip"}) has started.`,
+            );
+          }
+        }}
+      />
 
       {/* Modal: Confirm Revoke Session */}
       {sessionToRevoke && (

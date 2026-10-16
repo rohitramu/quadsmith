@@ -117,19 +117,18 @@ func IsPublicProcedure(procedure string) bool {
 
 var allowedBannedProcedures = map[string]bool{
 	// AuthService
-	apiconnect.AuthServiceRefreshTokenProcedure:                  true,
-	apiconnect.AuthServiceLogoutProcedure:                        true,
-	apiconnect.AuthServiceUpdateProfileProcedure:                 true,
-	apiconnect.AuthServiceListActiveSessionsProcedure:            true,
-	apiconnect.AuthServiceRevokeSessionProcedure:                 true,
-	apiconnect.AuthServiceRevokeOtherSessionsProcedure:           true,
-	apiconnect.AuthServiceGetCurrentUserProcedure:                true,
-	apiconnect.AuthServiceListUserEmailsProcedure:                true,
-	apiconnect.AuthServiceSendDataExportVerificationProcedure:    true,
-	apiconnect.AuthServiceVerifyDataExportProcedure:              true,
-	apiconnect.AuthServiceSendDeleteAccountVerificationProcedure: true,
-	apiconnect.AuthServiceDeleteAccountProcedure:                 true,
-	apiconnect.AuthServiceCancelAccountDeletionProcedure:         true,
+	apiconnect.AuthServiceSendEmailOtpProcedure:          true,
+	apiconnect.AuthServiceVerifyEmailOtpProcedure:        true,
+	apiconnect.AuthServiceRefreshTokenProcedure:          true,
+	apiconnect.AuthServiceLogoutProcedure:                true,
+	apiconnect.AuthServiceUpdateProfileProcedure:         true,
+	apiconnect.AuthServiceListActiveSessionsProcedure:    true,
+	apiconnect.AuthServiceRevokeSessionProcedure:         true,
+	apiconnect.AuthServiceRevokeOtherSessionsProcedure:   true,
+	apiconnect.AuthServiceGetCurrentUserProcedure:        true,
+	apiconnect.AuthServiceListUserEmailsProcedure:        true,
+	apiconnect.AuthServiceDeleteAccountProcedure:         true,
+	apiconnect.AuthServiceCancelAccountDeletionProcedure: true,
 
 	// UserService
 	apiconnect.UserServiceGetUserBanStatusProcedure: true,

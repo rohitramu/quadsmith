@@ -1,17 +1,19 @@
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ConnectError, Code } from "@connectrpc/connect";
-import { Moon, Sun, Loader2, ArrowLeft, Mail, AlertTriangle, Lock, Check } from "lucide-react";
+import { Moon, Sun, Loader2, Mail, AlertTriangle, Lock, Check } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
 import {
   OtpVerificationErrorSchema,
   LoginChallengeStatus,
+  EmailOtpPurpose,
 } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import type { GetLoginChallengeDetailsResponse } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import { UsernameAvailabilityStatus } from "@quadsmith/shared/gen/quadsmith/api/user_pb";
 import { getAvatarPalette, getInitial } from "@quadsmith/shared";
+import { EmailVerificationForm } from "../components/EmailVerificationForm";
 
 export function LoginPage() {
   const [searchParams] = useSearchParams();
@@ -19,7 +21,6 @@ export function LoginPage() {
   const {
     isAuthenticated,
     sendEmailOtp,
-    verifyEmailOtp,
     getLoginChallengeDetails,
     approveLoginChallenge,
     denyLoginChallenge,
@@ -34,14 +35,11 @@ export function LoginPage() {
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
   const [step, setStep] = useState<"email" | "otp" | "setup">(magicToken ? "otp" : "email");
   const [email, setEmail] = useState("");
-  const [otpDigits, setOtpDigits] = useState<string[]>(["", "", "", "", "", ""]);
-  const [hintDigits, setHintDigits] = useState<string[]>(["", "", "", "", "", ""]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [remainingAttempts, setRemainingAttempts] = useState<number | null>(null);
   const [isExhausted, setIsExhausted] = useState(false);
   const [isRateLimited, setIsRateLimited] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const [exhaustedCooldown, setExhaustedCooldown] = useState(0);
   const [rateLimitCooldown, setRateLimitCooldown] = useState(0);
@@ -203,13 +201,10 @@ export function LoginPage() {
               setSetupToken(res.authResponse.setupToken);
               setStep("setup");
             } else {
-              setIsSuccess(true);
               navigate(redirectUrl, { replace: true });
             }
           } else if (res.status === LoginChallengeStatus.DENIED) {
             setIsDenied(true);
-            setOtpDigits(["", "", "", "", "", ""]);
-            setHintDigits(["", "", "", "", "", ""]);
             setErrorMsg("Login request was denied.");
           }
         } catch {
@@ -334,8 +329,6 @@ export function LoginPage() {
         setRemainingAttempts(null);
         setIsExhausted(false);
         setIsRateLimited(false);
-        setHintDigits(["", "", "", "", "", ""]);
-        setOtpDigits(["", "", "", "", "", ""]);
       }
       setTimeout(() => otpInputRefs.current[0]?.focus(), 100);
     } catch (err: unknown) {
@@ -370,133 +363,6 @@ export function LoginPage() {
     }
   };
 
-  const handleOtpChange = (index: number, value: string) => {
-    // Only accept numeric input
-    const clean = value.replace(/\D/g, "");
-    if (!clean && value !== "") return;
-
-    const newDigits = [...otpDigits];
-
-    if (clean.length > 1) {
-      // Pasted multi-character string
-      const chars = clean.slice(0, 6).split("");
-      chars.forEach((c, i) => {
-        newDigits[i] = c;
-      });
-      setOtpDigits(newDigits);
-      const nextIndex = Math.min(chars.length, 5);
-      otpInputRefs.current[nextIndex]?.focus();
-      const code = newDigits.join("");
-      if (code.length === 6 && !isLoading) {
-        handleVerifyOtp(code);
-      }
-      return;
-    }
-
-    newDigits[index] = clean;
-    setOtpDigits(newDigits);
-
-    // Auto-advance
-    if (clean && index < 5) {
-      otpInputRefs.current[index + 1]?.focus();
-    }
-
-    const code = newDigits.join("");
-    if (code.length === 6 && !isLoading) {
-      handleVerifyOtp(code);
-    }
-  };
-
-  const handleKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace" && !otpDigits[index] && index > 0) {
-      otpInputRefs.current[index - 1]?.focus();
-    }
-  };
-
-  const handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
-    if (!pasted) return;
-    const newDigits = [...otpDigits];
-    pasted.split("").forEach((c, i) => {
-      newDigits[i] = c;
-    });
-    setOtpDigits(newDigits);
-    const nextIndex = Math.min(pasted.length, 5);
-    otpInputRefs.current[nextIndex]?.focus();
-    if (pasted.length === 6 && !isLoading) {
-      handleVerifyOtp(pasted);
-    }
-  };
-
-  const handleVerifyOtp = async (explicitCode?: string) => {
-    const code = explicitCode || otpDigits.join("");
-    if (code.length < 6) {
-      setErrorMsg("Please enter all 6 digits of the verification code");
-      return;
-    }
-    if (isLoading) return;
-
-    setIsLoading(true);
-    setErrorMsg(null);
-    try {
-      const res = await verifyEmailOtp(email, code);
-      if (res?.accountSetupRequired && res.setupToken) {
-        setSetupToken(res.setupToken);
-        setStep("setup");
-      } else {
-        setIsSuccess(true);
-        navigate(redirectUrl, { replace: true });
-      }
-    } catch (err: unknown) {
-      // Clear fields and show incorrect code as faded placeholder hints
-      setHintDigits(code.split(""));
-      setOtpDigits(["", "", "", "", "", ""]);
-      setTimeout(() => otpInputRefs.current[0]?.focus(), 10);
-
-      if (err instanceof ConnectError) {
-        if (
-          err.code === Code.ResourceExhausted &&
-          (err.rawMessage.toLowerCase().includes("too many") ||
-            err.rawMessage.toLowerCase().includes("minutes"))
-        ) {
-          setIsRateLimited(true);
-          const detail = err.findDetails(OtpVerificationErrorSchema)[0];
-          let cd = detail?.cooldownSeconds;
-          if (!cd) {
-            const matchMin = err.rawMessage.match(/(\d+)\s*minutes?/i);
-            const matchSec = err.rawMessage.match(/(\d+)\s*seconds?/i);
-            cd = matchMin
-              ? parseInt(matchMin[1], 10) * 60
-              : matchSec
-                ? parseInt(matchSec[1], 10)
-                : 3600;
-          }
-          setRateLimitCooldown(cd);
-          setErrorMsg(err.rawMessage);
-          return;
-        }
-        const detail = err.findDetails(OtpVerificationErrorSchema)[0];
-        if (detail) {
-          setRemainingAttempts(detail.remainingAttempts);
-          setIsExhausted(detail.isExhausted);
-          if (detail.isExhausted) {
-            setExhaustedCooldown(detail.cooldownSeconds || 15);
-          }
-          setErrorMsg(detail.message);
-        } else {
-          setErrorMsg(err.rawMessage);
-        }
-      } else if (err instanceof Error) {
-        setErrorMsg(err.message);
-      } else {
-        setErrorMsg("Verification failed. Please try again.");
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
   const handleCompleteSetup = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     if (usernameStatus !== "available" || !setupToken || isCompletingSetup) return;
@@ -509,7 +375,6 @@ export function LoginPage() {
         username.trim().toLowerCase(),
         avatarUrl.trim() || undefined,
       );
-      setIsSuccess(true);
       navigate(redirectUrl, { replace: true });
     } catch (err: unknown) {
       if (err instanceof ConnectError) {
@@ -538,11 +403,8 @@ export function LoginPage() {
     setRemainingAttempts(null);
     setIsExhausted(false);
     setIsRateLimited(false);
-    setIsSuccess(false);
     setExhaustedCooldown(0);
     setRateLimitCooldown(0);
-    setHintDigits(["", "", "", "", "", ""]);
-    setOtpDigits(["", "", "", "", "", ""]);
     setTimeout(() => emailInputRef.current?.focus(), 50);
   };
 
@@ -586,146 +448,49 @@ export function LoginPage() {
     <div
       className={`w-full p-8 space-y-6 ${isInactiveSlide ? "opacity-30 pointer-events-none" : ""}`}
     >
-      {/* Header */}
-      <div className="text-center space-y-3">
-        <div className="flex justify-center">
-          <img
-            src={theme === "dark" ? logoDark : logoLight}
-            alt="Quadsmith"
-            className="h-10 w-auto"
-          />
-        </div>
-        <h1 className="text-xl font-bold tracking-tight">Verify your email</h1>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
-          We sent a single-use login code to {email}
-        </p>
-      </div>
-
-      {/* Cross-Device Waiting Pulse Banner */}
-      {!isDenied && !isExhausted && !isRateLimited && (
-        <div
-          data-testid="waiting-for-approval-banner"
-          className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center gap-3 text-xs text-left"
-        >
-          <div className="relative flex items-center justify-center w-4 h-4 shrink-0">
-            <span className="absolute w-3.5 h-3.5 rounded-full bg-blue-400/40 animate-ping"></span>
-            <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-          </div>
-          <div className="space-y-0.5 flex-1">
-            <p className="font-semibold text-zinc-900 dark:text-zinc-100">
-              Waiting for magic link approval on your other device...
-            </p>
-            <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
-              Click the magic link in your email on your phone to instantly log in here, or enter
-              the 6-digit code below.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* 6 Digit Inputs */}
-      <div>
-        <div className="flex items-center justify-between mb-2">
-          <label className="text-xs font-medium text-zinc-700 dark:text-zinc-300">
-            Verification Code
-          </label>
-          {remainingAttempts !== null &&
-            remainingAttempts > 0 &&
-            !isExhausted &&
-            !isRateLimited &&
-            !isDenied && (
-              <span
-                className={`text-[10px] font-mono font-bold ${
-                  remainingAttempts === 1 ? "text-rose-500" : "text-amber-500"
-                }`}
-              >
-                {remainingAttempts} attempt{remainingAttempts === 1 ? "" : "s"} left
-              </span>
-            )}
-        </div>
-
-        <div className="flex items-center justify-between gap-2">
-          {otpDigits.map((digit, index) => (
-            <input
-              key={index}
-              ref={(el) => {
-                otpInputRefs.current[index] = el;
-              }}
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              autoComplete={index === 0 ? "one-time-code" : "off"}
-              maxLength={1}
-              placeholder={hintDigits[index] || ""}
-              value={digit}
-              disabled={isSuccess || isExhausted || isRateLimited || isDenied || isLoading}
-              onChange={(e) => handleOtpChange(index, e.target.value)}
-              onKeyDown={(e) => handleKeyDown(index, e)}
-              onPaste={handlePaste}
-              className={`w-12 h-14 text-center font-mono text-2xl font-bold rounded-xl border bg-zinc-50 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 focus:outline-none transition ${
-                isSuccess || isExhausted || isRateLimited || isDenied
-                  ? "opacity-40 border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-900 text-zinc-400 dark:text-zinc-600 cursor-not-allowed"
-                  : "border-zinc-300 dark:border-zinc-700 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-              }`}
-            />
-          ))}
-        </div>
-      </div>
-
-      {/* Error / Attempt Warning Banner below verification code and above buttons */}
-      {renderErrorBanner()}
-
-      {/* Action Buttons & Status */}
-      <div className="space-y-2.5">
-        {isLoading && (
-          <div className="flex items-center justify-center gap-2 py-1.5 text-xs font-medium text-blue-600 dark:text-blue-400">
-            <Loader2 size={16} className="animate-spin" />
-            <span>Verifying code...</span>
-          </div>
-        )}
-
-        {(isExhausted || isRateLimited || isDenied) &&
-          (() => {
-            const activeCooldown = isRateLimited
-              ? rateLimitCooldown
-              : isExhausted
-                ? exhaustedCooldown
-                : cooldown;
-            const isReqDisabled = activeCooldown > 0 || isLoading;
-            return (
-              <button
-                type="button"
-                onClick={() => handleSendEmail()}
-                disabled={isReqDisabled}
-                className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
-                  isReqDisabled
-                    ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
-                    : "text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 cursor-pointer"
-                }`}
-              >
-                <span>
-                  {isRateLimited && rateLimitCooldown > 0
-                    ? `Request New Verification Code (${Math.floor(rateLimitCooldown / 60)}m${rateLimitCooldown % 60}s)`
-                    : activeCooldown > 0
-                      ? `Request New Verification Code (${activeCooldown}s)`
-                      : "Request New Verification Code"}
-                </span>
-              </button>
-            );
-          })()}
-
-        {/* Back Option */}
-        <div className="flex items-center text-xs pt-1">
-          <button
-            type="button"
-            onClick={handleResetToEmail}
-            className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 flex items-center gap-1 transition cursor-pointer"
-          >
-            <ArrowLeft size={13} />
-            <span>Back</span>
-          </button>
-        </div>
-      </div>
+      <EmailVerificationForm
+        purpose={EmailOtpPurpose.LOGIN}
+        email={email}
+        initialCooldown={cooldown}
+        subtitle={`We sent a single-use login code to ${email}`}
+        isDenied={isDenied}
+        denialError={isDenied ? "Login request was denied." : null}
+        onResetDenial={() => {
+          setIsDenied(false);
+          setErrorMsg(null);
+        }}
+        onSuccess={(res) => {
+          if (res.accountSetupRequired && res.setupToken) {
+            setSetupToken(res.setupToken);
+            setStep("setup");
+          } else {
+            navigate(redirectUrl, { replace: true });
+          }
+        }}
+        onBackToEmail={handleResetToEmail}
+        customBanner={
+          !isDenied ? (
+            <div
+              data-testid="waiting-for-approval-banner"
+              className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center gap-3 text-xs text-left"
+            >
+              <div className="relative flex items-center justify-center w-4 h-4 shrink-0">
+                <span className="absolute w-3.5 h-3.5 rounded-full bg-blue-400/40 animate-ping"></span>
+                <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+              </div>
+              <div className="space-y-0.5 flex-1">
+                <p className="font-semibold text-zinc-900 dark:text-zinc-100">
+                  Waiting for magic link approval on your other device...
+                </p>
+                <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
+                  Click the magic link in your email on your phone to instantly log in here, or
+                  enter the 6-digit code below.
+                </p>
+              </div>
+            </div>
+          ) : undefined
+        }
+      />
     </div>
   );
 

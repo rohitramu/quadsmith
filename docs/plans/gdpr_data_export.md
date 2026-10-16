@@ -90,15 +90,16 @@ flowchart TD
 
     subgraph Runtime Step 1: Export Initiation
         UI["Account Settings (/account) or CLI (qs account export)"] --> Click["Click 'Download My Data'"]
-        Click --> SendRPC["AuthService.SendDataExportVerification"]
+        Click --> SendRPC["AuthService.SendEmailOtp (purpose = EXPORT_DATA)"]
     end
 
     subgraph Runtime Step 2: Out-of-Band Email Challenge
         SendRPC --> DBChallenge["Insert email_otps (purpose = 'export_data')"]
-        DBChallenge --> Email["Send 6-Digit OTP (3m TTL) + Magic Link (15m TTL) to Primary Email"]
+        Email["Send 6-Digit OTP (3m TTL) + Magic Link (15m TTL) to Primary Email"]
+        DBChallenge --> Email
         Email --> VerifyChoice{"User Verification Path"}
-        VerifyChoice -->|Enter 6-Digit Code| VerifyRPC["AuthService.VerifyDataExport (code + challenge_id)"]
-        VerifyChoice -->|Click Email Link| MagicRoute["/account?export_data_token=... -> AuthService.VerifyDataExport"]
+        VerifyChoice -->|Enter 6-Digit Code| VerifyRPC["AuthService.VerifyEmailOtp (purpose = EXPORT_DATA)"]
+        VerifyChoice -->|Click Email Link| MagicRoute["/account?export_data_token=... -> AuthService.VerifyEmailOtp"]
     end
 
     subgraph Runtime Step 3: Signed Token & Streaming ZIP Download
@@ -126,11 +127,13 @@ below the **Profile Details** card:
     and the **Download My Data** action button
     (`data-testid="download-data-button"`), without cluttering the UI with legal
     GDPR explanations or archive file breakdowns. Clicking **Download My Data**
-    immediately calls `AuthService.SendDataExportVerification` (dispatching the
-    code to the user's primary email) and opens the `Verify your email` OTP
-    modal. Designed as a general-purpose **Data & Privacy** section so future
-    privacy controls (e.g., `"Show my email address on my user profile"`) can be
-    added directly alongside this button.
+    opens the unified `EmailVerificationModal` (wrapping `EmailVerificationForm`
+    with `purpose = EXPORT_DATA` and `autoSend = true`), automatically calling
+    `AuthService.SendEmailOtp` to dispatch the challenge to the user's primary
+    email and presenting the OTP entry screen. Designed as a general-purpose
+    **Data & Privacy** section so future privacy controls (e.g.,
+    `"Show my email address on my user profile"`) can be added directly
+    alongside this button.
   - **Associated Email Addresses Table**: Displays the `Primary` badge only on
     the primary email row and omits the redundant `"Secondary"` badge on
     additional email addresses. Login and email-addition verification codes are
@@ -191,7 +194,7 @@ Verification step using the universal challenge architecture in
 [otp.go](../../src/backend/shared/pkg/auth/otp.go) and
 [email.go](../../src/backend/shared/pkg/email/email.go):
 
-1. **Challenge Dispatch (`SendDataExportVerification`)**:
+1. **Challenge Dispatch (`SendEmailOtp`)**:
    - Looks up the authenticated user's primary email address
      (`user_emails.is_primary = true`) in
      [quadsmith_api.sql](../../src/backend/db/quadsmith_api.sql#L49-L60).
@@ -203,9 +206,9 @@ Verification step using the universal challenge architecture in
      - The **6-digit numeric verification code** (valid for 3 minutes).
      - The **1-click magic link** (`/account?export_data_token=<raw_token>`,
        valid for 15 minutes).
-2. **Challenge Verification (`VerifyDataExport`)**:
-   - Accepts either the 6-digit `code` (bound to `challenge_id`) or the
-     `magic_token`.
+2. **Challenge Verification (`VerifyEmailOtp`)**:
+   - Accepts either the 6-digit `code` (bound to `challenge_id`) or the `token`
+     (magic link token) with `purpose = EMAIL_OTP_PURPOSE_EXPORT_DATA`.
    - Enforces the 3-attempt limit on OTP code guesses, returning structured
      `OtpVerificationError` details (`remaining_attempts`, `is_exhausted`,
      `cooldown_seconds`) on mismatch so the modal renders the exact same
@@ -217,10 +220,10 @@ Verification step using the universal challenge architecture in
      to `sub = userUUID`, `id = username`, and
      `purpose = "export_data_download"`).
    - Returns `export_token` and `download_url` (`/api/account/export?token=...`)
-     in `VerifyDataExportResponse`.
+     in `VerifyEmailOtpResponse`.
    - When the user clicks a magic link in their email
      (`/account?export_data_token=<token>`), `AccountSettingsPage.tsx`
-     automatically detects the query parameter, calls `VerifyDataExport`, clears
+     automatically detects the query parameter, calls `VerifyEmailOtp`, clears
      the URL parameter, and triggers the `.zip` download immediately.
 
 #### <a id="alternatives-considered-verification-flow" >Alternatives considered</a>
@@ -788,72 +791,78 @@ to the active primary row.
 
 ### <a id="protobuf-api-specifications-and-rpc-contracts" >Protobuf API Specifications and RPC Contracts</a>
 
-Extend [auth.proto](../../proto/quadsmith/api/auth.proto) with
-`SendDataExportVerification` and `VerifyDataExport` on `AuthService` (while
-maintaining the Top-Down Structural Invariant with `service AuthService` at the
-top of the file):
+Unify email verification across the entire platform in
+[auth.proto](../../proto/quadsmith/api/auth.proto) using standard `SendEmailOtp`
+and `VerifyEmailOtp` RPCs parameterized by the `EmailOtpPurpose` enum (`LOGIN`,
+`ADD_EMAIL`, `EXPORT_DATA`, `DELETE_ACCOUNT`):
 
 ```protobuf
 service AuthService {
-  // Existing authentication, email, username, and deletion RPCs...
-
-  // Dispatches an out-of-band email verification challenge (purpose = "export_data")
+  // Dispatches an out-of-band email verification challenge (purpose = EXPORT_DATA)
   // to the authenticated user's primary email address.
-  rpc SendDataExportVerification(SendDataExportVerificationRequest) returns (SendDataExportVerificationResponse);
+  rpc SendEmailOtp(SendEmailOtpRequest) returns (SendEmailOtpResponse);
 
   // Verifies the 6-digit OTP code or magic link token for data export and
   // returns a short-lived signed export token and download URL.
-  rpc VerifyDataExport(VerifyDataExportRequest) returns (VerifyDataExportResponse);
+  rpc VerifyEmailOtp(VerifyEmailOtpRequest) returns (VerifyEmailOtpResponse);
 }
 
-message SendDataExportVerificationRequest {}
+message SendEmailOtpRequest {
+  string email = 1;
+  EmailOtpPurpose purpose = 2;
+}
 
-message SendDataExportVerificationResponse {
+message SendEmailOtpResponse {
   bool success = 1;
   string message = 2;
-  string primary_email = 3;
-  int32 cooldown_seconds = 4;
-  string challenge_id = 5;
-  google.protobuf.Timestamp expires_at = 6;
+  int32 cooldown_seconds = 3;
+  bool is_existing_account = 4;
+  optional string challenge_id = 5;
+  string email = 6;
+  optional google.protobuf.Timestamp expires_at = 7;
 }
 
-message VerifyDataExportRequest {
-  optional string challenge_id = 1;
-  oneof verification {
-    string code = 2;
-    string magic_token = 3;
-  }
+message VerifyEmailOtpRequest {
+  string email = 1;
+  string code = 2;
+  optional string challenge_id = 3;
+  optional string token = 4;
+  EmailOtpPurpose purpose = 5;
 }
 
-message VerifyDataExportResponse {
+message VerifyEmailOtpResponse {
   bool success = 1;
   string message = 2;
-  string export_token = 3;
-  string download_url = 4;
-  string filename = 5;
-  google.protobuf.Timestamp expires_at = 6;
+  EmailOtpPurpose purpose = 3;
+  optional string email = 4;
+
+  // Data Export details (EXPORT_DATA)
+  optional string export_token = 20;
+  optional string download_url = 21;
+  optional string filename = 22;
+  optional google.protobuf.Timestamp export_expires_at = 23;
 }
 ```
 
 #### <a id="alternatives-considered-protobuf-contracts" >Alternatives considered</a>
 
-##### <a id="overloading-sendemailotp-with-purpose-parameter" >Overloading SendEmailOtp with Purpose Parameter</a>
+##### <a id="dedicated-separate-rpcs-for-every-verification-purpose" >Dedicated Separate RPCs for Every Verification Purpose</a>
 
-Adding an optional `purpose` field to the existing `SendEmailOtpRequest` and
-`VerifyEmailOtpRequest` messages instead of defining dedicated
-`SendDataExportVerification` and `VerifyDataExport` RPCs. The handler branches
-based on the purpose string.
+Defining dedicated standalone RPCs for each email challenge flow (such as
+`SendDataExportVerification` and `VerifyDataExport`, `SendAddEmailOtp` and
+`VerifyAddEmailOtp`, `SendDeleteAccountVerification`). Each workflow maintains
+its own distinct request and response message types.
 
 **Pros:**
 
-- Avoids adding two new RPC methods to `AuthService`.
-- Reuses existing request and response message types.
+- Keeps request/response messages strictly isolated to a single flow.
+- Explicit method names in the Protobuf service definition.
 
 **Cons:**
 
-- Pollutes unauthenticated login RPCs with authenticated post-login export
-  semantics (`export_token`, `download_url`, `primary_email`).
-- Weakens type safety and explicit RPC documentation in `auth.proto`.
+- Proliferates duplicate RPCs with identical rate limiting, hashing, and TTLs.
+- Fragments frontend implementation across separate React components and state.
+- Violates the universal Email Verification architecture across Quadsmith.
 
 ### <a id="cli-parity-with-qs-account-export" >CLI Parity with `qs account export`</a>
 
@@ -865,11 +874,12 @@ subcommand group with `qs account export`:
   `qs account export [-o / --output <path>] [--code <6-digit-code>]`
 - **Interactive & Flag Workflow**:
   1. Verifies that the user is logged in via `authStore.LoadToken()`.
-  2. Calls `AuthService.SendDataExportVerification` (unless `--token` or
-     pre-sent challenge is supplied) and prints:
+  2. Calls `AuthService.SendEmailOtp` with
+     `purpose = EMAIL_OTP_PURPOSE_EXPORT_DATA` (unless `--token` or pre-sent
+     challenge is supplied) and prints:
      `Verification code sent to <primary_email>. Enter the 6-digit code:`
   3. Reads the 6-digit code from `stdin` (or `--code` flag in non-interactive
-     scripts/tests) and calls `AuthService.VerifyDataExport`.
+     scripts/tests) and calls `AuthService.VerifyEmailOtp`.
   4. Performs an HTTP `GET` request to
      `<api-url>/api/account/export?token=<export_token>` and streams the
      response body to `quadsmith-data-<username>-<YYYY-MM-DD>.zip` (or the path

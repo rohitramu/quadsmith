@@ -826,18 +826,19 @@ func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
 	testIP := "198.51.100.99"
 
 	// 1. User A initiates Add Email for userBEmail2 (the secondary email)
-	sendReq := connect.NewRequest(&pb.SendAddEmailOtpRequest{
-		Email: userBEmail2,
+	sendReq := connect.NewRequest(&pb.SendEmailOtpRequest{
+		Email:   userBEmail2,
+		Purpose: pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
 	})
 	sendReq.Header().Set("Authorization", "Bearer "+tokenA)
 	sendReq.Header().Set("X-Forwarded-For", testIP)
-	sendRes, err := authClient.SendAddEmailOtp(ctx, sendReq)
+	sendRes, err := authClient.SendEmailOtp(ctx, sendReq)
 	if err != nil {
-		t.Fatalf("SendAddEmailOtp failed: %v", err)
+		t.Fatalf("SendEmailOtp failed: %v", err)
 	}
 	challengeId := sendRes.Msg.GetChallengeId()
 	if challengeId == "" {
-		t.Fatal("expected challenge_id from SendAddEmailOtp")
+		t.Fatal("expected challenge_id from SendEmailOtp")
 	}
 
 	// Update OTP code to a known value for verification
@@ -852,17 +853,18 @@ func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
 	}
 
 	// 2. User A verifies Add Email OTP
-	verifyReq := connect.NewRequest(&pb.VerifyAddEmailOtpRequest{
+	verifyReq := connect.NewRequest(&pb.VerifyEmailOtpRequest{
 		Email:       userBEmail2,
 		Code:        knownCode,
 		ChallengeId: &challengeId,
+		Purpose:     pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
 	})
 	verifyReq.Header().Set("Authorization", "Bearer "+tokenA)
 	verifyReq.Header().Set("X-Forwarded-For", testIP)
 	verifyReq.Header().Set("X-Challenge-Id", challengeId)
-	verifyRes, err := authClient.VerifyAddEmailOtp(ctx, verifyReq)
+	verifyRes, err := authClient.VerifyEmailOtp(ctx, verifyReq)
 	if err != nil {
-		t.Fatalf("VerifyAddEmailOtp failed: %v", err)
+		t.Fatalf("VerifyEmailOtp failed: %v", err)
 	}
 	if !verifyRes.Msg.MergeRequired {
 		t.Fatalf("expected MergeRequired=true, got false")
@@ -1322,27 +1324,31 @@ func TestSandboxAuth_AccountDeletionGracePeriodAndResurrection(t *testing.T) {
 		t.Fatalf("failed to sign access token: %v", err)
 	}
 
-	// 1. SendDeleteAccountVerification - mismatch username fails
-	badReq := connect.NewRequest(&pb.SendDeleteAccountVerificationRequest{
-		Username: "wrong_username",
+	unauthClient := apiconnect.NewAuthServiceClient(
+		&http.Client{Transport: http.DefaultTransport},
+		apiUrl,
+	)
+
+	// 1. SendEmailOtp for delete account without auth fails
+	badReq := connect.NewRequest(&pb.SendEmailOtpRequest{
+		Purpose: pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_DELETE_ACCOUNT,
 	})
-	badReq.Header().Set("Authorization", "Bearer "+token)
-	_, err = authClient.SendDeleteAccountVerification(ctx, badReq)
+	_, err = unauthClient.SendEmailOtp(ctx, badReq)
 	if err == nil {
-		t.Fatal("expected SendDeleteAccountVerification to fail on mismatched username, but it succeeded")
+		t.Fatal("expected SendEmailOtp for delete account without auth to fail, but it succeeded")
 	}
 
-	// 2. SendDeleteAccountVerification - correct username succeeds
-	sendReq := connect.NewRequest(&pb.SendDeleteAccountVerificationRequest{
-		Username: username,
+	// 2. SendEmailOtp - correct auth succeeds
+	sendReq := connect.NewRequest(&pb.SendEmailOtpRequest{
+		Purpose: pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_DELETE_ACCOUNT,
 	})
 	sendReq.Header().Set("Authorization", "Bearer "+token)
-	sendRes, err := authClient.SendDeleteAccountVerification(ctx, sendReq)
+	sendRes, err := authClient.SendEmailOtp(ctx, sendReq)
 	if err != nil {
-		t.Fatalf("SendDeleteAccountVerification failed: %v", err)
+		t.Fatalf("SendEmailOtp failed: %v", err)
 	}
-	if !sendRes.Msg.Success || sendRes.Msg.ChallengeId == "" {
-		t.Fatalf("unexpected SendDeleteAccountVerification response: %+v", sendRes.Msg)
+	if !sendRes.Msg.Success || sendRes.Msg.GetChallengeId() == "" {
+		t.Fatalf("unexpected SendEmailOtp response: %+v", sendRes.Msg)
 	}
 
 	// Query OTP challenge from DB
@@ -1363,10 +1369,8 @@ func TestSandboxAuth_AccountDeletionGracePeriodAndResurrection(t *testing.T) {
 	}
 
 	delReq := connect.NewRequest(&pb.DeleteAccountRequest{
-		Username: username,
-		Verification: &pb.DeleteAccountRequest_MagicToken{
-			MagicToken: magicToken,
-		},
+		Username:   username,
+		MagicToken: &magicToken,
 	})
 	delReq.Header().Set("Authorization", "Bearer "+token)
 	delRes, err := authClient.DeleteAccount(ctx, delReq)

@@ -285,7 +285,10 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 
 			ctx := context.Background()
 			fmt.Printf("Sending verification code to %s...\n", email)
-			sendRes, err := authClient.SendAddEmailOtp(ctx, connect.NewRequest(&pb.SendAddEmailOtpRequest{Email: email}))
+			sendRes, err := authClient.SendEmailOtp(ctx, connect.NewRequest(&pb.SendEmailOtpRequest{
+				Email:   email,
+				Purpose: pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
+			}))
 			if err != nil {
 				return fmt.Errorf("failed to send OTP: %w", err)
 			}
@@ -301,9 +304,10 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 				return errors.New("verification code cannot be empty")
 			}
 
-			verifyRes, err := authClient.VerifyAddEmailOtp(ctx, connect.NewRequest(&pb.VerifyAddEmailOtpRequest{
-				Email: email,
-				Code:  code,
+			verifyRes, err := authClient.VerifyEmailOtp(ctx, connect.NewRequest(&pb.VerifyEmailOtpRequest{
+				Email:   email,
+				Code:    code,
+				Purpose: pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
 			}))
 			if err != nil {
 				return fmt.Errorf("verification failed: %w", err)
@@ -389,7 +393,10 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 
 			ctx := context.Background()
 			fmt.Printf("Sending verification code to %s...\n", email)
-			sendRes, err := authClient.SendAddEmailOtp(ctx, connect.NewRequest(&pb.SendAddEmailOtpRequest{Email: email}))
+			sendRes, err := authClient.SendEmailOtp(ctx, connect.NewRequest(&pb.SendEmailOtpRequest{
+				Email:   email,
+				Purpose: pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
+			}))
 			if err != nil {
 				return fmt.Errorf("failed to send OTP: %w", err)
 			}
@@ -451,13 +458,15 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 			reader := bufio.NewReader(os.Stdin)
 
 			fmt.Println("Initiating GDPR data archive export...")
-			sendRes, err := authClient.SendDataExportVerification(ctx, connect.NewRequest(&pb.SendDataExportVerificationRequest{}))
+			sendRes, err := authClient.SendEmailOtp(ctx, connect.NewRequest(&pb.SendEmailOtpRequest{
+				Purpose: pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_EXPORT_DATA,
+			}))
 			if err != nil {
 				return fmt.Errorf("failed to initiate data export challenge: %w", err)
 			}
 
 			challengeID := sendRes.Msg.ChallengeId
-			primaryEmail := sendRes.Msg.PrimaryEmail
+			primaryEmail := sendRes.Msg.Email
 			if primaryEmail == "" {
 				primaryEmail = "your primary email"
 			}
@@ -476,19 +485,19 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 				return errors.New("verification code cannot be empty")
 			}
 
-			verifyRes, err := authClient.VerifyDataExport(ctx, connect.NewRequest(&pb.VerifyDataExportRequest{
-				ChallengeId: &challengeID,
-				Verification: &pb.VerifyDataExportRequest_Code{
-					Code: code,
-				},
+			verifyRes, err := authClient.VerifyEmailOtp(ctx, connect.NewRequest(&pb.VerifyEmailOtpRequest{
+				Email:       sendRes.Msg.Email,
+				ChallengeId: challengeID,
+				Code:        code,
+				Purpose:     pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_EXPORT_DATA,
 			}))
 			if err != nil {
 				return fmt.Errorf("failed to verify data export: %w", err)
 			}
 
-			exportToken := verifyRes.Msg.ExportToken
-			downloadURL := verifyRes.Msg.DownloadUrl
-			suggestedFilename := verifyRes.Msg.Filename
+			exportToken := verifyRes.Msg.GetExportToken()
+			downloadURL := verifyRes.Msg.GetDownloadUrl()
+			suggestedFilename := verifyRes.Msg.GetFilename()
 			if suggestedFilename == "" {
 				suggestedFilename = fmt.Sprintf("quadsmith-data-%s.zip", time.Now().UTC().Format("2006-01-02"))
 			}

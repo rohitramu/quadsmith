@@ -20,7 +20,9 @@ import { SearchService } from "@quadsmith/shared/gen/quadsmith/api/search_pb";
 import { SocialService } from "@quadsmith/shared/gen/quadsmith/api/social_pb";
 import {
   AuthService,
+  EmailOtpPurpose,
   SendEmailOtpResponseSchema,
+  VerifyEmailOtpResponseSchema,
   ArchivedUsernameSchema,
   OtpVerificationErrorSchema,
   LoginChallengeStatus,
@@ -571,14 +573,113 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     });
 
     service(AuthService, {
-      sendEmailOtp: () => ({
-        success: true,
-        message: "Code sent",
-        cooldownSeconds: 20,
-        isExistingAccount: true,
-        challengeId: "mock-challenge-id",
-      }),
+      sendEmailOtp: (req) => {
+        if (req.purpose === EmailOtpPurpose.ADD_EMAIL) {
+          return create(SendEmailOtpResponseSchema, {
+            success: true,
+            message: `Verification code sent to ${req.email}`,
+            cooldownSeconds: 20,
+            isExistingAccount: false,
+            challengeId: "mock-challenge-id",
+            email: req.email,
+          });
+        }
+        if (req.purpose === EmailOtpPurpose.EXPORT_DATA) {
+          return create(SendEmailOtpResponseSchema, {
+            success: true,
+            message: "Data export verification code and magic link sent to your primary email",
+            email: "alex@quadsmith.dev",
+            cooldownSeconds: 20,
+            challengeId: "mock-export-challenge-id",
+          });
+        }
+        return create(SendEmailOtpResponseSchema, {
+          success: true,
+          message: "Code sent",
+          cooldownSeconds: 20,
+          isExistingAccount: true,
+          challengeId: "mock-challenge-id",
+          email: req.email || "alex@fpv.build",
+        });
+      },
       verifyEmailOtp: (req) => {
+        if (req.purpose === EmailOtpPurpose.EXPORT_DATA) {
+          if (req.code !== "123456" && !req.token) {
+            throw new ConnectError(
+              "Invalid verification code; 2 attempt(s) remaining",
+              Code.InvalidArgument,
+              undefined,
+              [
+                {
+                  desc: OtpVerificationErrorSchema,
+                  value: {
+                    remainingAttempts: 2,
+                    isExhausted: false,
+                    cooldownSeconds: 0,
+                    message: "Invalid verification code; 2 attempt(s) remaining",
+                  },
+                },
+              ],
+            );
+          }
+          return create(VerifyEmailOtpResponseSchema, {
+            success: true,
+            message: "Data export authorized",
+            exportToken: "mock-signed-export-token",
+            downloadUrl: "/api/account/export?token=mock-signed-export-token",
+            filename: "quadsmith-data-fpv_pilot-2026-10-14.zip",
+          });
+        }
+
+        if (req.purpose === EmailOtpPurpose.ADD_EMAIL) {
+          if (req.code !== "123456" && !req.token) {
+            throw new ConnectError("Incorrect verification code", Code.InvalidArgument);
+          }
+          const emailLower = (req.email || "").toLowerCase();
+          const isExisting =
+            emailLower.includes("other") ||
+            emailLower.includes("old.racer") ||
+            emailLower.includes("existing") ||
+            Boolean(req.token && !req.email);
+
+          if (isExisting) {
+            return create(VerifyEmailOtpResponseSchema, {
+              success: true,
+              message: "Account merge required",
+              mergeRequired: true,
+              mergeTicket: "mock-merge-ticket",
+              otherUserUsername: "old_racer",
+              otherBuildCount: 4,
+              otherBuildNames: [
+                "Bando Basher 5-inch",
+                "CineWhoop 3.5 Pro",
+                "Long Range Cruiser 7-inch",
+                "Ultralight Toothpick 2S",
+              ],
+              otherEmails: ["old.racer@fpv.org", "old.racer.backup@example.com"],
+              otherOauthProviders: ["github"],
+            });
+          }
+
+          const newEmail = create(UserEmailSchema, {
+            uuid: `mock-email-uuid-${userEmails.length + 1}`,
+            userUuid: mockUser.uuid,
+            email: req.email || "pilot@example.com",
+            isPrimary: false,
+          });
+          userEmails.push(newEmail);
+          return create(VerifyEmailOtpResponseSchema, {
+            success: true,
+            message: "Email verified and added",
+            mergeRequired: false,
+            otherUserUsername: "",
+            otherBuildCount: 0,
+            otherBuildNames: [],
+            otherEmails: [],
+            otherOauthProviders: [],
+          });
+        }
+
         if (req.code === "888888") {
           const err = new ConnectError(
             "Incorrect code. You have 2 attempts left",
@@ -644,24 +745,25 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           );
         }
         if (req.code === "222222" || req.email.includes("new")) {
-          return {
+          return create(VerifyEmailOtpResponseSchema, {
             accountSetupRequired: true,
             setupToken: "mock-setup-token",
-          };
+          });
         }
-        return {
+        return create(VerifyEmailOtpResponseSchema, {
           accessToken: "mock-jwt-token",
           refreshToken: "mock-refresh-token",
           user: mockUser,
           profile: mockProfile,
-        };
+        });
       },
-      verifyMagicLink: () => ({
-        accessToken: "mock-jwt-token",
-        refreshToken: "mock-refresh-token",
-        user: mockUser,
-        profile: mockProfile,
-      }),
+      verifyMagicLink: () =>
+        create(VerifyEmailOtpResponseSchema, {
+          accessToken: "mock-jwt-token",
+          refreshToken: "mock-refresh-token",
+          user: mockUser,
+          profile: mockProfile,
+        }),
       getLoginChallengeDetails: (req) => {
         if (req.token === "invalid-token" || req.token === "expired-token") {
           throw new ConnectError("invalid or expired magic link", Code.InvalidArgument);
@@ -760,61 +862,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       listUserEmails: () => ({
         emails: userEmails,
       }),
-      sendAddEmailOtp: (req) => {
-        return create(SendEmailOtpResponseSchema, {
-          success: true,
-          message: `Verification code sent to ${req.email}`,
-          cooldownSeconds: 20,
-          isExistingAccount: false,
-        });
-      },
-      verifyAddEmailOtp: (req) => {
-        if (req.code !== "123456" && !req.token) {
-          throw new ConnectError("Incorrect verification code", Code.InvalidArgument);
-        }
-        const emailLower = (req.email || "").toLowerCase();
-        const isExisting =
-          emailLower.includes("other") ||
-          emailLower.includes("old.racer") ||
-          emailLower.includes("existing") ||
-          Boolean(req.token && !req.email);
 
-        if (isExisting) {
-          return {
-            success: true,
-            message: "Account merge required",
-            mergeRequired: true,
-            otherUserUsername: "old_racer",
-            otherBuildCount: 4,
-            otherBuildNames: [
-              "Bando Basher 5-inch",
-              "CineWhoop 3.5 Pro",
-              "Long Range Cruiser 7-inch",
-              "Ultralight Toothpick 2S",
-            ],
-            otherEmails: ["old.racer@fpv.org", "old.racer.backup@example.com"],
-            otherOauthProviders: ["github"],
-          };
-        }
-
-        const newEmail = create(UserEmailSchema, {
-          uuid: `mock-email-uuid-${userEmails.length + 1}`,
-          userUuid: mockUser.uuid,
-          email: req.email || "pilot@example.com",
-          isPrimary: false,
-        });
-        userEmails.push(newEmail);
-        return {
-          success: true,
-          message: "Email verified and added",
-          mergeRequired: false,
-          otherUserUsername: "",
-          otherBuildCount: 0,
-          otherBuildNames: [],
-          otherEmails: [],
-          otherOauthProviders: [],
-        };
-      },
       mergeAccount: (req) => {
         if (req.code !== "123456" && !req.token) {
           throw new ConnectError("Incorrect verification code", Code.InvalidArgument);
@@ -904,45 +952,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           nextAllowedArchiveRenameAt: undefined,
         };
       },
-      sendDataExportVerification: () => ({
-        success: true,
-        message: "Data export verification code and magic link sent to your primary email",
-        primaryEmail: "alex@quadsmith.dev",
-        cooldownSeconds: 20,
-        challengeId: "mock-export-challenge-id",
-        expiresAt: { seconds: BigInt(Math.floor((Date.now() + 15 * 60 * 1000) / 1000)), nanos: 0 },
-      }),
-      verifyDataExport: (req) => {
-        if (req.verification.case === "code" && req.verification.value !== "123456") {
-          throw new ConnectError(
-            "Invalid verification code; 2 attempt(s) remaining",
-            Code.InvalidArgument,
-            undefined,
-            [
-              {
-                desc: OtpVerificationErrorSchema,
-                value: {
-                  remainingAttempts: 2,
-                  isExhausted: false,
-                  cooldownSeconds: 0,
-                  message: "Invalid verification code; 2 attempt(s) remaining",
-                },
-              },
-            ],
-          );
-        }
-        return {
-          success: true,
-          message: "Data export authorized",
-          exportToken: "mock-signed-export-token",
-          downloadUrl: "/api/account/export?token=mock-signed-export-token",
-          filename: "quadsmith-data-fpv_pilot-2026-10-14.zip",
-          expiresAt: {
-            seconds: BigInt(Math.floor((Date.now() + 15 * 60 * 1000) / 1000)),
-            nanos: 0,
-          },
-        };
-      },
+
       ...(options.authService || {}),
     });
 

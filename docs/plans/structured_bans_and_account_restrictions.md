@@ -309,15 +309,14 @@ inspect their linked emails, and manage their authentication sessions:
        session)
      - `/quadsmith.api.AuthService/RevokeOtherSessions` (permits revoking all
        other sessions)
-     - `/quadsmith.api.AuthService/SendDataExportVerification`
-     - `/quadsmith.api.AuthService/VerifyDataExport`
-     - `/quadsmith.api.AuthService/SendDeleteAccountVerification`
+     - `/quadsmith.api.AuthService/SendEmailOtp`
+     - `/quadsmith.api.AuthService/VerifyEmailOtp`
      - `/quadsmith.api.AuthService/DeleteAccount`
      - `/quadsmith.api.AuthService/CancelAccountDeletion`
      - `/quadsmith.api.UserService/GetUserBanStatus`
-   - Any other procedure (such as `ChangeUsername`, `SendAddEmailOtp`,
-     `MergeAccount`, `AddComment`, `CreateBuild`, `RateBuild`) is rejected with
-     Connect code `CodePermissionDenied` and error message
+   - Any other procedure (such as `ChangeUsername`, `MergeAccount`,
+     `AddComment`, `CreateBuild`, `RateBuild`) is rejected with Connect code
+     `CodePermissionDenied` and error message
      `"account suspended: access restricted to account settings"`.
 3. **Public Community Invariance**:
    - When public visitors or other pilots view the banned user's profile

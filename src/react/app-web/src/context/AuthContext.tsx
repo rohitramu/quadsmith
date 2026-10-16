@@ -1,7 +1,11 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
 import { useTransport } from "@connectrpc/connect-query";
 import { createClient } from "@connectrpc/connect";
-import { AuthService, LoginChallengeStatus } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
+import {
+  AuthService,
+  EmailOtpPurpose,
+  LoginChallengeStatus,
+} from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import type {
   ChangeUsernameResponse,
   ListArchivedUsernamesResponse,
@@ -9,9 +13,8 @@ import type {
   ApproveLoginChallengeResponse,
   DenyLoginChallengeResponse,
   GetLoginChallengeStatusResponse,
-  SendDataExportVerificationResponse,
-  VerifyDataExportRequest,
-  VerifyDataExportResponse,
+  SendEmailOtpResponse,
+  VerifyEmailOtpResponse,
   Session,
 } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import { UserService } from "@quadsmith/shared/gen/quadsmith/api/user_pb";
@@ -30,17 +33,31 @@ export interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   challengeId: string | null;
-  sendEmailOtp: (email: string) => Promise<{
+  sendEmailOtp: (
+    email?: string,
+    purpose?: EmailOtpPurpose,
+  ) => Promise<{
     success: boolean;
     cooldownSeconds: number;
     message: string;
+    isExistingAccount?: boolean;
     challengeId?: string;
+    email?: string;
   }>;
   verifyEmailOtp: (
-    email: string,
-    code: string,
+    emailOrParams:
+      | string
+      | {
+          email?: string;
+          code?: string;
+          token?: string;
+          challengeId?: string | null;
+          purpose?: EmailOtpPurpose;
+        },
+    code?: string,
     challengeId?: string,
-  ) => Promise<{ accountSetupRequired?: boolean; setupToken?: string }>;
+    purpose?: EmailOtpPurpose,
+  ) => Promise<VerifyEmailOtpResponse>;
   verifyMagicLink: (
     token: string,
   ) => Promise<{ accountSetupRequired?: boolean; setupToken?: string }>;
@@ -104,12 +121,12 @@ export interface AuthContextType {
     available: boolean;
     message: string;
   }>;
-  sendDataExportVerification: () => Promise<SendDataExportVerificationResponse>;
+  sendDataExportVerification: () => Promise<SendEmailOtpResponse>;
   verifyDataExport: (
     challengeId?: string | null,
     code?: string | null,
     magicToken?: string | null,
-  ) => Promise<VerifyDataExportResponse>;
+  ) => Promise<VerifyEmailOtpResponse>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -263,8 +280,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return { revokedCount: res.revokedCount };
   };
 
-  const sendEmailOtp = async (email: string) => {
-    const res = await authClient.sendEmailOtp({ email });
+  const sendEmailOtp = async (email?: string, purpose: EmailOtpPurpose = EmailOtpPurpose.LOGIN) => {
+    const res = await authClient.sendEmailOtp({
+      email: email || "",
+      purpose,
+    });
     if (res.challengeId) {
       setChallengeId(res.challengeId);
       try {
@@ -277,30 +297,80 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       success: res.success,
       cooldownSeconds: res.cooldownSeconds ?? 20,
       message: res.message || "Verification code sent to your email",
+      isExistingAccount: res.isExistingAccount,
       challengeId: res.challengeId,
+      email: res.email,
     };
   };
 
-  const verifyEmailOtp = async (email: string, code: string, explicitChallengeId?: string) => {
-    const cid =
-      explicitChallengeId ||
-      challengeId ||
-      (() => {
-        try {
-          return sessionStorage.getItem("qs_challenge_id");
-        } catch {
-          return null;
-        }
-      })() ||
-      undefined;
+  const verifyEmailOtp = async (
+    emailOrParams:
+      | string
+      | {
+          email?: string;
+          code?: string;
+          token?: string;
+          challengeId?: string | null;
+          purpose?: EmailOtpPurpose;
+        },
+    explicitCode?: string,
+    explicitChallengeId?: string,
+    explicitPurpose?: EmailOtpPurpose,
+  ): Promise<VerifyEmailOtpResponse> => {
+    let email: string = "";
+    let code: string = "";
+    let token: string = "";
+    let cid: string | undefined = undefined;
+    let purpose: EmailOtpPurpose = EmailOtpPurpose.LOGIN;
 
-    const res = await authClient.verifyEmailOtp({ email, code, challengeId: cid });
+    if (typeof emailOrParams === "object") {
+      email = emailOrParams.email || "";
+      code = emailOrParams.code || "";
+      token = emailOrParams.token || "";
+      cid =
+        emailOrParams.challengeId ||
+        challengeId ||
+        (() => {
+          try {
+            return sessionStorage.getItem("qs_challenge_id");
+          } catch {
+            return null;
+          }
+        })() ||
+        undefined;
+      purpose = emailOrParams.purpose ?? EmailOtpPurpose.LOGIN;
+    } else {
+      email = emailOrParams;
+      code = explicitCode || "";
+      cid =
+        explicitChallengeId ||
+        challengeId ||
+        (() => {
+          try {
+            return sessionStorage.getItem("qs_challenge_id");
+          } catch {
+            return null;
+          }
+        })() ||
+        undefined;
+      purpose = explicitPurpose ?? EmailOtpPurpose.LOGIN;
+    }
+
+    const res = await authClient.verifyEmailOtp({
+      email,
+      code,
+      challengeId: cid,
+      token,
+      purpose,
+    });
+
     setChallengeId(null);
     try {
       sessionStorage.removeItem("qs_challenge_id");
     } catch {
       // ignore
     }
+
     if (res.accessToken) {
       setAccessToken(res.accessToken);
     }
@@ -310,10 +380,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (res.profile) {
       setProfile(res.profile);
     }
-    return {
-      accountSetupRequired: res.accountSetupRequired,
-      setupToken: res.setupToken,
-    };
+    if (res.mergeTicket) {
+      setMergeTicket(res.mergeTicket);
+    }
+    if (purpose === EmailOtpPurpose.ADD_EMAIL) {
+      await refreshEmails();
+    }
+
+    return res;
   };
 
   const verifyMagicLink = async (token: string) => {
@@ -402,22 +476,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const sendAddEmailOtp = async (email: string) => {
-    const res = await authClient.sendAddEmailOtp({ email });
-    if (res.challengeId) {
-      setChallengeId(res.challengeId);
-      try {
-        sessionStorage.setItem("qs_challenge_id", res.challengeId);
-      } catch {
-        // ignore
-      }
-    }
-    return {
-      success: res.success,
-      cooldownSeconds: res.cooldownSeconds || 20,
-      message: res.message || "Verification code sent to your email",
-      isExistingAccount: res.isExistingAccount || false,
-      challengeId: res.challengeId,
-    };
+    return await sendEmailOtp(email, EmailOtpPurpose.ADD_EMAIL);
   };
 
   const verifyAddEmailOtp = async (
@@ -426,29 +485,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     token?: string | null,
     explicitChallengeId?: string | null,
   ) => {
-    const cid =
-      explicitChallengeId ||
-      challengeId ||
-      (() => {
-        try {
-          return sessionStorage.getItem("qs_challenge_id");
-        } catch {
-          return null;
-        }
-      })() ||
-      undefined;
-
-    const res = await authClient.verifyAddEmailOtp({
+    return await verifyEmailOtp({
       email,
       code: code || "",
       token: token || "",
-      challengeId: cid,
+      challengeId: explicitChallengeId,
+      purpose: EmailOtpPurpose.ADD_EMAIL,
     });
-    if (res.mergeTicket) {
-      setMergeTicket(res.mergeTicket);
-    }
-    await refreshEmails();
-    return res;
   };
 
   const mergeAccount = async (
@@ -557,27 +600,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
-  const sendDataExportVerification = async (): Promise<SendDataExportVerificationResponse> => {
-    return await authClient.sendDataExportVerification({});
+  const sendDataExportVerification = async (): Promise<SendEmailOtpResponse> => {
+    return await authClient.sendEmailOtp({
+      email: "",
+      purpose: EmailOtpPurpose.EXPORT_DATA,
+    });
   };
 
   const verifyDataExport = async (
     challengeId?: string | null,
     code?: string | null,
     magicToken?: string | null,
-  ): Promise<VerifyDataExportResponse> => {
-    let verification: VerifyDataExportRequest["verification"];
-    if (code) {
-      verification = { case: "code", value: code };
-    } else if (magicToken) {
-      verification = { case: "magicToken", value: magicToken };
-    } else {
-      throw new Error("Verification code or magic token is required");
-    }
-
-    return await authClient.verifyDataExport({
-      challengeId: challengeId || undefined,
-      verification,
+  ): Promise<VerifyEmailOtpResponse> => {
+    return await verifyEmailOtp({
+      challengeId,
+      code: code || "",
+      token: magicToken || "",
+      purpose: EmailOtpPurpose.EXPORT_DATA,
     });
   };
 

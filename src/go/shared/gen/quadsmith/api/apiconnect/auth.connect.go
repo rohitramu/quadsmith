@@ -80,12 +80,6 @@ const (
 	// AuthServiceListUserEmailsProcedure is the fully-qualified name of the AuthService's
 	// ListUserEmails RPC.
 	AuthServiceListUserEmailsProcedure = "/quadsmith.api.AuthService/ListUserEmails"
-	// AuthServiceSendAddEmailOtpProcedure is the fully-qualified name of the AuthService's
-	// SendAddEmailOtp RPC.
-	AuthServiceSendAddEmailOtpProcedure = "/quadsmith.api.AuthService/SendAddEmailOtp"
-	// AuthServiceVerifyAddEmailOtpProcedure is the fully-qualified name of the AuthService's
-	// VerifyAddEmailOtp RPC.
-	AuthServiceVerifyAddEmailOtpProcedure = "/quadsmith.api.AuthService/VerifyAddEmailOtp"
 	// AuthServiceMergeAccountProcedure is the fully-qualified name of the AuthService's MergeAccount
 	// RPC.
 	AuthServiceMergeAccountProcedure = "/quadsmith.api.AuthService/MergeAccount"
@@ -101,15 +95,6 @@ const (
 	// AuthServiceListArchivedUsernamesProcedure is the fully-qualified name of the AuthService's
 	// ListArchivedUsernames RPC.
 	AuthServiceListArchivedUsernamesProcedure = "/quadsmith.api.AuthService/ListArchivedUsernames"
-	// AuthServiceSendDataExportVerificationProcedure is the fully-qualified name of the AuthService's
-	// SendDataExportVerification RPC.
-	AuthServiceSendDataExportVerificationProcedure = "/quadsmith.api.AuthService/SendDataExportVerification"
-	// AuthServiceVerifyDataExportProcedure is the fully-qualified name of the AuthService's
-	// VerifyDataExport RPC.
-	AuthServiceVerifyDataExportProcedure = "/quadsmith.api.AuthService/VerifyDataExport"
-	// AuthServiceSendDeleteAccountVerificationProcedure is the fully-qualified name of the
-	// AuthService's SendDeleteAccountVerification RPC.
-	AuthServiceSendDeleteAccountVerificationProcedure = "/quadsmith.api.AuthService/SendDeleteAccountVerification"
 	// AuthServiceDeleteAccountProcedure is the fully-qualified name of the AuthService's DeleteAccount
 	// RPC.
 	AuthServiceDeleteAccountProcedure = "/quadsmith.api.AuthService/DeleteAccount"
@@ -121,8 +106,8 @@ const (
 // AuthServiceClient is a client for the quadsmith.api.AuthService service.
 type AuthServiceClient interface {
 	SendEmailOtp(context.Context, *connect.Request[api.SendEmailOtpRequest]) (*connect.Response[api.SendEmailOtpResponse], error)
-	VerifyEmailOtp(context.Context, *connect.Request[api.VerifyEmailOtpRequest]) (*connect.Response[api.AuthResponse], error)
-	VerifyMagicLink(context.Context, *connect.Request[api.VerifyMagicLinkRequest]) (*connect.Response[api.AuthResponse], error)
+	VerifyEmailOtp(context.Context, *connect.Request[api.VerifyEmailOtpRequest]) (*connect.Response[api.VerifyEmailOtpResponse], error)
+	VerifyMagicLink(context.Context, *connect.Request[api.VerifyMagicLinkRequest]) (*connect.Response[api.VerifyEmailOtpResponse], error)
 	GetLoginChallengeDetails(context.Context, *connect.Request[api.GetLoginChallengeDetailsRequest]) (*connect.Response[api.GetLoginChallengeDetailsResponse], error)
 	ApproveLoginChallenge(context.Context, *connect.Request[api.ApproveLoginChallengeRequest]) (*connect.Response[api.ApproveLoginChallengeResponse], error)
 	DenyLoginChallenge(context.Context, *connect.Request[api.DenyLoginChallengeRequest]) (*connect.Response[api.DenyLoginChallengeResponse], error)
@@ -136,16 +121,11 @@ type AuthServiceClient interface {
 	RevokeSession(context.Context, *connect.Request[api.RevokeSessionRequest]) (*connect.Response[api.RevokeSessionResponse], error)
 	RevokeOtherSessions(context.Context, *connect.Request[api.RevokeOtherSessionsRequest]) (*connect.Response[api.RevokeOtherSessionsResponse], error)
 	ListUserEmails(context.Context, *connect.Request[api.ListUserEmailsRequest]) (*connect.Response[api.ListUserEmailsResponse], error)
-	SendAddEmailOtp(context.Context, *connect.Request[api.SendAddEmailOtpRequest]) (*connect.Response[api.SendEmailOtpResponse], error)
-	VerifyAddEmailOtp(context.Context, *connect.Request[api.VerifyAddEmailOtpRequest]) (*connect.Response[api.VerifyAddEmailOtpResponse], error)
 	MergeAccount(context.Context, *connect.Request[api.MergeAccountRequest]) (*connect.Response[api.MergeAccountResponse], error)
 	SetPrimaryEmail(context.Context, *connect.Request[api.SetPrimaryEmailRequest]) (*connect.Response[api.SetPrimaryEmailResponse], error)
 	RemoveUserEmail(context.Context, *connect.Request[api.RemoveUserEmailRequest]) (*connect.Response[api.RemoveUserEmailResponse], error)
 	ChangeUsername(context.Context, *connect.Request[api.ChangeUsernameRequest]) (*connect.Response[api.ChangeUsernameResponse], error)
 	ListArchivedUsernames(context.Context, *connect.Request[api.ListArchivedUsernamesRequest]) (*connect.Response[api.ListArchivedUsernamesResponse], error)
-	SendDataExportVerification(context.Context, *connect.Request[api.SendDataExportVerificationRequest]) (*connect.Response[api.SendDataExportVerificationResponse], error)
-	VerifyDataExport(context.Context, *connect.Request[api.VerifyDataExportRequest]) (*connect.Response[api.VerifyDataExportResponse], error)
-	SendDeleteAccountVerification(context.Context, *connect.Request[api.SendDeleteAccountVerificationRequest]) (*connect.Response[api.SendDeleteAccountVerificationResponse], error)
 	DeleteAccount(context.Context, *connect.Request[api.DeleteAccountRequest]) (*connect.Response[api.DeleteAccountResponse], error)
 	CancelAccountDeletion(context.Context, *connect.Request[api.CancelAccountDeletionRequest]) (*connect.Response[api.CancelAccountDeletionResponse], error)
 }
@@ -167,13 +147,13 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("SendEmailOtp")),
 			connect.WithClientOptions(opts...),
 		),
-		verifyEmailOtp: connect.NewClient[api.VerifyEmailOtpRequest, api.AuthResponse](
+		verifyEmailOtp: connect.NewClient[api.VerifyEmailOtpRequest, api.VerifyEmailOtpResponse](
 			httpClient,
 			baseURL+AuthServiceVerifyEmailOtpProcedure,
 			connect.WithSchema(authServiceMethods.ByName("VerifyEmailOtp")),
 			connect.WithClientOptions(opts...),
 		),
-		verifyMagicLink: connect.NewClient[api.VerifyMagicLinkRequest, api.AuthResponse](
+		verifyMagicLink: connect.NewClient[api.VerifyMagicLinkRequest, api.VerifyEmailOtpResponse](
 			httpClient,
 			baseURL+AuthServiceVerifyMagicLinkProcedure,
 			connect.WithSchema(authServiceMethods.ByName("VerifyMagicLink")),
@@ -257,18 +237,6 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("ListUserEmails")),
 			connect.WithClientOptions(opts...),
 		),
-		sendAddEmailOtp: connect.NewClient[api.SendAddEmailOtpRequest, api.SendEmailOtpResponse](
-			httpClient,
-			baseURL+AuthServiceSendAddEmailOtpProcedure,
-			connect.WithSchema(authServiceMethods.ByName("SendAddEmailOtp")),
-			connect.WithClientOptions(opts...),
-		),
-		verifyAddEmailOtp: connect.NewClient[api.VerifyAddEmailOtpRequest, api.VerifyAddEmailOtpResponse](
-			httpClient,
-			baseURL+AuthServiceVerifyAddEmailOtpProcedure,
-			connect.WithSchema(authServiceMethods.ByName("VerifyAddEmailOtp")),
-			connect.WithClientOptions(opts...),
-		),
 		mergeAccount: connect.NewClient[api.MergeAccountRequest, api.MergeAccountResponse](
 			httpClient,
 			baseURL+AuthServiceMergeAccountProcedure,
@@ -299,24 +267,6 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("ListArchivedUsernames")),
 			connect.WithClientOptions(opts...),
 		),
-		sendDataExportVerification: connect.NewClient[api.SendDataExportVerificationRequest, api.SendDataExportVerificationResponse](
-			httpClient,
-			baseURL+AuthServiceSendDataExportVerificationProcedure,
-			connect.WithSchema(authServiceMethods.ByName("SendDataExportVerification")),
-			connect.WithClientOptions(opts...),
-		),
-		verifyDataExport: connect.NewClient[api.VerifyDataExportRequest, api.VerifyDataExportResponse](
-			httpClient,
-			baseURL+AuthServiceVerifyDataExportProcedure,
-			connect.WithSchema(authServiceMethods.ByName("VerifyDataExport")),
-			connect.WithClientOptions(opts...),
-		),
-		sendDeleteAccountVerification: connect.NewClient[api.SendDeleteAccountVerificationRequest, api.SendDeleteAccountVerificationResponse](
-			httpClient,
-			baseURL+AuthServiceSendDeleteAccountVerificationProcedure,
-			connect.WithSchema(authServiceMethods.ByName("SendDeleteAccountVerification")),
-			connect.WithClientOptions(opts...),
-		),
 		deleteAccount: connect.NewClient[api.DeleteAccountRequest, api.DeleteAccountResponse](
 			httpClient,
 			baseURL+AuthServiceDeleteAccountProcedure,
@@ -334,34 +284,29 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 
 // authServiceClient implements AuthServiceClient.
 type authServiceClient struct {
-	sendEmailOtp                  *connect.Client[api.SendEmailOtpRequest, api.SendEmailOtpResponse]
-	verifyEmailOtp                *connect.Client[api.VerifyEmailOtpRequest, api.AuthResponse]
-	verifyMagicLink               *connect.Client[api.VerifyMagicLinkRequest, api.AuthResponse]
-	getLoginChallengeDetails      *connect.Client[api.GetLoginChallengeDetailsRequest, api.GetLoginChallengeDetailsResponse]
-	approveLoginChallenge         *connect.Client[api.ApproveLoginChallengeRequest, api.ApproveLoginChallengeResponse]
-	denyLoginChallenge            *connect.Client[api.DenyLoginChallengeRequest, api.DenyLoginChallengeResponse]
-	getLoginChallengeStatus       *connect.Client[api.GetLoginChallengeStatusRequest, api.GetLoginChallengeStatusResponse]
-	completeAccountSetup          *connect.Client[api.CompleteAccountSetupRequest, api.AuthResponse]
-	refreshToken                  *connect.Client[api.RefreshTokenRequest, api.AuthResponse]
-	getCurrentUser                *connect.Client[api.GetCurrentUserRequest, api.User]
-	updateProfile                 *connect.Client[api.UpdateProfileRequest, api.UserProfile]
-	logout                        *connect.Client[api.LogoutRequest, api.LogoutResponse]
-	listActiveSessions            *connect.Client[api.ListActiveSessionsRequest, api.ListActiveSessionsResponse]
-	revokeSession                 *connect.Client[api.RevokeSessionRequest, api.RevokeSessionResponse]
-	revokeOtherSessions           *connect.Client[api.RevokeOtherSessionsRequest, api.RevokeOtherSessionsResponse]
-	listUserEmails                *connect.Client[api.ListUserEmailsRequest, api.ListUserEmailsResponse]
-	sendAddEmailOtp               *connect.Client[api.SendAddEmailOtpRequest, api.SendEmailOtpResponse]
-	verifyAddEmailOtp             *connect.Client[api.VerifyAddEmailOtpRequest, api.VerifyAddEmailOtpResponse]
-	mergeAccount                  *connect.Client[api.MergeAccountRequest, api.MergeAccountResponse]
-	setPrimaryEmail               *connect.Client[api.SetPrimaryEmailRequest, api.SetPrimaryEmailResponse]
-	removeUserEmail               *connect.Client[api.RemoveUserEmailRequest, api.RemoveUserEmailResponse]
-	changeUsername                *connect.Client[api.ChangeUsernameRequest, api.ChangeUsernameResponse]
-	listArchivedUsernames         *connect.Client[api.ListArchivedUsernamesRequest, api.ListArchivedUsernamesResponse]
-	sendDataExportVerification    *connect.Client[api.SendDataExportVerificationRequest, api.SendDataExportVerificationResponse]
-	verifyDataExport              *connect.Client[api.VerifyDataExportRequest, api.VerifyDataExportResponse]
-	sendDeleteAccountVerification *connect.Client[api.SendDeleteAccountVerificationRequest, api.SendDeleteAccountVerificationResponse]
-	deleteAccount                 *connect.Client[api.DeleteAccountRequest, api.DeleteAccountResponse]
-	cancelAccountDeletion         *connect.Client[api.CancelAccountDeletionRequest, api.CancelAccountDeletionResponse]
+	sendEmailOtp             *connect.Client[api.SendEmailOtpRequest, api.SendEmailOtpResponse]
+	verifyEmailOtp           *connect.Client[api.VerifyEmailOtpRequest, api.VerifyEmailOtpResponse]
+	verifyMagicLink          *connect.Client[api.VerifyMagicLinkRequest, api.VerifyEmailOtpResponse]
+	getLoginChallengeDetails *connect.Client[api.GetLoginChallengeDetailsRequest, api.GetLoginChallengeDetailsResponse]
+	approveLoginChallenge    *connect.Client[api.ApproveLoginChallengeRequest, api.ApproveLoginChallengeResponse]
+	denyLoginChallenge       *connect.Client[api.DenyLoginChallengeRequest, api.DenyLoginChallengeResponse]
+	getLoginChallengeStatus  *connect.Client[api.GetLoginChallengeStatusRequest, api.GetLoginChallengeStatusResponse]
+	completeAccountSetup     *connect.Client[api.CompleteAccountSetupRequest, api.AuthResponse]
+	refreshToken             *connect.Client[api.RefreshTokenRequest, api.AuthResponse]
+	getCurrentUser           *connect.Client[api.GetCurrentUserRequest, api.User]
+	updateProfile            *connect.Client[api.UpdateProfileRequest, api.UserProfile]
+	logout                   *connect.Client[api.LogoutRequest, api.LogoutResponse]
+	listActiveSessions       *connect.Client[api.ListActiveSessionsRequest, api.ListActiveSessionsResponse]
+	revokeSession            *connect.Client[api.RevokeSessionRequest, api.RevokeSessionResponse]
+	revokeOtherSessions      *connect.Client[api.RevokeOtherSessionsRequest, api.RevokeOtherSessionsResponse]
+	listUserEmails           *connect.Client[api.ListUserEmailsRequest, api.ListUserEmailsResponse]
+	mergeAccount             *connect.Client[api.MergeAccountRequest, api.MergeAccountResponse]
+	setPrimaryEmail          *connect.Client[api.SetPrimaryEmailRequest, api.SetPrimaryEmailResponse]
+	removeUserEmail          *connect.Client[api.RemoveUserEmailRequest, api.RemoveUserEmailResponse]
+	changeUsername           *connect.Client[api.ChangeUsernameRequest, api.ChangeUsernameResponse]
+	listArchivedUsernames    *connect.Client[api.ListArchivedUsernamesRequest, api.ListArchivedUsernamesResponse]
+	deleteAccount            *connect.Client[api.DeleteAccountRequest, api.DeleteAccountResponse]
+	cancelAccountDeletion    *connect.Client[api.CancelAccountDeletionRequest, api.CancelAccountDeletionResponse]
 }
 
 // SendEmailOtp calls quadsmith.api.AuthService.SendEmailOtp.
@@ -370,12 +315,12 @@ func (c *authServiceClient) SendEmailOtp(ctx context.Context, req *connect.Reque
 }
 
 // VerifyEmailOtp calls quadsmith.api.AuthService.VerifyEmailOtp.
-func (c *authServiceClient) VerifyEmailOtp(ctx context.Context, req *connect.Request[api.VerifyEmailOtpRequest]) (*connect.Response[api.AuthResponse], error) {
+func (c *authServiceClient) VerifyEmailOtp(ctx context.Context, req *connect.Request[api.VerifyEmailOtpRequest]) (*connect.Response[api.VerifyEmailOtpResponse], error) {
 	return c.verifyEmailOtp.CallUnary(ctx, req)
 }
 
 // VerifyMagicLink calls quadsmith.api.AuthService.VerifyMagicLink.
-func (c *authServiceClient) VerifyMagicLink(ctx context.Context, req *connect.Request[api.VerifyMagicLinkRequest]) (*connect.Response[api.AuthResponse], error) {
+func (c *authServiceClient) VerifyMagicLink(ctx context.Context, req *connect.Request[api.VerifyMagicLinkRequest]) (*connect.Response[api.VerifyEmailOtpResponse], error) {
 	return c.verifyMagicLink.CallUnary(ctx, req)
 }
 
@@ -444,16 +389,6 @@ func (c *authServiceClient) ListUserEmails(ctx context.Context, req *connect.Req
 	return c.listUserEmails.CallUnary(ctx, req)
 }
 
-// SendAddEmailOtp calls quadsmith.api.AuthService.SendAddEmailOtp.
-func (c *authServiceClient) SendAddEmailOtp(ctx context.Context, req *connect.Request[api.SendAddEmailOtpRequest]) (*connect.Response[api.SendEmailOtpResponse], error) {
-	return c.sendAddEmailOtp.CallUnary(ctx, req)
-}
-
-// VerifyAddEmailOtp calls quadsmith.api.AuthService.VerifyAddEmailOtp.
-func (c *authServiceClient) VerifyAddEmailOtp(ctx context.Context, req *connect.Request[api.VerifyAddEmailOtpRequest]) (*connect.Response[api.VerifyAddEmailOtpResponse], error) {
-	return c.verifyAddEmailOtp.CallUnary(ctx, req)
-}
-
 // MergeAccount calls quadsmith.api.AuthService.MergeAccount.
 func (c *authServiceClient) MergeAccount(ctx context.Context, req *connect.Request[api.MergeAccountRequest]) (*connect.Response[api.MergeAccountResponse], error) {
 	return c.mergeAccount.CallUnary(ctx, req)
@@ -479,21 +414,6 @@ func (c *authServiceClient) ListArchivedUsernames(ctx context.Context, req *conn
 	return c.listArchivedUsernames.CallUnary(ctx, req)
 }
 
-// SendDataExportVerification calls quadsmith.api.AuthService.SendDataExportVerification.
-func (c *authServiceClient) SendDataExportVerification(ctx context.Context, req *connect.Request[api.SendDataExportVerificationRequest]) (*connect.Response[api.SendDataExportVerificationResponse], error) {
-	return c.sendDataExportVerification.CallUnary(ctx, req)
-}
-
-// VerifyDataExport calls quadsmith.api.AuthService.VerifyDataExport.
-func (c *authServiceClient) VerifyDataExport(ctx context.Context, req *connect.Request[api.VerifyDataExportRequest]) (*connect.Response[api.VerifyDataExportResponse], error) {
-	return c.verifyDataExport.CallUnary(ctx, req)
-}
-
-// SendDeleteAccountVerification calls quadsmith.api.AuthService.SendDeleteAccountVerification.
-func (c *authServiceClient) SendDeleteAccountVerification(ctx context.Context, req *connect.Request[api.SendDeleteAccountVerificationRequest]) (*connect.Response[api.SendDeleteAccountVerificationResponse], error) {
-	return c.sendDeleteAccountVerification.CallUnary(ctx, req)
-}
-
 // DeleteAccount calls quadsmith.api.AuthService.DeleteAccount.
 func (c *authServiceClient) DeleteAccount(ctx context.Context, req *connect.Request[api.DeleteAccountRequest]) (*connect.Response[api.DeleteAccountResponse], error) {
 	return c.deleteAccount.CallUnary(ctx, req)
@@ -507,8 +427,8 @@ func (c *authServiceClient) CancelAccountDeletion(ctx context.Context, req *conn
 // AuthServiceHandler is an implementation of the quadsmith.api.AuthService service.
 type AuthServiceHandler interface {
 	SendEmailOtp(context.Context, *connect.Request[api.SendEmailOtpRequest]) (*connect.Response[api.SendEmailOtpResponse], error)
-	VerifyEmailOtp(context.Context, *connect.Request[api.VerifyEmailOtpRequest]) (*connect.Response[api.AuthResponse], error)
-	VerifyMagicLink(context.Context, *connect.Request[api.VerifyMagicLinkRequest]) (*connect.Response[api.AuthResponse], error)
+	VerifyEmailOtp(context.Context, *connect.Request[api.VerifyEmailOtpRequest]) (*connect.Response[api.VerifyEmailOtpResponse], error)
+	VerifyMagicLink(context.Context, *connect.Request[api.VerifyMagicLinkRequest]) (*connect.Response[api.VerifyEmailOtpResponse], error)
 	GetLoginChallengeDetails(context.Context, *connect.Request[api.GetLoginChallengeDetailsRequest]) (*connect.Response[api.GetLoginChallengeDetailsResponse], error)
 	ApproveLoginChallenge(context.Context, *connect.Request[api.ApproveLoginChallengeRequest]) (*connect.Response[api.ApproveLoginChallengeResponse], error)
 	DenyLoginChallenge(context.Context, *connect.Request[api.DenyLoginChallengeRequest]) (*connect.Response[api.DenyLoginChallengeResponse], error)
@@ -522,16 +442,11 @@ type AuthServiceHandler interface {
 	RevokeSession(context.Context, *connect.Request[api.RevokeSessionRequest]) (*connect.Response[api.RevokeSessionResponse], error)
 	RevokeOtherSessions(context.Context, *connect.Request[api.RevokeOtherSessionsRequest]) (*connect.Response[api.RevokeOtherSessionsResponse], error)
 	ListUserEmails(context.Context, *connect.Request[api.ListUserEmailsRequest]) (*connect.Response[api.ListUserEmailsResponse], error)
-	SendAddEmailOtp(context.Context, *connect.Request[api.SendAddEmailOtpRequest]) (*connect.Response[api.SendEmailOtpResponse], error)
-	VerifyAddEmailOtp(context.Context, *connect.Request[api.VerifyAddEmailOtpRequest]) (*connect.Response[api.VerifyAddEmailOtpResponse], error)
 	MergeAccount(context.Context, *connect.Request[api.MergeAccountRequest]) (*connect.Response[api.MergeAccountResponse], error)
 	SetPrimaryEmail(context.Context, *connect.Request[api.SetPrimaryEmailRequest]) (*connect.Response[api.SetPrimaryEmailResponse], error)
 	RemoveUserEmail(context.Context, *connect.Request[api.RemoveUserEmailRequest]) (*connect.Response[api.RemoveUserEmailResponse], error)
 	ChangeUsername(context.Context, *connect.Request[api.ChangeUsernameRequest]) (*connect.Response[api.ChangeUsernameResponse], error)
 	ListArchivedUsernames(context.Context, *connect.Request[api.ListArchivedUsernamesRequest]) (*connect.Response[api.ListArchivedUsernamesResponse], error)
-	SendDataExportVerification(context.Context, *connect.Request[api.SendDataExportVerificationRequest]) (*connect.Response[api.SendDataExportVerificationResponse], error)
-	VerifyDataExport(context.Context, *connect.Request[api.VerifyDataExportRequest]) (*connect.Response[api.VerifyDataExportResponse], error)
-	SendDeleteAccountVerification(context.Context, *connect.Request[api.SendDeleteAccountVerificationRequest]) (*connect.Response[api.SendDeleteAccountVerificationResponse], error)
 	DeleteAccount(context.Context, *connect.Request[api.DeleteAccountRequest]) (*connect.Response[api.DeleteAccountResponse], error)
 	CancelAccountDeletion(context.Context, *connect.Request[api.CancelAccountDeletionRequest]) (*connect.Response[api.CancelAccountDeletionResponse], error)
 }
@@ -639,18 +554,6 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(authServiceMethods.ByName("ListUserEmails")),
 		connect.WithHandlerOptions(opts...),
 	)
-	authServiceSendAddEmailOtpHandler := connect.NewUnaryHandler(
-		AuthServiceSendAddEmailOtpProcedure,
-		svc.SendAddEmailOtp,
-		connect.WithSchema(authServiceMethods.ByName("SendAddEmailOtp")),
-		connect.WithHandlerOptions(opts...),
-	)
-	authServiceVerifyAddEmailOtpHandler := connect.NewUnaryHandler(
-		AuthServiceVerifyAddEmailOtpProcedure,
-		svc.VerifyAddEmailOtp,
-		connect.WithSchema(authServiceMethods.ByName("VerifyAddEmailOtp")),
-		connect.WithHandlerOptions(opts...),
-	)
 	authServiceMergeAccountHandler := connect.NewUnaryHandler(
 		AuthServiceMergeAccountProcedure,
 		svc.MergeAccount,
@@ -679,24 +582,6 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		AuthServiceListArchivedUsernamesProcedure,
 		svc.ListArchivedUsernames,
 		connect.WithSchema(authServiceMethods.ByName("ListArchivedUsernames")),
-		connect.WithHandlerOptions(opts...),
-	)
-	authServiceSendDataExportVerificationHandler := connect.NewUnaryHandler(
-		AuthServiceSendDataExportVerificationProcedure,
-		svc.SendDataExportVerification,
-		connect.WithSchema(authServiceMethods.ByName("SendDataExportVerification")),
-		connect.WithHandlerOptions(opts...),
-	)
-	authServiceVerifyDataExportHandler := connect.NewUnaryHandler(
-		AuthServiceVerifyDataExportProcedure,
-		svc.VerifyDataExport,
-		connect.WithSchema(authServiceMethods.ByName("VerifyDataExport")),
-		connect.WithHandlerOptions(opts...),
-	)
-	authServiceSendDeleteAccountVerificationHandler := connect.NewUnaryHandler(
-		AuthServiceSendDeleteAccountVerificationProcedure,
-		svc.SendDeleteAccountVerification,
-		connect.WithSchema(authServiceMethods.ByName("SendDeleteAccountVerification")),
 		connect.WithHandlerOptions(opts...),
 	)
 	authServiceDeleteAccountHandler := connect.NewUnaryHandler(
@@ -745,10 +630,6 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 			authServiceRevokeOtherSessionsHandler.ServeHTTP(w, r)
 		case AuthServiceListUserEmailsProcedure:
 			authServiceListUserEmailsHandler.ServeHTTP(w, r)
-		case AuthServiceSendAddEmailOtpProcedure:
-			authServiceSendAddEmailOtpHandler.ServeHTTP(w, r)
-		case AuthServiceVerifyAddEmailOtpProcedure:
-			authServiceVerifyAddEmailOtpHandler.ServeHTTP(w, r)
 		case AuthServiceMergeAccountProcedure:
 			authServiceMergeAccountHandler.ServeHTTP(w, r)
 		case AuthServiceSetPrimaryEmailProcedure:
@@ -759,12 +640,6 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 			authServiceChangeUsernameHandler.ServeHTTP(w, r)
 		case AuthServiceListArchivedUsernamesProcedure:
 			authServiceListArchivedUsernamesHandler.ServeHTTP(w, r)
-		case AuthServiceSendDataExportVerificationProcedure:
-			authServiceSendDataExportVerificationHandler.ServeHTTP(w, r)
-		case AuthServiceVerifyDataExportProcedure:
-			authServiceVerifyDataExportHandler.ServeHTTP(w, r)
-		case AuthServiceSendDeleteAccountVerificationProcedure:
-			authServiceSendDeleteAccountVerificationHandler.ServeHTTP(w, r)
 		case AuthServiceDeleteAccountProcedure:
 			authServiceDeleteAccountHandler.ServeHTTP(w, r)
 		case AuthServiceCancelAccountDeletionProcedure:
@@ -782,11 +657,11 @@ func (UnimplementedAuthServiceHandler) SendEmailOtp(context.Context, *connect.Re
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.SendEmailOtp is not implemented"))
 }
 
-func (UnimplementedAuthServiceHandler) VerifyEmailOtp(context.Context, *connect.Request[api.VerifyEmailOtpRequest]) (*connect.Response[api.AuthResponse], error) {
+func (UnimplementedAuthServiceHandler) VerifyEmailOtp(context.Context, *connect.Request[api.VerifyEmailOtpRequest]) (*connect.Response[api.VerifyEmailOtpResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.VerifyEmailOtp is not implemented"))
 }
 
-func (UnimplementedAuthServiceHandler) VerifyMagicLink(context.Context, *connect.Request[api.VerifyMagicLinkRequest]) (*connect.Response[api.AuthResponse], error) {
+func (UnimplementedAuthServiceHandler) VerifyMagicLink(context.Context, *connect.Request[api.VerifyMagicLinkRequest]) (*connect.Response[api.VerifyEmailOtpResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.VerifyMagicLink is not implemented"))
 }
 
@@ -842,14 +717,6 @@ func (UnimplementedAuthServiceHandler) ListUserEmails(context.Context, *connect.
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.ListUserEmails is not implemented"))
 }
 
-func (UnimplementedAuthServiceHandler) SendAddEmailOtp(context.Context, *connect.Request[api.SendAddEmailOtpRequest]) (*connect.Response[api.SendEmailOtpResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.SendAddEmailOtp is not implemented"))
-}
-
-func (UnimplementedAuthServiceHandler) VerifyAddEmailOtp(context.Context, *connect.Request[api.VerifyAddEmailOtpRequest]) (*connect.Response[api.VerifyAddEmailOtpResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.VerifyAddEmailOtp is not implemented"))
-}
-
 func (UnimplementedAuthServiceHandler) MergeAccount(context.Context, *connect.Request[api.MergeAccountRequest]) (*connect.Response[api.MergeAccountResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.MergeAccount is not implemented"))
 }
@@ -868,18 +735,6 @@ func (UnimplementedAuthServiceHandler) ChangeUsername(context.Context, *connect.
 
 func (UnimplementedAuthServiceHandler) ListArchivedUsernames(context.Context, *connect.Request[api.ListArchivedUsernamesRequest]) (*connect.Response[api.ListArchivedUsernamesResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.ListArchivedUsernames is not implemented"))
-}
-
-func (UnimplementedAuthServiceHandler) SendDataExportVerification(context.Context, *connect.Request[api.SendDataExportVerificationRequest]) (*connect.Response[api.SendDataExportVerificationResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.SendDataExportVerification is not implemented"))
-}
-
-func (UnimplementedAuthServiceHandler) VerifyDataExport(context.Context, *connect.Request[api.VerifyDataExportRequest]) (*connect.Response[api.VerifyDataExportResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.VerifyDataExport is not implemented"))
-}
-
-func (UnimplementedAuthServiceHandler) SendDeleteAccountVerification(context.Context, *connect.Request[api.SendDeleteAccountVerificationRequest]) (*connect.Response[api.SendDeleteAccountVerificationResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.SendDeleteAccountVerification is not implemented"))
 }
 
 func (UnimplementedAuthServiceHandler) DeleteAccount(context.Context, *connect.Request[api.DeleteAccountRequest]) (*connect.Response[api.DeleteAccountResponse], error) {

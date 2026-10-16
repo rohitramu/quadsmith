@@ -12,6 +12,8 @@ import (
 
 func TestAllowedBannedProcedures(t *testing.T) {
 	allowed := []string{
+		apiconnect.AuthServiceSendEmailOtpProcedure,
+		apiconnect.AuthServiceVerifyEmailOtpProcedure,
 		apiconnect.AuthServiceRefreshTokenProcedure,
 		apiconnect.AuthServiceLogoutProcedure,
 		apiconnect.AuthServiceUpdateProfileProcedure,
@@ -20,9 +22,6 @@ func TestAllowedBannedProcedures(t *testing.T) {
 		apiconnect.AuthServiceRevokeOtherSessionsProcedure,
 		apiconnect.AuthServiceGetCurrentUserProcedure,
 		apiconnect.AuthServiceListUserEmailsProcedure,
-		apiconnect.AuthServiceSendDataExportVerificationProcedure,
-		apiconnect.AuthServiceVerifyDataExportProcedure,
-		apiconnect.AuthServiceSendDeleteAccountVerificationProcedure,
 		apiconnect.AuthServiceDeleteAccountProcedure,
 		apiconnect.AuthServiceCancelAccountDeletionProcedure,
 		apiconnect.UserServiceGetUserBanStatusProcedure,
@@ -36,8 +35,6 @@ func TestAllowedBannedProcedures(t *testing.T) {
 
 	blocked := []string{
 		apiconnect.AuthServiceChangeUsernameProcedure,
-		apiconnect.AuthServiceSendAddEmailOtpProcedure,
-		apiconnect.AuthServiceVerifyAddEmailOtpProcedure,
 		apiconnect.AuthServiceMergeAccountProcedure,
 		apiconnect.AuthServiceSetPrimaryEmailProcedure,
 		apiconnect.AuthServiceRemoveUserEmailProcedure,

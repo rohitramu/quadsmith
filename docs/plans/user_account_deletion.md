@@ -72,7 +72,7 @@ preservation of communal knowledge.
 flowchart TD
     subgraph Step 1: Client Request
         UI["Account Settings: Delete Account"] --> Form["Step 1: Type Exact Username"]
-        Form --> API1["AuthService.SendDeleteAccountVerification"]
+        Form --> API1["AuthService.SendEmailOtp (purpose = DELETE_ACCOUNT)"]
     end
 
     subgraph Step 2: Out-of-Band Challenge
@@ -112,8 +112,7 @@ tokens:
      ([`users.id`](../../src/backend/db/quadsmith_api.sql#L13)).
    - The client verifies the string matches before enabling the challenge
      button.
-   - The server verifies in `SendDeleteAccountVerification` that the supplied
-     username matches the authenticated caller's identity.
+   - The server verifies in `SendEmailOtp` that the caller is authenticated.
 2. **Step 2: Universal Email Verification Challenge**:
    - The server issues a challenge token (`challenge_id`) bound to
      `purpose = "delete_account"`.
@@ -461,18 +460,6 @@ to define the deletion and resurrection RPC contracts:
 // Account Deletion Requests & Responses
 // ---------------------------------------------------------
 
-message SendDeleteAccountVerificationRequest {
-  // Exact username of the account to delete (must match authenticated caller)
-  string username = 1 [(quadsmith.validate.rules).string = {min_len: 3, max_len: 20}];
-}
-
-message SendDeleteAccountVerificationResponse {
-  bool success = 1;
-  string message = 2;
-  string challenge_id = 3;
-  google.protobuf.Timestamp expires_at = 4;
-}
-
 message DeleteAccountRequest {
   string username = 1;
   string challenge_id = 2;
@@ -502,10 +489,8 @@ Add the corresponding RPCs to `AuthService` in
 
 ```protobuf
 service AuthService {
-  // Existing authentication RPCs...
-
-  // Initiates account deletion by dispatching an out-of-band email verification challenge
-  rpc SendDeleteAccountVerification(SendDeleteAccountVerificationRequest) returns (SendDeleteAccountVerificationResponse);
+  // Universal email OTP verification challenge
+  rpc SendEmailOtp(SendEmailOtpRequest) returns (SendEmailOtpResponse);
 
   // Verifies email challenge (code or magic token) and marks the account as soft-deleted
   rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResponse);
@@ -517,21 +502,21 @@ service AuthService {
 
 #### <a id="alternatives-considered-rpc-specifications" >Alternatives considered</a>
 
-##### <a id="reusing-generic-sendemailotp-rpc" >Reusing Generic SendEmailOtp RPC</a>
+##### <a id="dedicated-senddeleteaccountverification-rpc" >Dedicated SendDeleteAccountVerification RPC</a>
 
-Overloading the existing `SendEmailOtp` endpoint with an optional `purpose`
-parameter (e.g. `purpose = "delete_account"`) instead of defining dedicated
-deletion RPCs. The server checks the purpose string to branch internal logic.
+Introducing a dedicated `SendDeleteAccountVerification` RPC with bespoke request
+and response message schemas instead of the unified `SendEmailOtp` procedure.
 
 **Pros:**
 
-- Reuses existing RPC definitions without introducing new service methods.
-- Keeps the `AuthService` schema surface slightly smaller.
+- Keeps delete verification RPC distinct in the Protobuf service definition.
+- Permits embedding explicit username verification in the request proto message.
 
 **Cons:**
 
-- Weakens schema type safety and documentation for critical security operations.
-- Cannot enforce typed username validation in the Protobuf request contract.
+- Proliferates duplicate RPCs with identical rate limiting, hashing, and TTLs.
+- Fragments frontend implementation across separate React components and state.
+- Violates the universal Email Verification architecture across Quadsmith.
 
 ---
 
