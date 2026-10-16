@@ -659,16 +659,15 @@ cards:
     [`SocialToolbar.tsx`](../../src/react/app-web/src/components/SocialToolbar.tsx)
     action bars (`Like`, `Save to Collection`, `Share`, `Build Similar`) to wrap
     cleanly with `flex-wrap gap-2`.
-  - Provide a `"None (No battery selected)"` option in both
+  - Ensure battery selectors across
     [`BatteryCombobox.tsx`](../../src/react/app-web/src/components/BatteryCombobox.tsx)
     and
     [`BatteryPickerModal.tsx`](../../src/react/app-web/src/components/BatteryPickerModal.tsx)
-    that allows users to clear their battery selection. Default battery
-    selection initializes strictly once per `buildId`, preventing unwanted
-    automatic re-selection when cleared. When no battery is selected, live
-    telemetry renders an "Evaluation Paused" notice card explaining that a
-    battery is required to compute all-up weight, thrust-to-weight ratio, and
-    flight times.
+    always maintain an active compatible battery selection without a redundant
+    "None" option. When no compatible batteries exist in the database for the
+    build's electrical envelope, the selector displays "No compatible batteries"
+    and is disabled, and the evaluation section displays a prominent "No
+    Compatible Batteries" notice card.
 - **Horizontally Scrollable Tab Bars
   ([`SocialTabs.tsx`](../../src/react/app-web/src/components/SocialTabs.tsx) &
   [`UserProfilePage.tsx`](../../src/react/app-web/src/pages/UserProfilePage.tsx))**:

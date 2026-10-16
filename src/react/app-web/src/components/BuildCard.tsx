@@ -249,7 +249,7 @@ export function BuildCard({
               </div>
             ) : !isLoadingLimits && !electricalLimits?.defaultBatteryId ? (
               <div className="text-red-500/80 dark:text-red-400/80 text-xs italic">
-                No compatible battery
+                No compatible batteries
               </div>
             ) : (
               <div className="text-zinc-400 text-xs italic">Evaluating build specs...</div>
@@ -464,7 +464,7 @@ export function BuildCard({
             </div>
           ) : !isLoadingLimits && !electricalLimits?.defaultBatteryId ? (
             <div className="text-red-500/80 dark:text-red-400/80 text-xs italic">
-              No compatible battery
+              No compatible batteries
             </div>
           ) : (
             <div className="text-zinc-400 text-xs italic">Evaluating build specs...</div>

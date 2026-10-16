@@ -564,7 +564,9 @@ describe("AccountSettingsPage Component", () => {
       expect(bioTextarea).toBeEnabled();
       fireEvent.change(bioTextarea, { target: { value: "Updated bio while restricted." } });
       const saveBtn = screen.getByRole("button", { name: /^save$/i });
-      expect(saveBtn).toBeEnabled();
+      await waitFor(() => {
+        expect(saveBtn).toBeEnabled();
+      });
 
       // Verify Active Sessions is still rendered
       expect(screen.getByRole("heading", { name: /active sessions/i })).toBeInTheDocument();

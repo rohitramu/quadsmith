@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useState, useMemo, useEffect, useRef, useCallback } from "react";
+import { useState, useMemo, useEffect, useCallback } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import { keepPreviousData } from "@tanstack/react-query";
 import { getBuild } from "@quadsmith/shared/gen/quadsmith/api/build-BuildService_connectquery";
@@ -225,44 +225,42 @@ export function BuildProfilePage() {
   // Selected battery object state (for custom or incompatible selection)
   const [selectedBatteryObj, setSelectedBatteryObj] = useState<Battery | null>(null);
 
-  // Track whether the default battery has been initialized for the current build
-  const initializedBuildRef = useRef<string | null | undefined>(null);
-
   // Reset selected battery when changing builds
   useEffect(() => {
-    initializedBuildRef.current = null;
     setSelectedBatteryId("");
     setSelectedBatteryObj(null);
     setActiveSocialTab("reviews");
   }, [buildId]);
 
-  // Lightest compatible battery selected by default on initial build load
+  // Maintain active compatible battery: select recommended or first compatible battery
   useEffect(() => {
-    if (initializedBuildRef.current !== buildId && compatibleBatteries.length > 0) {
-      initializedBuildRef.current = buildId;
-      if (
-        electricalLimits?.defaultBatteryId &&
-        compatibleBatteries.some(
-          (b) =>
-            b.id === electricalLimits.defaultBatteryId ||
-            b.uuid === electricalLimits.defaultBatteryId,
-        )
-      ) {
-        setSelectedBatteryId(electricalLimits.defaultBatteryId);
-      } else {
-        setSelectedBatteryId(compatibleBatteries[0].id || compatibleBatteries[0].uuid);
+    if (compatibleBatteries.length > 0) {
+      const isSelectedCompatible = compatibleBatteries.some(
+        (b) => (b.id || b.uuid) === selectedBatteryId,
+      );
+      if (!selectedBatteryId || !isSelectedCompatible) {
+        const defaultBattery =
+          electricalLimits?.defaultBatteryId &&
+          compatibleBatteries.find(
+            (b) =>
+              b.id === electricalLimits.defaultBatteryId ||
+              b.uuid === electricalLimits.defaultBatteryId,
+          );
+        const nextBattery = defaultBattery || compatibleBatteries[0];
+        const nextId = nextBattery.id || nextBattery.uuid;
+        setSelectedBatteryId(nextId);
+        setSelectedBatteryObj(nextBattery);
       }
+    } else if (selectedBatteryId) {
+      setSelectedBatteryId("");
+      setSelectedBatteryObj(null);
     }
-  }, [buildId, electricalLimits, compatibleBatteries]);
+  }, [buildId, electricalLimits, compatibleBatteries, selectedBatteryId]);
 
-  const handleSelectBattery = useCallback(
-    (id: string, battery?: Battery) => {
-      initializedBuildRef.current = buildId;
-      setSelectedBatteryId(id);
-      setSelectedBatteryObj(battery || null);
-    },
-    [buildId],
-  );
+  const handleSelectBattery = useCallback((id: string, battery?: Battery) => {
+    setSelectedBatteryId(id);
+    setSelectedBatteryObj(battery || null);
+  }, []);
 
   const {
     data: compatibilityResponse,
@@ -870,11 +868,10 @@ export function BuildProfilePage() {
               <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 flex items-start gap-3 mb-6">
                 <AlertCircle size={20} className="shrink-0 mt-0.5 text-amber-500" />
                 <div>
-                  <div className="font-bold text-sm">Evaluation Paused</div>
+                  <div className="font-bold text-sm">No Compatible Batteries</div>
                   <p className="text-xs mt-1 text-amber-700 dark:text-amber-400 leading-relaxed">
-                    Select a battery to calculate live flight telemetry, including All-Up Weight
-                    (AUW), thrust-to-weight ratio, top speed, hover throttle, and flight time
-                    estimates.
+                    No batteries in the database match this build's electrical voltage and current
+                    limits.
                   </p>
                 </div>
               </div>

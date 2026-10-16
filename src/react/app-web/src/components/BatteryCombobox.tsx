@@ -97,17 +97,12 @@ export function BatteryCombobox({
 
   const handleSelect = (battery: any) => {
     if (!battery) {
-      onSelectBattery("", undefined);
       setSearchQuery("");
       setIsOpen(false);
       return;
     }
     const id = battery.id || battery.uuid;
-    if (selectedBatteryId === id) {
-      onSelectBattery("", undefined);
-    } else {
-      onSelectBattery(id, battery);
-    }
+    onSelectBattery(id, battery);
     setSearchQuery("");
     setIsOpen(false);
   };
@@ -153,9 +148,14 @@ export function BatteryCombobox({
     }
   };
 
+  const hasNoCompatible = !isLoading && batteries.length === 0;
+
   // Format label for display when closed or idle
   const displayLabel = useMemo(() => {
-    if (!selectedBattery) return "";
+    if (!selectedBattery) {
+      if (hasNoCompatible) return "No compatible batteries";
+      return "";
+    }
     const specs = [
       selectedBattery.weightG ? `${selectedBattery.weightG.toFixed(2)}g` : "",
       selectedBattery.cellCountS ? `${selectedBattery.cellCountS}S` : "",
@@ -164,7 +164,7 @@ export function BatteryCombobox({
       .filter(Boolean)
       .join(", ");
     return specs ? `${selectedBattery.name} (${specs})` : selectedBattery.name;
-  }, [selectedBattery]);
+  }, [selectedBattery, hasNoCompatible]);
 
   return (
     <div ref={containerRef} className={`relative ${className}`}>
@@ -186,20 +186,26 @@ export function BatteryCombobox({
           aria-haspopup="listbox"
           aria-label={ariaLabel}
           aria-autocomplete="list"
-          disabled={disabled}
+          disabled={disabled || hasNoCompatible}
           value={isOpen ? searchQuery : displayLabel}
           onChange={(e) => {
             setSearchQuery(e.target.value);
             if (!isOpen) setIsOpen(true);
           }}
           onFocus={() => {
-            if (!disabled) setIsOpen(true);
+            if (!disabled && !hasNoCompatible) setIsOpen(true);
           }}
           onClick={() => {
-            if (!disabled && !isOpen) setIsOpen(true);
+            if (!disabled && !hasNoCompatible && !isOpen) setIsOpen(true);
           }}
           onKeyDown={handleKeyDown}
-          placeholder={isOpen ? "Type to search batteries..." : displayLabel || placeholder}
+          placeholder={
+            isOpen
+              ? "Type to search batteries..."
+              : hasNoCompatible
+                ? "No compatible batteries"
+                : displayLabel || placeholder
+          }
           className="w-full pl-8 pr-14 py-1.5 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-blue-500 font-medium transition-all shadow-xs truncate cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           data-testid="battery-combobox-input"
           data-battery-id={selectedBatteryId}
@@ -218,15 +224,15 @@ export function BatteryCombobox({
           )}
           <button
             type="button"
-            disabled={disabled}
+            disabled={disabled || hasNoCompatible}
             onClick={() => {
-              if (!disabled) {
+              if (!disabled && !hasNoCompatible) {
                 setIsOpen(!isOpen);
                 if (!isOpen) inputRef.current?.focus();
               }
             }}
             aria-label="Toggle battery list"
-            className="p-1 rounded text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
+            className="p-1 rounded text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ChevronDown
               size={13}
@@ -248,37 +254,24 @@ export function BatteryCombobox({
           {/* Header count info */}
           <div className="px-3 py-1.5 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/60 flex items-center justify-between text-[10px] text-zinc-500 dark:text-zinc-400">
             <span>
-              {displayItems.length} {displayItems.length === 1 ? "battery" : "batteries"}{" "}
-              {debouncedQuery ? "found" : "available"}
+              {displayItems.length === 0
+                ? "No compatible batteries"
+                : `${displayItems.length} ${displayItems.length === 1 ? "battery" : "batteries"} ${debouncedQuery ? "found" : "available"}`}
             </span>
-            <span className="font-mono text-[9px] text-zinc-400">Hover for specs</span>
+            {displayItems.length > 0 && (
+              <span className="font-mono text-[9px] text-zinc-400">Hover for specs</span>
+            )}
           </div>
 
           {/* List items */}
           <ul className="max-h-60 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800/40 text-xs">
-            {/* Blank / No Battery option */}
-            <li
-              role="option"
-              aria-selected={!selectedBatteryId}
-              onClick={() => handleSelect(null)}
-              className={`p-2.5 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 cursor-pointer flex items-center justify-between transition-colors ${
-                !selectedBatteryId
-                  ? "bg-blue-50/80 dark:bg-blue-950/30 border-l-2 border-blue-500 font-medium text-zinc-900 dark:text-zinc-100"
-                  : "text-zinc-500 dark:text-zinc-400 italic"
-              }`}
-            >
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full border border-dashed border-zinc-400 shrink-0" />
-                <span>None (No battery selected)</span>
-              </div>
-              {!selectedBatteryId && (
-                <Check size={13} className="text-blue-600 dark:text-blue-400 shrink-0" />
-              )}
-            </li>
-
             {displayItems.length === 0 ? (
               <li className="p-3 text-center text-xs text-zinc-400 dark:text-zinc-500">
-                {isSearching ? "Searching batteries..." : "No matching batteries found"}
+                {isSearching
+                  ? "Searching batteries..."
+                  : debouncedQuery
+                    ? "No matching batteries found"
+                    : "No compatible batteries"}
               </li>
             ) : (
               displayItems.map((b, idx) => {

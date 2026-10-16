@@ -113,28 +113,36 @@ describe("BatteryPickerModal Component", () => {
     expect(handleClose).toHaveBeenCalled();
   });
 
-  it("allows selecting 'None' option to clear battery selection", async () => {
-    const user = userEvent.setup();
-    const handleSelect = vi.fn();
-    const handleClose = vi.fn();
-
+  it("does not display a 'None' option in the modal list", () => {
     renderWithProviders(
       <BatteryPickerModal
         isOpen={true}
-        onClose={handleClose}
+        onClose={vi.fn()}
         selectedBatteryId={mockBattery1.id}
-        onSelectBattery={handleSelect}
+        onSelectBattery={vi.fn()}
         limits={defaultLimits}
         compatibleBatteries={[mockBattery1]}
         allBatteries={[mockBattery1, mockBatteryIncompatible]}
       />,
     );
 
-    const noneOption = screen.getByText("None (No battery selected)");
-    await user.click(noneOption);
+    expect(screen.queryByText(/None \(No battery selected\)/i)).not.toBeInTheDocument();
+  });
 
-    expect(handleSelect).toHaveBeenCalledWith("", undefined);
-    expect(handleClose).toHaveBeenCalled();
+  it("displays 'No compatible batteries' when no compatible batteries exist", () => {
+    renderWithProviders(
+      <BatteryPickerModal
+        isOpen={true}
+        onClose={vi.fn()}
+        selectedBatteryId=""
+        onSelectBattery={vi.fn()}
+        limits={defaultLimits}
+        compatibleBatteries={[]}
+        allBatteries={[]}
+      />,
+    );
+
+    expect(screen.getByText("No compatible batteries")).toBeInTheDocument();
   });
 
   it("filters batteries by search query", async () => {
@@ -155,6 +163,7 @@ describe("BatteryPickerModal Component", () => {
     const searchInput = screen.getByPlaceholderText(/search by name, brand, connector/i);
     await user.type(searchInput, "nonexistent");
 
-    expect(screen.getByText(/no compatible batteries found/i)).toBeInTheDocument();
+    expect(screen.getByText("No batteries found")).toBeInTheDocument();
+    expect(screen.getByText(/no batteries match "nonexistent"/i)).toBeInTheDocument();
   });
 });

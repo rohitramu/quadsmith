@@ -108,4 +108,47 @@ describe("BatteryCombobox Component", () => {
     });
     expect(screen.getByText("Black Series 1500mAh 6S 100C")).toBeInTheDocument();
   });
+
+  it("does not render a 'None' option in the battery list", async () => {
+    const user = userEvent.setup();
+    renderWithProviders(
+      <BatteryCombobox selectedBatteryId="" onSelectBattery={vi.fn()} batteries={mockBatteries} />,
+    );
+
+    const input = screen.getByRole("combobox", { name: /select battery/i });
+    await user.click(input);
+
+    expect(screen.queryByText(/None \(No battery selected\)/i)).not.toBeInTheDocument();
+  });
+
+  it("displays 'No compatible batteries' when batteries array is empty", () => {
+    renderWithProviders(
+      <BatteryCombobox selectedBatteryId="" onSelectBattery={vi.fn()} batteries={[]} />,
+    );
+
+    const input = screen.getByRole("combobox", { name: /select battery/i });
+    expect(input).toBeDisabled();
+    expect(input).toHaveValue("No compatible batteries");
+  });
+
+  it("keeps battery selected when re-clicking an already selected item", async () => {
+    const user = userEvent.setup();
+    const handleSelect = vi.fn();
+
+    renderWithProviders(
+      <BatteryCombobox
+        selectedBatteryId={mockBattery1.id}
+        onSelectBattery={handleSelect}
+        batteries={mockBatteries}
+      />,
+    );
+
+    const input = screen.getByRole("combobox", { name: /select battery/i });
+    await user.click(input);
+
+    const option = screen.getByText("Black Series 1500mAh 6S 100C");
+    await user.click(option);
+
+    expect(handleSelect).toHaveBeenCalledWith(mockBattery1.id, expect.anything());
+  });
 });

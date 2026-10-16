@@ -125,7 +125,7 @@ describe("BuildProfilePage Component", () => {
     expect(screen.getByText(/14.8v – 25.2v/i)).toBeInTheDocument();
   });
 
-  it("allows selecting 'None' in battery selector to clear battery and pause evaluation", async () => {
+  it("maintains active compatible battery selection and does not display a 'None' option", async () => {
     const { user } = renderBuildProfile();
 
     const batterySelect = await screen.findByRole("combobox", { name: /select battery/i });
@@ -136,21 +136,8 @@ describe("BuildProfilePage Component", () => {
     // Open battery selector dropdown
     await user.click(batterySelect);
 
-    // Click "None (No battery selected)" option
-    const noneOption = await screen.findByText("None (No battery selected)");
-    await user.click(noneOption);
-
-    // Selected battery should remain empty and not revert back to the first battery
-    await waitFor(() => {
-      expect(batterySelect).toHaveAttribute("data-battery-id", "");
-      expect(batterySelect).toHaveValue("");
-    });
-
-    // Evaluation Paused alert should be rendered
-    expect(screen.getByText("Evaluation Paused")).toBeInTheDocument();
-    expect(
-      screen.getByText(/select a battery to calculate live flight telemetry/i),
-    ).toBeInTheDocument();
+    // Verify 'None (No battery selected)' is NOT present
+    expect(screen.queryByText(/None \(No battery selected\)/i)).not.toBeInTheDocument();
   });
 
   it("allows interactive payload weight simulation with text box input and presets", async () => {

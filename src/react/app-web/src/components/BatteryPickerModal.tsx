@@ -309,7 +309,7 @@ export function BatteryPickerModal({
           <div className="py-12 text-center">
             <Filter size={32} className="mx-auto text-zinc-300 dark:text-zinc-600 mb-2" />
             <p className="text-sm font-semibold text-zinc-600 dark:text-zinc-300">
-              No {compatibleOnly ? "compatible " : ""}batteries found
+              {compatibleOnly && !searchQuery ? "No compatible batteries" : "No batteries found"}
             </p>
             <p className="text-xs text-zinc-400 mt-1 max-w-sm mx-auto">
               {searchQuery
@@ -320,32 +320,92 @@ export function BatteryPickerModal({
             </p>
           </div>
         ) : (
-          <>
-            {!searchQuery.trim() && (
+          filteredAndSortedBatteries.map((b) => {
+            const isSelected = b.id === selectedBatteryId || b.uuid === selectedBatteryId;
+            const incompatibilityReason = getIncompatibilityReason(b);
+            const isIncompatible = !!incompatibilityReason;
+
+            return (
               <div
+                key={b.uuid || b.id}
                 onClick={() => {
-                  onSelectBattery("", undefined);
+                  onSelectBattery(b.id || b.uuid, b);
                   onClose();
                 }}
                 className={`group cursor-pointer p-3.5 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
-                  !selectedBatteryId
+                  isSelected
                     ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                    : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50/80 dark:hover:bg-zinc-850"
+                    : isIncompatible
+                      ? "opacity-60 saturate-50 hover:opacity-85 border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
+                      : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50/80 dark:hover:bg-zinc-850"
                 }`}
               >
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2 flex-wrap mb-1">
-                    <span className="font-semibold text-sm text-zinc-700 dark:text-zinc-300 italic">
-                      None (No battery selected)
+                    <span className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
+                      {b.name}
                     </span>
+                    <span className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-mono">
+                      {b.manufacturer}
+                    </span>
+                    {b.cellCountS ? (
+                      <span className="text-xs px-1.5 py-0.5 rounded font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200/60 dark:border-amber-900/60">
+                        {b.cellCountS}S
+                      </span>
+                    ) : null}
+                    {b.connector ? (
+                      <span className="text-xs px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300">
+                        {b.connector}
+                      </span>
+                    ) : null}
+                    {isIncompatible && (
+                      <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0">
+                        Incompatible ({incompatibilityReason})
+                      </span>
+                    )}
                   </div>
-                  <div className="text-xs text-zinc-500 dark:text-zinc-400">
-                    Clear battery selection and pause live flight telemetry calculations
+
+                  <div className="flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400 flex-wrap">
+                    {b.weightG ? (
+                      <span className="flex items-center gap-1">
+                        <Weight size={12} className="text-zinc-400" />
+                        <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+                          {b.weightG.toFixed(2)}g
+                        </span>
+                      </span>
+                    ) : null}
+                    {b.capacityMah ? (
+                      <span>
+                        Capacity:{" "}
+                        <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                          {b.capacityMah}mAh
+                        </span>
+                      </span>
+                    ) : null}
+                    {b.minVoltage && b.maxVoltage ? (
+                      <span>
+                        Voltage:{" "}
+                        <span className="font-medium font-mono text-zinc-700 dark:text-zinc-300">
+                          {b.minVoltage.toFixed(1)}–{b.maxVoltage.toFixed(1)}V
+                        </span>
+                      </span>
+                    ) : null}
+                    {b.maxCurrentA ? (
+                      <span className="flex items-center gap-1">
+                        <Gauge size={12} className="text-zinc-400" />
+                        <span>
+                          Current:{" "}
+                          <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                            {b.maxCurrentA.toFixed(1)}A
+                          </span>
+                        </span>
+                      </span>
+                    ) : null}
                   </div>
                 </div>
 
                 <div className="shrink-0 flex items-center gap-2">
-                  {!selectedBatteryId ? (
+                  {isSelected ? (
                     <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-600 text-white shadow-xs">
                       <Check size={13} />
                       <span>Active</span>
@@ -357,107 +417,8 @@ export function BatteryPickerModal({
                   )}
                 </div>
               </div>
-            )}
-            {filteredAndSortedBatteries.map((b) => {
-              const isSelected = b.id === selectedBatteryId || b.uuid === selectedBatteryId;
-              const incompatibilityReason = getIncompatibilityReason(b);
-              const isIncompatible = !!incompatibilityReason;
-
-              return (
-                <div
-                  key={b.uuid || b.id}
-                  onClick={() => {
-                    onSelectBattery(b.id || b.uuid, b);
-                    onClose();
-                  }}
-                  className={`group cursor-pointer p-3.5 rounded-xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
-                    isSelected
-                      ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500"
-                      : isIncompatible
-                        ? "opacity-60 saturate-50 hover:opacity-85 border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
-                        : "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 hover:border-zinc-300 dark:hover:border-zinc-700 hover:bg-zinc-50/80 dark:hover:bg-zinc-850"
-                  }`}
-                >
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2 flex-wrap mb-1">
-                      <span className="font-semibold text-sm text-zinc-900 dark:text-zinc-100">
-                        {b.name}
-                      </span>
-                      <span className="text-xs px-1.5 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-mono">
-                        {b.manufacturer}
-                      </span>
-                      {b.cellCountS ? (
-                        <span className="text-xs px-1.5 py-0.5 rounded font-bold bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-200/60 dark:border-amber-900/60">
-                          {b.cellCountS}S
-                        </span>
-                      ) : null}
-                      {b.connector ? (
-                        <span className="text-xs px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300">
-                          {b.connector}
-                        </span>
-                      ) : null}
-                      {isIncompatible && (
-                        <span className="text-[10px] px-1.5 py-0.5 rounded font-medium bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20 shrink-0">
-                          Incompatible ({incompatibilityReason})
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="flex items-center gap-4 text-xs text-zinc-500 dark:text-zinc-400 flex-wrap">
-                      {b.weightG ? (
-                        <span className="flex items-center gap-1">
-                          <Weight size={12} className="text-zinc-400" />
-                          <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-                            {b.weightG.toFixed(2)}g
-                          </span>
-                        </span>
-                      ) : null}
-                      {b.capacityMah ? (
-                        <span>
-                          Capacity:{" "}
-                          <span className="font-medium text-zinc-700 dark:text-zinc-300">
-                            {b.capacityMah}mAh
-                          </span>
-                        </span>
-                      ) : null}
-                      {b.minVoltage && b.maxVoltage ? (
-                        <span>
-                          Voltage:{" "}
-                          <span className="font-medium font-mono text-zinc-700 dark:text-zinc-300">
-                            {b.minVoltage.toFixed(1)}–{b.maxVoltage.toFixed(1)}V
-                          </span>
-                        </span>
-                      ) : null}
-                      {b.maxCurrentA ? (
-                        <span className="flex items-center gap-1">
-                          <Gauge size={12} className="text-zinc-400" />
-                          <span>
-                            Current:{" "}
-                            <span className="font-medium text-zinc-700 dark:text-zinc-300">
-                              {b.maxCurrentA.toFixed(1)}A
-                            </span>
-                          </span>
-                        </span>
-                      ) : null}
-                    </div>
-                  </div>
-
-                  <div className="shrink-0 flex items-center gap-2">
-                    {isSelected ? (
-                      <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-blue-600 text-white shadow-xs">
-                        <Check size={13} />
-                        <span>Active</span>
-                      </span>
-                    ) : (
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-medium border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 group-hover:bg-zinc-100 dark:group-hover:bg-zinc-800 transition-colors">
-                        Select
-                      </span>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </>
+            );
+          })
         )}
       </div>
 

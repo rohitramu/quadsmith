@@ -183,7 +183,7 @@ export function ReviewStep() {
         id: "battery",
         collectionId: "batteries",
         label: "Test Battery",
-        name: activeBattery ? activeBattery.name : "None (No battery selected)",
+        name: activeBattery ? activeBattery.name : "No compatible batteries",
         manufacturer: activeBattery?.manufacturer,
         qty: activeBattery ? 1 : 0,
         weightG: activeBattery?.weightG || 0,

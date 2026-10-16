@@ -771,7 +771,7 @@ describe("BuildWizardPage Component", () => {
     expect(screen.getByText(/129\.5mm \(5\.1"\)/)).toBeInTheDocument();
   });
 
-  it("provides blank first option in battery combobox and opens BatteryPickerModal on Browse click", async () => {
+  it("renders battery combobox and opens BatteryPickerModal on Browse click without None option", async () => {
     const user = userEvent.setup();
     renderWizard();
 
@@ -782,7 +782,7 @@ describe("BuildWizardPage Component", () => {
     // Click combobox to open dropdown
     await user.click(batteryCombobox);
     expect(await screen.findByRole("listbox", { name: "Batteries" })).toBeInTheDocument();
-    expect(screen.getByText("None (No battery selected)")).toBeInTheDocument();
+    expect(screen.queryByText(/None \(No battery selected\)/i)).not.toBeInTheDocument();
 
     // Browse button next to battery combobox
     const browseBtn = screen.getByRole("button", { name: /browse all compatible batteries/i });
