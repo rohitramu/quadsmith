@@ -93,18 +93,22 @@ flowchart TD
         Click --> SendRPC["AuthService.SendEmailOtp (purpose = EXPORT_DATA)"]
     end
 
-    subgraph Runtime Step 2: Out-of-Band Email Challenge
+    subgraph Runtime Step 2: Out-of-Band Email Challenge & Dual Verification
         SendRPC --> DBChallenge["Insert email_otps (purpose = 'export_data')"]
         Email["Send 6-Digit OTP (3m TTL) + Magic Link (15m TTL) to Primary Email"]
         DBChallenge --> Email
         Email --> VerifyChoice{"User Verification Path"}
-        VerifyChoice -->|Enter 6-Digit Code| VerifyRPC["AuthService.VerifyEmailOtp (purpose = EXPORT_DATA)"]
-        VerifyChoice -->|Click Email Link| MagicRoute["/account?export_data_token=... -> AuthService.VerifyEmailOtp"]
+        VerifyChoice -->|Enter 6-Digit Code on Device A| VerifyRPC["AuthService.VerifyEmailOtp (purpose = EXPORT_DATA)"]
+        VerifyChoice -->|Click Magic Link on Device B| ApprovalPage["/login/verify?token=... -> Device B Approval Screen"]
+        ApprovalPage -->|Approve Request| ApproveRPC["AuthService.ApproveLoginChallenge"]
+        ApproveRPC --> DeviceBDownload["Trigger Direct ZIP Download on Device B"]
+        ApproveRPC -.->|Cross-Device Status Polling| PollStatus["AuthService.GetLoginChallengeStatus"]
+        PollStatus --> AutoDownload["Device A Auto-Completes & Triggers ZIP Download"]
     end
 
     subgraph Runtime Step 3: Signed Token & Streaming ZIP Download
         VerifyRPC --> SignedToken["Issue HMAC-Signed Export Token (15m TTL)"]
-        MagicRoute --> SignedToken
+        ApproveRPC --> SignedToken
         SignedToken --> HTTPGet["GET /api/account/export?token=<export_token>"]
         StoreGen --> HTTPGet
         HTTPGet --> ZipStream["Stream application/zip via Go archive/zip (7 JSON manifests + blobs/)"]
@@ -204,27 +208,32 @@ Verification step using the universal challenge architecture in
      6-digit OTP (`code_hash`) and challenge ID (`challenge_id_hash`).
    - Sends a transactional email via `email.Sender` containing:
      - The **6-digit numeric verification code** (valid for 3 minutes).
-     - The **1-click magic link** (`/account?export_data_token=<raw_token>`,
-       valid for 15 minutes).
-2. **Challenge Verification (`VerifyEmailOtp`)**:
-   - Accepts either the 6-digit `code` (bound to `challenge_id`) or the `token`
-     (magic link token) with `purpose = EMAIL_OTP_PURPOSE_EXPORT_DATA`.
-   - Enforces the 3-attempt limit on OTP code guesses, returning structured
-     `OtpVerificationError` details (`remaining_attempts`, `is_exhausted`,
-     `cooldown_seconds`) on mismatch so the modal renders the exact same
-     attempt-counter UX as login and add-email flows.
-   - Marks the `email_otps` row as `approved` and `used_at = NOW()`.
+     - The **1-click magic link** (`/login/verify?token=<raw_token>`, valid for
+       15 minutes).
+2. **Challenge Verification & Cross-Device Approval Flow**:
+   - **Device A Direct Code Entry**: Accepts the 6-digit `code` (bound to
+     `challenge_id`) via `AuthService.VerifyEmailOtp` with
+     `purpose = EMAIL_OTP_PURPOSE_EXPORT_DATA`. Enforces the 3-attempt limit on
+     OTP code guesses, returning structured `OtpVerificationError` details
+     (`remaining_attempts`, `is_exhausted`, `cooldown_seconds`) on mismatch.
+   - **Device B Magic Link Approval**: When the user opens the magic link
+     (`/login/verify?token=<token>`), the standalone approval screen displays
+     the "Approve Data Export" challenge details. Upon user confirmation,
+     `AuthService.ApproveLoginChallenge` marks the challenge approved and
+     returns `VerifyEmailOtpResponse` containing the signed export token,
+     triggering a direct `.zip` download on Device B.
+   - **Device A Reactive Completion**: While `EmailVerificationForm` displays
+     the OTP input step, it continuously polls
+     `AuthService.GetLoginChallengeStatus(challenge_id)`. Once approved on
+     Device B, Device A automatically receives the `verify_response`, starts the
+     `.zip` download, closes the modal, and presents the confirmation notice.
 3. **Short-Lived Signed Export Token**:
-   - Upon successful verification, the backend generates a stateless HMAC-SHA256
-     signed token (15-minute TTL, signed with the server's JWT secret and bound
-     to `sub = userUUID`, `id = username`, and
+   - Upon successful verification or challenge approval, the backend generates a
+     stateless HMAC-SHA256 signed token (15-minute TTL, signed with the server's
+     JWT secret and bound to `sub = userUUID`, `id = username`, and
      `purpose = "export_data_download"`).
    - Returns `export_token` and `download_url` (`/api/account/export?token=...`)
      in `VerifyEmailOtpResponse`.
-   - When the user clicks a magic link in their email
-     (`/account?export_data_token=<token>`), `AccountSettingsPage.tsx`
-     automatically detects the query parameter, calls `VerifyEmailOtp`, clears
-     the URL parameter, and triggers the `.zip` download immediately.
 
 #### <a id="alternatives-considered-verification-flow" >Alternatives considered</a>
 

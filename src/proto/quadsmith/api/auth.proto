@@ -53,6 +53,7 @@ message ApproveLoginChallengeRequest {
 message ApproveLoginChallengeResponse {
   bool success = 1;
   string message = 2;
+  optional VerifyEmailOtpResponse verify_response = 3;
 }
 
 message CancelAccountDeletionRequest {}
@@ -149,6 +150,7 @@ message GetLoginChallengeDetailsResponse {
   google.protobuf.Timestamp created_at = 5;
   google.protobuf.Timestamp expires_at = 6;
   LoginChallengeStatus status = 7;
+  EmailOtpPurpose purpose = 8;
 }
 
 message GetLoginChallengeStatusRequest {
@@ -158,6 +160,7 @@ message GetLoginChallengeStatusRequest {
 message GetLoginChallengeStatusResponse {
   LoginChallengeStatus status = 1;
   optional AuthResponse auth_response = 2;
+  optional VerifyEmailOtpResponse verify_response = 3;
 }
 
 message AuthResponse {

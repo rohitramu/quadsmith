@@ -768,25 +768,61 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         if (req.token === "invalid-token" || req.token === "expired-token") {
           throw new ConnectError("invalid or expired magic link", Code.InvalidArgument);
         }
+        const isExport = req.token?.includes("export");
         return {
           email: "alex@fpv.build",
           ipAddress: "192.168.1.42",
           locationHint: "Local Network",
           deviceHint: "Chrome on macOS",
           status: LoginChallengeStatus.PENDING,
+          purpose: isExport ? EmailOtpPurpose.EXPORT_DATA : EmailOtpPurpose.LOGIN,
         };
       },
-      approveLoginChallenge: () => ({
-        success: true,
-        message: "Login approved",
-      }),
+      approveLoginChallenge: (req) => {
+        const isExport = req.token?.includes("export");
+        if (isExport) {
+          return {
+            success: true,
+            message: "Data export authorized",
+            verifyResponse: {
+              success: true,
+              purpose: EmailOtpPurpose.EXPORT_DATA,
+              email: "alex@fpv.build",
+              message: "Data export authorized",
+              exportToken: "mock-signed-export-token",
+              downloadUrl: "/api/account/export?token=mock-signed-export-token",
+              filename: "quadsmith-data-fpv_pilot-2026-10-14.zip",
+            },
+          };
+        }
+        return {
+          success: true,
+          message: "Login approved",
+        };
+      },
       denyLoginChallenge: () => ({
         success: true,
         message: "Login request denied",
       }),
-      getLoginChallengeStatus: () => ({
-        status: LoginChallengeStatus.PENDING,
-      }),
+      getLoginChallengeStatus: (req) => {
+        if (req.challengeId === "mock-approved-export-challenge-id") {
+          return {
+            status: LoginChallengeStatus.APPROVED,
+            verifyResponse: {
+              success: true,
+              purpose: EmailOtpPurpose.EXPORT_DATA,
+              email: "alex@quadsmith.dev",
+              message: "Data export authorized",
+              exportToken: "mock-signed-export-token",
+              downloadUrl: "/api/account/export?token=mock-signed-export-token",
+              filename: "quadsmith-data-alex-2026-10-15.zip",
+            },
+          };
+        }
+        return {
+          status: LoginChallengeStatus.PENDING,
+        };
+      },
       completeAccountSetup: (req) => {
         if (!req.setupToken) {
           throw new ConnectError("Setup token required", Code.InvalidArgument);

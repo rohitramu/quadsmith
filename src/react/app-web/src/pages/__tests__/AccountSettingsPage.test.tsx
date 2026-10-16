@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { screen, fireEvent, waitFor, within } from "@testing-library/react";
 import { renderApp } from "../../test/test-utils";
 import { mockUser } from "../../test/mocks/fixtures";
+import { LoginChallengeStatus, EmailOtpPurpose } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 
 describe("AccountSettingsPage Component", () => {
   beforeEach(() => {
@@ -366,6 +367,56 @@ describe("AccountSettingsPage Component", () => {
       expect(screen.queryByRole("heading", { name: /verify your email/i })).not.toBeInTheDocument();
       expect(screen.getByText(/your data download .* has started/i)).toBeInTheDocument();
     });
+  });
+
+  it("polls and automatically initiates data download on Device A when export is approved on Device B", async () => {
+    let polled = false;
+    renderApp("/account", {
+      transportOptions: {
+        authService: {
+          sendEmailOtp: () => ({
+            success: true,
+            challengeId: "export-cross-device-challenge",
+            cooldownSeconds: 20,
+            email: "alex@quadsmith.dev",
+          }),
+          getLoginChallengeStatus: () => {
+            if (!polled) {
+              polled = true;
+              return { status: LoginChallengeStatus.PENDING };
+            }
+            return {
+              status: LoginChallengeStatus.APPROVED,
+              verifyResponse: {
+                success: true,
+                purpose: EmailOtpPurpose.EXPORT_DATA,
+                email: "alex@quadsmith.dev",
+                message: "Data export authorized",
+                exportToken: "mock-signed-export-token",
+                downloadUrl: "/api/account/export?token=mock-signed-export-token",
+                filename: "quadsmith-data-fpv_pilot-2026-10-14.zip",
+              },
+            };
+          },
+        },
+      },
+    });
+
+    const downloadBtn = await screen.findByTestId("download-data-button");
+    fireEvent.click(downloadBtn);
+
+    expect(await screen.findByRole("heading", { name: /verify your email/i })).toBeInTheDocument();
+
+    // Device A polls and auto-completes download without typing OTP
+    await waitFor(
+      () => {
+        expect(
+          screen.queryByRole("heading", { name: /verify your email/i }),
+        ).not.toBeInTheDocument();
+        expect(screen.getByText(/your data download .* has started/i)).toBeInTheDocument();
+      },
+      { timeout: 8000 },
+    );
   });
 
   it("renders Active Sessions section with This Device badge, session count, and scrollable container", async () => {

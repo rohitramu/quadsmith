@@ -1,10 +1,13 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Mail, Lock, AlertTriangle, Loader2, ArrowRight, ArrowLeft } from "lucide-react";
 import { ConnectError, Code } from "@connectrpc/connect";
+import { create } from "@bufbuild/protobuf";
 import { useAuth } from "../context/AuthContext";
 import {
   EmailOtpPurpose,
+  LoginChallengeStatus,
   OtpVerificationErrorSchema,
+  VerifyEmailOtpResponseSchema,
 } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import type { VerifyEmailOtpResponse } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
@@ -84,7 +87,7 @@ export function EmailVerificationForm({
   showResendButton = false,
   extraContent,
 }: EmailVerificationFormProps) {
-  const { sendEmailOtp, verifyEmailOtp } = useAuth();
+  const { sendEmailOtp, verifyEmailOtp, getLoginChallengeStatus } = useAuth();
 
   const [step, setStep] = useState<"email" | "otp">(requireEmailInput ? "email" : "otp");
   const [email, setEmail] = useState(initialEmail);
@@ -169,6 +172,66 @@ export function EmailVerificationForm({
       setRemainingAttempts(null);
     }
   }, [isDenied]);
+
+  // Poll challenge approval status while on OTP step (cross-device approval)
+  useEffect(() => {
+    if (step !== "otp" || !challengeId || isExhausted || isRateLimited || isVerifying || isDenied) {
+      return;
+    }
+
+    const interval = setInterval(
+      async () => {
+        try {
+          const res = await getLoginChallengeStatus(challengeId);
+          if (res.status === LoginChallengeStatus.APPROVED) {
+            clearInterval(interval);
+            if (res.verifyResponse) {
+              onSuccess(res.verifyResponse, email);
+            } else if (res.authResponse) {
+              const synthetic = create(VerifyEmailOtpResponseSchema, {
+                success: true,
+                message: "Login successful",
+                purpose: EmailOtpPurpose.LOGIN,
+                email,
+                accessToken: res.authResponse.accessToken,
+                refreshToken: res.authResponse.refreshToken,
+                user: res.authResponse.user,
+                profile: res.authResponse.profile,
+                accountSetupRequired: res.authResponse.accountSetupRequired,
+                setupToken: res.authResponse.setupToken,
+                accountStatus: res.authResponse.accountStatus,
+                activeBan: res.authResponse.activeBan,
+                scheduledPurgeAt: res.authResponse.scheduledPurgeAt,
+              });
+              onSuccess(synthetic, email);
+            }
+          } else if (res.status === LoginChallengeStatus.DENIED) {
+            clearInterval(interval);
+            setErrorMsg(denialError || "Verification request was denied on your other device.");
+          }
+        } catch {
+          // Ignore transient polling network errors
+        }
+      },
+      (typeof window !== "undefined" && (window as any).__VITEST__) ||
+        import.meta.env.MODE === "test"
+        ? 50
+        : 2000,
+    );
+
+    return () => clearInterval(interval);
+  }, [
+    step,
+    challengeId,
+    isExhausted,
+    isRateLimited,
+    isVerifying,
+    isDenied,
+    denialError,
+    getLoginChallengeStatus,
+    onSuccess,
+    email,
+  ]);
 
   // Send OTP
   const handleSendOtp = useCallback(

@@ -745,4 +745,32 @@ describe("LoginPage Component", () => {
       });
     });
   });
+
+  it("renders Device B approval screen for EXPORT_DATA with custom texts and initiates zip download upon approval", async () => {
+    const { user } = renderApp("/login/verify?token=valid-export-token", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    expect(
+      await screen.findByRole("heading", { name: /approve data export/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(/a device is requesting to export your quadsmith account data/i),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /approve data export/i })).toBeInTheDocument();
+
+    const approveBtn = screen.getByRole("button", { name: /approve data export/i });
+    await user.click(approveBtn);
+
+    expect(await screen.findByTestId("approval-success-card")).toBeInTheDocument();
+    expect(screen.getByText(/export approved!/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /your data export has been approved and the download has been initiated on your other device/i,
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("link", { name: /download data archive \(\.zip\)/i }),
+    ).toBeInTheDocument();
+  });
 });

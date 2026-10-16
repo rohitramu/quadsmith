@@ -31,6 +31,7 @@ export function AppRoutes() {
       {/* Standalone Login Route (No Navbar / Top Bar) */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/login/verify" element={<LoginPage />} />
+      <Route path="/verify" element={<LoginPage />} />
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
