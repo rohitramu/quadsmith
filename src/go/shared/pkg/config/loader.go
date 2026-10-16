@@ -11,9 +11,9 @@ import (
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
-	"google.golang.org/protobuf/types/known/durationpb"
 
-	"quadsmith/shared/gen/quadsmith/config"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
+	configpb "quadsmith/shared/gen/quadsmith/config"
 )
 
 var placeholderRegex = regexp.MustCompile(`\$\{([A-Za-z0-9_]+)(?::-([^}]*))?\}`)
@@ -79,7 +79,7 @@ func Load[M proto.Message](path string, msg M) error {
 }
 
 // LoadAPIServerConfig loads and validates the API server configuration from an explicit file path.
-func LoadAPIServerConfig(configPath string) (*config.ApiServerConfig, error) {
+func LoadAPIServerConfig(configPath string) (*configpb.ApiServerConfig, error) {
 	if configPath == "" {
 		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
 			configPath = envFile
@@ -88,7 +88,7 @@ func LoadAPIServerConfig(configPath string) (*config.ApiServerConfig, error) {
 		}
 	}
 
-	var cfg config.ApiServerConfig
+	var cfg configpb.ApiServerConfig
 	if err := Load(configPath, &cfg); err != nil {
 		return nil, err
 	}
@@ -103,7 +103,7 @@ func LoadAPIServerConfig(configPath string) (*config.ApiServerConfig, error) {
 }
 
 // LoadOpsServerConfig loads and validates the internal ops server configuration from an explicit file path.
-func LoadOpsServerConfig(configPath string) (*config.OpsServerConfig, error) {
+func LoadOpsServerConfig(configPath string) (*configpb.OpsServerConfig, error) {
 	if configPath == "" {
 		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
 			configPath = envFile
@@ -112,7 +112,7 @@ func LoadOpsServerConfig(configPath string) (*config.OpsServerConfig, error) {
 		}
 	}
 
-	var cfg config.OpsServerConfig
+	var cfg configpb.OpsServerConfig
 	if err := Load(configPath, &cfg); err != nil {
 		return nil, err
 	}
@@ -127,7 +127,7 @@ func LoadOpsServerConfig(configPath string) (*config.OpsServerConfig, error) {
 }
 
 // LoadJobServerConfig loads and validates the job scheduler configuration from an explicit file path.
-func LoadJobServerConfig(configPath string) (*config.JobServerConfig, error) {
+func LoadJobServerConfig(configPath string) (*configpb.JobServerConfig, error) {
 	if configPath == "" {
 		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
 			configPath = envFile
@@ -136,7 +136,7 @@ func LoadJobServerConfig(configPath string) (*config.JobServerConfig, error) {
 		}
 	}
 
-	var cfg config.JobServerConfig
+	var cfg configpb.JobServerConfig
 	if err := Load(configPath, &cfg); err != nil {
 		return nil, err
 	}
@@ -151,7 +151,7 @@ func LoadJobServerConfig(configPath string) (*config.JobServerConfig, error) {
 }
 
 // LoadWebServerConfig loads and validates the web server configuration from an explicit file path.
-func LoadWebServerConfig(configPath string) (*config.WebServerConfig, error) {
+func LoadWebServerConfig(configPath string) (*configpb.WebServerConfig, error) {
 	if configPath == "" {
 		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
 			configPath = envFile
@@ -160,7 +160,7 @@ func LoadWebServerConfig(configPath string) (*config.WebServerConfig, error) {
 		}
 	}
 
-	var cfg config.WebServerConfig
+	var cfg configpb.WebServerConfig
 	if err := Load(configPath, &cfg); err != nil {
 		return nil, err
 	}
@@ -175,13 +175,13 @@ func LoadWebServerConfig(configPath string) (*config.WebServerConfig, error) {
 }
 
 // LoadOpsCliConfig loads and validates configuration for the qsops operations CLI.
-func LoadOpsCliConfig(configPath, envName string) (*config.OpsCliConfig, error) {
+func LoadOpsCliConfig(configPath, envName string) (*configpb.OpsCliConfig, error) {
 	resolvedPath, err := resolveConfigPath("cli-ops", configPath, envName)
 	if err != nil {
 		resolvedPath, err = resolveConfigPath("qsops", configPath, envName)
 	}
 
-	var cfg config.OpsCliConfig
+	var cfg configpb.OpsCliConfig
 	if err == nil {
 		_ = Load(resolvedPath, &cfg)
 	}
@@ -194,13 +194,13 @@ func LoadOpsCliConfig(configPath, envName string) (*config.OpsCliConfig, error) 
 }
 
 // LoadCliConfig loads and validates configuration for the customer CLI.
-func LoadCliConfig(configPath, envName string) (*config.CliConfig, error) {
+func LoadCliConfig(configPath, envName string) (*configpb.CliConfig, error) {
 	resolvedPath, err := resolveConfigPath("cli", configPath, envName)
 	if err != nil {
 		return nil, err
 	}
 
-	var cfg config.CliConfig
+	var cfg configpb.CliConfig
 	if err := Load(resolvedPath, &cfg); err != nil {
 		return nil, err
 	}
@@ -313,7 +313,7 @@ func FindBinaryConfigFile(binaryName, envName string) (string, error) {
 	return "", fmt.Errorf("unable to locate configuration file %q for binary %q and environment %q", filename, binaryName, envName)
 }
 
-func applyAPIServerEnvOverrides(cfg *config.ApiServerConfig) {
+func applyAPIServerEnvOverrides(cfg *configpb.ApiServerConfig) {
 	if cfg.Database != nil {
 		applyDatabaseEnvOverrides(cfg.Database)
 	}
@@ -334,7 +334,7 @@ func applyAPIServerEnvOverrides(cfg *config.ApiServerConfig) {
 	}
 }
 
-func applyOpsServerEnvOverrides(cfg *config.OpsServerConfig) {
+func applyOpsServerEnvOverrides(cfg *configpb.OpsServerConfig) {
 	if cfg.Database != nil {
 		applyDatabaseEnvOverrides(cfg.Database)
 	}
@@ -351,7 +351,7 @@ func applyOpsServerEnvOverrides(cfg *config.OpsServerConfig) {
 	}
 }
 
-func applyJobServerEnvOverrides(cfg *config.JobServerConfig) {
+func applyJobServerEnvOverrides(cfg *configpb.JobServerConfig) {
 	if cfg.InternalDatabase != nil {
 		applyInternalDatabaseEnvOverrides(cfg.InternalDatabase)
 	}
@@ -363,19 +363,19 @@ func applyJobServerEnvOverrides(cfg *config.JobServerConfig) {
 	}
 }
 
-func applyWebServerEnvOverrides(cfg *config.WebServerConfig) {
+func applyWebServerEnvOverrides(cfg *configpb.WebServerConfig) {
 	if v := os.Getenv("QS_API_URL"); v != "" {
 		cfg.ApiUrl = &v
 	}
 }
 
-func applyInternalDatabaseEnvOverrides(db *config.DatabaseConfig) {
+func applyInternalDatabaseEnvOverrides(db *configpb.DatabaseConfig) {
 	if v := os.Getenv("QS_INTERNAL_DATABASE_URL"); v != "" {
 		db.Url = &v
 	}
 }
 
-func applyDatabaseEnvOverrides(db *config.DatabaseConfig) {
+func applyDatabaseEnvOverrides(db *configpb.DatabaseConfig) {
 	if v := os.Getenv("QS_DATABASE_URL"); v != "" {
 		db.Url = &v
 	}
@@ -460,7 +460,7 @@ func validateMessageFields(m protoreflect.Message, path string, missing *[]strin
 }
 
 // ValidateAPIServerConfig ensures all configuration required by the API server daemon is present and valid.
-func ValidateAPIServerConfig(c *config.ApiServerConfig) error {
+func ValidateAPIServerConfig(c *configpb.ApiServerConfig) error {
 	var errs []string
 
 	if err := ValidateNoUnsetFields(c); err != nil {
@@ -510,7 +510,7 @@ func ValidateAPIServerConfig(c *config.ApiServerConfig) error {
 }
 
 // ValidateWebServerConfig ensures all configuration required by the web server daemon is present and valid.
-func ValidateWebServerConfig(c *config.WebServerConfig) error {
+func ValidateWebServerConfig(c *configpb.WebServerConfig) error {
 	var errs []string
 
 	if err := ValidateNoUnsetFields(c); err != nil {
@@ -561,7 +561,7 @@ func ValidateWebServerConfig(c *config.WebServerConfig) error {
 }
 
 // ValidateOpsServerConfig ensures all configuration required by the internal ops server is present and valid.
-func ValidateOpsServerConfig(c *config.OpsServerConfig) error {
+func ValidateOpsServerConfig(c *configpb.OpsServerConfig) error {
 	var errs []string
 
 	if err := ValidateNoUnsetFields(c); err != nil {
@@ -615,7 +615,7 @@ func ValidateOpsServerConfig(c *config.OpsServerConfig) error {
 }
 
 // ValidateJobServerConfig ensures all configuration required by the job server is present and valid.
-func ValidateJobServerConfig(c *config.JobServerConfig) error {
+func ValidateJobServerConfig(c *configpb.JobServerConfig) error {
 	var errs []string
 
 	if err := ValidateNoUnsetFields(c); err != nil {
@@ -665,36 +665,58 @@ func ValidateJobServerConfig(c *config.JobServerConfig) error {
 		errs = append(errs, "internal_database: "+err.Error())
 	}
 
+	if len(c.Groups) == 0 {
+		errs = append(errs, "at least one IAM group must be defined in groups")
+	}
+
 	// Helper to validate a task's schedule branch
-	validateSchedule := func(name string, hasCron bool, cronStr string, hasInterval bool, dur *durationpb.Duration) {
+	validateTaskSchedule := func(name string, hasCron bool, cronStr string, hasInterval bool, dur *durationpb.Duration) {
 		if hasCron {
-			if err := ValidateCronExpression(cronStr); err != nil {
+			if strings.TrimSpace(cronStr) == "" {
+				errs = append(errs, fmt.Sprintf("%s.cron cannot be empty", name))
+			} else if err := ValidateCronExpression(cronStr); err != nil {
 				errs = append(errs, fmt.Sprintf("%s: %v", name, err))
 			}
 		} else if hasInterval {
-			if _, err := DurationPbToCron(dur); err != nil {
+			if dur == nil {
+				errs = append(errs, fmt.Sprintf("%s.interval cannot be nil", name))
+			} else if _, err := DurationPbToCron(dur); err != nil {
 				errs = append(errs, fmt.Sprintf("%s: invalid interval: %v", name, err))
 			}
+		} else {
+			errs = append(errs, fmt.Sprintf("%s: schedule (cron or interval) must be set", name))
 		}
 	}
 
-	if s := c.GetCleanupExpiredOtps(); s != nil && s.GetEnabled() {
-		validateSchedule("cleanup_expired_otps", s.GetCron() != "", s.GetCron(), s.GetInterval() != nil, s.GetInterval())
+	if s := c.GetCleanupExpiredOtps(); s != nil {
+		_, hasCron := s.GetSchedule().(*configpb.CleanupExpiredOtpsSchedule_Cron)
+		_, hasInterval := s.GetSchedule().(*configpb.CleanupExpiredOtpsSchedule_Interval)
+		validateTaskSchedule("cleanup_expired_otps", hasCron, s.GetCron(), hasInterval, s.GetInterval())
 	}
-	if s := c.GetCleanupExpiredTokens(); s != nil && s.GetEnabled() {
-		validateSchedule("cleanup_expired_tokens", s.GetCron() != "", s.GetCron(), s.GetInterval() != nil, s.GetInterval())
+	if s := c.GetCleanupExpiredTokens(); s != nil {
+		_, hasCron := s.GetSchedule().(*configpb.CleanupExpiredTokensSchedule_Cron)
+		_, hasInterval := s.GetSchedule().(*configpb.CleanupExpiredTokensSchedule_Interval)
+		validateTaskSchedule("cleanup_expired_tokens", hasCron, s.GetCron(), hasInterval, s.GetInterval())
 	}
-	if s := c.GetCleanupOrphanedBlobs(); s != nil && s.GetEnabled() {
-		validateSchedule("cleanup_orphaned_blobs", s.GetCron() != "", s.GetCron(), s.GetInterval() != nil, s.GetInterval())
+	if s := c.GetCleanupOrphanedBlobs(); s != nil {
+		_, hasCron := s.GetSchedule().(*configpb.CleanupOrphanedBlobsSchedule_Cron)
+		_, hasInterval := s.GetSchedule().(*configpb.CleanupOrphanedBlobsSchedule_Interval)
+		validateTaskSchedule("cleanup_orphaned_blobs", hasCron, s.GetCron(), hasInterval, s.GetInterval())
 	}
-	if s := c.GetDatabaseMaintenance(); s != nil && s.GetEnabled() {
-		validateSchedule("database_maintenance", s.GetCron() != "", s.GetCron(), s.GetInterval() != nil, s.GetInterval())
+	if s := c.GetDatabaseMaintenance(); s != nil {
+		_, hasCron := s.GetSchedule().(*configpb.DatabaseMaintenanceSchedule_Cron)
+		_, hasInterval := s.GetSchedule().(*configpb.DatabaseMaintenanceSchedule_Interval)
+		validateTaskSchedule("database_maintenance", hasCron, s.GetCron(), hasInterval, s.GetInterval())
 	}
-	if s := c.GetPurgeSoftDeletedAccounts(); s != nil && s.GetEnabled() {
-		validateSchedule("purge_soft_deleted_accounts", s.GetCron() != "", s.GetCron(), s.GetInterval() != nil, s.GetInterval())
+	if s := c.GetPurgeSoftDeletedAccounts(); s != nil {
+		_, hasCron := s.GetSchedule().(*configpb.PurgeSoftDeletedAccountsSchedule_Cron)
+		_, hasInterval := s.GetSchedule().(*configpb.PurgeSoftDeletedAccountsSchedule_Interval)
+		validateTaskSchedule("purge_soft_deleted_accounts", hasCron, s.GetCron(), hasInterval, s.GetInterval())
 	}
-	if s := c.GetSendUsernameReleaseWarnings(); s != nil && s.GetEnabled() {
-		validateSchedule("send_username_release_warnings", s.GetCron() != "", s.GetCron(), s.GetInterval() != nil, s.GetInterval())
+	if s := c.GetSendUsernameReleaseWarnings(); s != nil {
+		_, hasCron := s.GetSchedule().(*configpb.SendUsernameReleaseWarningsSchedule_Cron)
+		_, hasInterval := s.GetSchedule().(*configpb.SendUsernameReleaseWarningsSchedule_Interval)
+		validateTaskSchedule("send_username_release_warnings", hasCron, s.GetCron(), hasInterval, s.GetInterval())
 	}
 
 	if len(errs) > 0 {
@@ -704,7 +726,7 @@ func ValidateJobServerConfig(c *config.JobServerConfig) error {
 }
 
 // ValidateOpsCliConfig ensures configuration required by qsops is present and valid.
-func ValidateOpsCliConfig(c *config.OpsCliConfig) error {
+func ValidateOpsCliConfig(c *configpb.OpsCliConfig) error {
 	var errs []string
 
 	if err := ValidateNoUnsetFields(c); err != nil {
@@ -744,7 +766,7 @@ func ValidateOpsCliConfig(c *config.OpsCliConfig) error {
 }
 
 // ValidateCliConfig ensures configuration required by the customer CLI is present and valid.
-func ValidateCliConfig(c *config.CliConfig) error {
+func ValidateCliConfig(c *configpb.CliConfig) error {
 	var errs []string
 
 	if err := ValidateNoUnsetFields(c); err != nil {
@@ -775,7 +797,7 @@ func ValidateCliConfig(c *config.CliConfig) error {
 }
 
 // ValidateSeeder validates database settings required by the seeder.
-func ValidateSeeder(db *config.DatabaseConfig, env string) error {
+func ValidateSeeder(db *configpb.DatabaseConfig, env string) error {
 	if db == nil {
 		return formatErrors("Database Seeder", []string{"database configuration is missing"})
 	}
@@ -786,7 +808,7 @@ func ValidateSeeder(db *config.DatabaseConfig, env string) error {
 }
 
 // ValidateDatabase checks that the database configuration is well-formed and valid for the environment.
-func ValidateDatabase(db *config.DatabaseConfig, env string) error {
+func ValidateDatabase(db *configpb.DatabaseConfig, env string) error {
 	if strings.TrimSpace(db.GetUrl()) == "" {
 		return fmt.Errorf("database.url cannot be empty")
 	}
@@ -820,7 +842,7 @@ func ValidateDatabase(db *config.DatabaseConfig, env string) error {
 }
 
 // ValidateAuth checks authentication configuration settings.
-func ValidateAuth(auth *config.AuthConfig, env string) error {
+func ValidateAuth(auth *configpb.AuthConfig, env string) error {
 	var errs []string
 	if strings.TrimSpace(auth.GetSecret()) == "" {
 		errs = append(errs, "auth.secret cannot be empty")

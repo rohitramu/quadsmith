@@ -14,9 +14,49 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_config_common: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Ch1xdWFkc21pdGgvY29uZmlnL2NvbW1vbi5wcm90bxIQcXVhZHNtaXRoLmNvbmZpZyKqAQoORGF0YWJhc2VDb25maWcSEAoDdXJsGAEgASgJSACIAQESEQoEbmFtZRgCIAEoCUgBiAEBEhwKD21heF9jb25uZWN0aW9ucxgDIAEoBUgCiAEBEhwKD21pbl9jb25uZWN0aW9ucxgEIAEoBUgDiAEBQgYKBF91cmxCBwoFX25hbWVCEgoQX21heF9jb25uZWN0aW9uc0ISChBfbWluX2Nvbm5lY3Rpb25zIvQBCgxTZXJ2ZXJDb25maWcSEQoEcG9ydBgBIAEoBUgAiAEBEi8KDHJlYWRfdGltZW91dBgCIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhIwCg13cml0ZV90aW1lb3V0GAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEi8KDGlkbGVfdGltZW91dBgEIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhIeChFtYXhfcmVxdWVzdF9ieXRlcxgFIAEoA0gBiAEBQgcKBV9wb3J0QhQKEl9tYXhfcmVxdWVzdF9ieXRlc0IuWixxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvY29uZmlnO2NvbmZpZ2IGcHJvdG8z",
+    "Ch1xdWFkc21pdGgvY29uZmlnL2NvbW1vbi5wcm90bxIQcXVhZHNtaXRoLmNvbmZpZyKsAQoUQm9vdHN0cmFwVG9rZW5Db25maWcSDwoCaWQYASABKAlIAIgBARIRCgRuYW1lGAIgASgJSAGIAQESEgoFdG9rZW4YAyABKAlIAogBARIXCgpncm91cF9uYW1lGAQgASgJSAOIAQESEQoEdHlwZRgFIAEoCUgEiAEBQgUKA19pZEIHCgVfbmFtZUIICgZfdG9rZW5CDQoLX2dyb3VwX25hbWVCBwoFX3R5cGUiqgEKDkRhdGFiYXNlQ29uZmlnEhAKA3VybBgBIAEoCUgAiAEBEhEKBG5hbWUYAiABKAlIAYgBARIcCg9tYXhfY29ubmVjdGlvbnMYAyABKAVIAogBARIcCg9taW5fY29ubmVjdGlvbnMYBCABKAVIA4gBAUIGCgRfdXJsQgcKBV9uYW1lQhIKEF9tYXhfY29ubmVjdGlvbnNCEgoQX21pbl9jb25uZWN0aW9ucyJ0ChNJbnRlcm5hbEdyb3VwQ29uZmlnEhEKBG5hbWUYASABKAlIAIgBARIYCgtkZXNjcmlwdGlvbhgCIAEoCUgBiAEBEhcKD2FsbG93ZWRfbWV0aG9kcxgDIAMoCUIHCgVfbmFtZUIOCgxfZGVzY3JpcHRpb24i9AEKDFNlcnZlckNvbmZpZxIRCgRwb3J0GAEgASgFSACIAQESLwoMcmVhZF90aW1lb3V0GAIgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEjAKDXdyaXRlX3RpbWVvdXQYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SLwoMaWRsZV90aW1lb3V0GAQgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEh4KEW1heF9yZXF1ZXN0X2J5dGVzGAUgASgDSAGIAQFCBwoFX3BvcnRCFAoSX21heF9yZXF1ZXN0X2J5dGVzQi5aLHF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9jb25maWc7Y29uZmlnYgZwcm90bzM",
     [file_google_protobuf_duration],
   );
+
+/**
+ * @generated from message quadsmith.config.BootstrapTokenConfig
+ */
+export type BootstrapTokenConfig = Message<"quadsmith.config.BootstrapTokenConfig"> & {
+  /**
+   * @generated from field: optional string id = 1;
+   */
+  id?: string | undefined;
+
+  /**
+   * @generated from field: optional string name = 2;
+   */
+  name?: string | undefined;
+
+  /**
+   * @generated from field: optional string token = 3;
+   */
+  token?: string | undefined;
+
+  /**
+   * @generated from field: optional string group_name = 4;
+   */
+  groupName?: string | undefined;
+
+  /**
+   * 'HUMAN' or 'ROBOT'
+   *
+   * @generated from field: optional string type = 5;
+   */
+  type?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.BootstrapTokenConfig.
+ * Use `create(BootstrapTokenConfigSchema)` to create a new message.
+ */
+export const BootstrapTokenConfigSchema: GenMessage<BootstrapTokenConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_common, 0);
 
 /**
  * @generated from message quadsmith.config.DatabaseConfig
@@ -49,7 +89,35 @@ export type DatabaseConfig = Message<"quadsmith.config.DatabaseConfig"> & {
  */
 export const DatabaseConfigSchema: GenMessage<DatabaseConfig> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_config_common, 0);
+  messageDesc(file_quadsmith_config_common, 1);
+
+/**
+ * @generated from message quadsmith.config.InternalGroupConfig
+ */
+export type InternalGroupConfig = Message<"quadsmith.config.InternalGroupConfig"> & {
+  /**
+   * @generated from field: optional string name = 1;
+   */
+  name?: string | undefined;
+
+  /**
+   * @generated from field: optional string description = 2;
+   */
+  description?: string | undefined;
+
+  /**
+   * @generated from field: repeated string allowed_methods = 3;
+   */
+  allowedMethods: string[];
+};
+
+/**
+ * Describes the message quadsmith.config.InternalGroupConfig.
+ * Use `create(InternalGroupConfigSchema)` to create a new message.
+ */
+export const InternalGroupConfigSchema: GenMessage<InternalGroupConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_common, 2);
 
 /**
  * @generated from message quadsmith.config.ServerConfig
@@ -87,4 +155,4 @@ export type ServerConfig = Message<"quadsmith.config.ServerConfig"> & {
  */
 export const ServerConfigSchema: GenMessage<ServerConfig> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_config_common, 1);
+  messageDesc(file_quadsmith_config_common, 3);

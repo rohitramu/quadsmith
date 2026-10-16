@@ -9,8 +9,8 @@ import (
 
 	"google.golang.org/protobuf/proto"
 
-	"google.golang.org/protobuf/types/known/durationpb"
-	"quadsmith/shared/gen/quadsmith/config"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
+	configpb "quadsmith/shared/gen/quadsmith/config"
 )
 
 func TestExpandTemplates(t *testing.T) {
@@ -42,14 +42,14 @@ func TestExpandTemplates(t *testing.T) {
 func TestValidateDatabase(t *testing.T) {
 	tests := []struct {
 		name    string
-		db      *config.DatabaseConfig
+		db      *configpb.DatabaseConfig
 		env     string
 		wantErr bool
 		errMsg  string
 	}{
 		{
 			name: "valid database config",
-			db: &config.DatabaseConfig{
+			db: &configpb.DatabaseConfig{
 				Url:            proto.String("postgres://user:pass@127.0.0.1:5432/quadsmith_api"),
 				Name:           proto.String("quadsmith_api"),
 				MaxConnections: proto.Int32(20),
@@ -60,7 +60,7 @@ func TestValidateDatabase(t *testing.T) {
 		},
 		{
 			name: "missing database name",
-			db: &config.DatabaseConfig{
+			db: &configpb.DatabaseConfig{
 				Url:            proto.String("postgres://user:pass@127.0.0.1:5432/quadsmith_api"),
 				Name:           proto.String(""),
 				MaxConnections: proto.Int32(20),
@@ -72,7 +72,7 @@ func TestValidateDatabase(t *testing.T) {
 		},
 		{
 			name: "database name mismatch with url path",
-			db: &config.DatabaseConfig{
+			db: &configpb.DatabaseConfig{
 				Url:            proto.String("postgres://user:pass@127.0.0.1:5432/quadsmith_api"),
 				Name:           proto.String("quadsmith_ops"),
 				MaxConnections: proto.Int32(20),
@@ -84,7 +84,7 @@ func TestValidateDatabase(t *testing.T) {
 		},
 		{
 			name: "min connections exceeds max connections",
-			db: &config.DatabaseConfig{
+			db: &configpb.DatabaseConfig{
 				Url:            proto.String("postgres://user:pass@127.0.0.1:5432/quadsmith_api"),
 				Name:           proto.String("quadsmith_api"),
 				MaxConnections: proto.Int32(5),
@@ -96,7 +96,7 @@ func TestValidateDatabase(t *testing.T) {
 		},
 		{
 			name: "localhost rejected in production",
-			db: &config.DatabaseConfig{
+			db: &configpb.DatabaseConfig{
 				Url:            proto.String("postgres://user:pass@localhost:5432/quadsmith_api"),
 				Name:           proto.String("quadsmith_api"),
 				MaxConnections: proto.Int32(20),
@@ -132,9 +132,9 @@ func TestValidateServer(t *testing.T) {
 		t.Error("expected error for invalid port, got nil")
 	}
 
-	webCfg := &config.WebServerConfig{
+	webCfg := &configpb.WebServerConfig{
 		Environment: proto.String("sandbox"),
-		Server: &config.ServerConfig{
+		Server: &configpb.ServerConfig{
 			Port:            proto.Int32(3000),
 			ReadTimeout:     durationpb.New(15 * time.Second),
 			WriteTimeout:    durationpb.New(15 * time.Second),
@@ -221,7 +221,7 @@ auth {
 		t.Fatalf("failed to write test config: %v", err)
 	}
 
-	var cfg config.ApiServerConfig
+	var cfg configpb.ApiServerConfig
 	if err := Load(configPath, &cfg); err != nil {
 		t.Fatalf("failed to load config: %v", err)
 	}

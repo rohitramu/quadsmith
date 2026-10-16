@@ -114,6 +114,7 @@ func (s *Service) GetJob(ctx context.Context, req *connect.Request[jobspb.GetJob
 		SELECT id, method, caller, caller_type, status, duration_ms, error_message, created_at
 		FROM internal_api_calls
 		WHERE (id = $1 OR uuid::text = $1)
+		  AND method IN ('CleanupExpiredOtps', 'CleanupExpiredTokens', 'CleanupOrphanedBlobs', 'PurgeSoftDeletedAccounts', 'SendUsernameReleaseWarnings', 'RunDatabaseMaintenance', 'SeedDatabase')
 		LIMIT 1`
 
 	var id, method, caller, callerType, status string

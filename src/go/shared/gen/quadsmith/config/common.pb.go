@@ -22,6 +22,82 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type BootstrapTokenConfig struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            *string                `protobuf:"bytes,1,opt,name=id,proto3,oneof" json:"id,omitempty"`
+	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	Token         *string                `protobuf:"bytes,3,opt,name=token,proto3,oneof" json:"token,omitempty"`
+	GroupName     *string                `protobuf:"bytes,4,opt,name=group_name,json=groupName,proto3,oneof" json:"group_name,omitempty"`
+	Type          *string                `protobuf:"bytes,5,opt,name=type,proto3,oneof" json:"type,omitempty"` // 'HUMAN' or 'ROBOT'
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *BootstrapTokenConfig) Reset() {
+	*x = BootstrapTokenConfig{}
+	mi := &file_quadsmith_config_common_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *BootstrapTokenConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*BootstrapTokenConfig) ProtoMessage() {}
+
+func (x *BootstrapTokenConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_config_common_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use BootstrapTokenConfig.ProtoReflect.Descriptor instead.
+func (*BootstrapTokenConfig) Descriptor() ([]byte, []int) {
+	return file_quadsmith_config_common_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *BootstrapTokenConfig) GetId() string {
+	if x != nil && x.Id != nil {
+		return *x.Id
+	}
+	return ""
+}
+
+func (x *BootstrapTokenConfig) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
+	}
+	return ""
+}
+
+func (x *BootstrapTokenConfig) GetToken() string {
+	if x != nil && x.Token != nil {
+		return *x.Token
+	}
+	return ""
+}
+
+func (x *BootstrapTokenConfig) GetGroupName() string {
+	if x != nil && x.GroupName != nil {
+		return *x.GroupName
+	}
+	return ""
+}
+
+func (x *BootstrapTokenConfig) GetType() string {
+	if x != nil && x.Type != nil {
+		return *x.Type
+	}
+	return ""
+}
+
 type DatabaseConfig struct {
 	state          protoimpl.MessageState `protogen:"open.v1"`
 	Url            *string                `protobuf:"bytes,1,opt,name=url,proto3,oneof" json:"url,omitempty"`
@@ -34,7 +110,7 @@ type DatabaseConfig struct {
 
 func (x *DatabaseConfig) Reset() {
 	*x = DatabaseConfig{}
-	mi := &file_quadsmith_config_common_proto_msgTypes[0]
+	mi := &file_quadsmith_config_common_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -46,7 +122,7 @@ func (x *DatabaseConfig) String() string {
 func (*DatabaseConfig) ProtoMessage() {}
 
 func (x *DatabaseConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_common_proto_msgTypes[0]
+	mi := &file_quadsmith_config_common_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -59,7 +135,7 @@ func (x *DatabaseConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DatabaseConfig.ProtoReflect.Descriptor instead.
 func (*DatabaseConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_common_proto_rawDescGZIP(), []int{0}
+	return file_quadsmith_config_common_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *DatabaseConfig) GetUrl() string {
@@ -90,6 +166,66 @@ func (x *DatabaseConfig) GetMinConnections() int32 {
 	return 0
 }
 
+type InternalGroupConfig struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	Name           *string                `protobuf:"bytes,1,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	Description    *string                `protobuf:"bytes,2,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	AllowedMethods []string               `protobuf:"bytes,3,rep,name=allowed_methods,json=allowedMethods,proto3" json:"allowed_methods,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *InternalGroupConfig) Reset() {
+	*x = InternalGroupConfig{}
+	mi := &file_quadsmith_config_common_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *InternalGroupConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*InternalGroupConfig) ProtoMessage() {}
+
+func (x *InternalGroupConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_config_common_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use InternalGroupConfig.ProtoReflect.Descriptor instead.
+func (*InternalGroupConfig) Descriptor() ([]byte, []int) {
+	return file_quadsmith_config_common_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *InternalGroupConfig) GetName() string {
+	if x != nil && x.Name != nil {
+		return *x.Name
+	}
+	return ""
+}
+
+func (x *InternalGroupConfig) GetDescription() string {
+	if x != nil && x.Description != nil {
+		return *x.Description
+	}
+	return ""
+}
+
+func (x *InternalGroupConfig) GetAllowedMethods() []string {
+	if x != nil {
+		return x.AllowedMethods
+	}
+	return nil
+}
+
 type ServerConfig struct {
 	state           protoimpl.MessageState `protogen:"open.v1"`
 	Port            *int32                 `protobuf:"varint,1,opt,name=port,proto3,oneof" json:"port,omitempty"`
@@ -103,7 +239,7 @@ type ServerConfig struct {
 
 func (x *ServerConfig) Reset() {
 	*x = ServerConfig{}
-	mi := &file_quadsmith_config_common_proto_msgTypes[1]
+	mi := &file_quadsmith_config_common_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -115,7 +251,7 @@ func (x *ServerConfig) String() string {
 func (*ServerConfig) ProtoMessage() {}
 
 func (x *ServerConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_common_proto_msgTypes[1]
+	mi := &file_quadsmith_config_common_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -128,7 +264,7 @@ func (x *ServerConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ServerConfig.ProtoReflect.Descriptor instead.
 func (*ServerConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_common_proto_rawDescGZIP(), []int{1}
+	return file_quadsmith_config_common_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ServerConfig) GetPort() int32 {
@@ -170,7 +306,19 @@ var File_quadsmith_config_common_proto protoreflect.FileDescriptor
 
 const file_quadsmith_config_common_proto_rawDesc = "" +
 	"\n" +
-	"\x1dquadsmith/config/common.proto\x12\x10quadsmith.config\x1a\x1egoogle/protobuf/duration.proto\"\xd5\x01\n" +
+	"\x1dquadsmith/config/common.proto\x12\x10quadsmith.config\x1a\x1egoogle/protobuf/duration.proto\"\xce\x01\n" +
+	"\x14BootstrapTokenConfig\x12\x13\n" +
+	"\x02id\x18\x01 \x01(\tH\x00R\x02id\x88\x01\x01\x12\x17\n" +
+	"\x04name\x18\x02 \x01(\tH\x01R\x04name\x88\x01\x01\x12\x19\n" +
+	"\x05token\x18\x03 \x01(\tH\x02R\x05token\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"group_name\x18\x04 \x01(\tH\x03R\tgroupName\x88\x01\x01\x12\x17\n" +
+	"\x04type\x18\x05 \x01(\tH\x04R\x04type\x88\x01\x01B\x05\n" +
+	"\x03_idB\a\n" +
+	"\x05_nameB\b\n" +
+	"\x06_tokenB\r\n" +
+	"\v_group_nameB\a\n" +
+	"\x05_type\"\xd5\x01\n" +
 	"\x0eDatabaseConfig\x12\x15\n" +
 	"\x03url\x18\x01 \x01(\tH\x00R\x03url\x88\x01\x01\x12\x17\n" +
 	"\x04name\x18\x02 \x01(\tH\x01R\x04name\x88\x01\x01\x12,\n" +
@@ -179,7 +327,13 @@ const file_quadsmith_config_common_proto_rawDesc = "" +
 	"\x04_urlB\a\n" +
 	"\x05_nameB\x12\n" +
 	"\x10_max_connectionsB\x12\n" +
-	"\x10_min_connections\"\xb3\x02\n" +
+	"\x10_min_connections\"\x97\x01\n" +
+	"\x13InternalGroupConfig\x12\x17\n" +
+	"\x04name\x18\x01 \x01(\tH\x00R\x04name\x88\x01\x01\x12%\n" +
+	"\vdescription\x18\x02 \x01(\tH\x01R\vdescription\x88\x01\x01\x12'\n" +
+	"\x0fallowed_methods\x18\x03 \x03(\tR\x0eallowedMethodsB\a\n" +
+	"\x05_nameB\x0e\n" +
+	"\f_description\"\xb3\x02\n" +
 	"\fServerConfig\x12\x17\n" +
 	"\x04port\x18\x01 \x01(\x05H\x00R\x04port\x88\x01\x01\x12<\n" +
 	"\fread_timeout\x18\x02 \x01(\v2\x19.google.protobuf.DurationR\vreadTimeout\x12>\n" +
@@ -201,16 +355,18 @@ func file_quadsmith_config_common_proto_rawDescGZIP() []byte {
 	return file_quadsmith_config_common_proto_rawDescData
 }
 
-var file_quadsmith_config_common_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_quadsmith_config_common_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_quadsmith_config_common_proto_goTypes = []any{
-	(*DatabaseConfig)(nil),      // 0: quadsmith.config.DatabaseConfig
-	(*ServerConfig)(nil),        // 1: quadsmith.config.ServerConfig
-	(*durationpb.Duration)(nil), // 2: google.protobuf.Duration
+	(*BootstrapTokenConfig)(nil), // 0: quadsmith.config.BootstrapTokenConfig
+	(*DatabaseConfig)(nil),       // 1: quadsmith.config.DatabaseConfig
+	(*InternalGroupConfig)(nil),  // 2: quadsmith.config.InternalGroupConfig
+	(*ServerConfig)(nil),         // 3: quadsmith.config.ServerConfig
+	(*durationpb.Duration)(nil),  // 4: google.protobuf.Duration
 }
 var file_quadsmith_config_common_proto_depIdxs = []int32{
-	2, // 0: quadsmith.config.ServerConfig.read_timeout:type_name -> google.protobuf.Duration
-	2, // 1: quadsmith.config.ServerConfig.write_timeout:type_name -> google.protobuf.Duration
-	2, // 2: quadsmith.config.ServerConfig.idle_timeout:type_name -> google.protobuf.Duration
+	4, // 0: quadsmith.config.ServerConfig.read_timeout:type_name -> google.protobuf.Duration
+	4, // 1: quadsmith.config.ServerConfig.write_timeout:type_name -> google.protobuf.Duration
+	4, // 2: quadsmith.config.ServerConfig.idle_timeout:type_name -> google.protobuf.Duration
 	3, // [3:3] is the sub-list for method output_type
 	3, // [3:3] is the sub-list for method input_type
 	3, // [3:3] is the sub-list for extension type_name
@@ -225,13 +381,15 @@ func file_quadsmith_config_common_proto_init() {
 	}
 	file_quadsmith_config_common_proto_msgTypes[0].OneofWrappers = []any{}
 	file_quadsmith_config_common_proto_msgTypes[1].OneofWrappers = []any{}
+	file_quadsmith_config_common_proto_msgTypes[2].OneofWrappers = []any{}
+	file_quadsmith_config_common_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_config_common_proto_rawDesc), len(file_quadsmith_config_common_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

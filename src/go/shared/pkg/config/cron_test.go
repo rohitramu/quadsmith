@@ -38,3 +38,25 @@ func TestDurationToCron(t *testing.T) {
 		}
 	}
 }
+
+func TestDurationToCron_Invalid(t *testing.T) {
+	invalidDurations := []time.Duration{
+		0,
+		-1 * time.Minute,
+		30 * time.Second,
+		90 * time.Second,
+		7 * time.Minute,
+		45 * time.Minute,
+		5 * time.Hour,
+		90 * time.Minute,
+		2 * 24 * time.Hour,
+		14 * 24 * time.Hour,
+	}
+
+	for _, d := range invalidDurations {
+		got, err := DurationToCron(d)
+		if err == nil {
+			t.Errorf("DurationToCron(%v) expected error, but got %q", d, got)
+		}
+	}
+}

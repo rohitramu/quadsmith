@@ -135,9 +135,13 @@ func getOpsClient() opsconnect.OpsServiceClient {
 		token: token,
 		base:  http.DefaultTransport,
 	}
+	timeout := 60 * time.Second
+	if embeddedConfig.GetTimeout() != nil && embeddedConfig.GetTimeout().AsDuration() > 0 {
+		timeout = embeddedConfig.GetTimeout().AsDuration()
+	}
 	httpClient := &http.Client{
 		Transport: transport,
-		Timeout:   60 * time.Second,
+		Timeout:   timeout,
 	}
 	return opsconnect.NewOpsServiceClient(httpClient, opsServerURL)
 }
@@ -148,16 +152,17 @@ func getJobsClient() jobsconnect.JobsServiceClient {
 		token: token,
 		base:  http.DefaultTransport,
 	}
+	timeout := 60 * time.Second
+	if embeddedConfig.GetTimeout() != nil && embeddedConfig.GetTimeout().AsDuration() > 0 {
+		timeout = embeddedConfig.GetTimeout().AsDuration()
+	}
 	httpClient := &http.Client{
 		Transport: transport,
-		Timeout:   60 * time.Second,
+		Timeout:   timeout,
 	}
 	url := jobsServerURL
 	if url == "" {
 		url = embeddedConfig.GetJobsServerUrl()
-	}
-	if url == "" {
-		url = "http://127.0.0.1:8083"
 	}
 	return jobsconnect.NewJobsServiceClient(httpClient, url)
 }
@@ -800,8 +805,6 @@ func newTasksCmd() *cobra.Command {
 			client := getOpsClient()
 			ctx := cmd.Context()
 			taskName := strings.ToLower(strings.TrimSpace(args[0]))
-			taskName = strings.TrimPrefix(taskName, "auth.")
-			taskName = strings.TrimPrefix(taskName, "blob.")
 
 			switch taskName {
 			case "cleanup_expired_otps", "cleanupexpiredotps":
@@ -814,7 +817,12 @@ func newTasksCmd() *cobra.Command {
 					fmt.Println(string(out))
 					return nil
 				}
-				fmt.Printf("✓ Cleaned %d expired OTPs\n", resp.Msg.GetCleanedCount())
+				jobID := resp.Header().Get("X-Job-Id")
+				if jobID != "" {
+					fmt.Printf("✓ Cleaned %d expired OTPs (Job ID: %s)\n", resp.Msg.GetCleanedCount(), jobID)
+				} else {
+					fmt.Printf("✓ Cleaned %d expired OTPs\n", resp.Msg.GetCleanedCount())
+				}
 				return nil
 
 			case "cleanup_expired_tokens", "cleanupexpiredtokens":
@@ -827,7 +835,12 @@ func newTasksCmd() *cobra.Command {
 					fmt.Println(string(out))
 					return nil
 				}
-				fmt.Printf("✓ Cleaned %d expired tokens\n", resp.Msg.GetCleanedCount())
+				jobID := resp.Header().Get("X-Job-Id")
+				if jobID != "" {
+					fmt.Printf("✓ Cleaned %d expired tokens (Job ID: %s)\n", resp.Msg.GetCleanedCount(), jobID)
+				} else {
+					fmt.Printf("✓ Cleaned %d expired tokens\n", resp.Msg.GetCleanedCount())
+				}
 				return nil
 
 			case "cleanup_orphaned_blobs", "cleanuporphanedblobs":
@@ -840,7 +853,12 @@ func newTasksCmd() *cobra.Command {
 					fmt.Println(string(out))
 					return nil
 				}
-				fmt.Printf("✓ Cleaned %d orphaned blobs\n", resp.Msg.GetCleanedCount())
+				jobID := resp.Header().Get("X-Job-Id")
+				if jobID != "" {
+					fmt.Printf("✓ Cleaned %d orphaned blobs (Job ID: %s)\n", resp.Msg.GetCleanedCount(), jobID)
+				} else {
+					fmt.Printf("✓ Cleaned %d orphaned blobs\n", resp.Msg.GetCleanedCount())
+				}
 				return nil
 
 			case "purge_soft_deleted_accounts", "purgesoftdeletedaccounts", "purge_accounts":
@@ -853,7 +871,12 @@ func newTasksCmd() *cobra.Command {
 					fmt.Println(string(out))
 					return nil
 				}
-				fmt.Printf("✓ Purged %d soft-deleted accounts\n", resp.Msg.GetPurgedCount())
+				jobID := resp.Header().Get("X-Job-Id")
+				if jobID != "" {
+					fmt.Printf("✓ Purged %d soft-deleted accounts (Job ID: %s)\n", resp.Msg.GetPurgedCount(), jobID)
+				} else {
+					fmt.Printf("✓ Purged %d soft-deleted accounts\n", resp.Msg.GetPurgedCount())
+				}
 				return nil
 
 			case "send_username_release_warnings", "sendusernamereleasewarnings", "warn_usernames":
@@ -866,7 +889,12 @@ func newTasksCmd() *cobra.Command {
 					fmt.Println(string(out))
 					return nil
 				}
-				fmt.Printf("✓ Sent %d username release warnings\n", resp.Msg.GetWarningCount())
+				jobID := resp.Header().Get("X-Job-Id")
+				if jobID != "" {
+					fmt.Printf("✓ Sent %d username release warnings (Job ID: %s)\n", resp.Msg.GetWarningCount(), jobID)
+				} else {
+					fmt.Printf("✓ Sent %d username release warnings\n", resp.Msg.GetWarningCount())
+				}
 				return nil
 
 			case "run_database_maintenance", "rundatabasemaintenance", "vacuum":
@@ -881,7 +909,12 @@ func newTasksCmd() *cobra.Command {
 					fmt.Println(string(out))
 					return nil
 				}
-				fmt.Printf("✓ %s (duration: %d ms)\n", resp.Msg.GetMessage(), resp.Msg.GetDurationMs())
+				jobID := resp.Header().Get("X-Job-Id")
+				if jobID != "" {
+					fmt.Printf("✓ %s (duration: %d ms, Job ID: %s)\n", resp.Msg.GetMessage(), resp.Msg.GetDurationMs(), jobID)
+				} else {
+					fmt.Printf("✓ %s (duration: %d ms)\n", resp.Msg.GetMessage(), resp.Msg.GetDurationMs())
+				}
 				return nil
 
 			case "seed_database", "seeddatabase", "seed":
@@ -896,7 +929,12 @@ func newTasksCmd() *cobra.Command {
 					fmt.Println(string(out))
 					return nil
 				}
-				fmt.Printf("✓ %s (records seeded: %d)\n", resp.Msg.GetMessage(), resp.Msg.GetRecordsSeeded())
+				jobID := resp.Header().Get("X-Job-Id")
+				if jobID != "" {
+					fmt.Printf("✓ %s (records seeded: %d, Job ID: %s)\n", resp.Msg.GetMessage(), resp.Msg.GetRecordsSeeded(), jobID)
+				} else {
+					fmt.Printf("✓ %s (records seeded: %d)\n", resp.Msg.GetMessage(), resp.Msg.GetRecordsSeeded())
+				}
 				return nil
 
 			default:

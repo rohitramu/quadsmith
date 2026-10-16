@@ -60,3 +60,22 @@ send_username_release_warnings {
   enabled: true
   cron: "0 0 * * *"
 }
+
+groups {
+  name: "operators"
+  description: "Full developer ops permissions"
+  allowed_methods: "*"
+}
+
+groups {
+  name: "robots"
+  description: "Automated scheduler and cron permissions"
+  allowed_methods: "*"
+}
+
+groups {
+  name: "viewers"
+  description: "Read-only internal operator permissions"
+  allowed_methods: "Get*"
+  allowed_methods: "List*"
+}

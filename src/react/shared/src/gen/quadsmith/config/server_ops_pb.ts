@@ -4,7 +4,12 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import type { DatabaseConfig, ServerConfig } from "./common_pb";
+import type {
+  BootstrapTokenConfig,
+  DatabaseConfig,
+  InternalGroupConfig,
+  ServerConfig,
+} from "./common_pb";
 import { file_quadsmith_config_common } from "./common_pb";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -14,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_config_server_ops: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiFxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9vcHMucHJvdG8SEHF1YWRzbWl0aC5jb25maWciswMKD09wc1NlcnZlckNvbmZpZxIYCgtlbnZpcm9ubWVudBgBIAEoCUgAiAEBEi4KBnNlcnZlchgCIAEoCzIeLnF1YWRzbWl0aC5jb25maWcuU2VydmVyQ29uZmlnEjIKCGRhdGFiYXNlGAMgASgLMiAucXVhZHNtaXRoLmNvbmZpZy5EYXRhYmFzZUNvbmZpZxI7ChFpbnRlcm5hbF9kYXRhYmFzZRgEIAEoCzIgLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VDb25maWcSNQoGZ3JvdXBzGAUgAygLMiUucXVhZHNtaXRoLmNvbmZpZy5JbnRlcm5hbEdyb3VwQ29uZmlnEkAKEGJvb3RzdHJhcF90b2tlbnMYBiADKAsyJi5xdWFkc21pdGguY29uZmlnLkJvb3RzdHJhcFRva2VuQ29uZmlnEi4KA2ppdBgHIAEoCzIhLnF1YWRzbWl0aC5jb25maWcuSml0UG9saWN5Q29uZmlnEiwKBW9hdXRoGAggASgLMh0ucXVhZHNtaXRoLmNvbmZpZy5PQXV0aENvbmZpZ0IOCgxfZW52aXJvbm1lbnQirAEKFEJvb3RzdHJhcFRva2VuQ29uZmlnEg8KAmlkGAEgASgJSACIAQESEQoEbmFtZRgCIAEoCUgBiAEBEhIKBXRva2VuGAMgASgJSAKIAQESFwoKZ3JvdXBfbmFtZRgEIAEoCUgDiAEBEhEKBHR5cGUYBSABKAlIBIgBAUIFCgNfaWRCBwoFX25hbWVCCAoGX3Rva2VuQg0KC19ncm91cF9uYW1lQgcKBV90eXBlInQKE0ludGVybmFsR3JvdXBDb25maWcSEQoEbmFtZRgBIAEoCUgAiAEBEhgKC2Rlc2NyaXB0aW9uGAIgASgJSAGIAQESFwoPYWxsb3dlZF9tZXRob2RzGAMgAygJQgcKBV9uYW1lQg4KDF9kZXNjcmlwdGlvbiLOAQoPSml0UG9saWN5Q29uZmlnEhQKB2VuYWJsZWQYASABKAhIAIgBARIZCgxhdXRvX2FwcHJvdmUYAiABKAhIAYgBARIaCg1kZWZhdWx0X2hvdXJzGAMgASgFSAKIAQESFgoJbWF4X2hvdXJzGAQgASgFSAOIAQESGQoRc2Vuc2l0aXZlX21ldGhvZHMYBSADKAlCCgoIX2VuYWJsZWRCDwoNX2F1dG9fYXBwcm92ZUIQCg5fZGVmYXVsdF9ob3Vyc0IMCgpfbWF4X2hvdXJzIokCCgtPQXV0aENvbmZpZxIVCghwcm92aWRlchgBIAEoCUgAiAEBEhYKCWNsaWVudF9pZBgCIAEoCUgBiAEBEhoKDWNsaWVudF9zZWNyZXQYAyABKAlIAogBARIUCgxhbGxvd2VkX29yZ3MYBCADKAkSGgoNZGVmYXVsdF9ncm91cBgFIAEoCUgDiAEBEj4KEmRldmVsb3Blcl9tYXBwaW5ncxgGIAMoCzIiLnF1YWRzbWl0aC5jb25maWcuRGV2ZWxvcGVyTWFwcGluZ0ILCglfcHJvdmlkZXJCDAoKX2NsaWVudF9pZEIQCg5fY2xpZW50X3NlY3JldEIQCg5fZGVmYXVsdF9ncm91cCJYChBEZXZlbG9wZXJNYXBwaW5nEhIKBWVtYWlsGAEgASgJSACIAQESFwoKZ3JvdXBfbmFtZRgCIAEoCUgBiAEBQggKBl9lbWFpbEINCgtfZ3JvdXBfbmFtZUIuWixxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvY29uZmlnO2NvbmZpZ2IGcHJvdG8z",
+    "CiFxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9vcHMucHJvdG8SEHF1YWRzbWl0aC5jb25maWciswMKD09wc1NlcnZlckNvbmZpZxIYCgtlbnZpcm9ubWVudBgBIAEoCUgAiAEBEi4KBnNlcnZlchgCIAEoCzIeLnF1YWRzbWl0aC5jb25maWcuU2VydmVyQ29uZmlnEjIKCGRhdGFiYXNlGAMgASgLMiAucXVhZHNtaXRoLmNvbmZpZy5EYXRhYmFzZUNvbmZpZxI7ChFpbnRlcm5hbF9kYXRhYmFzZRgEIAEoCzIgLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VDb25maWcSNQoGZ3JvdXBzGAUgAygLMiUucXVhZHNtaXRoLmNvbmZpZy5JbnRlcm5hbEdyb3VwQ29uZmlnEkAKEGJvb3RzdHJhcF90b2tlbnMYBiADKAsyJi5xdWFkc21pdGguY29uZmlnLkJvb3RzdHJhcFRva2VuQ29uZmlnEi4KA2ppdBgHIAEoCzIhLnF1YWRzbWl0aC5jb25maWcuSml0UG9saWN5Q29uZmlnEiwKBW9hdXRoGAggASgLMh0ucXVhZHNtaXRoLmNvbmZpZy5PQXV0aENvbmZpZ0IOCgxfZW52aXJvbm1lbnQizgEKD0ppdFBvbGljeUNvbmZpZxIUCgdlbmFibGVkGAEgASgISACIAQESGQoMYXV0b19hcHByb3ZlGAIgASgISAGIAQESGgoNZGVmYXVsdF9ob3VycxgDIAEoBUgCiAEBEhYKCW1heF9ob3VycxgEIAEoBUgDiAEBEhkKEXNlbnNpdGl2ZV9tZXRob2RzGAUgAygJQgoKCF9lbmFibGVkQg8KDV9hdXRvX2FwcHJvdmVCEAoOX2RlZmF1bHRfaG91cnNCDAoKX21heF9ob3VycyKJAgoLT0F1dGhDb25maWcSFQoIcHJvdmlkZXIYASABKAlIAIgBARIWCgljbGllbnRfaWQYAiABKAlIAYgBARIaCg1jbGllbnRfc2VjcmV0GAMgASgJSAKIAQESFAoMYWxsb3dlZF9vcmdzGAQgAygJEhoKDWRlZmF1bHRfZ3JvdXAYBSABKAlIA4gBARI+ChJkZXZlbG9wZXJfbWFwcGluZ3MYBiADKAsyIi5xdWFkc21pdGguY29uZmlnLkRldmVsb3Blck1hcHBpbmdCCwoJX3Byb3ZpZGVyQgwKCl9jbGllbnRfaWRCEAoOX2NsaWVudF9zZWNyZXRCEAoOX2RlZmF1bHRfZ3JvdXAiWAoQRGV2ZWxvcGVyTWFwcGluZxISCgVlbWFpbBgBIAEoCUgAiAEBEhcKCmdyb3VwX25hbWUYAiABKAlIAYgBAUIICgZfZW1haWxCDQoLX2dyb3VwX25hbWVCLloscXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2NvbmZpZztjb25maWdiBnByb3RvMw",
     [file_quadsmith_config_common],
   );
 
@@ -76,74 +81,6 @@ export const OpsServerConfigSchema: GenMessage<OpsServerConfig> =
   messageDesc(file_quadsmith_config_server_ops, 0);
 
 /**
- * @generated from message quadsmith.config.BootstrapTokenConfig
- */
-export type BootstrapTokenConfig = Message<"quadsmith.config.BootstrapTokenConfig"> & {
-  /**
-   * @generated from field: optional string id = 1;
-   */
-  id?: string | undefined;
-
-  /**
-   * @generated from field: optional string name = 2;
-   */
-  name?: string | undefined;
-
-  /**
-   * @generated from field: optional string token = 3;
-   */
-  token?: string | undefined;
-
-  /**
-   * @generated from field: optional string group_name = 4;
-   */
-  groupName?: string | undefined;
-
-  /**
-   * 'HUMAN' or 'ROBOT'
-   *
-   * @generated from field: optional string type = 5;
-   */
-  type?: string | undefined;
-};
-
-/**
- * Describes the message quadsmith.config.BootstrapTokenConfig.
- * Use `create(BootstrapTokenConfigSchema)` to create a new message.
- */
-export const BootstrapTokenConfigSchema: GenMessage<BootstrapTokenConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_server_ops, 1);
-
-/**
- * @generated from message quadsmith.config.InternalGroupConfig
- */
-export type InternalGroupConfig = Message<"quadsmith.config.InternalGroupConfig"> & {
-  /**
-   * @generated from field: optional string name = 1;
-   */
-  name?: string | undefined;
-
-  /**
-   * @generated from field: optional string description = 2;
-   */
-  description?: string | undefined;
-
-  /**
-   * @generated from field: repeated string allowed_methods = 3;
-   */
-  allowedMethods: string[];
-};
-
-/**
- * Describes the message quadsmith.config.InternalGroupConfig.
- * Use `create(InternalGroupConfigSchema)` to create a new message.
- */
-export const InternalGroupConfigSchema: GenMessage<InternalGroupConfig> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_server_ops, 2);
-
-/**
  * @generated from message quadsmith.config.JitPolicyConfig
  */
 export type JitPolicyConfig = Message<"quadsmith.config.JitPolicyConfig"> & {
@@ -179,7 +116,7 @@ export type JitPolicyConfig = Message<"quadsmith.config.JitPolicyConfig"> & {
  */
 export const JitPolicyConfigSchema: GenMessage<JitPolicyConfig> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_config_server_ops, 3);
+  messageDesc(file_quadsmith_config_server_ops, 1);
 
 /**
  * @generated from message quadsmith.config.OAuthConfig
@@ -224,7 +161,7 @@ export type OAuthConfig = Message<"quadsmith.config.OAuthConfig"> & {
  */
 export const OAuthConfigSchema: GenMessage<OAuthConfig> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_config_server_ops, 4);
+  messageDesc(file_quadsmith_config_server_ops, 2);
 
 /**
  * @generated from message quadsmith.config.DeveloperMapping
@@ -247,4 +184,4 @@ export type DeveloperMapping = Message<"quadsmith.config.DeveloperMapping"> & {
  */
 export const DeveloperMappingSchema: GenMessage<DeveloperMapping> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_config_server_ops, 5);
+  messageDesc(file_quadsmith_config_server_ops, 3);

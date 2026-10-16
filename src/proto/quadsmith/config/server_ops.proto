@@ -7,7 +7,7 @@ import "quadsmith/config/common.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/config;config";
 
 // ---------------------------------------------------------
-// Ops Server Root Configuration
+// Domain model
 // ---------------------------------------------------------
 
 message OpsServerConfig {
@@ -19,24 +19,6 @@ message OpsServerConfig {
   repeated BootstrapTokenConfig bootstrap_tokens = 6;
   JitPolicyConfig jit = 7;
   OAuthConfig oauth = 8;
-}
-
-// ---------------------------------------------------------
-// Ops Server Subordinate Configurations
-// ---------------------------------------------------------
-
-message BootstrapTokenConfig {
-  optional string id = 1;
-  optional string name = 2;
-  optional string token = 3;
-  optional string group_name = 4;
-  optional string type = 5; // 'HUMAN' or 'ROBOT'
-}
-
-message InternalGroupConfig {
-  optional string name = 1;
-  optional string description = 2;
-  repeated string allowed_methods = 3;
 }
 
 message JitPolicyConfig {

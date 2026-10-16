@@ -18,6 +18,7 @@ import (
 
 	"quadsmith/server-ops/pkg/ops"
 	"quadsmith/shared/pkg/config"
+	"quadsmith/shared/pkg/opsauth"
 
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 )
@@ -61,7 +62,7 @@ func main() {
 	defer internalPool.Close()
 
 	service := ops.NewOpsService(publicPool, internalPool, cfg)
-	interceptor := ops.NewOpsInterceptor(internalPool, cfg)
+	interceptor := opsauth.NewOpsInterceptor(internalPool, cfg.BootstrapTokens, cfg.Groups, cfg.Jit)
 
 	handlerOpts := []connect.HandlerOption{
 		connect.WithInterceptors(interceptor),

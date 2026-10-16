@@ -1,4 +1,4 @@
-package ops
+package opsauth
 
 import (
 	"context"
@@ -13,16 +13,58 @@ import (
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"quadsmith/shared/gen/quadsmith/config"
+	configpb "quadsmith/shared/gen/quadsmith/config"
 )
 
-type OpsInterceptor struct {
-	opsDb *pgxpool.Pool
-	cfg   *config.OpsServerConfig
+type OperatorContext struct {
+	Operator     string
+	OperatorType string
+	GroupName    string
+	JitGrantUUID string
+	JitGrantID   string
 }
 
-func NewOpsInterceptor(opsDb *pgxpool.Pool, cfg *config.OpsServerConfig) *OpsInterceptor {
-	return &OpsInterceptor{opsDb: opsDb, cfg: cfg}
+type contextKey struct{}
+
+func WithOperatorContext(ctx context.Context, op *OperatorContext) context.Context {
+	return context.WithValue(ctx, contextKey{}, op)
+}
+
+func OperatorContextFromContext(ctx context.Context) *OperatorContext {
+	if v, ok := ctx.Value(contextKey{}).(*OperatorContext); ok {
+		return v
+	}
+	return &OperatorContext{
+		Operator:     "anonymous",
+		OperatorType: "UNKNOWN",
+		GroupName:    "unauthenticated",
+	}
+}
+
+func HashToken(token string) string {
+	h := sha256.Sum256([]byte(token))
+	return hex.EncodeToString(h[:])
+}
+
+type OpsInterceptor struct {
+	opsDb           *pgxpool.Pool
+	bootstrapTokens []*configpb.BootstrapTokenConfig
+	groups          []*configpb.InternalGroupConfig
+	jit             *configpb.JitPolicyConfig
+}
+
+func NewOpsInterceptor(
+	opsDb *pgxpool.Pool,
+	bootstrapTokens []*configpb.BootstrapTokenConfig,
+	groups []*configpb.InternalGroupConfig,
+	jit *configpb.JitPolicyConfig,
+) *OpsInterceptor {
+	return &OpsInterceptor{
+		opsDb:           opsDb,
+		bootstrapTokens: bootstrapTokens,
+		groups:          groups,
+		jit:             jit,
+	}
 }
 
 func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
@@ -56,8 +98,8 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 			return nil, err
 		}
 
-		// 3. JIT Elevation Check
-		if in.isSensitiveMethod(methodName) {
+		// 3. JIT Elevation Check (applies only to HUMAN operators on sensitive methods)
+		if opCtx.OperatorType == "HUMAN" && in.isSensitiveMethod(methodName) {
 			grantUUID, grantID, err := in.checkJitGrant(ctx, opCtx.Operator, methodName)
 			if err != nil {
 				return nil, err
@@ -69,7 +111,7 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 		// Inject operator context
 		ctx = WithOperatorContext(ctx, opCtx)
 
-		// 4. Execution & Audit Logging
+		// 4. Execution & Synchronous Audit Logging
 		t0 := time.Now()
 		res, err := next(ctx, req)
 		durationMs := time.Since(t0).Milliseconds()
@@ -82,8 +124,10 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 			errMsg = &msg
 		}
 
-		// Asynchronously log audit entry
-		go in.logAudit(methodName, opCtx, status, errMsg, durationMs)
+		callID := in.logAudit(methodName, opCtx, status, errMsg, durationMs)
+		if res != nil {
+			res.Header().Set("X-Job-Id", callID)
+		}
 
 		return res, err
 	}
@@ -98,7 +142,7 @@ func (in *OpsInterceptor) WrapStreamingHandler(next connect.StreamingHandlerFunc
 }
 
 func (in *OpsInterceptor) authenticateToken(ctx context.Context, token string) (*OperatorContext, error) {
-	for _, bt := range in.cfg.BootstrapTokens {
+	for _, bt := range in.bootstrapTokens {
 		if bt.GetToken() != "" && bt.GetToken() == token {
 			return &OperatorContext{
 				Operator:     bt.GetName(),
@@ -139,8 +183,8 @@ func (in *OpsInterceptor) authenticateToken(ctx context.Context, token string) (
 }
 
 func (in *OpsInterceptor) authorizeGroup(groupName, methodName string) error {
-	var group *config.InternalGroupConfig
-	for _, g := range in.cfg.Groups {
+	var group *configpb.InternalGroupConfig
+	for _, g := range in.groups {
 		if g.GetName() == groupName {
 			group = g
 			break
@@ -166,10 +210,10 @@ func (in *OpsInterceptor) authorizeGroup(groupName, methodName string) error {
 }
 
 func (in *OpsInterceptor) isSensitiveMethod(methodName string) bool {
-	if in.cfg.Jit == nil || !in.cfg.Jit.GetEnabled() {
+	if in.jit == nil || !in.jit.GetEnabled() {
 		return false
 	}
-	for _, m := range in.cfg.Jit.SensitiveMethods {
+	for _, m := range in.jit.SensitiveMethods {
 		if m == "*" || m == methodName {
 			return true
 		}
@@ -192,7 +236,7 @@ func (in *OpsInterceptor) checkJitGrant(ctx context.Context, operator, methodNam
 	return grantUUID, grantID, nil
 }
 
-func (in *OpsInterceptor) logAudit(method string, opCtx *OperatorContext, status string, errMsg *string, durationMs int64) {
+func (in *OpsInterceptor) logAudit(method string, opCtx *OperatorContext, status string, errMsg *string, durationMs int64) string {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
@@ -213,9 +257,5 @@ func (in *OpsInterceptor) logAudit(method string, opCtx *OperatorContext, status
 	if err != nil {
 		log.Printf("[AuditLogger] Failed to write audit record for %s: %v", method, err)
 	}
-}
-
-func HashToken(token string) string {
-	h := sha256.Sum256([]byte(token))
-	return hex.EncodeToString(h[:])
+	return callID
 }

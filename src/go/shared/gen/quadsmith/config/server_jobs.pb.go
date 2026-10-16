@@ -35,6 +35,8 @@ type JobServerConfig struct {
 	DatabaseMaintenance         *DatabaseMaintenanceSchedule         `protobuf:"bytes,9,opt,name=database_maintenance,json=databaseMaintenance,proto3,oneof" json:"database_maintenance,omitempty"`
 	PurgeSoftDeletedAccounts    *PurgeSoftDeletedAccountsSchedule    `protobuf:"bytes,10,opt,name=purge_soft_deleted_accounts,json=purgeSoftDeletedAccounts,proto3,oneof" json:"purge_soft_deleted_accounts,omitempty"`
 	SendUsernameReleaseWarnings *SendUsernameReleaseWarningsSchedule `protobuf:"bytes,11,opt,name=send_username_release_warnings,json=sendUsernameReleaseWarnings,proto3,oneof" json:"send_username_release_warnings,omitempty"`
+	Groups                      []*InternalGroupConfig               `protobuf:"bytes,12,rep,name=groups,proto3" json:"groups,omitempty"`
+	BootstrapTokens             []*BootstrapTokenConfig              `protobuf:"bytes,13,rep,name=bootstrap_tokens,json=bootstrapTokens,proto3" json:"bootstrap_tokens,omitempty"`
 	unknownFields               protoimpl.UnknownFields
 	sizeCache                   protoimpl.SizeCache
 }
@@ -142,6 +144,20 @@ func (x *JobServerConfig) GetPurgeSoftDeletedAccounts() *PurgeSoftDeletedAccount
 func (x *JobServerConfig) GetSendUsernameReleaseWarnings() *SendUsernameReleaseWarningsSchedule {
 	if x != nil {
 		return x.SendUsernameReleaseWarnings
+	}
+	return nil
+}
+
+func (x *JobServerConfig) GetGroups() []*InternalGroupConfig {
+	if x != nil {
+		return x.Groups
+	}
+	return nil
+}
+
+func (x *JobServerConfig) GetBootstrapTokens() []*BootstrapTokenConfig {
+	if x != nil {
+		return x.BootstrapTokens
 	}
 	return nil
 }
@@ -699,7 +715,8 @@ var File_quadsmith_config_server_jobs_proto protoreflect.FileDescriptor
 
 const file_quadsmith_config_server_jobs_proto_rawDesc = "" +
 	"\n" +
-	"\"quadsmith/config/server_jobs.proto\x12\x10quadsmith.config\x1a\x1egoogle/protobuf/duration.proto\x1a\x1dquadsmith/config/common.proto\"\x86\t\n" +
+	"\"quadsmith/config/server_jobs.proto\x12\x10quadsmith.config\x1a\x1egoogle/protobuf/duration.proto\x1a\x1dquadsmith/config/common.proto\"\x98\n" +
+	"\n" +
 	"\x0fJobServerConfig\x12%\n" +
 	"\venvironment\x18\x01 \x01(\tH\x00R\venvironment\x88\x01\x01\x126\n" +
 	"\x06server\x18\x02 \x01(\v2\x1e.quadsmith.config.ServerConfigR\x06server\x12)\n" +
@@ -713,7 +730,9 @@ const file_quadsmith_config_server_jobs_proto_rawDesc = "" +
 	"\x14database_maintenance\x18\t \x01(\v2-.quadsmith.config.DatabaseMaintenanceScheduleH\x06R\x13databaseMaintenance\x88\x01\x01\x12v\n" +
 	"\x1bpurge_soft_deleted_accounts\x18\n" +
 	" \x01(\v22.quadsmith.config.PurgeSoftDeletedAccountsScheduleH\aR\x18purgeSoftDeletedAccounts\x88\x01\x01\x12\x7f\n" +
-	"\x1esend_username_release_warnings\x18\v \x01(\v25.quadsmith.config.SendUsernameReleaseWarningsScheduleH\bR\x1bsendUsernameReleaseWarnings\x88\x01\x01B\x0e\n" +
+	"\x1esend_username_release_warnings\x18\v \x01(\v25.quadsmith.config.SendUsernameReleaseWarningsScheduleH\bR\x1bsendUsernameReleaseWarnings\x88\x01\x01\x12=\n" +
+	"\x06groups\x18\f \x03(\v2%.quadsmith.config.InternalGroupConfigR\x06groups\x12Q\n" +
+	"\x10bootstrap_tokens\x18\r \x03(\v2&.quadsmith.config.BootstrapTokenConfigR\x0fbootstrapTokensB\x0e\n" +
 	"\f_environmentB\x11\n" +
 	"\x0f_ops_server_urlB\r\n" +
 	"\v_auth_tokenB\x17\n" +
@@ -798,7 +817,9 @@ var file_quadsmith_config_server_jobs_proto_goTypes = []any{
 	(*SendUsernameReleaseWarningsSchedule)(nil), // 6: quadsmith.config.SendUsernameReleaseWarningsSchedule
 	(*ServerConfig)(nil),                        // 7: quadsmith.config.ServerConfig
 	(*DatabaseConfig)(nil),                      // 8: quadsmith.config.DatabaseConfig
-	(*durationpb.Duration)(nil),                 // 9: google.protobuf.Duration
+	(*InternalGroupConfig)(nil),                 // 9: quadsmith.config.InternalGroupConfig
+	(*BootstrapTokenConfig)(nil),                // 10: quadsmith.config.BootstrapTokenConfig
+	(*durationpb.Duration)(nil),                 // 11: google.protobuf.Duration
 }
 var file_quadsmith_config_server_jobs_proto_depIdxs = []int32{
 	7,  // 0: quadsmith.config.JobServerConfig.server:type_name -> quadsmith.config.ServerConfig
@@ -809,17 +830,19 @@ var file_quadsmith_config_server_jobs_proto_depIdxs = []int32{
 	4,  // 5: quadsmith.config.JobServerConfig.database_maintenance:type_name -> quadsmith.config.DatabaseMaintenanceSchedule
 	5,  // 6: quadsmith.config.JobServerConfig.purge_soft_deleted_accounts:type_name -> quadsmith.config.PurgeSoftDeletedAccountsSchedule
 	6,  // 7: quadsmith.config.JobServerConfig.send_username_release_warnings:type_name -> quadsmith.config.SendUsernameReleaseWarningsSchedule
-	9,  // 8: quadsmith.config.CleanupExpiredOtpsSchedule.interval:type_name -> google.protobuf.Duration
-	9,  // 9: quadsmith.config.CleanupExpiredTokensSchedule.interval:type_name -> google.protobuf.Duration
-	9,  // 10: quadsmith.config.CleanupOrphanedBlobsSchedule.interval:type_name -> google.protobuf.Duration
-	9,  // 11: quadsmith.config.DatabaseMaintenanceSchedule.interval:type_name -> google.protobuf.Duration
-	9,  // 12: quadsmith.config.PurgeSoftDeletedAccountsSchedule.interval:type_name -> google.protobuf.Duration
-	9,  // 13: quadsmith.config.SendUsernameReleaseWarningsSchedule.interval:type_name -> google.protobuf.Duration
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	9,  // 8: quadsmith.config.JobServerConfig.groups:type_name -> quadsmith.config.InternalGroupConfig
+	10, // 9: quadsmith.config.JobServerConfig.bootstrap_tokens:type_name -> quadsmith.config.BootstrapTokenConfig
+	11, // 10: quadsmith.config.CleanupExpiredOtpsSchedule.interval:type_name -> google.protobuf.Duration
+	11, // 11: quadsmith.config.CleanupExpiredTokensSchedule.interval:type_name -> google.protobuf.Duration
+	11, // 12: quadsmith.config.CleanupOrphanedBlobsSchedule.interval:type_name -> google.protobuf.Duration
+	11, // 13: quadsmith.config.DatabaseMaintenanceSchedule.interval:type_name -> google.protobuf.Duration
+	11, // 14: quadsmith.config.PurgeSoftDeletedAccountsSchedule.interval:type_name -> google.protobuf.Duration
+	11, // 15: quadsmith.config.SendUsernameReleaseWarningsSchedule.interval:type_name -> google.protobuf.Duration
+	16, // [16:16] is the sub-list for method output_type
+	16, // [16:16] is the sub-list for method input_type
+	16, // [16:16] is the sub-list for extension type_name
+	16, // [16:16] is the sub-list for extension extendee
+	0,  // [0:16] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_config_server_jobs_proto_init() }

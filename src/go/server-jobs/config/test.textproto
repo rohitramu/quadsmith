@@ -60,3 +60,46 @@ send_username_release_warnings {
   enabled: true
   cron: "0 0 * * *"
 }
+
+groups {
+  name: "operators"
+  description: "Full developer ops permissions"
+  allowed_methods: "*"
+}
+
+groups {
+  name: "robots"
+  description: "Automated scheduler and cron permissions"
+  allowed_methods: "*"
+}
+
+groups {
+  name: "viewers"
+  description: "Read-only internal operator permissions"
+  allowed_methods: "Get*"
+  allowed_methods: "List*"
+}
+
+bootstrap_tokens {
+  id: "test-operator"
+  name: "Test Operator Token"
+  token: "qs_op_sandbox_token_12345"
+  group_name: "operators"
+  type: "HUMAN"
+}
+
+bootstrap_tokens {
+  id: "test-viewer"
+  name: "Test Viewer Token"
+  token: "qs_op_sandbox_viewer_token_12345"
+  group_name: "viewers"
+  type: "HUMAN"
+}
+
+bootstrap_tokens {
+  id: "test-robot"
+  name: "Test Robot Token"
+  token: "qs_robot_test_token_67890"
+  group_name: "robots"
+  type: "ROBOT"
+}

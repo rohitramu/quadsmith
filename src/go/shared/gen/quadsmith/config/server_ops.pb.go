@@ -121,142 +121,6 @@ func (x *OpsServerConfig) GetOauth() *OAuthConfig {
 	return nil
 }
 
-type BootstrapTokenConfig struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            *string                `protobuf:"bytes,1,opt,name=id,proto3,oneof" json:"id,omitempty"`
-	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
-	Token         *string                `protobuf:"bytes,3,opt,name=token,proto3,oneof" json:"token,omitempty"`
-	GroupName     *string                `protobuf:"bytes,4,opt,name=group_name,json=groupName,proto3,oneof" json:"group_name,omitempty"`
-	Type          *string                `protobuf:"bytes,5,opt,name=type,proto3,oneof" json:"type,omitempty"` // 'HUMAN' or 'ROBOT'
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *BootstrapTokenConfig) Reset() {
-	*x = BootstrapTokenConfig{}
-	mi := &file_quadsmith_config_server_ops_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *BootstrapTokenConfig) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*BootstrapTokenConfig) ProtoMessage() {}
-
-func (x *BootstrapTokenConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_server_ops_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use BootstrapTokenConfig.ProtoReflect.Descriptor instead.
-func (*BootstrapTokenConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_server_ops_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *BootstrapTokenConfig) GetId() string {
-	if x != nil && x.Id != nil {
-		return *x.Id
-	}
-	return ""
-}
-
-func (x *BootstrapTokenConfig) GetName() string {
-	if x != nil && x.Name != nil {
-		return *x.Name
-	}
-	return ""
-}
-
-func (x *BootstrapTokenConfig) GetToken() string {
-	if x != nil && x.Token != nil {
-		return *x.Token
-	}
-	return ""
-}
-
-func (x *BootstrapTokenConfig) GetGroupName() string {
-	if x != nil && x.GroupName != nil {
-		return *x.GroupName
-	}
-	return ""
-}
-
-func (x *BootstrapTokenConfig) GetType() string {
-	if x != nil && x.Type != nil {
-		return *x.Type
-	}
-	return ""
-}
-
-type InternalGroupConfig struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	Name           *string                `protobuf:"bytes,1,opt,name=name,proto3,oneof" json:"name,omitempty"`
-	Description    *string                `protobuf:"bytes,2,opt,name=description,proto3,oneof" json:"description,omitempty"`
-	AllowedMethods []string               `protobuf:"bytes,3,rep,name=allowed_methods,json=allowedMethods,proto3" json:"allowed_methods,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *InternalGroupConfig) Reset() {
-	*x = InternalGroupConfig{}
-	mi := &file_quadsmith_config_server_ops_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *InternalGroupConfig) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*InternalGroupConfig) ProtoMessage() {}
-
-func (x *InternalGroupConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_server_ops_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use InternalGroupConfig.ProtoReflect.Descriptor instead.
-func (*InternalGroupConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_server_ops_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *InternalGroupConfig) GetName() string {
-	if x != nil && x.Name != nil {
-		return *x.Name
-	}
-	return ""
-}
-
-func (x *InternalGroupConfig) GetDescription() string {
-	if x != nil && x.Description != nil {
-		return *x.Description
-	}
-	return ""
-}
-
-func (x *InternalGroupConfig) GetAllowedMethods() []string {
-	if x != nil {
-		return x.AllowedMethods
-	}
-	return nil
-}
-
 type JitPolicyConfig struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
 	Enabled          *bool                  `protobuf:"varint,1,opt,name=enabled,proto3,oneof" json:"enabled,omitempty"`
@@ -270,7 +134,7 @@ type JitPolicyConfig struct {
 
 func (x *JitPolicyConfig) Reset() {
 	*x = JitPolicyConfig{}
-	mi := &file_quadsmith_config_server_ops_proto_msgTypes[3]
+	mi := &file_quadsmith_config_server_ops_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -282,7 +146,7 @@ func (x *JitPolicyConfig) String() string {
 func (*JitPolicyConfig) ProtoMessage() {}
 
 func (x *JitPolicyConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_server_ops_proto_msgTypes[3]
+	mi := &file_quadsmith_config_server_ops_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -295,7 +159,7 @@ func (x *JitPolicyConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use JitPolicyConfig.ProtoReflect.Descriptor instead.
 func (*JitPolicyConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_server_ops_proto_rawDescGZIP(), []int{3}
+	return file_quadsmith_config_server_ops_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *JitPolicyConfig) GetEnabled() bool {
@@ -347,7 +211,7 @@ type OAuthConfig struct {
 
 func (x *OAuthConfig) Reset() {
 	*x = OAuthConfig{}
-	mi := &file_quadsmith_config_server_ops_proto_msgTypes[4]
+	mi := &file_quadsmith_config_server_ops_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -359,7 +223,7 @@ func (x *OAuthConfig) String() string {
 func (*OAuthConfig) ProtoMessage() {}
 
 func (x *OAuthConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_server_ops_proto_msgTypes[4]
+	mi := &file_quadsmith_config_server_ops_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -372,7 +236,7 @@ func (x *OAuthConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use OAuthConfig.ProtoReflect.Descriptor instead.
 func (*OAuthConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_server_ops_proto_rawDescGZIP(), []int{4}
+	return file_quadsmith_config_server_ops_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *OAuthConfig) GetProvider() string {
@@ -427,7 +291,7 @@ type DeveloperMapping struct {
 
 func (x *DeveloperMapping) Reset() {
 	*x = DeveloperMapping{}
-	mi := &file_quadsmith_config_server_ops_proto_msgTypes[5]
+	mi := &file_quadsmith_config_server_ops_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -439,7 +303,7 @@ func (x *DeveloperMapping) String() string {
 func (*DeveloperMapping) ProtoMessage() {}
 
 func (x *DeveloperMapping) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_server_ops_proto_msgTypes[5]
+	mi := &file_quadsmith_config_server_ops_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -452,7 +316,7 @@ func (x *DeveloperMapping) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeveloperMapping.ProtoReflect.Descriptor instead.
 func (*DeveloperMapping) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_server_ops_proto_rawDescGZIP(), []int{5}
+	return file_quadsmith_config_server_ops_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *DeveloperMapping) GetEmail() string {
@@ -483,25 +347,7 @@ const file_quadsmith_config_server_ops_proto_rawDesc = "" +
 	"\x10bootstrap_tokens\x18\x06 \x03(\v2&.quadsmith.config.BootstrapTokenConfigR\x0fbootstrapTokens\x123\n" +
 	"\x03jit\x18\a \x01(\v2!.quadsmith.config.JitPolicyConfigR\x03jit\x123\n" +
 	"\x05oauth\x18\b \x01(\v2\x1d.quadsmith.config.OAuthConfigR\x05oauthB\x0e\n" +
-	"\f_environment\"\xce\x01\n" +
-	"\x14BootstrapTokenConfig\x12\x13\n" +
-	"\x02id\x18\x01 \x01(\tH\x00R\x02id\x88\x01\x01\x12\x17\n" +
-	"\x04name\x18\x02 \x01(\tH\x01R\x04name\x88\x01\x01\x12\x19\n" +
-	"\x05token\x18\x03 \x01(\tH\x02R\x05token\x88\x01\x01\x12\"\n" +
-	"\n" +
-	"group_name\x18\x04 \x01(\tH\x03R\tgroupName\x88\x01\x01\x12\x17\n" +
-	"\x04type\x18\x05 \x01(\tH\x04R\x04type\x88\x01\x01B\x05\n" +
-	"\x03_idB\a\n" +
-	"\x05_nameB\b\n" +
-	"\x06_tokenB\r\n" +
-	"\v_group_nameB\a\n" +
-	"\x05_type\"\x97\x01\n" +
-	"\x13InternalGroupConfig\x12\x17\n" +
-	"\x04name\x18\x01 \x01(\tH\x00R\x04name\x88\x01\x01\x12%\n" +
-	"\vdescription\x18\x02 \x01(\tH\x01R\vdescription\x88\x01\x01\x12'\n" +
-	"\x0fallowed_methods\x18\x03 \x03(\tR\x0eallowedMethodsB\a\n" +
-	"\x05_nameB\x0e\n" +
-	"\f_description\"\x8e\x02\n" +
+	"\f_environment\"\x8e\x02\n" +
 	"\x0fJitPolicyConfig\x12\x1d\n" +
 	"\aenabled\x18\x01 \x01(\bH\x00R\aenabled\x88\x01\x01\x12&\n" +
 	"\fauto_approve\x18\x02 \x01(\bH\x01R\vautoApprove\x88\x01\x01\x12(\n" +
@@ -545,26 +391,26 @@ func file_quadsmith_config_server_ops_proto_rawDescGZIP() []byte {
 	return file_quadsmith_config_server_ops_proto_rawDescData
 }
 
-var file_quadsmith_config_server_ops_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_quadsmith_config_server_ops_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_quadsmith_config_server_ops_proto_goTypes = []any{
 	(*OpsServerConfig)(nil),      // 0: quadsmith.config.OpsServerConfig
-	(*BootstrapTokenConfig)(nil), // 1: quadsmith.config.BootstrapTokenConfig
-	(*InternalGroupConfig)(nil),  // 2: quadsmith.config.InternalGroupConfig
-	(*JitPolicyConfig)(nil),      // 3: quadsmith.config.JitPolicyConfig
-	(*OAuthConfig)(nil),          // 4: quadsmith.config.OAuthConfig
-	(*DeveloperMapping)(nil),     // 5: quadsmith.config.DeveloperMapping
-	(*ServerConfig)(nil),         // 6: quadsmith.config.ServerConfig
-	(*DatabaseConfig)(nil),       // 7: quadsmith.config.DatabaseConfig
+	(*JitPolicyConfig)(nil),      // 1: quadsmith.config.JitPolicyConfig
+	(*OAuthConfig)(nil),          // 2: quadsmith.config.OAuthConfig
+	(*DeveloperMapping)(nil),     // 3: quadsmith.config.DeveloperMapping
+	(*ServerConfig)(nil),         // 4: quadsmith.config.ServerConfig
+	(*DatabaseConfig)(nil),       // 5: quadsmith.config.DatabaseConfig
+	(*InternalGroupConfig)(nil),  // 6: quadsmith.config.InternalGroupConfig
+	(*BootstrapTokenConfig)(nil), // 7: quadsmith.config.BootstrapTokenConfig
 }
 var file_quadsmith_config_server_ops_proto_depIdxs = []int32{
-	6, // 0: quadsmith.config.OpsServerConfig.server:type_name -> quadsmith.config.ServerConfig
-	7, // 1: quadsmith.config.OpsServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
-	7, // 2: quadsmith.config.OpsServerConfig.internal_database:type_name -> quadsmith.config.DatabaseConfig
-	2, // 3: quadsmith.config.OpsServerConfig.groups:type_name -> quadsmith.config.InternalGroupConfig
-	1, // 4: quadsmith.config.OpsServerConfig.bootstrap_tokens:type_name -> quadsmith.config.BootstrapTokenConfig
-	3, // 5: quadsmith.config.OpsServerConfig.jit:type_name -> quadsmith.config.JitPolicyConfig
-	4, // 6: quadsmith.config.OpsServerConfig.oauth:type_name -> quadsmith.config.OAuthConfig
-	5, // 7: quadsmith.config.OAuthConfig.developer_mappings:type_name -> quadsmith.config.DeveloperMapping
+	4, // 0: quadsmith.config.OpsServerConfig.server:type_name -> quadsmith.config.ServerConfig
+	5, // 1: quadsmith.config.OpsServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
+	5, // 2: quadsmith.config.OpsServerConfig.internal_database:type_name -> quadsmith.config.DatabaseConfig
+	6, // 3: quadsmith.config.OpsServerConfig.groups:type_name -> quadsmith.config.InternalGroupConfig
+	7, // 4: quadsmith.config.OpsServerConfig.bootstrap_tokens:type_name -> quadsmith.config.BootstrapTokenConfig
+	1, // 5: quadsmith.config.OpsServerConfig.jit:type_name -> quadsmith.config.JitPolicyConfig
+	2, // 6: quadsmith.config.OpsServerConfig.oauth:type_name -> quadsmith.config.OAuthConfig
+	3, // 7: quadsmith.config.OAuthConfig.developer_mappings:type_name -> quadsmith.config.DeveloperMapping
 	8, // [8:8] is the sub-list for method output_type
 	8, // [8:8] is the sub-list for method input_type
 	8, // [8:8] is the sub-list for extension type_name
@@ -582,15 +428,13 @@ func file_quadsmith_config_server_ops_proto_init() {
 	file_quadsmith_config_server_ops_proto_msgTypes[1].OneofWrappers = []any{}
 	file_quadsmith_config_server_ops_proto_msgTypes[2].OneofWrappers = []any{}
 	file_quadsmith_config_server_ops_proto_msgTypes[3].OneofWrappers = []any{}
-	file_quadsmith_config_server_ops_proto_msgTypes[4].OneofWrappers = []any{}
-	file_quadsmith_config_server_ops_proto_msgTypes[5].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_config_server_ops_proto_rawDesc), len(file_quadsmith_config_server_ops_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

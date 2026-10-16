@@ -371,21 +371,36 @@ func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 		t.Errorf("Expected non-negative warning count, got %d", warnRes.Msg.WarningCount)
 	}
 
-	// 4. Query JobsService (if jobs server is running)
+	// 4. Query JobsService
 	jobsClient := newJobsClient("qs_op_sandbox_token_12345")
 	limitVal := int32(20)
 	jobsRes, err := jobsClient.ListJobs(ctx, connect.NewRequest(&jobspb.ListJobsRequest{Limit: &limitVal}))
+	if err != nil {
+		t.Fatalf("ListJobs failed: %v", err)
+	}
+	if len(jobsRes.Msg.Jobs) == 0 {
+		t.Fatalf("Expected recorded jobs in JobsService after triggering tasks, got 0")
+	}
+	firstJob := jobsRes.Msg.Jobs[0]
+	getJobRes, err := jobsClient.GetJob(ctx, connect.NewRequest(&jobspb.GetJobRequest{JobId: firstJob.JobId}))
+	if err != nil {
+		t.Fatalf("GetJob failed for %s: %v", firstJob.JobId, err)
+	}
+	if getJobRes.Msg.Job.JobId != firstJob.JobId {
+		t.Errorf("Expected job ID %s, got %s", firstJob.JobId, getJobRes.Msg.Job.JobId)
+	}
+
+	// Verify unauthenticated call to JobsService is rejected
+	unauthJobsClient := newJobsClient("")
+	_, err = unauthJobsClient.ListJobs(ctx, connect.NewRequest(&jobspb.ListJobsRequest{}))
 	if err == nil {
-		if len(jobsRes.Msg.Jobs) > 0 {
-			firstJob := jobsRes.Msg.Jobs[0]
-			getJobRes, err := jobsClient.GetJob(ctx, connect.NewRequest(&jobspb.GetJobRequest{JobId: firstJob.JobId}))
-			if err != nil {
-				t.Fatalf("GetJob failed for %s: %v", firstJob.JobId, err)
-			}
-			if getJobRes.Msg.Job.JobId != firstJob.JobId {
-				t.Errorf("Expected job ID %s, got %s", firstJob.JobId, getJobRes.Msg.Job.JobId)
-			}
-		}
+		t.Errorf("Expected error for unauthenticated ListJobs, got nil")
+	}
+
+	// Verify GetJob rejects non-existent job ID
+	_, err = jobsClient.GetJob(ctx, connect.NewRequest(&jobspb.GetJobRequest{JobId: "nonexistent-job-id"}))
+	if err == nil {
+		t.Errorf("Expected error for non-existent job ID, got nil")
 	}
 
 	// 5. Verify Audit Log recorded in internal_api_calls

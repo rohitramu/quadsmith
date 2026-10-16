@@ -18,9 +18,10 @@ import (
 
 	"quadsmith/shared/pkg/auth"
 	"quadsmith/shared/pkg/blob"
+	"quadsmith/shared/pkg/opsauth"
 
-	"google.golang.org/protobuf/types/known/timestamppb"
-	"quadsmith/shared/gen/quadsmith/config"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	configpb "quadsmith/shared/gen/quadsmith/config"
 	pb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 )
@@ -29,11 +30,11 @@ type OpsService struct {
 	opsconnect.UnimplementedOpsServiceHandler
 	publicDb  *pgxpool.Pool
 	opsDb     *pgxpool.Pool
-	cfg       *config.OpsServerConfig
+	cfg       *configpb.OpsServerConfig
 	startTime time.Time
 }
 
-func NewOpsService(publicDb, opsDb *pgxpool.Pool, cfg *config.OpsServerConfig) *OpsService {
+func NewOpsService(publicDb, opsDb *pgxpool.Pool, cfg *configpb.OpsServerConfig) *OpsService {
 	return &OpsService{
 		publicDb:  publicDb,
 		opsDb:     opsDb,
@@ -395,7 +396,7 @@ func (s *OpsService) ExchangeOAuthCode(ctx context.Context, req *connect.Request
 
 	// Generate persistent internal session token
 	tokenSecret := generateCryptoToken("qs_op_")
-	tokenHash := HashToken(tokenSecret)
+	tokenHash := opsauth.HashToken(tokenSecret)
 	tokenID := fmt.Sprintf("tok_%d", time.Now().UnixNano())
 	expiresAt := time.Now().Add(24 * time.Hour)
 
@@ -418,7 +419,7 @@ func (s *OpsService) ExchangeOAuthCode(ctx context.Context, req *connect.Request
 }
 
 func (s *OpsService) GetCurrentOperator(ctx context.Context, _ *connect.Request[pb.GetCurrentOperatorRequest]) (*connect.Response[pb.GetCurrentOperatorResponse], error) {
-	opCtx := OperatorContextFromContext(ctx)
+	opCtx := opsauth.OperatorContextFromContext(ctx)
 	if opCtx == nil {
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("unauthenticated operator"))
 	}
@@ -538,7 +539,7 @@ func (s *OpsService) CreateInternalToken(ctx context.Context, req *connect.Reque
 	}
 
 	tokenSecret := generateCryptoToken(prefix)
-	tokenHash := HashToken(tokenSecret)
+	tokenHash := opsauth.HashToken(tokenSecret)
 	tokenID := fmt.Sprintf("tok_%d", time.Now().UnixNano())
 	expiresAt := time.Now().AddDate(0, 0, days)
 
@@ -629,7 +630,7 @@ func (s *OpsService) RevokeInternalToken(ctx context.Context, req *connect.Reque
 // ---------------------------------------------------------
 
 func (s *OpsService) AcquireJitGrant(ctx context.Context, req *connect.Request[pb.AcquireJitGrantRequest]) (*connect.Response[pb.AcquireJitGrantResponse], error) {
-	opCtx := OperatorContextFromContext(ctx)
+	opCtx := opsauth.OperatorContextFromContext(ctx)
 	if opCtx == nil {
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("unauthenticated operator"))
 	}

@@ -24,6 +24,8 @@ message JobServerConfig {
   optional DatabaseMaintenanceSchedule database_maintenance = 9;
   optional PurgeSoftDeletedAccountsSchedule purge_soft_deleted_accounts = 10;
   optional SendUsernameReleaseWarningsSchedule send_username_release_warnings = 11;
+  repeated InternalGroupConfig groups = 12;
+  repeated BootstrapTokenConfig bootstrap_tokens = 13;
 }
 
 message CleanupExpiredOtpsSchedule {

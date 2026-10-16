@@ -20,6 +20,7 @@ import (
 
 	"quadsmith/server-jobs/pkg/jobs"
 	"quadsmith/shared/pkg/config"
+	"quadsmith/shared/pkg/opsauth"
 
 	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	"quadsmith/shared/gen/quadsmith/jobs/jobsconnect"
@@ -74,9 +75,10 @@ func main() {
 	}
 	defer dbPool.Close()
 
+	interceptor := opsauth.NewOpsInterceptor(dbPool, cfg.BootstrapTokens, cfg.Groups, nil)
 	service := jobs.NewService(dbPool, cfg)
 	mux := http.NewServeMux()
-	path, handler := jobsconnect.NewJobsServiceHandler(service)
+	path, handler := jobsconnect.NewJobsServiceHandler(service, connect.WithInterceptors(interceptor))
 	mux.Handle(path, handler)
 
 	// Healthcheck endpoint

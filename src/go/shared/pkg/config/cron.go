@@ -6,7 +6,8 @@ import (
 	"time"
 
 	"github.com/robfig/cron/v3"
-	"google.golang.org/protobuf/types/known/durationpb"
+
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 )
 
 var cronParser = cron.NewParser(cron.Minute | cron.Hour | cron.Dom | cron.Month | cron.Dow | cron.Descriptor)
@@ -33,7 +34,14 @@ func DurationPbToCron(pbDur *durationpb.Duration) (string, error) {
 }
 
 // DurationToCron converts a positive time.Duration into a standard 5-field cron expression,
-// anchored at the Unix epoch: January 1, 1970 at 12:00 AM UTC (time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC)).
+// anchored at the Unix epoch: January 1, 1970 at 12:00 AM UTC (a Thursday).
+//
+// Because standard 5-field cron requires recurring intervals to align with standard unit
+// cycles without drift, supported durations are:
+// - Whole minutes that evenly divide 60 minutes: 1m, 2m, 3m, 4m, 5m, 6m, 10m, 12m, 15m, 20m, 30m
+// - Whole hours that evenly divide 24 hours: 1h, 2h, 3h, 4h, 6h, 8h, 12h, 24h
+// - 7 days (weekly anchored to Thursday): 7d / 168h
+// For irregular intervals or other anchors, an explicit cron expression should be used.
 func DurationToCron(d time.Duration) (string, error) {
 	if d <= 0 {
 		return "", fmt.Errorf("duration must be strictly positive, got %v", d)
@@ -46,74 +54,40 @@ func DurationToCron(d time.Duration) (string, error) {
 
 	var cronExpr string
 
-	// Case 1: Sub-hourly intervals (minutes dividing 60: 1m, 2m, 3m, 4m, 5m, 6m, 10m, 12m, 15m, 20m, 30m)
 	if totalSeconds < 3600 {
+		// Case 1: Sub-hourly minute intervals (must evenly divide 60 minutes)
+		if totalSeconds%60 != 0 || 60%(totalSeconds/60) != 0 {
+			return "", fmt.Errorf("minute duration %v does not evenly divide 60 minutes; supported intervals are 1m, 2m, 3m, 4m, 5m, 6m, 10m, 12m, 15m, 20m, 30m, or use a cron expression", d)
+		}
 		mins := totalSeconds / 60
-		if 60%mins == 0 && totalSeconds%60 == 0 {
-			if mins == 1 {
-				cronExpr = "* * * * *"
-			} else {
-				cronExpr = fmt.Sprintf("*/%d * * * *", mins)
-			}
+		if mins == 1 {
+			cronExpr = "* * * * *"
 		} else {
-			var minutes []string
-			for m := int64(0); m < 60; m += mins {
-				minutes = append(minutes, fmt.Sprintf("%d", m))
-			}
-			cronExpr = fmt.Sprintf("%s * * * *", strings.Join(minutes, ","))
+			cronExpr = fmt.Sprintf("*/%d * * * *", mins)
 		}
 	} else if totalSeconds <= 86400 {
-		// Case 2: Sub-daily hourly intervals (hours dividing 24: 1h, 2h, 3h, 4h, 6h, 8h, 12h)
-		if totalSeconds%3600 == 0 {
-			hours := totalSeconds / 3600
-			if 24%hours == 0 {
-				if hours == 1 {
-					cronExpr = "0 * * * *"
-				} else {
-					var hourList []string
-					for h := int64(0); h < 24; h += hours {
-						hourList = append(hourList, fmt.Sprintf("%d", h))
-					}
-					cronExpr = fmt.Sprintf("0 %s * * *", strings.Join(hourList, ","))
-				}
-			} else {
-				var hourList []string
-				for h := int64(0); h < 24; h += hours {
-					hourList = append(hourList, fmt.Sprintf("%d", h))
-				}
-				cronExpr = fmt.Sprintf("0 %s * * *", strings.Join(hourList, ","))
-			}
+		// Case 2: Sub-daily hourly intervals (must evenly divide 24 hours)
+		if totalSeconds%3600 != 0 || 24%(totalSeconds/3600) != 0 {
+			return "", fmt.Errorf("hourly duration %v does not evenly divide 24 hours; supported intervals are 1h, 2h, 3h, 4h, 6h, 8h, 12h, 24h, or use a cron expression", d)
+		}
+		hours := totalSeconds / 3600
+		if hours == 1 {
+			cronExpr = "0 * * * *"
+		} else if hours == 24 {
+			cronExpr = "0 0 * * *"
 		} else {
-			minPart := (totalSeconds % 3600) / 60
-			hourStep := totalSeconds / 3600
-			if hourStep == 0 {
-				hourStep = 1
-			}
 			var hourList []string
-			for h := int64(0); h < 24; h += hourStep {
+			for h := int64(0); h < 24; h += hours {
 				hourList = append(hourList, fmt.Sprintf("%d", h))
 			}
-			cronExpr = fmt.Sprintf("%d %s * * *", minPart, strings.Join(hourList, ","))
-		}
-	} else if totalSeconds == 86400 {
-		// Case 3: Exactly 24 hours (1 day)
-		cronExpr = "0 0 * * *"
-	} else if totalSeconds%86400 == 0 {
-		// Case 4: Multi-day intervals
-		// Jan 1 1970 was Thursday (day 4).
-		days := totalSeconds / 86400
-		if 7%days == 0 {
-			cronExpr = "0 0 * * 4"
-		} else {
-			var daysOfWeek []string
-			for dIdx := int64(0); dIdx < 7; dIdx += days {
-				dow := (4 + dIdx) % 7
-				daysOfWeek = append(daysOfWeek, fmt.Sprintf("%d", dow))
-			}
-			cronExpr = fmt.Sprintf("0 0 * * %s", strings.Join(daysOfWeek, ","))
+			cronExpr = fmt.Sprintf("0 %s * * *", strings.Join(hourList, ","))
 		}
 	} else {
-		return "", fmt.Errorf("unsupported interval duration %v: must be in minutes, hours, or days", d)
+		// Case 3: Multi-day intervals (Jan 1 1970 was Thursday, day 4)
+		if totalSeconds%86400 != 0 || totalSeconds/86400 != 7 {
+			return "", fmt.Errorf("multi-day duration %v cannot be accurately expressed in standard cron; standard cron only supports 7d (weekly), or use an explicit cron expression", d)
+		}
+		cronExpr = "0 0 * * 4"
 	}
 
 	if err := ValidateCronExpression(cronExpr); err != nil {
