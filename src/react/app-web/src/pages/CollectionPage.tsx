@@ -13,6 +13,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
+  ExternalLink,
 } from "lucide-react";
 import { useState, useMemo, useRef, useEffect } from "react";
 import { keepPreviousData } from "@tanstack/react-query";
@@ -26,7 +27,6 @@ import {
 import { CollectionBadge } from "@quadsmith/shared";
 import { CollectionIcon } from "@quadsmith/shared";
 import { getCollectionColor } from "@quadsmith/shared";
-import { ProductHoverCard } from "../components/ProductHoverCard";
 import { useDocumentMeta } from "@quadsmith/shared";
 import { ComponentFormModal } from "../components/ComponentFormModal";
 import { StyledSelect } from "../components/StyledSelect";
@@ -348,6 +348,7 @@ export function CollectionTableView({
   const [pageIndex, setPageIndex] = useState<number>(0);
   const [tokenHistory, setTokenHistory] = useState<string[]>([""]);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
+  const colColor = collection.color || getCollectionColor(collection.id);
 
   // Reset pagination when search params change
   const prevSearchParamsRef = useRef(searchParams.toString());
@@ -642,67 +643,110 @@ export function CollectionTableView({
               data-testid="catalog-grid"
               className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4"
             >
-              {items.map((item: any) => (
-                <ProductHoverCard
-                  key={item.id}
-                  as="article"
-                  collectionId={collection.id}
-                  item={item}
-                  className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/90 p-4 sm:p-5 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 transition-all flex flex-col justify-between relative group"
-                >
-                  <div data-testid="catalog-card">
-                    {/* Header: Name, Manufacturer, Badges */}
-                    <div className="flex items-start justify-between gap-2 pb-3 mb-3 border-b border-zinc-100 dark:border-zinc-800/80">
-                      <div className="min-w-0 flex-1">
-                        <Link
-                          to={`/${getCollectionPath(collection)}/${item.id}`}
-                          className="font-bold text-sm sm:text-base text-zinc-900 dark:text-zinc-50 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors line-clamp-1"
-                          aria-label={`View ${item.name || item.id}`}
+              {items.map((item: any) => {
+                const productUrl = `/${getCollectionPath(collection)}/${item.id}`;
+                return (
+                  <article
+                    key={item.id}
+                    data-testid="catalog-card"
+                    className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/90 p-4 sm:p-5 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-md transition-all flex flex-col justify-between"
+                  >
+                    <div>
+                      {/* Header: Thumbnail + Badges/Manufacturer + Name + Community/Internal */}
+                      <div className="flex items-start gap-3 pb-3 mb-3 border-b border-zinc-100 dark:border-zinc-800/80">
+                        {/* Thumbnail / Icon */}
+                        <div
+                          className={`w-12 h-12 rounded-xl shrink-0 flex items-center justify-center overflow-hidden border border-zinc-200/80 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/80 ${colColor.textClass}`}
                         >
-                          {item.name || item.id}
-                        </Link>
-                        {item.manufacturer && (
-                          <p className="text-xs text-zinc-400 dark:text-zinc-500 font-medium truncate mt-0.5">
-                            {item.manufacturer}
-                          </p>
-                        )}
-                      </div>
+                          {item.primaryDisplayImage ? (
+                            <img
+                              src={item.primaryDisplayImage}
+                              alt=""
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <CollectionIcon collection={collection.id} size={22} />
+                          )}
+                        </div>
 
-                      <div className="flex items-center gap-1.5 shrink-0">
-                        {(item.isUserCreated || item.is_user_created) && (
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-                            Community
-                          </span>
-                        )}
-                        {item.is_internal_only && (
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                            Internal
-                          </span>
-                        )}
-                      </div>
-                    </div>
-
-                    {/* Spec Grid for active columns */}
-                    <div className="grid grid-cols-2 gap-2">
-                      {activeColumns
-                        .filter((col) => col.id !== "name")
-                        .map((col) => (
-                          <div
-                            key={col.id}
-                            className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl px-2.5 py-1.5 border border-zinc-100 dark:border-zinc-800/80 flex flex-col min-w-0"
-                          >
-                            <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500 truncate">
-                              {col.title}
-                            </span>
-                            <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate mt-0.5">
-                              {col.renderCell(item)}
+                        {/* Title & Metadata */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center justify-between gap-1.5 mb-1">
+                            <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
+                              <CollectionBadge collection={collection.id} size="xs" />
+                              {item.manufacturer && (
+                                <span className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider truncate">
+                                  {item.manufacturer}
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex items-center gap-1 shrink-0">
+                              {(item.isUserCreated || item.is_user_created) && (
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                                  Community
+                                </span>
+                              )}
+                              {item.is_internal_only && (
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                                  Internal
+                                </span>
+                              )}
                             </div>
                           </div>
-                        ))}
+
+                          <Link
+                            to={productUrl}
+                            className="font-bold text-sm sm:text-base text-zinc-900 dark:text-zinc-50 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors line-clamp-1 block"
+                            aria-label={`View ${item.name || item.id}`}
+                          >
+                            {item.name || item.id}
+                          </Link>
+                        </div>
+                      </div>
+
+                      {/* Spec Grid for active columns */}
+                      <div className="grid grid-cols-2 gap-2">
+                        {activeColumns
+                          .filter((col) => col.id !== "name")
+                          .map((col) => (
+                            <div
+                              key={col.id}
+                              className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl px-2.5 py-1.5 border border-zinc-100 dark:border-zinc-800/80 flex flex-col min-w-0"
+                            >
+                              <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500 truncate">
+                                {col.title}
+                              </span>
+                              <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate mt-0.5">
+                                {col.renderCell(item)}
+                              </div>
+                            </div>
+                          ))}
+                      </div>
+
+                      {/* Description if present */}
+                      {item.description && (
+                        <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-3 leading-relaxed">
+                          {item.description}
+                        </p>
+                      )}
                     </div>
-                  </div>
-                </ProductHoverCard>
-              ))}
+
+                    {/* Footer Direct Link & ID */}
+                    <div className="mt-3.5 pt-2.5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-xs">
+                      <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 truncate">
+                        {item.id}
+                      </span>
+                      <Link
+                        to={productUrl}
+                        className="inline-flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400 hover:underline shrink-0"
+                      >
+                        <span>Details</span>
+                        <ExternalLink size={12} />
+                      </Link>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           )}
 

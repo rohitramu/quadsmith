@@ -9,7 +9,6 @@ import {
   ThumbsUp,
   HelpCircle,
   Bookmark,
-  Star,
   ArrowUpRight,
   Plus,
   Archive,
@@ -314,63 +313,6 @@ export function SocialTabs({
           </div>
         </div>
       )}
-
-      {/* Reputation Economy Explainer Card (from preview design) */}
-      <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30 p-6 space-y-4">
-        <div className="flex items-center justify-between flex-wrap gap-2">
-          <h4 className="text-xs font-bold uppercase tracking-wider text-amber-500 dark:text-amber-400 flex items-center gap-1.5">
-            <Star size={14} className="fill-current" />
-            <span>Community Reputation Economy (Karma Rules)</span>
-          </h4>
-          <span className="text-[11px] font-mono text-zinc-400">
-            Derives from relational vote & acceptance tables
-          </span>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs">
-          <div className="p-3 rounded-xl bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800">
-            <div className="text-zinc-500 dark:text-zinc-400">Review Author</div>
-            <div className="text-emerald-600 dark:text-emerald-400 font-bold font-mono text-base mt-0.5">
-              +3 Rep
-            </div>
-            <div className="text-[10px] text-zinc-400 mt-1">Written evaluation reward</div>
-          </div>
-
-          <div className="p-3 rounded-xl bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800">
-            <div className="text-zinc-500 dark:text-zinc-400">Accepted Answer</div>
-            <div className="text-emerald-600 dark:text-emerald-400 font-bold font-mono text-base mt-0.5">
-              +30 Rep
-            </div>
-            <div className="text-[10px] text-zinc-400 mt-1">+10 bonus to asker</div>
-          </div>
-
-          <div className="p-3 rounded-xl bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800">
-            <div className="text-zinc-500 dark:text-zinc-400">Author Endorsed</div>
-            <div className="text-amber-600 dark:text-amber-400 font-bold font-mono text-base mt-0.5">
-              +20 Rep
-            </div>
-            <div className="text-[10px] text-zinc-400 mt-1">Conferred by build author</div>
-          </div>
-
-          <div className="p-3 rounded-xl bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800">
-            <div className="text-zinc-500 dark:text-zinc-400">Post / Review Upvote</div>
-            <div className="text-emerald-600 dark:text-emerald-400 font-bold font-mono text-base mt-0.5">
-              +1 Rep
-            </div>
-            <div className="text-[10px] text-zinc-400 mt-1">Daily Cap: max 20 upvotes / 24h</div>
-          </div>
-
-          <div className="p-3 rounded-xl bg-white dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800">
-            <div className="text-zinc-500 dark:text-zinc-400">Downvote Stakes</div>
-            <div className="text-rose-600 dark:text-rose-400 font-bold font-mono text-base mt-0.5">
-              -2 Rep (Both)
-            </div>
-            <div className="text-[10px] text-zinc-400 mt-1">
-              Costs voter -2 • Unlock at 100 rep • Max 3/24h (max 3/wk per target author)
-            </div>
-          </div>
-        </div>
-      </div>
 
       <SaveToCollectionModal
         isOpen={isNewColModalOpen}

@@ -245,16 +245,8 @@ describe("Social Interactions Components", () => {
       expect(await screen.findByText("Cinewhoop Favorites")).toBeInTheDocument();
       expect(screen.queryByText("Liked")).not.toBeInTheDocument();
 
-      // Verify reputation economy content card
-      expect(screen.getByText(/Community Reputation Economy \(Karma Rules\)/i)).toBeInTheDocument();
-      expect(screen.getByText(/\+30 Rep/i)).toBeInTheDocument();
-      expect(screen.getAllByText(/Accepted Answer/i).length).toBeGreaterThan(0);
-      expect(screen.getByText(/\+20 Rep/i)).toBeInTheDocument();
-      expect(screen.getByText(/\+3 Rep/i)).toBeInTheDocument();
-      expect(screen.getByText(/Review Author/i)).toBeInTheDocument();
-      expect(screen.getByText(/\+1 Rep/i)).toBeInTheDocument();
-      expect(screen.getByText(/-2 Rep \(Both\)/i)).toBeInTheDocument();
-      expect(screen.getByText(/Unlock at 100 rep/i)).toBeInTheDocument();
+      // Verify reputation economy content card is not rendered
+      expect(screen.queryByText(/Community Reputation Economy/i)).not.toBeInTheDocument();
     });
   });
 });

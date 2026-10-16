@@ -322,8 +322,8 @@ describe("CollectionPage Component", () => {
     });
   });
 
-  it("displays product hover card when hovering over any cell in the table row", async () => {
-    const { user } = renderWithProviders(
+  it("renders catalog cards with rich details including manufacturer, badge, specs, and details link without hover cards", async () => {
+    renderWithProviders(
       <Routes>
         <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
       </Routes>,
@@ -334,22 +334,16 @@ describe("CollectionPage Component", () => {
       expect(screen.getByText("ECO II 2207")).toBeInTheDocument();
     });
 
-    // Find the row triggers
-    const rowTriggers = screen.getAllByTestId("product-hover-trigger");
-    expect(rowTriggers.length).toBeGreaterThan(0);
+    // Check catalog cards are rendered
+    const cards = screen.getAllByTestId("catalog-card");
+    expect(cards.length).toBeGreaterThan(0);
 
-    // Hover over the first row trigger (a <tr> element)
-    await user.hover(rowTriggers[0]);
+    // Verify hover cards are not used on catalog cards
+    expect(screen.queryByTestId("product-hover-card")).not.toBeInTheDocument();
 
-    // Fast-forward or wait for hover card
-    await waitFor(
-      () => {
-        expect(screen.getByTestId("product-hover-card")).toBeInTheDocument();
-      },
-      { timeout: 1000 },
-    );
-
-    expect(screen.getByTestId("product-hover-card")).toBeInTheDocument();
-    expect(screen.getByText("Details")).toBeInTheDocument();
+    // Check direct Details link is present in footer
+    const detailsLinks = screen.getAllByRole("link", { name: /details/i });
+    expect(detailsLinks.length).toBeGreaterThan(0);
+    expect(detailsLinks[0]).toHaveAttribute("href", "/components/hardware/motors/emax-eco-ii-2207");
   });
 });
