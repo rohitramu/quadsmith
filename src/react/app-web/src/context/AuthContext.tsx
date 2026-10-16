@@ -1,4 +1,12 @@
-import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
 import { useTransport } from "@connectrpc/connect-query";
 import { createClient } from "@connectrpc/connect";
 import {
@@ -157,6 +165,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   });
   const [mergeTicket, setMergeTicket] = useState<string | null>(null);
+  const authMutationRef = useRef(0);
 
   const refreshSession = useCallback(async () => {
     try {
@@ -175,10 +184,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setUser(null);
       setProfile(null);
     }
-  }, []);
+  }, [authClient]);
 
   useEffect(() => {
     let mounted = true;
+    const startMutation = authMutationRef.current;
 
     async function initAuth() {
       try {
@@ -186,18 +196,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (token) {
           try {
             const currentUser = await authClient.getCurrentUser({});
-            if (mounted && currentUser) {
+            if (mounted && authMutationRef.current === startMutation && currentUser) {
               setUser(currentUser);
               try {
                 const emailsRes = await authClient.listUserEmails({});
-                if (mounted) setEmails(emailsRes.emails || []);
+                if (mounted && authMutationRef.current === startMutation) {
+                  setEmails(emailsRes.emails || []);
+                }
               } catch {
                 // ignore
               }
               // Profile refresh via silent refresh
               try {
                 const refreshRes = await authClient.refreshToken({});
-                if (mounted) {
+                if (mounted && authMutationRef.current === startMutation) {
                   if (refreshRes.accessToken) setAccessToken(refreshRes.accessToken);
                   if (refreshRes.profile) setProfile(refreshRes.profile);
                 }
@@ -210,27 +222,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             // Token might be expired, try refresh cookie
           }
         }
+        if (!mounted || authMutationRef.current !== startMutation) return;
         // Try refresh token from cookie
         const res = await authClient.refreshToken({});
-        if (mounted) {
+        if (mounted && authMutationRef.current === startMutation) {
           if (res.accessToken) setAccessToken(res.accessToken);
           if (res.user) setUser(res.user);
           if (res.profile) setProfile(res.profile);
           try {
             const emailsRes = await authClient.listUserEmails({});
-            if (mounted) setEmails(emailsRes.emails || []);
+            if (mounted && authMutationRef.current === startMutation) {
+              setEmails(emailsRes.emails || []);
+            }
           } catch {
             // ignore
           }
         }
       } catch {
-        if (mounted) {
+        if (mounted && authMutationRef.current === startMutation) {
           setAccessToken(null);
           setUser(null);
           setProfile(null);
         }
       } finally {
-        if (mounted) {
+        if (mounted && authMutationRef.current === startMutation) {
           setIsLoading(false);
         }
       }
@@ -381,6 +396,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // ignore
     }
 
+    if (res.accessToken || res.user) {
+      authMutationRef.current += 1;
+      setIsLoading(false);
+    }
     if (res.accessToken) {
       setAccessToken(res.accessToken);
     }
@@ -402,6 +421,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const verifyMagicLink = async (token: string) => {
     const res = await authClient.verifyMagicLink({ token });
+    if (res.accessToken || res.user) {
+      authMutationRef.current += 1;
+      setIsLoading(false);
+    }
     if (res.accessToken) {
       setAccessToken(res.accessToken);
     }
@@ -457,6 +480,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setMergeTicket(res.verifyResponse.mergeTicket);
       }
       if (res.authResponse) {
+        if (res.authResponse.accessToken || res.authResponse.user) {
+          authMutationRef.current += 1;
+          setIsLoading(false);
+        }
         if (res.authResponse.accessToken) {
           setAccessToken(res.authResponse.accessToken);
         }
@@ -477,22 +504,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return res;
   };
 
-  const completeAccountSetup = async (setupToken: string, username: string, avatarUrl?: string) => {
-    const res = await authClient.completeAccountSetup({
-      setupToken,
-      username,
-      avatarUrl: avatarUrl || undefined,
-    });
-    if (res.accessToken) {
-      setAccessToken(res.accessToken);
-    }
-    if (res.user) {
-      setUser(res.user);
-    }
-    if (res.profile) {
-      setProfile(res.profile);
-    }
-  };
+  const completeAccountSetup = useCallback(
+    async (setupToken: string, username: string, avatarUrl?: string) => {
+      const res = await authClient.completeAccountSetup({
+        setupToken,
+        username,
+        avatarUrl: avatarUrl || undefined,
+      });
+      authMutationRef.current += 1;
+      setIsLoading(false);
+      if (res.accessToken) {
+        setAccessToken(res.accessToken);
+      }
+      if (res.user) {
+        setUser(res.user);
+      }
+      if (res.profile) {
+        setProfile(res.profile);
+      }
+    },
+    [authClient],
+  );
 
   const updateProfile = async (data: { avatarUrl?: string; bio?: string }) => {
     const updated = await authClient.updateProfile(data);
@@ -595,16 +627,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return await authClient.listArchivedUsernames({});
   };
 
-  const checkUsernameAvailable = async (username: string) => {
-    const res = await userClient.checkUsernameAvailable({ username });
-    return {
-      status: res.status,
-      available: res.available,
-      message: res.message,
-    };
-  };
+  const checkUsernameAvailable = useCallback(
+    async (username: string) => {
+      const res = await userClient.checkUsernameAvailable({ username });
+      return {
+        status: res.status,
+        available: res.available,
+        message: res.message,
+      };
+    },
+    [userClient],
+  );
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
+    authMutationRef.current += 1;
     try {
       await authClient.logout({});
     } catch {
@@ -616,13 +652,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setEmails([]);
       setChallengeId(null);
       setMergeTicket(null);
+      setIsLoading(false);
       try {
         sessionStorage.removeItem("qs_challenge_id");
       } catch {
         // ignore
       }
     }
-  };
+  }, [authClient]);
 
   const sendDataExportVerification = async (): Promise<SendEmailOtpResponse> => {
     return await authClient.sendEmailOtp({
@@ -667,6 +704,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const completeOAuth = useCallback(
     async (code: string, state: string): Promise<CompleteOAuthResponse> => {
       const res = await authClient.completeOAuth({ code, state });
+      authMutationRef.current += 1;
+      setIsLoading(false);
       if (res.mergeTicket) {
         setMergeTicket(res.mergeTicket);
       }

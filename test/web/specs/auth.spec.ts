@@ -87,4 +87,20 @@ test.describe("Authentication Flows", () => {
       fullPage: true,
     });
   });
+
+  test("completes mock OAuth browser redirect and transitions to Account Setup", async ({
+    page,
+  }) => {
+    await page.goto("/login");
+
+    const discordBtn = page.getByRole("button", { name: /continue with discord/i });
+    await expect(discordBtn).toBeVisible();
+    await discordBtn.click();
+
+    await expect(page.getByRole("heading", { name: /account setup/i })).toBeVisible({
+      timeout: 10000,
+    });
+    await expect(page.getByTestId("username-input")).toBeVisible();
+  });
 });
+

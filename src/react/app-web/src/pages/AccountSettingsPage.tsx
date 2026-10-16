@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { ConnectError } from "@connectrpc/connect";
 import {
@@ -261,15 +261,18 @@ export function AccountSettingsPage() {
     }
   }, [mergeToken, addEmailToken, verifyAddEmailOtp, refreshEmails, searchParams, setSearchParams]);
 
+  const processedOAuthRef = useRef<string | null>(null);
+
   // OAuth callback for Add Email
   useEffect(() => {
     if (!oauthCode || !oauthState) return;
+    const oauthKey = `${oauthCode}:${oauthState}`;
+    if (processedOAuthRef.current === oauthKey) return;
+    processedOAuthRef.current = oauthKey;
 
-    let isMounted = true;
     async function handleOAuthCallback() {
       try {
         const res = await completeOAuth(oauthCode!, oauthState!);
-        if (!isMounted) return;
         if (res.mergeRequired) {
           setMergeEmail(res.primaryEmail || res.otherEmails?.[0] || "");
           setMergeOtherUsername(res.otherUserUsername || "user");
@@ -286,22 +289,19 @@ export function AccountSettingsPage() {
           await refreshEmails();
         }
       } catch (err: unknown) {
-        if (!isMounted) return;
         if (err instanceof Error) {
           setEmailActionError(err.message);
         } else {
           setEmailActionError("Failed to complete OAuth linking.");
         }
       } finally {
-        searchParams.delete("code");
-        searchParams.delete("state");
-        setSearchParams(searchParams, { replace: true });
+        const next = new URLSearchParams(searchParams);
+        next.delete("code");
+        next.delete("state");
+        setSearchParams(next, { replace: true });
       }
     }
     handleOAuthCallback();
-    return () => {
-      isMounted = false;
-    };
   }, [oauthCode, oauthState, completeOAuth, refreshEmails, searchParams, setSearchParams]);
 
   // Email Action feedback

@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"connectrpc.com/connect"
 	"google.golang.org/protobuf/proto"
 
 	pb "quadsmith/shared/gen/quadsmith/api"
@@ -187,5 +188,44 @@ func TestGitHubEmailFilteringLogic(t *testing.T) {
 	}
 	if len(ident.VerifiedEmails) != 1 || ident.VerifiedEmails[0] != "real_verified@example.com" {
 		t.Errorf("expected only [real_verified@example.com], got %v", ident.VerifiedEmails)
+	}
+}
+
+func TestStartOAuthBaseURLResolution(t *testing.T) {
+	mockSvc := NewAuthService(nil, &config.AuthConfig{
+		Secret: proto.String("quadsmith-test-secret-key-32bytes-long!"),
+		Oauth: &config.AuthOAuthConfig{
+			WebBaseUrl: proto.String("http://localhost:8080"),
+			Mode:       &config.AuthOAuthConfig_Mock{Mock: &config.MockOAuthConfig{}},
+		},
+	})
+
+	// 1. Mock mode with browser Origin header uses the browser's exact origin
+	reqWithOrigin := connect.NewRequest(&pb.StartOAuthRequest{
+		Provider:     pb.OAuthProvider_OAUTH_PROVIDER_GOOGLE,
+		Purpose:      pb.OAuthPurpose_OAUTH_PURPOSE_LOGIN,
+		RedirectPath: "/login",
+	})
+	reqWithOrigin.Header().Set("Origin", "http://127.0.0.1:8080")
+	res1, err := mockSvc.StartOAuth(context.Background(), reqWithOrigin)
+	if err != nil {
+		t.Fatalf("StartOAuth with Origin failed: %v", err)
+	}
+	if !strings.HasPrefix(res1.Msg.GetAuthorizationUrl(), "http://127.0.0.1:8080/login?code=mock_google_default") {
+		t.Errorf("expected mock OAuth URL to use Origin http://127.0.0.1:8080, got %s", res1.Msg.GetAuthorizationUrl())
+	}
+
+	// 2. Mock mode without Origin header (e.g. CLI) falls back to configured web_base_url (http://localhost:8080)
+	reqNoOrigin := connect.NewRequest(&pb.StartOAuthRequest{
+		Provider:     pb.OAuthProvider_OAUTH_PROVIDER_GOOGLE,
+		Purpose:      pb.OAuthPurpose_OAUTH_PURPOSE_LOGIN,
+		RedirectPath: "/login",
+	})
+	res2, err := mockSvc.StartOAuth(context.Background(), reqNoOrigin)
+	if err != nil {
+		t.Fatalf("StartOAuth without Origin failed: %v", err)
+	}
+	if !strings.HasPrefix(res2.Msg.GetAuthorizationUrl(), "http://localhost:8080/login?code=mock_google_default") {
+		t.Errorf("expected mock OAuth URL without Origin to use web_base_url http://localhost:8080, got %s", res2.Msg.GetAuthorizationUrl())
 	}
 }

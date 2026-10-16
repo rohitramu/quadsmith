@@ -325,6 +325,11 @@ func applyAPIServerEnvOverrides(cfg *config.ApiServerConfig) {
 				cfg.Auth.Email.GetSmtp().Password = &v
 			}
 		}
+		if cfg.Auth.Oauth != nil {
+			if v := os.Getenv("QS_WEB_BASE_URL"); v != "" {
+				cfg.Auth.Oauth.WebBaseUrl = &v
+			}
+		}
 	}
 }
 

@@ -2455,12 +2455,27 @@ func (s *AuthService) StartOAuth(ctx context.Context, req *connect.Request[pb.St
 	}
 
 	baseURL := ""
-	if s.cfg != nil && s.cfg.OAuth != nil && s.cfg.OAuth.GetWebBaseUrl() != "" {
+	isMockOAuth := s.cfg == nil || s.cfg.OAuth == nil || s.cfg.OAuth.GetMock() != nil || s.cfg.OAuth.GetProviders() == nil
+	if isMockOAuth {
+		if origin := strings.TrimRight(strings.TrimSpace(req.Header().Get("Origin")), "/"); origin != "" {
+			if u, err := url.Parse(origin); err == nil && (u.Scheme == "http" || u.Scheme == "https") && u.Host != "" {
+				baseURL = origin
+			}
+		} else if referer := strings.TrimSpace(req.Header().Get("Referer")); referer != "" {
+			if u, err := url.Parse(referer); err == nil && (u.Scheme == "http" || u.Scheme == "https") && u.Host != "" {
+				baseURL = fmt.Sprintf("%s://%s", u.Scheme, u.Host)
+			}
+		}
+	}
+	if baseURL == "" && s.cfg != nil && s.cfg.OAuth != nil && s.cfg.OAuth.GetWebBaseUrl() != "" {
 		baseURL = s.cfg.OAuth.GetWebBaseUrl()
-	} else if origin := req.Header().Get("Origin"); origin != "" {
-		baseURL = origin
-	} else {
-		baseURL = "http://localhost:5173"
+	}
+	if baseURL == "" {
+		if origin := strings.TrimRight(strings.TrimSpace(req.Header().Get("Origin")), "/"); origin != "" {
+			baseURL = origin
+		} else {
+			baseURL = "http://localhost:8080"
+		}
 	}
 
 	redirectPath := req.Msg.GetRedirectPath()

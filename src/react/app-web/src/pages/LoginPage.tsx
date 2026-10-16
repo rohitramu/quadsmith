@@ -19,7 +19,7 @@ import { ChallengeApprovalScreen } from "../components/ChallengeApprovalScreen";
 import { GoogleIcon, GitHubIcon, DiscordIcon } from "../components/OAuthIcons";
 
 export function LoginPage() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const {
     isAuthenticated,
@@ -59,6 +59,7 @@ export function LoginPage() {
   const [setupToken, setSetupToken] = useState("");
   const [username, setUsername] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [avatarLoadError, setAvatarLoadError] = useState(false);
   const [usernameStatus, setUsernameStatus] = useState<
     "idle" | "checking" | "available" | "unavailable" | "invalid"
   >("idle");
@@ -68,6 +69,7 @@ export function LoginPage() {
 
   const otpInputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const emailInputRef = useRef<HTMLInputElement>(null);
+  const processedOAuthRef = useRef<string | null>(null);
 
   // Cooldown countdown timer
   useEffect(() => {
@@ -132,6 +134,7 @@ export function LoginPage() {
       !magicToken &&
       !oauthCode &&
       !oauthState &&
+      !isOAuthProcessing &&
       !cliLoginApproved &&
       !isCliOAuthFlow
     ) {
@@ -142,6 +145,7 @@ export function LoginPage() {
     magicToken,
     oauthCode,
     oauthState,
+    isOAuthProcessing,
     cliLoginApproved,
     isCliOAuthFlow,
     navigate,
@@ -203,15 +207,23 @@ export function LoginPage() {
   // OAuth Callback Handler
   useEffect(() => {
     if (!oauthCode || !oauthState) return;
+    const oauthKey = `${oauthCode}:${oauthState}`;
+    if (processedOAuthRef.current === oauthKey) return;
+    processedOAuthRef.current = oauthKey;
 
-    let active = true;
+    const clearOAuthParams = () => {
+      const next = new URLSearchParams(searchParams);
+      next.delete("code");
+      next.delete("state");
+      setSearchParams(next, { replace: true });
+    };
+
     const processOAuth = async () => {
       setIsOAuthProcessing(true);
       setIsOAuthLoading(true);
       setErrorMsg(null);
       try {
         const res = await completeOAuth(oauthCode, oauthState);
-        if (!active) return;
 
         if (res.purpose === OAuthPurpose.OAUTH_PURPOSE_CLI_LOGIN) {
           setIsCliOAuthFlow(true);
@@ -221,14 +233,20 @@ export function LoginPage() {
         const sToken = res.authResponse?.setupToken;
         if (setupRequired && sToken) {
           setSetupToken(sToken);
+          if (res.primaryEmail) {
+            setEmail(res.primaryEmail);
+          }
           if (res.suggestedAvatarUrl) {
+            setAvatarLoadError(false);
             setAvatarUrl(res.suggestedAvatarUrl);
           }
           setStep("setup");
           setIsOAuthProcessing(false);
+          clearOAuthParams();
         } else if (res.purpose === OAuthPurpose.OAUTH_PURPOSE_CLI_LOGIN) {
           setCliLoginApproved(true);
           setIsOAuthProcessing(false);
+          clearOAuthParams();
         } else if (res.mergeRequired && res.mergeTicket) {
           sessionStorage.setItem(
             "qs_pending_oauth_merge",
@@ -249,8 +267,8 @@ export function LoginPage() {
           navigate(postLoginRedirect, { replace: true });
         }
       } catch (err: unknown) {
-        if (!active) return;
         setIsOAuthProcessing(false);
+        clearOAuthParams();
         if (err instanceof ConnectError) {
           setErrorMsg(err.rawMessage);
         } else if (err instanceof Error) {
@@ -259,17 +277,12 @@ export function LoginPage() {
           setErrorMsg("Failed to complete OAuth authentication. Please try again.");
         }
       } finally {
-        if (active) {
-          setIsOAuthLoading(false);
-        }
+        setIsOAuthLoading(false);
       }
     };
 
     processOAuth();
-    return () => {
-      active = false;
-    };
-  }, [oauthCode, oauthState, completeOAuth, navigate, redirectUrl]);
+  }, [oauthCode, oauthState, completeOAuth, navigate, redirectUrl, searchParams, setSearchParams]);
 
   const handleOAuthLogin = async (provider: OAuthProvider) => {
     setIsOAuthLoading(true);
@@ -544,18 +557,18 @@ export function LoginPage() {
           <div
             data-testid="avatar-preview"
             className={`w-16 h-16 rounded-full border flex items-center justify-center font-bold text-2xl shadow-2xs overflow-hidden relative transition-colors duration-150 ${
-              avatarUrl
+              avatarUrl && !avatarLoadError
                 ? "border-zinc-200 dark:border-zinc-800"
                 : getAvatarPalette(username.trim().toLowerCase() || email).badgeClass
             }`}
           >
-            {avatarUrl ? (
+            {avatarUrl && !avatarLoadError ? (
               <img
                 src={avatarUrl}
                 alt="Avatar Preview"
                 className="w-full h-full object-cover"
-                onError={(e) => {
-                  (e.currentTarget as HTMLElement).style.display = "none";
+                onError={() => {
+                  setAvatarLoadError(true);
                 }}
               />
             ) : (
@@ -653,7 +666,10 @@ export function LoginPage() {
             data-testid="avatar-url-input"
             placeholder="https://example.com/avatar.jpg"
             value={avatarUrl}
-            onChange={(e) => setAvatarUrl(e.target.value)}
+            onChange={(e) => {
+              setAvatarLoadError(false);
+              setAvatarUrl(e.target.value);
+            }}
             className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           />
           <p className="text-[10px] text-zinc-400 dark:text-zinc-500">

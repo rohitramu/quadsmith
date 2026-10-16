@@ -90,7 +90,7 @@ func NewTestAPIServerConfig(t testing.TB, opts ...APIServerOption) *config.ApiSe
 				},
 			},
 			Oauth: &config.AuthOAuthConfig{
-				WebBaseUrl: proto.String("http://localhost:5173"),
+				WebBaseUrl: proto.String("http://localhost:8080"),
 				Mode: &config.AuthOAuthConfig_Mock{
 					Mock: &config.MockOAuthConfig{},
 				},
