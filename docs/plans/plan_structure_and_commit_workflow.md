@@ -142,7 +142,7 @@ following structure for every plan document:
    references as appropriate).
 
    - Under each design decision sub-heading, a nested collapsible
-     `<details><summary><a id="custom-anchor-text" ><strong>Alternatives considered</strong></a></summary> ... </details>`
+     `<details><summary><strong>Alternatives considered</strong></summary> ... </details>`
      block with 1 sub-heading per alternative
      (`##### <a id="custom-anchor-text" >Alternative Name</a>`). Each
      alternative must include:
@@ -157,7 +157,7 @@ following structure for every plan document:
 4. **Alternatives considered (optional)**: A sibling section following the
    Proposal for evaluating alternative high-level (conceptually broad)
    approaches inside a collapsible
-   `<details><summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary> ... </details>`
+   `<details><summary><strong>Alternatives considered</strong></summary> ... </details>`
    block. Contains 1 sub-heading per alternative
    (`### <a id="custom-anchor-text" >Alternative Name</a>`) with an unbulleted
    ~2 sentence summary, unbulleted `**Pros:**` with bulleted items, and
@@ -224,12 +224,12 @@ Snippet to add to [AGENTS.md](../../AGENTS.md#L37-L57) under
       explanation directly under it (using diagrams, tables, images, UI
       screenshots, UI concept images, artifacts, or code snippets with path
       references as appropriate), and nested collapsible
-      `<details><summary><a id="custom-anchor-text" ><strong>Alternatives considered</strong></a></summary> ... </details>`
+      `<details><summary><strong>Alternatives considered</strong></summary> ... </details>`
       (unbulleted ~2 sentence summary, unbulleted `**Pros:**` and `**Cons:**`
       labels with bulleted items).
     - **4. Alternatives considered (optional)**: High-level conceptual
       alternatives inside a collapsible
-      `<details><summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary> ... </details>`
+      `<details><summary><strong>Alternatives considered</strong></summary> ... </details>`
       block.
     - **5. Assumptions (optional)**: Numbered list.
     - **6. Future work (optional)**: 1 sub-heading per idea.
@@ -237,7 +237,7 @@ Snippet to add to [AGENTS.md](../../AGENTS.md#L37-L57) under
 ```
 
 <details>
-<summary><a id="alternatives-considered-design-decision-1" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="loose-section-suggestions" >Loose Section Suggestions</a>
 
@@ -290,7 +290,7 @@ Define the two-stage lifecycle for all plans:
    across git clones and web viewers.
 
 <details>
-<summary><a id="alternatives-considered-design-decision-2" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="direct-authoring-in-docs-plans" >Direct Authoring in `docs/plans/`</a>
 
@@ -385,7 +385,7 @@ Snippet to add to [AGENTS.md](../../AGENTS.md#L12-L18) under
 ```
 
 <details>
-<summary><a id="alternatives-considered-design-decision-3" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="embed-full-plan-in-commit-message" >Embed Full Plan in Commit Message</a>
 
@@ -458,7 +458,7 @@ Snippet to add to [AGENTS.md](../../AGENTS.md#L58-L65) under
 ```
 
 <details>
-<summary><a id="alternatives-considered-design-decision-4" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="edit-superseded-plans-in-place" >Edit Superseded Plans In-Place</a>
 
@@ -506,7 +506,7 @@ To apply these rules:
 5. Push to remote.
 
 <details>
-<summary><a id="alternatives-considered-design-decision-5" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="update-agents-md-without-saving-this-plan-to-docs-plans" >Update `AGENTS.md` without Saving this Plan to `docs/plans/`</a>
 
@@ -526,8 +526,10 @@ minimizes the number of files touched during the task.
 
 ---
 
+## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+
 <details>
-<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ### <a id="pr-driven-plans" >PR-Driven Plans</a>
 

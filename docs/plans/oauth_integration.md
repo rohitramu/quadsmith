@@ -207,7 +207,7 @@ enum OAuthPurpose {
 ```
 
 <details>
-<summary><a id="alternatives-considered-handshake-architecture" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="pure-backend-http-redirect-endpoints" >Pure Backend HTTP Redirect Endpoints</a>
 
@@ -244,7 +244,7 @@ implement strict real-email extraction for each provider:
 | **Discord** | `identify email`       | Token: `https://discord.com/api/v10/oauth2/token`<br>Profile: `https://discord.com/api/v10/users/@me`                                          | Require `email != ""` and `verified == true` on the [Discord User object](https://discord.com/developers/docs/resources/user#user-object) (rejecting unverified Discord accounts). Construct avatar URL from `id` and `avatar` hash.                                                             |
 
 <details>
-<summary><a id="alternatives-considered-multi-email-import" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="import-only-primary-github-email" >Import Only Primary GitHub Email</a>
 
@@ -316,7 +316,7 @@ applies deterministic account resolution:
     opens the existing **Confirm Account Merge** dialog.
 
 <details>
-<summary><a id="alternatives-considered-account-matching-and-setup" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="silent-multi-account-auto-merging" >Silent Multi-Account Auto-Merging</a>
 
@@ -382,7 +382,7 @@ without adding a separate "Connected Accounts" section:
   divider followed by **Google**, **GitHub**, and **Discord** buttons.
 
 <details>
-<summary><a id="alternatives-considered-account-settings-ui" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="dedicated-connected-accounts-section" >Dedicated Connected Accounts Section</a>
 
@@ -463,7 +463,7 @@ message OAuthAccount {
 ```
 
 <details>
-<summary><a id="alternatives-considered-oauth-schema" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="retain-provider-tokens-in-database" >Retain Provider Tokens in Database</a>
 
@@ -506,7 +506,7 @@ three enhancements:
      `discord` directly from the terminal.
 
 <details>
-<summary><a id="alternatives-considered-cli-oauth" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="ephemeral-localhost-callback-listener" >Ephemeral Localhost HTTP Callback Listener</a>
 
@@ -570,7 +570,7 @@ external network calls, enabling full offline development and Playwright E2E
 test coverage.
 
 <details>
-<summary><a id="alternatives-considered-oauth-config" ><strong>Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="external-credentials-only-in-config" >External Credentials Only in Config</a>
 
@@ -590,8 +590,10 @@ in all environments without a `mock` configuration mode.
 
 ---
 
+## <a id="4-alternatives-considered" >4. Alternatives considered</a>
+
 <details>
-<summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary>
+<summary><strong>Alternatives considered</strong></summary>
 
 ### <a id="integrating-microsoft-apple-meta-reddit-or-steam-oauth" >Integrating Microsoft, Apple, Meta, Reddit, or Steam OAuth</a>
 
@@ -621,9 +623,8 @@ Reddit, or Steam.
 ## <a id="5-assumptions" >5. Assumptions</a>
 
 1. Every production OAuth app (Google, GitHub, Discord) is configured with a
-   single web callback URI (`<web_base_url>/login` and
-   `<web_base_url>/settings/account`, or unified `<web_base_url>/login` routing
-   via the signed `state` token).
+   single web callback URI (`<web_base_url>/login` and `<web_base_url>/account`,
+   or unified `<web_base_url>/login` routing via the signed `state` token).
 2. Users with unverified Discord accounts (`verified: false`) or GitHub accounts
    lacking any verified real email address will receive an actionable error
    instructing them to verify their email with their OAuth provider or use

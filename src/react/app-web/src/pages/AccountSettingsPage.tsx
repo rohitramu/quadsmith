@@ -49,6 +49,7 @@ export function AccountSettingsPage() {
     changeUsername,
     listArchivedUsernames,
     checkUsernameAvailable,
+    verifyEmailOtp,
     verifyDataExport,
     completeOAuth,
     unlinkOAuth,
@@ -58,6 +59,7 @@ export function AccountSettingsPage() {
   const mergeToken = searchParams.get("merge_token");
   const addEmailToken = searchParams.get("add_email_token");
   const exportDataToken = searchParams.get("export_data_token");
+  const deleteAccountToken = searchParams.get("delete_account_token");
   const oauthCode = searchParams.get("code");
   const oauthState = searchParams.get("state");
 
@@ -102,6 +104,7 @@ export function AccountSettingsPage() {
 
   // Account Deletion state
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleteVerificationOpen, setIsDeleteVerificationOpen] = useState(false);
   const [deleteConfirmHandle, setDeleteConfirmHandle] = useState("");
 
   // Synchronize initial values when profile loads
@@ -190,7 +193,8 @@ export function AccountSettingsPage() {
             if (res.otherEmails && res.otherEmails.length > 0) {
               setMergeEmail(res.otherEmails[0]);
             }
-            setVerifiedMergeToken(mergeToken || "");
+            setVerifiedMergeTicket(res.mergeTicket || "");
+            setVerifiedMergeToken("");
             setMergeModalStep("summary");
           } else {
             setAddEmailSuccess(
@@ -228,7 +232,8 @@ export function AccountSettingsPage() {
             setMergeOtherBuildNames(res.otherBuildNames || []);
             setMergeOtherEmails(res.otherEmails || []);
             setMergeOtherOauthProviders(res.otherOauthProviders || []);
-            setVerifiedMergeToken(addEmailToken || "");
+            setVerifiedMergeTicket(res.mergeTicket || "");
+            setVerifiedMergeToken("");
             setMergeModalStep("summary");
             setIsMergeModalOpen(true);
           } else {
@@ -341,6 +346,37 @@ export function AccountSettingsPage() {
       active = false;
     };
   }, [exportDataToken, verifyDataExport, searchParams, setSearchParams]);
+
+  useEffect(() => {
+    if (!deleteAccountToken) return;
+
+    let active = true;
+    (async () => {
+      try {
+        await verifyEmailOtp({
+          email: "",
+          token: deleteAccountToken,
+          purpose: EmailOtpPurpose.DELETE_ACCOUNT,
+        });
+        if (active) {
+          await logout();
+          navigate("/login", { replace: true });
+        }
+      } catch (err) {
+        if (active) {
+          const message =
+            err instanceof Error ? err.message : "Failed to verify account deletion link";
+          setEmailActionError(message);
+          searchParams.delete("delete_account_token");
+          setSearchParams(searchParams, { replace: true });
+        }
+      }
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [deleteAccountToken, verifyEmailOtp, logout, navigate, searchParams, setSearchParams]);
 
   const handleOpenExportModal = () => {
     setExportSuccessMessage(null);
@@ -1430,6 +1466,10 @@ export function AccountSettingsPage() {
               <button
                 type="button"
                 disabled={deleteConfirmHandle.trim().toLowerCase() !== user?.id?.toLowerCase()}
+                onClick={() => {
+                  setIsDeleteModalOpen(false);
+                  setIsDeleteVerificationOpen(true);
+                }}
                 className="px-3.5 py-2 text-xs font-semibold text-white bg-rose-600 hover:bg-rose-500 disabled:opacity-40 disabled:cursor-not-allowed rounded-xl transition cursor-pointer"
               >
                 Confirm Account Deletion
@@ -1438,6 +1478,22 @@ export function AccountSettingsPage() {
           </div>
         </div>
       )}
+
+      {/* Modal: Verify Account Deletion OTP */}
+      <EmailVerificationModal
+        isOpen={isDeleteVerificationOpen}
+        onClose={() => setIsDeleteVerificationOpen(false)}
+        purpose={EmailOtpPurpose.DELETE_ACCOUNT}
+        requireEmailInput={false}
+        autoSend={true}
+        title="Verify Account Deletion"
+        subtitle="Enter the 6-digit verification code sent to your primary email to schedule account deletion."
+        onSuccess={async () => {
+          setIsDeleteVerificationOpen(false);
+          await logout();
+          navigate("/login", { replace: true });
+        }}
+      />
 
       {/* Modal: Add Email Address Dialog (uses unified EmailVerificationModal) */}
       <EmailVerificationModal
@@ -1457,7 +1513,8 @@ export function AccountSettingsPage() {
             setMergeOtherEmails(res.otherEmails || []);
             setMergeOtherOauthProviders(res.otherOauthProviders || []);
             setVerifiedMergeCode("");
-            setVerifiedMergeToken(res.mergeTicket || "");
+            setVerifiedMergeToken("");
+            setVerifiedMergeTicket(res.mergeTicket || "");
             setMergeError(null);
             setMergeModalStep("summary");
             setIsMergeModalOpen(true);

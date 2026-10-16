@@ -181,6 +181,9 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 							fmt.Println("Please complete your account setup in the browser...")
 							continue
 						}
+						if authRes.User == nil {
+							return errors.New("authentication succeeded but user profile was not returned")
+						}
 						cfg := &CLIConfig{
 							AccessToken:  authRes.AccessToken,
 							RefreshToken: authRes.RefreshToken,
@@ -240,11 +243,54 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 			}
 
 			verifyRes, err := authClient.VerifyEmailOtp(ctx, connect.NewRequest(&pb.VerifyEmailOtpRequest{
-				Email: email,
-				Code:  code,
+				Email:       email,
+				Code:        code,
+				ChallengeId: sendRes.Msg.ChallengeId,
 			}))
 			if err != nil {
 				return fmt.Errorf("verification failed: %w", err)
+			}
+
+			if verifyRes.Msg.AccountSetupRequired {
+				fmt.Println("\nWelcome to Quadsmith! Please choose a username to complete your account setup.")
+				fmt.Print("Choose a username: ")
+				usernameInput, err := reader.ReadString('\n')
+				if err != nil {
+					return err
+				}
+				username := strings.TrimSpace(usernameInput)
+				if username == "" {
+					return errors.New("username cannot be empty")
+				}
+
+				setupRes, err := authClient.CompleteAccountSetup(ctx, connect.NewRequest(&pb.CompleteAccountSetupRequest{
+					SetupToken: verifyRes.Msg.GetSetupToken(),
+					Username:   username,
+				}))
+				if err != nil {
+					return fmt.Errorf("account setup failed: %w", err)
+				}
+				if setupRes.Msg.User == nil {
+					return errors.New("account setup succeeded but user profile was not returned")
+				}
+
+				cfg := &CLIConfig{
+					AccessToken:  setupRes.Msg.AccessToken,
+					RefreshToken: setupRes.Msg.RefreshToken,
+					UserUUID:     setupRes.Msg.User.Uuid,
+					UserID:       setupRes.Msg.User.Id,
+					Email:        setupRes.Msg.User.Email,
+				}
+				if err := saveCLIConfig(cfg); err != nil {
+					return fmt.Errorf("failed to save config: %w", err)
+				}
+
+				fmt.Printf("✓ Successfully created account and authenticated as @%s (%s)\n", cfg.UserID, cfg.Email)
+				return nil
+			}
+
+			if verifyRes.Msg.User == nil {
+				return errors.New("verification succeeded but user profile was not returned")
 			}
 
 			cfg := &CLIConfig{
@@ -394,9 +440,10 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 			}
 
 			verifyRes, err := authClient.VerifyEmailOtp(ctx, connect.NewRequest(&pb.VerifyEmailOtpRequest{
-				Email:   email,
-				Code:    code,
-				Purpose: pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
+				Email:       email,
+				Code:        code,
+				ChallengeId: sendRes.Msg.ChallengeId,
+				Purpose:     pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
 			}))
 			if err != nil {
 				return fmt.Errorf("verification failed: %w", err)
@@ -539,8 +586,9 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 			}
 
 			mergeRes, err := authClient.MergeAccount(ctx, connect.NewRequest(&pb.MergeAccountRequest{
-				Email: email,
-				Code:  code,
+				Email:       email,
+				Code:        code,
+				ChallengeId: sendRes.Msg.ChallengeId,
 			}))
 			if err != nil {
 				return fmt.Errorf("merge failed: %w", err)

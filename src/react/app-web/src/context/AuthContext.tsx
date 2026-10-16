@@ -452,21 +452,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       undefined;
 
     const res = await authClient.getLoginChallengeStatus({ challengeId: cid });
-    if (res.status === LoginChallengeStatus.APPROVED && res.authResponse) {
-      if (res.authResponse.accessToken) {
-        setAccessToken(res.authResponse.accessToken);
+    if (res.status === LoginChallengeStatus.APPROVED) {
+      if (res.verifyResponse?.mergeTicket) {
+        setMergeTicket(res.verifyResponse.mergeTicket);
       }
-      if (res.authResponse.user) {
-        setUser(res.authResponse.user);
-      }
-      if (res.authResponse.profile) {
-        setProfile(res.authResponse.profile);
-      }
-      setChallengeId(null);
-      try {
-        sessionStorage.removeItem("qs_challenge_id");
-      } catch {
-        // ignore
+      if (res.authResponse) {
+        if (res.authResponse.accessToken) {
+          setAccessToken(res.authResponse.accessToken);
+        }
+        if (res.authResponse.user) {
+          setUser(res.authResponse.user);
+        }
+        if (res.authResponse.profile) {
+          setProfile(res.authResponse.profile);
+        }
+        setChallengeId(null);
+        try {
+          sessionStorage.removeItem("qs_challenge_id");
+        } catch {
+          // ignore
+        }
       }
     }
     return res;

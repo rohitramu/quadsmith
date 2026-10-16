@@ -912,7 +912,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       }),
 
       mergeAccount: (req) => {
-        if (req.code !== "123456" && !req.token) {
+        if (req.code !== "123456" && !req.token && !req.mergeTicket) {
           throw new ConnectError("Incorrect verification code", Code.InvalidArgument);
         }
         const candidateEmails = [

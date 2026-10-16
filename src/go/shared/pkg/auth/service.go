@@ -540,95 +540,11 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 		if userCtx == nil {
 			return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 		}
-		// Check if this email is registered to ANOTHER account
-		var otherUserUUID, otherUsername string
-		err := s.db.QueryRow(ctx, `
-			SELECT u.uuid, u.id
-			FROM user_emails ue
-			JOIN users u ON u.uuid = ue.user_uuid
-			WHERE LOWER(ue.email) = LOWER($1) AND u.uuid != $2 AND u.deleted_at IS NULL
-			LIMIT 1`, email, userCtx.UserUUID).Scan(&otherUserUUID, &otherUsername)
-
-		if err == nil && otherUserUUID != "" {
-			mergeTicket, err := SignMergeTicket(userCtx.UserUUID, otherUserUUID, email, time.Now().Add(15*time.Minute))
-			if err != nil {
-				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign merge ticket: %w", err))
-			}
-
-			var buildCount int
-			_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false`, otherUserUUID).Scan(&buildCount)
-
-			var buildNames []string
-			rows, err := s.db.Query(ctx, `SELECT name FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false ORDER BY name ASC LIMIT 10`, otherUserUUID)
-			if err == nil {
-				defer rows.Close()
-				for rows.Next() {
-					var bName string
-					if err := rows.Scan(&bName); err == nil {
-						buildNames = append(buildNames, bName)
-					}
-				}
-			}
-
-			var otherEmails []string
-			mailRows, err := s.db.Query(ctx, `SELECT email FROM user_emails WHERE user_uuid = $1 ORDER BY email ASC`, otherUserUUID)
-			if err == nil {
-				defer mailRows.Close()
-				for mailRows.Next() {
-					var em string
-					if err := mailRows.Scan(&em); err == nil && em != "" {
-						otherEmails = append(otherEmails, em)
-					}
-				}
-			}
-			if email != "" && !slices.Contains(otherEmails, email) {
-				otherEmails = append(otherEmails, email)
-			}
-
-			var oauthProviders []string
-			oaRows, err := s.db.Query(ctx, `SELECT provider FROM oauth_accounts WHERE user_uuid = $1 ORDER BY provider ASC`, otherUserUUID)
-			if err == nil {
-				defer oaRows.Close()
-				for oaRows.Next() {
-					var prov string
-					if err := oaRows.Scan(&prov); err == nil {
-						oauthProviders = append(oauthProviders, prov)
-					}
-				}
-			}
-
-			return connect.NewResponse(&pb.VerifyEmailOtpResponse{
-				Success:             true,
-				Purpose:             pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
-				Email:               &email,
-				MergeRequired:       true,
-				OtherUserUsername:   otherUsername,
-				OtherBuildCount:     int32(buildCount),
-				OtherBuildNames:     buildNames,
-				OtherEmails:         otherEmails,
-				OtherOauthProviders: oauthProviders,
-				MergeTicket:         &mergeTicket,
-				Message:             fmt.Sprintf("This email belongs to account @%s (%d builds). Merging required to transfer data.", otherUsername, buildCount),
-			}), nil
-		}
-
-		newUUID := NewUUIDv7()
-		_, err = s.db.Exec(ctx, `
-			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
-			VALUES ($1, $2, $3, false, true, NOW())
-			ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false, verified_via_otp = true`,
-			newUUID, userCtx.UserUUID, email)
+		verifyResp, err := s.completeAddEmailVerification(ctx, userCtx.UserUUID, email)
 		if err != nil {
-			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to add email: %w", err))
+			return nil, err
 		}
-
-		return connect.NewResponse(&pb.VerifyEmailOtpResponse{
-			Success:       true,
-			Purpose:       pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
-			Email:         &email,
-			MergeRequired: false,
-			Message:       "Email successfully added to your account",
-		}), nil
+		return connect.NewResponse(verifyResp), nil
 
 	case pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_EXPORT_DATA:
 		if userCtx == nil {
@@ -731,6 +647,100 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 		}
 		return res, nil
 	}
+}
+
+func (s *AuthService) completeAddEmailVerification(ctx context.Context, userUUID, email string) (*pb.VerifyEmailOtpResponse, error) {
+	if userUUID == "" {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+	var otherUserUUID, otherUsername string
+	err := s.db.QueryRow(ctx, `
+		SELECT u.uuid, u.id
+		FROM user_emails ue
+		JOIN users u ON u.uuid = ue.user_uuid
+		WHERE LOWER(ue.email) = LOWER($1) AND u.uuid != $2 AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
+		LIMIT 1`, email, userUUID).Scan(&otherUserUUID, &otherUsername)
+
+	if err == nil && otherUserUUID != "" {
+		mergeTicket, err := SignMergeTicket(userUUID, otherUserUUID, email, time.Now().Add(15*time.Minute))
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign merge ticket: %w", err))
+		}
+
+		var buildCount int
+		_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false`, otherUserUUID).Scan(&buildCount)
+
+		var buildNames []string
+		rows, err := s.db.Query(ctx, `SELECT name FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false ORDER BY name ASC LIMIT 10`, otherUserUUID)
+		if err == nil {
+			defer rows.Close()
+			for rows.Next() {
+				var bName string
+				if err := rows.Scan(&bName); err == nil {
+					buildNames = append(buildNames, bName)
+				}
+			}
+		}
+
+		var otherEmails []string
+		mailRows, err := s.db.Query(ctx, `SELECT email FROM user_emails WHERE user_uuid = $1 ORDER BY email ASC`, otherUserUUID)
+		if err == nil {
+			defer mailRows.Close()
+			for mailRows.Next() {
+				var em string
+				if err := mailRows.Scan(&em); err == nil && em != "" {
+					otherEmails = append(otherEmails, em)
+				}
+			}
+		}
+		if email != "" && !slices.Contains(otherEmails, email) {
+			otherEmails = append(otherEmails, email)
+		}
+
+		var oauthProviders []string
+		oaRows, err := s.db.Query(ctx, `SELECT provider FROM oauth_accounts WHERE user_uuid = $1 ORDER BY provider ASC`, otherUserUUID)
+		if err == nil {
+			defer oaRows.Close()
+			for oaRows.Next() {
+				var prov string
+				if err := oaRows.Scan(&prov); err == nil {
+					oauthProviders = append(oauthProviders, prov)
+				}
+			}
+		}
+
+		return &pb.VerifyEmailOtpResponse{
+			Success:             true,
+			Purpose:             pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
+			Email:               &email,
+			MergeRequired:       true,
+			OtherUserUsername:   otherUsername,
+			OtherBuildCount:     int32(buildCount),
+			OtherBuildNames:     buildNames,
+			OtherEmails:         otherEmails,
+			OtherOauthProviders: oauthProviders,
+			MergeTicket:         &mergeTicket,
+			Message:             fmt.Sprintf("This email belongs to account @%s (%d builds). Merging required to transfer data.", otherUsername, buildCount),
+		}, nil
+	}
+
+	newUUID := NewUUIDv7()
+	_, err = s.db.Exec(ctx, `
+		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
+		VALUES ($1, $2, $3, false, true, NOW())
+		ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false, verified_via_otp = true`,
+		newUUID, userUUID, email)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to add email: %w", err))
+	}
+
+	return &pb.VerifyEmailOtpResponse{
+		Success:       true,
+		Purpose:       pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
+		Email:         &email,
+		MergeRequired: false,
+		Message:       "Email successfully added to your account",
+	}, nil
 }
 
 func (s *AuthService) VerifyMagicLink(ctx context.Context, req *connect.Request[pb.VerifyMagicLinkRequest]) (*connect.Response[pb.VerifyEmailOtpResponse], error) {
@@ -999,22 +1009,9 @@ func (s *AuthService) GetLoginChallengeStatus(ctx context.Context, req *connect.
 			}), nil
 
 		case "add_email":
-			newUUID := NewUUIDv7()
-			_, err = s.db.Exec(ctx, `
-				INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
-				VALUES ($1, $2, $3, false, true, NOW())
-				ON CONFLICT (email) DO UPDATE SET user_uuid = $2, is_primary = false, verified_via_otp = true`,
-				newUUID, userUUID, email)
+			verifyResp, err := s.completeAddEmailVerification(ctx, userUUID, email)
 			if err != nil {
-				return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to add email: %w", err))
-			}
-
-			verifyResp := &pb.VerifyEmailOtpResponse{
-				Success:       true,
-				Purpose:       pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_ADD_EMAIL,
-				Email:         &email,
-				MergeRequired: false,
-				Message:       "Email successfully added to your account",
+				return nil, err
 			}
 			return connect.NewResponse(&pb.GetLoginChallengeStatusResponse{
 				Status:         pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_APPROVED,
@@ -1128,14 +1125,23 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 	}
 	email := claims.Email
 
+	checkEmails := []string{strings.ToLower(email)}
+	for _, ve := range claims.VerifiedEmails {
+		veNorm := strings.ToLower(strings.TrimSpace(ve))
+		if veNorm != "" && !slices.Contains(checkEmails, veNorm) {
+			checkEmails = append(checkEmails, veNorm)
+		}
+	}
+
 	var isEmailSuspended bool
 	_ = s.db.QueryRow(ctx, `
 		SELECT EXISTS (
-			SELECT 1 FROM banned_emails
-			WHERE LOWER(email) = LOWER($1)
-			  AND revoked_at IS NULL
-			  AND (expires_at IS NULL OR expires_at > NOW())
-		)`, email).Scan(&isEmailSuspended)
+			SELECT 1 FROM banned_emails be
+			JOIN bans b ON b.uuid = be.ban_uuid
+			WHERE LOWER(be.email) = ANY($1)
+			  AND b.revoked_at IS NULL
+			  AND (b.expires_at IS NULL OR b.expires_at > NOW())
+		)`, checkEmails).Scan(&isEmailSuspended)
 	if isEmailSuspended {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("this email address is suspended from creating a new account"))
 	}
@@ -1882,6 +1888,15 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 		}
 	}
 
+	if activeBan, err := getActiveBanForUser(ctx, s.db, otherUserUUID); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	} else if activeBan != nil {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot merge a suspended account"))
+	}
+
+	var currentUsername string
+	_ = s.db.QueryRow(ctx, `SELECT id FROM users WHERE uuid = $1`, userCtx.UserUUID).Scan(&currentUsername)
+
 	var otherUsername, otherEmail string
 	err := s.db.QueryRow(ctx, `
 		SELECT u.id, COALESCE(ue.email, '')
@@ -1903,12 +1918,13 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 	var buildCount int
 	_ = tx.QueryRow(ctx, `SELECT COUNT(*) FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false`, otherUserUUID).Scan(&buildCount)
 
-	// 2. Reassign builds and components to current user
+	// 2. Reassign builds and components to current user (updating author_or_manufacturer on builds)
 	_, err = tx.Exec(ctx, `
 		UPDATE entities
-		SET user_uuid = $1
+		SET user_uuid = $1,
+		    author_or_manufacturer = CASE WHEN collection = 'builds' AND $3 != '' THEN $3 ELSE author_or_manufacturer END
 		WHERE user_uuid = $2`,
-		userCtx.UserUUID, otherUserUUID)
+		userCtx.UserUUID, otherUserUUID, currentUsername)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to transfer builds: %w", err))
 	}
@@ -1985,16 +2001,98 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 		VALUES ($1, $2, $3, NOW(), NOW())`,
 		histUUID, userCtx.UserUUID, otherUsername)
 
-	// 7. Revoke other user's active sessions
+	// 7. Reassign blobs and unlink old user avatar blob links
+	_ = blob.UnlinkEntityBlobs(ctx, tx, "user_avatar", otherUserUUID)
+	_, _ = tx.Exec(ctx, `UPDATE blobs SET user_uuid = $1 WHERE user_uuid = $2`, userCtx.UserUUID, otherUserUUID)
+
+	// 8. Reassign collections (merge duplicate system collections first)
+	_, _ = tx.Exec(ctx, `
+		INSERT INTO collection_items (uuid, collection_uuid, entity_uuid, created_at)
+		SELECT gen_random_uuid(), c_dest.uuid, ci.entity_uuid, ci.created_at
+		FROM collection_items ci
+		JOIN collections c_src ON ci.collection_uuid = c_src.uuid
+		JOIN collections c_dest ON c_dest.user_uuid = $1 AND c_dest.is_system_collection = true AND c_dest.name = c_src.name
+		WHERE c_src.user_uuid = $2 AND c_src.is_system_collection = true
+		ON CONFLICT (collection_uuid, entity_uuid) DO NOTHING`,
+		userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `
+		DELETE FROM collections
+		WHERE user_uuid = $2 AND is_system_collection = true
+		  AND EXISTS (
+		      SELECT 1 FROM collections c2
+		      WHERE c2.user_uuid = $1 AND c2.is_system_collection = true AND c2.name = collections.name
+		  )`,
+		userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `UPDATE collections SET user_uuid = $1 WHERE user_uuid = $2`, userCtx.UserUUID, otherUserUUID)
+
+	// 9. Reassign Q&A, comments, reviews, and votes
+	_, _ = tx.Exec(ctx, `UPDATE questions SET user_uuid = $1 WHERE user_uuid = $2`, userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `UPDATE question_comments SET user_uuid = $1 WHERE user_uuid = $2`, userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `
+		UPDATE question_votes qv
+		SET user_uuid = $1
+		WHERE user_uuid = $2
+		  AND NOT EXISTS (
+		      SELECT 1 FROM question_votes qv2
+		      WHERE qv2.user_uuid = $1 AND qv2.question_uuid = qv.question_uuid
+		  )`, userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `DELETE FROM question_votes WHERE user_uuid = $1`, otherUserUUID)
+
+	_, _ = tx.Exec(ctx, `UPDATE answers SET user_uuid = $1 WHERE user_uuid = $2`, userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `UPDATE answer_comments SET user_uuid = $1 WHERE user_uuid = $2`, userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `
+		UPDATE answer_votes av
+		SET user_uuid = $1
+		WHERE user_uuid = $2
+		  AND NOT EXISTS (
+		      SELECT 1 FROM answer_votes av2
+		      WHERE av2.user_uuid = $1 AND av2.answer_uuid = av.answer_uuid
+		  )`, userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `DELETE FROM answer_votes WHERE user_uuid = $1`, otherUserUUID)
+
+	_, _ = tx.Exec(ctx, `
+		UPDATE reviews r
+		SET user_uuid = $1
+		WHERE user_uuid = $2
+		  AND NOT EXISTS (
+		      SELECT 1 FROM reviews r2
+		      WHERE r2.user_uuid = $1 AND r2.entity_uuid = r.entity_uuid
+		  )`, userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `DELETE FROM reviews WHERE user_uuid = $1`, otherUserUUID)
+	_, _ = tx.Exec(ctx, `UPDATE review_comments SET user_uuid = $1 WHERE user_uuid = $2`, userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `
+		UPDATE review_votes rv
+		SET user_uuid = $1
+		WHERE user_uuid = $2
+		  AND NOT EXISTS (
+		      SELECT 1 FROM review_votes rv2
+		      WHERE rv2.user_uuid = $1 AND rv2.review_uuid = rv.review_uuid
+		  )`, userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `DELETE FROM review_votes WHERE user_uuid = $1`, otherUserUUID)
+
+	// 10. Clean up reputation and bans references
+	_, _ = tx.Exec(ctx, `DELETE FROM user_reputations WHERE user_uuid = $1`, otherUserUUID)
+	_, _ = tx.Exec(ctx, `UPDATE bans SET user_uuid = $1 WHERE user_uuid = $2`, userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `UPDATE bans SET banned_by_user_uuid = $1 WHERE banned_by_user_uuid = $2`, userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `UPDATE bans SET revoked_by_user_uuid = $1 WHERE revoked_by_user_uuid = $2`, userCtx.UserUUID, otherUserUUID)
+
+	// 11. Revoke other user's active sessions
 	_, _ = tx.Exec(ctx, `DELETE FROM refresh_tokens WHERE user_uuid = $1`, otherUserUUID)
 
-	// 8. Delete email_otps requested by the other user (prevents fk_email_otps_requested_by_user_uuid violation)
+	// 12. Delete email_otps requested by the other user (prevents fk_email_otps_requested_by_user_uuid violation)
 	_, _ = tx.Exec(ctx, `DELETE FROM email_otps WHERE requested_by_user_uuid = $1`, otherUserUUID)
 
-	// 9. Delete other user's profile
+	// 13. Backfill current user's profile from other user's profile if empty, then delete other user's profile
+	_, _ = tx.Exec(ctx, `
+		UPDATE user_profiles up_dest
+		SET avatar_url = CASE WHEN up_dest.avatar_url = '' THEN up_src.avatar_url ELSE up_dest.avatar_url END,
+		    bio = CASE WHEN up_dest.bio = '' THEN up_src.bio ELSE up_dest.bio END
+		FROM user_profiles up_src
+		WHERE up_dest.user_uuid = $1 AND up_src.user_uuid = $2`,
+		userCtx.UserUUID, otherUserUUID)
 	_, _ = tx.Exec(ctx, `DELETE FROM user_profiles WHERE user_uuid = $1`, otherUserUUID)
 
-	// 10. Delete other user record from users table
+	// 14. Delete other user record from users table
 	_, err = tx.Exec(ctx, `DELETE FROM users WHERE uuid = $1`, otherUserUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to finalize merge: %w", err))
@@ -2348,7 +2446,7 @@ func (s *AuthService) StartOAuth(ctx context.Context, req *connect.Request[pb.St
 		otpUUID := NewUUIDv7()
 		expiresAt := time.Now().Add(10 * time.Minute)
 		_, err := s.db.Exec(ctx, `
-			INSERT INTO email_otps (uuid, email, otp_code_hash, purpose, status, challenge_id_hash, expires_at, created_at)
+			INSERT INTO email_otps (uuid, email, code_hash, purpose, status, challenge_id_hash, expires_at, created_at)
 			VALUES ($1, 'cli_oauth@quadsmith.internal', '', 'cli_oauth', 'pending', $2, $3, NOW())`,
 			otpUUID, challengeIDHash, expiresAt)
 		if err != nil {
@@ -2449,21 +2547,50 @@ func (s *AuthService) completeOAuthAddEmail(
 ) (*connect.Response[pb.CompleteOAuthResponse], error) {
 	requesterUserUUID := stateClaims.RequesterUserUUID
 	userCtx := UserContextFromContext(ctx)
-	if userCtx != nil && userCtx.IsBanned {
-		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("account is suspended"))
-	}
-	if requesterUserUUID == "" && userCtx != nil {
-		requesterUserUUID = userCtx.UserUUID
+	if userCtx != nil {
+		if userCtx.IsBanned {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("account is suspended"))
+		}
+		if requesterUserUUID != "" && userCtx.UserUUID != requesterUserUUID {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("oauth state was issued to a different user session"))
+		}
+		if requesterUserUUID == "" {
+			requesterUserUUID = userCtx.UserUUID
+		}
 	}
 	if requesterUserUUID == "" {
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required to link oauth provider"))
 	}
+	if userCtx == nil {
+		if activeBan, err := getActiveBanForUser(ctx, s.db, requesterUserUUID); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		} else if activeBan != nil {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("account is suspended"))
+		}
+	}
 
-	// 1. Check if oauth provider account is already linked to another user
+	// Check if any of the OAuth emails are banned
+	var isEmailSuspended bool
+	_ = s.db.QueryRow(ctx, `
+		SELECT EXISTS (
+			SELECT 1 FROM banned_emails be
+			JOIN bans b ON b.uuid = be.ban_uuid
+			WHERE LOWER(be.email) = ANY($1)
+			  AND b.revoked_at IS NULL
+			  AND (b.expires_at IS NULL OR b.expires_at > NOW())
+		)`, identity.VerifiedEmails).Scan(&isEmailSuspended)
+	if isEmailSuspended {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("this email address is suspended and cannot be linked"))
+	}
+
+	// 1. Check if oauth provider account is already linked to another active user
 	var otherOAuthUserUUID string
 	err := s.db.QueryRow(ctx, `
-		SELECT user_uuid FROM oauth_accounts
-		WHERE LOWER(provider) = $1 AND provider_account_id = $2`,
+		SELECT oa.user_uuid
+		FROM oauth_accounts oa
+		JOIN users u ON u.uuid = oa.user_uuid
+		WHERE LOWER(oa.provider) = $1 AND oa.provider_account_id = $2
+		  AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())`,
 		strings.ToLower(identity.Provider), identity.ProviderAccountID).Scan(&otherOAuthUserUUID)
 	if err == nil && otherOAuthUserUUID != requesterUserUUID {
 		return s.buildOAuthMergeResponse(ctx, provider, purpose, identity, requesterUserUUID, otherOAuthUserUUID)
@@ -2493,6 +2620,15 @@ func (s *AuthService) completeOAuthAddEmail(
 		}
 	}
 
+	// Backfill avatar URL if empty
+	if identity.AvatarURL != "" {
+		_, _ = s.db.Exec(ctx, `
+			UPDATE user_profiles
+			SET avatar_url = $1, updated_at = NOW()
+			WHERE user_uuid = $2 AND (avatar_url IS NULL OR avatar_url = '')`,
+			identity.AvatarURL, requesterUserUUID)
+	}
+
 	return connect.NewResponse(&pb.CompleteOAuthResponse{
 		Success:            true,
 		Message:            "OAuth provider connected successfully",
@@ -2517,8 +2653,11 @@ func (s *AuthService) completeOAuthLogin(
 
 	var directOAuthUserUUID string
 	err := s.db.QueryRow(ctx, `
-		SELECT user_uuid FROM oauth_accounts
-		WHERE LOWER(provider) = $1 AND provider_account_id = $2`,
+		SELECT oa.user_uuid
+		FROM oauth_accounts oa
+		JOIN users u ON u.uuid = oa.user_uuid
+		WHERE LOWER(oa.provider) = $1 AND oa.provider_account_id = $2
+		  AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())`,
 		strings.ToLower(identity.Provider), identity.ProviderAccountID).Scan(&directOAuthUserUUID)
 	if err == nil && directOAuthUserUUID != "" {
 		matchedUUIDs = append(matchedUUIDs, directOAuthUserUUID)
@@ -2545,11 +2684,12 @@ func (s *AuthService) completeOAuthLogin(
 		var isEmailSuspended bool
 		_ = s.db.QueryRow(ctx, `
 			SELECT EXISTS (
-				SELECT 1 FROM banned_emails
-				WHERE LOWER(email) = LOWER($1)
-				  AND revoked_at IS NULL
-				  AND (expires_at IS NULL OR expires_at > NOW())
-			)`, identity.PrimaryEmail).Scan(&isEmailSuspended)
+				SELECT 1 FROM banned_emails be
+				JOIN bans b ON b.uuid = be.ban_uuid
+				WHERE LOWER(be.email) = ANY($1)
+				  AND b.revoked_at IS NULL
+				  AND (b.expires_at IS NULL OR b.expires_at > NOW())
+			)`, identity.VerifiedEmails).Scan(&isEmailSuspended)
 		if isEmailSuspended {
 			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("this email address is suspended from creating a new account"))
 		}
@@ -2576,9 +2716,6 @@ func (s *AuthService) completeOAuthLogin(
 
 	// Case B: Exactly 1 (or > 1) matched user -> Log in as primaryUserUUID
 	primaryUserUUID := matchedUUIDs[0]
-
-	// Resurrect if soft-deleted within 30 days
-	_, _ = s.db.Exec(ctx, `UPDATE users SET deleted_at = NULL WHERE uuid = $1 AND deleted_at IS NOT NULL`, primaryUserUUID)
 
 	// Link oauth account and all verified emails (LinkOAuthAccount skips emails owned by another user)
 	_ = s.LinkOAuthAccount(ctx, primaryUserUUID, identity.Provider, identity.ProviderAccountID, identity.PrimaryEmail)
@@ -3394,9 +3531,11 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, userAgent, cl
 	var userUUID, username, role string
 	var lastRenamedAt, deletedAt, createdAt, updatedAt *time.Time
 
-	// 1. Try finding user via user_emails
+	// 1. Try finding user via user_emails (resolving their primary email for session claims)
 	err := s.db.QueryRow(ctx, `
-		SELECT u.uuid, u.id, ue.email, u.role, u.last_renamed_at, u.deleted_at, u.created_at, u.updated_at
+		SELECT u.uuid, u.id,
+		       COALESCE((SELECT ue2.email FROM user_emails ue2 WHERE ue2.user_uuid = u.uuid AND ue2.is_primary = true LIMIT 1), ue.email),
+		       u.role, u.last_renamed_at, u.deleted_at, u.created_at, u.updated_at
 		FROM user_emails ue
 		JOIN users u ON u.uuid = ue.user_uuid
 		WHERE LOWER(ue.email) = LOWER($1) AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
@@ -3457,14 +3596,6 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, userAgent, cl
 	} else if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	} else {
-		// Ensure user_emails has this email
-		emailUUID := NewUUIDv7()
-		_, _ = s.db.Exec(ctx, `
-			INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
-			VALUES ($1, $2, $3, true, true, NOW())
-			ON CONFLICT (email) DO NOTHING`,
-			emailUUID, userUUID, email)
-
 		user.Uuid = userUUID
 		user.Id = username
 		user.Role = role
@@ -3517,7 +3648,7 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, userAgent, cl
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save session: %w", err))
 	}
 
-	accessToken, err := SignAccessToken(userUUID, username, email, role, sessionUUID)
+	accessToken, err := SignAccessToken(userUUID, username, user.Email, role, sessionUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign access token: %w", err))
 	}

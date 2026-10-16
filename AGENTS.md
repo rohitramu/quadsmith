@@ -152,7 +152,7 @@ corroboration checks.
       with the proposal explanation directly under it (using diagrams, tables,
       images, UI screenshots, UI concept images, artifacts, or code snippets
       with path references as appropriate), and nested collapsible
-      `<details><summary><a id="custom-anchor-text" ><strong>Alternatives considered</strong></a></summary> ... </details>`
+      `<details><summary><strong>Alternatives considered</strong></summary> ... </details>`
       containing 1 sub-heading per alternative
       (`##### <a id="custom-anchor-text" >Alternative Name</a>`), each with an
       unbulleted ~2 sentence summary explaining the alternative, an unbulleted
@@ -161,7 +161,7 @@ corroboration checks.
       a bulleted list of cons compared to the proposal.
     - **4. Alternatives considered (optional)**: High-level conceptual
       alternatives inside a collapsible
-      `<details><summary><a id="4-alternatives-considered" ><strong>4. Alternatives considered</strong></a></summary> ... </details>`
+      `<details><summary><strong>Alternatives considered</strong></summary> ... </details>`
       block, containing 1 sub-heading per alternative
       (`### <a id="custom-anchor-text" >Alternative Name</a>`), each with an
       unbulleted ~2 sentence summary explaining the alternative, an unbulleted

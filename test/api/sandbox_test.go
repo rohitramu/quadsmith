@@ -1624,7 +1624,7 @@ func TestOAuthIntegration(t *testing.T) {
 		t.Fatalf("expected orphaned Discord secondary email to be pruned leaving 2 emails, got %d", len(listResAfterUnlink.Msg.Emails))
 	}
 
-	// 7. Seed a second account and test OAuth-triggered MergeAccount preserving OAuth provenance
+	// 7. Seed a second account with collections and questions, and test OAuth-triggered MergeAccount preserving OAuth provenance and FK tables
 	otherUserUUID := "018f0000-0000-7000-8000-0000000000f1"
 	_, err = pool.Exec(ctx, `
 		INSERT INTO users (uuid, id, role, created_at, updated_at)
@@ -1637,6 +1637,18 @@ func TestOAuthIntegration(t *testing.T) {
 		VALUES ('018f0000-0000-7000-8000-0000000000f2', $1, 'other.oauth@example.com', true, true, NOW())`, otherUserUUID)
 	if err != nil {
 		t.Fatalf("failed to seed other.oauth@example.com: %v", err)
+	}
+	_, err = pool.Exec(ctx, `
+		INSERT INTO collections (uuid, id, user_uuid, name, description, is_system_collection, created_at, updated_at)
+		VALUES ('018f0000-0000-7000-8000-0000000000f3', 'other_favorites', $1, 'Favorites', 'System favorites', true, NOW(), NOW())`, otherUserUUID)
+	if err != nil {
+		t.Fatalf("failed to seed collection for otherUserUUID: %v", err)
+	}
+	_, err = pool.Exec(ctx, `
+		INSERT INTO user_reputations (uuid, user_uuid, score, updated_at)
+		VALUES ('018f0000-0000-7000-8000-0000000000f4', $1, 42, NOW())`, otherUserUUID)
+	if err != nil {
+		t.Fatalf("failed to seed user_reputations for otherUserUUID: %v", err)
 	}
 
 	startGoogleReq := connect.NewRequest(&pb.StartOAuthRequest{
@@ -1692,5 +1704,42 @@ func TestOAuthIntegration(t *testing.T) {
 	}
 	if !foundMergedEmail {
 		t.Errorf("expected other.oauth@example.com to be present on account after merge")
+	}
+
+	// 8. Test CLI OAuth Login flow (OAUTH_PURPOSE_CLI_LOGIN -> CompleteOAuth -> GetLoginChallengeStatus)
+	startCliRes, err := authClient.StartOAuth(ctx, connect.NewRequest(&pb.StartOAuthRequest{
+		Provider:     pb.OAuthProvider_OAUTH_PROVIDER_GITHUB,
+		Purpose:      pb.OAuthPurpose_OAUTH_PURPOSE_CLI_LOGIN,
+		RedirectPath: "/login",
+	}))
+	if err != nil {
+		t.Fatalf("StartOAuth CLI_LOGIN failed: %v", err)
+	}
+	if startCliRes.Msg.GetChallengeId() == "" {
+		t.Fatalf("expected non-empty challenge_id from StartOAuth CLI_LOGIN")
+	}
+
+	compCliRes, err := authClient.CompleteOAuth(ctx, connect.NewRequest(&pb.CompleteOAuthRequest{
+		Code:  "mock_github_default",
+		State: startCliRes.Msg.State,
+	}))
+	if err != nil || !compCliRes.Msg.Success {
+		t.Fatalf("CompleteOAuth CLI_LOGIN failed: %v", err)
+	}
+
+	cliStatusRes, err := authClient.GetLoginChallengeStatus(ctx, connect.NewRequest(&pb.GetLoginChallengeStatusRequest{
+		ChallengeId: startCliRes.Msg.GetChallengeId(),
+	}))
+	if err != nil {
+		t.Fatalf("GetLoginChallengeStatus for CLI_LOGIN failed: %v", err)
+	}
+	if cliStatusRes.Msg.Status != pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_APPROVED {
+		t.Fatalf("expected CLI login challenge status APPROVED, got %v", cliStatusRes.Msg.Status)
+	}
+	if cliStatusRes.Msg.GetAuthResponse() == nil || cliStatusRes.Msg.GetAuthResponse().GetAccessToken() == "" {
+		t.Fatalf("expected valid AuthResponse with AccessToken from CLI login challenge")
+	}
+	if cliStatusRes.Msg.GetAuthResponse().GetUser().GetEmail() != "pilot.github@example.com" {
+		t.Errorf("expected primary email pilot.github@example.com on CLI session user, got %s", cliStatusRes.Msg.GetAuthResponse().GetUser().GetEmail())
 	}
 }
