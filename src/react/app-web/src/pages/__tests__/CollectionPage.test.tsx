@@ -67,7 +67,7 @@ describe("CollectionPage Component", () => {
     expect(await screen.findByRole("button", { name: /sort descending/i })).toBeInTheDocument();
   });
 
-  it("opens column selector and allows toggling visible columns", async () => {
+  it("opens property selector and allows toggling visible properties", async () => {
     const { user } = renderWithProviders(
       <Routes>
         <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
@@ -79,15 +79,15 @@ describe("CollectionPage Component", () => {
       expect(screen.getByText("ECO II 2207")).toBeInTheDocument();
     });
 
-    // Find and click the Columns dropdown button
-    const columnsButton = screen.getByRole("button", { name: /columns \(/i });
-    await user.click(columnsButton);
+    // Find and click the Properties dropdown button
+    const propertiesButton = screen.getByRole("button", { name: /properties \(/i });
+    await user.click(propertiesButton);
 
     // Popover should be open
     expect(screen.getByText(/visible \(drag or arrows\)/i)).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Reset to Default" })).toBeInTheDocument();
 
-    // Find checkbox for Stator Size column and uncheck it to hide
+    // Find checkbox for Stator Size property and uncheck it to hide
     const checkboxes = screen.getAllByRole("checkbox");
     expect(checkboxes.length).toBeGreaterThan(0);
   });
@@ -138,8 +138,8 @@ describe("CollectionPage Component", () => {
     ).toBeInTheDocument();
   });
 
-  it("filters out internal-only products by default and shows them when toggled", async () => {
-    const { user } = renderWithProviders(
+  it("filters out internal-only products by default and does not render the show internal checkbox", async () => {
+    renderWithProviders(
       <Routes>
         <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
       </Routes>,
@@ -154,26 +154,8 @@ describe("CollectionPage Component", () => {
     // Internal FC should be filtered out by default
     expect(screen.queryByText("Integrated FC AIO")).not.toBeInTheDocument();
 
-    // The 'Show internal' toggle should be present and unchecked
-    const showInternalCheckbox = screen.getByRole("checkbox", { name: /show internal/i });
-    expect(showInternalCheckbox).toBeInTheDocument();
-    expect(showInternalCheckbox).not.toBeChecked();
-
-    // Check the box to show internal components
-    await user.click(showInternalCheckbox);
-
-    // Both should now be visible
-    await waitFor(() => {
-      expect(screen.getByText("Integrated FC AIO")).toBeInTheDocument();
-    });
-    expect(screen.getByText("F405 V4 FC")).toBeInTheDocument();
-
-    // Uncheck to filter them out again
-    await user.click(showInternalCheckbox);
-    await waitFor(() => {
-      expect(screen.queryByText("Integrated FC AIO")).not.toBeInTheDocument();
-    });
-    expect(screen.getByText("F405 V4 FC")).toBeInTheDocument();
+    // The 'Show internal' toggle should not be present
+    expect(screen.queryByRole("checkbox", { name: /show internal/i })).not.toBeInTheDocument();
   });
 
   it("shows internal products when filtered explicitly with is_internal_only in smart filter", async () => {
@@ -278,7 +260,7 @@ describe("CollectionPage Component", () => {
     expect(screen.queryByText("Stator Size")).not.toBeInTheDocument();
   });
 
-  it("updates URL columns parameter when modifying column selection and removes it on Reset to Default", async () => {
+  it("updates URL properties parameter when modifying property selection and removes it on Reset to Default", async () => {
     const { user } = renderWithProviders(
       <Routes>
         <Route
@@ -301,16 +283,16 @@ describe("CollectionPage Component", () => {
     const locationSearch = screen.getByTestId("location-search");
     expect(locationSearch.textContent).toBe("");
 
-    // Open ColumnSelector
-    const columnsButton = screen.getByRole("button", { name: /columns \(/i });
-    await user.click(columnsButton);
+    // Open PropertySelector
+    const propertiesButton = screen.getByRole("button", { name: /properties \(/i });
+    await user.click(propertiesButton);
 
-    // Hide Stator Size column by clicking its checkbox
-    const statorCheckbox = screen.getAllByRole("checkbox")[2]; // In visible columns
+    // Hide Stator Size property by clicking its checkbox
+    const statorCheckbox = screen.getAllByRole("checkbox")[2]; // In visible properties
     await user.click(statorCheckbox);
 
     await waitFor(() => {
-      expect(locationSearch.textContent).toContain("columns=");
+      expect(locationSearch.textContent).toContain("properties=");
     });
 
     // Reset to Default
@@ -318,7 +300,7 @@ describe("CollectionPage Component", () => {
     await user.click(resetButton);
 
     await waitFor(() => {
-      expect(locationSearch.textContent).not.toContain("columns=");
+      expect(locationSearch.textContent).not.toContain("properties=");
     });
   });
 

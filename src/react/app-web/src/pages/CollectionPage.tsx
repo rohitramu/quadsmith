@@ -5,7 +5,7 @@ import { frontend as frontendOpt } from "@quadsmith/shared/gen/quadsmith/common/
 import {
   ArrowUp,
   ArrowDown,
-  Columns3,
+  SlidersHorizontal,
   GripVertical,
   ChevronUp,
   ChevronDown,
@@ -31,15 +31,15 @@ import { useDocumentMeta } from "@quadsmith/shared";
 import { ComponentFormModal } from "../components/ComponentFormModal";
 import { StyledSelect } from "../components/StyledSelect";
 
-function ColumnSelector({
-  allColumns,
-  selectedColumnIds,
-  defaultColumnIds,
+function PropertySelector({
+  allProperties,
+  selectedPropertyIds,
+  defaultPropertyIds,
   onChange,
 }: {
-  allColumns: ColumnConfig[];
-  selectedColumnIds: string[];
-  defaultColumnIds: string[];
+  allProperties: ColumnConfig[];
+  selectedPropertyIds: string[];
+  defaultPropertyIds: string[];
   onChange: (selectedIds: string[]) => void;
 }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -68,42 +68,42 @@ function ColumnSelector({
     };
   }, [isOpen]);
 
-  const columnMap = useMemo(() => {
-    return new Map(allColumns.map((col) => [col.id, col]));
-  }, [allColumns]);
+  const propertyMap = useMemo(() => {
+    return new Map(allProperties.map((prop) => [prop.id, prop]));
+  }, [allProperties]);
 
-  // Active/Visible columns in their current order
-  const visibleColumns = useMemo(() => {
-    return selectedColumnIds
-      .map((id) => columnMap.get(id))
-      .filter((col): col is ColumnConfig => !!col);
-  }, [selectedColumnIds, columnMap]);
+  // Active/Visible properties in their current order
+  const visibleProperties = useMemo(() => {
+    return selectedPropertyIds
+      .map((id) => propertyMap.get(id))
+      .filter((prop): prop is ColumnConfig => !!prop);
+  }, [selectedPropertyIds, propertyMap]);
 
-  // Hidden columns
-  const hiddenColumns = useMemo(() => {
-    return allColumns.filter((col) => !selectedColumnIds.includes(col.id));
-  }, [allColumns, selectedColumnIds]);
+  // Hidden properties
+  const hiddenProperties = useMemo(() => {
+    return allProperties.filter((prop) => !selectedPropertyIds.includes(prop.id));
+  }, [allProperties, selectedPropertyIds]);
 
-  const moveColumn = (index: number, direction: -1 | 1) => {
+  const moveProperty = (index: number, direction: -1 | 1) => {
     const targetIndex = index + direction;
-    if (targetIndex < 0 || targetIndex >= selectedColumnIds.length) return;
-    const next = [...selectedColumnIds];
+    if (targetIndex < 0 || targetIndex >= selectedPropertyIds.length) return;
+    const next = [...selectedPropertyIds];
     const [moved] = next.splice(index, 1);
     next.splice(targetIndex, 0, moved);
     onChange(next);
   };
 
-  const hideColumn = (id: string) => {
-    if (selectedColumnIds.length <= 1) return; // Keep at least one column visible
-    onChange(selectedColumnIds.filter((colId) => colId !== id));
+  const hideProperty = (id: string) => {
+    if (selectedPropertyIds.length <= 1) return; // Keep at least one property visible
+    onChange(selectedPropertyIds.filter((propId) => propId !== id));
   };
 
-  const showColumn = (id: string) => {
-    onChange([...selectedColumnIds, id]);
+  const showProperty = (id: string) => {
+    onChange([...selectedPropertyIds, id]);
   };
 
   const resetToDefault = () => {
-    onChange(defaultColumnIds);
+    onChange(defaultPropertyIds);
   };
 
   return (
@@ -112,18 +112,20 @@ function ColumnSelector({
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-xs cursor-pointer"
-        title="Customize and reorder visible columns"
+        title="Customize and reorder visible properties"
       >
-        <Columns3 size={14} />
-        <span>Columns ({selectedColumnIds.length})</span>
+        <SlidersHorizontal size={14} />
+        <span>Properties ({selectedPropertyIds.length})</span>
       </button>
 
       {isOpen && (
         <div className="absolute right-0 top-full mt-1.5 w-72 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-xl z-50 p-2.5 text-xs">
           <div className="flex items-center justify-between px-2 py-1.5 border-b border-zinc-100 dark:border-zinc-800 mb-2">
             <span className="font-semibold text-zinc-800 dark:text-zinc-200">
-              Columns{" "}
-              <span className="font-normal text-zinc-400">({visibleColumns.length} visible)</span>
+              Properties{" "}
+              <span className="font-normal text-zinc-400">
+                ({visibleProperties.length} visible)
+              </span>
             </span>
             <button
               type="button"
@@ -134,15 +136,15 @@ function ColumnSelector({
             </button>
           </div>
 
-          {/* Visible Columns (Reorderable) */}
+          {/* Visible Properties (Reorderable) */}
           <div className="mb-2">
             <div className="px-2 py-0.5 text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider flex justify-between items-center">
               <span>Visible (drag or arrows)</span>
             </div>
             <div className="space-y-1 mt-1 max-h-56 overflow-y-auto">
-              {visibleColumns.map((col, idx) => (
+              {visibleProperties.map((prop, idx) => (
                 <div
-                  key={col.id}
+                  key={prop.id}
                   draggable
                   onDragStart={(e) => {
                     e.dataTransfer.effectAllowed = "move";
@@ -162,14 +164,14 @@ function ColumnSelector({
                     setDragOverIndex(null);
                     const hiddenId = e.dataTransfer.getData("text/quadsmith-hidden-id");
                     if (hiddenId) {
-                      const next = [...selectedColumnIds];
+                      const next = [...selectedPropertyIds];
                       next.splice(idx, 0, hiddenId);
                       onChange(next);
                       setDraggedIndex(null);
                       return;
                     }
                     if (draggedIndex !== null && draggedIndex !== idx) {
-                      const next = [...selectedColumnIds];
+                      const next = [...selectedPropertyIds];
                       const [moved] = next.splice(draggedIndex, 1);
                       next.splice(idx, 0, moved);
                       onChange(next);
@@ -200,23 +202,23 @@ function ColumnSelector({
                   <input
                     type="checkbox"
                     checked={true}
-                    disabled={visibleColumns.length <= 1}
-                    onChange={() => hideColumn(col.id)}
+                    disabled={visibleProperties.length <= 1}
+                    onChange={() => hideProperty(prop.id)}
                     className="rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 cursor-pointer disabled:opacity-40"
                     title={
-                      visibleColumns.length <= 1
-                        ? "At least one column must be visible"
-                        : "Hide column"
+                      visibleProperties.length <= 1
+                        ? "At least one property must be visible"
+                        : "Hide property"
                     }
                   />
                   <span className="font-medium text-zinc-800 dark:text-zinc-200 flex-1 truncate select-none">
-                    {col.title}
+                    {prop.title}
                   </span>
                   <div className="flex items-center gap-0.5 shrink-0">
                     <button
                       type="button"
                       disabled={idx === 0}
-                      onClick={() => moveColumn(idx, -1)}
+                      onClick={() => moveProperty(idx, -1)}
                       className="p-0.5 rounded text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 disabled:opacity-20 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed"
                       title="Move up / left"
                     >
@@ -224,8 +226,8 @@ function ColumnSelector({
                     </button>
                     <button
                       type="button"
-                      disabled={idx === visibleColumns.length - 1}
-                      onClick={() => moveColumn(idx, 1)}
+                      disabled={idx === visibleProperties.length - 1}
+                      onClick={() => moveProperty(idx, 1)}
                       className="p-0.5 rounded text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 disabled:opacity-20 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed"
                       title="Move down / right"
                     >
@@ -237,33 +239,33 @@ function ColumnSelector({
             </div>
           </div>
 
-          {/* Hidden Columns */}
-          {hiddenColumns.length > 0 && (
+          {/* Hidden Properties */}
+          {hiddenProperties.length > 0 && (
             <div className="border-t border-zinc-100 dark:border-zinc-800 pt-2">
               <div className="px-2 py-0.5 text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
-                <span>Hidden Columns (click to show)</span>
+                <span>Hidden Properties (click to show)</span>
               </div>
               <div className="space-y-0.5 mt-1 max-h-36 overflow-y-auto">
-                {hiddenColumns.map((col) => (
+                {hiddenProperties.map((prop) => (
                   <div
-                    key={col.id}
+                    key={prop.id}
                     draggable
                     onDragStart={(e) => {
                       e.dataTransfer.effectAllowed = "copyMove";
-                      e.dataTransfer.setData("text/quadsmith-hidden-id", col.id);
+                      e.dataTransfer.setData("text/quadsmith-hidden-id", prop.id);
                     }}
-                    onClick={() => showColumn(col.id)}
+                    onClick={() => showProperty(prop.id)}
                     className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-zinc-50 dark:hover:bg-zinc-800/60 cursor-pointer select-none text-zinc-500 dark:text-zinc-400 group"
                     title="Click to add or drag into visible list"
                   >
                     <input
                       type="checkbox"
                       checked={false}
-                      onChange={() => showColumn(col.id)}
+                      onChange={() => showProperty(prop.id)}
                       className="rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 cursor-pointer"
                     />
                     <span className="flex-1 truncate group-hover:text-zinc-700 dark:group-hover:text-zinc-300">
-                      {col.title}
+                      {prop.title}
                     </span>
                     <Plus
                       size={12}
@@ -303,11 +305,11 @@ export function CollectionTableView({
   }, [collection]);
 
   const selectedColumnIds = useMemo(() => {
-    const colsParam = searchParams.get("columns");
-    if (!colsParam) {
+    const propsParam = searchParams.get("properties") || searchParams.get("columns");
+    if (!propsParam) {
       return protoDefaultCols;
     }
-    const parsed = colsParam
+    const parsed = propsParam
       .split(",")
       .map((c) => c.trim())
       .filter((c) => c in collection.columns);
@@ -315,9 +317,6 @@ export function CollectionTableView({
   }, [searchParams, protoDefaultCols, collection.columns]);
 
   const filterQuery = searchParams.get("filter") || "";
-
-  const showInternal =
-    searchParams.get("show_internal") === "true" || searchParams.get("internal") === "true";
 
   const { sortField, sortDir } = useMemo(() => {
     const sortParam = searchParams.get("sort");
@@ -367,7 +366,7 @@ export function CollectionTableView({
   );
 
   const effectiveFilter = useMemo(() => {
-    if (!hasInternalField || showInternal) {
+    if (!hasInternalField) {
       return filterQuery;
     }
     if (filterQuery && filterQuery.includes("is_internal_only")) {
@@ -377,7 +376,7 @@ export function CollectionTableView({
       return "is_internal_only == false";
     }
     return `(${filterQuery}) && is_internal_only == false`;
-  }, [hasInternalField, showInternal, filterQuery]);
+  }, [hasInternalField, filterQuery]);
 
   const activeColumns = useMemo(() => {
     return selectedColumnIds
@@ -401,26 +400,17 @@ export function CollectionTableView({
     setSearchParams(nextParams);
   };
 
-  const handleColumnsChange = (newCols: string[]) => {
+  const handlePropertiesChange = (newProps: string[]) => {
     const nextParams = new URLSearchParams(searchParams);
     const isDefault =
-      newCols.length === protoDefaultCols.length &&
-      newCols.every((c, i) => c === protoDefaultCols[i]);
+      newProps.length === protoDefaultCols.length &&
+      newProps.every((c, i) => c === protoDefaultCols[i]);
     if (isDefault) {
+      nextParams.delete("properties");
       nextParams.delete("columns");
     } else {
-      nextParams.set("columns", newCols.join(","));
-    }
-    setSearchParams(nextParams);
-  };
-
-  const handleShowInternalChange = (checked: boolean) => {
-    const nextParams = new URLSearchParams(searchParams);
-    if (checked) {
-      nextParams.set("show_internal", "true");
-    } else {
-      nextParams.delete("show_internal");
-      nextParams.delete("internal");
+      nextParams.set("properties", newProps.join(","));
+      nextParams.delete("columns");
     }
     setSearchParams(nextParams);
   };
@@ -474,10 +464,9 @@ export function CollectionTableView({
   };
 
   const items = useMemo(() => {
-    const includeInternal =
-      showInternal || Boolean(filterQuery && filterQuery.includes("is_internal_only"));
+    const includeInternal = Boolean(filterQuery && filterQuery.includes("is_internal_only"));
     return collection.getDataList(data, includeInternal);
-  }, [collection, data, showInternal, filterQuery]);
+  }, [collection, data, filterQuery]);
   const count = items.length;
   const startItem = count > 0 ? pageIndex * pageSize + 1 : 0;
   const endItem = pageIndex * pageSize + count;
@@ -613,23 +602,11 @@ export function CollectionTableView({
                 </button>
               </div>
 
-              {hasInternalField && (
-                <label className="flex items-center gap-1.5 cursor-pointer text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200">
-                  <input
-                    type="checkbox"
-                    checked={showInternal}
-                    onChange={(e) => handleShowInternalChange(e.target.checked)}
-                    className="rounded border-zinc-300 dark:border-zinc-700 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
-                  />
-                  <span>Show internal</span>
-                </label>
-              )}
-
-              <ColumnSelector
-                allColumns={Object.values(collection.columns)}
-                selectedColumnIds={selectedColumnIds}
-                defaultColumnIds={protoDefaultCols}
-                onChange={handleColumnsChange}
+              <PropertySelector
+                allProperties={Object.values(collection.columns)}
+                selectedPropertyIds={selectedColumnIds}
+                defaultPropertyIds={protoDefaultCols}
+                onChange={handlePropertiesChange}
               />
             </div>
           </div>

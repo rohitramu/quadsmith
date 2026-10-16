@@ -314,18 +314,18 @@ a **Unified Responsive Spec Card Grid**
 (`grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4`), and the creation
 action button label is streamlined to `+ Add New`:
 
-| Element               | Mobile (`320px–639px` / `< sm`)                                                                       | Tablet (`640px–1023px`)              | Desktop (`>= 1024px` / `lg+`)                                                        |
-| :-------------------- | :---------------------------------------------------------------------------------------------------- | :----------------------------------- | :----------------------------------------------------------------------------------- |
-| **Action Button**     | `+ Add New` compact emerald button                                                                    | `+ Add New` button                   | `+ Add New` button                                                                   |
-| **Card Grid Columns** | 1 column (`grid-cols-1 gap-3`)                                                                        | 1–2 columns (`sm:grid-cols-2 gap-4`) | 2–3 columns (`lg:grid-cols-2 2xl:grid-cols-3 gap-4`)                                 |
-| **Card Header**       | Component thumbnail/icon, `Name` link, `Manufacturer` subtitle, and category / `Community` badge      | Same unified card header             | Same unified card header with direct Details link (no redundant hover overlay)       |
-| **Card Spec Pills**   | 2-column grid of labeled key-value spec pills (`Weight`, `KV`, `Stator`, etc.) for all active columns | 2-column labeled spec pill grid      | 2-column labeled spec pill grid that wraps cleanly as more `Columns (N)` are enabled |
-| **Catalog Toolbar**   | Custom-styled **Sort Dropdown** (`Sort: Field ↑↓`) + `Columns (N)` popover + `Show internal` toggle   | Same unified toolbar                 | Same unified toolbar                                                                 |
+| Element               | Mobile (`320px–639px` / `< sm`)                                                                          | Tablet (`640px–1023px`)              | Desktop (`>= 1024px` / `lg+`)                                                           |
+| :-------------------- | :------------------------------------------------------------------------------------------------------- | :----------------------------------- | :-------------------------------------------------------------------------------------- |
+| **Action Button**     | `+ Add New` compact emerald button                                                                       | `+ Add New` button                   | `+ Add New` button                                                                      |
+| **Card Grid Columns** | 1 column (`grid-cols-1 gap-3`)                                                                           | 1–2 columns (`sm:grid-cols-2 gap-4`) | 2–3 columns (`lg:grid-cols-2 2xl:grid-cols-3 gap-4`)                                    |
+| **Card Header**       | Component thumbnail/icon, `Name` link, `Manufacturer` subtitle, and category / `Community` badge         | Same unified card header             | Same unified card header with direct Details link (no redundant hover overlay)          |
+| **Card Spec Pills**   | 2-column grid of labeled key-value spec pills (`Weight`, `KV`, `Stator`, etc.) for all active properties | 2-column labeled spec pill grid      | 2-column labeled spec pill grid that wraps cleanly as more `Properties (N)` are enabled |
+| **Catalog Toolbar**   | Custom-styled **Sort Dropdown** (`Sort: Field ↑↓`) + `Properties (N)` popover                            | Same unified toolbar                 | Same unified toolbar                                                                    |
 
-- **Zero Horizontal Overflow With Dynamic Columns**: When a user enables extra
-  specification columns in the `Columns (N)` popover, additional labeled
-  key-value pills flow naturally inside each component card's spec grid rather
-  than forcing horizontal scrollbars.
+- **Zero Horizontal Overflow With Dynamic Properties**: When a user enables
+  extra specification properties in the `Properties (N)` popover, additional
+  labeled key-value pills flow naturally inside each component card's spec grid
+  rather than forcing horizontal scrollbars.
 - **Unified Sorting**: Because sorting is driven by an explicit custom-styled
   toolbar dropdown (field selection + ascending/descending toggle) rather than
   table header cells, sorting is equally discoverable on mobile, tablet, and

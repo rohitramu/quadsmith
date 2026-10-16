@@ -74,16 +74,21 @@ export function UserBadge({
   }[size];
 
   let borderClasses = `border-[2px] ${palette.borderClass} dark:border-[1px]`;
-  const shadowClasses =
-    "shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)] dark:shadow-[0_0_6px_2px_rgba(161,161,170,0.65)]";
   const fontClasses = "font-bold";
   let badgeTitle: string | undefined = undefined;
+  let shadowClasses = "";
 
   if (isAuthor) {
     borderClasses = "border-[3px] border-[#ca8a04] dark:border-[1px] dark:border-[#fbbf24]";
     badgeTitle = "Author";
-  } else if (isSelfBadge) {
-    badgeTitle = "You";
+  }
+
+  if (isSelfBadge) {
+    shadowClasses =
+      "shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)] dark:shadow-[0_0_6px_2px_rgba(161,161,170,0.65)]";
+    if (!isAuthor) {
+      badgeTitle = "You";
+    }
   }
 
   const badgeContent = (

@@ -19,7 +19,7 @@ describe("UserBadge Component", () => {
     expect(badge).toBeInTheDocument();
     expect(badge).toHaveTextContent("@alex");
     expect(badge.className).toContain(palette.borderClass.split(" ")[0]);
-    expect(badge.className).toContain("shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)]");
+    expect(badge.className).not.toContain("shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)]");
     expect(badge.className).toContain("font-bold");
     expect(badge.className).toContain(palette.bgClass.split(" ")[0]);
   });
@@ -45,7 +45,7 @@ describe("UserBadge Component", () => {
     expect(container.firstChild).toHaveClass("text-zinc-500");
   });
 
-  it("renders with gold border and Author title when isAuthor is true", () => {
+  it("renders with gold border and Author title when isAuthor is true (no glow when not self)", () => {
     renderWithProviders(
       <Routes>
         <Route
@@ -60,7 +60,7 @@ describe("UserBadge Component", () => {
     expect(badge).toHaveAttribute("title", "Author");
     expect(badge.className).toContain("border-[#ca8a04]");
     expect(badge.className).toContain("dark:border-[#fbbf24]");
-    expect(badge.className).toContain("shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)]");
+    expect(badge.className).not.toContain("shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)]");
   });
 
   it("renders with signature border, halo shadow, bold font, and You title when isSelf is true", () => {
