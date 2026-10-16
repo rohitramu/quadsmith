@@ -769,13 +769,21 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           throw new ConnectError("invalid or expired magic link", Code.InvalidArgument);
         }
         const isExport = req.token?.includes("export");
+        const isAddEmail = req.token?.includes("add-email");
+        const isDelete = req.token?.includes("delete");
         return {
           email: "alex@fpv.build",
           ipAddress: "192.168.1.42",
           locationHint: "Local Network",
           deviceHint: "Chrome on macOS",
           status: LoginChallengeStatus.PENDING,
-          purpose: isExport ? EmailOtpPurpose.EXPORT_DATA : EmailOtpPurpose.LOGIN,
+          purpose: isExport
+            ? EmailOtpPurpose.EXPORT_DATA
+            : isAddEmail
+              ? EmailOtpPurpose.ADD_EMAIL
+              : isDelete
+                ? EmailOtpPurpose.DELETE_ACCOUNT
+                : EmailOtpPurpose.LOGIN,
         };
       },
       approveLoginChallenge: (req) => {

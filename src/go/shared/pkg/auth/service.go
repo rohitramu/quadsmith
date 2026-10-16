@@ -296,7 +296,7 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 	}
 
 	baseURL := s.getBaseURL(req)
-	magicLinkURL := fmt.Sprintf("%s/login/verify?token=%s", baseURL, magicToken)
+	magicLinkURL := fmt.Sprintf("%s/login?token=%s", baseURL, magicToken)
 	var emailAction string
 	var successMessage string
 

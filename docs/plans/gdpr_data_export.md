@@ -208,8 +208,8 @@ Verification step using the universal challenge architecture in
      6-digit OTP (`code_hash`) and challenge ID (`challenge_id_hash`).
    - Sends a transactional email via `email.Sender` containing:
      - The **6-digit numeric verification code** (valid for 3 minutes).
-     - The **1-click magic link** (`/login/verify?token=<raw_token>`, valid for
-       15 minutes).
+     - The **1-click magic link** (`/login?token=<raw_token>`, valid for 15
+       minutes).
 2. **Challenge Verification & Cross-Device Approval Flow**:
    - **Device A Direct Code Entry**: Accepts the 6-digit `code` (bound to
      `challenge_id`) via `AuthService.VerifyEmailOtp` with
@@ -217,8 +217,9 @@ Verification step using the universal challenge architecture in
      OTP code guesses, returning structured `OtpVerificationError` details
      (`remaining_attempts`, `is_exhausted`, `cooldown_seconds`) on mismatch.
    - **Device B Magic Link Approval**: When the user opens the magic link
-     (`/login/verify?token=<token>`), the standalone approval screen displays
-     the "Approve Data Export" challenge details. Upon user confirmation,
+     (`/login?token=<token>`), the unified `<ChallengeApprovalScreen />`
+     displays the "Approve Data Export" challenge details regardless of whether
+     an active session is present. Upon user confirmation,
      `AuthService.ApproveLoginChallenge` marks the challenge approved and
      returns `VerifyEmailOtpResponse` containing the signed export token,
      triggering a direct `.zip` download on Device B.

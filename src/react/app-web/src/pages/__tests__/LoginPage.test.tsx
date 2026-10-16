@@ -571,6 +571,18 @@ describe("LoginPage Component", () => {
     expect(screen.getByText(/you can safely close this window now/i)).toBeInTheDocument();
   });
 
+  it("renders Device B approval screen even when already authenticated without redirecting away", async () => {
+    renderApp("/login?token=valid-magic-token", {
+      transportOptions: { isAuthenticated: true },
+    });
+
+    expect(
+      await screen.findByRole("heading", { name: /approve login request/i }),
+    ).toBeInTheDocument();
+    expect(await screen.findByText("alex@fpv.build")).toBeInTheDocument();
+    expect(screen.getByTestId("approve-login-btn")).toBeInTheDocument();
+  });
+
   it("renders Device B approval screen when token is present and denies request", async () => {
     const { user } = renderApp("/login?token=valid-magic-token", {
       transportOptions: { isAuthenticated: false },

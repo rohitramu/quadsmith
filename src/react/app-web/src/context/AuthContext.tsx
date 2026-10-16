@@ -407,17 +407,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   };
 
-  const getLoginChallengeDetails = async (token: string) => {
-    return await authClient.getLoginChallengeDetails({ token });
-  };
+  const getLoginChallengeDetails = useCallback(
+    async (token: string) => {
+      return await authClient.getLoginChallengeDetails({ token });
+    },
+    [authClient],
+  );
 
-  const approveLoginChallenge = async (token: string) => {
-    return await authClient.approveLoginChallenge({ token });
-  };
+  const approveLoginChallenge = useCallback(
+    async (token: string) => {
+      return await authClient.approveLoginChallenge({ token });
+    },
+    [authClient],
+  );
 
-  const denyLoginChallenge = async (token: string) => {
-    return await authClient.denyLoginChallenge({ token });
-  };
+  const denyLoginChallenge = useCallback(
+    async (token: string) => {
+      return await authClient.denyLoginChallenge({ token });
+    },
+    [authClient],
+  );
 
   const getLoginChallengeStatus = async (explicitChallengeId?: string | null) => {
     const cid =
