@@ -659,6 +659,11 @@ cards:
     [`SocialToolbar.tsx`](../../src/react/app-web/src/components/SocialToolbar.tsx)
     action bars (`Like`, `Save to Collection`, `Share`, `Build Similar`) to wrap
     cleanly with `flex-wrap gap-2`.
+  - Ensure component cards in the Hardware BOM section of
+    [`BuildProfilePage.tsx`](../../src/react/app-web/src/pages/BuildProfilePage.tsx)
+    present a clean category header with the uppercase collection label alone,
+    omitting redundant small collection icon and short-name badges next to the
+    label.
   - Ensure battery selectors across
     [`BatteryCombobox.tsx`](../../src/react/app-web/src/components/BatteryCombobox.tsx)
     and

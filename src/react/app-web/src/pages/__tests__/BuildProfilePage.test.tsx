@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { screen, waitFor, fireEvent } from "@testing-library/react";
+import { screen, waitFor, fireEvent, within } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
 import { BuildProfilePage } from "../BuildProfilePage";
 import { Route, Routes } from "react-router-dom";
@@ -102,6 +102,13 @@ describe("BuildProfilePage Component", () => {
     expect(await screen.findByText("Lollipop 4 RHCP")).toBeInTheDocument();
     // GPS
     expect(await screen.findByText("M8Q-5883 GPS & Compass")).toBeInTheDocument();
+
+    // Verify component cards show the collection label without redundant small collection badge/icon
+    const hardwareSection = screen
+      .getByRole("heading", { level: 2, name: /^hardware$/i })
+      .closest("section");
+    expect(hardwareSection).toBeInTheDocument();
+    expect(within(hardwareSection!).queryByTestId("collection-badge")).not.toBeInTheDocument();
   });
 
   it("renders runtime battery selector with compatible batteries and allows modal exploration", async () => {

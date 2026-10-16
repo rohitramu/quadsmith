@@ -100,11 +100,8 @@ function BomComponentCard({
           {icon ?? <CollectionIcon collection={collectionId} size={18} />}
         </div>
         <div className="min-w-0">
-          <div className="flex items-center gap-1.5 mb-0.5">
-            <span className="text-xs uppercase font-semibold text-zinc-400 dark:text-zinc-500">
-              {label}
-            </span>
-            <CollectionBadge collection={collectionId} size="xs" />
+          <div className="text-xs uppercase font-semibold text-zinc-400 dark:text-zinc-500 mb-0.5">
+            {label}
           </div>
           {isLoading ? (
             <div className="text-sm text-zinc-400 animate-pulse">Loading {label}...</div>
