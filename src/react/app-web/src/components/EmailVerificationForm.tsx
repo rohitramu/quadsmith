@@ -8,10 +8,13 @@ import {
   LoginChallengeStatus,
   OtpVerificationErrorSchema,
   VerifyEmailOtpResponseSchema,
+  OAuthProvider,
+  OAuthPurpose,
 } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import type { VerifyEmailOtpResponse } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
+import { GoogleIcon, GitHubIcon, DiscordIcon } from "./OAuthIcons";
 
 export interface EmailVerificationFormProps {
   /** The purpose of this OTP flow (LOGIN, ADD_EMAIL, EXPORT_DATA, DELETE_ACCOUNT) */
@@ -87,7 +90,24 @@ export function EmailVerificationForm({
   showResendButton = false,
   extraContent,
 }: EmailVerificationFormProps) {
-  const { sendEmailOtp, verifyEmailOtp, getLoginChallengeStatus } = useAuth();
+  const { sendEmailOtp, verifyEmailOtp, getLoginChallengeStatus, startOAuth } = useAuth();
+
+  const handleOAuthLink = async (provider: OAuthProvider) => {
+    try {
+      const res = await startOAuth(
+        provider,
+        OAuthPurpose.OAUTH_PURPOSE_ADD_EMAIL,
+        "/settings/account",
+      );
+      window.location.href = res.authorizationUrl;
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErrorMsg(err.message);
+      } else {
+        setErrorMsg("Failed to start OAuth linking.");
+      }
+    }
+  };
 
   const [step, setStep] = useState<"email" | "otp">(requireEmailInput ? "email" : "otp");
   const [email, setEmail] = useState(initialEmail);
@@ -555,6 +575,45 @@ export function EmailVerificationForm({
             )}
           </button>
         </form>
+
+        {purpose === EmailOtpPurpose.ADD_EMAIL && (
+          <div className="space-y-4 pt-1">
+            <div className="relative flex items-center py-1">
+              <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800"></div>
+              <span className="flex-shrink mx-3 text-[10px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+                Or link via OAuth
+              </span>
+              <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800"></div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2">
+              <button
+                type="button"
+                onClick={() => handleOAuthLink(OAuthProvider.OAUTH_PROVIDER_GOOGLE)}
+                className="py-2 px-3 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer text-zinc-800 dark:text-zinc-200 shadow-2xs transition"
+              >
+                <GoogleIcon className="w-3.5 h-3.5 shrink-0" />
+                <span>Google</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleOAuthLink(OAuthProvider.OAUTH_PROVIDER_GITHUB)}
+                className="py-2 px-3 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer text-zinc-800 dark:text-zinc-200 shadow-2xs transition"
+              >
+                <GitHubIcon className="w-3.5 h-3.5 shrink-0 fill-current" />
+                <span>GitHub</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => handleOAuthLink(OAuthProvider.OAUTH_PROVIDER_DISCORD)}
+                className="py-2 px-3 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-700 text-xs font-semibold flex items-center justify-center gap-1.5 cursor-pointer text-zinc-800 dark:text-zinc-200 shadow-2xs transition"
+              >
+                <DiscordIcon className="w-3.5 h-3.5 shrink-0" />
+                <span>Discord</span>
+              </button>
+            </div>
+          </div>
+        )}
 
         {extraContent}
       </div>

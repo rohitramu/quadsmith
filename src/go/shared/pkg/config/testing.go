@@ -89,6 +89,12 @@ func NewTestAPIServerConfig(t testing.TB, opts ...APIServerOption) *config.ApiSe
 					Console: &config.ConsoleEmailConfig{},
 				},
 			},
+			Oauth: &config.AuthOAuthConfig{
+				WebBaseUrl: proto.String("http://localhost:5173"),
+				Mode: &config.AuthOAuthConfig_Mock{
+					Mock: &config.MockOAuthConfig{},
+				},
+			},
 		},
 	}
 

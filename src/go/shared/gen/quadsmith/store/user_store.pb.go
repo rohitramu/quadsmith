@@ -941,7 +941,7 @@ func ListEmailOtps(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 }
 
 func CreateOAuthAccount(ctx context.Context, tx pgx.Tx, m *OAuthAccount) error {
-	query := `INSERT INTO oauth_accounts (uuid, user_uuid, provider, provider_account_id, access_token, refresh_token, token_expires_at, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
+	query := `INSERT INTO oauth_accounts (uuid, user_uuid, provider, provider_account_id, created_at) VALUES ($1, $2, $3, $4, $5)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -952,12 +952,7 @@ func CreateOAuthAccount(ctx context.Context, tx pgx.Tx, m *OAuthAccount) error {
 			return nil
 		}
 		return s
-	}(m.UserUuid), m.Provider, m.ProviderAccountId, m.AccessToken, m.RefreshToken, func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.TokenExpiresAt), func(ts *timestamppb.Timestamp) interface{} {
+	}(m.UserUuid), m.Provider, m.ProviderAccountId, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -967,8 +962,8 @@ func CreateOAuthAccount(ctx context.Context, tx pgx.Tx, m *OAuthAccount) error {
 }
 
 func GetOAuthAccount(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*OAuthAccount, error) {
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "provider": true, "provider_account_id": true, "access_token": true, "refresh_token": true, "token_expires_at": true, "created_at": true}
-	colsStr := "uuid, user_uuid, provider, provider_account_id, access_token, refresh_token, token_expires_at, created_at"
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "provider": true, "provider_account_id": true, "created_at": true}
+	colsStr := "uuid, user_uuid, provider, provider_account_id, created_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -979,7 +974,7 @@ func GetOAuthAccount(ctx context.Context, db *pgxpool.Pool, idOrUuid string, col
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "user_uuid", "provider", "provider_account_id", "access_token", "refresh_token", "token_expires_at", "created_at"}
+		cols = []string{"uuid", "user_uuid", "provider", "provider_account_id", "created_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM oauth_accounts WHERE uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -1001,18 +996,6 @@ func GetOAuthAccount(ctx context.Context, db *pgxpool.Pool, idOrUuid string, col
 			scanArgs[i] = &m.Provider
 		case "provider_account_id":
 			scanArgs[i] = &m.ProviderAccountId
-		case "access_token":
-			scanArgs[i] = &m.AccessToken
-		case "refresh_token":
-			scanArgs[i] = &m.RefreshToken
-		case "token_expires_at":
-			var v *time.Time
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.TokenExpiresAt = timestamppb.New(*v)
-				}
-			})
 		case "created_at":
 			var v *time.Time
 			scanArgs[i] = &v
@@ -1038,18 +1021,13 @@ func GetOAuthAccount(ctx context.Context, db *pgxpool.Pool, idOrUuid string, col
 }
 
 func UpdateOAuthAccount(ctx context.Context, tx pgx.Tx, m *OAuthAccount) error {
-	query := `UPDATE oauth_accounts SET user_uuid = $2, provider = $3, provider_account_id = $4, access_token = $5, refresh_token = $6, token_expires_at = $7, created_at = $8 WHERE uuid = $1`
+	query := `UPDATE oauth_accounts SET user_uuid = $2, provider = $3, provider_account_id = $4, created_at = $5 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.UserUuid), m.Provider, m.ProviderAccountId, m.AccessToken, m.RefreshToken, func(ts *timestamppb.Timestamp) interface{} {
-		if ts == nil {
-			return nil
-		}
-		return ts.AsTime()
-	}(m.TokenExpiresAt), func(ts *timestamppb.Timestamp) interface{} {
+	}(m.UserUuid), m.Provider, m.ProviderAccountId, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -1065,8 +1043,8 @@ func DeleteOAuthAccount(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListOAuthAccounts(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*OAuthAccount, error) {
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "provider": true, "provider_account_id": true, "access_token": true, "refresh_token": true, "token_expires_at": true, "created_at": true}
-	colsStr := "uuid, user_uuid, provider, provider_account_id, access_token, refresh_token, token_expires_at, created_at"
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "provider": true, "provider_account_id": true, "created_at": true}
+	colsStr := "uuid, user_uuid, provider, provider_account_id, created_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -1077,7 +1055,7 @@ func ListOAuthAccounts(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "user_uuid", "provider", "provider_account_id", "access_token", "refresh_token", "token_expires_at", "created_at"}
+		cols = []string{"uuid", "user_uuid", "provider", "provider_account_id", "created_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM oauth_accounts`
 	if whereClause != "" {
@@ -1140,18 +1118,6 @@ func ListOAuthAccounts(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 				scanArgs[i] = &m.Provider
 			case "provider_account_id":
 				scanArgs[i] = &m.ProviderAccountId
-			case "access_token":
-				scanArgs[i] = &m.AccessToken
-			case "refresh_token":
-				scanArgs[i] = &m.RefreshToken
-			case "token_expires_at":
-				var v *time.Time
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.TokenExpiresAt = timestamppb.New(*v)
-					}
-				})
 			case "created_at":
 				var v *time.Time
 				scanArgs[i] = &v

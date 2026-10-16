@@ -783,4 +783,54 @@ describe("LoginPage Component", () => {
     ).toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /download data archive/i })).not.toBeInTheDocument();
   });
+
+  it("renders OAuth continue buttons on step 1 and starts OAuth flow", async () => {
+    const origLocation = window.location;
+    // @ts-expect-error mock window.location
+    delete window.location;
+    window.location = { ...origLocation, href: "" } as any;
+
+    const { user } = renderApp("/login", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    const googleBtn = await screen.findByRole("button", { name: /continue with google/i });
+    const githubBtn = screen.getByRole("button", { name: /continue with github/i });
+    const discordBtn = screen.getByRole("button", { name: /continue with discord/i });
+
+    expect(googleBtn).toBeInTheDocument();
+    expect(githubBtn).toBeInTheDocument();
+    expect(discordBtn).toBeInTheDocument();
+
+    await user.click(googleBtn);
+    await waitFor(() => {
+      expect(window.location.href).toContain("https://mock-oauth-provider.com/auth");
+    });
+
+    (window as any).location = origLocation;
+  });
+
+  it("handles OAuth callback with accountSetupRequired, prefilling avatar and leaving username blank", async () => {
+    renderApp("/login?code=setup&state=mock-state", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    expect(await screen.findByRole("heading", { name: /account setup/i })).toBeInTheDocument();
+    const avatarInput = screen.getByTestId("avatar-url-input") as HTMLInputElement;
+    expect(avatarInput.value).toBe("https://mock.avatar/user.jpg");
+
+    const usernameInput = screen.getByTestId("username-input") as HTMLInputElement;
+    expect(usernameInput.value).toBe("");
+  });
+
+  it("handles OAuth callback with cliLoginApproved and shows CLI approval screen", async () => {
+    renderApp("/login?code=cli&state=mock-state", {
+      transportOptions: { isAuthenticated: false },
+    });
+
+    expect(await screen.findByRole("heading", { name: /cli login approved/i })).toBeInTheDocument();
+    expect(
+      screen.getByText(/you are now signed in to quadsmith cli on your terminal/i),
+    ).toBeInTheDocument();
+  });
 });

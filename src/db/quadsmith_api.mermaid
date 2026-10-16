@@ -87,12 +87,9 @@ erDiagram
 
     oauth_accounts {
         UUID uuid PK
-        UUID user_uuid FK
-        TEXT provider
-        TEXT provider_account_id
-        TEXT access_token
-        TEXT refresh_token
-        TIMESTAMPTZ token_expires_at
+        UUID user_uuid UK,FK
+        TEXT provider UK
+        TEXT provider_account_id UK
         TIMESTAMPTZ created_at
     }
 

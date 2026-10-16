@@ -246,3 +246,121 @@ func TestExportTokenSigningAndVerification(t *testing.T) {
 		t.Fatalf("expected expired export token verification to fail")
 	}
 }
+
+func TestPKCEGeneration(t *testing.T) {
+	verifier, challenge, err := GeneratePKCE()
+	if err != nil {
+		t.Fatalf("GeneratePKCE failed: %v", err)
+	}
+	if len(verifier) < 43 {
+		t.Fatalf("expected verifier length >= 43, got %d", len(verifier))
+	}
+	if len(challenge) == 0 {
+		t.Fatalf("expected non-empty challenge")
+	}
+}
+
+func TestOAuthStateTokenSigningAndVerification(t *testing.T) {
+	provider := "github"
+	purpose := "cli_login"
+	codeVerifier := "some-pkce-verifier-string"
+	redirectURI := "http://localhost:5173/login"
+	requesterUserUUID := NewUUIDv7()
+	challengeIDHash := "hash123"
+
+	state, err := SignOAuthState(provider, purpose, codeVerifier, redirectURI, requesterUserUUID, challengeIDHash)
+	if err != nil {
+		t.Fatalf("SignOAuthState failed: %v", err)
+	}
+
+	claims, err := VerifyOAuthState(state)
+	if err != nil {
+		t.Fatalf("VerifyOAuthState failed: %v", err)
+	}
+	if claims.Provider != provider {
+		t.Errorf("expected provider %s, got %s", provider, claims.Provider)
+	}
+	if claims.Purpose != purpose {
+		t.Errorf("expected purpose %s, got %s", purpose, claims.Purpose)
+	}
+	if claims.CodeVerifier != codeVerifier {
+		t.Errorf("expected code_verifier %s, got %s", codeVerifier, claims.CodeVerifier)
+	}
+	if claims.RedirectURI != redirectURI {
+		t.Errorf("expected redirect_uri %s, got %s", redirectURI, claims.RedirectURI)
+	}
+	if claims.RequesterUserUUID != requesterUserUUID {
+		t.Errorf("expected requesterUserUUID %s, got %s", requesterUserUUID, claims.RequesterUserUUID)
+	}
+	if claims.ChallengeIDHash != challengeIDHash {
+		t.Errorf("expected challengeIDHash %s, got %s", challengeIDHash, claims.ChallengeIDHash)
+	}
+
+	// Tampered state
+	tampered := state[:len(state)-5] + "xxxxx"
+	_, err = VerifyOAuthState(tampered)
+	if err == nil {
+		t.Fatalf("expected tampered oauth state verification to fail")
+	}
+
+	// Expired state
+	expClaims := OAuthStateClaims{
+		Provider:     provider,
+		Purpose:      purpose,
+		CodeVerifier: codeVerifier,
+		RedirectURI:  redirectURI,
+		Exp:          time.Now().Add(-1 * time.Minute).Unix(),
+	}
+	claimsJSON, _ := json.Marshal(expClaims)
+	payload := base64.RawURLEncoding.EncodeToString(claimsJSON)
+	sig := hmacSHA256([]byte(payload), deriveKey("oauth_state"))
+	sigB64 := base64.RawURLEncoding.EncodeToString(sig)
+	expiredState := payload + "." + sigB64
+
+	_, err = VerifyOAuthState(expiredState)
+	if err == nil {
+		t.Fatalf("expected expired oauth state verification to fail")
+	}
+}
+
+func TestOAuthSetupTokenSigningAndVerification(t *testing.T) {
+	primaryEmail := "pilot@example.com"
+	verifiedEmails := []string{"pilot@example.com", "alt@example.com"}
+	provider := "github"
+	providerAccountID := "github_12345"
+	avatarURL := "https://example.com/avatar.png"
+
+	token, err := SignOAuthSetupToken(primaryEmail, verifiedEmails, provider, providerAccountID, avatarURL, "")
+	if err != nil {
+		t.Fatalf("SignOAuthSetupToken failed: %v", err)
+	}
+
+	claims, err := VerifySetupTokenClaims(token)
+	if err != nil {
+		t.Fatalf("VerifySetupTokenClaims failed: %v", err)
+	}
+	if claims.Email != primaryEmail {
+		t.Errorf("expected Email %s, got %s", primaryEmail, claims.Email)
+	}
+	if len(claims.VerifiedEmails) != 2 || claims.VerifiedEmails[1] != "alt@example.com" {
+		t.Errorf("expected VerifiedEmails %v, got %v", verifiedEmails, claims.VerifiedEmails)
+	}
+	if claims.Provider != provider {
+		t.Errorf("expected Provider %s, got %s", provider, claims.Provider)
+	}
+	if claims.ProviderAccountID != providerAccountID {
+		t.Errorf("expected ProviderAccountID %s, got %s", providerAccountID, claims.ProviderAccountID)
+	}
+	if claims.AvatarURL != avatarURL {
+		t.Errorf("expected AvatarURL %s, got %s", avatarURL, claims.AvatarURL)
+	}
+
+	// Test backward-compat VerifySetupToken
+	email, err := VerifySetupToken(token)
+	if err != nil {
+		t.Fatalf("VerifySetupToken failed: %v", err)
+	}
+	if email != primaryEmail {
+		t.Errorf("expected email %s, got %s", primaryEmail, email)
+	}
+}

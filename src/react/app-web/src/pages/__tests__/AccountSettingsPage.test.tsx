@@ -39,7 +39,7 @@ describe("AccountSettingsPage Component", () => {
     expect(saveBtn).toBeDisabled();
   });
 
-  it("renders associated emails with primary and secondary status badges", async () => {
+  it("renders associated emails with primary and secondary status badges and OAuth provenance badges", async () => {
     renderApp("/account");
 
     expect(await screen.findByText("Associated Email Addresses")).toBeInTheDocument();
@@ -52,20 +52,35 @@ describe("AccountSettingsPage Component", () => {
 
     expect(screen.getAllByText("Primary").length).toBeGreaterThan(0);
     expect(screen.queryByText("Secondary")).not.toBeInTheDocument();
+    expect(screen.getByText("Email Verification")).toBeInTheDocument();
+    expect(screen.getByTitle("Unlink Google OAuth")).toBeInTheDocument();
+    expect(screen.getByTitle("Unlink GitHub OAuth")).toBeInTheDocument();
+
+    // Unlinking an OAuth provider calls unlinkOAuth
+    fireEvent.click(screen.getByTitle("Unlink Google OAuth"));
+    await waitFor(() => {
+      expect(screen.getByText(/unlinked oauth provider/i)).toBeInTheDocument();
+    });
+
     expect(screen.getByText("Make Primary")).toBeInTheDocument();
     expect(
       screen.getByRole("button", { name: /remove alex\.secondary@example\.com/i }),
     ).toBeInTheDocument();
   });
 
-  it("allows adding a new email through OTP verification", async () => {
+  it("allows adding a new email through OTP verification or linking via OAuth", async () => {
     renderApp("/account");
 
     const addEmailBtn = await screen.findByRole("button", { name: /add email/i });
     fireEvent.click(addEmailBtn);
 
-    // Modal appears
+    // Modal appears with email form and OAuth link divider
     expect(screen.getByRole("heading", { name: /add email address/i })).toBeInTheDocument();
+    expect(screen.getByText(/or link via oauth/i)).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^google$/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^github$/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^discord$/i })).toBeInTheDocument();
+
     const emailInput = screen.getByPlaceholderText(/alex@quadsmith\.dev/i);
     fireEvent.change(emailInput, { target: { value: "new.pilot@fpv.org" } });
 

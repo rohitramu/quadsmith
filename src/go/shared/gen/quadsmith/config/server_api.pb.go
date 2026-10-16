@@ -102,6 +102,7 @@ type AuthConfig struct {
 	MagicLinkTtl     *durationpb.Duration   `protobuf:"bytes,8,opt,name=magic_link_ttl,json=magicLinkTtl,proto3" json:"magic_link_ttl,omitempty"`
 	EmailCooldown    *durationpb.Duration   `protobuf:"bytes,9,opt,name=email_cooldown,json=emailCooldown,proto3" json:"email_cooldown,omitempty"`
 	Email            *EmailConfig           `protobuf:"bytes,10,opt,name=email,proto3" json:"email,omitempty"`
+	Oauth            *AuthOAuthConfig       `protobuf:"bytes,11,opt,name=oauth,proto3" json:"oauth,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -202,6 +203,13 @@ func (x *AuthConfig) GetEmailCooldown() *durationpb.Duration {
 func (x *AuthConfig) GetEmail() *EmailConfig {
 	if x != nil {
 		return x.Email
+	}
+	return nil
+}
+
+func (x *AuthConfig) GetOauth() *AuthOAuthConfig {
+	if x != nil {
+		return x.Oauth
 	}
 	return nil
 }
@@ -416,6 +424,244 @@ func (x *SmtpConfig) GetRequireTls() bool {
 	return false
 }
 
+type AuthOAuthConfig struct {
+	state      protoimpl.MessageState `protogen:"open.v1"`
+	WebBaseUrl *string                `protobuf:"bytes,1,opt,name=web_base_url,json=webBaseUrl,proto3,oneof" json:"web_base_url,omitempty"`
+	// Types that are valid to be assigned to Mode:
+	//
+	//	*AuthOAuthConfig_Mock
+	//	*AuthOAuthConfig_Providers
+	Mode          isAuthOAuthConfig_Mode `protobuf_oneof:"mode"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuthOAuthConfig) Reset() {
+	*x = AuthOAuthConfig{}
+	mi := &file_quadsmith_config_server_api_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuthOAuthConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthOAuthConfig) ProtoMessage() {}
+
+func (x *AuthOAuthConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_config_server_api_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthOAuthConfig.ProtoReflect.Descriptor instead.
+func (*AuthOAuthConfig) Descriptor() ([]byte, []int) {
+	return file_quadsmith_config_server_api_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *AuthOAuthConfig) GetWebBaseUrl() string {
+	if x != nil && x.WebBaseUrl != nil {
+		return *x.WebBaseUrl
+	}
+	return ""
+}
+
+func (x *AuthOAuthConfig) GetMode() isAuthOAuthConfig_Mode {
+	if x != nil {
+		return x.Mode
+	}
+	return nil
+}
+
+func (x *AuthOAuthConfig) GetMock() *MockOAuthConfig {
+	if x != nil {
+		if x, ok := x.Mode.(*AuthOAuthConfig_Mock); ok {
+			return x.Mock
+		}
+	}
+	return nil
+}
+
+func (x *AuthOAuthConfig) GetProviders() *OAuthProvidersConfig {
+	if x != nil {
+		if x, ok := x.Mode.(*AuthOAuthConfig_Providers); ok {
+			return x.Providers
+		}
+	}
+	return nil
+}
+
+type isAuthOAuthConfig_Mode interface {
+	isAuthOAuthConfig_Mode()
+}
+
+type AuthOAuthConfig_Mock struct {
+	Mock *MockOAuthConfig `protobuf:"bytes,2,opt,name=mock,proto3,oneof"`
+}
+
+type AuthOAuthConfig_Providers struct {
+	Providers *OAuthProvidersConfig `protobuf:"bytes,3,opt,name=providers,proto3,oneof"`
+}
+
+func (*AuthOAuthConfig_Mock) isAuthOAuthConfig_Mode() {}
+
+func (*AuthOAuthConfig_Providers) isAuthOAuthConfig_Mode() {}
+
+type MockOAuthConfig struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *MockOAuthConfig) Reset() {
+	*x = MockOAuthConfig{}
+	mi := &file_quadsmith_config_server_api_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *MockOAuthConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*MockOAuthConfig) ProtoMessage() {}
+
+func (x *MockOAuthConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_config_server_api_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use MockOAuthConfig.ProtoReflect.Descriptor instead.
+func (*MockOAuthConfig) Descriptor() ([]byte, []int) {
+	return file_quadsmith_config_server_api_proto_rawDescGZIP(), []int{6}
+}
+
+type OAuthProvidersConfig struct {
+	state         protoimpl.MessageState    `protogen:"open.v1"`
+	Google        *OAuthProviderCredentials `protobuf:"bytes,1,opt,name=google,proto3" json:"google,omitempty"`
+	Github        *OAuthProviderCredentials `protobuf:"bytes,2,opt,name=github,proto3" json:"github,omitempty"`
+	Discord       *OAuthProviderCredentials `protobuf:"bytes,3,opt,name=discord,proto3" json:"discord,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OAuthProvidersConfig) Reset() {
+	*x = OAuthProvidersConfig{}
+	mi := &file_quadsmith_config_server_api_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OAuthProvidersConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OAuthProvidersConfig) ProtoMessage() {}
+
+func (x *OAuthProvidersConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_config_server_api_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OAuthProvidersConfig.ProtoReflect.Descriptor instead.
+func (*OAuthProvidersConfig) Descriptor() ([]byte, []int) {
+	return file_quadsmith_config_server_api_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *OAuthProvidersConfig) GetGoogle() *OAuthProviderCredentials {
+	if x != nil {
+		return x.Google
+	}
+	return nil
+}
+
+func (x *OAuthProvidersConfig) GetGithub() *OAuthProviderCredentials {
+	if x != nil {
+		return x.Github
+	}
+	return nil
+}
+
+func (x *OAuthProvidersConfig) GetDiscord() *OAuthProviderCredentials {
+	if x != nil {
+		return x.Discord
+	}
+	return nil
+}
+
+type OAuthProviderCredentials struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClientId      *string                `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3,oneof" json:"client_id,omitempty"`
+	ClientSecret  *string                `protobuf:"bytes,2,opt,name=client_secret,json=clientSecret,proto3,oneof" json:"client_secret,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OAuthProviderCredentials) Reset() {
+	*x = OAuthProviderCredentials{}
+	mi := &file_quadsmith_config_server_api_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OAuthProviderCredentials) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OAuthProviderCredentials) ProtoMessage() {}
+
+func (x *OAuthProviderCredentials) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_config_server_api_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OAuthProviderCredentials.ProtoReflect.Descriptor instead.
+func (*OAuthProviderCredentials) Descriptor() ([]byte, []int) {
+	return file_quadsmith_config_server_api_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *OAuthProviderCredentials) GetClientId() string {
+	if x != nil && x.ClientId != nil {
+		return *x.ClientId
+	}
+	return ""
+}
+
+func (x *OAuthProviderCredentials) GetClientSecret() string {
+	if x != nil && x.ClientSecret != nil {
+		return *x.ClientSecret
+	}
+	return ""
+}
+
 var File_quadsmith_config_server_api_proto protoreflect.FileDescriptor
 
 const file_quadsmith_config_server_api_proto_rawDesc = "" +
@@ -426,7 +672,7 @@ const file_quadsmith_config_server_api_proto_rawDesc = "" +
 	"\x06server\x18\x02 \x01(\v2\x1e.quadsmith.config.ServerConfigR\x06server\x12<\n" +
 	"\bdatabase\x18\x03 \x01(\v2 .quadsmith.config.DatabaseConfigR\bdatabase\x120\n" +
 	"\x04auth\x18\x04 \x01(\v2\x1c.quadsmith.config.AuthConfigR\x04authB\x0e\n" +
-	"\f_environment\"\xf0\x04\n" +
+	"\f_environment\"\xa9\x05\n" +
 	"\n" +
 	"AuthConfig\x12\x1b\n" +
 	"\x06secret\x18\x01 \x01(\tH\x00R\x06secret\x88\x01\x01\x12'\n" +
@@ -439,7 +685,8 @@ const file_quadsmith_config_server_api_proto_rawDesc = "" +
 	"\x0emagic_link_ttl\x18\b \x01(\v2\x19.google.protobuf.DurationR\fmagicLinkTtl\x12@\n" +
 	"\x0eemail_cooldown\x18\t \x01(\v2\x19.google.protobuf.DurationR\remailCooldown\x123\n" +
 	"\x05email\x18\n" +
-	" \x01(\v2\x1d.quadsmith.config.EmailConfigR\x05emailB\t\n" +
+	" \x01(\v2\x1d.quadsmith.config.EmailConfigR\x05email\x127\n" +
+	"\x05oauth\x18\v \x01(\v2!.quadsmith.config.AuthOAuthConfigR\x05oauthB\t\n" +
 	"\a_secretB\x10\n" +
 	"\x0e_dev_print_otpB\x11\n" +
 	"\x0f_secure_cookiesB\x15\n" +
@@ -466,7 +713,25 @@ const file_quadsmith_config_server_api_proto_rawDesc = "" +
 	"\t_passwordB\x0f\n" +
 	"\r_from_addressB\v\n" +
 	"\t_reply_toB\x0e\n" +
-	"\f_require_tlsB.Z,quadsmith/shared/gen/quadsmith/config;configb\x06proto3"
+	"\f_require_tls\"\xd2\x01\n" +
+	"\x0fAuthOAuthConfig\x12%\n" +
+	"\fweb_base_url\x18\x01 \x01(\tH\x01R\n" +
+	"webBaseUrl\x88\x01\x01\x127\n" +
+	"\x04mock\x18\x02 \x01(\v2!.quadsmith.config.MockOAuthConfigH\x00R\x04mock\x12F\n" +
+	"\tproviders\x18\x03 \x01(\v2&.quadsmith.config.OAuthProvidersConfigH\x00R\tprovidersB\x06\n" +
+	"\x04modeB\x0f\n" +
+	"\r_web_base_url\"\x11\n" +
+	"\x0fMockOAuthConfig\"\xe4\x01\n" +
+	"\x14OAuthProvidersConfig\x12B\n" +
+	"\x06google\x18\x01 \x01(\v2*.quadsmith.config.OAuthProviderCredentialsR\x06google\x12B\n" +
+	"\x06github\x18\x02 \x01(\v2*.quadsmith.config.OAuthProviderCredentialsR\x06github\x12D\n" +
+	"\adiscord\x18\x03 \x01(\v2*.quadsmith.config.OAuthProviderCredentialsR\adiscord\"\x86\x01\n" +
+	"\x18OAuthProviderCredentials\x12 \n" +
+	"\tclient_id\x18\x01 \x01(\tH\x00R\bclientId\x88\x01\x01\x12(\n" +
+	"\rclient_secret\x18\x02 \x01(\tH\x01R\fclientSecret\x88\x01\x01B\f\n" +
+	"\n" +
+	"_client_idB\x10\n" +
+	"\x0e_client_secretB.Z,quadsmith/shared/gen/quadsmith/config;configb\x06proto3"
 
 var (
 	file_quadsmith_config_server_api_proto_rawDescOnce sync.Once
@@ -480,34 +745,44 @@ func file_quadsmith_config_server_api_proto_rawDescGZIP() []byte {
 	return file_quadsmith_config_server_api_proto_rawDescData
 }
 
-var file_quadsmith_config_server_api_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_quadsmith_config_server_api_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_quadsmith_config_server_api_proto_goTypes = []any{
-	(*ApiServerConfig)(nil),     // 0: quadsmith.config.ApiServerConfig
-	(*AuthConfig)(nil),          // 1: quadsmith.config.AuthConfig
-	(*EmailConfig)(nil),         // 2: quadsmith.config.EmailConfig
-	(*ConsoleEmailConfig)(nil),  // 3: quadsmith.config.ConsoleEmailConfig
-	(*SmtpConfig)(nil),          // 4: quadsmith.config.SmtpConfig
-	(*ServerConfig)(nil),        // 5: quadsmith.config.ServerConfig
-	(*DatabaseConfig)(nil),      // 6: quadsmith.config.DatabaseConfig
-	(*durationpb.Duration)(nil), // 7: google.protobuf.Duration
+	(*ApiServerConfig)(nil),          // 0: quadsmith.config.ApiServerConfig
+	(*AuthConfig)(nil),               // 1: quadsmith.config.AuthConfig
+	(*EmailConfig)(nil),              // 2: quadsmith.config.EmailConfig
+	(*ConsoleEmailConfig)(nil),       // 3: quadsmith.config.ConsoleEmailConfig
+	(*SmtpConfig)(nil),               // 4: quadsmith.config.SmtpConfig
+	(*AuthOAuthConfig)(nil),          // 5: quadsmith.config.AuthOAuthConfig
+	(*MockOAuthConfig)(nil),          // 6: quadsmith.config.MockOAuthConfig
+	(*OAuthProvidersConfig)(nil),     // 7: quadsmith.config.OAuthProvidersConfig
+	(*OAuthProviderCredentials)(nil), // 8: quadsmith.config.OAuthProviderCredentials
+	(*ServerConfig)(nil),             // 9: quadsmith.config.ServerConfig
+	(*DatabaseConfig)(nil),           // 10: quadsmith.config.DatabaseConfig
+	(*durationpb.Duration)(nil),      // 11: google.protobuf.Duration
 }
 var file_quadsmith_config_server_api_proto_depIdxs = []int32{
-	5,  // 0: quadsmith.config.ApiServerConfig.server:type_name -> quadsmith.config.ServerConfig
-	6,  // 1: quadsmith.config.ApiServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
+	9,  // 0: quadsmith.config.ApiServerConfig.server:type_name -> quadsmith.config.ServerConfig
+	10, // 1: quadsmith.config.ApiServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
 	1,  // 2: quadsmith.config.ApiServerConfig.auth:type_name -> quadsmith.config.AuthConfig
-	7,  // 3: quadsmith.config.AuthConfig.access_token_ttl:type_name -> google.protobuf.Duration
-	7,  // 4: quadsmith.config.AuthConfig.refresh_token_ttl:type_name -> google.protobuf.Duration
-	7,  // 5: quadsmith.config.AuthConfig.otp_ttl:type_name -> google.protobuf.Duration
-	7,  // 6: quadsmith.config.AuthConfig.magic_link_ttl:type_name -> google.protobuf.Duration
-	7,  // 7: quadsmith.config.AuthConfig.email_cooldown:type_name -> google.protobuf.Duration
+	11, // 3: quadsmith.config.AuthConfig.access_token_ttl:type_name -> google.protobuf.Duration
+	11, // 4: quadsmith.config.AuthConfig.refresh_token_ttl:type_name -> google.protobuf.Duration
+	11, // 5: quadsmith.config.AuthConfig.otp_ttl:type_name -> google.protobuf.Duration
+	11, // 6: quadsmith.config.AuthConfig.magic_link_ttl:type_name -> google.protobuf.Duration
+	11, // 7: quadsmith.config.AuthConfig.email_cooldown:type_name -> google.protobuf.Duration
 	2,  // 8: quadsmith.config.AuthConfig.email:type_name -> quadsmith.config.EmailConfig
-	3,  // 9: quadsmith.config.EmailConfig.console:type_name -> quadsmith.config.ConsoleEmailConfig
-	4,  // 10: quadsmith.config.EmailConfig.smtp:type_name -> quadsmith.config.SmtpConfig
-	11, // [11:11] is the sub-list for method output_type
-	11, // [11:11] is the sub-list for method input_type
-	11, // [11:11] is the sub-list for extension type_name
-	11, // [11:11] is the sub-list for extension extendee
-	0,  // [0:11] is the sub-list for field type_name
+	5,  // 9: quadsmith.config.AuthConfig.oauth:type_name -> quadsmith.config.AuthOAuthConfig
+	3,  // 10: quadsmith.config.EmailConfig.console:type_name -> quadsmith.config.ConsoleEmailConfig
+	4,  // 11: quadsmith.config.EmailConfig.smtp:type_name -> quadsmith.config.SmtpConfig
+	6,  // 12: quadsmith.config.AuthOAuthConfig.mock:type_name -> quadsmith.config.MockOAuthConfig
+	7,  // 13: quadsmith.config.AuthOAuthConfig.providers:type_name -> quadsmith.config.OAuthProvidersConfig
+	8,  // 14: quadsmith.config.OAuthProvidersConfig.google:type_name -> quadsmith.config.OAuthProviderCredentials
+	8,  // 15: quadsmith.config.OAuthProvidersConfig.github:type_name -> quadsmith.config.OAuthProviderCredentials
+	8,  // 16: quadsmith.config.OAuthProvidersConfig.discord:type_name -> quadsmith.config.OAuthProviderCredentials
+	17, // [17:17] is the sub-list for method output_type
+	17, // [17:17] is the sub-list for method input_type
+	17, // [17:17] is the sub-list for extension type_name
+	17, // [17:17] is the sub-list for extension extendee
+	0,  // [0:17] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_config_server_api_proto_init() }
@@ -523,13 +798,18 @@ func file_quadsmith_config_server_api_proto_init() {
 		(*EmailConfig_Smtp)(nil),
 	}
 	file_quadsmith_config_server_api_proto_msgTypes[4].OneofWrappers = []any{}
+	file_quadsmith_config_server_api_proto_msgTypes[5].OneofWrappers = []any{
+		(*AuthOAuthConfig_Mock)(nil),
+		(*AuthOAuthConfig_Providers)(nil),
+	}
+	file_quadsmith_config_server_api_proto_msgTypes[8].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_config_server_api_proto_rawDesc), len(file_quadsmith_config_server_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   9,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -39,7 +39,7 @@ test.describe("Authentication Flows", () => {
     const emailInput = page.getByRole("textbox", { name: /email/i });
     await emailInput.fill("pilot@example.com");
 
-    const submitBtn = page.getByRole("button", { name: /continue|send|submit/i });
+    const submitBtn = page.getByRole("button", { name: /send verification code/i });
     if (await submitBtn.isVisible()) {
       await submitBtn.click();
     } else {

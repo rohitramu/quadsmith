@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_config_server_api: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiFxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9hcGkucHJvdG8SEHF1YWRzbWl0aC5jb25maWciywEKD0FwaVNlcnZlckNvbmZpZxIYCgtlbnZpcm9ubWVudBgBIAEoCUgAiAEBEi4KBnNlcnZlchgCIAEoCzIeLnF1YWRzbWl0aC5jb25maWcuU2VydmVyQ29uZmlnEjIKCGRhdGFiYXNlGAMgASgLMiAucXVhZHNtaXRoLmNvbmZpZy5EYXRhYmFzZUNvbmZpZxIqCgRhdXRoGAQgASgLMhwucXVhZHNtaXRoLmNvbmZpZy5BdXRoQ29uZmlnQg4KDF9lbnZpcm9ubWVudCLtAwoKQXV0aENvbmZpZxITCgZzZWNyZXQYASABKAlIAIgBARIaCg1kZXZfcHJpbnRfb3RwGAIgASgISAGIAQESGwoOc2VjdXJlX2Nvb2tpZXMYAyABKAhIAogBARIfChJ0cnVzdGVkX3Byb3h5X2hvcHMYBCABKAVIA4gBARIzChBhY2Nlc3NfdG9rZW5fdHRsGAUgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEjQKEXJlZnJlc2hfdG9rZW5fdHRsGAYgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEioKB290cF90dGwYByABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SMQoObWFnaWNfbGlua190dGwYCCABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SMQoOZW1haWxfY29vbGRvd24YCSABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SLAoFZW1haWwYCiABKAsyHS5xdWFkc21pdGguY29uZmlnLkVtYWlsQ29uZmlnQgkKB19zZWNyZXRCEAoOX2Rldl9wcmludF9vdHBCEQoPX3NlY3VyZV9jb29raWVzQhUKE190cnVzdGVkX3Byb3h5X2hvcHMigAEKC0VtYWlsQ29uZmlnEjcKB2NvbnNvbGUYASABKAsyJC5xdWFkc21pdGguY29uZmlnLkNvbnNvbGVFbWFpbENvbmZpZ0gAEiwKBHNtdHAYAiABKAsyHC5xdWFkc21pdGguY29uZmlnLlNtdHBDb25maWdIAEIKCghkZWxpdmVyeSIUChJDb25zb2xlRW1haWxDb25maWcihgIKClNtdHBDb25maWcSEQoEaG9zdBgBIAEoCUgAiAEBEhEKBHBvcnQYAiABKAVIAYgBARIVCgh1c2VybmFtZRgDIAEoCUgCiAEBEhUKCHBhc3N3b3JkGAQgASgJSAOIAQESGQoMZnJvbV9hZGRyZXNzGAUgASgJSASIAQESFQoIcmVwbHlfdG8YBiABKAlIBYgBARIYCgtyZXF1aXJlX3RscxgHIAEoCEgGiAEBQgcKBV9ob3N0QgcKBV9wb3J0QgsKCV91c2VybmFtZUILCglfcGFzc3dvcmRCDwoNX2Zyb21fYWRkcmVzc0ILCglfcmVwbHlfdG9CDgoMX3JlcXVpcmVfdGxzQi5aLHF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9jb25maWc7Y29uZmlnYgZwcm90bzM",
+    "CiFxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9hcGkucHJvdG8SEHF1YWRzbWl0aC5jb25maWciywEKD0FwaVNlcnZlckNvbmZpZxIYCgtlbnZpcm9ubWVudBgBIAEoCUgAiAEBEi4KBnNlcnZlchgCIAEoCzIeLnF1YWRzbWl0aC5jb25maWcuU2VydmVyQ29uZmlnEjIKCGRhdGFiYXNlGAMgASgLMiAucXVhZHNtaXRoLmNvbmZpZy5EYXRhYmFzZUNvbmZpZxIqCgRhdXRoGAQgASgLMhwucXVhZHNtaXRoLmNvbmZpZy5BdXRoQ29uZmlnQg4KDF9lbnZpcm9ubWVudCKfBAoKQXV0aENvbmZpZxITCgZzZWNyZXQYASABKAlIAIgBARIaCg1kZXZfcHJpbnRfb3RwGAIgASgISAGIAQESGwoOc2VjdXJlX2Nvb2tpZXMYAyABKAhIAogBARIfChJ0cnVzdGVkX3Byb3h5X2hvcHMYBCABKAVIA4gBARIzChBhY2Nlc3NfdG9rZW5fdHRsGAUgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEjQKEXJlZnJlc2hfdG9rZW5fdHRsGAYgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uEioKB290cF90dGwYByABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SMQoObWFnaWNfbGlua190dGwYCCABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SMQoOZW1haWxfY29vbGRvd24YCSABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb24SLAoFZW1haWwYCiABKAsyHS5xdWFkc21pdGguY29uZmlnLkVtYWlsQ29uZmlnEjAKBW9hdXRoGAsgASgLMiEucXVhZHNtaXRoLmNvbmZpZy5BdXRoT0F1dGhDb25maWdCCQoHX3NlY3JldEIQCg5fZGV2X3ByaW50X290cEIRCg9fc2VjdXJlX2Nvb2tpZXNCFQoTX3RydXN0ZWRfcHJveHlfaG9wcyKAAQoLRW1haWxDb25maWcSNwoHY29uc29sZRgBIAEoCzIkLnF1YWRzbWl0aC5jb25maWcuQ29uc29sZUVtYWlsQ29uZmlnSAASLAoEc210cBgCIAEoCzIcLnF1YWRzbWl0aC5jb25maWcuU210cENvbmZpZ0gAQgoKCGRlbGl2ZXJ5IhQKEkNvbnNvbGVFbWFpbENvbmZpZyKGAgoKU210cENvbmZpZxIRCgRob3N0GAEgASgJSACIAQESEQoEcG9ydBgCIAEoBUgBiAEBEhUKCHVzZXJuYW1lGAMgASgJSAKIAQESFQoIcGFzc3dvcmQYBCABKAlIA4gBARIZCgxmcm9tX2FkZHJlc3MYBSABKAlIBIgBARIVCghyZXBseV90bxgGIAEoCUgFiAEBEhgKC3JlcXVpcmVfdGxzGAcgASgISAaIAQFCBwoFX2hvc3RCBwoFX3BvcnRCCwoJX3VzZXJuYW1lQgsKCV9wYXNzd29yZEIPCg1fZnJvbV9hZGRyZXNzQgsKCV9yZXBseV90b0IOCgxfcmVxdWlyZV90bHMitQEKD0F1dGhPQXV0aENvbmZpZxIZCgx3ZWJfYmFzZV91cmwYASABKAlIAYgBARIxCgRtb2NrGAIgASgLMiEucXVhZHNtaXRoLmNvbmZpZy5Nb2NrT0F1dGhDb25maWdIABI7Cglwcm92aWRlcnMYAyABKAsyJi5xdWFkc21pdGguY29uZmlnLk9BdXRoUHJvdmlkZXJzQ29uZmlnSABCBgoEbW9kZUIPCg1fd2ViX2Jhc2VfdXJsIhEKD01vY2tPQXV0aENvbmZpZyLLAQoUT0F1dGhQcm92aWRlcnNDb25maWcSOgoGZ29vZ2xlGAEgASgLMioucXVhZHNtaXRoLmNvbmZpZy5PQXV0aFByb3ZpZGVyQ3JlZGVudGlhbHMSOgoGZ2l0aHViGAIgASgLMioucXVhZHNtaXRoLmNvbmZpZy5PQXV0aFByb3ZpZGVyQ3JlZGVudGlhbHMSOwoHZGlzY29yZBgDIAEoCzIqLnF1YWRzbWl0aC5jb25maWcuT0F1dGhQcm92aWRlckNyZWRlbnRpYWxzIm4KGE9BdXRoUHJvdmlkZXJDcmVkZW50aWFscxIWCgljbGllbnRfaWQYASABKAlIAIgBARIaCg1jbGllbnRfc2VjcmV0GAIgASgJSAGIAQFCDAoKX2NsaWVudF9pZEIQCg5fY2xpZW50X3NlY3JldEIuWixxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvY29uZmlnO2NvbmZpZ2IGcHJvdG8z",
     [file_google_protobuf_duration, file_quadsmith_config_common],
   );
 
@@ -106,6 +106,11 @@ export type AuthConfig = Message<"quadsmith.config.AuthConfig"> & {
    * @generated from field: quadsmith.config.EmailConfig email = 10;
    */
   email?: EmailConfig | undefined;
+
+  /**
+   * @generated from field: quadsmith.config.AuthOAuthConfig oauth = 11;
+   */
+  oauth?: AuthOAuthConfig | undefined;
 };
 
 /**
@@ -209,3 +214,105 @@ export type SmtpConfig = Message<"quadsmith.config.SmtpConfig"> & {
 export const SmtpConfigSchema: GenMessage<SmtpConfig> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_config_server_api, 4);
+
+/**
+ * @generated from message quadsmith.config.AuthOAuthConfig
+ */
+export type AuthOAuthConfig = Message<"quadsmith.config.AuthOAuthConfig"> & {
+  /**
+   * @generated from field: optional string web_base_url = 1;
+   */
+  webBaseUrl?: string | undefined;
+
+  /**
+   * @generated from oneof quadsmith.config.AuthOAuthConfig.mode
+   */
+  mode:
+    | {
+        /**
+         * @generated from field: quadsmith.config.MockOAuthConfig mock = 2;
+         */
+        value: MockOAuthConfig;
+        case: "mock";
+      }
+    | {
+        /**
+         * @generated from field: quadsmith.config.OAuthProvidersConfig providers = 3;
+         */
+        value: OAuthProvidersConfig;
+        case: "providers";
+      }
+    | { case: undefined; value?: undefined };
+};
+
+/**
+ * Describes the message quadsmith.config.AuthOAuthConfig.
+ * Use `create(AuthOAuthConfigSchema)` to create a new message.
+ */
+export const AuthOAuthConfigSchema: GenMessage<AuthOAuthConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_server_api, 5);
+
+/**
+ * @generated from message quadsmith.config.MockOAuthConfig
+ */
+export type MockOAuthConfig = Message<"quadsmith.config.MockOAuthConfig"> & {};
+
+/**
+ * Describes the message quadsmith.config.MockOAuthConfig.
+ * Use `create(MockOAuthConfigSchema)` to create a new message.
+ */
+export const MockOAuthConfigSchema: GenMessage<MockOAuthConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_server_api, 6);
+
+/**
+ * @generated from message quadsmith.config.OAuthProvidersConfig
+ */
+export type OAuthProvidersConfig = Message<"quadsmith.config.OAuthProvidersConfig"> & {
+  /**
+   * @generated from field: quadsmith.config.OAuthProviderCredentials google = 1;
+   */
+  google?: OAuthProviderCredentials | undefined;
+
+  /**
+   * @generated from field: quadsmith.config.OAuthProviderCredentials github = 2;
+   */
+  github?: OAuthProviderCredentials | undefined;
+
+  /**
+   * @generated from field: quadsmith.config.OAuthProviderCredentials discord = 3;
+   */
+  discord?: OAuthProviderCredentials | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.OAuthProvidersConfig.
+ * Use `create(OAuthProvidersConfigSchema)` to create a new message.
+ */
+export const OAuthProvidersConfigSchema: GenMessage<OAuthProvidersConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_server_api, 7);
+
+/**
+ * @generated from message quadsmith.config.OAuthProviderCredentials
+ */
+export type OAuthProviderCredentials = Message<"quadsmith.config.OAuthProviderCredentials"> & {
+  /**
+   * @generated from field: optional string client_id = 1;
+   */
+  clientId?: string | undefined;
+
+  /**
+   * @generated from field: optional string client_secret = 2;
+   */
+  clientSecret?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.OAuthProviderCredentials.
+ * Use `create(OAuthProviderCredentialsSchema)` to create a new message.
+ */
+export const OAuthProviderCredentialsSchema: GenMessage<OAuthProviderCredentials> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_server_api, 8);

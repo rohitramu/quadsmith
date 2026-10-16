@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -244,19 +245,41 @@ func VerifyMagicLinkToken(tokenStr string) (*MagicLinkClaims, error) {
 
 // SetupTokenClaims contains claims for deferred account creation after email verification
 type SetupTokenClaims struct {
-	Email   string `json:"email"`
-	Exp     int64  `json:"exp"`
-	Purpose string `json:"purpose"`
+	Email             string   `json:"email"`
+	VerifiedEmails    []string `json:"verified_emails,omitempty"`
+	Provider          string   `json:"provider,omitempty"`
+	ProviderAccountID string   `json:"provider_account_id,omitempty"`
+	AvatarURL         string   `json:"avatar_url,omitempty"`
+	ChallengeIDHash   string   `json:"challenge_id_hash,omitempty"`
+	Exp               int64    `json:"exp"`
+	Purpose           string   `json:"purpose"`
 }
 
 const SetupTokenTTL = 15 * time.Minute
 
 // SignSetupToken creates a signed setup token for an email that completed OTP or magic link verification
 func SignSetupToken(email string) (string, error) {
+	return SignOAuthSetupToken(email, nil, "", "", "", "")
+}
+
+// SignOAuthSetupToken creates a signed setup token encoding primary email, secondary verified emails, and OAuth identity
+func SignOAuthSetupToken(email string, verifiedEmails []string, provider, providerAccountID, avatarURL, challengeIDHash string) (string, error) {
+	cleanEmails := make([]string, 0, len(verifiedEmails))
+	for _, e := range verifiedEmails {
+		norm := strings.ToLower(strings.TrimSpace(e))
+		if norm != "" && !slices.Contains(cleanEmails, norm) {
+			cleanEmails = append(cleanEmails, norm)
+		}
+	}
 	claims := SetupTokenClaims{
-		Email:   strings.ToLower(strings.TrimSpace(email)),
-		Exp:     time.Now().Add(SetupTokenTTL).Unix(),
-		Purpose: "account_setup",
+		Email:             strings.ToLower(strings.TrimSpace(email)),
+		VerifiedEmails:    cleanEmails,
+		Provider:          provider,
+		ProviderAccountID: providerAccountID,
+		AvatarURL:         avatarURL,
+		ChallengeIDHash:   challengeIDHash,
+		Exp:               time.Now().Add(SetupTokenTTL).Unix(),
+		Purpose:           "account_setup",
 	}
 	claimsJSON, err := json.Marshal(claims)
 	if err != nil {
@@ -268,36 +291,120 @@ func SignSetupToken(email string) (string, error) {
 	return payload + "." + sigB64, nil
 }
 
-// VerifySetupToken verifies a setup token and returns the verified email
-func VerifySetupToken(tokenStr string) (string, error) {
+// VerifySetupTokenClaims verifies a setup token and returns the parsed claims
+func VerifySetupTokenClaims(tokenStr string) (*SetupTokenClaims, error) {
 	parts := strings.Split(tokenStr, ".")
 	if len(parts) != 2 {
-		return "", errors.New("invalid setup token format")
+		return nil, errors.New("invalid setup token format")
 	}
 	payload, sigB64 := parts[0], parts[1]
 	expectedSig := hmacSHA256([]byte(payload), deriveKey("setup_token"))
 	actualSig, err := base64.RawURLEncoding.DecodeString(sigB64)
 	if err != nil {
-		return "", errors.New("invalid signature encoding")
+		return nil, errors.New("invalid signature encoding")
 	}
 	if !hmac.Equal(expectedSig, actualSig) {
-		return "", errors.New("invalid token signature")
+		return nil, errors.New("invalid token signature")
 	}
 	claimsJSON, err := base64.RawURLEncoding.DecodeString(payload)
 	if err != nil {
-		return "", errors.New("invalid payload encoding")
+		return nil, errors.New("invalid payload encoding")
 	}
 	var claims SetupTokenClaims
 	if err := json.Unmarshal(claimsJSON, &claims); err != nil {
-		return "", errors.New("invalid claims json")
+		return nil, errors.New("invalid claims json")
 	}
 	if claims.Purpose != "account_setup" {
-		return "", errors.New("invalid token purpose")
+		return nil, errors.New("invalid token purpose")
 	}
 	if time.Now().Unix() > claims.Exp {
-		return "", errors.New("setup token has expired. Please verify your email again")
+		return nil, errors.New("setup token has expired. Please verify your email again")
+	}
+	return &claims, nil
+}
+
+// VerifySetupToken verifies a setup token and returns the verified email
+func VerifySetupToken(tokenStr string) (string, error) {
+	claims, err := VerifySetupTokenClaims(tokenStr)
+	if err != nil {
+		return "", err
 	}
 	return claims.Email, nil
+}
+
+// GeneratePKCE returns a cryptographically secure random code_verifier and its RFC 7636 S256 code_challenge
+func GeneratePKCE() (verifier, challenge string, err error) {
+	b := make([]byte, 32)
+	if _, err := rand.Read(b); err != nil {
+		return "", "", err
+	}
+	verifier = base64.RawURLEncoding.EncodeToString(b)
+	h := sha256.Sum256([]byte(verifier))
+	challenge = base64.RawURLEncoding.EncodeToString(h[:])
+	return verifier, challenge, nil
+}
+
+// OAuthStateClaims contains claims embedded in the signed OAuth state token
+type OAuthStateClaims struct {
+	Provider          string `json:"provider"`
+	Purpose           string `json:"purpose"`
+	CodeVerifier      string `json:"code_verifier"`
+	RedirectURI       string `json:"redirect_uri"`
+	RequesterUserUUID string `json:"requester_user_uuid,omitempty"`
+	ChallengeIDHash   string `json:"challenge_id_hash,omitempty"`
+	Exp               int64  `json:"exp"`
+}
+
+const OAuthStateTTL = 10 * time.Minute
+
+// SignOAuthState signs an HMAC-SHA256 state token binding the flow parameters and PKCE verifier
+func SignOAuthState(provider, purpose, codeVerifier, redirectURI, requesterUserUUID, challengeIDHash string) (string, error) {
+	claims := OAuthStateClaims{
+		Provider:          provider,
+		Purpose:           purpose,
+		CodeVerifier:      codeVerifier,
+		RedirectURI:       redirectURI,
+		RequesterUserUUID: requesterUserUUID,
+		ChallengeIDHash:   challengeIDHash,
+		Exp:               time.Now().Add(OAuthStateTTL).Unix(),
+	}
+	claimsJSON, err := json.Marshal(claims)
+	if err != nil {
+		return "", err
+	}
+	payload := base64.RawURLEncoding.EncodeToString(claimsJSON)
+	sig := hmacSHA256([]byte(payload), deriveKey("oauth_state"))
+	sigB64 := base64.RawURLEncoding.EncodeToString(sig)
+	return payload + "." + sigB64, nil
+}
+
+// VerifyOAuthState verifies an OAuth state token signature, validity, and expiration
+func VerifyOAuthState(stateStr string) (*OAuthStateClaims, error) {
+	parts := strings.Split(stateStr, ".")
+	if len(parts) != 2 {
+		return nil, errors.New("invalid oauth state format")
+	}
+	payload, sigB64 := parts[0], parts[1]
+	expectedSig := hmacSHA256([]byte(payload), deriveKey("oauth_state"))
+	actualSig, err := base64.RawURLEncoding.DecodeString(sigB64)
+	if err != nil {
+		return nil, errors.New("invalid oauth state signature encoding")
+	}
+	if !hmac.Equal(expectedSig, actualSig) {
+		return nil, errors.New("invalid oauth state signature")
+	}
+	claimsJSON, err := base64.RawURLEncoding.DecodeString(payload)
+	if err != nil {
+		return nil, errors.New("invalid oauth state payload encoding")
+	}
+	var claims OAuthStateClaims
+	if err := json.Unmarshal(claimsJSON, &claims); err != nil {
+		return nil, errors.New("invalid oauth state claims json")
+	}
+	if time.Now().Unix() > claims.Exp {
+		return nil, errors.New("oauth state has expired. Please try signing in again")
+	}
+	return &claims, nil
 }
 
 // MergeTicketClaims defines the cryptographically signed authorization ticket for account merges

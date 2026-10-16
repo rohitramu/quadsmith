@@ -562,12 +562,16 @@ export const mockUserEmails: UserEmail[] = [
     userUuid: "018f0000-0000-7000-0000-000000000099",
     email: "alex@quadsmith.dev",
     isPrimary: true,
+    verifiedViaOtp: true,
+    oauthProviders: ["google"],
   }),
   create(UserEmailSchema, {
     uuid: "018f0000-0000-7000-0000-000000000092",
     userUuid: "018f0000-0000-7000-0000-000000000099",
     email: "alex.secondary@example.com",
     isPrimary: false,
+    verifiedViaOtp: false,
+    oauthProviders: ["github"],
   }),
 ];
 

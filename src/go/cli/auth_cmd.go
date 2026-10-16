@@ -10,7 +10,9 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"text/tabwriter"
 	"time"
@@ -120,12 +122,88 @@ func newCLIHTTPClient() *http.Client {
 func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http.Client) {
 	authClient := apiconnect.NewAuthServiceClient(httpClient, targetURL)
 
+	var providerFlag string
+
 	// login
 	loginCmd := &cobra.Command{
 		Use:   "login [email]",
-		Short: "Authenticate with Quadsmith using passwordless email OTP",
+		Short: "Authenticate with Quadsmith using passwordless email OTP or OAuth",
 		Args:  cobra.MaximumNArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
+			ctx := context.Background()
+
+			if providerFlag != "" {
+				provider := parseOAuthProvider(providerFlag)
+				if provider == pb.OAuthProvider_OAUTH_PROVIDER_UNSPECIFIED {
+					return fmt.Errorf("unsupported provider %q: must be google, github, or discord", providerFlag)
+				}
+
+				startRes, err := authClient.StartOAuth(ctx, connect.NewRequest(&pb.StartOAuthRequest{
+					Provider:     provider,
+					Purpose:      pb.OAuthPurpose_OAUTH_PURPOSE_CLI_LOGIN,
+					RedirectPath: "/login",
+				}))
+				if err != nil {
+					return fmt.Errorf("failed to initiate oauth login: %w", err)
+				}
+
+				if startRes.Msg.ChallengeId == nil || *startRes.Msg.ChallengeId == "" {
+					return errors.New("server did not return a valid login challenge ID")
+				}
+				challengeID := *startRes.Msg.ChallengeId
+
+				fmt.Printf("Opening your browser to authenticate with %s...\n", strings.Title(providerFlag))
+				fmt.Printf("If the browser does not open automatically, please visit:\n  %s\n\n", startRes.Msg.AuthorizationUrl)
+				openBrowser(startRes.Msg.AuthorizationUrl)
+
+				fmt.Println("Waiting for authentication in browser...")
+				for {
+					select {
+					case <-ctx.Done():
+						return ctx.Err()
+					case <-time.After(2 * time.Second):
+					}
+
+					statusRes, err := authClient.GetLoginChallengeStatus(ctx, connect.NewRequest(&pb.GetLoginChallengeStatusRequest{
+						ChallengeId: challengeID,
+					}))
+					if err != nil {
+						continue
+					}
+
+					switch statusRes.Msg.Status {
+					case pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_APPROVED:
+						authRes := statusRes.Msg.GetAuthResponse()
+						if authRes == nil {
+							return errors.New("authentication approved but no auth tokens received")
+						}
+						if authRes.AccountSetupRequired {
+							fmt.Println("Please complete your account setup in the browser...")
+							continue
+						}
+						cfg := &CLIConfig{
+							AccessToken:  authRes.AccessToken,
+							RefreshToken: authRes.RefreshToken,
+							UserUUID:     authRes.User.Uuid,
+							UserID:       authRes.User.Id,
+							Email:        authRes.User.Email,
+						}
+						if err := saveCLIConfig(cfg); err != nil {
+							return fmt.Errorf("failed to save config: %w", err)
+						}
+
+						fmt.Printf("✓ Successfully authenticated as @%s (%s)\n", cfg.UserID, cfg.Email)
+						return nil
+
+					case pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_DENIED:
+						return errors.New("login challenge was denied in browser")
+
+					case pb.LoginChallengeStatus_LOGIN_CHALLENGE_STATUS_EXPIRED:
+						return errors.New("login challenge expired. Please run 'qs login' again")
+					}
+				}
+			}
+
 			reader := bufio.NewReader(os.Stdin)
 
 			var email string
@@ -144,7 +222,6 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 				return errors.New("email address cannot be empty")
 			}
 
-			ctx := context.Background()
 			fmt.Printf("Sending verification code to %s...\n", email)
 			sendRes, err := authClient.SendEmailOtp(ctx, connect.NewRequest(&pb.SendEmailOtpRequest{Email: email}))
 			if err != nil {
@@ -185,6 +262,7 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 			return nil
 		},
 	}
+	loginCmd.Flags().StringVar(&providerFlag, "provider", "", "Authenticate via OAuth provider (google, github, discord)")
 	rootCmd.AddCommand(loginCmd)
 
 	// whoami
@@ -242,18 +320,29 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 			}
 
 			w := tabwriter.NewWriter(cmd.OutOrStdout(), 0, 0, 2, ' ', 0)
-			fmt.Fprintln(w, "EMAIL\tPRIMARY\tSTATUS\tCREATED")
+			fmt.Fprintln(w, "EMAIL\tPRIMARY\tVERIFIED BY\tSTATUS\tCREATED")
 			for _, em := range res.Msg.Emails {
 				isPrimary := "no"
 				if em.IsPrimary {
 					isPrimary = "yes"
+				}
+				verifiedByList := make([]string, 0, len(em.OauthProviders)+1)
+				if em.VerifiedViaOtp {
+					verifiedByList = append(verifiedByList, "otp")
+				}
+				for _, p := range em.OauthProviders {
+					verifiedByList = append(verifiedByList, strings.ToLower(p))
+				}
+				verifiedBy := strings.Join(verifiedByList, ", ")
+				if verifiedBy == "" {
+					verifiedBy = "none"
 				}
 				status := "verified"
 				created := "recent"
 				if em.CreatedAt != nil {
 					created = time.Unix(em.CreatedAt.Seconds, 0).Format("2006-01-02")
 				}
-				fmt.Fprintf(w, "%s\t%s\t%s\t%s\n", em.Email, isPrimary, status, created)
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n", em.Email, isPrimary, verifiedBy, status, created)
 			}
 			return w.Flush()
 		},
@@ -361,6 +450,28 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 		},
 	}
 	emailCmd.AddCommand(emailRemoveCmd)
+
+	// email unlink-oauth
+	emailUnlinkOAuthCmd := &cobra.Command{
+		Use:   "unlink-oauth <provider>",
+		Short: "Unlink an OAuth provider (google, github, discord) from your account",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			providerStr := strings.TrimSpace(args[0])
+			provider := parseOAuthProvider(providerStr)
+			if provider == pb.OAuthProvider_OAUTH_PROVIDER_UNSPECIFIED {
+				return fmt.Errorf("unsupported provider %q: must be google, github, or discord", providerStr)
+			}
+			ctx := context.Background()
+			res, err := authClient.UnlinkOAuth(ctx, connect.NewRequest(&pb.UnlinkOAuthRequest{Provider: provider}))
+			if err != nil {
+				return fmt.Errorf("failed to unlink oauth provider: %w", err)
+			}
+			fmt.Printf("✓ %s\n", res.Msg.Message)
+			return nil
+		},
+	}
+	emailCmd.AddCommand(emailUnlinkOAuthCmd)
 	rootCmd.AddCommand(emailCmd)
 
 	// account root command
@@ -571,4 +682,30 @@ func initAuthCommands(rootCmd *cobra.Command, targetURL string, httpClient *http
 		},
 	}
 	rootCmd.AddCommand(logoutCmd)
+}
+
+func parseOAuthProvider(s string) pb.OAuthProvider {
+	switch strings.ToLower(strings.TrimSpace(s)) {
+	case "google":
+		return pb.OAuthProvider_OAUTH_PROVIDER_GOOGLE
+	case "github":
+		return pb.OAuthProvider_OAUTH_PROVIDER_GITHUB
+	case "discord":
+		return pb.OAuthProvider_OAUTH_PROVIDER_DISCORD
+	default:
+		return pb.OAuthProvider_OAUTH_PROVIDER_UNSPECIFIED
+	}
+}
+
+func openBrowser(urlStr string) {
+	var cmd *exec.Cmd
+	switch runtime.GOOS {
+	case "darwin":
+		cmd = exec.Command("open", urlStr)
+	case "windows":
+		cmd = exec.Command("cmd", "/c", "start", urlStr)
+	default:
+		cmd = exec.Command("xdg-open", urlStr)
+	}
+	_ = cmd.Start()
 }

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { ConnectError } from "@connectrpc/connect";
 import {
   User as UserIcon,
   LogOut,
@@ -23,7 +24,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import type { ArchivedUsername, Session } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
-import { EmailOtpPurpose } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
+import { EmailOtpPurpose, OAuthProvider } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import { UsernameAvailabilityStatus } from "@quadsmith/shared/gen/quadsmith/api/user_pb";
 import { EmailVerificationModal } from "../components/EmailVerificationModal";
 import { UserBadge } from "../components/UserBadge";
@@ -49,12 +50,16 @@ export function AccountSettingsPage() {
     listArchivedUsernames,
     checkUsernameAvailable,
     verifyDataExport,
+    completeOAuth,
+    unlinkOAuth,
   } = useAuth();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const mergeToken = searchParams.get("merge_token");
   const addEmailToken = searchParams.get("add_email_token");
   const exportDataToken = searchParams.get("export_data_token");
+  const oauthCode = searchParams.get("code");
+  const oauthState = searchParams.get("state");
 
   // Active Sessions state
   const [sessionToRevoke, setSessionToRevoke] = useState<Session | null>(null);
@@ -227,6 +232,49 @@ export function AccountSettingsPage() {
     }
   }, [mergeToken, addEmailToken, verifyAddEmailOtp, refreshEmails, searchParams, setSearchParams]);
 
+  // OAuth callback for Add Email
+  useEffect(() => {
+    if (!oauthCode || !oauthState) return;
+
+    let isMounted = true;
+    async function handleOAuthCallback() {
+      try {
+        const res = await completeOAuth(oauthCode!, oauthState!);
+        if (!isMounted) return;
+        if (res.mergeRequired) {
+          setMergeEmail(res.otherEmails?.[0] || "");
+          setMergeOtherUsername(res.otherUserUsername || "user");
+          setMergeOtherBuildCount(res.otherBuildCount || 0);
+          setMergeOtherBuildNames(res.otherBuildNames || []);
+          setMergeOtherEmails(res.otherEmails || []);
+          setMergeOtherOauthProviders(res.otherOauthProviders || []);
+          setVerifiedMergeToken(res.mergeTicket || "");
+          setMergeModalStep("summary");
+          setIsMergeModalOpen(true);
+        } else {
+          setAddEmailSuccess(res.message || "Email and OAuth account linked successfully.");
+          setTimeout(() => setAddEmailSuccess(null), 4000);
+          await refreshEmails();
+        }
+      } catch (err: unknown) {
+        if (!isMounted) return;
+        if (err instanceof Error) {
+          setEmailActionError(err.message);
+        } else {
+          setEmailActionError("Failed to complete OAuth linking.");
+        }
+      } finally {
+        searchParams.delete("code");
+        searchParams.delete("state");
+        setSearchParams(searchParams, { replace: true });
+      }
+    }
+    handleOAuthCallback();
+    return () => {
+      isMounted = false;
+    };
+  }, [oauthCode, oauthState, completeOAuth, refreshEmails, searchParams, setSearchParams]);
+
   // Email Action feedback
   const [emailActionLoading, setEmailActionLoading] = useState<string | null>(null);
   const [emailActionError, setEmailActionError] = useState<string | null>(null);
@@ -382,6 +430,25 @@ export function AccountSettingsPage() {
     }
   };
 
+  // Handle Unlink OAuth Provider
+  const handleUnlinkOAuth = async (provider: OAuthProvider) => {
+    setEmailActionError(null);
+    try {
+      const res = await unlinkOAuth(provider);
+      setAddEmailSuccess(res.message);
+      setTimeout(() => setAddEmailSuccess(null), 4000);
+      await refreshEmails();
+    } catch (err: unknown) {
+      if (err instanceof ConnectError) {
+        setEmailActionError(err.rawMessage);
+      } else if (err instanceof Error) {
+        setEmailActionError(err.message);
+      } else {
+        setEmailActionError("Failed to unlink OAuth account.");
+      }
+    }
+  };
+
   // Fallback for displayed emails
   const displayedEmails =
     (emails?.length ?? 0) > 0
@@ -395,6 +462,8 @@ export function AccountSettingsPage() {
               email: user.email,
               isPrimary: true,
               createdAt: undefined,
+              verifiedViaOtp: true,
+              oauthProviders: [] as string[],
             },
           ]
         : [];
@@ -789,6 +858,87 @@ export function AccountSettingsPage() {
                         Primary
                       </span>
                     )}
+
+                    {/* Provenance Badges */}
+                    {em.verifiedViaOtp && (
+                      <span
+                        className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-zinc-200/70 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700"
+                        title="Verified via Email OTP / Magic Link"
+                      >
+                        <span>Email Verification</span>
+                      </span>
+                    )}
+
+                    {em.oauthProviders?.map((p: string) => {
+                      const prov = String(p).toLowerCase();
+                      if (prov === "google" || prov === "oauth_provider_google") {
+                        return (
+                          <span
+                            key="google"
+                            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-blue-500/10 text-blue-700 dark:text-blue-300 border border-blue-500/25"
+                          >
+                            <span>Google</span>
+                            {!isBanned && (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  handleUnlinkOAuth(OAuthProvider.OAUTH_PROVIDER_GOOGLE)
+                                }
+                                title="Unlink Google OAuth"
+                                className="hover:text-rose-500 font-bold cursor-pointer"
+                              >
+                                ×
+                              </button>
+                            )}
+                          </span>
+                        );
+                      }
+                      if (prov === "github" || prov === "oauth_provider_github") {
+                        return (
+                          <span
+                            key="github"
+                            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-zinc-500/10 text-zinc-800 dark:text-zinc-200 border border-zinc-400/30 dark:border-zinc-600"
+                          >
+                            <span>GitHub</span>
+                            {!isBanned && (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  handleUnlinkOAuth(OAuthProvider.OAUTH_PROVIDER_GITHUB)
+                                }
+                                title="Unlink GitHub OAuth"
+                                className="hover:text-rose-500 font-bold cursor-pointer"
+                              >
+                                ×
+                              </button>
+                            )}
+                          </span>
+                        );
+                      }
+                      if (prov === "discord" || prov === "oauth_provider_discord") {
+                        return (
+                          <span
+                            key="discord"
+                            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-[10px] font-semibold bg-indigo-500/10 text-indigo-700 dark:text-indigo-300 border border-indigo-500/25"
+                          >
+                            <span>Discord</span>
+                            {!isBanned && (
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  handleUnlinkOAuth(OAuthProvider.OAUTH_PROVIDER_DISCORD)
+                                }
+                                title="Unlink Discord OAuth"
+                                className="hover:text-rose-500 font-bold cursor-pointer"
+                              >
+                                ×
+                              </button>
+                            )}
+                          </span>
+                        );
+                      }
+                      return null;
+                    })}
                   </div>
                   <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
                     Added {formatDate(em.createdAt?.seconds)}

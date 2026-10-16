@@ -377,12 +377,9 @@ type OAuthAccount struct {
 	state             protoimpl.MessageState `protogen:"open.v1"`
 	Uuid              string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	UserUuid          string                 `protobuf:"bytes,2,opt,name=user_uuid,json=userUuid,proto3" json:"user_uuid,omitempty"`
-	Provider          string                 `protobuf:"bytes,3,opt,name=provider,proto3" json:"provider,omitempty"` // "google", "github"
+	Provider          string                 `protobuf:"bytes,3,opt,name=provider,proto3" json:"provider,omitempty"` // "google", "github", "discord"
 	ProviderAccountId string                 `protobuf:"bytes,4,opt,name=provider_account_id,json=providerAccountId,proto3" json:"provider_account_id,omitempty"`
-	AccessToken       string                 `protobuf:"bytes,5,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
-	RefreshToken      string                 `protobuf:"bytes,6,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
-	TokenExpiresAt    *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=token_expires_at,json=tokenExpiresAt,proto3" json:"token_expires_at,omitempty"`
-	CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	CreatedAt         *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -443,27 +440,6 @@ func (x *OAuthAccount) GetProviderAccountId() string {
 		return x.ProviderAccountId
 	}
 	return ""
-}
-
-func (x *OAuthAccount) GetAccessToken() string {
-	if x != nil {
-		return x.AccessToken
-	}
-	return ""
-}
-
-func (x *OAuthAccount) GetRefreshToken() string {
-	if x != nil {
-		return x.RefreshToken
-	}
-	return ""
-}
-
-func (x *OAuthAccount) GetTokenExpiresAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.TokenExpiresAt
-	}
-	return nil
 }
 
 func (x *OAuthAccount) GetCreatedAt() *timestamppb.Timestamp {
@@ -1044,19 +1020,16 @@ const file_quadsmith_store_user_proto_rawDesc = "" +
 	"\tdenied_at\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\bdeniedAt:\x16\xc2\xf3\x18\f\n" +
 	"\n" +
 	"email_otps\xc2\xf0\x19\x02\b\x01B\x19\n" +
-	"\x17_requested_by_user_uuid\"\xb9\x03\n" +
+	"\x17_requested_by_user_uuid\"\xd8\x02\n" +
 	"\fOAuthAccount\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x124\n" +
 	"\tuser_uuid\x18\x02 \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04R\buserUuid\x12 \n" +
 	"\bprovider\x18\x03 \x01(\tB\x04\xc0\xf0\x19\x03R\bprovider\x124\n" +
-	"\x13provider_account_id\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x03R\x11providerAccountId\x12'\n" +
-	"\faccess_token\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x06R\vaccessToken\x12)\n" +
-	"\rrefresh_token\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x06R\frefreshToken\x12J\n" +
-	"\x10token_expires_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x06R\x0etokenExpiresAt\x12?\n" +
+	"\x13provider_account_id\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x03R\x11providerAccountId\x12J\n" +
 	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt:\x1a\xc2\xf3\x18\x10\n" +
-	"\x0eoauth_accounts\xc2\xf0\x19\x02\b\x02\"\xfa\x03\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt:N\xc2\xf3\x18D\n" +
+	"\x0eoauth_accounts\x1a\x1dprovider, provider_account_id\x1a\x13user_uuid, provider\xc2\xf0\x19\x02\b\x02\"\xfa\x03\n" +
 	"\fRefreshToken\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x124\n" +
@@ -1168,26 +1141,25 @@ var file_quadsmith_store_user_proto_depIdxs = []int32{
 	10, // 6: quadsmith.store.EmailOtp.created_at:type_name -> google.protobuf.Timestamp
 	10, // 7: quadsmith.store.EmailOtp.approved_at:type_name -> google.protobuf.Timestamp
 	10, // 8: quadsmith.store.EmailOtp.denied_at:type_name -> google.protobuf.Timestamp
-	10, // 9: quadsmith.store.OAuthAccount.token_expires_at:type_name -> google.protobuf.Timestamp
-	10, // 10: quadsmith.store.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
-	10, // 11: quadsmith.store.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
-	10, // 12: quadsmith.store.RefreshToken.last_used_at:type_name -> google.protobuf.Timestamp
-	10, // 13: quadsmith.store.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
-	10, // 14: quadsmith.store.User.last_renamed_at:type_name -> google.protobuf.Timestamp
-	10, // 15: quadsmith.store.User.deleted_at:type_name -> google.protobuf.Timestamp
-	10, // 16: quadsmith.store.User.created_at:type_name -> google.protobuf.Timestamp
-	10, // 17: quadsmith.store.User.updated_at:type_name -> google.protobuf.Timestamp
-	10, // 18: quadsmith.store.UserEmail.created_at:type_name -> google.protobuf.Timestamp
-	10, // 19: quadsmith.store.UserEmailOAuthAccount.created_at:type_name -> google.protobuf.Timestamp
-	10, // 20: quadsmith.store.UserProfile.updated_at:type_name -> google.protobuf.Timestamp
-	10, // 21: quadsmith.store.UsernameHistory.renamed_at:type_name -> google.protobuf.Timestamp
-	10, // 22: quadsmith.store.UsernameHistory.first_archived_at:type_name -> google.protobuf.Timestamp
-	10, // 23: quadsmith.store.UsernameHistory.release_warning_sent_at:type_name -> google.protobuf.Timestamp
-	24, // [24:24] is the sub-list for method output_type
-	24, // [24:24] is the sub-list for method input_type
-	24, // [24:24] is the sub-list for extension type_name
-	24, // [24:24] is the sub-list for extension extendee
-	0,  // [0:24] is the sub-list for field type_name
+	10, // 9: quadsmith.store.OAuthAccount.created_at:type_name -> google.protobuf.Timestamp
+	10, // 10: quadsmith.store.RefreshToken.expires_at:type_name -> google.protobuf.Timestamp
+	10, // 11: quadsmith.store.RefreshToken.last_used_at:type_name -> google.protobuf.Timestamp
+	10, // 12: quadsmith.store.RefreshToken.created_at:type_name -> google.protobuf.Timestamp
+	10, // 13: quadsmith.store.User.last_renamed_at:type_name -> google.protobuf.Timestamp
+	10, // 14: quadsmith.store.User.deleted_at:type_name -> google.protobuf.Timestamp
+	10, // 15: quadsmith.store.User.created_at:type_name -> google.protobuf.Timestamp
+	10, // 16: quadsmith.store.User.updated_at:type_name -> google.protobuf.Timestamp
+	10, // 17: quadsmith.store.UserEmail.created_at:type_name -> google.protobuf.Timestamp
+	10, // 18: quadsmith.store.UserEmailOAuthAccount.created_at:type_name -> google.protobuf.Timestamp
+	10, // 19: quadsmith.store.UserProfile.updated_at:type_name -> google.protobuf.Timestamp
+	10, // 20: quadsmith.store.UsernameHistory.renamed_at:type_name -> google.protobuf.Timestamp
+	10, // 21: quadsmith.store.UsernameHistory.first_archived_at:type_name -> google.protobuf.Timestamp
+	10, // 22: quadsmith.store.UsernameHistory.release_warning_sent_at:type_name -> google.protobuf.Timestamp
+	23, // [23:23] is the sub-list for method output_type
+	23, // [23:23] is the sub-list for method input_type
+	23, // [23:23] is the sub-list for extension type_name
+	23, // [23:23] is the sub-list for extension extendee
+	0,  // [0:23] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_store_user_proto_init() }

@@ -33,6 +33,7 @@ message AuthConfig {
   google.protobuf.Duration magic_link_ttl = 8;
   google.protobuf.Duration email_cooldown = 9;
   EmailConfig email = 10;
+  AuthOAuthConfig oauth = 11;
 }
 
 // ---------------------------------------------------------
@@ -56,4 +57,29 @@ message SmtpConfig {
   optional string from_address = 5;
   optional string reply_to = 6;
   optional bool require_tls = 7;
+}
+
+// ---------------------------------------------------------
+// OAuth Subordinate Configurations
+// ---------------------------------------------------------
+
+message AuthOAuthConfig {
+  optional string web_base_url = 1;
+  oneof mode {
+    MockOAuthConfig mock = 2;
+    OAuthProvidersConfig providers = 3;
+  }
+}
+
+message MockOAuthConfig {}
+
+message OAuthProvidersConfig {
+  OAuthProviderCredentials google = 1;
+  OAuthProviderCredentials github = 2;
+  OAuthProviderCredentials discord = 3;
+}
+
+message OAuthProviderCredentials {
+  optional string client_id = 1;
+  optional string client_secret = 2;
 }

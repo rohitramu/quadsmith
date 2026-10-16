@@ -101,6 +101,13 @@ const (
 	// AuthServiceCancelAccountDeletionProcedure is the fully-qualified name of the AuthService's
 	// CancelAccountDeletion RPC.
 	AuthServiceCancelAccountDeletionProcedure = "/quadsmith.api.AuthService/CancelAccountDeletion"
+	// AuthServiceStartOAuthProcedure is the fully-qualified name of the AuthService's StartOAuth RPC.
+	AuthServiceStartOAuthProcedure = "/quadsmith.api.AuthService/StartOAuth"
+	// AuthServiceCompleteOAuthProcedure is the fully-qualified name of the AuthService's CompleteOAuth
+	// RPC.
+	AuthServiceCompleteOAuthProcedure = "/quadsmith.api.AuthService/CompleteOAuth"
+	// AuthServiceUnlinkOAuthProcedure is the fully-qualified name of the AuthService's UnlinkOAuth RPC.
+	AuthServiceUnlinkOAuthProcedure = "/quadsmith.api.AuthService/UnlinkOAuth"
 )
 
 // AuthServiceClient is a client for the quadsmith.api.AuthService service.
@@ -128,6 +135,9 @@ type AuthServiceClient interface {
 	ListArchivedUsernames(context.Context, *connect.Request[api.ListArchivedUsernamesRequest]) (*connect.Response[api.ListArchivedUsernamesResponse], error)
 	DeleteAccount(context.Context, *connect.Request[api.DeleteAccountRequest]) (*connect.Response[api.DeleteAccountResponse], error)
 	CancelAccountDeletion(context.Context, *connect.Request[api.CancelAccountDeletionRequest]) (*connect.Response[api.CancelAccountDeletionResponse], error)
+	StartOAuth(context.Context, *connect.Request[api.StartOAuthRequest]) (*connect.Response[api.StartOAuthResponse], error)
+	CompleteOAuth(context.Context, *connect.Request[api.CompleteOAuthRequest]) (*connect.Response[api.CompleteOAuthResponse], error)
+	UnlinkOAuth(context.Context, *connect.Request[api.UnlinkOAuthRequest]) (*connect.Response[api.UnlinkOAuthResponse], error)
 }
 
 // NewAuthServiceClient constructs a client for the quadsmith.api.AuthService service. By default,
@@ -279,6 +289,24 @@ func NewAuthServiceClient(httpClient connect.HTTPClient, baseURL string, opts ..
 			connect.WithSchema(authServiceMethods.ByName("CancelAccountDeletion")),
 			connect.WithClientOptions(opts...),
 		),
+		startOAuth: connect.NewClient[api.StartOAuthRequest, api.StartOAuthResponse](
+			httpClient,
+			baseURL+AuthServiceStartOAuthProcedure,
+			connect.WithSchema(authServiceMethods.ByName("StartOAuth")),
+			connect.WithClientOptions(opts...),
+		),
+		completeOAuth: connect.NewClient[api.CompleteOAuthRequest, api.CompleteOAuthResponse](
+			httpClient,
+			baseURL+AuthServiceCompleteOAuthProcedure,
+			connect.WithSchema(authServiceMethods.ByName("CompleteOAuth")),
+			connect.WithClientOptions(opts...),
+		),
+		unlinkOAuth: connect.NewClient[api.UnlinkOAuthRequest, api.UnlinkOAuthResponse](
+			httpClient,
+			baseURL+AuthServiceUnlinkOAuthProcedure,
+			connect.WithSchema(authServiceMethods.ByName("UnlinkOAuth")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -307,6 +335,9 @@ type authServiceClient struct {
 	listArchivedUsernames    *connect.Client[api.ListArchivedUsernamesRequest, api.ListArchivedUsernamesResponse]
 	deleteAccount            *connect.Client[api.DeleteAccountRequest, api.DeleteAccountResponse]
 	cancelAccountDeletion    *connect.Client[api.CancelAccountDeletionRequest, api.CancelAccountDeletionResponse]
+	startOAuth               *connect.Client[api.StartOAuthRequest, api.StartOAuthResponse]
+	completeOAuth            *connect.Client[api.CompleteOAuthRequest, api.CompleteOAuthResponse]
+	unlinkOAuth              *connect.Client[api.UnlinkOAuthRequest, api.UnlinkOAuthResponse]
 }
 
 // SendEmailOtp calls quadsmith.api.AuthService.SendEmailOtp.
@@ -424,6 +455,21 @@ func (c *authServiceClient) CancelAccountDeletion(ctx context.Context, req *conn
 	return c.cancelAccountDeletion.CallUnary(ctx, req)
 }
 
+// StartOAuth calls quadsmith.api.AuthService.StartOAuth.
+func (c *authServiceClient) StartOAuth(ctx context.Context, req *connect.Request[api.StartOAuthRequest]) (*connect.Response[api.StartOAuthResponse], error) {
+	return c.startOAuth.CallUnary(ctx, req)
+}
+
+// CompleteOAuth calls quadsmith.api.AuthService.CompleteOAuth.
+func (c *authServiceClient) CompleteOAuth(ctx context.Context, req *connect.Request[api.CompleteOAuthRequest]) (*connect.Response[api.CompleteOAuthResponse], error) {
+	return c.completeOAuth.CallUnary(ctx, req)
+}
+
+// UnlinkOAuth calls quadsmith.api.AuthService.UnlinkOAuth.
+func (c *authServiceClient) UnlinkOAuth(ctx context.Context, req *connect.Request[api.UnlinkOAuthRequest]) (*connect.Response[api.UnlinkOAuthResponse], error) {
+	return c.unlinkOAuth.CallUnary(ctx, req)
+}
+
 // AuthServiceHandler is an implementation of the quadsmith.api.AuthService service.
 type AuthServiceHandler interface {
 	SendEmailOtp(context.Context, *connect.Request[api.SendEmailOtpRequest]) (*connect.Response[api.SendEmailOtpResponse], error)
@@ -449,6 +495,9 @@ type AuthServiceHandler interface {
 	ListArchivedUsernames(context.Context, *connect.Request[api.ListArchivedUsernamesRequest]) (*connect.Response[api.ListArchivedUsernamesResponse], error)
 	DeleteAccount(context.Context, *connect.Request[api.DeleteAccountRequest]) (*connect.Response[api.DeleteAccountResponse], error)
 	CancelAccountDeletion(context.Context, *connect.Request[api.CancelAccountDeletionRequest]) (*connect.Response[api.CancelAccountDeletionResponse], error)
+	StartOAuth(context.Context, *connect.Request[api.StartOAuthRequest]) (*connect.Response[api.StartOAuthResponse], error)
+	CompleteOAuth(context.Context, *connect.Request[api.CompleteOAuthRequest]) (*connect.Response[api.CompleteOAuthResponse], error)
+	UnlinkOAuth(context.Context, *connect.Request[api.UnlinkOAuthRequest]) (*connect.Response[api.UnlinkOAuthResponse], error)
 }
 
 // NewAuthServiceHandler builds an HTTP handler from the service implementation. It returns the path
@@ -596,6 +645,24 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 		connect.WithSchema(authServiceMethods.ByName("CancelAccountDeletion")),
 		connect.WithHandlerOptions(opts...),
 	)
+	authServiceStartOAuthHandler := connect.NewUnaryHandler(
+		AuthServiceStartOAuthProcedure,
+		svc.StartOAuth,
+		connect.WithSchema(authServiceMethods.ByName("StartOAuth")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceCompleteOAuthHandler := connect.NewUnaryHandler(
+		AuthServiceCompleteOAuthProcedure,
+		svc.CompleteOAuth,
+		connect.WithSchema(authServiceMethods.ByName("CompleteOAuth")),
+		connect.WithHandlerOptions(opts...),
+	)
+	authServiceUnlinkOAuthHandler := connect.NewUnaryHandler(
+		AuthServiceUnlinkOAuthProcedure,
+		svc.UnlinkOAuth,
+		connect.WithSchema(authServiceMethods.ByName("UnlinkOAuth")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quadsmith.api.AuthService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case AuthServiceSendEmailOtpProcedure:
@@ -644,6 +711,12 @@ func NewAuthServiceHandler(svc AuthServiceHandler, opts ...connect.HandlerOption
 			authServiceDeleteAccountHandler.ServeHTTP(w, r)
 		case AuthServiceCancelAccountDeletionProcedure:
 			authServiceCancelAccountDeletionHandler.ServeHTTP(w, r)
+		case AuthServiceStartOAuthProcedure:
+			authServiceStartOAuthHandler.ServeHTTP(w, r)
+		case AuthServiceCompleteOAuthProcedure:
+			authServiceCompleteOAuthHandler.ServeHTTP(w, r)
+		case AuthServiceUnlinkOAuthProcedure:
+			authServiceUnlinkOAuthHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -743,4 +816,16 @@ func (UnimplementedAuthServiceHandler) DeleteAccount(context.Context, *connect.R
 
 func (UnimplementedAuthServiceHandler) CancelAccountDeletion(context.Context, *connect.Request[api.CancelAccountDeletionRequest]) (*connect.Response[api.CancelAccountDeletionResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.CancelAccountDeletion is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) StartOAuth(context.Context, *connect.Request[api.StartOAuthRequest]) (*connect.Response[api.StartOAuthResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.StartOAuth is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) CompleteOAuth(context.Context, *connect.Request[api.CompleteOAuthRequest]) (*connect.Response[api.CompleteOAuthResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.CompleteOAuth is not implemented"))
+}
+
+func (UnimplementedAuthServiceHandler) UnlinkOAuth(context.Context, *connect.Request[api.UnlinkOAuthRequest]) (*connect.Response[api.UnlinkOAuthResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.api.AuthService.UnlinkOAuth is not implemented"))
 }

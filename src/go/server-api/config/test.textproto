@@ -45,4 +45,9 @@ auth {
     console {
     }
   }
+  oauth {
+    web_base_url: "http://localhost:5173"
+    mock {
+    }
+  }
 }

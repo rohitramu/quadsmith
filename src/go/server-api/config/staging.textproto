@@ -45,4 +45,21 @@ auth {
     console {
     }
   }
+  oauth {
+    web_base_url: "https://staging.quadsmith.net"
+    providers {
+      google {
+        client_id: "${QS_GOOGLE_CLIENT_ID}"
+        client_secret: "${QS_GOOGLE_CLIENT_SECRET}"
+      }
+      github {
+        client_id: "${QS_GITHUB_CLIENT_ID}"
+        client_secret: "${QS_GITHUB_CLIENT_SECRET}"
+      }
+      discord {
+        client_id: "${QS_DISCORD_CLIENT_ID}"
+        client_secret: "${QS_DISCORD_CLIENT_SECRET}"
+      }
+    }
+  }
 }

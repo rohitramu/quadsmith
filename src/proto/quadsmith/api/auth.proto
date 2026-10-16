@@ -40,6 +40,10 @@ service AuthService {
 
   rpc DeleteAccount(DeleteAccountRequest) returns (DeleteAccountResponse);
   rpc CancelAccountDeletion(CancelAccountDeletionRequest) returns (CancelAccountDeletionResponse);
+
+  rpc StartOAuth(StartOAuthRequest) returns (StartOAuthResponse);
+  rpc CompleteOAuth(CompleteOAuthRequest) returns (CompleteOAuthResponse);
+  rpc UnlinkOAuth(UnlinkOAuthRequest) returns (UnlinkOAuthResponse);
 }
 
 // ---------------------------------------------------------
@@ -112,6 +116,29 @@ message CompleteAccountSetupRequest {
     ]
   }];
   optional string avatar_url = 3;
+}
+
+message CompleteOAuthRequest {
+  string code = 1;
+  string state = 2;
+}
+
+message CompleteOAuthResponse {
+  bool success = 1;
+  string message = 2;
+  OAuthProvider provider = 3;
+  OAuthPurpose purpose = 4;
+  string primary_email = 5;
+  repeated string verified_emails = 6;
+  optional string suggested_avatar_url = 7;
+  optional AuthResponse auth_response = 8;
+  bool merge_required = 9;
+  optional string merge_ticket = 10;
+  string other_user_username = 11;
+  int32 other_build_count = 12;
+  repeated string other_build_names = 13;
+  repeated string other_emails = 14;
+  repeated string other_oauth_providers = 15;
 }
 
 message DeleteAccountRequest {
@@ -293,6 +320,27 @@ message SetPrimaryEmailResponse {
   string message = 2;
 }
 
+message StartOAuthRequest {
+  OAuthProvider provider = 1;
+  OAuthPurpose purpose = 2;
+  string redirect_path = 3;
+}
+
+message StartOAuthResponse {
+  string authorization_url = 1;
+  string state = 2;
+  optional string challenge_id = 3;
+}
+
+message UnlinkOAuthRequest {
+  OAuthProvider provider = 1;
+}
+
+message UnlinkOAuthResponse {
+  bool success = 1;
+  string message = 2;
+}
+
 message UpdateProfileRequest {
   optional string avatar_url = 1;
   optional string bio = 2;
@@ -363,6 +411,20 @@ enum LoginChallengeStatus {
   LOGIN_CHALLENGE_STATUS_APPROVED = 2;
   LOGIN_CHALLENGE_STATUS_DENIED = 3;
   LOGIN_CHALLENGE_STATUS_EXPIRED = 4;
+}
+
+enum OAuthProvider {
+  OAUTH_PROVIDER_UNSPECIFIED = 0;
+  OAUTH_PROVIDER_GOOGLE = 1;
+  OAUTH_PROVIDER_GITHUB = 2;
+  OAUTH_PROVIDER_DISCORD = 3;
+}
+
+enum OAuthPurpose {
+  OAUTH_PURPOSE_UNSPECIFIED = 0;
+  OAUTH_PURPOSE_LOGIN = 1;
+  OAUTH_PURPOSE_ADD_EMAIL = 2;
+  OAUTH_PURPOSE_CLI_LOGIN = 3;
 }
 
 message OtpVerificationError {

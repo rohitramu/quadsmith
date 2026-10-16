@@ -27,6 +27,10 @@ import {
   OtpVerificationErrorSchema,
   LoginChallengeStatus,
   SessionSchema,
+  StartOAuthResponseSchema,
+  CompleteOAuthResponseSchema,
+  UnlinkOAuthResponseSchema,
+  OAuthPurpose,
 } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import {
   UserService,
@@ -995,6 +999,68 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           nextAllowedNewRenameAt: undefined,
           nextAllowedArchiveRenameAt: undefined,
         };
+      },
+
+      startOAuth: (req) => {
+        return create(StartOAuthResponseSchema, {
+          authorizationUrl: `https://mock-oauth-provider.com/auth?state=mock-state&provider=${req.provider}`,
+          state: "mock-oauth-state-token",
+          challengeId: "mock-oauth-challenge-id",
+        });
+      },
+      completeOAuth: (req) => {
+        if (req.code === "error" || req.state === "error") {
+          throw new ConnectError("OAuth exchange failed", Code.InvalidArgument);
+        }
+        if (req.code === "setup" || req.code?.includes("new")) {
+          return create(CompleteOAuthResponseSchema, {
+            success: true,
+            message: "Account setup required",
+            suggestedAvatarUrl: "https://mock.avatar/user.jpg",
+            authResponse: {
+              accountSetupRequired: true,
+              setupToken: "mock-oauth-setup-token",
+              accessToken: "",
+              refreshToken: "",
+            },
+          });
+        }
+        if (req.code === "cli") {
+          return create(CompleteOAuthResponseSchema, {
+            success: true,
+            message: "CLI login approved",
+            purpose: OAuthPurpose.OAUTH_PURPOSE_CLI_LOGIN,
+          });
+        }
+        if (req.code === "merge") {
+          return create(CompleteOAuthResponseSchema, {
+            success: true,
+            message: "Account merge required",
+            mergeRequired: true,
+            mergeTicket: "mock-oauth-merge-ticket",
+            otherUserUsername: "conflicting_pilot",
+            otherBuildCount: 3,
+            otherBuildNames: ["Apex 5 HD", "Nazgul Evoque", "Sub250 LR"],
+            otherEmails: ["pilot@external.org"],
+            otherOauthProviders: ["github"],
+          });
+        }
+        return create(CompleteOAuthResponseSchema, {
+          success: true,
+          message: "OAuth login successful",
+          authResponse: {
+            accessToken: "mock-jwt-token",
+            refreshToken: "mock-refresh-token",
+            user: mockUser,
+            profile: mockProfile,
+          },
+        });
+      },
+      unlinkOAuth: (_req) => {
+        return create(UnlinkOAuthResponseSchema, {
+          success: true,
+          message: "Unlinked OAuth provider",
+        });
       },
 
       ...(options.authService || {}),

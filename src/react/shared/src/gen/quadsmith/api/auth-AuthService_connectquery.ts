@@ -118,3 +118,18 @@ export const deleteAccount = AuthService.method.deleteAccount;
  * @generated from rpc quadsmith.api.AuthService.CancelAccountDeletion
  */
 export const cancelAccountDeletion = AuthService.method.cancelAccountDeletion;
+
+/**
+ * @generated from rpc quadsmith.api.AuthService.StartOAuth
+ */
+export const startOAuth = AuthService.method.startOAuth;
+
+/**
+ * @generated from rpc quadsmith.api.AuthService.CompleteOAuth
+ */
+export const completeOAuth = AuthService.method.completeOAuth;
+
+/**
+ * @generated from rpc quadsmith.api.AuthService.UnlinkOAuth
+ */
+export const unlinkOAuth = AuthService.method.unlinkOAuth;

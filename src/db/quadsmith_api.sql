@@ -317,10 +317,9 @@ CREATE TABLE IF NOT EXISTS oauth_accounts (
   user_uuid UUID NOT NULL,
   provider TEXT NOT NULL,
   provider_account_id TEXT NOT NULL,
-  access_token TEXT NOT NULL,
-  refresh_token TEXT NOT NULL,
-  token_expires_at TIMESTAMPTZ,
-  created_at TIMESTAMPTZ
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  CONSTRAINT oauth_accounts_provider_provider_account_id_key UNIQUE (provider, provider_account_id),
+  CONSTRAINT oauth_accounts_user_uuid_provider_key UNIQUE (user_uuid, provider)
 );
 
 CREATE INDEX IF NOT EXISTS idx_oauth_accounts_user_uuid ON oauth_accounts (user_uuid);

@@ -5,6 +5,8 @@ import {
   AuthService,
   EmailOtpPurpose,
   LoginChallengeStatus,
+  OAuthProvider,
+  OAuthPurpose,
 } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import type {
   ChangeUsernameResponse,
@@ -15,6 +17,7 @@ import type {
   GetLoginChallengeStatusResponse,
   SendEmailOtpResponse,
   VerifyEmailOtpResponse,
+  CompleteOAuthResponse,
   Session,
 } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import { UserService } from "@quadsmith/shared/gen/quadsmith/api/user_pb";
@@ -127,6 +130,13 @@ export interface AuthContextType {
     code?: string | null,
     magicToken?: string | null,
   ) => Promise<VerifyEmailOtpResponse>;
+  startOAuth: (
+    provider: OAuthProvider,
+    purpose?: OAuthPurpose,
+    redirectPath?: string,
+  ) => Promise<{ authorizationUrl: string; state: string; challengeId?: string }>;
+  completeOAuth: (code: string, state: string) => Promise<CompleteOAuthResponse>;
+  unlinkOAuth: (provider: OAuthProvider) => Promise<{ success: boolean; message: string }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -629,6 +639,55 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     });
   };
 
+  const startOAuth = useCallback(
+    async (
+      provider: OAuthProvider,
+      purpose: OAuthPurpose = OAuthPurpose.OAUTH_PURPOSE_LOGIN,
+      redirectPath?: string,
+    ) => {
+      const res = await authClient.startOAuth({
+        provider,
+        purpose,
+        redirectPath: redirectPath || "/login",
+      });
+      return {
+        authorizationUrl: res.authorizationUrl,
+        state: res.state,
+        challengeId: res.challengeId,
+      };
+    },
+    [authClient],
+  );
+
+  const completeOAuth = useCallback(
+    async (code: string, state: string): Promise<CompleteOAuthResponse> => {
+      const res = await authClient.completeOAuth({ code, state });
+      if (res.authResponse?.accessToken) {
+        setAccessToken(res.authResponse.accessToken);
+        if (res.authResponse.user) {
+          setUser(res.authResponse.user);
+        }
+        if (res.authResponse.profile) {
+          setProfile(res.authResponse.profile);
+        }
+        await refreshEmails();
+      } else if (res.success && res.purpose === OAuthPurpose.OAUTH_PURPOSE_ADD_EMAIL) {
+        await refreshEmails();
+      }
+      return res;
+    },
+    [authClient, refreshEmails],
+  );
+
+  const unlinkOAuth = useCallback(
+    async (provider: OAuthProvider) => {
+      const res = await authClient.unlinkOAuth({ provider });
+      await refreshEmails();
+      return { success: res.success, message: res.message };
+    },
+    [authClient, refreshEmails],
+  );
+
   return (
     <AuthContext.Provider
       value={{
@@ -664,6 +723,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         checkUsernameAvailable,
         sendDataExportVerification,
         verifyDataExport,
+        startOAuth,
+        completeOAuth,
+        unlinkOAuth,
       }}
     >
       {children}

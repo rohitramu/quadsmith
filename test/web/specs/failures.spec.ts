@@ -13,7 +13,7 @@ test.describe("Failure Modes, Input Validations & Fault Injection", () => {
     const emailInput = page.getByRole("textbox", { name: /email/i });
     await emailInput.fill("invalid-email-format");
 
-    const submitBtn = page.getByRole("button", { name: /continue|send|submit/i });
+    const submitBtn = page.getByRole("button", { name: /send verification code/i });
     await expect(submitBtn).toBeVisible();
     await submitBtn.click();
     await expect(

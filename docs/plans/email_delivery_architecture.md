@@ -166,7 +166,7 @@ To balance convenience, zero recurring costs, and universal access, Quadsmith
 implements a hybrid authentication strategy:
 
 1. **Third-Party Identity Delegation (OAuth 2.0 / OpenID Connect)**:
-   - Users authenticate with Google, GitHub, Discord, or Microsoft.
+   - Users authenticate with Google, GitHub, or Discord.
    - The provider signs a cryptographic JWT (`id_token`) attesting that the
      account owner possesses the verified email address.
    - **Cost to Quadsmith**: $0.00.
@@ -183,8 +183,8 @@ implements a hybrid authentication strategy:
 ##### <a id="oauth-only-authentication" >OAuth-Only Authentication</a>
 
 Restricting platform sign-in exclusively to third-party identity providers
-(Google, GitHub, Discord, Microsoft), eliminating email verification entirely.
-Users without supported OAuth accounts cannot register or sign in.
+(Google, GitHub, Discord), eliminating email verification entirely. Users
+without supported OAuth accounts cannot register or sign in.
 
 **Pros:**
 

@@ -13,7 +13,6 @@
   - [Soft-Deletion, Account Banning, and Resurrection Lifecycle](#soft-deletion-account-banning-and-resurrection-lifecycle)
 - [3. Assumptions](#3-assumptions)
 - [4. Future work](#4-future-work)
-  - [Meta OAuth Provider Support](#meta-oauth-provider-support)
   - [Automated OTP Pruning Worker](#automated-otp-pruning-worker)
   - [Active Sessions Management UI](#active-sessions-management-ui)
   - [Fine-Grained Temporary Bans and Audit Trail](#fine-grained-temporary-bans-and-audit-trail)
@@ -34,7 +33,7 @@ soft-delete content preservation.
 > **TL;DR:**
 >
 > - Eliminate passwords entirely in favor of passwordless Email OTP (3-minute
->   TTL) and multi-provider OAuth (Google, GitHub, Discord, Microsoft).
+>   TTL) and multi-provider OAuth (Google, GitHub, Discord).
 > - Deploy a hybrid session strategy: short-lived stateless JWT access tokens (1
 >   hour) paired with database-backed revocable refresh tokens (30 days).
 > - Mitigate brute force attacks via two-tier throttling: 3 failed attempts per
@@ -84,9 +83,6 @@ erDiagram
         uuid user_uuid FK
         text provider
         text provider_account_id
-        text access_token
-        text refresh_token
-        timestamptz token_expires_at
         timestamptz created_at
     }
     email_otps {
@@ -123,9 +119,8 @@ Users authenticate without static passwords via two pathways:
   before database persistence. Users enter the code directly on the web
   application without navigating away.
 - **OAuth Providers**: Integrations with major developer and enthusiast
-  platforms (Google, GitHub, Discord, Microsoft). OAuth accounts link provider
-  account IDs and automatically ingest user avatars and verified email
-  addresses.
+  platforms (Google, GitHub, Discord). OAuth accounts link provider account IDs
+  and automatically ingest user avatars and verified email addresses.
 
 #### <a id="alternatives-considered-passwordless-auth" >Alternatives considered</a>
 
@@ -263,11 +258,6 @@ questions, and answers.
 ---
 
 ## <a id="4-future-work" >4. Future work</a>
-
-### <a id="meta-oauth-provider-support" >Meta OAuth Provider Support</a>
-
-Expand social login capabilities to include Meta (Facebook/Instagram) OAuth once
-developer app credentials and review requirements are finalized.
 
 ### <a id="automated-otp-pruning-worker" >Automated OTP Pruning Worker</a>
 

@@ -46,6 +46,7 @@ type AuthConfig struct {
 	MagicLinkTTL     time.Duration
 	EmailCooldown    time.Duration
 	Email            *config.EmailConfig
+	OAuth            *config.AuthOAuthConfig
 }
 
 func FromProtoAuthConfig(p *config.AuthConfig) *AuthConfig {
@@ -63,6 +64,7 @@ func FromProtoAuthConfig(p *config.AuthConfig) *AuthConfig {
 		MagicLinkTTL:     p.GetMagicLinkTtl().AsDuration(),
 		EmailCooldown:    p.GetEmailCooldown().AsDuration(),
 		Email:            p.GetEmail(),
+		OAuth:            p.GetOauth(),
 	}
 }
 
@@ -71,6 +73,7 @@ type AuthService struct {
 	db          *pgxpool.Pool
 	cfg         *AuthConfig
 	emailSender email.EmailSender
+	oauthClient OAuthClient
 }
 
 func NewAuthService(db *pgxpool.Pool, protoCfg ...*config.AuthConfig) *AuthService {
@@ -108,12 +111,18 @@ func NewAuthService(db *pgxpool.Pool, protoCfg ...*config.AuthConfig) *AuthServi
 		db:          db,
 		cfg:         authCfg,
 		emailSender: sender,
+		oauthClient: NewOAuthClient(authCfg.OAuth),
 	}
 }
 
 // SetEmailSender overrides the active EmailSender implementation (useful for tests).
 func (s *AuthService) SetEmailSender(sender email.EmailSender) {
 	s.emailSender = sender
+}
+
+// SetOAuthClient overrides the active OAuthClient implementation (useful for tests).
+func (s *AuthService) SetOAuthClient(client OAuthClient) {
+	s.oauthClient = client
 }
 
 func purposeToDBString(p pb.EmailOtpPurpose) string {
@@ -1107,10 +1116,11 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 	if setupToken == "" {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("setup token required"))
 	}
-	email, err := VerifySetupToken(setupToken)
+	claims, err := VerifySetupTokenClaims(setupToken)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeUnauthenticated, fmt.Errorf("invalid or expired setup token: %w", err))
 	}
+	email := claims.Email
 
 	username := strings.ToLower(strings.TrimSpace(req.Msg.GetUsername()))
 	if IsReservedUsername(username) {
@@ -1172,6 +1182,9 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 
 	profileUUID := NewUUIDv7()
 	avatarURL := strings.TrimSpace(req.Msg.GetAvatarUrl())
+	if avatarURL == "" && claims.AvatarURL != "" {
+		avatarURL = claims.AvatarURL
+	}
 	_, err = tx.Exec(ctx, `
 		INSERT INTO user_profiles (uuid, user_uuid, avatar_url, bio, updated_at)
 		VALUES ($1, $2, $3, '', $4)`,
@@ -1180,17 +1193,70 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create profile: %w", err))
 	}
 
+	verifiedViaOTP := claims.Provider == ""
 	emailUUID := NewUUIDv7()
 	_, err = tx.Exec(ctx, `
 		INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
-		VALUES ($1, $2, $3, true, true, $4)`,
-		emailUUID, userUUID, email, now)
+		VALUES ($1, $2, $3, true, $4, $5)`,
+		emailUUID, userUUID, email, verifiedViaOTP, now)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user email: %w", err))
 	}
 
+	// If signed up via OAuth, link the provider and secondary emails
+	if claims.Provider != "" && claims.ProviderAccountID != "" {
+		oauthUUID := NewUUIDv7()
+		_, err = tx.Exec(ctx, `
+			INSERT INTO oauth_accounts (uuid, user_uuid, provider, provider_account_id, created_at)
+			VALUES ($1, $2, $3, $4, $5)`,
+			oauthUUID, userUUID, claims.Provider, claims.ProviderAccountID, now)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to insert oauth account: %w", err))
+		}
+
+		linkUUID := NewUUIDv7()
+		_, err = tx.Exec(ctx, `
+			INSERT INTO user_email_oauth_accounts (uuid, user_email_uuid, oauth_account_uuid, created_at)
+			VALUES ($1, $2, $3, $4)`,
+			linkUUID, emailUUID, oauthUUID, now)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to link email to oauth account: %w", err))
+		}
+
+		for _, secEmail := range claims.VerifiedEmails {
+			secNorm := strings.ToLower(strings.TrimSpace(secEmail))
+			if secNorm == "" || strings.EqualFold(secNorm, email) {
+				continue
+			}
+			secEmailUUID := NewUUIDv7()
+			_, err = tx.Exec(ctx, `
+				INSERT INTO user_emails (uuid, user_uuid, email, is_primary, verified_via_otp, created_at)
+				VALUES ($1, $2, $3, false, false, $4)
+				ON CONFLICT (email) DO NOTHING`,
+				secEmailUUID, userUUID, secNorm, now)
+			if err != nil {
+				continue
+			}
+			secLinkUUID := NewUUIDv7()
+			_, _ = tx.Exec(ctx, `
+				INSERT INTO user_email_oauth_accounts (uuid, user_email_uuid, oauth_account_uuid, created_at)
+				SELECT $1, uuid, $2, $3 FROM user_emails WHERE LOWER(email) = LOWER($4) AND user_uuid = $5
+				ON CONFLICT (user_email_uuid, oauth_account_uuid) DO NOTHING`,
+				secLinkUUID, oauthUUID, now, secNorm, userUUID)
+		}
+	}
+
 	if err := tx.Commit(ctx); err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to commit account creation: %w", err))
+	}
+
+	// If this was initiated from a CLI login challenge, mark the challenge approved
+	if claims.ChallengeIDHash != "" {
+		_, _ = s.db.Exec(ctx, `
+			UPDATE email_otps
+			SET status = 'approved', email = $1, used_at = NULL
+			WHERE challenge_id_hash = $2 AND status = 'pending'`,
+			email, claims.ChallengeIDHash)
 	}
 
 	clientIP := getClientIP(req)
@@ -1871,12 +1937,17 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 		transferredEmails = append(transferredEmails, emLower)
 	}
 
-	// 5. Transfer OAuth accounts
+	// 5. Transfer OAuth accounts (avoiding duplicate provider conflicts)
 	_, _ = tx.Exec(ctx, `
-		UPDATE oauth_accounts
+		UPDATE oauth_accounts oa
 		SET user_uuid = $1
-		WHERE user_uuid = $2`,
+		WHERE user_uuid = $2
+		  AND NOT EXISTS (
+		      SELECT 1 FROM oauth_accounts oa2
+		      WHERE oa2.user_uuid = $1 AND oa2.provider = oa.provider
+		  )`,
 		userCtx.UserUUID, otherUserUUID)
+	_, _ = tx.Exec(ctx, `DELETE FROM oauth_accounts WHERE user_uuid = $1`, otherUserUUID)
 
 	// 6. Transfer and record username history
 	_, _ = tx.Exec(ctx, `
@@ -2015,6 +2086,15 @@ func (s *AuthService) RemoveUserEmail(ctx context.Context, req *connect.Request[
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
+
+	// Prune any orphaned oauth_accounts for this user that have no remaining email links
+	_, _ = s.db.Exec(ctx, `
+		DELETE FROM oauth_accounts oa
+		WHERE oa.user_uuid = $1
+		  AND NOT EXISTS (
+		      SELECT 1 FROM user_email_oauth_accounts uea
+		      WHERE uea.oauth_account_uuid = oa.uuid
+		  )`, userCtx.UserUUID)
 
 	return connect.NewResponse(&pb.RemoveUserEmailResponse{
 		Success: true,
@@ -2186,6 +2266,469 @@ func (s *AuthService) UnlinkOAuthAccount(ctx context.Context, userUUID, provider
 	}
 
 	return tx.Commit(ctx)
+}
+
+func (s *AuthService) StartOAuth(ctx context.Context, req *connect.Request[pb.StartOAuthRequest]) (*connect.Response[pb.StartOAuthResponse], error) {
+	provider := req.Msg.GetProvider()
+	if provider == pb.OAuthProvider_OAUTH_PROVIDER_UNSPECIFIED {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("valid oauth provider is required"))
+	}
+
+	purpose := req.Msg.GetPurpose()
+	if purpose == pb.OAuthPurpose_OAUTH_PURPOSE_UNSPECIFIED {
+		purpose = pb.OAuthPurpose_OAUTH_PURPOSE_LOGIN
+	}
+
+	var requesterUserUUID string
+	if purpose == pb.OAuthPurpose_OAUTH_PURPOSE_ADD_EMAIL {
+		userCtx := UserContextFromContext(ctx)
+		if userCtx == nil {
+			return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required to link oauth provider"))
+		}
+		requesterUserUUID = userCtx.UserUUID
+	}
+
+	var challengeID, challengeIDHash string
+	if purpose == pb.OAuthPurpose_OAUTH_PURPOSE_CLI_LOGIN {
+		challengeID = NewUUIDv7()
+		challengeIDHash = HashToken(challengeID)
+		otpUUID := NewUUIDv7()
+		expiresAt := time.Now().Add(10 * time.Minute)
+		_, err := s.db.Exec(ctx, `
+			INSERT INTO email_otps (uuid, email, otp_code_hash, purpose, status, challenge_id_hash, expires_at, created_at)
+			VALUES ($1, 'cli_oauth@quadsmith.internal', '', 'cli_oauth', 'pending', $2, $3, NOW())`,
+			otpUUID, challengeIDHash, expiresAt)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create cli oauth challenge: %w", err))
+		}
+	}
+
+	baseURL := ""
+	if s.cfg != nil && s.cfg.OAuth != nil && s.cfg.OAuth.GetWebBaseUrl() != "" {
+		baseURL = s.cfg.OAuth.GetWebBaseUrl()
+	} else if origin := req.Header().Get("Origin"); origin != "" {
+		baseURL = origin
+	} else {
+		baseURL = "http://localhost:5173"
+	}
+
+	redirectPath := req.Msg.GetRedirectPath()
+	if redirectPath == "" {
+		redirectPath = "/login"
+	}
+	redirectURI := strings.TrimRight(baseURL, "/") + "/" + strings.TrimLeft(redirectPath, "/")
+
+	codeVerifier, codeChallenge, err := GeneratePKCE()
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate pkce: %w", err))
+	}
+
+	providerStr := OAuthProviderToString(provider)
+	var purposeStr string
+	switch purpose {
+	case pb.OAuthPurpose_OAUTH_PURPOSE_ADD_EMAIL:
+		purposeStr = "add_email"
+	case pb.OAuthPurpose_OAUTH_PURPOSE_CLI_LOGIN:
+		purposeStr = "cli_login"
+	default:
+		purposeStr = "login"
+	}
+
+	state, err := SignOAuthState(providerStr, purposeStr, codeVerifier, redirectURI, requesterUserUUID, challengeIDHash)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign oauth state: %w", err))
+	}
+
+	authURL, err := s.oauthClient.GetAuthorizationURL(provider, state, codeChallenge, redirectURI)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	res := &pb.StartOAuthResponse{
+		AuthorizationUrl: authURL,
+		State:            state,
+	}
+	if challengeID != "" {
+		res.ChallengeId = &challengeID
+	}
+	return connect.NewResponse(res), nil
+}
+
+func (s *AuthService) CompleteOAuth(ctx context.Context, req *connect.Request[pb.CompleteOAuthRequest]) (*connect.Response[pb.CompleteOAuthResponse], error) {
+	code := strings.TrimSpace(req.Msg.GetCode())
+	state := strings.TrimSpace(req.Msg.GetState())
+	if code == "" || state == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("code and state are required"))
+	}
+
+	stateClaims, err := VerifyOAuthState(state)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, fmt.Errorf("invalid or expired oauth state: %w", err))
+	}
+
+	provider := StringToOAuthProvider(stateClaims.Provider)
+	identity, err := s.oauthClient.ExchangeCode(ctx, provider, code, stateClaims.CodeVerifier, stateClaims.RedirectURI)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("oauth token exchange failed: %w", err))
+	}
+
+	purpose := pb.OAuthPurpose_OAUTH_PURPOSE_LOGIN
+	switch stateClaims.Purpose {
+	case "add_email":
+		purpose = pb.OAuthPurpose_OAUTH_PURPOSE_ADD_EMAIL
+	case "cli_login":
+		purpose = pb.OAuthPurpose_OAUTH_PURPOSE_CLI_LOGIN
+	}
+
+	if purpose == pb.OAuthPurpose_OAUTH_PURPOSE_ADD_EMAIL {
+		return s.completeOAuthAddEmail(ctx, req, provider, purpose, identity, stateClaims)
+	}
+	return s.completeOAuthLogin(ctx, req, provider, purpose, identity, stateClaims)
+}
+
+func (s *AuthService) completeOAuthAddEmail(
+	ctx context.Context,
+	req *connect.Request[pb.CompleteOAuthRequest],
+	provider pb.OAuthProvider,
+	purpose pb.OAuthPurpose,
+	identity *OAuthIdentity,
+	stateClaims *OAuthStateClaims,
+) (*connect.Response[pb.CompleteOAuthResponse], error) {
+	requesterUserUUID := stateClaims.RequesterUserUUID
+	userCtx := UserContextFromContext(ctx)
+	if requesterUserUUID == "" && userCtx != nil {
+		requesterUserUUID = userCtx.UserUUID
+	}
+	if requesterUserUUID == "" {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required to link oauth provider"))
+	}
+
+	// 1. Check if oauth provider account is already linked to another user
+	var otherOAuthUserUUID string
+	err := s.db.QueryRow(ctx, `
+		SELECT user_uuid FROM oauth_accounts
+		WHERE LOWER(provider) = $1 AND provider_account_id = $2`,
+		strings.ToLower(identity.Provider), identity.ProviderAccountID).Scan(&otherOAuthUserUUID)
+	if err == nil && otherOAuthUserUUID != requesterUserUUID {
+		return s.buildOAuthMergeResponse(ctx, provider, purpose, identity, requesterUserUUID, otherOAuthUserUUID)
+	}
+
+	// 2. Check if any verified email belongs to another active user
+	var otherEmailUserUUID string
+	err = s.db.QueryRow(ctx, `
+		SELECT DISTINCT ue.user_uuid
+		FROM user_emails ue
+		JOIN users u ON u.uuid = ue.user_uuid
+		WHERE LOWER(ue.email) = ANY($1) AND ue.user_uuid != $2 AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())
+		LIMIT 1`,
+		identity.VerifiedEmails, requesterUserUUID).Scan(&otherEmailUserUUID)
+	if err == nil && otherEmailUserUUID != "" && otherEmailUserUUID != requesterUserUUID {
+		return s.buildOAuthMergeResponse(ctx, provider, purpose, identity, requesterUserUUID, otherEmailUserUUID)
+	}
+
+	// 3. No conflict: Link oauth account and all verified emails
+	err = s.LinkOAuthAccount(ctx, requesterUserUUID, identity.Provider, identity.ProviderAccountID, identity.PrimaryEmail)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to link oauth account: %w", err))
+	}
+	for _, sec := range identity.VerifiedEmails {
+		if !strings.EqualFold(sec, identity.PrimaryEmail) {
+			_ = s.LinkOAuthAccount(ctx, requesterUserUUID, identity.Provider, identity.ProviderAccountID, sec)
+		}
+	}
+
+	return connect.NewResponse(&pb.CompleteOAuthResponse{
+		Success:            true,
+		Message:            "OAuth provider connected successfully",
+		Provider:           provider,
+		Purpose:            purpose,
+		PrimaryEmail:       identity.PrimaryEmail,
+		VerifiedEmails:     identity.VerifiedEmails,
+		SuggestedAvatarUrl: &identity.AvatarURL,
+	}), nil
+}
+
+func (s *AuthService) completeOAuthLogin(
+	ctx context.Context,
+	req *connect.Request[pb.CompleteOAuthRequest],
+	provider pb.OAuthProvider,
+	purpose pb.OAuthPurpose,
+	identity *OAuthIdentity,
+	stateClaims *OAuthStateClaims,
+) (*connect.Response[pb.CompleteOAuthResponse], error) {
+	// 1. Check for matching users via oauth_accounts or verified emails
+	matchedUUIDs := make([]string, 0, 2)
+
+	var directOAuthUserUUID string
+	err := s.db.QueryRow(ctx, `
+		SELECT user_uuid FROM oauth_accounts
+		WHERE LOWER(provider) = $1 AND provider_account_id = $2`,
+		strings.ToLower(identity.Provider), identity.ProviderAccountID).Scan(&directOAuthUserUUID)
+	if err == nil && directOAuthUserUUID != "" {
+		matchedUUIDs = append(matchedUUIDs, directOAuthUserUUID)
+	}
+
+	rows, err := s.db.Query(ctx, `
+		SELECT DISTINCT ue.user_uuid
+		FROM user_emails ue
+		JOIN users u ON u.uuid = ue.user_uuid
+		WHERE LOWER(ue.email) = ANY($1) AND (u.deleted_at IS NULL OR u.deleted_at + INTERVAL '30 days' > NOW())`,
+		identity.VerifiedEmails)
+	if err == nil {
+		defer rows.Close()
+		for rows.Next() {
+			var uUUID string
+			if err := rows.Scan(&uUUID); err == nil && uUUID != "" && !slices.Contains(matchedUUIDs, uUUID) {
+				matchedUUIDs = append(matchedUUIDs, uUUID)
+			}
+		}
+	}
+
+	// Case A: 0 matched users -> Brand new user setup required
+	if len(matchedUUIDs) == 0 {
+		setupToken, err := SignOAuthSetupToken(identity.PrimaryEmail, identity.VerifiedEmails, identity.Provider, identity.ProviderAccountID, identity.AvatarURL, stateClaims.ChallengeIDHash)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign setup token: %w", err))
+		}
+
+		return connect.NewResponse(&pb.CompleteOAuthResponse{
+			Success:            true,
+			Message:            "Account setup required",
+			Provider:           provider,
+			Purpose:            purpose,
+			PrimaryEmail:       identity.PrimaryEmail,
+			VerifiedEmails:     identity.VerifiedEmails,
+			SuggestedAvatarUrl: &identity.AvatarURL,
+			AuthResponse: &pb.AuthResponse{
+				AccountSetupRequired: true,
+				SetupToken:           setupToken,
+			},
+		}), nil
+	}
+
+	// Case B: Exactly 1 matched user -> Log in
+	primaryUserUUID := matchedUUIDs[0]
+
+	// Resurrect if soft-deleted within 30 days
+	_, _ = s.db.Exec(ctx, `UPDATE users SET deleted_at = NULL WHERE uuid = $1 AND deleted_at IS NOT NULL`, primaryUserUUID)
+
+	// Link oauth account and all verified emails
+	_ = s.LinkOAuthAccount(ctx, primaryUserUUID, identity.Provider, identity.ProviderAccountID, identity.PrimaryEmail)
+	for _, sec := range identity.VerifiedEmails {
+		if !strings.EqualFold(sec, identity.PrimaryEmail) {
+			_ = s.LinkOAuthAccount(ctx, primaryUserUUID, identity.Provider, identity.ProviderAccountID, sec)
+		}
+	}
+
+	// Backfill avatar URL if empty
+	if identity.AvatarURL != "" {
+		_, _ = s.db.Exec(ctx, `
+			UPDATE user_profiles
+			SET avatar_url = $1, updated_at = NOW()
+			WHERE user_uuid = $2 AND (avatar_url IS NULL OR avatar_url = '')`,
+			identity.AvatarURL, primaryUserUUID)
+	}
+
+	// If this was initiated from a CLI login challenge, mark the challenge approved
+	if purpose == pb.OAuthPurpose_OAUTH_PURPOSE_CLI_LOGIN && stateClaims.ChallengeIDHash != "" {
+		_, _ = s.db.Exec(ctx, `
+			UPDATE email_otps
+			SET status = 'approved', email = $1, used_at = NULL
+			WHERE challenge_id_hash = $2 AND status = 'pending'`,
+			identity.PrimaryEmail, stateClaims.ChallengeIDHash)
+	}
+
+	clientIP := getClientIP(req)
+	RecordIPSuccess(clientIP)
+	if err := CheckAndRecordIPSignIn(clientIP, identity.PrimaryEmail); err != nil {
+		return nil, connect.NewError(connect.CodeResourceExhausted, err)
+	}
+
+	locationHint := extractLocationHint(req.Header(), clientIP)
+	authRes, err := s.issueAuthSession(ctx, identity.PrimaryEmail, req.Header().Get("User-Agent"), clientIP, locationHint)
+	if err != nil {
+		return nil, err
+	}
+
+	// Case C: If > 1 matched users, also attach merge required payload
+	if len(matchedUUIDs) > 1 {
+		otherUserUUID := matchedUUIDs[1]
+		mergeTicket, err := SignMergeTicket(primaryUserUUID, otherUserUUID, identity.PrimaryEmail, time.Now().Add(15*time.Minute))
+		if err == nil {
+			var otherUsername string
+			_ = s.db.QueryRow(ctx, `SELECT id FROM users WHERE uuid = $1`, otherUserUUID).Scan(&otherUsername)
+
+			var otherBuildCount int
+			_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false`, otherUserUUID).Scan(&otherBuildCount)
+
+			var otherBuildNames []string
+			bRows, err := s.db.Query(ctx, `SELECT name FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false ORDER BY updated_at DESC LIMIT 5`, otherUserUUID)
+			if err == nil {
+				defer bRows.Close()
+				for bRows.Next() {
+					var bn string
+					if err := bRows.Scan(&bn); err == nil && bn != "" {
+						otherBuildNames = append(otherBuildNames, bn)
+					}
+				}
+			}
+
+			var otherEmails []string
+			eRows, err := s.db.Query(ctx, `SELECT email FROM user_emails WHERE user_uuid = $1`, otherUserUUID)
+			if err == nil {
+				defer eRows.Close()
+				for eRows.Next() {
+					var em string
+					if err := eRows.Scan(&em); err == nil && em != "" {
+						otherEmails = append(otherEmails, em)
+					}
+				}
+			}
+
+			var otherProviders []string
+			pRows, err := s.db.Query(ctx, `SELECT DISTINCT provider FROM oauth_accounts WHERE user_uuid = $1`, otherUserUUID)
+			if err == nil {
+				defer pRows.Close()
+				for pRows.Next() {
+					var p string
+					if err := pRows.Scan(&p); err == nil && p != "" {
+						otherProviders = append(otherProviders, p)
+					}
+				}
+			}
+
+			res := connect.NewResponse(&pb.CompleteOAuthResponse{
+				Success:             true,
+				Message:             "Authenticated with primary account. Additional accounts match your verified emails.",
+				Provider:            provider,
+				Purpose:             purpose,
+				PrimaryEmail:        identity.PrimaryEmail,
+				VerifiedEmails:      identity.VerifiedEmails,
+				SuggestedAvatarUrl:  &identity.AvatarURL,
+				AuthResponse:        authRes.Msg,
+				MergeRequired:       true,
+				MergeTicket:         &mergeTicket,
+				OtherUserUsername:   otherUsername,
+				OtherBuildCount:     int32(otherBuildCount),
+				OtherBuildNames:     otherBuildNames,
+				OtherEmails:         otherEmails,
+				OtherOauthProviders: otherProviders,
+			})
+			for _, cookie := range authRes.Header().Values("Set-Cookie") {
+				res.Header().Add("Set-Cookie", cookie)
+			}
+			return res, nil
+		}
+	}
+
+	res := connect.NewResponse(&pb.CompleteOAuthResponse{
+		Success:            true,
+		Message:            "Successfully authenticated",
+		Provider:           provider,
+		Purpose:            purpose,
+		PrimaryEmail:       identity.PrimaryEmail,
+		VerifiedEmails:     identity.VerifiedEmails,
+		SuggestedAvatarUrl: &identity.AvatarURL,
+		AuthResponse:       authRes.Msg,
+	})
+	for _, cookie := range authRes.Header().Values("Set-Cookie") {
+		res.Header().Add("Set-Cookie", cookie)
+	}
+	return res, nil
+}
+
+func (s *AuthService) buildOAuthMergeResponse(
+	ctx context.Context,
+	provider pb.OAuthProvider,
+	purpose pb.OAuthPurpose,
+	identity *OAuthIdentity,
+	sourceUserUUID, targetUserUUID string,
+) (*connect.Response[pb.CompleteOAuthResponse], error) {
+	mergeTicket, err := SignMergeTicket(sourceUserUUID, targetUserUUID, identity.PrimaryEmail, time.Now().Add(15*time.Minute))
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign merge ticket: %w", err))
+	}
+
+	var otherUsername string
+	_ = s.db.QueryRow(ctx, `SELECT id FROM users WHERE uuid = $1`, targetUserUUID).Scan(&otherUsername)
+
+	var otherBuildCount int
+	_ = s.db.QueryRow(ctx, `SELECT COUNT(*) FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false`, targetUserUUID).Scan(&otherBuildCount)
+
+	var otherBuildNames []string
+	bRows, err := s.db.Query(ctx, `SELECT name FROM entities WHERE user_uuid = $1 AND collection = 'builds' AND is_archived = false ORDER BY updated_at DESC LIMIT 5`, targetUserUUID)
+	if err == nil {
+		defer bRows.Close()
+		for bRows.Next() {
+			var bn string
+			if err := bRows.Scan(&bn); err == nil && bn != "" {
+				otherBuildNames = append(otherBuildNames, bn)
+			}
+		}
+	}
+
+	var otherEmails []string
+	eRows, err := s.db.Query(ctx, `SELECT email FROM user_emails WHERE user_uuid = $1`, targetUserUUID)
+	if err == nil {
+		defer eRows.Close()
+		for eRows.Next() {
+			var em string
+			if err := eRows.Scan(&em); err == nil && em != "" {
+				otherEmails = append(otherEmails, em)
+			}
+		}
+	}
+
+	var otherProviders []string
+	pRows, err := s.db.Query(ctx, `SELECT DISTINCT provider FROM oauth_accounts WHERE user_uuid = $1`, targetUserUUID)
+	if err == nil {
+		defer pRows.Close()
+		for pRows.Next() {
+			var p string
+			if err := pRows.Scan(&p); err == nil && p != "" {
+				otherProviders = append(otherProviders, p)
+			}
+		}
+	}
+
+	return connect.NewResponse(&pb.CompleteOAuthResponse{
+		Success:             false,
+		Message:             "An account already exists with one or more of these verified emails. Please confirm whether you wish to merge accounts.",
+		Provider:            provider,
+		Purpose:             purpose,
+		PrimaryEmail:        identity.PrimaryEmail,
+		VerifiedEmails:      identity.VerifiedEmails,
+		SuggestedAvatarUrl:  &identity.AvatarURL,
+		MergeRequired:       true,
+		MergeTicket:         &mergeTicket,
+		OtherUserUsername:   otherUsername,
+		OtherBuildCount:     int32(otherBuildCount),
+		OtherBuildNames:     otherBuildNames,
+		OtherEmails:         otherEmails,
+		OtherOauthProviders: otherProviders,
+	}), nil
+}
+
+func (s *AuthService) UnlinkOAuth(ctx context.Context, req *connect.Request[pb.UnlinkOAuthRequest]) (*connect.Response[pb.UnlinkOAuthResponse], error) {
+	userCtx := UserContextFromContext(ctx)
+	if userCtx == nil {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+
+	provider := req.Msg.GetProvider()
+	if provider == pb.OAuthProvider_OAUTH_PROVIDER_UNSPECIFIED {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("valid oauth provider required"))
+	}
+
+	providerStr := OAuthProviderToString(provider)
+	if err := s.UnlinkOAuthAccount(ctx, userCtx.UserUUID, providerStr); err != nil {
+		return nil, err
+	}
+
+	return connect.NewResponse(&pb.UnlinkOAuthResponse{
+		Success: true,
+		Message: "OAuth provider unlinked successfully",
+	}), nil
 }
 
 func (s *AuthService) ListArchivedUsernames(ctx context.Context, _ *connect.Request[pb.ListArchivedUsernamesRequest]) (*connect.Response[pb.ListArchivedUsernamesResponse], error) {

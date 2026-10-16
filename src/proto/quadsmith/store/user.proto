@@ -137,7 +137,11 @@ message EmailOtp {
 }
 
 message OAuthAccount {
-  option (quadsmith.sql.table) = {name: "oauth_accounts"};
+  option (quadsmith.sql.table) = {
+    name: "oauth_accounts"
+    unique_constraints: "provider, provider_account_id"
+    unique_constraints: "user_uuid, provider"
+  };
   option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_ACCOUNT};
 
   string uuid = 1 [
@@ -151,12 +155,12 @@ message OAuthAccount {
     },
     (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
-  string provider = 3 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED]; // "google", "github"
+  string provider = 3 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED]; // "google", "github", "discord"
   string provider_account_id = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
-  string access_token = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_SECRET];
-  string refresh_token = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_SECRET];
-  google.protobuf.Timestamp token_expires_at = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_SECRET];
-  google.protobuf.Timestamp created_at = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+  google.protobuf.Timestamp created_at = 5 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
 }
 
 message RefreshToken {

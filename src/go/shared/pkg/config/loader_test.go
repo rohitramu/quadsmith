@@ -211,6 +211,10 @@ auth {
   email {
     console {}
   }
+  oauth {
+    web_base_url: "http://localhost:5173"
+    mock {}
+  }
 }
 `
 	if err := os.WriteFile(configPath, []byte(content), 0644); err != nil {
@@ -333,6 +337,12 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	t.Setenv("QS_OAUTH_CLIENT_ID", "dummy-client-id")
 	t.Setenv("QS_OAUTH_CLIENT_SECRET", "dummy-client-secret")
 	t.Setenv("QS_SMTP_PASSWORD", "dummy-smtp-password")
+	t.Setenv("QS_GOOGLE_CLIENT_ID", "dummy-google-id")
+	t.Setenv("QS_GOOGLE_CLIENT_SECRET", "dummy-google-secret")
+	t.Setenv("QS_GITHUB_CLIENT_ID", "dummy-github-id")
+	t.Setenv("QS_GITHUB_CLIENT_SECRET", "dummy-github-secret")
+	t.Setenv("QS_DISCORD_CLIENT_ID", "dummy-discord-id")
+	t.Setenv("QS_DISCORD_CLIENT_SECRET", "dummy-discord-secret")
 
 	apiStagingPath := filepath.Join("..", "..", "..", "server-api", "config", "staging.textproto")
 	apiStaging, err := LoadAPIServerConfig(apiStagingPath)
