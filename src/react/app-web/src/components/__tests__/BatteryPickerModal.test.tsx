@@ -113,6 +113,30 @@ describe("BatteryPickerModal Component", () => {
     expect(handleClose).toHaveBeenCalled();
   });
 
+  it("allows selecting 'None' option to clear battery selection", async () => {
+    const user = userEvent.setup();
+    const handleSelect = vi.fn();
+    const handleClose = vi.fn();
+
+    renderWithProviders(
+      <BatteryPickerModal
+        isOpen={true}
+        onClose={handleClose}
+        selectedBatteryId={mockBattery1.id}
+        onSelectBattery={handleSelect}
+        limits={defaultLimits}
+        compatibleBatteries={[mockBattery1]}
+        allBatteries={[mockBattery1, mockBatteryIncompatible]}
+      />,
+    );
+
+    const noneOption = screen.getByText("None (No battery selected)");
+    await user.click(noneOption);
+
+    expect(handleSelect).toHaveBeenCalledWith("", undefined);
+    expect(handleClose).toHaveBeenCalled();
+  });
+
   it("filters batteries by search query", async () => {
     const user = userEvent.setup();
 

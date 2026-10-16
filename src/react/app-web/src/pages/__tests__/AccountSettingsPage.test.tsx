@@ -324,7 +324,9 @@ describe("AccountSettingsPage Component", () => {
     fireEvent.change(bioTextarea, { target: { value: "FPV freestyle pilot and bando crusher." } });
 
     // Now save button is enabled and shows modified indicators
-    expect(saveBtn).not.toBeDisabled();
+    await waitFor(() => {
+      expect(saveBtn).not.toBeDisabled();
+    });
     expect(screen.getByText("Unsaved changes")).toBeInTheDocument();
     expect(screen.getByText("Modified")).toBeInTheDocument();
 

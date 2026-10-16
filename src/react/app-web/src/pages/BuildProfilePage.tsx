@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef, useCallback } from "react";
 import { useQuery } from "@connectrpc/connect-query";
 import { keepPreviousData } from "@tanstack/react-query";
 import { getBuild } from "@quadsmith/shared/gen/quadsmith/api/build-BuildService_connectquery";
@@ -45,6 +45,7 @@ import {
   ExternalLink,
   AlertTriangle,
   AlertOctagon,
+  AlertCircle,
   Sliders,
   Layers,
   Zap,
@@ -224,16 +225,21 @@ export function BuildProfilePage() {
   // Selected battery object state (for custom or incompatible selection)
   const [selectedBatteryObj, setSelectedBatteryObj] = useState<Battery | null>(null);
 
+  // Track whether the default battery has been initialized for the current build
+  const initializedBuildRef = useRef<string | null | undefined>(null);
+
   // Reset selected battery when changing builds
   useEffect(() => {
+    initializedBuildRef.current = null;
     setSelectedBatteryId("");
     setSelectedBatteryObj(null);
     setActiveSocialTab("reviews");
   }, [buildId]);
 
-  // Lightest compatible battery selected by default when empty
+  // Lightest compatible battery selected by default on initial build load
   useEffect(() => {
-    if (!selectedBatteryId && compatibleBatteries.length > 0) {
+    if (initializedBuildRef.current !== buildId && compatibleBatteries.length > 0) {
+      initializedBuildRef.current = buildId;
       if (
         electricalLimits?.defaultBatteryId &&
         compatibleBatteries.some(
@@ -247,7 +253,16 @@ export function BuildProfilePage() {
         setSelectedBatteryId(compatibleBatteries[0].id || compatibleBatteries[0].uuid);
       }
     }
-  }, [electricalLimits, compatibleBatteries, selectedBatteryId]);
+  }, [buildId, electricalLimits, compatibleBatteries]);
+
+  const handleSelectBattery = useCallback(
+    (id: string, battery?: Battery) => {
+      initializedBuildRef.current = buildId;
+      setSelectedBatteryId(id);
+      setSelectedBatteryObj(battery || null);
+    },
+    [buildId],
+  );
 
   const {
     data: compatibilityResponse,
@@ -473,6 +488,8 @@ export function BuildProfilePage() {
       placeholderData: keepPreviousData,
     },
   );
+
+  const activeEvaluation = selectedBatteryId ? evaluation : undefined;
 
   if (isLoadingBuild) {
     return (
@@ -703,10 +720,7 @@ export function BuildProfilePage() {
                 <div className="flex items-center gap-1.5 my-1.5">
                   <BatteryCombobox
                     selectedBatteryId={selectedBatteryId}
-                    onSelectBattery={(id, battery) => {
-                      setSelectedBatteryId(id);
-                      if (battery) setSelectedBatteryObj(battery);
-                    }}
+                    onSelectBattery={handleSelectBattery}
                     batteries={comboboxBatteries}
                     isLoading={isLoadingBatteries}
                     ariaLabel="Select battery"
@@ -852,7 +866,19 @@ export function BuildProfilePage() {
             </div>
 
             {/* Evaluation Metrics Cards */}
-            {isLoadingEvaluation && !evaluation ? (
+            {!selectedBatteryId ? (
+              <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 flex items-start gap-3 mb-6">
+                <AlertCircle size={20} className="shrink-0 mt-0.5 text-amber-500" />
+                <div>
+                  <div className="font-bold text-sm">Evaluation Paused</div>
+                  <p className="text-xs mt-1 text-amber-700 dark:text-amber-400 leading-relaxed">
+                    Select a battery to calculate live flight telemetry, including All-Up Weight
+                    (AUW), thrust-to-weight ratio, top speed, hover throttle, and flight time
+                    estimates.
+                  </p>
+                </div>
+              </div>
+            ) : isLoadingEvaluation && !activeEvaluation ? (
               <div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                   {[1, 2, 3, 4, 5, 6].map((i) => (
@@ -874,7 +900,7 @@ export function BuildProfilePage() {
               <div className="p-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-sm">
                 Evaluation error: {evalError.message}
               </div>
-            ) : evaluation ? (
+            ) : activeEvaluation ? (
               <div
                 className={`transition-opacity duration-150 ${
                   isFetchingEvaluation ? "opacity-75" : "opacity-100"
@@ -889,7 +915,7 @@ export function BuildProfilePage() {
                     </div>
                     <div>
                       <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
-                        {evaluation.allUpWeightG.toFixed(2)}
+                        {activeEvaluation.allUpWeightG.toFixed(2)}
                         <span className="text-sm font-normal text-zinc-500 ml-1">g</span>
                       </div>
                       <div className="text-[11px] text-zinc-500 mt-1">
@@ -908,13 +934,13 @@ export function BuildProfilePage() {
                     </div>
                     <div>
                       <div
-                        className={`text-2xl sm:text-3xl font-bold mt-1 ${getTwrColor(evaluation.thrustToWeightRatio).text}`}
+                        className={`text-2xl sm:text-3xl font-bold mt-1 ${getTwrColor(activeEvaluation.thrustToWeightRatio).text}`}
                       >
-                        {evaluation.thrustToWeightRatio.toFixed(1)}
+                        {activeEvaluation.thrustToWeightRatio.toFixed(1)}
                         <span className="text-sm font-normal text-zinc-500 ml-1">: 1</span>
                       </div>
                       <div className="text-[11px] text-zinc-500 mt-1">
-                        {getTwrDescription(evaluation.thrustToWeightRatio)}
+                        {getTwrDescription(activeEvaluation.thrustToWeightRatio)}
                       </div>
                     </div>
                   </div>
@@ -927,12 +953,12 @@ export function BuildProfilePage() {
                     </div>
                     <div>
                       <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
-                        {evaluation.maxAccelerationMps2.toFixed(1)}
+                        {activeEvaluation.maxAccelerationMps2.toFixed(1)}
                         <span className="text-sm font-normal text-zinc-500 ml-1">m/s²</span>
                       </div>
                       <div className="text-[11px] text-zinc-500 mt-1">
-                        {evaluation.maxAccelerationMps2 > 0
-                          ? `~${(evaluation.maxAccelerationMps2 / 9.80665).toFixed(1)} G vertical punchout`
+                        {activeEvaluation.maxAccelerationMps2 > 0
+                          ? `~${(activeEvaluation.maxAccelerationMps2 / 9.80665).toFixed(1)} G vertical punchout`
                           : "No positive climb"}
                       </div>
                     </div>
@@ -946,12 +972,12 @@ export function BuildProfilePage() {
                     </div>
                     <div>
                       <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
-                        {Math.round(evaluation.topSpeedKmh)}
+                        {Math.round(activeEvaluation.topSpeedKmh)}
                         <span className="text-sm font-normal text-zinc-500 ml-1">km/h</span>
                       </div>
                       <div className="text-[11px] text-zinc-500 mt-1">
-                        {evaluation.topSpeedKmh > 0
-                          ? `~${Math.round(evaluation.topSpeedKmh * 0.621371)} mph terminal`
+                        {activeEvaluation.topSpeedKmh > 0
+                          ? `~${Math.round(activeEvaluation.topSpeedKmh * 0.621371)} mph terminal`
                           : "Insufficient forward thrust"}
                       </div>
                     </div>
@@ -965,17 +991,17 @@ export function BuildProfilePage() {
                     </div>
                     <div>
                       <div
-                        className={`text-2xl sm:text-3xl font-bold mt-1 ${getHoverThrottleColor(evaluation.hoverThrottlePercent).text}`}
+                        className={`text-2xl sm:text-3xl font-bold mt-1 ${getHoverThrottleColor(activeEvaluation.hoverThrottlePercent).text}`}
                       >
-                        {evaluation.hoverThrottlePercent.toFixed(1)}
+                        {activeEvaluation.hoverThrottlePercent.toFixed(1)}
                         <span className="text-sm font-normal text-zinc-500 ml-1">%</span>
                       </div>
                       {/* Progress bar */}
                       <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full mt-2 overflow-hidden">
                         <div
-                          className={`h-full rounded-full transition-all duration-300 ${getHoverThrottleColor(evaluation.hoverThrottlePercent).bar}`}
+                          className={`h-full rounded-full transition-all duration-300 ${getHoverThrottleColor(activeEvaluation.hoverThrottlePercent).bar}`}
                           style={{
-                            width: `${Math.min(100, evaluation.hoverThrottlePercent)}%`,
+                            width: `${Math.min(100, activeEvaluation.hoverThrottlePercent)}%`,
                           }}
                         />
                       </div>
@@ -983,8 +1009,9 @@ export function BuildProfilePage() {
                         className="text-[11px] text-zinc-500 mt-1"
                         title="Average propeller RPM at hover assuming sea-level air pressure (1.225 kg/m³), no wind, and horizontal stability"
                       >
-                        {evaluation.hoverThrottlePercent <= 100 && evaluation.hoverRpm > 0
-                          ? `~${evaluation.hoverRpm.toLocaleString()} prop RPM`
+                        {activeEvaluation.hoverThrottlePercent <= 100 &&
+                        activeEvaluation.hoverRpm > 0
+                          ? `~${activeEvaluation.hoverRpm.toLocaleString()} prop RPM`
                           : "Cannot achieve hover"}
                       </div>
                     </div>
@@ -998,10 +1025,11 @@ export function BuildProfilePage() {
                     </div>
                     <div>
                       <div className="text-xl sm:text-2xl lg:text-3xl font-bold mt-1 text-blue-600 dark:text-blue-400">
-                        {evaluation.minFlightTimeMin > 0 && evaluation.maxFlightTimeMin > 0
-                          ? `${evaluation.minFlightTimeMin.toFixed(1)} – ${evaluation.maxFlightTimeMin.toFixed(1)}`
-                          : evaluation.maxFlightTimeMin > 0
-                            ? `~${evaluation.maxFlightTimeMin.toFixed(1)}`
+                        {activeEvaluation.minFlightTimeMin > 0 &&
+                        activeEvaluation.maxFlightTimeMin > 0
+                          ? `${activeEvaluation.minFlightTimeMin.toFixed(1)} – ${activeEvaluation.maxFlightTimeMin.toFixed(1)}`
+                          : activeEvaluation.maxFlightTimeMin > 0
+                            ? `~${activeEvaluation.maxFlightTimeMin.toFixed(1)}`
                             : "—"}
                         <span className="text-sm font-normal text-zinc-500 ml-1">min</span>
                       </div>
@@ -1014,10 +1042,10 @@ export function BuildProfilePage() {
 
                 {/* Diagnostic Alerts / Compatibility Checks */}
                 {(() => {
-                  const errors = evaluation.systemMessages.filter(
+                  const errors = activeEvaluation.systemMessages.filter(
                     (m) => m.severity === SystemMessageSeverity.ERROR,
                   );
-                  const warnings = evaluation.systemMessages.filter(
+                  const warnings = activeEvaluation.systemMessages.filter(
                     (m) => m.severity === SystemMessageSeverity.WARNING,
                   );
 
@@ -1121,10 +1149,7 @@ export function BuildProfilePage() {
         isOpen={isBatteryModalOpen}
         onClose={() => setIsBatteryModalOpen(false)}
         selectedBatteryId={selectedBatteryId}
-        onSelectBattery={(id, battery) => {
-          setSelectedBatteryId(id);
-          if (battery) setSelectedBatteryObj(battery);
-        }}
+        onSelectBattery={handleSelectBattery}
         limits={electricalLimits}
         compatibleBatteries={compatibleBatteries}
         isLoading={isLoadingBatteries}
