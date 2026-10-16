@@ -90,7 +90,7 @@ export function UserBadge({
     <span
       data-testid="user-badge"
       title={badgeTitle}
-      className={`inline-flex items-center font-mono shrink-0 transition-all select-none ${palette.bgClass} ${palette.textClass} ${borderClasses} ${shadowClasses} ${fontClasses} ${paddingClasses} ${className}`}
+      className={`inline-flex items-center font-mono shrink-0 transition-all select-text ${palette.bgClass} ${palette.textClass} ${borderClasses} ${shadowClasses} ${fontClasses} ${paddingClasses} ${className}`}
     >
       {withAvatar && (
         <span

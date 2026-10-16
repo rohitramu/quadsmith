@@ -26,6 +26,7 @@ import type { ArchivedUsername, Session } from "@quadsmith/shared/gen/quadsmith/
 import { EmailOtpPurpose } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
 import { UsernameAvailabilityStatus } from "@quadsmith/shared/gen/quadsmith/api/user_pb";
 import { EmailVerificationModal } from "../components/EmailVerificationModal";
+import { UserBadge } from "../components/UserBadge";
 import { getAvatarPalette, getInitial, getApiBaseUrl } from "@quadsmith/shared";
 
 export function AccountSettingsPage() {
@@ -672,11 +673,8 @@ export function AccountSettingsPage() {
           )}
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Account Settings</h1>
-            <div className="flex items-center gap-2 mt-0.5">
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
-                Username:{" "}
-                <span className="font-semibold text-zinc-800 dark:text-zinc-200">@{user?.id}</span>
-              </p>
+            <div className="flex items-center gap-2.5 mt-1.5 flex-wrap">
+              <UserBadge username={user?.id} size="sm" withHoverCard={false} to={null} />
               {!isBanned ? (
                 <button
                   type="button"
@@ -1622,9 +1620,12 @@ export function AccountSettingsPage() {
                   >
                     <div className="space-y-0.5">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                          @{item.username}
-                        </span>
+                        <UserBadge
+                          username={item.username}
+                          size="sm"
+                          withHoverCard={false}
+                          to={null}
+                        />
                         {item.canReclaimNow ? (
                           <span className="px-2 py-0.5 rounded text-[10px] font-medium bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
                             Reclaim Available

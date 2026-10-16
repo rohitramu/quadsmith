@@ -97,10 +97,6 @@ func streamArchive(ctx context.Context, pool *pgxpool.Pool, zw *zip.Writer, user
 	if err != nil {
 		return err
 	}
-	reputations, err := pb.ExportUserReputations(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
 
 	accArchive := struct {
 		Users                  []json.RawMessage `json:"users"`
@@ -109,7 +105,6 @@ func streamArchive(ctx context.Context, pool *pgxpool.Pool, zw *zip.Writer, user
 		OAuthAccounts          []json.RawMessage `json:"oauth_accounts"`
 		UserEmailOAuthAccounts []json.RawMessage `json:"user_email_oauth_accounts"`
 		UsernameHistories      []json.RawMessage `json:"username_histories"`
-		UserReputations        []json.RawMessage `json:"user_reputations"`
 	}{
 		Users:                  mustProtoSlice(users),
 		UserProfiles:           mustProtoSlice(profiles),
@@ -117,7 +112,6 @@ func streamArchive(ctx context.Context, pool *pgxpool.Pool, zw *zip.Writer, user
 		OAuthAccounts:          mustProtoSlice(oauths),
 		UserEmailOAuthAccounts: mustProtoSlice(emailOauths),
 		UsernameHistories:      mustProtoSlice(histories),
-		UserReputations:        mustProtoSlice(reputations),
 	}
 	if err := writeJSONToZip(zw, "account.json", accArchive); err != nil {
 		return err

@@ -597,7 +597,7 @@ message UserReputation {
     name: "user_reputations"
     unique_constraints: ["user_uuid"]
   };
-  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_ACCOUNT};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
 
   string uuid = 1 [
     (quadsmith.sql.column) = {is_primary_key: true},
@@ -612,11 +612,11 @@ message UserReputation {
   ];
   int32 score = 3 [
     (quadsmith.sql.column) = {default_value: "0"},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
   ];
   google.protobuf.Timestamp updated_at = 4 [
     (quadsmith.sql.column) = {default_value: "NOW()"},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
   ];
 }
 

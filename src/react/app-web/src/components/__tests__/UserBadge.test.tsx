@@ -205,4 +205,17 @@ describe("UserBadge Component", () => {
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
     expect(screen.getByTestId("user-badge")).toHaveTextContent("@alex");
   });
+
+  it("ensures username pill text is selectable", () => {
+    renderWithProviders(
+      <Routes>
+        <Route path="/" element={<UserBadge username="alex" withHoverCard={false} />} />
+      </Routes>,
+      { route: "/" },
+    );
+
+    const badge = screen.getByTestId("user-badge");
+    expect(badge.className).not.toContain("select-none");
+    expect(badge.className).toContain("select-text");
+  });
 });

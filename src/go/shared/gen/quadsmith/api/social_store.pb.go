@@ -3529,48 +3529,6 @@ func ListUserReputations(ctx context.Context, db *pgxpool.Pool, cols []string, s
 	return results, nil
 }
 
-func ExportUserReputations(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*UserReputation, error) {
-	query := `SELECT uuid, user_uuid, score, updated_at FROM user_reputations WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
-	rows, err := db.Query(ctx, query, userUUID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	results := make([]*UserReputation, 0)
-	for rows.Next() {
-		scanArgs := make([]interface{}, 4)
-		scanAssigns := make([]func(), 0, 4)
-		m := &UserReputation{}
-		scanArgs[0] = &m.Uuid
-		var v1 *string
-		scanArgs[1] = &v1
-		scanAssigns = append(scanAssigns, func() {
-			if v1 != nil {
-				m.UserUuid = *v1
-			}
-		})
-		scanArgs[2] = &m.Score
-		var v3 *time.Time
-		scanArgs[3] = &v3
-		scanAssigns = append(scanAssigns, func() {
-			if v3 != nil {
-				m.UpdatedAt = timestamppb.New(*v3)
-			}
-		})
-		err := rows.Scan(scanArgs...)
-		if err != nil {
-			return nil, err
-		}
-		for _, assign := range scanAssigns {
-			assign()
-		}
-		if m.Score != 0 || m.UpdatedAt != nil {
-			results = append(results, m)
-		}
-	}
-	return results, nil
-}
-
 func CreateCollection(ctx context.Context, tx pgx.Tx, m *Collection) error {
 	query := `INSERT INTO collections (uuid, id, user_uuid, name, description, is_system_collection, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
