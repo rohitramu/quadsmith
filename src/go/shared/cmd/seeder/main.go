@@ -17,6 +17,7 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 	pb "quadsmith/shared/gen/quadsmith/api"
+	storepb "quadsmith/shared/gen/quadsmith/store"
 )
 
 func main() {
@@ -104,10 +105,9 @@ func main() {
 			}
 			now := time.Now()
 			twoDaysAgo := now.Add(-48 * time.Hour)
-			if err := pb.CreateUser(ctx, tx, &pb.User{
+			if err := storepb.CreateUser(ctx, tx, &storepb.User{
 				Uuid:      userUUID,
 				Id:        u.Id,
-				Email:     u.Email,
 				Role:      u.Role,
 				CreatedAt: timestamppb.New(twoDaysAgo),
 				UpdatedAt: timestamppb.New(now),
@@ -115,7 +115,7 @@ func main() {
 				panic(err)
 			}
 
-			if err := pb.CreateUserProfile(ctx, tx, &pb.UserProfile{
+			if err := storepb.CreateUserProfile(ctx, tx, &storepb.UserProfile{
 				Uuid:      authcontext.NewUUIDv7(),
 				UserUuid:  userUUID,
 				AvatarUrl: "",
@@ -125,7 +125,7 @@ func main() {
 				panic(err)
 			}
 
-			if err := pb.CreateUserEmail(ctx, tx, &pb.UserEmail{
+			if err := storepb.CreateUserEmail(ctx, tx, &storepb.UserEmail{
 				Uuid:      authcontext.NewUUIDv7(),
 				UserUuid:  userUUID,
 				Email:     u.Email,
@@ -135,7 +135,7 @@ func main() {
 				panic(err)
 			}
 
-			if err := pb.CreateUserReputation(ctx, tx, &pb.UserReputation{
+			if err := storepb.CreateUserReputation(ctx, tx, &storepb.UserReputation{
 				Uuid:      authcontext.NewUUIDv7(),
 				UserUuid:  userUUID,
 				Score:     u.ReputationScore,

@@ -26,6 +26,10 @@ message TableOptions {
 
   // Partial or expression UNIQUE indexes.
   repeated UniqueIndex unique_indexes = 4;
+
+  // Base table that this table inherits shared columns from via a 1:1 PK/FK
+  // relationship (e.g., "entities").
+  string inherits = 5;
 }
 
 message UniqueIndex {
@@ -58,9 +62,6 @@ message ColumnOptions {
 
   // Default value expression for the column (e.g., "4", "'pending'", "NOW()").
   string default_value = 7;
-
-  // If true, this field is an API-only field and will not be generated in the SQL schema or store operations.
-  bool ignore = 8;
 }
 
 // ---------------------------------------------------------

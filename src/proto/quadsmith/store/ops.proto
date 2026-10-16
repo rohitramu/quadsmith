@@ -1,0 +1,118 @@
+syntax = "proto3";
+
+package quadsmith.store;
+
+import "google/protobuf/timestamp.proto";
+import "quadsmith/data/data.proto";
+import "quadsmith/sql/sql.proto";
+
+option go_package = "quadsmith/shared/gen/quadsmith/store;store";
+
+// ---------------------------------------------------------
+// Domain model
+// ---------------------------------------------------------
+
+message InternalApiCallRecord {
+  option (quadsmith.sql.table) = {name: "internal_api_calls"};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string id = 2 [
+    (quadsmith.sql.column) = {is_unique: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string method = 3 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string caller = 4 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  string caller_type = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string group_name = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  optional string jit_grant_uuid = 7 [
+    (quadsmith.sql.column) = {
+      references: "jit_grants(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  string status = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  optional string error_message = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  int64 duration_ms = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  google.protobuf.Timestamp created_at = 12 [
+    (quadsmith.sql.column) = {
+      create_index: true
+      default_value: "NOW()"
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+}
+
+message InternalTokenRecord {
+  option (quadsmith.sql.table) = {name: "internal_tokens"};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string id = 2 [
+    (quadsmith.sql.column) = {is_unique: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string name = 3 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string type = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE]; // 'HUMAN' or 'ROBOT'
+  string group_name = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string token_hash = 6 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_SECRET
+  ];
+  google.protobuf.Timestamp expires_at = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  google.protobuf.Timestamp created_at = 8 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  google.protobuf.Timestamp revoked_at = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+}
+
+message JitGrantRecord {
+  option (quadsmith.sql.table) = {name: "jit_grants"};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string id = 2 [
+    (quadsmith.sql.column) = {is_unique: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string token_hash = 3 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_SECRET
+  ];
+  string operator = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string operator_type = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE]; // 'HUMAN' or 'ROBOT'
+  string reason = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string operation = 7 [
+    (quadsmith.sql.column) = {default_value: "'*'"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  string status = 8 [
+    (quadsmith.sql.column) = {
+      create_index: true
+      default_value: "'ACTIVE'"
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  int32 hours = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  google.protobuf.Timestamp expires_at = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  google.protobuf.Timestamp created_at = 11 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  google.protobuf.Timestamp extended_at = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  google.protobuf.Timestamp revoked_at = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+}

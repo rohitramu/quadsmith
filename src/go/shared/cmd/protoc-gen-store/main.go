@@ -27,12 +27,34 @@ func main() {
 	})
 }
 
-func getTableName(msg *protogen.Message) string {
+var entityInheritedFields = map[string]bool{
+	"id":                    true,
+	"name":                  true,
+	"description":           true,
+	"reference_links":       true,
+	"primary_display_image": true,
+	"media":                 true,
+	"user_uuid":             true,
+	"author_username":       true,
+}
+
+func isInheritedField(tblOpts *sqlpb.TableOptions, fieldName string) bool {
+	return tblOpts != nil && tblOpts.GetInherits() == "entities" && entityInheritedFields[fieldName]
+}
+
+func getTableOptions(msg *protogen.Message) *sqlpb.TableOptions {
 	opts := msg.Desc.Options()
 	if proto.HasExtension(opts, sqlpb.E_Table) {
 		if tblOpts, ok := proto.GetExtension(opts, sqlpb.E_Table).(*sqlpb.TableOptions); ok && tblOpts != nil && tblOpts.Name != "" {
-			return tblOpts.Name
+			return tblOpts
 		}
+	}
+	return nil
+}
+
+func getTableName(msg *protogen.Message) string {
+	if tblOpts := getTableOptions(msg); tblOpts != nil {
+		return tblOpts.Name
 	}
 	return ""
 }
@@ -139,17 +161,18 @@ func isTimestampField(field *protogen.Field) bool {
 }
 
 func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
-	tableName := getTableName(msg)
-	if tableName == "" {
+	tblOpts := getTableOptions(msg)
+	if tblOpts == nil {
 		return
 	}
+	tableName := tblOpts.Name
 
 	msgName := msg.GoIdent.GoName
 	collPath := getCollectionPath(msg)
-	hasEntitiesJoin := collPath != "" && tableName != "entities"
+	hasEntitiesJoin := tblOpts.GetInherits() == "entities" || (collPath != "" && tableName != "entities")
 
 	collName := ""
-	if hasEntitiesJoin {
+	if hasEntitiesJoin && collPath != "" {
 		parts := strings.Split(collPath, "/")
 		collName = parts[len(parts)-1]
 	}
@@ -157,13 +180,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	// activeFields: fields stored directly in tableName (for INSERT/UPDATE)
 	var activeFields []*protogen.Field
 	for _, field := range msg.Fields {
-		var colOpt *sqlpb.ColumnOptions
-		if proto.HasExtension(field.Desc.Options(), sqlpb.E_Column) {
-			if co, ok := proto.GetExtension(field.Desc.Options(), sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
-				colOpt = co
-			}
-		}
-		if colOpt != nil && colOpt.Ignore {
+		if isInheritedField(tblOpts, string(field.Desc.Name())) {
 			continue
 		}
 		activeFields = append(activeFields, field)
@@ -171,7 +188,7 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 
 	// readableFields: fields accessible for SELECT (Get and List)
 	var readableFields []*protogen.Field
-	if hasEntitiesJoin || tableName == "entities" {
+	if hasEntitiesJoin {
 		readableFields = msg.Fields
 	} else {
 		readableFields = activeFields
@@ -264,8 +281,6 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	fromClause := tableName
 	if hasEntitiesJoin {
 		fromClause = tableName + " INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid"
-	} else if tableName == "entities" {
-		fromClause = tableName + " LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid"
 	}
 
 	// --- GET ---

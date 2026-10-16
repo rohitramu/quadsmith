@@ -27,7 +27,10 @@ service ChargerService {
 // ---------------------------------------------------------
 
 message Charger {
-  option (quadsmith.sql.table) = {name: "chargers"};
+  option (quadsmith.sql.table) = {
+    name: "chargers"
+    inherits: "entities"
+  };
   option (quadsmith.common.collection_path) = "components/gear/chargers";
   option (quadsmith.data.export) = {
     domain: EXPORT_DOMAIN_COMPONENTS
@@ -51,18 +54,12 @@ message Charger {
     },
     (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
-  string id = 2 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
+  string id = 2 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
   string manufacturer = 3 [
     (quadsmith.sql.column) = {create_index: true},
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
   ];
-  string name = 4 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
+  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   float weight_g = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   uint32 channels = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   float max_charge_power_w = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
@@ -70,30 +67,12 @@ message Charger {
   string input_voltage_range = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   string supported_chemistries = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   uint32 max_cells_s = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string description = 12 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  repeated ReferenceLink reference_links = 13 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  optional string primary_display_image = 14 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  repeated Media media = 15 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  optional string user_uuid = 16 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
-  optional string author_username = 17 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
+  string description = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  repeated ReferenceLink reference_links = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional string primary_display_image = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  repeated Media media = 15 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional string user_uuid = 16 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  optional string author_username = 17 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 }
 
 // ---------------------------------------------------------

@@ -9,6 +9,7 @@ plugins:
   - plugin: sql
     out: ../db
     path: ../../bin/protoc-gen-sql
+    strategy: all
   - plugin: store
     out: ../go/shared/gen
     path: ../../bin/protoc-gen-store

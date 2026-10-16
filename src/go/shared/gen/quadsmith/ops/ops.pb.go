@@ -10,8 +10,6 @@ import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
-	_ "quadsmith/shared/gen/quadsmith/data"
-	_ "quadsmith/shared/gen/quadsmith/sql"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -24,39 +22,38 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type JitGrantRecord struct {
+type InternalApiCallRecord struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	TokenHash     string                 `protobuf:"bytes,3,opt,name=token_hash,json=tokenHash,proto3" json:"token_hash,omitempty"`
-	Operator      string                 `protobuf:"bytes,4,opt,name=operator,proto3" json:"operator,omitempty"`
-	OperatorType  string                 `protobuf:"bytes,5,opt,name=operator_type,json=operatorType,proto3" json:"operator_type,omitempty"` // 'HUMAN' or 'ROBOT'
-	Reason        string                 `protobuf:"bytes,6,opt,name=reason,proto3" json:"reason,omitempty"`
-	Operation     string                 `protobuf:"bytes,7,opt,name=operation,proto3" json:"operation,omitempty"`
-	Status        string                 `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"`
-	Hours         int32                  `protobuf:"varint,9,opt,name=hours,proto3" json:"hours,omitempty"`
-	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	ExtendedAt    *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=extended_at,json=extendedAt,proto3" json:"extended_at,omitempty"`
-	RevokedAt     *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=revoked_at,json=revokedAt,proto3" json:"revoked_at,omitempty"`
+	Method        string                 `protobuf:"bytes,3,opt,name=method,proto3" json:"method,omitempty"`
+	Caller        string                 `protobuf:"bytes,4,opt,name=caller,proto3" json:"caller,omitempty"`
+	CallerType    string                 `protobuf:"bytes,5,opt,name=caller_type,json=callerType,proto3" json:"caller_type,omitempty"`
+	GroupName     string                 `protobuf:"bytes,6,opt,name=group_name,json=groupName,proto3" json:"group_name,omitempty"`
+	JitGrantUuid  *string                `protobuf:"bytes,7,opt,name=jit_grant_uuid,json=jitGrantUuid,proto3,oneof" json:"jit_grant_uuid,omitempty"`
+	JitGrantId    *string                `protobuf:"bytes,8,opt,name=jit_grant_id,json=jitGrantId,proto3,oneof" json:"jit_grant_id,omitempty"`
+	Status        string                 `protobuf:"bytes,9,opt,name=status,proto3" json:"status,omitempty"`
+	ErrorMessage  *string                `protobuf:"bytes,10,opt,name=error_message,json=errorMessage,proto3,oneof" json:"error_message,omitempty"`
+	DurationMs    int64                  `protobuf:"varint,11,opt,name=duration_ms,json=durationMs,proto3" json:"duration_ms,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *JitGrantRecord) Reset() {
-	*x = JitGrantRecord{}
+func (x *InternalApiCallRecord) Reset() {
+	*x = InternalApiCallRecord{}
 	mi := &file_quadsmith_ops_ops_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *JitGrantRecord) String() string {
+func (x *InternalApiCallRecord) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*JitGrantRecord) ProtoMessage() {}
+func (*InternalApiCallRecord) ProtoMessage() {}
 
-func (x *JitGrantRecord) ProtoReflect() protoreflect.Message {
+func (x *InternalApiCallRecord) ProtoReflect() protoreflect.Message {
 	mi := &file_quadsmith_ops_ops_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -68,98 +65,91 @@ func (x *JitGrantRecord) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use JitGrantRecord.ProtoReflect.Descriptor instead.
-func (*JitGrantRecord) Descriptor() ([]byte, []int) {
+// Deprecated: Use InternalApiCallRecord.ProtoReflect.Descriptor instead.
+func (*InternalApiCallRecord) Descriptor() ([]byte, []int) {
 	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *JitGrantRecord) GetUuid() string {
+func (x *InternalApiCallRecord) GetUuid() string {
 	if x != nil {
 		return x.Uuid
 	}
 	return ""
 }
 
-func (x *JitGrantRecord) GetId() string {
+func (x *InternalApiCallRecord) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *JitGrantRecord) GetTokenHash() string {
+func (x *InternalApiCallRecord) GetMethod() string {
 	if x != nil {
-		return x.TokenHash
+		return x.Method
 	}
 	return ""
 }
 
-func (x *JitGrantRecord) GetOperator() string {
+func (x *InternalApiCallRecord) GetCaller() string {
 	if x != nil {
-		return x.Operator
+		return x.Caller
 	}
 	return ""
 }
 
-func (x *JitGrantRecord) GetOperatorType() string {
+func (x *InternalApiCallRecord) GetCallerType() string {
 	if x != nil {
-		return x.OperatorType
+		return x.CallerType
 	}
 	return ""
 }
 
-func (x *JitGrantRecord) GetReason() string {
+func (x *InternalApiCallRecord) GetGroupName() string {
 	if x != nil {
-		return x.Reason
+		return x.GroupName
 	}
 	return ""
 }
 
-func (x *JitGrantRecord) GetOperation() string {
-	if x != nil {
-		return x.Operation
+func (x *InternalApiCallRecord) GetJitGrantUuid() string {
+	if x != nil && x.JitGrantUuid != nil {
+		return *x.JitGrantUuid
 	}
 	return ""
 }
 
-func (x *JitGrantRecord) GetStatus() string {
+func (x *InternalApiCallRecord) GetJitGrantId() string {
+	if x != nil && x.JitGrantId != nil {
+		return *x.JitGrantId
+	}
+	return ""
+}
+
+func (x *InternalApiCallRecord) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
 	return ""
 }
 
-func (x *JitGrantRecord) GetHours() int32 {
+func (x *InternalApiCallRecord) GetErrorMessage() string {
+	if x != nil && x.ErrorMessage != nil {
+		return *x.ErrorMessage
+	}
+	return ""
+}
+
+func (x *InternalApiCallRecord) GetDurationMs() int64 {
 	if x != nil {
-		return x.Hours
+		return x.DurationMs
 	}
 	return 0
 }
 
-func (x *JitGrantRecord) GetExpiresAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ExpiresAt
-	}
-	return nil
-}
-
-func (x *JitGrantRecord) GetCreatedAt() *timestamppb.Timestamp {
+func (x *InternalApiCallRecord) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
-	}
-	return nil
-}
-
-func (x *JitGrantRecord) GetExtendedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ExtendedAt
-	}
-	return nil
-}
-
-func (x *JitGrantRecord) GetRevokedAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.RevokedAt
 	}
 	return nil
 }
@@ -272,38 +262,39 @@ func (x *InternalTokenRecord) GetRevokedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-type InternalApiCallRecord struct {
+type JitGrantRecord struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Method        string                 `protobuf:"bytes,3,opt,name=method,proto3" json:"method,omitempty"`
-	Caller        string                 `protobuf:"bytes,4,opt,name=caller,proto3" json:"caller,omitempty"`
-	CallerType    string                 `protobuf:"bytes,5,opt,name=caller_type,json=callerType,proto3" json:"caller_type,omitempty"`
-	GroupName     string                 `protobuf:"bytes,6,opt,name=group_name,json=groupName,proto3" json:"group_name,omitempty"`
-	JitGrantUuid  *string                `protobuf:"bytes,7,opt,name=jit_grant_uuid,json=jitGrantUuid,proto3,oneof" json:"jit_grant_uuid,omitempty"`
-	JitGrantId    *string                `protobuf:"bytes,8,opt,name=jit_grant_id,json=jitGrantId,proto3,oneof" json:"jit_grant_id,omitempty"`
-	Status        string                 `protobuf:"bytes,9,opt,name=status,proto3" json:"status,omitempty"`
-	ErrorMessage  *string                `protobuf:"bytes,10,opt,name=error_message,json=errorMessage,proto3,oneof" json:"error_message,omitempty"`
-	DurationMs    int64                  `protobuf:"varint,11,opt,name=duration_ms,json=durationMs,proto3" json:"duration_ms,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	TokenHash     string                 `protobuf:"bytes,3,opt,name=token_hash,json=tokenHash,proto3" json:"token_hash,omitempty"`
+	Operator      string                 `protobuf:"bytes,4,opt,name=operator,proto3" json:"operator,omitempty"`
+	OperatorType  string                 `protobuf:"bytes,5,opt,name=operator_type,json=operatorType,proto3" json:"operator_type,omitempty"` // 'HUMAN' or 'ROBOT'
+	Reason        string                 `protobuf:"bytes,6,opt,name=reason,proto3" json:"reason,omitempty"`
+	Operation     string                 `protobuf:"bytes,7,opt,name=operation,proto3" json:"operation,omitempty"`
+	Status        string                 `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"`
+	Hours         int32                  `protobuf:"varint,9,opt,name=hours,proto3" json:"hours,omitempty"`
+	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	ExtendedAt    *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=extended_at,json=extendedAt,proto3" json:"extended_at,omitempty"`
+	RevokedAt     *timestamppb.Timestamp `protobuf:"bytes,13,opt,name=revoked_at,json=revokedAt,proto3" json:"revoked_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *InternalApiCallRecord) Reset() {
-	*x = InternalApiCallRecord{}
+func (x *JitGrantRecord) Reset() {
+	*x = JitGrantRecord{}
 	mi := &file_quadsmith_ops_ops_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *InternalApiCallRecord) String() string {
+func (x *JitGrantRecord) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*InternalApiCallRecord) ProtoMessage() {}
+func (*JitGrantRecord) ProtoMessage() {}
 
-func (x *InternalApiCallRecord) ProtoReflect() protoreflect.Message {
+func (x *JitGrantRecord) ProtoReflect() protoreflect.Message {
 	mi := &file_quadsmith_ops_ops_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -315,91 +306,1002 @@ func (x *InternalApiCallRecord) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use InternalApiCallRecord.ProtoReflect.Descriptor instead.
-func (*InternalApiCallRecord) Descriptor() ([]byte, []int) {
+// Deprecated: Use JitGrantRecord.ProtoReflect.Descriptor instead.
+func (*JitGrantRecord) Descriptor() ([]byte, []int) {
 	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *InternalApiCallRecord) GetUuid() string {
+func (x *JitGrantRecord) GetUuid() string {
 	if x != nil {
 		return x.Uuid
 	}
 	return ""
 }
 
-func (x *InternalApiCallRecord) GetId() string {
+func (x *JitGrantRecord) GetId() string {
 	if x != nil {
 		return x.Id
 	}
 	return ""
 }
 
-func (x *InternalApiCallRecord) GetMethod() string {
+func (x *JitGrantRecord) GetTokenHash() string {
 	if x != nil {
-		return x.Method
+		return x.TokenHash
 	}
 	return ""
 }
 
-func (x *InternalApiCallRecord) GetCaller() string {
+func (x *JitGrantRecord) GetOperator() string {
 	if x != nil {
-		return x.Caller
+		return x.Operator
 	}
 	return ""
 }
 
-func (x *InternalApiCallRecord) GetCallerType() string {
+func (x *JitGrantRecord) GetOperatorType() string {
 	if x != nil {
-		return x.CallerType
+		return x.OperatorType
 	}
 	return ""
 }
 
-func (x *InternalApiCallRecord) GetGroupName() string {
+func (x *JitGrantRecord) GetReason() string {
 	if x != nil {
-		return x.GroupName
+		return x.Reason
 	}
 	return ""
 }
 
-func (x *InternalApiCallRecord) GetJitGrantUuid() string {
-	if x != nil && x.JitGrantUuid != nil {
-		return *x.JitGrantUuid
+func (x *JitGrantRecord) GetOperation() string {
+	if x != nil {
+		return x.Operation
 	}
 	return ""
 }
 
-func (x *InternalApiCallRecord) GetJitGrantId() string {
-	if x != nil && x.JitGrantId != nil {
-		return *x.JitGrantId
-	}
-	return ""
-}
-
-func (x *InternalApiCallRecord) GetStatus() string {
+func (x *JitGrantRecord) GetStatus() string {
 	if x != nil {
 		return x.Status
 	}
 	return ""
 }
 
-func (x *InternalApiCallRecord) GetErrorMessage() string {
-	if x != nil && x.ErrorMessage != nil {
-		return *x.ErrorMessage
-	}
-	return ""
-}
-
-func (x *InternalApiCallRecord) GetDurationMs() int64 {
+func (x *JitGrantRecord) GetHours() int32 {
 	if x != nil {
-		return x.DurationMs
+		return x.Hours
 	}
 	return 0
 }
 
-func (x *InternalApiCallRecord) GetCreatedAt() *timestamppb.Timestamp {
+func (x *JitGrantRecord) GetExpiresAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return nil
+}
+
+func (x *JitGrantRecord) GetCreatedAt() *timestamppb.Timestamp {
 	if x != nil {
 		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *JitGrantRecord) GetExtendedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExtendedAt
+	}
+	return nil
+}
+
+func (x *JitGrantRecord) GetRevokedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.RevokedAt
+	}
+	return nil
+}
+
+type AcquireJitGrantRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Hours         int32                  `protobuf:"varint,1,opt,name=hours,proto3" json:"hours,omitempty"` // 1 to 12
+	Reason        string                 `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
+	Operation     string                 `protobuf:"bytes,3,opt,name=operation,proto3" json:"operation,omitempty"` // optional, defaults to '*'
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AcquireJitGrantRequest) Reset() {
+	*x = AcquireJitGrantRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcquireJitGrantRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcquireJitGrantRequest) ProtoMessage() {}
+
+func (x *AcquireJitGrantRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcquireJitGrantRequest.ProtoReflect.Descriptor instead.
+func (*AcquireJitGrantRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *AcquireJitGrantRequest) GetHours() int32 {
+	if x != nil {
+		return x.Hours
+	}
+	return 0
+}
+
+func (x *AcquireJitGrantRequest) GetReason() string {
+	if x != nil {
+		return x.Reason
+	}
+	return ""
+}
+
+func (x *AcquireJitGrantRequest) GetOperation() string {
+	if x != nil {
+		return x.Operation
+	}
+	return ""
+}
+
+type AcquireJitGrantResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Grant         *JitGrantRecord        `protobuf:"bytes,1,opt,name=grant,proto3" json:"grant,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AcquireJitGrantResponse) Reset() {
+	*x = AcquireJitGrantResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AcquireJitGrantResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AcquireJitGrantResponse) ProtoMessage() {}
+
+func (x *AcquireJitGrantResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AcquireJitGrantResponse.ProtoReflect.Descriptor instead.
+func (*AcquireJitGrantResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *AcquireJitGrantResponse) GetGrant() *JitGrantRecord {
+	if x != nil {
+		return x.Grant
+	}
+	return nil
+}
+
+type CleanupExpiredOtpsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CleanupExpiredOtpsRequest) Reset() {
+	*x = CleanupExpiredOtpsRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CleanupExpiredOtpsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CleanupExpiredOtpsRequest) ProtoMessage() {}
+
+func (x *CleanupExpiredOtpsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CleanupExpiredOtpsRequest.ProtoReflect.Descriptor instead.
+func (*CleanupExpiredOtpsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{5}
+}
+
+type CleanupExpiredOtpsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CleanedCount  int64                  `protobuf:"varint,1,opt,name=cleaned_count,json=cleanedCount,proto3" json:"cleaned_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CleanupExpiredOtpsResponse) Reset() {
+	*x = CleanupExpiredOtpsResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CleanupExpiredOtpsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CleanupExpiredOtpsResponse) ProtoMessage() {}
+
+func (x *CleanupExpiredOtpsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CleanupExpiredOtpsResponse.ProtoReflect.Descriptor instead.
+func (*CleanupExpiredOtpsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *CleanupExpiredOtpsResponse) GetCleanedCount() int64 {
+	if x != nil {
+		return x.CleanedCount
+	}
+	return 0
+}
+
+type CleanupExpiredTokensRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CleanupExpiredTokensRequest) Reset() {
+	*x = CleanupExpiredTokensRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CleanupExpiredTokensRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CleanupExpiredTokensRequest) ProtoMessage() {}
+
+func (x *CleanupExpiredTokensRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CleanupExpiredTokensRequest.ProtoReflect.Descriptor instead.
+func (*CleanupExpiredTokensRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{7}
+}
+
+type CleanupExpiredTokensResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CleanedCount  int64                  `protobuf:"varint,1,opt,name=cleaned_count,json=cleanedCount,proto3" json:"cleaned_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CleanupExpiredTokensResponse) Reset() {
+	*x = CleanupExpiredTokensResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CleanupExpiredTokensResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CleanupExpiredTokensResponse) ProtoMessage() {}
+
+func (x *CleanupExpiredTokensResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CleanupExpiredTokensResponse.ProtoReflect.Descriptor instead.
+func (*CleanupExpiredTokensResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *CleanupExpiredTokensResponse) GetCleanedCount() int64 {
+	if x != nil {
+		return x.CleanedCount
+	}
+	return 0
+}
+
+type CleanupOrphanedBlobsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CleanupOrphanedBlobsRequest) Reset() {
+	*x = CleanupOrphanedBlobsRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CleanupOrphanedBlobsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CleanupOrphanedBlobsRequest) ProtoMessage() {}
+
+func (x *CleanupOrphanedBlobsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CleanupOrphanedBlobsRequest.ProtoReflect.Descriptor instead.
+func (*CleanupOrphanedBlobsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{9}
+}
+
+type CleanupOrphanedBlobsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	CleanedCount  int64                  `protobuf:"varint,1,opt,name=cleaned_count,json=cleanedCount,proto3" json:"cleaned_count,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CleanupOrphanedBlobsResponse) Reset() {
+	*x = CleanupOrphanedBlobsResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CleanupOrphanedBlobsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CleanupOrphanedBlobsResponse) ProtoMessage() {}
+
+func (x *CleanupOrphanedBlobsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CleanupOrphanedBlobsResponse.ProtoReflect.Descriptor instead.
+func (*CleanupOrphanedBlobsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *CleanupOrphanedBlobsResponse) GetCleanedCount() int64 {
+	if x != nil {
+		return x.CleanedCount
+	}
+	return 0
+}
+
+type CreateInternalTokenRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"` // 'HUMAN' or 'ROBOT'
+	GroupName     string                 `protobuf:"bytes,3,opt,name=group_name,json=groupName,proto3" json:"group_name,omitempty"`
+	DurationDays  int32                  `protobuf:"varint,4,opt,name=duration_days,json=durationDays,proto3" json:"duration_days,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateInternalTokenRequest) Reset() {
+	*x = CreateInternalTokenRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateInternalTokenRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateInternalTokenRequest) ProtoMessage() {}
+
+func (x *CreateInternalTokenRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateInternalTokenRequest.ProtoReflect.Descriptor instead.
+func (*CreateInternalTokenRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *CreateInternalTokenRequest) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *CreateInternalTokenRequest) GetType() string {
+	if x != nil {
+		return x.Type
+	}
+	return ""
+}
+
+func (x *CreateInternalTokenRequest) GetGroupName() string {
+	if x != nil {
+		return x.GroupName
+	}
+	return ""
+}
+
+func (x *CreateInternalTokenRequest) GetDurationDays() int32 {
+	if x != nil {
+		return x.DurationDays
+	}
+	return 0
+}
+
+type CreateInternalTokenResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TokenId       string                 `protobuf:"bytes,1,opt,name=token_id,json=tokenId,proto3" json:"token_id,omitempty"`
+	TokenSecret   string                 `protobuf:"bytes,2,opt,name=token_secret,json=tokenSecret,proto3" json:"token_secret,omitempty"`
+	Record        *InternalTokenRecord   `protobuf:"bytes,3,opt,name=record,proto3" json:"record,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateInternalTokenResponse) Reset() {
+	*x = CreateInternalTokenResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateInternalTokenResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateInternalTokenResponse) ProtoMessage() {}
+
+func (x *CreateInternalTokenResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateInternalTokenResponse.ProtoReflect.Descriptor instead.
+func (*CreateInternalTokenResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *CreateInternalTokenResponse) GetTokenId() string {
+	if x != nil {
+		return x.TokenId
+	}
+	return ""
+}
+
+func (x *CreateInternalTokenResponse) GetTokenSecret() string {
+	if x != nil {
+		return x.TokenSecret
+	}
+	return ""
+}
+
+func (x *CreateInternalTokenResponse) GetRecord() *InternalTokenRecord {
+	if x != nil {
+		return x.Record
+	}
+	return nil
+}
+
+type ExchangeOAuthCodeRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
+	CodeVerifier  string                 `protobuf:"bytes,2,opt,name=code_verifier,json=codeVerifier,proto3" json:"code_verifier,omitempty"`
+	RedirectUri   string                 `protobuf:"bytes,3,opt,name=redirect_uri,json=redirectUri,proto3" json:"redirect_uri,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExchangeOAuthCodeRequest) Reset() {
+	*x = ExchangeOAuthCodeRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExchangeOAuthCodeRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExchangeOAuthCodeRequest) ProtoMessage() {}
+
+func (x *ExchangeOAuthCodeRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExchangeOAuthCodeRequest.ProtoReflect.Descriptor instead.
+func (*ExchangeOAuthCodeRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *ExchangeOAuthCodeRequest) GetCode() string {
+	if x != nil {
+		return x.Code
+	}
+	return ""
+}
+
+func (x *ExchangeOAuthCodeRequest) GetCodeVerifier() string {
+	if x != nil {
+		return x.CodeVerifier
+	}
+	return ""
+}
+
+func (x *ExchangeOAuthCodeRequest) GetRedirectUri() string {
+	if x != nil {
+		return x.RedirectUri
+	}
+	return ""
+}
+
+type ExchangeOAuthCodeResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
+	Operator      string                 `protobuf:"bytes,3,opt,name=operator,proto3" json:"operator,omitempty"`
+	GroupName     string                 `protobuf:"bytes,4,opt,name=group_name,json=groupName,proto3" json:"group_name,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExchangeOAuthCodeResponse) Reset() {
+	*x = ExchangeOAuthCodeResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExchangeOAuthCodeResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExchangeOAuthCodeResponse) ProtoMessage() {}
+
+func (x *ExchangeOAuthCodeResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExchangeOAuthCodeResponse.ProtoReflect.Descriptor instead.
+func (*ExchangeOAuthCodeResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *ExchangeOAuthCodeResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *ExchangeOAuthCodeResponse) GetExpiresAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.ExpiresAt
+	}
+	return nil
+}
+
+func (x *ExchangeOAuthCodeResponse) GetOperator() string {
+	if x != nil {
+		return x.Operator
+	}
+	return ""
+}
+
+func (x *ExchangeOAuthCodeResponse) GetGroupName() string {
+	if x != nil {
+		return x.GroupName
+	}
+	return ""
+}
+
+type ExtendJitGrantRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	GrantId       string                 `protobuf:"bytes,1,opt,name=grant_id,json=grantId,proto3" json:"grant_id,omitempty"`
+	Hours         int32                  `protobuf:"varint,2,opt,name=hours,proto3" json:"hours,omitempty"` // 1 to 12
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExtendJitGrantRequest) Reset() {
+	*x = ExtendJitGrantRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExtendJitGrantRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExtendJitGrantRequest) ProtoMessage() {}
+
+func (x *ExtendJitGrantRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExtendJitGrantRequest.ProtoReflect.Descriptor instead.
+func (*ExtendJitGrantRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *ExtendJitGrantRequest) GetGrantId() string {
+	if x != nil {
+		return x.GrantId
+	}
+	return ""
+}
+
+func (x *ExtendJitGrantRequest) GetHours() int32 {
+	if x != nil {
+		return x.Hours
+	}
+	return 0
+}
+
+type ExtendJitGrantResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Grant         *JitGrantRecord        `protobuf:"bytes,1,opt,name=grant,proto3" json:"grant,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ExtendJitGrantResponse) Reset() {
+	*x = ExtendJitGrantResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ExtendJitGrantResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ExtendJitGrantResponse) ProtoMessage() {}
+
+func (x *ExtendJitGrantResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ExtendJitGrantResponse.ProtoReflect.Descriptor instead.
+func (*ExtendJitGrantResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *ExtendJitGrantResponse) GetGrant() *JitGrantRecord {
+	if x != nil {
+		return x.Grant
+	}
+	return nil
+}
+
+type GetCurrentOperatorRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetCurrentOperatorRequest) Reset() {
+	*x = GetCurrentOperatorRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCurrentOperatorRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCurrentOperatorRequest) ProtoMessage() {}
+
+func (x *GetCurrentOperatorRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCurrentOperatorRequest.ProtoReflect.Descriptor instead.
+func (*GetCurrentOperatorRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{17}
+}
+
+type GetCurrentOperatorResponse struct {
+	state            protoimpl.MessageState `protogen:"open.v1"`
+	Operator         string                 `protobuf:"bytes,1,opt,name=operator,proto3" json:"operator,omitempty"`
+	OperatorType     string                 `protobuf:"bytes,2,opt,name=operator_type,json=operatorType,proto3" json:"operator_type,omitempty"` // 'HUMAN' or 'ROBOT'
+	GroupName        string                 `protobuf:"bytes,3,opt,name=group_name,json=groupName,proto3" json:"group_name,omitempty"`
+	SessionExpiresAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=session_expires_at,json=sessionExpiresAt,proto3" json:"session_expires_at,omitempty"`
+	ActiveJitGrant   *JitGrantRecord        `protobuf:"bytes,5,opt,name=active_jit_grant,json=activeJitGrant,proto3,oneof" json:"active_jit_grant,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
+}
+
+func (x *GetCurrentOperatorResponse) Reset() {
+	*x = GetCurrentOperatorResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetCurrentOperatorResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetCurrentOperatorResponse) ProtoMessage() {}
+
+func (x *GetCurrentOperatorResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetCurrentOperatorResponse.ProtoReflect.Descriptor instead.
+func (*GetCurrentOperatorResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *GetCurrentOperatorResponse) GetOperator() string {
+	if x != nil {
+		return x.Operator
+	}
+	return ""
+}
+
+func (x *GetCurrentOperatorResponse) GetOperatorType() string {
+	if x != nil {
+		return x.OperatorType
+	}
+	return ""
+}
+
+func (x *GetCurrentOperatorResponse) GetGroupName() string {
+	if x != nil {
+		return x.GroupName
+	}
+	return ""
+}
+
+func (x *GetCurrentOperatorResponse) GetSessionExpiresAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.SessionExpiresAt
+	}
+	return nil
+}
+
+func (x *GetCurrentOperatorResponse) GetActiveJitGrant() *JitGrantRecord {
+	if x != nil {
+		return x.ActiveJitGrant
+	}
+	return nil
+}
+
+type GetDatabaseStatsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetDatabaseStatsRequest) Reset() {
+	*x = GetDatabaseStatsRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetDatabaseStatsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetDatabaseStatsRequest) ProtoMessage() {}
+
+func (x *GetDatabaseStatsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetDatabaseStatsRequest.ProtoReflect.Descriptor instead.
+func (*GetDatabaseStatsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{19}
+}
+
+type GetDatabaseStatsResponse struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	DatabaseName   string                 `protobuf:"bytes,1,opt,name=database_name,json=databaseName,proto3" json:"database_name,omitempty"`
+	TotalSizeBytes int64                  `protobuf:"varint,2,opt,name=total_size_bytes,json=totalSizeBytes,proto3" json:"total_size_bytes,omitempty"`
+	Tables         []*TableStat           `protobuf:"bytes,3,rep,name=tables,proto3" json:"tables,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *GetDatabaseStatsResponse) Reset() {
+	*x = GetDatabaseStatsResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetDatabaseStatsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetDatabaseStatsResponse) ProtoMessage() {}
+
+func (x *GetDatabaseStatsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetDatabaseStatsResponse.ProtoReflect.Descriptor instead.
+func (*GetDatabaseStatsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *GetDatabaseStatsResponse) GetDatabaseName() string {
+	if x != nil {
+		return x.DatabaseName
+	}
+	return ""
+}
+
+func (x *GetDatabaseStatsResponse) GetTotalSizeBytes() int64 {
+	if x != nil {
+		return x.TotalSizeBytes
+	}
+	return 0
+}
+
+func (x *GetDatabaseStatsResponse) GetTables() []*TableStat {
+	if x != nil {
+		return x.Tables
 	}
 	return nil
 }
@@ -412,7 +1314,7 @@ type GetSystemDiagnosticsRequest struct {
 
 func (x *GetSystemDiagnosticsRequest) Reset() {
 	*x = GetSystemDiagnosticsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[3]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[21]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -424,7 +1326,7 @@ func (x *GetSystemDiagnosticsRequest) String() string {
 func (*GetSystemDiagnosticsRequest) ProtoMessage() {}
 
 func (x *GetSystemDiagnosticsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[3]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[21]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -437,7 +1339,7 @@ func (x *GetSystemDiagnosticsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSystemDiagnosticsRequest.ProtoReflect.Descriptor instead.
 func (*GetSystemDiagnosticsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{3}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{21}
 }
 
 type GetSystemDiagnosticsResponse struct {
@@ -455,7 +1357,7 @@ type GetSystemDiagnosticsResponse struct {
 
 func (x *GetSystemDiagnosticsResponse) Reset() {
 	*x = GetSystemDiagnosticsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[4]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[22]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -467,7 +1369,7 @@ func (x *GetSystemDiagnosticsResponse) String() string {
 func (*GetSystemDiagnosticsResponse) ProtoMessage() {}
 
 func (x *GetSystemDiagnosticsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[4]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[22]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -480,7 +1382,7 @@ func (x *GetSystemDiagnosticsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetSystemDiagnosticsResponse.ProtoReflect.Descriptor instead.
 func (*GetSystemDiagnosticsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{4}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *GetSystemDiagnosticsResponse) GetVersion() string {
@@ -532,27 +1434,27 @@ func (x *GetSystemDiagnosticsResponse) GetActiveInternalConnections() int32 {
 	return 0
 }
 
-type GetDatabaseStatsRequest struct {
+type ListIamGroupsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetDatabaseStatsRequest) Reset() {
-	*x = GetDatabaseStatsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[5]
+func (x *ListIamGroupsRequest) Reset() {
+	*x = ListIamGroupsRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[23]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetDatabaseStatsRequest) String() string {
+func (x *ListIamGroupsRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetDatabaseStatsRequest) ProtoMessage() {}
+func (*ListIamGroupsRequest) ProtoMessage() {}
 
-func (x *GetDatabaseStatsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[5]
+func (x *ListIamGroupsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[23]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -563,35 +1465,33 @@ func (x *GetDatabaseStatsRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDatabaseStatsRequest.ProtoReflect.Descriptor instead.
-func (*GetDatabaseStatsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{5}
+// Deprecated: Use ListIamGroupsRequest.ProtoReflect.Descriptor instead.
+func (*ListIamGroupsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{23}
 }
 
-type GetDatabaseStatsResponse struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	DatabaseName   string                 `protobuf:"bytes,1,opt,name=database_name,json=databaseName,proto3" json:"database_name,omitempty"`
-	TotalSizeBytes int64                  `protobuf:"varint,2,opt,name=total_size_bytes,json=totalSizeBytes,proto3" json:"total_size_bytes,omitempty"`
-	Tables         []*TableStat           `protobuf:"bytes,3,rep,name=tables,proto3" json:"tables,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
+type ListIamGroupsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Groups        []*IamGroupSummary     `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetDatabaseStatsResponse) Reset() {
-	*x = GetDatabaseStatsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[6]
+func (x *ListIamGroupsResponse) Reset() {
+	*x = ListIamGroupsResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[24]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetDatabaseStatsResponse) String() string {
+func (x *ListIamGroupsResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetDatabaseStatsResponse) ProtoMessage() {}
+func (*ListIamGroupsResponse) ProtoMessage() {}
 
-func (x *GetDatabaseStatsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[6]
+func (x *ListIamGroupsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[24]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -602,54 +1502,39 @@ func (x *GetDatabaseStatsResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetDatabaseStatsResponse.ProtoReflect.Descriptor instead.
-func (*GetDatabaseStatsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{6}
+// Deprecated: Use ListIamGroupsResponse.ProtoReflect.Descriptor instead.
+func (*ListIamGroupsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{24}
 }
 
-func (x *GetDatabaseStatsResponse) GetDatabaseName() string {
+func (x *ListIamGroupsResponse) GetGroups() []*IamGroupSummary {
 	if x != nil {
-		return x.DatabaseName
-	}
-	return ""
-}
-
-func (x *GetDatabaseStatsResponse) GetTotalSizeBytes() int64 {
-	if x != nil {
-		return x.TotalSizeBytes
-	}
-	return 0
-}
-
-func (x *GetDatabaseStatsResponse) GetTables() []*TableStat {
-	if x != nil {
-		return x.Tables
+		return x.Groups
 	}
 	return nil
 }
 
-type RunDatabaseMaintenanceRequest struct {
+type ListIamUsersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	FullVacuum    bool                   `protobuf:"varint,1,opt,name=full_vacuum,json=fullVacuum,proto3" json:"full_vacuum,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RunDatabaseMaintenanceRequest) Reset() {
-	*x = RunDatabaseMaintenanceRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[7]
+func (x *ListIamUsersRequest) Reset() {
+	*x = ListIamUsersRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[25]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RunDatabaseMaintenanceRequest) String() string {
+func (x *ListIamUsersRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RunDatabaseMaintenanceRequest) ProtoMessage() {}
+func (*ListIamUsersRequest) ProtoMessage() {}
 
-func (x *RunDatabaseMaintenanceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[7]
+func (x *ListIamUsersRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[25]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -660,42 +1545,33 @@ func (x *RunDatabaseMaintenanceRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RunDatabaseMaintenanceRequest.ProtoReflect.Descriptor instead.
-func (*RunDatabaseMaintenanceRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{7}
+// Deprecated: Use ListIamUsersRequest.ProtoReflect.Descriptor instead.
+func (*ListIamUsersRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{25}
 }
 
-func (x *RunDatabaseMaintenanceRequest) GetFullVacuum() bool {
-	if x != nil {
-		return x.FullVacuum
-	}
-	return false
-}
-
-type RunDatabaseMaintenanceResponse struct {
+type ListIamUsersResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	DurationMs    int64                  `protobuf:"varint,3,opt,name=duration_ms,json=durationMs,proto3" json:"duration_ms,omitempty"`
+	Users         []*IamUserSummary      `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RunDatabaseMaintenanceResponse) Reset() {
-	*x = RunDatabaseMaintenanceResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[8]
+func (x *ListIamUsersResponse) Reset() {
+	*x = ListIamUsersResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[26]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RunDatabaseMaintenanceResponse) String() string {
+func (x *ListIamUsersResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RunDatabaseMaintenanceResponse) ProtoMessage() {}
+func (*ListIamUsersResponse) ProtoMessage() {}
 
-func (x *RunDatabaseMaintenanceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[8]
+func (x *ListIamUsersResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[26]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -706,566 +1582,16 @@ func (x *RunDatabaseMaintenanceResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RunDatabaseMaintenanceResponse.ProtoReflect.Descriptor instead.
-func (*RunDatabaseMaintenanceResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{8}
+// Deprecated: Use ListIamUsersResponse.ProtoReflect.Descriptor instead.
+func (*ListIamUsersResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{26}
 }
 
-func (x *RunDatabaseMaintenanceResponse) GetSuccess() bool {
+func (x *ListIamUsersResponse) GetUsers() []*IamUserSummary {
 	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-func (x *RunDatabaseMaintenanceResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-func (x *RunDatabaseMaintenanceResponse) GetDurationMs() int64 {
-	if x != nil {
-		return x.DurationMs
-	}
-	return 0
-}
-
-type SeedDatabaseRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Force         bool                   `protobuf:"varint,1,opt,name=force,proto3" json:"force,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SeedDatabaseRequest) Reset() {
-	*x = SeedDatabaseRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[9]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SeedDatabaseRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SeedDatabaseRequest) ProtoMessage() {}
-
-func (x *SeedDatabaseRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[9]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SeedDatabaseRequest.ProtoReflect.Descriptor instead.
-func (*SeedDatabaseRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{9}
-}
-
-func (x *SeedDatabaseRequest) GetForce() bool {
-	if x != nil {
-		return x.Force
-	}
-	return false
-}
-
-type SeedDatabaseResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	RecordsSeeded int32                  `protobuf:"varint,2,opt,name=records_seeded,json=recordsSeeded,proto3" json:"records_seeded,omitempty"`
-	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *SeedDatabaseResponse) Reset() {
-	*x = SeedDatabaseResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[10]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *SeedDatabaseResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*SeedDatabaseResponse) ProtoMessage() {}
-
-func (x *SeedDatabaseResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[10]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use SeedDatabaseResponse.ProtoReflect.Descriptor instead.
-func (*SeedDatabaseResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{10}
-}
-
-func (x *SeedDatabaseResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-func (x *SeedDatabaseResponse) GetRecordsSeeded() int32 {
-	if x != nil {
-		return x.RecordsSeeded
-	}
-	return 0
-}
-
-func (x *SeedDatabaseResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-type CleanupExpiredOtpsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CleanupExpiredOtpsRequest) Reset() {
-	*x = CleanupExpiredOtpsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[11]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CleanupExpiredOtpsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CleanupExpiredOtpsRequest) ProtoMessage() {}
-
-func (x *CleanupExpiredOtpsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[11]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CleanupExpiredOtpsRequest.ProtoReflect.Descriptor instead.
-func (*CleanupExpiredOtpsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{11}
-}
-
-type CleanupExpiredOtpsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CleanedCount  int64                  `protobuf:"varint,1,opt,name=cleaned_count,json=cleanedCount,proto3" json:"cleaned_count,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CleanupExpiredOtpsResponse) Reset() {
-	*x = CleanupExpiredOtpsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[12]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CleanupExpiredOtpsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CleanupExpiredOtpsResponse) ProtoMessage() {}
-
-func (x *CleanupExpiredOtpsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[12]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CleanupExpiredOtpsResponse.ProtoReflect.Descriptor instead.
-func (*CleanupExpiredOtpsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{12}
-}
-
-func (x *CleanupExpiredOtpsResponse) GetCleanedCount() int64 {
-	if x != nil {
-		return x.CleanedCount
-	}
-	return 0
-}
-
-type CleanupExpiredTokensRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CleanupExpiredTokensRequest) Reset() {
-	*x = CleanupExpiredTokensRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[13]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CleanupExpiredTokensRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CleanupExpiredTokensRequest) ProtoMessage() {}
-
-func (x *CleanupExpiredTokensRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[13]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CleanupExpiredTokensRequest.ProtoReflect.Descriptor instead.
-func (*CleanupExpiredTokensRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{13}
-}
-
-type CleanupExpiredTokensResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CleanedCount  int64                  `protobuf:"varint,1,opt,name=cleaned_count,json=cleanedCount,proto3" json:"cleaned_count,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CleanupExpiredTokensResponse) Reset() {
-	*x = CleanupExpiredTokensResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[14]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CleanupExpiredTokensResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CleanupExpiredTokensResponse) ProtoMessage() {}
-
-func (x *CleanupExpiredTokensResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[14]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CleanupExpiredTokensResponse.ProtoReflect.Descriptor instead.
-func (*CleanupExpiredTokensResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{14}
-}
-
-func (x *CleanupExpiredTokensResponse) GetCleanedCount() int64 {
-	if x != nil {
-		return x.CleanedCount
-	}
-	return 0
-}
-
-type CleanupOrphanedBlobsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CleanupOrphanedBlobsRequest) Reset() {
-	*x = CleanupOrphanedBlobsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[15]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CleanupOrphanedBlobsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CleanupOrphanedBlobsRequest) ProtoMessage() {}
-
-func (x *CleanupOrphanedBlobsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[15]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CleanupOrphanedBlobsRequest.ProtoReflect.Descriptor instead.
-func (*CleanupOrphanedBlobsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{15}
-}
-
-type CleanupOrphanedBlobsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	CleanedCount  int64                  `protobuf:"varint,1,opt,name=cleaned_count,json=cleanedCount,proto3" json:"cleaned_count,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CleanupOrphanedBlobsResponse) Reset() {
-	*x = CleanupOrphanedBlobsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[16]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CleanupOrphanedBlobsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CleanupOrphanedBlobsResponse) ProtoMessage() {}
-
-func (x *CleanupOrphanedBlobsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[16]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CleanupOrphanedBlobsResponse.ProtoReflect.Descriptor instead.
-func (*CleanupOrphanedBlobsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{16}
-}
-
-func (x *CleanupOrphanedBlobsResponse) GetCleanedCount() int64 {
-	if x != nil {
-		return x.CleanedCount
-	}
-	return 0
-}
-
-type ListScheduledJobsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListScheduledJobsRequest) Reset() {
-	*x = ListScheduledJobsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[17]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListScheduledJobsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListScheduledJobsRequest) ProtoMessage() {}
-
-func (x *ListScheduledJobsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[17]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListScheduledJobsRequest.ProtoReflect.Descriptor instead.
-func (*ListScheduledJobsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{17}
-}
-
-type ListScheduledJobsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Jobs          []*ScheduledJobDef     `protobuf:"bytes,1,rep,name=jobs,proto3" json:"jobs,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListScheduledJobsResponse) Reset() {
-	*x = ListScheduledJobsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[18]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListScheduledJobsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListScheduledJobsResponse) ProtoMessage() {}
-
-func (x *ListScheduledJobsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[18]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListScheduledJobsResponse.ProtoReflect.Descriptor instead.
-func (*ListScheduledJobsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{18}
-}
-
-func (x *ListScheduledJobsResponse) GetJobs() []*ScheduledJobDef {
-	if x != nil {
-		return x.Jobs
+		return x.Users
 	}
 	return nil
-}
-
-type TriggerJobRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	JobName       string                 `protobuf:"bytes,1,opt,name=job_name,json=jobName,proto3" json:"job_name,omitempty"`
-	PayloadJson   string                 `protobuf:"bytes,2,opt,name=payload_json,json=payloadJson,proto3" json:"payload_json,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *TriggerJobRequest) Reset() {
-	*x = TriggerJobRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[19]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *TriggerJobRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TriggerJobRequest) ProtoMessage() {}
-
-func (x *TriggerJobRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[19]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TriggerJobRequest.ProtoReflect.Descriptor instead.
-func (*TriggerJobRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{19}
-}
-
-func (x *TriggerJobRequest) GetJobName() string {
-	if x != nil {
-		return x.JobName
-	}
-	return ""
-}
-
-func (x *TriggerJobRequest) GetPayloadJson() string {
-	if x != nil {
-		return x.PayloadJson
-	}
-	return ""
-}
-
-type TriggerJobResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	CallId        string                 `protobuf:"bytes,3,opt,name=call_id,json=callId,proto3" json:"call_id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *TriggerJobResponse) Reset() {
-	*x = TriggerJobResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[20]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *TriggerJobResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TriggerJobResponse) ProtoMessage() {}
-
-func (x *TriggerJobResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[20]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TriggerJobResponse.ProtoReflect.Descriptor instead.
-func (*TriggerJobResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{20}
-}
-
-func (x *TriggerJobResponse) GetSuccess() bool {
-	if x != nil {
-		return x.Success
-	}
-	return false
-}
-
-func (x *TriggerJobResponse) GetMessage() string {
-	if x != nil {
-		return x.Message
-	}
-	return ""
-}
-
-func (x *TriggerJobResponse) GetCallId() string {
-	if x != nil {
-		return x.CallId
-	}
-	return ""
 }
 
 type ListInternalApiCallsRequest struct {
@@ -1279,7 +1605,7 @@ type ListInternalApiCallsRequest struct {
 
 func (x *ListInternalApiCallsRequest) Reset() {
 	*x = ListInternalApiCallsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[21]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[27]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1291,7 +1617,7 @@ func (x *ListInternalApiCallsRequest) String() string {
 func (*ListInternalApiCallsRequest) ProtoMessage() {}
 
 func (x *ListInternalApiCallsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[21]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[27]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1304,7 +1630,7 @@ func (x *ListInternalApiCallsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInternalApiCallsRequest.ProtoReflect.Descriptor instead.
 func (*ListInternalApiCallsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{21}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{27}
 }
 
 func (x *ListInternalApiCallsRequest) GetLimit() int32 {
@@ -1337,7 +1663,7 @@ type ListInternalApiCallsResponse struct {
 
 func (x *ListInternalApiCallsResponse) Reset() {
 	*x = ListInternalApiCallsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[22]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[28]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1349,7 +1675,7 @@ func (x *ListInternalApiCallsResponse) String() string {
 func (*ListInternalApiCallsResponse) ProtoMessage() {}
 
 func (x *ListInternalApiCallsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[22]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[28]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1362,540 +1688,12 @@ func (x *ListInternalApiCallsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInternalApiCallsResponse.ProtoReflect.Descriptor instead.
 func (*ListInternalApiCallsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{22}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{28}
 }
 
 func (x *ListInternalApiCallsResponse) GetCalls() []*InternalApiCallRecord {
 	if x != nil {
 		return x.Calls
-	}
-	return nil
-}
-
-type ExchangeOAuthCodeRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Code          string                 `protobuf:"bytes,1,opt,name=code,proto3" json:"code,omitempty"`
-	CodeVerifier  string                 `protobuf:"bytes,2,opt,name=code_verifier,json=codeVerifier,proto3" json:"code_verifier,omitempty"`
-	RedirectUri   string                 `protobuf:"bytes,3,opt,name=redirect_uri,json=redirectUri,proto3" json:"redirect_uri,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ExchangeOAuthCodeRequest) Reset() {
-	*x = ExchangeOAuthCodeRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[23]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ExchangeOAuthCodeRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ExchangeOAuthCodeRequest) ProtoMessage() {}
-
-func (x *ExchangeOAuthCodeRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[23]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ExchangeOAuthCodeRequest.ProtoReflect.Descriptor instead.
-func (*ExchangeOAuthCodeRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{23}
-}
-
-func (x *ExchangeOAuthCodeRequest) GetCode() string {
-	if x != nil {
-		return x.Code
-	}
-	return ""
-}
-
-func (x *ExchangeOAuthCodeRequest) GetCodeVerifier() string {
-	if x != nil {
-		return x.CodeVerifier
-	}
-	return ""
-}
-
-func (x *ExchangeOAuthCodeRequest) GetRedirectUri() string {
-	if x != nil {
-		return x.RedirectUri
-	}
-	return ""
-}
-
-type ExchangeOAuthCodeResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Token         string                 `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
-	ExpiresAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=expires_at,json=expiresAt,proto3" json:"expires_at,omitempty"`
-	Operator      string                 `protobuf:"bytes,3,opt,name=operator,proto3" json:"operator,omitempty"`
-	GroupName     string                 `protobuf:"bytes,4,opt,name=group_name,json=groupName,proto3" json:"group_name,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ExchangeOAuthCodeResponse) Reset() {
-	*x = ExchangeOAuthCodeResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[24]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ExchangeOAuthCodeResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ExchangeOAuthCodeResponse) ProtoMessage() {}
-
-func (x *ExchangeOAuthCodeResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[24]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ExchangeOAuthCodeResponse.ProtoReflect.Descriptor instead.
-func (*ExchangeOAuthCodeResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{24}
-}
-
-func (x *ExchangeOAuthCodeResponse) GetToken() string {
-	if x != nil {
-		return x.Token
-	}
-	return ""
-}
-
-func (x *ExchangeOAuthCodeResponse) GetExpiresAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.ExpiresAt
-	}
-	return nil
-}
-
-func (x *ExchangeOAuthCodeResponse) GetOperator() string {
-	if x != nil {
-		return x.Operator
-	}
-	return ""
-}
-
-func (x *ExchangeOAuthCodeResponse) GetGroupName() string {
-	if x != nil {
-		return x.GroupName
-	}
-	return ""
-}
-
-type GetCurrentOperatorRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetCurrentOperatorRequest) Reset() {
-	*x = GetCurrentOperatorRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[25]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetCurrentOperatorRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetCurrentOperatorRequest) ProtoMessage() {}
-
-func (x *GetCurrentOperatorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[25]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetCurrentOperatorRequest.ProtoReflect.Descriptor instead.
-func (*GetCurrentOperatorRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{25}
-}
-
-type GetCurrentOperatorResponse struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	Operator         string                 `protobuf:"bytes,1,opt,name=operator,proto3" json:"operator,omitempty"`
-	OperatorType     string                 `protobuf:"bytes,2,opt,name=operator_type,json=operatorType,proto3" json:"operator_type,omitempty"` // 'HUMAN' or 'ROBOT'
-	GroupName        string                 `protobuf:"bytes,3,opt,name=group_name,json=groupName,proto3" json:"group_name,omitempty"`
-	SessionExpiresAt *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=session_expires_at,json=sessionExpiresAt,proto3" json:"session_expires_at,omitempty"`
-	ActiveJitGrant   *JitGrantRecord        `protobuf:"bytes,5,opt,name=active_jit_grant,json=activeJitGrant,proto3,oneof" json:"active_jit_grant,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *GetCurrentOperatorResponse) Reset() {
-	*x = GetCurrentOperatorResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[26]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetCurrentOperatorResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetCurrentOperatorResponse) ProtoMessage() {}
-
-func (x *GetCurrentOperatorResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[26]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetCurrentOperatorResponse.ProtoReflect.Descriptor instead.
-func (*GetCurrentOperatorResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{26}
-}
-
-func (x *GetCurrentOperatorResponse) GetOperator() string {
-	if x != nil {
-		return x.Operator
-	}
-	return ""
-}
-
-func (x *GetCurrentOperatorResponse) GetOperatorType() string {
-	if x != nil {
-		return x.OperatorType
-	}
-	return ""
-}
-
-func (x *GetCurrentOperatorResponse) GetGroupName() string {
-	if x != nil {
-		return x.GroupName
-	}
-	return ""
-}
-
-func (x *GetCurrentOperatorResponse) GetSessionExpiresAt() *timestamppb.Timestamp {
-	if x != nil {
-		return x.SessionExpiresAt
-	}
-	return nil
-}
-
-func (x *GetCurrentOperatorResponse) GetActiveJitGrant() *JitGrantRecord {
-	if x != nil {
-		return x.ActiveJitGrant
-	}
-	return nil
-}
-
-type ListIamUsersRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListIamUsersRequest) Reset() {
-	*x = ListIamUsersRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[27]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListIamUsersRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListIamUsersRequest) ProtoMessage() {}
-
-func (x *ListIamUsersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[27]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListIamUsersRequest.ProtoReflect.Descriptor instead.
-func (*ListIamUsersRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{27}
-}
-
-type ListIamUsersResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Users         []*IamUserSummary      `protobuf:"bytes,1,rep,name=users,proto3" json:"users,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListIamUsersResponse) Reset() {
-	*x = ListIamUsersResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[28]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListIamUsersResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListIamUsersResponse) ProtoMessage() {}
-
-func (x *ListIamUsersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[28]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListIamUsersResponse.ProtoReflect.Descriptor instead.
-func (*ListIamUsersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{28}
-}
-
-func (x *ListIamUsersResponse) GetUsers() []*IamUserSummary {
-	if x != nil {
-		return x.Users
-	}
-	return nil
-}
-
-type ListIamGroupsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListIamGroupsRequest) Reset() {
-	*x = ListIamGroupsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[29]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListIamGroupsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListIamGroupsRequest) ProtoMessage() {}
-
-func (x *ListIamGroupsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[29]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListIamGroupsRequest.ProtoReflect.Descriptor instead.
-func (*ListIamGroupsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{29}
-}
-
-type ListIamGroupsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Groups        []*IamGroupSummary     `protobuf:"bytes,1,rep,name=groups,proto3" json:"groups,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListIamGroupsResponse) Reset() {
-	*x = ListIamGroupsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[30]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListIamGroupsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListIamGroupsResponse) ProtoMessage() {}
-
-func (x *ListIamGroupsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[30]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListIamGroupsResponse.ProtoReflect.Descriptor instead.
-func (*ListIamGroupsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{30}
-}
-
-func (x *ListIamGroupsResponse) GetGroups() []*IamGroupSummary {
-	if x != nil {
-		return x.Groups
-	}
-	return nil
-}
-
-type CreateInternalTokenRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
-	Type          string                 `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"` // 'HUMAN' or 'ROBOT'
-	GroupName     string                 `protobuf:"bytes,3,opt,name=group_name,json=groupName,proto3" json:"group_name,omitempty"`
-	DurationDays  int32                  `protobuf:"varint,4,opt,name=duration_days,json=durationDays,proto3" json:"duration_days,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateInternalTokenRequest) Reset() {
-	*x = CreateInternalTokenRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[31]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateInternalTokenRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateInternalTokenRequest) ProtoMessage() {}
-
-func (x *CreateInternalTokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[31]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateInternalTokenRequest.ProtoReflect.Descriptor instead.
-func (*CreateInternalTokenRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{31}
-}
-
-func (x *CreateInternalTokenRequest) GetName() string {
-	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *CreateInternalTokenRequest) GetType() string {
-	if x != nil {
-		return x.Type
-	}
-	return ""
-}
-
-func (x *CreateInternalTokenRequest) GetGroupName() string {
-	if x != nil {
-		return x.GroupName
-	}
-	return ""
-}
-
-func (x *CreateInternalTokenRequest) GetDurationDays() int32 {
-	if x != nil {
-		return x.DurationDays
-	}
-	return 0
-}
-
-type CreateInternalTokenResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	TokenId       string                 `protobuf:"bytes,1,opt,name=token_id,json=tokenId,proto3" json:"token_id,omitempty"`
-	TokenSecret   string                 `protobuf:"bytes,2,opt,name=token_secret,json=tokenSecret,proto3" json:"token_secret,omitempty"`
-	Record        *InternalTokenRecord   `protobuf:"bytes,3,opt,name=record,proto3" json:"record,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateInternalTokenResponse) Reset() {
-	*x = CreateInternalTokenResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[32]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateInternalTokenResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateInternalTokenResponse) ProtoMessage() {}
-
-func (x *CreateInternalTokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[32]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateInternalTokenResponse.ProtoReflect.Descriptor instead.
-func (*CreateInternalTokenResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{32}
-}
-
-func (x *CreateInternalTokenResponse) GetTokenId() string {
-	if x != nil {
-		return x.TokenId
-	}
-	return ""
-}
-
-func (x *CreateInternalTokenResponse) GetTokenSecret() string {
-	if x != nil {
-		return x.TokenSecret
-	}
-	return ""
-}
-
-func (x *CreateInternalTokenResponse) GetRecord() *InternalTokenRecord {
-	if x != nil {
-		return x.Record
 	}
 	return nil
 }
@@ -1908,7 +1706,7 @@ type ListInternalTokensRequest struct {
 
 func (x *ListInternalTokensRequest) Reset() {
 	*x = ListInternalTokensRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[33]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[29]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1920,7 +1718,7 @@ func (x *ListInternalTokensRequest) String() string {
 func (*ListInternalTokensRequest) ProtoMessage() {}
 
 func (x *ListInternalTokensRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[33]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[29]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1933,7 +1731,7 @@ func (x *ListInternalTokensRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInternalTokensRequest.ProtoReflect.Descriptor instead.
 func (*ListInternalTokensRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{33}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{29}
 }
 
 type ListInternalTokensResponse struct {
@@ -1945,7 +1743,7 @@ type ListInternalTokensResponse struct {
 
 func (x *ListInternalTokensResponse) Reset() {
 	*x = ListInternalTokensResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[34]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[30]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -1957,7 +1755,7 @@ func (x *ListInternalTokensResponse) String() string {
 func (*ListInternalTokensResponse) ProtoMessage() {}
 
 func (x *ListInternalTokensResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[34]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[30]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1970,12 +1768,180 @@ func (x *ListInternalTokensResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInternalTokensResponse.ProtoReflect.Descriptor instead.
 func (*ListInternalTokensResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{34}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{30}
 }
 
 func (x *ListInternalTokensResponse) GetTokens() []*InternalTokenRecord {
 	if x != nil {
 		return x.Tokens
+	}
+	return nil
+}
+
+type ListJitGrantsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ActiveOnly    bool                   `protobuf:"varint,1,opt,name=active_only,json=activeOnly,proto3" json:"active_only,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListJitGrantsRequest) Reset() {
+	*x = ListJitGrantsRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[31]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListJitGrantsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListJitGrantsRequest) ProtoMessage() {}
+
+func (x *ListJitGrantsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[31]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListJitGrantsRequest.ProtoReflect.Descriptor instead.
+func (*ListJitGrantsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{31}
+}
+
+func (x *ListJitGrantsRequest) GetActiveOnly() bool {
+	if x != nil {
+		return x.ActiveOnly
+	}
+	return false
+}
+
+type ListJitGrantsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Grants        []*JitGrantRecord      `protobuf:"bytes,1,rep,name=grants,proto3" json:"grants,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListJitGrantsResponse) Reset() {
+	*x = ListJitGrantsResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[32]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListJitGrantsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListJitGrantsResponse) ProtoMessage() {}
+
+func (x *ListJitGrantsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[32]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListJitGrantsResponse.ProtoReflect.Descriptor instead.
+func (*ListJitGrantsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{32}
+}
+
+func (x *ListJitGrantsResponse) GetGrants() []*JitGrantRecord {
+	if x != nil {
+		return x.Grants
+	}
+	return nil
+}
+
+type ListScheduledJobsRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListScheduledJobsRequest) Reset() {
+	*x = ListScheduledJobsRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[33]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListScheduledJobsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListScheduledJobsRequest) ProtoMessage() {}
+
+func (x *ListScheduledJobsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[33]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListScheduledJobsRequest.ProtoReflect.Descriptor instead.
+func (*ListScheduledJobsRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{33}
+}
+
+type ListScheduledJobsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Jobs          []*ScheduledJobDef     `protobuf:"bytes,1,rep,name=jobs,proto3" json:"jobs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListScheduledJobsResponse) Reset() {
+	*x = ListScheduledJobsResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[34]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListScheduledJobsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListScheduledJobsResponse) ProtoMessage() {}
+
+func (x *ListScheduledJobsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[34]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListScheduledJobsResponse.ProtoReflect.Descriptor instead.
+func (*ListScheduledJobsResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{34}
+}
+
+func (x *ListScheduledJobsResponse) GetJobs() []*ScheduledJobDef {
+	if x != nil {
+		return x.Jobs
 	}
 	return nil
 }
@@ -2068,294 +2034,6 @@ func (x *RevokeInternalTokenResponse) GetSuccess() bool {
 	return false
 }
 
-type AcquireJitGrantRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Hours         int32                  `protobuf:"varint,1,opt,name=hours,proto3" json:"hours,omitempty"` // 1 to 12
-	Reason        string                 `protobuf:"bytes,2,opt,name=reason,proto3" json:"reason,omitempty"`
-	Operation     string                 `protobuf:"bytes,3,opt,name=operation,proto3" json:"operation,omitempty"` // optional, defaults to '*'
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AcquireJitGrantRequest) Reset() {
-	*x = AcquireJitGrantRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[37]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AcquireJitGrantRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AcquireJitGrantRequest) ProtoMessage() {}
-
-func (x *AcquireJitGrantRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[37]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AcquireJitGrantRequest.ProtoReflect.Descriptor instead.
-func (*AcquireJitGrantRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{37}
-}
-
-func (x *AcquireJitGrantRequest) GetHours() int32 {
-	if x != nil {
-		return x.Hours
-	}
-	return 0
-}
-
-func (x *AcquireJitGrantRequest) GetReason() string {
-	if x != nil {
-		return x.Reason
-	}
-	return ""
-}
-
-func (x *AcquireJitGrantRequest) GetOperation() string {
-	if x != nil {
-		return x.Operation
-	}
-	return ""
-}
-
-type AcquireJitGrantResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Grant         *JitGrantRecord        `protobuf:"bytes,1,opt,name=grant,proto3" json:"grant,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *AcquireJitGrantResponse) Reset() {
-	*x = AcquireJitGrantResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[38]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *AcquireJitGrantResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*AcquireJitGrantResponse) ProtoMessage() {}
-
-func (x *AcquireJitGrantResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[38]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use AcquireJitGrantResponse.ProtoReflect.Descriptor instead.
-func (*AcquireJitGrantResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{38}
-}
-
-func (x *AcquireJitGrantResponse) GetGrant() *JitGrantRecord {
-	if x != nil {
-		return x.Grant
-	}
-	return nil
-}
-
-type ExtendJitGrantRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	GrantId       string                 `protobuf:"bytes,1,opt,name=grant_id,json=grantId,proto3" json:"grant_id,omitempty"`
-	Hours         int32                  `protobuf:"varint,2,opt,name=hours,proto3" json:"hours,omitempty"` // 1 to 12
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ExtendJitGrantRequest) Reset() {
-	*x = ExtendJitGrantRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[39]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ExtendJitGrantRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ExtendJitGrantRequest) ProtoMessage() {}
-
-func (x *ExtendJitGrantRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[39]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ExtendJitGrantRequest.ProtoReflect.Descriptor instead.
-func (*ExtendJitGrantRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{39}
-}
-
-func (x *ExtendJitGrantRequest) GetGrantId() string {
-	if x != nil {
-		return x.GrantId
-	}
-	return ""
-}
-
-func (x *ExtendJitGrantRequest) GetHours() int32 {
-	if x != nil {
-		return x.Hours
-	}
-	return 0
-}
-
-type ExtendJitGrantResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Grant         *JitGrantRecord        `protobuf:"bytes,1,opt,name=grant,proto3" json:"grant,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ExtendJitGrantResponse) Reset() {
-	*x = ExtendJitGrantResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[40]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ExtendJitGrantResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ExtendJitGrantResponse) ProtoMessage() {}
-
-func (x *ExtendJitGrantResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[40]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ExtendJitGrantResponse.ProtoReflect.Descriptor instead.
-func (*ExtendJitGrantResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{40}
-}
-
-func (x *ExtendJitGrantResponse) GetGrant() *JitGrantRecord {
-	if x != nil {
-		return x.Grant
-	}
-	return nil
-}
-
-type ListJitGrantsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ActiveOnly    bool                   `protobuf:"varint,1,opt,name=active_only,json=activeOnly,proto3" json:"active_only,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListJitGrantsRequest) Reset() {
-	*x = ListJitGrantsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[41]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListJitGrantsRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListJitGrantsRequest) ProtoMessage() {}
-
-func (x *ListJitGrantsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[41]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListJitGrantsRequest.ProtoReflect.Descriptor instead.
-func (*ListJitGrantsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{41}
-}
-
-func (x *ListJitGrantsRequest) GetActiveOnly() bool {
-	if x != nil {
-		return x.ActiveOnly
-	}
-	return false
-}
-
-type ListJitGrantsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Grants        []*JitGrantRecord      `protobuf:"bytes,1,rep,name=grants,proto3" json:"grants,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *ListJitGrantsResponse) Reset() {
-	*x = ListJitGrantsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[42]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *ListJitGrantsResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ListJitGrantsResponse) ProtoMessage() {}
-
-func (x *ListJitGrantsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[42]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ListJitGrantsResponse.ProtoReflect.Descriptor instead.
-func (*ListJitGrantsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{42}
-}
-
-func (x *ListJitGrantsResponse) GetGrants() []*JitGrantRecord {
-	if x != nil {
-		return x.Grants
-	}
-	return nil
-}
-
 type RevokeJitGrantRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	GrantId       string                 `protobuf:"bytes,1,opt,name=grant_id,json=grantId,proto3" json:"grant_id,omitempty"`
@@ -2365,7 +2043,7 @@ type RevokeJitGrantRequest struct {
 
 func (x *RevokeJitGrantRequest) Reset() {
 	*x = RevokeJitGrantRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[43]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2377,7 +2055,7 @@ func (x *RevokeJitGrantRequest) String() string {
 func (*RevokeJitGrantRequest) ProtoMessage() {}
 
 func (x *RevokeJitGrantRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[43]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2390,7 +2068,7 @@ func (x *RevokeJitGrantRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeJitGrantRequest.ProtoReflect.Descriptor instead.
 func (*RevokeJitGrantRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{43}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *RevokeJitGrantRequest) GetGrantId() string {
@@ -2409,7 +2087,7 @@ type RevokeJitGrantResponse struct {
 
 func (x *RevokeJitGrantResponse) Reset() {
 	*x = RevokeJitGrantResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[44]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2421,7 +2099,7 @@ func (x *RevokeJitGrantResponse) String() string {
 func (*RevokeJitGrantResponse) ProtoMessage() {}
 
 func (x *RevokeJitGrantResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[44]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2434,7 +2112,7 @@ func (x *RevokeJitGrantResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeJitGrantResponse.ProtoReflect.Descriptor instead.
 func (*RevokeJitGrantResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{44}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *RevokeJitGrantResponse) GetSuccess() bool {
@@ -2442,6 +2120,326 @@ func (x *RevokeJitGrantResponse) GetSuccess() bool {
 		return x.Success
 	}
 	return false
+}
+
+type RunDatabaseMaintenanceRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	FullVacuum    bool                   `protobuf:"varint,1,opt,name=full_vacuum,json=fullVacuum,proto3" json:"full_vacuum,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RunDatabaseMaintenanceRequest) Reset() {
+	*x = RunDatabaseMaintenanceRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[39]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RunDatabaseMaintenanceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RunDatabaseMaintenanceRequest) ProtoMessage() {}
+
+func (x *RunDatabaseMaintenanceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[39]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RunDatabaseMaintenanceRequest.ProtoReflect.Descriptor instead.
+func (*RunDatabaseMaintenanceRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{39}
+}
+
+func (x *RunDatabaseMaintenanceRequest) GetFullVacuum() bool {
+	if x != nil {
+		return x.FullVacuum
+	}
+	return false
+}
+
+type RunDatabaseMaintenanceResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	DurationMs    int64                  `protobuf:"varint,3,opt,name=duration_ms,json=durationMs,proto3" json:"duration_ms,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RunDatabaseMaintenanceResponse) Reset() {
+	*x = RunDatabaseMaintenanceResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[40]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RunDatabaseMaintenanceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RunDatabaseMaintenanceResponse) ProtoMessage() {}
+
+func (x *RunDatabaseMaintenanceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[40]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RunDatabaseMaintenanceResponse.ProtoReflect.Descriptor instead.
+func (*RunDatabaseMaintenanceResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{40}
+}
+
+func (x *RunDatabaseMaintenanceResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *RunDatabaseMaintenanceResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *RunDatabaseMaintenanceResponse) GetDurationMs() int64 {
+	if x != nil {
+		return x.DurationMs
+	}
+	return 0
+}
+
+type SeedDatabaseRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Force         bool                   `protobuf:"varint,1,opt,name=force,proto3" json:"force,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SeedDatabaseRequest) Reset() {
+	*x = SeedDatabaseRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[41]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SeedDatabaseRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SeedDatabaseRequest) ProtoMessage() {}
+
+func (x *SeedDatabaseRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[41]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SeedDatabaseRequest.ProtoReflect.Descriptor instead.
+func (*SeedDatabaseRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *SeedDatabaseRequest) GetForce() bool {
+	if x != nil {
+		return x.Force
+	}
+	return false
+}
+
+type SeedDatabaseResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	RecordsSeeded int32                  `protobuf:"varint,2,opt,name=records_seeded,json=recordsSeeded,proto3" json:"records_seeded,omitempty"`
+	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *SeedDatabaseResponse) Reset() {
+	*x = SeedDatabaseResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[42]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *SeedDatabaseResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SeedDatabaseResponse) ProtoMessage() {}
+
+func (x *SeedDatabaseResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[42]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SeedDatabaseResponse.ProtoReflect.Descriptor instead.
+func (*SeedDatabaseResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{42}
+}
+
+func (x *SeedDatabaseResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *SeedDatabaseResponse) GetRecordsSeeded() int32 {
+	if x != nil {
+		return x.RecordsSeeded
+	}
+	return 0
+}
+
+func (x *SeedDatabaseResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+type TriggerJobRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	JobName       string                 `protobuf:"bytes,1,opt,name=job_name,json=jobName,proto3" json:"job_name,omitempty"`
+	PayloadJson   string                 `protobuf:"bytes,2,opt,name=payload_json,json=payloadJson,proto3" json:"payload_json,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TriggerJobRequest) Reset() {
+	*x = TriggerJobRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[43]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TriggerJobRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TriggerJobRequest) ProtoMessage() {}
+
+func (x *TriggerJobRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[43]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TriggerJobRequest.ProtoReflect.Descriptor instead.
+func (*TriggerJobRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{43}
+}
+
+func (x *TriggerJobRequest) GetJobName() string {
+	if x != nil {
+		return x.JobName
+	}
+	return ""
+}
+
+func (x *TriggerJobRequest) GetPayloadJson() string {
+	if x != nil {
+		return x.PayloadJson
+	}
+	return ""
+}
+
+type TriggerJobResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Success       bool                   `protobuf:"varint,1,opt,name=success,proto3" json:"success,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	CallId        string                 `protobuf:"bytes,3,opt,name=call_id,json=callId,proto3" json:"call_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TriggerJobResponse) Reset() {
+	*x = TriggerJobResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[44]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TriggerJobResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TriggerJobResponse) ProtoMessage() {}
+
+func (x *TriggerJobResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[44]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TriggerJobResponse.ProtoReflect.Descriptor instead.
+func (*TriggerJobResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{44}
+}
+
+func (x *TriggerJobResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *TriggerJobResponse) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *TriggerJobResponse) GetCallId() string {
+	if x != nil {
+		return x.CallId
+	}
+	return ""
 }
 
 type IamGroupSummary struct {
@@ -2720,78 +2718,119 @@ var File_quadsmith_ops_ops_proto protoreflect.FileDescriptor
 
 const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"\n" +
-	"\x17quadsmith/ops/ops.proto\x12\rquadsmith.ops\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\x82\x05\n" +
-	"\x0eJitGrantRecord\x12\x1e\n" +
-	"\x04uuid\x18\x01 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
-	"\x02id\x18\x02 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02 \x01\xc0\xf0\x19\x04R\x02id\x12)\n" +
+	"\x17quadsmith/ops/ops.proto\x12\rquadsmith.ops\x1a\x1fgoogle/protobuf/timestamp.proto\"\xd1\x03\n" +
+	"\x15InternalApiCallRecord\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x0e\n" +
+	"\x02id\x18\x02 \x01(\tR\x02id\x12\x16\n" +
+	"\x06method\x18\x03 \x01(\tR\x06method\x12\x16\n" +
+	"\x06caller\x18\x04 \x01(\tR\x06caller\x12\x1f\n" +
+	"\vcaller_type\x18\x05 \x01(\tR\n" +
+	"callerType\x12\x1d\n" +
 	"\n" +
-	"token_hash\x18\x03 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x06R\ttokenHash\x12 \n" +
-	"\boperator\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x05R\boperator\x12)\n" +
-	"\roperator_type\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x05R\foperatorType\x12\x1c\n" +
-	"\x06reason\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x05R\x06reason\x12+\n" +
-	"\toperation\x18\a \x01(\tB\r\xc2\xf3\x18\x05:\x03'*'\xc0\xf0\x19\x05R\toperation\x12,\n" +
-	"\x06status\x18\b \x01(\tB\x14\xc2\xf3\x18\f(\x01:\b'ACTIVE'\xc0\xf0\x19\x05R\x06status\x12\x1a\n" +
-	"\x05hours\x18\t \x01(\x05B\x04\xc0\xf0\x19\x05R\x05hours\x12?\n" +
-	"\n" +
-	"expires_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\texpiresAt\x12J\n" +
-	"\n" +
-	"created_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x05R\tcreatedAt\x12A\n" +
-	"\vextended_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\n" +
-	"extendedAt\x12?\n" +
-	"\n" +
-	"revoked_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\trevokedAt:\x16\xc2\xf3\x18\f\n" +
-	"\n" +
-	"jit_grants\xc2\xf0\x19\x02\b\x01\"\xc0\x03\n" +
-	"\x13InternalTokenRecord\x12\x1e\n" +
-	"\x04uuid\x18\x01 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
-	"\x02id\x18\x02 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02 \x01\xc0\xf0\x19\x04R\x02id\x12\x18\n" +
-	"\x04name\x18\x03 \x01(\tB\x04\xc0\xf0\x19\x05R\x04name\x12\x18\n" +
-	"\x04type\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x05R\x04type\x12#\n" +
-	"\n" +
-	"group_name\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x05R\tgroupName\x12)\n" +
-	"\n" +
-	"token_hash\x18\x06 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x06R\ttokenHash\x12?\n" +
-	"\n" +
-	"expires_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\texpiresAt\x12J\n" +
-	"\n" +
-	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x05R\tcreatedAt\x12?\n" +
-	"\n" +
-	"revoked_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\trevokedAt:\x1b\xc2\xf3\x18\x11\n" +
-	"\x0finternal_tokens\xc2\xf0\x19\x02\b\x01\"\xf6\x04\n" +
-	"\x15InternalApiCallRecord\x12\x1e\n" +
-	"\x04uuid\x18\x01 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
-	"\x02id\x18\x02 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02 \x01\xc0\xf0\x19\x04R\x02id\x12\x1c\n" +
-	"\x06method\x18\x03 \x01(\tB\x04\xc0\xf0\x19\x05R\x06method\x12\"\n" +
-	"\x06caller\x18\x04 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x05R\x06caller\x12%\n" +
-	"\vcaller_type\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x05R\n" +
-	"callerType\x12#\n" +
-	"\n" +
-	"group_name\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x05R\tgroupName\x12G\n" +
-	"\x0ejit_grant_uuid\x18\a \x01(\tB\x1c\xc2\xf3\x18\x14\x1a\x10jit_grants(uuid)(\x01\xc0\xf0\x19\x05H\x00R\fjitGrantUuid\x88\x01\x01\x121\n" +
-	"\fjit_grant_id\x18\b \x01(\tB\n" +
-	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x05H\x01R\n" +
-	"jitGrantId\x88\x01\x01\x12\x1c\n" +
-	"\x06status\x18\t \x01(\tB\x04\xc0\xf0\x19\x05R\x06status\x12.\n" +
+	"group_name\x18\x06 \x01(\tR\tgroupName\x12)\n" +
+	"\x0ejit_grant_uuid\x18\a \x01(\tH\x00R\fjitGrantUuid\x88\x01\x01\x12%\n" +
+	"\fjit_grant_id\x18\b \x01(\tH\x01R\n" +
+	"jitGrantId\x88\x01\x01\x12\x16\n" +
+	"\x06status\x18\t \x01(\tR\x06status\x12(\n" +
 	"\rerror_message\x18\n" +
-	" \x01(\tB\x04\xc0\xf0\x19\x05H\x02R\ferrorMessage\x88\x01\x01\x12%\n" +
-	"\vduration_ms\x18\v \x01(\x03B\x04\xc0\xf0\x19\x05R\n" +
-	"durationMs\x12L\n" +
+	" \x01(\tH\x02R\ferrorMessage\x88\x01\x01\x12\x1f\n" +
+	"\vduration_ms\x18\v \x01(\x03R\n" +
+	"durationMs\x129\n" +
 	"\n" +
-	"created_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\x11\xc2\xf3\x18\t(\x01:\x05NOW()\xc0\xf0\x19\x05R\tcreatedAt:\x1e\xc2\xf3\x18\x14\n" +
-	"\x12internal_api_calls\xc2\xf0\x19\x02\b\x01B\x11\n" +
+	"created_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAtB\x11\n" +
 	"\x0f_jit_grant_uuidB\x0f\n" +
 	"\r_jit_grant_idB\x10\n" +
-	"\x0e_error_message\"\x1d\n" +
+	"\x0e_error_message\"\xd0\x02\n" +
+	"\x13InternalTokenRecord\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x0e\n" +
+	"\x02id\x18\x02 \x01(\tR\x02id\x12\x12\n" +
+	"\x04name\x18\x03 \x01(\tR\x04name\x12\x12\n" +
+	"\x04type\x18\x04 \x01(\tR\x04type\x12\x1d\n" +
+	"\n" +
+	"group_name\x18\x05 \x01(\tR\tgroupName\x12\x1d\n" +
+	"\n" +
+	"token_hash\x18\x06 \x01(\tR\ttokenHash\x129\n" +
+	"\n" +
+	"expires_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\x129\n" +
+	"\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"\n" +
+	"revoked_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\trevokedAt\"\xe6\x03\n" +
+	"\x0eJitGrantRecord\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x0e\n" +
+	"\x02id\x18\x02 \x01(\tR\x02id\x12\x1d\n" +
+	"\n" +
+	"token_hash\x18\x03 \x01(\tR\ttokenHash\x12\x1a\n" +
+	"\boperator\x18\x04 \x01(\tR\boperator\x12#\n" +
+	"\roperator_type\x18\x05 \x01(\tR\foperatorType\x12\x16\n" +
+	"\x06reason\x18\x06 \x01(\tR\x06reason\x12\x1c\n" +
+	"\toperation\x18\a \x01(\tR\toperation\x12\x16\n" +
+	"\x06status\x18\b \x01(\tR\x06status\x12\x14\n" +
+	"\x05hours\x18\t \x01(\x05R\x05hours\x129\n" +
+	"\n" +
+	"expires_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\x129\n" +
+	"\n" +
+	"created_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12;\n" +
+	"\vextended_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"extendedAt\x129\n" +
+	"\n" +
+	"revoked_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampR\trevokedAt\"d\n" +
+	"\x16AcquireJitGrantRequest\x12\x14\n" +
+	"\x05hours\x18\x01 \x01(\x05R\x05hours\x12\x16\n" +
+	"\x06reason\x18\x02 \x01(\tR\x06reason\x12\x1c\n" +
+	"\toperation\x18\x03 \x01(\tR\toperation\"N\n" +
+	"\x17AcquireJitGrantResponse\x123\n" +
+	"\x05grant\x18\x01 \x01(\v2\x1d.quadsmith.ops.JitGrantRecordR\x05grant\"\x1b\n" +
+	"\x19CleanupExpiredOtpsRequest\"A\n" +
+	"\x1aCleanupExpiredOtpsResponse\x12#\n" +
+	"\rcleaned_count\x18\x01 \x01(\x03R\fcleanedCount\"\x1d\n" +
+	"\x1bCleanupExpiredTokensRequest\"C\n" +
+	"\x1cCleanupExpiredTokensResponse\x12#\n" +
+	"\rcleaned_count\x18\x01 \x01(\x03R\fcleanedCount\"\x1d\n" +
+	"\x1bCleanupOrphanedBlobsRequest\"C\n" +
+	"\x1cCleanupOrphanedBlobsResponse\x12#\n" +
+	"\rcleaned_count\x18\x01 \x01(\x03R\fcleanedCount\"\x88\x01\n" +
+	"\x1aCreateInternalTokenRequest\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
+	"\x04type\x18\x02 \x01(\tR\x04type\x12\x1d\n" +
+	"\n" +
+	"group_name\x18\x03 \x01(\tR\tgroupName\x12#\n" +
+	"\rduration_days\x18\x04 \x01(\x05R\fdurationDays\"\x97\x01\n" +
+	"\x1bCreateInternalTokenResponse\x12\x19\n" +
+	"\btoken_id\x18\x01 \x01(\tR\atokenId\x12!\n" +
+	"\ftoken_secret\x18\x02 \x01(\tR\vtokenSecret\x12:\n" +
+	"\x06record\x18\x03 \x01(\v2\".quadsmith.ops.InternalTokenRecordR\x06record\"v\n" +
+	"\x18ExchangeOAuthCodeRequest\x12\x12\n" +
+	"\x04code\x18\x01 \x01(\tR\x04code\x12#\n" +
+	"\rcode_verifier\x18\x02 \x01(\tR\fcodeVerifier\x12!\n" +
+	"\fredirect_uri\x18\x03 \x01(\tR\vredirectUri\"\xa7\x01\n" +
+	"\x19ExchangeOAuthCodeResponse\x12\x14\n" +
+	"\x05token\x18\x01 \x01(\tR\x05token\x129\n" +
+	"\n" +
+	"expires_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\x12\x1a\n" +
+	"\boperator\x18\x03 \x01(\tR\boperator\x12\x1d\n" +
+	"\n" +
+	"group_name\x18\x04 \x01(\tR\tgroupName\"H\n" +
+	"\x15ExtendJitGrantRequest\x12\x19\n" +
+	"\bgrant_id\x18\x01 \x01(\tR\agrantId\x12\x14\n" +
+	"\x05hours\x18\x02 \x01(\x05R\x05hours\"M\n" +
+	"\x16ExtendJitGrantResponse\x123\n" +
+	"\x05grant\x18\x01 \x01(\v2\x1d.quadsmith.ops.JitGrantRecordR\x05grant\"\x1b\n" +
+	"\x19GetCurrentOperatorRequest\"\xa9\x02\n" +
+	"\x1aGetCurrentOperatorResponse\x12\x1a\n" +
+	"\boperator\x18\x01 \x01(\tR\boperator\x12#\n" +
+	"\roperator_type\x18\x02 \x01(\tR\foperatorType\x12\x1d\n" +
+	"\n" +
+	"group_name\x18\x03 \x01(\tR\tgroupName\x12H\n" +
+	"\x12session_expires_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x10sessionExpiresAt\x12L\n" +
+	"\x10active_jit_grant\x18\x05 \x01(\v2\x1d.quadsmith.ops.JitGrantRecordH\x00R\x0eactiveJitGrant\x88\x01\x01B\x13\n" +
+	"\x11_active_jit_grant\"\x19\n" +
+	"\x17GetDatabaseStatsRequest\"\x9b\x01\n" +
+	"\x18GetDatabaseStatsResponse\x12#\n" +
+	"\rdatabase_name\x18\x01 \x01(\tR\fdatabaseName\x12(\n" +
+	"\x10total_size_bytes\x18\x02 \x01(\x03R\x0etotalSizeBytes\x120\n" +
+	"\x06tables\x18\x03 \x03(\v2\x18.quadsmith.ops.TableStatR\x06tables\"\x1d\n" +
 	"\x1bGetSystemDiagnosticsRequest\"\xde\x02\n" +
 	"\x1cGetSystemDiagnosticsResponse\x12\x18\n" +
 	"\aversion\x18\x01 \x01(\tR\aversion\x12 \n" +
@@ -2800,12 +2839,38 @@ const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"\x16memory_allocated_bytes\x18\x04 \x01(\x03R\x14memoryAllocatedBytes\x12%\n" +
 	"\x0enum_goroutines\x18\x05 \x01(\x05R\rnumGoroutines\x12>\n" +
 	"\x1bactive_database_connections\x18\x06 \x01(\x05R\x19activeDatabaseConnections\x12>\n" +
-	"\x1bactive_internal_connections\x18\a \x01(\x05R\x19activeInternalConnections\"\x19\n" +
-	"\x17GetDatabaseStatsRequest\"\x9b\x01\n" +
-	"\x18GetDatabaseStatsResponse\x12#\n" +
-	"\rdatabase_name\x18\x01 \x01(\tR\fdatabaseName\x12(\n" +
-	"\x10total_size_bytes\x18\x02 \x01(\x03R\x0etotalSizeBytes\x120\n" +
-	"\x06tables\x18\x03 \x03(\v2\x18.quadsmith.ops.TableStatR\x06tables\"@\n" +
+	"\x1bactive_internal_connections\x18\a \x01(\x05R\x19activeInternalConnections\"\x16\n" +
+	"\x14ListIamGroupsRequest\"O\n" +
+	"\x15ListIamGroupsResponse\x126\n" +
+	"\x06groups\x18\x01 \x03(\v2\x1e.quadsmith.ops.IamGroupSummaryR\x06groups\"\x15\n" +
+	"\x13ListIamUsersRequest\"K\n" +
+	"\x14ListIamUsersResponse\x123\n" +
+	"\x05users\x18\x01 \x03(\v2\x1d.quadsmith.ops.IamUserSummaryR\x05users\"}\n" +
+	"\x1bListInternalApiCallsRequest\x12\x14\n" +
+	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12#\n" +
+	"\rcaller_filter\x18\x02 \x01(\tR\fcallerFilter\x12#\n" +
+	"\rmethod_filter\x18\x03 \x01(\tR\fmethodFilter\"Z\n" +
+	"\x1cListInternalApiCallsResponse\x12:\n" +
+	"\x05calls\x18\x01 \x03(\v2$.quadsmith.ops.InternalApiCallRecordR\x05calls\"\x1b\n" +
+	"\x19ListInternalTokensRequest\"X\n" +
+	"\x1aListInternalTokensResponse\x12:\n" +
+	"\x06tokens\x18\x01 \x03(\v2\".quadsmith.ops.InternalTokenRecordR\x06tokens\"7\n" +
+	"\x14ListJitGrantsRequest\x12\x1f\n" +
+	"\vactive_only\x18\x01 \x01(\bR\n" +
+	"activeOnly\"N\n" +
+	"\x15ListJitGrantsResponse\x125\n" +
+	"\x06grants\x18\x01 \x03(\v2\x1d.quadsmith.ops.JitGrantRecordR\x06grants\"\x1a\n" +
+	"\x18ListScheduledJobsRequest\"O\n" +
+	"\x19ListScheduledJobsResponse\x122\n" +
+	"\x04jobs\x18\x01 \x03(\v2\x1e.quadsmith.ops.ScheduledJobDefR\x04jobs\",\n" +
+	"\x1aRevokeInternalTokenRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"7\n" +
+	"\x1bRevokeInternalTokenResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"2\n" +
+	"\x15RevokeJitGrantRequest\x12\x19\n" +
+	"\bgrant_id\x18\x01 \x01(\tR\agrantId\"2\n" +
+	"\x16RevokeJitGrantResponse\x12\x18\n" +
+	"\asuccess\x18\x01 \x01(\bR\asuccess\"@\n" +
 	"\x1dRunDatabaseMaintenanceRequest\x12\x1f\n" +
 	"\vfull_vacuum\x18\x01 \x01(\bR\n" +
 	"fullVacuum\"u\n" +
@@ -2819,95 +2884,14 @@ const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"\x14SeedDatabaseResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12%\n" +
 	"\x0erecords_seeded\x18\x02 \x01(\x05R\rrecordsSeeded\x12\x18\n" +
-	"\amessage\x18\x03 \x01(\tR\amessage\"\x1b\n" +
-	"\x19CleanupExpiredOtpsRequest\"A\n" +
-	"\x1aCleanupExpiredOtpsResponse\x12#\n" +
-	"\rcleaned_count\x18\x01 \x01(\x03R\fcleanedCount\"\x1d\n" +
-	"\x1bCleanupExpiredTokensRequest\"C\n" +
-	"\x1cCleanupExpiredTokensResponse\x12#\n" +
-	"\rcleaned_count\x18\x01 \x01(\x03R\fcleanedCount\"\x1d\n" +
-	"\x1bCleanupOrphanedBlobsRequest\"C\n" +
-	"\x1cCleanupOrphanedBlobsResponse\x12#\n" +
-	"\rcleaned_count\x18\x01 \x01(\x03R\fcleanedCount\"\x1a\n" +
-	"\x18ListScheduledJobsRequest\"O\n" +
-	"\x19ListScheduledJobsResponse\x122\n" +
-	"\x04jobs\x18\x01 \x03(\v2\x1e.quadsmith.ops.ScheduledJobDefR\x04jobs\"Q\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\"Q\n" +
 	"\x11TriggerJobRequest\x12\x19\n" +
 	"\bjob_name\x18\x01 \x01(\tR\ajobName\x12!\n" +
 	"\fpayload_json\x18\x02 \x01(\tR\vpayloadJson\"a\n" +
 	"\x12TriggerJobResponse\x12\x18\n" +
 	"\asuccess\x18\x01 \x01(\bR\asuccess\x12\x18\n" +
 	"\amessage\x18\x02 \x01(\tR\amessage\x12\x17\n" +
-	"\acall_id\x18\x03 \x01(\tR\x06callId\"}\n" +
-	"\x1bListInternalApiCallsRequest\x12\x14\n" +
-	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12#\n" +
-	"\rcaller_filter\x18\x02 \x01(\tR\fcallerFilter\x12#\n" +
-	"\rmethod_filter\x18\x03 \x01(\tR\fmethodFilter\"Z\n" +
-	"\x1cListInternalApiCallsResponse\x12:\n" +
-	"\x05calls\x18\x01 \x03(\v2$.quadsmith.ops.InternalApiCallRecordR\x05calls\"v\n" +
-	"\x18ExchangeOAuthCodeRequest\x12\x12\n" +
-	"\x04code\x18\x01 \x01(\tR\x04code\x12#\n" +
-	"\rcode_verifier\x18\x02 \x01(\tR\fcodeVerifier\x12!\n" +
-	"\fredirect_uri\x18\x03 \x01(\tR\vredirectUri\"\xa7\x01\n" +
-	"\x19ExchangeOAuthCodeResponse\x12\x14\n" +
-	"\x05token\x18\x01 \x01(\tR\x05token\x129\n" +
-	"\n" +
-	"expires_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\texpiresAt\x12\x1a\n" +
-	"\boperator\x18\x03 \x01(\tR\boperator\x12\x1d\n" +
-	"\n" +
-	"group_name\x18\x04 \x01(\tR\tgroupName\"\x1b\n" +
-	"\x19GetCurrentOperatorRequest\"\xa9\x02\n" +
-	"\x1aGetCurrentOperatorResponse\x12\x1a\n" +
-	"\boperator\x18\x01 \x01(\tR\boperator\x12#\n" +
-	"\roperator_type\x18\x02 \x01(\tR\foperatorType\x12\x1d\n" +
-	"\n" +
-	"group_name\x18\x03 \x01(\tR\tgroupName\x12H\n" +
-	"\x12session_expires_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x10sessionExpiresAt\x12L\n" +
-	"\x10active_jit_grant\x18\x05 \x01(\v2\x1d.quadsmith.ops.JitGrantRecordH\x00R\x0eactiveJitGrant\x88\x01\x01B\x13\n" +
-	"\x11_active_jit_grant\"\x15\n" +
-	"\x13ListIamUsersRequest\"K\n" +
-	"\x14ListIamUsersResponse\x123\n" +
-	"\x05users\x18\x01 \x03(\v2\x1d.quadsmith.ops.IamUserSummaryR\x05users\"\x16\n" +
-	"\x14ListIamGroupsRequest\"O\n" +
-	"\x15ListIamGroupsResponse\x126\n" +
-	"\x06groups\x18\x01 \x03(\v2\x1e.quadsmith.ops.IamGroupSummaryR\x06groups\"\x88\x01\n" +
-	"\x1aCreateInternalTokenRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\x12\x12\n" +
-	"\x04type\x18\x02 \x01(\tR\x04type\x12\x1d\n" +
-	"\n" +
-	"group_name\x18\x03 \x01(\tR\tgroupName\x12#\n" +
-	"\rduration_days\x18\x04 \x01(\x05R\fdurationDays\"\x97\x01\n" +
-	"\x1bCreateInternalTokenResponse\x12\x19\n" +
-	"\btoken_id\x18\x01 \x01(\tR\atokenId\x12!\n" +
-	"\ftoken_secret\x18\x02 \x01(\tR\vtokenSecret\x12:\n" +
-	"\x06record\x18\x03 \x01(\v2\".quadsmith.ops.InternalTokenRecordR\x06record\"\x1b\n" +
-	"\x19ListInternalTokensRequest\"X\n" +
-	"\x1aListInternalTokensResponse\x12:\n" +
-	"\x06tokens\x18\x01 \x03(\v2\".quadsmith.ops.InternalTokenRecordR\x06tokens\",\n" +
-	"\x1aRevokeInternalTokenRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"7\n" +
-	"\x1bRevokeInternalTokenResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"d\n" +
-	"\x16AcquireJitGrantRequest\x12\x14\n" +
-	"\x05hours\x18\x01 \x01(\x05R\x05hours\x12\x16\n" +
-	"\x06reason\x18\x02 \x01(\tR\x06reason\x12\x1c\n" +
-	"\toperation\x18\x03 \x01(\tR\toperation\"N\n" +
-	"\x17AcquireJitGrantResponse\x123\n" +
-	"\x05grant\x18\x01 \x01(\v2\x1d.quadsmith.ops.JitGrantRecordR\x05grant\"H\n" +
-	"\x15ExtendJitGrantRequest\x12\x19\n" +
-	"\bgrant_id\x18\x01 \x01(\tR\agrantId\x12\x14\n" +
-	"\x05hours\x18\x02 \x01(\x05R\x05hours\"M\n" +
-	"\x16ExtendJitGrantResponse\x123\n" +
-	"\x05grant\x18\x01 \x01(\v2\x1d.quadsmith.ops.JitGrantRecordR\x05grant\"7\n" +
-	"\x14ListJitGrantsRequest\x12\x1f\n" +
-	"\vactive_only\x18\x01 \x01(\bR\n" +
-	"activeOnly\"N\n" +
-	"\x15ListJitGrantsResponse\x125\n" +
-	"\x06grants\x18\x01 \x03(\v2\x1d.quadsmith.ops.JitGrantRecordR\x06grants\"2\n" +
-	"\x15RevokeJitGrantRequest\x12\x19\n" +
-	"\bgrant_id\x18\x01 \x01(\tR\agrantId\"2\n" +
-	"\x16RevokeJitGrantResponse\x12\x18\n" +
-	"\asuccess\x18\x01 \x01(\bR\asuccess\"p\n" +
+	"\acall_id\x18\x03 \x01(\tR\x06callId\"p\n" +
 	"\x0fIamGroupSummary\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12'\n" +
@@ -2970,51 +2954,51 @@ func file_quadsmith_ops_ops_proto_rawDescGZIP() []byte {
 
 var file_quadsmith_ops_ops_proto_msgTypes = make([]protoimpl.MessageInfo, 49)
 var file_quadsmith_ops_ops_proto_goTypes = []any{
-	(*JitGrantRecord)(nil),                 // 0: quadsmith.ops.JitGrantRecord
+	(*InternalApiCallRecord)(nil),          // 0: quadsmith.ops.InternalApiCallRecord
 	(*InternalTokenRecord)(nil),            // 1: quadsmith.ops.InternalTokenRecord
-	(*InternalApiCallRecord)(nil),          // 2: quadsmith.ops.InternalApiCallRecord
-	(*GetSystemDiagnosticsRequest)(nil),    // 3: quadsmith.ops.GetSystemDiagnosticsRequest
-	(*GetSystemDiagnosticsResponse)(nil),   // 4: quadsmith.ops.GetSystemDiagnosticsResponse
-	(*GetDatabaseStatsRequest)(nil),        // 5: quadsmith.ops.GetDatabaseStatsRequest
-	(*GetDatabaseStatsResponse)(nil),       // 6: quadsmith.ops.GetDatabaseStatsResponse
-	(*RunDatabaseMaintenanceRequest)(nil),  // 7: quadsmith.ops.RunDatabaseMaintenanceRequest
-	(*RunDatabaseMaintenanceResponse)(nil), // 8: quadsmith.ops.RunDatabaseMaintenanceResponse
-	(*SeedDatabaseRequest)(nil),            // 9: quadsmith.ops.SeedDatabaseRequest
-	(*SeedDatabaseResponse)(nil),           // 10: quadsmith.ops.SeedDatabaseResponse
-	(*CleanupExpiredOtpsRequest)(nil),      // 11: quadsmith.ops.CleanupExpiredOtpsRequest
-	(*CleanupExpiredOtpsResponse)(nil),     // 12: quadsmith.ops.CleanupExpiredOtpsResponse
-	(*CleanupExpiredTokensRequest)(nil),    // 13: quadsmith.ops.CleanupExpiredTokensRequest
-	(*CleanupExpiredTokensResponse)(nil),   // 14: quadsmith.ops.CleanupExpiredTokensResponse
-	(*CleanupOrphanedBlobsRequest)(nil),    // 15: quadsmith.ops.CleanupOrphanedBlobsRequest
-	(*CleanupOrphanedBlobsResponse)(nil),   // 16: quadsmith.ops.CleanupOrphanedBlobsResponse
-	(*ListScheduledJobsRequest)(nil),       // 17: quadsmith.ops.ListScheduledJobsRequest
-	(*ListScheduledJobsResponse)(nil),      // 18: quadsmith.ops.ListScheduledJobsResponse
-	(*TriggerJobRequest)(nil),              // 19: quadsmith.ops.TriggerJobRequest
-	(*TriggerJobResponse)(nil),             // 20: quadsmith.ops.TriggerJobResponse
-	(*ListInternalApiCallsRequest)(nil),    // 21: quadsmith.ops.ListInternalApiCallsRequest
-	(*ListInternalApiCallsResponse)(nil),   // 22: quadsmith.ops.ListInternalApiCallsResponse
-	(*ExchangeOAuthCodeRequest)(nil),       // 23: quadsmith.ops.ExchangeOAuthCodeRequest
-	(*ExchangeOAuthCodeResponse)(nil),      // 24: quadsmith.ops.ExchangeOAuthCodeResponse
-	(*GetCurrentOperatorRequest)(nil),      // 25: quadsmith.ops.GetCurrentOperatorRequest
-	(*GetCurrentOperatorResponse)(nil),     // 26: quadsmith.ops.GetCurrentOperatorResponse
-	(*ListIamUsersRequest)(nil),            // 27: quadsmith.ops.ListIamUsersRequest
-	(*ListIamUsersResponse)(nil),           // 28: quadsmith.ops.ListIamUsersResponse
-	(*ListIamGroupsRequest)(nil),           // 29: quadsmith.ops.ListIamGroupsRequest
-	(*ListIamGroupsResponse)(nil),          // 30: quadsmith.ops.ListIamGroupsResponse
-	(*CreateInternalTokenRequest)(nil),     // 31: quadsmith.ops.CreateInternalTokenRequest
-	(*CreateInternalTokenResponse)(nil),    // 32: quadsmith.ops.CreateInternalTokenResponse
-	(*ListInternalTokensRequest)(nil),      // 33: quadsmith.ops.ListInternalTokensRequest
-	(*ListInternalTokensResponse)(nil),     // 34: quadsmith.ops.ListInternalTokensResponse
+	(*JitGrantRecord)(nil),                 // 2: quadsmith.ops.JitGrantRecord
+	(*AcquireJitGrantRequest)(nil),         // 3: quadsmith.ops.AcquireJitGrantRequest
+	(*AcquireJitGrantResponse)(nil),        // 4: quadsmith.ops.AcquireJitGrantResponse
+	(*CleanupExpiredOtpsRequest)(nil),      // 5: quadsmith.ops.CleanupExpiredOtpsRequest
+	(*CleanupExpiredOtpsResponse)(nil),     // 6: quadsmith.ops.CleanupExpiredOtpsResponse
+	(*CleanupExpiredTokensRequest)(nil),    // 7: quadsmith.ops.CleanupExpiredTokensRequest
+	(*CleanupExpiredTokensResponse)(nil),   // 8: quadsmith.ops.CleanupExpiredTokensResponse
+	(*CleanupOrphanedBlobsRequest)(nil),    // 9: quadsmith.ops.CleanupOrphanedBlobsRequest
+	(*CleanupOrphanedBlobsResponse)(nil),   // 10: quadsmith.ops.CleanupOrphanedBlobsResponse
+	(*CreateInternalTokenRequest)(nil),     // 11: quadsmith.ops.CreateInternalTokenRequest
+	(*CreateInternalTokenResponse)(nil),    // 12: quadsmith.ops.CreateInternalTokenResponse
+	(*ExchangeOAuthCodeRequest)(nil),       // 13: quadsmith.ops.ExchangeOAuthCodeRequest
+	(*ExchangeOAuthCodeResponse)(nil),      // 14: quadsmith.ops.ExchangeOAuthCodeResponse
+	(*ExtendJitGrantRequest)(nil),          // 15: quadsmith.ops.ExtendJitGrantRequest
+	(*ExtendJitGrantResponse)(nil),         // 16: quadsmith.ops.ExtendJitGrantResponse
+	(*GetCurrentOperatorRequest)(nil),      // 17: quadsmith.ops.GetCurrentOperatorRequest
+	(*GetCurrentOperatorResponse)(nil),     // 18: quadsmith.ops.GetCurrentOperatorResponse
+	(*GetDatabaseStatsRequest)(nil),        // 19: quadsmith.ops.GetDatabaseStatsRequest
+	(*GetDatabaseStatsResponse)(nil),       // 20: quadsmith.ops.GetDatabaseStatsResponse
+	(*GetSystemDiagnosticsRequest)(nil),    // 21: quadsmith.ops.GetSystemDiagnosticsRequest
+	(*GetSystemDiagnosticsResponse)(nil),   // 22: quadsmith.ops.GetSystemDiagnosticsResponse
+	(*ListIamGroupsRequest)(nil),           // 23: quadsmith.ops.ListIamGroupsRequest
+	(*ListIamGroupsResponse)(nil),          // 24: quadsmith.ops.ListIamGroupsResponse
+	(*ListIamUsersRequest)(nil),            // 25: quadsmith.ops.ListIamUsersRequest
+	(*ListIamUsersResponse)(nil),           // 26: quadsmith.ops.ListIamUsersResponse
+	(*ListInternalApiCallsRequest)(nil),    // 27: quadsmith.ops.ListInternalApiCallsRequest
+	(*ListInternalApiCallsResponse)(nil),   // 28: quadsmith.ops.ListInternalApiCallsResponse
+	(*ListInternalTokensRequest)(nil),      // 29: quadsmith.ops.ListInternalTokensRequest
+	(*ListInternalTokensResponse)(nil),     // 30: quadsmith.ops.ListInternalTokensResponse
+	(*ListJitGrantsRequest)(nil),           // 31: quadsmith.ops.ListJitGrantsRequest
+	(*ListJitGrantsResponse)(nil),          // 32: quadsmith.ops.ListJitGrantsResponse
+	(*ListScheduledJobsRequest)(nil),       // 33: quadsmith.ops.ListScheduledJobsRequest
+	(*ListScheduledJobsResponse)(nil),      // 34: quadsmith.ops.ListScheduledJobsResponse
 	(*RevokeInternalTokenRequest)(nil),     // 35: quadsmith.ops.RevokeInternalTokenRequest
 	(*RevokeInternalTokenResponse)(nil),    // 36: quadsmith.ops.RevokeInternalTokenResponse
-	(*AcquireJitGrantRequest)(nil),         // 37: quadsmith.ops.AcquireJitGrantRequest
-	(*AcquireJitGrantResponse)(nil),        // 38: quadsmith.ops.AcquireJitGrantResponse
-	(*ExtendJitGrantRequest)(nil),          // 39: quadsmith.ops.ExtendJitGrantRequest
-	(*ExtendJitGrantResponse)(nil),         // 40: quadsmith.ops.ExtendJitGrantResponse
-	(*ListJitGrantsRequest)(nil),           // 41: quadsmith.ops.ListJitGrantsRequest
-	(*ListJitGrantsResponse)(nil),          // 42: quadsmith.ops.ListJitGrantsResponse
-	(*RevokeJitGrantRequest)(nil),          // 43: quadsmith.ops.RevokeJitGrantRequest
-	(*RevokeJitGrantResponse)(nil),         // 44: quadsmith.ops.RevokeJitGrantResponse
+	(*RevokeJitGrantRequest)(nil),          // 37: quadsmith.ops.RevokeJitGrantRequest
+	(*RevokeJitGrantResponse)(nil),         // 38: quadsmith.ops.RevokeJitGrantResponse
+	(*RunDatabaseMaintenanceRequest)(nil),  // 39: quadsmith.ops.RunDatabaseMaintenanceRequest
+	(*RunDatabaseMaintenanceResponse)(nil), // 40: quadsmith.ops.RunDatabaseMaintenanceResponse
+	(*SeedDatabaseRequest)(nil),            // 41: quadsmith.ops.SeedDatabaseRequest
+	(*SeedDatabaseResponse)(nil),           // 42: quadsmith.ops.SeedDatabaseResponse
+	(*TriggerJobRequest)(nil),              // 43: quadsmith.ops.TriggerJobRequest
+	(*TriggerJobResponse)(nil),             // 44: quadsmith.ops.TriggerJobResponse
 	(*IamGroupSummary)(nil),                // 45: quadsmith.ops.IamGroupSummary
 	(*IamUserSummary)(nil),                 // 46: quadsmith.ops.IamUserSummary
 	(*ScheduledJobDef)(nil),                // 47: quadsmith.ops.ScheduledJobDef
@@ -3022,71 +3006,71 @@ var file_quadsmith_ops_ops_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil),          // 49: google.protobuf.Timestamp
 }
 var file_quadsmith_ops_ops_proto_depIdxs = []int32{
-	49, // 0: quadsmith.ops.JitGrantRecord.expires_at:type_name -> google.protobuf.Timestamp
-	49, // 1: quadsmith.ops.JitGrantRecord.created_at:type_name -> google.protobuf.Timestamp
-	49, // 2: quadsmith.ops.JitGrantRecord.extended_at:type_name -> google.protobuf.Timestamp
-	49, // 3: quadsmith.ops.JitGrantRecord.revoked_at:type_name -> google.protobuf.Timestamp
-	49, // 4: quadsmith.ops.InternalTokenRecord.expires_at:type_name -> google.protobuf.Timestamp
-	49, // 5: quadsmith.ops.InternalTokenRecord.created_at:type_name -> google.protobuf.Timestamp
-	49, // 6: quadsmith.ops.InternalTokenRecord.revoked_at:type_name -> google.protobuf.Timestamp
-	49, // 7: quadsmith.ops.InternalApiCallRecord.created_at:type_name -> google.protobuf.Timestamp
-	48, // 8: quadsmith.ops.GetDatabaseStatsResponse.tables:type_name -> quadsmith.ops.TableStat
-	47, // 9: quadsmith.ops.ListScheduledJobsResponse.jobs:type_name -> quadsmith.ops.ScheduledJobDef
-	2,  // 10: quadsmith.ops.ListInternalApiCallsResponse.calls:type_name -> quadsmith.ops.InternalApiCallRecord
-	49, // 11: quadsmith.ops.ExchangeOAuthCodeResponse.expires_at:type_name -> google.protobuf.Timestamp
+	49, // 0: quadsmith.ops.InternalApiCallRecord.created_at:type_name -> google.protobuf.Timestamp
+	49, // 1: quadsmith.ops.InternalTokenRecord.expires_at:type_name -> google.protobuf.Timestamp
+	49, // 2: quadsmith.ops.InternalTokenRecord.created_at:type_name -> google.protobuf.Timestamp
+	49, // 3: quadsmith.ops.InternalTokenRecord.revoked_at:type_name -> google.protobuf.Timestamp
+	49, // 4: quadsmith.ops.JitGrantRecord.expires_at:type_name -> google.protobuf.Timestamp
+	49, // 5: quadsmith.ops.JitGrantRecord.created_at:type_name -> google.protobuf.Timestamp
+	49, // 6: quadsmith.ops.JitGrantRecord.extended_at:type_name -> google.protobuf.Timestamp
+	49, // 7: quadsmith.ops.JitGrantRecord.revoked_at:type_name -> google.protobuf.Timestamp
+	2,  // 8: quadsmith.ops.AcquireJitGrantResponse.grant:type_name -> quadsmith.ops.JitGrantRecord
+	1,  // 9: quadsmith.ops.CreateInternalTokenResponse.record:type_name -> quadsmith.ops.InternalTokenRecord
+	49, // 10: quadsmith.ops.ExchangeOAuthCodeResponse.expires_at:type_name -> google.protobuf.Timestamp
+	2,  // 11: quadsmith.ops.ExtendJitGrantResponse.grant:type_name -> quadsmith.ops.JitGrantRecord
 	49, // 12: quadsmith.ops.GetCurrentOperatorResponse.session_expires_at:type_name -> google.protobuf.Timestamp
-	0,  // 13: quadsmith.ops.GetCurrentOperatorResponse.active_jit_grant:type_name -> quadsmith.ops.JitGrantRecord
-	46, // 14: quadsmith.ops.ListIamUsersResponse.users:type_name -> quadsmith.ops.IamUserSummary
+	2,  // 13: quadsmith.ops.GetCurrentOperatorResponse.active_jit_grant:type_name -> quadsmith.ops.JitGrantRecord
+	48, // 14: quadsmith.ops.GetDatabaseStatsResponse.tables:type_name -> quadsmith.ops.TableStat
 	45, // 15: quadsmith.ops.ListIamGroupsResponse.groups:type_name -> quadsmith.ops.IamGroupSummary
-	1,  // 16: quadsmith.ops.CreateInternalTokenResponse.record:type_name -> quadsmith.ops.InternalTokenRecord
-	1,  // 17: quadsmith.ops.ListInternalTokensResponse.tokens:type_name -> quadsmith.ops.InternalTokenRecord
-	0,  // 18: quadsmith.ops.AcquireJitGrantResponse.grant:type_name -> quadsmith.ops.JitGrantRecord
-	0,  // 19: quadsmith.ops.ExtendJitGrantResponse.grant:type_name -> quadsmith.ops.JitGrantRecord
-	0,  // 20: quadsmith.ops.ListJitGrantsResponse.grants:type_name -> quadsmith.ops.JitGrantRecord
+	46, // 16: quadsmith.ops.ListIamUsersResponse.users:type_name -> quadsmith.ops.IamUserSummary
+	0,  // 17: quadsmith.ops.ListInternalApiCallsResponse.calls:type_name -> quadsmith.ops.InternalApiCallRecord
+	1,  // 18: quadsmith.ops.ListInternalTokensResponse.tokens:type_name -> quadsmith.ops.InternalTokenRecord
+	2,  // 19: quadsmith.ops.ListJitGrantsResponse.grants:type_name -> quadsmith.ops.JitGrantRecord
+	47, // 20: quadsmith.ops.ListScheduledJobsResponse.jobs:type_name -> quadsmith.ops.ScheduledJobDef
 	49, // 21: quadsmith.ops.IamUserSummary.last_active_at:type_name -> google.protobuf.Timestamp
 	49, // 22: quadsmith.ops.ScheduledJobDef.last_run_at:type_name -> google.protobuf.Timestamp
-	3,  // 23: quadsmith.ops.OpsService.GetSystemDiagnostics:input_type -> quadsmith.ops.GetSystemDiagnosticsRequest
-	5,  // 24: quadsmith.ops.OpsService.GetDatabaseStats:input_type -> quadsmith.ops.GetDatabaseStatsRequest
-	7,  // 25: quadsmith.ops.OpsService.RunDatabaseMaintenance:input_type -> quadsmith.ops.RunDatabaseMaintenanceRequest
-	9,  // 26: quadsmith.ops.OpsService.SeedDatabase:input_type -> quadsmith.ops.SeedDatabaseRequest
-	11, // 27: quadsmith.ops.OpsService.CleanupExpiredOtps:input_type -> quadsmith.ops.CleanupExpiredOtpsRequest
-	13, // 28: quadsmith.ops.OpsService.CleanupExpiredTokens:input_type -> quadsmith.ops.CleanupExpiredTokensRequest
-	15, // 29: quadsmith.ops.OpsService.CleanupOrphanedBlobs:input_type -> quadsmith.ops.CleanupOrphanedBlobsRequest
-	17, // 30: quadsmith.ops.OpsService.ListScheduledJobs:input_type -> quadsmith.ops.ListScheduledJobsRequest
-	19, // 31: quadsmith.ops.OpsService.TriggerJob:input_type -> quadsmith.ops.TriggerJobRequest
-	21, // 32: quadsmith.ops.OpsService.ListInternalApiCalls:input_type -> quadsmith.ops.ListInternalApiCallsRequest
-	23, // 33: quadsmith.ops.OpsService.ExchangeOAuthCode:input_type -> quadsmith.ops.ExchangeOAuthCodeRequest
-	25, // 34: quadsmith.ops.OpsService.GetCurrentOperator:input_type -> quadsmith.ops.GetCurrentOperatorRequest
-	27, // 35: quadsmith.ops.OpsService.ListIamUsers:input_type -> quadsmith.ops.ListIamUsersRequest
-	29, // 36: quadsmith.ops.OpsService.ListIamGroups:input_type -> quadsmith.ops.ListIamGroupsRequest
-	31, // 37: quadsmith.ops.OpsService.CreateInternalToken:input_type -> quadsmith.ops.CreateInternalTokenRequest
-	33, // 38: quadsmith.ops.OpsService.ListInternalTokens:input_type -> quadsmith.ops.ListInternalTokensRequest
+	21, // 23: quadsmith.ops.OpsService.GetSystemDiagnostics:input_type -> quadsmith.ops.GetSystemDiagnosticsRequest
+	19, // 24: quadsmith.ops.OpsService.GetDatabaseStats:input_type -> quadsmith.ops.GetDatabaseStatsRequest
+	39, // 25: quadsmith.ops.OpsService.RunDatabaseMaintenance:input_type -> quadsmith.ops.RunDatabaseMaintenanceRequest
+	41, // 26: quadsmith.ops.OpsService.SeedDatabase:input_type -> quadsmith.ops.SeedDatabaseRequest
+	5,  // 27: quadsmith.ops.OpsService.CleanupExpiredOtps:input_type -> quadsmith.ops.CleanupExpiredOtpsRequest
+	7,  // 28: quadsmith.ops.OpsService.CleanupExpiredTokens:input_type -> quadsmith.ops.CleanupExpiredTokensRequest
+	9,  // 29: quadsmith.ops.OpsService.CleanupOrphanedBlobs:input_type -> quadsmith.ops.CleanupOrphanedBlobsRequest
+	33, // 30: quadsmith.ops.OpsService.ListScheduledJobs:input_type -> quadsmith.ops.ListScheduledJobsRequest
+	43, // 31: quadsmith.ops.OpsService.TriggerJob:input_type -> quadsmith.ops.TriggerJobRequest
+	27, // 32: quadsmith.ops.OpsService.ListInternalApiCalls:input_type -> quadsmith.ops.ListInternalApiCallsRequest
+	13, // 33: quadsmith.ops.OpsService.ExchangeOAuthCode:input_type -> quadsmith.ops.ExchangeOAuthCodeRequest
+	17, // 34: quadsmith.ops.OpsService.GetCurrentOperator:input_type -> quadsmith.ops.GetCurrentOperatorRequest
+	25, // 35: quadsmith.ops.OpsService.ListIamUsers:input_type -> quadsmith.ops.ListIamUsersRequest
+	23, // 36: quadsmith.ops.OpsService.ListIamGroups:input_type -> quadsmith.ops.ListIamGroupsRequest
+	11, // 37: quadsmith.ops.OpsService.CreateInternalToken:input_type -> quadsmith.ops.CreateInternalTokenRequest
+	29, // 38: quadsmith.ops.OpsService.ListInternalTokens:input_type -> quadsmith.ops.ListInternalTokensRequest
 	35, // 39: quadsmith.ops.OpsService.RevokeInternalToken:input_type -> quadsmith.ops.RevokeInternalTokenRequest
-	37, // 40: quadsmith.ops.OpsService.AcquireJitGrant:input_type -> quadsmith.ops.AcquireJitGrantRequest
-	39, // 41: quadsmith.ops.OpsService.ExtendJitGrant:input_type -> quadsmith.ops.ExtendJitGrantRequest
-	41, // 42: quadsmith.ops.OpsService.ListJitGrants:input_type -> quadsmith.ops.ListJitGrantsRequest
-	43, // 43: quadsmith.ops.OpsService.RevokeJitGrant:input_type -> quadsmith.ops.RevokeJitGrantRequest
-	4,  // 44: quadsmith.ops.OpsService.GetSystemDiagnostics:output_type -> quadsmith.ops.GetSystemDiagnosticsResponse
-	6,  // 45: quadsmith.ops.OpsService.GetDatabaseStats:output_type -> quadsmith.ops.GetDatabaseStatsResponse
-	8,  // 46: quadsmith.ops.OpsService.RunDatabaseMaintenance:output_type -> quadsmith.ops.RunDatabaseMaintenanceResponse
-	10, // 47: quadsmith.ops.OpsService.SeedDatabase:output_type -> quadsmith.ops.SeedDatabaseResponse
-	12, // 48: quadsmith.ops.OpsService.CleanupExpiredOtps:output_type -> quadsmith.ops.CleanupExpiredOtpsResponse
-	14, // 49: quadsmith.ops.OpsService.CleanupExpiredTokens:output_type -> quadsmith.ops.CleanupExpiredTokensResponse
-	16, // 50: quadsmith.ops.OpsService.CleanupOrphanedBlobs:output_type -> quadsmith.ops.CleanupOrphanedBlobsResponse
-	18, // 51: quadsmith.ops.OpsService.ListScheduledJobs:output_type -> quadsmith.ops.ListScheduledJobsResponse
-	20, // 52: quadsmith.ops.OpsService.TriggerJob:output_type -> quadsmith.ops.TriggerJobResponse
-	22, // 53: quadsmith.ops.OpsService.ListInternalApiCalls:output_type -> quadsmith.ops.ListInternalApiCallsResponse
-	24, // 54: quadsmith.ops.OpsService.ExchangeOAuthCode:output_type -> quadsmith.ops.ExchangeOAuthCodeResponse
-	26, // 55: quadsmith.ops.OpsService.GetCurrentOperator:output_type -> quadsmith.ops.GetCurrentOperatorResponse
-	28, // 56: quadsmith.ops.OpsService.ListIamUsers:output_type -> quadsmith.ops.ListIamUsersResponse
-	30, // 57: quadsmith.ops.OpsService.ListIamGroups:output_type -> quadsmith.ops.ListIamGroupsResponse
-	32, // 58: quadsmith.ops.OpsService.CreateInternalToken:output_type -> quadsmith.ops.CreateInternalTokenResponse
-	34, // 59: quadsmith.ops.OpsService.ListInternalTokens:output_type -> quadsmith.ops.ListInternalTokensResponse
+	3,  // 40: quadsmith.ops.OpsService.AcquireJitGrant:input_type -> quadsmith.ops.AcquireJitGrantRequest
+	15, // 41: quadsmith.ops.OpsService.ExtendJitGrant:input_type -> quadsmith.ops.ExtendJitGrantRequest
+	31, // 42: quadsmith.ops.OpsService.ListJitGrants:input_type -> quadsmith.ops.ListJitGrantsRequest
+	37, // 43: quadsmith.ops.OpsService.RevokeJitGrant:input_type -> quadsmith.ops.RevokeJitGrantRequest
+	22, // 44: quadsmith.ops.OpsService.GetSystemDiagnostics:output_type -> quadsmith.ops.GetSystemDiagnosticsResponse
+	20, // 45: quadsmith.ops.OpsService.GetDatabaseStats:output_type -> quadsmith.ops.GetDatabaseStatsResponse
+	40, // 46: quadsmith.ops.OpsService.RunDatabaseMaintenance:output_type -> quadsmith.ops.RunDatabaseMaintenanceResponse
+	42, // 47: quadsmith.ops.OpsService.SeedDatabase:output_type -> quadsmith.ops.SeedDatabaseResponse
+	6,  // 48: quadsmith.ops.OpsService.CleanupExpiredOtps:output_type -> quadsmith.ops.CleanupExpiredOtpsResponse
+	8,  // 49: quadsmith.ops.OpsService.CleanupExpiredTokens:output_type -> quadsmith.ops.CleanupExpiredTokensResponse
+	10, // 50: quadsmith.ops.OpsService.CleanupOrphanedBlobs:output_type -> quadsmith.ops.CleanupOrphanedBlobsResponse
+	34, // 51: quadsmith.ops.OpsService.ListScheduledJobs:output_type -> quadsmith.ops.ListScheduledJobsResponse
+	44, // 52: quadsmith.ops.OpsService.TriggerJob:output_type -> quadsmith.ops.TriggerJobResponse
+	28, // 53: quadsmith.ops.OpsService.ListInternalApiCalls:output_type -> quadsmith.ops.ListInternalApiCallsResponse
+	14, // 54: quadsmith.ops.OpsService.ExchangeOAuthCode:output_type -> quadsmith.ops.ExchangeOAuthCodeResponse
+	18, // 55: quadsmith.ops.OpsService.GetCurrentOperator:output_type -> quadsmith.ops.GetCurrentOperatorResponse
+	26, // 56: quadsmith.ops.OpsService.ListIamUsers:output_type -> quadsmith.ops.ListIamUsersResponse
+	24, // 57: quadsmith.ops.OpsService.ListIamGroups:output_type -> quadsmith.ops.ListIamGroupsResponse
+	12, // 58: quadsmith.ops.OpsService.CreateInternalToken:output_type -> quadsmith.ops.CreateInternalTokenResponse
+	30, // 59: quadsmith.ops.OpsService.ListInternalTokens:output_type -> quadsmith.ops.ListInternalTokensResponse
 	36, // 60: quadsmith.ops.OpsService.RevokeInternalToken:output_type -> quadsmith.ops.RevokeInternalTokenResponse
-	38, // 61: quadsmith.ops.OpsService.AcquireJitGrant:output_type -> quadsmith.ops.AcquireJitGrantResponse
-	40, // 62: quadsmith.ops.OpsService.ExtendJitGrant:output_type -> quadsmith.ops.ExtendJitGrantResponse
-	42, // 63: quadsmith.ops.OpsService.ListJitGrants:output_type -> quadsmith.ops.ListJitGrantsResponse
-	44, // 64: quadsmith.ops.OpsService.RevokeJitGrant:output_type -> quadsmith.ops.RevokeJitGrantResponse
+	4,  // 61: quadsmith.ops.OpsService.AcquireJitGrant:output_type -> quadsmith.ops.AcquireJitGrantResponse
+	16, // 62: quadsmith.ops.OpsService.ExtendJitGrant:output_type -> quadsmith.ops.ExtendJitGrantResponse
+	32, // 63: quadsmith.ops.OpsService.ListJitGrants:output_type -> quadsmith.ops.ListJitGrantsResponse
+	38, // 64: quadsmith.ops.OpsService.RevokeJitGrant:output_type -> quadsmith.ops.RevokeJitGrantResponse
 	44, // [44:65] is the sub-list for method output_type
 	23, // [23:44] is the sub-list for method input_type
 	23, // [23:23] is the sub-list for extension type_name
@@ -3099,8 +3083,8 @@ func file_quadsmith_ops_ops_proto_init() {
 	if File_quadsmith_ops_ops_proto != nil {
 		return
 	}
-	file_quadsmith_ops_ops_proto_msgTypes[2].OneofWrappers = []any{}
-	file_quadsmith_ops_ops_proto_msgTypes[26].OneofWrappers = []any{}
+	file_quadsmith_ops_ops_proto_msgTypes[0].OneofWrappers = []any{}
+	file_quadsmith_ops_ops_proto_msgTypes[18].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -276,9 +276,9 @@ func (s *SocialService) CreateReview(ctx context.Context, req *connect.Request[p
 	_, err = s.db.Exec(ctx, `
 		INSERT INTO reviews (
 			uuid, id, user_uuid, entity_uuid, is_recommended, body, is_edited,
-			is_author_verified_owner, created_at, updated_at
+			created_at, updated_at
 		)
-		VALUES ($1, $2, $3, $4, $5, $6, false, false, NOW(), NOW())
+		VALUES ($1, $2, $3, $4, $5, $6, false, NOW(), NOW())
 	`, reviewUUID, reviewID, u.UserUUID, entityUUID, req.Msg.GetIsRecommended(), body)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)

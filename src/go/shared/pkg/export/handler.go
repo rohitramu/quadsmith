@@ -17,6 +17,7 @@ import (
 	"quadsmith/shared/pkg/auth"
 
 	pb "quadsmith/shared/gen/quadsmith/api"
+	storepb "quadsmith/shared/gen/quadsmith/store"
 )
 
 // NewExportHandler creates an HTTP handler for streaming GDPR data archive ZIP files.
@@ -73,27 +74,27 @@ func NewExportHandler(pool *pgxpool.Pool) http.Handler {
 
 func streamArchive(ctx context.Context, pool *pgxpool.Pool, zw *zip.Writer, userUUID string) error {
 	// 1. account.json
-	users, err := pb.ExportUsers(ctx, pool, userUUID)
+	users, err := storepb.ExportUsers(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	profiles, err := pb.ExportUserProfiles(ctx, pool, userUUID)
+	profiles, err := storepb.ExportUserProfiles(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	emails, err := pb.ExportUserEmails(ctx, pool, userUUID)
+	emails, err := storepb.ExportUserEmails(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	oauths, err := pb.ExportOAuthAccounts(ctx, pool, userUUID)
+	oauths, err := storepb.ExportOAuthAccounts(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	emailOauths, err := pb.ExportUserEmailOAuthAccounts(ctx, pool, userUUID)
+	emailOauths, err := storepb.ExportUserEmailOAuthAccounts(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	histories, err := pb.ExportUsernameHistories(ctx, pool, userUUID)
+	histories, err := storepb.ExportUsernameHistories(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
@@ -118,7 +119,7 @@ func streamArchive(ctx context.Context, pool *pgxpool.Pool, zw *zip.Writer, user
 	}
 
 	// 2. security.json
-	refreshTokens, err := pb.ExportRefreshTokens(ctx, pool, userUUID)
+	refreshTokens, err := storepb.ExportRefreshTokens(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
@@ -133,12 +134,12 @@ func streamArchive(ctx context.Context, pool *pgxpool.Pool, zw *zip.Writer, user
 	}
 
 	// 3. builds.json
-	allEntities, err := pb.ExportEntities(ctx, pool, userUUID)
+	allEntities, err := storepb.ExportEntities(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	var buildEntities []*pb.Entity
-	var compEntities []*pb.Entity
+	var buildEntities []*storepb.Entity
+	var compEntities []*storepb.Entity
 	for _, e := range allEntities {
 		if e.Collection == "builds" {
 			buildEntities = append(buildEntities, e)
@@ -295,11 +296,11 @@ func streamArchive(ctx context.Context, pool *pgxpool.Pool, zw *zip.Writer, user
 	}
 
 	// 5. collections.json
-	collections, err := pb.ExportCollections(ctx, pool, userUUID)
+	collections, err := storepb.ExportCollections(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	collItems, err := pb.ExportCollectionItems(ctx, pool, userUUID)
+	collItems, err := storepb.ExportCollectionItems(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
@@ -316,39 +317,39 @@ func streamArchive(ctx context.Context, pool *pgxpool.Pool, zw *zip.Writer, user
 	}
 
 	// 6. social.json
-	reviews, err := pb.ExportReviews(ctx, pool, userUUID)
+	reviews, err := storepb.ExportReviews(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	reviewVotes, err := pb.ExportReviewVotes(ctx, pool, userUUID)
+	reviewVotes, err := storepb.ExportReviewVotes(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	reviewComments, err := pb.ExportReviewComments(ctx, pool, userUUID)
+	reviewComments, err := storepb.ExportReviewComments(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	questions, err := pb.ExportQuestions(ctx, pool, userUUID)
+	questions, err := storepb.ExportQuestions(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	questionComments, err := pb.ExportQuestionComments(ctx, pool, userUUID)
+	questionComments, err := storepb.ExportQuestionComments(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	answers, err := pb.ExportAnswers(ctx, pool, userUUID)
+	answers, err := storepb.ExportAnswers(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	answerComments, err := pb.ExportAnswerComments(ctx, pool, userUUID)
+	answerComments, err := storepb.ExportAnswerComments(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	questionVotes, err := pb.ExportQuestionVotes(ctx, pool, userUUID)
+	questionVotes, err := storepb.ExportQuestionVotes(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
-	answerVotes, err := pb.ExportAnswerVotes(ctx, pool, userUUID)
+	answerVotes, err := storepb.ExportAnswerVotes(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
@@ -379,18 +380,18 @@ func streamArchive(ctx context.Context, pool *pgxpool.Pool, zw *zip.Writer, user
 	}
 
 	// 7. blobs.json + blobs/<id>_<filename>
-	blobs, err := pb.ExportBlobs(ctx, pool, userUUID)
+	blobs, err := storepb.ExportBlobs(ctx, pool, userUUID)
 	if err != nil {
 		return err
 	}
 
 	// Separate blob metadata (with Bytes cleared) and write raw files to zip
-	blobsForJSON := make([]*pb.Blob, 0, len(blobs))
+	blobsForJSON := make([]*storepb.Blob, 0, len(blobs))
 	for _, b := range blobs {
 		rawBytes := b.Bytes
 
 		// Write metadata entry without raw payload
-		bCopy := proto.Clone(b).(*pb.Blob)
+		bCopy := proto.Clone(b).(*storepb.Blob)
 		bCopy.Bytes = nil
 		blobsForJSON = append(blobsForJSON, bCopy)
 

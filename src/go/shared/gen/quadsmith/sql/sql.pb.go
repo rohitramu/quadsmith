@@ -36,6 +36,9 @@ type TableOptions struct {
 	UniqueConstraints []string `protobuf:"bytes,3,rep,name=unique_constraints,json=uniqueConstraints,proto3" json:"unique_constraints,omitempty"`
 	// Partial or expression UNIQUE indexes.
 	UniqueIndexes []*UniqueIndex `protobuf:"bytes,4,rep,name=unique_indexes,json=uniqueIndexes,proto3" json:"unique_indexes,omitempty"`
+	// Base table that this table inherits shared columns from via a 1:1 PK/FK
+	// relationship (e.g., "entities").
+	Inherits      string `protobuf:"bytes,5,opt,name=inherits,proto3" json:"inherits,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -96,6 +99,13 @@ func (x *TableOptions) GetUniqueIndexes() []*UniqueIndex {
 		return x.UniqueIndexes
 	}
 	return nil
+}
+
+func (x *TableOptions) GetInherits() string {
+	if x != nil {
+		return x.Inherits
+	}
+	return ""
 }
 
 type UniqueIndex struct {
@@ -176,9 +186,7 @@ type ColumnOptions struct {
 	// Custom SQL column type override.
 	ColumnType string `protobuf:"bytes,6,opt,name=column_type,json=columnType,proto3" json:"column_type,omitempty"`
 	// Default value expression for the column (e.g., "4", "'pending'", "NOW()").
-	DefaultValue string `protobuf:"bytes,7,opt,name=default_value,json=defaultValue,proto3" json:"default_value,omitempty"`
-	// If true, this field is an API-only field and will not be generated in the SQL schema or store operations.
-	Ignore        bool `protobuf:"varint,8,opt,name=ignore,proto3" json:"ignore,omitempty"`
+	DefaultValue  string `protobuf:"bytes,7,opt,name=default_value,json=defaultValue,proto3" json:"default_value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -262,13 +270,6 @@ func (x *ColumnOptions) GetDefaultValue() string {
 	return ""
 }
 
-func (x *ColumnOptions) GetIgnore() bool {
-	if x != nil {
-		return x.Ignore
-	}
-	return false
-}
-
 var file_quadsmith_sql_sql_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
@@ -308,16 +309,17 @@ var File_quadsmith_sql_sql_proto protoreflect.FileDescriptor
 
 const file_quadsmith_sql_sql_proto_rawDesc = "" +
 	"\n" +
-	"\x17quadsmith/sql/sql.proto\x12\rquadsmith.sql\x1a google/protobuf/descriptor.proto\"\xac\x01\n" +
+	"\x17quadsmith/sql/sql.proto\x12\rquadsmith.sql\x1a google/protobuf/descriptor.proto\"\xc8\x01\n" +
 	"\fTableOptions\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
 	"\x06checks\x18\x02 \x03(\tR\x06checks\x12-\n" +
 	"\x12unique_constraints\x18\x03 \x03(\tR\x11uniqueConstraints\x12A\n" +
-	"\x0eunique_indexes\x18\x04 \x03(\v2\x1a.quadsmith.sql.UniqueIndexR\runiqueIndexes\"Q\n" +
+	"\x0eunique_indexes\x18\x04 \x03(\v2\x1a.quadsmith.sql.UniqueIndexR\runiqueIndexes\x12\x1a\n" +
+	"\binherits\x18\x05 \x01(\tR\binherits\"Q\n" +
 	"\vUniqueIndex\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
 	"\acolumns\x18\x02 \x01(\tR\acolumns\x12\x14\n" +
-	"\x05where\x18\x03 \x01(\tR\x05where\"\x87\x02\n" +
+	"\x05where\x18\x03 \x01(\tR\x05where\"\xef\x01\n" +
 	"\rColumnOptions\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12$\n" +
 	"\x0eis_primary_key\x18\x02 \x01(\bR\fisPrimaryKey\x12\x1e\n" +
@@ -328,8 +330,7 @@ const file_quadsmith_sql_sql_proto_rawDesc = "" +
 	"\fcreate_index\x18\x05 \x01(\bR\vcreateIndex\x12\x1f\n" +
 	"\vcolumn_type\x18\x06 \x01(\tR\n" +
 	"columnType\x12#\n" +
-	"\rdefault_value\x18\a \x01(\tR\fdefaultValue\x12\x16\n" +
-	"\x06ignore\x18\b \x01(\bR\x06ignore:T\n" +
+	"\rdefault_value\x18\a \x01(\tR\fdefaultValue:T\n" +
 	"\x05table\x12\x1f.google.protobuf.MessageOptions\x18\xb8\x8e\x03 \x01(\v2\x1b.quadsmith.sql.TableOptionsR\x05table:U\n" +
 	"\x06column\x12\x1d.google.protobuf.FieldOptions\x18\xb8\x8e\x03 \x01(\v2\x1c.quadsmith.sql.ColumnOptionsR\x06columnB(Z&quadsmith/shared/gen/quadsmith/sql;sqlb\x06proto3"
 

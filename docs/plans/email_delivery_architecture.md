@@ -304,11 +304,13 @@ ADD CONSTRAINT fk_user_email_oauth_accounts_oauth_account_uuid
 FOREIGN KEY (oauth_account_uuid) REFERENCES oauth_accounts (uuid) ON DELETE CASCADE;
 ```
 
-1. **Protobuf Model Updates**: Extend
-   [`UserEmail`](../../proto/quadsmith/api/user.proto#L75) with provenance
-   attributes:
+1. **Protobuf Model Updates**: Define the SQL storage models in
+   [`src/proto/quadsmith/store/user.proto`](../../src/proto/quadsmith/store/user.proto)
+   and extend [`UserEmail`](../../src/proto/quadsmith/api/user.proto) in the
+   public API view model with `oauth_providers`:
 
 ```protobuf
+// In src/proto/quadsmith/store/user.proto:
 message UserEmail {
   option (quadsmith.sql.table) = {name: "user_emails"};
 
@@ -325,7 +327,6 @@ message UserEmail {
   google.protobuf.Timestamp created_at = 5;
 
   bool verified_via_otp = 6 [(quadsmith.sql.column) = {default_value: "false"}];
-  repeated string oauth_providers = 7 [(quadsmith.sql.column) = {ignore: true}];
 }
 
 message UserEmailOAuthAccount {

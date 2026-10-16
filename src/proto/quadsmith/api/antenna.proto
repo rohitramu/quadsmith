@@ -27,7 +27,10 @@ service AntennaService {
 // ---------------------------------------------------------
 
 message Antenna {
-  option (quadsmith.sql.table) = {name: "antennas"};
+  option (quadsmith.sql.table) = {
+    name: "antennas"
+    inherits: "entities"
+  };
   option (quadsmith.common.collection_path) = "components/hardware/antennas";
   option (quadsmith.data.export) = {
     domain: EXPORT_DOMAIN_COMPONENTS
@@ -52,19 +55,13 @@ message Antenna {
     (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
 
-  string id = 2 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
+  string id = 2 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 
   string manufacturer = 3 [
     (quadsmith.sql.column) = {create_index: true},
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
   ];
-  string name = 4 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
+  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   bool is_internal_only = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   float weight_g = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
@@ -83,30 +80,12 @@ message Antenna {
 
   // Gain in dBi (e.g., 2.5, 3.0)
   float gain_dbi = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string description = 12 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  repeated ReferenceLink reference_links = 13 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  optional string primary_display_image = 14 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  repeated Media media = 15 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  optional string user_uuid = 16 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
-  optional string author_username = 17 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
+  string description = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  repeated ReferenceLink reference_links = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional string primary_display_image = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  repeated Media media = 15 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional string user_uuid = 16 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  optional string author_username = 17 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 }
 
 // ---------------------------------------------------------

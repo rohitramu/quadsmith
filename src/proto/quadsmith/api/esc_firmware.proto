@@ -27,7 +27,10 @@ service EscFirmwareService {
 // ---------------------------------------------------------
 
 message EscFirmware {
-  option (quadsmith.sql.table) = {name: "electronic_speed_controller_firmwares"};
+  option (quadsmith.sql.table) = {
+    name: "electronic_speed_controller_firmwares"
+    inherits: "entities"
+  };
   option (quadsmith.common.collection_path) = "components/software/esc-firmware";
   option (quadsmith.data.export) = {
     domain: EXPORT_DOMAIN_COMPONENTS
@@ -50,46 +53,22 @@ message EscFirmware {
     },
     (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
-  string id = 2 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
+  string id = 2 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
   string manufacturer = 3 [
     (quadsmith.sql.column) = {create_index: true},
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
   ];
-  string name = 4 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
+  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   string version = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   string protocols = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   string pwm_frequency_range = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   bool is_open_source = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string description = 9 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  repeated ReferenceLink reference_links = 10 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  optional string primary_display_image = 11 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  repeated Media media = 12 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  optional string user_uuid = 13 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
-  optional string author_username = 14 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
+  string description = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  repeated ReferenceLink reference_links = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional string primary_display_image = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  repeated Media media = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional string user_uuid = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  optional string author_username = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 }
 
 // ---------------------------------------------------------

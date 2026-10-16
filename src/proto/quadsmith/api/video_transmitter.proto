@@ -27,7 +27,10 @@ service VideoTransmitterService {
 // ---------------------------------------------------------
 
 message VideoTransmitter {
-  option (quadsmith.sql.table) = {name: "video_transmitters"};
+  option (quadsmith.sql.table) = {
+    name: "video_transmitters"
+    inherits: "entities"
+  };
   option (quadsmith.common.collection_path) = "components/hardware/video-transmitters";
   option (quadsmith.data.export) = {
     domain: EXPORT_DOMAIN_COMPONENTS
@@ -51,19 +54,13 @@ message VideoTransmitter {
     (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
 
-  string id = 2 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
+  string id = 2 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 
   string manufacturer = 3 [
     (quadsmith.sql.column) = {create_index: true},
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
   ];
-  string name = 4 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
+  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
   bool is_internal_only = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   float weight_g = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
@@ -83,22 +80,10 @@ message VideoTransmitter {
 
   // Array of antenna UUIDs included with or required by this video transmitter
   repeated string antenna_uuids = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string description = 12 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  repeated ReferenceLink reference_links = 13 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  optional string primary_display_image = 14 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
-  repeated Media media = 15 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
+  string description = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  repeated ReferenceLink reference_links = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional string primary_display_image = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  repeated Media media = 15 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 
   // Port/pin connection interface (e.g., "JST-SH 6-Pin", "Solder Pads", "JST-SH 4-Pin")
   string port_type = 16 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
@@ -111,14 +96,8 @@ message VideoTransmitter {
 
   // Supported antenna connector types (e.g., ["SMA"], ["U.FL"], ["Dual U.FL", "U.FL"], ["MMCX", "SMA"])
   repeated string antenna_connectors = 19 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  optional string user_uuid = 20 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
-  optional string author_username = 21 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
-  ];
+  optional string user_uuid = 20 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  optional string author_username = 21 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
 }
 
 // ---------------------------------------------------------

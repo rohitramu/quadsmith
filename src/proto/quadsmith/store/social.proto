@@ -1,0 +1,522 @@
+syntax = "proto3";
+
+package quadsmith.store;
+
+import "google/protobuf/timestamp.proto";
+import "quadsmith/api/media.proto";
+import "quadsmith/api/reference_link.proto";
+import "quadsmith/data/data.proto";
+import "quadsmith/sql/sql.proto";
+
+option go_package = "quadsmith/shared/gen/quadsmith/store;store";
+
+// ---------------------------------------------------------
+// Domain model
+// ---------------------------------------------------------
+
+message Answer {
+  option (quadsmith.sql.table) = {name: "answers"};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_SOCIAL};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string question_uuid = 2 [
+    (quadsmith.sql.column) = {
+      references: "questions(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string user_uuid = 3 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string body = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  int32 net_score = 5 [
+    (quadsmith.sql.column) = {
+      default_value: "0"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  bool is_accepted_by_asker = 6 [
+    (quadsmith.sql.column) = {default_value: "false"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  bool is_author_endorsed = 7 [
+    (quadsmith.sql.column) = {default_value: "false"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  bool is_edited = 8 [
+    (quadsmith.sql.column) = {default_value: "false"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  optional google.protobuf.Timestamp deleted_at = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+  google.protobuf.Timestamp created_at = 10 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  google.protobuf.Timestamp updated_at = 11 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  optional google.protobuf.Timestamp accepted_at = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+  optional google.protobuf.Timestamp endorsed_at = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+}
+
+message AnswerComment {
+  option (quadsmith.sql.table) = {name: "answer_comments"};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_SOCIAL};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string answer_uuid = 2 [
+    (quadsmith.sql.column) = {
+      references: "answers(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string user_uuid = 3 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string body = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional google.protobuf.Timestamp deleted_at = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+  google.protobuf.Timestamp created_at = 6 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  google.protobuf.Timestamp updated_at = 7 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+}
+
+message AnswerVote {
+  option (quadsmith.sql.table) = {
+    name: "answer_votes"
+    unique_constraints: ["user_uuid, answer_uuid"]
+  };
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_SOCIAL};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string answer_uuid = 2 [
+    (quadsmith.sql.column) = {
+      references: "answers(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string user_uuid = 3 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  bool is_upvote = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC]; // true = +1, false = -1
+  google.protobuf.Timestamp created_at = 5 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+}
+
+message Collection {
+  option (quadsmith.sql.table) = {name: "collections"};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_COLLECTIONS};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string id = 2 [
+    (quadsmith.sql.column) = {
+      is_unique: true
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string user_uuid = 3 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string description = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  bool is_system_collection = 6 [
+    (quadsmith.sql.column) = {
+      default_value: "false"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  google.protobuf.Timestamp created_at = 7 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  google.protobuf.Timestamp updated_at = 8 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+}
+
+message CollectionItem {
+  option (quadsmith.sql.table) = {
+    name: "collection_items"
+    unique_constraints: ["collection_uuid, entity_uuid"]
+  };
+  option (quadsmith.data.export) = {
+    domain: EXPORT_DOMAIN_COLLECTIONS
+    user_filter: "collection_uuid IN (SELECT uuid FROM collections WHERE user_uuid = $1::uuid)"
+  };
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string collection_uuid = 2 [
+    (quadsmith.sql.column) = {
+      references: "collections(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string entity_uuid = 3 [
+    (quadsmith.sql.column) = {
+      references: "entities(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  google.protobuf.Timestamp created_at = 4 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+}
+
+message Entity {
+  option (quadsmith.sql.table) = {
+    name: "entities"
+    unique_constraints: ["collection, id"]
+  };
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_COMPONENTS};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string collection = 2 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ]; // e.g. "builds", "motors", "frames"
+  string id = 3 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string description = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional string primary_display_image = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  repeated quadsmith.api.ReferenceLink reference_links = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  repeated quadsmith.api.Media media = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string author_or_manufacturer = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  bool is_archived = 10 [
+    (quadsmith.sql.column) = {
+      default_value: "false"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  google.protobuf.Timestamp created_at = 11 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  google.protobuf.Timestamp updated_at = 12 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  optional string user_uuid = 13 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+}
+
+message Question {
+  option (quadsmith.sql.table) = {name: "questions"};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_SOCIAL};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string id = 2 [
+    (quadsmith.sql.column) = {
+      is_unique: true
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string user_uuid = 3 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string entity_uuid = 4 [
+    (quadsmith.sql.column) = {
+      references: "entities(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string title = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string body = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  int32 net_score = 7 [
+    (quadsmith.sql.column) = {
+      default_value: "0"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  bool is_edited = 8 [
+    (quadsmith.sql.column) = {default_value: "false"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  optional google.protobuf.Timestamp deleted_at = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+  google.protobuf.Timestamp created_at = 10 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  google.protobuf.Timestamp updated_at = 11 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+}
+
+message QuestionComment {
+  option (quadsmith.sql.table) = {name: "question_comments"};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_SOCIAL};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string question_uuid = 2 [
+    (quadsmith.sql.column) = {
+      references: "questions(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string user_uuid = 3 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string body = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional google.protobuf.Timestamp deleted_at = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+  google.protobuf.Timestamp created_at = 6 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  google.protobuf.Timestamp updated_at = 7 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+}
+
+message QuestionVote {
+  option (quadsmith.sql.table) = {
+    name: "question_votes"
+    unique_constraints: ["user_uuid, question_uuid"]
+  };
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_SOCIAL};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string question_uuid = 2 [
+    (quadsmith.sql.column) = {
+      references: "questions(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string user_uuid = 3 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  bool is_upvote = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC]; // true = +1, false = -1
+  google.protobuf.Timestamp created_at = 5 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+}
+
+message Review {
+  option (quadsmith.sql.table) = {
+    name: "reviews"
+    unique_constraints: ["user_uuid, entity_uuid"]
+  };
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_SOCIAL};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string id = 2 [
+    (quadsmith.sql.column) = {
+      is_unique: true
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string user_uuid = 3 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string entity_uuid = 4 [
+    (quadsmith.sql.column) = {
+      references: "entities(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  bool is_recommended = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string body = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  bool is_edited = 7 [
+    (quadsmith.sql.column) = {default_value: "false"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  optional google.protobuf.Timestamp deleted_at = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+  google.protobuf.Timestamp created_at = 9 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  google.protobuf.Timestamp updated_at = 10 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+}
+
+message ReviewComment {
+  option (quadsmith.sql.table) = {name: "review_comments"};
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_SOCIAL};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string review_uuid = 2 [
+    (quadsmith.sql.column) = {
+      references: "reviews(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string user_uuid = 3 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string body = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  optional google.protobuf.Timestamp deleted_at = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+  google.protobuf.Timestamp created_at = 6 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+  google.protobuf.Timestamp updated_at = 7 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+}
+
+message ReviewVote {
+  option (quadsmith.sql.table) = {
+    name: "review_votes"
+    unique_constraints: ["user_uuid, review_uuid"]
+  };
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_SOCIAL};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string review_uuid = 2 [
+    (quadsmith.sql.column) = {
+      references: "reviews(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string user_uuid = 3 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  bool is_helpful = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC]; // true = Helpful, false = Unhelpful
+  google.protobuf.Timestamp created_at = 5 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
+  ];
+}
+
+message UserReputation {
+  option (quadsmith.sql.table) = {
+    name: "user_reputations"
+    unique_constraints: ["user_uuid"]
+  };
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_ACCOUNT};
+
+  string uuid = 1 [
+    (quadsmith.sql.column) = {is_primary_key: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string user_uuid = 2 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  int32 score = 3 [
+    (quadsmith.sql.column) = {default_value: "0"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  google.protobuf.Timestamp updated_at = 4 [
+    (quadsmith.sql.column) = {default_value: "NOW()"},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+}

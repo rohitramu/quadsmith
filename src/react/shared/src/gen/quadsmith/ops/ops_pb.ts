@@ -6,8 +6,6 @@ import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegen
 import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import { file_quadsmith_data_data } from "../data/data_pb";
-import { file_quadsmith_sql_sql } from "../sql/sql_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
@@ -16,9 +14,142 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_ops_ops: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChdxdWFkc21pdGgvb3BzL29wcy5wcm90bxINcXVhZHNtaXRoLm9wcyKGBAoOSml0R3JhbnRSZWNvcmQSGAoEdXVpZBgBIAEoCUIKwvMYAhABwPAZBBIWCgJpZBgCIAEoCUIKwvMYAiABwPAZBBIeCgp0b2tlbl9oYXNoGAMgASgJQgrC8xgCKAHA8BkGEhYKCG9wZXJhdG9yGAQgASgJQgTA8BkFEhsKDW9wZXJhdG9yX3R5cGUYBSABKAlCBMDwGQUSFAoGcmVhc29uGAYgASgJQgTA8BkFEiAKCW9wZXJhdGlvbhgHIAEoCUINwvMYBToDJyonwPAZBRIkCgZzdGF0dXMYCCABKAlCFMLzGAwoAToIJ0FDVElWRSfA8BkFEhMKBWhvdXJzGAkgASgFQgTA8BkFEjQKCmV4cGlyZXNfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkFEj8KCmNyZWF0ZWRfYXQYCyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQg/C8xgHOgVOT1coKcDwGQUSNQoLZXh0ZW5kZWRfYXQYDCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkFEjQKCnJldm9rZWRfYXQYDSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkFOhbC8xgMCgpqaXRfZ3JhbnRzwvAZAggBIvMCChNJbnRlcm5hbFRva2VuUmVjb3JkEhgKBHV1aWQYASABKAlCCsLzGAIQAcDwGQQSFgoCaWQYAiABKAlCCsLzGAIgAcDwGQQSEgoEbmFtZRgDIAEoCUIEwPAZBRISCgR0eXBlGAQgASgJQgTA8BkFEhgKCmdyb3VwX25hbWUYBSABKAlCBMDwGQUSHgoKdG9rZW5faGFzaBgGIAEoCUIKwvMYAigBwPAZBhI0CgpleHBpcmVzX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZBRI/CgpjcmVhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIPwvMYBzoFTk9XKCnA8BkFEjQKCnJldm9rZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkFOhvC8xgRCg9pbnRlcm5hbF90b2tlbnPC8BkCCAEi/gMKFUludGVybmFsQXBpQ2FsbFJlY29yZBIYCgR1dWlkGAEgASgJQgrC8xgCEAHA8BkEEhYKAmlkGAIgASgJQgrC8xgCIAHA8BkEEhQKBm1ldGhvZBgDIAEoCUIEwPAZBRIaCgZjYWxsZXIYBCABKAlCCsLzGAIoAcDwGQUSGQoLY2FsbGVyX3R5cGUYBSABKAlCBMDwGQUSGAoKZ3JvdXBfbmFtZRgGIAEoCUIEwPAZBRI5Cg5qaXRfZ3JhbnRfdXVpZBgHIAEoCUIcwvMYFBoQaml0X2dyYW50cyh1dWlkKSgBwPAZBUgAiAEBEiUKDGppdF9ncmFudF9pZBgIIAEoCUIKwvMYAkABwPAZBUgBiAEBEhQKBnN0YXR1cxgJIAEoCUIEwPAZBRIgCg1lcnJvcl9tZXNzYWdlGAogASgJQgTA8BkFSAKIAQESGQoLZHVyYXRpb25fbXMYCyABKANCBMDwGQUSQQoKY3JlYXRlZF9hdBgMIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCEcLzGAkoAToFTk9XKCnA8BkFOh7C8xgUChJpbnRlcm5hbF9hcGlfY2FsbHPC8BkCCAFCEQoPX2ppdF9ncmFudF91dWlkQg8KDV9qaXRfZ3JhbnRfaWRCEAoOX2Vycm9yX21lc3NhZ2UiHQobR2V0U3lzdGVtRGlhZ25vc3RpY3NSZXF1ZXN0It4BChxHZXRTeXN0ZW1EaWFnbm9zdGljc1Jlc3BvbnNlEg8KB3ZlcnNpb24YASABKAkSEwoLZW52aXJvbm1lbnQYAiABKAkSFgoOdXB0aW1lX3NlY29uZHMYAyABKAMSHgoWbWVtb3J5X2FsbG9jYXRlZF9ieXRlcxgEIAEoAxIWCg5udW1fZ29yb3V0aW5lcxgFIAEoBRIjChthY3RpdmVfZGF0YWJhc2VfY29ubmVjdGlvbnMYBiABKAUSIwobYWN0aXZlX2ludGVybmFsX2Nvbm5lY3Rpb25zGAcgASgFIhkKF0dldERhdGFiYXNlU3RhdHNSZXF1ZXN0InUKGEdldERhdGFiYXNlU3RhdHNSZXNwb25zZRIVCg1kYXRhYmFzZV9uYW1lGAEgASgJEhgKEHRvdGFsX3NpemVfYnl0ZXMYAiABKAMSKAoGdGFibGVzGAMgAygLMhgucXVhZHNtaXRoLm9wcy5UYWJsZVN0YXQiNAodUnVuRGF0YWJhc2VNYWludGVuYW5jZVJlcXVlc3QSEwoLZnVsbF92YWN1dW0YASABKAgiVwoeUnVuRGF0YWJhc2VNYWludGVuYW5jZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRITCgtkdXJhdGlvbl9tcxgDIAEoAyIkChNTZWVkRGF0YWJhc2VSZXF1ZXN0Eg0KBWZvcmNlGAEgASgIIlAKFFNlZWREYXRhYmFzZVJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSFgoOcmVjb3Jkc19zZWVkZWQYAiABKAUSDwoHbWVzc2FnZRgDIAEoCSIbChlDbGVhbnVwRXhwaXJlZE90cHNSZXF1ZXN0IjMKGkNsZWFudXBFeHBpcmVkT3Rwc1Jlc3BvbnNlEhUKDWNsZWFuZWRfY291bnQYASABKAMiHQobQ2xlYW51cEV4cGlyZWRUb2tlbnNSZXF1ZXN0IjUKHENsZWFudXBFeHBpcmVkVG9rZW5zUmVzcG9uc2USFQoNY2xlYW5lZF9jb3VudBgBIAEoAyIdChtDbGVhbnVwT3JwaGFuZWRCbG9ic1JlcXVlc3QiNQocQ2xlYW51cE9ycGhhbmVkQmxvYnNSZXNwb25zZRIVCg1jbGVhbmVkX2NvdW50GAEgASgDIhoKGExpc3RTY2hlZHVsZWRKb2JzUmVxdWVzdCJJChlMaXN0U2NoZWR1bGVkSm9ic1Jlc3BvbnNlEiwKBGpvYnMYASADKAsyHi5xdWFkc21pdGgub3BzLlNjaGVkdWxlZEpvYkRlZiI7ChFUcmlnZ2VySm9iUmVxdWVzdBIQCghqb2JfbmFtZRgBIAEoCRIUCgxwYXlsb2FkX2pzb24YAiABKAkiRwoSVHJpZ2dlckpvYlJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIPCgdjYWxsX2lkGAMgASgJIloKG0xpc3RJbnRlcm5hbEFwaUNhbGxzUmVxdWVzdBINCgVsaW1pdBgBIAEoBRIVCg1jYWxsZXJfZmlsdGVyGAIgASgJEhUKDW1ldGhvZF9maWx0ZXIYAyABKAkiUwocTGlzdEludGVybmFsQXBpQ2FsbHNSZXNwb25zZRIzCgVjYWxscxgBIAMoCzIkLnF1YWRzbWl0aC5vcHMuSW50ZXJuYWxBcGlDYWxsUmVjb3JkIlUKGEV4Y2hhbmdlT0F1dGhDb2RlUmVxdWVzdBIMCgRjb2RlGAEgASgJEhUKDWNvZGVfdmVyaWZpZXIYAiABKAkSFAoMcmVkaXJlY3RfdXJpGAMgASgJIoABChlFeGNoYW5nZU9BdXRoQ29kZVJlc3BvbnNlEg0KBXRva2VuGAEgASgJEi4KCmV4cGlyZXNfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhAKCG9wZXJhdG9yGAMgASgJEhIKCmdyb3VwX25hbWUYBCABKAkiGwoZR2V0Q3VycmVudE9wZXJhdG9yUmVxdWVzdCLkAQoaR2V0Q3VycmVudE9wZXJhdG9yUmVzcG9uc2USEAoIb3BlcmF0b3IYASABKAkSFQoNb3BlcmF0b3JfdHlwZRgCIAEoCRISCgpncm91cF9uYW1lGAMgASgJEjYKEnNlc3Npb25fZXhwaXJlc19hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASPAoQYWN0aXZlX2ppdF9ncmFudBgFIAEoCzIdLnF1YWRzbWl0aC5vcHMuSml0R3JhbnRSZWNvcmRIAIgBAUITChFfYWN0aXZlX2ppdF9ncmFudCIVChNMaXN0SWFtVXNlcnNSZXF1ZXN0IkQKFExpc3RJYW1Vc2Vyc1Jlc3BvbnNlEiwKBXVzZXJzGAEgAygLMh0ucXVhZHNtaXRoLm9wcy5JYW1Vc2VyU3VtbWFyeSIWChRMaXN0SWFtR3JvdXBzUmVxdWVzdCJHChVMaXN0SWFtR3JvdXBzUmVzcG9uc2USLgoGZ3JvdXBzGAEgAygLMh4ucXVhZHNtaXRoLm9wcy5JYW1Hcm91cFN1bW1hcnkiYwoaQ3JlYXRlSW50ZXJuYWxUb2tlblJlcXVlc3QSDAoEbmFtZRgBIAEoCRIMCgR0eXBlGAIgASgJEhIKCmdyb3VwX25hbWUYAyABKAkSFQoNZHVyYXRpb25fZGF5cxgEIAEoBSJ5ChtDcmVhdGVJbnRlcm5hbFRva2VuUmVzcG9uc2USEAoIdG9rZW5faWQYASABKAkSFAoMdG9rZW5fc2VjcmV0GAIgASgJEjIKBnJlY29yZBgDIAEoCzIiLnF1YWRzbWl0aC5vcHMuSW50ZXJuYWxUb2tlblJlY29yZCIbChlMaXN0SW50ZXJuYWxUb2tlbnNSZXF1ZXN0IlAKGkxpc3RJbnRlcm5hbFRva2Vuc1Jlc3BvbnNlEjIKBnRva2VucxgBIAMoCzIiLnF1YWRzbWl0aC5vcHMuSW50ZXJuYWxUb2tlblJlY29yZCIoChpSZXZva2VJbnRlcm5hbFRva2VuUmVxdWVzdBIKCgJpZBgBIAEoCSIuChtSZXZva2VJbnRlcm5hbFRva2VuUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCJKChZBY3F1aXJlSml0R3JhbnRSZXF1ZXN0Eg0KBWhvdXJzGAEgASgFEg4KBnJlYXNvbhgCIAEoCRIRCglvcGVyYXRpb24YAyABKAkiRwoXQWNxdWlyZUppdEdyYW50UmVzcG9uc2USLAoFZ3JhbnQYASABKAsyHS5xdWFkc21pdGgub3BzLkppdEdyYW50UmVjb3JkIjgKFUV4dGVuZEppdEdyYW50UmVxdWVzdBIQCghncmFudF9pZBgBIAEoCRINCgVob3VycxgCIAEoBSJGChZFeHRlbmRKaXRHcmFudFJlc3BvbnNlEiwKBWdyYW50GAEgASgLMh0ucXVhZHNtaXRoLm9wcy5KaXRHcmFudFJlY29yZCIrChRMaXN0Sml0R3JhbnRzUmVxdWVzdBITCgthY3RpdmVfb25seRgBIAEoCCJGChVMaXN0Sml0R3JhbnRzUmVzcG9uc2USLQoGZ3JhbnRzGAEgAygLMh0ucXVhZHNtaXRoLm9wcy5KaXRHcmFudFJlY29yZCIpChVSZXZva2VKaXRHcmFudFJlcXVlc3QSEAoIZ3JhbnRfaWQYASABKAkiKQoWUmV2b2tlSml0R3JhbnRSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIIk0KD0lhbUdyb3VwU3VtbWFyeRIMCgRuYW1lGAEgASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJEhcKD2FsbG93ZWRfbWV0aG9kcxgDIAMoCSKQAQoOSWFtVXNlclN1bW1hcnkSEAoIb3BlcmF0b3IYASABKAkSDAoEdHlwZRgCIAEoCRISCgpncm91cF9uYW1lGAMgASgJEjIKDmxhc3RfYWN0aXZlX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIWCg5oYXNfYWN0aXZlX2ppdBgFIAEoCCKKAQoPU2NoZWR1bGVkSm9iRGVmEgwKBG5hbWUYASABKAkSEQoJcHJvY2VkdXJlGAIgASgJEhAKCGludGVydmFsGAMgASgJEi8KC2xhc3RfcnVuX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBITCgtsYXN0X3N0YXR1cxgFIAEoCSJMCglUYWJsZVN0YXQSEgoKdGFibGVfbmFtZRgBIAEoCRIRCglyb3dfY291bnQYAiABKAMSGAoQdG90YWxfc2l6ZV9ieXRlcxgDIAEoAzL2EAoKT3BzU2VydmljZRJvChRHZXRTeXN0ZW1EaWFnbm9zdGljcxIqLnF1YWRzbWl0aC5vcHMuR2V0U3lzdGVtRGlhZ25vc3RpY3NSZXF1ZXN0GisucXVhZHNtaXRoLm9wcy5HZXRTeXN0ZW1EaWFnbm9zdGljc1Jlc3BvbnNlEmMKEEdldERhdGFiYXNlU3RhdHMSJi5xdWFkc21pdGgub3BzLkdldERhdGFiYXNlU3RhdHNSZXF1ZXN0GicucXVhZHNtaXRoLm9wcy5HZXREYXRhYmFzZVN0YXRzUmVzcG9uc2USdQoWUnVuRGF0YWJhc2VNYWludGVuYW5jZRIsLnF1YWRzbWl0aC5vcHMuUnVuRGF0YWJhc2VNYWludGVuYW5jZVJlcXVlc3QaLS5xdWFkc21pdGgub3BzLlJ1bkRhdGFiYXNlTWFpbnRlbmFuY2VSZXNwb25zZRJXCgxTZWVkRGF0YWJhc2USIi5xdWFkc21pdGgub3BzLlNlZWREYXRhYmFzZVJlcXVlc3QaIy5xdWFkc21pdGgub3BzLlNlZWREYXRhYmFzZVJlc3BvbnNlEmkKEkNsZWFudXBFeHBpcmVkT3RwcxIoLnF1YWRzbWl0aC5vcHMuQ2xlYW51cEV4cGlyZWRPdHBzUmVxdWVzdBopLnF1YWRzbWl0aC5vcHMuQ2xlYW51cEV4cGlyZWRPdHBzUmVzcG9uc2USbwoUQ2xlYW51cEV4cGlyZWRUb2tlbnMSKi5xdWFkc21pdGgub3BzLkNsZWFudXBFeHBpcmVkVG9rZW5zUmVxdWVzdBorLnF1YWRzbWl0aC5vcHMuQ2xlYW51cEV4cGlyZWRUb2tlbnNSZXNwb25zZRJvChRDbGVhbnVwT3JwaGFuZWRCbG9icxIqLnF1YWRzbWl0aC5vcHMuQ2xlYW51cE9ycGhhbmVkQmxvYnNSZXF1ZXN0GisucXVhZHNtaXRoLm9wcy5DbGVhbnVwT3JwaGFuZWRCbG9ic1Jlc3BvbnNlEmYKEUxpc3RTY2hlZHVsZWRKb2JzEicucXVhZHNtaXRoLm9wcy5MaXN0U2NoZWR1bGVkSm9ic1JlcXVlc3QaKC5xdWFkc21pdGgub3BzLkxpc3RTY2hlZHVsZWRKb2JzUmVzcG9uc2USUQoKVHJpZ2dlckpvYhIgLnF1YWRzbWl0aC5vcHMuVHJpZ2dlckpvYlJlcXVlc3QaIS5xdWFkc21pdGgub3BzLlRyaWdnZXJKb2JSZXNwb25zZRJvChRMaXN0SW50ZXJuYWxBcGlDYWxscxIqLnF1YWRzbWl0aC5vcHMuTGlzdEludGVybmFsQXBpQ2FsbHNSZXF1ZXN0GisucXVhZHNtaXRoLm9wcy5MaXN0SW50ZXJuYWxBcGlDYWxsc1Jlc3BvbnNlEmYKEUV4Y2hhbmdlT0F1dGhDb2RlEicucXVhZHNtaXRoLm9wcy5FeGNoYW5nZU9BdXRoQ29kZVJlcXVlc3QaKC5xdWFkc21pdGgub3BzLkV4Y2hhbmdlT0F1dGhDb2RlUmVzcG9uc2USaQoSR2V0Q3VycmVudE9wZXJhdG9yEigucXVhZHNtaXRoLm9wcy5HZXRDdXJyZW50T3BlcmF0b3JSZXF1ZXN0GikucXVhZHNtaXRoLm9wcy5HZXRDdXJyZW50T3BlcmF0b3JSZXNwb25zZRJXCgxMaXN0SWFtVXNlcnMSIi5xdWFkc21pdGgub3BzLkxpc3RJYW1Vc2Vyc1JlcXVlc3QaIy5xdWFkc21pdGgub3BzLkxpc3RJYW1Vc2Vyc1Jlc3BvbnNlEloKDUxpc3RJYW1Hcm91cHMSIy5xdWFkc21pdGgub3BzLkxpc3RJYW1Hcm91cHNSZXF1ZXN0GiQucXVhZHNtaXRoLm9wcy5MaXN0SWFtR3JvdXBzUmVzcG9uc2USbAoTQ3JlYXRlSW50ZXJuYWxUb2tlbhIpLnF1YWRzbWl0aC5vcHMuQ3JlYXRlSW50ZXJuYWxUb2tlblJlcXVlc3QaKi5xdWFkc21pdGgub3BzLkNyZWF0ZUludGVybmFsVG9rZW5SZXNwb25zZRJpChJMaXN0SW50ZXJuYWxUb2tlbnMSKC5xdWFkc21pdGgub3BzLkxpc3RJbnRlcm5hbFRva2Vuc1JlcXVlc3QaKS5xdWFkc21pdGgub3BzLkxpc3RJbnRlcm5hbFRva2Vuc1Jlc3BvbnNlEmwKE1Jldm9rZUludGVybmFsVG9rZW4SKS5xdWFkc21pdGgub3BzLlJldm9rZUludGVybmFsVG9rZW5SZXF1ZXN0GioucXVhZHNtaXRoLm9wcy5SZXZva2VJbnRlcm5hbFRva2VuUmVzcG9uc2USYAoPQWNxdWlyZUppdEdyYW50EiUucXVhZHNtaXRoLm9wcy5BY3F1aXJlSml0R3JhbnRSZXF1ZXN0GiYucXVhZHNtaXRoLm9wcy5BY3F1aXJlSml0R3JhbnRSZXNwb25zZRJdCg5FeHRlbmRKaXRHcmFudBIkLnF1YWRzbWl0aC5vcHMuRXh0ZW5kSml0R3JhbnRSZXF1ZXN0GiUucXVhZHNtaXRoLm9wcy5FeHRlbmRKaXRHcmFudFJlc3BvbnNlEloKDUxpc3RKaXRHcmFudHMSIy5xdWFkc21pdGgub3BzLkxpc3RKaXRHcmFudHNSZXF1ZXN0GiQucXVhZHNtaXRoLm9wcy5MaXN0Sml0R3JhbnRzUmVzcG9uc2USXQoOUmV2b2tlSml0R3JhbnQSJC5xdWFkc21pdGgub3BzLlJldm9rZUppdEdyYW50UmVxdWVzdBolLnF1YWRzbWl0aC5vcHMuUmV2b2tlSml0R3JhbnRSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvb3BzO29wc2IGcHJvdG8z",
-    [file_google_protobuf_timestamp, file_quadsmith_data_data, file_quadsmith_sql_sql],
+    "ChdxdWFkc21pdGgvb3BzL29wcy5wcm90bxINcXVhZHNtaXRoLm9wcyLZAgoVSW50ZXJuYWxBcGlDYWxsUmVjb3JkEgwKBHV1aWQYASABKAkSCgoCaWQYAiABKAkSDgoGbWV0aG9kGAMgASgJEg4KBmNhbGxlchgEIAEoCRITCgtjYWxsZXJfdHlwZRgFIAEoCRISCgpncm91cF9uYW1lGAYgASgJEhsKDmppdF9ncmFudF91dWlkGAcgASgJSACIAQESGQoMaml0X2dyYW50X2lkGAggASgJSAGIAQESDgoGc3RhdHVzGAkgASgJEhoKDWVycm9yX21lc3NhZ2UYCiABKAlIAogBARITCgtkdXJhdGlvbl9tcxgLIAEoAxIuCgpjcmVhdGVkX2F0GAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIRCg9faml0X2dyYW50X3V1aWRCDwoNX2ppdF9ncmFudF9pZEIQCg5fZXJyb3JfbWVzc2FnZSKDAgoTSW50ZXJuYWxUb2tlblJlY29yZBIMCgR1dWlkGAEgASgJEgoKAmlkGAIgASgJEgwKBG5hbWUYAyABKAkSDAoEdHlwZRgEIAEoCRISCgpncm91cF9uYW1lGAUgASgJEhIKCnRva2VuX2hhc2gYBiABKAkSLgoKZXhwaXJlc19hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKY3JlYXRlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKcmV2b2tlZF9hdBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAi6gIKDkppdEdyYW50UmVjb3JkEgwKBHV1aWQYASABKAkSCgoCaWQYAiABKAkSEgoKdG9rZW5faGFzaBgDIAEoCRIQCghvcGVyYXRvchgEIAEoCRIVCg1vcGVyYXRvcl90eXBlGAUgASgJEg4KBnJlYXNvbhgGIAEoCRIRCglvcGVyYXRpb24YByABKAkSDgoGc3RhdHVzGAggASgJEg0KBWhvdXJzGAkgASgFEi4KCmV4cGlyZXNfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmNyZWF0ZWRfYXQYCyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi8KC2V4dGVuZGVkX2F0GAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpyZXZva2VkX2F0GA0gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCJKChZBY3F1aXJlSml0R3JhbnRSZXF1ZXN0Eg0KBWhvdXJzGAEgASgFEg4KBnJlYXNvbhgCIAEoCRIRCglvcGVyYXRpb24YAyABKAkiRwoXQWNxdWlyZUppdEdyYW50UmVzcG9uc2USLAoFZ3JhbnQYASABKAsyHS5xdWFkc21pdGgub3BzLkppdEdyYW50UmVjb3JkIhsKGUNsZWFudXBFeHBpcmVkT3Rwc1JlcXVlc3QiMwoaQ2xlYW51cEV4cGlyZWRPdHBzUmVzcG9uc2USFQoNY2xlYW5lZF9jb3VudBgBIAEoAyIdChtDbGVhbnVwRXhwaXJlZFRva2Vuc1JlcXVlc3QiNQocQ2xlYW51cEV4cGlyZWRUb2tlbnNSZXNwb25zZRIVCg1jbGVhbmVkX2NvdW50GAEgASgDIh0KG0NsZWFudXBPcnBoYW5lZEJsb2JzUmVxdWVzdCI1ChxDbGVhbnVwT3JwaGFuZWRCbG9ic1Jlc3BvbnNlEhUKDWNsZWFuZWRfY291bnQYASABKAMiYwoaQ3JlYXRlSW50ZXJuYWxUb2tlblJlcXVlc3QSDAoEbmFtZRgBIAEoCRIMCgR0eXBlGAIgASgJEhIKCmdyb3VwX25hbWUYAyABKAkSFQoNZHVyYXRpb25fZGF5cxgEIAEoBSJ5ChtDcmVhdGVJbnRlcm5hbFRva2VuUmVzcG9uc2USEAoIdG9rZW5faWQYASABKAkSFAoMdG9rZW5fc2VjcmV0GAIgASgJEjIKBnJlY29yZBgDIAEoCzIiLnF1YWRzbWl0aC5vcHMuSW50ZXJuYWxUb2tlblJlY29yZCJVChhFeGNoYW5nZU9BdXRoQ29kZVJlcXVlc3QSDAoEY29kZRgBIAEoCRIVCg1jb2RlX3ZlcmlmaWVyGAIgASgJEhQKDHJlZGlyZWN0X3VyaRgDIAEoCSKAAQoZRXhjaGFuZ2VPQXV0aENvZGVSZXNwb25zZRINCgV0b2tlbhgBIAEoCRIuCgpleHBpcmVzX2F0GAIgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIQCghvcGVyYXRvchgDIAEoCRISCgpncm91cF9uYW1lGAQgASgJIjgKFUV4dGVuZEppdEdyYW50UmVxdWVzdBIQCghncmFudF9pZBgBIAEoCRINCgVob3VycxgCIAEoBSJGChZFeHRlbmRKaXRHcmFudFJlc3BvbnNlEiwKBWdyYW50GAEgASgLMh0ucXVhZHNtaXRoLm9wcy5KaXRHcmFudFJlY29yZCIbChlHZXRDdXJyZW50T3BlcmF0b3JSZXF1ZXN0IuQBChpHZXRDdXJyZW50T3BlcmF0b3JSZXNwb25zZRIQCghvcGVyYXRvchgBIAEoCRIVCg1vcGVyYXRvcl90eXBlGAIgASgJEhIKCmdyb3VwX25hbWUYAyABKAkSNgoSc2Vzc2lvbl9leHBpcmVzX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBI8ChBhY3RpdmVfaml0X2dyYW50GAUgASgLMh0ucXVhZHNtaXRoLm9wcy5KaXRHcmFudFJlY29yZEgAiAEBQhMKEV9hY3RpdmVfaml0X2dyYW50IhkKF0dldERhdGFiYXNlU3RhdHNSZXF1ZXN0InUKGEdldERhdGFiYXNlU3RhdHNSZXNwb25zZRIVCg1kYXRhYmFzZV9uYW1lGAEgASgJEhgKEHRvdGFsX3NpemVfYnl0ZXMYAiABKAMSKAoGdGFibGVzGAMgAygLMhgucXVhZHNtaXRoLm9wcy5UYWJsZVN0YXQiHQobR2V0U3lzdGVtRGlhZ25vc3RpY3NSZXF1ZXN0It4BChxHZXRTeXN0ZW1EaWFnbm9zdGljc1Jlc3BvbnNlEg8KB3ZlcnNpb24YASABKAkSEwoLZW52aXJvbm1lbnQYAiABKAkSFgoOdXB0aW1lX3NlY29uZHMYAyABKAMSHgoWbWVtb3J5X2FsbG9jYXRlZF9ieXRlcxgEIAEoAxIWCg5udW1fZ29yb3V0aW5lcxgFIAEoBRIjChthY3RpdmVfZGF0YWJhc2VfY29ubmVjdGlvbnMYBiABKAUSIwobYWN0aXZlX2ludGVybmFsX2Nvbm5lY3Rpb25zGAcgASgFIhYKFExpc3RJYW1Hcm91cHNSZXF1ZXN0IkcKFUxpc3RJYW1Hcm91cHNSZXNwb25zZRIuCgZncm91cHMYASADKAsyHi5xdWFkc21pdGgub3BzLklhbUdyb3VwU3VtbWFyeSIVChNMaXN0SWFtVXNlcnNSZXF1ZXN0IkQKFExpc3RJYW1Vc2Vyc1Jlc3BvbnNlEiwKBXVzZXJzGAEgAygLMh0ucXVhZHNtaXRoLm9wcy5JYW1Vc2VyU3VtbWFyeSJaChtMaXN0SW50ZXJuYWxBcGlDYWxsc1JlcXVlc3QSDQoFbGltaXQYASABKAUSFQoNY2FsbGVyX2ZpbHRlchgCIAEoCRIVCg1tZXRob2RfZmlsdGVyGAMgASgJIlMKHExpc3RJbnRlcm5hbEFwaUNhbGxzUmVzcG9uc2USMwoFY2FsbHMYASADKAsyJC5xdWFkc21pdGgub3BzLkludGVybmFsQXBpQ2FsbFJlY29yZCIbChlMaXN0SW50ZXJuYWxUb2tlbnNSZXF1ZXN0IlAKGkxpc3RJbnRlcm5hbFRva2Vuc1Jlc3BvbnNlEjIKBnRva2VucxgBIAMoCzIiLnF1YWRzbWl0aC5vcHMuSW50ZXJuYWxUb2tlblJlY29yZCIrChRMaXN0Sml0R3JhbnRzUmVxdWVzdBITCgthY3RpdmVfb25seRgBIAEoCCJGChVMaXN0Sml0R3JhbnRzUmVzcG9uc2USLQoGZ3JhbnRzGAEgAygLMh0ucXVhZHNtaXRoLm9wcy5KaXRHcmFudFJlY29yZCIaChhMaXN0U2NoZWR1bGVkSm9ic1JlcXVlc3QiSQoZTGlzdFNjaGVkdWxlZEpvYnNSZXNwb25zZRIsCgRqb2JzGAEgAygLMh4ucXVhZHNtaXRoLm9wcy5TY2hlZHVsZWRKb2JEZWYiKAoaUmV2b2tlSW50ZXJuYWxUb2tlblJlcXVlc3QSCgoCaWQYASABKAkiLgobUmV2b2tlSW50ZXJuYWxUb2tlblJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiKQoVUmV2b2tlSml0R3JhbnRSZXF1ZXN0EhAKCGdyYW50X2lkGAEgASgJIikKFlJldm9rZUppdEdyYW50UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCI0Ch1SdW5EYXRhYmFzZU1haW50ZW5hbmNlUmVxdWVzdBITCgtmdWxsX3ZhY3V1bRgBIAEoCCJXCh5SdW5EYXRhYmFzZU1haW50ZW5hbmNlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEhMKC2R1cmF0aW9uX21zGAMgASgDIiQKE1NlZWREYXRhYmFzZVJlcXVlc3QSDQoFZm9yY2UYASABKAgiUAoUU2VlZERhdGFiYXNlUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIWCg5yZWNvcmRzX3NlZWRlZBgCIAEoBRIPCgdtZXNzYWdlGAMgASgJIjsKEVRyaWdnZXJKb2JSZXF1ZXN0EhAKCGpvYl9uYW1lGAEgASgJEhQKDHBheWxvYWRfanNvbhgCIAEoCSJHChJUcmlnZ2VySm9iUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEg8KB2NhbGxfaWQYAyABKAkiTQoPSWFtR3JvdXBTdW1tYXJ5EgwKBG5hbWUYASABKAkSEwoLZGVzY3JpcHRpb24YAiABKAkSFwoPYWxsb3dlZF9tZXRob2RzGAMgAygJIpABCg5JYW1Vc2VyU3VtbWFyeRIQCghvcGVyYXRvchgBIAEoCRIMCgR0eXBlGAIgASgJEhIKCmdyb3VwX25hbWUYAyABKAkSMgoObGFzdF9hY3RpdmVfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhYKDmhhc19hY3RpdmVfaml0GAUgASgIIooBCg9TY2hlZHVsZWRKb2JEZWYSDAoEbmFtZRgBIAEoCRIRCglwcm9jZWR1cmUYAiABKAkSEAoIaW50ZXJ2YWwYAyABKAkSLwoLbGFzdF9ydW5fYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhMKC2xhc3Rfc3RhdHVzGAUgASgJIkwKCVRhYmxlU3RhdBISCgp0YWJsZV9uYW1lGAEgASgJEhEKCXJvd19jb3VudBgCIAEoAxIYChB0b3RhbF9zaXplX2J5dGVzGAMgASgDMvYQCgpPcHNTZXJ2aWNlEm8KFEdldFN5c3RlbURpYWdub3N0aWNzEioucXVhZHNtaXRoLm9wcy5HZXRTeXN0ZW1EaWFnbm9zdGljc1JlcXVlc3QaKy5xdWFkc21pdGgub3BzLkdldFN5c3RlbURpYWdub3N0aWNzUmVzcG9uc2USYwoQR2V0RGF0YWJhc2VTdGF0cxImLnF1YWRzbWl0aC5vcHMuR2V0RGF0YWJhc2VTdGF0c1JlcXVlc3QaJy5xdWFkc21pdGgub3BzLkdldERhdGFiYXNlU3RhdHNSZXNwb25zZRJ1ChZSdW5EYXRhYmFzZU1haW50ZW5hbmNlEiwucXVhZHNtaXRoLm9wcy5SdW5EYXRhYmFzZU1haW50ZW5hbmNlUmVxdWVzdBotLnF1YWRzbWl0aC5vcHMuUnVuRGF0YWJhc2VNYWludGVuYW5jZVJlc3BvbnNlElcKDFNlZWREYXRhYmFzZRIiLnF1YWRzbWl0aC5vcHMuU2VlZERhdGFiYXNlUmVxdWVzdBojLnF1YWRzbWl0aC5vcHMuU2VlZERhdGFiYXNlUmVzcG9uc2USaQoSQ2xlYW51cEV4cGlyZWRPdHBzEigucXVhZHNtaXRoLm9wcy5DbGVhbnVwRXhwaXJlZE90cHNSZXF1ZXN0GikucXVhZHNtaXRoLm9wcy5DbGVhbnVwRXhwaXJlZE90cHNSZXNwb25zZRJvChRDbGVhbnVwRXhwaXJlZFRva2VucxIqLnF1YWRzbWl0aC5vcHMuQ2xlYW51cEV4cGlyZWRUb2tlbnNSZXF1ZXN0GisucXVhZHNtaXRoLm9wcy5DbGVhbnVwRXhwaXJlZFRva2Vuc1Jlc3BvbnNlEm8KFENsZWFudXBPcnBoYW5lZEJsb2JzEioucXVhZHNtaXRoLm9wcy5DbGVhbnVwT3JwaGFuZWRCbG9ic1JlcXVlc3QaKy5xdWFkc21pdGgub3BzLkNsZWFudXBPcnBoYW5lZEJsb2JzUmVzcG9uc2USZgoRTGlzdFNjaGVkdWxlZEpvYnMSJy5xdWFkc21pdGgub3BzLkxpc3RTY2hlZHVsZWRKb2JzUmVxdWVzdBooLnF1YWRzbWl0aC5vcHMuTGlzdFNjaGVkdWxlZEpvYnNSZXNwb25zZRJRCgpUcmlnZ2VySm9iEiAucXVhZHNtaXRoLm9wcy5UcmlnZ2VySm9iUmVxdWVzdBohLnF1YWRzbWl0aC5vcHMuVHJpZ2dlckpvYlJlc3BvbnNlEm8KFExpc3RJbnRlcm5hbEFwaUNhbGxzEioucXVhZHNtaXRoLm9wcy5MaXN0SW50ZXJuYWxBcGlDYWxsc1JlcXVlc3QaKy5xdWFkc21pdGgub3BzLkxpc3RJbnRlcm5hbEFwaUNhbGxzUmVzcG9uc2USZgoRRXhjaGFuZ2VPQXV0aENvZGUSJy5xdWFkc21pdGgub3BzLkV4Y2hhbmdlT0F1dGhDb2RlUmVxdWVzdBooLnF1YWRzbWl0aC5vcHMuRXhjaGFuZ2VPQXV0aENvZGVSZXNwb25zZRJpChJHZXRDdXJyZW50T3BlcmF0b3ISKC5xdWFkc21pdGgub3BzLkdldEN1cnJlbnRPcGVyYXRvclJlcXVlc3QaKS5xdWFkc21pdGgub3BzLkdldEN1cnJlbnRPcGVyYXRvclJlc3BvbnNlElcKDExpc3RJYW1Vc2VycxIiLnF1YWRzbWl0aC5vcHMuTGlzdElhbVVzZXJzUmVxdWVzdBojLnF1YWRzbWl0aC5vcHMuTGlzdElhbVVzZXJzUmVzcG9uc2USWgoNTGlzdElhbUdyb3VwcxIjLnF1YWRzbWl0aC5vcHMuTGlzdElhbUdyb3Vwc1JlcXVlc3QaJC5xdWFkc21pdGgub3BzLkxpc3RJYW1Hcm91cHNSZXNwb25zZRJsChNDcmVhdGVJbnRlcm5hbFRva2VuEikucXVhZHNtaXRoLm9wcy5DcmVhdGVJbnRlcm5hbFRva2VuUmVxdWVzdBoqLnF1YWRzbWl0aC5vcHMuQ3JlYXRlSW50ZXJuYWxUb2tlblJlc3BvbnNlEmkKEkxpc3RJbnRlcm5hbFRva2VucxIoLnF1YWRzbWl0aC5vcHMuTGlzdEludGVybmFsVG9rZW5zUmVxdWVzdBopLnF1YWRzbWl0aC5vcHMuTGlzdEludGVybmFsVG9rZW5zUmVzcG9uc2USbAoTUmV2b2tlSW50ZXJuYWxUb2tlbhIpLnF1YWRzbWl0aC5vcHMuUmV2b2tlSW50ZXJuYWxUb2tlblJlcXVlc3QaKi5xdWFkc21pdGgub3BzLlJldm9rZUludGVybmFsVG9rZW5SZXNwb25zZRJgCg9BY3F1aXJlSml0R3JhbnQSJS5xdWFkc21pdGgub3BzLkFjcXVpcmVKaXRHcmFudFJlcXVlc3QaJi5xdWFkc21pdGgub3BzLkFjcXVpcmVKaXRHcmFudFJlc3BvbnNlEl0KDkV4dGVuZEppdEdyYW50EiQucXVhZHNtaXRoLm9wcy5FeHRlbmRKaXRHcmFudFJlcXVlc3QaJS5xdWFkc21pdGgub3BzLkV4dGVuZEppdEdyYW50UmVzcG9uc2USWgoNTGlzdEppdEdyYW50cxIjLnF1YWRzbWl0aC5vcHMuTGlzdEppdEdyYW50c1JlcXVlc3QaJC5xdWFkc21pdGgub3BzLkxpc3RKaXRHcmFudHNSZXNwb25zZRJdCg5SZXZva2VKaXRHcmFudBIkLnF1YWRzbWl0aC5vcHMuUmV2b2tlSml0R3JhbnRSZXF1ZXN0GiUucXVhZHNtaXRoLm9wcy5SZXZva2VKaXRHcmFudFJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9vcHM7b3BzYgZwcm90bzM",
+    [file_google_protobuf_timestamp],
   );
+
+/**
+ * @generated from message quadsmith.ops.InternalApiCallRecord
+ */
+export type InternalApiCallRecord = Message<"quadsmith.ops.InternalApiCallRecord"> & {
+  /**
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
+
+  /**
+   * @generated from field: string id = 2;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string method = 3;
+   */
+  method: string;
+
+  /**
+   * @generated from field: string caller = 4;
+   */
+  caller: string;
+
+  /**
+   * @generated from field: string caller_type = 5;
+   */
+  callerType: string;
+
+  /**
+   * @generated from field: string group_name = 6;
+   */
+  groupName: string;
+
+  /**
+   * @generated from field: optional string jit_grant_uuid = 7;
+   */
+  jitGrantUuid?: string | undefined;
+
+  /**
+   * @generated from field: optional string jit_grant_id = 8;
+   */
+  jitGrantId?: string | undefined;
+
+  /**
+   * @generated from field: string status = 9;
+   */
+  status: string;
+
+  /**
+   * @generated from field: optional string error_message = 10;
+   */
+  errorMessage?: string | undefined;
+
+  /**
+   * @generated from field: int64 duration_ms = 11;
+   */
+  durationMs: bigint;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 12;
+   */
+  createdAt?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message quadsmith.ops.InternalApiCallRecord.
+ * Use `create(InternalApiCallRecordSchema)` to create a new message.
+ */
+export const InternalApiCallRecordSchema: GenMessage<InternalApiCallRecord> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 0);
+
+/**
+ * @generated from message quadsmith.ops.InternalTokenRecord
+ */
+export type InternalTokenRecord = Message<"quadsmith.ops.InternalTokenRecord"> & {
+  /**
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
+
+  /**
+   * @generated from field: string id = 2;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string name = 3;
+   */
+  name: string;
+
+  /**
+   * 'HUMAN' or 'ROBOT'
+   *
+   * @generated from field: string type = 4;
+   */
+  type: string;
+
+  /**
+   * @generated from field: string group_name = 5;
+   */
+  groupName: string;
+
+  /**
+   * @generated from field: string token_hash = 6;
+   */
+  tokenHash: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp expires_at = 7;
+   */
+  expiresAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 8;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp revoked_at = 9;
+   */
+  revokedAt?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message quadsmith.ops.InternalTokenRecord.
+ * Use `create(InternalTokenRecordSchema)` to create a new message.
+ */
+export const InternalTokenRecordSchema: GenMessage<InternalTokenRecord> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 1);
 
 /**
  * @generated from message quadsmith.ops.JitGrantRecord
@@ -98,140 +229,411 @@ export type JitGrantRecord = Message<"quadsmith.ops.JitGrantRecord"> & {
  */
 export const JitGrantRecordSchema: GenMessage<JitGrantRecord> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 0);
+  messageDesc(file_quadsmith_ops_ops, 2);
 
 /**
- * @generated from message quadsmith.ops.InternalTokenRecord
+ * @generated from message quadsmith.ops.AcquireJitGrantRequest
  */
-export type InternalTokenRecord = Message<"quadsmith.ops.InternalTokenRecord"> & {
+export type AcquireJitGrantRequest = Message<"quadsmith.ops.AcquireJitGrantRequest"> & {
   /**
-   * @generated from field: string uuid = 1;
+   * 1 to 12
+   *
+   * @generated from field: int32 hours = 1;
    */
-  uuid: string;
+  hours: number;
 
   /**
-   * @generated from field: string id = 2;
+   * @generated from field: string reason = 2;
    */
-  id: string;
+  reason: string;
 
   /**
-   * @generated from field: string name = 3;
+   * optional, defaults to '*'
+   *
+   * @generated from field: string operation = 3;
+   */
+  operation: string;
+};
+
+/**
+ * Describes the message quadsmith.ops.AcquireJitGrantRequest.
+ * Use `create(AcquireJitGrantRequestSchema)` to create a new message.
+ */
+export const AcquireJitGrantRequestSchema: GenMessage<AcquireJitGrantRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 3);
+
+/**
+ * @generated from message quadsmith.ops.AcquireJitGrantResponse
+ */
+export type AcquireJitGrantResponse = Message<"quadsmith.ops.AcquireJitGrantResponse"> & {
+  /**
+   * @generated from field: quadsmith.ops.JitGrantRecord grant = 1;
+   */
+  grant?: JitGrantRecord | undefined;
+};
+
+/**
+ * Describes the message quadsmith.ops.AcquireJitGrantResponse.
+ * Use `create(AcquireJitGrantResponseSchema)` to create a new message.
+ */
+export const AcquireJitGrantResponseSchema: GenMessage<AcquireJitGrantResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 4);
+
+/**
+ * @generated from message quadsmith.ops.CleanupExpiredOtpsRequest
+ */
+export type CleanupExpiredOtpsRequest = Message<"quadsmith.ops.CleanupExpiredOtpsRequest"> & {};
+
+/**
+ * Describes the message quadsmith.ops.CleanupExpiredOtpsRequest.
+ * Use `create(CleanupExpiredOtpsRequestSchema)` to create a new message.
+ */
+export const CleanupExpiredOtpsRequestSchema: GenMessage<CleanupExpiredOtpsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 5);
+
+/**
+ * @generated from message quadsmith.ops.CleanupExpiredOtpsResponse
+ */
+export type CleanupExpiredOtpsResponse = Message<"quadsmith.ops.CleanupExpiredOtpsResponse"> & {
+  /**
+   * @generated from field: int64 cleaned_count = 1;
+   */
+  cleanedCount: bigint;
+};
+
+/**
+ * Describes the message quadsmith.ops.CleanupExpiredOtpsResponse.
+ * Use `create(CleanupExpiredOtpsResponseSchema)` to create a new message.
+ */
+export const CleanupExpiredOtpsResponseSchema: GenMessage<CleanupExpiredOtpsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 6);
+
+/**
+ * @generated from message quadsmith.ops.CleanupExpiredTokensRequest
+ */
+export type CleanupExpiredTokensRequest = Message<"quadsmith.ops.CleanupExpiredTokensRequest"> & {};
+
+/**
+ * Describes the message quadsmith.ops.CleanupExpiredTokensRequest.
+ * Use `create(CleanupExpiredTokensRequestSchema)` to create a new message.
+ */
+export const CleanupExpiredTokensRequestSchema: GenMessage<CleanupExpiredTokensRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 7);
+
+/**
+ * @generated from message quadsmith.ops.CleanupExpiredTokensResponse
+ */
+export type CleanupExpiredTokensResponse = Message<"quadsmith.ops.CleanupExpiredTokensResponse"> & {
+  /**
+   * @generated from field: int64 cleaned_count = 1;
+   */
+  cleanedCount: bigint;
+};
+
+/**
+ * Describes the message quadsmith.ops.CleanupExpiredTokensResponse.
+ * Use `create(CleanupExpiredTokensResponseSchema)` to create a new message.
+ */
+export const CleanupExpiredTokensResponseSchema: GenMessage<CleanupExpiredTokensResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 8);
+
+/**
+ * @generated from message quadsmith.ops.CleanupOrphanedBlobsRequest
+ */
+export type CleanupOrphanedBlobsRequest = Message<"quadsmith.ops.CleanupOrphanedBlobsRequest"> & {};
+
+/**
+ * Describes the message quadsmith.ops.CleanupOrphanedBlobsRequest.
+ * Use `create(CleanupOrphanedBlobsRequestSchema)` to create a new message.
+ */
+export const CleanupOrphanedBlobsRequestSchema: GenMessage<CleanupOrphanedBlobsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 9);
+
+/**
+ * @generated from message quadsmith.ops.CleanupOrphanedBlobsResponse
+ */
+export type CleanupOrphanedBlobsResponse = Message<"quadsmith.ops.CleanupOrphanedBlobsResponse"> & {
+  /**
+   * @generated from field: int64 cleaned_count = 1;
+   */
+  cleanedCount: bigint;
+};
+
+/**
+ * Describes the message quadsmith.ops.CleanupOrphanedBlobsResponse.
+ * Use `create(CleanupOrphanedBlobsResponseSchema)` to create a new message.
+ */
+export const CleanupOrphanedBlobsResponseSchema: GenMessage<CleanupOrphanedBlobsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 10);
+
+/**
+ * @generated from message quadsmith.ops.CreateInternalTokenRequest
+ */
+export type CreateInternalTokenRequest = Message<"quadsmith.ops.CreateInternalTokenRequest"> & {
+  /**
+   * @generated from field: string name = 1;
    */
   name: string;
 
   /**
    * 'HUMAN' or 'ROBOT'
    *
-   * @generated from field: string type = 4;
+   * @generated from field: string type = 2;
    */
   type: string;
 
   /**
-   * @generated from field: string group_name = 5;
+   * @generated from field: string group_name = 3;
    */
   groupName: string;
 
   /**
-   * @generated from field: string token_hash = 6;
+   * @generated from field: int32 duration_days = 4;
    */
-  tokenHash: string;
+  durationDays: number;
+};
+
+/**
+ * Describes the message quadsmith.ops.CreateInternalTokenRequest.
+ * Use `create(CreateInternalTokenRequestSchema)` to create a new message.
+ */
+export const CreateInternalTokenRequestSchema: GenMessage<CreateInternalTokenRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 11);
+
+/**
+ * @generated from message quadsmith.ops.CreateInternalTokenResponse
+ */
+export type CreateInternalTokenResponse = Message<"quadsmith.ops.CreateInternalTokenResponse"> & {
+  /**
+   * @generated from field: string token_id = 1;
+   */
+  tokenId: string;
 
   /**
-   * @generated from field: google.protobuf.Timestamp expires_at = 7;
+   * @generated from field: string token_secret = 2;
+   */
+  tokenSecret: string;
+
+  /**
+   * @generated from field: quadsmith.ops.InternalTokenRecord record = 3;
+   */
+  record?: InternalTokenRecord | undefined;
+};
+
+/**
+ * Describes the message quadsmith.ops.CreateInternalTokenResponse.
+ * Use `create(CreateInternalTokenResponseSchema)` to create a new message.
+ */
+export const CreateInternalTokenResponseSchema: GenMessage<CreateInternalTokenResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 12);
+
+/**
+ * @generated from message quadsmith.ops.ExchangeOAuthCodeRequest
+ */
+export type ExchangeOAuthCodeRequest = Message<"quadsmith.ops.ExchangeOAuthCodeRequest"> & {
+  /**
+   * @generated from field: string code = 1;
+   */
+  code: string;
+
+  /**
+   * @generated from field: string code_verifier = 2;
+   */
+  codeVerifier: string;
+
+  /**
+   * @generated from field: string redirect_uri = 3;
+   */
+  redirectUri: string;
+};
+
+/**
+ * Describes the message quadsmith.ops.ExchangeOAuthCodeRequest.
+ * Use `create(ExchangeOAuthCodeRequestSchema)` to create a new message.
+ */
+export const ExchangeOAuthCodeRequestSchema: GenMessage<ExchangeOAuthCodeRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 13);
+
+/**
+ * @generated from message quadsmith.ops.ExchangeOAuthCodeResponse
+ */
+export type ExchangeOAuthCodeResponse = Message<"quadsmith.ops.ExchangeOAuthCodeResponse"> & {
+  /**
+   * @generated from field: string token = 1;
+   */
+  token: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp expires_at = 2;
    */
   expiresAt?: Timestamp | undefined;
 
   /**
-   * @generated from field: google.protobuf.Timestamp created_at = 8;
+   * @generated from field: string operator = 3;
    */
-  createdAt?: Timestamp | undefined;
+  operator: string;
 
   /**
-   * @generated from field: google.protobuf.Timestamp revoked_at = 9;
+   * @generated from field: string group_name = 4;
    */
-  revokedAt?: Timestamp | undefined;
+  groupName: string;
 };
 
 /**
- * Describes the message quadsmith.ops.InternalTokenRecord.
- * Use `create(InternalTokenRecordSchema)` to create a new message.
+ * Describes the message quadsmith.ops.ExchangeOAuthCodeResponse.
+ * Use `create(ExchangeOAuthCodeResponseSchema)` to create a new message.
  */
-export const InternalTokenRecordSchema: GenMessage<InternalTokenRecord> =
+export const ExchangeOAuthCodeResponseSchema: GenMessage<ExchangeOAuthCodeResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 1);
+  messageDesc(file_quadsmith_ops_ops, 14);
 
 /**
- * @generated from message quadsmith.ops.InternalApiCallRecord
+ * @generated from message quadsmith.ops.ExtendJitGrantRequest
  */
-export type InternalApiCallRecord = Message<"quadsmith.ops.InternalApiCallRecord"> & {
+export type ExtendJitGrantRequest = Message<"quadsmith.ops.ExtendJitGrantRequest"> & {
   /**
-   * @generated from field: string uuid = 1;
+   * @generated from field: string grant_id = 1;
    */
-  uuid: string;
+  grantId: string;
 
   /**
-   * @generated from field: string id = 2;
+   * 1 to 12
+   *
+   * @generated from field: int32 hours = 2;
    */
-  id: string;
+  hours: number;
+};
+
+/**
+ * Describes the message quadsmith.ops.ExtendJitGrantRequest.
+ * Use `create(ExtendJitGrantRequestSchema)` to create a new message.
+ */
+export const ExtendJitGrantRequestSchema: GenMessage<ExtendJitGrantRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 15);
+
+/**
+ * @generated from message quadsmith.ops.ExtendJitGrantResponse
+ */
+export type ExtendJitGrantResponse = Message<"quadsmith.ops.ExtendJitGrantResponse"> & {
+  /**
+   * @generated from field: quadsmith.ops.JitGrantRecord grant = 1;
+   */
+  grant?: JitGrantRecord | undefined;
+};
+
+/**
+ * Describes the message quadsmith.ops.ExtendJitGrantResponse.
+ * Use `create(ExtendJitGrantResponseSchema)` to create a new message.
+ */
+export const ExtendJitGrantResponseSchema: GenMessage<ExtendJitGrantResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 16);
+
+/**
+ * @generated from message quadsmith.ops.GetCurrentOperatorRequest
+ */
+export type GetCurrentOperatorRequest = Message<"quadsmith.ops.GetCurrentOperatorRequest"> & {};
+
+/**
+ * Describes the message quadsmith.ops.GetCurrentOperatorRequest.
+ * Use `create(GetCurrentOperatorRequestSchema)` to create a new message.
+ */
+export const GetCurrentOperatorRequestSchema: GenMessage<GetCurrentOperatorRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 17);
+
+/**
+ * @generated from message quadsmith.ops.GetCurrentOperatorResponse
+ */
+export type GetCurrentOperatorResponse = Message<"quadsmith.ops.GetCurrentOperatorResponse"> & {
+  /**
+   * @generated from field: string operator = 1;
+   */
+  operator: string;
 
   /**
-   * @generated from field: string method = 3;
+   * 'HUMAN' or 'ROBOT'
+   *
+   * @generated from field: string operator_type = 2;
    */
-  method: string;
+  operatorType: string;
 
   /**
-   * @generated from field: string caller = 4;
-   */
-  caller: string;
-
-  /**
-   * @generated from field: string caller_type = 5;
-   */
-  callerType: string;
-
-  /**
-   * @generated from field: string group_name = 6;
+   * @generated from field: string group_name = 3;
    */
   groupName: string;
 
   /**
-   * @generated from field: optional string jit_grant_uuid = 7;
+   * @generated from field: google.protobuf.Timestamp session_expires_at = 4;
    */
-  jitGrantUuid?: string | undefined;
+  sessionExpiresAt?: Timestamp | undefined;
 
   /**
-   * @generated from field: optional string jit_grant_id = 8;
+   * @generated from field: optional quadsmith.ops.JitGrantRecord active_jit_grant = 5;
    */
-  jitGrantId?: string | undefined;
-
-  /**
-   * @generated from field: string status = 9;
-   */
-  status: string;
-
-  /**
-   * @generated from field: optional string error_message = 10;
-   */
-  errorMessage?: string | undefined;
-
-  /**
-   * @generated from field: int64 duration_ms = 11;
-   */
-  durationMs: bigint;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at = 12;
-   */
-  createdAt?: Timestamp | undefined;
+  activeJitGrant?: JitGrantRecord | undefined;
 };
 
 /**
- * Describes the message quadsmith.ops.InternalApiCallRecord.
- * Use `create(InternalApiCallRecordSchema)` to create a new message.
+ * Describes the message quadsmith.ops.GetCurrentOperatorResponse.
+ * Use `create(GetCurrentOperatorResponseSchema)` to create a new message.
  */
-export const InternalApiCallRecordSchema: GenMessage<InternalApiCallRecord> =
+export const GetCurrentOperatorResponseSchema: GenMessage<GetCurrentOperatorResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 2);
+  messageDesc(file_quadsmith_ops_ops, 18);
+
+/**
+ * @generated from message quadsmith.ops.GetDatabaseStatsRequest
+ */
+export type GetDatabaseStatsRequest = Message<"quadsmith.ops.GetDatabaseStatsRequest"> & {};
+
+/**
+ * Describes the message quadsmith.ops.GetDatabaseStatsRequest.
+ * Use `create(GetDatabaseStatsRequestSchema)` to create a new message.
+ */
+export const GetDatabaseStatsRequestSchema: GenMessage<GetDatabaseStatsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 19);
+
+/**
+ * @generated from message quadsmith.ops.GetDatabaseStatsResponse
+ */
+export type GetDatabaseStatsResponse = Message<"quadsmith.ops.GetDatabaseStatsResponse"> & {
+  /**
+   * @generated from field: string database_name = 1;
+   */
+  databaseName: string;
+
+  /**
+   * @generated from field: int64 total_size_bytes = 2;
+   */
+  totalSizeBytes: bigint;
+
+  /**
+   * @generated from field: repeated quadsmith.ops.TableStat tables = 3;
+   */
+  tables: TableStat[];
+};
+
+/**
+ * Describes the message quadsmith.ops.GetDatabaseStatsResponse.
+ * Use `create(GetDatabaseStatsResponseSchema)` to create a new message.
+ */
+export const GetDatabaseStatsResponseSchema: GenMessage<GetDatabaseStatsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 20);
 
 /**
  * @generated from message quadsmith.ops.GetSystemDiagnosticsRequest
@@ -244,7 +646,7 @@ export type GetSystemDiagnosticsRequest = Message<"quadsmith.ops.GetSystemDiagno
  */
 export const GetSystemDiagnosticsRequestSchema: GenMessage<GetSystemDiagnosticsRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 3);
+  messageDesc(file_quadsmith_ops_ops, 21);
 
 /**
  * @generated from message quadsmith.ops.GetSystemDiagnosticsResponse
@@ -292,317 +694,69 @@ export type GetSystemDiagnosticsResponse = Message<"quadsmith.ops.GetSystemDiagn
  */
 export const GetSystemDiagnosticsResponseSchema: GenMessage<GetSystemDiagnosticsResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 4);
+  messageDesc(file_quadsmith_ops_ops, 22);
 
 /**
- * @generated from message quadsmith.ops.GetDatabaseStatsRequest
+ * @generated from message quadsmith.ops.ListIamGroupsRequest
  */
-export type GetDatabaseStatsRequest = Message<"quadsmith.ops.GetDatabaseStatsRequest"> & {};
+export type ListIamGroupsRequest = Message<"quadsmith.ops.ListIamGroupsRequest"> & {};
 
 /**
- * Describes the message quadsmith.ops.GetDatabaseStatsRequest.
- * Use `create(GetDatabaseStatsRequestSchema)` to create a new message.
+ * Describes the message quadsmith.ops.ListIamGroupsRequest.
+ * Use `create(ListIamGroupsRequestSchema)` to create a new message.
  */
-export const GetDatabaseStatsRequestSchema: GenMessage<GetDatabaseStatsRequest> =
+export const ListIamGroupsRequestSchema: GenMessage<ListIamGroupsRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 5);
+  messageDesc(file_quadsmith_ops_ops, 23);
 
 /**
- * @generated from message quadsmith.ops.GetDatabaseStatsResponse
+ * @generated from message quadsmith.ops.ListIamGroupsResponse
  */
-export type GetDatabaseStatsResponse = Message<"quadsmith.ops.GetDatabaseStatsResponse"> & {
+export type ListIamGroupsResponse = Message<"quadsmith.ops.ListIamGroupsResponse"> & {
   /**
-   * @generated from field: string database_name = 1;
+   * @generated from field: repeated quadsmith.ops.IamGroupSummary groups = 1;
    */
-  databaseName: string;
-
-  /**
-   * @generated from field: int64 total_size_bytes = 2;
-   */
-  totalSizeBytes: bigint;
-
-  /**
-   * @generated from field: repeated quadsmith.ops.TableStat tables = 3;
-   */
-  tables: TableStat[];
+  groups: IamGroupSummary[];
 };
 
 /**
- * Describes the message quadsmith.ops.GetDatabaseStatsResponse.
- * Use `create(GetDatabaseStatsResponseSchema)` to create a new message.
+ * Describes the message quadsmith.ops.ListIamGroupsResponse.
+ * Use `create(ListIamGroupsResponseSchema)` to create a new message.
  */
-export const GetDatabaseStatsResponseSchema: GenMessage<GetDatabaseStatsResponse> =
+export const ListIamGroupsResponseSchema: GenMessage<ListIamGroupsResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 6);
+  messageDesc(file_quadsmith_ops_ops, 24);
 
 /**
- * @generated from message quadsmith.ops.RunDatabaseMaintenanceRequest
+ * @generated from message quadsmith.ops.ListIamUsersRequest
  */
-export type RunDatabaseMaintenanceRequest =
-  Message<"quadsmith.ops.RunDatabaseMaintenanceRequest"> & {
-    /**
-     * @generated from field: bool full_vacuum = 1;
-     */
-    fullVacuum: boolean;
-  };
+export type ListIamUsersRequest = Message<"quadsmith.ops.ListIamUsersRequest"> & {};
 
 /**
- * Describes the message quadsmith.ops.RunDatabaseMaintenanceRequest.
- * Use `create(RunDatabaseMaintenanceRequestSchema)` to create a new message.
+ * Describes the message quadsmith.ops.ListIamUsersRequest.
+ * Use `create(ListIamUsersRequestSchema)` to create a new message.
  */
-export const RunDatabaseMaintenanceRequestSchema: GenMessage<RunDatabaseMaintenanceRequest> =
+export const ListIamUsersRequestSchema: GenMessage<ListIamUsersRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 7);
+  messageDesc(file_quadsmith_ops_ops, 25);
 
 /**
- * @generated from message quadsmith.ops.RunDatabaseMaintenanceResponse
+ * @generated from message quadsmith.ops.ListIamUsersResponse
  */
-export type RunDatabaseMaintenanceResponse =
-  Message<"quadsmith.ops.RunDatabaseMaintenanceResponse"> & {
-    /**
-     * @generated from field: bool success = 1;
-     */
-    success: boolean;
-
-    /**
-     * @generated from field: string message = 2;
-     */
-    message: string;
-
-    /**
-     * @generated from field: int64 duration_ms = 3;
-     */
-    durationMs: bigint;
-  };
-
-/**
- * Describes the message quadsmith.ops.RunDatabaseMaintenanceResponse.
- * Use `create(RunDatabaseMaintenanceResponseSchema)` to create a new message.
- */
-export const RunDatabaseMaintenanceResponseSchema: GenMessage<RunDatabaseMaintenanceResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 8);
-
-/**
- * @generated from message quadsmith.ops.SeedDatabaseRequest
- */
-export type SeedDatabaseRequest = Message<"quadsmith.ops.SeedDatabaseRequest"> & {
+export type ListIamUsersResponse = Message<"quadsmith.ops.ListIamUsersResponse"> & {
   /**
-   * @generated from field: bool force = 1;
+   * @generated from field: repeated quadsmith.ops.IamUserSummary users = 1;
    */
-  force: boolean;
+  users: IamUserSummary[];
 };
 
 /**
- * Describes the message quadsmith.ops.SeedDatabaseRequest.
- * Use `create(SeedDatabaseRequestSchema)` to create a new message.
+ * Describes the message quadsmith.ops.ListIamUsersResponse.
+ * Use `create(ListIamUsersResponseSchema)` to create a new message.
  */
-export const SeedDatabaseRequestSchema: GenMessage<SeedDatabaseRequest> =
+export const ListIamUsersResponseSchema: GenMessage<ListIamUsersResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 9);
-
-/**
- * @generated from message quadsmith.ops.SeedDatabaseResponse
- */
-export type SeedDatabaseResponse = Message<"quadsmith.ops.SeedDatabaseResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: int32 records_seeded = 2;
-   */
-  recordsSeeded: number;
-
-  /**
-   * @generated from field: string message = 3;
-   */
-  message: string;
-};
-
-/**
- * Describes the message quadsmith.ops.SeedDatabaseResponse.
- * Use `create(SeedDatabaseResponseSchema)` to create a new message.
- */
-export const SeedDatabaseResponseSchema: GenMessage<SeedDatabaseResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 10);
-
-/**
- * @generated from message quadsmith.ops.CleanupExpiredOtpsRequest
- */
-export type CleanupExpiredOtpsRequest = Message<"quadsmith.ops.CleanupExpiredOtpsRequest"> & {};
-
-/**
- * Describes the message quadsmith.ops.CleanupExpiredOtpsRequest.
- * Use `create(CleanupExpiredOtpsRequestSchema)` to create a new message.
- */
-export const CleanupExpiredOtpsRequestSchema: GenMessage<CleanupExpiredOtpsRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 11);
-
-/**
- * @generated from message quadsmith.ops.CleanupExpiredOtpsResponse
- */
-export type CleanupExpiredOtpsResponse = Message<"quadsmith.ops.CleanupExpiredOtpsResponse"> & {
-  /**
-   * @generated from field: int64 cleaned_count = 1;
-   */
-  cleanedCount: bigint;
-};
-
-/**
- * Describes the message quadsmith.ops.CleanupExpiredOtpsResponse.
- * Use `create(CleanupExpiredOtpsResponseSchema)` to create a new message.
- */
-export const CleanupExpiredOtpsResponseSchema: GenMessage<CleanupExpiredOtpsResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 12);
-
-/**
- * @generated from message quadsmith.ops.CleanupExpiredTokensRequest
- */
-export type CleanupExpiredTokensRequest = Message<"quadsmith.ops.CleanupExpiredTokensRequest"> & {};
-
-/**
- * Describes the message quadsmith.ops.CleanupExpiredTokensRequest.
- * Use `create(CleanupExpiredTokensRequestSchema)` to create a new message.
- */
-export const CleanupExpiredTokensRequestSchema: GenMessage<CleanupExpiredTokensRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 13);
-
-/**
- * @generated from message quadsmith.ops.CleanupExpiredTokensResponse
- */
-export type CleanupExpiredTokensResponse = Message<"quadsmith.ops.CleanupExpiredTokensResponse"> & {
-  /**
-   * @generated from field: int64 cleaned_count = 1;
-   */
-  cleanedCount: bigint;
-};
-
-/**
- * Describes the message quadsmith.ops.CleanupExpiredTokensResponse.
- * Use `create(CleanupExpiredTokensResponseSchema)` to create a new message.
- */
-export const CleanupExpiredTokensResponseSchema: GenMessage<CleanupExpiredTokensResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 14);
-
-/**
- * @generated from message quadsmith.ops.CleanupOrphanedBlobsRequest
- */
-export type CleanupOrphanedBlobsRequest = Message<"quadsmith.ops.CleanupOrphanedBlobsRequest"> & {};
-
-/**
- * Describes the message quadsmith.ops.CleanupOrphanedBlobsRequest.
- * Use `create(CleanupOrphanedBlobsRequestSchema)` to create a new message.
- */
-export const CleanupOrphanedBlobsRequestSchema: GenMessage<CleanupOrphanedBlobsRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 15);
-
-/**
- * @generated from message quadsmith.ops.CleanupOrphanedBlobsResponse
- */
-export type CleanupOrphanedBlobsResponse = Message<"quadsmith.ops.CleanupOrphanedBlobsResponse"> & {
-  /**
-   * @generated from field: int64 cleaned_count = 1;
-   */
-  cleanedCount: bigint;
-};
-
-/**
- * Describes the message quadsmith.ops.CleanupOrphanedBlobsResponse.
- * Use `create(CleanupOrphanedBlobsResponseSchema)` to create a new message.
- */
-export const CleanupOrphanedBlobsResponseSchema: GenMessage<CleanupOrphanedBlobsResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 16);
-
-/**
- * @generated from message quadsmith.ops.ListScheduledJobsRequest
- */
-export type ListScheduledJobsRequest = Message<"quadsmith.ops.ListScheduledJobsRequest"> & {};
-
-/**
- * Describes the message quadsmith.ops.ListScheduledJobsRequest.
- * Use `create(ListScheduledJobsRequestSchema)` to create a new message.
- */
-export const ListScheduledJobsRequestSchema: GenMessage<ListScheduledJobsRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 17);
-
-/**
- * @generated from message quadsmith.ops.ListScheduledJobsResponse
- */
-export type ListScheduledJobsResponse = Message<"quadsmith.ops.ListScheduledJobsResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.ops.ScheduledJobDef jobs = 1;
-   */
-  jobs: ScheduledJobDef[];
-};
-
-/**
- * Describes the message quadsmith.ops.ListScheduledJobsResponse.
- * Use `create(ListScheduledJobsResponseSchema)` to create a new message.
- */
-export const ListScheduledJobsResponseSchema: GenMessage<ListScheduledJobsResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 18);
-
-/**
- * @generated from message quadsmith.ops.TriggerJobRequest
- */
-export type TriggerJobRequest = Message<"quadsmith.ops.TriggerJobRequest"> & {
-  /**
-   * @generated from field: string job_name = 1;
-   */
-  jobName: string;
-
-  /**
-   * @generated from field: string payload_json = 2;
-   */
-  payloadJson: string;
-};
-
-/**
- * Describes the message quadsmith.ops.TriggerJobRequest.
- * Use `create(TriggerJobRequestSchema)` to create a new message.
- */
-export const TriggerJobRequestSchema: GenMessage<TriggerJobRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 19);
-
-/**
- * @generated from message quadsmith.ops.TriggerJobResponse
- */
-export type TriggerJobResponse = Message<"quadsmith.ops.TriggerJobResponse"> & {
-  /**
-   * @generated from field: bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: string message = 2;
-   */
-  message: string;
-
-  /**
-   * @generated from field: string call_id = 3;
-   */
-  callId: string;
-};
-
-/**
- * Describes the message quadsmith.ops.TriggerJobResponse.
- * Use `create(TriggerJobResponseSchema)` to create a new message.
- */
-export const TriggerJobResponseSchema: GenMessage<TriggerJobResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 20);
+  messageDesc(file_quadsmith_ops_ops, 26);
 
 /**
  * @generated from message quadsmith.ops.ListInternalApiCallsRequest
@@ -630,7 +784,7 @@ export type ListInternalApiCallsRequest = Message<"quadsmith.ops.ListInternalApi
  */
 export const ListInternalApiCallsRequestSchema: GenMessage<ListInternalApiCallsRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 21);
+  messageDesc(file_quadsmith_ops_ops, 27);
 
 /**
  * @generated from message quadsmith.ops.ListInternalApiCallsResponse
@@ -648,246 +802,7 @@ export type ListInternalApiCallsResponse = Message<"quadsmith.ops.ListInternalAp
  */
 export const ListInternalApiCallsResponseSchema: GenMessage<ListInternalApiCallsResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 22);
-
-/**
- * @generated from message quadsmith.ops.ExchangeOAuthCodeRequest
- */
-export type ExchangeOAuthCodeRequest = Message<"quadsmith.ops.ExchangeOAuthCodeRequest"> & {
-  /**
-   * @generated from field: string code = 1;
-   */
-  code: string;
-
-  /**
-   * @generated from field: string code_verifier = 2;
-   */
-  codeVerifier: string;
-
-  /**
-   * @generated from field: string redirect_uri = 3;
-   */
-  redirectUri: string;
-};
-
-/**
- * Describes the message quadsmith.ops.ExchangeOAuthCodeRequest.
- * Use `create(ExchangeOAuthCodeRequestSchema)` to create a new message.
- */
-export const ExchangeOAuthCodeRequestSchema: GenMessage<ExchangeOAuthCodeRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 23);
-
-/**
- * @generated from message quadsmith.ops.ExchangeOAuthCodeResponse
- */
-export type ExchangeOAuthCodeResponse = Message<"quadsmith.ops.ExchangeOAuthCodeResponse"> & {
-  /**
-   * @generated from field: string token = 1;
-   */
-  token: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp expires_at = 2;
-   */
-  expiresAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: string operator = 3;
-   */
-  operator: string;
-
-  /**
-   * @generated from field: string group_name = 4;
-   */
-  groupName: string;
-};
-
-/**
- * Describes the message quadsmith.ops.ExchangeOAuthCodeResponse.
- * Use `create(ExchangeOAuthCodeResponseSchema)` to create a new message.
- */
-export const ExchangeOAuthCodeResponseSchema: GenMessage<ExchangeOAuthCodeResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 24);
-
-/**
- * @generated from message quadsmith.ops.GetCurrentOperatorRequest
- */
-export type GetCurrentOperatorRequest = Message<"quadsmith.ops.GetCurrentOperatorRequest"> & {};
-
-/**
- * Describes the message quadsmith.ops.GetCurrentOperatorRequest.
- * Use `create(GetCurrentOperatorRequestSchema)` to create a new message.
- */
-export const GetCurrentOperatorRequestSchema: GenMessage<GetCurrentOperatorRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 25);
-
-/**
- * @generated from message quadsmith.ops.GetCurrentOperatorResponse
- */
-export type GetCurrentOperatorResponse = Message<"quadsmith.ops.GetCurrentOperatorResponse"> & {
-  /**
-   * @generated from field: string operator = 1;
-   */
-  operator: string;
-
-  /**
-   * 'HUMAN' or 'ROBOT'
-   *
-   * @generated from field: string operator_type = 2;
-   */
-  operatorType: string;
-
-  /**
-   * @generated from field: string group_name = 3;
-   */
-  groupName: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp session_expires_at = 4;
-   */
-  sessionExpiresAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: optional quadsmith.ops.JitGrantRecord active_jit_grant = 5;
-   */
-  activeJitGrant?: JitGrantRecord | undefined;
-};
-
-/**
- * Describes the message quadsmith.ops.GetCurrentOperatorResponse.
- * Use `create(GetCurrentOperatorResponseSchema)` to create a new message.
- */
-export const GetCurrentOperatorResponseSchema: GenMessage<GetCurrentOperatorResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 26);
-
-/**
- * @generated from message quadsmith.ops.ListIamUsersRequest
- */
-export type ListIamUsersRequest = Message<"quadsmith.ops.ListIamUsersRequest"> & {};
-
-/**
- * Describes the message quadsmith.ops.ListIamUsersRequest.
- * Use `create(ListIamUsersRequestSchema)` to create a new message.
- */
-export const ListIamUsersRequestSchema: GenMessage<ListIamUsersRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 27);
-
-/**
- * @generated from message quadsmith.ops.ListIamUsersResponse
- */
-export type ListIamUsersResponse = Message<"quadsmith.ops.ListIamUsersResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.ops.IamUserSummary users = 1;
-   */
-  users: IamUserSummary[];
-};
-
-/**
- * Describes the message quadsmith.ops.ListIamUsersResponse.
- * Use `create(ListIamUsersResponseSchema)` to create a new message.
- */
-export const ListIamUsersResponseSchema: GenMessage<ListIamUsersResponse> =
-  /*@__PURE__*/
   messageDesc(file_quadsmith_ops_ops, 28);
-
-/**
- * @generated from message quadsmith.ops.ListIamGroupsRequest
- */
-export type ListIamGroupsRequest = Message<"quadsmith.ops.ListIamGroupsRequest"> & {};
-
-/**
- * Describes the message quadsmith.ops.ListIamGroupsRequest.
- * Use `create(ListIamGroupsRequestSchema)` to create a new message.
- */
-export const ListIamGroupsRequestSchema: GenMessage<ListIamGroupsRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 29);
-
-/**
- * @generated from message quadsmith.ops.ListIamGroupsResponse
- */
-export type ListIamGroupsResponse = Message<"quadsmith.ops.ListIamGroupsResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.ops.IamGroupSummary groups = 1;
-   */
-  groups: IamGroupSummary[];
-};
-
-/**
- * Describes the message quadsmith.ops.ListIamGroupsResponse.
- * Use `create(ListIamGroupsResponseSchema)` to create a new message.
- */
-export const ListIamGroupsResponseSchema: GenMessage<ListIamGroupsResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 30);
-
-/**
- * @generated from message quadsmith.ops.CreateInternalTokenRequest
- */
-export type CreateInternalTokenRequest = Message<"quadsmith.ops.CreateInternalTokenRequest"> & {
-  /**
-   * @generated from field: string name = 1;
-   */
-  name: string;
-
-  /**
-   * 'HUMAN' or 'ROBOT'
-   *
-   * @generated from field: string type = 2;
-   */
-  type: string;
-
-  /**
-   * @generated from field: string group_name = 3;
-   */
-  groupName: string;
-
-  /**
-   * @generated from field: int32 duration_days = 4;
-   */
-  durationDays: number;
-};
-
-/**
- * Describes the message quadsmith.ops.CreateInternalTokenRequest.
- * Use `create(CreateInternalTokenRequestSchema)` to create a new message.
- */
-export const CreateInternalTokenRequestSchema: GenMessage<CreateInternalTokenRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 31);
-
-/**
- * @generated from message quadsmith.ops.CreateInternalTokenResponse
- */
-export type CreateInternalTokenResponse = Message<"quadsmith.ops.CreateInternalTokenResponse"> & {
-  /**
-   * @generated from field: string token_id = 1;
-   */
-  tokenId: string;
-
-  /**
-   * @generated from field: string token_secret = 2;
-   */
-  tokenSecret: string;
-
-  /**
-   * @generated from field: quadsmith.ops.InternalTokenRecord record = 3;
-   */
-  record?: InternalTokenRecord | undefined;
-};
-
-/**
- * Describes the message quadsmith.ops.CreateInternalTokenResponse.
- * Use `create(CreateInternalTokenResponseSchema)` to create a new message.
- */
-export const CreateInternalTokenResponseSchema: GenMessage<CreateInternalTokenResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 32);
 
 /**
  * @generated from message quadsmith.ops.ListInternalTokensRequest
@@ -900,7 +815,7 @@ export type ListInternalTokensRequest = Message<"quadsmith.ops.ListInternalToken
  */
 export const ListInternalTokensRequestSchema: GenMessage<ListInternalTokensRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 33);
+  messageDesc(file_quadsmith_ops_ops, 29);
 
 /**
  * @generated from message quadsmith.ops.ListInternalTokensResponse
@@ -917,6 +832,73 @@ export type ListInternalTokensResponse = Message<"quadsmith.ops.ListInternalToke
  * Use `create(ListInternalTokensResponseSchema)` to create a new message.
  */
 export const ListInternalTokensResponseSchema: GenMessage<ListInternalTokensResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 30);
+
+/**
+ * @generated from message quadsmith.ops.ListJitGrantsRequest
+ */
+export type ListJitGrantsRequest = Message<"quadsmith.ops.ListJitGrantsRequest"> & {
+  /**
+   * @generated from field: bool active_only = 1;
+   */
+  activeOnly: boolean;
+};
+
+/**
+ * Describes the message quadsmith.ops.ListJitGrantsRequest.
+ * Use `create(ListJitGrantsRequestSchema)` to create a new message.
+ */
+export const ListJitGrantsRequestSchema: GenMessage<ListJitGrantsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 31);
+
+/**
+ * @generated from message quadsmith.ops.ListJitGrantsResponse
+ */
+export type ListJitGrantsResponse = Message<"quadsmith.ops.ListJitGrantsResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.ops.JitGrantRecord grants = 1;
+   */
+  grants: JitGrantRecord[];
+};
+
+/**
+ * Describes the message quadsmith.ops.ListJitGrantsResponse.
+ * Use `create(ListJitGrantsResponseSchema)` to create a new message.
+ */
+export const ListJitGrantsResponseSchema: GenMessage<ListJitGrantsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 32);
+
+/**
+ * @generated from message quadsmith.ops.ListScheduledJobsRequest
+ */
+export type ListScheduledJobsRequest = Message<"quadsmith.ops.ListScheduledJobsRequest"> & {};
+
+/**
+ * Describes the message quadsmith.ops.ListScheduledJobsRequest.
+ * Use `create(ListScheduledJobsRequestSchema)` to create a new message.
+ */
+export const ListScheduledJobsRequestSchema: GenMessage<ListScheduledJobsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 33);
+
+/**
+ * @generated from message quadsmith.ops.ListScheduledJobsResponse
+ */
+export type ListScheduledJobsResponse = Message<"quadsmith.ops.ListScheduledJobsResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.ops.ScheduledJobDef jobs = 1;
+   */
+  jobs: ScheduledJobDef[];
+};
+
+/**
+ * Describes the message quadsmith.ops.ListScheduledJobsResponse.
+ * Use `create(ListScheduledJobsResponseSchema)` to create a new message.
+ */
+export const ListScheduledJobsResponseSchema: GenMessage<ListScheduledJobsResponse> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_ops_ops, 34);
 
@@ -957,135 +939,6 @@ export const RevokeInternalTokenResponseSchema: GenMessage<RevokeInternalTokenRe
   messageDesc(file_quadsmith_ops_ops, 36);
 
 /**
- * @generated from message quadsmith.ops.AcquireJitGrantRequest
- */
-export type AcquireJitGrantRequest = Message<"quadsmith.ops.AcquireJitGrantRequest"> & {
-  /**
-   * 1 to 12
-   *
-   * @generated from field: int32 hours = 1;
-   */
-  hours: number;
-
-  /**
-   * @generated from field: string reason = 2;
-   */
-  reason: string;
-
-  /**
-   * optional, defaults to '*'
-   *
-   * @generated from field: string operation = 3;
-   */
-  operation: string;
-};
-
-/**
- * Describes the message quadsmith.ops.AcquireJitGrantRequest.
- * Use `create(AcquireJitGrantRequestSchema)` to create a new message.
- */
-export const AcquireJitGrantRequestSchema: GenMessage<AcquireJitGrantRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 37);
-
-/**
- * @generated from message quadsmith.ops.AcquireJitGrantResponse
- */
-export type AcquireJitGrantResponse = Message<"quadsmith.ops.AcquireJitGrantResponse"> & {
-  /**
-   * @generated from field: quadsmith.ops.JitGrantRecord grant = 1;
-   */
-  grant?: JitGrantRecord | undefined;
-};
-
-/**
- * Describes the message quadsmith.ops.AcquireJitGrantResponse.
- * Use `create(AcquireJitGrantResponseSchema)` to create a new message.
- */
-export const AcquireJitGrantResponseSchema: GenMessage<AcquireJitGrantResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 38);
-
-/**
- * @generated from message quadsmith.ops.ExtendJitGrantRequest
- */
-export type ExtendJitGrantRequest = Message<"quadsmith.ops.ExtendJitGrantRequest"> & {
-  /**
-   * @generated from field: string grant_id = 1;
-   */
-  grantId: string;
-
-  /**
-   * 1 to 12
-   *
-   * @generated from field: int32 hours = 2;
-   */
-  hours: number;
-};
-
-/**
- * Describes the message quadsmith.ops.ExtendJitGrantRequest.
- * Use `create(ExtendJitGrantRequestSchema)` to create a new message.
- */
-export const ExtendJitGrantRequestSchema: GenMessage<ExtendJitGrantRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 39);
-
-/**
- * @generated from message quadsmith.ops.ExtendJitGrantResponse
- */
-export type ExtendJitGrantResponse = Message<"quadsmith.ops.ExtendJitGrantResponse"> & {
-  /**
-   * @generated from field: quadsmith.ops.JitGrantRecord grant = 1;
-   */
-  grant?: JitGrantRecord | undefined;
-};
-
-/**
- * Describes the message quadsmith.ops.ExtendJitGrantResponse.
- * Use `create(ExtendJitGrantResponseSchema)` to create a new message.
- */
-export const ExtendJitGrantResponseSchema: GenMessage<ExtendJitGrantResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 40);
-
-/**
- * @generated from message quadsmith.ops.ListJitGrantsRequest
- */
-export type ListJitGrantsRequest = Message<"quadsmith.ops.ListJitGrantsRequest"> & {
-  /**
-   * @generated from field: bool active_only = 1;
-   */
-  activeOnly: boolean;
-};
-
-/**
- * Describes the message quadsmith.ops.ListJitGrantsRequest.
- * Use `create(ListJitGrantsRequestSchema)` to create a new message.
- */
-export const ListJitGrantsRequestSchema: GenMessage<ListJitGrantsRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 41);
-
-/**
- * @generated from message quadsmith.ops.ListJitGrantsResponse
- */
-export type ListJitGrantsResponse = Message<"quadsmith.ops.ListJitGrantsResponse"> & {
-  /**
-   * @generated from field: repeated quadsmith.ops.JitGrantRecord grants = 1;
-   */
-  grants: JitGrantRecord[];
-};
-
-/**
- * Describes the message quadsmith.ops.ListJitGrantsResponse.
- * Use `create(ListJitGrantsResponseSchema)` to create a new message.
- */
-export const ListJitGrantsResponseSchema: GenMessage<ListJitGrantsResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 42);
-
-/**
  * @generated from message quadsmith.ops.RevokeJitGrantRequest
  */
 export type RevokeJitGrantRequest = Message<"quadsmith.ops.RevokeJitGrantRequest"> & {
@@ -1101,7 +954,7 @@ export type RevokeJitGrantRequest = Message<"quadsmith.ops.RevokeJitGrantRequest
  */
 export const RevokeJitGrantRequestSchema: GenMessage<RevokeJitGrantRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 43);
+  messageDesc(file_quadsmith_ops_ops, 37);
 
 /**
  * @generated from message quadsmith.ops.RevokeJitGrantResponse
@@ -1118,6 +971,151 @@ export type RevokeJitGrantResponse = Message<"quadsmith.ops.RevokeJitGrantRespon
  * Use `create(RevokeJitGrantResponseSchema)` to create a new message.
  */
 export const RevokeJitGrantResponseSchema: GenMessage<RevokeJitGrantResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 38);
+
+/**
+ * @generated from message quadsmith.ops.RunDatabaseMaintenanceRequest
+ */
+export type RunDatabaseMaintenanceRequest =
+  Message<"quadsmith.ops.RunDatabaseMaintenanceRequest"> & {
+    /**
+     * @generated from field: bool full_vacuum = 1;
+     */
+    fullVacuum: boolean;
+  };
+
+/**
+ * Describes the message quadsmith.ops.RunDatabaseMaintenanceRequest.
+ * Use `create(RunDatabaseMaintenanceRequestSchema)` to create a new message.
+ */
+export const RunDatabaseMaintenanceRequestSchema: GenMessage<RunDatabaseMaintenanceRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 39);
+
+/**
+ * @generated from message quadsmith.ops.RunDatabaseMaintenanceResponse
+ */
+export type RunDatabaseMaintenanceResponse =
+  Message<"quadsmith.ops.RunDatabaseMaintenanceResponse"> & {
+    /**
+     * @generated from field: bool success = 1;
+     */
+    success: boolean;
+
+    /**
+     * @generated from field: string message = 2;
+     */
+    message: string;
+
+    /**
+     * @generated from field: int64 duration_ms = 3;
+     */
+    durationMs: bigint;
+  };
+
+/**
+ * Describes the message quadsmith.ops.RunDatabaseMaintenanceResponse.
+ * Use `create(RunDatabaseMaintenanceResponseSchema)` to create a new message.
+ */
+export const RunDatabaseMaintenanceResponseSchema: GenMessage<RunDatabaseMaintenanceResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 40);
+
+/**
+ * @generated from message quadsmith.ops.SeedDatabaseRequest
+ */
+export type SeedDatabaseRequest = Message<"quadsmith.ops.SeedDatabaseRequest"> & {
+  /**
+   * @generated from field: bool force = 1;
+   */
+  force: boolean;
+};
+
+/**
+ * Describes the message quadsmith.ops.SeedDatabaseRequest.
+ * Use `create(SeedDatabaseRequestSchema)` to create a new message.
+ */
+export const SeedDatabaseRequestSchema: GenMessage<SeedDatabaseRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 41);
+
+/**
+ * @generated from message quadsmith.ops.SeedDatabaseResponse
+ */
+export type SeedDatabaseResponse = Message<"quadsmith.ops.SeedDatabaseResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: int32 records_seeded = 2;
+   */
+  recordsSeeded: number;
+
+  /**
+   * @generated from field: string message = 3;
+   */
+  message: string;
+};
+
+/**
+ * Describes the message quadsmith.ops.SeedDatabaseResponse.
+ * Use `create(SeedDatabaseResponseSchema)` to create a new message.
+ */
+export const SeedDatabaseResponseSchema: GenMessage<SeedDatabaseResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 42);
+
+/**
+ * @generated from message quadsmith.ops.TriggerJobRequest
+ */
+export type TriggerJobRequest = Message<"quadsmith.ops.TriggerJobRequest"> & {
+  /**
+   * @generated from field: string job_name = 1;
+   */
+  jobName: string;
+
+  /**
+   * @generated from field: string payload_json = 2;
+   */
+  payloadJson: string;
+};
+
+/**
+ * Describes the message quadsmith.ops.TriggerJobRequest.
+ * Use `create(TriggerJobRequestSchema)` to create a new message.
+ */
+export const TriggerJobRequestSchema: GenMessage<TriggerJobRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 43);
+
+/**
+ * @generated from message quadsmith.ops.TriggerJobResponse
+ */
+export type TriggerJobResponse = Message<"quadsmith.ops.TriggerJobResponse"> & {
+  /**
+   * @generated from field: bool success = 1;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: string message = 2;
+   */
+  message: string;
+
+  /**
+   * @generated from field: string call_id = 3;
+   */
+  callId: string;
+};
+
+/**
+ * Describes the message quadsmith.ops.TriggerJobResponse.
+ * Use `create(TriggerJobResponseSchema)` to create a new message.
+ */
+export const TriggerJobResponseSchema: GenMessage<TriggerJobResponse> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_ops_ops, 44);
 

@@ -34,13 +34,18 @@ func main() {
 			return out
 		}
 
-		for _, f := range gen.Files {
+		processFile := func(f *protogen.File) {
 			if !f.Generate {
-				continue
+				return
 			}
 
-			dbName := strings.ReplaceAll(string(f.Desc.Package()), ".", "_")
-			if dbName == "" {
+			pkg := string(f.Desc.Package())
+			dbName := strings.ReplaceAll(pkg, ".", "_")
+			if strings.HasSuffix(f.Proto.GetName(), "store/ops.proto") || pkg == "quadsmith.ops" {
+				dbName = "quadsmith_ops"
+			} else if pkg == "quadsmith.store" || pkg == "quadsmith.api" {
+				dbName = "quadsmith_api"
+			} else if dbName == "" {
 				dbName = "quadsmith"
 			}
 
@@ -51,6 +56,18 @@ func main() {
 				out := getOutput(dbName)
 				alters := generateTable(out.file, msg)
 				out.alterStatements = append(out.alterStatements, alters...)
+			}
+		}
+
+		// Emit quadsmith.store base tables before quadsmith.api child tables.
+		for _, f := range gen.Files {
+			if string(f.Desc.Package()) == "quadsmith.store" {
+				processFile(f)
+			}
+		}
+		for _, f := range gen.Files {
+			if string(f.Desc.Package()) != "quadsmith.store" {
+				processFile(f)
 			}
 		}
 
@@ -65,6 +82,21 @@ func main() {
 
 		return nil
 	})
+}
+
+var entityInheritedFields = map[string]bool{
+	"id":                    true,
+	"name":                  true,
+	"description":           true,
+	"reference_links":       true,
+	"primary_display_image": true,
+	"media":                 true,
+	"user_uuid":             true,
+	"author_username":       true,
+}
+
+func isInheritedField(tblOpts *sqlpb.TableOptions, fieldName string) bool {
+	return tblOpts != nil && tblOpts.GetInherits() == "entities" && entityInheritedFields[fieldName]
 }
 
 func getTableOptions(msg *protogen.Message) *sqlpb.TableOptions {
@@ -90,6 +122,10 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 	var alters []string
 
 	for _, field := range msg.Fields {
+		if isInheritedField(tblOpts, string(field.Desc.Name())) {
+			continue
+		}
+
 		fOpts := field.Desc.Options()
 
 		var colOpt *sqlpb.ColumnOptions
@@ -97,10 +133,6 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 			if co, ok := proto.GetExtension(fOpts, sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
 				colOpt = co
 			}
-		}
-
-		if colOpt != nil && colOpt.Ignore {
-			continue
 		}
 
 		colName := string(field.Desc.Name())
@@ -158,9 +190,12 @@ func generateTable(g *protogen.GeneratedFile, msg *protogen.Message) []string {
 
 	// Generate indexes
 	for _, field := range msg.Fields {
+		if isInheritedField(tblOpts, string(field.Desc.Name())) {
+			continue
+		}
 		fOpts := field.Desc.Options()
 		if proto.HasExtension(fOpts, sqlpb.E_Column) {
-			if co, ok := proto.GetExtension(fOpts, sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil && !co.Ignore && co.CreateIndex {
+			if co, ok := proto.GetExtension(fOpts, sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil && co.CreateIndex {
 				colName := string(field.Desc.Name())
 				if co.Name != "" {
 					colName = co.Name

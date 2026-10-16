@@ -1,12 +1,12 @@
 syntax = "proto3";
 
-package quadsmith.api;
+package quadsmith.store;
 
 import "google/protobuf/timestamp.proto";
 import "quadsmith/data/data.proto";
 import "quadsmith/sql/sql.proto";
 
-option go_package = "quadsmith/shared/gen/quadsmith/api;api";
+option go_package = "quadsmith/shared/gen/quadsmith/store;store";
 
 // ---------------------------------------------------------
 // Domain model

@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_sql_sql: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChdxdWFkc21pdGgvc3FsL3NxbC5wcm90bxINcXVhZHNtaXRoLnNxbCJ8CgxUYWJsZU9wdGlvbnMSDAoEbmFtZRgBIAEoCRIOCgZjaGVja3MYAiADKAkSGgoSdW5pcXVlX2NvbnN0cmFpbnRzGAMgAygJEjIKDnVuaXF1ZV9pbmRleGVzGAQgAygLMhoucXVhZHNtaXRoLnNxbC5VbmlxdWVJbmRleCI7CgtVbmlxdWVJbmRleBIMCgRuYW1lGAEgASgJEg8KB2NvbHVtbnMYAiABKAkSDQoFd2hlcmUYAyABKAkirgEKDUNvbHVtbk9wdGlvbnMSDAoEbmFtZRgBIAEoCRIWCg5pc19wcmltYXJ5X2tleRgCIAEoCBISCgpyZWZlcmVuY2VzGAMgASgJEhEKCWlzX3VuaXF1ZRgEIAEoCBIUCgxjcmVhdGVfaW5kZXgYBSABKAgSEwoLY29sdW1uX3R5cGUYBiABKAkSFQoNZGVmYXVsdF92YWx1ZRgHIAEoCRIOCgZpZ25vcmUYCCABKAg6VAoFdGFibGUSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMYuI4DIAEoCzIbLnF1YWRzbWl0aC5zcWwuVGFibGVPcHRpb25zUgV0YWJsZTpVCgZjb2x1bW4SHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLiOAyABKAsyHC5xdWFkc21pdGguc3FsLkNvbHVtbk9wdGlvbnNSBmNvbHVtbkIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvc3FsO3NxbGIGcHJvdG8z",
+    "ChdxdWFkc21pdGgvc3FsL3NxbC5wcm90bxINcXVhZHNtaXRoLnNxbCKOAQoMVGFibGVPcHRpb25zEgwKBG5hbWUYASABKAkSDgoGY2hlY2tzGAIgAygJEhoKEnVuaXF1ZV9jb25zdHJhaW50cxgDIAMoCRIyCg51bmlxdWVfaW5kZXhlcxgEIAMoCzIaLnF1YWRzbWl0aC5zcWwuVW5pcXVlSW5kZXgSEAoIaW5oZXJpdHMYBSABKAkiOwoLVW5pcXVlSW5kZXgSDAoEbmFtZRgBIAEoCRIPCgdjb2x1bW5zGAIgASgJEg0KBXdoZXJlGAMgASgJIp4BCg1Db2x1bW5PcHRpb25zEgwKBG5hbWUYASABKAkSFgoOaXNfcHJpbWFyeV9rZXkYAiABKAgSEgoKcmVmZXJlbmNlcxgDIAEoCRIRCglpc191bmlxdWUYBCABKAgSFAoMY3JlYXRlX2luZGV4GAUgASgIEhMKC2NvbHVtbl90eXBlGAYgASgJEhUKDWRlZmF1bHRfdmFsdWUYByABKAk6VAoFdGFibGUSHy5nb29nbGUucHJvdG9idWYuTWVzc2FnZU9wdGlvbnMYuI4DIAEoCzIbLnF1YWRzbWl0aC5zcWwuVGFibGVPcHRpb25zUgV0YWJsZTpVCgZjb2x1bW4SHS5nb29nbGUucHJvdG9idWYuRmllbGRPcHRpb25zGLiOAyABKAsyHC5xdWFkc21pdGguc3FsLkNvbHVtbk9wdGlvbnNSBmNvbHVtbkIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvc3FsO3NxbGIGcHJvdG8z",
     [file_google_protobuf_descriptor],
   );
 
@@ -53,6 +53,14 @@ export type TableOptions = Message<"quadsmith.sql.TableOptions"> & {
    * @generated from field: repeated quadsmith.sql.UniqueIndex unique_indexes = 4;
    */
   uniqueIndexes: UniqueIndex[];
+
+  /**
+   * Base table that this table inherits shared columns from via a 1:1 PK/FK
+   * relationship (e.g., "entities").
+   *
+   * @generated from field: string inherits = 5;
+   */
+  inherits: string;
 };
 
 /**
@@ -146,13 +154,6 @@ export type ColumnOptions = Message<"quadsmith.sql.ColumnOptions"> & {
    * @generated from field: string default_value = 7;
    */
   defaultValue: string;
-
-  /**
-   * If true, this field is an API-only field and will not be generated in the SQL schema or store operations.
-   *
-   * @generated from field: bool ignore = 8;
-   */
-  ignore: boolean;
 };
 
 /**

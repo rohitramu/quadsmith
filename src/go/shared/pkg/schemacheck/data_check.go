@@ -94,7 +94,7 @@ func CheckAllProtoDataClassification() ([]VerifiedTableData, error) {
 				return false
 			}
 
-			isOps := strings.HasPrefix(string(md.FullName()), "quadsmith.ops.")
+			isOps := strings.HasPrefix(string(md.FullName()), "quadsmith.ops.") || strings.HasSuffix(string(fd.Path()), "store/ops.proto")
 			if isOps && exportOpt.Domain != datapb.ExportDomain_EXPORT_DOMAIN_NONE {
 				firstErr = fmt.Errorf("ops table message %s must declare EXPORT_DOMAIN_NONE, got %v", md.FullName(), exportOpt.Domain)
 				return false
@@ -142,7 +142,7 @@ func CheckAllProtoDataClassification() ([]VerifiedTableData, error) {
 					return false
 				}
 				if fName == "id" {
-					if md.FullName() == "quadsmith.api.User" {
+					if md.FullName() == "quadsmith.store.User" {
 						if ct != datapb.ContentType_CONTENT_TYPE_USER_PROVIDED_PUBLIC {
 							firstErr = fmt.Errorf("User.id must be USER_PROVIDED_PUBLIC, got %v", ct)
 							return false

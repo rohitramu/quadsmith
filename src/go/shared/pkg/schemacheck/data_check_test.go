@@ -6,6 +6,7 @@ import (
 	_ "quadsmith/shared/gen/quadsmith/api"
 	_ "quadsmith/shared/gen/quadsmith/data"
 	_ "quadsmith/shared/gen/quadsmith/ops"
+	_ "quadsmith/shared/gen/quadsmith/store"
 )
 
 func TestCheckAllProtoDataClassification(t *testing.T) {

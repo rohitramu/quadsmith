@@ -302,7 +302,10 @@ message ListMotorsResponse {
 
 // 3. Domain Model (Referenced by Services and Requests above)
 message Motor {
-  option (quadsmith.sql.table) = {name: "motors"};
+  option (quadsmith.sql.table) = {
+    name: "motors"
+    inherits: "entities"
+  };
   option (quadsmith.common.collection_path) = "components/hardware/motors";
 
   string uuid = 1 [(quadsmith.sql.column) = {is_primary_key: true, references: "entities(uuid)"}];

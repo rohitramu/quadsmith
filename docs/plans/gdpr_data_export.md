@@ -375,9 +375,10 @@ enforces five invariants across all Protobuf files during `make test`:
    not be exported (`domain: EXPORT_DOMAIN_NONE` at the table level, and omitted
    at runtime if all `USER_*` fields on an object or embedded sub-message are
    empty).
-5. **Operations Schema Isolation (`quadsmith.ops`)**: Every table in
-   [ops.proto](../../proto/quadsmith/ops/ops.proto) must categorize all fields
-   exclusively as `CONTENT_TYPE_SYSTEM_METADATA_*` or
+5. **Operations Schema Isolation (`quadsmith.ops` / `store/ops.proto`)**: Every
+   table in
+   [`src/proto/quadsmith/store/ops.proto`](../../src/proto/quadsmith/store/ops.proto)
+   must categorize all fields exclusively as `CONTENT_TYPE_SYSTEM_METADATA_*` or
    `CONTENT_TYPE_SYSTEM_SECRET` (zero `USER_*` fields, and therefore excluded
    from export by Rule 4).
 
@@ -443,14 +444,14 @@ export) without failing `schemacheck`. Only exported fields require annotations.
 ### <a id="compile-time-export-code-generation-in-protoc-gen-store" >Compile-Time Export Code Generation in `protoc-gen-store`</a>
 
 Using the `quadsmith.data` annotations,
-[protoc-gen-store/main.go](../../src/backend/shared/cmd/protoc-gen-store/main.go)
+[`protoc-gen-store/main.go`](../../src/go/shared/cmd/protoc-gen-store/main.go)
 generates a type-safe `Export<PluralName>` function in `*_store.pb.go` for every
 `(quadsmith.sql.table)` message that contains at least one `USER_*` field:
 
 1. **Exportable Column Selection**:
    - At code-generation time, `protoc-gen-store` filters the table's persisted
-     SQL columns (`sql.column.ignore != true`) to those whose `content_type` is
-     one of:
+     SQL columns (`!isInheritedField(tblOpts, fieldName)`) to those whose
+     `content_type` is one of:
      - `CONTENT_TYPE_USER_PROVIDED_PRIVATE`
      - `CONTENT_TYPE_USER_PROVIDED_PUBLIC`
      - `CONTENT_TYPE_USER_OBSERVED`
@@ -699,11 +700,13 @@ the redundant `users.email` SQL column in
 [quadsmith_api.sql](../../src/backend/db/quadsmith_api.sql#L21) is removed:
 
 1. **Drop Redundant `users.email` Column**:
-   - In [user.proto](../../proto/quadsmith/api/user.proto#L48-L51), `User.email`
-     is marked `[(quadsmith.sql.column) = {ignore: true}]` (so it remains
-     available on API responses populated from
+   - In
+     [`src/proto/quadsmith/store/user.proto`](../../src/proto/quadsmith/store/user.proto),
+     `User` omits `email` entirely, while in
+     [`src/proto/quadsmith/api/user.proto`](../../src/proto/quadsmith/api/user.proto),
+     `User.email` remains available on API responses populated from
      `user_emails WHERE is_primary = true` without persisting a duplicate column
-     in `users`).
+     in `users`.
    - All dual-write queries in
      [service.go](../../src/backend/shared/pkg/auth/service.go)
      (`CompleteAccountSetup`, `SetPrimaryEmail`, `MergeAccount`,

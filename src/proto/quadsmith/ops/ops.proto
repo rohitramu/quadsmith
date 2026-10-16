@@ -3,8 +3,6 @@ syntax = "proto3";
 package quadsmith.ops;
 
 import "google/protobuf/timestamp.proto";
-import "quadsmith/data/data.proto";
-import "quadsmith/sql/sql.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/ops;ops";
 
@@ -55,118 +53,133 @@ service OpsService {
 // Domain model
 // ---------------------------------------------------------
 
-message JitGrantRecord {
-  option (quadsmith.sql.table) = {name: "jit_grants"};
-  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
-
-  string uuid = 1 [
-    (quadsmith.sql.column) = {is_primary_key: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
-  string id = 2 [
-    (quadsmith.sql.column) = {is_unique: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
-  string token_hash = 3 [
-    (quadsmith.sql.column) = {create_index: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_SECRET
-  ];
-  string operator = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  string operator_type = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE]; // 'HUMAN' or 'ROBOT'
-  string reason = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  string operation = 7 [
-    (quadsmith.sql.column) = {default_value: "'*'"},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
-  ];
-  string status = 8 [
-    (quadsmith.sql.column) = {
-      create_index: true
-      default_value: "'ACTIVE'"
-    },
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
-  ];
-  int32 hours = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  google.protobuf.Timestamp expires_at = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  google.protobuf.Timestamp created_at = 11 [
-    (quadsmith.sql.column) = {default_value: "NOW()"},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
-  ];
-  google.protobuf.Timestamp extended_at = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  google.protobuf.Timestamp revoked_at = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+message InternalApiCallRecord {
+  string uuid = 1;
+  string id = 2;
+  string method = 3;
+  string caller = 4;
+  string caller_type = 5;
+  string group_name = 6;
+  optional string jit_grant_uuid = 7;
+  optional string jit_grant_id = 8;
+  string status = 9;
+  optional string error_message = 10;
+  int64 duration_ms = 11;
+  google.protobuf.Timestamp created_at = 12;
 }
 
 message InternalTokenRecord {
-  option (quadsmith.sql.table) = {name: "internal_tokens"};
-  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
-
-  string uuid = 1 [
-    (quadsmith.sql.column) = {is_primary_key: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
-  string id = 2 [
-    (quadsmith.sql.column) = {is_unique: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
-  string name = 3 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  string type = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE]; // 'HUMAN' or 'ROBOT'
-  string group_name = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  string token_hash = 6 [
-    (quadsmith.sql.column) = {create_index: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_SECRET
-  ];
-  google.protobuf.Timestamp expires_at = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  google.protobuf.Timestamp created_at = 8 [
-    (quadsmith.sql.column) = {default_value: "NOW()"},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
-  ];
-  google.protobuf.Timestamp revoked_at = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  string uuid = 1;
+  string id = 2;
+  string name = 3;
+  string type = 4; // 'HUMAN' or 'ROBOT'
+  string group_name = 5;
+  string token_hash = 6;
+  google.protobuf.Timestamp expires_at = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp revoked_at = 9;
 }
 
-message InternalApiCallRecord {
-  option (quadsmith.sql.table) = {name: "internal_api_calls"};
-  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
-
-  string uuid = 1 [
-    (quadsmith.sql.column) = {is_primary_key: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
-  string id = 2 [
-    (quadsmith.sql.column) = {is_unique: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ];
-  string method = 3 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  string caller = 4 [
-    (quadsmith.sql.column) = {create_index: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
-  ];
-  string caller_type = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  string group_name = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  optional string jit_grant_uuid = 7 [
-    (quadsmith.sql.column) = {
-      references: "jit_grants(uuid)"
-      create_index: true
-    },
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
-  ];
-  optional string jit_grant_id = 8 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
-  ];
-  string status = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  optional string error_message = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  int64 duration_ms = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  google.protobuf.Timestamp created_at = 12 [
-    (quadsmith.sql.column) = {
-      create_index: true
-      default_value: "NOW()"
-    },
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
-  ];
+message JitGrantRecord {
+  string uuid = 1;
+  string id = 2;
+  string token_hash = 3;
+  string operator = 4;
+  string operator_type = 5; // 'HUMAN' or 'ROBOT'
+  string reason = 6;
+  string operation = 7;
+  string status = 8;
+  int32 hours = 9;
+  google.protobuf.Timestamp expires_at = 10;
+  google.protobuf.Timestamp created_at = 11;
+  google.protobuf.Timestamp extended_at = 12;
+  google.protobuf.Timestamp revoked_at = 13;
 }
 
 // ---------------------------------------------------------
 // Request/response messages
 // ---------------------------------------------------------
+
+message AcquireJitGrantRequest {
+  int32 hours = 1; // 1 to 12
+  string reason = 2;
+  string operation = 3; // optional, defaults to '*'
+}
+
+message AcquireJitGrantResponse {
+  JitGrantRecord grant = 1;
+}
+
+message CleanupExpiredOtpsRequest {}
+
+message CleanupExpiredOtpsResponse {
+  int64 cleaned_count = 1;
+}
+
+message CleanupExpiredTokensRequest {}
+
+message CleanupExpiredTokensResponse {
+  int64 cleaned_count = 1;
+}
+
+message CleanupOrphanedBlobsRequest {}
+
+message CleanupOrphanedBlobsResponse {
+  int64 cleaned_count = 1;
+}
+
+message CreateInternalTokenRequest {
+  string name = 1;
+  string type = 2; // 'HUMAN' or 'ROBOT'
+  string group_name = 3;
+  int32 duration_days = 4;
+}
+
+message CreateInternalTokenResponse {
+  string token_id = 1;
+  string token_secret = 2;
+  InternalTokenRecord record = 3;
+}
+
+message ExchangeOAuthCodeRequest {
+  string code = 1;
+  string code_verifier = 2;
+  string redirect_uri = 3;
+}
+
+message ExchangeOAuthCodeResponse {
+  string token = 1;
+  google.protobuf.Timestamp expires_at = 2;
+  string operator = 3;
+  string group_name = 4;
+}
+
+message ExtendJitGrantRequest {
+  string grant_id = 1;
+  int32 hours = 2; // 1 to 12
+}
+
+message ExtendJitGrantResponse {
+  JitGrantRecord grant = 1;
+}
+
+message GetCurrentOperatorRequest {}
+
+message GetCurrentOperatorResponse {
+  string operator = 1;
+  string operator_type = 2; // 'HUMAN' or 'ROBOT'
+  string group_name = 3;
+  google.protobuf.Timestamp session_expires_at = 4;
+  optional JitGrantRecord active_jit_grant = 5;
+}
+
+message GetDatabaseStatsRequest {}
+
+message GetDatabaseStatsResponse {
+  string database_name = 1;
+  int64 total_size_bytes = 2;
+  repeated TableStat tables = 3;
+}
 
 message GetSystemDiagnosticsRequest {}
 
@@ -180,12 +193,62 @@ message GetSystemDiagnosticsResponse {
   int32 active_internal_connections = 7;
 }
 
-message GetDatabaseStatsRequest {}
+message ListIamGroupsRequest {}
 
-message GetDatabaseStatsResponse {
-  string database_name = 1;
-  int64 total_size_bytes = 2;
-  repeated TableStat tables = 3;
+message ListIamGroupsResponse {
+  repeated IamGroupSummary groups = 1;
+}
+
+message ListIamUsersRequest {}
+
+message ListIamUsersResponse {
+  repeated IamUserSummary users = 1;
+}
+
+message ListInternalApiCallsRequest {
+  int32 limit = 1;
+  string caller_filter = 2;
+  string method_filter = 3;
+}
+
+message ListInternalApiCallsResponse {
+  repeated InternalApiCallRecord calls = 1;
+}
+
+message ListInternalTokensRequest {}
+
+message ListInternalTokensResponse {
+  repeated InternalTokenRecord tokens = 1;
+}
+
+message ListJitGrantsRequest {
+  bool active_only = 1;
+}
+
+message ListJitGrantsResponse {
+  repeated JitGrantRecord grants = 1;
+}
+
+message ListScheduledJobsRequest {}
+
+message ListScheduledJobsResponse {
+  repeated ScheduledJobDef jobs = 1;
+}
+
+message RevokeInternalTokenRequest {
+  string id = 1;
+}
+
+message RevokeInternalTokenResponse {
+  bool success = 1;
+}
+
+message RevokeJitGrantRequest {
+  string grant_id = 1;
+}
+
+message RevokeJitGrantResponse {
+  bool success = 1;
 }
 
 message RunDatabaseMaintenanceRequest {
@@ -208,30 +271,6 @@ message SeedDatabaseResponse {
   string message = 3;
 }
 
-message CleanupExpiredOtpsRequest {}
-
-message CleanupExpiredOtpsResponse {
-  int64 cleaned_count = 1;
-}
-
-message CleanupExpiredTokensRequest {}
-
-message CleanupExpiredTokensResponse {
-  int64 cleaned_count = 1;
-}
-
-message CleanupOrphanedBlobsRequest {}
-
-message CleanupOrphanedBlobsResponse {
-  int64 cleaned_count = 1;
-}
-
-message ListScheduledJobsRequest {}
-
-message ListScheduledJobsResponse {
-  repeated ScheduledJobDef jobs = 1;
-}
-
 message TriggerJobRequest {
   string job_name = 1;
   string payload_json = 2;
@@ -241,113 +280,6 @@ message TriggerJobResponse {
   bool success = 1;
   string message = 2;
   string call_id = 3;
-}
-
-message ListInternalApiCallsRequest {
-  int32 limit = 1;
-  string caller_filter = 2;
-  string method_filter = 3;
-}
-
-message ListInternalApiCallsResponse {
-  repeated InternalApiCallRecord calls = 1;
-}
-
-message ExchangeOAuthCodeRequest {
-  string code = 1;
-  string code_verifier = 2;
-  string redirect_uri = 3;
-}
-
-message ExchangeOAuthCodeResponse {
-  string token = 1;
-  google.protobuf.Timestamp expires_at = 2;
-  string operator = 3;
-  string group_name = 4;
-}
-
-message GetCurrentOperatorRequest {}
-
-message GetCurrentOperatorResponse {
-  string operator = 1;
-  string operator_type = 2; // 'HUMAN' or 'ROBOT'
-  string group_name = 3;
-  google.protobuf.Timestamp session_expires_at = 4;
-  optional JitGrantRecord active_jit_grant = 5;
-}
-
-message ListIamUsersRequest {}
-
-message ListIamUsersResponse {
-  repeated IamUserSummary users = 1;
-}
-
-message ListIamGroupsRequest {}
-
-message ListIamGroupsResponse {
-  repeated IamGroupSummary groups = 1;
-}
-
-message CreateInternalTokenRequest {
-  string name = 1;
-  string type = 2; // 'HUMAN' or 'ROBOT'
-  string group_name = 3;
-  int32 duration_days = 4;
-}
-
-message CreateInternalTokenResponse {
-  string token_id = 1;
-  string token_secret = 2;
-  InternalTokenRecord record = 3;
-}
-
-message ListInternalTokensRequest {}
-
-message ListInternalTokensResponse {
-  repeated InternalTokenRecord tokens = 1;
-}
-
-message RevokeInternalTokenRequest {
-  string id = 1;
-}
-
-message RevokeInternalTokenResponse {
-  bool success = 1;
-}
-
-message AcquireJitGrantRequest {
-  int32 hours = 1; // 1 to 12
-  string reason = 2;
-  string operation = 3; // optional, defaults to '*'
-}
-
-message AcquireJitGrantResponse {
-  JitGrantRecord grant = 1;
-}
-
-message ExtendJitGrantRequest {
-  string grant_id = 1;
-  int32 hours = 2; // 1 to 12
-}
-
-message ExtendJitGrantResponse {
-  JitGrantRecord grant = 1;
-}
-
-message ListJitGrantsRequest {
-  bool active_only = 1;
-}
-
-message ListJitGrantsResponse {
-  repeated JitGrantRecord grants = 1;
-}
-
-message RevokeJitGrantRequest {
-  string grant_id = 1;
-}
-
-message RevokeJitGrantResponse {
-  bool success = 1;
 }
 
 // ---------------------------------------------------------

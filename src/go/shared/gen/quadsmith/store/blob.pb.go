@@ -2,9 +2,9 @@
 // versions:
 // 	protoc-gen-go v1.36.12
 // 	protoc        (unknown)
-// source: quadsmith/api/blob.proto
+// source: quadsmith/store/blob.proto
 
-package api
+package store
 
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -48,7 +48,7 @@ type Blob struct {
 
 func (x *Blob) Reset() {
 	*x = Blob{}
-	mi := &file_quadsmith_api_blob_proto_msgTypes[0]
+	mi := &file_quadsmith_store_blob_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -60,7 +60,7 @@ func (x *Blob) String() string {
 func (*Blob) ProtoMessage() {}
 
 func (x *Blob) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_blob_proto_msgTypes[0]
+	mi := &file_quadsmith_store_blob_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -73,7 +73,7 @@ func (x *Blob) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Blob.ProtoReflect.Descriptor instead.
 func (*Blob) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_blob_proto_rawDescGZIP(), []int{0}
+	return file_quadsmith_store_blob_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *Blob) GetUuid() string {
@@ -154,7 +154,7 @@ type BlobReference struct {
 
 func (x *BlobReference) Reset() {
 	*x = BlobReference{}
-	mi := &file_quadsmith_api_blob_proto_msgTypes[1]
+	mi := &file_quadsmith_store_blob_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -166,7 +166,7 @@ func (x *BlobReference) String() string {
 func (*BlobReference) ProtoMessage() {}
 
 func (x *BlobReference) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_blob_proto_msgTypes[1]
+	mi := &file_quadsmith_store_blob_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -179,7 +179,7 @@ func (x *BlobReference) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use BlobReference.ProtoReflect.Descriptor instead.
 func (*BlobReference) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_blob_proto_rawDescGZIP(), []int{1}
+	return file_quadsmith_store_blob_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *BlobReference) GetUuid() string {
@@ -231,11 +231,11 @@ func (x *BlobReference) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
-var File_quadsmith_api_blob_proto protoreflect.FileDescriptor
+var File_quadsmith_store_blob_proto protoreflect.FileDescriptor
 
-const file_quadsmith_api_blob_proto_rawDesc = "" +
+const file_quadsmith_store_blob_proto_rawDesc = "" +
 	"\n" +
-	"\x18quadsmith/api/blob.proto\x12\rquadsmith.api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xee\x02\n" +
+	"\x1aquadsmith/store/blob.proto\x12\x0fquadsmith.store\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xee\x02\n" +
 	"\x04Blob\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x1c\n" +
@@ -267,29 +267,29 @@ const file_quadsmith_api_blob_proto_rawDesc = "" +
 	"\x0fblob_references\x12(num_nonnulls(entity_uuid, user_uuid) = 1\x1a#blob_uuid, entity_type, entity_uuid\x1a!blob_uuid, entity_type, user_uuid\xc2\xf0\x19\x02\b\x01B\x0e\n" +
 	"\f_entity_uuidB\f\n" +
 	"\n" +
-	"_user_uuidB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"_user_uuidB,Z*quadsmith/shared/gen/quadsmith/store;storeb\x06proto3"
 
 var (
-	file_quadsmith_api_blob_proto_rawDescOnce sync.Once
-	file_quadsmith_api_blob_proto_rawDescData []byte
+	file_quadsmith_store_blob_proto_rawDescOnce sync.Once
+	file_quadsmith_store_blob_proto_rawDescData []byte
 )
 
-func file_quadsmith_api_blob_proto_rawDescGZIP() []byte {
-	file_quadsmith_api_blob_proto_rawDescOnce.Do(func() {
-		file_quadsmith_api_blob_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_api_blob_proto_rawDesc), len(file_quadsmith_api_blob_proto_rawDesc)))
+func file_quadsmith_store_blob_proto_rawDescGZIP() []byte {
+	file_quadsmith_store_blob_proto_rawDescOnce.Do(func() {
+		file_quadsmith_store_blob_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quadsmith_store_blob_proto_rawDesc), len(file_quadsmith_store_blob_proto_rawDesc)))
 	})
-	return file_quadsmith_api_blob_proto_rawDescData
+	return file_quadsmith_store_blob_proto_rawDescData
 }
 
-var file_quadsmith_api_blob_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_quadsmith_api_blob_proto_goTypes = []any{
-	(*Blob)(nil),                  // 0: quadsmith.api.Blob
-	(*BlobReference)(nil),         // 1: quadsmith.api.BlobReference
+var file_quadsmith_store_blob_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_quadsmith_store_blob_proto_goTypes = []any{
+	(*Blob)(nil),                  // 0: quadsmith.store.Blob
+	(*BlobReference)(nil),         // 1: quadsmith.store.BlobReference
 	(*timestamppb.Timestamp)(nil), // 2: google.protobuf.Timestamp
 }
-var file_quadsmith_api_blob_proto_depIdxs = []int32{
-	2, // 0: quadsmith.api.Blob.created_at:type_name -> google.protobuf.Timestamp
-	2, // 1: quadsmith.api.BlobReference.created_at:type_name -> google.protobuf.Timestamp
+var file_quadsmith_store_blob_proto_depIdxs = []int32{
+	2, // 0: quadsmith.store.Blob.created_at:type_name -> google.protobuf.Timestamp
+	2, // 1: quadsmith.store.BlobReference.created_at:type_name -> google.protobuf.Timestamp
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
@@ -297,27 +297,27 @@ var file_quadsmith_api_blob_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_quadsmith_api_blob_proto_init() }
-func file_quadsmith_api_blob_proto_init() {
-	if File_quadsmith_api_blob_proto != nil {
+func init() { file_quadsmith_store_blob_proto_init() }
+func file_quadsmith_store_blob_proto_init() {
+	if File_quadsmith_store_blob_proto != nil {
 		return
 	}
-	file_quadsmith_api_blob_proto_msgTypes[1].OneofWrappers = []any{}
+	file_quadsmith_store_blob_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_blob_proto_rawDesc), len(file_quadsmith_api_blob_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_store_blob_proto_rawDesc), len(file_quadsmith_store_blob_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_quadsmith_api_blob_proto_goTypes,
-		DependencyIndexes: file_quadsmith_api_blob_proto_depIdxs,
-		MessageInfos:      file_quadsmith_api_blob_proto_msgTypes,
+		GoTypes:           file_quadsmith_store_blob_proto_goTypes,
+		DependencyIndexes: file_quadsmith_store_blob_proto_depIdxs,
+		MessageInfos:      file_quadsmith_store_blob_proto_msgTypes,
 	}.Build()
-	File_quadsmith_api_blob_proto = out.File
-	file_quadsmith_api_blob_proto_goTypes = nil
-	file_quadsmith_api_blob_proto_depIdxs = nil
+	File_quadsmith_store_blob_proto = out.File
+	file_quadsmith_store_blob_proto_goTypes = nil
+	file_quadsmith_store_blob_proto_depIdxs = nil
 }

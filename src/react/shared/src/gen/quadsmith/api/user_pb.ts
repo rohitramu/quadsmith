@@ -6,8 +6,6 @@ import type { GenEnum, GenFile, GenMessage, GenService } from "@bufbuild/protobu
 import { enumDesc, fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
-import { file_quadsmith_data_data } from "../data/data_pb";
-import { file_quadsmith_sql_sql } from "../sql/sql_pb";
 import { file_quadsmith_validate_validate } from "../validate/validate_pb";
 import type { Message } from "@bufbuild/protobuf";
 
@@ -17,14 +15,54 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_user: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChhxdWFkc21pdGgvYXBpL3VzZXIucHJvdG8SDXF1YWRzbWl0aC5hcGki/wMKBFVzZXISGAoEdXVpZBgBIAEoCUIKwvMYAhABwPAZBBJ+CgJpZBgCIAEoCUJywvMYBCABKAGCshliCmAIAxAUGh5eW2Etel1bYS16MC05X117MSwxOH1bYS16MC05XSQiBWFkbWluIgRyb290IgZzeXN0ZW0iA2JvdCIFcm9ib3QqAl9fKglxdWFkc21pdGgqCnF1YWRfc21pdGjA8BkCEhkKBWVtYWlsGAMgASgJQgrC8xgCQAHA8BkBEh4KBHJvbGUYBCABKAlCEMLzGAg6BidVU0VSJ8DwGQQSOQoPbGFzdF9yZW5hbWVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxI0CgpkZWxldGVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxI0CgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxI0Cgp1cGRhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxIyCgphY3RpdmVfYmFuGAkgASgLMhIucXVhZHNtaXRoLmFwaS5CYW5CCsLzGAJAAcDwGQQ6EcLzGAcKBXVzZXJzwvAZAggCItMBCgtVc2VyUHJvZmlsZRIYCgR1dWlkGAEgASgJQgrC8xgCEAHA8BkEEiwKCXVzZXJfdXVpZBgCIAEoCUIZwvMYERoLdXNlcnModXVpZCkgASgBwPAZBBIYCgphdmF0YXJfdXJsGAMgASgJQgTA8BkCEhEKA2JpbxgEIAEoCUIEwPAZAhI0Cgp1cGRhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAzoZwvMYDwoNdXNlcl9wcm9maWxlc8LwGQIIAiL4AgoJVXNlckVtYWlsEhgKBHV1aWQYASABKAlCCsLzGAIQAcDwGQQSKgoJdXNlcl91dWlkGAIgASgJQhfC8xgPGgt1c2Vycyh1dWlkKSgBwPAZBBIbCgVlbWFpbBgDIAEoCUIMwvMYBCABKAHA8BkBEiMKCmlzX3ByaW1hcnkYBCABKAhCD8LzGAc6BWZhbHNlwPAZARI0CgpjcmVhdGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAxIpChB2ZXJpZmllZF92aWFfb3RwGAYgASgIQg/C8xgHOgVmYWxzZcDwGQMSIwoPb2F1dGhfcHJvdmlkZXJzGAcgAygJQgrC8xgCQAHA8BkDOl3C8xhTCgt1c2VyX2VtYWlscyJECiRpZHhfdXNlcl9lbWFpbHNfb25lX3ByaW1hcnlfcGVyX3VzZXISCXVzZXJfdXVpZBoRaXNfcHJpbWFyeSA9IHRydWXC8BkCCAIipwMKFVVzZXJFbWFpbE9BdXRoQWNjb3VudBIYCgR1dWlkGAEgASgJQgrC8xgCEAHA8BkEEkgKD3VzZXJfZW1haWxfdXVpZBgCIAEoCUIvwvMYJxojdXNlcl9lbWFpbHModXVpZCkgT04gREVMRVRFIENBU0NBREUoAcDwGQQSTgoSb2F1dGhfYWNjb3VudF91dWlkGAMgASgJQjLC8xgqGiZvYXV0aF9hY2NvdW50cyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERSgBwPAZBBI/CgpjcmVhdGVkX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIPwvMYBzoFTk9XKCnA8BkDOpgBwvMYQAoZdXNlcl9lbWFpbF9vYXV0aF9hY2NvdW50cxojdXNlcl9lbWFpbF91dWlkLCBvYXV0aF9hY2NvdW50X3V1aWTC8BlQCAISTHVzZXJfZW1haWxfdXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSB1c2VyX2VtYWlscyBXSEVSRSB1c2VyX3V1aWQgPSAkMTo6dXVpZCkinwEKEVB1YmxpY1VzZXJQcm9maWxlEgoKAmlkGAEgASgJEhIKCmF2YXRhcl91cmwYAiABKAkSCwoDYmlvGAMgASgJEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhMKC2J1aWxkX2NvdW50GAUgASgFEhgKEHJlcHV0YXRpb25fc2NvcmUYBiABKAUimAMKDFJlZnJlc2hUb2tlbhIYCgR1dWlkGAEgASgJQgrC8xgCEAHA8BkEEioKCXVzZXJfdXVpZBgCIAEoCUIXwvMYDxoLdXNlcnModXVpZCkoAcDwGQQSIAoKdG9rZW5faGFzaBgDIAEoCUIMwvMYBCABKAHA8BkGEjQKCmV4cGlyZXNfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkDEjYKDGxhc3RfdXNlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQMSGQoLZGV2aWNlX2hpbnQYBiABKAlCBMDwGQMSIAoKaXBfYWRkcmVzcxgIIAEoCUIMwvMYBDoCJyfA8BkDEiMKDWxvY2F0aW9uX2hpbnQYCSABKAlCDMLzGAQ6AicnwPAZAxI0CgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZAzoawvMYEAoOcmVmcmVzaF90b2tlbnPC8BkCCAMi1QUKCEVtYWlsT3RwEhgKBHV1aWQYASABKAlCCsLzGAIQAcDwGQQSGQoFZW1haWwYAiABKAlCCsLzGAIoAcDwGQESFwoJY29kZV9oYXNoGAMgASgJQgTA8BkGEjQKCmV4cGlyZXNfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkFEjEKB3VzZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkDEiQKD2ZhaWxlZF9hdHRlbXB0cxgGIAEoBUILwvMYAzoBMMDwGQUSNAoKY3JlYXRlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQMSKQoRY2hhbGxlbmdlX2lkX2hhc2gYCCABKAlCDsLzGAYoAToCJyfA8BkGEiIKB3B1cnBvc2UYCSABKAlCEcLzGAk6Bydsb2dpbifA8BkDEjoKFnJlcXVlc3RlZF9ieV91c2VyX3V1aWQYCiABKAlCFcLzGA0aC3VzZXJzKHV1aWQpwPAZBEgAiAEBEiAKCmlwX2FkZHJlc3MYCyABKAlCDMLzGAQ6AicnwPAZAxIgCgp1c2VyX2FnZW50GAwgASgJQgzC8xgEOgInJ8DwGQMSIwoNbG9jYXRpb25faGludBgNIAEoCUIMwvMYBDoCJyfA8BkDEiMKBnN0YXR1cxgOIAEoCUITwvMYCzoJJ3BlbmRpbmcnwPAZAxI1CgthcHByb3ZlZF9hdBgPIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQMSMwoJZGVuaWVkX2F0GBAgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZBToWwvMYDAoKZW1haWxfb3Rwc8LwGQIIAUIZChdfcmVxdWVzdGVkX2J5X3VzZXJfdXVpZCLcAgoPVXNlcm5hbWVIaXN0b3J5EhgKBHV1aWQYASABKAlCCsLzGAIQAcDwGQQSKgoJdXNlcl91dWlkGAIgASgJQhfC8xgPGgt1c2Vycyh1dWlkKSgBwPAZBBIgCgxvbGRfdXNlcm5hbWUYAyABKAlCCsLzGAIoAcDwGQISNAoKcmVuYW1lZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQMSSAoRZmlyc3RfYXJjaGl2ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQhHC8xgJKAE6BU5PVygpwPAZAxJBChdyZWxlYXNlX3dhcm5pbmdfc2VudF9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQU6HsLzGBQKEnVzZXJuYW1lX2hpc3Rvcmllc8LwGQIIAiLWAgoMT0F1dGhBY2NvdW50EhgKBHV1aWQYASABKAlCCsLzGAIQAcDwGQQSKgoJdXNlcl91dWlkGAIgASgJQhfC8xgPGgt1c2Vycyh1dWlkKSgBwPAZBBIWCghwcm92aWRlchgDIAEoCUIEwPAZAxIhChNwcm92aWRlcl9hY2NvdW50X2lkGAQgASgJQgTA8BkDEhoKDGFjY2Vzc190b2tlbhgFIAEoCUIEwPAZBhIbCg1yZWZyZXNoX3Rva2VuGAYgASgJQgTA8BkGEjoKEHRva2VuX2V4cGlyZXNfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkGEjQKCmNyZWF0ZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQgTA8BkDOhrC8xgQCg5vYXV0aF9hY2NvdW50c8LwGQIIAiL6AwoDQmFuEhgKBHV1aWQYASABKAlCCsLzGAIQAcDwGQQSKgoJdXNlcl91dWlkGAIgASgJQhfC8xgPGgt1c2Vycyh1dWlkKSgBwPAZBBI0ChNiYW5uZWRfYnlfdXNlcl91dWlkGAMgASgJQhfC8xgPGgt1c2Vycyh1dWlkKSgBwPAZBBIUCgZyZWFzb24YBCABKAlCBMDwGQQSHAoOaW50ZXJuYWxfbm90ZXMYBSABKAlCBMDwGQUSNAoKZXhwaXJlc19hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCBMDwGQQSPwoKY3JlYXRlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCD8LzGAc6BU5PVygpwPAZAxI0CgpyZXZva2VkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIEwPAZBBI4ChRyZXZva2VkX2J5X3VzZXJfdXVpZBgJIAEoCUIVwvMYDRoLdXNlcnModXVpZCnA8BkESACIAQESGwoNcmV2b2tlX3JlYXNvbhgKIAEoCUIEwPAZBDomwvMYBgoEYmFuc8LwGRgIAxIUdXNlcl91dWlkID0gJDE6OnV1aWRCFwoVX3Jldm9rZWRfYnlfdXNlcl91dWlkIpoCCgtCYW5uZWRFbWFpbBIYCgR1dWlkGAEgASgJQgrC8xgCEAHA8BkEEjoKCGJhbl91dWlkGAIgASgJQijC8xggGhxiYW5zKHV1aWQpIE9OIERFTEVURSBDQVNDQURFKAHA8BkEEhkKBWVtYWlsGAMgASgJQgrC8xgCKAHA8BkBEj8KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wQg/C8xgHOgVOT1coKcDwGQM6WcLzGA8KDWJhbm5lZF9lbWFpbHPC8BlCCAMSPmJhbl91dWlkIElOIChTRUxFQ1QgdXVpZCBGUk9NIGJhbnMgV0hFUkUgdXNlcl91dWlkID0gJDE6OnV1aWQpIo0BCg5CYW5Vc2VyUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEg4KBnJlYXNvbhgCIAEoCRIWCg5pbnRlcm5hbF9ub3RlcxgDIAEoCRIzCgpleHBpcmVzX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgAiAEBQg0KC19leHBpcmVzX2F0IlQKD0JhblVzZXJSZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIEg8KB21lc3NhZ2UYAiABKAkSHwoDYmFuGAMgASgLMhIucXVhZHNtaXRoLmFwaS5CYW4iMQodQ2hlY2tVc2VybmFtZUF2YWlsYWJsZVJlcXVlc3QSEAoIdXNlcm5hbWUYASABKAkifwoeQ2hlY2tVc2VybmFtZUF2YWlsYWJsZVJlc3BvbnNlEjkKBnN0YXR1cxgBIAEoDjIpLnF1YWRzbWl0aC5hcGkuVXNlcm5hbWVBdmFpbGFiaWxpdHlTdGF0dXMSEQoJYXZhaWxhYmxlGAIgASgIEg8KB21lc3NhZ2UYAyABKAkiJQoXR2V0UHVibGljUHJvZmlsZVJlcXVlc3QSCgoCaWQYASABKAkiKgoXR2V0VXNlckJhblN0YXR1c1JlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCSJpChhHZXRVc2VyQmFuU3RhdHVzUmVzcG9uc2USEQoJaXNfYmFubmVkGAEgASgIEisKCmFjdGl2ZV9iYW4YAiABKAsyEi5xdWFkc21pdGguYXBpLkJhbkgAiAEBQg0KC19hY3RpdmVfYmFuIhwKDkdldFVzZXJSZXF1ZXN0EgoKAmlkGAEgASgJIokBCg9MaXN0QmFuc1JlcXVlc3QSFAoHdXNlcl9pZBgBIAEoCUgAiAEBEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg4KBmZpbHRlchgEIAEoCRIMCgRzb3J0GAUgAygJEg8KB2NvbHVtbnMYBiADKAlCCgoIX3VzZXJfaWQiTQoQTGlzdEJhbnNSZXNwb25zZRIgCgRiYW5zGAEgAygLMhIucXVhZHNtaXRoLmFwaS5CYW4SFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIlQKEUxpc3RVc2Vyc1Jlc3BvbnNlEiYKBXVzZXJzGAEgAygLMhcucXVhZHNtaXRoLmFwaS5TZWVkVXNlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiaAoIU2VlZFVzZXISDAoEdXVpZBgBIAEoCRIKCgJpZBgCIAEoCRINCgVlbWFpbBgDIAEoCRIMCgRyb2xlGAQgASgJEgsKA2JpbxgFIAEoCRIYChByZXB1dGF0aW9uX3Njb3JlGAYgASgFIp8CChBVcGRhdGVCYW5SZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSEwoGcmVhc29uGAIgASgJSACIAQESGwoOaW50ZXJuYWxfbm90ZXMYAyABKAlIAYgBARIzCgpleHBpcmVzX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgCiAEBEhgKEGNsZWFyX2V4cGlyZXNfYXQYBSABKAgSEwoGcmV2b2tlGAYgASgISAOIAQESGgoNcmV2b2tlX3JlYXNvbhgHIAEoCUgEiAEBQgkKB19yZWFzb25CEQoPX2ludGVybmFsX25vdGVzQg0KC19leHBpcmVzX2F0QgkKB19yZXZva2VCEAoOX3Jldm9rZV9yZWFzb24iVgoRVXBkYXRlQmFuUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEh8KA2JhbhgDIAEoCzISLnF1YWRzbWl0aC5hcGkuQmFuKs4BChpVc2VybmFtZUF2YWlsYWJpbGl0eVN0YXR1cxIsCihVU0VSTkFNRV9BVkFJTEFCSUxJVFlfU1RBVFVTX1VOU1BFQ0lGSUVEEAASKgomVVNFUk5BTUVfQVZBSUxBQklMSVRZX1NUQVRVU19BVkFJTEFCTEUQARIsCihVU0VSTkFNRV9BVkFJTEFCSUxJVFlfU1RBVFVTX1VOQVZBSUxBQkxFEAISKAokVVNFUk5BTUVfQVZBSUxBQklMSVRZX1NUQVRVU19JTlZBTElEEAMy7QQKC1VzZXJTZXJ2aWNlEj0KB0dldFVzZXISHS5xdWFkc21pdGguYXBpLkdldFVzZXJSZXF1ZXN0GhMucXVhZHNtaXRoLmFwaS5Vc2VyElwKEEdldFB1YmxpY1Byb2ZpbGUSJi5xdWFkc21pdGguYXBpLkdldFB1YmxpY1Byb2ZpbGVSZXF1ZXN0GiAucXVhZHNtaXRoLmFwaS5QdWJsaWNVc2VyUHJvZmlsZRJ1ChZDaGVja1VzZXJuYW1lQXZhaWxhYmxlEiwucXVhZHNtaXRoLmFwaS5DaGVja1VzZXJuYW1lQXZhaWxhYmxlUmVxdWVzdBotLnF1YWRzbWl0aC5hcGkuQ2hlY2tVc2VybmFtZUF2YWlsYWJsZVJlc3BvbnNlEkgKB0JhblVzZXISHS5xdWFkc21pdGguYXBpLkJhblVzZXJSZXF1ZXN0Gh4ucXVhZHNtaXRoLmFwaS5CYW5Vc2VyUmVzcG9uc2USTgoJVXBkYXRlQmFuEh8ucXVhZHNtaXRoLmFwaS5VcGRhdGVCYW5SZXF1ZXN0GiAucXVhZHNtaXRoLmFwaS5VcGRhdGVCYW5SZXNwb25zZRJLCghMaXN0QmFucxIeLnF1YWRzbWl0aC5hcGkuTGlzdEJhbnNSZXF1ZXN0Gh8ucXVhZHNtaXRoLmFwaS5MaXN0QmFuc1Jlc3BvbnNlEmMKEEdldFVzZXJCYW5TdGF0dXMSJi5xdWFkc21pdGguYXBpLkdldFVzZXJCYW5TdGF0dXNSZXF1ZXN0GicucXVhZHNtaXRoLmFwaS5HZXRVc2VyQmFuU3RhdHVzUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
-    [
-      file_google_protobuf_timestamp,
-      file_quadsmith_data_data,
-      file_quadsmith_sql_sql,
-      file_quadsmith_validate_validate,
-    ],
+    "ChhxdWFkc21pdGgvYXBpL3VzZXIucHJvdG8SDXF1YWRzbWl0aC5hcGkinwEKEVB1YmxpY1VzZXJQcm9maWxlEgoKAmlkGAEgASgJEhIKCmF2YXRhcl91cmwYAiABKAkSCwoDYmlvGAMgASgJEi4KCmNyZWF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhMKC2J1aWxkX2NvdW50GAUgASgFEhgKEHJlcHV0YXRpb25fc2NvcmUYBiABKAUikgMKBFVzZXISDAoEdXVpZBgBIAEoCRJyCgJpZBgCIAEoCUJmgrIZYgpgCAMQFBoeXlthLXpdW2EtejAtOV9dezEsMTh9W2EtejAtOV0kIgVhZG1pbiIEcm9vdCIGc3lzdGVtIgNib3QiBXJvYm90KgJfXyoJcXVhZHNtaXRoKgpxdWFkX3NtaXRoEg0KBWVtYWlsGAMgASgJEgwKBHJvbGUYBCABKAkSMwoPbGFzdF9yZW5hbWVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpkZWxldGVkX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpjcmVhdGVkX2F0GAcgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GAggASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBImCgphY3RpdmVfYmFuGAkgASgLMhIucXVhZHNtaXRoLmFwaS5CYW4isgEKCVVzZXJFbWFpbBIMCgR1dWlkGAEgASgJEhEKCXVzZXJfdXVpZBgCIAEoCRINCgVlbWFpbBgDIAEoCRISCgppc19wcmltYXJ5GAQgASgIEi4KCmNyZWF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhgKEHZlcmlmaWVkX3ZpYV9vdHAYBiABKAgSFwoPb2F1dGhfcHJvdmlkZXJzGAcgAygJIn8KC1VzZXJQcm9maWxlEgwKBHV1aWQYASABKAkSEQoJdXNlcl91dWlkGAIgASgJEhIKCmF2YXRhcl91cmwYAyABKAkSCwoDYmlvGAQgASgJEi4KCnVwZGF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIs4CCgNCYW4SDAoEdXVpZBgBIAEoCRIRCgl1c2VyX3V1aWQYAiABKAkSGwoTYmFubmVkX2J5X3VzZXJfdXVpZBgDIAEoCRIOCgZyZWFzb24YBCABKAkSFgoOaW50ZXJuYWxfbm90ZXMYBSABKAkSLgoKZXhwaXJlc19hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKY3JlYXRlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKcmV2b2tlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASIQoUcmV2b2tlZF9ieV91c2VyX3V1aWQYCSABKAlIAIgBARIVCg1yZXZva2VfcmVhc29uGAogASgJQhcKFV9yZXZva2VkX2J5X3VzZXJfdXVpZCKNAQoOQmFuVXNlclJlcXVlc3QSDwoHdXNlcl9pZBgBIAEoCRIOCgZyZWFzb24YAiABKAkSFgoOaW50ZXJuYWxfbm90ZXMYAyABKAkSMwoKZXhwaXJlc19hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAIgBAUINCgtfZXhwaXJlc19hdCJUCg9CYW5Vc2VyUmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCBIPCgdtZXNzYWdlGAIgASgJEh8KA2JhbhgDIAEoCzISLnF1YWRzbWl0aC5hcGkuQmFuIjEKHUNoZWNrVXNlcm5hbWVBdmFpbGFibGVSZXF1ZXN0EhAKCHVzZXJuYW1lGAEgASgJIn8KHkNoZWNrVXNlcm5hbWVBdmFpbGFibGVSZXNwb25zZRI5CgZzdGF0dXMYASABKA4yKS5xdWFkc21pdGguYXBpLlVzZXJuYW1lQXZhaWxhYmlsaXR5U3RhdHVzEhEKCWF2YWlsYWJsZRgCIAEoCBIPCgdtZXNzYWdlGAMgASgJIiUKF0dldFB1YmxpY1Byb2ZpbGVSZXF1ZXN0EgoKAmlkGAEgASgJIioKF0dldFVzZXJCYW5TdGF0dXNSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkiaQoYR2V0VXNlckJhblN0YXR1c1Jlc3BvbnNlEhEKCWlzX2Jhbm5lZBgBIAEoCBIrCgphY3RpdmVfYmFuGAIgASgLMhIucXVhZHNtaXRoLmFwaS5CYW5IAIgBAUINCgtfYWN0aXZlX2JhbiIcCg5HZXRVc2VyUmVxdWVzdBIKCgJpZBgBIAEoCSKJAQoPTGlzdEJhbnNSZXF1ZXN0EhQKB3VzZXJfaWQYASABKAlIAIgBARIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIOCgZmaWx0ZXIYBCABKAkSDAoEc29ydBgFIAMoCRIPCgdjb2x1bW5zGAYgAygJQgoKCF91c2VyX2lkIk0KEExpc3RCYW5zUmVzcG9uc2USIAoEYmFucxgBIAMoCzISLnF1YWRzbWl0aC5hcGkuQmFuEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSJUChFMaXN0VXNlcnNSZXNwb25zZRImCgV1c2VycxgBIAMoCzIXLnF1YWRzbWl0aC5hcGkuU2VlZFVzZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJImgKCFNlZWRVc2VyEgwKBHV1aWQYASABKAkSCgoCaWQYAiABKAkSDQoFZW1haWwYAyABKAkSDAoEcm9sZRgEIAEoCRILCgNiaW8YBSABKAkSGAoQcmVwdXRhdGlvbl9zY29yZRgGIAEoBSKfAgoQVXBkYXRlQmFuUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEhMKBnJlYXNvbhgCIAEoCUgAiAEBEhsKDmludGVybmFsX25vdGVzGAMgASgJSAGIAQESMwoKZXhwaXJlc19hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAogBARIYChBjbGVhcl9leHBpcmVzX2F0GAUgASgIEhMKBnJldm9rZRgGIAEoCEgDiAEBEhoKDXJldm9rZV9yZWFzb24YByABKAlIBIgBAUIJCgdfcmVhc29uQhEKD19pbnRlcm5hbF9ub3Rlc0INCgtfZXhwaXJlc19hdEIJCgdfcmV2b2tlQhAKDl9yZXZva2VfcmVhc29uIlYKEVVwZGF0ZUJhblJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgSDwoHbWVzc2FnZRgCIAEoCRIfCgNiYW4YAyABKAsyEi5xdWFkc21pdGguYXBpLkJhbirOAQoaVXNlcm5hbWVBdmFpbGFiaWxpdHlTdGF0dXMSLAooVVNFUk5BTUVfQVZBSUxBQklMSVRZX1NUQVRVU19VTlNQRUNJRklFRBAAEioKJlVTRVJOQU1FX0FWQUlMQUJJTElUWV9TVEFUVVNfQVZBSUxBQkxFEAESLAooVVNFUk5BTUVfQVZBSUxBQklMSVRZX1NUQVRVU19VTkFWQUlMQUJMRRACEigKJFVTRVJOQU1FX0FWQUlMQUJJTElUWV9TVEFUVVNfSU5WQUxJRBADMu0ECgtVc2VyU2VydmljZRI9CgdHZXRVc2VyEh0ucXVhZHNtaXRoLmFwaS5HZXRVc2VyUmVxdWVzdBoTLnF1YWRzbWl0aC5hcGkuVXNlchJcChBHZXRQdWJsaWNQcm9maWxlEiYucXVhZHNtaXRoLmFwaS5HZXRQdWJsaWNQcm9maWxlUmVxdWVzdBogLnF1YWRzbWl0aC5hcGkuUHVibGljVXNlclByb2ZpbGUSdQoWQ2hlY2tVc2VybmFtZUF2YWlsYWJsZRIsLnF1YWRzbWl0aC5hcGkuQ2hlY2tVc2VybmFtZUF2YWlsYWJsZVJlcXVlc3QaLS5xdWFkc21pdGguYXBpLkNoZWNrVXNlcm5hbWVBdmFpbGFibGVSZXNwb25zZRJICgdCYW5Vc2VyEh0ucXVhZHNtaXRoLmFwaS5CYW5Vc2VyUmVxdWVzdBoeLnF1YWRzbWl0aC5hcGkuQmFuVXNlclJlc3BvbnNlEk4KCVVwZGF0ZUJhbhIfLnF1YWRzbWl0aC5hcGkuVXBkYXRlQmFuUmVxdWVzdBogLnF1YWRzbWl0aC5hcGkuVXBkYXRlQmFuUmVzcG9uc2USSwoITGlzdEJhbnMSHi5xdWFkc21pdGguYXBpLkxpc3RCYW5zUmVxdWVzdBofLnF1YWRzbWl0aC5hcGkuTGlzdEJhbnNSZXNwb25zZRJjChBHZXRVc2VyQmFuU3RhdHVzEiYucXVhZHNtaXRoLmFwaS5HZXRVc2VyQmFuU3RhdHVzUmVxdWVzdBonLnF1YWRzbWl0aC5hcGkuR2V0VXNlckJhblN0YXR1c1Jlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    [file_google_protobuf_timestamp, file_quadsmith_validate_validate],
   );
+
+/**
+ * @generated from message quadsmith.api.PublicUserProfile
+ */
+export type PublicUserProfile = Message<"quadsmith.api.PublicUserProfile"> & {
+  /**
+   * Public username (or UUID fallback)
+   *
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string avatar_url = 2;
+   */
+  avatarUrl: string;
+
+  /**
+   * @generated from field: string bio = 3;
+   */
+  bio: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 4;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: int32 build_count = 5;
+   */
+  buildCount: number;
+
+  /**
+   * @generated from field: int32 reputation_score = 6;
+   */
+  reputationScore: number;
+};
+
+/**
+ * Describes the message quadsmith.api.PublicUserProfile.
+ * Use `create(PublicUserProfileSchema)` to create a new message.
+ */
+export const PublicUserProfileSchema: GenMessage<PublicUserProfile> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_api_user, 0);
 
 /**
  * @generated from message quadsmith.api.User
@@ -48,7 +86,7 @@ export type User = Message<"quadsmith.api.User"> & {
   id: string;
 
   /**
-   * Verified primary email (populated for API responses, not persisted in users table)
+   * Verified primary email
    *
    * @generated from field: string email = 3;
    */
@@ -91,45 +129,7 @@ export type User = Message<"quadsmith.api.User"> & {
  * Describes the message quadsmith.api.User.
  * Use `create(UserSchema)` to create a new message.
  */
-export const UserSchema: GenMessage<User> = /*@__PURE__*/ messageDesc(file_quadsmith_api_user, 0);
-
-/**
- * @generated from message quadsmith.api.UserProfile
- */
-export type UserProfile = Message<"quadsmith.api.UserProfile"> & {
-  /**
-   * @generated from field: string uuid = 1;
-   */
-  uuid: string;
-
-  /**
-   * @generated from field: string user_uuid = 2;
-   */
-  userUuid: string;
-
-  /**
-   * @generated from field: string avatar_url = 3;
-   */
-  avatarUrl: string;
-
-  /**
-   * @generated from field: string bio = 4;
-   */
-  bio: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp updated_at = 5;
-   */
-  updatedAt?: Timestamp | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UserProfile.
- * Use `create(UserProfileSchema)` to create a new message.
- */
-export const UserProfileSchema: GenMessage<UserProfile> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 1);
+export const UserSchema: GenMessage<User> = /*@__PURE__*/ messageDesc(file_quadsmith_api_user, 1);
 
 /**
  * @generated from message quadsmith.api.UserEmail
@@ -180,331 +180,42 @@ export const UserEmailSchema: GenMessage<UserEmail> =
   messageDesc(file_quadsmith_api_user, 2);
 
 /**
- * @generated from message quadsmith.api.UserEmailOAuthAccount
+ * @generated from message quadsmith.api.UserProfile
  */
-export type UserEmailOAuthAccount = Message<"quadsmith.api.UserEmailOAuthAccount"> & {
+export type UserProfile = Message<"quadsmith.api.UserProfile"> & {
   /**
    * @generated from field: string uuid = 1;
    */
   uuid: string;
 
   /**
-   * @generated from field: string user_email_uuid = 2;
+   * @generated from field: string user_uuid = 2;
    */
-  userEmailUuid: string;
+  userUuid: string;
 
   /**
-   * @generated from field: string oauth_account_uuid = 3;
-   */
-  oauthAccountUuid: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at = 4;
-   */
-  createdAt?: Timestamp | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UserEmailOAuthAccount.
- * Use `create(UserEmailOAuthAccountSchema)` to create a new message.
- */
-export const UserEmailOAuthAccountSchema: GenMessage<UserEmailOAuthAccount> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 3);
-
-/**
- * @generated from message quadsmith.api.PublicUserProfile
- */
-export type PublicUserProfile = Message<"quadsmith.api.PublicUserProfile"> & {
-  /**
-   * Public username (or UUID fallback)
-   *
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: string avatar_url = 2;
+   * @generated from field: string avatar_url = 3;
    */
   avatarUrl: string;
 
   /**
-   * @generated from field: string bio = 3;
+   * @generated from field: string bio = 4;
    */
   bio: string;
 
   /**
-   * @generated from field: google.protobuf.Timestamp created_at = 4;
+   * @generated from field: google.protobuf.Timestamp updated_at = 5;
    */
-  createdAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: int32 build_count = 5;
-   */
-  buildCount: number;
-
-  /**
-   * @generated from field: int32 reputation_score = 6;
-   */
-  reputationScore: number;
+  updatedAt?: Timestamp | undefined;
 };
 
 /**
- * Describes the message quadsmith.api.PublicUserProfile.
- * Use `create(PublicUserProfileSchema)` to create a new message.
+ * Describes the message quadsmith.api.UserProfile.
+ * Use `create(UserProfileSchema)` to create a new message.
  */
-export const PublicUserProfileSchema: GenMessage<PublicUserProfile> =
+export const UserProfileSchema: GenMessage<UserProfile> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 4);
-
-/**
- * @generated from message quadsmith.api.RefreshToken
- */
-export type RefreshToken = Message<"quadsmith.api.RefreshToken"> & {
-  /**
-   * @generated from field: string uuid = 1;
-   */
-  uuid: string;
-
-  /**
-   * @generated from field: string user_uuid = 2;
-   */
-  userUuid: string;
-
-  /**
-   * @generated from field: string token_hash = 3;
-   */
-  tokenHash: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp expires_at = 4;
-   */
-  expiresAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp last_used_at = 5;
-   */
-  lastUsedAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: string device_hint = 6;
-   */
-  deviceHint: string;
-
-  /**
-   * @generated from field: string ip_address = 8;
-   */
-  ipAddress: string;
-
-  /**
-   * @generated from field: string location_hint = 9;
-   */
-  locationHint: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at = 7;
-   */
-  createdAt?: Timestamp | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.RefreshToken.
- * Use `create(RefreshTokenSchema)` to create a new message.
- */
-export const RefreshTokenSchema: GenMessage<RefreshToken> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 5);
-
-/**
- * @generated from message quadsmith.api.EmailOtp
- */
-export type EmailOtp = Message<"quadsmith.api.EmailOtp"> & {
-  /**
-   * @generated from field: string uuid = 1;
-   */
-  uuid: string;
-
-  /**
-   * @generated from field: string email = 2;
-   */
-  email: string;
-
-  /**
-   * @generated from field: string code_hash = 3;
-   */
-  codeHash: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp expires_at = 4;
-   */
-  expiresAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp used_at = 5;
-   */
-  usedAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: int32 failed_attempts = 6;
-   */
-  failedAttempts: number;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at = 7;
-   */
-  createdAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: string challenge_id_hash = 8;
-   */
-  challengeIdHash: string;
-
-  /**
-   * @generated from field: string purpose = 9;
-   */
-  purpose: string;
-
-  /**
-   * @generated from field: optional string requested_by_user_uuid = 10;
-   */
-  requestedByUserUuid?: string | undefined;
-
-  /**
-   * @generated from field: string ip_address = 11;
-   */
-  ipAddress: string;
-
-  /**
-   * @generated from field: string user_agent = 12;
-   */
-  userAgent: string;
-
-  /**
-   * @generated from field: string location_hint = 13;
-   */
-  locationHint: string;
-
-  /**
-   * @generated from field: string status = 14;
-   */
-  status: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp approved_at = 15;
-   */
-  approvedAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp denied_at = 16;
-   */
-  deniedAt?: Timestamp | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.EmailOtp.
- * Use `create(EmailOtpSchema)` to create a new message.
- */
-export const EmailOtpSchema: GenMessage<EmailOtp> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 6);
-
-/**
- * @generated from message quadsmith.api.UsernameHistory
- */
-export type UsernameHistory = Message<"quadsmith.api.UsernameHistory"> & {
-  /**
-   * @generated from field: string uuid = 1;
-   */
-  uuid: string;
-
-  /**
-   * @generated from field: string user_uuid = 2;
-   */
-  userUuid: string;
-
-  /**
-   * @generated from field: string old_username = 3;
-   */
-  oldUsername: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp renamed_at = 4;
-   */
-  renamedAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp first_archived_at = 5;
-   */
-  firstArchivedAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp release_warning_sent_at = 6;
-   */
-  releaseWarningSentAt?: Timestamp | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UsernameHistory.
- * Use `create(UsernameHistorySchema)` to create a new message.
- */
-export const UsernameHistorySchema: GenMessage<UsernameHistory> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 7);
-
-/**
- * @generated from message quadsmith.api.OAuthAccount
- */
-export type OAuthAccount = Message<"quadsmith.api.OAuthAccount"> & {
-  /**
-   * @generated from field: string uuid = 1;
-   */
-  uuid: string;
-
-  /**
-   * @generated from field: string user_uuid = 2;
-   */
-  userUuid: string;
-
-  /**
-   * "google", "github"
-   *
-   * @generated from field: string provider = 3;
-   */
-  provider: string;
-
-  /**
-   * @generated from field: string provider_account_id = 4;
-   */
-  providerAccountId: string;
-
-  /**
-   * @generated from field: string access_token = 5;
-   */
-  accessToken: string;
-
-  /**
-   * @generated from field: string refresh_token = 6;
-   */
-  refreshToken: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp token_expires_at = 7;
-   */
-  tokenExpiresAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at = 8;
-   */
-  createdAt?: Timestamp | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.OAuthAccount.
- * Use `create(OAuthAccountSchema)` to create a new message.
- */
-export const OAuthAccountSchema: GenMessage<OAuthAccount> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 8);
+  messageDesc(file_quadsmith_api_user, 3);
 
 /**
  * @generated from message quadsmith.api.Ban
@@ -565,40 +276,7 @@ export type Ban = Message<"quadsmith.api.Ban"> & {
  * Describes the message quadsmith.api.Ban.
  * Use `create(BanSchema)` to create a new message.
  */
-export const BanSchema: GenMessage<Ban> = /*@__PURE__*/ messageDesc(file_quadsmith_api_user, 9);
-
-/**
- * @generated from message quadsmith.api.BannedEmail
- */
-export type BannedEmail = Message<"quadsmith.api.BannedEmail"> & {
-  /**
-   * @generated from field: string uuid = 1;
-   */
-  uuid: string;
-
-  /**
-   * @generated from field: string ban_uuid = 2;
-   */
-  banUuid: string;
-
-  /**
-   * @generated from field: string email = 3;
-   */
-  email: string;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at = 4;
-   */
-  createdAt?: Timestamp | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.BannedEmail.
- * Use `create(BannedEmailSchema)` to create a new message.
- */
-export const BannedEmailSchema: GenMessage<BannedEmail> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 10);
+export const BanSchema: GenMessage<Ban> = /*@__PURE__*/ messageDesc(file_quadsmith_api_user, 4);
 
 /**
  * @generated from message quadsmith.api.BanUserRequest
@@ -639,7 +317,7 @@ export type BanUserRequest = Message<"quadsmith.api.BanUserRequest"> & {
  */
 export const BanUserRequestSchema: GenMessage<BanUserRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 11);
+  messageDesc(file_quadsmith_api_user, 5);
 
 /**
  * @generated from message quadsmith.api.BanUserResponse
@@ -667,7 +345,7 @@ export type BanUserResponse = Message<"quadsmith.api.BanUserResponse"> & {
  */
 export const BanUserResponseSchema: GenMessage<BanUserResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 12);
+  messageDesc(file_quadsmith_api_user, 6);
 
 /**
  * @generated from message quadsmith.api.CheckUsernameAvailableRequest
@@ -686,7 +364,7 @@ export type CheckUsernameAvailableRequest =
  */
 export const CheckUsernameAvailableRequestSchema: GenMessage<CheckUsernameAvailableRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 13);
+  messageDesc(file_quadsmith_api_user, 7);
 
 /**
  * @generated from message quadsmith.api.CheckUsernameAvailableResponse
@@ -715,7 +393,7 @@ export type CheckUsernameAvailableResponse =
  */
 export const CheckUsernameAvailableResponseSchema: GenMessage<CheckUsernameAvailableResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 14);
+  messageDesc(file_quadsmith_api_user, 8);
 
 /**
  * @generated from message quadsmith.api.GetPublicProfileRequest
@@ -735,7 +413,7 @@ export type GetPublicProfileRequest = Message<"quadsmith.api.GetPublicProfileReq
  */
 export const GetPublicProfileRequestSchema: GenMessage<GetPublicProfileRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 15);
+  messageDesc(file_quadsmith_api_user, 9);
 
 /**
  * @generated from message quadsmith.api.GetUserBanStatusRequest
@@ -755,7 +433,7 @@ export type GetUserBanStatusRequest = Message<"quadsmith.api.GetUserBanStatusReq
  */
 export const GetUserBanStatusRequestSchema: GenMessage<GetUserBanStatusRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 16);
+  messageDesc(file_quadsmith_api_user, 10);
 
 /**
  * @generated from message quadsmith.api.GetUserBanStatusResponse
@@ -778,7 +456,7 @@ export type GetUserBanStatusResponse = Message<"quadsmith.api.GetUserBanStatusRe
  */
 export const GetUserBanStatusResponseSchema: GenMessage<GetUserBanStatusResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 17);
+  messageDesc(file_quadsmith_api_user, 11);
 
 /**
  * @generated from message quadsmith.api.GetUserRequest
@@ -798,7 +476,7 @@ export type GetUserRequest = Message<"quadsmith.api.GetUserRequest"> & {
  */
 export const GetUserRequestSchema: GenMessage<GetUserRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 18);
+  messageDesc(file_quadsmith_api_user, 12);
 
 /**
  * @generated from message quadsmith.api.ListBansRequest
@@ -843,7 +521,7 @@ export type ListBansRequest = Message<"quadsmith.api.ListBansRequest"> & {
  */
 export const ListBansRequestSchema: GenMessage<ListBansRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 19);
+  messageDesc(file_quadsmith_api_user, 13);
 
 /**
  * @generated from message quadsmith.api.ListBansResponse
@@ -866,7 +544,7 @@ export type ListBansResponse = Message<"quadsmith.api.ListBansResponse"> & {
  */
 export const ListBansResponseSchema: GenMessage<ListBansResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 20);
+  messageDesc(file_quadsmith_api_user, 14);
 
 /**
  * @generated from message quadsmith.api.ListUsersResponse
@@ -889,7 +567,7 @@ export type ListUsersResponse = Message<"quadsmith.api.ListUsersResponse"> & {
  */
 export const ListUsersResponseSchema: GenMessage<ListUsersResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 21);
+  messageDesc(file_quadsmith_api_user, 15);
 
 /**
  * @generated from message quadsmith.api.SeedUser
@@ -932,7 +610,7 @@ export type SeedUser = Message<"quadsmith.api.SeedUser"> & {
  */
 export const SeedUserSchema: GenMessage<SeedUser> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 22);
+  messageDesc(file_quadsmith_api_user, 16);
 
 /**
  * @generated from message quadsmith.api.UpdateBanRequest
@@ -994,7 +672,7 @@ export type UpdateBanRequest = Message<"quadsmith.api.UpdateBanRequest"> & {
  */
 export const UpdateBanRequestSchema: GenMessage<UpdateBanRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 23);
+  messageDesc(file_quadsmith_api_user, 17);
 
 /**
  * @generated from message quadsmith.api.UpdateBanResponse
@@ -1022,7 +700,7 @@ export type UpdateBanResponse = Message<"quadsmith.api.UpdateBanResponse"> & {
  */
 export const UpdateBanResponseSchema: GenMessage<UpdateBanResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_user, 24);
+  messageDesc(file_quadsmith_api_user, 18);
 
 /**
  * @generated from enum quadsmith.api.UsernameAvailabilityStatus

@@ -84,8 +84,9 @@ identifiers.
 > - Replace `internal_api_calls.jit_grant_id` with a `jit_grant_uuid` foreign
 >   key referencing `jit_grants(uuid)` and project `jit_grant_id` via
 >   `LEFT JOIN`.
-> - Mark 11 denormalized display fields on `reviews`, `questions`, `answers`,
->   and `collection_items` as `ignore: true` in Protobuf.
+> - Exclude 11 denormalized display fields on `reviews`, `questions`, `answers`,
+>   and `collection_items` from the SQL storage schema (`store/social.proto`),
+>   retaining them only on the API view models (`api/social.proto`).
 > - Enforce database-level referential integrity on `blob_references` using
 >   explicit nullable `entity_uuid` and `user_uuid` foreign keys with `CHECK`.
 > - Retain `firmware` and `operating_system` hardware spec columns as `TEXT`
@@ -100,28 +101,32 @@ referenced row either does not exist yet, has already been purged under GDPR
 retention rules, or represents a distinct conceptual tier). For true relational
 linkages, we normalize the underlying SQL tables in
 [`quadsmith_api.sql`](../../src/db/quadsmith_api.sql) and
-[`quadsmith_ops.sql`](../../src/db/quadsmith_ops.sql) to store only `UUID`
-foreign keys while keeping the API-facing human-readable fields on the Protobuf
-messages via `[(quadsmith.sql.column) = {ignore: true}]`.
+[`quadsmith_ops.sql`](../../src/db/quadsmith_ops.sql) (defined in
+[`src/proto/quadsmith/store/`](../../src/proto/quadsmith/store) per
+[`storage_and_api_proto_separation.md`](storage_and_api_proto_separation.md)) to
+store only `UUID` foreign keys while keeping the API-facing human-readable
+fields on the API view-model Protobuf messages in `quadsmith.api` and
+`quadsmith.ops`.
 
 ### <a id="design-decision-1-normalize-internal-api-calls-jit-grant-id-to-jit-grant-uuid" >Design Decision 1: Normalize `internal_api_calls.jit_grant_id` to `jit_grant_uuid`</a>
 
 In
-[`src/proto/quadsmith/ops/ops.proto`](../../src/proto/quadsmith/ops/ops.proto#L125-L165),
-[`InternalApiCallRecord`](../../src/proto/quadsmith/ops/ops.proto#L125)
-previously defined `optional string jit_grant_id = 7;`, which caused
-[`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go) to generate
-an unconstrained `jit_grant_id TEXT` column on
-[`internal_api_calls`](../../src/db/quadsmith_ops.sql#L46). This was the only
-column in either database that directly referenced another table exclusively by
-its human-readable `id` without a `uuid` column.
+[`src/proto/quadsmith/ops/ops.proto`](../../src/proto/quadsmith/ops/ops.proto),
+`InternalApiCallRecord` previously defined `optional string jit_grant_id = 7;`,
+which caused [`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go)
+to generate an unconstrained `jit_grant_id TEXT` column on
+[`internal_api_calls`](../../src/db/quadsmith_ops.sql). This was the only column
+in either database that directly referenced another table exclusively by its
+human-readable `id` without a `uuid` column.
 
-We replace the persisted SQL column with `jit_grant_uuid UUID` referencing
-`jit_grants(uuid)` and mark `jit_grant_id` as an API-only projected field,
-annotating both with `CONTENT_TYPE_SYSTEM_METADATA_PRIVATE` to satisfy
-[`schemacheck`](../../src/go/shared/pkg/schemacheck/data_check.go):
+We replace the persisted SQL column in
+[`src/proto/quadsmith/store/ops.proto`](../../src/proto/quadsmith/store/ops.proto)
+with `jit_grant_uuid UUID` referencing `jit_grants(uuid)` and retain
+`jit_grant_id` as an API-only projected field on `InternalApiCallRecord` in
+[`src/proto/quadsmith/ops/ops.proto`](../../src/proto/quadsmith/ops/ops.proto):
 
 ```protobuf
+// In src/proto/quadsmith/store/ops.proto:
 message InternalApiCallRecord {
   option (quadsmith.sql.table) = {name: "internal_api_calls"};
   option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
@@ -148,14 +153,10 @@ message InternalApiCallRecord {
     },
     (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
   ];
-  optional string jit_grant_id = 8 [
-    (quadsmith.sql.column) = {ignore: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
-  ];
-  string status = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  optional string error_message = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  int64 duration_ms = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  google.protobuf.Timestamp created_at = 12 [
+  string status = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  optional string error_message = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  int64 duration_ms = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  google.protobuf.Timestamp created_at = 11 [
     (quadsmith.sql.column) = {
       create_index: true
       default_value: "NOW()"
@@ -289,9 +290,13 @@ redundant SQL columns in [`quadsmith_api.sql`](../../src/db/quadsmith_api.sql):
 
 We:
 
-- Annotate all 11 fields in
+- Omit all 11 denormalized fields (plus the dead `is_author_verified_owner`
+  column) from the SQL storage definitions in
+  [`src/proto/quadsmith/store/social.proto`](../../src/proto/quadsmith/store/social.proto)
+  while keeping them on the pure API view models in
   [`src/proto/quadsmith/api/social.proto`](../../src/proto/quadsmith/api/social.proto)
-  with `[(quadsmith.sql.column) = {ignore: true}]`.
+  (see
+  [`storage_and_api_proto_separation.md`](storage_and_api_proto_separation.md)).
 - Update [`resolveEntity`](../../src/go/shared/pkg/social/service.go#L46-L81) to
   also return `resolvedID` (`entities.id`) so `CreateReview`, `CreateQuestion`,
   and `AddCollectionItem` always return the canonical slug even when called with
@@ -307,16 +312,16 @@ We:
   [`AddCollectionItem`](../../src/go/shared/pkg/social/service.go#L1996-L2000)
   to insert only `(uuid, collection_uuid, entity_uuid, created_at)`.
 - **GDPR Data Export Compatibility
-  ([`protoc-gen-store`](../../src/go/shared/cmd/protoc-gen-store/main.go#L528-L555))**:
-  `protoc-gen-store` generates `Export<PluralName>` by iterating over
-  `activeFields` (fields where `sql.column.ignore` is false). Marking these 11
-  fields `ignore: true` automatically excludes the redundant denormalized
-  columns from `ExportReviews`, `ExportQuestions`, `ExportAnswers`, and
+  ([`protoc-gen-store`](../../src/go/shared/cmd/protoc-gen-store/main.go))**:
+  `protoc-gen-store` generates `Export<PluralName>` in
+  `quadsmith/shared/gen/quadsmith/store` by iterating over the persisted SQL
+  columns of `store/social.proto`, automatically excluding the denormalized
+  display fields from `ExportReviews`, `ExportQuestions`, `ExportAnswers`, and
   `ExportCollectionItems`. Because `CollectionItem.created_at`
   (`CONTENT_TYPE_USER_OBSERVED`) remains an active non-UUID SQL column,
   `ExportCollectionItems` continues to be generated for
-  [`export/handler.go`](../../src/go/shared/pkg/export/handler.go#L302) and
-  exports `(uuid, collection_uuid, entity_uuid, created_at)`, matching how
+  [`export/handler.go`](../../src/go/shared/pkg/export/handler.go) and exports
+  `(uuid, collection_uuid, entity_uuid, created_at)`, matching how
   `ExportReviewVotes`, `ExportQuestionVotes`, and `ExportAnswerVotes` export
   their canonical UUIDs and timestamps.
 
@@ -383,7 +388,7 @@ We implement a two-part design for blob references:
    the polymorphic relational foreign key pattern from
    [social_interactions_and_collections.md](social_interactions_and_collections.md#L56-L69)
    by giving `BlobReference` in
-   [`src/proto/quadsmith/api/blob.proto`](../../src/proto/quadsmith/api/blob.proto#L65-L120)
+   [`src/proto/quadsmith/store/blob.proto`](../../src/proto/quadsmith/store/blob.proto)
    explicit nullable `entity_uuid`
    (`REFERENCES entities(uuid) ON DELETE CASCADE`) and `user_uuid`
    (`REFERENCES users(uuid) ON DELETE CASCADE`) columns (annotated with
@@ -420,7 +425,7 @@ when entities or users are deleted.
 
 **Pros:**
 
-- Zero changes required to `blob.proto`, `blob/store.go`, or
+- Zero changes required to `store/blob.proto`, `blob/store.go`, or
   `protoc-gen-server`.
 
 **Cons:**
@@ -517,9 +522,12 @@ Add `esc_firmware_uuids UUID[]` on `electronic_speed_controllers` and
 ### <a id="design-decision-5-preserve-pre-account-and-post-purge-text-email-snapshots-email-otps-banned-emails" >Design Decision 5: Preserve Pre-Account and Post-Purge `TEXT` Email Snapshots (`email_otps`, `banned_emails`)</a>
 
 Following the implementation of
-[gdpr_data_export.md](gdpr_data_export.md#L695-L740), `users.email` has already
-been marked `[(quadsmith.sql.column) = {ignore: true}]` in
-[`src/proto/quadsmith/api/user.proto`](../../src/proto/quadsmith/api/user.proto#L69-L72),
+[gdpr_data_export.md](gdpr_data_export.md#L695-L740) and
+[storage_and_api_proto_separation.md](storage_and_api_proto_separation.md),
+`users.email` is omitted from `User` in
+[`src/proto/quadsmith/store/user.proto`](../../src/proto/quadsmith/store/user.proto)
+and exists only as a resolved API field on `User` in
+[`src/proto/quadsmith/api/user.proto`](../../src/proto/quadsmith/api/user.proto),
 leaving [`user_emails`](../../src/db/quadsmith_api.sql#L46-L61) as the sole
 canonical table for active user email addresses (enforced by
 `idx_user_emails_one_primary_per_user`).
@@ -676,10 +684,11 @@ and creating an `operators` table in `quadsmith_ops.sql`.
    redundant columns and replace `jit_grant_id` in the SQL schema and Protobuf
    definitions without legacy migration shims.
 2. Keeping API-level Protobuf fields (`Review.entity_id`, `Question.entity_id`,
-   `CollectionItem.entity_id`, `InternalApiCallRecord.jit_grant_id`) populated
-   via SQL joins with `[(quadsmith.sql.column) = {ignore: true}]` preserves full
-   frontend and CLI ergonomics while keeping the database and GDPR data exports
-   normalized.
+   `CollectionItem.entity_id`, `InternalApiCallRecord.jit_grant_id`) on the API
+   view models in `quadsmith.api` and `quadsmith.ops` populated via SQL joins
+   while omitting them from the storage schemas in `quadsmith.store` preserves
+   full frontend and CLI ergonomics while keeping the database and GDPR data
+   exports normalized.
 
 ---
 
@@ -692,4 +701,4 @@ Add a compile-time check in
 [`schemacheck`](../../src/go/shared/pkg/schemacheck/data_check.go)) that fails
 `make generate` / `make test` if any `references` annotation targets a column
 other than `(uuid)` or if a column named `*_id` (other than
-`provider_account_id`) is generated on a SQL table without `ignore: true`.
+`provider_account_id`) is generated on a SQL table.

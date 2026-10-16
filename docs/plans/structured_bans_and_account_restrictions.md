@@ -344,7 +344,9 @@ login attempts with `CodePermissionDenied`.
 ### <a id="administrative-moderation-protobuf-contracts-in-userservice" >Administrative Moderation Protobuf Contracts in UserService</a>
 
 The moderation RPCs are integrated directly into `UserService` in
-[`src/proto/quadsmith/api/user.proto`](../../src/proto/quadsmith/api/user.proto):
+[`src/proto/quadsmith/api/user.proto`](../../src/proto/quadsmith/api/user.proto),
+with the SQL table definitions (`Ban` and `BannedEmail`) stored in
+[`src/proto/quadsmith/store/user.proto`](../../src/proto/quadsmith/store/user.proto):
 
 ```protobuf
 service UserService {
@@ -359,6 +361,7 @@ service UserService {
   rpc GetUserBanStatus(GetUserBanStatusRequest) returns (GetUserBanStatusResponse);
 }
 
+// In src/proto/quadsmith/store/user.proto:
 message Ban {
   option (quadsmith.sql.table) = {name: "bans"};
   option (quadsmith.data.export) = {
