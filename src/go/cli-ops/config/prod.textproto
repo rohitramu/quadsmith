@@ -1,5 +1,6 @@
 environment: "prod"
 ops_server_url: "https://ops.quadsmith.com"
+jobs_server_url: "https://jobs.quadsmith.com"
 timeout {
   seconds: 30
 }

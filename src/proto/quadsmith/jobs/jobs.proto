@@ -7,27 +7,48 @@ import "google/protobuf/timestamp.proto";
 option go_package = "quadsmith/shared/gen/quadsmith/jobs;jobs";
 
 // ---------------------------------------------------------
-// Domain model
+// Services
 // ---------------------------------------------------------
 
-message JobExecutionRecord {
-  string uuid = 1;
-  string job_name = 2;
-  string procedure = 3;
-  JobExecutionStatus status = 4;
-  google.protobuf.Timestamp started_at = 5;
-  google.protobuf.Timestamp completed_at = 6;
-  int64 duration_ms = 7;
-  optional string error_message = 8;
+service JobsService {
+  rpc GetJob(GetJobRequest) returns (GetJobResponse);
+  rpc ListJobs(ListJobsRequest) returns (ListJobsResponse);
 }
 
 // ---------------------------------------------------------
-// Everything else
+// Domain model
 // ---------------------------------------------------------
 
-enum JobExecutionStatus {
-  JOB_EXECUTION_STATUS_UNSPECIFIED = 0;
-  JOB_EXECUTION_STATUS_RUNNING = 1;
-  JOB_EXECUTION_STATUS_SUCCESS = 2;
-  JOB_EXECUTION_STATUS_FAILED = 3;
+message JobRecord {
+  string job_id = 1;
+  string task_name = 2;
+  string procedure = 3;
+  string caller = 4;
+  string caller_type = 5;
+  string status = 6;
+  int64 duration_ms = 7;
+  optional string error_message = 8;
+  google.protobuf.Timestamp created_at = 9;
+  optional string schedule_interval = 10;
+}
+
+// ---------------------------------------------------------
+// Request/response messages
+// ---------------------------------------------------------
+
+message GetJobRequest {
+  string job_id = 1;
+}
+
+message GetJobResponse {
+  JobRecord job = 1;
+}
+
+message ListJobsRequest {
+  optional int32 limit = 1;
+  optional string task_name = 2;
+}
+
+message ListJobsResponse {
+  repeated JobRecord jobs = 1;
 }

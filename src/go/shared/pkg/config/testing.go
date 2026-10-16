@@ -198,14 +198,57 @@ func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *config.OpsSe
 func NewTestJobServerConfig(t testing.TB) *config.JobServerConfig {
 	t.Helper()
 	return &config.JobServerConfig{
-		Environment:  proto.String("test"),
+		Environment: proto.String("test"),
+		Server: &config.ServerConfig{
+			Port:            proto.Int32(8080),
+			ReadTimeout:     durationpb.New(30 * time.Second),
+			WriteTimeout:    durationpb.New(60 * time.Second),
+			IdleTimeout:     durationpb.New(120 * time.Second),
+			MaxRequestBytes: proto.Int64(2097152),
+		},
 		OpsServerUrl: proto.String("http://127.0.0.1:8082"),
 		AuthToken:    proto.String("qs_robot_test_token_67890"),
-		Schedules: []*config.JobScheduleConfig{
-			{
-				Name:      proto.String("cleanup_expired_otps"),
-				Procedure: proto.String("CleanupExpiredOtps"),
-				Interval:  proto.String("6h"),
+		InternalDatabase: &config.DatabaseConfig{
+			Url:            proto.String("postgres://postgres:postgres@127.0.0.1:5432/quadsmith_ops?sslmode=disable"),
+			Name:           proto.String("quadsmith_ops"),
+			MaxConnections: proto.Int32(10),
+			MinConnections: proto.Int32(2),
+		},
+		CleanupExpiredOtps: &config.CleanupExpiredOtpsSchedule{
+			Enabled: proto.Bool(true),
+			Schedule: &config.CleanupExpiredOtpsSchedule_Interval{
+				Interval: durationpb.New(6 * time.Hour),
+			},
+		},
+		CleanupExpiredTokens: &config.CleanupExpiredTokensSchedule{
+			Enabled: proto.Bool(true),
+			Schedule: &config.CleanupExpiredTokensSchedule_Cron{
+				Cron: "0 */12 * * *",
+			},
+		},
+		CleanupOrphanedBlobs: &config.CleanupOrphanedBlobsSchedule{
+			Enabled: proto.Bool(true),
+			Schedule: &config.CleanupOrphanedBlobsSchedule_Interval{
+				Interval: durationpb.New(5 * time.Minute),
+			},
+		},
+		DatabaseMaintenance: &config.DatabaseMaintenanceSchedule{
+			Enabled: proto.Bool(false),
+			Schedule: &config.DatabaseMaintenanceSchedule_Cron{
+				Cron: "0 3 * * 0",
+			},
+			FullVacuum: proto.Bool(false),
+		},
+		PurgeSoftDeletedAccounts: &config.PurgeSoftDeletedAccountsSchedule{
+			Enabled: proto.Bool(true),
+			Schedule: &config.PurgeSoftDeletedAccountsSchedule_Interval{
+				Interval: durationpb.New(8 * time.Hour),
+			},
+		},
+		SendUsernameReleaseWarnings: &config.SendUsernameReleaseWarningsSchedule{
+			Enabled: proto.Bool(true),
+			Schedule: &config.SendUsernameReleaseWarningsSchedule_Cron{
+				Cron: "0 0 * * *",
 			},
 		},
 	}

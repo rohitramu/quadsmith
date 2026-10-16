@@ -53,14 +53,19 @@ const (
 	// OpsServiceCleanupOrphanedBlobsProcedure is the fully-qualified name of the OpsService's
 	// CleanupOrphanedBlobs RPC.
 	OpsServiceCleanupOrphanedBlobsProcedure = "/quadsmith.ops.OpsService/CleanupOrphanedBlobs"
-	// OpsServiceListScheduledJobsProcedure is the fully-qualified name of the OpsService's
-	// ListScheduledJobs RPC.
-	OpsServiceListScheduledJobsProcedure = "/quadsmith.ops.OpsService/ListScheduledJobs"
-	// OpsServiceTriggerJobProcedure is the fully-qualified name of the OpsService's TriggerJob RPC.
-	OpsServiceTriggerJobProcedure = "/quadsmith.ops.OpsService/TriggerJob"
+	// OpsServicePurgeSoftDeletedAccountsProcedure is the fully-qualified name of the OpsService's
+	// PurgeSoftDeletedAccounts RPC.
+	OpsServicePurgeSoftDeletedAccountsProcedure = "/quadsmith.ops.OpsService/PurgeSoftDeletedAccounts"
+	// OpsServiceSendUsernameReleaseWarningsProcedure is the fully-qualified name of the OpsService's
+	// SendUsernameReleaseWarnings RPC.
+	OpsServiceSendUsernameReleaseWarningsProcedure = "/quadsmith.ops.OpsService/SendUsernameReleaseWarnings"
+	// OpsServiceGetTaskProcedure is the fully-qualified name of the OpsService's GetTask RPC.
+	OpsServiceGetTaskProcedure = "/quadsmith.ops.OpsService/GetTask"
 	// OpsServiceListInternalApiCallsProcedure is the fully-qualified name of the OpsService's
 	// ListInternalApiCalls RPC.
 	OpsServiceListInternalApiCallsProcedure = "/quadsmith.ops.OpsService/ListInternalApiCalls"
+	// OpsServiceListTasksProcedure is the fully-qualified name of the OpsService's ListTasks RPC.
+	OpsServiceListTasksProcedure = "/quadsmith.ops.OpsService/ListTasks"
 	// OpsServiceExchangeOAuthCodeProcedure is the fully-qualified name of the OpsService's
 	// ExchangeOAuthCode RPC.
 	OpsServiceExchangeOAuthCodeProcedure = "/quadsmith.ops.OpsService/ExchangeOAuthCode"
@@ -104,14 +109,16 @@ type OpsServiceClient interface {
 	RunDatabaseMaintenance(context.Context, *connect.Request[ops.RunDatabaseMaintenanceRequest]) (*connect.Response[ops.RunDatabaseMaintenanceResponse], error)
 	// Catalog Seeding
 	SeedDatabase(context.Context, *connect.Request[ops.SeedDatabaseRequest]) (*connect.Response[ops.SeedDatabaseResponse], error)
-	// Maintenance & Cleanup
+	// Maintenance & Cleanup Tasks
 	CleanupExpiredOtps(context.Context, *connect.Request[ops.CleanupExpiredOtpsRequest]) (*connect.Response[ops.CleanupExpiredOtpsResponse], error)
 	CleanupExpiredTokens(context.Context, *connect.Request[ops.CleanupExpiredTokensRequest]) (*connect.Response[ops.CleanupExpiredTokensResponse], error)
 	CleanupOrphanedBlobs(context.Context, *connect.Request[ops.CleanupOrphanedBlobsRequest]) (*connect.Response[ops.CleanupOrphanedBlobsResponse], error)
-	// Scheduled Jobs & Audit
-	ListScheduledJobs(context.Context, *connect.Request[ops.ListScheduledJobsRequest]) (*connect.Response[ops.ListScheduledJobsResponse], error)
-	TriggerJob(context.Context, *connect.Request[ops.TriggerJobRequest]) (*connect.Response[ops.TriggerJobResponse], error)
+	PurgeSoftDeletedAccounts(context.Context, *connect.Request[ops.PurgeSoftDeletedAccountsRequest]) (*connect.Response[ops.PurgeSoftDeletedAccountsResponse], error)
+	SendUsernameReleaseWarnings(context.Context, *connect.Request[ops.SendUsernameReleaseWarningsRequest]) (*connect.Response[ops.SendUsernameReleaseWarningsResponse], error)
+	// Tasks Inspection & Audit
+	GetTask(context.Context, *connect.Request[ops.GetTaskRequest]) (*connect.Response[ops.GetTaskResponse], error)
 	ListInternalApiCalls(context.Context, *connect.Request[ops.ListInternalApiCallsRequest]) (*connect.Response[ops.ListInternalApiCallsResponse], error)
+	ListTasks(context.Context, *connect.Request[ops.ListTasksRequest]) (*connect.Response[ops.ListTasksResponse], error)
 	// Authentication & IAM
 	ExchangeOAuthCode(context.Context, *connect.Request[ops.ExchangeOAuthCodeRequest]) (*connect.Response[ops.ExchangeOAuthCodeResponse], error)
 	GetCurrentOperator(context.Context, *connect.Request[ops.GetCurrentOperatorRequest]) (*connect.Response[ops.GetCurrentOperatorResponse], error)
@@ -181,22 +188,34 @@ func NewOpsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 			connect.WithSchema(opsServiceMethods.ByName("CleanupOrphanedBlobs")),
 			connect.WithClientOptions(opts...),
 		),
-		listScheduledJobs: connect.NewClient[ops.ListScheduledJobsRequest, ops.ListScheduledJobsResponse](
+		purgeSoftDeletedAccounts: connect.NewClient[ops.PurgeSoftDeletedAccountsRequest, ops.PurgeSoftDeletedAccountsResponse](
 			httpClient,
-			baseURL+OpsServiceListScheduledJobsProcedure,
-			connect.WithSchema(opsServiceMethods.ByName("ListScheduledJobs")),
+			baseURL+OpsServicePurgeSoftDeletedAccountsProcedure,
+			connect.WithSchema(opsServiceMethods.ByName("PurgeSoftDeletedAccounts")),
 			connect.WithClientOptions(opts...),
 		),
-		triggerJob: connect.NewClient[ops.TriggerJobRequest, ops.TriggerJobResponse](
+		sendUsernameReleaseWarnings: connect.NewClient[ops.SendUsernameReleaseWarningsRequest, ops.SendUsernameReleaseWarningsResponse](
 			httpClient,
-			baseURL+OpsServiceTriggerJobProcedure,
-			connect.WithSchema(opsServiceMethods.ByName("TriggerJob")),
+			baseURL+OpsServiceSendUsernameReleaseWarningsProcedure,
+			connect.WithSchema(opsServiceMethods.ByName("SendUsernameReleaseWarnings")),
+			connect.WithClientOptions(opts...),
+		),
+		getTask: connect.NewClient[ops.GetTaskRequest, ops.GetTaskResponse](
+			httpClient,
+			baseURL+OpsServiceGetTaskProcedure,
+			connect.WithSchema(opsServiceMethods.ByName("GetTask")),
 			connect.WithClientOptions(opts...),
 		),
 		listInternalApiCalls: connect.NewClient[ops.ListInternalApiCallsRequest, ops.ListInternalApiCallsResponse](
 			httpClient,
 			baseURL+OpsServiceListInternalApiCallsProcedure,
 			connect.WithSchema(opsServiceMethods.ByName("ListInternalApiCalls")),
+			connect.WithClientOptions(opts...),
+		),
+		listTasks: connect.NewClient[ops.ListTasksRequest, ops.ListTasksResponse](
+			httpClient,
+			baseURL+OpsServiceListTasksProcedure,
+			connect.WithSchema(opsServiceMethods.ByName("ListTasks")),
 			connect.WithClientOptions(opts...),
 		),
 		exchangeOAuthCode: connect.NewClient[ops.ExchangeOAuthCodeRequest, ops.ExchangeOAuthCodeResponse](
@@ -270,27 +289,29 @@ func NewOpsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 
 // opsServiceClient implements OpsServiceClient.
 type opsServiceClient struct {
-	getSystemDiagnostics   *connect.Client[ops.GetSystemDiagnosticsRequest, ops.GetSystemDiagnosticsResponse]
-	getDatabaseStats       *connect.Client[ops.GetDatabaseStatsRequest, ops.GetDatabaseStatsResponse]
-	runDatabaseMaintenance *connect.Client[ops.RunDatabaseMaintenanceRequest, ops.RunDatabaseMaintenanceResponse]
-	seedDatabase           *connect.Client[ops.SeedDatabaseRequest, ops.SeedDatabaseResponse]
-	cleanupExpiredOtps     *connect.Client[ops.CleanupExpiredOtpsRequest, ops.CleanupExpiredOtpsResponse]
-	cleanupExpiredTokens   *connect.Client[ops.CleanupExpiredTokensRequest, ops.CleanupExpiredTokensResponse]
-	cleanupOrphanedBlobs   *connect.Client[ops.CleanupOrphanedBlobsRequest, ops.CleanupOrphanedBlobsResponse]
-	listScheduledJobs      *connect.Client[ops.ListScheduledJobsRequest, ops.ListScheduledJobsResponse]
-	triggerJob             *connect.Client[ops.TriggerJobRequest, ops.TriggerJobResponse]
-	listInternalApiCalls   *connect.Client[ops.ListInternalApiCallsRequest, ops.ListInternalApiCallsResponse]
-	exchangeOAuthCode      *connect.Client[ops.ExchangeOAuthCodeRequest, ops.ExchangeOAuthCodeResponse]
-	getCurrentOperator     *connect.Client[ops.GetCurrentOperatorRequest, ops.GetCurrentOperatorResponse]
-	listIamUsers           *connect.Client[ops.ListIamUsersRequest, ops.ListIamUsersResponse]
-	listIamGroups          *connect.Client[ops.ListIamGroupsRequest, ops.ListIamGroupsResponse]
-	createInternalToken    *connect.Client[ops.CreateInternalTokenRequest, ops.CreateInternalTokenResponse]
-	listInternalTokens     *connect.Client[ops.ListInternalTokensRequest, ops.ListInternalTokensResponse]
-	revokeInternalToken    *connect.Client[ops.RevokeInternalTokenRequest, ops.RevokeInternalTokenResponse]
-	acquireJitGrant        *connect.Client[ops.AcquireJitGrantRequest, ops.AcquireJitGrantResponse]
-	extendJitGrant         *connect.Client[ops.ExtendJitGrantRequest, ops.ExtendJitGrantResponse]
-	listJitGrants          *connect.Client[ops.ListJitGrantsRequest, ops.ListJitGrantsResponse]
-	revokeJitGrant         *connect.Client[ops.RevokeJitGrantRequest, ops.RevokeJitGrantResponse]
+	getSystemDiagnostics        *connect.Client[ops.GetSystemDiagnosticsRequest, ops.GetSystemDiagnosticsResponse]
+	getDatabaseStats            *connect.Client[ops.GetDatabaseStatsRequest, ops.GetDatabaseStatsResponse]
+	runDatabaseMaintenance      *connect.Client[ops.RunDatabaseMaintenanceRequest, ops.RunDatabaseMaintenanceResponse]
+	seedDatabase                *connect.Client[ops.SeedDatabaseRequest, ops.SeedDatabaseResponse]
+	cleanupExpiredOtps          *connect.Client[ops.CleanupExpiredOtpsRequest, ops.CleanupExpiredOtpsResponse]
+	cleanupExpiredTokens        *connect.Client[ops.CleanupExpiredTokensRequest, ops.CleanupExpiredTokensResponse]
+	cleanupOrphanedBlobs        *connect.Client[ops.CleanupOrphanedBlobsRequest, ops.CleanupOrphanedBlobsResponse]
+	purgeSoftDeletedAccounts    *connect.Client[ops.PurgeSoftDeletedAccountsRequest, ops.PurgeSoftDeletedAccountsResponse]
+	sendUsernameReleaseWarnings *connect.Client[ops.SendUsernameReleaseWarningsRequest, ops.SendUsernameReleaseWarningsResponse]
+	getTask                     *connect.Client[ops.GetTaskRequest, ops.GetTaskResponse]
+	listInternalApiCalls        *connect.Client[ops.ListInternalApiCallsRequest, ops.ListInternalApiCallsResponse]
+	listTasks                   *connect.Client[ops.ListTasksRequest, ops.ListTasksResponse]
+	exchangeOAuthCode           *connect.Client[ops.ExchangeOAuthCodeRequest, ops.ExchangeOAuthCodeResponse]
+	getCurrentOperator          *connect.Client[ops.GetCurrentOperatorRequest, ops.GetCurrentOperatorResponse]
+	listIamUsers                *connect.Client[ops.ListIamUsersRequest, ops.ListIamUsersResponse]
+	listIamGroups               *connect.Client[ops.ListIamGroupsRequest, ops.ListIamGroupsResponse]
+	createInternalToken         *connect.Client[ops.CreateInternalTokenRequest, ops.CreateInternalTokenResponse]
+	listInternalTokens          *connect.Client[ops.ListInternalTokensRequest, ops.ListInternalTokensResponse]
+	revokeInternalToken         *connect.Client[ops.RevokeInternalTokenRequest, ops.RevokeInternalTokenResponse]
+	acquireJitGrant             *connect.Client[ops.AcquireJitGrantRequest, ops.AcquireJitGrantResponse]
+	extendJitGrant              *connect.Client[ops.ExtendJitGrantRequest, ops.ExtendJitGrantResponse]
+	listJitGrants               *connect.Client[ops.ListJitGrantsRequest, ops.ListJitGrantsResponse]
+	revokeJitGrant              *connect.Client[ops.RevokeJitGrantRequest, ops.RevokeJitGrantResponse]
 }
 
 // GetSystemDiagnostics calls quadsmith.ops.OpsService.GetSystemDiagnostics.
@@ -328,19 +349,29 @@ func (c *opsServiceClient) CleanupOrphanedBlobs(ctx context.Context, req *connec
 	return c.cleanupOrphanedBlobs.CallUnary(ctx, req)
 }
 
-// ListScheduledJobs calls quadsmith.ops.OpsService.ListScheduledJobs.
-func (c *opsServiceClient) ListScheduledJobs(ctx context.Context, req *connect.Request[ops.ListScheduledJobsRequest]) (*connect.Response[ops.ListScheduledJobsResponse], error) {
-	return c.listScheduledJobs.CallUnary(ctx, req)
+// PurgeSoftDeletedAccounts calls quadsmith.ops.OpsService.PurgeSoftDeletedAccounts.
+func (c *opsServiceClient) PurgeSoftDeletedAccounts(ctx context.Context, req *connect.Request[ops.PurgeSoftDeletedAccountsRequest]) (*connect.Response[ops.PurgeSoftDeletedAccountsResponse], error) {
+	return c.purgeSoftDeletedAccounts.CallUnary(ctx, req)
 }
 
-// TriggerJob calls quadsmith.ops.OpsService.TriggerJob.
-func (c *opsServiceClient) TriggerJob(ctx context.Context, req *connect.Request[ops.TriggerJobRequest]) (*connect.Response[ops.TriggerJobResponse], error) {
-	return c.triggerJob.CallUnary(ctx, req)
+// SendUsernameReleaseWarnings calls quadsmith.ops.OpsService.SendUsernameReleaseWarnings.
+func (c *opsServiceClient) SendUsernameReleaseWarnings(ctx context.Context, req *connect.Request[ops.SendUsernameReleaseWarningsRequest]) (*connect.Response[ops.SendUsernameReleaseWarningsResponse], error) {
+	return c.sendUsernameReleaseWarnings.CallUnary(ctx, req)
+}
+
+// GetTask calls quadsmith.ops.OpsService.GetTask.
+func (c *opsServiceClient) GetTask(ctx context.Context, req *connect.Request[ops.GetTaskRequest]) (*connect.Response[ops.GetTaskResponse], error) {
+	return c.getTask.CallUnary(ctx, req)
 }
 
 // ListInternalApiCalls calls quadsmith.ops.OpsService.ListInternalApiCalls.
 func (c *opsServiceClient) ListInternalApiCalls(ctx context.Context, req *connect.Request[ops.ListInternalApiCallsRequest]) (*connect.Response[ops.ListInternalApiCallsResponse], error) {
 	return c.listInternalApiCalls.CallUnary(ctx, req)
+}
+
+// ListTasks calls quadsmith.ops.OpsService.ListTasks.
+func (c *opsServiceClient) ListTasks(ctx context.Context, req *connect.Request[ops.ListTasksRequest]) (*connect.Response[ops.ListTasksResponse], error) {
+	return c.listTasks.CallUnary(ctx, req)
 }
 
 // ExchangeOAuthCode calls quadsmith.ops.OpsService.ExchangeOAuthCode.
@@ -407,14 +438,16 @@ type OpsServiceHandler interface {
 	RunDatabaseMaintenance(context.Context, *connect.Request[ops.RunDatabaseMaintenanceRequest]) (*connect.Response[ops.RunDatabaseMaintenanceResponse], error)
 	// Catalog Seeding
 	SeedDatabase(context.Context, *connect.Request[ops.SeedDatabaseRequest]) (*connect.Response[ops.SeedDatabaseResponse], error)
-	// Maintenance & Cleanup
+	// Maintenance & Cleanup Tasks
 	CleanupExpiredOtps(context.Context, *connect.Request[ops.CleanupExpiredOtpsRequest]) (*connect.Response[ops.CleanupExpiredOtpsResponse], error)
 	CleanupExpiredTokens(context.Context, *connect.Request[ops.CleanupExpiredTokensRequest]) (*connect.Response[ops.CleanupExpiredTokensResponse], error)
 	CleanupOrphanedBlobs(context.Context, *connect.Request[ops.CleanupOrphanedBlobsRequest]) (*connect.Response[ops.CleanupOrphanedBlobsResponse], error)
-	// Scheduled Jobs & Audit
-	ListScheduledJobs(context.Context, *connect.Request[ops.ListScheduledJobsRequest]) (*connect.Response[ops.ListScheduledJobsResponse], error)
-	TriggerJob(context.Context, *connect.Request[ops.TriggerJobRequest]) (*connect.Response[ops.TriggerJobResponse], error)
+	PurgeSoftDeletedAccounts(context.Context, *connect.Request[ops.PurgeSoftDeletedAccountsRequest]) (*connect.Response[ops.PurgeSoftDeletedAccountsResponse], error)
+	SendUsernameReleaseWarnings(context.Context, *connect.Request[ops.SendUsernameReleaseWarningsRequest]) (*connect.Response[ops.SendUsernameReleaseWarningsResponse], error)
+	// Tasks Inspection & Audit
+	GetTask(context.Context, *connect.Request[ops.GetTaskRequest]) (*connect.Response[ops.GetTaskResponse], error)
 	ListInternalApiCalls(context.Context, *connect.Request[ops.ListInternalApiCallsRequest]) (*connect.Response[ops.ListInternalApiCallsResponse], error)
+	ListTasks(context.Context, *connect.Request[ops.ListTasksRequest]) (*connect.Response[ops.ListTasksResponse], error)
 	// Authentication & IAM
 	ExchangeOAuthCode(context.Context, *connect.Request[ops.ExchangeOAuthCodeRequest]) (*connect.Response[ops.ExchangeOAuthCodeResponse], error)
 	GetCurrentOperator(context.Context, *connect.Request[ops.GetCurrentOperatorRequest]) (*connect.Response[ops.GetCurrentOperatorResponse], error)
@@ -480,22 +513,34 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 		connect.WithSchema(opsServiceMethods.ByName("CleanupOrphanedBlobs")),
 		connect.WithHandlerOptions(opts...),
 	)
-	opsServiceListScheduledJobsHandler := connect.NewUnaryHandler(
-		OpsServiceListScheduledJobsProcedure,
-		svc.ListScheduledJobs,
-		connect.WithSchema(opsServiceMethods.ByName("ListScheduledJobs")),
+	opsServicePurgeSoftDeletedAccountsHandler := connect.NewUnaryHandler(
+		OpsServicePurgeSoftDeletedAccountsProcedure,
+		svc.PurgeSoftDeletedAccounts,
+		connect.WithSchema(opsServiceMethods.ByName("PurgeSoftDeletedAccounts")),
 		connect.WithHandlerOptions(opts...),
 	)
-	opsServiceTriggerJobHandler := connect.NewUnaryHandler(
-		OpsServiceTriggerJobProcedure,
-		svc.TriggerJob,
-		connect.WithSchema(opsServiceMethods.ByName("TriggerJob")),
+	opsServiceSendUsernameReleaseWarningsHandler := connect.NewUnaryHandler(
+		OpsServiceSendUsernameReleaseWarningsProcedure,
+		svc.SendUsernameReleaseWarnings,
+		connect.WithSchema(opsServiceMethods.ByName("SendUsernameReleaseWarnings")),
+		connect.WithHandlerOptions(opts...),
+	)
+	opsServiceGetTaskHandler := connect.NewUnaryHandler(
+		OpsServiceGetTaskProcedure,
+		svc.GetTask,
+		connect.WithSchema(opsServiceMethods.ByName("GetTask")),
 		connect.WithHandlerOptions(opts...),
 	)
 	opsServiceListInternalApiCallsHandler := connect.NewUnaryHandler(
 		OpsServiceListInternalApiCallsProcedure,
 		svc.ListInternalApiCalls,
 		connect.WithSchema(opsServiceMethods.ByName("ListInternalApiCalls")),
+		connect.WithHandlerOptions(opts...),
+	)
+	opsServiceListTasksHandler := connect.NewUnaryHandler(
+		OpsServiceListTasksProcedure,
+		svc.ListTasks,
+		connect.WithSchema(opsServiceMethods.ByName("ListTasks")),
 		connect.WithHandlerOptions(opts...),
 	)
 	opsServiceExchangeOAuthCodeHandler := connect.NewUnaryHandler(
@@ -580,12 +625,16 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 			opsServiceCleanupExpiredTokensHandler.ServeHTTP(w, r)
 		case OpsServiceCleanupOrphanedBlobsProcedure:
 			opsServiceCleanupOrphanedBlobsHandler.ServeHTTP(w, r)
-		case OpsServiceListScheduledJobsProcedure:
-			opsServiceListScheduledJobsHandler.ServeHTTP(w, r)
-		case OpsServiceTriggerJobProcedure:
-			opsServiceTriggerJobHandler.ServeHTTP(w, r)
+		case OpsServicePurgeSoftDeletedAccountsProcedure:
+			opsServicePurgeSoftDeletedAccountsHandler.ServeHTTP(w, r)
+		case OpsServiceSendUsernameReleaseWarningsProcedure:
+			opsServiceSendUsernameReleaseWarningsHandler.ServeHTTP(w, r)
+		case OpsServiceGetTaskProcedure:
+			opsServiceGetTaskHandler.ServeHTTP(w, r)
 		case OpsServiceListInternalApiCallsProcedure:
 			opsServiceListInternalApiCallsHandler.ServeHTTP(w, r)
+		case OpsServiceListTasksProcedure:
+			opsServiceListTasksHandler.ServeHTTP(w, r)
 		case OpsServiceExchangeOAuthCodeProcedure:
 			opsServiceExchangeOAuthCodeHandler.ServeHTTP(w, r)
 		case OpsServiceGetCurrentOperatorProcedure:
@@ -645,16 +694,24 @@ func (UnimplementedOpsServiceHandler) CleanupOrphanedBlobs(context.Context, *con
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.CleanupOrphanedBlobs is not implemented"))
 }
 
-func (UnimplementedOpsServiceHandler) ListScheduledJobs(context.Context, *connect.Request[ops.ListScheduledJobsRequest]) (*connect.Response[ops.ListScheduledJobsResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.ListScheduledJobs is not implemented"))
+func (UnimplementedOpsServiceHandler) PurgeSoftDeletedAccounts(context.Context, *connect.Request[ops.PurgeSoftDeletedAccountsRequest]) (*connect.Response[ops.PurgeSoftDeletedAccountsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.PurgeSoftDeletedAccounts is not implemented"))
 }
 
-func (UnimplementedOpsServiceHandler) TriggerJob(context.Context, *connect.Request[ops.TriggerJobRequest]) (*connect.Response[ops.TriggerJobResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.TriggerJob is not implemented"))
+func (UnimplementedOpsServiceHandler) SendUsernameReleaseWarnings(context.Context, *connect.Request[ops.SendUsernameReleaseWarningsRequest]) (*connect.Response[ops.SendUsernameReleaseWarningsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.SendUsernameReleaseWarnings is not implemented"))
+}
+
+func (UnimplementedOpsServiceHandler) GetTask(context.Context, *connect.Request[ops.GetTaskRequest]) (*connect.Response[ops.GetTaskResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.GetTask is not implemented"))
 }
 
 func (UnimplementedOpsServiceHandler) ListInternalApiCalls(context.Context, *connect.Request[ops.ListInternalApiCallsRequest]) (*connect.Response[ops.ListInternalApiCallsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.ListInternalApiCalls is not implemented"))
+}
+
+func (UnimplementedOpsServiceHandler) ListTasks(context.Context, *connect.Request[ops.ListTasksRequest]) (*connect.Response[ops.ListTasksResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.ListTasks is not implemented"))
 }
 
 func (UnimplementedOpsServiceHandler) ExchangeOAuthCode(context.Context, *connect.Request[ops.ExchangeOAuthCodeRequest]) (*connect.Response[ops.ExchangeOAuthCodeResponse], error) {

@@ -31,7 +31,7 @@ export const runDatabaseMaintenance = OpsService.method.runDatabaseMaintenance;
 export const seedDatabase = OpsService.method.seedDatabase;
 
 /**
- * Maintenance & Cleanup
+ * Maintenance & Cleanup Tasks
  *
  * @generated from rpc quadsmith.ops.OpsService.CleanupExpiredOtps
  */
@@ -48,21 +48,31 @@ export const cleanupExpiredTokens = OpsService.method.cleanupExpiredTokens;
 export const cleanupOrphanedBlobs = OpsService.method.cleanupOrphanedBlobs;
 
 /**
- * Scheduled Jobs & Audit
- *
- * @generated from rpc quadsmith.ops.OpsService.ListScheduledJobs
+ * @generated from rpc quadsmith.ops.OpsService.PurgeSoftDeletedAccounts
  */
-export const listScheduledJobs = OpsService.method.listScheduledJobs;
+export const purgeSoftDeletedAccounts = OpsService.method.purgeSoftDeletedAccounts;
 
 /**
- * @generated from rpc quadsmith.ops.OpsService.TriggerJob
+ * @generated from rpc quadsmith.ops.OpsService.SendUsernameReleaseWarnings
  */
-export const triggerJob = OpsService.method.triggerJob;
+export const sendUsernameReleaseWarnings = OpsService.method.sendUsernameReleaseWarnings;
+
+/**
+ * Tasks Inspection & Audit
+ *
+ * @generated from rpc quadsmith.ops.OpsService.GetTask
+ */
+export const getTask = OpsService.method.getTask;
 
 /**
  * @generated from rpc quadsmith.ops.OpsService.ListInternalApiCalls
  */
 export const listInternalApiCalls = OpsService.method.listInternalApiCalls;
+
+/**
+ * @generated from rpc quadsmith.ops.OpsService.ListTasks
+ */
+export const listTasks = OpsService.method.listTasks;
 
 /**
  * Authentication & IAM

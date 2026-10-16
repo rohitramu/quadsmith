@@ -2,8 +2,8 @@
 // @generated from file quadsmith/jobs/jobs.proto (package quadsmith.jobs, syntax proto3)
 /* eslint-disable */
 
-import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
-import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import type { GenFile, GenMessage, GenService } from "@bufbuild/protobuf/codegenv2";
+import { fileDesc, messageDesc, serviceDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
@@ -14,23 +14,23 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_jobs_jobs: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChlxdWFkc21pdGgvam9icy9qb2JzLnByb3RvEg5xdWFkc21pdGguam9icyKgAgoSSm9iRXhlY3V0aW9uUmVjb3JkEgwKBHV1aWQYASABKAkSEAoIam9iX25hbWUYAiABKAkSEQoJcHJvY2VkdXJlGAMgASgJEjIKBnN0YXR1cxgEIAEoDjIiLnF1YWRzbWl0aC5qb2JzLkpvYkV4ZWN1dGlvblN0YXR1cxIuCgpzdGFydGVkX2F0GAUgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIwCgxjb21wbGV0ZWRfYXQYBiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhMKC2R1cmF0aW9uX21zGAcgASgDEhoKDWVycm9yX21lc3NhZ2UYCCABKAlIAIgBAUIQCg5fZXJyb3JfbWVzc2FnZSqfAQoSSm9iRXhlY3V0aW9uU3RhdHVzEiQKIEpPQl9FWEVDVVRJT05fU1RBVFVTX1VOU1BFQ0lGSUVEEAASIAocSk9CX0VYRUNVVElPTl9TVEFUVVNfUlVOTklORxABEiAKHEpPQl9FWEVDVVRJT05fU1RBVFVTX1NVQ0NFU1MQAhIfChtKT0JfRVhFQ1VUSU9OX1NUQVRVU19GQUlMRUQQA0IqWihxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvam9icztqb2JzYgZwcm90bzM",
+    "ChlxdWFkc21pdGgvam9icy9qb2JzLnByb3RvEg5xdWFkc21pdGguam9icyKfAgoJSm9iUmVjb3JkEg4KBmpvYl9pZBgBIAEoCRIRCgl0YXNrX25hbWUYAiABKAkSEQoJcHJvY2VkdXJlGAMgASgJEg4KBmNhbGxlchgEIAEoCRITCgtjYWxsZXJfdHlwZRgFIAEoCRIOCgZzdGF0dXMYBiABKAkSEwoLZHVyYXRpb25fbXMYByABKAMSGgoNZXJyb3JfbWVzc2FnZRgIIAEoCUgAiAEBEi4KCmNyZWF0ZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEh4KEXNjaGVkdWxlX2ludGVydmFsGAogASgJSAGIAQFCEAoOX2Vycm9yX21lc3NhZ2VCFAoSX3NjaGVkdWxlX2ludGVydmFsIh8KDUdldEpvYlJlcXVlc3QSDgoGam9iX2lkGAEgASgJIjgKDkdldEpvYlJlc3BvbnNlEiYKA2pvYhgBIAEoCzIZLnF1YWRzbWl0aC5qb2JzLkpvYlJlY29yZCJVCg9MaXN0Sm9ic1JlcXVlc3QSEgoFbGltaXQYASABKAVIAIgBARIWCgl0YXNrX25hbWUYAiABKAlIAYgBAUIICgZfbGltaXRCDAoKX3Rhc2tfbmFtZSI7ChBMaXN0Sm9ic1Jlc3BvbnNlEicKBGpvYnMYASADKAsyGS5xdWFkc21pdGguam9icy5Kb2JSZWNvcmQypQEKC0pvYnNTZXJ2aWNlEkcKBkdldEpvYhIdLnF1YWRzbWl0aC5qb2JzLkdldEpvYlJlcXVlc3QaHi5xdWFkc21pdGguam9icy5HZXRKb2JSZXNwb25zZRJNCghMaXN0Sm9icxIfLnF1YWRzbWl0aC5qb2JzLkxpc3RKb2JzUmVxdWVzdBogLnF1YWRzbWl0aC5qb2JzLkxpc3RKb2JzUmVzcG9uc2VCKloocXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2pvYnM7am9ic2IGcHJvdG8z",
     [file_google_protobuf_timestamp],
   );
 
 /**
- * @generated from message quadsmith.jobs.JobExecutionRecord
+ * @generated from message quadsmith.jobs.JobRecord
  */
-export type JobExecutionRecord = Message<"quadsmith.jobs.JobExecutionRecord"> & {
+export type JobRecord = Message<"quadsmith.jobs.JobRecord"> & {
   /**
-   * @generated from field: string uuid = 1;
+   * @generated from field: string job_id = 1;
    */
-  uuid: string;
+  jobId: string;
 
   /**
-   * @generated from field: string job_name = 2;
+   * @generated from field: string task_name = 2;
    */
-  jobName: string;
+  taskName: string;
 
   /**
    * @generated from field: string procedure = 3;
@@ -38,19 +38,19 @@ export type JobExecutionRecord = Message<"quadsmith.jobs.JobExecutionRecord"> & 
   procedure: string;
 
   /**
-   * @generated from field: quadsmith.jobs.JobExecutionStatus status = 4;
+   * @generated from field: string caller = 4;
    */
-  status: JobExecutionStatus;
+  caller: string;
 
   /**
-   * @generated from field: google.protobuf.Timestamp started_at = 5;
+   * @generated from field: string caller_type = 5;
    */
-  startedAt?: Timestamp | undefined;
+  callerType: string;
 
   /**
-   * @generated from field: google.protobuf.Timestamp completed_at = 6;
+   * @generated from field: string status = 6;
    */
-  completedAt?: Timestamp | undefined;
+  status: string;
 
   /**
    * @generated from field: int64 duration_ms = 7;
@@ -61,44 +61,121 @@ export type JobExecutionRecord = Message<"quadsmith.jobs.JobExecutionRecord"> & 
    * @generated from field: optional string error_message = 8;
    */
   errorMessage?: string | undefined;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 9;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: optional string schedule_interval = 10;
+   */
+  scheduleInterval?: string | undefined;
 };
 
 /**
- * Describes the message quadsmith.jobs.JobExecutionRecord.
- * Use `create(JobExecutionRecordSchema)` to create a new message.
+ * Describes the message quadsmith.jobs.JobRecord.
+ * Use `create(JobRecordSchema)` to create a new message.
  */
-export const JobExecutionRecordSchema: GenMessage<JobExecutionRecord> =
+export const JobRecordSchema: GenMessage<JobRecord> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_jobs_jobs, 0);
 
 /**
- * @generated from enum quadsmith.jobs.JobExecutionStatus
+ * @generated from message quadsmith.jobs.GetJobRequest
  */
-export enum JobExecutionStatus {
+export type GetJobRequest = Message<"quadsmith.jobs.GetJobRequest"> & {
   /**
-   * @generated from enum value: JOB_EXECUTION_STATUS_UNSPECIFIED = 0;
+   * @generated from field: string job_id = 1;
    */
-  UNSPECIFIED = 0,
-
-  /**
-   * @generated from enum value: JOB_EXECUTION_STATUS_RUNNING = 1;
-   */
-  RUNNING = 1,
-
-  /**
-   * @generated from enum value: JOB_EXECUTION_STATUS_SUCCESS = 2;
-   */
-  SUCCESS = 2,
-
-  /**
-   * @generated from enum value: JOB_EXECUTION_STATUS_FAILED = 3;
-   */
-  FAILED = 3,
-}
+  jobId: string;
+};
 
 /**
- * Describes the enum quadsmith.jobs.JobExecutionStatus.
+ * Describes the message quadsmith.jobs.GetJobRequest.
+ * Use `create(GetJobRequestSchema)` to create a new message.
  */
-export const JobExecutionStatusSchema: GenEnum<JobExecutionStatus> =
+export const GetJobRequestSchema: GenMessage<GetJobRequest> =
   /*@__PURE__*/
-  enumDesc(file_quadsmith_jobs_jobs, 0);
+  messageDesc(file_quadsmith_jobs_jobs, 1);
+
+/**
+ * @generated from message quadsmith.jobs.GetJobResponse
+ */
+export type GetJobResponse = Message<"quadsmith.jobs.GetJobResponse"> & {
+  /**
+   * @generated from field: quadsmith.jobs.JobRecord job = 1;
+   */
+  job?: JobRecord | undefined;
+};
+
+/**
+ * Describes the message quadsmith.jobs.GetJobResponse.
+ * Use `create(GetJobResponseSchema)` to create a new message.
+ */
+export const GetJobResponseSchema: GenMessage<GetJobResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_jobs_jobs, 2);
+
+/**
+ * @generated from message quadsmith.jobs.ListJobsRequest
+ */
+export type ListJobsRequest = Message<"quadsmith.jobs.ListJobsRequest"> & {
+  /**
+   * @generated from field: optional int32 limit = 1;
+   */
+  limit?: number | undefined;
+
+  /**
+   * @generated from field: optional string task_name = 2;
+   */
+  taskName?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.jobs.ListJobsRequest.
+ * Use `create(ListJobsRequestSchema)` to create a new message.
+ */
+export const ListJobsRequestSchema: GenMessage<ListJobsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_jobs_jobs, 3);
+
+/**
+ * @generated from message quadsmith.jobs.ListJobsResponse
+ */
+export type ListJobsResponse = Message<"quadsmith.jobs.ListJobsResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.jobs.JobRecord jobs = 1;
+   */
+  jobs: JobRecord[];
+};
+
+/**
+ * Describes the message quadsmith.jobs.ListJobsResponse.
+ * Use `create(ListJobsResponseSchema)` to create a new message.
+ */
+export const ListJobsResponseSchema: GenMessage<ListJobsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_jobs_jobs, 4);
+
+/**
+ * @generated from service quadsmith.jobs.JobsService
+ */
+export const JobsService: GenService<{
+  /**
+   * @generated from rpc quadsmith.jobs.JobsService.GetJob
+   */
+  getJob: {
+    methodKind: "unary";
+    input: typeof GetJobRequestSchema;
+    output: typeof GetJobResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.jobs.JobsService.ListJobs
+   */
+  listJobs: {
+    methodKind: "unary";
+    input: typeof ListJobsRequestSchema;
+    output: typeof ListJobsResponseSchema;
+  };
+}> = /*@__PURE__*/ serviceDesc(file_quadsmith_jobs_jobs, 0);

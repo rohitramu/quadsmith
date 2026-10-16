@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_config_cli_ops: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Ch5xdWFkc21pdGgvY29uZmlnL2NsaV9vcHMucHJvdG8SEHF1YWRzbWl0aC5jb25maWcilAEKDE9wc0NsaUNvbmZpZxIYCgtlbnZpcm9ubWVudBgBIAEoCUgAiAEBEhsKDm9wc19zZXJ2ZXJfdXJsGAIgASgJSAGIAQESKgoHdGltZW91dBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkIOCgxfZW52aXJvbm1lbnRCEQoPX29wc19zZXJ2ZXJfdXJsQi5aLHF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9jb25maWc7Y29uZmlnYgZwcm90bzM",
+    "Ch5xdWFkc21pdGgvY29uZmlnL2NsaV9vcHMucHJvdG8SEHF1YWRzbWl0aC5jb25maWcixgEKDE9wc0NsaUNvbmZpZxIYCgtlbnZpcm9ubWVudBgBIAEoCUgAiAEBEhsKDm9wc19zZXJ2ZXJfdXJsGAIgASgJSAGIAQESKgoHdGltZW91dBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbhIcCg9qb2JzX3NlcnZlcl91cmwYBCABKAlIAogBAUIOCgxfZW52aXJvbm1lbnRCEQoPX29wc19zZXJ2ZXJfdXJsQhIKEF9qb2JzX3NlcnZlcl91cmxCLloscXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2NvbmZpZztjb25maWdiBnByb3RvMw",
     [file_google_protobuf_duration],
   );
 
@@ -36,6 +36,11 @@ export type OpsCliConfig = Message<"quadsmith.config.OpsCliConfig"> & {
    * @generated from field: google.protobuf.Duration timeout = 3;
    */
   timeout?: Duration | undefined;
+
+  /**
+   * @generated from field: optional string jobs_server_url = 4;
+   */
+  jobsServerUrl?: string | undefined;
 };
 
 /**

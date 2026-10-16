@@ -575,6 +575,7 @@ describe("AccountSettingsPage Component", () => {
       ).not.toBeInTheDocument();
 
       // Verify Bio is still editable and saveable
+      expect(await screen.findByText("No unsaved changes")).toBeInTheDocument();
       const bioTextarea = screen.getByPlaceholderText(/tell other users about your flying style/i);
       expect(bioTextarea).toBeEnabled();
       fireEvent.change(bioTextarea, { target: { value: "Updated bio while restricted." } });

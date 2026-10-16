@@ -4,6 +4,10 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import type { Duration } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_duration } from "@bufbuild/protobuf/wkt";
+import type { DatabaseConfig, ServerConfig } from "./common_pb";
+import { file_quadsmith_config_common } from "./common_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
@@ -12,7 +16,8 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_config_server_jobs: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiJxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9qb2JzLnByb3RvEhBxdWFkc21pdGguY29uZmlnIssBCg9Kb2JTZXJ2ZXJDb25maWcSGAoLZW52aXJvbm1lbnQYASABKAlIAIgBARIbCg5vcHNfc2VydmVyX3VybBgCIAEoCUgBiAEBEhcKCmF1dGhfdG9rZW4YAyABKAlIAogBARI2CglzY2hlZHVsZXMYBCADKAsyIy5xdWFkc21pdGguY29uZmlnLkpvYlNjaGVkdWxlQ29uZmlnQg4KDF9lbnZpcm9ubWVudEIRCg9fb3BzX3NlcnZlcl91cmxCDQoLX2F1dGhfdG9rZW4ieQoRSm9iU2NoZWR1bGVDb25maWcSEQoEbmFtZRgBIAEoCUgAiAEBEhYKCXByb2NlZHVyZRgCIAEoCUgBiAEBEhUKCGludGVydmFsGAMgASgJSAKIAQFCBwoFX25hbWVCDAoKX3Byb2NlZHVyZUILCglfaW50ZXJ2YWxCLloscXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2NvbmZpZztjb25maWdiBnByb3RvMw",
+    "CiJxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9qb2JzLnByb3RvEhBxdWFkc21pdGguY29uZmlnIroHCg9Kb2JTZXJ2ZXJDb25maWcSGAoLZW52aXJvbm1lbnQYASABKAlIAIgBARIuCgZzZXJ2ZXIYAiABKAsyHi5xdWFkc21pdGguY29uZmlnLlNlcnZlckNvbmZpZxIbCg5vcHNfc2VydmVyX3VybBgDIAEoCUgBiAEBEhcKCmF1dGhfdG9rZW4YBCABKAlIAogBARI7ChFpbnRlcm5hbF9kYXRhYmFzZRgFIAEoCzIgLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VDb25maWcSTwoUY2xlYW51cF9leHBpcmVkX290cHMYBiABKAsyLC5xdWFkc21pdGguY29uZmlnLkNsZWFudXBFeHBpcmVkT3Rwc1NjaGVkdWxlSAOIAQESUwoWY2xlYW51cF9leHBpcmVkX3Rva2VucxgHIAEoCzIuLnF1YWRzbWl0aC5jb25maWcuQ2xlYW51cEV4cGlyZWRUb2tlbnNTY2hlZHVsZUgEiAEBElMKFmNsZWFudXBfb3JwaGFuZWRfYmxvYnMYCCABKAsyLi5xdWFkc21pdGguY29uZmlnLkNsZWFudXBPcnBoYW5lZEJsb2JzU2NoZWR1bGVIBYgBARJQChRkYXRhYmFzZV9tYWludGVuYW5jZRgJIAEoCzItLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VNYWludGVuYW5jZVNjaGVkdWxlSAaIAQESXAobcHVyZ2Vfc29mdF9kZWxldGVkX2FjY291bnRzGAogASgLMjIucXVhZHNtaXRoLmNvbmZpZy5QdXJnZVNvZnREZWxldGVkQWNjb3VudHNTY2hlZHVsZUgHiAEBEmIKHnNlbmRfdXNlcm5hbWVfcmVsZWFzZV93YXJuaW5ncxgLIAEoCzI1LnF1YWRzbWl0aC5jb25maWcuU2VuZFVzZXJuYW1lUmVsZWFzZVdhcm5pbmdzU2NoZWR1bGVICIgBAUIOCgxfZW52aXJvbm1lbnRCEQoPX29wc19zZXJ2ZXJfdXJsQg0KC19hdXRoX3Rva2VuQhcKFV9jbGVhbnVwX2V4cGlyZWRfb3Rwc0IZChdfY2xlYW51cF9leHBpcmVkX3Rva2Vuc0IZChdfY2xlYW51cF9vcnBoYW5lZF9ibG9ic0IXChVfZGF0YWJhc2VfbWFpbnRlbmFuY2VCHgocX3B1cmdlX3NvZnRfZGVsZXRlZF9hY2NvdW50c0IhCh9fc2VuZF91c2VybmFtZV9yZWxlYXNlX3dhcm5pbmdzIokBChpDbGVhbnVwRXhwaXJlZE90cHNTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSABCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWQiiwEKHENsZWFudXBFeHBpcmVkVG9rZW5zU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAQgoKCHNjaGVkdWxlQgoKCF9lbmFibGVkIosBChxDbGVhbnVwT3JwaGFuZWRCbG9ic1NjaGVkdWxlEhQKB2VuYWJsZWQYASABKAhIAYgBARIOCgRjcm9uGAIgASgJSAASLQoIaW50ZXJ2YWwYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IAEIKCghzY2hlZHVsZUIKCghfZW5hYmxlZCK0AQobRGF0YWJhc2VNYWludGVuYW5jZVNjaGVkdWxlEhQKB2VuYWJsZWQYASABKAhIAYgBARIOCgRjcm9uGAIgASgJSAASLQoIaW50ZXJ2YWwYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IABIYCgtmdWxsX3ZhY3V1bRgEIAEoCEgCiAEBQgoKCHNjaGVkdWxlQgoKCF9lbmFibGVkQg4KDF9mdWxsX3ZhY3V1bSKPAQogUHVyZ2VTb2Z0RGVsZXRlZEFjY291bnRzU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAQgoKCHNjaGVkdWxlQgoKCF9lbmFibGVkIpIBCiNTZW5kVXNlcm5hbWVSZWxlYXNlV2FybmluZ3NTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSABCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWRCLloscXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2NvbmZpZztjb25maWdiBnByb3RvMw",
+    [file_google_protobuf_duration, file_quadsmith_config_common],
   );
 
 /**
@@ -25,19 +30,54 @@ export type JobServerConfig = Message<"quadsmith.config.JobServerConfig"> & {
   environment?: string | undefined;
 
   /**
-   * @generated from field: optional string ops_server_url = 2;
+   * @generated from field: quadsmith.config.ServerConfig server = 2;
+   */
+  server?: ServerConfig | undefined;
+
+  /**
+   * @generated from field: optional string ops_server_url = 3;
    */
   opsServerUrl?: string | undefined;
 
   /**
-   * @generated from field: optional string auth_token = 3;
+   * @generated from field: optional string auth_token = 4;
    */
   authToken?: string | undefined;
 
   /**
-   * @generated from field: repeated quadsmith.config.JobScheduleConfig schedules = 4;
+   * @generated from field: quadsmith.config.DatabaseConfig internal_database = 5;
    */
-  schedules: JobScheduleConfig[];
+  internalDatabase?: DatabaseConfig | undefined;
+
+  /**
+   * @generated from field: optional quadsmith.config.CleanupExpiredOtpsSchedule cleanup_expired_otps = 6;
+   */
+  cleanupExpiredOtps?: CleanupExpiredOtpsSchedule | undefined;
+
+  /**
+   * @generated from field: optional quadsmith.config.CleanupExpiredTokensSchedule cleanup_expired_tokens = 7;
+   */
+  cleanupExpiredTokens?: CleanupExpiredTokensSchedule | undefined;
+
+  /**
+   * @generated from field: optional quadsmith.config.CleanupOrphanedBlobsSchedule cleanup_orphaned_blobs = 8;
+   */
+  cleanupOrphanedBlobs?: CleanupOrphanedBlobsSchedule | undefined;
+
+  /**
+   * @generated from field: optional quadsmith.config.DatabaseMaintenanceSchedule database_maintenance = 9;
+   */
+  databaseMaintenance?: DatabaseMaintenanceSchedule | undefined;
+
+  /**
+   * @generated from field: optional quadsmith.config.PurgeSoftDeletedAccountsSchedule purge_soft_deleted_accounts = 10;
+   */
+  purgeSoftDeletedAccounts?: PurgeSoftDeletedAccountsSchedule | undefined;
+
+  /**
+   * @generated from field: optional quadsmith.config.SendUsernameReleaseWarningsSchedule send_username_release_warnings = 11;
+   */
+  sendUsernameReleaseWarnings?: SendUsernameReleaseWarningsSchedule | undefined;
 };
 
 /**
@@ -49,29 +89,239 @@ export const JobServerConfigSchema: GenMessage<JobServerConfig> =
   messageDesc(file_quadsmith_config_server_jobs, 0);
 
 /**
- * @generated from message quadsmith.config.JobScheduleConfig
+ * @generated from message quadsmith.config.CleanupExpiredOtpsSchedule
  */
-export type JobScheduleConfig = Message<"quadsmith.config.JobScheduleConfig"> & {
+export type CleanupExpiredOtpsSchedule = Message<"quadsmith.config.CleanupExpiredOtpsSchedule"> & {
   /**
-   * @generated from field: optional string name = 1;
+   * @generated from field: optional bool enabled = 1;
    */
-  name?: string | undefined;
+  enabled?: boolean | undefined;
 
   /**
-   * @generated from field: optional string procedure = 2;
+   * @generated from oneof quadsmith.config.CleanupExpiredOtpsSchedule.schedule
    */
-  procedure?: string | undefined;
-
-  /**
-   * @generated from field: optional string interval = 3;
-   */
-  interval?: string | undefined;
+  schedule:
+    | {
+        /**
+         * @generated from field: string cron = 2;
+         */
+        value: string;
+        case: "cron";
+      }
+    | {
+        /**
+         * @generated from field: google.protobuf.Duration interval = 3;
+         */
+        value: Duration;
+        case: "interval";
+      }
+    | { case: undefined; value?: undefined };
 };
 
 /**
- * Describes the message quadsmith.config.JobScheduleConfig.
- * Use `create(JobScheduleConfigSchema)` to create a new message.
+ * Describes the message quadsmith.config.CleanupExpiredOtpsSchedule.
+ * Use `create(CleanupExpiredOtpsScheduleSchema)` to create a new message.
  */
-export const JobScheduleConfigSchema: GenMessage<JobScheduleConfig> =
+export const CleanupExpiredOtpsScheduleSchema: GenMessage<CleanupExpiredOtpsSchedule> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_config_server_jobs, 1);
+
+/**
+ * @generated from message quadsmith.config.CleanupExpiredTokensSchedule
+ */
+export type CleanupExpiredTokensSchedule =
+  Message<"quadsmith.config.CleanupExpiredTokensSchedule"> & {
+    /**
+     * @generated from field: optional bool enabled = 1;
+     */
+    enabled?: boolean | undefined;
+
+    /**
+     * @generated from oneof quadsmith.config.CleanupExpiredTokensSchedule.schedule
+     */
+    schedule:
+      | {
+          /**
+           * @generated from field: string cron = 2;
+           */
+          value: string;
+          case: "cron";
+        }
+      | {
+          /**
+           * @generated from field: google.protobuf.Duration interval = 3;
+           */
+          value: Duration;
+          case: "interval";
+        }
+      | { case: undefined; value?: undefined };
+  };
+
+/**
+ * Describes the message quadsmith.config.CleanupExpiredTokensSchedule.
+ * Use `create(CleanupExpiredTokensScheduleSchema)` to create a new message.
+ */
+export const CleanupExpiredTokensScheduleSchema: GenMessage<CleanupExpiredTokensSchedule> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_server_jobs, 2);
+
+/**
+ * @generated from message quadsmith.config.CleanupOrphanedBlobsSchedule
+ */
+export type CleanupOrphanedBlobsSchedule =
+  Message<"quadsmith.config.CleanupOrphanedBlobsSchedule"> & {
+    /**
+     * @generated from field: optional bool enabled = 1;
+     */
+    enabled?: boolean | undefined;
+
+    /**
+     * @generated from oneof quadsmith.config.CleanupOrphanedBlobsSchedule.schedule
+     */
+    schedule:
+      | {
+          /**
+           * @generated from field: string cron = 2;
+           */
+          value: string;
+          case: "cron";
+        }
+      | {
+          /**
+           * @generated from field: google.protobuf.Duration interval = 3;
+           */
+          value: Duration;
+          case: "interval";
+        }
+      | { case: undefined; value?: undefined };
+  };
+
+/**
+ * Describes the message quadsmith.config.CleanupOrphanedBlobsSchedule.
+ * Use `create(CleanupOrphanedBlobsScheduleSchema)` to create a new message.
+ */
+export const CleanupOrphanedBlobsScheduleSchema: GenMessage<CleanupOrphanedBlobsSchedule> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_server_jobs, 3);
+
+/**
+ * @generated from message quadsmith.config.DatabaseMaintenanceSchedule
+ */
+export type DatabaseMaintenanceSchedule =
+  Message<"quadsmith.config.DatabaseMaintenanceSchedule"> & {
+    /**
+     * @generated from field: optional bool enabled = 1;
+     */
+    enabled?: boolean | undefined;
+
+    /**
+     * @generated from oneof quadsmith.config.DatabaseMaintenanceSchedule.schedule
+     */
+    schedule:
+      | {
+          /**
+           * @generated from field: string cron = 2;
+           */
+          value: string;
+          case: "cron";
+        }
+      | {
+          /**
+           * @generated from field: google.protobuf.Duration interval = 3;
+           */
+          value: Duration;
+          case: "interval";
+        }
+      | { case: undefined; value?: undefined };
+
+    /**
+     * @generated from field: optional bool full_vacuum = 4;
+     */
+    fullVacuum?: boolean | undefined;
+  };
+
+/**
+ * Describes the message quadsmith.config.DatabaseMaintenanceSchedule.
+ * Use `create(DatabaseMaintenanceScheduleSchema)` to create a new message.
+ */
+export const DatabaseMaintenanceScheduleSchema: GenMessage<DatabaseMaintenanceSchedule> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_server_jobs, 4);
+
+/**
+ * @generated from message quadsmith.config.PurgeSoftDeletedAccountsSchedule
+ */
+export type PurgeSoftDeletedAccountsSchedule =
+  Message<"quadsmith.config.PurgeSoftDeletedAccountsSchedule"> & {
+    /**
+     * @generated from field: optional bool enabled = 1;
+     */
+    enabled?: boolean | undefined;
+
+    /**
+     * @generated from oneof quadsmith.config.PurgeSoftDeletedAccountsSchedule.schedule
+     */
+    schedule:
+      | {
+          /**
+           * @generated from field: string cron = 2;
+           */
+          value: string;
+          case: "cron";
+        }
+      | {
+          /**
+           * @generated from field: google.protobuf.Duration interval = 3;
+           */
+          value: Duration;
+          case: "interval";
+        }
+      | { case: undefined; value?: undefined };
+  };
+
+/**
+ * Describes the message quadsmith.config.PurgeSoftDeletedAccountsSchedule.
+ * Use `create(PurgeSoftDeletedAccountsScheduleSchema)` to create a new message.
+ */
+export const PurgeSoftDeletedAccountsScheduleSchema: GenMessage<PurgeSoftDeletedAccountsSchedule> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_server_jobs, 5);
+
+/**
+ * @generated from message quadsmith.config.SendUsernameReleaseWarningsSchedule
+ */
+export type SendUsernameReleaseWarningsSchedule =
+  Message<"quadsmith.config.SendUsernameReleaseWarningsSchedule"> & {
+    /**
+     * @generated from field: optional bool enabled = 1;
+     */
+    enabled?: boolean | undefined;
+
+    /**
+     * @generated from oneof quadsmith.config.SendUsernameReleaseWarningsSchedule.schedule
+     */
+    schedule:
+      | {
+          /**
+           * @generated from field: string cron = 2;
+           */
+          value: string;
+          case: "cron";
+        }
+      | {
+          /**
+           * @generated from field: google.protobuf.Duration interval = 3;
+           */
+          value: Duration;
+          case: "interval";
+        }
+      | { case: undefined; value?: undefined };
+  };
+
+/**
+ * Describes the message quadsmith.config.SendUsernameReleaseWarningsSchedule.
+ * Use `create(SendUsernameReleaseWarningsScheduleSchema)` to create a new message.
+ */
+export const SendUsernameReleaseWarningsScheduleSchema: GenMessage<SendUsernameReleaseWarningsSchedule> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_server_jobs, 6);

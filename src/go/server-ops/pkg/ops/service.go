@@ -206,130 +206,102 @@ func (s *OpsService) CleanupOrphanedBlobs(ctx context.Context, _ *connect.Reques
 	return connect.NewResponse(&pb.CleanupOrphanedBlobsResponse{CleanedCount: count}), nil
 }
 
-// ---------------------------------------------------------
-// Scheduled Jobs & Audit
-// ---------------------------------------------------------
-
-func (s *OpsService) ListScheduledJobs(ctx context.Context, _ *connect.Request[pb.ListScheduledJobsRequest]) (*connect.Response[pb.ListScheduledJobsResponse], error) {
-	schedules := []*pb.ScheduledJobDef{
-		{
-			Name:      "cleanup_expired_otps",
-			Procedure: "CleanupExpiredOtps",
-			Interval:  "6h",
-		},
-		{
-			Name:      "cleanup_expired_tokens",
-			Procedure: "CleanupExpiredTokens",
-			Interval:  "12h",
-		},
-		{
-			Name:      "cleanup_orphaned_blobs",
-			Procedure: "CleanupOrphanedBlobs",
-			Interval:  "5m",
-		},
-		{
-			Name:      "purge_soft_deleted_accounts",
-			Procedure: "PurgeSoftDeletedAccounts",
-			Interval:  "8h",
-		},
+func (s *OpsService) PurgeSoftDeletedAccounts(ctx context.Context, _ *connect.Request[pb.PurgeSoftDeletedAccountsRequest]) (*connect.Response[pb.PurgeSoftDeletedAccountsResponse], error) {
+	count, err := auth.HandlePurgeSoftDeletedAccounts(ctx, s.publicDb)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
-
-	for _, job := range schedules {
-		var lastRun time.Time
-		var lastStatus string
-		err := s.opsDb.QueryRow(ctx, `
-			SELECT created_at, status
-			FROM internal_api_calls
-			WHERE method = $1
-			ORDER BY created_at DESC
-			LIMIT 1`, job.Procedure).Scan(&lastRun, &lastStatus)
-		if err == nil {
-			job.LastRunAt = timestamppb.New(lastRun)
-			job.LastStatus = lastStatus
-		} else {
-			job.LastStatus = "PENDING"
-		}
-	}
-
-	return connect.NewResponse(&pb.ListScheduledJobsResponse{Jobs: schedules}), nil
+	return connect.NewResponse(&pb.PurgeSoftDeletedAccountsResponse{PurgedCount: count}), nil
 }
 
-func (s *OpsService) TriggerJob(ctx context.Context, req *connect.Request[pb.TriggerJobRequest]) (*connect.Response[pb.TriggerJobResponse], error) {
-	jobName := strings.ToLower(strings.TrimSpace(req.Msg.GetJobName()))
-	jobName = strings.TrimPrefix(jobName, "auth.")
-	jobName = strings.TrimPrefix(jobName, "blob.")
-	callID := fmt.Sprintf("trig_%d", time.Now().UnixNano())
-
-	switch jobName {
-	case "cleanupexpiredotps", "cleanup_expired_otps":
-		_, err := s.CleanupExpiredOtps(ctx, connect.NewRequest(&pb.CleanupExpiredOtpsRequest{}))
-		if err != nil {
-			return nil, err
-		}
-		return connect.NewResponse(&pb.TriggerJobResponse{
-			Success: true,
-			Message: "CleanupExpiredOtps executed successfully",
-			CallId:  callID,
-		}), nil
-
-	case "cleanupexpiredtokens", "cleanup_expired_tokens":
-		_, err := s.CleanupExpiredTokens(ctx, connect.NewRequest(&pb.CleanupExpiredTokensRequest{}))
-		if err != nil {
-			return nil, err
-		}
-		return connect.NewResponse(&pb.TriggerJobResponse{
-			Success: true,
-			Message: "CleanupExpiredTokens executed successfully",
-			CallId:  callID,
-		}), nil
-
-	case "cleanuporphanedblobs", "cleanup_orphaned_blobs":
-		_, err := s.CleanupOrphanedBlobs(ctx, connect.NewRequest(&pb.CleanupOrphanedBlobsRequest{}))
-		if err != nil {
-			return nil, err
-		}
-		return connect.NewResponse(&pb.TriggerJobResponse{
-			Success: true,
-			Message: "CleanupOrphanedBlobs executed successfully",
-			CallId:  callID,
-		}), nil
-
-	case "rundatabasemaintenance", "run_database_maintenance", "vacuum":
-		_, err := s.RunDatabaseMaintenance(ctx, connect.NewRequest(&pb.RunDatabaseMaintenanceRequest{}))
-		if err != nil {
-			return nil, err
-		}
-		return connect.NewResponse(&pb.TriggerJobResponse{
-			Success: true,
-			Message: "RunDatabaseMaintenance executed successfully",
-			CallId:  callID,
-		}), nil
-
-	case "seeddatabase", "seed_database", "seed":
-		_, err := s.SeedDatabase(ctx, connect.NewRequest(&pb.SeedDatabaseRequest{}))
-		if err != nil {
-			return nil, err
-		}
-		return connect.NewResponse(&pb.TriggerJobResponse{
-			Success: true,
-			Message: "SeedDatabase executed successfully",
-			CallId:  callID,
-		}), nil
-
-	case "purgesoftdeletedaccounts", "purge_soft_deleted_accounts", "purge_accounts":
-		count, err := auth.HandlePurgeSoftDeletedAccounts(ctx, s.publicDb)
-		if err != nil {
-			return nil, err
-		}
-		return connect.NewResponse(&pb.TriggerJobResponse{
-			Success: true,
-			Message: fmt.Sprintf("HandlePurgeSoftDeletedAccounts executed successfully; purged %d account(s)", count),
-			CallId:  callID,
-		}), nil
-
-	default:
-		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unknown scheduled job %q", req.Msg.GetJobName()))
+func (s *OpsService) SendUsernameReleaseWarnings(ctx context.Context, _ *connect.Request[pb.SendUsernameReleaseWarningsRequest]) (*connect.Response[pb.SendUsernameReleaseWarningsResponse], error) {
+	count, err := auth.HandleUsernameReleaseWarning(ctx, s.publicDb)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
 	}
+	return connect.NewResponse(&pb.SendUsernameReleaseWarningsResponse{WarningCount: count}), nil
+}
+
+// ---------------------------------------------------------
+// Tasks Inspection & Audit
+// ---------------------------------------------------------
+
+var taskCatalog = []*pb.TaskDef{
+	{
+		Name:            "cleanup_expired_otps",
+		Procedure:       "CleanupExpiredOtps",
+		Description:     "Purges used and expired OTPs older than 24 hours",
+		DefaultInterval: "6h",
+	},
+	{
+		Name:            "cleanup_expired_tokens",
+		Procedure:       "CleanupExpiredTokens",
+		Description:     "Purges revoked or expired refresh tokens older than 7 days",
+		DefaultInterval: "12h",
+	},
+	{
+		Name:            "cleanup_orphaned_blobs",
+		Procedure:       "CleanupOrphanedBlobs",
+		Description:     "Deletes unreferenced blob objects older than 5 minutes",
+		DefaultInterval: "5m",
+	},
+	{
+		Name:            "purge_soft_deleted_accounts",
+		Procedure:       "PurgeSoftDeletedAccounts",
+		Description:     "Anonymizes and permanently purges soft-deleted user accounts past their 30-day grace period",
+		DefaultInterval: "8h",
+	},
+	{
+		Name:            "send_username_release_warnings",
+		Procedure:       "SendUsernameReleaseWarnings",
+		Description:     "Sends release warning notifications for archived usernames approaching their 30-day hold expiration",
+		DefaultInterval: "24h",
+	},
+	{
+		Name:            "run_database_maintenance",
+		Procedure:       "RunDatabaseMaintenance",
+		Description:     "Executes PostgreSQL VACUUM and ANALYZE on public database tables",
+		DefaultInterval: "weekly",
+	},
+	{
+		Name:            "seed_database",
+		Procedure:       "SeedDatabase",
+		Description:     "Seeds hardware catalog and sample fixtures into public database",
+		DefaultInterval: "manual",
+	},
+}
+
+func (s *OpsService) ListTasks(ctx context.Context, _ *connect.Request[pb.ListTasksRequest]) (*connect.Response[pb.ListTasksResponse], error) {
+	tasks := make([]*pb.TaskDef, len(taskCatalog))
+	for i, t := range taskCatalog {
+		tasks[i] = &pb.TaskDef{
+			Name:            t.Name,
+			Procedure:       t.Procedure,
+			Description:     t.Description,
+			DefaultInterval: t.DefaultInterval,
+		}
+	}
+	return connect.NewResponse(&pb.ListTasksResponse{Tasks: tasks}), nil
+}
+
+func (s *OpsService) GetTask(ctx context.Context, req *connect.Request[pb.GetTaskRequest]) (*connect.Response[pb.GetTaskResponse], error) {
+	name := strings.ToLower(strings.TrimSpace(req.Msg.GetTaskName()))
+	name = strings.TrimPrefix(name, "auth.")
+	name = strings.TrimPrefix(name, "blob.")
+
+	for _, t := range taskCatalog {
+		if strings.ToLower(t.Name) == name || strings.ToLower(t.Procedure) == name {
+			return connect.NewResponse(&pb.GetTaskResponse{
+				Task: &pb.TaskDef{
+					Name:            t.Name,
+					Procedure:       t.Procedure,
+					Description:     t.Description,
+					DefaultInterval: t.DefaultInterval,
+				},
+			}), nil
+		}
+	}
+	return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("task %q not found", req.Msg.GetTaskName()))
 }
 
 func (s *OpsService) ListInternalApiCalls(ctx context.Context, req *connect.Request[pb.ListInternalApiCallsRequest]) (*connect.Response[pb.ListInternalApiCallsResponse], error) {

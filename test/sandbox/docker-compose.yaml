@@ -56,11 +56,22 @@ services:
     build:
       context: ../..
       dockerfile: src/go/server-jobs/Dockerfile
+    ports:
+      - "${JOBS_PORT:-8083}:8080"
     environment:
       - QS_OPS_SERVER_URL=http://ops:8080
+      - QS_INTERNAL_DATABASE_URL=postgres://postgres:postgres@db:5432/quadsmith_ops?sslmode=disable
     depends_on:
+      db:
+        condition: service_healthy
       ops:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 100ms
+      timeout: 1s
+      retries: 50
+      start_period: 200ms
     entrypoint: ["/app/server-jobs", "--config", "/app/src/go/server-jobs/config/sandbox.textproto"]
 
   web:

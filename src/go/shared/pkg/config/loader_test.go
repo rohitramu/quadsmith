@@ -282,7 +282,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load job-server sandbox: %v", err)
 	}
-	if jobSandbox.GetOpsServerUrl() != "http://127.0.0.1:8082" || len(jobSandbox.Schedules) != 4 {
+	if jobSandbox.GetOpsServerUrl() != "http://127.0.0.1:8082" || !jobSandbox.GetCleanupExpiredOtps().GetEnabled() || jobSandbox.Server.GetPort() != 8080 {
 		t.Errorf("unexpected job-server sandbox config: %+v", jobSandbox)
 	}
 

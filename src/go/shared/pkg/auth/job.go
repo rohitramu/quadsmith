@@ -13,8 +13,14 @@ import (
 
 // HandleUsernameReleaseWarning scans username_histories for archived usernames approaching the end of their 30-day hold window
 // (23 days elapsed, 7 days remaining) and dispatches warning notifications.
-func HandleUsernameReleaseWarning(ctx context.Context, pool *pgxpool.Pool) error {
-	rows, err := pool.Query(ctx, `
+func HandleUsernameReleaseWarning(ctx context.Context, pool *pgxpool.Pool) (int64, error) {
+	tx, err := pool.Begin(ctx)
+	if err != nil {
+		return 0, fmt.Errorf("failed to begin transaction: %w", err)
+	}
+	defer tx.Rollback(ctx)
+
+	rows, err := tx.Query(ctx, `
 		SELECT hh.uuid, hh.old_username, hh.user_uuid, COALESCE(hh.first_archived_at, hh.renamed_at), COALESCE(ue.email, '')
 		FROM username_histories hh
 		JOIN users u ON u.uuid = hh.user_uuid
@@ -23,9 +29,10 @@ func HandleUsernameReleaseWarning(ctx context.Context, pool *pgxpool.Pool) error
 		  AND COALESCE(hh.first_archived_at, hh.renamed_at) + INTERVAL '30 days' > NOW()
 		  AND hh.release_warning_sent_at IS NULL
 		  AND LOWER(hh.old_username) != LOWER(u.id)
-		  AND u.deleted_at IS NULL`)
+		  AND u.deleted_at IS NULL
+		FOR UPDATE OF hh SKIP LOCKED`)
 	if err != nil {
-		return fmt.Errorf("failed to query expiring usernames: %w", err)
+		return 0, fmt.Errorf("failed to query expiring usernames: %w", err)
 	}
 	defer rows.Close()
 
@@ -46,7 +53,9 @@ func HandleUsernameReleaseWarning(ctx context.Context, pool *pgxpool.Pool) error
 		}
 		items = append(items, item)
 	}
+	rows.Close()
 
+	var sentCount int64
 	for _, item := range items {
 		releaseAt := item.firstArchivedAt.Add(30 * 24 * time.Hour)
 		// Dispatch warning email to primary user email
@@ -54,16 +63,25 @@ func HandleUsernameReleaseWarning(ctx context.Context, pool *pgxpool.Pool) error
 			item.email, item.username, releaseAt.Format("Jan 02, 2006"))
 
 		// Mark notification as sent
-		_, err := pool.Exec(ctx, `
+		_, err := tx.Exec(ctx, `
 			UPDATE username_histories
 			SET release_warning_sent_at = NOW()
 			WHERE uuid = $1`, item.uuid)
 		if err != nil {
 			log.Printf("[UsernameReleaseJob] Failed to mark release warning sent for %s: %v", item.uuid, err)
+			continue
 		}
+		sentCount++
 	}
 
-	return nil
+	if err := tx.Commit(ctx); err != nil {
+		return 0, fmt.Errorf("failed to commit username release warnings: %w", err)
+	}
+
+	if sentCount > 0 {
+		log.Printf("[UsernameReleaseJob] Dispatched %d username release warnings", sentCount)
+	}
+	return sentCount, nil
 }
 
 // HandleCleanupExpiredOTPs purges used OTPs and expired OTPs older than 24 hours.

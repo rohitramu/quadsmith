@@ -12,6 +12,8 @@ import (
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
 
+	jobspb "quadsmith/shared/gen/quadsmith/jobs"
+	"quadsmith/shared/gen/quadsmith/jobs/jobsconnect"
 	pb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 )
@@ -24,6 +26,16 @@ func getOpsURL() string {
 		return url
 	}
 	return "http://127.0.0.1:8082"
+}
+
+func getJobsURL() string {
+	if url := os.Getenv("QS_JOBS_SERVER_URL"); url != "" {
+		return url
+	}
+	if url := os.Getenv("QS_JOBS_URL"); url != "" {
+		return url
+	}
+	return "http://127.0.0.1:8083"
 }
 
 func getOpsDBURL() string {
@@ -43,6 +55,18 @@ func newOpsClient(token string) opsconnect.OpsServiceClient {
 		Timeout:   10 * time.Second,
 	}
 	return opsconnect.NewOpsServiceClient(client, getOpsURL())
+}
+
+func newJobsClient(token string) jobsconnect.JobsServiceClient {
+	transport := &authRoundTripper{
+		base:  http.DefaultTransport,
+		token: token,
+	}
+	client := &http.Client{
+		Transport: transport,
+		Timeout:   10 * time.Second,
+	}
+	return jobsconnect.NewJobsServiceClient(client, getJobsURL())
 }
 
 func resolveQSOpsPath(t *testing.T) string {
@@ -278,48 +302,93 @@ func TestOpsServer_DatabaseStats(t *testing.T) {
 	}
 }
 
-func TestOpsServer_ScheduledJobsAndAudit(t *testing.T) {
+func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 	ctx := context.Background()
 	operatorClient := newOpsClient("qs_op_sandbox_token_12345")
 
-	// 1. List Scheduled Jobs
-	jobsRes, err := operatorClient.ListScheduledJobs(ctx, connect.NewRequest(&pb.ListScheduledJobsRequest{}))
+	// 1. List Tasks on OpsService
+	tasksRes, err := operatorClient.ListTasks(ctx, connect.NewRequest(&pb.ListTasksRequest{}))
 	if err != nil {
-		t.Fatalf("ListScheduledJobs failed: %v", err)
+		t.Fatalf("ListTasks failed: %v", err)
 	}
 
-	expectedJobs := []string{
+	expectedTasks := []string{
 		"cleanup_expired_otps",
 		"cleanup_expired_tokens",
 		"cleanup_orphaned_blobs",
+		"purge_soft_deleted_accounts",
+		"send_username_release_warnings",
+		"run_database_maintenance",
+		"seed_database",
 	}
 
-	for _, exp := range expectedJobs {
+	for _, exp := range expectedTasks {
 		found := false
-		for _, j := range jobsRes.Msg.Jobs {
-			if j.Name == exp {
+		for _, task := range tasksRes.Msg.Tasks {
+			if task.Name == exp {
 				found = true
 				break
 			}
 		}
 		if !found {
-			t.Errorf("Expected job %q in scheduled jobs list", exp)
+			t.Errorf("Expected task %q in registered tasks list", exp)
 		}
 	}
 
-	// 2. Trigger Job
-	trigRes, err := operatorClient.TriggerJob(ctx, connect.NewRequest(&pb.TriggerJobRequest{
-		JobName:     "cleanup_expired_otps",
-		PayloadJson: "{}",
+	// 2. Get Task details
+	getTaskRes, err := operatorClient.GetTask(ctx, connect.NewRequest(&pb.GetTaskRequest{
+		TaskName: "cleanup_expired_otps",
 	}))
 	if err != nil {
-		t.Fatalf("TriggerJob failed: %v", err)
+		t.Fatalf("GetTask failed: %v", err)
 	}
-	if !trigRes.Msg.Success {
-		t.Errorf("Expected TriggerJob to report success: %s", trigRes.Msg.Message)
+	if getTaskRes.Msg.Task.Procedure != "CleanupExpiredOtps" {
+		t.Errorf("Expected procedure CleanupExpiredOtps, got %s", getTaskRes.Msg.Task.Procedure)
 	}
 
-	// 3. Verify Audit Log recorded in internal_api_calls
+	// 3. Trigger maintenance tasks directly over dedicated typed RPCs
+	otpsRes, err := operatorClient.CleanupExpiredOtps(ctx, connect.NewRequest(&pb.CleanupExpiredOtpsRequest{}))
+	if err != nil {
+		t.Fatalf("CleanupExpiredOtps failed: %v", err)
+	}
+	if otpsRes.Msg.CleanedCount < 0 {
+		t.Errorf("Expected non-negative cleaned count, got %d", otpsRes.Msg.CleanedCount)
+	}
+
+	purgeRes, err := operatorClient.PurgeSoftDeletedAccounts(ctx, connect.NewRequest(&pb.PurgeSoftDeletedAccountsRequest{}))
+	if err != nil {
+		t.Fatalf("PurgeSoftDeletedAccounts failed: %v", err)
+	}
+	if purgeRes.Msg.PurgedCount < 0 {
+		t.Errorf("Expected non-negative purged count, got %d", purgeRes.Msg.PurgedCount)
+	}
+
+	warnRes, err := operatorClient.SendUsernameReleaseWarnings(ctx, connect.NewRequest(&pb.SendUsernameReleaseWarningsRequest{}))
+	if err != nil {
+		t.Fatalf("SendUsernameReleaseWarnings failed: %v", err)
+	}
+	if warnRes.Msg.WarningCount < 0 {
+		t.Errorf("Expected non-negative warning count, got %d", warnRes.Msg.WarningCount)
+	}
+
+	// 4. Query JobsService (if jobs server is running)
+	jobsClient := newJobsClient("qs_op_sandbox_token_12345")
+	limitVal := int32(20)
+	jobsRes, err := jobsClient.ListJobs(ctx, connect.NewRequest(&jobspb.ListJobsRequest{Limit: &limitVal}))
+	if err == nil {
+		if len(jobsRes.Msg.Jobs) > 0 {
+			firstJob := jobsRes.Msg.Jobs[0]
+			getJobRes, err := jobsClient.GetJob(ctx, connect.NewRequest(&jobspb.GetJobRequest{JobId: firstJob.JobId}))
+			if err != nil {
+				t.Fatalf("GetJob failed for %s: %v", firstJob.JobId, err)
+			}
+			if getJobRes.Msg.Job.JobId != firstJob.JobId {
+				t.Errorf("Expected job ID %s, got %s", firstJob.JobId, getJobRes.Msg.Job.JobId)
+			}
+		}
+	}
+
+	// 5. Verify Audit Log recorded in internal_api_calls
 	auditRes, err := operatorClient.ListInternalApiCalls(ctx, connect.NewRequest(&pb.ListInternalApiCallsRequest{
 		Limit: 20,
 	}))
@@ -379,15 +448,37 @@ func TestQSOpsCLIExecution(t *testing.T) {
 		t.Errorf("Expected 'quadsmith_api' in db stats output: %s", outStr)
 	}
 
-	// 3. qsops jobs list
-	cmd = exec.Command(qsopsPath, "jobs", "list", "--token", "qs_op_sandbox_token_12345", "--json")
+	// 3. qsops tasks list
+	cmd = exec.Command(qsopsPath, "tasks", "list", "--token", "qs_op_sandbox_token_12345", "--json")
 	out, err = cmd.CombinedOutput()
 	if err != nil {
-		t.Fatalf("qsops jobs list failed: %v, output: %s", err, string(out))
+		t.Fatalf("qsops tasks list failed: %v, output: %s", err, string(out))
 	}
 	outStr = string(out)
 	if !containsString(outStr, "cleanup_expired_otps") {
-		t.Errorf("Expected 'cleanup_expired_otps' in jobs list output: %s", outStr)
+		t.Errorf("Expected 'cleanup_expired_otps' in tasks list output: %s", outStr)
+	}
+
+	// 4. qsops tasks get cleanup_expired_otps
+	cmd = exec.Command(qsopsPath, "tasks", "get", "cleanup_expired_otps", "--token", "qs_op_sandbox_token_12345")
+	out, err = cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops tasks get failed: %v, output: %s", err, string(out))
+	}
+	outStr = string(out)
+	if !containsString(outStr, "CleanupExpiredOtps") {
+		t.Errorf("Expected 'CleanupExpiredOtps' in tasks get output: %s", outStr)
+	}
+
+	// 5. qsops tasks trigger cleanup_expired_otps
+	cmd = exec.Command(qsopsPath, "tasks", "trigger", "cleanup_expired_otps", "--token", "qs_op_sandbox_token_12345")
+	out, err = cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops tasks trigger failed: %v, output: %s", err, string(out))
+	}
+	outStr = string(out)
+	if !containsString(outStr, "Cleaned") {
+		t.Errorf("Expected 'Cleaned' in tasks trigger output: %s", outStr)
 	}
 }
 

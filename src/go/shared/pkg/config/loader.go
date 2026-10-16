@@ -11,6 +11,7 @@ import (
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
+	"google.golang.org/protobuf/types/known/durationpb"
 
 	"quadsmith/shared/gen/quadsmith/config"
 )
@@ -351,6 +352,9 @@ func applyOpsServerEnvOverrides(cfg *config.OpsServerConfig) {
 }
 
 func applyJobServerEnvOverrides(cfg *config.JobServerConfig) {
+	if cfg.InternalDatabase != nil {
+		applyInternalDatabaseEnvOverrides(cfg.InternalDatabase)
+	}
 	if v := os.Getenv("QS_JOB_SERVER_AUTH_TOKEN"); v != "" {
 		cfg.AuthToken = &v
 	}
@@ -622,6 +626,26 @@ func ValidateJobServerConfig(c *config.JobServerConfig) error {
 		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
 	}
 
+	if c.Server == nil {
+		errs = append(errs, "server configuration section is missing")
+	} else {
+		if c.Server.GetPort() < 1 || c.Server.GetPort() > 65535 {
+			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.GetPort()))
+		}
+		if c.Server.ReadTimeout != nil && c.Server.ReadTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.read_timeout must be greater than 0")
+		}
+		if c.Server.WriteTimeout != nil && c.Server.WriteTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.write_timeout must be greater than 0")
+		}
+		if c.Server.IdleTimeout != nil && c.Server.IdleTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.idle_timeout must be greater than 0")
+		}
+		if c.Server.GetMaxRequestBytes() <= 0 {
+			errs = append(errs, "server.max_request_bytes must be greater than 0")
+		}
+	}
+
 	if strings.TrimSpace(c.GetOpsServerUrl()) == "" {
 		errs = append(errs, "ops_server_url cannot be empty")
 	} else {
@@ -635,8 +659,42 @@ func ValidateJobServerConfig(c *config.JobServerConfig) error {
 		errs = append(errs, "auth_token cannot be empty")
 	}
 
-	if len(c.Schedules) == 0 {
-		errs = append(errs, "at least one schedule must be defined in schedules")
+	if c.InternalDatabase == nil {
+		errs = append(errs, "internal_database configuration section is missing")
+	} else if err := ValidateDatabase(c.InternalDatabase, c.GetEnvironment()); err != nil {
+		errs = append(errs, "internal_database: "+err.Error())
+	}
+
+	// Helper to validate a task's schedule branch
+	validateSchedule := func(name string, hasCron bool, cronStr string, hasInterval bool, dur *durationpb.Duration) {
+		if hasCron {
+			if err := ValidateCronExpression(cronStr); err != nil {
+				errs = append(errs, fmt.Sprintf("%s: %v", name, err))
+			}
+		} else if hasInterval {
+			if _, err := DurationPbToCron(dur); err != nil {
+				errs = append(errs, fmt.Sprintf("%s: invalid interval: %v", name, err))
+			}
+		}
+	}
+
+	if s := c.GetCleanupExpiredOtps(); s != nil && s.GetEnabled() {
+		validateSchedule("cleanup_expired_otps", s.GetCron() != "", s.GetCron(), s.GetInterval() != nil, s.GetInterval())
+	}
+	if s := c.GetCleanupExpiredTokens(); s != nil && s.GetEnabled() {
+		validateSchedule("cleanup_expired_tokens", s.GetCron() != "", s.GetCron(), s.GetInterval() != nil, s.GetInterval())
+	}
+	if s := c.GetCleanupOrphanedBlobs(); s != nil && s.GetEnabled() {
+		validateSchedule("cleanup_orphaned_blobs", s.GetCron() != "", s.GetCron(), s.GetInterval() != nil, s.GetInterval())
+	}
+	if s := c.GetDatabaseMaintenance(); s != nil && s.GetEnabled() {
+		validateSchedule("database_maintenance", s.GetCron() != "", s.GetCron(), s.GetInterval() != nil, s.GetInterval())
+	}
+	if s := c.GetPurgeSoftDeletedAccounts(); s != nil && s.GetEnabled() {
+		validateSchedule("purge_soft_deleted_accounts", s.GetCron() != "", s.GetCron(), s.GetInterval() != nil, s.GetInterval())
+	}
+	if s := c.GetSendUsernameReleaseWarnings(); s != nil && s.GetEnabled() {
+		validateSchedule("send_username_release_warnings", s.GetCron() != "", s.GetCron(), s.GetInterval() != nil, s.GetInterval())
 	}
 
 	if len(errs) > 0 {
@@ -663,6 +721,15 @@ func ValidateOpsCliConfig(c *config.OpsCliConfig) error {
 		u, err := url.Parse(c.GetOpsServerUrl())
 		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
 			errs = append(errs, fmt.Sprintf("ops_server_url must be a valid HTTP or HTTPS URL (got %q)", c.GetOpsServerUrl()))
+		}
+	}
+
+	if strings.TrimSpace(c.GetJobsServerUrl()) == "" {
+		errs = append(errs, "jobs_server_url cannot be empty")
+	} else {
+		u, err := url.Parse(c.GetJobsServerUrl())
+		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
+			errs = append(errs, fmt.Sprintf("jobs_server_url must be a valid HTTP or HTTPS URL (got %q)", c.GetJobsServerUrl()))
 		}
 	}
 

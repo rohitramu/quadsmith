@@ -294,27 +294,28 @@ Boot a blank `postgres:15-alpine` container and run a separate seeder service.
 
 The soft-deleted account scrubber in
 [`HandlePurgeSoftDeletedAccounts`](../../src/go/shared/pkg/auth/job.go) will be
-registered into the operational catalog and scheduled daemon:
+registered into the operational catalog and scheduled daemon (see
+[`tasks_and_jobs.md`](tasks_and_jobs.md)):
 
 1. **Ops Service Catalog
    ([`service.go`](../../src/go/server-ops/pkg/ops/service.go))**:
    - Register `purge_soft_deleted_accounts` (procedure
-     `PurgeSoftDeletedAccounts`) in `ListScheduledJobs` with an initial interval
-     of `8h`.
+     `PurgeSoftDeletedAccounts`) in `ListTasks` with a default interval of `8h`.
 2. **Environment Configuration**:
-   - Add the schedule entry to all 4 job server textproto files:
+   - Add the typed schedule entry to all 4 job server textproto files:
      - [`sandbox.textproto`](../../src/go/server-jobs/config/sandbox.textproto)
      - [`test.textproto`](../../src/go/server-jobs/config/test.textproto)
      - [`staging.textproto`](../../src/go/server-jobs/config/staging.textproto)
      - [`prod.textproto`](../../src/go/server-jobs/config/prod.textproto)
-   - Configured with `interval: "8h"` by default, allowing operator adjustment
+   - Configured with an 8-hour interval by default, allowing operator adjustment
      per environment without code modification.
 
 ```textproto
-schedules {
-  name: "purge_soft_deleted_accounts"
-  procedure: "PurgeSoftDeletedAccounts"
-  interval: "8h"
+purge_soft_deleted_accounts {
+  enabled: true
+  interval {
+    seconds: 28800
+  }
 }
 ```
 

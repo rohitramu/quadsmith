@@ -19,6 +19,8 @@ import (
 	"quadsmith/shared/pkg/config"
 
 	configpb "quadsmith/shared/gen/quadsmith/config"
+	jobspb "quadsmith/shared/gen/quadsmith/jobs"
+	"quadsmith/shared/gen/quadsmith/jobs/jobsconnect"
 	pb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 )
@@ -26,6 +28,7 @@ import (
 var (
 	embeddedConfig *configpb.OpsCliConfig
 	opsServerURL   string
+	jobsServerURL  string
 	tokenFlag      string
 	jsonOut        bool
 )
@@ -41,6 +44,13 @@ func init() {
 	}
 	embeddedConfig = &cfg
 	opsServerURL = cfg.GetOpsServerUrl()
+	if v := os.Getenv("QS_OPS_SERVER_URL"); v != "" {
+		opsServerURL = v
+	}
+	jobsServerURL = cfg.GetJobsServerUrl()
+	if v := os.Getenv("QS_JOBS_SERVER_URL"); v != "" {
+		jobsServerURL = v
+	}
 }
 
 type SessionConfig struct {
@@ -132,6 +142,26 @@ func getOpsClient() opsconnect.OpsServiceClient {
 	return opsconnect.NewOpsServiceClient(httpClient, opsServerURL)
 }
 
+func getJobsClient() jobsconnect.JobsServiceClient {
+	token := loadSessionToken()
+	transport := &bearerTransport{
+		token: token,
+		base:  http.DefaultTransport,
+	}
+	httpClient := &http.Client{
+		Transport: transport,
+		Timeout:   60 * time.Second,
+	}
+	url := jobsServerURL
+	if url == "" {
+		url = embeddedConfig.GetJobsServerUrl()
+	}
+	if url == "" {
+		url = "http://127.0.0.1:8083"
+	}
+	return jobsconnect.NewJobsServiceClient(httpClient, url)
+}
+
 func main() {
 	if err := newRootCmd().Execute(); err != nil {
 		os.Exit(1)
@@ -142,7 +172,7 @@ func newRootCmd() *cobra.Command {
 	rootCmd := &cobra.Command{
 		Use:   "qsops",
 		Short: "Quadsmith Developer Operations CLI",
-		Long:  "Operational and developer tooling for system diagnostics, IAM, JIT elevation, DB maintenance, and scheduled jobs.",
+		Long:  "Operational and developer tooling for system diagnostics, IAM, JIT elevation, DB maintenance, background tasks, and scheduled jobs.",
 	}
 
 	rootCmd.PersistentFlags().StringVar(&tokenFlag, "token", "", "Operator session or bootstrap token (env: QS_OPS_TOKEN)")
@@ -161,7 +191,9 @@ func newRootCmd() *cobra.Command {
 	rootCmd.AddCommand(newSystemCmd())
 	rootCmd.AddCommand(newDbCmd())
 	rootCmd.AddCommand(newSeedCmd())
+	rootCmd.AddCommand(newTasksCmd())
 	rootCmd.AddCommand(newJobsCmd())
+	rootCmd.AddCommand(newAuditCmd())
 
 	return rootCmd
 }
@@ -697,23 +729,23 @@ func newSeedCmd() *cobra.Command {
 }
 
 // ---------------------------------------------------------
-// Jobs & Audit Commands
+// Tasks, Jobs & Audit Commands
 // ---------------------------------------------------------
 
-func newJobsCmd() *cobra.Command {
+func newTasksCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "jobs",
-		Short: "Inspect schedules, trigger manual jobs, and view internal audit logs",
+		Use:   "tasks",
+		Short: "Inspect and trigger background operational tasks",
 	}
 
 	cmd.AddCommand(&cobra.Command{
 		Use:   "list",
-		Short: "List scheduled maintenance jobs",
+		Short: "List registered operational maintenance tasks",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := getOpsClient()
-			resp, err := client.ListScheduledJobs(cmd.Context(), connect.NewRequest(&pb.ListScheduledJobsRequest{}))
+			resp, err := client.ListTasks(cmd.Context(), connect.NewRequest(&pb.ListTasksRequest{}))
 			if err != nil {
-				return fmt.Errorf("failed to list scheduled jobs: %w", err)
+				return fmt.Errorf("failed to list tasks: %w", err)
 			}
 
 			if jsonOut {
@@ -723,40 +755,265 @@ func newJobsCmd() *cobra.Command {
 			}
 
 			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
-			fmt.Fprintf(w, "JOB NAME\tPROCEDURE\tINTERVAL\tLAST STATUS\tLAST RUN\n")
-			for _, j := range resp.Msg.GetJobs() {
-				lastRun := "-"
-				if j.GetLastRunAt() != nil {
-					lastRun = j.GetLastRunAt().AsTime().Format("2006-01-02 15:04:05")
-				}
-				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\n",
-					j.GetName(), j.GetProcedure(), j.GetInterval(), j.GetLastStatus(), lastRun)
+			fmt.Fprintf(w, "TASK NAME\tDESCRIPTION\tPROCEDURE\tDEFAULT INTERVAL\n")
+			for _, t := range resp.Msg.GetTasks() {
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\n",
+					t.GetName(), t.GetDescription(), t.GetProcedure(), t.GetDefaultInterval())
 			}
 			return w.Flush()
 		},
 	})
 
 	cmd.AddCommand(&cobra.Command{
-		Use:   "trigger [job_name]",
-		Short: "Immediately trigger execution of a maintenance job",
+		Use:   "get [task_name]",
+		Short: "Get metadata and description for a specific task",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := getOpsClient()
-			resp, err := client.TriggerJob(cmd.Context(), connect.NewRequest(&pb.TriggerJobRequest{
-				JobName: args[0],
+			resp, err := client.GetTask(cmd.Context(), connect.NewRequest(&pb.GetTaskRequest{
+				TaskName: args[0],
 			}))
 			if err != nil {
-				return fmt.Errorf("failed to trigger job %s: %w", args[0], err)
+				return fmt.Errorf("failed to get task %s: %w", args[0], err)
 			}
-			fmt.Printf("✓ %s (call ID: %s)\n", resp.Msg.GetMessage(), resp.Msg.GetCallId())
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			t := resp.Msg.GetTask()
+			fmt.Printf("Task Name:        %s\n", t.GetName())
+			fmt.Printf("Description:      %s\n", t.GetDescription())
+			fmt.Printf("Procedure:        %s\n", t.GetProcedure())
+			fmt.Printf("Default Interval: %s\n", t.GetDefaultInterval())
 			return nil
 		},
 	})
 
+	cmd.AddCommand(&cobra.Command{
+		Use:   "trigger [task_name]",
+		Short: "Immediately trigger execution of a task",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			ctx := cmd.Context()
+			taskName := strings.ToLower(strings.TrimSpace(args[0]))
+			taskName = strings.TrimPrefix(taskName, "auth.")
+			taskName = strings.TrimPrefix(taskName, "blob.")
+
+			switch taskName {
+			case "cleanup_expired_otps", "cleanupexpiredotps":
+				resp, err := client.CleanupExpiredOtps(ctx, connect.NewRequest(&pb.CleanupExpiredOtpsRequest{}))
+				if err != nil {
+					return fmt.Errorf("failed to trigger cleanup_expired_otps: %w", err)
+				}
+				if jsonOut {
+					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+					fmt.Println(string(out))
+					return nil
+				}
+				fmt.Printf("✓ Cleaned %d expired OTPs\n", resp.Msg.GetCleanedCount())
+				return nil
+
+			case "cleanup_expired_tokens", "cleanupexpiredtokens":
+				resp, err := client.CleanupExpiredTokens(ctx, connect.NewRequest(&pb.CleanupExpiredTokensRequest{}))
+				if err != nil {
+					return fmt.Errorf("failed to trigger cleanup_expired_tokens: %w", err)
+				}
+				if jsonOut {
+					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+					fmt.Println(string(out))
+					return nil
+				}
+				fmt.Printf("✓ Cleaned %d expired tokens\n", resp.Msg.GetCleanedCount())
+				return nil
+
+			case "cleanup_orphaned_blobs", "cleanuporphanedblobs":
+				resp, err := client.CleanupOrphanedBlobs(ctx, connect.NewRequest(&pb.CleanupOrphanedBlobsRequest{}))
+				if err != nil {
+					return fmt.Errorf("failed to trigger cleanup_orphaned_blobs: %w", err)
+				}
+				if jsonOut {
+					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+					fmt.Println(string(out))
+					return nil
+				}
+				fmt.Printf("✓ Cleaned %d orphaned blobs\n", resp.Msg.GetCleanedCount())
+				return nil
+
+			case "purge_soft_deleted_accounts", "purgesoftdeletedaccounts", "purge_accounts":
+				resp, err := client.PurgeSoftDeletedAccounts(ctx, connect.NewRequest(&pb.PurgeSoftDeletedAccountsRequest{}))
+				if err != nil {
+					return fmt.Errorf("failed to trigger purge_soft_deleted_accounts: %w", err)
+				}
+				if jsonOut {
+					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+					fmt.Println(string(out))
+					return nil
+				}
+				fmt.Printf("✓ Purged %d soft-deleted accounts\n", resp.Msg.GetPurgedCount())
+				return nil
+
+			case "send_username_release_warnings", "sendusernamereleasewarnings", "warn_usernames":
+				resp, err := client.SendUsernameReleaseWarnings(ctx, connect.NewRequest(&pb.SendUsernameReleaseWarningsRequest{}))
+				if err != nil {
+					return fmt.Errorf("failed to trigger send_username_release_warnings: %w", err)
+				}
+				if jsonOut {
+					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+					fmt.Println(string(out))
+					return nil
+				}
+				fmt.Printf("✓ Sent %d username release warnings\n", resp.Msg.GetWarningCount())
+				return nil
+
+			case "run_database_maintenance", "rundatabasemaintenance", "vacuum":
+				resp, err := client.RunDatabaseMaintenance(ctx, connect.NewRequest(&pb.RunDatabaseMaintenanceRequest{
+					FullVacuum: false,
+				}))
+				if err != nil {
+					return fmt.Errorf("failed to trigger database maintenance: %w", err)
+				}
+				if jsonOut {
+					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+					fmt.Println(string(out))
+					return nil
+				}
+				fmt.Printf("✓ %s (duration: %d ms)\n", resp.Msg.GetMessage(), resp.Msg.GetDurationMs())
+				return nil
+
+			case "seed_database", "seeddatabase", "seed":
+				resp, err := client.SeedDatabase(ctx, connect.NewRequest(&pb.SeedDatabaseRequest{
+					Force: false,
+				}))
+				if err != nil {
+					return fmt.Errorf("failed to trigger seed_database: %w", err)
+				}
+				if jsonOut {
+					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+					fmt.Println(string(out))
+					return nil
+				}
+				fmt.Printf("✓ %s (records seeded: %d)\n", resp.Msg.GetMessage(), resp.Msg.GetRecordsSeeded())
+				return nil
+
+			default:
+				return fmt.Errorf("unknown task %q; run 'qsops tasks list' to see available tasks", args[0])
+			}
+		},
+	})
+
+	return cmd
+}
+
+func newJobsCmd() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "jobs",
+		Short: "Inspect execution history and schedules of jobs",
+	}
+
 	var limit int
-	historyCmd := &cobra.Command{
-		Use:   "history",
-		Short: "View audit log of internal API calls and job executions",
+	var taskFilter string
+
+	listCmd := &cobra.Command{
+		Use:   "list",
+		Short: "List historical executions of background tasks (latest first)",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getJobsClient()
+			listReq := &jobspb.ListJobsRequest{}
+			if limit > 0 {
+				l := int32(limit)
+				listReq.Limit = &l
+			}
+			if taskFilter != "" {
+				listReq.TaskName = &taskFilter
+			}
+			resp, err := client.ListJobs(cmd.Context(), connect.NewRequest(listReq))
+			if err != nil {
+				return fmt.Errorf("failed to list jobs: %w", err)
+			}
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(w, "JOB ID\tTASK\tPROCEDURE\tSTATUS\tDURATION\tCREATED AT\tSCHEDULE\n")
+			for _, j := range resp.Msg.GetJobs() {
+				createdAt := "-"
+				if j.GetCreatedAt() != nil {
+					createdAt = j.GetCreatedAt().AsTime().Format("2006-01-02 15:04:05")
+				}
+				sched := "-"
+				if j.GetScheduleInterval() != "" {
+					sched = j.GetScheduleInterval()
+				}
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%d ms\t%s\t%s\n",
+					j.GetJobId(), j.GetTaskName(), j.GetProcedure(), j.GetStatus(), j.GetDurationMs(), createdAt, sched)
+			}
+			return w.Flush()
+		},
+	}
+	listCmd.Flags().IntVar(&limit, "limit", 50, "Maximum number of job records to return")
+	listCmd.Flags().StringVar(&taskFilter, "task", "", "Filter jobs by task name (e.g. cleanup_expired_otps)")
+	cmd.AddCommand(listCmd)
+
+	cmd.AddCommand(&cobra.Command{
+		Use:   "get [job_id]",
+		Short: "Retrieve schedule information and execution details for a job",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getJobsClient()
+			resp, err := client.GetJob(cmd.Context(), connect.NewRequest(&jobspb.GetJobRequest{
+				JobId: args[0],
+			}))
+			if err != nil {
+				return fmt.Errorf("failed to get job %s: %w", args[0], err)
+			}
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			j := resp.Msg.GetJob()
+			createdAt := "-"
+			if j.GetCreatedAt() != nil {
+				createdAt = j.GetCreatedAt().AsTime().Format("2006-01-02 15:04:05")
+			}
+			sched := "None"
+			if j.GetScheduleInterval() != "" {
+				sched = j.GetScheduleInterval()
+			}
+
+			fmt.Printf("Job ID:            %s\n", j.GetJobId())
+			fmt.Printf("Task Name:         %s\n", j.GetTaskName())
+			fmt.Printf("Procedure:         %s\n", j.GetProcedure())
+			fmt.Printf("Caller:            %s (%s)\n", j.GetCaller(), j.GetCallerType())
+			fmt.Printf("Status:            %s\n", j.GetStatus())
+			fmt.Printf("Duration:          %d ms\n", j.GetDurationMs())
+			fmt.Printf("Created At:        %s\n", createdAt)
+			fmt.Printf("Schedule Interval: %s\n", sched)
+			if j.GetErrorMessage() != "" {
+				fmt.Printf("Error Message:     %s\n", j.GetErrorMessage())
+			}
+			return nil
+		},
+	})
+
+	return cmd
+}
+
+func newAuditCmd() *cobra.Command {
+	var limit int
+	cmd := &cobra.Command{
+		Use:   "audit",
+		Short: "View audit log of internal API calls across all services",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := getOpsClient()
 			resp, err := client.ListInternalApiCalls(cmd.Context(), connect.NewRequest(&pb.ListInternalApiCallsRequest{
@@ -786,8 +1043,6 @@ func newJobsCmd() *cobra.Command {
 			return w.Flush()
 		},
 	}
-	historyCmd.Flags().IntVar(&limit, "limit", 50, "Maximum number of audit records to return")
-	cmd.AddCommand(historyCmd)
-
+	cmd.Flags().IntVar(&limit, "limit", 50, "Maximum number of audit records to return")
 	return cmd
 }

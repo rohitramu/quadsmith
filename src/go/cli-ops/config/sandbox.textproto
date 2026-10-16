@@ -1,5 +1,6 @@
 environment: "sandbox"
 ops_server_url: "http://127.0.0.1:8082"
+jobs_server_url: "http://127.0.0.1:8083"
 timeout {
   seconds: 30
 }
