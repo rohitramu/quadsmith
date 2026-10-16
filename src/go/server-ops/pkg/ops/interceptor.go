@@ -58,10 +58,11 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 
 		// 3. JIT Elevation Check
 		if in.isSensitiveMethod(methodName) {
-			grantID, err := in.checkJitGrant(ctx, opCtx.Operator, methodName)
+			grantUUID, grantID, err := in.checkJitGrant(ctx, opCtx.Operator, methodName)
 			if err != nil {
 				return nil, err
 			}
+			opCtx.JitGrantUUID = grantUUID
 			opCtx.JitGrantID = grantID
 		}
 
@@ -176,19 +177,19 @@ func (in *OpsInterceptor) isSensitiveMethod(methodName string) bool {
 	return false
 }
 
-func (in *OpsInterceptor) checkJitGrant(ctx context.Context, operator, methodName string) (string, error) {
-	var grantID string
+func (in *OpsInterceptor) checkJitGrant(ctx context.Context, operator, methodName string) (string, string, error) {
+	var grantUUID, grantID string
 	var expiresAt time.Time
 	err := in.opsDb.QueryRow(ctx, `
-		SELECT id, expires_at
+		SELECT uuid::text, id, expires_at
 		FROM jit_grants
 		WHERE operator = $1 AND status = 'ACTIVE' AND expires_at > NOW() AND (operation = '*' OR operation = $2)
 		ORDER BY expires_at DESC
-		LIMIT 1`, operator, methodName).Scan(&grantID, &expiresAt)
+		LIMIT 1`, operator, methodName).Scan(&grantUUID, &grantID, &expiresAt)
 	if err != nil {
-		return "", connect.NewError(connect.CodePermissionDenied, fmt.Errorf("procedure %s requires active JIT elevation: acquire a lease via 'qsops jit request'", methodName))
+		return "", "", connect.NewError(connect.CodePermissionDenied, fmt.Errorf("procedure %s requires active JIT elevation: acquire a lease via 'qsops jit request'", methodName))
 	}
-	return grantID, nil
+	return grantUUID, grantID, nil
 }
 
 func (in *OpsInterceptor) logAudit(method string, opCtx *OperatorContext, status string, errMsg *string, durationMs int64) {
@@ -196,18 +197,18 @@ func (in *OpsInterceptor) logAudit(method string, opCtx *OperatorContext, status
 	defer cancel()
 
 	callID := fmt.Sprintf("call_%d", time.Now().UnixNano())
-	var jitID *string
-	if opCtx.JitGrantID != "" {
-		jitID = &opCtx.JitGrantID
+	var jitUUID *string
+	if opCtx.JitGrantUUID != "" {
+		jitUUID = &opCtx.JitGrantUUID
 	}
 
 	_, err := in.opsDb.Exec(ctx, `
 		INSERT INTO internal_api_calls (
-			uuid, id, method, caller, caller_type, group_name, jit_grant_id, status, error_message, duration_ms, created_at
+			uuid, id, method, caller, caller_type, group_name, jit_grant_uuid, status, error_message, duration_ms, created_at
 		) VALUES (
 			gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, NOW()
 		)`,
-		callID, method, opCtx.Operator, opCtx.OperatorType, opCtx.GroupName, jitID, status, errMsg, durationMs,
+		callID, method, opCtx.Operator, opCtx.OperatorType, opCtx.GroupName, jitUUID, status, errMsg, durationMs,
 	)
 	if err != nil {
 		log.Printf("[AuditLogger] Failed to write audit record for %s: %v", method, err)

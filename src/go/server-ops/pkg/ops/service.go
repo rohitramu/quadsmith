@@ -339,24 +339,27 @@ func (s *OpsService) ListInternalApiCalls(ctx context.Context, req *connect.Requ
 	}
 
 	query := `
-		SELECT uuid, id, method, caller, caller_type, group_name, jit_grant_id, status, error_message, duration_ms, created_at
-		FROM internal_api_calls
+		SELECT
+			c.uuid, c.id, c.method, c.caller, c.caller_type, c.group_name,
+			c.jit_grant_uuid::text, j.id, c.status, c.error_message, c.duration_ms, c.created_at
+		FROM internal_api_calls c
+		LEFT JOIN jit_grants j ON j.uuid = c.jit_grant_uuid
 		WHERE 1=1`
 	var args []any
 	argIdx := 1
 
 	if caller := req.Msg.GetCallerFilter(); caller != "" {
-		query += fmt.Sprintf(" AND caller = $%d", argIdx)
+		query += fmt.Sprintf(" AND c.caller = $%d", argIdx)
 		args = append(args, caller)
 		argIdx++
 	}
 	if method := req.Msg.GetMethodFilter(); method != "" {
-		query += fmt.Sprintf(" AND method = $%d", argIdx)
+		query += fmt.Sprintf(" AND c.method = $%d", argIdx)
 		args = append(args, method)
 		argIdx++
 	}
 
-	query += fmt.Sprintf(" ORDER BY created_at DESC LIMIT $%d", argIdx)
+	query += fmt.Sprintf(" ORDER BY c.created_at DESC LIMIT $%d", argIdx)
 	args = append(args, limit)
 
 	rows, err := s.opsDb.Query(ctx, query, args...)
@@ -368,15 +371,18 @@ func (s *OpsService) ListInternalApiCalls(ctx context.Context, req *connect.Requ
 	var calls []*pb.InternalApiCallRecord
 	for rows.Next() {
 		var r pb.InternalApiCallRecord
-		var jitGrantID, errorMsg *string
+		var jitGrantUUID, jitGrantID, errorMsg *string
 		var createdAt time.Time
 
 		err := rows.Scan(
 			&r.Uuid, &r.Id, &r.Method, &r.Caller, &r.CallerType, &r.GroupName,
-			&jitGrantID, &r.Status, &errorMsg, &r.DurationMs, &createdAt,
+			&jitGrantUUID, &jitGrantID, &r.Status, &errorMsg, &r.DurationMs, &createdAt,
 		)
 		if err != nil {
 			continue
+		}
+		if jitGrantUUID != nil {
+			r.JitGrantUuid = jitGrantUUID
 		}
 		if jitGrantID != nil {
 			r.JitGrantId = jitGrantID

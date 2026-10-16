@@ -142,10 +142,12 @@ type BlobReference struct {
 	BlobUuid string `protobuf:"bytes,3,opt,name=blob_uuid,json=blobUuid,proto3" json:"blob_uuid,omitempty"`
 	// Entity category: "build", "component", "user_avatar"
 	EntityType string `protobuf:"bytes,4,opt,name=entity_type,json=entityType,proto3" json:"entity_type,omitempty"`
-	// Foreign key uuid of the referencing entity
-	EntityUuid string `protobuf:"bytes,5,opt,name=entity_uuid,json=entityUuid,proto3" json:"entity_uuid,omitempty"`
+	// Foreign key uuid of the referencing entity (when entity_type != "user_avatar")
+	EntityUuid *string `protobuf:"bytes,5,opt,name=entity_uuid,json=entityUuid,proto3,oneof" json:"entity_uuid,omitempty"`
+	// Foreign key uuid of the referencing user (when entity_type == "user_avatar")
+	UserUuid *string `protobuf:"bytes,6,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
 	// Linkage timestamp
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -209,8 +211,15 @@ func (x *BlobReference) GetEntityType() string {
 }
 
 func (x *BlobReference) GetEntityUuid() string {
-	if x != nil {
-		return x.EntityUuid
+	if x != nil && x.EntityUuid != nil {
+		return *x.EntityUuid
+	}
+	return ""
+}
+
+func (x *BlobReference) GetUserUuid() string {
+	if x != nil && x.UserUuid != nil {
+		return *x.UserUuid
 	}
 	return ""
 }
@@ -240,7 +249,7 @@ const file_quadsmith_api_blob_proto_rawDesc = "" +
 	"\tuser_uuid\x18\a \x01(\tB\x15\xc2\xf3\x18\r\x1a\vusers(uuid)\xc0\xf0\x19\x04R\buserUuid\x12J\n" +
 	"\n" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt:\x11\xc2\xf3\x18\a\n" +
-	"\x05blobs\xc2\xf0\x19\x02\b\b\"\xf9\x02\n" +
+	"\x05blobs\xc2\xf0\x19\x02\b\b\"\xda\x04\n" +
 	"\rBlobReference\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
@@ -249,13 +258,16 @@ const file_quadsmith_api_blob_proto_rawDesc = "" +
 	"\tblob_uuid\x18\x03 \x01(\tB'\xc2\xf3\x18\x1f\x1a\x1dblobs(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\bblobUuid\x12+\n" +
 	"\ventity_type\x18\x04 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x04R\n" +
-	"entityType\x12+\n" +
-	"\ventity_uuid\x18\x05 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x04R\n" +
-	"entityUuid\x12J\n" +
+	"entityType\x12R\n" +
+	"\ventity_uuid\x18\x05 \x01(\tB,\xc2\xf3\x18$\x1a entities(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04H\x00R\n" +
+	"entityUuid\x88\x01\x01\x12K\n" +
+	"\tuser_uuid\x18\x06 \x01(\tB)\xc2\xf3\x18!\x1a\x1dusers(uuid) ON DELETE CASCADE(\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x12J\n" +
 	"\n" +
-	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x04R\tcreatedAt:@\xc2\xf3\x186\n" +
-	"\x0fblob_references\x1a#blob_uuid, entity_type, entity_uuid\xc2\xf0\x19\x02\b\x01B(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x04R\tcreatedAt:\x8e\x01\xc2\xf3\x18\x83\x01\n" +
+	"\x0fblob_references\x12(num_nonnulls(entity_uuid, user_uuid) = 1\x1a#blob_uuid, entity_type, entity_uuid\x1a!blob_uuid, entity_type, user_uuid\xc2\xf0\x19\x02\b\x01B\x0e\n" +
+	"\f_entity_uuidB\f\n" +
+	"\n" +
+	"_user_uuidB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_blob_proto_rawDescOnce sync.Once
@@ -290,6 +302,7 @@ func file_quadsmith_api_blob_proto_init() {
 	if File_quadsmith_api_blob_proto != nil {
 		return
 	}
+	file_quadsmith_api_blob_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -280,11 +280,12 @@ type InternalApiCallRecord struct {
 	Caller        string                 `protobuf:"bytes,4,opt,name=caller,proto3" json:"caller,omitempty"`
 	CallerType    string                 `protobuf:"bytes,5,opt,name=caller_type,json=callerType,proto3" json:"caller_type,omitempty"`
 	GroupName     string                 `protobuf:"bytes,6,opt,name=group_name,json=groupName,proto3" json:"group_name,omitempty"`
-	JitGrantId    *string                `protobuf:"bytes,7,opt,name=jit_grant_id,json=jitGrantId,proto3,oneof" json:"jit_grant_id,omitempty"`
-	Status        string                 `protobuf:"bytes,8,opt,name=status,proto3" json:"status,omitempty"`
-	ErrorMessage  *string                `protobuf:"bytes,9,opt,name=error_message,json=errorMessage,proto3,oneof" json:"error_message,omitempty"`
-	DurationMs    int64                  `protobuf:"varint,10,opt,name=duration_ms,json=durationMs,proto3" json:"duration_ms,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,11,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	JitGrantUuid  *string                `protobuf:"bytes,7,opt,name=jit_grant_uuid,json=jitGrantUuid,proto3,oneof" json:"jit_grant_uuid,omitempty"`
+	JitGrantId    *string                `protobuf:"bytes,8,opt,name=jit_grant_id,json=jitGrantId,proto3,oneof" json:"jit_grant_id,omitempty"`
+	Status        string                 `protobuf:"bytes,9,opt,name=status,proto3" json:"status,omitempty"`
+	ErrorMessage  *string                `protobuf:"bytes,10,opt,name=error_message,json=errorMessage,proto3,oneof" json:"error_message,omitempty"`
+	DurationMs    int64                  `protobuf:"varint,11,opt,name=duration_ms,json=durationMs,proto3" json:"duration_ms,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,12,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -357,6 +358,13 @@ func (x *InternalApiCallRecord) GetCallerType() string {
 func (x *InternalApiCallRecord) GetGroupName() string {
 	if x != nil {
 		return x.GroupName
+	}
+	return ""
+}
+
+func (x *InternalApiCallRecord) GetJitGrantUuid() string {
+	if x != nil && x.JitGrantUuid != nil {
+		return *x.JitGrantUuid
 	}
 	return ""
 }
@@ -2756,7 +2764,7 @@ const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x05R\tcreatedAt\x12?\n" +
 	"\n" +
 	"revoked_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\trevokedAt:\x1b\xc2\xf3\x18\x11\n" +
-	"\x0finternal_tokens\xc2\xf0\x19\x02\b\x01\"\x94\x04\n" +
+	"\x0finternal_tokens\xc2\xf0\x19\x02\b\x01\"\xf6\x04\n" +
 	"\x15InternalApiCallRecord\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x1a\n" +
@@ -2768,17 +2776,20 @@ const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"\vcaller_type\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x05R\n" +
 	"callerType\x12#\n" +
 	"\n" +
-	"group_name\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x05R\tgroupName\x12+\n" +
-	"\fjit_grant_id\x18\a \x01(\tB\x04\xc0\xf0\x19\x05H\x00R\n" +
+	"group_name\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x05R\tgroupName\x12G\n" +
+	"\x0ejit_grant_uuid\x18\a \x01(\tB\x1c\xc2\xf3\x18\x14\x1a\x10jit_grants(uuid)(\x01\xc0\xf0\x19\x05H\x00R\fjitGrantUuid\x88\x01\x01\x121\n" +
+	"\fjit_grant_id\x18\b \x01(\tB\n" +
+	"\xc2\xf3\x18\x02@\x01\xc0\xf0\x19\x05H\x01R\n" +
 	"jitGrantId\x88\x01\x01\x12\x1c\n" +
-	"\x06status\x18\b \x01(\tB\x04\xc0\xf0\x19\x05R\x06status\x12.\n" +
-	"\rerror_message\x18\t \x01(\tB\x04\xc0\xf0\x19\x05H\x01R\ferrorMessage\x88\x01\x01\x12%\n" +
-	"\vduration_ms\x18\n" +
-	" \x01(\x03B\x04\xc0\xf0\x19\x05R\n" +
+	"\x06status\x18\t \x01(\tB\x04\xc0\xf0\x19\x05R\x06status\x12.\n" +
+	"\rerror_message\x18\n" +
+	" \x01(\tB\x04\xc0\xf0\x19\x05H\x02R\ferrorMessage\x88\x01\x01\x12%\n" +
+	"\vduration_ms\x18\v \x01(\x03B\x04\xc0\xf0\x19\x05R\n" +
 	"durationMs\x12L\n" +
 	"\n" +
-	"created_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\x11\xc2\xf3\x18\t(\x01:\x05NOW()\xc0\xf0\x19\x05R\tcreatedAt:\x1e\xc2\xf3\x18\x14\n" +
-	"\x12internal_api_calls\xc2\xf0\x19\x02\b\x01B\x0f\n" +
+	"created_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\x11\xc2\xf3\x18\t(\x01:\x05NOW()\xc0\xf0\x19\x05R\tcreatedAt:\x1e\xc2\xf3\x18\x14\n" +
+	"\x12internal_api_calls\xc2\xf0\x19\x02\b\x01B\x11\n" +
+	"\x0f_jit_grant_uuidB\x0f\n" +
 	"\r_jit_grant_idB\x10\n" +
 	"\x0e_error_message\"\x1d\n" +
 	"\x1bGetSystemDiagnosticsRequest\"\xde\x02\n" +

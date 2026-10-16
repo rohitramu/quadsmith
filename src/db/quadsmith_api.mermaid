@@ -125,7 +125,8 @@ erDiagram
         TEXT id
         UUID blob_uuid UK,FK
         TEXT entity_type UK
-        UUID entity_uuid UK
+        UUID entity_uuid UK,FK
+        UUID user_uuid UK,FK
         TIMESTAMPTZ created_at
     }
 
@@ -350,8 +351,6 @@ erDiagram
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
         BOOLEAN is_author_verified_owner
-        TEXT collection
-        TEXT entity_id
     }
 
     review_votes {
@@ -384,9 +383,6 @@ erDiagram
         TIMESTAMPTZ deleted_at
         TIMESTAMPTZ created_at
         TIMESTAMPTZ updated_at
-        JSONB comments
-        TEXT collection
-        TEXT entity_id
     }
 
     answers {
@@ -403,7 +399,6 @@ erDiagram
         TIMESTAMPTZ updated_at
         TIMESTAMPTZ accepted_at
         TIMESTAMPTZ endorsed_at
-        JSONB comments
     }
 
     question_votes {
@@ -465,11 +460,6 @@ erDiagram
         UUID collection_uuid UK,FK
         UUID entity_uuid UK,FK
         TIMESTAMPTZ created_at
-        TEXT entity_id
-        TEXT collection
-        TEXT name
-        TEXT primary_display_image
-        TEXT author_or_manufacturer
     }
 
     software_tools {
@@ -555,3 +545,6 @@ erDiagram
     entities ||--o| video_transmitter_firmwares : inherits
     entities ||--o| video_transmitters : inherits
     users ||--o{ entities : authors
+    blobs ||--o{ blob_references : referenced_by
+    entities ||--o{ blob_references : references
+    users ||--o{ blob_references : avatar_references

@@ -533,13 +533,18 @@ func ListInternalTokenRecords(ctx context.Context, db *pgxpool.Pool, cols []stri
 }
 
 func CreateInternalApiCallRecord(ctx context.Context, tx pgx.Tx, m *InternalApiCallRecord) error {
-	query := `INSERT INTO internal_api_calls (uuid, id, method, caller, caller_type, group_name, jit_grant_id, status, error_message, duration_ms, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`
+	query := `INSERT INTO internal_api_calls (uuid, id, method, caller, caller_type, group_name, jit_grant_uuid, status, error_message, duration_ms, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Method, m.Caller, m.CallerType, m.GroupName, m.JitGrantId, m.Status, m.ErrorMessage, m.DurationMs, func(ts *timestamppb.Timestamp) interface{} {
+	}(m.Uuid), m.Id, m.Method, m.Caller, m.CallerType, m.GroupName, func(s *string) interface{} {
+		if s == nil || *s == "" {
+			return nil
+		}
+		return *s
+	}(m.JitGrantUuid), m.Status, m.ErrorMessage, m.DurationMs, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -549,8 +554,8 @@ func CreateInternalApiCallRecord(ctx context.Context, tx pgx.Tx, m *InternalApiC
 }
 
 func GetInternalApiCallRecord(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*InternalApiCallRecord, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "method": true, "caller": true, "caller_type": true, "group_name": true, "jit_grant_id": true, "status": true, "error_message": true, "duration_ms": true, "created_at": true}
-	colsStr := "uuid, id, method, caller, caller_type, group_name, jit_grant_id, status, error_message, duration_ms, created_at"
+	validCols := map[string]bool{"uuid": true, "id": true, "method": true, "caller": true, "caller_type": true, "group_name": true, "jit_grant_uuid": true, "status": true, "error_message": true, "duration_ms": true, "created_at": true}
+	colsStr := "uuid, id, method, caller, caller_type, group_name, jit_grant_uuid, status, error_message, duration_ms, created_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -561,7 +566,7 @@ func GetInternalApiCallRecord(ctx context.Context, db *pgxpool.Pool, idOrUuid st
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "method", "caller", "caller_type", "group_name", "jit_grant_id", "status", "error_message", "duration_ms", "created_at"}
+		cols = []string{"uuid", "id", "method", "caller", "caller_type", "group_name", "jit_grant_uuid", "status", "error_message", "duration_ms", "created_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM internal_api_calls WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -581,8 +586,8 @@ func GetInternalApiCallRecord(ctx context.Context, db *pgxpool.Pool, idOrUuid st
 			scanArgs[i] = &m.CallerType
 		case "group_name":
 			scanArgs[i] = &m.GroupName
-		case "jit_grant_id":
-			scanArgs[i] = &m.JitGrantId
+		case "jit_grant_uuid":
+			scanArgs[i] = &m.JitGrantUuid
 		case "status":
 			scanArgs[i] = &m.Status
 		case "error_message":
@@ -614,8 +619,13 @@ func GetInternalApiCallRecord(ctx context.Context, db *pgxpool.Pool, idOrUuid st
 }
 
 func UpdateInternalApiCallRecord(ctx context.Context, tx pgx.Tx, m *InternalApiCallRecord) error {
-	query := `UPDATE internal_api_calls SET method = $2, caller = $3, caller_type = $4, group_name = $5, jit_grant_id = $6, status = $7, error_message = $8, duration_ms = $9, created_at = $10 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Method, m.Caller, m.CallerType, m.GroupName, m.JitGrantId, m.Status, m.ErrorMessage, m.DurationMs, func(ts *timestamppb.Timestamp) interface{} {
+	query := `UPDATE internal_api_calls SET method = $2, caller = $3, caller_type = $4, group_name = $5, jit_grant_uuid = $6, status = $7, error_message = $8, duration_ms = $9, created_at = $10 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, m.Method, m.Caller, m.CallerType, m.GroupName, func(s *string) interface{} {
+		if s == nil || *s == "" {
+			return nil
+		}
+		return *s
+	}(m.JitGrantUuid), m.Status, m.ErrorMessage, m.DurationMs, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -631,8 +641,8 @@ func DeleteInternalApiCallRecord(ctx context.Context, tx pgx.Tx, idOrUuid string
 }
 
 func ListInternalApiCallRecords(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*InternalApiCallRecord, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "method": true, "caller": true, "caller_type": true, "group_name": true, "jit_grant_id": true, "status": true, "error_message": true, "duration_ms": true, "created_at": true}
-	colsStr := "uuid, id, method, caller, caller_type, group_name, jit_grant_id, status, error_message, duration_ms, created_at"
+	validCols := map[string]bool{"uuid": true, "id": true, "method": true, "caller": true, "caller_type": true, "group_name": true, "jit_grant_uuid": true, "status": true, "error_message": true, "duration_ms": true, "created_at": true}
+	colsStr := "uuid, id, method, caller, caller_type, group_name, jit_grant_uuid, status, error_message, duration_ms, created_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -643,7 +653,7 @@ func ListInternalApiCallRecords(ctx context.Context, db *pgxpool.Pool, cols []st
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "method", "caller", "caller_type", "group_name", "jit_grant_id", "status", "error_message", "duration_ms", "created_at"}
+		cols = []string{"uuid", "id", "method", "caller", "caller_type", "group_name", "jit_grant_uuid", "status", "error_message", "duration_ms", "created_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM internal_api_calls`
 	if whereClause != "" {
@@ -704,8 +714,8 @@ func ListInternalApiCallRecords(ctx context.Context, db *pgxpool.Pool, cols []st
 				scanArgs[i] = &m.CallerType
 			case "group_name":
 				scanArgs[i] = &m.GroupName
-			case "jit_grant_id":
-				scanArgs[i] = &m.JitGrantId
+			case "jit_grant_uuid":
+				scanArgs[i] = &m.JitGrantUuid
 			case "status":
 				scanArgs[i] = &m.Status
 			case "error_message":

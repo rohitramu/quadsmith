@@ -274,7 +274,7 @@ func ExportBlobs(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Blo
 }
 
 func CreateBlobReference(ctx context.Context, tx pgx.Tx, m *BlobReference) error {
-	query := `INSERT INTO blob_references (uuid, id, blob_uuid, entity_type, entity_uuid, created_at) VALUES ($1, $2, $3, $4, $5, $6)`
+	query := `INSERT INTO blob_references (uuid, id, blob_uuid, entity_type, entity_uuid, user_uuid, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -285,12 +285,17 @@ func CreateBlobReference(ctx context.Context, tx pgx.Tx, m *BlobReference) error
 			return nil
 		}
 		return s
-	}(m.BlobUuid), m.EntityType, func(s string) interface{} {
-		if s == "" {
+	}(m.BlobUuid), m.EntityType, func(s *string) interface{} {
+		if s == nil || *s == "" {
 			return nil
 		}
-		return s
-	}(m.EntityUuid), func(ts *timestamppb.Timestamp) interface{} {
+		return *s
+	}(m.EntityUuid), func(s *string) interface{} {
+		if s == nil || *s == "" {
+			return nil
+		}
+		return *s
+	}(m.UserUuid), func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -300,8 +305,8 @@ func CreateBlobReference(ctx context.Context, tx pgx.Tx, m *BlobReference) error
 }
 
 func GetBlobReference(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*BlobReference, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "blob_uuid": true, "entity_type": true, "entity_uuid": true, "created_at": true}
-	colsStr := "uuid, id, blob_uuid, entity_type, entity_uuid, created_at"
+	validCols := map[string]bool{"uuid": true, "id": true, "blob_uuid": true, "entity_type": true, "entity_uuid": true, "user_uuid": true, "created_at": true}
+	colsStr := "uuid, id, blob_uuid, entity_type, entity_uuid, user_uuid, created_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -312,7 +317,7 @@ func GetBlobReference(ctx context.Context, db *pgxpool.Pool, idOrUuid string, co
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "blob_uuid", "entity_type", "entity_uuid", "created_at"}
+		cols = []string{"uuid", "id", "blob_uuid", "entity_type", "entity_uuid", "user_uuid", "created_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM blob_references WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -335,13 +340,9 @@ func GetBlobReference(ctx context.Context, db *pgxpool.Pool, idOrUuid string, co
 		case "entity_type":
 			scanArgs[i] = &m.EntityType
 		case "entity_uuid":
-			var v *string
-			scanArgs[i] = &v
-			scanAssigns = append(scanAssigns, func() {
-				if v != nil {
-					m.EntityUuid = *v
-				}
-			})
+			scanArgs[i] = &m.EntityUuid
+		case "user_uuid":
+			scanArgs[i] = &m.UserUuid
 		case "created_at":
 			var v *time.Time
 			scanArgs[i] = &v
@@ -367,18 +368,23 @@ func GetBlobReference(ctx context.Context, db *pgxpool.Pool, idOrUuid string, co
 }
 
 func UpdateBlobReference(ctx context.Context, tx pgx.Tx, m *BlobReference) error {
-	query := `UPDATE blob_references SET blob_uuid = $2, entity_type = $3, entity_uuid = $4, created_at = $5 WHERE uuid = $1`
+	query := `UPDATE blob_references SET blob_uuid = $2, entity_type = $3, entity_uuid = $4, user_uuid = $5, created_at = $6 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.BlobUuid), m.EntityType, func(s string) interface{} {
-		if s == "" {
+	}(m.BlobUuid), m.EntityType, func(s *string) interface{} {
+		if s == nil || *s == "" {
 			return nil
 		}
-		return s
-	}(m.EntityUuid), func(ts *timestamppb.Timestamp) interface{} {
+		return *s
+	}(m.EntityUuid), func(s *string) interface{} {
+		if s == nil || *s == "" {
+			return nil
+		}
+		return *s
+	}(m.UserUuid), func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -394,8 +400,8 @@ func DeleteBlobReference(ctx context.Context, tx pgx.Tx, idOrUuid string) error 
 }
 
 func ListBlobReferences(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*BlobReference, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "blob_uuid": true, "entity_type": true, "entity_uuid": true, "created_at": true}
-	colsStr := "uuid, id, blob_uuid, entity_type, entity_uuid, created_at"
+	validCols := map[string]bool{"uuid": true, "id": true, "blob_uuid": true, "entity_type": true, "entity_uuid": true, "user_uuid": true, "created_at": true}
+	colsStr := "uuid, id, blob_uuid, entity_type, entity_uuid, user_uuid, created_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -406,7 +412,7 @@ func ListBlobReferences(ctx context.Context, db *pgxpool.Pool, cols []string, so
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "blob_uuid", "entity_type", "entity_uuid", "created_at"}
+		cols = []string{"uuid", "id", "blob_uuid", "entity_type", "entity_uuid", "user_uuid", "created_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM blob_references`
 	if whereClause != "" {
@@ -470,13 +476,9 @@ func ListBlobReferences(ctx context.Context, db *pgxpool.Pool, cols []string, so
 			case "entity_type":
 				scanArgs[i] = &m.EntityType
 			case "entity_uuid":
-				var v *string
-				scanArgs[i] = &v
-				scanAssigns = append(scanAssigns, func() {
-					if v != nil {
-						m.EntityUuid = *v
-					}
-				})
+				scanArgs[i] = &m.EntityUuid
+			case "user_uuid":
+				scanArgs[i] = &m.UserUuid
 			case "created_at":
 				var v *time.Time
 				scanArgs[i] = &v

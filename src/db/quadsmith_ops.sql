@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS internal_api_calls (
   caller TEXT NOT NULL,
   caller_type TEXT NOT NULL,
   group_name TEXT NOT NULL,
-  jit_grant_id TEXT,
+  jit_grant_uuid UUID,
   status TEXT NOT NULL,
   error_message TEXT,
   duration_ms BIGINT NOT NULL,
@@ -52,4 +52,10 @@ CREATE TABLE IF NOT EXISTS internal_api_calls (
 
 CREATE INDEX IF NOT EXISTS idx_internal_api_calls_caller ON internal_api_calls (caller);
 
+CREATE INDEX IF NOT EXISTS idx_internal_api_calls_jit_grant_uuid ON internal_api_calls (jit_grant_uuid);
+
 CREATE INDEX IF NOT EXISTS idx_internal_api_calls_created_at ON internal_api_calls (created_at);
+
+-- Foreign Keys
+ALTER TABLE internal_api_calls
+ADD CONSTRAINT fk_internal_api_calls_jit_grant_uuid FOREIGN KEY (jit_grant_uuid) REFERENCES jit_grants (uuid);

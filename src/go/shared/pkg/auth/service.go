@@ -21,6 +21,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"quadsmith/shared/internal/cel2sql"
+	"quadsmith/shared/pkg/blob"
 	"quadsmith/shared/pkg/email"
 	"quadsmith/shared/pkg/pagination"
 
@@ -1497,7 +1498,15 @@ func (s *AuthService) UpdateProfile(ctx context.Context, req *connect.Request[pb
 	}
 
 	if req.Msg.AvatarUrl != nil {
-		_, _ = s.db.Exec(ctx, `UPDATE user_profiles SET avatar_url = $1, updated_at = NOW() WHERE user_uuid = $2`, *req.Msg.AvatarUrl, userCtx.UserUUID)
+		tx, txErr := s.db.Begin(ctx)
+		if txErr == nil {
+			_, _ = tx.Exec(ctx, `UPDATE user_profiles SET avatar_url = $1, updated_at = NOW() WHERE user_uuid = $2`, *req.Msg.AvatarUrl, userCtx.UserUUID)
+			_ = blob.UnlinkEntityBlobs(ctx, tx, "user_avatar", userCtx.UserUUID)
+			if *req.Msg.AvatarUrl != "" {
+				_ = blob.LinkEntityBlobs(ctx, tx, "user_avatar", userCtx.UserUUID, []string{*req.Msg.AvatarUrl})
+			}
+			_ = tx.Commit(ctx)
+		}
 	}
 	if req.Msg.Bio != nil {
 		_, _ = s.db.Exec(ctx, `UPDATE user_profiles SET bio = $1, updated_at = NOW() WHERE user_uuid = $2`, *req.Msg.Bio, userCtx.UserUUID)

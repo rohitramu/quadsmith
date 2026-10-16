@@ -313,7 +313,7 @@ func ExportEntities(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*
 }
 
 func CreateReview(ctx context.Context, tx pgx.Tx, m *Review) error {
-	query := `INSERT INTO reviews (uuid, id, user_uuid, entity_uuid, is_recommended, body, is_edited, deleted_at, created_at, updated_at, is_author_verified_owner, collection, entity_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
+	query := `INSERT INTO reviews (uuid, id, user_uuid, entity_uuid, is_recommended, body, is_edited, deleted_at, created_at, updated_at, is_author_verified_owner) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -344,13 +344,13 @@ func CreateReview(ctx context.Context, tx pgx.Tx, m *Review) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.UpdatedAt), m.IsAuthorVerifiedOwner, m.Collection, m.EntityId)
+	}(m.UpdatedAt), m.IsAuthorVerifiedOwner)
 	return err
 }
 
 func GetReview(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Review, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "user_uuid": true, "entity_uuid": true, "is_recommended": true, "body": true, "is_edited": true, "deleted_at": true, "created_at": true, "updated_at": true, "is_author_verified_owner": true, "collection": true, "entity_id": true}
-	colsStr := "uuid, id, user_uuid, entity_uuid, is_recommended, body, is_edited, deleted_at, created_at, updated_at, is_author_verified_owner, collection, entity_id"
+	validCols := map[string]bool{"uuid": true, "id": true, "user_uuid": true, "entity_uuid": true, "is_recommended": true, "body": true, "is_edited": true, "deleted_at": true, "created_at": true, "updated_at": true, "is_author_verified_owner": true}
+	colsStr := "uuid, id, user_uuid, entity_uuid, is_recommended, body, is_edited, deleted_at, created_at, updated_at, is_author_verified_owner"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -361,7 +361,7 @@ func GetReview(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []st
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "user_uuid", "entity_uuid", "is_recommended", "body", "is_edited", "deleted_at", "created_at", "updated_at", "is_author_verified_owner", "collection", "entity_id"}
+		cols = []string{"uuid", "id", "user_uuid", "entity_uuid", "is_recommended", "body", "is_edited", "deleted_at", "created_at", "updated_at", "is_author_verified_owner"}
 	}
 	query := `SELECT ` + colsStr + ` FROM reviews WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -421,10 +421,6 @@ func GetReview(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []st
 			})
 		case "is_author_verified_owner":
 			scanArgs[i] = &m.IsAuthorVerifiedOwner
-		case "collection":
-			scanArgs[i] = &m.Collection
-		case "entity_id":
-			scanArgs[i] = &m.EntityId
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -442,7 +438,7 @@ func GetReview(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []st
 }
 
 func UpdateReview(ctx context.Context, tx pgx.Tx, m *Review) error {
-	query := `UPDATE reviews SET user_uuid = $2, entity_uuid = $3, is_recommended = $4, body = $5, is_edited = $6, deleted_at = $7, created_at = $8, updated_at = $9, is_author_verified_owner = $10, collection = $11, entity_id = $12 WHERE uuid = $1`
+	query := `UPDATE reviews SET user_uuid = $2, entity_uuid = $3, is_recommended = $4, body = $5, is_edited = $6, deleted_at = $7, created_at = $8, updated_at = $9, is_author_verified_owner = $10 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -468,7 +464,7 @@ func UpdateReview(ctx context.Context, tx pgx.Tx, m *Review) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.UpdatedAt), m.IsAuthorVerifiedOwner, m.Collection, m.EntityId)
+	}(m.UpdatedAt), m.IsAuthorVerifiedOwner)
 	return err
 }
 
@@ -479,8 +475,8 @@ func DeleteReview(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListReviews(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Review, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "user_uuid": true, "entity_uuid": true, "is_recommended": true, "body": true, "is_edited": true, "deleted_at": true, "created_at": true, "updated_at": true, "is_author_verified_owner": true, "collection": true, "entity_id": true}
-	colsStr := "uuid, id, user_uuid, entity_uuid, is_recommended, body, is_edited, deleted_at, created_at, updated_at, is_author_verified_owner, collection, entity_id"
+	validCols := map[string]bool{"uuid": true, "id": true, "user_uuid": true, "entity_uuid": true, "is_recommended": true, "body": true, "is_edited": true, "deleted_at": true, "created_at": true, "updated_at": true, "is_author_verified_owner": true}
+	colsStr := "uuid, id, user_uuid, entity_uuid, is_recommended, body, is_edited, deleted_at, created_at, updated_at, is_author_verified_owner"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -491,7 +487,7 @@ func ListReviews(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "user_uuid", "entity_uuid", "is_recommended", "body", "is_edited", "deleted_at", "created_at", "updated_at", "is_author_verified_owner", "collection", "entity_id"}
+		cols = []string{"uuid", "id", "user_uuid", "entity_uuid", "is_recommended", "body", "is_edited", "deleted_at", "created_at", "updated_at", "is_author_verified_owner"}
 	}
 	query := `SELECT ` + colsStr + ` FROM reviews`
 	if whereClause != "" {
@@ -592,10 +588,6 @@ func ListReviews(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 				})
 			case "is_author_verified_owner":
 				scanArgs[i] = &m.IsAuthorVerifiedOwner
-			case "collection":
-				scanArgs[i] = &m.Collection
-			case "entity_id":
-				scanArgs[i] = &m.EntityId
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy
@@ -614,7 +606,7 @@ func ListReviews(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 }
 
 func ExportReviews(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Review, error) {
-	query := `SELECT uuid, id, user_uuid, entity_uuid, is_recommended, body, is_edited, deleted_at, created_at, updated_at, is_author_verified_owner, collection, entity_id FROM reviews WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	query := `SELECT uuid, id, user_uuid, entity_uuid, is_recommended, body, is_edited, deleted_at, created_at, updated_at, is_author_verified_owner FROM reviews WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
 	rows, err := db.Query(ctx, query, userUUID)
 	if err != nil {
 		return nil, err
@@ -622,8 +614,8 @@ func ExportReviews(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*R
 	defer rows.Close()
 	results := make([]*Review, 0)
 	for rows.Next() {
-		scanArgs := make([]interface{}, 13)
-		scanAssigns := make([]func(), 0, 13)
+		scanArgs := make([]interface{}, 11)
+		scanAssigns := make([]func(), 0, 11)
 		m := &Review{}
 		scanArgs[0] = &m.Uuid
 		scanArgs[1] = &m.Id
@@ -666,8 +658,6 @@ func ExportReviews(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*R
 			}
 		})
 		scanArgs[10] = &m.IsAuthorVerifiedOwner
-		scanArgs[11] = &m.Collection
-		scanArgs[12] = &m.EntityId
 		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
@@ -1297,7 +1287,7 @@ func ExportReviewComments(ctx context.Context, db *pgxpool.Pool, userUUID string
 }
 
 func CreateQuestion(ctx context.Context, tx pgx.Tx, m *Question) error {
-	query := `INSERT INTO questions (uuid, id, user_uuid, entity_uuid, title, body, net_score, is_edited, deleted_at, created_at, updated_at, comments, collection, entity_id) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
+	query := `INSERT INTO questions (uuid, id, user_uuid, entity_uuid, title, body, net_score, is_edited, deleted_at, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -1328,13 +1318,13 @@ func CreateQuestion(ctx context.Context, tx pgx.Tx, m *Question) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.UpdatedAt), m.Comments, m.Collection, m.EntityId)
+	}(m.UpdatedAt))
 	return err
 }
 
 func GetQuestion(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Question, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "user_uuid": true, "entity_uuid": true, "title": true, "body": true, "net_score": true, "is_edited": true, "deleted_at": true, "created_at": true, "updated_at": true, "comments": true, "collection": true, "entity_id": true}
-	colsStr := "uuid, id, user_uuid, entity_uuid, title, body, net_score, is_edited, deleted_at, created_at, updated_at, comments, collection, entity_id"
+	validCols := map[string]bool{"uuid": true, "id": true, "user_uuid": true, "entity_uuid": true, "title": true, "body": true, "net_score": true, "is_edited": true, "deleted_at": true, "created_at": true, "updated_at": true}
+	colsStr := "uuid, id, user_uuid, entity_uuid, title, body, net_score, is_edited, deleted_at, created_at, updated_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -1345,7 +1335,7 @@ func GetQuestion(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "user_uuid", "entity_uuid", "title", "body", "net_score", "is_edited", "deleted_at", "created_at", "updated_at", "comments", "collection", "entity_id"}
+		cols = []string{"uuid", "id", "user_uuid", "entity_uuid", "title", "body", "net_score", "is_edited", "deleted_at", "created_at", "updated_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM questions WHERE id = $1 OR uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -1405,12 +1395,6 @@ func GetQuestion(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 					m.UpdatedAt = timestamppb.New(*v)
 				}
 			})
-		case "comments":
-			scanArgs[i] = &m.Comments
-		case "collection":
-			scanArgs[i] = &m.Collection
-		case "entity_id":
-			scanArgs[i] = &m.EntityId
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -1428,7 +1412,7 @@ func GetQuestion(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []
 }
 
 func UpdateQuestion(ctx context.Context, tx pgx.Tx, m *Question) error {
-	query := `UPDATE questions SET user_uuid = $2, entity_uuid = $3, title = $4, body = $5, net_score = $6, is_edited = $7, deleted_at = $8, created_at = $9, updated_at = $10, comments = $11, collection = $12, entity_id = $13 WHERE uuid = $1`
+	query := `UPDATE questions SET user_uuid = $2, entity_uuid = $3, title = $4, body = $5, net_score = $6, is_edited = $7, deleted_at = $8, created_at = $9, updated_at = $10 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -1454,7 +1438,7 @@ func UpdateQuestion(ctx context.Context, tx pgx.Tx, m *Question) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.UpdatedAt), m.Comments, m.Collection, m.EntityId)
+	}(m.UpdatedAt))
 	return err
 }
 
@@ -1465,8 +1449,8 @@ func DeleteQuestion(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListQuestions(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Question, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "user_uuid": true, "entity_uuid": true, "title": true, "body": true, "net_score": true, "is_edited": true, "deleted_at": true, "created_at": true, "updated_at": true, "comments": true, "collection": true, "entity_id": true}
-	colsStr := "uuid, id, user_uuid, entity_uuid, title, body, net_score, is_edited, deleted_at, created_at, updated_at, comments, collection, entity_id"
+	validCols := map[string]bool{"uuid": true, "id": true, "user_uuid": true, "entity_uuid": true, "title": true, "body": true, "net_score": true, "is_edited": true, "deleted_at": true, "created_at": true, "updated_at": true}
+	colsStr := "uuid, id, user_uuid, entity_uuid, title, body, net_score, is_edited, deleted_at, created_at, updated_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -1477,7 +1461,7 @@ func ListQuestions(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "user_uuid", "entity_uuid", "title", "body", "net_score", "is_edited", "deleted_at", "created_at", "updated_at", "comments", "collection", "entity_id"}
+		cols = []string{"uuid", "id", "user_uuid", "entity_uuid", "title", "body", "net_score", "is_edited", "deleted_at", "created_at", "updated_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM questions`
 	if whereClause != "" {
@@ -1578,12 +1562,6 @@ func ListQuestions(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 						m.UpdatedAt = timestamppb.New(*v)
 					}
 				})
-			case "comments":
-				scanArgs[i] = &m.Comments
-			case "collection":
-				scanArgs[i] = &m.Collection
-			case "entity_id":
-				scanArgs[i] = &m.EntityId
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy
@@ -1602,7 +1580,7 @@ func ListQuestions(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 }
 
 func ExportQuestions(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Question, error) {
-	query := `SELECT uuid, id, user_uuid, entity_uuid, title, body, net_score, is_edited, deleted_at, created_at, updated_at, comments, collection, entity_id FROM questions WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	query := `SELECT uuid, id, user_uuid, entity_uuid, title, body, net_score, is_edited, deleted_at, created_at, updated_at FROM questions WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
 	rows, err := db.Query(ctx, query, userUUID)
 	if err != nil {
 		return nil, err
@@ -1610,8 +1588,8 @@ func ExportQuestions(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]
 	defer rows.Close()
 	results := make([]*Question, 0)
 	for rows.Next() {
-		scanArgs := make([]interface{}, 14)
-		scanAssigns := make([]func(), 0, 14)
+		scanArgs := make([]interface{}, 11)
+		scanAssigns := make([]func(), 0, 11)
 		m := &Question{}
 		scanArgs[0] = &m.Uuid
 		scanArgs[1] = &m.Id
@@ -1654,9 +1632,6 @@ func ExportQuestions(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]
 				m.UpdatedAt = timestamppb.New(*v10)
 			}
 		})
-		scanArgs[11] = &m.Comments
-		scanArgs[12] = &m.Collection
-		scanArgs[13] = &m.EntityId
 		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
@@ -1664,7 +1639,7 @@ func ExportQuestions(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]
 		for _, assign := range scanAssigns {
 			assign()
 		}
-		if m.Title != "" || m.Body != "" || m.NetScore != 0 || m.IsEdited || m.DeletedAt != nil || m.CreatedAt != nil || m.UpdatedAt != nil || len(m.Comments) > 0 {
+		if m.Title != "" || m.Body != "" || m.NetScore != 0 || m.IsEdited || m.DeletedAt != nil || m.CreatedAt != nil || m.UpdatedAt != nil {
 			results = append(results, m)
 		}
 	}
@@ -2012,7 +1987,7 @@ func ExportQuestionComments(ctx context.Context, db *pgxpool.Pool, userUUID stri
 }
 
 func CreateAnswer(ctx context.Context, tx pgx.Tx, m *Answer) error {
-	query := `INSERT INTO answers (uuid, question_uuid, user_uuid, body, net_score, is_accepted_by_asker, is_author_endorsed, is_edited, deleted_at, created_at, updated_at, accepted_at, endorsed_at, comments) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
+	query := `INSERT INTO answers (uuid, question_uuid, user_uuid, body, net_score, is_accepted_by_asker, is_author_endorsed, is_edited, deleted_at, created_at, updated_at, accepted_at, endorsed_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -2053,13 +2028,13 @@ func CreateAnswer(ctx context.Context, tx pgx.Tx, m *Answer) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.EndorsedAt), m.Comments)
+	}(m.EndorsedAt))
 	return err
 }
 
 func GetAnswer(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Answer, error) {
-	validCols := map[string]bool{"uuid": true, "question_uuid": true, "user_uuid": true, "body": true, "net_score": true, "is_accepted_by_asker": true, "is_author_endorsed": true, "is_edited": true, "deleted_at": true, "created_at": true, "updated_at": true, "accepted_at": true, "endorsed_at": true, "comments": true}
-	colsStr := "uuid, question_uuid, user_uuid, body, net_score, is_accepted_by_asker, is_author_endorsed, is_edited, deleted_at, created_at, updated_at, accepted_at, endorsed_at, comments"
+	validCols := map[string]bool{"uuid": true, "question_uuid": true, "user_uuid": true, "body": true, "net_score": true, "is_accepted_by_asker": true, "is_author_endorsed": true, "is_edited": true, "deleted_at": true, "created_at": true, "updated_at": true, "accepted_at": true, "endorsed_at": true}
+	colsStr := "uuid, question_uuid, user_uuid, body, net_score, is_accepted_by_asker, is_author_endorsed, is_edited, deleted_at, created_at, updated_at, accepted_at, endorsed_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -2070,7 +2045,7 @@ func GetAnswer(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []st
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "question_uuid", "user_uuid", "body", "net_score", "is_accepted_by_asker", "is_author_endorsed", "is_edited", "deleted_at", "created_at", "updated_at", "accepted_at", "endorsed_at", "comments"}
+		cols = []string{"uuid", "question_uuid", "user_uuid", "body", "net_score", "is_accepted_by_asker", "is_author_endorsed", "is_edited", "deleted_at", "created_at", "updated_at", "accepted_at", "endorsed_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM answers WHERE uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -2146,8 +2121,6 @@ func GetAnswer(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []st
 					m.EndorsedAt = timestamppb.New(*v)
 				}
 			})
-		case "comments":
-			scanArgs[i] = &m.Comments
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -2165,7 +2138,7 @@ func GetAnswer(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []st
 }
 
 func UpdateAnswer(ctx context.Context, tx pgx.Tx, m *Answer) error {
-	query := `UPDATE answers SET question_uuid = $2, user_uuid = $3, body = $4, net_score = $5, is_accepted_by_asker = $6, is_author_endorsed = $7, is_edited = $8, deleted_at = $9, created_at = $10, updated_at = $11, accepted_at = $12, endorsed_at = $13, comments = $14 WHERE uuid = $1`
+	query := `UPDATE answers SET question_uuid = $2, user_uuid = $3, body = $4, net_score = $5, is_accepted_by_asker = $6, is_author_endorsed = $7, is_edited = $8, deleted_at = $9, created_at = $10, updated_at = $11, accepted_at = $12, endorsed_at = $13 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -2201,7 +2174,7 @@ func UpdateAnswer(ctx context.Context, tx pgx.Tx, m *Answer) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.EndorsedAt), m.Comments)
+	}(m.EndorsedAt))
 	return err
 }
 
@@ -2212,8 +2185,8 @@ func DeleteAnswer(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListAnswers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Answer, error) {
-	validCols := map[string]bool{"uuid": true, "question_uuid": true, "user_uuid": true, "body": true, "net_score": true, "is_accepted_by_asker": true, "is_author_endorsed": true, "is_edited": true, "deleted_at": true, "created_at": true, "updated_at": true, "accepted_at": true, "endorsed_at": true, "comments": true}
-	colsStr := "uuid, question_uuid, user_uuid, body, net_score, is_accepted_by_asker, is_author_endorsed, is_edited, deleted_at, created_at, updated_at, accepted_at, endorsed_at, comments"
+	validCols := map[string]bool{"uuid": true, "question_uuid": true, "user_uuid": true, "body": true, "net_score": true, "is_accepted_by_asker": true, "is_author_endorsed": true, "is_edited": true, "deleted_at": true, "created_at": true, "updated_at": true, "accepted_at": true, "endorsed_at": true}
+	colsStr := "uuid, question_uuid, user_uuid, body, net_score, is_accepted_by_asker, is_author_endorsed, is_edited, deleted_at, created_at, updated_at, accepted_at, endorsed_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -2224,7 +2197,7 @@ func ListAnswers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "question_uuid", "user_uuid", "body", "net_score", "is_accepted_by_asker", "is_author_endorsed", "is_edited", "deleted_at", "created_at", "updated_at", "accepted_at", "endorsed_at", "comments"}
+		cols = []string{"uuid", "question_uuid", "user_uuid", "body", "net_score", "is_accepted_by_asker", "is_author_endorsed", "is_edited", "deleted_at", "created_at", "updated_at", "accepted_at", "endorsed_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM answers`
 	if whereClause != "" {
@@ -2341,8 +2314,6 @@ func ListAnswers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 						m.EndorsedAt = timestamppb.New(*v)
 					}
 				})
-			case "comments":
-				scanArgs[i] = &m.Comments
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy
@@ -2361,7 +2332,7 @@ func ListAnswers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 }
 
 func ExportAnswers(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Answer, error) {
-	query := `SELECT uuid, question_uuid, user_uuid, body, net_score, is_accepted_by_asker, is_author_endorsed, is_edited, deleted_at, created_at, updated_at, accepted_at, endorsed_at, comments FROM answers WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	query := `SELECT uuid, question_uuid, user_uuid, body, net_score, is_accepted_by_asker, is_author_endorsed, is_edited, deleted_at, created_at, updated_at, accepted_at, endorsed_at FROM answers WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
 	rows, err := db.Query(ctx, query, userUUID)
 	if err != nil {
 		return nil, err
@@ -2369,8 +2340,8 @@ func ExportAnswers(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*A
 	defer rows.Close()
 	results := make([]*Answer, 0)
 	for rows.Next() {
-		scanArgs := make([]interface{}, 14)
-		scanAssigns := make([]func(), 0, 14)
+		scanArgs := make([]interface{}, 13)
+		scanAssigns := make([]func(), 0, 13)
 		m := &Answer{}
 		scanArgs[0] = &m.Uuid
 		var v1 *string
@@ -2427,7 +2398,6 @@ func ExportAnswers(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*A
 				m.EndorsedAt = timestamppb.New(*v12)
 			}
 		})
-		scanArgs[13] = &m.Comments
 		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
@@ -2435,7 +2405,7 @@ func ExportAnswers(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*A
 		for _, assign := range scanAssigns {
 			assign()
 		}
-		if m.Body != "" || m.NetScore != 0 || m.IsAcceptedByAsker || m.IsAuthorEndorsed || m.IsEdited || m.DeletedAt != nil || m.CreatedAt != nil || m.UpdatedAt != nil || m.AcceptedAt != nil || m.EndorsedAt != nil || len(m.Comments) > 0 {
+		if m.Body != "" || m.NetScore != 0 || m.IsAcceptedByAsker || m.IsAuthorEndorsed || m.IsEdited || m.DeletedAt != nil || m.CreatedAt != nil || m.UpdatedAt != nil || m.AcceptedAt != nil || m.EndorsedAt != nil {
 			results = append(results, m)
 		}
 	}
@@ -3819,7 +3789,7 @@ func ExportCollections(ctx context.Context, db *pgxpool.Pool, userUUID string) (
 }
 
 func CreateCollectionItem(ctx context.Context, tx pgx.Tx, m *CollectionItem) error {
-	query := `INSERT INTO collection_items (uuid, collection_uuid, entity_uuid, created_at, entity_id, collection, name, primary_display_image, author_or_manufacturer) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
+	query := `INSERT INTO collection_items (uuid, collection_uuid, entity_uuid, created_at) VALUES ($1, $2, $3, $4)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -3840,13 +3810,13 @@ func CreateCollectionItem(ctx context.Context, tx pgx.Tx, m *CollectionItem) err
 			return nil
 		}
 		return ts.AsTime()
-	}(m.CreatedAt), m.EntityId, m.Collection, m.Name, m.PrimaryDisplayImage, m.AuthorOrManufacturer)
+	}(m.CreatedAt))
 	return err
 }
 
 func GetCollectionItem(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*CollectionItem, error) {
-	validCols := map[string]bool{"uuid": true, "collection_uuid": true, "entity_uuid": true, "created_at": true, "entity_id": true, "collection": true, "name": true, "primary_display_image": true, "author_or_manufacturer": true}
-	colsStr := "uuid, collection_uuid, entity_uuid, created_at, entity_id, collection, name, primary_display_image, author_or_manufacturer"
+	validCols := map[string]bool{"uuid": true, "collection_uuid": true, "entity_uuid": true, "created_at": true}
+	colsStr := "uuid, collection_uuid, entity_uuid, created_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -3857,7 +3827,7 @@ func GetCollectionItem(ctx context.Context, db *pgxpool.Pool, idOrUuid string, c
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "collection_uuid", "entity_uuid", "created_at", "entity_id", "collection", "name", "primary_display_image", "author_or_manufacturer"}
+		cols = []string{"uuid", "collection_uuid", "entity_uuid", "created_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM collection_items WHERE uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -3891,16 +3861,6 @@ func GetCollectionItem(ctx context.Context, db *pgxpool.Pool, idOrUuid string, c
 					m.CreatedAt = timestamppb.New(*v)
 				}
 			})
-		case "entity_id":
-			scanArgs[i] = &m.EntityId
-		case "collection":
-			scanArgs[i] = &m.Collection
-		case "name":
-			scanArgs[i] = &m.Name
-		case "primary_display_image":
-			scanArgs[i] = &m.PrimaryDisplayImage
-		case "author_or_manufacturer":
-			scanArgs[i] = &m.AuthorOrManufacturer
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -3918,7 +3878,7 @@ func GetCollectionItem(ctx context.Context, db *pgxpool.Pool, idOrUuid string, c
 }
 
 func UpdateCollectionItem(ctx context.Context, tx pgx.Tx, m *CollectionItem) error {
-	query := `UPDATE collection_items SET collection_uuid = $2, entity_uuid = $3, created_at = $4, entity_id = $5, collection = $6, name = $7, primary_display_image = $8, author_or_manufacturer = $9 WHERE uuid = $1`
+	query := `UPDATE collection_items SET collection_uuid = $2, entity_uuid = $3, created_at = $4 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -3934,7 +3894,7 @@ func UpdateCollectionItem(ctx context.Context, tx pgx.Tx, m *CollectionItem) err
 			return nil
 		}
 		return ts.AsTime()
-	}(m.CreatedAt), m.EntityId, m.Collection, m.Name, m.PrimaryDisplayImage, m.AuthorOrManufacturer)
+	}(m.CreatedAt))
 	return err
 }
 
@@ -3945,8 +3905,8 @@ func DeleteCollectionItem(ctx context.Context, tx pgx.Tx, idOrUuid string) error
 }
 
 func ListCollectionItems(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*CollectionItem, error) {
-	validCols := map[string]bool{"uuid": true, "collection_uuid": true, "entity_uuid": true, "created_at": true, "entity_id": true, "collection": true, "name": true, "primary_display_image": true, "author_or_manufacturer": true}
-	colsStr := "uuid, collection_uuid, entity_uuid, created_at, entity_id, collection, name, primary_display_image, author_or_manufacturer"
+	validCols := map[string]bool{"uuid": true, "collection_uuid": true, "entity_uuid": true, "created_at": true}
+	colsStr := "uuid, collection_uuid, entity_uuid, created_at"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -3957,7 +3917,7 @@ func ListCollectionItems(ctx context.Context, db *pgxpool.Pool, cols []string, s
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "collection_uuid", "entity_uuid", "created_at", "entity_id", "collection", "name", "primary_display_image", "author_or_manufacturer"}
+		cols = []string{"uuid", "collection_uuid", "entity_uuid", "created_at"}
 	}
 	query := `SELECT ` + colsStr + ` FROM collection_items`
 	if whereClause != "" {
@@ -4032,16 +3992,6 @@ func ListCollectionItems(ctx context.Context, db *pgxpool.Pool, cols []string, s
 						m.CreatedAt = timestamppb.New(*v)
 					}
 				})
-			case "entity_id":
-				scanArgs[i] = &m.EntityId
-			case "collection":
-				scanArgs[i] = &m.Collection
-			case "name":
-				scanArgs[i] = &m.Name
-			case "primary_display_image":
-				scanArgs[i] = &m.PrimaryDisplayImage
-			case "author_or_manufacturer":
-				scanArgs[i] = &m.AuthorOrManufacturer
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy
@@ -4060,7 +4010,7 @@ func ListCollectionItems(ctx context.Context, db *pgxpool.Pool, cols []string, s
 }
 
 func ExportCollectionItems(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*CollectionItem, error) {
-	query := `SELECT uuid, collection_uuid, entity_uuid, created_at, entity_id, collection, name, primary_display_image, author_or_manufacturer FROM collection_items WHERE collection_uuid IN (SELECT uuid FROM collections WHERE user_uuid = $1::uuid) ORDER BY uuid ASC`
+	query := `SELECT uuid, collection_uuid, entity_uuid, created_at FROM collection_items WHERE collection_uuid IN (SELECT uuid FROM collections WHERE user_uuid = $1::uuid) ORDER BY uuid ASC`
 	rows, err := db.Query(ctx, query, userUUID)
 	if err != nil {
 		return nil, err
@@ -4068,8 +4018,8 @@ func ExportCollectionItems(ctx context.Context, db *pgxpool.Pool, userUUID strin
 	defer rows.Close()
 	results := make([]*CollectionItem, 0)
 	for rows.Next() {
-		scanArgs := make([]interface{}, 9)
-		scanAssigns := make([]func(), 0, 9)
+		scanArgs := make([]interface{}, 4)
+		scanAssigns := make([]func(), 0, 4)
 		m := &CollectionItem{}
 		scanArgs[0] = &m.Uuid
 		var v1 *string
@@ -4093,11 +4043,6 @@ func ExportCollectionItems(ctx context.Context, db *pgxpool.Pool, userUUID strin
 				m.CreatedAt = timestamppb.New(*v3)
 			}
 		})
-		scanArgs[4] = &m.EntityId
-		scanArgs[5] = &m.Collection
-		scanArgs[6] = &m.Name
-		scanArgs[7] = &m.PrimaryDisplayImage
-		scanArgs[8] = &m.AuthorOrManufacturer
 		err := rows.Scan(scanArgs...)
 		if err != nil {
 			return nil, err
@@ -4105,7 +4050,7 @@ func ExportCollectionItems(ctx context.Context, db *pgxpool.Pool, userUUID strin
 		for _, assign := range scanAssigns {
 			assign()
 		}
-		if m.CreatedAt != nil || m.Name != "" || (m.PrimaryDisplayImage != nil && *m.PrimaryDisplayImage != "") || (m.AuthorOrManufacturer != nil && *m.AuthorOrManufacturer != "") {
+		if m.CreatedAt != nil {
 			results = append(results, m)
 		}
 	}

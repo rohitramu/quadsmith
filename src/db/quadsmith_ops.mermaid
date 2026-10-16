@@ -34,9 +34,11 @@ erDiagram
         TEXT caller
         TEXT caller_type
         TEXT group_name
-        TEXT jit_grant_id
+        UUID jit_grant_uuid FK
         TEXT status
         TEXT error_message
         BIGINT duration_ms
         TIMESTAMPTZ created_at
     }
+
+    jit_grants ||--o{ internal_api_calls : authorizes

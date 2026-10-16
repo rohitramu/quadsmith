@@ -319,8 +319,8 @@ func ExtractBlobKeys(urls []string) []string {
 	return keys
 }
 
-// LinkEntityBlobs creates relational references between an entity and any referenced blobs.
-func LinkEntityBlobs(ctx context.Context, tx pgx.Tx, entityType, entityUUID string, rawURLs []string) error {
+// LinkEntityBlobs creates relational references between an entity (or user) and any referenced blobs.
+func LinkEntityBlobs(ctx context.Context, tx pgx.Tx, entityType, targetUUID string, rawURLs []string) error {
 	keys := ExtractBlobKeys(rawURLs)
 	if len(keys) == 0 {
 		return nil
@@ -343,22 +343,36 @@ func LinkEntityBlobs(ctx context.Context, tx pgx.Tx, entityType, entityUUID stri
 	for _, bu := range blobUUIDs {
 		refUUID := authcontext.NewUUIDv7()
 		refID := "ref-" + refUUID
-		_, err := tx.Exec(ctx, `
-			INSERT INTO blob_references (uuid, id, blob_uuid, entity_type, entity_uuid, created_at)
-			VALUES ($1, $2, $3, $4, $5, NOW())
-			ON CONFLICT (blob_uuid, entity_type, entity_uuid) DO NOTHING;`,
-			refUUID, refID, bu, entityType, entityUUID)
-		if err != nil {
-			return fmt.Errorf("failed creating blob reference: %w", err)
+		var execErr error
+		if entityType == "user_avatar" {
+			_, execErr = tx.Exec(ctx, `
+				INSERT INTO blob_references (uuid, id, blob_uuid, entity_type, user_uuid, created_at)
+				VALUES ($1, $2, $3, $4, $5, NOW())
+				ON CONFLICT (blob_uuid, entity_type, user_uuid) DO NOTHING;`,
+				refUUID, refID, bu, entityType, targetUUID)
+		} else {
+			_, execErr = tx.Exec(ctx, `
+				INSERT INTO blob_references (uuid, id, blob_uuid, entity_type, entity_uuid, created_at)
+				VALUES ($1, $2, $3, $4, $5, NOW())
+				ON CONFLICT (blob_uuid, entity_type, entity_uuid) DO NOTHING;`,
+				refUUID, refID, bu, entityType, targetUUID)
+		}
+		if execErr != nil {
+			return fmt.Errorf("failed creating blob reference: %w", execErr)
 		}
 	}
 
 	return nil
 }
 
-// UnlinkEntityBlobs removes all references from blob_references for the given entity.
-func UnlinkEntityBlobs(ctx context.Context, tx pgx.Tx, entityType, entityUUID string) error {
-	_, err := tx.Exec(ctx, `DELETE FROM blob_references WHERE entity_type = $1 AND entity_uuid = $2;`, entityType, entityUUID)
+// UnlinkEntityBlobs removes all references from blob_references for the given entity or user.
+func UnlinkEntityBlobs(ctx context.Context, tx pgx.Tx, entityType, targetUUID string) error {
+	var err error
+	if entityType == "user_avatar" {
+		_, err = tx.Exec(ctx, `DELETE FROM blob_references WHERE entity_type = $1 AND user_uuid = $2;`, entityType, targetUUID)
+	} else {
+		_, err = tx.Exec(ctx, `DELETE FROM blob_references WHERE entity_type = $1 AND entity_uuid = $2;`, entityType, targetUUID)
+	}
 	if err != nil {
 		return fmt.Errorf("failed deleting blob references: %w", err)
 	}

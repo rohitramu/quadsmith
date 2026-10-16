@@ -6,6 +6,7 @@ type OperatorContext struct {
 	Operator     string
 	OperatorType string // 'HUMAN' or 'ROBOT'
 	GroupName    string
+	JitGrantUUID string
 	JitGrantID   string
 }
 

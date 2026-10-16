@@ -43,10 +43,10 @@ func slugify(text string) string {
 	return s
 }
 
-func resolveEntity(ctx context.Context, db *pgxpool.Pool, entityID string, collection *string) (entityUUID string, resolvedCol string, name string, image string, authorOrManufacturer string, isArchived bool, err error) {
+func resolveEntity(ctx context.Context, db *pgxpool.Pool, entityID string, collection *string) (entityUUID string, resolvedID string, resolvedCol string, name string, image string, authorOrManufacturer string, isArchived bool, err error) {
 	trimmedID := strings.TrimSpace(entityID)
 	if trimmedID == "" {
-		return "", "", "", "", "", false, connect.NewError(connect.CodeInvalidArgument, errors.New("entity_id is required"))
+		return "", "", "", "", "", "", false, connect.NewError(connect.CodeInvalidArgument, errors.New("entity_id is required"))
 	}
 	col := ""
 	if collection != nil {
@@ -58,26 +58,26 @@ func resolveEntity(ctx context.Context, db *pgxpool.Pool, entityID string, colle
 
 	if col != "" {
 		err = db.QueryRow(ctx, `
-			SELECT uuid, collection, name, COALESCE(primary_display_image, ''), COALESCE(author_or_manufacturer, ''), is_archived
+			SELECT uuid, id, collection, name, COALESCE(primary_display_image, ''), COALESCE(author_or_manufacturer, ''), is_archived
 			FROM entities
 			WHERE collection = $1 AND (id = $2 OR uuid::text = $2)
 			LIMIT 1
-		`, col, trimmedID).Scan(&entityUUID, &resolvedCol, &name, &image, &authorOrManufacturer, &isArchived)
+		`, col, trimmedID).Scan(&entityUUID, &resolvedID, &resolvedCol, &name, &image, &authorOrManufacturer, &isArchived)
 	} else {
 		err = db.QueryRow(ctx, `
-			SELECT uuid, collection, name, COALESCE(primary_display_image, ''), COALESCE(author_or_manufacturer, ''), is_archived
+			SELECT uuid, id, collection, name, COALESCE(primary_display_image, ''), COALESCE(author_or_manufacturer, ''), is_archived
 			FROM entities
 			WHERE id = $1 OR uuid::text = $1
 			LIMIT 1
-		`, trimmedID).Scan(&entityUUID, &resolvedCol, &name, &image, &authorOrManufacturer, &isArchived)
+		`, trimmedID).Scan(&entityUUID, &resolvedID, &resolvedCol, &name, &image, &authorOrManufacturer, &isArchived)
 	}
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return "", "", "", "", "", false, connect.NewError(connect.CodeNotFound, fmt.Errorf("entity '%s' not found", trimmedID))
+			return "", "", "", "", "", "", false, connect.NewError(connect.CodeNotFound, fmt.Errorf("entity '%s' not found", trimmedID))
 		}
-		return "", "", "", "", "", false, connect.NewError(connect.CodeInternal, err)
+		return "", "", "", "", "", "", false, connect.NewError(connect.CodeInternal, err)
 	}
-	return entityUUID, resolvedCol, name, image, authorOrManufacturer, isArchived, nil
+	return entityUUID, resolvedID, resolvedCol, name, image, authorOrManufacturer, isArchived, nil
 }
 
 func checkProbationaryPeriod(ctx context.Context, db *pgxpool.Pool, userUUID string) error {
@@ -239,7 +239,7 @@ func (s *SocialService) CreateReview(ctx context.Context, req *connect.Request[p
 		return nil, err
 	}
 
-	entityUUID, resolvedCol, _, _, _, isArchived, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
+	entityUUID, resolvedID, resolvedCol, _, _, _, isArchived, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
 	if err != nil {
 		return nil, err
 	}
@@ -276,10 +276,10 @@ func (s *SocialService) CreateReview(ctx context.Context, req *connect.Request[p
 	_, err = s.db.Exec(ctx, `
 		INSERT INTO reviews (
 			uuid, id, user_uuid, entity_uuid, is_recommended, body, is_edited,
-			is_author_verified_owner, collection, entity_id, created_at, updated_at
+			is_author_verified_owner, created_at, updated_at
 		)
-		VALUES ($1, $2, $3, $4, $5, $6, false, false, $7, $8, NOW(), NOW())
-	`, reviewUUID, reviewID, u.UserUUID, entityUUID, req.Msg.GetIsRecommended(), body, resolvedCol, req.Msg.GetEntityId())
+		VALUES ($1, $2, $3, $4, $5, $6, false, false, NOW(), NOW())
+	`, reviewUUID, reviewID, u.UserUUID, entityUUID, req.Msg.GetIsRecommended(), body)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -293,7 +293,7 @@ func (s *SocialService) CreateReview(ctx context.Context, req *connect.Request[p
 		UserUuid:              u.UserUUID,
 		EntityUuid:            entityUUID,
 		Collection:            resolvedCol,
-		EntityId:              req.Msg.GetEntityId(),
+		EntityId:              resolvedID,
 		IsRecommended:         req.Msg.GetIsRecommended(),
 		Body:                  body,
 		IsEdited:              false,
@@ -329,7 +329,12 @@ func (s *SocialService) UpdateReview(ctx context.Context, req *connect.Request[p
 
 	var revUUID, userUUID, entityUUID, col, entityID string
 	var createdAt time.Time
-	err := s.db.QueryRow(ctx, "SELECT uuid, user_uuid, entity_uuid, collection, entity_id, created_at FROM reviews WHERE id = $1 OR uuid::text = $1", revID).Scan(&revUUID, &userUUID, &entityUUID, &col, &entityID, &createdAt)
+	err := s.db.QueryRow(ctx, `
+		SELECT r.uuid, r.user_uuid, r.entity_uuid, e.collection, e.id, r.created_at
+		FROM reviews r
+		JOIN entities e ON e.uuid = r.entity_uuid
+		WHERE r.id = $1 OR r.uuid::text = $1
+	`, revID).Scan(&revUUID, &userUUID, &entityUUID, &col, &entityID, &createdAt)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, connect.NewError(connect.CodeNotFound, errors.New("review not found"))
@@ -407,7 +412,7 @@ func (s *SocialService) DeleteReview(ctx context.Context, req *connect.Request[p
 }
 
 func (s *SocialService) ListReviews(ctx context.Context, req *connect.Request[pb.ListReviewsRequest]) (*connect.Response[pb.ListReviewsResponse], error) {
-	entityUUID, _, _, _, _, _, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
+	entityUUID, _, _, _, _, _, _, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
 	if err != nil {
 		return nil, err
 	}
@@ -431,7 +436,7 @@ func (s *SocialService) ListReviews(ctx context.Context, req *connect.Request[pb
 
 	query := fmt.Sprintf(`
 		SELECT
-			r.uuid, r.id, r.user_uuid, r.entity_uuid, r.collection, r.entity_id,
+			r.uuid, r.id, r.user_uuid, r.entity_uuid, e.collection, e.id as entity_id,
 			r.is_recommended, r.body, r.is_edited, r.created_at, r.updated_at,
 			u.id as author_username, COALESCE(p.avatar_url, '') as author_avatar_url,
 			COALESCE(SUM(CASE WHEN v.is_helpful = true THEN 1 ELSE 0 END), 0) as helpful_count,
@@ -439,6 +444,7 @@ func (s *SocialService) ListReviews(ctx context.Context, req *connect.Request[pb
 			COALESCE(c.comment_count, 0) as comment_count,
 			COALESCE(MAX(CASE WHEN v.user_uuid = $2 THEN (CASE WHEN v.is_helpful THEN 1 ELSE 2 END) ELSE 0 END), 0) as user_vote
 		FROM reviews r
+		JOIN entities e ON e.uuid = r.entity_uuid
 		JOIN users u ON u.uuid = r.user_uuid
 		LEFT JOIN user_profiles p ON p.user_uuid = u.uuid
 		LEFT JOIN review_votes v ON v.review_uuid = r.uuid
@@ -449,7 +455,7 @@ func (s *SocialService) ListReviews(ctx context.Context, req *connect.Request[pb
 			GROUP BY review_uuid
 		) c ON c.review_uuid = r.uuid
 		WHERE r.entity_uuid = $1 AND r.deleted_at IS NULL
-		GROUP BY r.uuid, r.id, r.user_uuid, r.entity_uuid, r.collection, r.entity_id, r.is_recommended, r.body, r.is_edited, r.created_at, r.updated_at, u.id, p.avatar_url, c.comment_count
+		GROUP BY r.uuid, r.id, r.user_uuid, r.entity_uuid, e.collection, e.id, r.is_recommended, r.body, r.is_edited, r.created_at, r.updated_at, u.id, p.avatar_url, c.comment_count
 		%s
 		LIMIT 50
 	`, orderClause)
@@ -718,7 +724,7 @@ func (s *SocialService) CreateQuestion(ctx context.Context, req *connect.Request
 		return nil, err
 	}
 
-	entityUUID, resolvedCol, _, _, _, isArchived, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
+	entityUUID, resolvedID, resolvedCol, _, _, _, isArchived, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
 	if err != nil {
 		return nil, err
 	}
@@ -749,10 +755,10 @@ func (s *SocialService) CreateQuestion(ctx context.Context, req *connect.Request
 	_, err = s.db.Exec(ctx, `
 		INSERT INTO questions (
 			uuid, id, user_uuid, entity_uuid, title, body, net_score, is_edited,
-			collection, entity_id, created_at, updated_at
+			created_at, updated_at
 		)
-		VALUES ($1, $2, $3, $4, $5, $6, 0, false, $7, $8, NOW(), NOW())
-	`, qUUID, qID, u.UserUUID, entityUUID, title, body, resolvedCol, req.Msg.GetEntityId())
+		VALUES ($1, $2, $3, $4, $5, $6, 0, false, NOW(), NOW())
+	`, qUUID, qID, u.UserUUID, entityUUID, title, body)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -763,7 +769,7 @@ func (s *SocialService) CreateQuestion(ctx context.Context, req *connect.Request
 		UserUuid:          u.UserUUID,
 		EntityUuid:        entityUUID,
 		Collection:        resolvedCol,
-		EntityId:          req.Msg.GetEntityId(),
+		EntityId:          resolvedID,
 		Title:             title,
 		Body:              body,
 		NetScore:          0,
@@ -799,7 +805,12 @@ func (s *SocialService) UpdateQuestion(ctx context.Context, req *connect.Request
 
 	var qUUID, authorUUID, entityUUID, col, entityID string
 	var createdAt time.Time
-	err := s.db.QueryRow(ctx, "SELECT uuid, user_uuid, entity_uuid, collection, entity_id, created_at FROM questions WHERE id = $1 OR uuid::text = $1", qID).Scan(&qUUID, &authorUUID, &entityUUID, &col, &entityID, &createdAt)
+	err := s.db.QueryRow(ctx, `
+		SELECT q.uuid, q.user_uuid, q.entity_uuid, e.collection, e.id, q.created_at
+		FROM questions q
+		JOIN entities e ON e.uuid = q.entity_uuid
+		WHERE q.id = $1 OR q.uuid::text = $1
+	`, qID).Scan(&qUUID, &authorUUID, &entityUUID, &col, &entityID, &createdAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("question not found"))
 	}
@@ -883,7 +894,7 @@ func (s *SocialService) DeleteQuestion(ctx context.Context, req *connect.Request
 }
 
 func (s *SocialService) ListQuestions(ctx context.Context, req *connect.Request[pb.ListQuestionsRequest]) (*connect.Response[pb.ListQuestionsResponse], error) {
-	entityUUID, _, _, _, _, _, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
+	entityUUID, _, _, _, _, _, _, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
 	if err != nil {
 		return nil, err
 	}
@@ -905,7 +916,7 @@ func (s *SocialService) ListQuestions(ctx context.Context, req *connect.Request[
 
 	query := fmt.Sprintf(`
 		SELECT
-			q.uuid, q.id, q.user_uuid, q.entity_uuid, q.collection, q.entity_id,
+			q.uuid, q.id, q.user_uuid, q.entity_uuid, e.collection, e.id as entity_id,
 			q.title, q.body, q.net_score, q.is_edited, q.deleted_at, q.created_at, q.updated_at,
 			CASE WHEN q.deleted_at IS NOT NULL THEN '[Deleted User]' ELSE u.id END as author_username,
 			CASE WHEN q.deleted_at IS NOT NULL THEN '' ELSE COALESCE(p.avatar_url, '') END as author_avatar_url,
@@ -915,6 +926,7 @@ func (s *SocialService) ListQuestions(ctx context.Context, req *connect.Request[
 			COALESCE(SUM(CASE WHEN v.is_upvote = true THEN 1 ELSE 0 END), 0) as upvotes,
 			COALESCE(SUM(CASE WHEN v.is_upvote = false THEN 1 ELSE 0 END), 0) as downvotes
 		FROM questions q
+		JOIN entities e ON e.uuid = q.entity_uuid
 		JOIN users u ON u.uuid = q.user_uuid
 		LEFT JOIN user_profiles p ON p.user_uuid = u.uuid
 		LEFT JOIN question_votes v ON v.question_uuid = q.uuid
@@ -925,7 +937,7 @@ func (s *SocialService) ListQuestions(ctx context.Context, req *connect.Request[
 			GROUP BY question_uuid
 		) ans ON ans.question_uuid = q.uuid
 		WHERE q.entity_uuid = $1 %s
-		GROUP BY q.uuid, q.id, q.user_uuid, q.entity_uuid, q.collection, q.entity_id, q.title, q.body, q.net_score, q.is_edited, q.deleted_at, q.created_at, q.updated_at, u.id, p.avatar_url, ans.ans_count, ans.has_accepted
+		GROUP BY q.uuid, q.id, q.user_uuid, q.entity_uuid, e.collection, e.id, q.title, q.body, q.net_score, q.is_edited, q.deleted_at, q.created_at, q.updated_at, u.id, p.avatar_url, ans.ans_count, ans.has_accepted
 		%s
 		LIMIT 50
 	`, searchClause, orderClause)
@@ -1686,7 +1698,7 @@ func (s *SocialService) ToggleLikeItem(ctx context.Context, req *connect.Request
 		return nil, err
 	}
 
-	entityUUID, resolvedCol, name, image, authorOrMfg, _, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
+	entityUUID, _, _, _, _, _, _, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
 	if err != nil {
 		return nil, err
 	}
@@ -1708,9 +1720,9 @@ func (s *SocialService) ToggleLikeItem(ctx context.Context, req *connect.Request
 		// Like
 		newItemUUID := authcontext.NewUUIDv7()
 		_, err = s.db.Exec(ctx, `
-			INSERT INTO collection_items (uuid, collection_uuid, entity_uuid, entity_id, collection, name, primary_display_image, author_or_manufacturer, created_at)
-			VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
-		`, newItemUUID, likedColUUID, entityUUID, req.Msg.GetEntityId(), resolvedCol, name, image, authorOrMfg)
+			INSERT INTO collection_items (uuid, collection_uuid, entity_uuid, created_at)
+			VALUES ($1, $2, $3, NOW())
+		`, newItemUUID, likedColUUID, entityUUID)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, err)
 		}
@@ -1904,7 +1916,7 @@ func (s *SocialService) ListUserCollections(ctx context.Context, req *connect.Re
 
 	var filterEntityUUID string
 	if req.Msg.ContainsEntityId != nil && strings.TrimSpace(*req.Msg.ContainsEntityId) != "" {
-		entityUUID, _, _, _, _, _, err := resolveEntity(ctx, s.db, *req.Msg.ContainsEntityId, req.Msg.ContainsCollection)
+		entityUUID, _, _, _, _, _, _, err := resolveEntity(ctx, s.db, *req.Msg.ContainsEntityId, req.Msg.ContainsCollection)
 		if err == nil {
 			filterEntityUUID = entityUUID
 		}
@@ -1979,17 +1991,17 @@ func (s *SocialService) AddCollectionItem(ctx context.Context, req *connect.Requ
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot add items to another user's collection"))
 	}
 
-	entityUUID, resolvedCol, name, image, authorOrMfg, _, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
+	entityUUID, resolvedID, resolvedCol, name, image, authorOrMfg, _, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
 	if err != nil {
 		return nil, err
 	}
 
 	itemUUID := authcontext.NewUUIDv7()
 	_, err = s.db.Exec(ctx, `
-		INSERT INTO collection_items (uuid, collection_uuid, entity_uuid, entity_id, collection, name, primary_display_image, author_or_manufacturer, created_at)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, NOW())
+		INSERT INTO collection_items (uuid, collection_uuid, entity_uuid, created_at)
+		VALUES ($1, $2, $3, NOW())
 		ON CONFLICT DO NOTHING
-	`, itemUUID, colUUID, entityUUID, req.Msg.GetEntityId(), resolvedCol, name, image, authorOrMfg)
+	`, itemUUID, colUUID, entityUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -1998,7 +2010,7 @@ func (s *SocialService) AddCollectionItem(ctx context.Context, req *connect.Requ
 		Uuid:                 itemUUID,
 		CollectionUuid:       colUUID,
 		EntityUuid:           entityUUID,
-		EntityId:             req.Msg.GetEntityId(),
+		EntityId:             resolvedID,
 		Collection:           resolvedCol,
 		Name:                 name,
 		PrimaryDisplayImage:  &image,
@@ -2023,7 +2035,7 @@ func (s *SocialService) RemoveCollectionItem(ctx context.Context, req *connect.R
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot remove items from another user's collection"))
 	}
 
-	entityUUID, _, _, _, _, _, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
+	entityUUID, _, _, _, _, _, _, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
 	if err != nil {
 		return nil, err
 	}
@@ -2100,7 +2112,7 @@ func (s *SocialService) ListCollectionItems(ctx context.Context, req *connect.Re
 }
 
 func (s *SocialService) GetEntitySocialSummary(ctx context.Context, req *connect.Request[pb.GetEntitySocialSummaryRequest]) (*connect.Response[pb.EntitySocialSummary], error) {
-	entityUUID, _, _, _, _, isArchived, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
+	entityUUID, _, _, _, _, _, isArchived, err := resolveEntity(ctx, s.db, req.Msg.GetEntityId(), req.Msg.Collection)
 	if err != nil {
 		return nil, err
 	}

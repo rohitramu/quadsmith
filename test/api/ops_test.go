@@ -194,6 +194,26 @@ func TestOpsServer_JITElevation(t *testing.T) {
 		t.Errorf("Expected maintenance success: %s", maintRes.Msg.Message)
 	}
 
+	// Verify audit record stores jit_grant_uuid and projects jit_grant_id via LEFT JOIN
+	time.Sleep(50 * time.Millisecond)
+	auditRes, err := operatorClient.ListInternalApiCalls(ctx, connect.NewRequest(&pb.ListInternalApiCallsRequest{
+		MethodFilter: "RunDatabaseMaintenance",
+		Limit:        5,
+	}))
+	if err != nil {
+		t.Fatalf("ListInternalApiCalls failed: %v", err)
+	}
+	foundJitCall := false
+	for _, c := range auditRes.Msg.GetCalls() {
+		if c.GetJitGrantUuid() == grant.Uuid && c.GetJitGrantId() == grant.Id {
+			foundJitCall = true
+			break
+		}
+	}
+	if !foundJitCall {
+		t.Errorf("Expected audit record for RunDatabaseMaintenance with jit_grant_uuid=%s and jit_grant_id=%s", grant.Uuid, grant.Id)
+	}
+
 	// 5. Extend JIT Grant
 	extRes, err := operatorClient.ExtendJitGrant(ctx, connect.NewRequest(&pb.ExtendJitGrantRequest{
 		GrantId: grant.Id,

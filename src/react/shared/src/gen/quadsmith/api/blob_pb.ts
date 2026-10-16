@@ -16,7 +16,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_blob: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "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",
+    "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",
     [file_google_protobuf_timestamp, file_quadsmith_data_data, file_quadsmith_sql_sql],
   );
 
@@ -120,16 +120,23 @@ export type BlobReference = Message<"quadsmith.api.BlobReference"> & {
   entityType: string;
 
   /**
-   * Foreign key uuid of the referencing entity
+   * Foreign key uuid of the referencing entity (when entity_type != "user_avatar")
    *
-   * @generated from field: string entity_uuid = 5;
+   * @generated from field: optional string entity_uuid = 5;
    */
-  entityUuid: string;
+  entityUuid?: string | undefined;
+
+  /**
+   * Foreign key uuid of the referencing user (when entity_type == "user_avatar")
+   *
+   * @generated from field: optional string user_uuid = 6;
+   */
+  userUuid?: string | undefined;
 
   /**
    * Linkage timestamp
    *
-   * @generated from field: google.protobuf.Timestamp created_at = 6;
+   * @generated from field: google.protobuf.Timestamp created_at = 7;
    */
   createdAt?: Timestamp | undefined;
 };

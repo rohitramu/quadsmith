@@ -360,9 +360,9 @@ enforces five invariants across all Protobuf files during `make test`:
    `USER_PROVIDED_PUBLIC`)**:
    - System-generated `uuid` primary keys, `user_uuid` / relational foreign
      keys, and system-generated `id` slugs (`Entity.id`, `Collection.id`,
-     `CollectionItem.entity_id`, `Review.id`, `Review.entity_id`, `Question.id`,
-     `Question.entity_id`, `Blob.id`) are categorized as
-     `CONTENT_TYPE_SYSTEM_METADATA_PUBLIC`.
+     `Review.id`, `Question.id`, `Blob.id`, as well as API-only projected
+     `CollectionItem.entity_id`, `Review.entity_id`, and `Question.entity_id`)
+     are categorized as `CONTENT_TYPE_SYSTEM_METADATA_PUBLIC`.
    - User-chosen identifiers and component selections (`User.id` and the
      component selection fields on `Build` such as `frame_uuid`, `motor_uuid`,
      `flight_controller_uuid`, etc.) are categorized as

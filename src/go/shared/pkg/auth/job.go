@@ -7,6 +7,8 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
+
+	"quadsmith/shared/pkg/blob"
 )
 
 // HandleUsernameReleaseWarning scans username_histories for archived usernames approaching the end of their 30-day hold window
@@ -141,11 +143,16 @@ func HandlePurgeSoftDeletedAccounts(ctx context.Context, pool *pgxpool.Pool) (in
 			continue
 		}
 
-		// 2. Clear personal profile details
+		// 2. Clear personal profile details and unlink any custom avatar blob reference
 		_, err = tx.Exec(ctx, `UPDATE user_profiles SET bio = '', avatar_url = '', updated_at = NOW() WHERE user_uuid = $1`, u.uuid)
 		if err != nil {
 			_ = tx.Rollback(ctx)
 			log.Printf("[PurgeJob] Failed to clear profile for %s: %v", u.uuid, err)
+			continue
+		}
+		if err := blob.UnlinkEntityBlobs(ctx, tx, "user_avatar", u.uuid); err != nil {
+			_ = tx.Rollback(ctx)
+			log.Printf("[PurgeJob] Failed to unlink avatar blobs for %s: %v", u.uuid, err)
 			continue
 		}
 

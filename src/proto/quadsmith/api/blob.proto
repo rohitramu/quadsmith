@@ -65,7 +65,11 @@ message Blob {
 message BlobReference {
   option (quadsmith.sql.table) = {
     name: "blob_references"
-    unique_constraints: "blob_uuid, entity_type, entity_uuid"
+    checks: "num_nonnulls(entity_uuid, user_uuid) = 1"
+    unique_constraints: [
+      "blob_uuid, entity_type, entity_uuid",
+      "blob_uuid, entity_type, user_uuid"
+    ]
   };
   option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
 
@@ -93,14 +97,26 @@ message BlobReference {
     (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
 
-  // Foreign key uuid of the referencing entity
-  string entity_uuid = 5 [
-    (quadsmith.sql.column) = {create_index: true},
+  // Foreign key uuid of the referencing entity (when entity_type != "user_avatar")
+  optional string entity_uuid = 5 [
+    (quadsmith.sql.column) = {
+      references: "entities(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+
+  // Foreign key uuid of the referencing user (when entity_type == "user_avatar")
+  optional string user_uuid = 6 [
+    (quadsmith.sql.column) = {
+      references: "users(uuid) ON DELETE CASCADE"
+      create_index: true
+    },
     (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
 
   // Linkage timestamp
-  google.protobuf.Timestamp created_at = 6 [
+  google.protobuf.Timestamp created_at = 7 [
     (quadsmith.sql.column) = {default_value: "NOW()"},
     (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];

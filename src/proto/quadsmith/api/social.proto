@@ -191,8 +191,14 @@ message Review {
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
   ];
   bool is_author_verified_owner = 17 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
-  string collection = 18 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
-  string entity_id = 19 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  string collection = 18 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string entity_id = 19 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 }
 
 message ReviewVote {
@@ -354,9 +360,18 @@ message Question {
     (quadsmith.sql.column) = {ignore: true},
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
   ];
-  repeated QuestionComment comments = 19 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string collection = 20 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
-  string entity_id = 21 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  repeated QuestionComment comments = 19 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  string collection = 20 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string entity_id = 21 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
 }
 
 message QuestionComment {
@@ -482,7 +497,10 @@ message Answer {
     (quadsmith.sql.column) = {ignore: true},
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
   ];
-  repeated AnswerComment comments = 20 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  repeated AnswerComment comments = 20 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 }
 
 message AnswerComment {
@@ -715,11 +733,26 @@ message CollectionItem {
   ];
 
   // Resolved item details for display
-  string entity_id = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
-  string collection = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
-  string name = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  optional string primary_display_image = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  optional string author_or_manufacturer = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string entity_id = 5 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string collection = 6 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
+  ];
+  string name = 7 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  optional string primary_display_image = 8 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
+  optional string author_or_manufacturer = 9 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+  ];
 }
 
 message EntitySocialSummary {

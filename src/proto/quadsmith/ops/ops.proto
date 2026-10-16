@@ -141,11 +141,21 @@ message InternalApiCallRecord {
   ];
   string caller_type = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
   string group_name = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  optional string jit_grant_id = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  string status = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  optional string error_message = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  int64 duration_ms = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
-  google.protobuf.Timestamp created_at = 11 [
+  optional string jit_grant_uuid = 7 [
+    (quadsmith.sql.column) = {
+      references: "jit_grants(uuid)"
+      create_index: true
+    },
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  optional string jit_grant_id = 8 [
+    (quadsmith.sql.column) = {ignore: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
+  string status = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  optional string error_message = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  int64 duration_ms = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE];
+  google.protobuf.Timestamp created_at = 12 [
     (quadsmith.sql.column) = {
       create_index: true
       default_value: "NOW()"

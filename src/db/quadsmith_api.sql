@@ -210,14 +210,19 @@ CREATE TABLE IF NOT EXISTS blob_references (
   id TEXT UNIQUE NOT NULL,
   blob_uuid UUID NOT NULL,
   entity_type TEXT NOT NULL,
-  entity_uuid UUID NOT NULL,
+  entity_uuid UUID,
+  user_uuid UUID,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  CONSTRAINT blob_references_blob_uuid_entity_type_entity_uuid_key UNIQUE (blob_uuid, entity_type, entity_uuid)
+  CHECK (num_nonnulls (entity_uuid, user_uuid) = 1),
+  CONSTRAINT blob_references_blob_uuid_entity_type_entity_uuid_key UNIQUE (blob_uuid, entity_type, entity_uuid),
+  CONSTRAINT blob_references_blob_uuid_entity_type_user_uuid_key UNIQUE (blob_uuid, entity_type, user_uuid)
 );
 
 CREATE INDEX IF NOT EXISTS idx_blob_references_entity_type ON blob_references (entity_type);
 
 CREATE INDEX IF NOT EXISTS idx_blob_references_entity_uuid ON blob_references (entity_uuid);
+
+CREATE INDEX IF NOT EXISTS idx_blob_references_user_uuid ON blob_references (user_uuid);
 
 CREATE TABLE IF NOT EXISTS builds (
   uuid UUID NOT NULL,
@@ -505,8 +510,6 @@ CREATE TABLE IF NOT EXISTS reviews (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   is_author_verified_owner BOOLEAN NOT NULL,
-  collection TEXT NOT NULL,
-  entity_id TEXT NOT NULL,
   CONSTRAINT reviews_user_uuid_entity_uuid_key UNIQUE (user_uuid, entity_uuid)
 );
 
@@ -557,10 +560,7 @@ CREATE TABLE IF NOT EXISTS questions (
   is_edited BOOLEAN DEFAULT false NOT NULL,
   deleted_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  comments JSONB,
-  collection TEXT NOT NULL,
-  entity_id TEXT NOT NULL
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS idx_questions_id ON questions (id);
@@ -600,8 +600,7 @@ CREATE TABLE IF NOT EXISTS answers (
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   accepted_at TIMESTAMPTZ,
-  endorsed_at TIMESTAMPTZ,
-  comments JSONB
+  endorsed_at TIMESTAMPTZ
 );
 
 CREATE INDEX IF NOT EXISTS idx_answers_question_uuid ON answers (question_uuid);
@@ -688,11 +687,6 @@ CREATE TABLE IF NOT EXISTS collection_items (
   collection_uuid UUID NOT NULL,
   entity_uuid UUID NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  entity_id TEXT NOT NULL,
-  collection TEXT NOT NULL,
-  name TEXT NOT NULL,
-  primary_display_image TEXT,
-  author_or_manufacturer TEXT,
   CONSTRAINT collection_items_collection_uuid_entity_uuid_key UNIQUE (collection_uuid, entity_uuid)
 );
 
@@ -785,6 +779,12 @@ ADD CONSTRAINT fk_blobs_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid
 
 ALTER TABLE blob_references
 ADD CONSTRAINT fk_blob_references_blob_uuid FOREIGN KEY (blob_uuid) REFERENCES blobs (uuid) ON DELETE CASCADE;
+
+ALTER TABLE blob_references
+ADD CONSTRAINT fk_blob_references_entity_uuid FOREIGN KEY (entity_uuid) REFERENCES entities (uuid) ON DELETE CASCADE;
+
+ALTER TABLE blob_references
+ADD CONSTRAINT fk_blob_references_user_uuid FOREIGN KEY (user_uuid) REFERENCES users (uuid) ON DELETE CASCADE;
 
 ALTER TABLE builds
 ADD CONSTRAINT fk_builds_uuid FOREIGN KEY (uuid) REFERENCES entities (uuid) ON DELETE CASCADE;
