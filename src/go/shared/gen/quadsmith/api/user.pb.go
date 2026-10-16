@@ -2075,7 +2075,7 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"\rlocation_hint\x18\t \x01(\tB\f\xc2\xf3\x18\x04:\x02''\xc0\xf0\x19\x03R\flocationHint\x12?\n" +
 	"\n" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt:\x1a\xc2\xf3\x18\x10\n" +
-	"\x0erefresh_tokens\xc2\xf0\x19\x02\b\x03\"\xab\b\n" +
+	"\x0erefresh_tokens\xc2\xf0\x19\x02\b\x03\"\x8b\a\n" +
 	"\bEmailOtp\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12 \n" +
@@ -2100,9 +2100,9 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"\x06status\x18\x0e \x01(\tB\x13\xc2\xf3\x18\v:\t'pending'\xc0\xf0\x19\x03R\x06status\x12A\n" +
 	"\vapproved_at\x18\x0f \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\n" +
 	"approvedAt\x12=\n" +
-	"\tdenied_at\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\bdeniedAt:\xb5\x01\xc2\xf3\x18\f\n" +
+	"\tdenied_at\x18\x10 \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x05R\bdeniedAt:\x16\xc2\xf3\x18\f\n" +
 	"\n" +
-	"email_otps\xc2\xf0\x19\xa0\x01\b\x03\x12\x9b\x01requested_by_user_uuid = $1::uuid OR (email IN (SELECT email FROM user_emails WHERE user_uuid = $1::uuid) AND (used_at IS NOT NULL OR status = 'approved'))B\x19\n" +
+	"email_otps\xc2\xf0\x19\x02\b\x01B\x19\n" +
 	"\x17_requested_by_user_uuid\"\xab\x03\n" +
 	"\x0fUsernameHistory\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +

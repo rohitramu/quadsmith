@@ -564,7 +564,7 @@ serves the archive via a dedicated HTTP endpoint:
 | Archive Path                           | `ExportDomain`              | Generated Store Functions Invoked                                                                                                                                                              |
 | :------------------------------------- | :-------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `account.json`                         | `EXPORT_DOMAIN_ACCOUNT`     | `ExportUsers`, `ExportUserProfiles`, `ExportUserEmails`, `ExportOAuthAccounts`, `ExportUserEmailOAuthAccounts`, `ExportUsernameHistories`                                                      |
-| `security.json`                        | `EXPORT_DOMAIN_SECURITY`    | `ExportRefreshTokens`, `ExportEmailOtps` (with surgical verified/user-initiated `user_filter`)                                                                                                 |
+| `security.json`                        | `EXPORT_DOMAIN_SECURITY`    | `ExportRefreshTokens`                                                                                                                                                                          |
 | `builds.json`                          | `EXPORT_DOMAIN_BUILDS`      | `ExportEntities` (filtered to `collection = 'builds'`), `ExportBuilds`                                                                                                                         |
 | `components.json`                      | `EXPORT_DOMAIN_COMPONENTS`  | `ExportEntities` (filtered to `collection != 'builds'`), plus `Export<ComponentPlural>` across all 20 component tables                                                                         |
 | `collections.json`                     | `EXPORT_DOMAIN_COLLECTIONS` | `ExportCollections`, `ExportCollectionItems`                                                                                                                                                   |
@@ -633,37 +633,19 @@ To satisfy both [GDPR Article 15](https://gdpr-info.eu/art-15-gdpr/) (Right of
 access, including observed personal data) and
 [GDPR Article 20](https://gdpr-info.eu/art-20-gdpr/) (Right to data portability)
 without exposing anti-abuse mechanics or third-party data under Article 15(4),
-`security.json` applies two surgical rules via `quadsmith.data` options on
-[RefreshToken](../../proto/quadsmith/api/user.proto#L121-L137) and
-[EmailOtp](../../proto/quadsmith/api/user.proto#L139-L161):
+`security.json` exports persistent user device sessions while treating
+transient, in-flight authentication challenges as internal operational data:
 
-1. **Surgical Row Filter on `EmailOtp` (`export.user_filter`)**:
-   - `EmailOtp` declares:
-
-     ```protobuf
-     option (quadsmith.data.export) = {
-       domain: EXPORT_DOMAIN_SECURITY
-       user_filter: "requested_by_user_uuid = $1::uuid OR (email IN (SELECT email FROM user_emails WHERE user_uuid = $1::uuid) AND (used_at IS NOT NULL OR status = 'approved'))"
-     };
-     ```
-
-   - This exports **only** challenges explicitly initiated by the authenticated
-     user (`requested_by_user_uuid = $1`) or login challenges where the user
-     verified ownership of the email
-     (`used_at IS NOT NULL OR status = 'approved'`).
-   - Unauthenticated, unverified login attempts triggered by third parties
-     typing the user's email address are excluded, preventing third-party
-     IP/device harvesting under GDPR Article 15(4).
-2. **Surgical Field Categorization (`SYSTEM_METADATA_PRIVATE` &
-   `SYSTEM_SECRET`)**:
-   - On `EmailOtp`, cryptographic hashes (`code_hash`, `challenge_id_hash`) are
-     marked `CONTENT_TYPE_SYSTEM_SECRET`, and internal anti-abuse/TTL state
-     (`failed_attempts`, `expires_at`, `denied_at`) is marked
-     `CONTENT_TYPE_SYSTEM_METADATA_PRIVATE`. Only `uuid` and
-     `requested_by_user_uuid` (`SYSTEM_METADATA_PUBLIC`), `email`
-     (`USER_PROVIDED_PRIVATE`), and observed access facts (`purpose`,
-     `ip_address`, `user_agent`, `location_hint`, `status`, `created_at`,
-     `used_at`, `approved_at` as `USER_OBSERVED`) are exported.
+1. **Exclusion of Ephemeral `EmailOtp` Challenges (`EXPORT_DOMAIN_NONE`)**:
+   - `EmailOtp` rows represent short-lived operational tokens (15-minute
+     expiration, with used/expired records purged automatically after 24 hours).
+   - Because they are ephemeral and in-flight, they do not constitute a durable
+     session audit log. Furthermore, exporting unverified challenges risks
+     leaking IP/device metadata of third parties who mistyped the user's email
+     address under GDPR Article 15(4).
+   - `EmailOtp` declares `domain: EXPORT_DOMAIN_NONE` and is excluded from user
+     exports.
+2. **Surgical Field Categorization on `RefreshToken`**:
    - On `RefreshToken`, `token_hash` is marked `CONTENT_TYPE_SYSTEM_SECRET`,
      while `uuid` and `user_uuid` (`SYSTEM_METADATA_PUBLIC`) and `device_hint`,
      `created_at`, `last_used_at`, and `expires_at` (`USER_OBSERVED`) are
@@ -677,42 +659,38 @@ without exposing anti-abuse mechanics or third-party data under Article 15(4),
 
 Exporting only user-provided content (`account.json`, `builds.json`,
 `components.json`, `collections.json`, `social.json`, `blobs.json`) and omitting
-`security.json` (`RefreshToken` and `EmailOtp`) completely. No session or access
-logs are included in the archive.
+`security.json` (`RefreshToken`) completely. No session or access logs are
+included in the archive.
 
 **Pros:**
 
-- Eliminates any need to filter `email_otps` rows or classify session fields.
 - Reduces the archive to strictly Article 20 user-provided portability data.
+- Slightly simpler archive generation logic.
 
 **Cons:**
 
 - Falls short of GDPR Article 15 Right of Access, which covers observed personal
-  data (`device_hint`, `ip_address`, `user_agent`, and session timestamps)
-  stored about the user.
+  data (`device_hint`, `created_at`, and session timestamps) stored about the
+  user.
 - Prevents users from inspecting their own historical login and session
   activity.
 
-##### <a id="unfiltered-email-otps-export-with-failed-attempts" >Unfiltered email_otps Export with Failed Attempts</a>
+##### <a id="exporting-ephemeral-email-otps-in-security-json" >Exporting Ephemeral email_otps in security.json</a>
 
-Exporting all `email_otps` rows matching the user's email address (including
-unverified `pending`/`denied` rows and `failed_attempts` counters), redacting
-only `code_hash` and `challenge_id_hash`. Every challenge row for the email is
-returned.
+Exporting `email_otps` challenge rows matching the user's verified email
+addresses in `security.json` alongside `RefreshToken`.
 
 **Pros:**
 
-- Uses a simpler `email IN (SELECT email FROM user_emails WHERE user_uuid = $1)`
-  filter.
-- Shows failed login attempts targeting the user's email address.
+- Provides visibility into recent in-flight login and verification challenges
+  generated within the last 24 hours.
 
 **Cons:**
 
-- Violates GDPR Article 15(4) by leaking the `ip_address`, `user_agent`, and
-  `location_hint` of unauthenticated third parties who mistyped or probed the
-  email.
-- Exposes internal rate-limiting and anti-abuse counters (`failed_attempts`,
-  `expires_at`) to malicious actors.
+- Incomplete as an audit trail since all rows are purged after 24 hours.
+- Mixes transient protocol handshake buffers with durable session history.
+- Risks exposing IP/device metadata from mistyped third-party requests or
+  anti-abuse counters.
 
 ### <a id="single-source-of-truth-email-storage-and-primary-email-constraint" >Single-Source-of-Truth Email Storage and Primary Email Constraint</a>
 

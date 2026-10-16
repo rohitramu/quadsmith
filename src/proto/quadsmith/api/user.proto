@@ -232,10 +232,7 @@ message RefreshToken {
 
 message EmailOtp {
   option (quadsmith.sql.table) = {name: "email_otps"};
-  option (quadsmith.data.export) = {
-    domain: EXPORT_DOMAIN_SECURITY
-    user_filter: "requested_by_user_uuid = $1::uuid OR (email IN (SELECT email FROM user_emails WHERE user_uuid = $1::uuid) AND (used_at IS NOT NULL OR status = 'approved'))"
-  };
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
 
   string uuid = 1 [
     (quadsmith.sql.column) = {is_primary_key: true},

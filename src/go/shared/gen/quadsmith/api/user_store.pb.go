@@ -1734,61 +1734,6 @@ func ListEmailOtps(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 	return results, nil
 }
 
-func ExportEmailOtps(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*EmailOtp, error) {
-	query := `SELECT uuid, email, used_at, created_at, purpose, requested_by_user_uuid, ip_address, user_agent, location_hint, status, approved_at FROM email_otps WHERE requested_by_user_uuid = $1::uuid OR (email IN (SELECT email FROM user_emails WHERE user_uuid = $1::uuid) AND (used_at IS NOT NULL OR status = 'approved')) ORDER BY uuid ASC`
-	rows, err := db.Query(ctx, query, userUUID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	results := make([]*EmailOtp, 0)
-	for rows.Next() {
-		scanArgs := make([]interface{}, 11)
-		scanAssigns := make([]func(), 0, 11)
-		m := &EmailOtp{}
-		scanArgs[0] = &m.Uuid
-		scanArgs[1] = &m.Email
-		var v2 *time.Time
-		scanArgs[2] = &v2
-		scanAssigns = append(scanAssigns, func() {
-			if v2 != nil {
-				m.UsedAt = timestamppb.New(*v2)
-			}
-		})
-		var v3 *time.Time
-		scanArgs[3] = &v3
-		scanAssigns = append(scanAssigns, func() {
-			if v3 != nil {
-				m.CreatedAt = timestamppb.New(*v3)
-			}
-		})
-		scanArgs[4] = &m.Purpose
-		scanArgs[5] = &m.RequestedByUserUuid
-		scanArgs[6] = &m.IpAddress
-		scanArgs[7] = &m.UserAgent
-		scanArgs[8] = &m.LocationHint
-		scanArgs[9] = &m.Status
-		var v10 *time.Time
-		scanArgs[10] = &v10
-		scanAssigns = append(scanAssigns, func() {
-			if v10 != nil {
-				m.ApprovedAt = timestamppb.New(*v10)
-			}
-		})
-		err := rows.Scan(scanArgs...)
-		if err != nil {
-			return nil, err
-		}
-		for _, assign := range scanAssigns {
-			assign()
-		}
-		if m.Email != "" || m.UsedAt != nil || m.CreatedAt != nil || m.Purpose != "" || m.IpAddress != "" || m.UserAgent != "" || m.LocationHint != "" || m.Status != "" || m.ApprovedAt != nil {
-			results = append(results, m)
-		}
-	}
-	return results, nil
-}
-
 func CreateUsernameHistory(ctx context.Context, tx pgx.Tx, m *UsernameHistory) error {
 	query := `INSERT INTO username_histories (uuid, user_uuid, old_username, renamed_at, first_archived_at, release_warning_sent_at) VALUES ($1, $2, $3, $4, $5, $6)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {

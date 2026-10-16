@@ -122,17 +122,11 @@ func streamArchive(ctx context.Context, pool *pgxpool.Pool, zw *zip.Writer, user
 	if err != nil {
 		return err
 	}
-	emailOtps, err := pb.ExportEmailOtps(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
 
 	secArchive := struct {
 		RefreshTokens []json.RawMessage `json:"refresh_tokens"`
-		EmailOtps     []json.RawMessage `json:"email_otps"`
 	}{
 		RefreshTokens: mustProtoSlice(refreshTokens),
-		EmailOtps:     mustProtoSlice(emailOtps),
 	}
 	if err := writeJSONToZip(zw, "security.json", secArchive); err != nil {
 		return err
