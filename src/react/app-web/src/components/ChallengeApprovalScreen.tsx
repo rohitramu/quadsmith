@@ -6,7 +6,6 @@ import type {
   GetLoginChallengeDetailsResponse,
   ApproveLoginChallengeResponse,
 } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
-import { getApiBaseUrl } from "@quadsmith/shared";
 import logoDark from "../assets/quadsmith-logo-dark.svg";
 import logoLight from "../assets/quadsmith-logo-light.svg";
 
@@ -36,10 +35,6 @@ export function ChallengeApprovalScreen({
     "loading" | "prompt" | "approving" | "approved" | "denying" | "denied" | "error"
   >("loading");
   const [approvalError, setApprovalError] = useState<string | null>(null);
-  const [downloadLinkInfo, setDownloadLinkInfo] = useState<{
-    url: string;
-    filename: string;
-  } | null>(null);
 
   const onApprovedRef = useRef(onApproved);
   const onDeniedRef = useRef(onDenied);
@@ -100,12 +95,6 @@ export function ChallengeApprovalScreen({
     setApprovalState("approving");
     try {
       const res = await approveLoginChallenge(token);
-      if (res.verifyResponse?.downloadUrl) {
-        const rawUrl = res.verifyResponse.downloadUrl;
-        const filename = res.verifyResponse.filename || "quadsmith-data-export.zip";
-        const finalUrl = rawUrl.startsWith("http") ? rawUrl : `${getApiBaseUrl()}${rawUrl}`;
-        setDownloadLinkInfo({ url: finalUrl, filename });
-      }
       setApprovalState("approved");
       onApprovedRef.current?.(res);
     } catch (err: unknown) {
@@ -250,17 +239,6 @@ export function ChallengeApprovalScreen({
             {successTitle}
           </h2>
           <p className="text-xs text-zinc-600 dark:text-zinc-400">{successMessage}</p>
-          {downloadLinkInfo && (
-            <div className="pt-2">
-              <a
-                href={downloadLinkInfo.url}
-                download={downloadLinkInfo.filename}
-                className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white transition shadow-sm"
-              >
-                Download Data Archive (.zip)
-              </a>
-            </div>
-          )}
           <div className="pt-2 text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
             ✓ You can safely close this window now.
           </div>

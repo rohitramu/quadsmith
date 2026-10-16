@@ -6,12 +6,12 @@ import { useOptionalAuth } from "../context/AuthContext";
 
 export interface UserBadgeProps {
   username?: string | null;
-  size?: "xs" | "sm" | "md";
+  size?: "xs" | "sm" | "md" | "lg";
   prefix?: string;
   withAt?: boolean;
   withAvatar?: boolean;
   withHoverCard?: boolean;
-  to?: string;
+  to?: string | null;
   className?: string;
   onClick?: (e: React.MouseEvent) => void;
   isAuthor?: boolean;
@@ -66,33 +66,23 @@ export function UserBadge({
   const fallbackName = cleanUsername || "community";
   const nameWithAt = withAt && !fallbackName.startsWith("@") ? `@${fallbackName}` : fallbackName;
 
-  const standardPadding = {
-    xs: "text-[10px] px-1.5 py-0.5 rounded-md gap-1",
-    sm: "text-xs px-2 py-0.5 rounded-md gap-1",
-    md: "text-sm px-2.5 py-1 rounded-md gap-1.5",
-  }[size];
-
-  const selfPadding = {
+  const paddingClasses = {
     xs: "text-[10px] px-2 py-0.5 rounded-md gap-1",
     sm: "text-xs px-2.5 py-1 rounded-md gap-1",
     md: "text-sm px-3 py-1.5 rounded-md gap-1.5",
+    lg: "text-lg sm:text-xl px-4 py-1.5 rounded-xl gap-2",
   }[size];
 
-  let borderClasses = "border border-transparent";
-  let shadowClasses = "shadow-none";
-  let fontClasses = "font-medium";
-  let paddingClasses = standardPadding;
+  let borderClasses = `border-[2px] ${palette.borderClass} dark:border-[1px]`;
+  const shadowClasses =
+    "shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)] dark:shadow-[0_0_6px_2px_rgba(161,161,170,0.65)]";
+  const fontClasses = "font-bold";
   let badgeTitle: string | undefined = undefined;
 
   if (isAuthor) {
     borderClasses = "border-[3px] border-[#ca8a04] dark:border-[1px] dark:border-[#fbbf24]";
     badgeTitle = "Author";
   } else if (isSelfBadge) {
-    borderClasses = `border-[2px] ${palette.borderClass} dark:border-[1px]`;
-    shadowClasses =
-      "shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)] dark:shadow-[0_0_6px_2px_rgba(161,161,170,0.65)]";
-    fontClasses = "font-bold";
-    paddingClasses = selfPadding;
     badgeTitle = "You";
   }
 
@@ -113,7 +103,14 @@ export function UserBadge({
     </span>
   );
 
-  const linkTo = to !== undefined ? to : isValidUser ? `/users/${cleanUsername}` : undefined;
+  const linkTo =
+    to === null
+      ? undefined
+      : to !== undefined
+        ? to
+        : isValidUser
+          ? `/users/${cleanUsername}`
+          : undefined;
 
   let pillElement: React.ReactNode;
   if (linkTo) {
@@ -142,6 +139,7 @@ export function UserBadge({
       xs: "text-[10px]",
       sm: "text-xs",
       md: "text-sm",
+      lg: "text-base",
     }[size];
 
     return (

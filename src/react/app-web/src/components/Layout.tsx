@@ -10,6 +10,7 @@ import {
   Settings,
   LogOut,
   Menu,
+  User,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@connectrpc/connect-query";
@@ -23,6 +24,7 @@ import {
   getCollectionPath,
 } from "../lib/hardwareCollections";
 import { AccountRestrictedPage } from "../pages/AccountRestrictedPage";
+import { UserBadge } from "./UserBadge";
 
 import { getCollectionColor } from "@quadsmith/shared";
 import { CollectionBadge } from "@quadsmith/shared";
@@ -58,36 +60,27 @@ export function Layout() {
 
   // Account menu state
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
-  const accountMenuTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const accountMenuRef = useRef<HTMLDivElement>(null);
-  const lastHoverTimeRef = useRef<number>(0);
-
-  const handleAccountMouseEnter = () => {
-    lastHoverTimeRef.current = Date.now();
-    if (accountMenuTimerRef.current) {
-      clearTimeout(accountMenuTimerRef.current);
-      accountMenuTimerRef.current = null;
-    }
-    setIsAccountMenuOpen(true);
-  };
-
-  const handleAccountMouseLeave = () => {
-    accountMenuTimerRef.current = setTimeout(() => {
-      setIsAccountMenuOpen(false);
-    }, 150);
-  };
 
   const handleAccountClick = () => {
     setIsAccountMenuOpen((prev) => !prev);
   };
 
+  // Close account menu when location changes
   useEffect(() => {
-    return () => {
-      if (accountMenuTimerRef.current) {
-        clearTimeout(accountMenuTimerRef.current);
+    setIsAccountMenuOpen(false);
+  }, [location.pathname]);
+
+  // Close account menu on Escape
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isAccountMenuOpen) {
+        setIsAccountMenuOpen(false);
       }
     };
-  }, []);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isAccountMenuOpen]);
 
   // Account menu outside click dismissal
   useEffect(() => {
@@ -617,12 +610,7 @@ export function Layout() {
 
             {/* Rightmost Account Avatar Button & Dropdown Menu */}
             {user && (
-              <div
-                ref={accountMenuRef}
-                className="relative"
-                onMouseEnter={handleAccountMouseEnter}
-                onMouseLeave={handleAccountMouseLeave}
-              >
+              <div ref={accountMenuRef} className="relative">
                 <button
                   type="button"
                   aria-label="Account Settings"
@@ -649,30 +637,32 @@ export function Layout() {
 
                 {/* Account Dropdown Menu */}
                 {isAccountMenuOpen && (
-                  <div
-                    className="absolute right-0 top-full pt-1.5 z-50"
-                    onMouseEnter={handleAccountMouseEnter}
-                    onMouseLeave={handleAccountMouseLeave}
-                  >
+                  <div className="absolute right-0 top-full pt-1.5 z-50">
                     <div
                       className="w-48 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-xl py-1.5 text-xs font-medium"
                       role="menu"
                       aria-label="Account menu"
                     >
-                      <div className="px-3.5 py-2 border-b border-zinc-100 dark:border-zinc-800/80 mb-1">
-                        <Link
-                          to={`/users/${user.id}`}
-                          onClick={() => setIsAccountMenuOpen(false)}
-                          className="font-semibold text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 dark:hover:text-emerald-400 hover:underline transition-colors block truncate"
-                        >
-                          @{user.id}
-                        </Link>
+                      <div className="px-3.5 py-2.5 border-b border-zinc-100 dark:border-zinc-800/80 mb-1">
+                        <div className="flex items-center">
+                          <UserBadge username={user.id} size="sm" withHoverCard={false} to={null} />
+                        </div>
                         {user.email && (
-                          <p className="text-[11px] text-zinc-400 dark:text-zinc-500 truncate">
+                          <p className="text-[11px] text-zinc-400 dark:text-zinc-500 truncate mt-1.5">
                             {user.email}
                           </p>
                         )}
                       </div>
+
+                      <Link
+                        to={`/users/${user.id}`}
+                        role="menuitem"
+                        onClick={() => setIsAccountMenuOpen(false)}
+                        className="flex items-center gap-2.5 px-3 py-2 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 rounded-xl mx-1 transition-colors"
+                      >
+                        <User size={15} className="text-zinc-500 dark:text-zinc-400 shrink-0" />
+                        <span>Public Profile</span>
+                      </Link>
 
                       <Link
                         to="/account"
@@ -681,7 +671,7 @@ export function Layout() {
                         className="flex items-center gap-2.5 px-3 py-2 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 rounded-xl mx-1 transition-colors"
                       >
                         <Settings size={15} className="text-zinc-500 dark:text-zinc-400 shrink-0" />
-                        <span>Account settings</span>
+                        <span>Account Settings</span>
                       </Link>
 
                       <div className="my-1 border-t border-zinc-100 dark:border-zinc-800/80" />

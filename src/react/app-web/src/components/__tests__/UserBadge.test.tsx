@@ -6,7 +6,7 @@ import { UserBadge } from "../UserBadge";
 import { getAvatarPalette } from "@quadsmith/shared";
 
 describe("UserBadge Component", () => {
-  it("renders with hash-generated palette for a valid username as standard peer (borderless)", () => {
+  it("renders with hash-generated palette for a valid username with signature border and highlight", () => {
     const palette = getAvatarPalette("alex");
     renderWithProviders(
       <Routes>
@@ -18,10 +18,9 @@ describe("UserBadge Component", () => {
     const badge = screen.getByTestId("user-badge");
     expect(badge).toBeInTheDocument();
     expect(badge).toHaveTextContent("@alex");
-    // Standard peer has borderless styling
-    expect(badge.className).toContain("border-transparent");
-    expect(badge.className).toContain("shadow-none");
-    expect(badge.className).toContain("font-medium");
+    expect(badge.className).toContain(palette.borderClass.split(" ")[0]);
+    expect(badge.className).toContain("shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)]");
+    expect(badge.className).toContain("font-bold");
     expect(badge.className).toContain(palette.bgClass.split(" ")[0]);
   });
 
@@ -61,7 +60,7 @@ describe("UserBadge Component", () => {
     expect(badge).toHaveAttribute("title", "Author");
     expect(badge.className).toContain("border-[#ca8a04]");
     expect(badge.className).toContain("dark:border-[#fbbf24]");
-    expect(badge.className).toContain("shadow-none");
+    expect(badge.className).toContain("shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)]");
   });
 
   it("renders with signature border, halo shadow, bold font, and You title when isSelf is true", () => {
@@ -166,7 +165,7 @@ describe("UserBadge Component", () => {
     expect(badge).toHaveTextContent("@alex");
   });
 
-  it("renders different sizes (xs, sm, md)", () => {
+  it("renders different sizes (xs, sm, md, lg)", () => {
     const { unmount } = renderWithProviders(
       <Routes>
         <Route path="/" element={<UserBadge username="alex" size="xs" withHoverCard={false} />} />
@@ -177,12 +176,33 @@ describe("UserBadge Component", () => {
     expect(screen.getByTestId("user-badge").className).toContain("text-[10px]");
     unmount();
 
-    renderWithProviders(
+    const { unmount: unmountMd } = renderWithProviders(
       <Routes>
         <Route path="/" element={<UserBadge username="alex" size="md" withHoverCard={false} />} />
       </Routes>,
       { route: "/" },
     );
     expect(screen.getByTestId("user-badge").className).toContain("text-sm");
+    unmountMd();
+
+    renderWithProviders(
+      <Routes>
+        <Route path="/" element={<UserBadge username="alex" size="lg" withHoverCard={false} />} />
+      </Routes>,
+      { route: "/" },
+    );
+    expect(screen.getByTestId("user-badge").className).toContain("text-lg");
+  });
+
+  it("renders as non-clickable span when to is null", () => {
+    renderWithProviders(
+      <Routes>
+        <Route path="/" element={<UserBadge username="alex" to={null} withHoverCard={false} />} />
+      </Routes>,
+      { route: "/" },
+    );
+
+    expect(screen.queryByRole("link")).not.toBeInTheDocument();
+    expect(screen.getByTestId("user-badge")).toHaveTextContent("@alex");
   });
 });

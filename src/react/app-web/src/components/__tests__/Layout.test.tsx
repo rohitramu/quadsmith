@@ -156,7 +156,7 @@ describe("Layout Component", () => {
     expect(feedIcon).toHaveClass("text-blue-600");
   });
 
-  it("shows account dropdown menu on hover and allows tap-to-toggle", async () => {
+  it("shows account dropdown menu only on click and provides distinct Public Profile button", async () => {
     const { user } = renderWithProviders(<Layout />, { route: "/" });
 
     // Wait for auth to resolve and find the account settings avatar button
@@ -166,15 +166,24 @@ describe("Layout Component", () => {
     // Menu is not visible initially
     expect(screen.queryByRole("menu", { name: /account menu/i })).not.toBeInTheDocument();
 
-    // Hover over avatar opens menu
+    // Hover over avatar does NOT open the menu
     await user.hover(accountBtn);
+    expect(screen.queryByRole("menu", { name: /account menu/i })).not.toBeInTheDocument();
+
+    // Click on avatar opens menu
+    await user.click(accountBtn);
     const menu = await screen.findByRole("menu", { name: /account menu/i });
     expect(menu).toBeInTheDocument();
 
-    // The username is a link that navigates to the public profile
-    const usernameProfileLink = screen.getByRole("link", { name: /@fpv_pilot/i });
-    expect(usernameProfileLink).toBeInTheDocument();
-    expect(usernameProfileLink).toHaveAttribute("href", "/users/fpv_pilot");
+    // The username is rendered as a badge pill and is NOT clickable
+    expect(screen.getByTestId("user-badge")).toHaveTextContent("@fpv_pilot");
+    const usernameProfileLink = screen.queryByRole("link", { name: /@fpv_pilot/i });
+    expect(usernameProfileLink).not.toBeInTheDocument();
+
+    // Separate "Public Profile" button is rendered above "Account Settings"
+    const publicProfileLink = screen.getByRole("menuitem", { name: /public profile/i });
+    expect(publicProfileLink).toBeInTheDocument();
+    expect(publicProfileLink).toHaveAttribute("href", "/users/fpv_pilot");
 
     const settingsLink = screen.getByRole("menuitem", { name: /account settings/i });
     expect(settingsLink).toBeInTheDocument();
@@ -183,5 +192,9 @@ describe("Layout Component", () => {
     const logoutBtn = screen.getByRole("menuitem", { name: /log out/i });
     expect(logoutBtn).toBeInTheDocument();
     expect(logoutBtn).toHaveClass("text-rose-600");
+
+    // Clicking avatar again toggles menu closed
+    await user.click(accountBtn);
+    expect(screen.queryByRole("menu", { name: /account menu/i })).not.toBeInTheDocument();
   });
 });

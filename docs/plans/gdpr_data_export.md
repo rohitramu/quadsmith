@@ -101,7 +101,6 @@ flowchart TD
         VerifyChoice -->|Enter 6-Digit Code on Device A| VerifyRPC["AuthService.VerifyEmailOtp (purpose = EXPORT_DATA)"]
         VerifyChoice -->|Click Magic Link on Device B| ApprovalPage["/login/verify?token=... -> Device B Approval Screen"]
         ApprovalPage -->|Approve Request| ApproveRPC["AuthService.ApproveLoginChallenge"]
-        ApproveRPC --> DeviceBDownload["Trigger Direct ZIP Download on Device B"]
         ApproveRPC -.->|Cross-Device Status Polling| PollStatus["AuthService.GetLoginChallengeStatus"]
         PollStatus --> AutoDownload["Device A Auto-Completes & Triggers ZIP Download"]
     end
@@ -220,10 +219,11 @@ Verification step using the universal challenge architecture in
      (`/login?token=<token>`), the unified `<ChallengeApprovalScreen />`
      displays the "Approve Data Export" challenge details regardless of whether
      an active session is present. Upon user confirmation,
-     `AuthService.ApproveLoginChallenge` marks the challenge approved and
-     returns `VerifyEmailOtpResponse` containing the signed export token,
-     rendering a direct `.zip` download link on Device B while Device A
-     automatically initiates the download.
+     `AuthService.ApproveLoginChallenge` marks the challenge approved. To
+     guarantee that the download only occurs on the device that requested it,
+     Device B does not initiate a download or provide a fallback download
+     button; instead, it displays the confirmation notice, while Device A
+     automatically receives the approved token and starts the `.zip` download.
    - **Device A Reactive Completion**: While `EmailVerificationForm` displays
      the OTP input step, it continuously polls
      `AuthService.GetLoginChallengeStatus(challenge_id)`. Once approved on

@@ -781,8 +781,6 @@ describe("LoginPage Component", () => {
         /your data export has been approved and the download has been initiated on your other device/i,
       ),
     ).toBeInTheDocument();
-    expect(
-      screen.getByRole("link", { name: /download data archive \(\.zip\)/i }),
-    ).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /download data archive/i })).not.toBeInTheDocument();
   });
 });

@@ -257,7 +257,9 @@ export function UserProfilePage() {
               </div>
             )}
             <div className="space-y-1">
-              <h1 className="text-2xl font-extrabold tracking-tight">@{profile.id}</h1>
+              <h1 className="flex items-center">
+                <UserBadge username={profile.id} size="lg" withHoverCard={false} to={null} />
+              </h1>
               {profile.createdAt && (
                 <div className="flex items-center gap-1.5 text-[11px] text-zinc-400 pt-1">
                   <Calendar size={12} />

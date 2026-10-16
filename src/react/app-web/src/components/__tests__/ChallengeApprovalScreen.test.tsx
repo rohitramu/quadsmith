@@ -54,7 +54,7 @@ describe("ChallengeApprovalScreen Component", () => {
     expect(onDenied).toHaveBeenCalledTimes(1);
   });
 
-  it("renders custom headings and triggers zip download for EXPORT_DATA purpose", async () => {
+  it("renders custom headings and does not offer fallback download button on approving device for EXPORT_DATA purpose", async () => {
     const user = userEvent.setup();
     const onApproved = vi.fn();
 
@@ -76,8 +76,11 @@ describe("ChallengeApprovalScreen Component", () => {
     expect(await screen.findByTestId("approval-success-card")).toBeInTheDocument();
     expect(screen.getByText(/export approved!/i)).toBeInTheDocument();
     expect(
-      screen.getByRole("link", { name: /download data archive \(\.zip\)/i }),
+      screen.getByText(
+        /your data export has been approved and the download has been initiated on your other device/i,
+      ),
     ).toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /download data archive/i })).not.toBeInTheDocument();
     expect(onApproved).toHaveBeenCalledTimes(1);
   });
 
