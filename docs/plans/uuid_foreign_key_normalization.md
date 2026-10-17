@@ -273,22 +273,32 @@ redundant SQL columns in [`quadsmith_api.sql`](../../src/db/quadsmith_api.sql):
    `e.collection`, `e.name`, `e.primary_display_image`, and
    `e.author_or_manufacturer` via `JOIN entities e ON e.uuid = ci.entity_uuid`.
 
-```text
-+-------------------------------------------------------------------+
-|                             entities                              |
-| uuid (PK) | collection | id | name | primary_display_image | ...  |
-+-------------------------------------------------------------------+
-      ^                   ^                     ^
-      | entity_uuid (FK)  | entity_uuid (FK)    | entity_uuid (FK)
-+------------+     +--------------+     +--------------------+
-|  reviews   |     |  questions   |     |  collection_items  |
-|------------|     |--------------|     |--------------------|
-| uuid (PK)  |     | uuid (PK)    |     | uuid (PK)          |
-| user_uuid  |     | user_uuid    |     | collection_uuid    |
-| entity_uuid|     | entity_uuid  |     | entity_uuid        |
-| body, ...  |     | title, body  |     | created_at         |
-+------------+     +--------------+     +--------------------+
-  (No redundant entity_id, collection, name, or comments JSONB columns)
+```mermaid
+flowchart BT
+    Entities["entities
+    uuid (PK) | collection | id | name | primary_display_image | ..."]
+
+    Reviews["reviews
+    • uuid (PK)
+    • user_uuid
+    • entity_uuid
+    • body, ..."]
+
+    Questions["questions
+    • uuid (PK)
+    • user_uuid
+    • entity_uuid
+    • title, body"]
+
+    CollectionItems["collection_items
+    • uuid (PK)
+    • collection_uuid
+    • entity_uuid
+    • created_at"]
+
+    Reviews -- "entity_uuid (FK)" --> Entities
+    Questions -- "entity_uuid (FK)" --> Entities
+    CollectionItems -- "entity_uuid (FK)" --> Entities
 ```
 
 We:

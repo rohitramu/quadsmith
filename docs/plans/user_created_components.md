@@ -71,30 +71,31 @@ rules.
 > - Provide schema-driven modal editors in the web UI, quick-add shortcuts in
 >   the Forge wizard, and CLI CRUD commands.
 
-```text
-               +--------------------------------------------+
-               |                  entities                  |
-               |--------------------------------------------|
-               | uuid (PK, UUIDv7)                          |
-               | collection ('motors', 'frames', 'builds')  |
-               | id (unique slug, e.g. 'tmotor-f80-pro')    |
-               | name, description                          |
-               | author_or_manufacturer                     |
-               | user_uuid (FK -> users.uuid)               | <--- Single Source of Truth
-               | is_archived, created_at, updated_at        |
-               +---------------------+----------------------+
-                                     | 1:1 (Shared UUID)
-            +------------------------+------------------------+
-            |                                                 |
-            v                                                 v
-+-----------------------+                         +-----------------------+
-|        motors         |                         |        builds         |
-|-----------------------|                         |-----------------------|
-| uuid (PK, FK->entities|                         | uuid (PK, FK->entities|
-| kv, stator_size       |                         | frame_uuid, motor_uuid|
-| min/max_voltage       |                         | fc_uuid, esc_uuids    |
-| max_current_a, mount  |                         | rx_uuids, vtx_uuid    |
-+-----------------------+                         +-----------------------+
+```mermaid
+flowchart TD
+    Entities["entities (Single Source of Truth)
+    • uuid (PK, UUIDv7)
+    • collection ('motors', 'frames', 'builds')
+    • id (unique slug, e.g. 'tmotor-f80-pro')
+    • name, description
+    • author_or_manufacturer
+    • user_uuid (FK -> users.uuid)
+    • is_archived, created_at, updated_at"]
+
+    Motors["motors
+    • uuid (PK, FK -> entities)
+    • kv, stator_size
+    • min/max_voltage
+    • max_current_a, mount"]
+
+    Builds["builds
+    • uuid (PK, FK -> entities)
+    • frame_uuid, motor_uuid
+    • fc_uuid, esc_uuids
+    • rx_uuids, vtx_uuid"]
+
+    Entities -- "1:1 (Shared UUID)" --> Motors
+    Entities -- "1:1 (Shared UUID)" --> Builds
 ```
 
 ### <a id="true-table-per-type-tpt-inheritance-architecture" >True Table-Per-Type (TPT) Inheritance Architecture</a>
@@ -383,32 +384,29 @@ references and protect historical builds:
 - **Referenced Components**: If referenced anywhere, the component is
   soft-deleted by setting `entities.is_archived = true`.
 
-```text
-                  +----------------------------------+
-                  |  User Requests Component Delete  |
-                  +-----------------+----------------+
-                                    |
-                                    v
-                  +-----------------+----------------+
-                  | Check References:                |
-                  | - builds (FK references)         |
-                  | - reviews & questions            |
-                  | - collection_items               |
-                  +-----------------+----------------+
-                                    |
-                   +----------------+----------------+
-                   |                                 |
-           [Zero References]               [Referenced in System]
-                   |                                 |
-                   v                                 v
-     +---------------------------+     +---------------------------+
-     |       Hard Deletion       |     |       Delist / Archive    |
-     | - DELETE FROM component   |     | - UPDATE entities         |
-     | - DELETE FROM entities    |     |   SET is_archived = true  |
-     | - DELETE FROM blob_refs   |     | - Component hidden in List|
-     | Returns is_archived=false |     | - Retained in builds & Get|
-     +---------------------------+     | Returns is_archived=true  |
-                                       +---------------------------+
+```mermaid
+flowchart TD
+    Req["User Requests Component Delete"]
+    Check["Check References:
+    • builds (FK references)
+    • reviews & questions
+    • collection_items"]
+
+    Hard["Hard Deletion
+    • DELETE FROM component
+    • DELETE FROM entities
+    • DELETE FROM blob_refs
+    Returns is_archived=false"]
+
+    Archive["Delist / Archive
+    • UPDATE entities SET is_archived = true
+    • Component hidden in List
+    • Retained in builds & Get
+    Returns is_archived=true"]
+
+    Req --> Check
+    Check -- "Zero References" --> Hard
+    Check -- "Referenced in System" --> Archive
 ```
 
 - **Catalog Listings (`List...`)**: Automatically filters

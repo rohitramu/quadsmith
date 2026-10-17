@@ -542,22 +542,21 @@ two dedicated components for suspended accounts:
    - **Privacy Section**: Features self-service data export and voluntary
      account deletion under the concise heading **"Privacy"**.
 
-```text
-+--------------------------------------------------------------------------+
-|  [!] Account Access Restricted                                           |
-|  Your account was suspended on Oct 14, 2026.                             |
-|  Reason: Violation of community flight safety guidelines.                |
-|  Duration: Indefinite suspension                                         |
-+--------------------------------------------------------------------------+
-|  Profile Information (Handle: Locked, Bio: Editable)                     |
-|  ...                                                                     |
-|  Linked Emails (Read-Only: View Verified Addresses)                      |
-|  ...                                                                     |
-|  Auth Sessions (Active - Revoke All Sessions & Manage)                   |
-|  ...                                                                     |
-|  Privacy (Active)                                                        |
-|  [Export My Data]   [Delete Account]                                     |
-+--------------------------------------------------------------------------+
+```mermaid
+flowchart TD
+    subgraph Settings["Restricted Account Settings View"]
+        Banner["[!] Account Access Restricted
+        Your account was suspended on Oct 14, 2026.
+        Reason: Violation of community flight safety guidelines.
+        Duration: Indefinite suspension"]
+
+        Profile["Profile Information (Handle: Locked, Bio: Editable)"]
+        Emails["Linked Emails (Read-Only: View Verified Addresses)"]
+        Sessions["Auth Sessions (Active - Revoke All Sessions & Manage)"]
+        Privacy["Privacy (Active): [Export My Data] | [Delete Account]"]
+
+        Banner --> Profile --> Emails --> Sessions --> Privacy
+    end
 ```
 
 <details>

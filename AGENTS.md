@@ -121,6 +121,13 @@ corroboration checks.
     - **Collapsible Details Blocks**: Always leave a clean blank line
       immediately after `</summary>` and before `</details>` so contained
       Markdown elements (subheadings, lists, code blocks) parse cleanly.
+    - **Mermaid Format for All Diagrams**: All diagrams in plan documents
+      (architecture, flowcharts, sequence, state, class, and entity-relationship
+      diagrams) must be authored in Mermaid format (` ```mermaid `) rather than
+      plain-text or ASCII art (` ```text `). The sole exception is
+      folder/directory structures, which may use ` ```text ` blocks formatted
+      like `tree` output (`├──`, `└──`, `│`, trailing `/` on directories, and
+      aligned `#` comments).
     - **Line Wrapping at 80 Characters**: Lines should wrap at 80 characters
       whenever possible.
     - **Custom Anchors for All Headings**: Every heading must have a unique
@@ -149,9 +156,9 @@ corroboration checks.
       formatted as either a short paragraph or concise bulleted list), followed
       by a high-level concept explanation paragraph, then 1 sub-heading per
       design decision (`### <a id="custom-anchor-text" >Design Decision</a>`)
-      with the proposal explanation directly under it (using diagrams, tables,
-      images, UI screenshots, UI concept images, artifacts, or code snippets
-      with path references as appropriate), and nested collapsible
+      with the proposal explanation directly under it (using Mermaid diagrams,
+      tables, images, UI screenshots, UI concept images, artifacts, or code
+      snippets with path references as appropriate), and nested collapsible
       `<details><summary><strong>Alternatives considered</strong></summary> ... </details>`
       containing 1 sub-heading per alternative
       (`##### <a id="custom-anchor-text" >Alternative Name</a>`), each with an

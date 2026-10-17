@@ -96,37 +96,37 @@ their respective containers, while standard HTTP `Cache-Control` headers allow
 any upstream CDN to absorb static asset, WASM, and media blob traffic at the
 edge.
 
-```text
-                              ┌─────────────────────────────────────────────────────────────┐
-                              │ Cloudflare Edge (RFC Cache-Control Respect Mode)            │
-                              │ • quadsmith.com      • api.quadsmith.com                   │
-                              │ • www.quadsmith.com  • ops.quadsmith.com                   │
-                              │                      • jobs.quadsmith.com                  │
-                              └──────────────────────────────┬──────────────────────────────┘
-                                                             │ Outbound Tunnel Connection
-                                                             ▼
-┌───────────────────────────────────────────────────────────────────────────────────────────┐
-│ GCP e2-micro VM (us-central1, 2 vCPU burstable, 1 GB RAM, 30 GB pd-standard Disk)         │
-│                                                                                           │
-│  ┌───────────────────────┐         ┌────────────────────────┐                             │
-│  │ cloudflared (Tunnel)  │────────>│ Nginx Gateway (:80)    │                             │
-│  └───────────────────────┘         └───────────┬────────────┘                             │
-│                                                │                                          │
-│         ┌───────────────────────┬──────────────┴──────────────┬──────────────────────┐    │
-│         │ Host: quadsmith.com   │ Host: api.quadsmith.com     │ Host: ops.quadsmith  │    │
-│         ▼                       ▼                             ▼                      ▼    │
-│  ┌──────────────┐        ┌──────────────┐              ┌──────────────┐       ┌─────────┐ │
-│  │  server-web  │───────>│  server-api  │              │  server-ops  │<──────│ server- │ │
-│  │   (:8080)    │ OG RPC │   (:8080)    │              │   (:8080)    │  RPC  │  jobs   │ │
-│  └──────────────┘        └──────┬───────┘              └──────┬───────┘       └────┬────┘ │
-└─────────────────────────────────┼─────────────────────────────┼────────────────────┼──────┘
-                                  │                             │                    │
-                                  │       External TLS Queries  │                    │
-                                  ▼                             ▼                    ▼
-                               ┌─────────────────────────────────────────────────────────┐
-                               │ External Managed PostgreSQL (Neon / Supabase / etc.)    │
-                               │ • quadsmith_api         • quadsmith_ops                 │
-                               └─────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    CF["Cloudflare Edge (RFC Cache-Control Respect Mode)
+    • quadsmith.com / www.quadsmith.com
+    • api.quadsmith.com / ops.quadsmith.com / jobs.quadsmith.com"]
+
+    subgraph VM["GCP e2-micro VM (us-central1, 2 vCPU burstable, 1 GB RAM, 30 GB pd-standard Disk)"]
+        Tunnel["cloudflared (Tunnel)"]
+        Nginx["Nginx Gateway (:80)"]
+        Web["server-web (:8080)"]
+        API["server-api (:8080)"]
+        Ops["server-ops (:8080)"]
+        Jobs["server-jobs (:8080)"]
+
+        Tunnel --> Nginx
+        Nginx -- "Host: quadsmith.com" --> Web
+        Nginx -- "Host: api.quadsmith.com" --> API
+        Nginx -- "Host: ops.quadsmith.com" --> Ops
+        Nginx -- "Host: jobs.quadsmith.com" --> Jobs
+        Web -- "OG RPC" --> API
+        Jobs -- "RPC" --> Ops
+    end
+
+    DB["External Managed PostgreSQL (Neon / Supabase / etc.)
+    • quadsmith_api
+    • quadsmith_ops"]
+
+    CF -- "Outbound Tunnel Connection" --> Tunnel
+    API -- "External TLS Queries" --> DB
+    Ops -- "External TLS Queries" --> DB
+    Jobs -- "External TLS Queries" --> DB
 ```
 
 ### <a id="cloud-infrastructure-and-zero-ip-tunnel-ingress" >Cloud Infrastructure and Zero-IP Tunnel Ingress</a>
@@ -693,41 +693,32 @@ therefore scale **horizontally across global regions first** (Phase 2) before
 scaling node sizes vertically and offloading blob storage (Phase 3) or moving to
 elastic serverless (Phase 4):
 
-```text
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ Phase 1: Single-Region Free Tier Launch ($0.00/mo [1 GB] – $1.00/mo [10 GB])           │
-│ • ~45k–60k App Loads/mo at strictly $0.00 | ~350k App Loads/mo with ~$1 egress overage │
-│ • 1 GCP e2-micro VM (us-central1) + Cloudflare Tunnel + Tiered Edge Cache              │
-│ • External Managed PostgreSQL Free Tier (Supabase / Neon, 5 GB free transfer)          │
-└───────────────────────────────────────────┬────────────────────────────────────────────┘
-                                            │
-                                            │ International latency (>150ms) or HA needed
-                                            ▼
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ Phase 2: Multi-Region Horizontal Scaling ($15.00 – $35.00/mo | ~1.5M–3M App Loads/mo)  │
-│ • Add 1–2 secondary e2-micro VMs in europe-west1 (EU) and asia-east1 (APAC)            │
-│ • Run identical Compose stack connected as free cloudflared Tunnel Replicas            │
-│ • Cloudflare automatically routes users to closest healthy region & fails over on down │
-│ • Upgrade external PostgreSQL to include regional read replicas & connection pooling   │
-└───────────────────────────────────────────┬────────────────────────────────────────────┘
-                                            │
-                                            │ Per-node RAM > 750 MB or DB blobs > 10 GB
-                                            ▼
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ Phase 3: Vertical Sizing & Object Storage ($50.00 – $95.00/mo | ~5M–15M App Loads/mo)  │
-│ • In-place resize regional VMs: e2-micro (1 GB) ──> e2-small (2 GB) / e2-medium (4 GB) │
-│   (or lift-and-shift identical Compose stack to 4 GB Hetzner nodes at ~$4.50/mo each)  │
-│ • Offload /blobs/* binary storage from Postgres to S3-compatible object storage (R2)   │
-└───────────────────────────────────────────┬────────────────────────────────────────────┘
-                                            │
-                                            │ Burst traffic spikes (>1,000 RPS) or zero-ops
-                                            ▼
-┌────────────────────────────────────────────────────────────────────────────────────────┐
-│ Phase 4: Elastic Multi-Region Serverless ($100.00 – $350.00+/mo | 25M–100M+ App Loads) │
-│ • Graduate server-web, server-api, and server-ops containers to multi-region Cloud Run │
-│ • Replace server-jobs tickers with Google Cloud Scheduler ($0.20/mo)                   │
-│ • Decommission VMs entirely; autoscale 0 to 1,000+ container instances on demand       │
-└────────────────────────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TD
+    P1["Phase 1: Single-Region Free Tier Launch ($0.00/mo [1 GB] – $1.00/mo [10 GB])
+    • ~45k–60k App Loads/mo at strictly $0.00 | ~350k App Loads/mo with ~$1 egress overage
+    • 1 GCP e2-micro VM (us-central1) + Cloudflare Tunnel + Tiered Edge Cache
+    • External Managed PostgreSQL Free Tier (Supabase / Neon, 5 GB free transfer)"]
+
+    P2["Phase 2: Multi-Region Horizontal Scaling ($15.00 – $35.00/mo | ~1.5M–3M App Loads/mo)
+    • Add 1–2 secondary e2-micro VMs in europe-west1 (EU) and asia-east1 (APAC)
+    • Run identical Compose stack connected as free cloudflared Tunnel Replicas
+    • Cloudflare automatically routes users to closest healthy region & fails over on down
+    • Upgrade external PostgreSQL to include regional read replicas & connection pooling"]
+
+    P3["Phase 3: Vertical Sizing & Object Storage ($50.00 – $95.00/mo | ~5M–15M App Loads/mo)
+    • In-place resize regional VMs: e2-micro (1 GB) -> e2-small (2 GB) / e2-medium (4 GB)
+      (or lift-and-shift identical Compose stack to 4 GB Hetzner nodes at ~$4.50/mo each)
+    • Offload /blobs/* binary storage from Postgres to S3-compatible object storage (R2)"]
+
+    P4["Phase 4: Elastic Multi-Region Serverless ($100.00 – $350.00+/mo | 25M–100M+ App Loads)
+    • Graduate server-web, server-api, and server-ops containers to multi-region Cloud Run
+    • Replace server-jobs tickers with Google Cloud Scheduler ($0.20/mo)
+    • Decommission VMs entirely; autoscale 0 to 1,000+ container instances on demand"]
+
+    P1 -- "International latency (>150ms) or HA needed" --> P2
+    P2 -- "Per-node RAM > 750 MB or DB blobs > 10 GB" --> P3
+    P3 -- "Burst traffic spikes (>1,000 RPS) or zero-ops" --> P4
 ```
 
 #### <a id="cost-and-app-load-capacity-summary-by-phase" >Cost and App Load Capacity Summary by Phase</a>

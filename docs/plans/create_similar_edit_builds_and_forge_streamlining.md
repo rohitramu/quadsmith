@@ -94,22 +94,31 @@ and Forge streamlining to:
 > - Add `UpdateBuild` RPC and `/builds/:buildId/edit` for creator build editing.
 > - All specifications remain fully editable in the component creation modal.
 
-```text
-               CREATOR EDIT FLOW                     BUILD SIMILAR FLOW
-      +---------------------------------+   +---------------------------------+
-      |        BuildProfilePage         |   |        BuildProfilePage         |
-      |   (isCreator: [ Edit Build ])   |   |        [ Build Similar ]        |
-      +----------------+----------------+   +----------------+----------------+
-                       |                                     |
-                       v                                     v
-      +---------------------------------+   +---------------------------------+
-      |      /builds/:buildId/edit      |   |      /builds/new?from=<id>      |
-      | - Checks creator/admin auth     |   | - Loads parent build parts      |
-      | - Hydrates existing parts       |   | - Name: "Copy of <Name>"        |
-      | - Name: exact existing name     |   | - Slug: auto-generated         |
-      | - Review Step: [Save Changes]   |   | - Review Step: [Save & Publish] |
-      | - Calls: UpdateBuild RPC        |   | - Calls: CreateBuild RPC        |
-      +---------------------------------+   +---------------------------------+
+```mermaid
+flowchart TD
+    subgraph CreatorEdit["CREATOR EDIT FLOW"]
+        EditProfile["BuildProfilePage
+        (isCreator: [ Edit Build ])"]
+        EditPage["/builds/:buildId/edit
+        • Checks creator/admin auth
+        • Hydrates existing parts
+        • Name: exact existing name
+        • Review Step: [Save Changes]
+        • Calls: UpdateBuild RPC"]
+        EditProfile --> EditPage
+    end
+
+    subgraph BuildSimilar["BUILD SIMILAR FLOW"]
+        SimProfile["BuildProfilePage
+        [ Build Similar ]"]
+        SimPage["/builds/new?from=id
+        • Loads parent build parts
+        • Name: Copy of Name
+        • Slug: auto-generated
+        • Review Step: [Save & Publish]
+        • Calls: CreateBuild RPC"]
+        SimProfile --> SimPage
+    end
 ```
 
 ### <a id="architectural-decision-create-similar-over-suggest-edit" >Architectural Decision: 'Create Similar' Over 'Suggest Edit'</a>
