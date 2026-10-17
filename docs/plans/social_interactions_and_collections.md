@@ -220,6 +220,9 @@ are derived directly from relational vote records and endorsement events:
 - **Daily Rate Ceiling**: Strict limit of 3 downvotes per user in any rolling
   24-hour window.
 - **Reputation Floor**: Total reputation cannot drop below `0`.
+- **Self-Voting Prohibition**: Authors cannot vote on their own reviews,
+  questions, or answers; voting action buttons are completely hidden in the UI
+  on authored content.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>

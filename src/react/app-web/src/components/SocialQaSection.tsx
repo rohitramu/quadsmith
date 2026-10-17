@@ -123,6 +123,9 @@ export function SocialQaSection({
       await mutateVoteQuestion({ questionId, vote: newVote });
       await refetchQuestions();
     } catch (err: unknown) {
+      if (err instanceof Error && err.message.includes("cannot vote on your own question")) {
+        return;
+      }
       alert(err instanceof Error ? err.message : "Failed to vote");
     }
   }
@@ -294,7 +297,7 @@ export function SocialQaSection({
           </div>
         ) : (
           questions.map((q) => {
-            const isAsker = user?.uuid === q.userUuid;
+            const isAsker = Boolean(user?.uuid && user.uuid === q.userUuid);
             const comments = q.comments || [];
 
             return (
@@ -306,35 +309,37 @@ export function SocialQaSection({
                 <div className="flex items-start gap-4">
                   {/* Voting column */}
                   <div className="flex flex-col items-center gap-0.5 shrink-0 pt-1">
-                    <button
-                      type="button"
-                      disabled={isArchived}
-                      onClick={() => handleVoteQ(q.id, q.currentUserVote, 1)}
-                      className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                        q.currentUserVote === 1
-                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                          : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500"
-                      }`}
-                      title="Upvote (+1 rep to author)"
-                    >
-                      <ChevronUp size={20} />
-                    </button>
+                    {!isAsker && !isArchived && (
+                      <button
+                        type="button"
+                        onClick={() => handleVoteQ(q.id, q.currentUserVote, 1)}
+                        className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                          q.currentUserVote === 1
+                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                            : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500"
+                        }`}
+                        title="Upvote (+1 rep to author)"
+                      >
+                        <ChevronUp size={20} />
+                      </button>
+                    )}
                     <span className="font-bold text-sm font-mono text-zinc-900 dark:text-zinc-100">
                       {q.netScore}
                     </span>
-                    <button
-                      type="button"
-                      disabled={isArchived}
-                      onClick={() => handleVoteQ(q.id, q.currentUserVote, -1)}
-                      className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                        q.currentUserVote === -1
-                          ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
-                          : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-rose-500"
-                      }`}
-                      title="Downvote (-2 rep to author, costs voter -2 rep • requires 100 rep)"
-                    >
-                      <ChevronDown size={20} />
-                    </button>
+                    {!isAsker && !isArchived && (
+                      <button
+                        type="button"
+                        onClick={() => handleVoteQ(q.id, q.currentUserVote, -1)}
+                        className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
+                          q.currentUserVote === -1
+                            ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
+                            : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-rose-500"
+                        }`}
+                        title="Downvote (-2 rep to author, costs voter -2 rep • requires 100 rep)"
+                      >
+                        <ChevronDown size={20} />
+                      </button>
+                    )}
                   </div>
 
                   {/* Question details */}
@@ -531,6 +536,9 @@ function QuestionAnswersList({
       await mutateVoteAnswer({ answerUuid, vote: newVote });
       await refetch();
     } catch (err: unknown) {
+      if (err instanceof Error && err.message.includes("cannot vote on your own answer")) {
+        return;
+      }
       alert(err instanceof Error ? err.message : "Failed to vote on answer");
     }
   }
@@ -584,6 +592,7 @@ function QuestionAnswersList({
       {answers.map((ans) => {
         const isAccepted = ans.isAcceptedByAsker;
         const isEndorsed = ans.isAuthorEndorsed;
+        const isMyAnswer = Boolean(user?.uuid && user.uuid === ans.userUuid);
         const comments = ans.comments || [];
 
         return (
@@ -646,35 +655,37 @@ function QuestionAnswersList({
             {/* Answer Body with Voting Column */}
             <div className="flex items-start gap-4">
               <div className="flex flex-col items-center gap-0.5 shrink-0 pt-0.5">
-                <button
-                  type="button"
-                  disabled={isArchived}
-                  onClick={() => handleVote(ans.uuid, ans.currentUserVote, 1)}
-                  className={`p-1 rounded-md transition-colors cursor-pointer ${
-                    ans.currentUserVote === 1
-                      ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                      : "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500"
-                  }`}
-                  title="Upvote (+1 rep)"
-                >
-                  <ChevronUp size={16} />
-                </button>
+                {!isMyAnswer && !isArchived && (
+                  <button
+                    type="button"
+                    onClick={() => handleVote(ans.uuid, ans.currentUserVote, 1)}
+                    className={`p-1 rounded-md transition-colors cursor-pointer ${
+                      ans.currentUserVote === 1
+                        ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                        : "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500"
+                    }`}
+                    title="Upvote (+1 rep)"
+                  >
+                    <ChevronUp size={16} />
+                  </button>
+                )}
                 <span className="font-bold text-xs font-mono text-zinc-900 dark:text-zinc-100">
                   {ans.netScore}
                 </span>
-                <button
-                  type="button"
-                  disabled={isArchived}
-                  onClick={() => handleVote(ans.uuid, ans.currentUserVote, -1)}
-                  className={`p-1 rounded-md transition-colors cursor-pointer ${
-                    ans.currentUserVote === -1
-                      ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
-                      : "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400 hover:text-rose-500"
-                  }`}
-                  title="Downvote (-2 rep, costs voter -2 rep • requires 100 rep)"
-                >
-                  <ChevronDown size={16} />
-                </button>
+                {!isMyAnswer && !isArchived && (
+                  <button
+                    type="button"
+                    onClick={() => handleVote(ans.uuid, ans.currentUserVote, -1)}
+                    className={`p-1 rounded-md transition-colors cursor-pointer ${
+                      ans.currentUserVote === -1
+                        ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
+                        : "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400 hover:text-rose-500"
+                    }`}
+                    title="Downvote (-2 rep, costs voter -2 rep • requires 100 rep)"
+                  >
+                    <ChevronDown size={16} />
+                  </button>
+                )}
               </div>
 
               <div className="text-sm text-zinc-800 dark:text-zinc-200 leading-relaxed whitespace-pre-line flex-1">

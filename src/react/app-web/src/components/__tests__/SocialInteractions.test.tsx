@@ -2,7 +2,11 @@ import { describe, it, expect, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
 import { create } from "@bufbuild/protobuf";
-import { ReviewSchema, ReviewVoteType } from "@quadsmith/shared/gen/quadsmith/api/social_pb";
+import {
+  ReviewSchema,
+  ReviewVoteType,
+  QuestionSchema,
+} from "@quadsmith/shared/gen/quadsmith/api/social_pb";
 import { mockUser, mockBuild1 } from "../../test/mocks/fixtures";
 import { SocialToolbar } from "../SocialToolbar";
 import { SaveToCollectionModal } from "../SaveToCollectionModal";
@@ -169,7 +173,7 @@ describe("Social Interactions Components", () => {
       expect(await screen.findByRole("button", { name: /you voted yes\s*6/i })).toBeInTheDocument();
     });
 
-    it("disables voting buttons on the user's own review", async () => {
+    it("hides voting buttons on the user's own review", async () => {
       const ownReview = create(ReviewSchema, {
         uuid: "018f0000-0000-7000-0000-000000000999",
         id: "review-own-user",
@@ -198,14 +202,12 @@ describe("Social Interactions Components", () => {
       // Verify the review is rendered
       expect(await screen.findByText("My own test review writeup.")).toBeInTheDocument();
 
-      // Voting buttons should be disabled and have helpful tooltip
-      const yesBtn = screen.getByRole("button", { name: /yes\s*3/i });
-      const noBtn = screen.getByRole("button", { name: /no\s*0/i });
+      // Voting buttons should be hidden
+      expect(screen.queryByRole("button", { name: /yes/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /no/i })).not.toBeInTheDocument();
 
-      expect(yesBtn).toBeDisabled();
-      expect(noBtn).toBeDisabled();
-      expect(yesBtn).toHaveAttribute("title", "You cannot vote on your own review");
-      expect(noBtn).toHaveAttribute("title", "You cannot vote on your own review");
+      // Read-only helpfulness metric should be shown
+      expect(screen.getByText(/3 people found this helpful/i)).toBeInTheDocument();
     });
   });
 
@@ -264,6 +266,49 @@ describe("Social Interactions Components", () => {
         await screen.findByText(/Build creators cannot ask questions on their own builds/i),
       ).toBeInTheDocument();
       expect(screen.queryByRole("button", { name: /ask a question/i })).not.toBeInTheDocument();
+    });
+
+    it("hides voting buttons on the user's own question and answer", async () => {
+      const ownQuestion = create(QuestionSchema, {
+        uuid: "018f0000-0000-7000-0000-000000000699",
+        id: "own-question-test",
+        userUuid: mockUser.uuid,
+        entityUuid: mockBuild1.uuid,
+        title: "How to tune PIDs for this frame?",
+        body: "Any recommended betaflight master multiplier?",
+        netScore: 5,
+        upvoteCount: 5,
+        downvoteCount: 0,
+        answerCount: 1,
+        hasAcceptedAnswer: false,
+        isEdited: false,
+        createdAt: { seconds: 1717001000n, nanos: 0 },
+        updatedAt: { seconds: 1717001000n, nanos: 0 },
+        authorUsername: mockUser.id,
+        currentUserVote: 0,
+        comments: [],
+      });
+
+      renderWithProviders(<SocialQaSection target={target} entityName={targetName} />, {
+        transportOptions: {
+          questions: [ownQuestion],
+        },
+      });
+
+      // Own question is displayed with net score 5
+      expect(await screen.findByText("How to tune PIDs for this frame?")).toBeInTheDocument();
+      expect(screen.getByText("5")).toBeInTheDocument();
+
+      // Voting buttons for own question should not be in the document
+      expect(screen.queryByTitle(/upvote question/i)).not.toBeInTheDocument();
+      expect(screen.queryByTitle(/downvote question/i)).not.toBeInTheDocument();
+
+      // For answers: mockAnswer1 is also authored by mockUser (mockUser.uuid)
+      // Its score 4 should be displayed, but its voting buttons should be hidden
+      expect(await screen.findByText(/Yes, you can use 20x20mm stacks/i)).toBeInTheDocument();
+      expect(screen.getByText("4")).toBeInTheDocument();
+      expect(screen.queryByTitle(/^upvote/i)).not.toBeInTheDocument();
+      expect(screen.queryByTitle(/^downvote/i)).not.toBeInTheDocument();
     });
   });
 

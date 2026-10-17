@@ -1284,6 +1284,9 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           (item) => item.id === req.questionId || item.uuid === req.questionId,
         );
         if (q) {
+          if (q.userUuid === mockUser.uuid) {
+            throw new ConnectError("cannot vote on your own question", Code.PermissionDenied);
+          }
           q.netScore += req.vote;
           q.upvoteCount += req.vote > 0 ? 1 : 0;
           q.downvoteCount += req.vote < 0 ? 1 : 0;
@@ -1339,6 +1342,9 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       voteAnswer: (req) => {
         const a = mockAnswers.find((item) => item.uuid === req.answerUuid);
         if (a) {
+          if (a.userUuid === mockUser.uuid) {
+            throw new ConnectError("cannot vote on your own answer", Code.PermissionDenied);
+          }
           a.netScore += req.vote;
           a.upvoteCount += req.vote > 0 ? 1 : 0;
           a.downvoteCount += req.vote < 0 ? 1 : 0;

@@ -457,70 +457,61 @@ export function SocialReviewSection({
                 {/* Helpfulness Bar & Thread Toggle */}
                 <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-xs flex-wrap gap-2">
                   <div className="flex items-center gap-3">
-                    <span className="text-zinc-500">Was this review helpful?</span>
-                    {/* Yes button */}
-                    <button
-                      type="button"
-                      disabled={isArchived || isMyReview}
-                      onClick={() => handleVote(review.id, review.currentUserVote, true)}
-                      title={
-                        isArchived
-                          ? "Reviews are archived"
-                          : isMyReview
-                            ? "You cannot vote on your own review"
-                            : undefined
-                      }
-                      className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors ${
-                        isArchived || isMyReview
-                          ? "cursor-not-allowed opacity-50"
-                          : "cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-700"
-                      } ${
-                        review.currentUserVote === ReviewVoteType.HELPFUL
-                          ? "border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold"
-                          : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300"
-                      }`}
-                    >
-                      <ThumbsUp size={13} />
-                      <span>
-                        {review.currentUserVote === ReviewVoteType.HELPFUL
-                          ? "You voted Yes"
-                          : "Yes"}
-                      </span>
-                      <span className="font-mono text-zinc-400 ml-0.5">{review.helpfulCount}</span>
-                    </button>
+                    {!isMyReview && !isArchived ? (
+                      <>
+                        <span className="text-zinc-500">Was this review helpful?</span>
+                        {/* Yes button */}
+                        <button
+                          type="button"
+                          onClick={() => handleVote(review.id, review.currentUserVote, true)}
+                          className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-700 ${
+                            review.currentUserVote === ReviewVoteType.HELPFUL
+                              ? "border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold"
+                              : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300"
+                          }`}
+                        >
+                          <ThumbsUp size={13} />
+                          <span>
+                            {review.currentUserVote === ReviewVoteType.HELPFUL
+                              ? "You voted Yes"
+                              : "Yes"}
+                          </span>
+                          <span className="font-mono text-zinc-400 ml-0.5">
+                            {review.helpfulCount}
+                          </span>
+                        </button>
 
-                    {/* No button */}
-                    <button
-                      type="button"
-                      disabled={isArchived || isMyReview}
-                      onClick={() => handleVote(review.id, review.currentUserVote, false)}
-                      title={
-                        isArchived
-                          ? "Reviews are archived"
-                          : isMyReview
-                            ? "You cannot vote on your own review"
-                            : undefined
-                      }
-                      className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors ${
-                        isArchived || isMyReview
-                          ? "cursor-not-allowed opacity-50"
-                          : "cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-700"
-                      } ${
-                        review.currentUserVote === ReviewVoteType.UNHELPFUL
-                          ? "border-rose-500 bg-rose-500/10 text-rose-600 dark:text-rose-400 font-semibold"
-                          : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
-                      }`}
-                    >
-                      <ThumbsDown size={13} />
-                      <span>
-                        {review.currentUserVote === ReviewVoteType.UNHELPFUL
-                          ? "You voted No"
-                          : "No"}
-                      </span>
-                      <span className="font-mono text-zinc-400 ml-0.5">
-                        {review.unhelpfulCount}
-                      </span>
-                    </button>
+                        {/* No button */}
+                        <button
+                          type="button"
+                          onClick={() => handleVote(review.id, review.currentUserVote, false)}
+                          className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-700 ${
+                            review.currentUserVote === ReviewVoteType.UNHELPFUL
+                              ? "border-rose-500 bg-rose-500/10 text-rose-600 dark:text-rose-400 font-semibold"
+                              : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
+                          }`}
+                        >
+                          <ThumbsDown size={13} />
+                          <span>
+                            {review.currentUserVote === ReviewVoteType.UNHELPFUL
+                              ? "You voted No"
+                              : "No"}
+                          </span>
+                          <span className="font-mono text-zinc-400 ml-0.5">
+                            {review.unhelpfulCount}
+                          </span>
+                        </button>
+                      </>
+                    ) : review.helpfulCount > 0 || review.unhelpfulCount > 0 ? (
+                      <div className="flex items-center gap-1.5 text-zinc-500 text-xs">
+                        <ThumbsUp size={13} className="text-zinc-400" />
+                        <span>
+                          {review.helpfulCount} {review.helpfulCount === 1 ? "person" : "people"}{" "}
+                          found this helpful
+                          {review.unhelpfulCount > 0 && ` (${review.unhelpfulCount} unhelpful)`}
+                        </span>
+                      </div>
+                    ) : null}
                   </div>
 
                   <div className="flex items-center gap-3">
