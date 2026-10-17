@@ -57,7 +57,6 @@ services:
     environment:
       - QS_CONFIG=/app/src/go/server-jobs/config/prod.textproto
       - QS_OPS_SERVER_URL=http://ops:8080
-      - QS_INTERNAL_DATABASE_URL=${QS_INTERNAL_DATABASE_URL}
       - QS_JOB_SERVER_AUTH_TOKEN=${QS_JOB_SERVER_AUTH_TOKEN}
     depends_on:
       - ops

@@ -9,7 +9,6 @@ cd "$ROOT_DIR"
 export PORT="${1:-8080}"
 export DB_PORT="${DB_PORT:-5432}"
 export OPS_PORT="${OPS_PORT:-8082}"
-export JOBS_PORT="${JOBS_PORT:-8083}"
 export API_PORT="${API_PORT:-8081}"
 
 echo "--- Stopping any existing sandbox instance ---"
@@ -18,7 +17,7 @@ docker compose -f test/sandbox/docker-compose.yaml down -v >/dev/null 2>&1 || tr
 echo "--- Building Sandbox Container Images ---"
 docker compose -f test/sandbox/docker-compose.yaml build
 
-echo "--- Starting Quadsmith Sandbox (Web on $PORT, Ops on $OPS_PORT, Jobs on $JOBS_PORT, API on $API_PORT, DB on $DB_PORT) ---"
+echo "--- Starting Quadsmith Sandbox (Web on $PORT, Ops on $OPS_PORT, API on $API_PORT, DB on $DB_PORT) ---"
 if [ -f "test/sandbox/db/seed_data/users.textproto" ]; then
     echo "Pre-seeded users:"
     awk '

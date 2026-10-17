@@ -6,13 +6,6 @@ import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import type { Duration } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_duration } from "@bufbuild/protobuf/wkt";
-import type {
-  BootstrapTokenConfig,
-  DatabaseConfig,
-  InternalGroupConfig,
-  ServerConfig,
-} from "./common_pb";
-import { file_quadsmith_config_common } from "./common_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
@@ -21,8 +14,8 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_config_server_jobs: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiJxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9qb2JzLnByb3RvEhBxdWFkc21pdGguY29uZmlnIsgHCg9Kb2JTZXJ2ZXJDb25maWcSGAoLZW52aXJvbm1lbnQYASABKAlIAIgBARIuCgZzZXJ2ZXIYAiABKAsyHi5xdWFkc21pdGguY29uZmlnLlNlcnZlckNvbmZpZxIbCg5vcHNfc2VydmVyX3VybBgDIAEoCUgBiAEBEhcKCmF1dGhfdG9rZW4YBCABKAlIAogBARI7ChFpbnRlcm5hbF9kYXRhYmFzZRgFIAEoCzIgLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VDb25maWcSTwoUY2xlYW51cF9leHBpcmVkX290cHMYBiABKAsyLC5xdWFkc21pdGguY29uZmlnLkNsZWFudXBFeHBpcmVkT3Rwc1NjaGVkdWxlSAOIAQESUwoWY2xlYW51cF9leHBpcmVkX3Rva2VucxgHIAEoCzIuLnF1YWRzbWl0aC5jb25maWcuQ2xlYW51cEV4cGlyZWRUb2tlbnNTY2hlZHVsZUgEiAEBElMKFmNsZWFudXBfb3JwaGFuZWRfYmxvYnMYCCABKAsyLi5xdWFkc21pdGguY29uZmlnLkNsZWFudXBPcnBoYW5lZEJsb2JzU2NoZWR1bGVIBYgBARJcChtwdXJnZV9zb2Z0X2RlbGV0ZWRfYWNjb3VudHMYCSABKAsyMi5xdWFkc21pdGguY29uZmlnLlB1cmdlU29mdERlbGV0ZWRBY2NvdW50c1NjaGVkdWxlSAaIAQESYgoec2VuZF91c2VybmFtZV9yZWxlYXNlX3dhcm5pbmdzGAogASgLMjUucXVhZHNtaXRoLmNvbmZpZy5TZW5kVXNlcm5hbWVSZWxlYXNlV2FybmluZ3NTY2hlZHVsZUgHiAEBEjUKBmdyb3VwcxgLIAMoCzIlLnF1YWRzbWl0aC5jb25maWcuSW50ZXJuYWxHcm91cENvbmZpZxJAChBib290c3RyYXBfdG9rZW5zGAwgAygLMiYucXVhZHNtaXRoLmNvbmZpZy5Cb290c3RyYXBUb2tlbkNvbmZpZ0IOCgxfZW52aXJvbm1lbnRCEQoPX29wc19zZXJ2ZXJfdXJsQg0KC19hdXRoX3Rva2VuQhcKFV9jbGVhbnVwX2V4cGlyZWRfb3Rwc0IZChdfY2xlYW51cF9leHBpcmVkX3Rva2Vuc0IZChdfY2xlYW51cF9vcnBoYW5lZF9ibG9ic0IeChxfcHVyZ2Vfc29mdF9kZWxldGVkX2FjY291bnRzQiEKH19zZW5kX3VzZXJuYW1lX3JlbGVhc2Vfd2FybmluZ3MiiQEKGkNsZWFudXBFeHBpcmVkT3Rwc1NjaGVkdWxlEhQKB2VuYWJsZWQYASABKAhIAYgBARIOCgRjcm9uGAIgASgJSAASLQoIaW50ZXJ2YWwYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IAEIKCghzY2hlZHVsZUIKCghfZW5hYmxlZCKLAQocQ2xlYW51cEV4cGlyZWRUb2tlbnNTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSABCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWQiiwEKHENsZWFudXBPcnBoYW5lZEJsb2JzU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAQgoKCHNjaGVkdWxlQgoKCF9lbmFibGVkIo8BCiBQdXJnZVNvZnREZWxldGVkQWNjb3VudHNTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSABCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWQikgEKI1NlbmRVc2VybmFtZVJlbGVhc2VXYXJuaW5nc1NjaGVkdWxlEhQKB2VuYWJsZWQYASABKAhIAYgBARIOCgRjcm9uGAIgASgJSAASLQoIaW50ZXJ2YWwYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IAEIKCghzY2hlZHVsZUIKCghfZW5hYmxlZEIuWixxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvY29uZmlnO2NvbmZpZ2IGcHJvdG8z",
-    [file_google_protobuf_duration, file_quadsmith_config_common],
+    "CiJxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9qb2JzLnByb3RvEhBxdWFkc21pdGguY29uZmlnIuIFCg9Kb2JTZXJ2ZXJDb25maWcSGAoLZW52aXJvbm1lbnQYASABKAlIAIgBARIbCg5vcHNfc2VydmVyX3VybBgCIAEoCUgBiAEBEhcKCmF1dGhfdG9rZW4YAyABKAlIAogBARJPChRjbGVhbnVwX2V4cGlyZWRfb3RwcxgEIAEoCzIsLnF1YWRzbWl0aC5jb25maWcuQ2xlYW51cEV4cGlyZWRPdHBzU2NoZWR1bGVIA4gBARJTChZjbGVhbnVwX2V4cGlyZWRfdG9rZW5zGAUgASgLMi4ucXVhZHNtaXRoLmNvbmZpZy5DbGVhbnVwRXhwaXJlZFRva2Vuc1NjaGVkdWxlSASIAQESUwoWY2xlYW51cF9vcnBoYW5lZF9ibG9icxgGIAEoCzIuLnF1YWRzbWl0aC5jb25maWcuQ2xlYW51cE9ycGhhbmVkQmxvYnNTY2hlZHVsZUgFiAEBElwKG3B1cmdlX3NvZnRfZGVsZXRlZF9hY2NvdW50cxgHIAEoCzIyLnF1YWRzbWl0aC5jb25maWcuUHVyZ2VTb2Z0RGVsZXRlZEFjY291bnRzU2NoZWR1bGVIBogBARJiCh5zZW5kX3VzZXJuYW1lX3JlbGVhc2Vfd2FybmluZ3MYCCABKAsyNS5xdWFkc21pdGguY29uZmlnLlNlbmRVc2VybmFtZVJlbGVhc2VXYXJuaW5nc1NjaGVkdWxlSAeIAQFCDgoMX2Vudmlyb25tZW50QhEKD19vcHNfc2VydmVyX3VybEINCgtfYXV0aF90b2tlbkIXChVfY2xlYW51cF9leHBpcmVkX290cHNCGQoXX2NsZWFudXBfZXhwaXJlZF90b2tlbnNCGQoXX2NsZWFudXBfb3JwaGFuZWRfYmxvYnNCHgocX3B1cmdlX3NvZnRfZGVsZXRlZF9hY2NvdW50c0IhCh9fc2VuZF91c2VybmFtZV9yZWxlYXNlX3dhcm5pbmdzIokBChpDbGVhbnVwRXhwaXJlZE90cHNTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSABCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWQiiwEKHENsZWFudXBFeHBpcmVkVG9rZW5zU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAQgoKCHNjaGVkdWxlQgoKCF9lbmFibGVkIosBChxDbGVhbnVwT3JwaGFuZWRCbG9ic1NjaGVkdWxlEhQKB2VuYWJsZWQYASABKAhIAYgBARIOCgRjcm9uGAIgASgJSAASLQoIaW50ZXJ2YWwYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IAEIKCghzY2hlZHVsZUIKCghfZW5hYmxlZCKPAQogUHVyZ2VTb2Z0RGVsZXRlZEFjY291bnRzU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAQgoKCHNjaGVkdWxlQgoKCF9lbmFibGVkIpIBCiNTZW5kVXNlcm5hbWVSZWxlYXNlV2FybmluZ3NTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSABCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWRCLloscXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2NvbmZpZztjb25maWdiBnByb3RvMw",
+    [file_google_protobuf_duration],
   );
 
 /**
@@ -35,59 +28,39 @@ export type JobServerConfig = Message<"quadsmith.config.JobServerConfig"> & {
   environment?: string | undefined;
 
   /**
-   * @generated from field: quadsmith.config.ServerConfig server = 2;
-   */
-  server?: ServerConfig | undefined;
-
-  /**
-   * @generated from field: optional string ops_server_url = 3;
+   * @generated from field: optional string ops_server_url = 2;
    */
   opsServerUrl?: string | undefined;
 
   /**
-   * @generated from field: optional string auth_token = 4;
+   * @generated from field: optional string auth_token = 3;
    */
   authToken?: string | undefined;
 
   /**
-   * @generated from field: quadsmith.config.DatabaseConfig internal_database = 5;
-   */
-  internalDatabase?: DatabaseConfig | undefined;
-
-  /**
-   * @generated from field: optional quadsmith.config.CleanupExpiredOtpsSchedule cleanup_expired_otps = 6;
+   * @generated from field: optional quadsmith.config.CleanupExpiredOtpsSchedule cleanup_expired_otps = 4;
    */
   cleanupExpiredOtps?: CleanupExpiredOtpsSchedule | undefined;
 
   /**
-   * @generated from field: optional quadsmith.config.CleanupExpiredTokensSchedule cleanup_expired_tokens = 7;
+   * @generated from field: optional quadsmith.config.CleanupExpiredTokensSchedule cleanup_expired_tokens = 5;
    */
   cleanupExpiredTokens?: CleanupExpiredTokensSchedule | undefined;
 
   /**
-   * @generated from field: optional quadsmith.config.CleanupOrphanedBlobsSchedule cleanup_orphaned_blobs = 8;
+   * @generated from field: optional quadsmith.config.CleanupOrphanedBlobsSchedule cleanup_orphaned_blobs = 6;
    */
   cleanupOrphanedBlobs?: CleanupOrphanedBlobsSchedule | undefined;
 
   /**
-   * @generated from field: optional quadsmith.config.PurgeSoftDeletedAccountsSchedule purge_soft_deleted_accounts = 9;
+   * @generated from field: optional quadsmith.config.PurgeSoftDeletedAccountsSchedule purge_soft_deleted_accounts = 7;
    */
   purgeSoftDeletedAccounts?: PurgeSoftDeletedAccountsSchedule | undefined;
 
   /**
-   * @generated from field: optional quadsmith.config.SendUsernameReleaseWarningsSchedule send_username_release_warnings = 10;
+   * @generated from field: optional quadsmith.config.SendUsernameReleaseWarningsSchedule send_username_release_warnings = 8;
    */
   sendUsernameReleaseWarnings?: SendUsernameReleaseWarningsSchedule | undefined;
-
-  /**
-   * @generated from field: repeated quadsmith.config.InternalGroupConfig groups = 11;
-   */
-  groups: InternalGroupConfig[];
-
-  /**
-   * @generated from field: repeated quadsmith.config.BootstrapTokenConfig bootstrap_tokens = 12;
-   */
-  bootstrapTokens: BootstrapTokenConfig[];
 };
 
 /**

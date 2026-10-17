@@ -155,7 +155,7 @@ func (s *OpsService) SendUsernameReleaseWarnings(ctx context.Context, _ *connect
 }
 
 // ---------------------------------------------------------
-// Tasks Inspection & Audit
+// Tasks, Jobs & Audit
 // ---------------------------------------------------------
 
 var taskCatalog = []*pb.TaskDef{
@@ -220,6 +220,135 @@ func (s *OpsService) GetTask(ctx context.Context, req *connect.Request[pb.GetTas
 		}
 	}
 	return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("task %q not found", req.Msg.GetTaskName()))
+}
+
+func (s *OpsService) ListJobs(ctx context.Context, req *connect.Request[pb.ListJobsRequest]) (*connect.Response[pb.ListJobsResponse], error) {
+	limit := int(req.Msg.GetLimit())
+	if limit <= 0 || limit > 500 {
+		limit = 50
+	}
+
+	filterProcedure := ""
+	if task := strings.TrimSpace(req.Msg.GetTaskName()); task != "" {
+		filterProcedure = taskToProcedure(task)
+		if filterProcedure == "" {
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unknown task %q", task))
+		}
+	}
+
+	query := `
+		SELECT uuid::text, id, method, caller, caller_type, status, duration_ms, error_message, created_at
+		FROM internal_api_calls
+		WHERE ($1 = '' OR method = $1)
+		  AND method IN (
+			'CleanupExpiredOtps',
+			'CleanupExpiredTokens',
+			'CleanupOrphanedBlobs',
+			'PurgeSoftDeletedAccounts',
+			'SendUsernameReleaseWarnings'
+		  )
+		ORDER BY created_at DESC
+		LIMIT $2`
+
+	rows, err := s.opsDb.Query(ctx, query, filterProcedure, limit)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to query job history: %w", err))
+	}
+	defer rows.Close()
+
+	var records []*pb.JobRecord
+	for rows.Next() {
+		var uuid, id, method, caller, callerType, status string
+		var durationMs int64
+		var errMsg *string
+		var createdAt time.Time
+
+		if err := rows.Scan(&uuid, &id, &method, &caller, &callerType, &status, &durationMs, &errMsg, &createdAt); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to scan job record: %w", err))
+		}
+
+		rec := &pb.JobRecord{
+			Uuid:       uuid,
+			JobId:      id,
+			TaskName:   procedureToTask(method),
+			Procedure:  method,
+			Caller:     caller,
+			CallerType: callerType,
+			Status:     status,
+			DurationMs: durationMs,
+			CreatedAt:  timestamppb.New(createdAt),
+		}
+		if errMsg != nil {
+			rec.ErrorMessage = errMsg
+		}
+		records = append(records, rec)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("error reading job records: %w", err))
+	}
+
+	return connect.NewResponse(&pb.ListJobsResponse{Jobs: records}), nil
+}
+
+func (s *OpsService) GetJob(ctx context.Context, req *connect.Request[pb.GetJobRequest]) (*connect.Response[pb.GetJobResponse], error) {
+	jobID := strings.TrimSpace(req.Msg.GetJobId())
+	if jobID == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("job_id cannot be empty"))
+	}
+
+	query := `
+		SELECT uuid::text, id, method, caller, caller_type, status, duration_ms, error_message, created_at
+		FROM internal_api_calls
+		WHERE (id = $1 OR uuid::text = $1)
+		  AND method IN ('CleanupExpiredOtps', 'CleanupExpiredTokens', 'CleanupOrphanedBlobs', 'PurgeSoftDeletedAccounts', 'SendUsernameReleaseWarnings')
+		LIMIT 1`
+
+	var uuid, id, method, caller, callerType, status string
+	var durationMs int64
+	var errMsg *string
+	var createdAt time.Time
+
+	err := s.opsDb.QueryRow(ctx, query, jobID).Scan(&uuid, &id, &method, &caller, &callerType, &status, &durationMs, &errMsg, &createdAt)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("job %q not found", jobID))
+	}
+
+	rec := &pb.JobRecord{
+		Uuid:       uuid,
+		JobId:      id,
+		TaskName:   procedureToTask(method),
+		Procedure:  method,
+		Caller:     caller,
+		CallerType: callerType,
+		Status:     status,
+		DurationMs: durationMs,
+		CreatedAt:  timestamppb.New(createdAt),
+	}
+	if errMsg != nil {
+		rec.ErrorMessage = errMsg
+	}
+
+	return connect.NewResponse(&pb.GetJobResponse{Job: rec}), nil
+}
+
+func taskToProcedure(task string) string {
+	clean := strings.ToLower(strings.TrimSpace(task))
+	for _, t := range taskCatalog {
+		if strings.ToLower(t.Name) == clean || strings.ToLower(t.Procedure) == clean {
+			return t.Procedure
+		}
+	}
+	return ""
+}
+
+func procedureToTask(procedure string) string {
+	for _, t := range taskCatalog {
+		if t.Procedure == procedure {
+			return t.Name
+		}
+	}
+	return strings.ToLower(procedure)
 }
 
 func (s *OpsService) ListInternalApiCalls(ctx context.Context, req *connect.Request[pb.ListInternalApiCallsRequest]) (*connect.Response[pb.ListInternalApiCallsResponse], error) {

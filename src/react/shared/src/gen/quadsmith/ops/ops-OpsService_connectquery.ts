@@ -46,8 +46,13 @@ export const purgeSoftDeletedAccounts = OpsService.method.purgeSoftDeletedAccoun
 export const sendUsernameReleaseWarnings = OpsService.method.sendUsernameReleaseWarnings;
 
 /**
- * Tasks Inspection & Audit
+ * Tasks, Jobs & Audit
  *
+ * @generated from rpc quadsmith.ops.OpsService.GetJob
+ */
+export const getJob = OpsService.method.getJob;
+
+/**
  * @generated from rpc quadsmith.ops.OpsService.GetTask
  */
 export const getTask = OpsService.method.getTask;
@@ -56,6 +61,11 @@ export const getTask = OpsService.method.getTask;
  * @generated from rpc quadsmith.ops.OpsService.ListInternalApiCalls
  */
 export const listInternalApiCalls = OpsService.method.listInternalApiCalls;
+
+/**
+ * @generated from rpc quadsmith.ops.OpsService.ListJobs
+ */
+export const listJobs = OpsService.method.listJobs;
 
 /**
  * @generated from rpc quadsmith.ops.OpsService.ListTasks

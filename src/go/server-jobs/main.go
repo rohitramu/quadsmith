@@ -8,22 +8,15 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"strconv"
 	"syscall"
 	"time"
 
 	"connectrpc.com/connect"
-	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/robfig/cron/v3"
-	"golang.org/x/net/http2"
-	"golang.org/x/net/http2/h2c"
 
-	"quadsmith/server-jobs/pkg/jobs"
 	"quadsmith/shared/pkg/config"
-	"quadsmith/shared/pkg/opsauth"
 
 	"google.golang.org/protobuf/types/known/durationpb"
-	"quadsmith/shared/gen/quadsmith/jobs/jobsconnect"
 	opspb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 )
@@ -68,70 +61,6 @@ func main() {
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-
-	poolCfg, err := pgxpool.ParseConfig(cfg.GetInternalDatabase().GetUrl())
-	if err != nil {
-		log.Fatalf("Invalid internal database URL (%s): %v\n", cfg.GetInternalDatabase().GetName(), err)
-	}
-	if cfg.GetInternalDatabase().GetMaxConnections() > 0 {
-		poolCfg.MaxConns = cfg.GetInternalDatabase().GetMaxConnections()
-	}
-	if cfg.GetInternalDatabase().GetMinConnections() > 0 {
-		poolCfg.MinConns = cfg.GetInternalDatabase().GetMinConnections()
-	}
-	dbPool, err := pgxpool.NewWithConfig(ctx, poolCfg)
-	if err != nil {
-		log.Fatalf("Unable to connect to internal database (%s): %v\n", cfg.GetInternalDatabase().GetName(), err)
-	}
-	defer dbPool.Close()
-
-	interceptor := opsauth.NewOpsInterceptor(dbPool, cfg.BootstrapTokens, cfg.Groups, nil)
-	service := jobs.NewService(dbPool, cfg)
-
-	maxReqBytes := 1 << 20
-	if cfg.Server != nil && cfg.Server.GetMaxRequestBytes() > 0 {
-		maxReqBytes = int(cfg.Server.GetMaxRequestBytes())
-	}
-
-	mux := http.NewServeMux()
-	path, handler := jobsconnect.NewJobsServiceHandler(
-		service,
-		connect.WithInterceptors(interceptor),
-		connect.WithReadMaxBytes(maxReqBytes),
-	)
-	mux.Handle(path, handler)
-
-	// Healthcheck endpoint
-	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte("ok"))
-	})
-
-	port := 8080
-	var readTimeout, writeTimeout, idleTimeout time.Duration
-	if cfg.Server != nil {
-		if cfg.Server.GetPort() > 0 {
-			port = int(cfg.Server.GetPort())
-		}
-		if cfg.Server.ReadTimeout != nil {
-			readTimeout = cfg.Server.ReadTimeout.AsDuration()
-		}
-		if cfg.Server.WriteTimeout != nil {
-			writeTimeout = cfg.Server.WriteTimeout.AsDuration()
-		}
-		if cfg.Server.IdleTimeout != nil {
-			idleTimeout = cfg.Server.IdleTimeout.AsDuration()
-		}
-	}
-
-	server := &http.Server{
-		Addr:              ":" + strconv.Itoa(port),
-		Handler:           h2c.NewHandler(mux, &http2.Server{}),
-		ReadHeaderTimeout: 5 * time.Second,
-		ReadTimeout:       readTimeout,
-		WriteTimeout:      writeTimeout,
-		IdleTimeout:       idleTimeout,
-	}
 
 	transport := &bearerAuthTransport{
 		token: cfg.GetAuthToken(),
@@ -257,19 +186,13 @@ func main() {
 	}
 
 	cronRunner.Start()
-
-	go func() {
-		log.Printf("Starting Quadsmith Job Server on port %d...", port)
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("HTTP server error: %v", err)
-		}
-	}()
+	log.Printf("Starting Quadsmith Job Scheduler (target: %s)...", cfg.GetOpsServerUrl())
 
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 
 	<-stop
-	log.Println("Shutting down job server...")
+	log.Println("Shutting down job scheduler...")
 
 	cronCtx := cronRunner.Stop()
 	select {
@@ -279,12 +202,6 @@ func main() {
 		log.Println("Cron runner shutdown timed out")
 	}
 
-	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer shutdownCancel()
-	if err := server.Shutdown(shutdownCtx); err != nil {
-		log.Printf("Server shutdown warning: %v", err)
-	}
-
 	cancel()
-	log.Println("Job server stopped gracefully")
+	log.Println("Job scheduler stopped gracefully")
 }

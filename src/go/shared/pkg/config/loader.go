@@ -359,9 +359,6 @@ func applyOpsServerEnvOverrides(cfg *configpb.OpsServerConfig) {
 }
 
 func applyJobServerEnvOverrides(cfg *configpb.JobServerConfig) {
-	if cfg.InternalDatabase != nil {
-		applyInternalDatabaseEnvOverrides(cfg.InternalDatabase)
-	}
 	if v := os.Getenv("QS_JOB_SERVER_AUTH_TOKEN"); v != "" {
 		cfg.AuthToken = &v
 	}
@@ -379,9 +376,6 @@ func applyWebServerEnvOverrides(cfg *configpb.WebServerConfig) {
 func applyOpsCliEnvOverrides(cfg *configpb.OpsCliConfig) {
 	if v := os.Getenv("QS_OPS_SERVER_URL"); v != "" {
 		cfg.OpsServerUrl = &v
-	}
-	if v := os.Getenv("QS_JOBS_SERVER_URL"); v != "" {
-		cfg.JobsServerUrl = &v
 	}
 }
 
@@ -648,26 +642,6 @@ func ValidateJobServerConfig(c *configpb.JobServerConfig) error {
 		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, staging, prod)")
 	}
 
-	if c.Server == nil {
-		errs = append(errs, "server configuration section is missing")
-	} else {
-		if c.Server.GetPort() < 1 || c.Server.GetPort() > 65535 {
-			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.GetPort()))
-		}
-		if c.Server.ReadTimeout != nil && c.Server.ReadTimeout.AsDuration() <= 0 {
-			errs = append(errs, "server.read_timeout must be greater than 0")
-		}
-		if c.Server.WriteTimeout != nil && c.Server.WriteTimeout.AsDuration() <= 0 {
-			errs = append(errs, "server.write_timeout must be greater than 0")
-		}
-		if c.Server.IdleTimeout != nil && c.Server.IdleTimeout.AsDuration() <= 0 {
-			errs = append(errs, "server.idle_timeout must be greater than 0")
-		}
-		if c.Server.GetMaxRequestBytes() <= 0 {
-			errs = append(errs, "server.max_request_bytes must be greater than 0")
-		}
-	}
-
 	if strings.TrimSpace(c.GetOpsServerUrl()) == "" {
 		errs = append(errs, "ops_server_url cannot be empty")
 	} else {
@@ -679,16 +653,6 @@ func ValidateJobServerConfig(c *configpb.JobServerConfig) error {
 
 	if strings.TrimSpace(c.GetAuthToken()) == "" {
 		errs = append(errs, "auth_token cannot be empty")
-	}
-
-	if c.InternalDatabase == nil {
-		errs = append(errs, "internal_database configuration section is missing")
-	} else if err := ValidateDatabase(c.InternalDatabase, c.GetEnvironment()); err != nil {
-		errs = append(errs, "internal_database: "+err.Error())
-	}
-
-	if len(c.Groups) == 0 {
-		errs = append(errs, "at least one IAM group must be defined in groups")
 	}
 
 	// Helper to validate a task's schedule branch
@@ -760,15 +724,6 @@ func ValidateOpsCliConfig(c *configpb.OpsCliConfig) error {
 		u, err := url.Parse(c.GetOpsServerUrl())
 		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
 			errs = append(errs, fmt.Sprintf("ops_server_url must be a valid HTTP or HTTPS URL (got %q)", c.GetOpsServerUrl()))
-		}
-	}
-
-	if strings.TrimSpace(c.GetJobsServerUrl()) == "" {
-		errs = append(errs, "jobs_server_url cannot be empty")
-	} else {
-		u, err := url.Parse(c.GetJobsServerUrl())
-		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
-			errs = append(errs, fmt.Sprintf("jobs_server_url must be a valid HTTP or HTTPS URL (got %q)", c.GetJobsServerUrl()))
 		}
 	}
 

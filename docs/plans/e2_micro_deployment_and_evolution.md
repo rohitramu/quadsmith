@@ -29,17 +29,17 @@ Quadsmith's service architecture was recently aligned by language into
 Subsequently, background workers and operations maintenance were refactored in
 [`tasks_and_jobs.md`](tasks_and_jobs.md) to establish clean boundaries:
 
-1. **Tasks** (5 maintenance procedures: `CleanupExpiredOtps` every 6h,
+1. **Tasks & Jobs** (5 maintenance procedures: `CleanupExpiredOtps` every 6h,
    `CleanupExpiredTokens` every 12h, `CleanupOrphanedBlobs` every 10m,
    `PurgeSoftDeletedAccounts` every 8h, and `SendUsernameReleaseWarnings` every
    24h—with SQL-engine maintenance delegated natively to PostgreSQL
-   `autovacuum`) are owned and executed by
-   [`server-ops`](../../src/go/server-ops) under `OpsService`.
-2. **Jobs** (execution history and schedule queries) are hosted by
-   [`server-jobs`](../../src/go/server-jobs) under `JobsService` on port 8080,
-   protected by the shared
-   [`opsauth.NewOpsInterceptor`](../../src/go/shared/pkg/opsauth/interceptor.go)
-   while concurrently running typed background schedulers via `robfig/cron/v3`.
+   `autovacuum`, alongside `ListTasks`, `GetTask`, `ListJobs`, and `GetJob`) are
+   owned and served by [`server-ops`](../../src/go/server-ops) under
+   `OpsService`.
+2. **Headless Scheduler** ([`server-jobs`](../../src/go/server-jobs)) operates
+   purely as a headless cron daemon with zero HTTP APIs or database connections,
+   running typed background schedulers via `robfig/cron/v3` that trigger task
+   RPCs on `server-ops`.
 3. **Public APIs & Blobs** are served by [`server-api`](../../src/go/server-api)
    via ConnectRPC alongside plain HTTP media endpoints (`/api/blobs`,
    `/blobs/{id}`) documented in
@@ -100,7 +100,7 @@ edge.
 flowchart TD
     CF["Cloudflare Edge (RFC Cache-Control Respect Mode)
     • quadsmith.com / www.quadsmith.com
-    • api.quadsmith.com / ops.quadsmith.com / jobs.quadsmith.com"]
+    • api.quadsmith.com / ops.quadsmith.com"]
 
     subgraph VM["GCP e2-micro VM (us-central1, 2 vCPU burstable, 1 GB RAM, 30 GB pd-standard Disk)"]
         Tunnel["cloudflared (Tunnel)"]
@@ -108,13 +108,12 @@ flowchart TD
         Web["server-web (:8080)"]
         API["server-api (:8080)"]
         Ops["server-ops (:8080)"]
-        Jobs["server-jobs (:8080)"]
+        Jobs["server-jobs (Headless Cron)"]
 
         Tunnel --> Nginx
         Nginx -- "Host: quadsmith.com" --> Web
         Nginx -- "Host: api.quadsmith.com" --> API
         Nginx -- "Host: ops.quadsmith.com" --> Ops
-        Nginx -- "Host: jobs.quadsmith.com" --> Jobs
         Web -- "OG RPC" --> API
         Jobs -- "RPC" --> Ops
     end
@@ -126,7 +125,6 @@ flowchart TD
     CF -- "Outbound Tunnel Connection" --> Tunnel
     API -- "External TLS Queries" --> DB
     Ops -- "External TLS Queries" --> DB
-    Jobs -- "External TLS Queries" --> DB
 ```
 
 ### <a id="cloud-infrastructure-and-zero-ip-tunnel-ingress" >Cloud Infrastructure and Zero-IP Tunnel Ingress</a>
@@ -149,8 +147,8 @@ account:
 A lightweight `cloudflared` container runs inside Docker Compose, authenticating
 via a tunnel token (`QS_CLOUDFLARE_TUNNEL_TOKEN`). It establishes redundant,
 outbound-only QUIC/HTTP2 tunnels to Cloudflare's global Anycast edge. In
-Cloudflare DNS, `CNAME` records for `@`, `www`, `api`, `ops`, and `jobs` point
-to `<tunnel-uuid>.cfargotunnel.com`, routing all traffic down the tunnel to
+Cloudflare DNS, `CNAME` records for `@`, `www`, `api`, and `ops` point to
+`<tunnel-uuid>.cfargotunnel.com`, routing all traffic down the tunnel to
 `http://nginx:80` inside the VM's Docker network.
 
 This delivers two critical advantages:
@@ -203,15 +201,14 @@ respective container (`api.quadsmith.com` &rarr; `http://api:8080`,
 A dedicated, Alpine-based Nginx container (`nginx:alpine`) acts as the internal
 ingress gateway on port 80 within the Docker Compose network.
 
-To ensure all four Go services listen on a uniform internal port (`8080`) behind
-Nginx and redirect OAuth flows to the canonical domain,
+To ensure all three HTTP-serving Go services listen on a uniform internal port
+(`8080`) behind Nginx and redirect OAuth flows to the canonical domain,
 [`src/go/server-web/config/prod.textproto`](../../src/go/server-web/config/prod.textproto)
 and
 [`src/go/server-api/config/prod.textproto`](../../src/go/server-api/config/prod.textproto)
 (along with their `staging.textproto` counterparts) are updated from `port: 443`
 to `port: 8080`, matching
-[`server-ops`](../../src/go/server-ops/config/prod.textproto) and
-[`server-jobs`](../../src/go/server-jobs/config/prod.textproto), and
+[`server-ops`](../../src/go/server-ops/config/prod.textproto), and
 `server-api`'s `oauth.web_base_url`, `from_address`, and `reply_to` fields are
 aligned from `quadsmith.net` to `quadsmith.com`.
 
@@ -248,7 +245,6 @@ http {
     upstream web_upstream  { server web:8080; }
     upstream api_upstream  { server api:8080; }
     upstream ops_upstream  { server ops:8080; }
-    upstream jobs_upstream { server jobs:8080; }
 
     proxy_http_version 1.1;
     proxy_set_header Host $host;
@@ -291,17 +287,6 @@ http {
 
         location / {
             proxy_pass http://ops_upstream;
-        }
-    }
-
-    # Jobs & Schedule Introspection ConnectRPC API
-    server {
-        listen 80;
-        server_name jobs.quadsmith.com;
-        client_max_body_size 2m;
-
-        location / {
-            proxy_pass http://jobs_upstream;
         }
     }
 }
@@ -503,7 +488,6 @@ services:
     environment:
       - QS_CONFIG=/app/src/go/server-jobs/config/prod.textproto
       - QS_OPS_SERVER_URL=http://ops:8080
-      - QS_INTERNAL_DATABASE_URL=${QS_INTERNAL_DATABASE_URL}
       - QS_JOB_SERVER_AUTH_TOKEN=${QS_JOB_SERVER_AUTH_TOKEN}
     depends_on:
       - ops
@@ -520,9 +504,9 @@ The memory budget for the 1 GB VM is strictly disciplined:
 | `server-web`        | Go (static asset & OG handler) | ~25 MB            | ~40 MB              |
 | `server-api`        | Go (ConnectRPC + pgxpool)      | ~25 MB            | ~45 MB              |
 | `server-ops`        | Go (ConnectRPC + pgxpool)      | ~20 MB            | ~35 MB              |
-| `server-jobs`       | Go (ConnectRPC + cron)         | ~15 MB            | ~30 MB              |
+| `server-jobs`       | Go (headless cron client)      | ~10 MB            | ~20 MB              |
 | Linux OS / systemd  | Linux Kernel / Docker          | ~150 MB           | ~200 MB             |
-| **Total**           |                                | **~254 MB**       | **~385 MB**         |
+| **Total**           |                                | **~249 MB**       | **~375 MB**         |
 
 To guarantee host stability, prevent out-of-memory kernel panics, and stay
 within Free Tier managed PostgreSQL connection and compute limits:
@@ -531,19 +515,16 @@ within Free Tier managed PostgreSQL connection and compute limits:
    [`src/go/server-api/main.go`](../../src/go/server-api/main.go) to apply
    `max_connections` and `min_connections` via `pgxpool.ParseConfig` /
    `pgxpool.NewWithConfig`, matching
-   [`server-ops`](../../src/go/server-ops/main.go) and
-   [`server-jobs`](../../src/go/server-jobs/main.go). Right-size
-   `prod.textproto` connection pools for Phase 1 (`server-api`:
+   [`server-ops`](../../src/go/server-ops/main.go). Right-size `prod.textproto`
+   connection pools for Phase 1 (`server-api`:
    `max_connections: 15, min_connections: 1`; `server-ops`:
-   `max_connections: 5, min_connections: 1`; `server-jobs`:
-   `max_connections: 5, min_connections: 1`), capping total VM connections at 20
-   on `quadsmith_api` and 10 on `quadsmith_ops` (with only 4 total idle
-   connections).
+   `max_connections: 5, min_connections: 1` on both `database` and
+   `internal_database`), capping total VM connections at 20 on `quadsmith_api`
+   and 5 on `quadsmith_ops` (with only 3 total idle connections, since
+   `server-jobs` is a pure stateless RPC client with zero database pools).
 2. **Database-Backed Operations Token Seeding**: Rather than embedding static
    `bootstrap_tokens` in
-   [`server-ops/config/prod.textproto`](../../src/go/server-ops/config/prod.textproto)
-   or
-   [`server-jobs/config/prod.textproto`](../../src/go/server-jobs/config/prod.textproto),
+   [`server-ops/config/prod.textproto`](../../src/go/server-ops/config/prod.textproto),
    initial `ROBOT` (`QS_JOB_SERVER_AUTH_TOKEN`, `group_name = 'robots'`) and
    operator `HUMAN` (`group_name = 'operators'`) token SHA-256 hashes are seeded
    directly into `quadsmith_ops.internal_tokens` via SQL during database setup,
@@ -590,7 +571,7 @@ by a host volume mount.
 ##### <a id="alt-config-bootstrap-tokens" >Static Bootstrap Tokens in Production Configs</a>
 
 Define `bootstrap_tokens` entries templated with environment variables in
-`server-ops/config/prod.textproto` and `server-jobs/config/prod.textproto`.
+`server-ops/config/prod.textproto`.
 
 **Pros:**
 
@@ -789,8 +770,9 @@ flowchart TD
      Cloud Run** across multiple regions (`us-central1`, `europe-west1`,
      `asia-east1`). Replace `server-jobs` background cron tickers with **Google
      Cloud Scheduler** ($0.20/mo) as detailed in
-     [`tasks_and_jobs.md`](tasks_and_jobs.md), while keeping `server-jobs` on
-     Cloud Run as a scale-to-zero query service for `qsops jobs`.
+     [`tasks_and_jobs.md`](tasks_and_jobs.md) and retire `server-jobs`
+     completely with zero client or API changes, since `qsops jobs` queries
+     `server-ops` directly.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>

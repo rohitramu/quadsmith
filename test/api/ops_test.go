@@ -12,8 +12,6 @@ import (
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	jobspb "quadsmith/shared/gen/quadsmith/jobs"
-	"quadsmith/shared/gen/quadsmith/jobs/jobsconnect"
 	pb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 )
@@ -26,16 +24,6 @@ func getOpsURL() string {
 		return url
 	}
 	return "http://127.0.0.1:8082"
-}
-
-func getJobsURL() string {
-	if url := os.Getenv("QS_JOBS_SERVER_URL"); url != "" {
-		return url
-	}
-	if url := os.Getenv("QS_JOBS_URL"); url != "" {
-		return url
-	}
-	return "http://127.0.0.1:8083"
 }
 
 func getOpsDBURL() string {
@@ -55,18 +43,6 @@ func newOpsClient(token string) opsconnect.OpsServiceClient {
 		Timeout:   10 * time.Second,
 	}
 	return opsconnect.NewOpsServiceClient(client, getOpsURL())
-}
-
-func newJobsClient(token string) jobsconnect.JobsServiceClient {
-	transport := &authRoundTripper{
-		base:  http.DefaultTransport,
-		token: token,
-	}
-	client := &http.Client{
-		Transport: transport,
-		Timeout:   10 * time.Second,
-	}
-	return jobsconnect.NewJobsServiceClient(client, getJobsURL())
 }
 
 func resolveQSOpsPath(t *testing.T) string {
@@ -385,10 +361,9 @@ func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 		t.Errorf("Expected non-negative warning count, got %d", warnRes.Msg.WarningCount)
 	}
 
-	// 4. Query JobsService
-	jobsClient := newJobsClient("qs_op_sandbox_token_12345")
+	// 4. Query Job History on OpsService
 	limitVal := int32(20)
-	jobsRes, err := jobsClient.ListJobs(ctx, connect.NewRequest(&jobspb.ListJobsRequest{Limit: &limitVal}))
+	jobsRes, err := operatorClient.ListJobs(ctx, connect.NewRequest(&pb.ListJobsRequest{Limit: &limitVal}))
 	if err != nil {
 		t.Fatalf("ListJobs failed: %v", err)
 	}
@@ -396,13 +371,13 @@ func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 		t.Errorf("Expected no X-Job-Id header on read-only ListJobs response, got %q", jobsRes.Header().Get("X-Job-Id"))
 	}
 	if len(jobsRes.Msg.Jobs) == 0 {
-		t.Fatalf("Expected recorded jobs in JobsService after triggering tasks, got 0")
+		t.Fatalf("Expected recorded jobs in OpsService after triggering tasks, got 0")
 	}
 	firstJob := jobsRes.Msg.Jobs[0]
 	if firstJob.GetUuid() == "" {
 		t.Errorf("Expected non-empty uuid on JobRecord")
 	}
-	getJobRes, err := jobsClient.GetJob(ctx, connect.NewRequest(&jobspb.GetJobRequest{JobId: firstJob.JobId}))
+	getJobRes, err := operatorClient.GetJob(ctx, connect.NewRequest(&pb.GetJobRequest{JobId: firstJob.JobId}))
 	if err != nil {
 		t.Fatalf("GetJob failed for %s: %v", firstJob.JobId, err)
 	}
@@ -414,7 +389,7 @@ func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 	}
 
 	// Verify GetJob also resolves by UUID fallback
-	getJobByUUIDRes, err := jobsClient.GetJob(ctx, connect.NewRequest(&jobspb.GetJobRequest{JobId: firstJob.GetUuid()}))
+	getJobByUUIDRes, err := operatorClient.GetJob(ctx, connect.NewRequest(&pb.GetJobRequest{JobId: firstJob.GetUuid()}))
 	if err != nil {
 		t.Fatalf("GetJob by UUID failed for %s: %v", firstJob.GetUuid(), err)
 	}
@@ -424,7 +399,7 @@ func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 
 	// Verify ListJobs filtering by valid task_name and rejection of invalid task_name
 	taskFilter := "cleanup_expired_otps"
-	filteredJobsRes, err := jobsClient.ListJobs(ctx, connect.NewRequest(&jobspb.ListJobsRequest{
+	filteredJobsRes, err := operatorClient.ListJobs(ctx, connect.NewRequest(&pb.ListJobsRequest{
 		Limit:    &limitVal,
 		TaskName: &taskFilter,
 	}))
@@ -438,22 +413,22 @@ func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 	}
 
 	badTask := "nonexistent_task"
-	_, err = jobsClient.ListJobs(ctx, connect.NewRequest(&jobspb.ListJobsRequest{
+	_, err = operatorClient.ListJobs(ctx, connect.NewRequest(&pb.ListJobsRequest{
 		TaskName: &badTask,
 	}))
 	if err == nil {
 		t.Errorf("Expected error for unknown task_name in ListJobs, got nil")
 	}
 
-	// Verify unauthenticated call to JobsService is rejected
-	unauthJobsClient := newJobsClient("")
-	_, err = unauthJobsClient.ListJobs(ctx, connect.NewRequest(&jobspb.ListJobsRequest{}))
+	// Verify unauthenticated call to ListJobs is rejected
+	unauthOpsClient := newOpsClient("")
+	_, err = unauthOpsClient.ListJobs(ctx, connect.NewRequest(&pb.ListJobsRequest{}))
 	if err == nil {
 		t.Errorf("Expected error for unauthenticated ListJobs, got nil")
 	}
 
 	// Verify GetJob rejects non-existent job ID
-	_, err = jobsClient.GetJob(ctx, connect.NewRequest(&jobspb.GetJobRequest{JobId: "nonexistent-job-id"}))
+	_, err = operatorClient.GetJob(ctx, connect.NewRequest(&pb.GetJobRequest{JobId: "nonexistent-job-id"}))
 	if err == nil {
 		t.Errorf("Expected error for non-existent job ID, got nil")
 	}
@@ -563,8 +538,8 @@ func TestQSOpsCLIExecution(t *testing.T) {
 	}
 
 	// 7. qsops jobs get <job-id>
-	jobsClient := newJobsClient("qs_op_sandbox_token_12345")
-	jobsRes, err := jobsClient.ListJobs(context.Background(), connect.NewRequest(&jobspb.ListJobsRequest{}))
+	opsClient := newOpsClient("qs_op_sandbox_token_12345")
+	jobsRes, err := opsClient.ListJobs(context.Background(), connect.NewRequest(&pb.ListJobsRequest{}))
 	if err != nil || len(jobsRes.Msg.GetJobs()) == 0 {
 		t.Fatalf("ListJobs for CLI get test failed: %v", err)
 	}
@@ -576,7 +551,7 @@ func TestQSOpsCLIExecution(t *testing.T) {
 		t.Fatalf("qsops jobs get %s failed: %v, output: %s", targetJobID, err, string(out))
 	}
 	outStr = string(out)
-	if !containsString(outStr, targetJobID) || !containsString(outStr, "Schedule Interval:") || !containsString(outStr, "UUID:") {
+	if !containsString(outStr, targetJobID) || !containsString(outStr, "UUID:") {
 		t.Errorf("Expected job details in jobs get output: %s", outStr)
 	}
 }

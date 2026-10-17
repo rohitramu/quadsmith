@@ -282,7 +282,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load job-server sandbox: %v", err)
 	}
-	if jobSandbox.GetOpsServerUrl() != "http://127.0.0.1:8082" || !jobSandbox.GetCleanupExpiredOtps().GetEnabled() || jobSandbox.Server.GetPort() != 8080 {
+	if jobSandbox.GetOpsServerUrl() != "http://127.0.0.1:8082" || !jobSandbox.GetCleanupExpiredOtps().GetEnabled() {
 		t.Errorf("unexpected job-server sandbox config: %+v", jobSandbox)
 	}
 
@@ -385,8 +385,8 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load job-server staging: %v", err)
 	}
-	if jobStaging.Server.GetPort() != 8080 {
-		t.Errorf("unexpected job-server staging port: %d", jobStaging.Server.GetPort())
+	if jobStaging.GetOpsServerUrl() != "https://staging-ops.quadsmith.com" {
+		t.Errorf("unexpected job-server staging ops_server_url: %s", jobStaging.GetOpsServerUrl())
 	}
 
 	jobProdPath := filepath.Join("..", "..", "..", "server-jobs", "config", "prod.textproto")
@@ -394,15 +394,15 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load job-server prod: %v", err)
 	}
-	if jobProd.Server.GetPort() != 8080 {
-		t.Errorf("unexpected job-server prod port: %d", jobProd.Server.GetPort())
+	if jobProd.GetOpsServerUrl() != "https://ops.quadsmith.com" {
+		t.Errorf("unexpected job-server prod ops_server_url: %s", jobProd.GetOpsServerUrl())
 	}
 
 	opsCliStaging, err := LoadOpsCliConfig("", "staging")
 	if err != nil {
 		t.Fatalf("failed to load ops cli staging: %v", err)
 	}
-	if opsCliStaging.GetJobsServerUrl() != "https://staging-jobs.quadsmith.com" {
+	if opsCliStaging.GetOpsServerUrl() != "https://staging-ops.quadsmith.com" {
 		t.Errorf("unexpected ops cli staging config: %+v", opsCliStaging)
 	}
 
@@ -410,7 +410,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops cli prod: %v", err)
 	}
-	if opsCliProd.GetJobsServerUrl() != "https://jobs.quadsmith.com" {
+	if opsCliProd.GetOpsServerUrl() != "https://ops.quadsmith.com" {
 		t.Errorf("unexpected ops cli prod config: %+v", opsCliProd)
 	}
 }

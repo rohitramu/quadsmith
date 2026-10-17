@@ -3,7 +3,6 @@ syntax = "proto3";
 package quadsmith.config;
 
 import "google/protobuf/duration.proto";
-import "quadsmith/config/common.proto";
 
 option go_package = "quadsmith/shared/gen/quadsmith/config;config";
 
@@ -13,18 +12,14 @@ option go_package = "quadsmith/shared/gen/quadsmith/config;config";
 
 message JobServerConfig {
   optional string environment = 1;
-  ServerConfig server = 2;
-  optional string ops_server_url = 3;
-  optional string auth_token = 4;
-  DatabaseConfig internal_database = 5;
+  optional string ops_server_url = 2;
+  optional string auth_token = 3;
 
-  optional CleanupExpiredOtpsSchedule cleanup_expired_otps = 6;
-  optional CleanupExpiredTokensSchedule cleanup_expired_tokens = 7;
-  optional CleanupOrphanedBlobsSchedule cleanup_orphaned_blobs = 8;
-  optional PurgeSoftDeletedAccountsSchedule purge_soft_deleted_accounts = 9;
-  optional SendUsernameReleaseWarningsSchedule send_username_release_warnings = 10;
-  repeated InternalGroupConfig groups = 11;
-  repeated BootstrapTokenConfig bootstrap_tokens = 12;
+  optional CleanupExpiredOtpsSchedule cleanup_expired_otps = 4;
+  optional CleanupExpiredTokensSchedule cleanup_expired_tokens = 5;
+  optional CleanupOrphanedBlobsSchedule cleanup_orphaned_blobs = 6;
+  optional PurgeSoftDeletedAccountsSchedule purge_soft_deleted_accounts = 7;
+  optional SendUsernameReleaseWarningsSchedule send_username_release_warnings = 8;
 }
 
 message CleanupExpiredOtpsSchedule {

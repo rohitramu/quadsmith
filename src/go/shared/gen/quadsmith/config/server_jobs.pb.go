@@ -25,17 +25,13 @@ const (
 type JobServerConfig struct {
 	state                       protoimpl.MessageState               `protogen:"open.v1"`
 	Environment                 *string                              `protobuf:"bytes,1,opt,name=environment,proto3,oneof" json:"environment,omitempty"`
-	Server                      *ServerConfig                        `protobuf:"bytes,2,opt,name=server,proto3" json:"server,omitempty"`
-	OpsServerUrl                *string                              `protobuf:"bytes,3,opt,name=ops_server_url,json=opsServerUrl,proto3,oneof" json:"ops_server_url,omitempty"`
-	AuthToken                   *string                              `protobuf:"bytes,4,opt,name=auth_token,json=authToken,proto3,oneof" json:"auth_token,omitempty"`
-	InternalDatabase            *DatabaseConfig                      `protobuf:"bytes,5,opt,name=internal_database,json=internalDatabase,proto3" json:"internal_database,omitempty"`
-	CleanupExpiredOtps          *CleanupExpiredOtpsSchedule          `protobuf:"bytes,6,opt,name=cleanup_expired_otps,json=cleanupExpiredOtps,proto3,oneof" json:"cleanup_expired_otps,omitempty"`
-	CleanupExpiredTokens        *CleanupExpiredTokensSchedule        `protobuf:"bytes,7,opt,name=cleanup_expired_tokens,json=cleanupExpiredTokens,proto3,oneof" json:"cleanup_expired_tokens,omitempty"`
-	CleanupOrphanedBlobs        *CleanupOrphanedBlobsSchedule        `protobuf:"bytes,8,opt,name=cleanup_orphaned_blobs,json=cleanupOrphanedBlobs,proto3,oneof" json:"cleanup_orphaned_blobs,omitempty"`
-	PurgeSoftDeletedAccounts    *PurgeSoftDeletedAccountsSchedule    `protobuf:"bytes,9,opt,name=purge_soft_deleted_accounts,json=purgeSoftDeletedAccounts,proto3,oneof" json:"purge_soft_deleted_accounts,omitempty"`
-	SendUsernameReleaseWarnings *SendUsernameReleaseWarningsSchedule `protobuf:"bytes,10,opt,name=send_username_release_warnings,json=sendUsernameReleaseWarnings,proto3,oneof" json:"send_username_release_warnings,omitempty"`
-	Groups                      []*InternalGroupConfig               `protobuf:"bytes,11,rep,name=groups,proto3" json:"groups,omitempty"`
-	BootstrapTokens             []*BootstrapTokenConfig              `protobuf:"bytes,12,rep,name=bootstrap_tokens,json=bootstrapTokens,proto3" json:"bootstrap_tokens,omitempty"`
+	OpsServerUrl                *string                              `protobuf:"bytes,2,opt,name=ops_server_url,json=opsServerUrl,proto3,oneof" json:"ops_server_url,omitempty"`
+	AuthToken                   *string                              `protobuf:"bytes,3,opt,name=auth_token,json=authToken,proto3,oneof" json:"auth_token,omitempty"`
+	CleanupExpiredOtps          *CleanupExpiredOtpsSchedule          `protobuf:"bytes,4,opt,name=cleanup_expired_otps,json=cleanupExpiredOtps,proto3,oneof" json:"cleanup_expired_otps,omitempty"`
+	CleanupExpiredTokens        *CleanupExpiredTokensSchedule        `protobuf:"bytes,5,opt,name=cleanup_expired_tokens,json=cleanupExpiredTokens,proto3,oneof" json:"cleanup_expired_tokens,omitempty"`
+	CleanupOrphanedBlobs        *CleanupOrphanedBlobsSchedule        `protobuf:"bytes,6,opt,name=cleanup_orphaned_blobs,json=cleanupOrphanedBlobs,proto3,oneof" json:"cleanup_orphaned_blobs,omitempty"`
+	PurgeSoftDeletedAccounts    *PurgeSoftDeletedAccountsSchedule    `protobuf:"bytes,7,opt,name=purge_soft_deleted_accounts,json=purgeSoftDeletedAccounts,proto3,oneof" json:"purge_soft_deleted_accounts,omitempty"`
+	SendUsernameReleaseWarnings *SendUsernameReleaseWarningsSchedule `protobuf:"bytes,8,opt,name=send_username_release_warnings,json=sendUsernameReleaseWarnings,proto3,oneof" json:"send_username_release_warnings,omitempty"`
 	unknownFields               protoimpl.UnknownFields
 	sizeCache                   protoimpl.SizeCache
 }
@@ -77,13 +73,6 @@ func (x *JobServerConfig) GetEnvironment() string {
 	return ""
 }
 
-func (x *JobServerConfig) GetServer() *ServerConfig {
-	if x != nil {
-		return x.Server
-	}
-	return nil
-}
-
 func (x *JobServerConfig) GetOpsServerUrl() string {
 	if x != nil && x.OpsServerUrl != nil {
 		return *x.OpsServerUrl
@@ -96,13 +85,6 @@ func (x *JobServerConfig) GetAuthToken() string {
 		return *x.AuthToken
 	}
 	return ""
-}
-
-func (x *JobServerConfig) GetInternalDatabase() *DatabaseConfig {
-	if x != nil {
-		return x.InternalDatabase
-	}
-	return nil
 }
 
 func (x *JobServerConfig) GetCleanupExpiredOtps() *CleanupExpiredOtpsSchedule {
@@ -136,20 +118,6 @@ func (x *JobServerConfig) GetPurgeSoftDeletedAccounts() *PurgeSoftDeletedAccount
 func (x *JobServerConfig) GetSendUsernameReleaseWarnings() *SendUsernameReleaseWarningsSchedule {
 	if x != nil {
 		return x.SendUsernameReleaseWarnings
-	}
-	return nil
-}
-
-func (x *JobServerConfig) GetGroups() []*InternalGroupConfig {
-	if x != nil {
-		return x.Groups
-	}
-	return nil
-}
-
-func (x *JobServerConfig) GetBootstrapTokens() []*BootstrapTokenConfig {
-	if x != nil {
-		return x.BootstrapTokens
 	}
 	return nil
 }
@@ -609,22 +577,17 @@ var File_quadsmith_config_server_jobs_proto protoreflect.FileDescriptor
 
 const file_quadsmith_config_server_jobs_proto_rawDesc = "" +
 	"\n" +
-	"\"quadsmith/config/server_jobs.proto\x12\x10quadsmith.config\x1a\x1egoogle/protobuf/duration.proto\x1a\x1dquadsmith/config/common.proto\"\x98\t\n" +
+	"\"quadsmith/config/server_jobs.proto\x12\x10quadsmith.config\x1a\x1egoogle/protobuf/duration.proto\"\xff\x06\n" +
 	"\x0fJobServerConfig\x12%\n" +
-	"\venvironment\x18\x01 \x01(\tH\x00R\venvironment\x88\x01\x01\x126\n" +
-	"\x06server\x18\x02 \x01(\v2\x1e.quadsmith.config.ServerConfigR\x06server\x12)\n" +
-	"\x0eops_server_url\x18\x03 \x01(\tH\x01R\fopsServerUrl\x88\x01\x01\x12\"\n" +
+	"\venvironment\x18\x01 \x01(\tH\x00R\venvironment\x88\x01\x01\x12)\n" +
+	"\x0eops_server_url\x18\x02 \x01(\tH\x01R\fopsServerUrl\x88\x01\x01\x12\"\n" +
 	"\n" +
-	"auth_token\x18\x04 \x01(\tH\x02R\tauthToken\x88\x01\x01\x12M\n" +
-	"\x11internal_database\x18\x05 \x01(\v2 .quadsmith.config.DatabaseConfigR\x10internalDatabase\x12c\n" +
-	"\x14cleanup_expired_otps\x18\x06 \x01(\v2,.quadsmith.config.CleanupExpiredOtpsScheduleH\x03R\x12cleanupExpiredOtps\x88\x01\x01\x12i\n" +
-	"\x16cleanup_expired_tokens\x18\a \x01(\v2..quadsmith.config.CleanupExpiredTokensScheduleH\x04R\x14cleanupExpiredTokens\x88\x01\x01\x12i\n" +
-	"\x16cleanup_orphaned_blobs\x18\b \x01(\v2..quadsmith.config.CleanupOrphanedBlobsScheduleH\x05R\x14cleanupOrphanedBlobs\x88\x01\x01\x12v\n" +
-	"\x1bpurge_soft_deleted_accounts\x18\t \x01(\v22.quadsmith.config.PurgeSoftDeletedAccountsScheduleH\x06R\x18purgeSoftDeletedAccounts\x88\x01\x01\x12\x7f\n" +
-	"\x1esend_username_release_warnings\x18\n" +
-	" \x01(\v25.quadsmith.config.SendUsernameReleaseWarningsScheduleH\aR\x1bsendUsernameReleaseWarnings\x88\x01\x01\x12=\n" +
-	"\x06groups\x18\v \x03(\v2%.quadsmith.config.InternalGroupConfigR\x06groups\x12Q\n" +
-	"\x10bootstrap_tokens\x18\f \x03(\v2&.quadsmith.config.BootstrapTokenConfigR\x0fbootstrapTokensB\x0e\n" +
+	"auth_token\x18\x03 \x01(\tH\x02R\tauthToken\x88\x01\x01\x12c\n" +
+	"\x14cleanup_expired_otps\x18\x04 \x01(\v2,.quadsmith.config.CleanupExpiredOtpsScheduleH\x03R\x12cleanupExpiredOtps\x88\x01\x01\x12i\n" +
+	"\x16cleanup_expired_tokens\x18\x05 \x01(\v2..quadsmith.config.CleanupExpiredTokensScheduleH\x04R\x14cleanupExpiredTokens\x88\x01\x01\x12i\n" +
+	"\x16cleanup_orphaned_blobs\x18\x06 \x01(\v2..quadsmith.config.CleanupOrphanedBlobsScheduleH\x05R\x14cleanupOrphanedBlobs\x88\x01\x01\x12v\n" +
+	"\x1bpurge_soft_deleted_accounts\x18\a \x01(\v22.quadsmith.config.PurgeSoftDeletedAccountsScheduleH\x06R\x18purgeSoftDeletedAccounts\x88\x01\x01\x12\x7f\n" +
+	"\x1esend_username_release_warnings\x18\b \x01(\v25.quadsmith.config.SendUsernameReleaseWarningsScheduleH\aR\x1bsendUsernameReleaseWarnings\x88\x01\x01B\x0e\n" +
 	"\f_environmentB\x11\n" +
 	"\x0f_ops_server_urlB\r\n" +
 	"\v_auth_tokenB\x17\n" +
@@ -694,32 +657,24 @@ var file_quadsmith_config_server_jobs_proto_goTypes = []any{
 	(*CleanupOrphanedBlobsSchedule)(nil),        // 3: quadsmith.config.CleanupOrphanedBlobsSchedule
 	(*PurgeSoftDeletedAccountsSchedule)(nil),    // 4: quadsmith.config.PurgeSoftDeletedAccountsSchedule
 	(*SendUsernameReleaseWarningsSchedule)(nil), // 5: quadsmith.config.SendUsernameReleaseWarningsSchedule
-	(*ServerConfig)(nil),                        // 6: quadsmith.config.ServerConfig
-	(*DatabaseConfig)(nil),                      // 7: quadsmith.config.DatabaseConfig
-	(*InternalGroupConfig)(nil),                 // 8: quadsmith.config.InternalGroupConfig
-	(*BootstrapTokenConfig)(nil),                // 9: quadsmith.config.BootstrapTokenConfig
-	(*durationpb.Duration)(nil),                 // 10: google.protobuf.Duration
+	(*durationpb.Duration)(nil),                 // 6: google.protobuf.Duration
 }
 var file_quadsmith_config_server_jobs_proto_depIdxs = []int32{
-	6,  // 0: quadsmith.config.JobServerConfig.server:type_name -> quadsmith.config.ServerConfig
-	7,  // 1: quadsmith.config.JobServerConfig.internal_database:type_name -> quadsmith.config.DatabaseConfig
-	1,  // 2: quadsmith.config.JobServerConfig.cleanup_expired_otps:type_name -> quadsmith.config.CleanupExpiredOtpsSchedule
-	2,  // 3: quadsmith.config.JobServerConfig.cleanup_expired_tokens:type_name -> quadsmith.config.CleanupExpiredTokensSchedule
-	3,  // 4: quadsmith.config.JobServerConfig.cleanup_orphaned_blobs:type_name -> quadsmith.config.CleanupOrphanedBlobsSchedule
-	4,  // 5: quadsmith.config.JobServerConfig.purge_soft_deleted_accounts:type_name -> quadsmith.config.PurgeSoftDeletedAccountsSchedule
-	5,  // 6: quadsmith.config.JobServerConfig.send_username_release_warnings:type_name -> quadsmith.config.SendUsernameReleaseWarningsSchedule
-	8,  // 7: quadsmith.config.JobServerConfig.groups:type_name -> quadsmith.config.InternalGroupConfig
-	9,  // 8: quadsmith.config.JobServerConfig.bootstrap_tokens:type_name -> quadsmith.config.BootstrapTokenConfig
-	10, // 9: quadsmith.config.CleanupExpiredOtpsSchedule.interval:type_name -> google.protobuf.Duration
-	10, // 10: quadsmith.config.CleanupExpiredTokensSchedule.interval:type_name -> google.protobuf.Duration
-	10, // 11: quadsmith.config.CleanupOrphanedBlobsSchedule.interval:type_name -> google.protobuf.Duration
-	10, // 12: quadsmith.config.PurgeSoftDeletedAccountsSchedule.interval:type_name -> google.protobuf.Duration
-	10, // 13: quadsmith.config.SendUsernameReleaseWarningsSchedule.interval:type_name -> google.protobuf.Duration
-	14, // [14:14] is the sub-list for method output_type
-	14, // [14:14] is the sub-list for method input_type
-	14, // [14:14] is the sub-list for extension type_name
-	14, // [14:14] is the sub-list for extension extendee
-	0,  // [0:14] is the sub-list for field type_name
+	1,  // 0: quadsmith.config.JobServerConfig.cleanup_expired_otps:type_name -> quadsmith.config.CleanupExpiredOtpsSchedule
+	2,  // 1: quadsmith.config.JobServerConfig.cleanup_expired_tokens:type_name -> quadsmith.config.CleanupExpiredTokensSchedule
+	3,  // 2: quadsmith.config.JobServerConfig.cleanup_orphaned_blobs:type_name -> quadsmith.config.CleanupOrphanedBlobsSchedule
+	4,  // 3: quadsmith.config.JobServerConfig.purge_soft_deleted_accounts:type_name -> quadsmith.config.PurgeSoftDeletedAccountsSchedule
+	5,  // 4: quadsmith.config.JobServerConfig.send_username_release_warnings:type_name -> quadsmith.config.SendUsernameReleaseWarningsSchedule
+	6,  // 5: quadsmith.config.CleanupExpiredOtpsSchedule.interval:type_name -> google.protobuf.Duration
+	6,  // 6: quadsmith.config.CleanupExpiredTokensSchedule.interval:type_name -> google.protobuf.Duration
+	6,  // 7: quadsmith.config.CleanupOrphanedBlobsSchedule.interval:type_name -> google.protobuf.Duration
+	6,  // 8: quadsmith.config.PurgeSoftDeletedAccountsSchedule.interval:type_name -> google.protobuf.Duration
+	6,  // 9: quadsmith.config.SendUsernameReleaseWarningsSchedule.interval:type_name -> google.protobuf.Duration
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_config_server_jobs_proto_init() }
@@ -727,7 +682,6 @@ func file_quadsmith_config_server_jobs_proto_init() {
 	if File_quadsmith_config_server_jobs_proto != nil {
 		return
 	}
-	file_quadsmith_config_common_proto_init()
 	file_quadsmith_config_server_jobs_proto_msgTypes[0].OneofWrappers = []any{}
 	file_quadsmith_config_server_jobs_proto_msgTypes[1].OneofWrappers = []any{
 		(*CleanupExpiredOtpsSchedule_Cron)(nil),

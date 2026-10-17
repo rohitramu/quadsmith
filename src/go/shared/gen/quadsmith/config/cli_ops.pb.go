@@ -27,7 +27,6 @@ type OpsCliConfig struct {
 	Environment   *string                `protobuf:"bytes,1,opt,name=environment,proto3,oneof" json:"environment,omitempty"`
 	OpsServerUrl  *string                `protobuf:"bytes,2,opt,name=ops_server_url,json=opsServerUrl,proto3,oneof" json:"ops_server_url,omitempty"`
 	Timeout       *durationpb.Duration   `protobuf:"bytes,3,opt,name=timeout,proto3" json:"timeout,omitempty"`
-	JobsServerUrl *string                `protobuf:"bytes,4,opt,name=jobs_server_url,json=jobsServerUrl,proto3,oneof" json:"jobs_server_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -83,26 +82,17 @@ func (x *OpsCliConfig) GetTimeout() *durationpb.Duration {
 	return nil
 }
 
-func (x *OpsCliConfig) GetJobsServerUrl() string {
-	if x != nil && x.JobsServerUrl != nil {
-		return *x.JobsServerUrl
-	}
-	return ""
-}
-
 var File_quadsmith_config_cli_ops_proto protoreflect.FileDescriptor
 
 const file_quadsmith_config_cli_ops_proto_rawDesc = "" +
 	"\n" +
-	"\x1equadsmith/config/cli_ops.proto\x12\x10quadsmith.config\x1a\x1egoogle/protobuf/duration.proto\"\xf9\x01\n" +
+	"\x1equadsmith/config/cli_ops.proto\x12\x10quadsmith.config\x1a\x1egoogle/protobuf/duration.proto\"\xb8\x01\n" +
 	"\fOpsCliConfig\x12%\n" +
 	"\venvironment\x18\x01 \x01(\tH\x00R\venvironment\x88\x01\x01\x12)\n" +
 	"\x0eops_server_url\x18\x02 \x01(\tH\x01R\fopsServerUrl\x88\x01\x01\x123\n" +
-	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\atimeout\x12+\n" +
-	"\x0fjobs_server_url\x18\x04 \x01(\tH\x02R\rjobsServerUrl\x88\x01\x01B\x0e\n" +
+	"\atimeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationR\atimeoutB\x0e\n" +
 	"\f_environmentB\x11\n" +
-	"\x0f_ops_server_urlB\x12\n" +
-	"\x10_jobs_server_urlB.Z,quadsmith/shared/gen/quadsmith/config;configb\x06proto3"
+	"\x0f_ops_server_urlB.Z,quadsmith/shared/gen/quadsmith/config;configb\x06proto3"
 
 var (
 	file_quadsmith_config_cli_ops_proto_rawDescOnce sync.Once

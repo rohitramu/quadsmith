@@ -198,22 +198,9 @@ func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *configpb.Ops
 func NewTestJobServerConfig(t testing.TB) *configpb.JobServerConfig {
 	t.Helper()
 	return &configpb.JobServerConfig{
-		Environment: proto.String("sandbox"),
-		Server: &configpb.ServerConfig{
-			Port:            proto.Int32(8080),
-			ReadTimeout:     durationpb.New(30 * time.Second),
-			WriteTimeout:    durationpb.New(60 * time.Second),
-			IdleTimeout:     durationpb.New(120 * time.Second),
-			MaxRequestBytes: proto.Int64(2097152),
-		},
+		Environment:  proto.String("sandbox"),
 		OpsServerUrl: proto.String("http://127.0.0.1:8082"),
 		AuthToken:    proto.String("qs_robot_sandbox_token_67890"),
-		InternalDatabase: &configpb.DatabaseConfig{
-			Url:            proto.String("postgres://postgres:postgres@127.0.0.1:5432/quadsmith_ops?sslmode=disable"),
-			Name:           proto.String("quadsmith_ops"),
-			MaxConnections: proto.Int32(10),
-			MinConnections: proto.Int32(2),
-		},
 		CleanupExpiredOtps: &configpb.CleanupExpiredOtpsSchedule{
 			Enabled: proto.Bool(true),
 			Schedule: &configpb.CleanupExpiredOtpsSchedule_Interval{
@@ -242,39 +229,6 @@ func NewTestJobServerConfig(t testing.TB) *configpb.JobServerConfig {
 			Enabled: proto.Bool(true),
 			Schedule: &configpb.SendUsernameReleaseWarningsSchedule_Cron{
 				Cron: "0 0 * * *",
-			},
-		},
-		Groups: []*configpb.InternalGroupConfig{
-			{
-				Name:           proto.String("operators"),
-				Description:    proto.String("Full developer ops permissions"),
-				AllowedMethods: []string{"*"},
-			},
-			{
-				Name:           proto.String("robots"),
-				Description:    proto.String("Automated scheduler and cron permissions"),
-				AllowedMethods: []string{"*"},
-			},
-			{
-				Name:           proto.String("viewers"),
-				Description:    proto.String("Read-only internal operator permissions"),
-				AllowedMethods: []string{"Get*", "List*"},
-			},
-		},
-		BootstrapTokens: []*configpb.BootstrapTokenConfig{
-			{
-				Id:        proto.String("sandbox-operator"),
-				Name:      proto.String("Sandbox Operator Token"),
-				Token:     proto.String("qs_op_sandbox_token_12345"),
-				GroupName: proto.String("operators"),
-				Type:      proto.String("HUMAN"),
-			},
-			{
-				Id:        proto.String("sandbox-robot"),
-				Name:      proto.String("Sandbox Robot Token"),
-				Token:     proto.String("qs_robot_sandbox_token_67890"),
-				GroupName: proto.String("robots"),
-				Type:      proto.String("ROBOT"),
 			},
 		},
 	}

@@ -54,11 +54,15 @@ const (
 	// OpsServiceSendUsernameReleaseWarningsProcedure is the fully-qualified name of the OpsService's
 	// SendUsernameReleaseWarnings RPC.
 	OpsServiceSendUsernameReleaseWarningsProcedure = "/quadsmith.ops.OpsService/SendUsernameReleaseWarnings"
+	// OpsServiceGetJobProcedure is the fully-qualified name of the OpsService's GetJob RPC.
+	OpsServiceGetJobProcedure = "/quadsmith.ops.OpsService/GetJob"
 	// OpsServiceGetTaskProcedure is the fully-qualified name of the OpsService's GetTask RPC.
 	OpsServiceGetTaskProcedure = "/quadsmith.ops.OpsService/GetTask"
 	// OpsServiceListInternalApiCallsProcedure is the fully-qualified name of the OpsService's
 	// ListInternalApiCalls RPC.
 	OpsServiceListInternalApiCallsProcedure = "/quadsmith.ops.OpsService/ListInternalApiCalls"
+	// OpsServiceListJobsProcedure is the fully-qualified name of the OpsService's ListJobs RPC.
+	OpsServiceListJobsProcedure = "/quadsmith.ops.OpsService/ListJobs"
 	// OpsServiceListTasksProcedure is the fully-qualified name of the OpsService's ListTasks RPC.
 	OpsServiceListTasksProcedure = "/quadsmith.ops.OpsService/ListTasks"
 	// OpsServiceExchangeOAuthCodeProcedure is the fully-qualified name of the OpsService's
@@ -107,9 +111,11 @@ type OpsServiceClient interface {
 	CleanupOrphanedBlobs(context.Context, *connect.Request[ops.CleanupOrphanedBlobsRequest]) (*connect.Response[ops.CleanupOrphanedBlobsResponse], error)
 	PurgeSoftDeletedAccounts(context.Context, *connect.Request[ops.PurgeSoftDeletedAccountsRequest]) (*connect.Response[ops.PurgeSoftDeletedAccountsResponse], error)
 	SendUsernameReleaseWarnings(context.Context, *connect.Request[ops.SendUsernameReleaseWarningsRequest]) (*connect.Response[ops.SendUsernameReleaseWarningsResponse], error)
-	// Tasks Inspection & Audit
+	// Tasks, Jobs & Audit
+	GetJob(context.Context, *connect.Request[ops.GetJobRequest]) (*connect.Response[ops.GetJobResponse], error)
 	GetTask(context.Context, *connect.Request[ops.GetTaskRequest]) (*connect.Response[ops.GetTaskResponse], error)
 	ListInternalApiCalls(context.Context, *connect.Request[ops.ListInternalApiCallsRequest]) (*connect.Response[ops.ListInternalApiCallsResponse], error)
+	ListJobs(context.Context, *connect.Request[ops.ListJobsRequest]) (*connect.Response[ops.ListJobsResponse], error)
 	ListTasks(context.Context, *connect.Request[ops.ListTasksRequest]) (*connect.Response[ops.ListTasksResponse], error)
 	// Authentication & IAM
 	ExchangeOAuthCode(context.Context, *connect.Request[ops.ExchangeOAuthCodeRequest]) (*connect.Response[ops.ExchangeOAuthCodeResponse], error)
@@ -180,6 +186,12 @@ func NewOpsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 			connect.WithSchema(opsServiceMethods.ByName("SendUsernameReleaseWarnings")),
 			connect.WithClientOptions(opts...),
 		),
+		getJob: connect.NewClient[ops.GetJobRequest, ops.GetJobResponse](
+			httpClient,
+			baseURL+OpsServiceGetJobProcedure,
+			connect.WithSchema(opsServiceMethods.ByName("GetJob")),
+			connect.WithClientOptions(opts...),
+		),
 		getTask: connect.NewClient[ops.GetTaskRequest, ops.GetTaskResponse](
 			httpClient,
 			baseURL+OpsServiceGetTaskProcedure,
@@ -190,6 +202,12 @@ func NewOpsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 			httpClient,
 			baseURL+OpsServiceListInternalApiCallsProcedure,
 			connect.WithSchema(opsServiceMethods.ByName("ListInternalApiCalls")),
+			connect.WithClientOptions(opts...),
+		),
+		listJobs: connect.NewClient[ops.ListJobsRequest, ops.ListJobsResponse](
+			httpClient,
+			baseURL+OpsServiceListJobsProcedure,
+			connect.WithSchema(opsServiceMethods.ByName("ListJobs")),
 			connect.WithClientOptions(opts...),
 		),
 		listTasks: connect.NewClient[ops.ListTasksRequest, ops.ListTasksResponse](
@@ -276,8 +294,10 @@ type opsServiceClient struct {
 	cleanupOrphanedBlobs        *connect.Client[ops.CleanupOrphanedBlobsRequest, ops.CleanupOrphanedBlobsResponse]
 	purgeSoftDeletedAccounts    *connect.Client[ops.PurgeSoftDeletedAccountsRequest, ops.PurgeSoftDeletedAccountsResponse]
 	sendUsernameReleaseWarnings *connect.Client[ops.SendUsernameReleaseWarningsRequest, ops.SendUsernameReleaseWarningsResponse]
+	getJob                      *connect.Client[ops.GetJobRequest, ops.GetJobResponse]
 	getTask                     *connect.Client[ops.GetTaskRequest, ops.GetTaskResponse]
 	listInternalApiCalls        *connect.Client[ops.ListInternalApiCallsRequest, ops.ListInternalApiCallsResponse]
+	listJobs                    *connect.Client[ops.ListJobsRequest, ops.ListJobsResponse]
 	listTasks                   *connect.Client[ops.ListTasksRequest, ops.ListTasksResponse]
 	exchangeOAuthCode           *connect.Client[ops.ExchangeOAuthCodeRequest, ops.ExchangeOAuthCodeResponse]
 	getCurrentOperator          *connect.Client[ops.GetCurrentOperatorRequest, ops.GetCurrentOperatorResponse]
@@ -327,6 +347,11 @@ func (c *opsServiceClient) SendUsernameReleaseWarnings(ctx context.Context, req 
 	return c.sendUsernameReleaseWarnings.CallUnary(ctx, req)
 }
 
+// GetJob calls quadsmith.ops.OpsService.GetJob.
+func (c *opsServiceClient) GetJob(ctx context.Context, req *connect.Request[ops.GetJobRequest]) (*connect.Response[ops.GetJobResponse], error) {
+	return c.getJob.CallUnary(ctx, req)
+}
+
 // GetTask calls quadsmith.ops.OpsService.GetTask.
 func (c *opsServiceClient) GetTask(ctx context.Context, req *connect.Request[ops.GetTaskRequest]) (*connect.Response[ops.GetTaskResponse], error) {
 	return c.getTask.CallUnary(ctx, req)
@@ -335,6 +360,11 @@ func (c *opsServiceClient) GetTask(ctx context.Context, req *connect.Request[ops
 // ListInternalApiCalls calls quadsmith.ops.OpsService.ListInternalApiCalls.
 func (c *opsServiceClient) ListInternalApiCalls(ctx context.Context, req *connect.Request[ops.ListInternalApiCallsRequest]) (*connect.Response[ops.ListInternalApiCallsResponse], error) {
 	return c.listInternalApiCalls.CallUnary(ctx, req)
+}
+
+// ListJobs calls quadsmith.ops.OpsService.ListJobs.
+func (c *opsServiceClient) ListJobs(ctx context.Context, req *connect.Request[ops.ListJobsRequest]) (*connect.Response[ops.ListJobsResponse], error) {
+	return c.listJobs.CallUnary(ctx, req)
 }
 
 // ListTasks calls quadsmith.ops.OpsService.ListTasks.
@@ -409,9 +439,11 @@ type OpsServiceHandler interface {
 	CleanupOrphanedBlobs(context.Context, *connect.Request[ops.CleanupOrphanedBlobsRequest]) (*connect.Response[ops.CleanupOrphanedBlobsResponse], error)
 	PurgeSoftDeletedAccounts(context.Context, *connect.Request[ops.PurgeSoftDeletedAccountsRequest]) (*connect.Response[ops.PurgeSoftDeletedAccountsResponse], error)
 	SendUsernameReleaseWarnings(context.Context, *connect.Request[ops.SendUsernameReleaseWarningsRequest]) (*connect.Response[ops.SendUsernameReleaseWarningsResponse], error)
-	// Tasks Inspection & Audit
+	// Tasks, Jobs & Audit
+	GetJob(context.Context, *connect.Request[ops.GetJobRequest]) (*connect.Response[ops.GetJobResponse], error)
 	GetTask(context.Context, *connect.Request[ops.GetTaskRequest]) (*connect.Response[ops.GetTaskResponse], error)
 	ListInternalApiCalls(context.Context, *connect.Request[ops.ListInternalApiCallsRequest]) (*connect.Response[ops.ListInternalApiCallsResponse], error)
+	ListJobs(context.Context, *connect.Request[ops.ListJobsRequest]) (*connect.Response[ops.ListJobsResponse], error)
 	ListTasks(context.Context, *connect.Request[ops.ListTasksRequest]) (*connect.Response[ops.ListTasksResponse], error)
 	// Authentication & IAM
 	ExchangeOAuthCode(context.Context, *connect.Request[ops.ExchangeOAuthCodeRequest]) (*connect.Response[ops.ExchangeOAuthCodeResponse], error)
@@ -478,6 +510,12 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 		connect.WithSchema(opsServiceMethods.ByName("SendUsernameReleaseWarnings")),
 		connect.WithHandlerOptions(opts...),
 	)
+	opsServiceGetJobHandler := connect.NewUnaryHandler(
+		OpsServiceGetJobProcedure,
+		svc.GetJob,
+		connect.WithSchema(opsServiceMethods.ByName("GetJob")),
+		connect.WithHandlerOptions(opts...),
+	)
 	opsServiceGetTaskHandler := connect.NewUnaryHandler(
 		OpsServiceGetTaskProcedure,
 		svc.GetTask,
@@ -488,6 +526,12 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 		OpsServiceListInternalApiCallsProcedure,
 		svc.ListInternalApiCalls,
 		connect.WithSchema(opsServiceMethods.ByName("ListInternalApiCalls")),
+		connect.WithHandlerOptions(opts...),
+	)
+	opsServiceListJobsHandler := connect.NewUnaryHandler(
+		OpsServiceListJobsProcedure,
+		svc.ListJobs,
+		connect.WithSchema(opsServiceMethods.ByName("ListJobs")),
 		connect.WithHandlerOptions(opts...),
 	)
 	opsServiceListTasksHandler := connect.NewUnaryHandler(
@@ -578,10 +622,14 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 			opsServicePurgeSoftDeletedAccountsHandler.ServeHTTP(w, r)
 		case OpsServiceSendUsernameReleaseWarningsProcedure:
 			opsServiceSendUsernameReleaseWarningsHandler.ServeHTTP(w, r)
+		case OpsServiceGetJobProcedure:
+			opsServiceGetJobHandler.ServeHTTP(w, r)
 		case OpsServiceGetTaskProcedure:
 			opsServiceGetTaskHandler.ServeHTTP(w, r)
 		case OpsServiceListInternalApiCallsProcedure:
 			opsServiceListInternalApiCallsHandler.ServeHTTP(w, r)
+		case OpsServiceListJobsProcedure:
+			opsServiceListJobsHandler.ServeHTTP(w, r)
 		case OpsServiceListTasksProcedure:
 			opsServiceListTasksHandler.ServeHTTP(w, r)
 		case OpsServiceExchangeOAuthCodeProcedure:
@@ -643,12 +691,20 @@ func (UnimplementedOpsServiceHandler) SendUsernameReleaseWarnings(context.Contex
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.SendUsernameReleaseWarnings is not implemented"))
 }
 
+func (UnimplementedOpsServiceHandler) GetJob(context.Context, *connect.Request[ops.GetJobRequest]) (*connect.Response[ops.GetJobResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.GetJob is not implemented"))
+}
+
 func (UnimplementedOpsServiceHandler) GetTask(context.Context, *connect.Request[ops.GetTaskRequest]) (*connect.Response[ops.GetTaskResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.GetTask is not implemented"))
 }
 
 func (UnimplementedOpsServiceHandler) ListInternalApiCalls(context.Context, *connect.Request[ops.ListInternalApiCallsRequest]) (*connect.Response[ops.ListInternalApiCallsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.ListInternalApiCalls is not implemented"))
+}
+
+func (UnimplementedOpsServiceHandler) ListJobs(context.Context, *connect.Request[ops.ListJobsRequest]) (*connect.Response[ops.ListJobsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.ListJobs is not implemented"))
 }
 
 func (UnimplementedOpsServiceHandler) ListTasks(context.Context, *connect.Request[ops.ListTasksRequest]) (*connect.Response[ops.ListTasksResponse], error) {

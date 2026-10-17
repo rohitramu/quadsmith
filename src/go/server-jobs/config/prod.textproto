@@ -1,28 +1,7 @@
 environment: "prod"
 
-server {
-  port: 8080
-  read_timeout {
-    seconds: 30
-  }
-  write_timeout {
-    seconds: 60
-  }
-  idle_timeout {
-    seconds: 120
-  }
-  max_request_bytes: 2097152
-}
-
 ops_server_url: "https://ops.quadsmith.com"
 auth_token: "${QS_JOB_SERVER_AUTH_TOKEN}"
-
-internal_database {
-  url: "${QS_INTERNAL_DATABASE_URL}"
-  name: "quadsmith_ops"
-  max_connections: 5
-  min_connections: 1
-}
 
 cleanup_expired_otps {
   enabled: true
@@ -53,23 +32,4 @@ purge_soft_deleted_accounts {
 send_username_release_warnings {
   enabled: true
   cron: "0 0 * * *"
-}
-
-groups {
-  name: "operators"
-  description: "Full developer ops permissions"
-  allowed_methods: "*"
-}
-
-groups {
-  name: "robots"
-  description: "Automated scheduler and cron permissions"
-  allowed_methods: "*"
-}
-
-groups {
-  name: "viewers"
-  description: "Read-only internal operator permissions"
-  allowed_methods: "Get*"
-  allowed_methods: "List*"
 }

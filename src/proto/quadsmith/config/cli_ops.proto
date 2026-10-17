@@ -14,5 +14,4 @@ message OpsCliConfig {
   optional string environment = 1;
   optional string ops_server_url = 2;
   google.protobuf.Duration timeout = 3;
-  optional string jobs_server_url = 4;
 }

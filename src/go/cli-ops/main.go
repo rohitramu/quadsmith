@@ -19,8 +19,6 @@ import (
 	"quadsmith/shared/pkg/config"
 
 	configpb "quadsmith/shared/gen/quadsmith/config"
-	jobspb "quadsmith/shared/gen/quadsmith/jobs"
-	"quadsmith/shared/gen/quadsmith/jobs/jobsconnect"
 	pb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 )
@@ -28,7 +26,6 @@ import (
 var (
 	embeddedConfig *configpb.OpsCliConfig
 	opsServerURL   string
-	jobsServerURL  string
 	tokenFlag      string
 	jsonOut        bool
 )
@@ -46,10 +43,6 @@ func init() {
 	opsServerURL = cfg.GetOpsServerUrl()
 	if v := os.Getenv("QS_OPS_SERVER_URL"); v != "" {
 		opsServerURL = v
-	}
-	jobsServerURL = cfg.GetJobsServerUrl()
-	if v := os.Getenv("QS_JOBS_SERVER_URL"); v != "" {
-		jobsServerURL = v
 	}
 }
 
@@ -144,27 +137,6 @@ func getOpsClient() opsconnect.OpsServiceClient {
 		Timeout:   timeout,
 	}
 	return opsconnect.NewOpsServiceClient(httpClient, opsServerURL)
-}
-
-func getJobsClient() jobsconnect.JobsServiceClient {
-	token := loadSessionToken()
-	transport := &bearerTransport{
-		token: token,
-		base:  http.DefaultTransport,
-	}
-	timeout := 60 * time.Second
-	if embeddedConfig.GetTimeout() != nil && embeddedConfig.GetTimeout().AsDuration() > 0 {
-		timeout = embeddedConfig.GetTimeout().AsDuration()
-	}
-	httpClient := &http.Client{
-		Transport: transport,
-		Timeout:   timeout,
-	}
-	url := jobsServerURL
-	if url == "" {
-		url = embeddedConfig.GetJobsServerUrl()
-	}
-	return jobsconnect.NewJobsServiceClient(httpClient, url)
 }
 
 func main() {
@@ -867,7 +839,7 @@ func newTasksCmd() *cobra.Command {
 func newJobsCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "jobs",
-		Short: "Inspect execution history and schedules of jobs",
+		Short: "Inspect execution history of background jobs",
 	}
 
 	var limit int
@@ -877,8 +849,8 @@ func newJobsCmd() *cobra.Command {
 		Use:   "list",
 		Short: "List historical executions of background tasks (latest first)",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			client := getJobsClient()
-			listReq := &jobspb.ListJobsRequest{}
+			client := getOpsClient()
+			listReq := &pb.ListJobsRequest{}
 			if limit > 0 {
 				l := int32(limit)
 				listReq.Limit = &l
@@ -898,18 +870,14 @@ func newJobsCmd() *cobra.Command {
 			}
 
 			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
-			fmt.Fprintf(w, "JOB ID\tTASK\tPROCEDURE\tCALLER\tSTATUS\tDURATION\tCREATED AT\tSCHEDULE\n")
+			fmt.Fprintf(w, "JOB ID\tTASK\tPROCEDURE\tCALLER\tSTATUS\tDURATION\tCREATED AT\n")
 			for _, j := range resp.Msg.GetJobs() {
 				createdAt := "-"
 				if j.GetCreatedAt() != nil {
 					createdAt = j.GetCreatedAt().AsTime().Format("2006-01-02 15:04:05")
 				}
-				sched := "-"
-				if j.GetScheduleInterval() != "" {
-					sched = j.GetScheduleInterval()
-				}
-				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%d ms\t%s\t%s\n",
-					j.GetJobId(), j.GetTaskName(), j.GetProcedure(), j.GetCaller(), j.GetStatus(), j.GetDurationMs(), createdAt, sched)
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%d ms\t%s\n",
+					j.GetJobId(), j.GetTaskName(), j.GetProcedure(), j.GetCaller(), j.GetStatus(), j.GetDurationMs(), createdAt)
 			}
 			return w.Flush()
 		},
@@ -920,11 +888,11 @@ func newJobsCmd() *cobra.Command {
 
 	cmd.AddCommand(&cobra.Command{
 		Use:   "get [job_id]",
-		Short: "Retrieve schedule information and execution details for a job",
+		Short: "Retrieve execution details for a job",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			client := getJobsClient()
-			resp, err := client.GetJob(cmd.Context(), connect.NewRequest(&jobspb.GetJobRequest{
+			client := getOpsClient()
+			resp, err := client.GetJob(cmd.Context(), connect.NewRequest(&pb.GetJobRequest{
 				JobId: args[0],
 			}))
 			if err != nil {
@@ -942,22 +910,17 @@ func newJobsCmd() *cobra.Command {
 			if j.GetCreatedAt() != nil {
 				createdAt = j.GetCreatedAt().AsTime().Format("2006-01-02 15:04:05")
 			}
-			sched := "None"
-			if j.GetScheduleInterval() != "" {
-				sched = j.GetScheduleInterval()
-			}
 
-			fmt.Printf("Job ID:            %s\n", j.GetJobId())
-			fmt.Printf("UUID:              %s\n", j.GetUuid())
-			fmt.Printf("Task Name:         %s\n", j.GetTaskName())
-			fmt.Printf("Procedure:         %s\n", j.GetProcedure())
-			fmt.Printf("Caller:            %s (%s)\n", j.GetCaller(), j.GetCallerType())
-			fmt.Printf("Status:            %s\n", j.GetStatus())
-			fmt.Printf("Duration:          %d ms\n", j.GetDurationMs())
-			fmt.Printf("Created At:        %s\n", createdAt)
-			fmt.Printf("Schedule Interval: %s\n", sched)
+			fmt.Printf("Job ID:        %s\n", j.GetJobId())
+			fmt.Printf("UUID:          %s\n", j.GetUuid())
+			fmt.Printf("Task Name:     %s\n", j.GetTaskName())
+			fmt.Printf("Procedure:     %s\n", j.GetProcedure())
+			fmt.Printf("Caller:        %s (%s)\n", j.GetCaller(), j.GetCallerType())
+			fmt.Printf("Status:        %s\n", j.GetStatus())
+			fmt.Printf("Duration:      %d ms\n", j.GetDurationMs())
+			fmt.Printf("Created At:    %s\n", createdAt)
 			if j.GetErrorMessage() != "" {
-				fmt.Printf("Error Message:     %s\n", j.GetErrorMessage())
+				fmt.Printf("Error Message: %s\n", j.GetErrorMessage())
 			}
 			return nil
 		},

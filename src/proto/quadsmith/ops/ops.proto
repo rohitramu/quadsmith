@@ -24,9 +24,11 @@ service OpsService {
   rpc PurgeSoftDeletedAccounts(PurgeSoftDeletedAccountsRequest) returns (PurgeSoftDeletedAccountsResponse);
   rpc SendUsernameReleaseWarnings(SendUsernameReleaseWarningsRequest) returns (SendUsernameReleaseWarningsResponse);
 
-  // Tasks Inspection & Audit
+  // Tasks, Jobs & Audit
+  rpc GetJob(GetJobRequest) returns (GetJobResponse);
   rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
   rpc ListInternalApiCalls(ListInternalApiCallsRequest) returns (ListInternalApiCallsResponse);
+  rpc ListJobs(ListJobsRequest) returns (ListJobsResponse);
   rpc ListTasks(ListTasksRequest) returns (ListTasksResponse);
 
   // Authentication & IAM
@@ -92,6 +94,19 @@ message JitGrantRecord {
   google.protobuf.Timestamp created_at = 11;
   google.protobuf.Timestamp extended_at = 12;
   google.protobuf.Timestamp revoked_at = 13;
+}
+
+message JobRecord {
+  string uuid = 1;
+  string job_id = 2;
+  string task_name = 3;
+  string procedure = 4;
+  string caller = 5;
+  string caller_type = 6;
+  string status = 7;
+  int64 duration_ms = 8;
+  optional string error_message = 9;
+  google.protobuf.Timestamp created_at = 10;
 }
 
 message TaskDef {
@@ -186,6 +201,14 @@ message GetDatabaseStatsResponse {
   repeated TableStat tables = 3;
 }
 
+message GetJobRequest {
+  string job_id = 1;
+}
+
+message GetJobResponse {
+  JobRecord job = 1;
+}
+
 message GetSystemDiagnosticsRequest {}
 
 message GetSystemDiagnosticsResponse {
@@ -240,6 +263,15 @@ message ListJitGrantsRequest {
 
 message ListJitGrantsResponse {
   repeated JitGrantRecord grants = 1;
+}
+
+message ListJobsRequest {
+  optional int32 limit = 1;
+  optional string task_name = 2;
+}
+
+message ListJobsResponse {
+  repeated JobRecord jobs = 1;
 }
 
 message ListTasksRequest {}
