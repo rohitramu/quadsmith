@@ -29,10 +29,9 @@ func TestAccessTokenSigningAndVerification(t *testing.T) {
 	userUUID := NewUUIDv7()
 	userID := "pilot_apex"
 	email := "alex@example.com"
-	role := "USER"
 	sessionUUID := NewUUIDv7()
 
-	token, err := SignAccessToken(userUUID, userID, email, role, sessionUUID)
+	token, err := SignAccessToken(userUUID, userID, email, sessionUUID)
 	if err != nil {
 		t.Fatalf("SignAccessToken failed: %v", err)
 	}
@@ -51,8 +50,8 @@ func TestAccessTokenSigningAndVerification(t *testing.T) {
 	if claims.Email != email {
 		t.Errorf("expected Email %s, got %s", email, claims.Email)
 	}
-	if claims.Role != role {
-		t.Errorf("expected Role %s, got %s", role, claims.Role)
+	if claims.Role != "USER" {
+		t.Errorf("expected Role USER, got %s", claims.Role)
 	}
 	if claims.SessionUUID != sessionUUID {
 		t.Errorf("expected SessionUUID %s, got %s", sessionUUID, claims.SessionUUID)

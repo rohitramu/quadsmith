@@ -728,109 +728,179 @@ func newTasksCmd() *cobra.Command {
 
 	triggerCmd := &cobra.Command{
 		Use:   "trigger [task_name]",
-		Short: "Immediately trigger execution of a task",
-		Args:  cobra.ExactArgs(1),
+		Short: "Immediately trigger execution of a background task",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			client := getOpsClient()
-			ctx := cmd.Context()
-			taskName := strings.ToLower(strings.TrimSpace(args[0]))
-
-			switch taskName {
-			case "cleanup_expired_otps":
-				resp, err := client.CleanupExpiredOtps(ctx, connect.NewRequest(&pb.CleanupExpiredOtpsRequest{}))
-				if err != nil {
-					return fmt.Errorf("failed to trigger cleanup_expired_otps: %w", err)
-				}
-				if jsonOut {
-					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
-					fmt.Println(string(out))
-					return nil
-				}
-				jobID := resp.Header().Get("X-Job-Id")
-				if jobID != "" {
-					fmt.Printf("✓ Cleaned %d expired OTPs (Job ID: %s)\n", resp.Msg.GetCleanedCount(), jobID)
-				} else {
-					fmt.Printf("✓ Cleaned %d expired OTPs\n", resp.Msg.GetCleanedCount())
-				}
-				return nil
-
-			case "cleanup_expired_tokens":
-				resp, err := client.CleanupExpiredTokens(ctx, connect.NewRequest(&pb.CleanupExpiredTokensRequest{}))
-				if err != nil {
-					return fmt.Errorf("failed to trigger cleanup_expired_tokens: %w", err)
-				}
-				if jsonOut {
-					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
-					fmt.Println(string(out))
-					return nil
-				}
-				jobID := resp.Header().Get("X-Job-Id")
-				if jobID != "" {
-					fmt.Printf("✓ Cleaned %d expired tokens (Job ID: %s)\n", resp.Msg.GetCleanedCount(), jobID)
-				} else {
-					fmt.Printf("✓ Cleaned %d expired tokens\n", resp.Msg.GetCleanedCount())
-				}
-				return nil
-
-			case "cleanup_orphaned_blobs":
-				resp, err := client.CleanupOrphanedBlobs(ctx, connect.NewRequest(&pb.CleanupOrphanedBlobsRequest{}))
-				if err != nil {
-					return fmt.Errorf("failed to trigger cleanup_orphaned_blobs: %w", err)
-				}
-				if jsonOut {
-					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
-					fmt.Println(string(out))
-					return nil
-				}
-				jobID := resp.Header().Get("X-Job-Id")
-				if jobID != "" {
-					fmt.Printf("✓ Cleaned %d orphaned blobs (Job ID: %s)\n", resp.Msg.GetCleanedCount(), jobID)
-				} else {
-					fmt.Printf("✓ Cleaned %d orphaned blobs\n", resp.Msg.GetCleanedCount())
-				}
-				return nil
-
-			case "purge_soft_deleted_accounts":
-				resp, err := client.PurgeSoftDeletedAccounts(ctx, connect.NewRequest(&pb.PurgeSoftDeletedAccountsRequest{}))
-				if err != nil {
-					return fmt.Errorf("failed to trigger purge_soft_deleted_accounts: %w", err)
-				}
-				if jsonOut {
-					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
-					fmt.Println(string(out))
-					return nil
-				}
-				jobID := resp.Header().Get("X-Job-Id")
-				if jobID != "" {
-					fmt.Printf("✓ Purged %d soft-deleted accounts (Job ID: %s)\n", resp.Msg.GetPurgedCount(), jobID)
-				} else {
-					fmt.Printf("✓ Purged %d soft-deleted accounts\n", resp.Msg.GetPurgedCount())
-				}
-				return nil
-
-			case "send_username_release_warnings":
-				resp, err := client.SendUsernameReleaseWarnings(ctx, connect.NewRequest(&pb.SendUsernameReleaseWarningsRequest{}))
-				if err != nil {
-					return fmt.Errorf("failed to trigger send_username_release_warnings: %w", err)
-				}
-				if jsonOut {
-					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
-					fmt.Println(string(out))
-					return nil
-				}
-				jobID := resp.Header().Get("X-Job-Id")
-				if jobID != "" {
-					fmt.Printf("✓ Sent %d username release warnings (Job ID: %s)\n", resp.Msg.GetWarningCount(), jobID)
-				} else {
-					fmt.Printf("✓ Sent %d username release warnings\n", resp.Msg.GetWarningCount())
-				}
-				return nil
-
-			default:
-				return fmt.Errorf("unknown task %q; run 'qsops tasks list' to see available tasks", args[0])
+			if len(args) > 0 {
+				return fmt.Errorf("unknown task subcommand %q; run 'qsops tasks trigger --help' to see available tasks", args[0])
 			}
+			return cmd.Help()
 		},
 	}
+
+	triggerCmd.AddCommand(&cobra.Command{
+		Use:   "cleanup_expired_otps",
+		Short: "Purge used and expired OTPs",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.CleanupExpiredOtps(cmd.Context(), connect.NewRequest(&pb.CleanupExpiredOtpsRequest{}))
+			if err != nil {
+				return fmt.Errorf("failed to trigger cleanup_expired_otps: %w", err)
+			}
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+			jobID := resp.Header().Get("X-Job-Id")
+			if jobID != "" {
+				fmt.Printf("✓ Cleaned %d expired OTPs (Job ID: %s)\n", resp.Msg.GetCleanedCount(), jobID)
+			} else {
+				fmt.Printf("✓ Cleaned %d expired OTPs\n", resp.Msg.GetCleanedCount())
+			}
+			return nil
+		},
+	})
+
+	triggerCmd.AddCommand(&cobra.Command{
+		Use:   "cleanup_expired_tokens",
+		Short: "Purge expired refresh tokens",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.CleanupExpiredTokens(cmd.Context(), connect.NewRequest(&pb.CleanupExpiredTokensRequest{}))
+			if err != nil {
+				return fmt.Errorf("failed to trigger cleanup_expired_tokens: %w", err)
+			}
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+			jobID := resp.Header().Get("X-Job-Id")
+			if jobID != "" {
+				fmt.Printf("✓ Cleaned %d expired tokens (Job ID: %s)\n", resp.Msg.GetCleanedCount(), jobID)
+			} else {
+				fmt.Printf("✓ Cleaned %d expired tokens\n", resp.Msg.GetCleanedCount())
+			}
+			return nil
+		},
+	})
+
+	triggerCmd.AddCommand(&cobra.Command{
+		Use:   "cleanup_orphaned_blobs",
+		Short: "Delete unreferenced blob objects older than 10 minutes",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.CleanupOrphanedBlobs(cmd.Context(), connect.NewRequest(&pb.CleanupOrphanedBlobsRequest{}))
+			if err != nil {
+				return fmt.Errorf("failed to trigger cleanup_orphaned_blobs: %w", err)
+			}
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+			jobID := resp.Header().Get("X-Job-Id")
+			if jobID != "" {
+				fmt.Printf("✓ Cleaned %d orphaned blobs (Job ID: %s)\n", resp.Msg.GetCleanedCount(), jobID)
+			} else {
+				fmt.Printf("✓ Cleaned %d orphaned blobs\n", resp.Msg.GetCleanedCount())
+			}
+			return nil
+		},
+	})
+
+	triggerCmd.AddCommand(&cobra.Command{
+		Use:   "purge_soft_deleted_accounts",
+		Short: "Anonymize and permanently purge soft-deleted user accounts past grace period",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.PurgeSoftDeletedAccounts(cmd.Context(), connect.NewRequest(&pb.PurgeSoftDeletedAccountsRequest{}))
+			if err != nil {
+				return fmt.Errorf("failed to trigger purge_soft_deleted_accounts: %w", err)
+			}
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+			jobID := resp.Header().Get("X-Job-Id")
+			if jobID != "" {
+				fmt.Printf("✓ Purged %d soft-deleted accounts (Job ID: %s)\n", resp.Msg.GetPurgedCount(), jobID)
+			} else {
+				fmt.Printf("✓ Purged %d soft-deleted accounts\n", resp.Msg.GetPurgedCount())
+			}
+			return nil
+		},
+	})
+
+	triggerCmd.AddCommand(&cobra.Command{
+		Use:   "send_username_release_warnings",
+		Short: "Send release warning notifications for archived usernames approaching expiration",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.SendUsernameReleaseWarnings(cmd.Context(), connect.NewRequest(&pb.SendUsernameReleaseWarningsRequest{}))
+			if err != nil {
+				return fmt.Errorf("failed to trigger send_username_release_warnings: %w", err)
+			}
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+			jobID := resp.Header().Get("X-Job-Id")
+			if jobID != "" {
+				fmt.Printf("✓ Sent %d username release warnings (Job ID: %s)\n", resp.Msg.GetWarningCount(), jobID)
+			} else {
+				fmt.Printf("✓ Sent %d username release warnings\n", resp.Msg.GetWarningCount())
+			}
+			return nil
+		},
+	})
+
+	var triggerUser string
+	var triggerRole string
+
+	setUserRoleCmd := &cobra.Command{
+		Use:   "set_user_role",
+		Short: "Update a user account role ('USER' or 'ADMIN')",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if strings.TrimSpace(triggerUser) == "" {
+				return errors.New("--user <username|uuid> is required for set_user_role")
+			}
+			roleUpper := strings.ToUpper(strings.TrimSpace(triggerRole))
+			if roleUpper != "USER" && roleUpper != "ADMIN" {
+				return errors.New("--role must be 'USER' or 'ADMIN'")
+			}
+			client := getOpsClient()
+			resp, err := client.SetUserRole(cmd.Context(), connect.NewRequest(&pb.SetUserRoleRequest{
+				UserId: triggerUser,
+				Role:   roleUpper,
+			}))
+			if err != nil {
+				return fmt.Errorf("failed to trigger set_user_role: %w", err)
+			}
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+			jobID := resp.Header().Get("X-Job-Id")
+			if jobID != "" {
+				fmt.Printf("✓ Updated role for @%s (%s) from %s to %s (Job ID: %s)\n",
+					resp.Msg.GetUsername(), resp.Msg.GetUserUuid(), resp.Msg.GetPreviousRole(), resp.Msg.GetRole(), jobID)
+			} else {
+				fmt.Printf("✓ Updated role for @%s (%s) from %s to %s\n",
+					resp.Msg.GetUsername(), resp.Msg.GetUserUuid(), resp.Msg.GetPreviousRole(), resp.Msg.GetRole())
+			}
+			return nil
+		},
+	}
+	setUserRoleCmd.Flags().StringVar(&triggerUser, "user", "", "Target user identifier (username or UUID)")
+	setUserRoleCmd.Flags().StringVar(&triggerRole, "role", "", "Target role ('USER' or 'ADMIN')")
+	_ = setUserRoleCmd.MarkFlagRequired("user")
+	_ = setUserRoleCmd.MarkFlagRequired("role")
+	triggerCmd.AddCommand(setUserRoleCmd)
+
 	cmd.AddCommand(triggerCmd)
 
 	return cmd

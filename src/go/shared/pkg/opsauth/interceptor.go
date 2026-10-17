@@ -75,7 +75,8 @@ func isTaskMethod(methodName string) bool {
 		"CleanupExpiredTokens",
 		"CleanupOrphanedBlobs",
 		"PurgeSoftDeletedAccounts",
-		"SendUsernameReleaseWarnings":
+		"SendUsernameReleaseWarnings",
+		"SetUserRole":
 		return true
 	default:
 		return false
@@ -113,8 +114,11 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 			return nil, err
 		}
 
-		// 3. JIT Elevation Check (applies only to HUMAN operators on sensitive methods)
-		if opCtx.OperatorType == "HUMAN" && in.isSensitiveMethod(methodName) {
+		// 3. JIT Elevation Check (sensitive methods require HUMAN operator and active JIT grant)
+		if in.isSensitiveMethod(methodName) {
+			if opCtx.OperatorType != "HUMAN" {
+				return nil, connect.NewError(connect.CodePermissionDenied, errors.New("sensitive procedure requires a HUMAN operator"))
+			}
 			grantUUID, grantID, err := in.checkJitGrant(ctx, opCtx.Operator, methodName)
 			if err != nil {
 				return nil, err

@@ -46,6 +46,11 @@ export const purgeSoftDeletedAccounts = OpsService.method.purgeSoftDeletedAccoun
 export const sendUsernameReleaseWarnings = OpsService.method.sendUsernameReleaseWarnings;
 
 /**
+ * @generated from rpc quadsmith.ops.OpsService.SetUserRole
+ */
+export const setUserRole = OpsService.method.setUserRole;
+
+/**
  * Tasks, Jobs & Audit
  *
  * @generated from rpc quadsmith.ops.OpsService.GetJob

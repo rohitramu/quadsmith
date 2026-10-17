@@ -136,12 +136,13 @@ history inspection RPCs are defined on
 [`OpsService`](../../src/proto/quadsmith/ops/ops.proto):
 
 ```protobuf
-// Maintenance & Cleanup Tasks
+// Maintenance & Operational Tasks
 rpc CleanupExpiredOtps(CleanupExpiredOtpsRequest) returns (CleanupExpiredOtpsResponse);
 rpc CleanupExpiredTokens(CleanupExpiredTokensRequest) returns (CleanupExpiredTokensResponse);
 rpc CleanupOrphanedBlobs(CleanupOrphanedBlobsRequest) returns (CleanupOrphanedBlobsResponse);
 rpc PurgeSoftDeletedAccounts(PurgeSoftDeletedAccountsRequest) returns (PurgeSoftDeletedAccountsResponse);
 rpc SendUsernameReleaseWarnings(SendUsernameReleaseWarningsRequest) returns (SendUsernameReleaseWarningsResponse);
+rpc SetUserRole(SetUserRoleRequest) returns (SetUserRoleResponse);
 
 // Tasks Inspection
 rpc ListTasks(ListTasksRequest) returns (ListTasksResponse);
@@ -152,13 +153,13 @@ rpc GetJob(GetJobRequest) returns (GetJobResponse);
 rpc ListJobs(ListJobsRequest) returns (ListJobsResponse);
 ```
 
-When any of the five task RPCs is executed on `server-ops`, the shared
+When any of the task RPCs is executed on `server-ops`, the shared
 [`OpsInterceptor`](../../src/go/shared/pkg/opsauth/interceptor.go) synchronously
 writes the job execution audit record to `quadsmith_ops.internal_api_calls` and
 returns the generated job identifier in the `X-Job-Id` response header.
 Read-only inspection calls (`ListTasks`, `GetTask`, `ListJobs`, `GetJob`) do not
 emit `X-Job-Id` headers and are filtered out of job history queries via
-`WHERE method IN (...)` for the five task procedures.
+`WHERE method IN (...)` for the registered task procedures.
 
 #### <a id="task-and-job-messages" >Task and Job Messages</a>
 
@@ -427,8 +428,10 @@ In
 - `qsops tasks get <task-name>`: Calls `OpsService.GetTask`, displaying the full
   description, target procedure, and default schedule.
 - `qsops tasks trigger <task-name>`: Calls the dedicated typed RPC on
-  `OpsService` (e.g., `CleanupExpiredOtps`, `PurgeSoftDeletedAccounts`),
-  outputting the execution result and generated job ID (`X-Job-Id`).
+  `OpsService` (e.g., `CleanupExpiredOtps`, `PurgeSoftDeletedAccounts`, or
+  `SetUserRole` via `--user <id|uuid> --role <USER|ADMIN>`), outputting the
+  execution result and generated job ID (`X-Job-Id`). Parameterized role changes
+  require active JIT elevation and are strictly restricted to `HUMAN` operators.
 
 #### <a id="jobs-commands" >2. Jobs Commands (`qsops jobs` -> targets `OpsService` on `server-ops`)</a>
 

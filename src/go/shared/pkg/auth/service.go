@@ -1188,7 +1188,6 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 
 	userUUID := NewUUIDv7()
 	now := time.Now()
-	role := "USER"
 
 	tx, err := s.db.Begin(ctx)
 	if err != nil {
@@ -1197,9 +1196,9 @@ func (s *AuthService) CompleteAccountSetup(ctx context.Context, req *connect.Req
 	defer tx.Rollback(ctx)
 
 	_, err = tx.Exec(ctx, `
-		INSERT INTO users (uuid, id, role, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, $4)`,
-		userUUID, username, role, now)
+		INSERT INTO users (uuid, id, created_at, updated_at)
+		VALUES ($1, $2, $3, $3)`,
+		userUUID, username, now)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user: %w", err))
 	}
@@ -1485,7 +1484,7 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 		profile.UpdatedAt = timestamppb.New(*profileUpdatedAt)
 	}
 
-	accessToken, err := SignAccessToken(userUUID, username, email, role, sessionUUID)
+	accessToken, err := SignAccessToken(userUUID, username, email, sessionUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -3579,9 +3578,9 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, userAgent, cl
 		now := time.Now()
 
 		_, err = s.db.Exec(ctx, `
-			INSERT INTO users (uuid, id, role, created_at, updated_at)
-			VALUES ($1, $2, $3, $4, $4)`,
-			userUUID, username, role, now)
+			INSERT INTO users (uuid, id, created_at, updated_at)
+			VALUES ($1, $2, $3, $3)`,
+			userUUID, username, now)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create user: %w", err))
 		}
@@ -3663,7 +3662,7 @@ func (s *AuthService) issueAuthSession(ctx context.Context, email, userAgent, cl
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to save session: %w", err))
 	}
 
-	accessToken, err := SignAccessToken(userUUID, username, user.Email, role, sessionUUID)
+	accessToken, err := SignAccessToken(userUUID, username, user.Email, sessionUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign access token: %w", err))
 	}
@@ -4217,11 +4216,11 @@ func (s *UserService) BanUser(ctx context.Context, req *connect.Request[pb.BanUs
 	}
 	internalNotes := strings.TrimSpace(req.Msg.GetInternalNotes())
 
-	var targetUUID, targetRole, targetHandle string
+	var targetUUID, targetHandle string
 	err := s.db.QueryRow(ctx, `
-		SELECT uuid, role, id FROM users
+		SELECT uuid, id FROM users
 		WHERE LOWER(id) = LOWER($1) OR uuid::text = $1
-		LIMIT 1`, targetID).Scan(&targetUUID, &targetRole, &targetHandle)
+		LIMIT 1`, targetID).Scan(&targetUUID, &targetHandle)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, connect.NewError(connect.CodeNotFound, errors.New("target user not found"))
@@ -4231,9 +4230,6 @@ func (s *UserService) BanUser(ctx context.Context, req *connect.Request[pb.BanUs
 
 	if targetUUID == userCtx.UserUUID {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("cannot ban yourself"))
-	}
-	if targetRole == "ADMIN" {
-		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot ban an administrator"))
 	}
 
 	existingBan, err := getActiveBanForUser(ctx, s.db, targetUUID)
@@ -4264,6 +4260,14 @@ func (s *UserService) BanUser(ctx context.Context, req *connect.Request[pb.BanUs
 		banUUID, targetUUID, userCtx.UserUUID, reason, internalNotes, expiresAt, now)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to insert ban: %w", err))
+	}
+
+	_, err = tx.Exec(ctx, `
+		UPDATE users
+		SET role = 'USER', updated_at = $2
+		WHERE uuid = $1::uuid`, targetUUID, now)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to demote banned user: %w", err))
 	}
 
 	rows, err := tx.Query(ctx, `SELECT email FROM user_emails WHERE user_uuid = $1`, targetUUID)

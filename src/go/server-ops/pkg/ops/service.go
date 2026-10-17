@@ -154,6 +154,86 @@ func (s *OpsService) SendUsernameReleaseWarnings(ctx context.Context, _ *connect
 	return connect.NewResponse(&pb.SendUsernameReleaseWarningsResponse{WarningCount: count}), nil
 }
 
+func (s *OpsService) SetUserRole(ctx context.Context, req *connect.Request[pb.SetUserRoleRequest]) (*connect.Response[pb.SetUserRoleResponse], error) {
+	opCtx := opsauth.OperatorContextFromContext(ctx)
+	if opCtx == nil || opCtx.GroupName == "unauthenticated" || opCtx.OperatorType == "UNKNOWN" {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+	if opCtx.OperatorType != "HUMAN" {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("sensitive procedure requires a HUMAN operator"))
+	}
+
+	userID := req.Msg.GetUserId()
+	if strings.TrimSpace(userID) == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("user identifier is required"))
+	}
+
+	targetRole := strings.ToUpper(strings.TrimSpace(req.Msg.GetRole()))
+	if targetRole != "USER" && targetRole != "ADMIN" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("invalid role %q: role must be USER or ADMIN", req.Msg.GetRole()))
+	}
+
+	tx, err := s.publicDb.Begin(ctx)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to begin transaction: %w", err))
+	}
+	defer func() { _ = tx.Rollback(ctx) }()
+
+	var userUUID, username, previousRole string
+	var deletedAt *time.Time
+	err = tx.QueryRow(ctx, `
+		SELECT uuid::text, id, role, deleted_at
+		FROM users
+		WHERE id = $1 OR uuid::text = $1
+		FOR UPDATE`, userID).Scan(&userUUID, &username, &previousRole, &deletedAt)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user %q not found", userID))
+		}
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to query user: %w", err))
+	}
+
+	if deletedAt != nil {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("cannot change role of a soft-deleted user"))
+	}
+
+	if targetRole == "ADMIN" {
+		var hasActiveBan bool
+		err = tx.QueryRow(ctx, `
+			SELECT EXISTS (
+				SELECT 1 FROM bans
+				WHERE user_uuid = $1::uuid
+				  AND revoked_at IS NULL
+				  AND (expires_at IS NULL OR expires_at > NOW())
+			)`, userUUID).Scan(&hasActiveBan)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to check active ban: %w", err))
+		}
+		if hasActiveBan {
+			return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("cannot promote a banned user to ADMIN; revoke the active ban first"))
+		}
+	}
+
+	_, err = tx.Exec(ctx, `
+		UPDATE users
+		SET role = $1, updated_at = NOW()
+		WHERE uuid = $2::uuid`, targetRole, userUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to update user role: %w", err))
+	}
+
+	if err := tx.Commit(ctx); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to commit transaction: %w", err))
+	}
+
+	return connect.NewResponse(&pb.SetUserRoleResponse{
+		UserUuid:     userUUID,
+		Username:     username,
+		PreviousRole: previousRole,
+		Role:         targetRole,
+	}), nil
+}
+
 // ---------------------------------------------------------
 // Tasks, Jobs & Audit
 // ---------------------------------------------------------
@@ -188,6 +268,12 @@ var taskCatalog = []*pb.TaskDef{
 		Procedure:       "SendUsernameReleaseWarnings",
 		Description:     "Sends release warning notifications for archived usernames approaching their 30-day hold expiration",
 		DefaultInterval: "24h",
+	},
+	{
+		Name:            "set_user_role",
+		Procedure:       "SetUserRole",
+		Description:     "Updates a user account role ('USER' or 'ADMIN')",
+		DefaultInterval: "manual",
 	},
 }
 
@@ -245,7 +331,8 @@ func (s *OpsService) ListJobs(ctx context.Context, req *connect.Request[pb.ListJ
 			'CleanupExpiredTokens',
 			'CleanupOrphanedBlobs',
 			'PurgeSoftDeletedAccounts',
-			'SendUsernameReleaseWarnings'
+			'SendUsernameReleaseWarnings',
+			'SetUserRole'
 		  )
 		ORDER BY created_at DESC
 		LIMIT $2`
@@ -301,7 +388,7 @@ func (s *OpsService) GetJob(ctx context.Context, req *connect.Request[pb.GetJobR
 		SELECT uuid::text, id, method, caller, caller_type, status, duration_ms, error_message, created_at
 		FROM internal_api_calls
 		WHERE (id = $1 OR uuid::text = $1)
-		  AND method IN ('CleanupExpiredOtps', 'CleanupExpiredTokens', 'CleanupOrphanedBlobs', 'PurgeSoftDeletedAccounts', 'SendUsernameReleaseWarnings')
+		  AND method IN ('CleanupExpiredOtps', 'CleanupExpiredTokens', 'CleanupOrphanedBlobs', 'PurgeSoftDeletedAccounts', 'SendUsernameReleaseWarnings', 'SetUserRole')
 		LIMIT 1`
 
 	var uuid, id, method, caller, callerType, status string

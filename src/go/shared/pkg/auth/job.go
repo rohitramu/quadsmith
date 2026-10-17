@@ -152,9 +152,9 @@ func HandlePurgeSoftDeletedAccounts(ctx context.Context, pool *pgxpool.Pool) (in
 			continue
 		}
 
-		// 1. Anonymize user handle, releasing original username to the public pool
+		// 1. Anonymize user handle, releasing original username to the public pool, and reset role to 'USER'
 		newHandle := "deleted-" + u.uuid
-		_, err = tx.Exec(ctx, `UPDATE users SET id = $1, updated_at = NOW() WHERE uuid = $2`, newHandle, u.uuid)
+		_, err = tx.Exec(ctx, `UPDATE users SET id = $1, role = 'USER', updated_at = NOW() WHERE uuid = $2`, newHandle, u.uuid)
 		if err != nil {
 			_ = tx.Rollback(ctx)
 			log.Printf("[PurgeJob] Failed to anonymize user %s: %v", u.uuid, err)

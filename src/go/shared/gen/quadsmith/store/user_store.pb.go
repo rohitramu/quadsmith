@@ -1508,13 +1508,13 @@ func ExportRefreshTokens(ctx context.Context, db *pgxpool.Pool, userUUID string)
 }
 
 func CreateUser(ctx context.Context, tx pgx.Tx, m *User) error {
-	query := `INSERT INTO users (uuid, id, role, last_renamed_at, deleted_at, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6, $7)`
+	query := `INSERT INTO users (uuid, id, last_renamed_at, deleted_at, created_at, updated_at) VALUES ($1, $2, $3, $4, $5, $6)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
 		}
 		return s
-	}(m.Uuid), m.Id, m.Role, func(ts *timestamppb.Timestamp) interface{} {
+	}(m.Uuid), m.Id, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}
@@ -1614,8 +1614,8 @@ func GetUser(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []stri
 }
 
 func UpdateUser(ctx context.Context, tx pgx.Tx, m *User) error {
-	query := `UPDATE users SET role = $2, last_renamed_at = $3, deleted_at = $4, created_at = $5, updated_at = $6 WHERE uuid = $1`
-	_, err := tx.Exec(ctx, query, m.Uuid, m.Role, func(ts *timestamppb.Timestamp) interface{} {
+	query := `UPDATE users SET last_renamed_at = $2, deleted_at = $3, created_at = $4, updated_at = $5 WHERE uuid = $1`
+	_, err := tx.Exec(ctx, query, m.Uuid, func(ts *timestamppb.Timestamp) interface{} {
 		if ts == nil {
 			return nil
 		}

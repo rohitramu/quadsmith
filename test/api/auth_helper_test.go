@@ -38,7 +38,6 @@ func TestMain(m *testing.M) {
 		"018f0000-0000-7000-8000-000000000001",
 		"test_pilot",
 		"pilot@example.com",
-		"user",
 		"test-session-uuid",
 	)
 	if err != nil {
@@ -65,8 +64,8 @@ func TestMain(m *testing.M) {
 	if pool, err := pgxpool.New(ctx, dbUrl); err == nil {
 		if err := pool.Ping(ctx); err == nil {
 			_, _ = pool.Exec(ctx, `
-				INSERT INTO users (uuid, id, role, created_at, updated_at)
-				VALUES ($1, $2, 'user', NOW(), NOW())
+				INSERT INTO users (uuid, id, created_at, updated_at)
+				VALUES ($1, $2, NOW(), NOW())
 				ON CONFLICT (uuid) DO NOTHING`,
 				"018f0000-0000-7000-8000-000000000001", "test_pilot")
 			_, _ = pool.Exec(ctx, `

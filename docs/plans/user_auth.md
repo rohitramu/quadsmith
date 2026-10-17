@@ -145,15 +145,21 @@ Traditional password-based authentication with salt and bcrypt hashing.
 Session state uses a two-tier token model:
 
 - **Access Token (JWT, 1-hour TTL)**: Signed using a server secret (HMAC-SHA256
-  or asymmetric Ed25519). Validated purely by cryptographic signature without
-  hitting the database, enabling low-latency API verification across distributed
-  microservices.
+  or asymmetric Ed25519). Validated by cryptographic signature. To ensure
+  instant enforcement of administrative promotions and demotions without waiting
+  for token expiry, access token claims intentionally omit the user's role;
+  instead, role permissions are dynamically hydrated live from `users.role` in
+  PostgreSQL during request authentication.
 - **Refresh Token (DB-Stored, 30-day TTL)**: An opaque cryptographically random
   256-bit secret stored as a SHA-256 hash in the `refresh_tokens` table. Used
   exclusively at `/auth/refresh` to issue new JWT access tokens.
 - **Revocation**: Deleting a user's refresh token rows instantly terminates
   their ability to obtain new access tokens, forcing re-authentication once the
   current 1-hour JWT expires.
+- **Role Immutability in Store**: In PostgreSQL, `users.role` defaults to
+  `'USER'` with a `CHECK (role IN ('USER', 'ADMIN'))` constraint and is marked
+  `read_only: true` in store codegen, guaranteeing that role mutations occur
+  strictly via the audited `set_user_role` ops task.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>

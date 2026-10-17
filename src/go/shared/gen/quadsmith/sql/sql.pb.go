@@ -186,7 +186,9 @@ type ColumnOptions struct {
 	// Custom SQL column type override.
 	ColumnType string `protobuf:"bytes,6,opt,name=column_type,json=columnType,proto3" json:"column_type,omitempty"`
 	// Default value expression for the column (e.g., "4", "'pending'", "NOW()").
-	DefaultValue  string `protobuf:"bytes,7,opt,name=default_value,json=defaultValue,proto3" json:"default_value,omitempty"`
+	DefaultValue string `protobuf:"bytes,7,opt,name=default_value,json=defaultValue,proto3" json:"default_value,omitempty"`
+	// Marks this column as read-only for store generation (omitted from INSERT and UPDATE).
+	ReadOnly      bool `protobuf:"varint,8,opt,name=read_only,json=readOnly,proto3" json:"read_only,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -270,6 +272,13 @@ func (x *ColumnOptions) GetDefaultValue() string {
 	return ""
 }
 
+func (x *ColumnOptions) GetReadOnly() bool {
+	if x != nil {
+		return x.ReadOnly
+	}
+	return false
+}
+
 var file_quadsmith_sql_sql_proto_extTypes = []protoimpl.ExtensionInfo{
 	{
 		ExtendedType:  (*descriptorpb.MessageOptions)(nil),
@@ -319,7 +328,7 @@ const file_quadsmith_sql_sql_proto_rawDesc = "" +
 	"\vUniqueIndex\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
 	"\acolumns\x18\x02 \x01(\tR\acolumns\x12\x14\n" +
-	"\x05where\x18\x03 \x01(\tR\x05where\"\xef\x01\n" +
+	"\x05where\x18\x03 \x01(\tR\x05where\"\x8c\x02\n" +
 	"\rColumnOptions\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12$\n" +
 	"\x0eis_primary_key\x18\x02 \x01(\bR\fisPrimaryKey\x12\x1e\n" +
@@ -330,7 +339,8 @@ const file_quadsmith_sql_sql_proto_rawDesc = "" +
 	"\fcreate_index\x18\x05 \x01(\bR\vcreateIndex\x12\x1f\n" +
 	"\vcolumn_type\x18\x06 \x01(\tR\n" +
 	"columnType\x12#\n" +
-	"\rdefault_value\x18\a \x01(\tR\fdefaultValue:T\n" +
+	"\rdefault_value\x18\a \x01(\tR\fdefaultValue\x12\x1b\n" +
+	"\tread_only\x18\b \x01(\bR\breadOnly:T\n" +
 	"\x05table\x12\x1f.google.protobuf.MessageOptions\x18\xb8\x8e\x03 \x01(\v2\x1b.quadsmith.sql.TableOptionsR\x05table:U\n" +
 	"\x06column\x12\x1d.google.protobuf.FieldOptions\x18\xb8\x8e\x03 \x01(\v2\x1c.quadsmith.sql.ColumnOptionsR\x06columnB(Z&quadsmith/shared/gen/quadsmith/sql;sqlb\x06proto3"
 

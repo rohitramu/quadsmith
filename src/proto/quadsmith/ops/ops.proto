@@ -23,6 +23,7 @@ service OpsService {
   rpc CleanupOrphanedBlobs(CleanupOrphanedBlobsRequest) returns (CleanupOrphanedBlobsResponse);
   rpc PurgeSoftDeletedAccounts(PurgeSoftDeletedAccountsRequest) returns (PurgeSoftDeletedAccountsResponse);
   rpc SendUsernameReleaseWarnings(SendUsernameReleaseWarningsRequest) returns (SendUsernameReleaseWarningsResponse);
+  rpc SetUserRole(SetUserRoleRequest) returns (SetUserRoleResponse);
 
   // Tasks, Jobs & Audit
   rpc GetJob(GetJobRequest) returns (GetJobResponse);
@@ -306,6 +307,18 @@ message SendUsernameReleaseWarningsRequest {}
 
 message SendUsernameReleaseWarningsResponse {
   int64 warning_count = 1;
+}
+
+message SetUserRoleRequest {
+  string user_id = 1; // Username (id) or UUID
+  string role = 2; // Target role: "USER" or "ADMIN"
+}
+
+message SetUserRoleResponse {
+  string user_uuid = 1;
+  string username = 2;
+  string previous_role = 3;
+  string role = 4;
 }
 
 // ---------------------------------------------------------

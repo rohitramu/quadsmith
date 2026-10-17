@@ -188,6 +188,13 @@ func AuthenticateHTTPRequest(ctx context.Context, pool *pgxpool.Pool, r *http.Re
 	if strings.HasPrefix(strings.ToLower(authHeader), "bearer ") {
 		tokenStr := strings.TrimSpace(authHeader[7:])
 		if claims, err := VerifyAccessToken(tokenStr); err == nil && claims != nil {
+			if pool != nil {
+				var role string
+				err := pool.QueryRow(ctx, `SELECT role FROM users WHERE uuid::text = $1`, claims.UserUUID).Scan(&role)
+				if err == nil && role != "" {
+					claims.Role = role
+				}
+			}
 			return claims
 		}
 	}

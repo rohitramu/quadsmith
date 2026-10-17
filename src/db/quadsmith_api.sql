@@ -349,7 +349,8 @@ CREATE TABLE IF NOT EXISTS users (
   last_renamed_at TIMESTAMPTZ,
   deleted_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ,
-  updated_at TIMESTAMPTZ
+  updated_at TIMESTAMPTZ,
+  CHECK (role IN ('USER', 'ADMIN'))
 );
 
 CREATE INDEX IF NOT EXISTS idx_users_id ON users (id);

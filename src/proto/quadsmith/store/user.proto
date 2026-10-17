@@ -200,7 +200,10 @@ message RefreshToken {
 }
 
 message User {
-  option (quadsmith.sql.table) = {name: "users"};
+  option (quadsmith.sql.table) = {
+    name: "users"
+    checks: "role IN ('USER', 'ADMIN')"
+  };
   option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_ACCOUNT};
 
   string uuid = 1 [
@@ -232,7 +235,10 @@ message User {
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
   ];
   string role = 4 [
-    (quadsmith.sql.column) = {default_value: "'USER'"},
+    (quadsmith.sql.column) = {
+      default_value: "'USER'"
+      read_only: true
+    },
     (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ]; // "USER", "ADMIN"
   google.protobuf.Timestamp last_renamed_at = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];

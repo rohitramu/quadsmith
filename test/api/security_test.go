@@ -69,7 +69,7 @@ func TestSandboxSecurity_CreateBuildOwnershipEnforcement(t *testing.T) {
 	attackerUsername := "victim_target"
 	clientProvidedUUID := "01920000-0000-7000-8000-111111111111"
 
-	token, err := auth.SignAccessToken("018f0000-0000-7000-8000-000000000001", "test_pilot", "pilot@example.com", "user", "session-1")
+	token, err := auth.SignAccessToken("018f0000-0000-7000-8000-000000000001", "test_pilot", "pilot@example.com", "session-1")
 	if err != nil {
 		t.Fatalf("SignAccessToken failed: %v", err)
 	}
@@ -216,7 +216,7 @@ func TestSandboxSecurity_GetUserRequiresAuthorization(t *testing.T) {
 		t.Errorf("expected CodeUnauthenticated for unauthenticated GetUser, got %v: %v", connect.CodeOf(err), err)
 	}
 
-	token, err := auth.SignAccessToken("018f0000-0000-7000-8000-000000000001", "test_pilot", "pilot@example.com", "user", "session-1")
+	token, err := auth.SignAccessToken("018f0000-0000-7000-8000-000000000001", "test_pilot", "pilot@example.com", "session-1")
 	if err != nil {
 		t.Fatalf("SignAccessToken failed: %v", err)
 	}

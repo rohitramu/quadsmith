@@ -492,6 +492,15 @@ message GetUserBanStatusResponse {
 }
 ```
 
+When `BanUser` executes, the database transaction atomically resets the target
+user's role to `'USER'`
+(`UPDATE users SET role = 'USER', updated_at = NOW() WHERE uuid = $1`) alongside
+inserting the ban and snapshotting emails into `banned_emails`. Any
+administrative privileges (`role = 'ADMIN'`) are immediately stripped upon
+suspension. Even if the ban later expires or is revoked via `UpdateBan`, the
+account remains at `role = 'USER'`; reinstating `ADMIN` privileges requires an
+explicit operator promotion via the `set_user_role` ops task.
+
 <details>
 <summary><strong>Alternatives considered</strong></summary>
 

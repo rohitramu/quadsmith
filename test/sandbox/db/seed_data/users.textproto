@@ -2,7 +2,6 @@ users: {
   uuid: "018f0000-0000-7000-8000-000000000001"
   id: "test_pilot"
   email: "pilot@example.com"
-  role: "user"
   bio: "E2E Test Account"
   reputation_score: 150
 }
@@ -10,7 +9,6 @@ users: {
   uuid: "018f0000-0000-7000-8000-000000000010"
   id: "alex"
   email: "alex@quadsmith.dev"
-  role: "user"
   bio: "Community Builder"
   reputation_score: 250
 }

@@ -54,6 +54,8 @@ const (
 	// OpsServiceSendUsernameReleaseWarningsProcedure is the fully-qualified name of the OpsService's
 	// SendUsernameReleaseWarnings RPC.
 	OpsServiceSendUsernameReleaseWarningsProcedure = "/quadsmith.ops.OpsService/SendUsernameReleaseWarnings"
+	// OpsServiceSetUserRoleProcedure is the fully-qualified name of the OpsService's SetUserRole RPC.
+	OpsServiceSetUserRoleProcedure = "/quadsmith.ops.OpsService/SetUserRole"
 	// OpsServiceGetJobProcedure is the fully-qualified name of the OpsService's GetJob RPC.
 	OpsServiceGetJobProcedure = "/quadsmith.ops.OpsService/GetJob"
 	// OpsServiceGetTaskProcedure is the fully-qualified name of the OpsService's GetTask RPC.
@@ -111,6 +113,7 @@ type OpsServiceClient interface {
 	CleanupOrphanedBlobs(context.Context, *connect.Request[ops.CleanupOrphanedBlobsRequest]) (*connect.Response[ops.CleanupOrphanedBlobsResponse], error)
 	PurgeSoftDeletedAccounts(context.Context, *connect.Request[ops.PurgeSoftDeletedAccountsRequest]) (*connect.Response[ops.PurgeSoftDeletedAccountsResponse], error)
 	SendUsernameReleaseWarnings(context.Context, *connect.Request[ops.SendUsernameReleaseWarningsRequest]) (*connect.Response[ops.SendUsernameReleaseWarningsResponse], error)
+	SetUserRole(context.Context, *connect.Request[ops.SetUserRoleRequest]) (*connect.Response[ops.SetUserRoleResponse], error)
 	// Tasks, Jobs & Audit
 	GetJob(context.Context, *connect.Request[ops.GetJobRequest]) (*connect.Response[ops.GetJobResponse], error)
 	GetTask(context.Context, *connect.Request[ops.GetTaskRequest]) (*connect.Response[ops.GetTaskResponse], error)
@@ -184,6 +187,12 @@ func NewOpsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 			httpClient,
 			baseURL+OpsServiceSendUsernameReleaseWarningsProcedure,
 			connect.WithSchema(opsServiceMethods.ByName("SendUsernameReleaseWarnings")),
+			connect.WithClientOptions(opts...),
+		),
+		setUserRole: connect.NewClient[ops.SetUserRoleRequest, ops.SetUserRoleResponse](
+			httpClient,
+			baseURL+OpsServiceSetUserRoleProcedure,
+			connect.WithSchema(opsServiceMethods.ByName("SetUserRole")),
 			connect.WithClientOptions(opts...),
 		),
 		getJob: connect.NewClient[ops.GetJobRequest, ops.GetJobResponse](
@@ -294,6 +303,7 @@ type opsServiceClient struct {
 	cleanupOrphanedBlobs        *connect.Client[ops.CleanupOrphanedBlobsRequest, ops.CleanupOrphanedBlobsResponse]
 	purgeSoftDeletedAccounts    *connect.Client[ops.PurgeSoftDeletedAccountsRequest, ops.PurgeSoftDeletedAccountsResponse]
 	sendUsernameReleaseWarnings *connect.Client[ops.SendUsernameReleaseWarningsRequest, ops.SendUsernameReleaseWarningsResponse]
+	setUserRole                 *connect.Client[ops.SetUserRoleRequest, ops.SetUserRoleResponse]
 	getJob                      *connect.Client[ops.GetJobRequest, ops.GetJobResponse]
 	getTask                     *connect.Client[ops.GetTaskRequest, ops.GetTaskResponse]
 	listInternalApiCalls        *connect.Client[ops.ListInternalApiCallsRequest, ops.ListInternalApiCallsResponse]
@@ -345,6 +355,11 @@ func (c *opsServiceClient) PurgeSoftDeletedAccounts(ctx context.Context, req *co
 // SendUsernameReleaseWarnings calls quadsmith.ops.OpsService.SendUsernameReleaseWarnings.
 func (c *opsServiceClient) SendUsernameReleaseWarnings(ctx context.Context, req *connect.Request[ops.SendUsernameReleaseWarningsRequest]) (*connect.Response[ops.SendUsernameReleaseWarningsResponse], error) {
 	return c.sendUsernameReleaseWarnings.CallUnary(ctx, req)
+}
+
+// SetUserRole calls quadsmith.ops.OpsService.SetUserRole.
+func (c *opsServiceClient) SetUserRole(ctx context.Context, req *connect.Request[ops.SetUserRoleRequest]) (*connect.Response[ops.SetUserRoleResponse], error) {
+	return c.setUserRole.CallUnary(ctx, req)
 }
 
 // GetJob calls quadsmith.ops.OpsService.GetJob.
@@ -439,6 +454,7 @@ type OpsServiceHandler interface {
 	CleanupOrphanedBlobs(context.Context, *connect.Request[ops.CleanupOrphanedBlobsRequest]) (*connect.Response[ops.CleanupOrphanedBlobsResponse], error)
 	PurgeSoftDeletedAccounts(context.Context, *connect.Request[ops.PurgeSoftDeletedAccountsRequest]) (*connect.Response[ops.PurgeSoftDeletedAccountsResponse], error)
 	SendUsernameReleaseWarnings(context.Context, *connect.Request[ops.SendUsernameReleaseWarningsRequest]) (*connect.Response[ops.SendUsernameReleaseWarningsResponse], error)
+	SetUserRole(context.Context, *connect.Request[ops.SetUserRoleRequest]) (*connect.Response[ops.SetUserRoleResponse], error)
 	// Tasks, Jobs & Audit
 	GetJob(context.Context, *connect.Request[ops.GetJobRequest]) (*connect.Response[ops.GetJobResponse], error)
 	GetTask(context.Context, *connect.Request[ops.GetTaskRequest]) (*connect.Response[ops.GetTaskResponse], error)
@@ -508,6 +524,12 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 		OpsServiceSendUsernameReleaseWarningsProcedure,
 		svc.SendUsernameReleaseWarnings,
 		connect.WithSchema(opsServiceMethods.ByName("SendUsernameReleaseWarnings")),
+		connect.WithHandlerOptions(opts...),
+	)
+	opsServiceSetUserRoleHandler := connect.NewUnaryHandler(
+		OpsServiceSetUserRoleProcedure,
+		svc.SetUserRole,
+		connect.WithSchema(opsServiceMethods.ByName("SetUserRole")),
 		connect.WithHandlerOptions(opts...),
 	)
 	opsServiceGetJobHandler := connect.NewUnaryHandler(
@@ -622,6 +644,8 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 			opsServicePurgeSoftDeletedAccountsHandler.ServeHTTP(w, r)
 		case OpsServiceSendUsernameReleaseWarningsProcedure:
 			opsServiceSendUsernameReleaseWarningsHandler.ServeHTTP(w, r)
+		case OpsServiceSetUserRoleProcedure:
+			opsServiceSetUserRoleHandler.ServeHTTP(w, r)
 		case OpsServiceGetJobProcedure:
 			opsServiceGetJobHandler.ServeHTTP(w, r)
 		case OpsServiceGetTaskProcedure:
@@ -689,6 +713,10 @@ func (UnimplementedOpsServiceHandler) PurgeSoftDeletedAccounts(context.Context, 
 
 func (UnimplementedOpsServiceHandler) SendUsernameReleaseWarnings(context.Context, *connect.Request[ops.SendUsernameReleaseWarningsRequest]) (*connect.Response[ops.SendUsernameReleaseWarningsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.SendUsernameReleaseWarnings is not implemented"))
+}
+
+func (UnimplementedOpsServiceHandler) SetUserRole(context.Context, *connect.Request[ops.SetUserRoleRequest]) (*connect.Response[ops.SetUserRoleResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.SetUserRole is not implemented"))
 }
 
 func (UnimplementedOpsServiceHandler) GetJob(context.Context, *connect.Request[ops.GetJobRequest]) (*connect.Response[ops.GetJobResponse], error) {

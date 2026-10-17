@@ -12,7 +12,7 @@ test.describe("Administrative Ban Lockout & Account Deletion Flows", () => {
         body: JSON.stringify({
           uuid: "018f0000-0000-7000-8000-000000000001",
           id: "banned_pilot",
-          role: "user",
+          role: "USER",
           email: "banned@example.com",
           activeBan: {
             uuid: "ban-uuid-12345",
@@ -35,7 +35,7 @@ test.describe("Administrative Ban Lockout & Account Deletion Flows", () => {
           user: {
             uuid: "018f0000-0000-7000-8000-000000000001",
             id: "banned_pilot",
-            role: "user",
+            role: "USER",
             email: "banned@example.com",
             activeBan: {
               uuid: "ban-uuid-12345",

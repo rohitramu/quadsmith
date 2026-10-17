@@ -1166,9 +1166,8 @@ type SeedUser struct {
 	Uuid            string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	Id              string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	Email           string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
-	Role            string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`
-	Bio             string                 `protobuf:"bytes,5,opt,name=bio,proto3" json:"bio,omitempty"`
-	ReputationScore int32                  `protobuf:"varint,6,opt,name=reputation_score,json=reputationScore,proto3" json:"reputation_score,omitempty"`
+	Bio             string                 `protobuf:"bytes,4,opt,name=bio,proto3" json:"bio,omitempty"`
+	ReputationScore int32                  `protobuf:"varint,5,opt,name=reputation_score,json=reputationScore,proto3" json:"reputation_score,omitempty"`
 	unknownFields   protoimpl.UnknownFields
 	sizeCache       protoimpl.SizeCache
 }
@@ -1220,13 +1219,6 @@ func (x *SeedUser) GetId() string {
 func (x *SeedUser) GetEmail() string {
 	if x != nil {
 		return x.Email
-	}
-	return ""
-}
-
-func (x *SeedUser) GetRole() string {
-	if x != nil {
-		return x.Role
 	}
 	return ""
 }
@@ -1505,14 +1497,13 @@ const file_quadsmith_api_user_proto_rawDesc = "" +
 	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"j\n" +
 	"\x11ListUsersResponse\x12-\n" +
 	"\x05users\x18\x01 \x03(\v2\x17.quadsmith.api.SeedUserR\x05users\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x95\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x81\x01\n" +
 	"\bSeedUser\x12\x12\n" +
 	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x0e\n" +
 	"\x02id\x18\x02 \x01(\tR\x02id\x12\x14\n" +
-	"\x05email\x18\x03 \x01(\tR\x05email\x12\x12\n" +
-	"\x04role\x18\x04 \x01(\tR\x04role\x12\x10\n" +
-	"\x03bio\x18\x05 \x01(\tR\x03bio\x12)\n" +
-	"\x10reputation_score\x18\x06 \x01(\x05R\x0freputationScore\"\xef\x02\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12\x10\n" +
+	"\x03bio\x18\x04 \x01(\tR\x03bio\x12)\n" +
+	"\x10reputation_score\x18\x05 \x01(\x05R\x0freputationScore\"\xef\x02\n" +
 	"\x10UpdateBanRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1b\n" +
 	"\x06reason\x18\x02 \x01(\tH\x00R\x06reason\x88\x01\x01\x12*\n" +

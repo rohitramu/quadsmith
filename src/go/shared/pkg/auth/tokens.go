@@ -70,14 +70,13 @@ type JWTClaims struct {
 	UserUUID    string `json:"user_uuid"`
 	UserID      string `json:"user_id"` // Public username (e.g. "fpv_pilot")
 	Email       string `json:"email"`
-	Role        string `json:"role"`
 	SessionUUID string `json:"session_uuid"`
 	Exp         int64  `json:"exp"`
 	Iat         int64  `json:"iat"`
 }
 
 // SignAccessToken signs a new 1-hour access JWT using HMAC-SHA256 with a dedicated subkey
-func SignAccessToken(userUUID, userID, email, role, sessionUUID string) (string, error) {
+func SignAccessToken(userUUID, userID, email, sessionUUID string) (string, error) {
 	now := time.Now()
 	masterSecretMu.RLock()
 	ttl := accessTokenTTL
@@ -86,7 +85,6 @@ func SignAccessToken(userUUID, userID, email, role, sessionUUID string) (string,
 		UserUUID:    userUUID,
 		UserID:      userID,
 		Email:       email,
-		Role:        role,
 		SessionUUID: sessionUUID,
 		Iat:         now.Unix(),
 		Exp:         now.Add(ttl).Unix(),
@@ -148,7 +146,7 @@ func VerifyAccessToken(tokenStr string) (*UserContext, error) {
 		UserUUID:    claims.UserUUID,
 		UserID:      claims.UserID,
 		Email:       claims.Email,
-		Role:        claims.Role,
+		Role:        "USER",
 		SessionUUID: claims.SessionUUID,
 	}, nil
 }

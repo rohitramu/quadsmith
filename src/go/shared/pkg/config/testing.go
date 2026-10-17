@@ -177,7 +177,7 @@ func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *configpb.Ops
 			AutoApprove:      proto.Bool(true),
 			DefaultHours:     proto.Int32(2),
 			MaxHours:         proto.Int32(12),
-			SensitiveMethods: []string{"RevokeInternalToken"},
+			SensitiveMethods: []string{"RevokeInternalToken", "SetUserRole"},
 		},
 		Oauth: &configpb.OAuthConfig{
 			Provider:     proto.String("github"),

@@ -6,12 +6,17 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 	"testing"
 	"time"
 
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
 
+	"quadsmith/shared/pkg/auth"
+
+	apipb "quadsmith/shared/gen/quadsmith/api"
+	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 	pb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 )
@@ -306,6 +311,7 @@ func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 		"cleanup_orphaned_blobs",
 		"purge_soft_deleted_accounts",
 		"send_username_release_warnings",
+		"set_user_role",
 	}
 
 	for _, exp := range expectedTasks {
@@ -553,6 +559,247 @@ func TestQSOpsCLIExecution(t *testing.T) {
 	outStr = string(out)
 	if !containsString(outStr, targetJobID) || !containsString(outStr, "UUID:") {
 		t.Errorf("Expected job details in jobs get output: %s", outStr)
+	}
+}
+
+func TestOpsServer_SetUserRoleAndBanRoleDemotion(t *testing.T) {
+	ctx := context.Background()
+	pubPool, err := pgxpool.New(ctx, getDBURL())
+	if err != nil {
+		t.Fatalf("Failed to connect to quadsmith_api DB: %v", err)
+	}
+	defer pubPool.Close()
+
+	user1UUID := "018f0000-0000-7000-8000-000000000901"
+	user1Handle := "role_test_admin1"
+	user1Email := "role_admin1@quadsmith.dev"
+
+	user2UUID := "018f0000-0000-7000-8000-000000000902"
+	user2Handle := "role_test_admin2"
+	user2Email := "role_admin2@quadsmith.dev"
+
+	cleanup := func() {
+		_, _ = pubPool.Exec(ctx, `DELETE FROM banned_emails WHERE email IN ($1, $2)`, user1Email, user2Email)
+		_, _ = pubPool.Exec(ctx, `DELETE FROM bans WHERE user_uuid IN ($1::uuid, $2::uuid) OR banned_by_user_uuid IN ($1::uuid, $2::uuid)`, user1UUID, user2UUID)
+		_, _ = pubPool.Exec(ctx, `DELETE FROM user_emails WHERE user_uuid IN ($1::uuid, $2::uuid)`, user1UUID, user2UUID)
+		_, _ = pubPool.Exec(ctx, `DELETE FROM user_profiles WHERE user_uuid IN ($1::uuid, $2::uuid)`, user1UUID, user2UUID)
+		_, _ = pubPool.Exec(ctx, `DELETE FROM users WHERE uuid IN ($1::uuid, $2::uuid)`, user1UUID, user2UUID)
+	}
+	cleanup()
+	defer cleanup()
+
+	// 1. Seed both users without specifying role (relies on PostgreSQL DEFAULT 'USER')
+	for _, u := range []struct {
+		uuid, handle, email string
+	}{
+		{user1UUID, user1Handle, user1Email},
+		{user2UUID, user2Handle, user2Email},
+	} {
+		if _, err := pubPool.Exec(ctx, `INSERT INTO users (uuid, id, created_at, updated_at) VALUES ($1, $2, NOW(), NOW())`, u.uuid, u.handle); err != nil {
+			t.Fatalf("Failed to seed user %s: %v", u.handle, err)
+		}
+		if _, err := pubPool.Exec(ctx, `INSERT INTO user_emails (uuid, user_uuid, email, is_primary, created_at) VALUES ($1, $2, $3, true, NOW())`, auth.NewUUIDv7(), u.uuid, u.email); err != nil {
+			t.Fatalf("Failed to seed email for %s: %v", u.handle, err)
+		}
+	}
+
+	// 2. Verify PostgreSQL CHECK (role IN ('USER', 'ADMIN')) constraint rejects invalid roles
+	_, err = pubPool.Exec(ctx, `UPDATE users SET role = 'SUPERADMIN' WHERE uuid = $1::uuid`, user1UUID)
+	if err == nil {
+		t.Fatalf("Expected PostgreSQL CHECK constraint to reject role='SUPERADMIN'")
+	}
+
+	// 3. Verify SetUserRole requires active JIT grant and HUMAN operator
+	operatorClient := newOpsClient("qs_op_sandbox_token_12345")
+	robotClient := newOpsClient("qs_robot_sandbox_token_67890")
+
+	// Revoke any pre-existing active JIT grants on sandbox operator
+	if grantsRes, err := operatorClient.ListJitGrants(ctx, connect.NewRequest(&pb.ListJitGrantsRequest{ActiveOnly: true})); err == nil {
+		for _, g := range grantsRes.Msg.GetGrants() {
+			_, _ = operatorClient.RevokeJitGrant(ctx, connect.NewRequest(&pb.RevokeJitGrantRequest{GrantId: g.GetId()}))
+		}
+	}
+
+	// Without JIT grant -> PermissionDenied
+	_, err = operatorClient.SetUserRole(ctx, connect.NewRequest(&pb.SetUserRoleRequest{
+		UserId: user1Handle,
+		Role:   "ADMIN",
+	}))
+	if err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("Expected CodePermissionDenied when calling SetUserRole without JIT grant, got %v", err)
+	}
+
+	// With ROBOT token -> PermissionDenied
+	_, err = robotClient.SetUserRole(ctx, connect.NewRequest(&pb.SetUserRoleRequest{
+		UserId: user1Handle,
+		Role:   "ADMIN",
+	}))
+	if err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("Expected CodePermissionDenied when calling SetUserRole with ROBOT token, got %v", err)
+	}
+
+	// 4. Verify user1's JWT initially does NOT have admin access on server-api
+	token1, err := auth.SignAccessToken(user1UUID, user1Handle, user1Email, "session-admin1")
+	if err != nil {
+		t.Fatalf("Failed to sign token for user1: %v", err)
+	}
+	user1ApiClient := apiconnect.NewUserServiceClient(&http.Client{
+		Transport: &authRoundTripper{base: http.DefaultTransport, token: token1},
+		Timeout:   5 * time.Second,
+	}, getAPIURL())
+
+	_, err = user1ApiClient.ListBans(ctx, connect.NewRequest(&apipb.ListBansRequest{}))
+	if err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("Expected CodePermissionDenied for ListBans before promotion, got %v", err)
+	}
+
+	// 5. Acquire JIT grant for HUMAN operator
+	grantRes, err := operatorClient.AcquireJitGrant(ctx, connect.NewRequest(&pb.AcquireJitGrantRequest{
+		Hours:     1,
+		Reason:    "E2E test for SetUserRole",
+		Operation: "SetUserRole",
+	}))
+	if err != nil {
+		t.Fatalf("AcquireJitGrant failed: %v", err)
+	}
+	grantID := grantRes.Msg.GetGrant().GetId()
+	defer func() {
+		_, _ = operatorClient.RevokeJitGrant(ctx, connect.NewRequest(&pb.RevokeJitGrantRequest{GrantId: grantID}))
+	}()
+
+	// 6. Promote user1 to ADMIN via OpsService.SetUserRole
+	setRes, err := operatorClient.SetUserRole(ctx, connect.NewRequest(&pb.SetUserRoleRequest{
+		UserId: user1Handle,
+		Role:   "ADMIN",
+	}))
+	if err != nil {
+		t.Fatalf("SetUserRole(user1 -> ADMIN) failed: %v", err)
+	}
+	if setRes.Msg.GetPreviousRole() != "USER" || setRes.Msg.GetRole() != "ADMIN" {
+		t.Errorf("Unexpected SetUserRole response: prev=%q, role=%q", setRes.Msg.GetPreviousRole(), setRes.Msg.GetRole())
+	}
+	jobID := setRes.Header().Get("X-Job-Id")
+	if jobID == "" {
+		t.Errorf("Expected non-empty X-Job-Id header on SetUserRole response")
+	}
+
+	// Verify job is inspectable via GetJob
+	jobRes, err := operatorClient.GetJob(ctx, connect.NewRequest(&pb.GetJobRequest{JobId: jobID}))
+	if err != nil {
+		t.Fatalf("GetJob(%s) for SetUserRole failed: %v", jobID, err)
+	}
+	if jobRes.Msg.GetJob().GetTaskName() != "set_user_role" || jobRes.Msg.GetJob().GetProcedure() != "SetUserRole" {
+		t.Errorf("Unexpected job record: task=%q, proc=%q", jobRes.Msg.GetJob().GetTaskName(), jobRes.Msg.GetJob().GetProcedure())
+	}
+
+	// 7. Verify user1's existing JWT immediately has ADMIN privileges on server-api (live DB role hydration)
+	if _, err := user1ApiClient.ListBans(ctx, connect.NewRequest(&apipb.ListBansRequest{})); err != nil {
+		t.Fatalf("Expected ListBans to succeed immediately after promoting user1 to ADMIN, got %v", err)
+	}
+
+	// 8. Promote user2 to ADMIN via qsops CLI
+	qsopsPath := resolveQSOpsPath(t)
+
+	// Verify alias "setuserrole" is rejected by Cobra (only "set_user_role" is accepted)
+	cmd := exec.Command(qsopsPath, "tasks", "trigger", "setuserrole", "--token", "qs_op_sandbox_token_12345")
+	out, err := cmd.CombinedOutput()
+	if err == nil {
+		t.Fatalf("Expected qsops tasks trigger setuserrole to fail, but succeeded: %s", string(out))
+	}
+	if !containsString(string(out), `unknown task subcommand "setuserrole"`) && !containsString(string(out), `unknown command "setuserrole"`) {
+		t.Errorf("Expected 'unknown command/subcommand' error for setuserrole, got: %s", string(out))
+	}
+
+	// Verify strict username match in qsops: leading "@" is NOT stripped -> fails
+	cmd = exec.Command(qsopsPath, "tasks", "trigger", "set_user_role", "--user", "@"+user2Handle, "--role", "ADMIN", "--token", "qs_op_sandbox_token_12345")
+	out, err = cmd.CombinedOutput()
+	if err == nil {
+		t.Fatalf("Expected qsops set_user_role with '@' to fail under strict matching, but succeeded: %s", string(out))
+	}
+
+	// Verify strict username match in API: uppercase handle fails (no lowercase conversion)
+	_, err = operatorClient.SetUserRole(ctx, connect.NewRequest(&pb.SetUserRoleRequest{
+		UserId: strings.ToUpper(user2Handle),
+		Role:   "ADMIN",
+	}))
+	if err == nil || connect.CodeOf(err) != connect.CodeNotFound {
+		t.Fatalf("Expected CodeNotFound when calling SetUserRole with uppercase handle, got %v", err)
+	}
+
+	// Strict match with exact username succeeds
+	cmd = exec.Command(qsopsPath, "tasks", "trigger", "set_user_role", "--user", user2Handle, "--role", "ADMIN", "--token", "qs_op_sandbox_token_12345")
+	out, err = cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops tasks trigger set_user_role failed: %v, output: %s", err, string(out))
+	}
+	if !containsString(string(out), "from USER to ADMIN") || !containsString(string(out), "Job ID:") {
+		t.Errorf("Unexpected qsops set_user_role output: %s", string(out))
+	}
+
+	var user2Role string
+	if err := pubPool.QueryRow(ctx, `SELECT role FROM users WHERE uuid = $1::uuid`, user2UUID).Scan(&user2Role); err != nil || user2Role != "ADMIN" {
+		t.Fatalf("Expected user2 role in DB to be ADMIN, got %q (err=%v)", user2Role, err)
+	}
+
+	// 9. Ban user2 (who is currently ADMIN) using user1's admin client -> must succeed and demote user2 to USER
+	banRes, err := user1ApiClient.BanUser(ctx, connect.NewRequest(&apipb.BanUserRequest{
+		UserId: user2Handle,
+		Reason: "Testing automatic role demotion on ban",
+	}))
+	if err != nil || !banRes.Msg.GetSuccess() {
+		t.Fatalf("BanUser on admin user2 failed: %v", err)
+	}
+	if err := pubPool.QueryRow(ctx, `SELECT role FROM users WHERE uuid = $1::uuid`, user2UUID).Scan(&user2Role); err != nil || user2Role != "USER" {
+		t.Fatalf("Expected banned user2 role to automatically revert to USER, got %q (err=%v)", user2Role, err)
+	}
+
+	// 10. Attempting to promote actively banned user2 back to ADMIN via SetUserRole must fail with CodeFailedPrecondition
+	_, err = operatorClient.SetUserRole(ctx, connect.NewRequest(&pb.SetUserRoleRequest{
+		UserId: user2UUID,
+		Role:   "ADMIN",
+	}))
+	if err == nil || connect.CodeOf(err) != connect.CodeFailedPrecondition {
+		t.Fatalf("Expected CodeFailedPrecondition when promoting actively banned user to ADMIN, got %v", err)
+	}
+
+	// 11. Revoke the ban on user2 -> role must remain USER (not restored to ADMIN)
+	revokeFlag := true
+	revokeReason := "Lifting test ban"
+	if _, err := user1ApiClient.UpdateBan(ctx, connect.NewRequest(&apipb.UpdateBanRequest{
+		UserId:       user2Handle,
+		Revoke:       &revokeFlag,
+		RevokeReason: &revokeReason,
+	})); err != nil {
+		t.Fatalf("UpdateBan(revoke) failed: %v", err)
+	}
+	if err := pubPool.QueryRow(ctx, `SELECT role FROM users WHERE uuid = $1::uuid`, user2UUID).Scan(&user2Role); err != nil || user2Role != "USER" {
+		t.Fatalf("Expected user2 role to remain USER after ban revocation, got %q (err=%v)", user2Role, err)
+	}
+
+	// 12. Soft-delete user2 -> SetUserRole must reject soft-deleted user with CodeFailedPrecondition
+	if _, err := pubPool.Exec(ctx, `UPDATE users SET deleted_at = NOW() WHERE uuid = $1::uuid`, user2UUID); err != nil {
+		t.Fatalf("Failed to soft-delete user2: %v", err)
+	}
+	_, err = operatorClient.SetUserRole(ctx, connect.NewRequest(&pb.SetUserRoleRequest{
+		UserId: user2Handle,
+		Role:   "ADMIN",
+	}))
+	if err == nil || connect.CodeOf(err) != connect.CodeFailedPrecondition {
+		t.Fatalf("Expected CodeFailedPrecondition when changing role of soft-deleted user, got %v", err)
+	}
+
+	// 13. Demote user1 back to USER via qsops CLI -> existing JWT immediately loses ADMIN privileges
+	cmd = exec.Command(qsopsPath, "tasks", "trigger", "set_user_role", "--user", user1UUID, "--role", "USER", "--token", "qs_op_sandbox_token_12345")
+	out, err = cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops tasks trigger set_user_role (demote) failed: %v, output: %s", err, string(out))
+	}
+	if !containsString(string(out), "from ADMIN to USER") {
+		t.Errorf("Unexpected qsops demote output: %s", string(out))
+	}
+	_, err = user1ApiClient.ListBans(ctx, connect.NewRequest(&apipb.ListBansRequest{}))
+	if err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("Expected CodePermissionDenied for ListBans immediately after demoting user1 to USER, got %v", err)
 	}
 }
 

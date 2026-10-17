@@ -160,6 +160,16 @@ func isTimestampField(field *protogen.Field) bool {
 		field.Desc.Message().FullName() == "google.protobuf.Timestamp"
 }
 
+func isReadOnlyField(field *protogen.Field) bool {
+	opts := field.Desc.Options()
+	if proto.HasExtension(opts, sqlpb.E_Column) {
+		if co, ok := proto.GetExtension(opts, sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
+			return co.GetReadOnly()
+		}
+	}
+	return false
+}
+
 func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	tblOpts := getTableOptions(msg)
 	if tblOpts == nil {
@@ -197,7 +207,10 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	var activeColNames []string
 	var placeHolders []string
 	var mFields []string
-	for i, field := range activeFields {
+	for _, field := range activeFields {
+		if isReadOnlyField(field) {
+			continue
+		}
 		colName := string(field.Desc.Name())
 		colType := ""
 		if proto.HasExtension(field.Desc.Options(), sqlpb.E_Column) {
@@ -213,9 +226,9 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		activeColNames = append(activeColNames, colName)
 
 		if colType != "" {
-			placeHolders = append(placeHolders, fmt.Sprintf("$%d::%s", i+1, colType))
+			placeHolders = append(placeHolders, fmt.Sprintf("$%d::%s", len(activeColNames), colType))
 		} else {
-			placeHolders = append(placeHolders, fmt.Sprintf("$%d", i+1))
+			placeHolders = append(placeHolders, fmt.Sprintf("$%d", len(activeColNames)))
 		}
 
 		goName := field.GoName
@@ -354,11 +367,17 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	updateArgs = append(updateArgs, "m.Uuid")
 
 	argIdx := 2
-	for i, field := range activeFields {
-		colName := activeColNames[i]
+	for _, field := range activeFields {
+		if isReadOnlyField(field) {
+			continue
+		}
+		colName := string(field.Desc.Name())
 		colType := ""
 		if proto.HasExtension(field.Desc.Options(), sqlpb.E_Column) {
 			if co, ok := proto.GetExtension(field.Desc.Options(), sqlpb.E_Column).(*sqlpb.ColumnOptions); ok && co != nil {
+				if co.Name != "" {
+					colName = co.Name
+				}
 				if co.ColumnType != "" {
 					colType = co.ColumnType
 				}
@@ -375,7 +394,20 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 			updateSets = append(updateSets, fmt.Sprintf("%s = $%d", colName, argIdx))
 		}
 
-		updateArgs = append(updateArgs, mFields[i])
+		goName := field.GoName
+		if isTimestampField(field) {
+			updateArgs = append(updateArgs, "func(ts *timestamppb.Timestamp) interface{} { if ts == nil { return nil }; return ts.AsTime() }(m."+goName+")")
+		} else if strings.HasSuffix(colName, "uuid") {
+			if field.Desc.HasPresence() {
+				updateArgs = append(updateArgs, "func(s *string) interface{} { if s == nil || *s == \"\" { return nil }; return *s }(m."+goName+")")
+			} else {
+				updateArgs = append(updateArgs, "func(s string) interface{} { if s == \"\" { return nil }; return s }(m."+goName+")")
+			}
+		} else if strings.HasSuffix(colName, "uuids") {
+			updateArgs = append(updateArgs, "func(s []string) interface{} { if len(s) == 0 { return nil }; return s }(m."+goName+")")
+		} else {
+			updateArgs = append(updateArgs, "m."+goName)
+		}
 		argIdx++
 	}
 

@@ -5,7 +5,6 @@ export interface TestUser {
   uuid: string;
   id: string;
   email: string;
-  role?: string;
   secret?: string;
 }
 
@@ -13,14 +12,12 @@ export const SEEDED_PILOT: TestUser = {
   uuid: "018f0000-0000-7000-8000-000000000001",
   id: "test_pilot",
   email: "pilot@example.com",
-  role: "USER",
 };
 
 export const SEEDED_ALEX: TestUser = {
   uuid: "018f0000-0000-7000-8000-000000000010",
   id: "alex",
   email: "alex@quadsmith.dev",
-  role: "USER",
 };
 
 export function createTestJwt(user: TestUser): string {
@@ -41,7 +38,6 @@ export function createTestJwt(user: TestUser): string {
     user_uuid: user.uuid,
     user_id: user.id,
     email: user.email,
-    role: user.role || "USER",
     session_uuid: "playwright-e2e-session",
     iat: now,
     exp: now + 86400,

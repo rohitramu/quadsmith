@@ -108,7 +108,6 @@ func main() {
 			if err := storepb.CreateUser(ctx, tx, &storepb.User{
 				Uuid:      userUUID,
 				Id:        u.Id,
-				Role:      u.Role,
 				CreatedAt: timestamppb.New(twoDaysAgo),
 				UpdatedAt: timestamppb.New(now),
 			}); err != nil {

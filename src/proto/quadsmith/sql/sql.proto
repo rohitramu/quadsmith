@@ -62,6 +62,9 @@ message ColumnOptions {
 
   // Default value expression for the column (e.g., "4", "'pending'", "NOW()").
   string default_value = 7;
+
+  // Marks this column as read-only for store generation (omitted from INSERT and UPDATE).
+  bool read_only = 8;
 }
 
 // ---------------------------------------------------------

@@ -77,6 +77,7 @@ jit {
   default_hours: 2
   max_hours: 12
   sensitive_methods: "RevokeInternalToken"
+  sensitive_methods: "SetUserRole"
 }
 
 oauth {

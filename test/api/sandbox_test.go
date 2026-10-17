@@ -775,8 +775,8 @@ func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
 
 	// Seed User A
 	_, err = pool.Exec(ctx, `
-		INSERT INTO users (uuid, id, role, created_at, updated_at)
-		VALUES ($1, $2, 'user', NOW(), NOW())`,
+		INSERT INTO users (uuid, id, created_at, updated_at)
+		VALUES ($1, $2, NOW(), NOW())`,
 		userAUUID, userAId)
 	if err != nil {
 		t.Fatalf("failed to seed user A: %v", err)
@@ -792,8 +792,8 @@ func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
 
 	// Seed User B with 2 emails and an email_otp referencing user_b
 	_, err = pool.Exec(ctx, `
-		INSERT INTO users (uuid, id, role, created_at, updated_at)
-		VALUES ($1, $2, 'user', NOW(), NOW())`,
+		INSERT INTO users (uuid, id, created_at, updated_at)
+		VALUES ($1, $2, NOW(), NOW())`,
 		userBUUID, userBId)
 	if err != nil {
 		t.Fatalf("failed to seed user B: %v", err)
@@ -818,7 +818,7 @@ func TestSandboxAuth_MergeAccountWithMultipleEmails(t *testing.T) {
 		"018f0000-0000-7000-8000-0000000000b5", userBEmail1, userBUUID)
 
 	// Generate access token for User A
-	tokenA, err := auth.SignAccessToken(userAUUID, userAId, userAEmail, "user", "session-a")
+	tokenA, err := auth.SignAccessToken(userAUUID, userAId, userAEmail, "session-a")
 	if err != nil {
 		t.Fatalf("failed to sign token for user A: %v", err)
 	}
@@ -1304,8 +1304,8 @@ func TestSandboxAuth_AccountDeletionGracePeriodAndResurrection(t *testing.T) {
 
 	// Seed user
 	_, err = pool.Exec(ctx, `
-		INSERT INTO users (uuid, id, role, created_at, updated_at)
-		VALUES ($1, $2, 'USER', NOW(), NOW())`,
+		INSERT INTO users (uuid, id, created_at, updated_at)
+		VALUES ($1, $2, NOW(), NOW())`,
 		userUUID, username)
 	if err != nil {
 		t.Fatalf("failed to seed user: %v", err)
@@ -1319,7 +1319,7 @@ func TestSandboxAuth_AccountDeletionGracePeriodAndResurrection(t *testing.T) {
 		t.Fatalf("failed to seed user email: %v", err)
 	}
 
-	token, err := auth.SignAccessToken(userUUID, username, userEmail, "USER", "test-session-d1")
+	token, err := auth.SignAccessToken(userUUID, username, userEmail, "test-session-d1")
 	if err != nil {
 		t.Fatalf("failed to sign access token: %v", err)
 	}
@@ -1627,8 +1627,8 @@ func TestOAuthIntegration(t *testing.T) {
 	// 7. Seed a second account with collections and questions, and test OAuth-triggered MergeAccount preserving OAuth provenance and FK tables
 	otherUserUUID := "018f0000-0000-7000-8000-0000000000f1"
 	_, err = pool.Exec(ctx, `
-		INSERT INTO users (uuid, id, role, created_at, updated_at)
-		VALUES ($1, 'oauth_other_pilot', 'USER', NOW(), NOW())`, otherUserUUID)
+		INSERT INTO users (uuid, id, created_at, updated_at)
+		VALUES ($1, 'oauth_other_pilot', NOW(), NOW())`, otherUserUUID)
 	if err != nil {
 		t.Fatalf("failed to seed oauth_other_pilot: %v", err)
 	}

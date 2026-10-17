@@ -189,7 +189,7 @@ verify: generate fmt
 	@echo "--- Verifying Clean Git Working Tree ---"
 	@git diff --exit-code || (echo "Code generation or formatting is out of sync. Please run 'make generate fmt' and commit the changes." && exit 1)
 
-test: generate fmt bin/qs bin/qsops
+test: build
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 	@echo "--- Running Go Tests ---"
 	@cd src/go/shared && go test -mod=vendor -count=1 ./...
