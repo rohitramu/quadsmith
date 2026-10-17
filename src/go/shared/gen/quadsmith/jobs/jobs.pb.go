@@ -24,16 +24,17 @@ const (
 
 type JobRecord struct {
 	state            protoimpl.MessageState `protogen:"open.v1"`
-	JobId            string                 `protobuf:"bytes,1,opt,name=job_id,json=jobId,proto3" json:"job_id,omitempty"`
-	TaskName         string                 `protobuf:"bytes,2,opt,name=task_name,json=taskName,proto3" json:"task_name,omitempty"`
-	Procedure        string                 `protobuf:"bytes,3,opt,name=procedure,proto3" json:"procedure,omitempty"`
-	Caller           string                 `protobuf:"bytes,4,opt,name=caller,proto3" json:"caller,omitempty"`
-	CallerType       string                 `protobuf:"bytes,5,opt,name=caller_type,json=callerType,proto3" json:"caller_type,omitempty"`
-	Status           string                 `protobuf:"bytes,6,opt,name=status,proto3" json:"status,omitempty"`
-	DurationMs       int64                  `protobuf:"varint,7,opt,name=duration_ms,json=durationMs,proto3" json:"duration_ms,omitempty"`
-	ErrorMessage     *string                `protobuf:"bytes,8,opt,name=error_message,json=errorMessage,proto3,oneof" json:"error_message,omitempty"`
-	CreatedAt        *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	ScheduleInterval *string                `protobuf:"bytes,10,opt,name=schedule_interval,json=scheduleInterval,proto3,oneof" json:"schedule_interval,omitempty"`
+	Uuid             string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
+	JobId            string                 `protobuf:"bytes,2,opt,name=job_id,json=jobId,proto3" json:"job_id,omitempty"`
+	TaskName         string                 `protobuf:"bytes,3,opt,name=task_name,json=taskName,proto3" json:"task_name,omitempty"`
+	Procedure        string                 `protobuf:"bytes,4,opt,name=procedure,proto3" json:"procedure,omitempty"`
+	Caller           string                 `protobuf:"bytes,5,opt,name=caller,proto3" json:"caller,omitempty"`
+	CallerType       string                 `protobuf:"bytes,6,opt,name=caller_type,json=callerType,proto3" json:"caller_type,omitempty"`
+	Status           string                 `protobuf:"bytes,7,opt,name=status,proto3" json:"status,omitempty"`
+	DurationMs       int64                  `protobuf:"varint,8,opt,name=duration_ms,json=durationMs,proto3" json:"duration_ms,omitempty"`
+	ErrorMessage     *string                `protobuf:"bytes,9,opt,name=error_message,json=errorMessage,proto3,oneof" json:"error_message,omitempty"`
+	CreatedAt        *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	ScheduleInterval *string                `protobuf:"bytes,11,opt,name=schedule_interval,json=scheduleInterval,proto3,oneof" json:"schedule_interval,omitempty"`
 	unknownFields    protoimpl.UnknownFields
 	sizeCache        protoimpl.SizeCache
 }
@@ -66,6 +67,13 @@ func (x *JobRecord) ProtoReflect() protoreflect.Message {
 // Deprecated: Use JobRecord.ProtoReflect.Descriptor instead.
 func (*JobRecord) Descriptor() ([]byte, []int) {
 	return file_quadsmith_jobs_jobs_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *JobRecord) GetUuid() string {
+	if x != nil {
+		return x.Uuid
+	}
+	return ""
 }
 
 func (x *JobRecord) GetJobId() string {
@@ -326,22 +334,23 @@ var File_quadsmith_jobs_jobs_proto protoreflect.FileDescriptor
 
 const file_quadsmith_jobs_jobs_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/jobs/jobs.proto\x12\x0equadsmith.jobs\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8e\x03\n" +
-	"\tJobRecord\x12\x15\n" +
-	"\x06job_id\x18\x01 \x01(\tR\x05jobId\x12\x1b\n" +
-	"\ttask_name\x18\x02 \x01(\tR\btaskName\x12\x1c\n" +
-	"\tprocedure\x18\x03 \x01(\tR\tprocedure\x12\x16\n" +
-	"\x06caller\x18\x04 \x01(\tR\x06caller\x12\x1f\n" +
-	"\vcaller_type\x18\x05 \x01(\tR\n" +
+	"\x19quadsmith/jobs/jobs.proto\x12\x0equadsmith.jobs\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa2\x03\n" +
+	"\tJobRecord\x12\x12\n" +
+	"\x04uuid\x18\x01 \x01(\tR\x04uuid\x12\x15\n" +
+	"\x06job_id\x18\x02 \x01(\tR\x05jobId\x12\x1b\n" +
+	"\ttask_name\x18\x03 \x01(\tR\btaskName\x12\x1c\n" +
+	"\tprocedure\x18\x04 \x01(\tR\tprocedure\x12\x16\n" +
+	"\x06caller\x18\x05 \x01(\tR\x06caller\x12\x1f\n" +
+	"\vcaller_type\x18\x06 \x01(\tR\n" +
 	"callerType\x12\x16\n" +
-	"\x06status\x18\x06 \x01(\tR\x06status\x12\x1f\n" +
-	"\vduration_ms\x18\a \x01(\x03R\n" +
+	"\x06status\x18\a \x01(\tR\x06status\x12\x1f\n" +
+	"\vduration_ms\x18\b \x01(\x03R\n" +
 	"durationMs\x12(\n" +
-	"\rerror_message\x18\b \x01(\tH\x00R\ferrorMessage\x88\x01\x01\x129\n" +
+	"\rerror_message\x18\t \x01(\tH\x00R\ferrorMessage\x88\x01\x01\x129\n" +
 	"\n" +
-	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x120\n" +
-	"\x11schedule_interval\x18\n" +
-	" \x01(\tH\x01R\x10scheduleInterval\x88\x01\x01B\x10\n" +
+	"created_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x120\n" +
+	"\x11schedule_interval\x18\v \x01(\tH\x01R\x10scheduleInterval\x88\x01\x01B\x10\n" +
 	"\x0e_error_messageB\x14\n" +
 	"\x12_schedule_interval\"&\n" +
 	"\rGetJobRequest\x12\x15\n" +

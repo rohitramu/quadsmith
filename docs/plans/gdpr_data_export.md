@@ -731,7 +731,7 @@ the redundant `users.email` SQL column in
      `OAuthCallback`, `userExistsForEmail`) read and write email addresses
      solely in `user_emails`.
    - When
-     [PurgeDeletedAccounts](../../src/backend/shared/pkg/auth/job.go#L135-L166)
+     [`HandlePurgeSoftDeletedAccounts`](../../src/go/shared/pkg/auth/job.go#L120-L229)
      wipes a deleted account after 30 days, it simply deletes the user's
      `user_emails` rows without needing to invent a fake
      `deleted-<uuid>@deleted.quadsmith.internal` placeholder on `users`.

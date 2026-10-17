@@ -407,7 +407,8 @@ We implement a two-part design for blob references:
 
    We also wire
    [`AuthService.UpdateProfile`](../../src/go/shared/pkg/auth/service.go#L1500-L1510)
-   and [`PurgeDeletedAccounts`](../../src/go/shared/pkg/auth/job.go#L146-L157)
+   and
+   [`HandlePurgeSoftDeletedAccounts`](../../src/go/shared/pkg/auth/job.go#L172-L176)
    to link and unlink `user_avatar` blobs using `user_uuid` in `blob_references`
    so custom user avatar blobs are protected from orphan pruning while active
    and automatically garbage-collected after account purge.
@@ -563,7 +564,7 @@ store `TEXT` email strings rather than `user_email_uuid` foreign keys:
    banned user's verified email strings as `TEXT`. This must remain a `TEXT`
    column rather than `user_email_uuid REFERENCES user_emails(uuid)` because
    when a banned user deletes their account,
-   [`PurgeDeletedAccounts`](../../src/go/shared/pkg/auth/job.go#L167)
+   [`HandlePurgeSoftDeletedAccounts`](../../src/go/shared/pkg/auth/job.go#L188)
    hard-deletes all of the user's `user_emails` rows after 30 days, whereas
    `banned_emails` must outlive `user_emails` to permanently block
    re-registration under those email addresses.

@@ -37,7 +37,7 @@ cleanup
 echo "--- Building Sandbox Container Images ---"
 docker compose -f test/sandbox/docker-compose.yaml build
 
-echo "--- Starting fresh Sandbox containers on port ${PORT} (Ops: ${OPS_PORT}, API: ${API_PORT}, DB: ${DB_PORT}) ---"
+echo "--- Starting fresh Sandbox containers on port ${PORT} (Ops: ${OPS_PORT}, Jobs: ${JOBS_PORT}, API: ${API_PORT}, DB: ${DB_PORT}) ---"
 docker compose -f test/sandbox/docker-compose.yaml up -d
 
 echo "--- Waiting for Sandbox to become healthy ---"

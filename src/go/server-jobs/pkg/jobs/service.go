@@ -11,8 +11,8 @@ import (
 
 	"quadsmith/shared/pkg/config"
 
-	durationpb "google.golang.org/protobuf/types/known/durationpb"
-	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/durationpb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	configpb "quadsmith/shared/gen/quadsmith/config"
 	jobspb "quadsmith/shared/gen/quadsmith/jobs"
 	"quadsmith/shared/gen/quadsmith/jobs/jobsconnect"
@@ -46,7 +46,7 @@ func (s *Service) ListJobs(ctx context.Context, req *connect.Request[jobspb.List
 	}
 
 	query := `
-		SELECT id, method, caller, caller_type, status, duration_ms, error_message, created_at
+		SELECT uuid::text, id, method, caller, caller_type, status, duration_ms, error_message, created_at
 		FROM internal_api_calls
 		WHERE ($1 = '' OR method = $1)
 		  AND method IN (
@@ -69,16 +69,17 @@ func (s *Service) ListJobs(ctx context.Context, req *connect.Request[jobspb.List
 
 	var records []*jobspb.JobRecord
 	for rows.Next() {
-		var id, method, caller, callerType, status string
+		var uuid, id, method, caller, callerType, status string
 		var durationMs int64
 		var errMsg *string
 		var createdAt time.Time
 
-		if err := rows.Scan(&id, &method, &caller, &callerType, &status, &durationMs, &errMsg, &createdAt); err != nil {
+		if err := rows.Scan(&uuid, &id, &method, &caller, &callerType, &status, &durationMs, &errMsg, &createdAt); err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to scan job record: %w", err))
 		}
 
 		rec := &jobspb.JobRecord{
+			Uuid:             uuid,
 			JobId:            id,
 			TaskName:         procedureToTask(method),
 			Procedure:        method,
@@ -109,23 +110,24 @@ func (s *Service) GetJob(ctx context.Context, req *connect.Request[jobspb.GetJob
 	}
 
 	query := `
-		SELECT id, method, caller, caller_type, status, duration_ms, error_message, created_at
+		SELECT uuid::text, id, method, caller, caller_type, status, duration_ms, error_message, created_at
 		FROM internal_api_calls
 		WHERE (id = $1 OR uuid::text = $1)
 		  AND method IN ('CleanupExpiredOtps', 'CleanupExpiredTokens', 'CleanupOrphanedBlobs', 'PurgeSoftDeletedAccounts', 'SendUsernameReleaseWarnings', 'RunDatabaseMaintenance', 'SeedDatabase')
 		LIMIT 1`
 
-	var id, method, caller, callerType, status string
+	var uuid, id, method, caller, callerType, status string
 	var durationMs int64
 	var errMsg *string
 	var createdAt time.Time
 
-	err := s.db.QueryRow(ctx, query, jobID).Scan(&id, &method, &caller, &callerType, &status, &durationMs, &errMsg, &createdAt)
+	err := s.db.QueryRow(ctx, query, jobID).Scan(&uuid, &id, &method, &caller, &callerType, &status, &durationMs, &errMsg, &createdAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("job %q not found", jobID))
 	}
 
 	rec := &jobspb.JobRecord{
+		Uuid:             uuid,
 		JobId:            id,
 		TaskName:         procedureToTask(method),
 		Procedure:        method,
@@ -196,19 +198,19 @@ func formatSchedule(enabled bool, cron string, interval *durationpb.Duration) *s
 func taskToProcedure(task string) string {
 	clean := strings.ToLower(strings.TrimSpace(task))
 	switch clean {
-	case "cleanup_expired_otps", "cleanupexpiredotps":
+	case "cleanup_expired_otps":
 		return "CleanupExpiredOtps"
-	case "cleanup_expired_tokens", "cleanupexpiredtokens":
+	case "cleanup_expired_tokens":
 		return "CleanupExpiredTokens"
-	case "cleanup_orphaned_blobs", "cleanuporphanedblobs":
+	case "cleanup_orphaned_blobs":
 		return "CleanupOrphanedBlobs"
-	case "purge_soft_deleted_accounts", "purgesoftdeletedaccounts":
+	case "purge_soft_deleted_accounts":
 		return "PurgeSoftDeletedAccounts"
-	case "send_username_release_warnings", "sendusernamereleasewarnings":
+	case "send_username_release_warnings":
 		return "SendUsernameReleaseWarnings"
-	case "run_database_maintenance", "rundatabasemaintenance":
+	case "run_database_maintenance":
 		return "RunDatabaseMaintenance"
-	case "seed_database", "seeddatabase":
+	case "seed_database":
 		return "SeedDatabase"
 	default:
 		return ""

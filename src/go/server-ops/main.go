@@ -20,8 +20,23 @@ import (
 	"quadsmith/shared/pkg/config"
 	"quadsmith/shared/pkg/opsauth"
 
+	configpb "quadsmith/shared/gen/quadsmith/config"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 )
+
+func connectPool(ctx context.Context, dbCfg *configpb.DatabaseConfig) (*pgxpool.Pool, error) {
+	poolCfg, err := pgxpool.ParseConfig(dbCfg.GetUrl())
+	if err != nil {
+		return nil, err
+	}
+	if dbCfg.GetMaxConnections() > 0 {
+		poolCfg.MaxConns = dbCfg.GetMaxConnections()
+	}
+	if dbCfg.GetMinConnections() > 0 {
+		poolCfg.MinConns = dbCfg.GetMinConnections()
+	}
+	return pgxpool.NewWithConfig(ctx, poolCfg)
+}
 
 func main() {
 	var configPath string
@@ -65,13 +80,13 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	publicPool, err := pgxpool.New(ctx, cfg.Database.GetUrl())
+	publicPool, err := connectPool(ctx, cfg.Database)
 	if err != nil {
 		log.Fatalf("Unable to connect to public database (%s): %v\n", cfg.Database.GetName(), err)
 	}
 	defer publicPool.Close()
 
-	internalPool, err := pgxpool.New(ctx, cfg.InternalDatabase.GetUrl())
+	internalPool, err := connectPool(ctx, cfg.InternalDatabase)
 	if err != nil {
 		log.Fatalf("Unable to connect to internal database (%s): %v\n", cfg.InternalDatabase.GetName(), err)
 	}

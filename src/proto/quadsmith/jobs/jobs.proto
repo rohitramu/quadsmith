@@ -20,16 +20,17 @@ service JobsService {
 // ---------------------------------------------------------
 
 message JobRecord {
-  string job_id = 1;
-  string task_name = 2;
-  string procedure = 3;
-  string caller = 4;
-  string caller_type = 5;
-  string status = 6;
-  int64 duration_ms = 7;
-  optional string error_message = 8;
-  google.protobuf.Timestamp created_at = 9;
-  optional string schedule_interval = 10;
+  string uuid = 1;
+  string job_id = 2;
+  string task_name = 3;
+  string procedure = 4;
+  string caller = 5;
+  string caller_type = 6;
+  string status = 7;
+  int64 duration_ms = 8;
+  optional string error_message = 9;
+  google.protobuf.Timestamp created_at = 10;
+  optional string schedule_interval = 11;
 }
 
 // ---------------------------------------------------------

@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_jobs_jobs: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChlxdWFkc21pdGgvam9icy9qb2JzLnByb3RvEg5xdWFkc21pdGguam9icyKfAgoJSm9iUmVjb3JkEg4KBmpvYl9pZBgBIAEoCRIRCgl0YXNrX25hbWUYAiABKAkSEQoJcHJvY2VkdXJlGAMgASgJEg4KBmNhbGxlchgEIAEoCRITCgtjYWxsZXJfdHlwZRgFIAEoCRIOCgZzdGF0dXMYBiABKAkSEwoLZHVyYXRpb25fbXMYByABKAMSGgoNZXJyb3JfbWVzc2FnZRgIIAEoCUgAiAEBEi4KCmNyZWF0ZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEh4KEXNjaGVkdWxlX2ludGVydmFsGAogASgJSAGIAQFCEAoOX2Vycm9yX21lc3NhZ2VCFAoSX3NjaGVkdWxlX2ludGVydmFsIh8KDUdldEpvYlJlcXVlc3QSDgoGam9iX2lkGAEgASgJIjgKDkdldEpvYlJlc3BvbnNlEiYKA2pvYhgBIAEoCzIZLnF1YWRzbWl0aC5qb2JzLkpvYlJlY29yZCJVCg9MaXN0Sm9ic1JlcXVlc3QSEgoFbGltaXQYASABKAVIAIgBARIWCgl0YXNrX25hbWUYAiABKAlIAYgBAUIICgZfbGltaXRCDAoKX3Rhc2tfbmFtZSI7ChBMaXN0Sm9ic1Jlc3BvbnNlEicKBGpvYnMYASADKAsyGS5xdWFkc21pdGguam9icy5Kb2JSZWNvcmQypQEKC0pvYnNTZXJ2aWNlEkcKBkdldEpvYhIdLnF1YWRzbWl0aC5qb2JzLkdldEpvYlJlcXVlc3QaHi5xdWFkc21pdGguam9icy5HZXRKb2JSZXNwb25zZRJNCghMaXN0Sm9icxIfLnF1YWRzbWl0aC5qb2JzLkxpc3RKb2JzUmVxdWVzdBogLnF1YWRzbWl0aC5qb2JzLkxpc3RKb2JzUmVzcG9uc2VCKloocXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2pvYnM7am9ic2IGcHJvdG8z",
+    "ChlxdWFkc21pdGgvam9icy9qb2JzLnByb3RvEg5xdWFkc21pdGguam9icyKtAgoJSm9iUmVjb3JkEgwKBHV1aWQYASABKAkSDgoGam9iX2lkGAIgASgJEhEKCXRhc2tfbmFtZRgDIAEoCRIRCglwcm9jZWR1cmUYBCABKAkSDgoGY2FsbGVyGAUgASgJEhMKC2NhbGxlcl90eXBlGAYgASgJEg4KBnN0YXR1cxgHIAEoCRITCgtkdXJhdGlvbl9tcxgIIAEoAxIaCg1lcnJvcl9tZXNzYWdlGAkgASgJSACIAQESLgoKY3JlYXRlZF9hdBgKIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASHgoRc2NoZWR1bGVfaW50ZXJ2YWwYCyABKAlIAYgBAUIQCg5fZXJyb3JfbWVzc2FnZUIUChJfc2NoZWR1bGVfaW50ZXJ2YWwiHwoNR2V0Sm9iUmVxdWVzdBIOCgZqb2JfaWQYASABKAkiOAoOR2V0Sm9iUmVzcG9uc2USJgoDam9iGAEgASgLMhkucXVhZHNtaXRoLmpvYnMuSm9iUmVjb3JkIlUKD0xpc3RKb2JzUmVxdWVzdBISCgVsaW1pdBgBIAEoBUgAiAEBEhYKCXRhc2tfbmFtZRgCIAEoCUgBiAEBQggKBl9saW1pdEIMCgpfdGFza19uYW1lIjsKEExpc3RKb2JzUmVzcG9uc2USJwoEam9icxgBIAMoCzIZLnF1YWRzbWl0aC5qb2JzLkpvYlJlY29yZDKlAQoLSm9ic1NlcnZpY2USRwoGR2V0Sm9iEh0ucXVhZHNtaXRoLmpvYnMuR2V0Sm9iUmVxdWVzdBoeLnF1YWRzbWl0aC5qb2JzLkdldEpvYlJlc3BvbnNlEk0KCExpc3RKb2JzEh8ucXVhZHNtaXRoLmpvYnMuTGlzdEpvYnNSZXF1ZXN0GiAucXVhZHNtaXRoLmpvYnMuTGlzdEpvYnNSZXNwb25zZUIqWihxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvam9icztqb2JzYgZwcm90bzM",
     [file_google_protobuf_timestamp],
   );
 
@@ -23,52 +23,57 @@ export const file_quadsmith_jobs_jobs: GenFile =
  */
 export type JobRecord = Message<"quadsmith.jobs.JobRecord"> & {
   /**
-   * @generated from field: string job_id = 1;
+   * @generated from field: string uuid = 1;
+   */
+  uuid: string;
+
+  /**
+   * @generated from field: string job_id = 2;
    */
   jobId: string;
 
   /**
-   * @generated from field: string task_name = 2;
+   * @generated from field: string task_name = 3;
    */
   taskName: string;
 
   /**
-   * @generated from field: string procedure = 3;
+   * @generated from field: string procedure = 4;
    */
   procedure: string;
 
   /**
-   * @generated from field: string caller = 4;
+   * @generated from field: string caller = 5;
    */
   caller: string;
 
   /**
-   * @generated from field: string caller_type = 5;
+   * @generated from field: string caller_type = 6;
    */
   callerType: string;
 
   /**
-   * @generated from field: string status = 6;
+   * @generated from field: string status = 7;
    */
   status: string;
 
   /**
-   * @generated from field: int64 duration_ms = 7;
+   * @generated from field: int64 duration_ms = 8;
    */
   durationMs: bigint;
 
   /**
-   * @generated from field: optional string error_message = 8;
+   * @generated from field: optional string error_message = 9;
    */
   errorMessage?: string | undefined;
 
   /**
-   * @generated from field: google.protobuf.Timestamp created_at = 9;
+   * @generated from field: google.protobuf.Timestamp created_at = 10;
    */
   createdAt?: Timestamp | undefined;
 
   /**
-   * @generated from field: optional string schedule_interval = 10;
+   * @generated from field: optional string schedule_interval = 11;
    */
   scheduleInterval?: string | undefined;
 };

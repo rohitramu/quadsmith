@@ -195,7 +195,6 @@ func newRootCmd() *cobra.Command {
 	// Domain operation commands
 	rootCmd.AddCommand(newSystemCmd())
 	rootCmd.AddCommand(newDbCmd())
-	rootCmd.AddCommand(newSeedCmd())
 	rootCmd.AddCommand(newTasksCmd())
 	rootCmd.AddCommand(newJobsCmd())
 	rootCmd.AddCommand(newAuditCmd())
@@ -655,7 +654,7 @@ func newSystemCmd() *cobra.Command {
 func newDbCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "db",
-		Short: "Public database statistics and maintenance",
+		Short: "Public database statistics",
 	}
 
 	cmd.AddCommand(&cobra.Command{
@@ -685,48 +684,6 @@ func newDbCmd() *cobra.Command {
 					t.GetTableName(), t.GetRowCount(), float64(t.GetTotalSizeBytes())/1024)
 			}
 			return w.Flush()
-		},
-	})
-
-	var fullVacuum bool
-	pruneCmd := &cobra.Command{
-		Use:   "prune",
-		Short: "Run VACUUM ANALYZE maintenance on the database",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			client := getOpsClient()
-			resp, err := client.RunDatabaseMaintenance(cmd.Context(), connect.NewRequest(&pb.RunDatabaseMaintenanceRequest{
-				FullVacuum: fullVacuum,
-			}))
-			if err != nil {
-				return fmt.Errorf("maintenance failed: %w", err)
-			}
-			fmt.Printf("✓ %s (duration: %d ms)\n", resp.Msg.GetMessage(), resp.Msg.GetDurationMs())
-			return nil
-		},
-	}
-	pruneCmd.Flags().BoolVar(&fullVacuum, "full", false, "Execute FULL vacuum (exclusive lock)")
-	cmd.AddCommand(pruneCmd)
-
-	return cmd
-}
-
-func newSeedCmd() *cobra.Command {
-	cmd := &cobra.Command{
-		Use:   "seed",
-		Short: "Seed hardware catalog and sample fixtures into public database",
-	}
-
-	cmd.AddCommand(&cobra.Command{
-		Use:   "run",
-		Short: "Execute catalog seeding",
-		RunE: func(cmd *cobra.Command, args []string) error {
-			client := getOpsClient()
-			resp, err := client.SeedDatabase(cmd.Context(), connect.NewRequest(&pb.SeedDatabaseRequest{}))
-			if err != nil {
-				return fmt.Errorf("seeder failed: %w", err)
-			}
-			fmt.Printf("✓ %s\n", resp.Msg.GetMessage())
-			return nil
 		},
 	})
 
@@ -797,7 +754,9 @@ func newTasksCmd() *cobra.Command {
 		},
 	})
 
-	cmd.AddCommand(&cobra.Command{
+	var fullVacuum bool
+	var forceSeed bool
+	triggerCmd := &cobra.Command{
 		Use:   "trigger [task_name]",
 		Short: "Immediately trigger execution of a task",
 		Args:  cobra.ExactArgs(1),
@@ -807,7 +766,7 @@ func newTasksCmd() *cobra.Command {
 			taskName := strings.ToLower(strings.TrimSpace(args[0]))
 
 			switch taskName {
-			case "cleanup_expired_otps", "cleanupexpiredotps":
+			case "cleanup_expired_otps":
 				resp, err := client.CleanupExpiredOtps(ctx, connect.NewRequest(&pb.CleanupExpiredOtpsRequest{}))
 				if err != nil {
 					return fmt.Errorf("failed to trigger cleanup_expired_otps: %w", err)
@@ -825,7 +784,7 @@ func newTasksCmd() *cobra.Command {
 				}
 				return nil
 
-			case "cleanup_expired_tokens", "cleanupexpiredtokens":
+			case "cleanup_expired_tokens":
 				resp, err := client.CleanupExpiredTokens(ctx, connect.NewRequest(&pb.CleanupExpiredTokensRequest{}))
 				if err != nil {
 					return fmt.Errorf("failed to trigger cleanup_expired_tokens: %w", err)
@@ -843,7 +802,7 @@ func newTasksCmd() *cobra.Command {
 				}
 				return nil
 
-			case "cleanup_orphaned_blobs", "cleanuporphanedblobs":
+			case "cleanup_orphaned_blobs":
 				resp, err := client.CleanupOrphanedBlobs(ctx, connect.NewRequest(&pb.CleanupOrphanedBlobsRequest{}))
 				if err != nil {
 					return fmt.Errorf("failed to trigger cleanup_orphaned_blobs: %w", err)
@@ -861,7 +820,7 @@ func newTasksCmd() *cobra.Command {
 				}
 				return nil
 
-			case "purge_soft_deleted_accounts", "purgesoftdeletedaccounts":
+			case "purge_soft_deleted_accounts":
 				resp, err := client.PurgeSoftDeletedAccounts(ctx, connect.NewRequest(&pb.PurgeSoftDeletedAccountsRequest{}))
 				if err != nil {
 					return fmt.Errorf("failed to trigger purge_soft_deleted_accounts: %w", err)
@@ -879,7 +838,7 @@ func newTasksCmd() *cobra.Command {
 				}
 				return nil
 
-			case "send_username_release_warnings", "sendusernamereleasewarnings":
+			case "send_username_release_warnings":
 				resp, err := client.SendUsernameReleaseWarnings(ctx, connect.NewRequest(&pb.SendUsernameReleaseWarningsRequest{}))
 				if err != nil {
 					return fmt.Errorf("failed to trigger send_username_release_warnings: %w", err)
@@ -897,12 +856,12 @@ func newTasksCmd() *cobra.Command {
 				}
 				return nil
 
-			case "run_database_maintenance", "rundatabasemaintenance":
+			case "run_database_maintenance":
 				resp, err := client.RunDatabaseMaintenance(ctx, connect.NewRequest(&pb.RunDatabaseMaintenanceRequest{
-					FullVacuum: false,
+					FullVacuum: fullVacuum,
 				}))
 				if err != nil {
-					return fmt.Errorf("failed to trigger database maintenance: %w", err)
+					return fmt.Errorf("failed to trigger run_database_maintenance: %w", err)
 				}
 				if jsonOut {
 					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
@@ -917,9 +876,9 @@ func newTasksCmd() *cobra.Command {
 				}
 				return nil
 
-			case "seed_database", "seeddatabase":
+			case "seed_database":
 				resp, err := client.SeedDatabase(ctx, connect.NewRequest(&pb.SeedDatabaseRequest{
-					Force: false,
+					Force: forceSeed,
 				}))
 				if err != nil {
 					return fmt.Errorf("failed to trigger seed_database: %w", err)
@@ -941,7 +900,10 @@ func newTasksCmd() *cobra.Command {
 				return fmt.Errorf("unknown task %q; run 'qsops tasks list' to see available tasks", args[0])
 			}
 		},
-	})
+	}
+	triggerCmd.Flags().BoolVar(&fullVacuum, "full-vacuum", false, "Execute FULL vacuum (for run_database_maintenance)")
+	triggerCmd.Flags().BoolVar(&forceSeed, "force", false, "Force re-seeding (for seed_database)")
+	cmd.AddCommand(triggerCmd)
 
 	return cmd
 }
@@ -980,7 +942,7 @@ func newJobsCmd() *cobra.Command {
 			}
 
 			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
-			fmt.Fprintf(w, "JOB ID\tTASK\tPROCEDURE\tSTATUS\tDURATION\tCREATED AT\tSCHEDULE\n")
+			fmt.Fprintf(w, "JOB ID\tTASK\tPROCEDURE\tCALLER\tSTATUS\tDURATION\tCREATED AT\tSCHEDULE\n")
 			for _, j := range resp.Msg.GetJobs() {
 				createdAt := "-"
 				if j.GetCreatedAt() != nil {
@@ -990,8 +952,8 @@ func newJobsCmd() *cobra.Command {
 				if j.GetScheduleInterval() != "" {
 					sched = j.GetScheduleInterval()
 				}
-				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%d ms\t%s\t%s\n",
-					j.GetJobId(), j.GetTaskName(), j.GetProcedure(), j.GetStatus(), j.GetDurationMs(), createdAt, sched)
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%s\t%d ms\t%s\t%s\n",
+					j.GetJobId(), j.GetTaskName(), j.GetProcedure(), j.GetCaller(), j.GetStatus(), j.GetDurationMs(), createdAt, sched)
 			}
 			return w.Flush()
 		},
@@ -1030,6 +992,7 @@ func newJobsCmd() *cobra.Command {
 			}
 
 			fmt.Printf("Job ID:            %s\n", j.GetJobId())
+			fmt.Printf("UUID:              %s\n", j.GetUuid())
 			fmt.Printf("Task Name:         %s\n", j.GetTaskName())
 			fmt.Printf("Procedure:         %s\n", j.GetProcedure())
 			fmt.Printf("Caller:            %s (%s)\n", j.GetCaller(), j.GetCallerType())

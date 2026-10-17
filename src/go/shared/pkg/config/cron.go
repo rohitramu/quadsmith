@@ -7,7 +7,7 @@ import (
 
 	"github.com/robfig/cron/v3"
 
-	durationpb "google.golang.org/protobuf/types/known/durationpb"
+	"google.golang.org/protobuf/types/known/durationpb"
 )
 
 var cronParser = cron.NewParser(cron.Minute | cron.Hour | cron.Dom | cron.Month | cron.Dow | cron.Descriptor)

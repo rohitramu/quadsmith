@@ -22,7 +22,7 @@ import (
 	"quadsmith/shared/pkg/config"
 	"quadsmith/shared/pkg/opsauth"
 
-	durationpb "google.golang.org/protobuf/types/known/durationpb"
+	"google.golang.org/protobuf/types/known/durationpb"
 	"quadsmith/shared/gen/quadsmith/jobs/jobsconnect"
 	opspb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
@@ -69,7 +69,17 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	dbPool, err := pgxpool.New(ctx, cfg.GetInternalDatabase().GetUrl())
+	poolCfg, err := pgxpool.ParseConfig(cfg.GetInternalDatabase().GetUrl())
+	if err != nil {
+		log.Fatalf("Invalid internal database URL (%s): %v\n", cfg.GetInternalDatabase().GetName(), err)
+	}
+	if cfg.GetInternalDatabase().GetMaxConnections() > 0 {
+		poolCfg.MaxConns = cfg.GetInternalDatabase().GetMaxConnections()
+	}
+	if cfg.GetInternalDatabase().GetMinConnections() > 0 {
+		poolCfg.MinConns = cfg.GetInternalDatabase().GetMinConnections()
+	}
+	dbPool, err := pgxpool.NewWithConfig(ctx, poolCfg)
 	if err != nil {
 		log.Fatalf("Unable to connect to internal database (%s): %v\n", cfg.GetInternalDatabase().GetName(), err)
 	}

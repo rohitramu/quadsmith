@@ -389,12 +389,27 @@ func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 		t.Fatalf("Expected recorded jobs in JobsService after triggering tasks, got 0")
 	}
 	firstJob := jobsRes.Msg.Jobs[0]
+	if firstJob.GetUuid() == "" {
+		t.Errorf("Expected non-empty uuid on JobRecord")
+	}
 	getJobRes, err := jobsClient.GetJob(ctx, connect.NewRequest(&jobspb.GetJobRequest{JobId: firstJob.JobId}))
 	if err != nil {
 		t.Fatalf("GetJob failed for %s: %v", firstJob.JobId, err)
 	}
 	if getJobRes.Msg.Job.JobId != firstJob.JobId {
 		t.Errorf("Expected job ID %s, got %s", firstJob.JobId, getJobRes.Msg.Job.JobId)
+	}
+	if getJobRes.Msg.Job.GetUuid() != firstJob.GetUuid() {
+		t.Errorf("Expected job UUID %s, got %s", firstJob.GetUuid(), getJobRes.Msg.Job.GetUuid())
+	}
+
+	// Verify GetJob also resolves by UUID fallback
+	getJobByUUIDRes, err := jobsClient.GetJob(ctx, connect.NewRequest(&jobspb.GetJobRequest{JobId: firstJob.GetUuid()}))
+	if err != nil {
+		t.Fatalf("GetJob by UUID failed for %s: %v", firstJob.GetUuid(), err)
+	}
+	if getJobByUUIDRes.Msg.Job.JobId != firstJob.JobId {
+		t.Errorf("Expected job ID %s when querying by UUID, got %s", firstJob.JobId, getJobByUUIDRes.Msg.Job.JobId)
 	}
 
 	// Verify ListJobs filtering by valid task_name and rejection of invalid task_name
@@ -522,8 +537,37 @@ func TestQSOpsCLIExecution(t *testing.T) {
 		t.Fatalf("qsops tasks trigger failed: %v, output: %s", err, string(out))
 	}
 	outStr = string(out)
-	if !containsString(outStr, "Cleaned") {
-		t.Errorf("Expected 'Cleaned' in tasks trigger output: %s", outStr)
+	if !containsString(outStr, "Cleaned") || !containsString(outStr, "Job ID:") {
+		t.Errorf("Expected 'Cleaned' and 'Job ID:' in tasks trigger output: %s", outStr)
+	}
+
+	// 6. qsops jobs list
+	cmd = exec.Command(qsopsPath, "jobs", "list", "--task", "cleanup_expired_otps", "--token", "qs_op_sandbox_token_12345")
+	out, err = cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops jobs list failed: %v, output: %s", err, string(out))
+	}
+	outStr = string(out)
+	if !containsString(outStr, "cleanup_expired_otps") || !containsString(outStr, "CALLER") {
+		t.Errorf("Expected 'cleanup_expired_otps' and 'CALLER' header in jobs list output: %s", outStr)
+	}
+
+	// 7. qsops jobs get <job-id>
+	jobsClient := newJobsClient("qs_op_sandbox_token_12345")
+	jobsRes, err := jobsClient.ListJobs(context.Background(), connect.NewRequest(&jobspb.ListJobsRequest{}))
+	if err != nil || len(jobsRes.Msg.GetJobs()) == 0 {
+		t.Fatalf("ListJobs for CLI get test failed: %v", err)
+	}
+	targetJobID := jobsRes.Msg.GetJobs()[0].GetJobId()
+
+	cmd = exec.Command(qsopsPath, "jobs", "get", targetJobID, "--token", "qs_op_sandbox_token_12345")
+	out, err = cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops jobs get %s failed: %v, output: %s", targetJobID, err, string(out))
+	}
+	outStr = string(out)
+	if !containsString(outStr, targetJobID) || !containsString(outStr, "Schedule Interval:") || !containsString(outStr, "UUID:") {
+		t.Errorf("Expected job details in jobs get output: %s", outStr)
 	}
 }
 

@@ -1,4 +1,6 @@
-# Table of Contents
+# <a id="tasks-and-jobs-architecture" >Tasks and Jobs Architecture</a>
+
+## <a id="table-of-contents" >Table of Contents</a>
 
 - [1. Background](#1-background)
 - [2. Goal](#2-goal)
@@ -12,11 +14,10 @@
   - [Username Release Warning Counter in Shared Auth](#username-release-warning-counter-in-shared-auth)
 - [4. Future work](#4-future-work)
   - [Cloud Functions Deployment Tooling](#cloud-functions-deployment-tooling)
-- [5. Verification Plan](#5-verification-plan)
 
 ---
 
-# <a id="1-background" >1. Background</a>
+## <a id="1-background" >1. Background</a>
 
 In Quadsmith, background worker operations currently span two subsystems: the
 operations server [`server-ops`](../../src/go/server-ops) and a background
@@ -40,7 +41,7 @@ operations and scheduler audit reporting.
 
 ---
 
-# <a id="2-goal" >2. Goal</a>
+## <a id="2-goal" >2. Goal</a>
 
 Establish a clean separation of concerns and clear taxonomy across subsystems:
 
@@ -58,7 +59,7 @@ Establish a clean separation of concerns and clear taxonomy across subsystems:
 
 ---
 
-# <a id="3-proposal" >3. Proposal</a>
+## <a id="3-proposal" >3. Proposal</a>
 
 > **TL;DR:**
 >
@@ -150,7 +151,7 @@ When any of the seven task RPCs is executed on `server-ops`, the shared
 writes the job execution audit record to `quadsmith_ops.internal_api_calls` and
 returns the generated job identifier in the `X-Job-Id` response header.
 
-#### Task Messages
+#### <a id="task-messages" >Task Messages</a>
 
 ```protobuf
 message TaskDef {
@@ -230,8 +231,8 @@ option go_package = "quadsmith/shared/gen/quadsmith/jobs;jobs";
 // ---------------------------------------------------------
 
 service JobsService {
-  rpc ListJobs(ListJobsRequest) returns (ListJobsResponse);
   rpc GetJob(GetJobRequest) returns (GetJobResponse);
+  rpc ListJobs(ListJobsRequest) returns (ListJobsResponse);
 }
 
 // ---------------------------------------------------------
@@ -239,21 +240,30 @@ service JobsService {
 // ---------------------------------------------------------
 
 message JobRecord {
-  string job_id = 1;
-  string task_name = 2;
-  string procedure = 3;
-  string caller = 4;
-  string caller_type = 5;
-  string status = 6;
-  int64 duration_ms = 7;
-  optional string error_message = 8;
-  google.protobuf.Timestamp created_at = 9;
-  optional string schedule_interval = 10;
+  string uuid = 1;
+  string job_id = 2;
+  string task_name = 3;
+  string procedure = 4;
+  string caller = 5;
+  string caller_type = 6;
+  string status = 7;
+  int64 duration_ms = 8;
+  optional string error_message = 9;
+  google.protobuf.Timestamp created_at = 10;
+  optional string schedule_interval = 11;
 }
 
 // ---------------------------------------------------------
 // Request/response messages
 // ---------------------------------------------------------
+
+message GetJobRequest {
+  string job_id = 1;
+}
+
+message GetJobResponse {
+  JobRecord job = 1;
+}
 
 message ListJobsRequest {
   optional int32 limit = 1;
@@ -263,14 +273,6 @@ message ListJobsRequest {
 message ListJobsResponse {
   repeated JobRecord jobs = 1;
 }
-
-message GetJobRequest {
-  string job_id = 1;
-}
-
-message GetJobResponse {
-  JobRecord job = 1;
-}
 ```
 
 In `server-jobs`:
@@ -278,9 +280,9 @@ In `server-jobs`:
 - `ListJobs`: Queries job execution records from
   `quadsmith_ops.internal_api_calls` for all task procedures, ordered by
   `created_at DESC` (latest on top).
-- `GetJob`: Retrieves a specific job execution instance by its ID (e.g.
-  `call_1729...`), hydrating both its runtime audit attributes and the
-  configured schedule interval from `JobServerConfig`.
+- `GetJob`: Retrieves a specific job execution instance by its ID or UUID
+  (`WHERE (id = $1 OR uuid::text = $1)`), hydrating both its runtime audit
+  attributes and the configured schedule interval from `JobServerConfig`.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -494,17 +496,18 @@ Defaulting in sandbox CLI configs to `http://127.0.0.1:8083`.
 
 In [`src/go/cli-ops/main.go`](../../src/go/cli-ops/main.go):
 
-#### 1. Tasks Commands (`qsops tasks` -> targets `server-ops`)
+#### <a id="tasks-commands" >1. Tasks Commands (`qsops tasks` -> targets `server-ops`)</a>
 
 - `qsops tasks list`: Calls `OpsService.ListTasks`, displaying all defined
   tasks, descriptions, and target procedures.
 - `qsops tasks get <task-name>`: Calls `OpsService.GetTask`, displaying the full
   description, target procedure, and default schedule.
-- `qsops tasks trigger <task-name>`: Calls the dedicated typed RPC on
-  `OpsService` (e.g., `CleanupExpiredOtps`, `PurgeSoftDeletedAccounts`),
+- `qsops tasks trigger <task-name> [--full-vacuum] [--force]`: Calls the
+  dedicated typed RPC on `OpsService` (e.g., `CleanupExpiredOtps`,
+  `PurgeSoftDeletedAccounts`, `RunDatabaseMaintenance`, `SeedDatabase`),
   outputting the execution result and generated job ID (`X-Job-Id`).
 
-#### 2. Jobs Commands (`qsops jobs` -> targets `server-jobs`)
+#### <a id="jobs-commands" >2. Jobs Commands (`qsops jobs` -> targets `server-jobs`)</a>
 
 - `qsops jobs list [--limit=N] [--task=name]`: Calls `JobsService.ListJobs`,
   displaying the chronological execution history (latest on top).
@@ -543,8 +546,8 @@ refactored into a full dual-mode daemon:
    that is enabled, it registers a `robfig/cron/v3` job invoking the typed
    `OpsService` RPC over the authenticated Connect client (`ROBOT` tokens bypass
    interactive human JIT checks while still enforcing group RBAC).
-3. **Database Pool**: Connects to `quadsmith_ops` via `pgxpool.New` to query job
-   execution records from `internal_api_calls`.
+3. **Database Pool**: Connects to `quadsmith_ops` via `pgxpool.NewWithConfig` to
+   query job execution records from `internal_api_calls`.
 4. **Docker & Sandbox Port Mapping**: In
    [`test/sandbox/docker-compose.yaml`](../../test/sandbox/docker-compose.yaml),
    the `jobs` service maps `"${JOBS_PORT:-8083}:8080"` and includes a health
@@ -593,7 +596,7 @@ to:
 
 ---
 
-# <a id="4-future-work" >4. Future work</a>
+## <a id="4-future-work" >4. Future work</a>
 
 ### <a id="cloud-functions-deployment-tooling" >Cloud Functions Deployment Tooling</a>
 
@@ -601,45 +604,3 @@ to:
   configurations to provision Google Cloud Scheduler jobs targeting individual
   Cloud Function endpoints.
 - Package serverless function entrypoints for zero-server deployments.
-
----
-
-# <a id="5-verification-plan" >5. Verification Plan</a>
-
-### Automated Tests
-
-1. **Protobuf Generation & Formatting**:
-
-   ```bash
-   make generate
-   ```
-
-2. **Go Workspace Compilation**:
-
-   ```bash
-   make build
-   ```
-
-3. **Unit & Integration Tests**: Update
-   [`test/api/ops_test.go`](../../test/api/ops_test.go) to:
-   - Query `ListTasks` and `GetTask` on `OpsService`.
-   - Trigger tasks directly via typed RPCs (`CleanupExpiredOtps`,
-     `PurgeSoftDeletedAccounts`, `SendUsernameReleaseWarnings`).
-   - Query `ListJobs` and `GetJob` on `JobsService`, verifying chronological
-     ordering (latest on top) and retrieval of schedule information.
-
-   ```bash
-   make test
-   ```
-
-### Manual Verification
-
-1. Launch local sandbox via `make sandbox` and verify all services (`api`,
-   `ops`, `jobs`, `web`) become healthy.
-2. Run `bin/qsops tasks list` and `bin/qsops tasks get cleanup_expired_otps` to
-   verify task description formatting against `server-ops`.
-3. Run `bin/qsops tasks trigger cleanup_expired_otps` to execute the task.
-4. Run `bin/qsops jobs list` to verify that the newly generated job appears at
-   the top of the list returned by `server-jobs`.
-5. Run `bin/qsops jobs get <job-id>` to verify that job execution details and
-   schedule information display properly.

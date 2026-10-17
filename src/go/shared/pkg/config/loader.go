@@ -12,7 +12,7 @@ import (
 	"google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 
-	durationpb "google.golang.org/protobuf/types/known/durationpb"
+	"google.golang.org/protobuf/types/known/durationpb"
 	configpb "quadsmith/shared/gen/quadsmith/config"
 )
 
@@ -189,6 +189,8 @@ func LoadOpsCliConfig(configPath, envName string) (*configpb.OpsCliConfig, error
 		return nil, err
 	}
 
+	applyOpsCliEnvOverrides(&cfg)
+
 	if err := ValidateOpsCliConfig(&cfg); err != nil {
 		return nil, err
 	}
@@ -207,6 +209,8 @@ func LoadCliConfig(configPath, envName string) (*configpb.CliConfig, error) {
 	if err := Load(resolvedPath, &cfg); err != nil {
 		return nil, err
 	}
+
+	applyCliEnvOverrides(&cfg)
 
 	if err := ValidateCliConfig(&cfg); err != nil {
 		return nil, err
@@ -368,6 +372,21 @@ func applyJobServerEnvOverrides(cfg *configpb.JobServerConfig) {
 
 func applyWebServerEnvOverrides(cfg *configpb.WebServerConfig) {
 	if v := os.Getenv("QS_API_URL"); v != "" {
+		cfg.ApiUrl = &v
+	}
+}
+
+func applyOpsCliEnvOverrides(cfg *configpb.OpsCliConfig) {
+	if v := os.Getenv("QS_OPS_SERVER_URL"); v != "" {
+		cfg.OpsServerUrl = &v
+	}
+	if v := os.Getenv("QS_JOBS_SERVER_URL"); v != "" {
+		cfg.JobsServerUrl = &v
+	}
+}
+
+func applyCliEnvOverrides(cfg *configpb.CliConfig) {
+	if v := os.Getenv("QS_SERVER_URL"); v != "" {
 		cfg.ApiUrl = &v
 	}
 }

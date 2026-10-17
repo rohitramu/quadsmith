@@ -20,7 +20,7 @@ import (
 	"quadsmith/shared/pkg/blob"
 	"quadsmith/shared/pkg/opsauth"
 
-	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
+	"google.golang.org/protobuf/types/known/timestamppb"
 	configpb "quadsmith/shared/gen/quadsmith/config"
 	pb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
