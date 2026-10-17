@@ -25,16 +25,16 @@
 
 Recent architectural refactors decoupled static asset delivery from the backend
 API servers, introducing a standalone HTTP/2 reverse-proxy binary in
-[`server-web`](../../src/go/server-web/main.go) and implementing an account
+[`server-web`](../src/go/server-web/main.go) and implementing an account
 soft-deletion and hard-purge lifecycle in
-[`src/go/shared/pkg/auth/job.go`](../../src/go/shared/pkg/auth/job.go).
+[`src/go/shared/pkg/auth/job.go`](../src/go/shared/pkg/auth/job.go).
 
 However, several structural, operational, and container configurations drifted:
 
 - The legacy directory taxonomy divided code by conceptual role into
   `src/backend` and `src/frontend`. This created an architectural boundary
-  violation: the CLI applications ([`src/go/cli`](../../src/go/cli) and
-  [`src/go/cli-ops`](../../src/go/cli-ops)) are compiled Go binaries that depend
+  violation: the CLI applications ([`src/go/cli`](../src/go/cli) and
+  [`src/go/cli-ops`](../src/go/cli-ops)) are compiled Go binaries that depend
   directly on internal Go packages inside `src/backend/shared`, forcing Go code
   and `go.work` declarations to bridge across the role-based hierarchy.
 - The legacy production container specification in `src/Dockerfile` only
@@ -46,7 +46,7 @@ However, several structural, operational, and container configurations drifted:
 - The automated account purge procedure remained unregistered in the job daemon
   schedule configurations and ops catalog.
 - The CI configuration in
-  [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) referenced legacy
+  [`.github/workflows/ci.yml`](../.github/workflows/ci.yml) referenced legacy
   paths and lacked Markdown formatting validations.
 
 ---
@@ -86,8 +86,8 @@ pre-seeded Docker Compose topology that delivers sub-two-second startup times.
 
 ### <a id="language-and-framework-project-organization-src-go-and-src-react" >Language and Framework Project Organization (src/go and src/react)</a>
 
-The repository structure under [`src/`](../../src) will be reorganized cleanly
-by programming language and framework:
+The repository structure under [`src/`](../src) will be reorganized cleanly by
+programming language and framework:
 
 ```text
 src/
@@ -135,14 +135,14 @@ Key architectural benefits of this structure:
      the exact same language workspace. There is no confusing dependency from a
      "frontend" folder into a "backend" folder.
 2. **Unified Go Workspace Context**:
-   - [`src/go/go.work`](../../src/go/go.work) coordinates all Go modules. Go
+   - [`src/go/go.work`](../src/go/go.work) coordinates all Go modules. Go
      language servers (`gopls`), linters, and `go work vendor` operate
      exclusively within `src/go/` without scanning `node_modules` or TypeScript
      files.
 3. **Dedicated Web Server Configuration**:
    - The web server textproto configuration files are relocated from
      `src/frontend/web/config/` to
-     [`src/go/server-web/config/`](../../src/go/server-web/config), making
+     [`src/go/server-web/config/`](../src/go/server-web/config), making
      `server-web` completely self-contained like the other Go servers.
 4. **Clean Multi-App Frontend Expansion**:
    - React applications reside under `src/react/` with standard peer naming
@@ -187,7 +187,7 @@ Name the frontend tree `src/web/` instead of `src/react/`.
 
 ### <a id="per-app-production-container-packaging" >Per-App Production Container Packaging</a>
 
-Each server application under [`src/go`](../../src/go) will own its dedicated,
+Each server application under [`src/go`](../src/go) will own its dedicated,
 minimal, single-process `Dockerfile`. The obsolete, monolithic `src/Dockerfile`
 will be removed.
 
@@ -205,7 +205,7 @@ will be removed.
      `src/go/server-jobs/config` (exposes no network ports).
 4. **Web Server (`src/go/server-web/Dockerfile`)**:
    - Multi-stage compilation: Node.js builder executing `npm run build` in
-     [`src/react/app-web`](../../src/react/app-web), and Go builder compiling
+     [`src/react/app-web`](../src/react/app-web), and Go builder compiling
      `server-web` and stripped `quadsmith-engine.wasm` from `src/go`.
    - Minimal Alpine runtime copying the compiled binary, bundled static assets,
      and `src/go/server-web/config`.
@@ -236,13 +236,13 @@ select output images.
 
 Local sandbox development (`make sandbox`) and integration testing
 (`make test-e2e`) will transition to Docker Compose, housed cleanly in
-[`test/sandbox/docker-compose.yaml`](../../test/sandbox/docker-compose.yaml).
+[`test/sandbox/docker-compose.yaml`](../test/sandbox/docker-compose.yaml).
 
 To overcome the standard 9-second cold database initialization penalty, a
 dedicated test database image
-([`test/sandbox/db/Dockerfile`](../../test/sandbox/db/Dockerfile)) will
-pre-apply SQL DDL schemas and pre-populate catalog data at image build time
-using the database seeder binary.
+([`test/sandbox/db/Dockerfile`](../test/sandbox/db/Dockerfile)) will pre-apply
+SQL DDL schemas and pre-populate catalog data at image build time using the
+database seeder binary.
 
 Empirical testing validates that this reduces Compose startup from 9,162 ms to
 1,666 ms while delivering full 1:1 multi-container network isolation:
@@ -254,9 +254,9 @@ Empirical testing validates that this reduces Compose startup from 9,162 ms to
 | **Containers**         | 1 (monolithic)            | 5 (with seeder)              | **5 (discrete services)**     |
 | **Production Parity**  | Low (localhost sharing)   | High                         | **High (DNS discovery)**      |
 
-The test harness scripts [`test/start_sandbox.sh`](../../test/start_sandbox.sh)
-and [`test/run_sandbox_tests.sh`](../../test/run_sandbox_tests.sh) will be
-refactored to orchestrate `docker compose -f test/sandbox/docker-compose.yaml`.
+The test harness scripts [`test/start_sandbox.sh`](../test/start_sandbox.sh) and
+[`test/run_sandbox_tests.sh`](../test/run_sandbox_tests.sh) will be refactored
+to orchestrate `docker compose -f test/sandbox/docker-compose.yaml`.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -293,19 +293,19 @@ Boot a blank `postgres:15-alpine` container and run a separate seeder service.
 ### <a id="scheduled-account-purge-daemon-registration-and-configurable-cadence" >Scheduled Account Purge Daemon Registration and Configurable Cadence</a>
 
 The soft-deleted account scrubber in
-[`HandlePurgeSoftDeletedAccounts`](../../src/go/shared/pkg/auth/job.go) will be
+[`HandlePurgeSoftDeletedAccounts`](../src/go/shared/pkg/auth/job.go) will be
 registered into the operational catalog and scheduled daemon (see
 [`tasks_and_jobs.md`](tasks_and_jobs.md)):
 
 1. **Ops Service Catalog
-   ([`service.go`](../../src/go/server-ops/pkg/ops/service.go))**:
+   ([`service.go`](../src/go/server-ops/pkg/ops/service.go))**:
    - Register `purge_soft_deleted_accounts` (procedure
      `PurgeSoftDeletedAccounts`) in `ListTasks` with a default interval of `8h`.
 2. **Environment Configuration**:
    - Add the typed schedule entry to all 3 job server textproto files:
-     - [`sandbox.textproto`](../../src/go/server-jobs/config/sandbox.textproto)
-     - [`staging.textproto`](../../src/go/server-jobs/config/staging.textproto)
-     - [`prod.textproto`](../../src/go/server-jobs/config/prod.textproto)
+     - [`sandbox.textproto`](../src/go/server-jobs/config/sandbox.textproto)
+     - [`staging.textproto`](../src/go/server-jobs/config/staging.textproto)
+     - [`prod.textproto`](../src/go/server-jobs/config/prod.textproto)
    - Configured with an 8-hour interval by default, allowing operator adjustment
      per environment without code modification.
 
@@ -339,8 +339,8 @@ Run the purge scrubber once every 24 hours.
 ### <a id="continuous-integration-workflow-and-build-verification" >Continuous Integration Workflow and Build Verification</a>
 
 The GitHub Actions workflow in
-[`.github/workflows/ci.yml`](../../.github/workflows/ci.yml) and the root
-[`Makefile`](../../Makefile) will be aligned with current repository standards:
+[`.github/workflows/ci.yml`](../.github/workflows/ci.yml) and the root
+[`Makefile`](../Makefile) will be aligned with current repository standards:
 
 - Update Go installation step to Go `1.27`.
 - Update web working directory from `src/frontend/web/app` to
@@ -350,7 +350,7 @@ The GitHub Actions workflow in
 - Update `src/proto/buf.gen.yaml` output targets to `../go/shared/gen`, `../db`,
   and `../react/shared/src/gen`.
 - Add Prettier and Markdownlint verification steps matching the root
-  [`Makefile`](../../Makefile).
+  [`Makefile`](../Makefile).
 - Ensure `make generate`, `make build`, and `make test` pass hermetically.
 
 <details>

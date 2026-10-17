@@ -107,16 +107,16 @@ flowchart TD
 
 All browser automation and visual regression tests execute within a dedicated,
 hermetic Docker container defined in
-[`test/web/Dockerfile`](../../test/web/Dockerfile). Based on the official
-Microsoft Playwright image (`mcr.microsoft.com/playwright:v1.51.1-noble`), the
-container pre-installs system rendering libraries, fonts, and browser engines
-(Chromium, Firefox, WebKit).
+[`test/web/Dockerfile`](../test/web/Dockerfile). Based on the official Microsoft
+Playwright image (`mcr.microsoft.com/playwright:v1.51.1-noble`), the container
+pre-installs system rendering libraries, fonts, and browser engines (Chromium,
+Firefox, WebKit).
 
 The runner container is completely decoupled from any specific host environment.
 It accepts a dynamic `BASE_URL` environment variable:
 
 - **Local Sandbox Execution**: When testing the local sandbox stack
-  ([`test/sandbox/docker-compose.yaml`](../../test/sandbox/docker-compose.yaml)),
+  ([`test/sandbox/docker-compose.yaml`](../test/sandbox/docker-compose.yaml)),
   the container runs using Docker host networking (`--network host`), connecting
   directly to `http://127.0.0.1:8080` (Web SPA) and `http://127.0.0.1:8081` (API
   Server).
@@ -171,10 +171,9 @@ regression plugins.
 ### <a id="test-suite-organization-and-directory-structure-in-testweb" >Test Suite Organization and Directory Structure in test/web</a>
 
 All E2E, visual regression, and resilience test files, Playwright configuration,
-and snapshot baselines are consolidated in [`test/web`](../../test/web),
-preserving a clean boundary between fast unit tests in
-[`src/react/app-web`](../../src/react/app-web) and full-stack integration
-suites:
+and snapshot baselines are consolidated in [`test/web`](../test/web), preserving
+a clean boundary between fast unit tests in
+[`src/react/app-web`](../src/react/app-web) and full-stack integration suites:
 
 ```text
 test/web/
@@ -326,7 +325,7 @@ Routing screenshot diffs to a cloud-hosted visual testing SaaS service.
 
 The E2E suite covers the platform's core interactive user flows and visual
 surfaces using deterministic seed data provided by
-[`test/sandbox/db/seed_data`](../../test/sandbox/db/seed_data):
+[`test/sandbox/db/seed_data`](../test/sandbox/db/seed_data):
 
 1. **Home Page & Navigation (`home.spec.ts`)**:
    - Full page rendering with hero, featured builds, and footer.
@@ -388,7 +387,7 @@ flows (such as The Forge wizard or login form).
 
 To guarantee application stability under adverse real-world conditions, a
 dedicated test suite in
-[`test/web/specs/failures.spec.ts`](../../test/web/specs/failures.spec.ts)
+[`test/web/specs/failures.spec.ts`](../test/web/specs/failures.spec.ts)
 exercises error boundaries, invalid input validations, disabled control
 enforcement, and network fault injections:
 

@@ -29,7 +29,7 @@
 In Quadsmith, entities fall into two primary categories: user-assembled aircraft
 configurations ([`Builds`](src/proto/quadsmith/api/build.proto)) and 20 catalog
 collections representing hardware specifications, pilot gear, and firmware
-([`Components`](docs/plans/user_created_components.md)).
+([`Components`](user_created_components.md)).
 
 Currently, [The Forge](src/react/app-web/src/pages/BuildWizardPage.tsx) mandates
 a Step 0 gate: `TemplateStep`. Every builder must either choose an existing

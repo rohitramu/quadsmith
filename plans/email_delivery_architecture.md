@@ -27,10 +27,10 @@ In [user_auth.md](user_auth.md), Quadsmith established a passwordless
 authentication model relying on 6-digit numeric verification codes with a
 3-minute time-to-live (TTL) and cryptographic magic login links with a 15-minute
 TTL. Currently,
-[src/backend/shared/pkg/auth/service.go](../../src/backend/shared/pkg/auth/service.go#L158-L165)
+[src/backend/shared/pkg/auth/service.go](../src/backend/shared/pkg/auth/service.go#L158-L165)
 implements a developer console logger (`cfg.DevPrintOTP`) that prints codes and
 magic links directly to stdout. In production configurations such as
-[src/backend/server-api/config/prod.textproto](../../src/backend/server-api/config/prod.textproto#L26),
+[src/backend/server-api/config/prod.textproto](../src/backend/server-api/config/prod.textproto#L26),
 `dev_print_otp` is set to `false`, leaving the platform without an operational
 mechanism to deliver emails to real users.
 
@@ -291,7 +291,7 @@ where multiple OAuth providers verify the identical email address:
 
 1. **Schema Enhancements**:
    - Add `verified_via_otp BOOLEAN DEFAULT false NOT NULL` to
-     [`user_emails`](../../src/backend/db/quadsmith_api.sql#L51).
+     [`user_emails`](../src/backend/db/quadsmith_api.sql#L51).
    - Create a dedicated junction table `user_email_oauth_accounts`:
 
 ```sql
@@ -314,9 +314,9 @@ FOREIGN KEY (oauth_account_uuid) REFERENCES oauth_accounts (uuid) ON DELETE CASC
 ```
 
 1. **Protobuf Model Updates**: Define the SQL storage models in
-   [`src/proto/quadsmith/store/user.proto`](../../src/proto/quadsmith/store/user.proto)
-   and extend [`UserEmail`](../../src/proto/quadsmith/api/user.proto) in the
-   public API view model with `oauth_providers`:
+   [`src/proto/quadsmith/store/user.proto`](../src/proto/quadsmith/store/user.proto)
+   and extend [`UserEmail`](../src/proto/quadsmith/api/user.proto) in the public
+   API view model with `oauth_providers`:
 
 ```protobuf
 // In src/proto/quadsmith/store/user.proto:
@@ -580,8 +580,8 @@ network delivery.
 ### <a id="declarative-configuration-in-configproto" >Declarative Configuration in `config.proto`</a>
 
 Extend
-[proto/quadsmith/config/config.proto](../../proto/quadsmith/config/config.proto)
-to define a typed `EmailConfig` message:
+[proto/quadsmith/config/config.proto](../proto/quadsmith/config/config.proto) to
+define a typed `EmailConfig` message:
 
 ```protobuf
 message SmtpConfig {

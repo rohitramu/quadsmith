@@ -25,9 +25,9 @@ Quadsmith's authentication and email provenance architecture is defined in
 [email_delivery_architecture.md](email_delivery_architecture.md). The backend
 already provides database tables (`oauth_accounts` and
 `user_email_oauth_accounts`) in
-[`src/db/quadsmith_api.sql`](../../src/db/quadsmith_api.sql#L314-L388) and
-internal helper functions (`LinkOAuthAccount` and `UnlinkOAuthAccount`) in
-[`src/go/shared/pkg/auth/service.go`](../../src/go/shared/pkg/auth/service.go).
+[`src/db/quadsmith_api.sql`](../src/db/quadsmith_api.sql#L314-L388) and internal
+helper functions (`LinkOAuthAccount` and `UnlinkOAuthAccount`) in
+[`src/go/shared/pkg/auth/service.go`](../src/go/shared/pkg/auth/service.go).
 
 However, the end-to-end OAuth 2.0 /
 [OpenID Connect (OIDC)](https://openid.net/developers/how-connect-works/)
@@ -106,7 +106,7 @@ sequenceDiagram
 ### <a id="connectrpc-oauth-handshake-and-callback-architecture" >ConnectRPC OAuth Handshake and Callback Architecture</a>
 
 We will expose three new RPCs on `AuthService` in
-[`src/proto/quadsmith/api/auth.proto`](../../src/proto/quadsmith/api/auth.proto):
+[`src/proto/quadsmith/api/auth.proto`](../src/proto/quadsmith/api/auth.proto):
 
 - `StartOAuth(StartOAuthRequest) returns (StartOAuthResponse)`:
   - Validates the requested `OAuthProvider` (`GOOGLE`, `GITHUB`, `DISCORD`) and
@@ -116,7 +116,7 @@ We will expose three new RPCs on `AuthService` in
     `S256` `code_challenge`.
   - Signs a stateless HMAC-SHA256 `state` token (10-minute TTL, derived via HKDF
     in
-    [`src/go/shared/pkg/auth/tokens.go`](../../src/go/shared/pkg/auth/tokens.go))
+    [`src/go/shared/pkg/auth/tokens.go`](../src/go/shared/pkg/auth/tokens.go))
     binding the `provider`, `purpose`, `code_verifier`, `redirect_uri`, optional
     authenticated `requester_user_uuid` (for `ADD_EMAIL`), and optional
     `challenge_id_hash` (for `CLI_LOGIN`).
@@ -131,7 +131,7 @@ We will expose three new RPCs on `AuthService` in
     flow.
 - `UnlinkOAuth(UnlinkOAuthRequest) returns (UnlinkOAuthResponse)`:
   - Wraps `UnlinkOAuthAccount` in
-    [`src/go/shared/pkg/auth/service.go`](../../src/go/shared/pkg/auth/service.go#L2099-L2185)
+    [`src/go/shared/pkg/auth/service.go`](../src/go/shared/pkg/auth/service.go#L2099-L2185)
     as a ConnectRPC endpoint for the authenticated user.
 
 ```protobuf
@@ -228,7 +228,7 @@ parameters.
   cookies.
 - Bypasses the standard ConnectRPC client transport and mock interceptors used
   by unit tests in
-  [`src/react/app-web/src/test/mocks/transport.ts`](../../src/react/app-web/src/test/mocks/transport.ts).
+  [`src/react/app-web/src/test/mocks/transport.ts`](../src/react/app-web/src/test/mocks/transport.ts).
 
 </details>
 
@@ -280,7 +280,7 @@ applies deterministic account resolution:
     exactly **one** existing user (active or within the 30-day soft-delete
     resurrection window), Quadsmith links the OAuth account and all
     non-conflicting verified emails via
-    [`LinkOAuthAccount`](../../src/go/shared/pkg/auth/service.go#L2026-L2095),
+    [`LinkOAuthAccount`](../src/go/shared/pkg/auth/service.go#L2026-L2095),
     backfills `user_profiles.avatar_url` if currently empty, and issues an
     authenticated session.
   - **Multi-Account Email Conflict on Login**: If a multi-email provider (such
@@ -293,26 +293,26 @@ applies deterministic account resolution:
     account or any of its verified emails, `CompleteOAuth` signs an enhanced
     `setup_token` (encoding `email`, `verified_emails`, `provider`,
     `provider_account_id`, and `avatar_url` in `SetupTokenClaims` in
-    [`src/go/shared/pkg/auth/tokens.go`](../../src/go/shared/pkg/auth/tokens.go#L246-L250))
+    [`src/go/shared/pkg/auth/tokens.go`](../src/go/shared/pkg/auth/tokens.go#L246-L250))
     and returns `account_setup_required = true` with `suggested_avatar_url`.
   - On
-    [`LoginPage.tsx`](../../src/react/app-web/src/pages/LoginPage.tsx#L411-L585),
+    [`LoginPage.tsx`](../src/react/app-web/src/pages/LoginPage.tsx#L411-L585),
     the Account Setup screen **pre-fills the Display Image URL (`avatarUrl`)**
     from the OAuth profile while **leaving the `username` field blank** for the
     user to type manually. Calling
-    [`CompleteAccountSetup`](../../src/go/shared/pkg/auth/service.go#L1105-L1203)
+    [`CompleteAccountSetup`](../src/go/shared/pkg/auth/service.go#L1105-L1203)
     atomically creates the `users`, `user_profiles`, `user_emails`,
     `oauth_accounts`, and `user_email_oauth_accounts` rows.
 - **2. Authenticated Account Linking (`OAUTH_PURPOSE_ADD_EMAIL`)**:
   - If the OAuth account and all verified emails are unallocated (or already
     belong to the current user), Quadsmith links them immediately and refreshes
     the email list in
-    [`AccountSettingsPage.tsx`](../../src/react/app-web/src/pages/AccountSettingsPage.tsx).
+    [`AccountSettingsPage.tsx`](../src/react/app-web/src/pages/AccountSettingsPage.tsx).
   - If the OAuth account or any of its verified emails belongs to another active
     Quadsmith user (`@other_user`), `CompleteOAuth` does **not** auto-merge; it
     returns `merge_required = true` and a signed `merge_ticket` (containing the
     pending OAuth link payload) so
-    [`AccountSettingsPage.tsx`](../../src/react/app-web/src/pages/AccountSettingsPage.tsx#L1303-L1500)
+    [`AccountSettingsPage.tsx`](../src/react/app-web/src/pages/AccountSettingsPage.tsx#L1303-L1500)
     opens the existing **Confirm Account Merge** dialog.
 
 <details>
@@ -352,11 +352,11 @@ handle or skipping the Account Setup screen by auto-generating a username.
 
 OAuth connections will be managed strictly inside the **Associated Email
 Addresses** section of
-[`AccountSettingsPage.tsx`](../../src/react/app-web/src/pages/AccountSettingsPage.tsx#L716-L841)
+[`AccountSettingsPage.tsx`](../src/react/app-web/src/pages/AccountSettingsPage.tsx#L716-L841)
 and the **Add Email Address** modal
-([`EmailVerificationModal.tsx`](../../src/react/app-web/src/components/EmailVerificationModal.tsx)
+([`EmailVerificationModal.tsx`](../src/react/app-web/src/components/EmailVerificationModal.tsx)
 /
-[`EmailVerificationForm.tsx`](../../src/react/app-web/src/components/EmailVerificationForm.tsx)),
+[`EmailVerificationForm.tsx`](../src/react/app-web/src/components/EmailVerificationForm.tsx)),
 without adding a separate "Connected Accounts" section:
 
 - **Inline Provenance Badges**: Each email row in "Associated Email Addresses"
@@ -370,13 +370,13 @@ without adding a separate "Connected Accounts" section:
     `user_email_oauth_accounts`) and removes any secondary emails verified
     exclusively by that provider.
   - Enforces the primary email safeguard in
-    [`UnlinkOAuthAccount`](../../src/go/shared/pkg/auth/service.go#L2161-L2169):
-    if the provider is the sole verification source for the user's primary email
+    [`UnlinkOAuthAccount`](../src/go/shared/pkg/auth/service.go#L2161-L2169): if
+    the provider is the sole verification source for the user's primary email
     (or only email), the server rejects the request with `FAILED_PRECONDITION`.
 - **Orphaned OAuth Cleanup on Secondary Email Removal**: Updating
-  [`RemoveUserEmail`](../../src/go/shared/pkg/auth/service.go#L1977-L2023) so
-  that deleting a secondary email row also deletes any `oauth_accounts` row for
-  that user that has zero remaining links in `user_email_oauth_accounts`.
+  [`RemoveUserEmail`](../src/go/shared/pkg/auth/service.go#L1977-L2023) so that
+  deleting a secondary email row also deletes any `oauth_accounts` row for that
+  user that has zero remaining links in `user_email_oauth_accounts`.
 - **Add Email Modal OAuth Buttons**: When `EmailVerificationForm` renders in
   `ADD_EMAIL` mode on the email input step, it displays an `"OR LINK VIA OAUTH"`
   divider followed by **Google**, **GitHub**, and **Discord** buttons.
@@ -424,11 +424,10 @@ ownership—immediately issuing its own JWT access tokens and database-backed
 `token_expires_at` values at rest introduces unnecessary secret-storage risk.
 
 We will update `OAuthAccount` in
-[`src/proto/quadsmith/store/user.proto`](../../src/proto/quadsmith/store/user.proto#L139-L160),
-regenerate
-[`src/db/quadsmith_api.sql`](../../src/db/quadsmith_api.sql#L314-L326), and
-update
-[`src/db/quadsmith_api.mermaid`](../../src/db/quadsmith_api.mermaid#L88-L98) to
+[`src/proto/quadsmith/store/user.proto`](../src/proto/quadsmith/store/user.proto#L139-L160),
+regenerate [`src/db/quadsmith_api.sql`](../src/db/quadsmith_api.sql#L314-L326),
+and update
+[`src/db/quadsmith_api.mermaid`](../src/db/quadsmith_api.mermaid#L88-L98) to
 drop `access_token`, `refresh_token`, and `token_expires_at`, while enforcing
 `UNIQUE (provider, provider_account_id)` and `UNIQUE (user_uuid, provider)`:
 
@@ -484,8 +483,8 @@ Keeping `access_token`, `refresh_token`, and `token_expires_at` on
 
 ### <a id="cross-device-cli-oauth-authentication" >Cross-Device CLI OAuth Authentication</a>
 
-We will extend [`src/go/cli/auth_cmd.go`](../../src/go/cli/auth_cmd.go) with
-three enhancements:
+We will extend [`src/go/cli/auth_cmd.go`](../src/go/cli/auth_cmd.go) with three
+enhancements:
 
 1. **Browser OAuth Login (`qs login --provider <google|github|discord>`)**:
    - Invokes `StartOAuth` with `purpose = OAUTH_PURPOSE_CLI_LOGIN`.
@@ -529,7 +528,7 @@ passing that localhost URL as the OAuth `redirect_uri`.
 ### <a id="declarative-server-configuration-and-sandbox-mock-oauth-mode" >Declarative Server Configuration and Sandbox Mock OAuth Mode</a>
 
 Mirroring `EmailConfig` in
-[`src/proto/quadsmith/config/server_api.proto`](../../src/proto/quadsmith/config/server_api.proto#L25-L60),
+[`src/proto/quadsmith/config/server_api.proto`](../src/proto/quadsmith/config/server_api.proto#L25-L60),
 we will add `OAuthConfig` to `AuthConfig` supporting both real provider
 credentials (`staging.textproto`, `prod.textproto`) and a deterministic `mock`
 mode (`sandbox.textproto`):

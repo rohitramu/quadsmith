@@ -26,43 +26,42 @@ In [e2e_and_visual_regression_testing.md](e2e_and_visual_regression_testing.md),
 Quadsmith introduced containerized multi-browser Playwright visual regression
 testing across desktop (`1280×800`) and mobile (`390×844` iPhone 13) viewports.
 Inspecting the mobile baseline screenshots under
-[`test/web/snapshots/`](../../test/web/snapshots/) exposed severe mobile
-usability and layout defects across every primary surface of the React
-single-page application in [`src/react/app-web`](../../src/react/app-web):
+[`test/web/snapshots/`](../test/web/snapshots/) exposed severe mobile usability
+and layout defects across every primary surface of the React single-page
+application in [`src/react/app-web`](../src/react/app-web):
 
 - **Permanent Sidebar Viewport Starvation**: In
-  [`Layout.tsx`](../../src/react/app-web/src/components/Layout.tsx), the
+  [`Layout.tsx`](../src/react/app-web/src/components/Layout.tsx), the
   `<aside className="w-64 ...">` navigation sidebar remains permanently mounted
   at `256px` wide on a `390px` screen, leaving only `134px` for `<main>`.
   Combined with `<div className="p-8">` (`64px` horizontal padding) and nested
   page padding, active page content is crushed into a `~70px` sliver where
   headings wrap 1–3 characters per line.
 - **Top Header Crushing**: In
-  [`Layout.tsx`](../../src/react/app-web/src/components/Layout.tsx), fixed
-  `w-64` left and right header zones squeeze the central search input and crush
-  the brand logo whenever account restriction badges (from
+  [`Layout.tsx`](../src/react/app-web/src/components/Layout.tsx), fixed `w-64`
+  left and right header zones squeeze the central search input and crush the
+  brand logo whenever account restriction badges (from
   [structured_bans_and_account_restrictions.md](structured_bans_and_account_restrictions.md))
   are rendered.
 - **Overflowing Multi-Column Tables & Native Controls**: In
-  [`CollectionPage.tsx`](../../src/react/app-web/src/pages/CollectionPage.tsx)
-  and
-  [`AccountSettingsPage.tsx`](../../src/react/app-web/src/pages/AccountSettingsPage.tsx),
+  [`CollectionPage.tsx`](../src/react/app-web/src/pages/CollectionPage.tsx) and
+  [`AccountSettingsPage.tsx`](../src/react/app-web/src/pages/AccountSettingsPage.tsx),
   multi-column HTML tables overflow horizontally on mobile and become cramped on
   desktop whenever several hardware specification columns are enabled, while
   native `<select>` dropdowns and default OS scrollbars clash with the
   application's dark/light aesthetic.
 - **Buried Telemetry in The Forge**: In
-  [`BuildWizardPage.tsx`](../../src/react/app-web/src/pages/BuildWizardPage.tsx)
+  [`BuildWizardPage.tsx`](../src/react/app-web/src/pages/BuildWizardPage.tsx)
   (from
   [create_similar_edit_builds_and_forge_streamlining.md](create_similar_edit_builds_and_forge_streamlining.md)),
   the 12-column grid stacks the `lg:col-span-5` Selected Parts & Live Telemetry
   sidebar far below the component picker list on screens narrower than `1024px`.
 - **Hover-Only Touch Traps**: Hover popovers in
-  [`ProductHoverCard.tsx`](../../src/react/app-web/src/components/ProductHoverCard.tsx),
-  [`UserHoverCard.tsx`](../../src/react/app-web/src/components/UserHoverCard.tsx),
-  [`CompatibilityHoverCard.tsx`](../../src/react/app-web/src/components/CompatibilityHoverCard.tsx),
+  [`ProductHoverCard.tsx`](../src/react/app-web/src/components/ProductHoverCard.tsx),
+  [`UserHoverCard.tsx`](../src/react/app-web/src/components/UserHoverCard.tsx),
+  [`CompatibilityHoverCard.tsx`](../src/react/app-web/src/components/CompatibilityHoverCard.tsx),
   and the account menu in
-  [`Layout.tsx`](../../src/react/app-web/src/components/Layout.tsx) rely on
+  [`Layout.tsx`](../src/react/app-web/src/components/Layout.tsx) rely on
   `onMouseEnter`/`onMouseLeave`, causing sticky popovers or unreachable menus on
   touch devices.
 
@@ -151,7 +150,7 @@ flowchart TD
 ### <a id="slide-over-mobile-navigation-drawer-and-viewport-reclamation" >Slide-Over Mobile Navigation Drawer and Viewport Reclamation</a>
 
 In
-[`src/react/app-web/src/components/Layout.tsx`](../../src/react/app-web/src/components/Layout.tsx),
+[`src/react/app-web/src/components/Layout.tsx`](../src/react/app-web/src/components/Layout.tsx),
 the persistent `<aside>` sidebar is hidden on viewports narrower than `768px`
 (`hidden md:flex md:w-64 md:shrink-0`) and paired with a slide-over mobile
 navigation drawer (`fixed inset-y-0 left-0 z-50 w-72 max-w-[82vw] md:hidden`)
@@ -162,21 +161,21 @@ coupled with a dimmed backdrop (`bg-slate-950/70 backdrop-blur-xs`).
   `<main>` changes from `<div className="p-8">` to
   `<div className="p-4 sm:p-6 lg:p-8">`, and redundant outer horizontal/vertical
   paddings in child pages
-  ([`BuildWizardPage.tsx`](../../src/react/app-web/src/pages/BuildWizardPage.tsx),
-  [`AccountSettingsPage.tsx`](../../src/react/app-web/src/pages/AccountSettingsPage.tsx),
-  [`UserProfilePage.tsx`](../../src/react/app-web/src/pages/UserProfilePage.tsx),
+  ([`BuildWizardPage.tsx`](../src/react/app-web/src/pages/BuildWizardPage.tsx),
+  [`AccountSettingsPage.tsx`](../src/react/app-web/src/pages/AccountSettingsPage.tsx),
+  [`UserProfilePage.tsx`](../src/react/app-web/src/pages/UserProfilePage.tsx),
   and
-  [`UserCollectionsPage.tsx`](../../src/react/app-web/src/pages/UserCollectionsPage.tsx))
+  [`UserCollectionsPage.tsx`](../src/react/app-web/src/pages/UserCollectionsPage.tsx))
   are normalized so `390px` screens get `358px` of usable content width (`5×`
   more than the previous `70px`).
 - **Minimum Viewport Width Floor (`320px`) & Horizontal Scroll Fallback**: To
   prevent layout crushing when a desktop browser window is manually resized to
   an extreme narrow sliver (`< 320px`), we enforce `min-width: 320px` and
   `overflow-x: auto` on the root document and top-level shells
-  ([`index.css`](../../src/react/app-web/src/index.css),
-  [`Layout.tsx`](../../src/react/app-web/src/components/Layout.tsx),
-  [`LoginPage.tsx`](../../src/react/app-web/src/pages/LoginPage.tsx), and
-  [`BannedScreen.tsx`](../../src/react/app-web/src/components/BannedScreen.tsx)).
+  ([`index.css`](../src/react/app-web/src/index.css),
+  [`Layout.tsx`](../src/react/app-web/src/components/Layout.tsx),
+  [`LoginPage.tsx`](../src/react/app-web/src/pages/LoginPage.tsx), and
+  [`BannedScreen.tsx`](../src/react/app-web/src/components/BannedScreen.tsx)).
   At `>= 320px` (matching the
   [WCAG 2.1 Reflow 1.4.10 standard](https://www.w3.org/WAI/WCAG21/Understanding/reflow.html)),
   the layout is 100% fluid with zero horizontal scrollbars; below `320px`, the
@@ -187,7 +186,7 @@ coupled with a dimmed backdrop (`bg-slate-950/70 backdrop-blur-xs`).
 - **Landmark Visibility on Mobile**: To ensure a `<nav>` landmark is always
   visible across all viewports (including Playwright's
   `expect(page.locator("nav").first()).toBeVisible()` check in
-  [`test/web/specs/home.spec.ts`](../../test/web/specs/home.spec.ts)), the top
+  [`test/web/specs/home.spec.ts`](../test/web/specs/home.spec.ts)), the top
   header bar wraps its primary navigation controls in a semantic `<nav>`
   element.
 
@@ -246,7 +245,7 @@ constraint.
 ### <a id="single-row-header-responsive-search-hints-and-slash-shortcut" >Single-Row Header, Responsive Search Hints, and Slash Shortcut</a>
 
 In
-[`src/react/app-web/src/components/Layout.tsx`](../../src/react/app-web/src/components/Layout.tsx),
+[`src/react/app-web/src/components/Layout.tsx`](../src/react/app-web/src/components/Layout.tsx),
 the fixed `w-64` widths on the left brand container and right actions container
 are replaced with responsive sizing (`w-auto md:w-64 shrink-0`):
 
@@ -314,7 +313,7 @@ across all pages on mobile.
 ### <a id="unified-responsive-spec-card-grid-and-toolbar-sorting-in-component-catalogs" >Unified Responsive Spec Card Grid and Toolbar Sorting in Component Catalogs</a>
 
 In
-[`src/react/app-web/src/pages/CollectionPage.tsx`](../../src/react/app-web/src/pages/CollectionPage.tsx),
+[`src/react/app-web/src/pages/CollectionPage.tsx`](../src/react/app-web/src/pages/CollectionPage.tsx),
 the traditional multi-column `<table>` is replaced across **all viewports** with
 a **Unified Responsive Spec Card Grid**
 (`grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4`), and the creation
@@ -384,8 +383,8 @@ Default to the responsive Card Grid on all viewports while providing a
 **Cons:**
 
 - Doubles the component rendering code and test surface area in
-  [`CollectionPage.tsx`](../../src/react/app-web/src/pages/CollectionPage.tsx)
-  for marginal benefit.
+  [`CollectionPage.tsx`](../src/react/app-web/src/pages/CollectionPage.tsx) for
+  marginal benefit.
 
 </details>
 
@@ -394,7 +393,7 @@ Default to the responsive Card Grid on all viewports while providing a
 To eliminate unstyled native OS `<select>` menus and default browser scrollbars:
 
 - **Reusable `StyledSelect` Popover Component
-  ([`src/react/app-web/src/components/StyledSelect.tsx`](../../src/react/app-web/src/components/StyledSelect.tsx))**:
+  ([`src/react/app-web/src/components/StyledSelect.tsx`](../src/react/app-web/src/components/StyledSelect.tsx))**:
   - Renders a styled button trigger
     (`rounded-lg border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900`)
     and a floating custom popover menu
@@ -402,17 +401,17 @@ To eliminate unstyled native OS `<select>` menus and default browser scrollbars:
     option checkmarks (`✓`), hover highlights, `Escape` / outside-click
     dismissal, and accessible `role="listbox"` / `role="option"` semantics.
   - Replaces all native `<select>` elements across the application:
-    1. [`CollectionPage.tsx`](../../src/react/app-web/src/pages/CollectionPage.tsx):
+    1. [`CollectionPage.tsx`](../src/react/app-web/src/pages/CollectionPage.tsx):
        Toolbar **Sort** selector and **Page Size** (`10 / page`, `20 / page`,
        `50 / page`, `100 / page`) selector.
-    2. [`BatteryPickerModal.tsx`](../../src/react/app-web/src/components/BatteryPickerModal.tsx):
+    2. [`BatteryPickerModal.tsx`](../src/react/app-web/src/components/BatteryPickerModal.tsx):
        Battery chemistry filter selector.
-    3. [`SocialQaSection.tsx`](../../src/react/app-web/src/components/SocialQaSection.tsx)
+    3. [`SocialQaSection.tsx`](../src/react/app-web/src/components/SocialQaSection.tsx)
        and
-       [`SocialReviewSection.tsx`](../../src/react/app-web/src/components/SocialReviewSection.tsx):
+       [`SocialReviewSection.tsx`](../src/react/app-web/src/components/SocialReviewSection.tsx):
        Discussion and review sort selectors.
 - **Custom Theme-Aware Scrollbars
-  ([`src/react/app-web/src/index.css`](../../src/react/app-web/src/index.css))**:
+  ([`src/react/app-web/src/index.css`](../src/react/app-web/src/index.css))**:
   - Configures both standard CSS Scrollbars
     (`scrollbar-width: thin; scrollbar-color: ...`) and WebKit scrollbar
     pseudo-elements (`::-webkit-scrollbar`, `::-webkit-scrollbar-track`,
@@ -443,7 +442,7 @@ open `<option>` popup menu to the operating system.
 ### <a id="compact-collapsible-build-progress-and-live-telemetry-bar-in-the-forge" >Compact Collapsible Build Progress and Live Telemetry Bar in The Forge</a>
 
 In
-[`src/react/app-web/src/pages/BuildWizardPage.tsx`](../../src/react/app-web/src/pages/BuildWizardPage.tsx),
+[`src/react/app-web/src/pages/BuildWizardPage.tsx`](../src/react/app-web/src/pages/BuildWizardPage.tsx),
 users on viewports narrower than `1024px` (`< lg`) previously had to scroll past
 the entire component selection list to see their selected parts or live build
 evaluation metrics. We introduce a **Compact Collapsible Build Progress & Live
@@ -507,9 +506,9 @@ Touch devices do not support true cursor hover before tap activation, causing
 links. We split popover behavior into two explicit interaction categories:
 
 1. **Navigational / Selection Preview Hover Cards
-   ([`ProductHoverCard.tsx`](../../src/react/app-web/src/components/ProductHoverCard.tsx)
+   ([`ProductHoverCard.tsx`](../src/react/app-web/src/components/ProductHoverCard.tsx)
    &
-   [`UserHoverCard.tsx`](../../src/react/app-web/src/components/UserHoverCard.tsx))**:
+   [`UserHoverCard.tsx`](../src/react/app-web/src/components/UserHoverCard.tsx))**:
    - Ignore touch-initiated pointer events (checking
      `window.matchMedia("(hover: hover) and (pointer: fine)")` or pointer type)
      so tapping a component card in the catalog, a card in The Forge, or a
@@ -518,17 +517,17 @@ links. We split popover behavior into two explicit interaction categories:
    - Constrain desktop hover card positioning with viewport-safe clamping
      (`max-w-[calc(100vw-2rem)]`).
 2. **Informational Badges & Account Menus
-   ([`CompatibilityHoverCard.tsx`](../../src/react/app-web/src/components/CompatibilityHoverCard.tsx)
+   ([`CompatibilityHoverCard.tsx`](../src/react/app-web/src/components/CompatibilityHoverCard.tsx)
    & Account Menu in
-   [`Layout.tsx`](../../src/react/app-web/src/components/Layout.tsx))**:
+   [`Layout.tsx`](../src/react/app-web/src/components/Layout.tsx))**:
    - In
-     [`CompatibilityHoverCard.tsx`](../../src/react/app-web/src/components/CompatibilityHoverCard.tsx),
+     [`CompatibilityHoverCard.tsx`](../src/react/app-web/src/components/CompatibilityHoverCard.tsx),
      add tap-to-toggle support (`onClick`) alongside desktop hover, clamping the
      popover width to `w-80 max-w-[calc(100vw-2rem)]` and dismissing on outside
      pointer down or `Escape`.
-   - In [`Layout.tsx`](../../src/react/app-web/src/components/Layout.tsx),
-     support tap-to-toggle with outside-click dismissal on the circular user
-     avatar button so mobile and desktop users can open `Public Profile`,
+   - In [`Layout.tsx`](../src/react/app-web/src/components/Layout.tsx), support
+     tap-to-toggle with outside-click dismissal on the circular user avatar
+     button so mobile and desktop users can open `Public Profile`,
      `Saved Collections`, `Account Settings`, and `Sign Out` via click/tap as
      well as hover.
 
@@ -569,7 +568,7 @@ to open a preview modal.
 ### <a id="user-profile-page-consistent-add-actions-and-authoritative-component-styling" >User Profile Page: Consistent Add Actions and Authoritative Component Styling</a>
 
 In
-[`src/react/app-web/src/pages/UserProfilePage.tsx`](../../src/react/app-web/src/pages/UserProfilePage.tsx),
+[`src/react/app-web/src/pages/UserProfilePage.tsx`](../src/react/app-web/src/pages/UserProfilePage.tsx),
 the pilot profile surfaces three distinct tabs for user content: **Builds**,
 **Collections**, and **Components**. Previously, action triggers and visual
 metadata suffered from stark inconsistencies:
@@ -596,16 +595,16 @@ metadata suffered from stark inconsistencies:
   - Accessible names (`aria-label="Add Build"`, `aria-label="Add Collection"`,
     and `aria-label="Add Component"`) preserve screen reader clarity and Testing
     Library query compatibility in
-    [`UserProfilePage.test.tsx`](../../src/react/app-web/src/pages/__tests__/UserProfilePage.test.tsx).
+    [`UserProfilePage.test.tsx`](../src/react/app-web/src/pages/__tests__/UserProfilePage.test.tsx).
 - **Authoritative Component Category Pills and Icons**:
   - Previously, contributed component cards rendered hardcoded neutral badge
     classes (`bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400`)
     and a generic `<Cpu size={18} />` placeholder icon regardless of hardware
     category.
   - We replace the generic markup with `@quadsmith/shared`'s authoritative
-    [`CollectionBadge`](../../src/react/shared/src/components/CollectionBadge.tsx)
+    [`CollectionBadge`](../src/react/shared/src/components/CollectionBadge.tsx)
     and
-    [`CollectionIcon`](../../src/react/shared/src/components/CollectionIcon.tsx)
+    [`CollectionIcon`](../src/react/shared/src/components/CollectionIcon.tsx)
     primitives:
     1. **Category Pills**: Render `<CollectionBadge>` with
        `collection={collectionKey}`, `label={item.collectionName}`,
@@ -664,7 +663,7 @@ updated to eliminate horizontal overflow and replace remaining list tables with
 cards:
 
 - **Account Settings Card Lists
-  ([`AccountSettingsPage.tsx`](../../src/react/app-web/src/pages/AccountSettingsPage.tsx))**:
+  ([`AccountSettingsPage.tsx`](../src/react/app-web/src/pages/AccountSettingsPage.tsx))**:
   - Replace the Associated Emails `<table>` with a responsive Card list matching
     the Active Sessions card list below it. Each email card and session card
     stacks vertically on `< sm`
@@ -672,41 +671,41 @@ cards:
     addresses, `Primary`/`Verified` badges, and action buttons (`Make Primary`,
     `Verify`, `Remove`, `Revoke`) never clip.
 - **Build Profile & Product Detail Pages
-  ([`BuildProfilePage.tsx`](../../src/react/app-web/src/pages/BuildProfilePage.tsx),
-  [`ProductPage.tsx`](../../src/react/app-web/src/pages/ProductPage.tsx),
-  [`BuildCard.tsx`](../../src/react/app-web/src/components/BuildCard.tsx))**:
+  ([`BuildProfilePage.tsx`](../src/react/app-web/src/pages/BuildProfilePage.tsx),
+  [`ProductPage.tsx`](../src/react/app-web/src/pages/ProductPage.tsx),
+  [`BuildCard.tsx`](../src/react/app-web/src/components/BuildCard.tsx))**:
   - Reduce card padding from fixed `p-6`/`p-8` to `p-4 sm:p-6` and scale metric
     values (`text-xl sm:text-3xl`) so 2-column telemetry cards fit comfortably
     on `390px`.
-  - Allow
-    [`BuildCard.tsx`](../../src/react/app-web/src/components/BuildCard.tsx) and
-    [`SocialToolbar.tsx`](../../src/react/app-web/src/components/SocialToolbar.tsx)
+  - Allow [`BuildCard.tsx`](../src/react/app-web/src/components/BuildCard.tsx)
+    and
+    [`SocialToolbar.tsx`](../src/react/app-web/src/components/SocialToolbar.tsx)
     action bars (`Like`, `Save to Collection`, `Share`, `Build Similar`) to wrap
     cleanly with `flex-wrap gap-2`.
   - Ensure component cards in the Hardware BOM section of
-    [`BuildProfilePage.tsx`](../../src/react/app-web/src/pages/BuildProfilePage.tsx)
+    [`BuildProfilePage.tsx`](../src/react/app-web/src/pages/BuildProfilePage.tsx)
     present a clean category header with the uppercase collection label alone,
     omitting redundant small collection icon and short-name badges next to the
     label.
   - Ensure battery selectors across
-    [`BatteryCombobox.tsx`](../../src/react/app-web/src/components/BatteryCombobox.tsx)
+    [`BatteryCombobox.tsx`](../src/react/app-web/src/components/BatteryCombobox.tsx)
     and
-    [`BatteryPickerModal.tsx`](../../src/react/app-web/src/components/BatteryPickerModal.tsx)
+    [`BatteryPickerModal.tsx`](../src/react/app-web/src/components/BatteryPickerModal.tsx)
     always maintain an active compatible battery selection without a redundant
     "None" option. When no compatible batteries exist in the database for the
     build's electrical envelope, the selector displays "No compatible batteries"
     and is disabled, and the evaluation section displays a prominent "No
     Compatible Batteries" notice card.
 - **Horizontally Scrollable Tab Bars
-  ([`SocialTabs.tsx`](../../src/react/app-web/src/components/SocialTabs.tsx) &
-  [`UserProfilePage.tsx`](../../src/react/app-web/src/pages/UserProfilePage.tsx))**:
+  ([`SocialTabs.tsx`](../src/react/app-web/src/components/SocialTabs.tsx) &
+  [`UserProfilePage.tsx`](../src/react/app-web/src/pages/UserProfilePage.tsx))**:
   - Apply `overflow-x-auto whitespace-nowrap` with compact mobile tab padding
     (`px-3 sm:px-5 py-2.5 sm:py-3 text-xs sm:text-sm`) so tab strips
     (`Discussions`, `Photos & Media`, `Flight Videos`, `Forks & Variants`) stay
     on a single clean horizontal line without awkward multi-line wrapping.
 - **OTP Verification Inputs
-  ([`LoginPage.tsx`](../../src/react/app-web/src/pages/LoginPage.tsx) &
-  [`AccountSettingsPage.tsx`](../../src/react/app-web/src/pages/AccountSettingsPage.tsx))**:
+  ([`LoginPage.tsx`](../src/react/app-web/src/pages/LoginPage.tsx) &
+  [`AccountSettingsPage.tsx`](../src/react/app-web/src/pages/AccountSettingsPage.tsx))**:
   - Use responsive slot sizing (`w-10 h-12 sm:w-12 sm:h-14`) so 6-digit OTP
     inputs fit inside mobile modals with zero overflow.
 
@@ -733,32 +732,31 @@ mobile viewports.
 
 - **Vitest Component & Integration Tests**:
   - Update and expand unit tests in
-    [`src/react/app-web/src/components/__tests__/Layout.test.tsx`](../../src/react/app-web/src/components/__tests__/Layout.test.tsx)
+    [`src/react/app-web/src/components/__tests__/Layout.test.tsx`](../src/react/app-web/src/components/__tests__/Layout.test.tsx)
     to verify mobile drawer open/close toggling, auto-close on navigation, `/`
     keyboard shortcut to focus search, responsive search placeholders,
     focus-expanding mobile search, and tap-to-toggle account menu behavior.
   - Update
-    [`CollectionPage.test.tsx`](../../src/react/app-web/src/pages/__tests__/CollectionPage.test.tsx)
+    [`CollectionPage.test.tsx`](../src/react/app-web/src/pages/__tests__/CollectionPage.test.tsx)
     and
-    [`AccountSettingsPage.test.tsx`](../../src/react/app-web/src/pages/__tests__/AccountSettingsPage.test.tsx)
+    [`AccountSettingsPage.test.tsx`](../src/react/app-web/src/pages/__tests__/AccountSettingsPage.test.tsx)
     for the unified card grid, `+ Add New` button, and `StyledSelect` sort
     controls; update
-    [`UserProfilePage.test.tsx`](../../src/react/app-web/src/pages/__tests__/UserProfilePage.test.tsx)
+    [`UserProfilePage.test.tsx`](../src/react/app-web/src/pages/__tests__/UserProfilePage.test.tsx)
     for the normalized `+ Add New` buttons and colored collection badges; and
     add tests for the collapsible mobile progress/telemetry bar in
-    [`BuildWizardPage.test.tsx`](../../src/react/app-web/src/pages/__tests__/BuildWizardPage.test.tsx).
+    [`BuildWizardPage.test.tsx`](../src/react/app-web/src/pages/__tests__/BuildWizardPage.test.tsx).
 - **Playwright E2E & Golden Visual Snapshots**:
-  - Update
-    [`test/web/specs/catalog.spec.ts`](../../test/web/specs/catalog.spec.ts) to
-    assert against the catalog card grid (`[data-testid="catalog-grid"]` and
+  - Update [`test/web/specs/catalog.spec.ts`](../test/web/specs/catalog.spec.ts)
+    to assert against the catalog card grid (`[data-testid="catalog-grid"]` and
     `[data-testid="catalog-card"]`) and verify all E2E specs under
-    [`test/web/specs/`](../../test/web/specs/) pass across desktop and mobile
+    [`test/web/specs/`](../test/web/specs/) pass across desktop and mobile
     projects (`chromium-desktop`, `chromium-mobile`, `firefox-desktop`,
     `webkit-desktop`, `webkit-mobile`).
   - Regenerate the committed golden PNG baselines in
-    [`test/web/snapshots/`](../../test/web/snapshots/) via
-    `make test-e2e-update` and inspect the resulting mobile and desktop
-    screenshots to confirm zero text clipping or layout crushing.
+    [`test/web/snapshots/`](../test/web/snapshots/) via `make test-e2e-update`
+    and inspect the resulting mobile and desktop screenshots to confirm zero
+    text clipping or layout crushing.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -827,13 +825,12 @@ down on mobile screens.
    `2xl: 1536px`) and a `min-w-[320px]` root floor are sufficient for all
    responsive layout transitions without introducing custom breakpoint tokens.
 2. Replacing `<table>` markup in
-   [`CollectionPage.tsx`](../../src/react/app-web/src/pages/CollectionPage.tsx)
-   and
-   [`AccountSettingsPage.tsx`](../../src/react/app-web/src/pages/AccountSettingsPage.tsx)
+   [`CollectionPage.tsx`](../src/react/app-web/src/pages/CollectionPage.tsx) and
+   [`AccountSettingsPage.tsx`](../src/react/app-web/src/pages/AccountSettingsPage.tsx)
    with semantic `<article>` card grids (`data-testid="catalog-grid"` /
    `data-testid="catalog-card"`) and updating
-   [`test/web/specs/catalog.spec.ts`](../../test/web/specs/catalog.spec.ts)
-   aligns with Quadsmith's clean-slate architecture rules.
+   [`test/web/specs/catalog.spec.ts`](../test/web/specs/catalog.spec.ts) aligns
+   with Quadsmith's clean-slate architecture rules.
 
 ---
 

@@ -28,19 +28,17 @@ the data subject) and [GDPR Article 20](https://gdpr-info.eu/art-20-gdpr/)
 personal data concerning them in a structured, commonly used, and
 machine-readable format.
 
-In
-[user_account_deletion.md](../../docs/plans/user_account_deletion.md#L619-L624),
-Quadsmith identified **Self-Service GDPR Data Archive Export** under Future Work
-so users can download a complete archive of their profile, aircraft builds,
-custom components, collections, community contributions, and uploaded media
-before or independent of account deletion. Additionally,
-[email_delivery_architecture.md](../../docs/plans/email_delivery_architecture.md)
-established Quadsmith's universal out-of-band Email Verification challenge model
-(combining a 6-digit numeric OTP code with a 1-click magic link sent to the
-user's primary email). This plan specifies the end-to-end architecture for
-self-service GDPR data export across the Protobuf schema, store code generator,
-API server, Web UI, and CLI without contradicting or superseding any existing
-plan.
+In [user_account_deletion.md](user_account_deletion.md#L619-L624), Quadsmith
+identified **Self-Service GDPR Data Archive Export** under Future Work so users
+can download a complete archive of their profile, aircraft builds, custom
+components, collections, community contributions, and uploaded media before or
+independent of account deletion. Additionally,
+[email_delivery_architecture.md](email_delivery_architecture.md) established
+Quadsmith's universal out-of-band Email Verification challenge model (combining
+a 6-digit numeric OTP code with a 1-click magic link sent to the user's primary
+email). This plan specifies the end-to-end architecture for self-service GDPR
+data export across the Protobuf schema, store code generator, API server, Web
+UI, and CLI without contradicting or superseding any existing plan.
 
 ---
 
@@ -118,7 +116,7 @@ flowchart TD
 
 The self-service data export entry point is placed on the private Account
 Settings page in
-[AccountSettingsPage.tsx](../../src/frontend/web/app/src/pages/AccountSettingsPage.tsx)
+[AccountSettingsPage.tsx](../src/frontend/web/app/src/pages/AccountSettingsPage.tsx)
 at `/account`, inside a dedicated **Data & Privacy** section card positioned
 below the **Profile Details** card:
 
@@ -155,7 +153,7 @@ below the **Profile Details** card:
 ##### <a id="public-profile-page-owner-only-button" >Public Profile Page Owner-Only Button</a>
 
 Placing the "Download Data" button directly on the public user profile page in
-[UserProfilePage.tsx](../../src/frontend/web/app/src/pages/UserProfilePage.tsx)
+[UserProfilePage.tsx](../src/frontend/web/app/src/pages/UserProfilePage.tsx)
 (`/users/:username`), visible only when the authenticated viewer is the profile
 owner (`user.id === username`). Clicking the button launches the export flow
 from the public profile header.
@@ -197,13 +195,13 @@ verified email addresses, IP and user-agent access logs, private draft builds,
 and uploaded files—an active session bearer token alone is insufficient to
 authorize an export. Quadsmith enforces a mandatory out-of-band Email
 Verification step using the universal challenge architecture in
-[otp.go](../../src/backend/shared/pkg/auth/otp.go) and
-[email.go](../../src/backend/shared/pkg/email/email.go):
+[otp.go](../src/backend/shared/pkg/auth/otp.go) and
+[email.go](../src/backend/shared/pkg/email/email.go):
 
 1. **Challenge Dispatch (`SendEmailOtp`)**:
    - Looks up the authenticated user's primary email address
      (`user_emails.is_primary = true`) in
-     [quadsmith_api.sql](../../src/backend/db/quadsmith_api.sql#L49-L60).
+     [quadsmith_api.sql](../src/backend/db/quadsmith_api.sql#L49-L60).
    - Enforces the standard per-email resend cooldown and hourly rate limit.
    - Inserts a challenge row into `email_otps` with `purpose = 'export_data'`
      and `requested_by_user_uuid = userUUID`, storing HMAC/SHA-256 hashes of the
@@ -287,8 +285,8 @@ complete. The user cannot download the archive directly in the modal.
 Rather than maintaining ad-hoc, error-prone column allowlists in Go, Quadsmith
 introduces a dedicated `quadsmith.data` Protobuf extensions package in
 `proto/quadsmith/data/data.proto` (following the pattern of
-[sql.proto](../../proto/quadsmith/sql/sql.proto) and
-[common.proto](../../proto/quadsmith/common/common.proto)):
+[sql.proto](../proto/quadsmith/sql/sql.proto) and
+[common.proto](../proto/quadsmith/common/common.proto)):
 
 ```protobuf
 syntax = "proto3";
@@ -349,7 +347,7 @@ enum ContentType {
 ```
 
 To guarantee zero classification drift as schemas evolve, a test in
-[schemacheck](../../src/backend/shared/pkg/schemacheck/schemacheck_test.go)
+[schemacheck](../src/backend/shared/pkg/schemacheck/schemacheck_test.go)
 enforces five invariants across all Protobuf files during `make test`:
 
 1. **100% Table Domain Coverage**: Every message with
@@ -358,8 +356,8 @@ enforces five invariants across all Protobuf files during `make test`:
 2. **100% Explicit Field Coverage (Including Embedded Sub-Messages)**: Every
    field on a `(quadsmith.sql.table)` message—and every field on any non-table
    message transitively referenced by a `(quadsmith.sql.table)` message (such as
-   [Media](../../proto/quadsmith/api/media.proto#L15-L20) and
-   [ReferenceLink](../../proto/quadsmith/api/reference_link.proto#L18-L21),
+   [Media](../proto/quadsmith/api/media.proto#L15-L20) and
+   [ReferenceLink](../proto/quadsmith/api/reference_link.proto#L18-L21),
    excluding `google.protobuf.Timestamp`)—must explicitly declare
    `[(quadsmith.data.content_type)]` (never `CONTENT_TYPE_UNSPECIFIED`).
 3. **Identifier & Relational Key Provenance (`SYSTEM_METADATA_PUBLIC` vs.
@@ -383,7 +381,7 @@ enforces five invariants across all Protobuf files during `make test`:
    empty).
 5. **Operations Schema Isolation (`quadsmith.ops` / `store/ops.proto`)**: Every
    table in
-   [`src/proto/quadsmith/store/ops.proto`](../../src/proto/quadsmith/store/ops.proto)
+   [`src/proto/quadsmith/store/ops.proto`](../src/proto/quadsmith/store/ops.proto)
    must categorize all fields exclusively as `CONTENT_TYPE_SYSTEM_METADATA_*` or
    `CONTENT_TYPE_SYSTEM_SECRET` (zero `USER_*` fields, and therefore excluded
    from export by Rule 4).
@@ -453,7 +451,7 @@ export) without failing `schemacheck`. Only exported fields require annotations.
 ### <a id="compile-time-export-code-generation-in-protoc-gen-store" >Compile-Time Export Code Generation in `protoc-gen-store`</a>
 
 Using the `quadsmith.data` annotations,
-[`protoc-gen-store/main.go`](../../src/go/shared/cmd/protoc-gen-store/main.go)
+[`protoc-gen-store/main.go`](../src/go/shared/cmd/protoc-gen-store/main.go)
 generates a type-safe `Export<PluralName>` function in `*_store.pb.go` for every
 `(quadsmith.sql.table)` message that contains at least one `USER_*` field:
 
@@ -552,15 +550,15 @@ columns. Referenced records are expanded inline during export.
 ### <a id="streaming-zip-archive-endpoint-and-modular-json-layout" >Streaming ZIP Archive Endpoint and Modular JSON Layout</a>
 
 ConnectRPC endpoints in
-[server-api/main.go](../../src/backend/server-api/main.go#L118-L120) enforce a
+[server-api/main.go](../src/backend/server-api/main.go#L118-L120) enforce a
 strict 1 MB request read limit (`connect.WithReadMaxBytes(1 << 20)`) and buffer
 unary protobuf responses in memory. Following the pattern established for binary
-media in [handler.go](../../src/backend/shared/pkg/blob/handler.go), Quadsmith
+media in [handler.go](../src/backend/shared/pkg/blob/handler.go), Quadsmith
 serves the archive via a dedicated HTTP endpoint:
 
 - **Endpoint**: `GET /api/account/export?token=<export_token>` mounted on
-  [server-api/main.go](../../src/backend/server-api/main.go) and reverse-proxied
-  in [server-web/main.go](../../src/backend/server-web/main.go#L41-L45).
+  [server-api/main.go](../src/backend/server-api/main.go) and reverse-proxied in
+  [server-web/main.go](../src/backend/server-web/main.go#L41-L45).
 - **Authentication**: Validates the HMAC-signed `export_token` query parameter
   (or `Authorization: Bearer <export_token>` header for CLI requests), verifying
   its signature, `purpose == "export_data_download"`, and 15-minute expiration.
@@ -716,23 +714,23 @@ addresses in `security.json` alongside `RefreshToken`.
 
 All user email addresses are stored exclusively in the `user_emails` table, and
 the redundant `users.email` SQL column in
-[quadsmith_api.sql](../../src/backend/db/quadsmith_api.sql#L21) is removed:
+[quadsmith_api.sql](../src/backend/db/quadsmith_api.sql#L21) is removed:
 
 1. **Drop Redundant `users.email` Column**:
    - In
-     [`src/proto/quadsmith/store/user.proto`](../../src/proto/quadsmith/store/user.proto),
+     [`src/proto/quadsmith/store/user.proto`](../src/proto/quadsmith/store/user.proto),
      `User` omits `email` entirely, while in
-     [`src/proto/quadsmith/api/user.proto`](../../src/proto/quadsmith/api/user.proto),
+     [`src/proto/quadsmith/api/user.proto`](../src/proto/quadsmith/api/user.proto),
      `User.email` remains available on API responses populated from
      `user_emails WHERE is_primary = true` without persisting a duplicate column
      in `users`.
    - All dual-write queries in
-     [service.go](../../src/backend/shared/pkg/auth/service.go)
+     [service.go](../src/backend/shared/pkg/auth/service.go)
      (`CompleteAccountSetup`, `SetPrimaryEmail`, `MergeAccount`,
      `OAuthCallback`, `userExistsForEmail`) read and write email addresses
      solely in `user_emails`.
    - When
-     [`HandlePurgeSoftDeletedAccounts`](../../src/go/shared/pkg/auth/job.go#L120-L229)
+     [`HandlePurgeSoftDeletedAccounts`](../src/go/shared/pkg/auth/job.go#L120-L229)
      wipes a deleted account after 30 days, it simply deletes the user's
      `user_emails` rows without needing to invent a fake
      `deleted-<uuid>@deleted.quadsmith.internal` placeholder on `users`.
@@ -741,9 +739,9 @@ the redundant `users.email` SQL column in
      rather than duplicating the primary email inside `user` (`ExportUsers`).
 2. **Enforce 1 and Only 1 Primary Email (`is_primary = true`)**:
    - Extend `TableOptions` in
-     [sql.proto](../../proto/quadsmith/sql/sql.proto#L13-L26) with
+     [sql.proto](../proto/quadsmith/sql/sql.proto#L13-L26) with
      `repeated UniqueIndex unique_indexes = 4;` and update
-     [protoc-gen-sql/main.go](../../src/backend/shared/cmd/protoc-gen-sql/main.go)
+     [protoc-gen-sql/main.go](../src/backend/shared/cmd/protoc-gen-sql/main.go)
      to emit partial unique indexes in `quadsmith_api.sql`:
 
      ```sql
@@ -812,7 +810,7 @@ to the active primary row.
 ### <a id="protobuf-api-specifications-and-rpc-contracts" >Protobuf API Specifications and RPC Contracts</a>
 
 Unify email verification across the entire platform in
-[auth.proto](../../proto/quadsmith/api/auth.proto) using standard `SendEmailOtp`
+[auth.proto](../proto/quadsmith/api/auth.proto) using standard `SendEmailOtp`
 and `VerifyEmailOtp` RPCs parameterized by the `EmailOtpPurpose` enum (`LOGIN`,
 `ADD_EMAIL`, `EXPORT_DATA`, `DELETE_ACCOUNT`):
 
@@ -890,7 +888,7 @@ its own distinct request and response message types.
 ### <a id="cli-parity-with-qs-account-export" >CLI Parity with `qs account export`</a>
 
 To maintain full parity between the Web UI and CLI in
-[auth_cmd.go](../../src/frontend/cli/auth_cmd.go), Quadsmith adds an `account`
+[auth_cmd.go](../src/frontend/cli/auth_cmd.go), Quadsmith adds an `account`
 subcommand group with `qs account export`:
 
 - **Command Signature**:
@@ -1028,6 +1026,6 @@ takes effect.
 ### <a id="additional-privacy-settings-in-data-privacy-section" >Additional Privacy Settings in Data & Privacy Section</a>
 
 Expand the **Data & Privacy** section on
-[AccountSettingsPage.tsx](../../src/frontend/web/app/src/pages/AccountSettingsPage.tsx)
+[AccountSettingsPage.tsx](../src/frontend/web/app/src/pages/AccountSettingsPage.tsx)
 with user-configurable visibility toggles such as
 `"Show my email address on my user profile"`.

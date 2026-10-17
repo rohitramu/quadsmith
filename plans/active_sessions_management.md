@@ -16,7 +16,7 @@
 
 ## <a id="1-background" >1. Background</a>
 
-In [docs/plans/user_auth.md](user_auth.md), the core authentication architecture
+In [plans/user_auth.md](user_auth.md), the core authentication architecture
 established a hybrid token model: short-lived stateless JWT access tokens (1
 hour TTL) paired with database-backed, revocable refresh tokens (30 days TTL
 stored in the `refresh_tokens` table in PostgreSQL).
@@ -39,7 +39,7 @@ sessions or revoke access remotely without contacting support.
 
 Implement a self-service **Active Sessions** management interface on the Account
 Settings page
-([`AccountSettingsPage.tsx`](../../src/react/app-web/src/pages/AccountSettingsPage.tsx))
+([`AccountSettingsPage.tsx`](../src/react/app-web/src/pages/AccountSettingsPage.tsx))
 that allows authenticated users to inspect all active sessions across their
 devices with a compact vertical footprint, automatically scrolls if there are
 more than 3 sessions, clearly distinguishes the current device, and provides
@@ -71,7 +71,7 @@ revoke stale or unrecognized sessions immediately.
 ### <a id="placement-and-page-hierarchy" >Placement and Page Hierarchy</a>
 
 The Active Sessions component will be placed on the Account Settings page
-([`AccountSettingsPage.tsx`](../../src/react/app-web/src/pages/AccountSettingsPage.tsx))
+([`AccountSettingsPage.tsx`](../src/react/app-web/src/pages/AccountSettingsPage.tsx))
 as a dedicated card section positioned immediately below the "Associated Email
 Addresses" section and immediately above the "Public Profile" section.
 
@@ -238,8 +238,8 @@ Provide only individual session revocation buttons without a bulk action.
 ### <a id="database-schema-and-ip-location-tracking" >Database Schema and IP/Location Tracking</a>
 
 The `refresh_tokens` table in
-[`src/db/quadsmith_api.sql`](../../src/db/quadsmith_api.sql) is extended with
-two columns:
+[`src/db/quadsmith_api.sql`](../src/db/quadsmith_api.sql) is extended with two
+columns:
 
 ```sql
 CREATE TABLE IF NOT EXISTS refresh_tokens (
@@ -256,11 +256,10 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
 );
 ```
 
-[`src/db/quadsmith_api.mermaid`](../../src/db/quadsmith_api.mermaid) is updated
-to match.
+[`src/db/quadsmith_api.mermaid`](../src/db/quadsmith_api.mermaid) is updated to
+match.
 
-In
-[`src/go/shared/pkg/auth/service.go`](../../src/go/shared/pkg/auth/service.go),
+In [`src/go/shared/pkg/auth/service.go`](../src/go/shared/pkg/auth/service.go),
 `issueAuthSession` extracts `clientIP := getClientIP(req)` and
 `locationHint := extractLocationHint(req.Header(), clientIP)` and inserts them
 into `refresh_tokens`. In `RefreshToken`, `last_used_at` is updated to `NOW()`.
@@ -286,7 +285,7 @@ Store only `device_hint` without extending the database schema.
 ### <a id="protobuf-api-and-connectrpc-service-contracts" >Protobuf API and ConnectRPC Service Contracts</a>
 
 The following RPCs are added to `AuthService` in
-[`src/proto/quadsmith/api/auth.proto`](../../src/proto/quadsmith/api/auth.proto):
+[`src/proto/quadsmith/api/auth.proto`](../src/proto/quadsmith/api/auth.proto):
 
 ```protobuf
 service AuthService {

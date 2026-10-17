@@ -6,7 +6,7 @@
 - [2. Goal](#2-goal)
 - [3. Proposal](#3-proposal)
   - [Design Decision 1: Plan Document Structure & Section Rules](#design-decision-1-plan-document-structure-and-section-rules)
-  - [Design Decision 2: Plan Lifecycle (Artifacts to docs/plans/)](#design-decision-2-plan-lifecycle-artifacts-to-docs-plans)
+  - [Design Decision 2: Plan Lifecycle (Artifacts to plans/)](#design-decision-2-plan-lifecycle-artifacts-to-plans)
   - [Design Decision 3: Git Commit Workflow Integration](#design-decision-3-git-commit-workflow-integration)
   - [Design Decision 4: Plan Maintenance, Superseding, and Archival](#design-decision-4-plan-maintenance-superseding-and-archival)
   - [Design Decision 5: Self-Execution for this Change](#design-decision-5-self-execution-for-this-change)
@@ -17,16 +17,16 @@
 
 ## <a id="1-background" >1. Background</a>
 
-Currently, [AGENTS.md (Project Planning)](../../AGENTS.md#L26-L65) specifies
+Currently, [AGENTS.md (Project Planning)](../AGENTS.md#L26-L65) specifies
 conventions for distinguishing direct requests from plans, requiring user
 approval for planning documents, and enforcing prominent approval callouts.
-Furthermore, [AGENTS.md (Git Workflow)](../../AGENTS.md#L7-L18) establishes
+Furthermore, [AGENTS.md (Git Workflow)](../AGENTS.md#L7-L18) establishes
 policies for clean commits and remote pushing.
 
 However, neither section defines a structured schema for technical design
 proposals. As seen in earlier documents like
-[docs/plans/archive/mvp_plan.md](archive/mvp_plan.md) and
-[docs/plans/archive/data_representation_cleanup_plan.md](archive/data_representation_cleanup_plan.md),
+[plans/archive/mvp_plan.md](archive/mvp_plan.md) and
+[plans/archive/data_representation_cleanup_plan.md](archive/data_representation_cleanup_plan.md),
 past plans lacked a consistent section hierarchy, omitted formal evaluations of
 rejected options, had no defined archival strategy when contradicted, and were
 detached from commit messages.
@@ -47,23 +47,23 @@ Formally codify the standardized plan document structure (including Table of
 Contents, Proposal blockquoted TL;DR and high-level overview, relative path file
 links for git, and evidence links), the draft-to-repo lifecycle, the plan
 superseding/archival process, and the commit message formatting rules directly
-into [AGENTS.md](../../AGENTS.md).
+into [AGENTS.md](../AGENTS.md).
 
 ---
 
 ## <a id="3-proposal" >3. Proposal</a>
 
 > **TL;DR:** Standardize plan documents and git integration in
-> [AGENTS.md](../../AGENTS.md):
+> [AGENTS.md](../AGENTS.md):
 >
 > - **Structure**: 7 standard sections with Table of Contents, blockquoted
 >   TL;DR, and decision-specific alternatives.
 > - **Lifecycle**: Draft in session artifacts (`&nbsp;` spacing, `file:///`
->   links); commit to `docs/plans/` (pure markdown, relative links).
+>   links); commit to `plans/` (pure markdown, relative links).
 > - **Commits**: Implement plans in a single commit containing the Goal and
 >   Proposal TL;DR in the commit message.
 > - **Maintenance**: Keep active plans updated with each commit; move superseded
->   plans into `docs/plans/archive/`.
+>   plans into `plans/archive/`.
 
 This proposal establishes a standardized, end-to-end framework for how technical
 and architectural plans are drafted, structured, reviewed, versioned,
@@ -74,14 +74,14 @@ decisions, and discarded alternatives without ambiguity.
 
 Furthermore, integrating the plan's Goal and Proposal TL;DR directly into git
 commit messages ensures that the repository history contains clear context for
-every major change while preserving the full architectural design in
-`docs/plans/`. Finally, requiring active plans to stay updated while archiving
-contradicted plans preserves clean documentation while maintaining an immutable
-historical record.
+every major change while preserving the full architectural design in `plans/`.
+Finally, requiring active plans to stay updated while archiving contradicted
+plans preserves clean documentation while maintaining an immutable historical
+record.
 
 ### <a id="design-decision-1-plan-document-structure-and-section-rules" >Design Decision 1: Plan Document Structure & Section Rules</a>
 
-In [AGENTS.md](../../AGENTS.md) under `## Project Planning`, prescribe the
+In [AGENTS.md](../AGENTS.md) under `## Project Planning`, prescribe the
 following structure for every plan document:
 
 - **Table of Contents**: A linked list directly under the title containing all
@@ -123,8 +123,8 @@ following structure for every plan document:
   linking as evidence for statements).
   - For file and code references in committed git plans, always use relative
     paths from the repository root or file location (e.g.
-    `[AGENTS.md](../../AGENTS.md#L26-L65)` or
-    `[docs/plans/archive/mvp_plan.md](archive/mvp_plan.md)`).
+    `[AGENTS.md](../AGENTS.md#L26-L65)` or
+    `[plans/archive/mvp_plan.md](archive/mvp_plan.md)`).
   - Prioritize external links by utility:
 
     1. [Official documentation](https://www.w3.org/standards/) (most useful)
@@ -177,8 +177,7 @@ following structure for every plan document:
 7. **Open questions (optional)**: A numbered list of any unknowns, subjective
    decisions, or undecided tradeoffs.
 
-Snippet to add to [AGENTS.md](../../AGENTS.md#L37-L57) under
-`## Project Planning`:
+Snippet to add to [AGENTS.md](../AGENTS.md#L37-L57) under `## Project Planning`:
 
 ````markdown
 - **Plan Document Structure & Lifecycle**:
@@ -187,8 +186,8 @@ Snippet to add to [AGENTS.md](../../AGENTS.md#L37-L57) under
   - In artifact files, use `&nbsp;` on blank lines between adjacent paragraphs
     for preview spacing, and `file:///` scheme links for editor clickability.
   - Upon approval, convert internal file links to repo-relative paths, remove
-    `&nbsp;` spacing, and commit the finalized plan to
-    `docs/plans/<plan_name>.md` using pure standard Markdown.
+    `&nbsp;` spacing, and commit the finalized plan to `plans/<plan_name>.md`
+    using pure standard Markdown.
   - Every plan document must adhere to the standardized structure:
     - **Table of Contents**: Linked list of all Level 1 headings present in the
       doc, plus nested design decision headings.
@@ -284,7 +283,7 @@ Always include all 7 sections even when empty by adding placeholder text such as
 
 </details>
 
-### <a id="design-decision-2-plan-lifecycle-artifacts-to-docs-plans" >Design Decision 2: Plan Lifecycle (Artifacts to `docs/plans/`)</a>
+### <a id="design-decision-2-plan-lifecycle-artifacts-to-plans" >Design Decision 2: Plan Lifecycle (Artifacts to `plans/`)</a>
 
 Define the two-stage lifecycle for all plans:
 
@@ -296,16 +295,34 @@ Define the two-stage lifecycle for all plans:
    `file:///` scheme so clicking them opens the local workspace file directly in
    the editor.
 2. **Implementation Phase (Git Repository)**: Once approved, the plan document
-   is created at `docs/plans/<plan_name>.md` and committed along with the
+   is created at `plans/<plan_name>.md` and committed along with the
    implementation code. During this step, strip `&nbsp;` paragraph spacers
    (restoring pure standard Markdown) and convert internal `file:///` links to
-   repository-relative paths (e.g., `../../AGENTS.md`) to maintain portability
+   repository-relative paths (e.g., `../AGENTS.md`) to maintain portability
    across git clones and web viewers.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
 
-##### <a id="direct-authoring-in-docs-plans" >Direct Authoring in `docs/plans/`</a>
+##### <a id="nest-plans-under-docs-plans" >Nest Plans Under `docs/plans/`</a>
+
+Store plan documents in a nested `docs/plans/` directory rather than a top-level
+`plans/` directory.
+
+**Pros:**
+
+- Groups plans inside a parent `docs/` directory if other standalone
+  documentation folders exist alongside `plans/`.
+
+**Cons:**
+
+- Creates an unnecessary single-child wrapper directory (`docs/`) when all
+  non-plan operational documentation (such as `deploy/README.md`) is colocated
+  with its respective subsystem.
+- Requires two levels of parent traversal (`../../`) for every relative
+  repository link instead of `../`.
+
+##### <a id="direct-authoring-in-plans" >Direct Authoring in `plans/`</a>
 
 Create and edit the plan file in the git working tree from the start of the
 conversation. This bypasses the need to move files between directories.
@@ -318,7 +335,7 @@ conversation. This bypasses the need to move files between directories.
 
 - Pollutes `git status` with unapproved, in-progress drafts.
 - Violates the project rule in
-  [AGENTS.md (Project Planning)](../../AGENTS.md#L26-L26) that iterations remain
+  [AGENTS.md (Project Planning)](../AGENTS.md#L26-L26) that iterations remain
   confined to preview/artifact directories before approval.
 
 ##### <a id="relative-file-links-in-artifact-previews" >Relative File Links in Artifact Previews</a>
@@ -328,7 +345,7 @@ during planning review.
 
 **Pros:**
 
-- No URL conversion step required when saving the file to `docs/plans/`.
+- No URL conversion step required when saving the file to `plans/`.
 
 **Cons:**
 
@@ -340,16 +357,15 @@ during planning review.
 
 ### <a id="design-decision-3-git-commit-workflow-integration" >Design Decision 3: Git Commit Workflow Integration</a>
 
-In [AGENTS.md](../../AGENTS.md) under `## Git Workflow & Commit Messages`,
-define the following commit conventions:
+In [AGENTS.md](../AGENTS.md) under `## Git Workflow & Commit Messages`, define
+the following commit conventions:
 
 1. **Single Commit Implementation**: Plans should be implemented in a single
    commit.
 2. **Active Plan Citation Invariant**: Every commit that relates to or impacts
-   one or more active plans (directly in `docs/plans/`) must explicitly cite
-   those plans (by relative path, e.g., `docs/plans/<plan_name>.md`) in the
-   commit message body. Archived plans in `docs/plans/archive/` should be
-   ignored and not cited.
+   one or more active plans (directly in `plans/`) must explicitly cite those
+   plans (by relative path, e.g., `plans/<plan_name>.md`) in the commit message
+   body. Archived plans in `plans/archive/` should be ignored and not cited.
 3. **Commit Message Format**: The commit message must include the standard
    top-line subject, followed by just the **Goal** section and a **TL;DR of the
    Proposal** (conforming to
@@ -359,7 +375,7 @@ define the following commit conventions:
 
    - Explicitly mention the affected active plan(s) in the commit message body.
    - If a follow-up commit is required because the plan needs to change: update
-     the plan document in `docs/plans/<plan_name>.md` as part of that commit.
+     the plan document in `plans/<plan_name>.md` as part of that commit.
    - If a follow-up commit is required because the code does not correctly
      implement the plan: treat it as a bugfix with a simple commit message (the
      plan document does not need to be updated, but the relevant active plan
@@ -372,24 +388,24 @@ define the following commit conventions:
      force-pushing via
      [`git push --force-with-lease`](https://git-scm.com/docs/git-push#Documentation/git-push.txt---force-with-leaseltrefnamegt).
 
-Snippet to add to [AGENTS.md](../../AGENTS.md#L12-L18) under
+Snippet to add to [AGENTS.md](../AGENTS.md#L12-L18) under
 `## Git Workflow & Commit Messages`:
 
 ```markdown
 - **Plan Implementation & Commits**:
   - **Mention Active Plans in Related Commits**: Every commit that relates to or
-    impacts one or more active plans (directly in `docs/plans/`) must explicitly
-    cite those plans (by relative path, e.g., `docs/plans/<plan_name>.md`) in
-    the commit message body. Archived plans in `docs/plans/archive/` must be
-    ignored and not cited.
+    impacts one or more active plans (directly in `plans/`) must explicitly cite
+    those plans (by relative path, e.g., `plans/<plan_name>.md`) in the commit
+    message body. Archived plans in `plans/archive/` must be ignored and not
+    cited.
   - Implement plans in a single commit that saves the finalized plan to
-    `docs/plans/<plan_name>.md`.
+    `plans/<plan_name>.md`.
   - Include the **Goal** section, a **TL;DR of the Proposal**, and the plan path
     reference in the commit message body following the subject line.
   - For follow-up commits:
     - Explicitly mention the affected active plan(s) in the commit message body.
-    - If the plan changes: update the plan in `docs/plans/<plan_name>.md` in
-      that commit.
+    - If the plan changes: update the plan in `plans/<plan_name>.md` in that
+      commit.
     - If fixing an incorrect implementation: treat it as a standard bugfix
       commit (no plan document update needed, but still cite the active plan).
     - If following up immediately on the branch's latest commit: amend the
@@ -413,7 +429,7 @@ This keeps git commit logs completely standalone.
 **Cons:**
 
 - Produces massive commit logs.
-- Causes duplication between git logs and `docs/plans/`.
+- Causes duplication between git logs and `plans/`.
 - Harder to read with `git log --oneline` or terminal viewers.
 
 ##### <a id="always-create-new-commits-for-immediate-follow-ups" >Always Create New Commits for Immediate Follow-ups</a>
@@ -434,37 +450,35 @@ on the branch; always create a new commit.
 
 ### <a id="design-decision-4-plan-maintenance-superseding-and-archival" >Design Decision 4: Plan Maintenance, Superseding, and Archival</a>
 
-In [AGENTS.md](../../AGENTS.md) under `## Project Planning`, define the rules
-for ongoing plan maintenance and deprecation:
+In [AGENTS.md](../AGENTS.md) under `## Project Planning`, define the rules for
+ongoing plan maintenance and deprecation:
 
-1. **Keep Active Plans Updated**: All non-archived plans in `docs/plans/` must
-   be kept up-to-date with every new commit, in line with
+1. **Keep Active Plans Updated**: All non-archived plans in `plans/` must be
+   kept up-to-date with every new commit, in line with
    [Software Documentation Lifecycle Best Practices](https://en.wikipedia.org/wiki/Software_documentation).
 2. **Superseding Contradicted Plans**:
 
    - If a new plan contradicts an existing plan, do **not** modify the existing
      plan documents.
    - Reference the superseded plan(s) in the new plan's `1. Background` section.
-   - Consider the superseded plans archived and move them into
-     `docs/plans/archive/` (following standard
+   - Consider the superseded plans archived and move them into `plans/archive/`
+     (following standard
      [software deprecation practices](https://en.wikipedia.org/wiki/Deprecation)).
    - Notify the user of this situation while discussing the plan.
 
 3. **Clarifying Uncertainty**: If unsure whether to archive an existing plan or
    update it to match new changes, explicitly ask the user.
 
-Snippet to add to [AGENTS.md](../../AGENTS.md#L58-L65) under
-`## Project Planning`:
+Snippet to add to [AGENTS.md](../AGENTS.md#L58-L65) under `## Project Planning`:
 
 ```markdown
 - **Plan Maintenance & Archival**:
-  - Keep all non-archived plans in `docs/plans/` up-to-date with every new
-    commit.
+  - Keep all non-archived plans in `plans/` up-to-date with every new commit.
   - If a new plan contradicts an existing plan:
     - Do not modify the existing plan document.
     - Reference the superseded plan(s) in the `Background` section of the new
       plan.
-    - Move superseded plans into `docs/plans/archive/`.
+    - Move superseded plans into `plans/archive/`.
     - Notify the user of this situation during the plan discussion.
   - If unsure whether an existing plan should be updated or archived, ask the
     user.
@@ -475,8 +489,8 @@ Snippet to add to [AGENTS.md](../../AGENTS.md#L58-L65) under
 
 ##### <a id="edit-superseded-plans-in-place" >Edit Superseded Plans In-Place</a>
 
-Directly edit superseded plans in `docs/plans/` to reflect new architecture
-rather than archiving them.
+Directly edit superseded plans in `plans/` to reflect new architecture rather
+than archiving them.
 
 **Pros:**
 
@@ -488,10 +502,10 @@ rather than archiving them.
 - Destroys historical context of why earlier architectural choices were made.
 - Makes it difficult to audit past decisions and system evolution.
 
-##### <a id="retain-superseded-plans-in-docs-plans-with-deprecation-headers" >Retain Superseded Plans in `docs/plans/` with Deprecation Headers</a>
+##### <a id="retain-superseded-plans-in-plans-with-deprecation-headers" >Retain Superseded Plans in `plans/` with Deprecation Headers</a>
 
-Leave superseded plans in `docs/plans/` and prepend a note stating that they
-have been replaced.
+Leave superseded plans in `plans/` and prepend a note stating that they have
+been replaced.
 
 **Pros:**
 
@@ -499,7 +513,7 @@ have been replaced.
 
 **Cons:**
 
-- Clutters the active `docs/plans/` directory with obsolete plans.
+- Clutters the active `plans/` directory with obsolete plans.
 - Increases the risk of agents or developers referencing outdated
   specifications.
 
@@ -509,11 +523,11 @@ have been replaced.
 
 To apply these rules:
 
-1. Update [AGENTS.md](../../AGENTS.md) with the new sections in
+1. Update [AGENTS.md](../AGENTS.md) with the new sections in
    `## Git Workflow & Commit Messages` and `## Project Planning`.
-2. Ensure `docs/plans/archive/` exists.
-3. Save this plan to `docs/plans/plan_structure_and_commit_workflow.md` using
-   pure standard Markdown (stripping `&nbsp;`) and repo-relative file links.
+2. Ensure `plans/archive/` exists.
+3. Save this plan to `plans/plan_structure_and_commit_workflow.md` using pure
+   standard Markdown (stripping `&nbsp;`) and repo-relative file links.
 4. Commit files in a single commit whose message includes the Goal and Proposal
    TL;DR.
 5. Push to remote.
@@ -521,10 +535,10 @@ To apply these rules:
 <details>
 <summary><strong>Alternatives considered</strong></summary>
 
-##### <a id="update-agents-md-without-saving-this-plan-to-docs-plans" >Update `AGENTS.md` without Saving this Plan to `docs/plans/`</a>
+##### <a id="update-agents-md-without-saving-this-plan-to-plans" >Update `AGENTS.md` without Saving this Plan to `plans/`</a>
 
-Only update `AGENTS.md` and omit writing this plan into `docs/plans/`. This
-minimizes the number of files touched during the task.
+Only update `AGENTS.md` and omit writing this plan into `plans/`. This minimizes
+the number of files touched during the task.
 
 **Pros:**
 
@@ -565,6 +579,6 @@ the repository, relying on
 
 ## <a id="5-assumptions" >5. Assumptions</a>
 
-1. The plan document in `docs/plans/<plan_name>.md` should remain formatted in
+1. The plan document in `plans/<plan_name>.md` should remain formatted in
    [GitHub Flavored Markdown](https://github.github.com/gfm/).
 2. The rules apply to all future planning tasks across the repository.

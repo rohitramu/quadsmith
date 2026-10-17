@@ -205,7 +205,7 @@ providers:
 In adherence to Quadsmith schema standards:
 
 - All authentication tables
-  ([`src/backend/db/quadsmith_api.sql`](../../src/backend/db/quadsmith_api.sql))
+  ([`src/backend/db/quadsmith_api.sql`](../src/backend/db/quadsmith_api.sql))
   utilize hidden UUID v7 primary keys (`uuid UUID PRIMARY KEY`).
 - Foreign keys explicitly reference
   `user_uuid UUID REFERENCES users(uuid) ON DELETE CASCADE`.

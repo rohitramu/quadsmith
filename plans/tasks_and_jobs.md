@@ -19,27 +19,27 @@
 ## <a id="1-background" >1. Background</a>
 
 In Quadsmith, background worker operations span two subsystems: the operations
-server [`server-ops`](../../src/go/server-ops) and a background scheduling
-daemon [`server-jobs`](../../src/go/server-jobs).
+server [`server-ops`](../src/go/server-ops) and a background scheduling daemon
+[`server-jobs`](../src/go/server-jobs).
 
-Previously, [`server-jobs`](../../src/go/server-jobs/main.go) loaded a generic
+Previously, [`server-jobs`](../src/go/server-jobs/main.go) loaded a generic
 repeated list of string schedule definitions
 (`repeated JobScheduleConfig schedules`) and triggered operations through a
 generic, string-based `TriggerJob` RPC on
-[`OpsService`](../../src/proto/quadsmith/ops/ops.proto). Within
-[`server-ops`](../../src/go/server-ops/pkg/ops/service.go), `TriggerJob`
-contained a string switch statement dispatching to either specific methods like
-[`CleanupExpiredOtps`](../../src/proto/quadsmith/ops/ops.proto) or inline
-business logic like
-[`auth.HandlePurgeSoftDeletedAccounts`](../../src/go/shared/pkg/auth/job.go).
+[`OpsService`](../src/proto/quadsmith/ops/ops.proto). Within
+[`server-ops`](../src/go/server-ops/pkg/ops/service.go), `TriggerJob` contained
+a string switch statement dispatching to either specific methods like
+[`CleanupExpiredOtps`](../src/proto/quadsmith/ops/ops.proto) or inline business
+logic like
+[`auth.HandlePurgeSoftDeletedAccounts`](../src/go/shared/pkg/auth/job.go).
 
 Furthermore, hosting `GetJob` and `ListJobs` RPCs on `server-jobs` via a
-separate `JobsService` coupled client tooling ([`qsops`](../../src/go/cli-ops)),
-reverse-proxy routing ([`nginx.conf`](../../src/deploy/nginx/nginx.conf)), and
+separate `JobsService` coupled client tooling ([`qsops`](../src/go/cli-ops)),
+reverse-proxy routing ([`nginx.conf`](../src/deploy/nginx/nginx.conf)), and
 database connection pools directly to the scheduler process. Consolidating all
-task and job RPCs into [`OpsService`](../../src/proto/quadsmith/ops/ops.proto)
-on [`server-ops`](../../src/go/server-ops) ensures that
-[`server-jobs`](../../src/go/server-jobs) acts purely as a replaceable, headless
+task and job RPCs into [`OpsService`](../src/proto/quadsmith/ops/ops.proto) on
+[`server-ops`](../src/go/server-ops) ensures that
+[`server-jobs`](../src/go/server-jobs) acts purely as a replaceable, headless
 scheduling mechanism without any HTTP APIs or database connections.
 
 ---
@@ -49,17 +49,17 @@ scheduling mechanism without any HTTP APIs or database connections.
 Establish a clean separation of concerns and clear taxonomy across subsystems:
 
 1. **Tasks** (definitions and execution methods) and **Jobs** (execution history
-   and audit inspection) live in [`server-ops`](../../src/go/server-ops) under
-   [`OpsService`](../../src/proto/quadsmith/ops/ops.proto).
-2. [`server-jobs`](../../src/go/server-jobs) operates purely as a headless
+   and audit inspection) live in [`server-ops`](../src/go/server-ops) under
+   [`OpsService`](../src/proto/quadsmith/ops/ops.proto).
+2. [`server-jobs`](../src/go/server-jobs) operates purely as a headless
    scheduling daemon with zero exposed RPCs, HTTP listeners, or database
    connections, making it trivial to swap out the scheduling mechanism (e.g., to
    Google Cloud Scheduler or Kubernetes `CronJob`) without changing any client,
    proxy, or API logic.
-3. [`server_jobs.proto`](../../src/proto/quadsmith/config/server_jobs.proto)
+3. [`server_jobs.proto`](../src/proto/quadsmith/config/server_jobs.proto)
    features strongly-typed schedule configurations with one message per task
    type.
-4. [`qsops`](../../src/go/cli-ops) organizes commands cleanly under
+4. [`qsops`](../src/go/cli-ops) organizes commands cleanly under
    `qsops tasks (list|get|trigger)` and `qsops jobs (list|get)`, communicating
    exclusively with `server-ops`.
 
@@ -100,15 +100,15 @@ flowchart LR
   OPS -- "Writes & Queries\nJob Audit Records" --> DB
 ```
 
-The operations server [`server-ops`](../../src/go/server-ops) serves
-[`OpsService`](../../src/proto/quadsmith/ops/ops.proto), acting as the single
+The operations server [`server-ops`](../src/go/server-ops) serves
+[`OpsService`](../src/proto/quadsmith/ops/ops.proto), acting as the single
 authoritative owner of task definitions, task execution logic, and job execution
 history. Every task is exposed as a strongly-typed Connect RPC method (e.g.,
 `CleanupExpiredOtps`, `PurgeSoftDeletedAccounts`), task catalog inspection is
 served via `ListTasks` and `GetTask`, and chronological job execution history is
 served via `ListJobs` and `GetJob`.
 
-The job scheduler [`server-jobs`](../../src/go/server-jobs) is a lightweight,
+The job scheduler [`server-jobs`](../src/go/server-jobs) is a lightweight,
 headless background daemon. It holds no database connections and exposes no
 network ports; it simply runs the validated `robfig/cron/v3` schedules and
 triggers the strongly-typed task RPCs on `server-ops` using its `ROBOT` bearer
@@ -129,11 +129,10 @@ token.
 
 ### <a id="task-and-job-rpcs-in-opsservice-server-ops" >Task and Job RPCs in OpsService (server-ops)</a>
 
-In
-[`src/proto/quadsmith/ops/ops.proto`](../../src/proto/quadsmith/ops/ops.proto),
+In [`src/proto/quadsmith/ops/ops.proto`](../src/proto/quadsmith/ops/ops.proto),
 all five maintenance and cleanup tasks, task catalog inspection RPCs, and job
 history inspection RPCs are defined on
-[`OpsService`](../../src/proto/quadsmith/ops/ops.proto):
+[`OpsService`](../src/proto/quadsmith/ops/ops.proto):
 
 ```protobuf
 // Maintenance & Operational Tasks
@@ -154,7 +153,7 @@ rpc ListJobs(ListJobsRequest) returns (ListJobsResponse);
 ```
 
 When any of the task RPCs is executed on `server-ops`, the shared
-[`OpsInterceptor`](../../src/go/shared/pkg/opsauth/interceptor.go) synchronously
+[`OpsInterceptor`](../src/go/shared/pkg/opsauth/interceptor.go) synchronously
 writes the job execution audit record to `quadsmith_ops.internal_api_calls` and
 returns the generated job identifier in the `X-Job-Id` response header.
 Read-only inspection calls (`ListTasks`, `GetTask`, `ListJobs`, `GetJob`) do not
@@ -217,7 +216,7 @@ message ListTasksResponse {
 ```
 
 In
-[`src/go/server-ops/pkg/ops/service.go`](../../src/go/server-ops/pkg/ops/service.go):
+[`src/go/server-ops/pkg/ops/service.go`](../src/go/server-ops/pkg/ops/service.go):
 
 - `ListJobs`: Queries job execution records from
   `quadsmith_ops.internal_api_calls` for all task procedures, ordered by
@@ -244,8 +243,8 @@ Expose `GetJob` and `ListJobs` on a dedicated `JobsService` hosted by
 
 **Cons:**
 
-- Couples [`qsops`](../../src/go/cli-ops) (`jobs_server_url`), Nginx routing,
-  and RBAC/bootstrap token configs to the scheduler daemon.
+- Couples [`qsops`](../src/go/cli-ops) (`jobs_server_url`), Nginx routing, and
+  RBAC/bootstrap token configs to the scheduler daemon.
 - Wastes PostgreSQL connections on a second connection pool to `quadsmith_ops`.
 - Requires client and proxy changes if `server-jobs` is later replaced by Cloud
   Scheduler or Kubernetes `CronJob`.
@@ -269,7 +268,7 @@ RPCs.
 ### <a id="strongly-typed-per-task-schedules-in-server_jobsproto" >Strongly-Typed Per-Task Schedules in server_jobs.proto</a>
 
 In
-[`src/proto/quadsmith/config/server_jobs.proto`](../../src/proto/quadsmith/config/server_jobs.proto),
+[`src/proto/quadsmith/config/server_jobs.proto`](../src/proto/quadsmith/config/server_jobs.proto),
 `JobServerConfig` contains only the target `ops_server_url`, `auth_token`, and
 strongly-typed schedule sub-messages—with no `ServerConfig`, `DatabaseConfig`,
 `groups`, or `bootstrap_tokens`:
@@ -329,10 +328,10 @@ message SendUsernameReleaseWarningsSchedule {
 ```
 
 The textproto configuration files across all environments
-([`sandbox.textproto`](../../src/go/server-jobs/config/sandbox.textproto),
-[`staging.textproto`](../../src/go/server-jobs/config/staging.textproto), and
-[`prod.textproto`](../../src/go/server-jobs/config/prod.textproto)) specify
-either a `cron` string or a typed `interval`:
+([`sandbox.textproto`](../src/go/server-jobs/config/sandbox.textproto),
+[`staging.textproto`](../src/go/server-jobs/config/staging.textproto), and
+[`prod.textproto`](../src/go/server-jobs/config/prod.textproto)) specify either
+a `cron` string or a typed `interval`:
 
 ```protobuf
 environment: "sandbox"
@@ -416,10 +415,10 @@ Keep generic `repeated JobScheduleConfig schedules` with string fields.
 ### <a id="cli-command-structure-qsops-tasks-and-qsops-jobs" >CLI Command Structure: qsops tasks and qsops jobs</a>
 
 In
-[`src/proto/quadsmith/config/cli_ops.proto`](../../src/proto/quadsmith/config/cli_ops.proto),
+[`src/proto/quadsmith/config/cli_ops.proto`](../src/proto/quadsmith/config/cli_ops.proto),
 `OpsCliConfig` requires only `ops_server_url` (no `jobs_server_url`). Both
 `qsops tasks` and `qsops jobs` in
-[`src/go/cli-ops/main.go`](../../src/go/cli-ops/main.go) use `getOpsClient()`:
+[`src/go/cli-ops/main.go`](../src/go/cli-ops/main.go) use `getOpsClient()`:
 
 #### <a id="tasks-commands" >1. Tasks Commands (`qsops tasks` -> targets `OpsService` on `server-ops`)</a>
 
@@ -460,8 +459,8 @@ Keep all commands under `qsops jobs` without a `qsops tasks` subcommand group.
 
 ### <a id="pure-headless-scheduler-architecture-in-server-jobs-daemon" >Pure Headless Scheduler Architecture in server-jobs Daemon</a>
 
-[`src/go/server-jobs/main.go`](../../src/go/server-jobs/main.go) operates as a
-pure headless scheduling daemon:
+[`src/go/server-jobs/main.go`](../src/go/server-jobs/main.go) operates as a pure
+headless scheduling daemon:
 
 1. **Zero Network Listeners or DB Pools**: Does not open an `http.Server` or
    connect to PostgreSQL.
@@ -495,7 +494,7 @@ return `schedule_interval`.
 
 ### <a id="username-release-warning-counter-in-shared-auth" >Username Release Warning Counter in Shared Auth</a>
 
-In [`src/go/shared/pkg/auth/job.go`](../../src/go/shared/pkg/auth/job.go),
+In [`src/go/shared/pkg/auth/job.go`](../src/go/shared/pkg/auth/job.go),
 `HandleUsernameReleaseWarning` has the signature:
 
 ```go

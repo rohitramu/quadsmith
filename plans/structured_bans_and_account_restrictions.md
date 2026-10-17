@@ -104,9 +104,9 @@ flowchart TD
 
 To enforce schema cleanliness and adhere to the zero-legacy rule, the primitive
 `banned_at` column is removed from `users` in
-[`src/db/quadsmith_api.sql`](../../src/db/quadsmith_api.sql) and
-[`src/proto/quadsmith/api/user.proto`](../../src/proto/quadsmith/api/user.proto).
-A dedicated `bans` table is introduced in `quadsmith_api`:
+[`src/db/quadsmith_api.sql`](../src/db/quadsmith_api.sql) and
+[`src/proto/quadsmith/api/user.proto`](../src/proto/quadsmith/api/user.proto). A
+dedicated `bans` table is introduced in `quadsmith_api`:
 
 ```sql
 CREATE TABLE IF NOT EXISTS bans (
@@ -290,7 +290,7 @@ inspect their linked emails, and manage their authentication sessions:
 
 1. **Authentication Token Issuance**:
    - In
-     [`src/go/shared/pkg/auth/service.go`](../../src/go/shared/pkg/auth/service.go),
+     [`src/go/shared/pkg/auth/service.go`](../src/go/shared/pkg/auth/service.go),
      `issueAuthSession` checks for an active ban.
    - If an active ban exists, `AuthResponse` returns `account_status: "BANNED"`
      along with the active `Ban` record in `AuthResponse.active_ban`.
@@ -298,7 +298,7 @@ inspect their linked emails, and manage their authentication sessions:
      permitted account endpoints.
 2. **Auth Interceptor Enforcement**:
    - In
-     [`src/go/shared/pkg/auth/interceptor.go`](../../src/go/shared/pkg/auth/interceptor.go),
+     [`src/go/shared/pkg/auth/interceptor.go`](../src/go/shared/pkg/auth/interceptor.go),
      when a request is authenticated:
    - Check if the authenticated user has an active ban.
    - If banned, inspect the procedure name against an explicit allowlist:
@@ -353,9 +353,9 @@ login attempts with `CodePermissionDenied`.
 ### <a id="administrative-moderation-protobuf-contracts-in-userservice" >Administrative Moderation Protobuf Contracts in UserService</a>
 
 The moderation RPCs are integrated directly into `UserService` in
-[`src/proto/quadsmith/api/user.proto`](../../src/proto/quadsmith/api/user.proto),
+[`src/proto/quadsmith/api/user.proto`](../src/proto/quadsmith/api/user.proto),
 with the SQL table definitions (`Ban` and `BannedEmail`) stored in
-[`src/proto/quadsmith/store/user.proto`](../../src/proto/quadsmith/store/user.proto):
+[`src/proto/quadsmith/store/user.proto`](../src/proto/quadsmith/store/user.proto):
 
 ```protobuf
 service UserService {
@@ -523,8 +523,8 @@ Placing ban and unban procedures in a dedicated `ModerationService` in
 
 ### <a id="dedicated-lock-screen-and-account-settings-banned-state" >Dedicated Lock Screen and Account Settings Banned State</a>
 
-The web frontend in [`src/react/app-web`](../../src/react/app-web) implements
-two dedicated components for suspended accounts:
+The web frontend in [`src/react/app-web`](../src/react/app-web) implements two
+dedicated components for suspended accounts:
 
 1. **Dedicated Lock Screen (`AccountRestrictedPage.tsx`)**:
    - When an authenticated user with an active ban navigates to any non-account
@@ -591,7 +591,7 @@ another route, displaying a brief temporary toast notification.
 ### <a id="cli-moderation-tooling-in-qs" >CLI Moderation Tooling in qs</a>
 
 Administrative pilots managing Quadsmith use the `qs` CLI in
-[`src/go/cli`](../../src/go/cli) to enforce moderation actions following the
+[`src/go/cli`](../src/go/cli) to enforce moderation actions following the
 standard entity collection interface
 `qs user bans [get|list|new|update] <username|uuid>` where the target identifier
 consistently follows the operation name:
@@ -668,8 +668,7 @@ rather than `qs`.
 
 ### <a id="post-purge-username-hold-alignment" >Post-Purge Username Hold Alignment</a>
 
-In alignment with
-[`docs/plans/user_account_deletion.md`](user_account_deletion.md):
+In alignment with [`plans/user_account_deletion.md`](user_account_deletion.md):
 
 1. **Single Source of Truth**:
    - The deletion timer and username hold timer start at the exact same

@@ -24,16 +24,16 @@ In Quadsmith, physical drone hardware specifications, pilot gear, and companion
 firmware profiles are cataloged across 20 distinct relational tables and served
 via dedicated ConnectRPC services. Currently, component data is read-only for
 regular users, populated exclusively via pre-compiled
-[seed textprotos](../../test/sandbox/db/seed_data) and maintenance commands.
+[seed textprotos](../test/sandbox/db/seed_data) and maintenance commands.
 
 Furthermore, investigation of the current architecture reveals an underlying
 data desynchronization flaw between the domain tables (such as
-[`builds`](../../src/backend/db/quadsmith_api.sql#L280-L310) and
-[`motors`](../../src/backend/db/quadsmith_api.sql#L230-L255)) and the unified
-[`entities`](../../src/backend/db/quadsmith_api.sql#L313-L330) registry. More
-than seven columns (`name`, `description`, `primary_display_image`,
+[`builds`](../src/backend/db/quadsmith_api.sql#L280-L310) and
+[`motors`](../src/backend/db/quadsmith_api.sql#L230-L255)) and the unified
+[`entities`](../src/backend/db/quadsmith_api.sql#L313-L330) registry. More than
+seven columns (`name`, `description`, `primary_display_image`,
 `reference_links`, `media`, and author info) are duplicated between tables. In
-[`DeleteBuild`](../../src/backend/shared/cmd/protoc-gen-server/main.go#L418-L424),
+[`DeleteBuild`](../src/backend/shared/cmd/protoc-gen-server/main.go#L418-L424),
 archiving sets `entities.is_archived = true`, but because the `builds` table
 lacks an `is_archived` column and `ListBuilds` queries `builds` directly,
 archived builds continue to leak into public listings.
@@ -101,8 +101,8 @@ flowchart TD
 ### <a id="true-table-per-type-tpt-inheritance-architecture" >True Table-Per-Type (TPT) Inheritance Architecture</a>
 
 Quadsmith will adopt true Table-Per-Type (TPT) relational inheritance. The
-canonical [`entities`](../../src/backend/db/quadsmith_api.sql#L313-L330) table
-acts as the base entity for every catalog component and user build:
+canonical [`entities`](../src/backend/db/quadsmith_api.sql#L313-L330) table acts
+as the base entity for every catalog component and user build:
 
 - **Canonical Base Metadata in `entities`**: `uuid` (PK), `collection`, `id`,
   `name`, `description`, `primary_display_image`, `reference_links`, `media`,
@@ -253,10 +253,10 @@ defined in Quadsmith:
   `RadioFirmware`, `SoftwareTool`.
 
 Adhering strictly to Quadsmith's **Top-Down Structural Invariant** (Services
-First, Callers Precede Callees) from [`AGENTS.md`](../../AGENTS.md#L192-L210),
-each component's `.proto` file (e.g.
-[`motor.proto`](../../proto/quadsmith/api/motor.proto)) will declare standard
-CRUD RPCs organized top-down:
+First, Callers Precede Callees) from [`AGENTS.md`](../AGENTS.md#L192-L210), each
+component's `.proto` file (e.g.
+[`motor.proto`](../proto/quadsmith/api/motor.proto)) will declare standard CRUD
+RPCs organized top-down:
 
 ```protobuf
 syntax = "proto3";
@@ -329,7 +329,7 @@ message Motor {
 ```
 
 The Go ConnectRPC handlers will be generated automatically by enhancing
-[`protoc-gen-server`](../../src/backend/shared/cmd/protoc-gen-server/main.go) to
+[`protoc-gen-server`](../src/backend/shared/cmd/protoc-gen-server/main.go) to
 generate standard `Create<Type>`, `Update<Type>`, and `Delete<Type>` methods for
 all messages with table and collection options, performing the atomic
 `entities` + `<subtype_table>` transaction.
@@ -512,7 +512,7 @@ electrical safety checks:
   - `name`: Required, 1 to 256 characters.
   - `manufacturer`: Required, 1 to 128 characters.
   - `reference_links`: Validated with
-    [`validation.ValidateReferenceLinks`](../../src/backend/shared/pkg/validation/validation.go).
+    [`validation.ValidateReferenceLinks`](../src/backend/shared/pkg/validation/validation.go).
   - `media` and `primary_display_image`: Valid URL or `/blobs/<hash>` format.
 - **Hardware-Specific Domain Bounds**:
   - `Motor`: `kv > 0`, `stator_diameter_mm > 0`, `stator_height_mm > 0`,
@@ -574,7 +574,7 @@ differentiate platform-seeded components from user-created items.
      toolbar next to the column selector and search filter.
    - Clicking the button opens a responsive modal dialog containing a dynamic
      form generated from the collection's field definitions
-     ([`hardwareCollections.tsx`](../../src/frontend/web/app/src/lib/hardwareCollections.tsx)).
+     ([`hardwareCollections.tsx`](../src/frontend/web/app/src/lib/hardwareCollections.tsx)).
    - Supports drag-and-drop file upload to `/api/blobs` as well as direct
      manufacturer image URLs with live image preview.
 2. **Product Detail Pages (`ProductPage.tsx`)**:
@@ -597,7 +597,7 @@ differentiate platform-seeded components from user-created items.
 
 #### CLI Implementation (`qs`)
 
-Enhance [`generate_cli.go`](../../src/frontend/cli/generate_cli.go) to generate
+Enhance [`generate_cli.go`](../src/frontend/cli/generate_cli.go) to generate
 uniform `create`, `update`, and `delete` commands across all component
 collections:
 

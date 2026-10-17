@@ -32,8 +32,8 @@ primary categories:
 Binary storage was originally introduced in commit `1993c62` with
 content-addressable SHA-256 deduplication in PostgreSQL (`blobs` and
 `blob_references` tables), served through plain HTTP handlers in
-[`handler.go`](../../src/go/shared/pkg/blob/handler.go) and mounted directly
-onto the API server in [`main.go`](../../src/go/server-api/main.go#L137-L144):
+[`handler.go`](../src/go/shared/pkg/blob/handler.go) and mounted directly onto
+the API server in [`main.go`](../src/go/server-api/main.go#L137-L144):
 `POST /api/blobs` for uploads and `GET /blobs/{id}` for downloads.
 
 During recent architecture reviews, we evaluated whether ConnectRPC streaming
@@ -112,13 +112,13 @@ data transfer:
    - Manages blob metadata, ownership, authorization, and referential integrity.
    - Associates blobs with domain entities (builds, parts, user profiles) via
      the `blob_references` table defined in
-     [`src/proto/quadsmith/store/blob.proto`](../../src/proto/quadsmith/store/blob.proto).
+     [`src/proto/quadsmith/store/blob.proto`](../src/proto/quadsmith/store/blob.proto).
    - Future management RPCs (e.g., inspecting quotas, linking/unlinking
      attachments, querying file dimensions or durations) belong in ConnectRPC
      service interfaces.
 2. **Data Plane (Plain HTTP)**:
    - Manages raw byte ingress and egress through
-     [`blob.Handler`](../../src/go/shared/pkg/blob/handler.go#L20-L45).
+     [`blob.Handler`](../src/go/shared/pkg/blob/handler.go#L20-L45).
    - `POST /api/blobs`: Authenticated streaming upload endpoint accepting both
      `multipart/form-data` and raw octet streams.
    - `GET /blobs/{id}`: Public, content-addressed streaming download endpoint
@@ -184,7 +184,7 @@ preclude the use of framed RPC protocols:
    - When a user scrubs along a video timeline, skips forward 30 seconds, or
      buffers ahead, the browser issues HTTP `GET` requests with
      `Range: bytes=X-Y` headers.
-   - In [`handler.go`](../../src/go/shared/pkg/blob/handler.go#L164), Go's
+   - In [`handler.go`](../src/go/shared/pkg/blob/handler.go#L164), Go's
      [`http.ServeContent`](https://pkg.go.dev/net/http#ServeContent) natively
      handles byte-range slicing, conditional `If-Range` checks, and
      `206 Partial Content` status codes from any `io.ReadSeeker`.
@@ -274,14 +274,14 @@ Quadsmith uses content-addressable storage for all binary blobs:
 
 1. **Deduplication**:
    - Every uploaded blob is hashed via SHA-256 in
-     [`store.go`](../../src/go/shared/pkg/blob/store.go#L112-L135).
+     [`store.go`](../src/go/shared/pkg/blob/store.go#L112-L135).
    - If an identical file is uploaded by another user or linked to another
      build, the existing record is reused (`is_duplicate = true`), saving disk
      storage and network bandwidth.
 2. **Immutable HTTP Caching**:
    - Because the URL path (`/blobs/<sha256>`) is cryptographically tied to the
      content, blobs are permanently immutable.
-   - [`handler.go`](../../src/go/shared/pkg/blob/handler.go#L152-L161) emits
+   - [`handler.go`](../src/go/shared/pkg/blob/handler.go#L152-L161) emits
      aggressive caching headers:
 
      ```http
@@ -324,8 +324,8 @@ Serve media using semantic, entity-bound paths such as
 ### <a id="multipart-and-raw-binary-upload-pipeline" >Multipart & Raw Binary Upload Pipeline</a>
 
 Uploads are handled through `POST /api/blobs` in
-[`handler.go`](../../src/go/shared/pkg/blob/handler.go#L56-L127) with support
-for dual ingestion mechanisms:
+[`handler.go`](../src/go/shared/pkg/blob/handler.go#L56-L127) with support for
+dual ingestion mechanisms:
 
 1. **Multipart Form Uploads (`multipart/form-data`)**:
    - Used by browser file inputs and drag-and-drop file uploaders in the React
@@ -333,7 +333,7 @@ for dual ingestion mechanisms:
    - Streams multipart chunks up to the maximum permitted payload size without
      buffering full request bodies in memory.
 2. **Raw Binary Streams (`application/octet-stream`)**:
-   - Used by CLI tools ([`qs blob upload`](../../src/go/cli/blob_cmd.go)) and
+   - Used by CLI tools ([`qs blob upload`](../src/go/cli/blob_cmd.go)) and
      script automation.
    - Extracts filenames from query parameters (`?filename=...`) or the
      `X-Filename` HTTP header.
@@ -341,7 +341,7 @@ for dual ingestion mechanisms:
    - Validates file content using magic byte inspection
      ([`http.DetectContentType`](https://pkg.go.dev/net/http#DetectContentType))
      paired with extension mapping in
-     [`NormalizeMIMEType`](../../src/go/shared/pkg/blob/store.go#L74-L100).
+     [`NormalizeMIMEType`](../src/go/shared/pkg/blob/store.go#L74-L100).
    - Enforces strict category size limits: 15 MB for images, 35 MB for 3D
      models, and 100 MB for videos.
    - Rejects unsupported file formats immediately with
@@ -405,9 +405,9 @@ or Google Cloud Storage. Under this design:
 ### <a id="adaptive-bitrate-video-transcoding-hls" >Adaptive Bitrate Video Transcoding (HLS)</a>
 
 Implement a background video transcoding worker in
-[`src/go/server-jobs`](../../src/go/server-jobs) to convert uploaded raw
-MP4/WebM videos into HTTP Live Streaming (HLS) multi-rate profiles (`.m3u8`
-playlists and `.ts` / `.m4s` segments).
+[`src/go/server-jobs`](../src/go/server-jobs) to convert uploaded raw MP4/WebM
+videos into HTTP Live Streaming (HLS) multi-rate profiles (`.m3u8` playlists and
+`.ts` / `.m4s` segments).
 
 HLS operates entirely over plain HTTP `GET` requests, allowing adaptive quality
 switching based on client bandwidth while maintaining native iOS and web video

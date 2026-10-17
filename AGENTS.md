@@ -20,18 +20,18 @@ corroboration checks.
   subject line (top line) unless it is the only changed file.
 - **Plan Implementation & Commits**:
   - **Mention Active Plans in Related Commits**: Every commit that relates to or
-    impacts one or more active plans (directly in `docs/plans/`) must explicitly
-    cite those plans (by relative path, e.g., `docs/plans/<plan_name>.md`) in
-    the commit message body. Archived plans in `docs/plans/archive/` must be
-    ignored and not cited.
+    impacts one or more active plans (directly in `plans/`) must explicitly cite
+    those plans (by relative path, e.g., `plans/<plan_name>.md`) in the commit
+    message body. Archived plans in `plans/archive/` must be ignored and not
+    cited.
   - Implement plans in a single commit that saves the finalized plan to
-    `docs/plans/<plan_name>.md`.
+    `plans/<plan_name>.md`.
   - Include the **Goal** section, a **TL;DR of the Proposal**, and the plan path
     reference in the commit message body following the subject line.
   - For follow-up commits:
     - Explicitly mention the affected active plan(s) in the commit message body.
-    - If the plan changes: update the plan in `docs/plans/<plan_name>.md` in
-      that commit.
+    - If the plan changes: update the plan in `plans/<plan_name>.md` in that
+      commit.
     - If fixing an incorrect implementation: treat it as a standard bugfix
       commit (no plan document update needed, but still cite the active plan).
     - If following up immediately on the branch's latest commit: amend the
@@ -106,8 +106,8 @@ corroboration checks.
     horizontal rules (`---`), tables, lists, or code blocks; use regular empty
     blank lines around them.
   - Upon approval, convert internal file links to repo-relative paths, remove
-    `&nbsp;` spacing, and commit the finalized plan to
-    `docs/plans/<plan_name>.md` using pure standard Markdown.
+    `&nbsp;` spacing, and commit the finalized plan to `plans/<plan_name>.md`
+    using pure standard Markdown.
   - Every plan document must adhere to the standardized structure:
     - **Table of Contents**: Linked list of all Level 1 headings present in the
       doc, plus nested design decision headings.
@@ -178,13 +178,12 @@ corroboration checks.
     - **6. Future work (optional)**: 1 sub-heading per idea.
     - **7. Open questions (optional)**: Numbered list.
 - **Plan Maintenance & Archival**:
-  - Keep all non-archived plans in `docs/plans/` up-to-date with every new
-    commit.
+  - Keep all non-archived plans in `plans/` up-to-date with every new commit.
   - If a new plan contradicts an existing plan:
     - Do not modify the existing plan document.
     - Reference the superseded plan(s) in the `Background` section of the new
       plan.
-    - Move superseded plans into `docs/plans/archive/`.
+    - Move superseded plans into `plans/archive/`.
     - Notify the user of this situation during the plan discussion.
   - If unsure whether an existing plan should be updated or archived, ask the
     user.

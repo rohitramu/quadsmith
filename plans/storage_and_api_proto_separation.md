@@ -21,23 +21,23 @@
 Currently, Quadsmith defines both its public-facing
 [ConnectRPC](https://connectrpc.com/docs/introduction) API contracts and its
 [PostgreSQL](https://www.postgresql.org/docs/current/ddl.html) database schemas
-within the [`quadsmith.api`](../../src/proto/quadsmith/api) and
-[`quadsmith.ops`](../../src/proto/quadsmith/ops/ops.proto)
+within the [`quadsmith.api`](../src/proto/quadsmith/api) and
+[`quadsmith.ops`](../src/proto/quadsmith/ops/ops.proto)
 [Protocol Buffers](https://protobuf.dev/programming-guides/proto3/) packages.
-Custom options in [`sql.proto`](../../src/proto/quadsmith/sql/sql.proto)
+Custom options in [`sql.proto`](../src/proto/quadsmith/sql/sql.proto)
 (`quadsmith.sql.table` and `quadsmith.sql.column`) drive three custom compiler
 plugins:
 
-- [`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go): Emits
-  declarative SQL DDL into [`quadsmith_api.sql`](../../src/db/quadsmith_api.sql)
-  and [`quadsmith_ops.sql`](../../src/db/quadsmith_ops.sql) for
+- [`protoc-gen-sql`](../src/go/shared/cmd/protoc-gen-sql/main.go): Emits
+  declarative SQL DDL into [`quadsmith_api.sql`](../src/db/quadsmith_api.sql)
+  and [`quadsmith_ops.sql`](../src/db/quadsmith_ops.sql) for
   [`psqldef`](https://github.com/sqldef/sqldef).
-- [`protoc-gen-store`](../../src/go/shared/cmd/protoc-gen-store/main.go): Emits
+- [`protoc-gen-store`](../src/go/shared/cmd/protoc-gen-store/main.go): Emits
   typed Go data-access functions (`Create*`, `Get*`, `Update*`, `Delete*`,
   `List*`, and `Export*`) in `*_store.pb.go`.
-- [`protoc-gen-server`](../../src/go/shared/cmd/protoc-gen-server/main.go):
-  Emits ConnectRPC service handlers (`*_server.pb.go`) that wire
-  [`cel2sql.Compile`](../../src/go/shared/internal/cel2sql/cel2sql.go) and
+- [`protoc-gen-server`](../src/go/shared/cmd/protoc-gen-server/main.go): Emits
+  ConnectRPC service handlers (`*_server.pb.go`) that wire
+  [`cel2sql.Compile`](../src/go/shared/internal/cel2sql/cel2sql.go) and
   pagination into the generated store functions.
 
 While this unified model works well when a resource's storage representation and
@@ -48,30 +48,30 @@ occurrences of `(quadsmith.sql.column) = {ignore: true}` across the repository):
 
 1. **168 Repetitive `ignore: true` Annotations on Catalog and Build Protos**:
    All 20 hardware and software component protos (such as
-   [`motor.proto`](../../src/proto/quadsmith/api/motor.proto) and
-   [`frame.proto`](../../src/proto/quadsmith/api/frame.proto)) plus
-   [`build.proto`](../../src/proto/quadsmith/api/build.proto) use
+   [`motor.proto`](../src/proto/quadsmith/api/motor.proto) and
+   [`frame.proto`](../src/proto/quadsmith/api/frame.proto)) plus
+   [`build.proto`](../src/proto/quadsmith/api/build.proto) use
    [Class Table Inheritance](https://martinfowler.com/eaaCatalog/classTableInheritance.html)
    ([`user_created_components.md`](user_created_components.md)), storing common
    metadata (`id`, `name`, `description`, `reference_links`,
    `primary_display_image`, `media`, `user_uuid`) in the base `entities` table
    and resolving `author_username` via a `LEFT JOIN` on `users`. Although
-   [`protoc-gen-store`](../../src/go/shared/cmd/protoc-gen-store/main.go)
-   already knows about this `entities` join,
-   [`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go) does not,
+   [`protoc-gen-store`](../src/go/shared/cmd/protoc-gen-store/main.go) already
+   knows about this `entities` join,
+   [`protoc-gen-sql`](../src/go/shared/cmd/protoc-gen-sql/main.go) does not,
    forcing all 21 messages to repeat `(quadsmith.sql.column) = {ignore: true}`
    on those 8 fields ($21 \times 8 = 168$ occurrences).
 2. **40 `ignore: true` Annotations and Leaked Internal Storage Tables in Auth,
    User, Social, Blob, and Ops Protos**:
-   [`user.proto`](../../src/proto/quadsmith/api/user.proto),
-   [`social.proto`](../../src/proto/quadsmith/api/social.proto), `blob.proto`,
-   and [`ops.proto`](../../src/proto/quadsmith/ops/ops.proto) do not use
-   generated ConnectRPC handlers from `protoc-gen-server`; their services are
-   hand-written in [`auth`](../../src/go/shared/pkg/auth),
-   [`social`](../../src/go/shared/pkg/social/service.go),
-   [`blob`](../../src/go/shared/pkg/blob), and
-   [`ops`](../../src/go/server-ops/pkg/ops/service.go). However, because their
-   SQL table definitions lived in `quadsmith.api` and `quadsmith.ops`:
+   [`user.proto`](../src/proto/quadsmith/api/user.proto),
+   [`social.proto`](../src/proto/quadsmith/api/social.proto), `blob.proto`, and
+   [`ops.proto`](../src/proto/quadsmith/ops/ops.proto) do not use generated
+   ConnectRPC handlers from `protoc-gen-server`; their services are hand-written
+   in [`auth`](../src/go/shared/pkg/auth),
+   [`social`](../src/go/shared/pkg/social/service.go),
+   [`blob`](../src/go/shared/pkg/blob), and
+   [`ops`](../src/go/server-ops/pkg/ops/service.go). However, because their SQL
+   table definitions lived in `quadsmith.api` and `quadsmith.ops`:
    - 13 purely internal storage tables (`RefreshToken`, `EmailOtp`,
      `UsernameHistory`, `OAuthAccount`, `UserEmailOAuthAccount`, `BannedEmail`,
      `Entity`, `ReviewVote`, `QuestionVote`, `AnswerVote`, `UserReputation`,
@@ -92,10 +92,10 @@ occurrences of `(quadsmith.sql.column) = {ignore: true}` across the repository):
    caused 11 denormalized social fields to leak into `quadsmith_api.sql` as
    physical columns. Even after those 11 fields were marked `ignore: true`,
    `reviews.is_author_verified_owner` in
-   [`social.proto`](../../src/proto/quadsmith/api/social.proto) remained a dead
+   [`social.proto`](../src/proto/quadsmith/api/social.proto) remained a dead
    physical `BOOLEAN NOT NULL` column in
-   [`quadsmith_api.sql`](../../src/db/quadsmith_api.sql) (hardcoded to `false`
-   on `INSERT` and never read back in SQL).
+   [`quadsmith_api.sql`](../src/db/quadsmith_api.sql) (hardcoded to `false` on
+   `INSERT` and never read back in SQL).
 
 We evaluated whether to split the architecture into a separate Data Plane
 microservice (`server-data`) and Control Plane microservice (`server-api`) with
@@ -123,9 +123,9 @@ they are identical:
   `quadsmith_ops.sql`) into a dedicated internal storage package
   (`quadsmith.store`).
 - Remove the remaining dead `reviews.is_author_verified_owner` column from
-  [`quadsmith_api.sql`](../../src/db/quadsmith_api.sql).
+  [`quadsmith_api.sql`](../src/db/quadsmith_api.sql).
 - Delete `bool ignore = 8;` from
-  [`sql.proto`](../../src/proto/quadsmith/sql/sql.proto) so every field on a
+  [`sql.proto`](../src/proto/quadsmith/sql/sql.proto) so every field on a
   `(quadsmith.sql.table)` message is a real database column.
 
 ---
@@ -175,10 +175,10 @@ First, for the **21 Catalog and Build types** (`Antenna`, `Battery`, `Camera`,
 `VideoTransmitter`, `VtxFirmware`, and `Build`), the public API object _is_ the
 logical entity (`child_table INNER JOIN entities USING (uuid)`). Adding
 `inherits: "entities"` to `TableOptions` in
-[`sql.proto`](../../src/proto/quadsmith/sql/sql.proto) allows these 21 messages
-to remain directly in `quadsmith.api`—preserving zero-copy reuse across
-ConnectRPC, CLI, React, WASM engines, and `cel2sql`—while eliminating all 168
-`ignore: true` annotations.
+[`sql.proto`](../src/proto/quadsmith/sql/sql.proto) allows these 21 messages to
+remain directly in `quadsmith.api`—preserving zero-copy reuse across ConnectRPC,
+CLI, React, WASM engines, and `cel2sql`—while eliminating all 168 `ignore: true`
+annotations.
 
 Second, for the **28 Auth, User, Social, Blob, Entity, and Ops tables**, the
 physical storage tables and API view models have fundamentally different shapes
@@ -188,14 +188,13 @@ and lifecycles. Moving these 28 table definitions into
 vote tables, etc.) completely out of `quadsmith.api`, leaves pure API view
 models in `quadsmith.api` and `quadsmith.ops`, removes the remaining dead
 `reviews.is_author_verified_owner` column from
-[`quadsmith_api.sql`](../../src/db/quadsmith_api.sql), and allows
+[`quadsmith_api.sql`](../src/db/quadsmith_api.sql), and allows
 `bool ignore = 8;` to be deleted from
-[`sql.proto`](../../src/proto/quadsmith/sql/sql.proto) entirely.
+[`sql.proto`](../src/proto/quadsmith/sql/sql.proto) entirely.
 
 ### <a id="class-table-inheritance-for-catalog-and-build-entities-inherits-entities" >Class-Table Inheritance for Catalog and Build Entities (`inherits: "entities"`)</a>
 
-In
-[`src/proto/quadsmith/sql/sql.proto`](../../src/proto/quadsmith/sql/sql.proto),
+In [`src/proto/quadsmith/sql/sql.proto`](../src/proto/quadsmith/sql/sql.proto),
 we add `string inherits = 5;` to `TableOptions`:
 
 ```protobuf
@@ -211,7 +210,7 @@ message TableOptions {
 ```
 
 Each of the 20 component protos and
-[`build.proto`](../../src/proto/quadsmith/api/build.proto) declares
+[`build.proto`](../src/proto/quadsmith/api/build.proto) declares
 `inherits: "entities"` on its `quadsmith.sql.table` option, and removes
 `(quadsmith.sql.column) = {ignore: true}` from the 8 inherited fields (`id`,
 `name`, `description`, `reference_links`, `primary_display_image`, `media`,
@@ -246,18 +245,18 @@ message Motor {
 }
 ```
 
-Both [`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go) and
-[`protoc-gen-store`](../../src/go/shared/cmd/protoc-gen-store/main.go) use a
-shared definition of the `entities`-inherited field set (`id`, `name`,
-`description`, `reference_links`, `primary_display_image`, `media`, `user_uuid`,
+Both [`protoc-gen-sql`](../src/go/shared/cmd/protoc-gen-sql/main.go) and
+[`protoc-gen-store`](../src/go/shared/cmd/protoc-gen-store/main.go) use a shared
+definition of the `entities`-inherited field set (`id`, `name`, `description`,
+`reference_links`, `primary_display_image`, `media`, `user_uuid`,
 `author_username`) when `tblOpts.GetInherits() == "entities"`:
 
 - **`protoc-gen-sql`**: Skips the 8 inherited fields when generating
   `CREATE TABLE` columns and indexes for the child table (e.g., `motors`),
   emitting only the primary key `uuid` (referencing `entities(uuid)`) and the
   child-specific columns. The generated DDL in
-  [`quadsmith_api.sql`](../../src/db/quadsmith_api.sql) for all 21 tables
-  remains byte-for-byte identical.
+  [`quadsmith_api.sql`](../src/db/quadsmith_api.sql) for all 21 tables remains
+  byte-for-byte identical.
 - **`protoc-gen-store`**: Excludes the 8 inherited fields from `activeFields`
   (`INSERT INTO <child>`, `UPDATE <child>`, and `Export<PluralName>`) while
   keeping all fields in `readableFields` (`SELECT ... FROM <child>`
@@ -266,7 +265,7 @@ shared definition of the `entities`-inherited field set (`id`, `name`,
   `ON u.u_uuid = entities.user_uuid`). Because `activeFields` for
   `inherits: "entities"` tables contains the exact same child-table columns as
   before, the `hasNonUUIDField` check in
-  [`protoc-gen-store/main.go`](../../src/go/shared/cmd/protoc-gen-store/main.go)
+  [`protoc-gen-store/main.go`](../src/go/shared/cmd/protoc-gen-store/main.go)
   and the generated `ExportBuilds` and `Export<Component>s` functions remain
   100% unchanged.
 
@@ -310,10 +309,10 @@ Extracting component specifications into shared sub-messages (such as
 - Nesting fields under `.spec.*` changes the wire JSON/textproto structure and
   breaks flat CEL filter expressions (`kv >= 1800` would become
   `spec.kv >= 1800`).
-- Forces [`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go) and
-  [`protoc-gen-store`](../../src/go/shared/cmd/protoc-gen-store/main.go) to
-  flatten nested sub-messages into top-level SQL columns instead of treating
-  message fields as `JSONB`.
+- Forces [`protoc-gen-sql`](../src/go/shared/cmd/protoc-gen-sql/main.go) and
+  [`protoc-gen-store`](../src/go/shared/cmd/protoc-gen-store/main.go) to flatten
+  nested sub-messages into top-level SQL columns instead of treating message
+  fields as `JSONB`.
 
 ##### <a id="sub-package-quadsmithapientity-for-entity-inheriting-protos" >Sub-Package `quadsmith.api.entity` for Entity-Inheriting Protos</a>
 
@@ -325,10 +324,10 @@ non-entity services (`UserService`, `AuthService`, `SocialService`,
 
 **Pros:**
 
-- Allows [`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go),
-  [`protoc-gen-store`](../../src/go/shared/cmd/protoc-gen-store/main.go), and
-  [`protoc-gen-server`](../../src/go/shared/cmd/protoc-gen-server/main.go) to
-  infer `entities` inheritance and CRUD handler generation from the package name
+- Allows [`protoc-gen-sql`](../src/go/shared/cmd/protoc-gen-sql/main.go),
+  [`protoc-gen-store`](../src/go/shared/cmd/protoc-gen-store/main.go), and
+  [`protoc-gen-server`](../src/go/shared/cmd/protoc-gen-server/main.go) to infer
+  `entities` inheritance and CRUD handler generation from the package name
   (`quadsmith.api.entity`) rather than a per-table `inherits: "entities"`
   option.
 - Visually separates the 21 auto-generated catalog/build protos from the 7
@@ -336,14 +335,14 @@ non-entity services (`UserService`, `AuthService`, `SocialService`,
 
 **Cons:**
 
-- Because [`buf.gen.yaml`](../../src/proto/buf.gen.yaml) uses
+- Because [`buf.gen.yaml`](../src/proto/buf.gen.yaml) uses
   `paths=source_relative`, moving `src/proto/quadsmith/api/entity/*.proto` into
   a subdirectory splits the generated Go and TypeScript API types across two
   packages (`quadsmith/shared/gen/quadsmith/api` and
   `quadsmith/shared/gen/quadsmith/api/entity`), forcing cross-package imports in
-  [`evaluator.proto`](../../src/proto/quadsmith/api/evaluator.proto),
-  [`compatibility.proto`](../../src/proto/quadsmith/api/compatibility.proto),
-  [`components.proto`](../../src/proto/quadsmith/api/components.proto), the WASM
+  [`evaluator.proto`](../src/proto/quadsmith/api/evaluator.proto),
+  [`compatibility.proto`](../src/proto/quadsmith/api/compatibility.proto),
+  [`components.proto`](../src/proto/quadsmith/api/components.proto), the WASM
   engines, the CLI, and the React frontend.
 - Still requires a separate `quadsmith.store` package for the 28 Auth, User,
   Social, Blob, Entity, and Ops tables whose physical columns diverge from the
@@ -357,25 +356,25 @@ We introduce `src/proto/quadsmith/store/` (`package quadsmith.store`,
 `option go_package = "quadsmith/shared/gen/quadsmith/store;store";`) to house
 all 28 non-catalog SQL table definitions across four files:
 
-| Storage Proto File                                                                       | SQL Tables Defined (`(quadsmith.sql.table)`)                                                                                                                                                                                                                                                                                                                                                                                | Corresponding Public / Ops API Changes                                                                                                                                                                                                                                                                                                                              |
-| :--------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [`src/proto/quadsmith/store/blob.proto`](../../src/proto/quadsmith/store/blob.proto)     | `Blob` (`blobs`), `BlobReference` (`blob_references`, including `entity_uuid`, `user_uuid`, and `CHECK (num_nonnulls(entity_uuid, user_uuid) = 1)`)                                                                                                                                                                                                                                                                         | Delete `src/proto/quadsmith/api/blob.proto` completely (contains 0 RPCs).                                                                                                                                                                                                                                                                                           |
-| [`src/proto/quadsmith/store/user.proto`](../../src/proto/quadsmith/store/user.proto)     | `Ban` (`bans`), `BannedEmail` (`banned_emails`), `EmailOtp` (`email_otps`), `OAuthAccount` (`oauth_accounts`), `RefreshToken` (`refresh_tokens`), `User` (`users`), `UserEmail` (`user_emails`), `UserEmailOAuthAccount` (`user_email_oauth_accounts`), `UserProfile` (`user_profiles`), `UsernameHistory` (`username_histories`)                                                                                           | [`src/proto/quadsmith/api/user.proto`](../../src/proto/quadsmith/api/user.proto) retains only `UserService` and pure API view models (`PublicUserProfile`, `User`, `UserEmail`, `UserProfile`, `Ban`) with zero `quadsmith.sql` or `quadsmith.data` annotations.                                                                                                    |
-| [`src/proto/quadsmith/store/social.proto`](../../src/proto/quadsmith/store/social.proto) | `Answer` (`answers`), `AnswerComment` (`answer_comments`), `AnswerVote` (`answer_votes`), `Collection` (`collections`), `CollectionItem` (`collection_items`), `Entity` (`entities`), `Question` (`questions`), `QuestionComment` (`question_comments`), `QuestionVote` (`question_votes`), `Review` (`reviews`), `ReviewComment` (`review_comments`), `ReviewVote` (`review_votes`), `UserReputation` (`user_reputations`) | [`src/proto/quadsmith/api/social.proto`](../../src/proto/quadsmith/api/social.proto) retains only `SocialService` and pure API view models (`Answer`, `AnswerComment`, `Collection`, `CollectionItem`, `EntitySocialSummary`, `Question`, `QuestionComment`, `Review`, `ReviewComment`, `ReviewSummary`) with zero `quadsmith.sql` or `quadsmith.data` annotations. |
-| [`src/proto/quadsmith/store/ops.proto`](../../src/proto/quadsmith/store/ops.proto)       | `InternalApiCallRecord` (`internal_api_calls`, storing `jit_grant_uuid` without `jit_grant_id`), `InternalTokenRecord` (`internal_tokens`), `JitGrantRecord` (`jit_grants`)                                                                                                                                                                                                                                                 | [`src/proto/quadsmith/ops/ops.proto`](../../src/proto/quadsmith/ops/ops.proto) retains `OpsService` and pure API messages (`InternalApiCallRecord` with `optional string jit_grant_id = 8`, `InternalTokenRecord`, `JitGrantRecord`) with zero `quadsmith.sql` or `quadsmith.data` annotations.                                                                     |
+| Storage Proto File                                                                    | SQL Tables Defined (`(quadsmith.sql.table)`)                                                                                                                                                                                                                                                                                                                                                                                | Corresponding Public / Ops API Changes                                                                                                                                                                                                                                                                                                                           |
+| :------------------------------------------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [`src/proto/quadsmith/store/blob.proto`](../src/proto/quadsmith/store/blob.proto)     | `Blob` (`blobs`), `BlobReference` (`blob_references`, including `entity_uuid`, `user_uuid`, and `CHECK (num_nonnulls(entity_uuid, user_uuid) = 1)`)                                                                                                                                                                                                                                                                         | Delete `src/proto/quadsmith/api/blob.proto` completely (contains 0 RPCs).                                                                                                                                                                                                                                                                                        |
+| [`src/proto/quadsmith/store/user.proto`](../src/proto/quadsmith/store/user.proto)     | `Ban` (`bans`), `BannedEmail` (`banned_emails`), `EmailOtp` (`email_otps`), `OAuthAccount` (`oauth_accounts`), `RefreshToken` (`refresh_tokens`), `User` (`users`), `UserEmail` (`user_emails`), `UserEmailOAuthAccount` (`user_email_oauth_accounts`), `UserProfile` (`user_profiles`), `UsernameHistory` (`username_histories`)                                                                                           | [`src/proto/quadsmith/api/user.proto`](../src/proto/quadsmith/api/user.proto) retains only `UserService` and pure API view models (`PublicUserProfile`, `User`, `UserEmail`, `UserProfile`, `Ban`) with zero `quadsmith.sql` or `quadsmith.data` annotations.                                                                                                    |
+| [`src/proto/quadsmith/store/social.proto`](../src/proto/quadsmith/store/social.proto) | `Answer` (`answers`), `AnswerComment` (`answer_comments`), `AnswerVote` (`answer_votes`), `Collection` (`collections`), `CollectionItem` (`collection_items`), `Entity` (`entities`), `Question` (`questions`), `QuestionComment` (`question_comments`), `QuestionVote` (`question_votes`), `Review` (`reviews`), `ReviewComment` (`review_comments`), `ReviewVote` (`review_votes`), `UserReputation` (`user_reputations`) | [`src/proto/quadsmith/api/social.proto`](../src/proto/quadsmith/api/social.proto) retains only `SocialService` and pure API view models (`Answer`, `AnswerComment`, `Collection`, `CollectionItem`, `EntitySocialSummary`, `Question`, `QuestionComment`, `Review`, `ReviewComment`, `ReviewSummary`) with zero `quadsmith.sql` or `quadsmith.data` annotations. |
+| [`src/proto/quadsmith/store/ops.proto`](../src/proto/quadsmith/store/ops.proto)       | `InternalApiCallRecord` (`internal_api_calls`, storing `jit_grant_uuid` without `jit_grant_id`), `InternalTokenRecord` (`internal_tokens`), `JitGrantRecord` (`jit_grants`)                                                                                                                                                                                                                                                 | [`src/proto/quadsmith/ops/ops.proto`](../src/proto/quadsmith/ops/ops.proto) retains `OpsService` and pure API messages (`InternalApiCallRecord` with `optional string jit_grant_id = 8`, `InternalTokenRecord`, `JitGrantRecord`) with zero `quadsmith.sql` or `quadsmith.data` annotations.                                                                     |
 
-Because [`store/social.proto`](../../src/proto/quadsmith/store/social.proto)
+Because [`store/social.proto`](../src/proto/quadsmith/store/social.proto)
 references `ReferenceLink` and `Media` (for the `entities.reference_links` and
 `entities.media` `JSONB` columns), `quadsmith.store` imports
-[`src/proto/quadsmith/api/reference_link.proto`](../../src/proto/quadsmith/api/reference_link.proto)
+[`src/proto/quadsmith/api/reference_link.proto`](../src/proto/quadsmith/api/reference_link.proto)
 and
-[`src/proto/quadsmith/api/media.proto`](../../src/proto/quadsmith/api/media.proto)
+[`src/proto/quadsmith/api/media.proto`](../src/proto/quadsmith/api/media.proto)
 without introducing any circular dependency (`quadsmith.api` and `quadsmith.ops`
 never import `quadsmith.store`).
 
 In Go, internal packages import `storepb "quadsmith/shared/gen/quadsmith/store"`
 alongside `pb "quadsmith/shared/gen/quadsmith/api"` following the `*pb` aliasing
-rules in [`AGENTS.md`](../../AGENTS.md).
+rules in [`AGENTS.md`](../AGENTS.md).
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -409,28 +408,28 @@ denormalized display fields across `Review`, `Question`, `Answer`, and
 `CollectionItem` (`collection`, `entity_id`, `comments`, `name`,
 `primary_display_image`, and `author_or_manufacturer`) were marked
 `[(quadsmith.sql.column) = {ignore: true}]` and removed from
-[`quadsmith_api.sql`](../../src/db/quadsmith_api.sql), with
-[`social/service.go`](../../src/go/shared/pkg/social/service.go) joining
-`entities` to project them dynamically.
+[`quadsmith_api.sql`](../src/db/quadsmith_api.sql), with
+[`social/service.go`](../src/go/shared/pkg/social/service.go) joining `entities`
+to project them dynamically.
 
 When separating
-[`src/proto/quadsmith/store/social.proto`](../../src/proto/quadsmith/store/social.proto)
+[`src/proto/quadsmith/store/social.proto`](../src/proto/quadsmith/store/social.proto)
 from
-[`src/proto/quadsmith/api/social.proto`](../../src/proto/quadsmith/api/social.proto),
+[`src/proto/quadsmith/api/social.proto`](../src/proto/quadsmith/api/social.proto),
 we replace all 36 `ignore: true` annotations in `social.proto` with clean
 single-purpose definitions:
 
-- **[`src/proto/quadsmith/store/social.proto`](../../src/proto/quadsmith/store/social.proto)**:
+- **[`src/proto/quadsmith/store/social.proto`](../src/proto/quadsmith/store/social.proto)**:
   Contains **only** genuine persisted database columns for the 13 social and
   entity tables. In addition to excluding the 36 fields previously marked
   `ignore: true`, we also remove the remaining dead `is_author_verified_owner`
   column from `store.Review` and
-  [`src/db/quadsmith_api.sql`](../../src/db/quadsmith_api.sql) (and
-  [`src/db/quadsmith_api.mermaid`](../../src/db/quadsmith_api.mermaid)),
-  updating `CreateReview` in
-  [`social/service.go`](../../src/go/shared/pkg/social/service.go) to omit
+  [`src/db/quadsmith_api.sql`](../src/db/quadsmith_api.sql) (and
+  [`src/db/quadsmith_api.mermaid`](../src/db/quadsmith_api.mermaid)), updating
+  `CreateReview` in
+  [`social/service.go`](../src/go/shared/pkg/social/service.go) to omit
   `is_author_verified_owner` from the `INSERT INTO reviews` statement.
-- **[`src/proto/quadsmith/api/social.proto`](../../src/proto/quadsmith/api/social.proto)**:
+- **[`src/proto/quadsmith/api/social.proto`](../src/proto/quadsmith/api/social.proto)**:
   Retains all enriched API response fields (`author_username`,
   `author_avatar_url`, `is_author_verified_owner`, `helpful_count`,
   `upvote_count`, `current_user_vote`, `collection`, `entity_id`, `comments`,
@@ -466,7 +465,7 @@ all 40 user/social/ops occurrences (3 in `user.proto`, 36 in `social.proto`, and
 repository.
 
 We therefore delete `bool ignore = 8;` from `ColumnOptions` in
-[`src/proto/quadsmith/sql/sql.proto`](../../src/proto/quadsmith/sql/sql.proto):
+[`src/proto/quadsmith/sql/sql.proto`](../src/proto/quadsmith/sql/sql.proto):
 
 ```protobuf
 message ColumnOptions {
@@ -481,9 +480,9 @@ message ColumnOptions {
 ```
 
 We also remove all `colOpt.Ignore` branches from
-[`src/go/shared/cmd/protoc-gen-sql/main.go`](../../src/go/shared/cmd/protoc-gen-sql/main.go)
+[`src/go/shared/cmd/protoc-gen-sql/main.go`](../src/go/shared/cmd/protoc-gen-sql/main.go)
 and
-[`src/go/shared/cmd/protoc-gen-store/main.go`](../../src/go/shared/cmd/protoc-gen-store/main.go).
+[`src/go/shared/cmd/protoc-gen-store/main.go`](../src/go/shared/cmd/protoc-gen-store/main.go).
 Going forward, the compiler enforces a strict invariant: **every field on a
 message annotated with `(quadsmith.sql.table)` is a real persisted database
 column** (either directly on that table or on its declared `inherits` parent
@@ -519,23 +518,22 @@ Moving the 28 Auth, User, Social, Blob, Entity, and Ops table messages into
 cleanly:
 
 1. **Database Output Routing in
-   [`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go) and
-   [`buf.gen.yaml`](../../src/proto/buf.gen.yaml)**: We configure
-   `strategy: all` for `plugin: sql` in
-   [`src/proto/buf.gen.yaml`](../../src/proto/buf.gen.yaml) and update
-   [`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go) so that
-   `quadsmith/store/ops.proto` (or `quadsmith.ops`) emits into
+   [`protoc-gen-sql`](../src/go/shared/cmd/protoc-gen-sql/main.go) and
+   [`buf.gen.yaml`](../src/proto/buf.gen.yaml)**: We configure `strategy: all`
+   for `plugin: sql` in [`src/proto/buf.gen.yaml`](../src/proto/buf.gen.yaml)
+   and update [`protoc-gen-sql`](../src/go/shared/cmd/protoc-gen-sql/main.go) so
+   that `quadsmith/store/ops.proto` (or `quadsmith.ops`) emits into
    `quadsmith_ops.sql`, while `quadsmith/store/{blob,user,social}.proto` and
    `quadsmith.api` emit into `quadsmith_api.sql` in a single pass (with
    `quadsmith.store` tables emitted first so base tables like `users` and
    `entities` precede child tables).
 2. **Compile-Time GDPR Verification in
-   [`schemacheck/data_check.go`](../../src/go/shared/pkg/schemacheck/data_check.go)**:
-   - [`CheckAllProtoDataClassification`](../../src/go/shared/pkg/schemacheck/data_check.go)
+   [`schemacheck/data_check.go`](../src/go/shared/pkg/schemacheck/data_check.go)**:
+   - [`CheckAllProtoDataClassification`](../src/go/shared/pkg/schemacheck/data_check.go)
      iterates over all registered files whose package starts with `"quadsmith"`
      and inspects every message with `(quadsmith.sql.table)`.
    - We import `_ "quadsmith/shared/gen/quadsmith/store"` in
-     [`schemacheck/data_check_test.go`](../../src/go/shared/pkg/schemacheck/data_check_test.go)
+     [`schemacheck/data_check_test.go`](../src/go/shared/pkg/schemacheck/data_check_test.go)
      so `protoregistry.GlobalFiles` includes all `quadsmith.store` descriptors,
      include `store/ops.proto` in the `isOps` check, and update the `User.id`
      provenance check from `"quadsmith.api.User"` to `"quadsmith.store.User"`.
@@ -543,7 +541,7 @@ cleanly:
      `ops/ops.proto` no longer carry `(quadsmith.sql.table)`, they no longer
      require `(quadsmith.data.content_type)` annotations on UI-only fields.
 3. **GDPR Archive Streaming in
-   [`export/handler.go`](../../src/go/shared/pkg/export/handler.go)**:
+   [`export/handler.go`](../src/go/shared/pkg/export/handler.go)**:
    `protoc-gen-store` generates `ExportUsers`, `ExportUserProfiles`,
    `ExportUserEmails`, `ExportUserEmailOAuthAccounts`,
    `ExportUsernameHistories`, `ExportOAuthAccounts`, `ExportRefreshTokens`,
@@ -555,13 +553,13 @@ cleanly:
    `store` (`quadsmith/shared/gen/quadsmith/store`), while `ExportBuilds` and
    the 20 `Export<Component>s` functions remain in package `api`
    (`quadsmith/shared/gen/quadsmith/api`).
-   [`export/handler.go`](../../src/go/shared/pkg/export/handler.go) imports
+   [`export/handler.go`](../src/go/shared/pkg/export/handler.go) imports
    `storepb "quadsmith/shared/gen/quadsmith/store"` to call the
    user/social/blob/entity export functions and
    `pb "quadsmith/shared/gen/quadsmith/api"` for builds and components.
 4. **Seeder & Internal Services
-   ([`seeder/main.go`](../../src/go/shared/cmd/seeder/main.go))**:
-   - [`seeder/main.go`](../../src/go/shared/cmd/seeder/main.go) imports
+   ([`seeder/main.go`](../src/go/shared/cmd/seeder/main.go))**:
+   - [`seeder/main.go`](../src/go/shared/cmd/seeder/main.go) imports
      `storepb "quadsmith/shared/gen/quadsmith/store"` for `storepb.CreateUser`,
      `storepb.CreateUserProfile`, `storepb.CreateUserEmail`, and
      `storepb.CreateUserReputation`, while continuing to use `pb`
@@ -658,7 +656,7 @@ building a two-stage [Common Expression Language (CEL)](https://cel.dev/)
 compiler: translating client CEL filters over Control Plane protos (`CP-CEL`)
 into CEL filters over Data Plane protos (`DP-CEL`), and then compiling `DP-CEL`
 into SQL `WHERE` clauses via
-[`cel2sql`](../../src/go/shared/internal/cel2sql/cel2sql.go).
+[`cel2sql`](../src/go/shared/internal/cel2sql/cel2sql.go).
 
 **Pros:**
 
@@ -677,11 +675,11 @@ into SQL `WHERE` clauses via
 
 ### <a id="hand-written-sql-schemas-without-protoc-gen-sql" >Hand-Written SQL Schemas Without `protoc-gen-sql`</a>
 
-Deleting [`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go) and
-[`sql.proto`](../../src/proto/quadsmith/sql/sql.proto) entirely, maintaining
-[`src/db/quadsmith_api.sql`](../../src/db/quadsmith_api.sql) and
-[`src/db/quadsmith_ops.sql`](../../src/db/quadsmith_ops.sql) by hand for
-`psqldef`, and defining protos purely around query/mutation payloads.
+Deleting [`protoc-gen-sql`](../src/go/shared/cmd/protoc-gen-sql/main.go) and
+[`sql.proto`](../src/proto/quadsmith/sql/sql.proto) entirely, maintaining
+[`src/db/quadsmith_api.sql`](../src/db/quadsmith_api.sql) and
+[`src/db/quadsmith_ops.sql`](../src/db/quadsmith_ops.sql) by hand for `psqldef`,
+and defining protos purely around query/mutation payloads.
 
 **Pros:**
 
@@ -694,8 +692,8 @@ Deleting [`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go) and
 - **Breaks Single-Source-of-Truth GDPR Enforcement**: Quadsmith's
   [GDPR Art. 15 and Art. 20](https://gdpr-info.eu/art-15-gdpr/) compliance
   architecture relies on
-  [`schemacheck.CheckAllProtoDataClassification`](../../src/go/shared/pkg/schemacheck/data_check.go)
-  and [`protoc-gen-store`](../../src/go/shared/cmd/protoc-gen-store/main.go)
+  [`schemacheck.CheckAllProtoDataClassification`](../src/go/shared/pkg/schemacheck/data_check.go)
+  and [`protoc-gen-store`](../src/go/shared/cmd/protoc-gen-store/main.go)
   reading `(quadsmith.sql.table)` and `(quadsmith.data.content_type)` from the
   same Protobuf descriptors that generate `quadsmith_api.sql`. Hand-writing SQL
   would require building a custom SQL comment parser and a new SQL-based export
@@ -711,7 +709,7 @@ Deleting [`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go) and
 
 1. This codebase is not yet deployed to production, so dropping the dead
    `reviews.is_author_verified_owner` column from
-   [`src/db/quadsmith_api.sql`](../../src/db/quadsmith_api.sql) and removing
+   [`src/db/quadsmith_api.sql`](../src/db/quadsmith_api.sql) and removing
    internal storage messages from `quadsmith.api` requires no
    backwards-compatibility shims or data migrations.
 2. All 21 Catalog and Build entities share the same 8 inherited fields (`id`,
@@ -725,7 +723,7 @@ Deleting [`protoc-gen-sql`](../../src/go/shared/cmd/protoc-gen-sql/main.go) and
 ### <a id="proto-driven-entity-inheritance-validation-in-schemacheck" >Proto-Driven Entity Inheritance Validation in `schemacheck`</a>
 
 Extend
-[`src/go/shared/pkg/schemacheck`](../../src/go/shared/pkg/schemacheck/data_check.go)
+[`src/go/shared/pkg/schemacheck`](../src/go/shared/pkg/schemacheck/data_check.go)
 to assert at test time that every message declaring
 `option (quadsmith.sql.table) = {inherits: "entities"}` defines the exact field
 types and `(quadsmith.data.content_type)` classifications as

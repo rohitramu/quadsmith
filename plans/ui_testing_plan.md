@@ -17,7 +17,7 @@
 ## <a id="1-goal" >1. Goal</a>
 
 Establish a robust, hermetic, sub-second automated testing architecture for the
-Quadsmith web frontend ([`src/frontend/web`](../../src/frontend/web)), verifying
+Quadsmith web frontend ([`src/frontend/web`](../src/frontend/web)), verifying
 rendering integrity, interactive state machines, column customization, and
 multi-page client routing without requiring live backend servers or browser
 binaries.
@@ -37,9 +37,9 @@ binaries.
 >   guaranteeing compile-time type safety against Protobuf definitions.
 > - Decouple application route definitions from the browser DOM to enable
 >   multi-page navigation testing via `MemoryRouter`.
-> - Embed UI tests directly into [`Makefile`](../../Makefile)'s `make test`
->   target, maintaining sub-second feedback loops in local development and
->   continuous integration.
+> - Embed UI tests directly into [`Makefile`](../Makefile)'s `make test` target,
+>   maintaining sub-second feedback loops in local development and continuous
+>   integration.
 
 The web UI testing architecture prioritizes developer velocity, deterministic
 execution, and tight alignment with Quadsmith's Protobuf contracts. Rather than
@@ -152,8 +152,8 @@ browser-dependent globals:
 ### <a id="sub-second-local-and-ci-integration-suite" >Sub-Second Local and CI Integration Suite</a>
 
 The test runner is configured to ensure the entire test suite executes rapidly.
-Test execution is wired directly into the root [`Makefile`](../../Makefile)
-under `make test`:
+Test execution is wired directly into the root [`Makefile`](../Makefile) under
+`make test`:
 
 - **Selective Execution Environments**: Pure utility and non-DOM test suites
   (such as regex validations, color maps, and formatters) specify

@@ -109,7 +109,7 @@ tokens:
 1. **Step 1: Explicit Username Confirmation**:
    - The user opens the "Delete Account" modal in their settings.
    - The user must explicitly type their exact current username handle
-     ([`users.id`](../../src/backend/db/quadsmith_api.sql#L13)).
+     ([`users.id`](../src/backend/db/quadsmith_api.sql#L13)).
    - The client verifies the string matches before enabling the challenge
      button.
    - The server verifies in `SendEmailOtp` that the caller is authenticated.
@@ -117,7 +117,7 @@ tokens:
    - The server issues a challenge token (`challenge_id`) bound to
      `purpose = "delete_account"`.
    - The server dispatches an email to the user's primary verified email address
-     ([`user_emails.is_primary = true`](../../src/backend/db/quadsmith_api.sql#L54)).
+     ([`user_emails.is_primary = true`](../src/backend/db/quadsmith_api.sql#L54)).
    - In accordance with the universal Email Verification flow, the email
      contains both:
      - A 6-digit numeric verification code (3-minute TTL).
@@ -242,7 +242,7 @@ handle back from `username_histories` to `users.id`.
 
 A core design consideration is clarifying the functional boundary between
 `users.deleted_at` and
-[`username_histories`](../../src/backend/db/quadsmith_api.sql#L71):
+[`username_histories`](../src/backend/db/quadsmith_api.sql#L71):
 
 1. **Purpose of `username_histories`**:
    - Designed exclusively for **explicit username renames** by active accounts
@@ -470,8 +470,8 @@ deletion. Each selected build is deleted while unselected builds are anonymized.
 
 ### <a id="protobuf-api-specifications-and-rpc-contracts" >Protobuf API Specifications and RPC Contracts</a>
 
-Extend [`proto/quadsmith/api/auth.proto`](../../proto/quadsmith/api/auth.proto)
-to define the deletion and resurrection RPC contracts:
+Extend [`proto/quadsmith/api/auth.proto`](../proto/quadsmith/api/auth.proto) to
+define the deletion and resurrection RPC contracts:
 
 ```protobuf
 // ---------------------------------------------------------
@@ -503,7 +503,7 @@ message CancelAccountDeletionResponse {
 ```
 
 Add the corresponding RPCs to `AuthService` in
-[`proto/quadsmith/api/auth.proto`](../../proto/quadsmith/api/auth.proto#L257):
+[`proto/quadsmith/api/auth.proto`](../proto/quadsmith/api/auth.proto#L257):
 
 ```protobuf
 service AuthService {

@@ -30,22 +30,22 @@ user to `ADMIN` (or demote an `ADMIN` back to `USER`). At the same time, several
 codebase pathways expose `role` to arbitrary assignment or fail to strip
 administrative privileges on account suspension:
 
-- [`src/proto/quadsmith/api/user.proto`](../../src/proto/quadsmith/api/user.proto)
+- [`src/proto/quadsmith/api/user.proto`](../src/proto/quadsmith/api/user.proto)
   defines `string role = 4;` on `SeedUser`, and
-  [`src/go/shared/cmd/seeder/main.go`](../../src/go/shared/cmd/seeder/main.go)
+  [`src/go/shared/cmd/seeder/main.go`](../src/go/shared/cmd/seeder/main.go)
   passes `u.Role` directly to `storepb.CreateUser`.
-- [`src/go/shared/cmd/protoc-gen-store/main.go`](../../src/go/shared/cmd/protoc-gen-store/main.go)
+- [`src/go/shared/cmd/protoc-gen-store/main.go`](../src/go/shared/cmd/protoc-gen-store/main.go)
   generates `CreateUser` and `UpdateUser` in
-  [`src/go/shared/gen/quadsmith/store/user_store.pb.go`](../../src/go/shared/gen/quadsmith/store/user_store.pb.go)
+  [`src/go/shared/gen/quadsmith/store/user_store.pb.go`](../src/go/shared/gen/quadsmith/store/user_store.pb.go)
   with `role` included in `INSERT` and `UPDATE` statements.
-- [`src/go/shared/pkg/auth/service.go`](../../src/go/shared/pkg/auth/service.go)
+- [`src/go/shared/pkg/auth/service.go`](../src/go/shared/pkg/auth/service.go)
   blocks banning administrators in `UserService.BanUser` rather than resetting
   the banned user's `role` back to `'USER'`.
-- [`src/go/shared/pkg/auth/tokens.go`](../../src/go/shared/pkg/auth/tokens.go)
+- [`src/go/shared/pkg/auth/tokens.go`](../src/go/shared/pkg/auth/tokens.go)
   embeds `Role` inside stateless JWT access token claims (`JWTClaims`), and
-  [`src/go/shared/pkg/auth/interceptor.go`](../../src/go/shared/pkg/auth/interceptor.go)
+  [`src/go/shared/pkg/auth/interceptor.go`](../src/go/shared/pkg/auth/interceptor.go)
   trusts the JWT claim without verifying `users.role` in PostgreSQL.
-- [`src/db/quadsmith_api.sql`](../../src/db/quadsmith_api.sql) lacks a
+- [`src/db/quadsmith_api.sql`](../src/db/quadsmith_api.sql) lacks a
   `CHECK (role IN ('USER', 'ADMIN'))` constraint on the `users` table.
 
 ---
@@ -101,8 +101,7 @@ sequenceDiagram
 
 ### <a id="parameterized-setuserrole-task-in-opsservice" >Parameterized SetUserRole Task in OpsService</a>
 
-In
-[`src/proto/quadsmith/ops/ops.proto`](../../src/proto/quadsmith/ops/ops.proto),
+In [`src/proto/quadsmith/ops/ops.proto`](../src/proto/quadsmith/ops/ops.proto),
 add `SetUserRole` to `OpsService` alongside its request and response messages
 (ordered according to the repository's top-down protobuf conventions):
 
@@ -133,22 +132,22 @@ message SetUserRoleResponse {
 ```
 
 In
-[`src/go/server-ops/pkg/ops/service.go`](../../src/go/server-ops/pkg/ops/service.go)
+[`src/go/server-ops/pkg/ops/service.go`](../src/go/server-ops/pkg/ops/service.go)
 and
-[`src/go/shared/pkg/opsauth/interceptor.go`](../../src/go/shared/pkg/opsauth/interceptor.go):
+[`src/go/shared/pkg/opsauth/interceptor.go`](../src/go/shared/pkg/opsauth/interceptor.go):
 
 - Register `set_user_role` in `taskCatalog` with `Procedure: "SetUserRole"`,
   `Description: "Updates a user account role ('USER' or 'ADMIN')"`, and
   `DefaultInterval: "manual"`.
 - Include `"SetUserRole"` in `isTaskMethod` in
-  [`src/go/shared/pkg/opsauth/interceptor.go`](../../src/go/shared/pkg/opsauth/interceptor.go)
+  [`src/go/shared/pkg/opsauth/interceptor.go`](../src/go/shared/pkg/opsauth/interceptor.go)
   and in the `ListJobs` / `GetJob` task method filters in
-  [`src/go/server-ops/pkg/ops/service.go`](../../src/go/server-ops/pkg/ops/service.go)
+  [`src/go/server-ops/pkg/ops/service.go`](../src/go/server-ops/pkg/ops/service.go)
   so every role update returns an `X-Job-Id` header and is inspectable via
   `qsops jobs list` and `qsops jobs get`.
 - Because `set_user_role` is an on-demand, parameterized operator task rather
   than a recurring background ticker, no schedule field is added to
-  [`src/proto/quadsmith/config/server_jobs.proto`](../../src/proto/quadsmith/config/server_jobs.proto).
+  [`src/proto/quadsmith/config/server_jobs.proto`](../src/proto/quadsmith/config/server_jobs.proto).
 - Update active plan [`tasks_and_jobs.md`](tasks_and_jobs.md) to reflect the
   addition of `SetUserRole` (`set_user_role`) on `OpsService`.
 
@@ -187,7 +186,7 @@ instead of a unified `SetUserRole` task.
 
 ### <a id="cli-trigger-syntax-in-qsops" >CLI Trigger Syntax in qsops</a>
 
-In [`src/go/cli-ops/main.go`](../../src/go/cli-ops/main.go), extend
+In [`src/go/cli-ops/main.go`](../src/go/cli-ops/main.go), extend
 `qsops tasks trigger` with `--user` and `--role` flags required when triggering
 `set_user_role`:
 
@@ -247,15 +246,15 @@ Changing a user's administrative privileges is a high-sensitivity operation:
 
 1. **JIT Policy Configuration**: Add `"SetUserRole"` to `jit.sensitive_methods`
    across
-   [`src/go/server-ops/config/sandbox.textproto`](../../src/go/server-ops/config/sandbox.textproto),
-   [`src/go/server-ops/config/staging.textproto`](../../src/go/server-ops/config/staging.textproto),
+   [`src/go/server-ops/config/sandbox.textproto`](../src/go/server-ops/config/sandbox.textproto),
+   [`src/go/server-ops/config/staging.textproto`](../src/go/server-ops/config/staging.textproto),
    and
-   [`src/go/server-ops/config/prod.textproto`](../../src/go/server-ops/config/prod.textproto),
+   [`src/go/server-ops/config/prod.textproto`](../src/go/server-ops/config/prod.textproto),
    as well as default test configurations in
-   [`src/go/shared/pkg/config/testing.go`](../../src/go/shared/pkg/config/testing.go).
+   [`src/go/shared/pkg/config/testing.go`](../src/go/shared/pkg/config/testing.go).
 2. **HUMAN-Only Execution in Interceptor and Handler**:
    - In
-     [`src/go/shared/pkg/opsauth/interceptor.go`](../../src/go/shared/pkg/opsauth/interceptor.go),
+     [`src/go/shared/pkg/opsauth/interceptor.go`](../src/go/shared/pkg/opsauth/interceptor.go),
      whenever `in.isSensitiveMethod(methodName)` is true, reject non-`HUMAN`
      callers with `connect.CodePermissionDenied`
      (`"sensitive procedure requires a HUMAN operator"`) even if their group
@@ -303,7 +302,7 @@ To prevent suspended or deleted accounts from holding administrative privileges:
 
 1. **Automatic Role Demotion to `'USER'` on Ban (`UserService.BanUser`)**:
    - In
-     [`src/go/shared/pkg/auth/service.go`](../../src/go/shared/pkg/auth/service.go),
+     [`src/go/shared/pkg/auth/service.go`](../src/go/shared/pkg/auth/service.go),
      remove the `if targetRole == "ADMIN"` rejection (while retaining the
      `targetUUID == userCtx.UserUUID` self-ban guard) and execute
      `UPDATE users SET role = 'USER', updated_at = $2 WHERE uuid = $1` inside
@@ -346,7 +345,7 @@ To prevent suspended or deleted accounts from holding administrative privileges:
    - If an active ban exists, reject with `connect.CodeFailedPrecondition`
      (`"cannot promote a banned user to ADMIN; revoke the active ban first"`).
 5. **Permanent Account Purge Reset**:
-   - In [`src/go/shared/pkg/auth/job.go`](../../src/go/shared/pkg/auth/job.go),
+   - In [`src/go/shared/pkg/auth/job.go`](../src/go/shared/pkg/auth/job.go),
      update `HandlePurgeSoftDeletedAccounts` to also reset `role = 'USER'` when
      anonymizing an expired soft-deleted account to `deleted-<uuid>`, ensuring
      permanently purged tombstone rows never retain `ADMIN`.
@@ -419,43 +418,43 @@ To guarantee that `SetUserRole` is the **only** way a user can become an admin:
 
 1. **Read-Only Column Option in Store Codegen**:
    - Add `bool read_only = 8;` to `ColumnOptions` in
-     [`src/proto/quadsmith/sql/sql.proto`](../../src/proto/quadsmith/sql/sql.proto).
+     [`src/proto/quadsmith/sql/sql.proto`](../src/proto/quadsmith/sql/sql.proto).
    - Annotate `User.role` in
-     [`src/proto/quadsmith/store/user.proto`](../../src/proto/quadsmith/store/user.proto)
+     [`src/proto/quadsmith/store/user.proto`](../src/proto/quadsmith/store/user.proto)
      with `read_only: true`, and add `checks: "role IN ('USER', 'ADMIN')"` to
      `User`'s `(quadsmith.sql.table)` option.
    - Update
-     [`src/go/shared/cmd/protoc-gen-store/main.go`](../../src/go/shared/cmd/protoc-gen-store/main.go)
+     [`src/go/shared/cmd/protoc-gen-store/main.go`](../src/go/shared/cmd/protoc-gen-store/main.go)
      so fields with `read_only: true` are omitted strictly from the column lists
      of `Create<Model>` (`INSERT`) and `Update<Model>` (`UPDATE`), while
      remaining in `activeFields` and `readableFields` so `GetUser`, `ListUsers`,
      and `ExportUsers` continue to read and export `role`.
    - Regenerating protobufs updates
-     [`src/go/shared/gen/quadsmith/store/user_store.pb.go`](../../src/go/shared/gen/quadsmith/store/user_store.pb.go)
+     [`src/go/shared/gen/quadsmith/store/user_store.pb.go`](../src/go/shared/gen/quadsmith/store/user_store.pb.go)
      so `storepb.CreateUser` relies on the PostgreSQL column default (`'USER'`)
      and `storepb.UpdateUser` cannot modify `role`.
 2. **Database Schema Constraint**:
    - Regenerating SQL updates
-     [`src/db/quadsmith_api.sql`](../../src/db/quadsmith_api.sql) to include
+     [`src/db/quadsmith_api.sql`](../src/db/quadsmith_api.sql) to include
      `CHECK (role IN ('USER', 'ADMIN'))` on `users` alongside
      `role TEXT DEFAULT 'USER' NOT NULL`.
 3. **Remove `role` from `SeedUser` and Seed Data**:
    - Remove `string role = 4;` from `SeedUser` in
-     [`src/proto/quadsmith/api/user.proto`](../../src/proto/quadsmith/api/user.proto)
+     [`src/proto/quadsmith/api/user.proto`](../src/proto/quadsmith/api/user.proto)
      (renumbering `bio = 4` and `reputation_score = 5`).
    - Remove `role: "user"` from
-     [`test/sandbox/db/seed_data/users.textproto`](../../test/sandbox/db/seed_data/users.textproto)
+     [`test/sandbox/db/seed_data/users.textproto`](../test/sandbox/db/seed_data/users.textproto)
      and remove `Role: u.Role` from
-     [`src/go/shared/cmd/seeder/main.go`](../../src/go/shared/cmd/seeder/main.go).
+     [`src/go/shared/cmd/seeder/main.go`](../src/go/shared/cmd/seeder/main.go).
 4. **Omit `role` from Auth Signup `INSERT` Queries**:
    - In
-     [`src/go/shared/pkg/auth/service.go`](../../src/go/shared/pkg/auth/service.go)
+     [`src/go/shared/pkg/auth/service.go`](../src/go/shared/pkg/auth/service.go)
      (OTP registration and OAuth registration), omit `role` from
      `INSERT INTO users`, letting PostgreSQL assign `DEFAULT 'USER'`.
    - Normalize test user inserts in
-     [`test/api/auth_helper_test.go`](../../test/api/auth_helper_test.go) and
-     [`test/api/sandbox_test.go`](../../test/api/sandbox_test.go) to omit `role`
-     on `INSERT INTO users`.
+     [`test/api/auth_helper_test.go`](../test/api/auth_helper_test.go) and
+     [`test/api/sandbox_test.go`](../test/api/sandbox_test.go) to omit `role` on
+     `INSERT INTO users`.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -498,7 +497,7 @@ database role:
 
 1. **Remove `Role` from `JWTClaims` and `SignAccessToken`**:
    - In
-     [`src/go/shared/pkg/auth/tokens.go`](../../src/go/shared/pkg/auth/tokens.go),
+     [`src/go/shared/pkg/auth/tokens.go`](../src/go/shared/pkg/auth/tokens.go),
      remove `Role` from `JWTClaims` and update the signature of
      `SignAccessToken` to:
 
@@ -507,16 +506,16 @@ database role:
      ```
 
    - Update all callers in
-     [`src/go/shared/pkg/auth/service.go`](../../src/go/shared/pkg/auth/service.go),
-     [`src/go/shared/pkg/auth/tokens_test.go`](../../src/go/shared/pkg/auth/tokens_test.go),
-     [`test/api/auth_helper_test.go`](../../test/api/auth_helper_test.go),
-     [`test/api/security_test.go`](../../test/api/security_test.go), and
-     [`test/api/sandbox_test.go`](../../test/api/sandbox_test.go), and update
+     [`src/go/shared/pkg/auth/service.go`](../src/go/shared/pkg/auth/service.go),
+     [`src/go/shared/pkg/auth/tokens_test.go`](../src/go/shared/pkg/auth/tokens_test.go),
+     [`test/api/auth_helper_test.go`](../test/api/auth_helper_test.go),
+     [`test/api/security_test.go`](../test/api/security_test.go), and
+     [`test/api/sandbox_test.go`](../test/api/sandbox_test.go), and update
      [`user_auth.md`](user_auth.md) to note that `users.role` is resolved live
      from PostgreSQL.
 2. **Hydrate Live `users.role` in `AuthenticateHTTPRequest`**:
    - In
-     [`src/go/shared/pkg/auth/interceptor.go`](../../src/go/shared/pkg/auth/interceptor.go),
+     [`src/go/shared/pkg/auth/interceptor.go`](../src/go/shared/pkg/auth/interceptor.go),
      when a Bearer JWT is verified via `VerifyAccessToken`, default
      `claims.Role = "USER"` and, when `pool != nil`, query
      `SELECT role FROM users WHERE uuid::text = $1` to populate `claims.Role`

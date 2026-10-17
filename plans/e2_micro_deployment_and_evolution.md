@@ -24,7 +24,7 @@
 ## <a id="1-background" >1. Background</a>
 
 Quadsmith's service architecture was recently aligned by language into
-[`src/go`](../../src/go) and [`src/react`](../../src/react) in
+[`src/go`](../src/go) and [`src/react`](../src/react) in
 [`infrastructure_alignment_and_container_architecture.md`](infrastructure_alignment_and_container_architecture.md).
 Subsequently, background workers and operations maintenance were refactored in
 [`tasks_and_jobs.md`](tasks_and_jobs.md) to establish clean boundaries:
@@ -34,25 +34,24 @@ Subsequently, background workers and operations maintenance were refactored in
    `PurgeSoftDeletedAccounts` every 8h, and `SendUsernameReleaseWarnings` every
    24h—with SQL-engine maintenance delegated natively to PostgreSQL
    `autovacuum`, alongside `ListTasks`, `GetTask`, `ListJobs`, and `GetJob`) are
-   owned and served by [`server-ops`](../../src/go/server-ops) under
-   `OpsService`.
-2. **Headless Scheduler** ([`server-jobs`](../../src/go/server-jobs)) operates
+   owned and served by [`server-ops`](../src/go/server-ops) under `OpsService`.
+2. **Headless Scheduler** ([`server-jobs`](../src/go/server-jobs)) operates
    purely as a headless cron daemon with zero HTTP APIs or database connections,
    running typed background schedulers via `robfig/cron/v3` that trigger task
    RPCs on `server-ops`.
-3. **Public APIs & Blobs** are served by [`server-api`](../../src/go/server-api)
+3. **Public APIs & Blobs** are served by [`server-api`](../src/go/server-api)
    via ConnectRPC alongside plain HTTP media endpoints (`/api/blobs`,
    `/blobs/{id}`) documented in
    [`blob_storage_and_streaming_architecture.md`](blob_storage_and_streaming_architecture.md).
 4. **Web Frontend & Social Previews** are served by
-   [`server-web`](../../src/go/server-web), which serves the React 19 SPA, the
-   17.5 MB WebAssembly physics engine
-   ([`quadsmith-engine.wasm`](../../src/react/app-web/public/quadsmith-engine.wasm)),
+   [`server-web`](../src/go/server-web), which serves the React 19 SPA, the 17.5
+   MB WebAssembly physics engine
+   ([`quadsmith-engine.wasm`](../src/react/app-web/public/quadsmith-engine.wasm)),
    and dynamically injects Open Graph / Twitter Card metadata for social media
-   crawlers via [`static.go`](../../src/go/shared/pkg/static/static.go).
+   crawlers via [`static.go`](../src/go/shared/pkg/static/static.go).
 
 The local sandbox environment in
-[`test/sandbox/docker-compose.yaml`](../../test/sandbox/docker-compose.yaml)
+[`test/sandbox/docker-compose.yaml`](../test/sandbox/docker-compose.yaml)
 coordinates these four services alongside a local PostgreSQL container. However,
 we require an initial production deployment that costs **$0.00/month**, avoids
 managing stateful database instances on the host VM, keeps the stack 100%
@@ -203,28 +202,28 @@ ingress gateway on port 80 within the Docker Compose network.
 
 To ensure all three HTTP-serving Go services listen on a uniform internal port
 (`8080`) behind Nginx and redirect OAuth flows to the canonical domain,
-[`src/go/server-web/config/prod.textproto`](../../src/go/server-web/config/prod.textproto)
+[`src/go/server-web/config/prod.textproto`](../src/go/server-web/config/prod.textproto)
 and
-[`src/go/server-api/config/prod.textproto`](../../src/go/server-api/config/prod.textproto)
+[`src/go/server-api/config/prod.textproto`](../src/go/server-api/config/prod.textproto)
 (along with their `staging.textproto` counterparts) are updated from `port: 443`
 to `port: 8080`, matching
-[`server-ops`](../../src/go/server-ops/config/prod.textproto), and
-`server-api`'s `oauth.web_base_url`, `from_address`, and `reply_to` fields are
-aligned from `quadsmith.net` to `quadsmith.com`.
+[`server-ops`](../src/go/server-ops/config/prod.textproto), and `server-api`'s
+`oauth.web_base_url`, `from_address`, and `reply_to` fields are aligned from
+`quadsmith.net` to `quadsmith.com`.
 
 Furthermore, two critical proxy behaviors are configured in `nginx.conf`:
 
 1. **Single-Hop `X-Forwarded-For` Preservation**:
-   [`src/go/shared/pkg/auth/service.go`](../../src/go/shared/pkg/auth/service.go)
+   [`src/go/shared/pkg/auth/service.go`](../src/go/shared/pkg/auth/service.go)
    resolves the client IP using `trusted_proxy_hops: 1` in
-   [`src/go/server-api/config/prod.textproto`](../../src/go/server-api/config/prod.textproto).
+   [`src/go/server-api/config/prod.textproto`](../src/go/server-api/config/prod.textproto).
    Because Nginx is only reachable internally from `cloudflared`, Nginx passes
    `proxy_set_header X-Forwarded-For $http_x_forwarded_for;` rather than
    `$proxy_add_x_forwarded_for`, avoiding appending `cloudflared`'s internal
    Docker bridge IP (`172.18.0.x`) and keeping `trusted_proxy_hops: 1` accurate
    across both Docker Compose and Cloud Run.
 2. **Unbuffered 100 MB Blob Uploads**:
-   [`server-api`](../../src/go/server-api/main.go) accepts up to 100 MB on
+   [`server-api`](../src/go/server-api/main.go) accepts up to 100 MB on
    `/api/blobs` (matching Cloudflare Free Tier's 100 MB upload limit). Nginx's
    default 1 MB limit is raised via `client_max_body_size 100m;` with
    `proxy_request_buffering off;` so large flight video uploads stream directly
@@ -323,15 +322,15 @@ free network egress limit**, all caching policies are driven strictly by
 standard RFC 9111 `Cache-Control` headers emitted by our Go binaries:
 
 1. **Hashed Vite Bundles (`/assets/*` in
-   [`static.go`](../../src/go/shared/pkg/static/static.go))**:
+   [`static.go`](../src/go/shared/pkg/static/static.go))**:
    - Vite compiles JS and CSS bundles with content hashes in their filenames
      (e.g., `/assets/index-D8f3a1b2.js`).
-   - [`ServeSPA()`](../../src/go/shared/pkg/static/static.go) sets
+   - [`ServeSPA()`](../src/go/shared/pkg/static/static.go) sets
      `Cache-Control: public, max-age=31536000, immutable` on all requests under
      `/assets/`.
 2. **Unhashed Public Assets & 17.5 MB WASM Engine (`/quadsmith-engine.wasm`,
    `/wasm_exec.js`, `/og-default.png`)**:
-   - [`src/react/app-web/public/quadsmith-engine.wasm`](../../src/react/app-web/public/quadsmith-engine.wasm)
+   - [`src/react/app-web/public/quadsmith-engine.wasm`](../src/react/app-web/public/quadsmith-engine.wasm)
      is **17.5 MB**—by far the largest asset in the SPA (30x larger than all JS
      and CSS bundles combined). Without edge caching, just 58 page loads would
      exhaust GCP's 1 GB/month free egress.
@@ -343,24 +342,24 @@ standard RFC 9111 `Cache-Control` headers emitted by our Go binaries:
      Tier's **512 MB per-file cache limit**) and automatically applies **Brotli
      compression** to `application/wasm` responses (~3.5–4.0 MB over the wire).
    - **Size & Cache-Busting Optimization**:
-     - Update [`Makefile`](../../Makefile) and
-       [`src/go/server-web/Dockerfile`](../../src/go/server-web/Dockerfile) to
+     - Update [`Makefile`](../Makefile) and
+       [`src/go/server-web/Dockerfile`](../src/go/server-web/Dockerfile) to
        compile `quadsmith-engine.wasm` with `-ldflags="-w -s"`, stripping DWARF
        debug symbols and reducing the raw binary size by ~30% (~17.5 MB &rarr;
        ~12 MB) across both local and CI Docker builds.
-     - [`ServeSPA()`](../../src/go/shared/pkg/static/static.go) precomputes
-       content SHA-256 `ETag` values at startup for static files in `dir` and
-       emits `Cache-Control: public, max-age=3600, stale-while-revalidate=86400`
+     - [`ServeSPA()`](../src/go/shared/pkg/static/static.go) precomputes content
+       SHA-256 `ETag` values at startup for static files in `dir` and emits
+       `Cache-Control: public, max-age=3600, stale-while-revalidate=86400`
        alongside `ETag` (and `Content-Type: application/wasm`). Upstream CDNs
        serve the WASM binary from the edge and revalidate via `If-None-Match`
        (`304 Not Modified`, 0 body bytes) so deployments take effect cleanly.
 3. **SPA HTML & Dynamic Open Graph Cards (`index.html`)**:
-   - [`ServeSPA()`](../../src/go/shared/pkg/static/static.go) emits
+   - [`ServeSPA()`](../src/go/shared/pkg/static/static.go) emits
      `Cache-Control: no-cache` on rendered `index.html` responses so CDNs and
      browsers never cache crawler-injected Open Graph metadata across routes or
      retain stale asset references after deployments.
 4. **Content-Addressed Media Blobs (`/blobs/{id}` in
-   [`blob/handler.go`](../../src/go/shared/pkg/blob/handler.go))**:
+   [`blob/handler.go`](../src/go/shared/pkg/blob/handler.go))**:
    - Already emits `Cache-Control: public, max-age=31536000, immutable` and
      `ETag: "<blob_id>"`.
 5. **Single Standard-Compliance Rule & Smart Tiered Cache on Cloudflare**:
@@ -419,7 +418,7 @@ routing rules to proxy requests with social bot `User-Agent` headers to
 ### <a id="stateless-container-topology-and-host-memory-hygiene" >Stateless Container Topology and Host Memory Hygiene</a>
 
 The production deployment manifest
-[`src/deploy/docker-compose.prod.yaml`](../../src/deploy/docker-compose.prod.yaml)
+[`src/deploy/docker-compose.prod.yaml`](../src/deploy/docker-compose.prod.yaml)
 packages the four application containers, Nginx, and Cloudflare Tunnel. Notably,
 `server-web` sets `QS_API_URL=http://api:8080` so social crawler metadata RPCs
 travel over the internal Docker bridge network rather than hair-pinning through
@@ -512,10 +511,10 @@ To guarantee host stability, prevent out-of-memory kernel panics, and stay
 within Free Tier managed PostgreSQL connection and compute limits:
 
 1. **Database Connection Pool Enforcement (`pgxpool`)**: Update
-   [`src/go/server-api/main.go`](../../src/go/server-api/main.go) to apply
+   [`src/go/server-api/main.go`](../src/go/server-api/main.go) to apply
    `max_connections` and `min_connections` via `pgxpool.ParseConfig` /
    `pgxpool.NewWithConfig`, matching
-   [`server-ops`](../../src/go/server-ops/main.go). Right-size `prod.textproto`
+   [`server-ops`](../src/go/server-ops/main.go). Right-size `prod.textproto`
    connection pools for Phase 1 (`server-api`:
    `max_connections: 15, min_connections: 1`; `server-ops`:
    `max_connections: 5, min_connections: 1` on both `database` and
@@ -524,7 +523,7 @@ within Free Tier managed PostgreSQL connection and compute limits:
    `server-jobs` is a pure stateless RPC client with zero database pools).
 2. **Database-Backed Operations Token Seeding**: Rather than embedding static
    `bootstrap_tokens` in
-   [`server-ops/config/prod.textproto`](../../src/go/server-ops/config/prod.textproto),
+   [`server-ops/config/prod.textproto`](../src/go/server-ops/config/prod.textproto),
    initial `ROBOT` (`QS_JOB_SERVER_AUTH_TOKEN`, `group_name = 'robots'`) and
    operator `HUMAN` (`group_name = 'operators'`) token SHA-256 hashes are seeded
    directly into `quadsmith_ops.internal_tokens` via SQL during database setup,
@@ -609,7 +608,7 @@ Docker images are hosted in a private **Google Artifact Registry** repository
 #### <a id="github-actions-deployment-pipeline" >GitHub Actions Deployment Pipeline</a>
 
 The CI/CD workflow in
-[`.github/workflows/deploy.yml`](../../.github/workflows/deploy.yml):
+[`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml):
 
 1. **Build & Push**: Builds the 4 images in parallel using BuildKit and pushes
    to `us-central1-docker.pkg.dev/<PROJECT_ID>/quadsmith-docker/<image>:latest`

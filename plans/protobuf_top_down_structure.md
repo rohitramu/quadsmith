@@ -40,7 +40,7 @@ This document formalizes these rules into a permanent engineering standard.
 ## <a id="2-goal" >2. Goal</a>
 
 Establish a deterministic structural ordering standard for all Protobuf
-definitions (`.proto`) in [AGENTS.md](../../AGENTS.md) that organizes files into
+definitions (`.proto`) in [AGENTS.md](../AGENTS.md) that organizes files into
 four standard sections (Services, Domain model, Request/response messages,
 Everything else) with clean unnumbered headers, mandates that a message is never
 above what references it, applies alphabetical sorting as the lowest-precedence
@@ -211,7 +211,7 @@ Retain all configuration messages in a single `config.proto` file.
 
 ### <a id="codified-agents-md-rule-specification" >Codified AGENTS.md Rule Specification</a>
 
-The complete rule in [AGENTS.md](../../AGENTS.md) under
+The complete rule in [AGENTS.md](../AGENTS.md) under
 `## Protobuf Structure & Organization`:
 
 ```markdown
