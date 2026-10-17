@@ -179,11 +179,14 @@ func LoadOpsCliConfig(configPath, envName string) (*configpb.OpsCliConfig, error
 	resolvedPath, err := resolveConfigPath("cli-ops", configPath, envName)
 	if err != nil {
 		resolvedPath, err = resolveConfigPath("qsops", configPath, envName)
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	var cfg configpb.OpsCliConfig
-	if err == nil {
-		_ = Load(resolvedPath, &cfg)
+	if err := Load(resolvedPath, &cfg); err != nil {
+		return nil, err
 	}
 
 	if err := ValidateOpsCliConfig(&cfg); err != nil {
@@ -703,10 +706,10 @@ func ValidateJobServerConfig(c *configpb.JobServerConfig) error {
 		_, hasInterval := s.GetSchedule().(*configpb.CleanupOrphanedBlobsSchedule_Interval)
 		validateTaskSchedule("cleanup_orphaned_blobs", hasCron, s.GetCron(), hasInterval, s.GetInterval())
 	}
-	if s := c.GetDatabaseMaintenance(); s != nil {
-		_, hasCron := s.GetSchedule().(*configpb.DatabaseMaintenanceSchedule_Cron)
-		_, hasInterval := s.GetSchedule().(*configpb.DatabaseMaintenanceSchedule_Interval)
-		validateTaskSchedule("database_maintenance", hasCron, s.GetCron(), hasInterval, s.GetInterval())
+	if s := c.GetRunDatabaseMaintenance(); s != nil {
+		_, hasCron := s.GetSchedule().(*configpb.RunDatabaseMaintenanceSchedule_Cron)
+		_, hasInterval := s.GetSchedule().(*configpb.RunDatabaseMaintenanceSchedule_Interval)
+		validateTaskSchedule("run_database_maintenance", hasCron, s.GetCron(), hasInterval, s.GetInterval())
 	}
 	if s := c.GetPurgeSoftDeletedAccounts(); s != nil {
 		_, hasCron := s.GetSchedule().(*configpb.PurgeSoftDeletedAccountsSchedule_Cron)

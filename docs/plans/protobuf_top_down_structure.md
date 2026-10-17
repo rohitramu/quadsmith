@@ -174,12 +174,16 @@ Rather than maintaining a monolithic `config.proto` file that conflates server,
 ops, job, web, and CLI configuration schemas, split definitions into dedicated
 per-binary schema files under `src/proto/quadsmith/config/`:
 
-- `common.proto`: Shared infrastructure (`DatabaseConfig`, `ServerConfig`).
+- `common.proto`: Shared infrastructure (`DatabaseConfig`, `ServerConfig`,
+  `BootstrapTokenConfig`, `InternalGroupConfig`).
 - `server_api.proto`: `ApiServerConfig`, `AuthConfig`, `EmailConfig`,
   `ConsoleEmailConfig`, `SmtpConfig`.
-- `server_ops.proto`: `OpsServerConfig`, `BootstrapTokenConfig`,
-  `InternalGroupConfig`, `JitPolicyConfig`, `OAuthConfig`, `DeveloperMapping`.
-- `server_jobs.proto`: `JobServerConfig`, `JobScheduleConfig`.
+- `server_ops.proto`: `OpsServerConfig`, `JitPolicyConfig`, `OAuthConfig`,
+  `DeveloperMapping`.
+- `server_jobs.proto`: `JobServerConfig`, `CleanupExpiredOtpsSchedule`,
+  `CleanupExpiredTokensSchedule`, `CleanupOrphanedBlobsSchedule`,
+  `PurgeSoftDeletedAccountsSchedule`, `RunDatabaseMaintenanceSchedule`,
+  `SendUsernameReleaseWarningsSchedule`.
 - `server_web.proto`: `WebServerConfig`.
 - `cli.proto`: `CliConfig`.
 - `cli_ops.proto`: `OpsCliConfig`.

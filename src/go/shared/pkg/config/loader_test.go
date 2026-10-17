@@ -330,9 +330,27 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 		t.Errorf("unexpected ops-server test config: %+v", opsTest)
 	}
 
-	// Staging & Prod (require QS_DATABASE_URL, QS_INTERNAL_DATABASE_URL, and QS_AUTH_SECRET)
+	jobTestPath := filepath.Join("..", "..", "..", "server-jobs", "config", "test.textproto")
+	jobTest, err := LoadJobServerConfig(jobTestPath)
+	if err != nil {
+		t.Fatalf("failed to load job-server test: %v", err)
+	}
+	if jobTest.Server.GetPort() != 8080 || jobTest.InternalDatabase.GetName() != "quadsmith_ops" {
+		t.Errorf("unexpected job-server test config: %+v", jobTest)
+	}
+
+	opsCliTest, err := LoadOpsCliConfig("", "test")
+	if err != nil {
+		t.Fatalf("failed to load ops cli test: %v", err)
+	}
+	if opsCliTest.GetOpsServerUrl() != "http://127.0.0.1:8082" || opsCliTest.GetJobsServerUrl() != "http://127.0.0.1:8083" {
+		t.Errorf("unexpected ops cli test config: %+v", opsCliTest)
+	}
+
+	// Staging & Prod (require QS_DATABASE_URL, QS_INTERNAL_DATABASE_URL, QS_JOB_SERVER_AUTH_TOKEN, and QS_AUTH_SECRET)
 	t.Setenv("QS_DATABASE_URL", "postgres://user:pass@db.example.com:5432/quadsmith_api")
 	t.Setenv("QS_INTERNAL_DATABASE_URL", "postgres://user:pass@db.example.com:5432/quadsmith_ops")
+	t.Setenv("QS_JOB_SERVER_AUTH_TOKEN", "qs_robot_prod_token_secret")
 	t.Setenv("QS_AUTH_SECRET", "super-secret-prod-auth-key-32bytes")
 	t.Setenv("QS_OAUTH_CLIENT_ID", "dummy-client-id")
 	t.Setenv("QS_OAUTH_CLIENT_SECRET", "dummy-client-secret")
@@ -378,5 +396,39 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	}
 	if opsProd.Server.GetPort() != 8080 {
 		t.Errorf("unexpected ops-server prod port: %d", opsProd.Server.GetPort())
+	}
+
+	jobStagingPath := filepath.Join("..", "..", "..", "server-jobs", "config", "staging.textproto")
+	jobStaging, err := LoadJobServerConfig(jobStagingPath)
+	if err != nil {
+		t.Fatalf("failed to load job-server staging: %v", err)
+	}
+	if jobStaging.Server.GetPort() != 8080 {
+		t.Errorf("unexpected job-server staging port: %d", jobStaging.Server.GetPort())
+	}
+
+	jobProdPath := filepath.Join("..", "..", "..", "server-jobs", "config", "prod.textproto")
+	jobProd, err := LoadJobServerConfig(jobProdPath)
+	if err != nil {
+		t.Fatalf("failed to load job-server prod: %v", err)
+	}
+	if jobProd.Server.GetPort() != 8080 {
+		t.Errorf("unexpected job-server prod port: %d", jobProd.Server.GetPort())
+	}
+
+	opsCliStaging, err := LoadOpsCliConfig("", "staging")
+	if err != nil {
+		t.Fatalf("failed to load ops cli staging: %v", err)
+	}
+	if opsCliStaging.GetJobsServerUrl() != "https://staging-jobs.quadsmith.com" {
+		t.Errorf("unexpected ops cli staging config: %+v", opsCliStaging)
+	}
+
+	opsCliProd, err := LoadOpsCliConfig("", "prod")
+	if err != nil {
+		t.Fatalf("failed to load ops cli prod: %v", err)
+	}
+	if opsCliProd.GetJobsServerUrl() != "https://jobs.quadsmith.com" {
+		t.Errorf("unexpected ops cli prod config: %+v", opsCliProd)
 	}
 }

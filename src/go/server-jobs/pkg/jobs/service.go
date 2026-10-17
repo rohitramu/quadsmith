@@ -40,12 +40,15 @@ func (s *Service) ListJobs(ctx context.Context, req *connect.Request[jobspb.List
 	filterProcedure := ""
 	if task := strings.TrimSpace(req.Msg.GetTaskName()); task != "" {
 		filterProcedure = taskToProcedure(task)
+		if filterProcedure == "" {
+			return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("unknown task %q", task))
+		}
 	}
 
 	query := `
 		SELECT id, method, caller, caller_type, status, duration_ms, error_message, created_at
 		FROM internal_api_calls
-		WHERE ($1 = '' OR method = $1 OR method ILIKE $2)
+		WHERE ($1 = '' OR method = $1)
 		  AND method IN (
 			'CleanupExpiredOtps',
 			'CleanupExpiredTokens',
@@ -56,14 +59,9 @@ func (s *Service) ListJobs(ctx context.Context, req *connect.Request[jobspb.List
 			'SeedDatabase'
 		  )
 		ORDER BY created_at DESC
-		LIMIT $3`
+		LIMIT $2`
 
-	likePattern := ""
-	if filterProcedure != "" {
-		likePattern = "%" + filterProcedure + "%"
-	}
-
-	rows, err := s.db.Query(ctx, query, filterProcedure, likePattern, limit)
+	rows, err := s.db.Query(ctx, query, filterProcedure, limit)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to query job history: %w", err))
 	}
@@ -148,34 +146,38 @@ func (s *Service) GetJob(ctx context.Context, req *connect.Request[jobspb.GetJob
 func (s *Service) getScheduleForProcedure(procedure string) *string {
 	switch procedure {
 	case "CleanupExpiredOtps":
-		if s := s.cfg.GetCleanupExpiredOtps(); s != nil {
-			return formatSchedule(s.GetCron(), s.GetInterval())
+		if sched := s.cfg.GetCleanupExpiredOtps(); sched != nil {
+			return formatSchedule(sched.GetEnabled(), sched.GetCron(), sched.GetInterval())
 		}
 	case "CleanupExpiredTokens":
-		if s := s.cfg.GetCleanupExpiredTokens(); s != nil {
-			return formatSchedule(s.GetCron(), s.GetInterval())
+		if sched := s.cfg.GetCleanupExpiredTokens(); sched != nil {
+			return formatSchedule(sched.GetEnabled(), sched.GetCron(), sched.GetInterval())
 		}
 	case "CleanupOrphanedBlobs":
-		if s := s.cfg.GetCleanupOrphanedBlobs(); s != nil {
-			return formatSchedule(s.GetCron(), s.GetInterval())
+		if sched := s.cfg.GetCleanupOrphanedBlobs(); sched != nil {
+			return formatSchedule(sched.GetEnabled(), sched.GetCron(), sched.GetInterval())
 		}
 	case "PurgeSoftDeletedAccounts":
-		if s := s.cfg.GetPurgeSoftDeletedAccounts(); s != nil {
-			return formatSchedule(s.GetCron(), s.GetInterval())
+		if sched := s.cfg.GetPurgeSoftDeletedAccounts(); sched != nil {
+			return formatSchedule(sched.GetEnabled(), sched.GetCron(), sched.GetInterval())
 		}
 	case "SendUsernameReleaseWarnings":
-		if s := s.cfg.GetSendUsernameReleaseWarnings(); s != nil {
-			return formatSchedule(s.GetCron(), s.GetInterval())
+		if sched := s.cfg.GetSendUsernameReleaseWarnings(); sched != nil {
+			return formatSchedule(sched.GetEnabled(), sched.GetCron(), sched.GetInterval())
 		}
 	case "RunDatabaseMaintenance":
-		if s := s.cfg.GetDatabaseMaintenance(); s != nil {
-			return formatSchedule(s.GetCron(), s.GetInterval())
+		if sched := s.cfg.GetRunDatabaseMaintenance(); sched != nil {
+			return formatSchedule(sched.GetEnabled(), sched.GetCron(), sched.GetInterval())
 		}
 	}
 	return nil
 }
 
-func formatSchedule(cron string, interval *durationpb.Duration) *string {
+func formatSchedule(enabled bool, cron string, interval *durationpb.Duration) *string {
+	if !enabled {
+		disabled := "disabled"
+		return &disabled
+	}
 	if cron != "" {
 		return &cron
 	}
@@ -193,8 +195,6 @@ func formatSchedule(cron string, interval *durationpb.Duration) *string {
 
 func taskToProcedure(task string) string {
 	clean := strings.ToLower(strings.TrimSpace(task))
-	clean = strings.TrimPrefix(clean, "auth.")
-	clean = strings.TrimPrefix(clean, "blob.")
 	switch clean {
 	case "cleanup_expired_otps", "cleanupexpiredotps":
 		return "CleanupExpiredOtps"
@@ -202,16 +202,16 @@ func taskToProcedure(task string) string {
 		return "CleanupExpiredTokens"
 	case "cleanup_orphaned_blobs", "cleanuporphanedblobs":
 		return "CleanupOrphanedBlobs"
-	case "purge_soft_deleted_accounts", "purgesoftdeletedaccounts", "purge_accounts":
+	case "purge_soft_deleted_accounts", "purgesoftdeletedaccounts":
 		return "PurgeSoftDeletedAccounts"
-	case "send_username_release_warnings", "sendusernamereleasewarnings", "warn_usernames":
+	case "send_username_release_warnings", "sendusernamereleasewarnings":
 		return "SendUsernameReleaseWarnings"
-	case "run_database_maintenance", "rundatabasemaintenance", "vacuum":
+	case "run_database_maintenance", "rundatabasemaintenance":
 		return "RunDatabaseMaintenance"
-	case "seed_database", "seeddatabase", "seed":
+	case "seed_database", "seeddatabase":
 		return "SeedDatabase"
 	default:
-		return task
+		return ""
 	}
 }
 

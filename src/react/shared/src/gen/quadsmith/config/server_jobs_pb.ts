@@ -21,7 +21,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_config_server_jobs: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiJxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9qb2JzLnByb3RvEhBxdWFkc21pdGguY29uZmlnIrMICg9Kb2JTZXJ2ZXJDb25maWcSGAoLZW52aXJvbm1lbnQYASABKAlIAIgBARIuCgZzZXJ2ZXIYAiABKAsyHi5xdWFkc21pdGguY29uZmlnLlNlcnZlckNvbmZpZxIbCg5vcHNfc2VydmVyX3VybBgDIAEoCUgBiAEBEhcKCmF1dGhfdG9rZW4YBCABKAlIAogBARI7ChFpbnRlcm5hbF9kYXRhYmFzZRgFIAEoCzIgLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VDb25maWcSTwoUY2xlYW51cF9leHBpcmVkX290cHMYBiABKAsyLC5xdWFkc21pdGguY29uZmlnLkNsZWFudXBFeHBpcmVkT3Rwc1NjaGVkdWxlSAOIAQESUwoWY2xlYW51cF9leHBpcmVkX3Rva2VucxgHIAEoCzIuLnF1YWRzbWl0aC5jb25maWcuQ2xlYW51cEV4cGlyZWRUb2tlbnNTY2hlZHVsZUgEiAEBElMKFmNsZWFudXBfb3JwaGFuZWRfYmxvYnMYCCABKAsyLi5xdWFkc21pdGguY29uZmlnLkNsZWFudXBPcnBoYW5lZEJsb2JzU2NoZWR1bGVIBYgBARJQChRkYXRhYmFzZV9tYWludGVuYW5jZRgJIAEoCzItLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VNYWludGVuYW5jZVNjaGVkdWxlSAaIAQESXAobcHVyZ2Vfc29mdF9kZWxldGVkX2FjY291bnRzGAogASgLMjIucXVhZHNtaXRoLmNvbmZpZy5QdXJnZVNvZnREZWxldGVkQWNjb3VudHNTY2hlZHVsZUgHiAEBEmIKHnNlbmRfdXNlcm5hbWVfcmVsZWFzZV93YXJuaW5ncxgLIAEoCzI1LnF1YWRzbWl0aC5jb25maWcuU2VuZFVzZXJuYW1lUmVsZWFzZVdhcm5pbmdzU2NoZWR1bGVICIgBARI1CgZncm91cHMYDCADKAsyJS5xdWFkc21pdGguY29uZmlnLkludGVybmFsR3JvdXBDb25maWcSQAoQYm9vdHN0cmFwX3Rva2VucxgNIAMoCzImLnF1YWRzbWl0aC5jb25maWcuQm9vdHN0cmFwVG9rZW5Db25maWdCDgoMX2Vudmlyb25tZW50QhEKD19vcHNfc2VydmVyX3VybEINCgtfYXV0aF90b2tlbkIXChVfY2xlYW51cF9leHBpcmVkX290cHNCGQoXX2NsZWFudXBfZXhwaXJlZF90b2tlbnNCGQoXX2NsZWFudXBfb3JwaGFuZWRfYmxvYnNCFwoVX2RhdGFiYXNlX21haW50ZW5hbmNlQh4KHF9wdXJnZV9zb2Z0X2RlbGV0ZWRfYWNjb3VudHNCIQofX3NlbmRfdXNlcm5hbWVfcmVsZWFzZV93YXJuaW5ncyKJAQoaQ2xlYW51cEV4cGlyZWRPdHBzU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAQgoKCHNjaGVkdWxlQgoKCF9lbmFibGVkIosBChxDbGVhbnVwRXhwaXJlZFRva2Vuc1NjaGVkdWxlEhQKB2VuYWJsZWQYASABKAhIAYgBARIOCgRjcm9uGAIgASgJSAASLQoIaW50ZXJ2YWwYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IAEIKCghzY2hlZHVsZUIKCghfZW5hYmxlZCKLAQocQ2xlYW51cE9ycGhhbmVkQmxvYnNTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSABCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWQitAEKG0RhdGFiYXNlTWFpbnRlbmFuY2VTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSAASGAoLZnVsbF92YWN1dW0YBCABKAhIAogBAUIKCghzY2hlZHVsZUIKCghfZW5hYmxlZEIOCgxfZnVsbF92YWN1dW0ijwEKIFB1cmdlU29mdERlbGV0ZWRBY2NvdW50c1NjaGVkdWxlEhQKB2VuYWJsZWQYASABKAhIAYgBARIOCgRjcm9uGAIgASgJSAASLQoIaW50ZXJ2YWwYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IAEIKCghzY2hlZHVsZUIKCghfZW5hYmxlZCKSAQojU2VuZFVzZXJuYW1lUmVsZWFzZVdhcm5pbmdzU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAQgoKCHNjaGVkdWxlQgoKCF9lbmFibGVkQi5aLHF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9jb25maWc7Y29uZmlnYgZwcm90bzM",
+    "CiJxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9qb2JzLnByb3RvEhBxdWFkc21pdGguY29uZmlnIr4ICg9Kb2JTZXJ2ZXJDb25maWcSGAoLZW52aXJvbm1lbnQYASABKAlIAIgBARIuCgZzZXJ2ZXIYAiABKAsyHi5xdWFkc21pdGguY29uZmlnLlNlcnZlckNvbmZpZxIbCg5vcHNfc2VydmVyX3VybBgDIAEoCUgBiAEBEhcKCmF1dGhfdG9rZW4YBCABKAlIAogBARI7ChFpbnRlcm5hbF9kYXRhYmFzZRgFIAEoCzIgLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VDb25maWcSTwoUY2xlYW51cF9leHBpcmVkX290cHMYBiABKAsyLC5xdWFkc21pdGguY29uZmlnLkNsZWFudXBFeHBpcmVkT3Rwc1NjaGVkdWxlSAOIAQESUwoWY2xlYW51cF9leHBpcmVkX3Rva2VucxgHIAEoCzIuLnF1YWRzbWl0aC5jb25maWcuQ2xlYW51cEV4cGlyZWRUb2tlbnNTY2hlZHVsZUgEiAEBElMKFmNsZWFudXBfb3JwaGFuZWRfYmxvYnMYCCABKAsyLi5xdWFkc21pdGguY29uZmlnLkNsZWFudXBPcnBoYW5lZEJsb2JzU2NoZWR1bGVIBYgBARJcChtwdXJnZV9zb2Z0X2RlbGV0ZWRfYWNjb3VudHMYCSABKAsyMi5xdWFkc21pdGguY29uZmlnLlB1cmdlU29mdERlbGV0ZWRBY2NvdW50c1NjaGVkdWxlSAaIAQESVwoYcnVuX2RhdGFiYXNlX21haW50ZW5hbmNlGAogASgLMjAucXVhZHNtaXRoLmNvbmZpZy5SdW5EYXRhYmFzZU1haW50ZW5hbmNlU2NoZWR1bGVIB4gBARJiCh5zZW5kX3VzZXJuYW1lX3JlbGVhc2Vfd2FybmluZ3MYCyABKAsyNS5xdWFkc21pdGguY29uZmlnLlNlbmRVc2VybmFtZVJlbGVhc2VXYXJuaW5nc1NjaGVkdWxlSAiIAQESNQoGZ3JvdXBzGAwgAygLMiUucXVhZHNtaXRoLmNvbmZpZy5JbnRlcm5hbEdyb3VwQ29uZmlnEkAKEGJvb3RzdHJhcF90b2tlbnMYDSADKAsyJi5xdWFkc21pdGguY29uZmlnLkJvb3RzdHJhcFRva2VuQ29uZmlnQg4KDF9lbnZpcm9ubWVudEIRCg9fb3BzX3NlcnZlcl91cmxCDQoLX2F1dGhfdG9rZW5CFwoVX2NsZWFudXBfZXhwaXJlZF9vdHBzQhkKF19jbGVhbnVwX2V4cGlyZWRfdG9rZW5zQhkKF19jbGVhbnVwX29ycGhhbmVkX2Jsb2JzQh4KHF9wdXJnZV9zb2Z0X2RlbGV0ZWRfYWNjb3VudHNCGwoZX3J1bl9kYXRhYmFzZV9tYWludGVuYW5jZUIhCh9fc2VuZF91c2VybmFtZV9yZWxlYXNlX3dhcm5pbmdzIokBChpDbGVhbnVwRXhwaXJlZE90cHNTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSABCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWQiiwEKHENsZWFudXBFeHBpcmVkVG9rZW5zU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAQgoKCHNjaGVkdWxlQgoKCF9lbmFibGVkIosBChxDbGVhbnVwT3JwaGFuZWRCbG9ic1NjaGVkdWxlEhQKB2VuYWJsZWQYASABKAhIAYgBARIOCgRjcm9uGAIgASgJSAASLQoIaW50ZXJ2YWwYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IAEIKCghzY2hlZHVsZUIKCghfZW5hYmxlZCKPAQogUHVyZ2VTb2Z0RGVsZXRlZEFjY291bnRzU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAQgoKCHNjaGVkdWxlQgoKCF9lbmFibGVkIrcBCh5SdW5EYXRhYmFzZU1haW50ZW5hbmNlU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAEhgKC2Z1bGxfdmFjdXVtGAQgASgISAKIAQFCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWRCDgoMX2Z1bGxfdmFjdXVtIpIBCiNTZW5kVXNlcm5hbWVSZWxlYXNlV2FybmluZ3NTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSABCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWRCLloscXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2NvbmZpZztjb25maWdiBnByb3RvMw",
     [file_google_protobuf_duration, file_quadsmith_config_common],
   );
 
@@ -70,14 +70,14 @@ export type JobServerConfig = Message<"quadsmith.config.JobServerConfig"> & {
   cleanupOrphanedBlobs?: CleanupOrphanedBlobsSchedule | undefined;
 
   /**
-   * @generated from field: optional quadsmith.config.DatabaseMaintenanceSchedule database_maintenance = 9;
-   */
-  databaseMaintenance?: DatabaseMaintenanceSchedule | undefined;
-
-  /**
-   * @generated from field: optional quadsmith.config.PurgeSoftDeletedAccountsSchedule purge_soft_deleted_accounts = 10;
+   * @generated from field: optional quadsmith.config.PurgeSoftDeletedAccountsSchedule purge_soft_deleted_accounts = 9;
    */
   purgeSoftDeletedAccounts?: PurgeSoftDeletedAccountsSchedule | undefined;
+
+  /**
+   * @generated from field: optional quadsmith.config.RunDatabaseMaintenanceSchedule run_database_maintenance = 10;
+   */
+  runDatabaseMaintenance?: RunDatabaseMaintenanceSchedule | undefined;
 
   /**
    * @generated from field: optional quadsmith.config.SendUsernameReleaseWarningsSchedule send_username_release_warnings = 11;
@@ -220,50 +220,6 @@ export const CleanupOrphanedBlobsScheduleSchema: GenMessage<CleanupOrphanedBlobs
   messageDesc(file_quadsmith_config_server_jobs, 3);
 
 /**
- * @generated from message quadsmith.config.DatabaseMaintenanceSchedule
- */
-export type DatabaseMaintenanceSchedule =
-  Message<"quadsmith.config.DatabaseMaintenanceSchedule"> & {
-    /**
-     * @generated from field: optional bool enabled = 1;
-     */
-    enabled?: boolean | undefined;
-
-    /**
-     * @generated from oneof quadsmith.config.DatabaseMaintenanceSchedule.schedule
-     */
-    schedule:
-      | {
-          /**
-           * @generated from field: string cron = 2;
-           */
-          value: string;
-          case: "cron";
-        }
-      | {
-          /**
-           * @generated from field: google.protobuf.Duration interval = 3;
-           */
-          value: Duration;
-          case: "interval";
-        }
-      | { case: undefined; value?: undefined };
-
-    /**
-     * @generated from field: optional bool full_vacuum = 4;
-     */
-    fullVacuum?: boolean | undefined;
-  };
-
-/**
- * Describes the message quadsmith.config.DatabaseMaintenanceSchedule.
- * Use `create(DatabaseMaintenanceScheduleSchema)` to create a new message.
- */
-export const DatabaseMaintenanceScheduleSchema: GenMessage<DatabaseMaintenanceSchedule> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_server_jobs, 4);
-
-/**
  * @generated from message quadsmith.config.PurgeSoftDeletedAccountsSchedule
  */
 export type PurgeSoftDeletedAccountsSchedule =
@@ -299,6 +255,50 @@ export type PurgeSoftDeletedAccountsSchedule =
  * Use `create(PurgeSoftDeletedAccountsScheduleSchema)` to create a new message.
  */
 export const PurgeSoftDeletedAccountsScheduleSchema: GenMessage<PurgeSoftDeletedAccountsSchedule> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_server_jobs, 4);
+
+/**
+ * @generated from message quadsmith.config.RunDatabaseMaintenanceSchedule
+ */
+export type RunDatabaseMaintenanceSchedule =
+  Message<"quadsmith.config.RunDatabaseMaintenanceSchedule"> & {
+    /**
+     * @generated from field: optional bool enabled = 1;
+     */
+    enabled?: boolean | undefined;
+
+    /**
+     * @generated from oneof quadsmith.config.RunDatabaseMaintenanceSchedule.schedule
+     */
+    schedule:
+      | {
+          /**
+           * @generated from field: string cron = 2;
+           */
+          value: string;
+          case: "cron";
+        }
+      | {
+          /**
+           * @generated from field: google.protobuf.Duration interval = 3;
+           */
+          value: Duration;
+          case: "interval";
+        }
+      | { case: undefined; value?: undefined };
+
+    /**
+     * @generated from field: optional bool full_vacuum = 4;
+     */
+    fullVacuum?: boolean | undefined;
+  };
+
+/**
+ * Describes the message quadsmith.config.RunDatabaseMaintenanceSchedule.
+ * Use `create(RunDatabaseMaintenanceScheduleSchema)` to create a new message.
+ */
+export const RunDatabaseMaintenanceScheduleSchema: GenMessage<RunDatabaseMaintenanceSchedule> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_config_server_jobs, 5);
 

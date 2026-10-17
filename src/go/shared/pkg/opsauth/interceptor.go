@@ -13,6 +13,8 @@ import (
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
 
+	"quadsmith/shared/pkg/authcontext"
+
 	configpb "quadsmith/shared/gen/quadsmith/config"
 )
 
@@ -67,6 +69,21 @@ func NewOpsInterceptor(
 	}
 }
 
+func isTaskMethod(methodName string) bool {
+	switch methodName {
+	case "CleanupExpiredOtps",
+		"CleanupExpiredTokens",
+		"CleanupOrphanedBlobs",
+		"PurgeSoftDeletedAccounts",
+		"SendUsernameReleaseWarnings",
+		"RunDatabaseMaintenance",
+		"SeedDatabase":
+		return true
+	default:
+		return false
+	}
+}
+
 func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 	return func(ctx context.Context, req connect.AnyRequest) (connect.AnyResponse, error) {
 		procedure := req.Spec().Procedure
@@ -111,22 +128,24 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 		// Inject operator context
 		ctx = WithOperatorContext(ctx, opCtx)
 
-		// 4. Execution & Synchronous Audit Logging
+		// 4. Execution & Synchronous Audit Logging (for OpsService RPCs)
 		t0 := time.Now()
 		res, err := next(ctx, req)
 		durationMs := time.Since(t0).Milliseconds()
 
-		status := "OK"
-		var errMsg *string
-		if err != nil {
-			status = "ERROR"
-			msg := err.Error()
-			errMsg = &msg
-		}
+		if strings.HasPrefix(procedure, "/quadsmith.ops.OpsService/") {
+			status := "OK"
+			var errMsg *string
+			if err != nil {
+				status = "ERROR"
+				msg := err.Error()
+				errMsg = &msg
+			}
 
-		callID := in.logAudit(methodName, opCtx, status, errMsg, durationMs)
-		if res != nil {
-			res.Header().Set("X-Job-Id", callID)
+			callID := in.logAudit(methodName, opCtx, status, errMsg, durationMs)
+			if res != nil && isTaskMethod(methodName) {
+				res.Header().Set("X-Job-Id", callID)
+			}
 		}
 
 		return res, err
@@ -240,6 +259,7 @@ func (in *OpsInterceptor) logAudit(method string, opCtx *OperatorContext, status
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
+	callUUID := authcontext.NewUUIDv7()
 	callID := fmt.Sprintf("call_%d", time.Now().UnixNano())
 	var jitUUID *string
 	if opCtx.JitGrantUUID != "" {
@@ -250,9 +270,9 @@ func (in *OpsInterceptor) logAudit(method string, opCtx *OperatorContext, status
 		INSERT INTO internal_api_calls (
 			uuid, id, method, caller, caller_type, group_name, jit_grant_uuid, status, error_message, duration_ms, created_at
 		) VALUES (
-			gen_random_uuid(), $1, $2, $3, $4, $5, $6, $7, $8, $9, NOW()
+			$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW()
 		)`,
-		callID, method, opCtx.Operator, opCtx.OperatorType, opCtx.GroupName, jitUUID, status, errMsg, durationMs,
+		callUUID, callID, method, opCtx.Operator, opCtx.OperatorType, opCtx.GroupName, jitUUID, status, errMsg, durationMs,
 	)
 	if err != nil {
 		log.Printf("[AuditLogger] Failed to write audit record for %s: %v", method, err)

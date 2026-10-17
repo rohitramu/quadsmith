@@ -861,7 +861,7 @@ func newTasksCmd() *cobra.Command {
 				}
 				return nil
 
-			case "purge_soft_deleted_accounts", "purgesoftdeletedaccounts", "purge_accounts":
+			case "purge_soft_deleted_accounts", "purgesoftdeletedaccounts":
 				resp, err := client.PurgeSoftDeletedAccounts(ctx, connect.NewRequest(&pb.PurgeSoftDeletedAccountsRequest{}))
 				if err != nil {
 					return fmt.Errorf("failed to trigger purge_soft_deleted_accounts: %w", err)
@@ -879,7 +879,7 @@ func newTasksCmd() *cobra.Command {
 				}
 				return nil
 
-			case "send_username_release_warnings", "sendusernamereleasewarnings", "warn_usernames":
+			case "send_username_release_warnings", "sendusernamereleasewarnings":
 				resp, err := client.SendUsernameReleaseWarnings(ctx, connect.NewRequest(&pb.SendUsernameReleaseWarningsRequest{}))
 				if err != nil {
 					return fmt.Errorf("failed to trigger send_username_release_warnings: %w", err)
@@ -897,7 +897,7 @@ func newTasksCmd() *cobra.Command {
 				}
 				return nil
 
-			case "run_database_maintenance", "rundatabasemaintenance", "vacuum":
+			case "run_database_maintenance", "rundatabasemaintenance":
 				resp, err := client.RunDatabaseMaintenance(ctx, connect.NewRequest(&pb.RunDatabaseMaintenanceRequest{
 					FullVacuum: false,
 				}))
@@ -917,7 +917,7 @@ func newTasksCmd() *cobra.Command {
 				}
 				return nil
 
-			case "seed_database", "seeddatabase", "seed":
+			case "seed_database", "seeddatabase":
 				resp, err := client.SeedDatabase(ctx, connect.NewRequest(&pb.SeedDatabaseRequest{
 					Force: false,
 				}))

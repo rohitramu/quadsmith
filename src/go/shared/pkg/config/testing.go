@@ -232,9 +232,9 @@ func NewTestJobServerConfig(t testing.TB) *configpb.JobServerConfig {
 				Interval: durationpb.New(5 * time.Minute),
 			},
 		},
-		DatabaseMaintenance: &configpb.DatabaseMaintenanceSchedule{
+		RunDatabaseMaintenance: &configpb.RunDatabaseMaintenanceSchedule{
 			Enabled: proto.Bool(false),
-			Schedule: &configpb.DatabaseMaintenanceSchedule_Cron{
+			Schedule: &configpb.RunDatabaseMaintenanceSchedule_Cron{
 				Cron: "0 3 * * 0",
 			},
 			FullVacuum: proto.Bool(false),

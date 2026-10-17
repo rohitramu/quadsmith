@@ -43,7 +43,7 @@ cleanup_orphaned_blobs {
   }
 }
 
-database_maintenance {
+run_database_maintenance {
   enabled: false
   cron: "0 3 * * 0"
   full_vacuum: false

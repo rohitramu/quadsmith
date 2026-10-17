@@ -32,8 +32,8 @@ type JobServerConfig struct {
 	CleanupExpiredOtps          *CleanupExpiredOtpsSchedule          `protobuf:"bytes,6,opt,name=cleanup_expired_otps,json=cleanupExpiredOtps,proto3,oneof" json:"cleanup_expired_otps,omitempty"`
 	CleanupExpiredTokens        *CleanupExpiredTokensSchedule        `protobuf:"bytes,7,opt,name=cleanup_expired_tokens,json=cleanupExpiredTokens,proto3,oneof" json:"cleanup_expired_tokens,omitempty"`
 	CleanupOrphanedBlobs        *CleanupOrphanedBlobsSchedule        `protobuf:"bytes,8,opt,name=cleanup_orphaned_blobs,json=cleanupOrphanedBlobs,proto3,oneof" json:"cleanup_orphaned_blobs,omitempty"`
-	DatabaseMaintenance         *DatabaseMaintenanceSchedule         `protobuf:"bytes,9,opt,name=database_maintenance,json=databaseMaintenance,proto3,oneof" json:"database_maintenance,omitempty"`
-	PurgeSoftDeletedAccounts    *PurgeSoftDeletedAccountsSchedule    `protobuf:"bytes,10,opt,name=purge_soft_deleted_accounts,json=purgeSoftDeletedAccounts,proto3,oneof" json:"purge_soft_deleted_accounts,omitempty"`
+	PurgeSoftDeletedAccounts    *PurgeSoftDeletedAccountsSchedule    `protobuf:"bytes,9,opt,name=purge_soft_deleted_accounts,json=purgeSoftDeletedAccounts,proto3,oneof" json:"purge_soft_deleted_accounts,omitempty"`
+	RunDatabaseMaintenance      *RunDatabaseMaintenanceSchedule      `protobuf:"bytes,10,opt,name=run_database_maintenance,json=runDatabaseMaintenance,proto3,oneof" json:"run_database_maintenance,omitempty"`
 	SendUsernameReleaseWarnings *SendUsernameReleaseWarningsSchedule `protobuf:"bytes,11,opt,name=send_username_release_warnings,json=sendUsernameReleaseWarnings,proto3,oneof" json:"send_username_release_warnings,omitempty"`
 	Groups                      []*InternalGroupConfig               `protobuf:"bytes,12,rep,name=groups,proto3" json:"groups,omitempty"`
 	BootstrapTokens             []*BootstrapTokenConfig              `protobuf:"bytes,13,rep,name=bootstrap_tokens,json=bootstrapTokens,proto3" json:"bootstrap_tokens,omitempty"`
@@ -127,16 +127,16 @@ func (x *JobServerConfig) GetCleanupOrphanedBlobs() *CleanupOrphanedBlobsSchedul
 	return nil
 }
 
-func (x *JobServerConfig) GetDatabaseMaintenance() *DatabaseMaintenanceSchedule {
+func (x *JobServerConfig) GetPurgeSoftDeletedAccounts() *PurgeSoftDeletedAccountsSchedule {
 	if x != nil {
-		return x.DatabaseMaintenance
+		return x.PurgeSoftDeletedAccounts
 	}
 	return nil
 }
 
-func (x *JobServerConfig) GetPurgeSoftDeletedAccounts() *PurgeSoftDeletedAccountsSchedule {
+func (x *JobServerConfig) GetRunDatabaseMaintenance() *RunDatabaseMaintenanceSchedule {
 	if x != nil {
-		return x.PurgeSoftDeletedAccounts
+		return x.RunDatabaseMaintenance
 	}
 	return nil
 }
@@ -432,104 +432,6 @@ func (*CleanupOrphanedBlobsSchedule_Cron) isCleanupOrphanedBlobsSchedule_Schedul
 
 func (*CleanupOrphanedBlobsSchedule_Interval) isCleanupOrphanedBlobsSchedule_Schedule() {}
 
-type DatabaseMaintenanceSchedule struct {
-	state   protoimpl.MessageState `protogen:"open.v1"`
-	Enabled *bool                  `protobuf:"varint,1,opt,name=enabled,proto3,oneof" json:"enabled,omitempty"`
-	// Types that are valid to be assigned to Schedule:
-	//
-	//	*DatabaseMaintenanceSchedule_Cron
-	//	*DatabaseMaintenanceSchedule_Interval
-	Schedule      isDatabaseMaintenanceSchedule_Schedule `protobuf_oneof:"schedule"`
-	FullVacuum    *bool                                  `protobuf:"varint,4,opt,name=full_vacuum,json=fullVacuum,proto3,oneof" json:"full_vacuum,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DatabaseMaintenanceSchedule) Reset() {
-	*x = DatabaseMaintenanceSchedule{}
-	mi := &file_quadsmith_config_server_jobs_proto_msgTypes[4]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DatabaseMaintenanceSchedule) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DatabaseMaintenanceSchedule) ProtoMessage() {}
-
-func (x *DatabaseMaintenanceSchedule) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_server_jobs_proto_msgTypes[4]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DatabaseMaintenanceSchedule.ProtoReflect.Descriptor instead.
-func (*DatabaseMaintenanceSchedule) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_server_jobs_proto_rawDescGZIP(), []int{4}
-}
-
-func (x *DatabaseMaintenanceSchedule) GetEnabled() bool {
-	if x != nil && x.Enabled != nil {
-		return *x.Enabled
-	}
-	return false
-}
-
-func (x *DatabaseMaintenanceSchedule) GetSchedule() isDatabaseMaintenanceSchedule_Schedule {
-	if x != nil {
-		return x.Schedule
-	}
-	return nil
-}
-
-func (x *DatabaseMaintenanceSchedule) GetCron() string {
-	if x != nil {
-		if x, ok := x.Schedule.(*DatabaseMaintenanceSchedule_Cron); ok {
-			return x.Cron
-		}
-	}
-	return ""
-}
-
-func (x *DatabaseMaintenanceSchedule) GetInterval() *durationpb.Duration {
-	if x != nil {
-		if x, ok := x.Schedule.(*DatabaseMaintenanceSchedule_Interval); ok {
-			return x.Interval
-		}
-	}
-	return nil
-}
-
-func (x *DatabaseMaintenanceSchedule) GetFullVacuum() bool {
-	if x != nil && x.FullVacuum != nil {
-		return *x.FullVacuum
-	}
-	return false
-}
-
-type isDatabaseMaintenanceSchedule_Schedule interface {
-	isDatabaseMaintenanceSchedule_Schedule()
-}
-
-type DatabaseMaintenanceSchedule_Cron struct {
-	Cron string `protobuf:"bytes,2,opt,name=cron,proto3,oneof"`
-}
-
-type DatabaseMaintenanceSchedule_Interval struct {
-	Interval *durationpb.Duration `protobuf:"bytes,3,opt,name=interval,proto3,oneof"`
-}
-
-func (*DatabaseMaintenanceSchedule_Cron) isDatabaseMaintenanceSchedule_Schedule() {}
-
-func (*DatabaseMaintenanceSchedule_Interval) isDatabaseMaintenanceSchedule_Schedule() {}
-
 type PurgeSoftDeletedAccountsSchedule struct {
 	state   protoimpl.MessageState `protogen:"open.v1"`
 	Enabled *bool                  `protobuf:"varint,1,opt,name=enabled,proto3,oneof" json:"enabled,omitempty"`
@@ -544,7 +446,7 @@ type PurgeSoftDeletedAccountsSchedule struct {
 
 func (x *PurgeSoftDeletedAccountsSchedule) Reset() {
 	*x = PurgeSoftDeletedAccountsSchedule{}
-	mi := &file_quadsmith_config_server_jobs_proto_msgTypes[5]
+	mi := &file_quadsmith_config_server_jobs_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -556,7 +458,7 @@ func (x *PurgeSoftDeletedAccountsSchedule) String() string {
 func (*PurgeSoftDeletedAccountsSchedule) ProtoMessage() {}
 
 func (x *PurgeSoftDeletedAccountsSchedule) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_server_jobs_proto_msgTypes[5]
+	mi := &file_quadsmith_config_server_jobs_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -569,7 +471,7 @@ func (x *PurgeSoftDeletedAccountsSchedule) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurgeSoftDeletedAccountsSchedule.ProtoReflect.Descriptor instead.
 func (*PurgeSoftDeletedAccountsSchedule) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_server_jobs_proto_rawDescGZIP(), []int{5}
+	return file_quadsmith_config_server_jobs_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *PurgeSoftDeletedAccountsSchedule) GetEnabled() bool {
@@ -619,6 +521,104 @@ type PurgeSoftDeletedAccountsSchedule_Interval struct {
 func (*PurgeSoftDeletedAccountsSchedule_Cron) isPurgeSoftDeletedAccountsSchedule_Schedule() {}
 
 func (*PurgeSoftDeletedAccountsSchedule_Interval) isPurgeSoftDeletedAccountsSchedule_Schedule() {}
+
+type RunDatabaseMaintenanceSchedule struct {
+	state   protoimpl.MessageState `protogen:"open.v1"`
+	Enabled *bool                  `protobuf:"varint,1,opt,name=enabled,proto3,oneof" json:"enabled,omitempty"`
+	// Types that are valid to be assigned to Schedule:
+	//
+	//	*RunDatabaseMaintenanceSchedule_Cron
+	//	*RunDatabaseMaintenanceSchedule_Interval
+	Schedule      isRunDatabaseMaintenanceSchedule_Schedule `protobuf_oneof:"schedule"`
+	FullVacuum    *bool                                     `protobuf:"varint,4,opt,name=full_vacuum,json=fullVacuum,proto3,oneof" json:"full_vacuum,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RunDatabaseMaintenanceSchedule) Reset() {
+	*x = RunDatabaseMaintenanceSchedule{}
+	mi := &file_quadsmith_config_server_jobs_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RunDatabaseMaintenanceSchedule) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RunDatabaseMaintenanceSchedule) ProtoMessage() {}
+
+func (x *RunDatabaseMaintenanceSchedule) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_config_server_jobs_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RunDatabaseMaintenanceSchedule.ProtoReflect.Descriptor instead.
+func (*RunDatabaseMaintenanceSchedule) Descriptor() ([]byte, []int) {
+	return file_quadsmith_config_server_jobs_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *RunDatabaseMaintenanceSchedule) GetEnabled() bool {
+	if x != nil && x.Enabled != nil {
+		return *x.Enabled
+	}
+	return false
+}
+
+func (x *RunDatabaseMaintenanceSchedule) GetSchedule() isRunDatabaseMaintenanceSchedule_Schedule {
+	if x != nil {
+		return x.Schedule
+	}
+	return nil
+}
+
+func (x *RunDatabaseMaintenanceSchedule) GetCron() string {
+	if x != nil {
+		if x, ok := x.Schedule.(*RunDatabaseMaintenanceSchedule_Cron); ok {
+			return x.Cron
+		}
+	}
+	return ""
+}
+
+func (x *RunDatabaseMaintenanceSchedule) GetInterval() *durationpb.Duration {
+	if x != nil {
+		if x, ok := x.Schedule.(*RunDatabaseMaintenanceSchedule_Interval); ok {
+			return x.Interval
+		}
+	}
+	return nil
+}
+
+func (x *RunDatabaseMaintenanceSchedule) GetFullVacuum() bool {
+	if x != nil && x.FullVacuum != nil {
+		return *x.FullVacuum
+	}
+	return false
+}
+
+type isRunDatabaseMaintenanceSchedule_Schedule interface {
+	isRunDatabaseMaintenanceSchedule_Schedule()
+}
+
+type RunDatabaseMaintenanceSchedule_Cron struct {
+	Cron string `protobuf:"bytes,2,opt,name=cron,proto3,oneof"`
+}
+
+type RunDatabaseMaintenanceSchedule_Interval struct {
+	Interval *durationpb.Duration `protobuf:"bytes,3,opt,name=interval,proto3,oneof"`
+}
+
+func (*RunDatabaseMaintenanceSchedule_Cron) isRunDatabaseMaintenanceSchedule_Schedule() {}
+
+func (*RunDatabaseMaintenanceSchedule_Interval) isRunDatabaseMaintenanceSchedule_Schedule() {}
 
 type SendUsernameReleaseWarningsSchedule struct {
 	state   protoimpl.MessageState `protogen:"open.v1"`
@@ -715,7 +715,7 @@ var File_quadsmith_config_server_jobs_proto protoreflect.FileDescriptor
 
 const file_quadsmith_config_server_jobs_proto_rawDesc = "" +
 	"\n" +
-	"\"quadsmith/config/server_jobs.proto\x12\x10quadsmith.config\x1a\x1egoogle/protobuf/duration.proto\x1a\x1dquadsmith/config/common.proto\"\x98\n" +
+	"\"quadsmith/config/server_jobs.proto\x12\x10quadsmith.config\x1a\x1egoogle/protobuf/duration.proto\x1a\x1dquadsmith/config/common.proto\"\xa6\n" +
 	"\n" +
 	"\x0fJobServerConfig\x12%\n" +
 	"\venvironment\x18\x01 \x01(\tH\x00R\venvironment\x88\x01\x01\x126\n" +
@@ -726,10 +726,10 @@ const file_quadsmith_config_server_jobs_proto_rawDesc = "" +
 	"\x11internal_database\x18\x05 \x01(\v2 .quadsmith.config.DatabaseConfigR\x10internalDatabase\x12c\n" +
 	"\x14cleanup_expired_otps\x18\x06 \x01(\v2,.quadsmith.config.CleanupExpiredOtpsScheduleH\x03R\x12cleanupExpiredOtps\x88\x01\x01\x12i\n" +
 	"\x16cleanup_expired_tokens\x18\a \x01(\v2..quadsmith.config.CleanupExpiredTokensScheduleH\x04R\x14cleanupExpiredTokens\x88\x01\x01\x12i\n" +
-	"\x16cleanup_orphaned_blobs\x18\b \x01(\v2..quadsmith.config.CleanupOrphanedBlobsScheduleH\x05R\x14cleanupOrphanedBlobs\x88\x01\x01\x12e\n" +
-	"\x14database_maintenance\x18\t \x01(\v2-.quadsmith.config.DatabaseMaintenanceScheduleH\x06R\x13databaseMaintenance\x88\x01\x01\x12v\n" +
-	"\x1bpurge_soft_deleted_accounts\x18\n" +
-	" \x01(\v22.quadsmith.config.PurgeSoftDeletedAccountsScheduleH\aR\x18purgeSoftDeletedAccounts\x88\x01\x01\x12\x7f\n" +
+	"\x16cleanup_orphaned_blobs\x18\b \x01(\v2..quadsmith.config.CleanupOrphanedBlobsScheduleH\x05R\x14cleanupOrphanedBlobs\x88\x01\x01\x12v\n" +
+	"\x1bpurge_soft_deleted_accounts\x18\t \x01(\v22.quadsmith.config.PurgeSoftDeletedAccountsScheduleH\x06R\x18purgeSoftDeletedAccounts\x88\x01\x01\x12o\n" +
+	"\x18run_database_maintenance\x18\n" +
+	" \x01(\v20.quadsmith.config.RunDatabaseMaintenanceScheduleH\aR\x16runDatabaseMaintenance\x88\x01\x01\x12\x7f\n" +
 	"\x1esend_username_release_warnings\x18\v \x01(\v25.quadsmith.config.SendUsernameReleaseWarningsScheduleH\bR\x1bsendUsernameReleaseWarnings\x88\x01\x01\x12=\n" +
 	"\x06groups\x18\f \x03(\v2%.quadsmith.config.InternalGroupConfigR\x06groups\x12Q\n" +
 	"\x10bootstrap_tokens\x18\r \x03(\v2&.quadsmith.config.BootstrapTokenConfigR\x0fbootstrapTokensB\x0e\n" +
@@ -738,9 +738,9 @@ const file_quadsmith_config_server_jobs_proto_rawDesc = "" +
 	"\v_auth_tokenB\x17\n" +
 	"\x15_cleanup_expired_otpsB\x19\n" +
 	"\x17_cleanup_expired_tokensB\x19\n" +
-	"\x17_cleanup_orphaned_blobsB\x17\n" +
-	"\x15_database_maintenanceB\x1e\n" +
-	"\x1c_purge_soft_deleted_accountsB!\n" +
+	"\x17_cleanup_orphaned_blobsB\x1e\n" +
+	"\x1c_purge_soft_deleted_accountsB\x1b\n" +
+	"\x19_run_database_maintenanceB!\n" +
 	"\x1f_send_username_release_warnings\"\xa2\x01\n" +
 	"\x1aCleanupExpiredOtpsSchedule\x12\x1d\n" +
 	"\aenabled\x18\x01 \x01(\bH\x01R\aenabled\x88\x01\x01\x12\x14\n" +
@@ -765,8 +765,16 @@ const file_quadsmith_config_server_jobs_proto_rawDesc = "" +
 	"\n" +
 	"\bscheduleB\n" +
 	"\n" +
-	"\b_enabled\"\xd9\x01\n" +
-	"\x1bDatabaseMaintenanceSchedule\x12\x1d\n" +
+	"\b_enabled\"\xa8\x01\n" +
+	" PurgeSoftDeletedAccountsSchedule\x12\x1d\n" +
+	"\aenabled\x18\x01 \x01(\bH\x01R\aenabled\x88\x01\x01\x12\x14\n" +
+	"\x04cron\x18\x02 \x01(\tH\x00R\x04cron\x127\n" +
+	"\binterval\x18\x03 \x01(\v2\x19.google.protobuf.DurationH\x00R\bintervalB\n" +
+	"\n" +
+	"\bscheduleB\n" +
+	"\n" +
+	"\b_enabled\"\xdc\x01\n" +
+	"\x1eRunDatabaseMaintenanceSchedule\x12\x1d\n" +
 	"\aenabled\x18\x01 \x01(\bH\x01R\aenabled\x88\x01\x01\x12\x14\n" +
 	"\x04cron\x18\x02 \x01(\tH\x00R\x04cron\x127\n" +
 	"\binterval\x18\x03 \x01(\v2\x19.google.protobuf.DurationH\x00R\binterval\x12$\n" +
@@ -776,15 +784,7 @@ const file_quadsmith_config_server_jobs_proto_rawDesc = "" +
 	"\bscheduleB\n" +
 	"\n" +
 	"\b_enabledB\x0e\n" +
-	"\f_full_vacuum\"\xa8\x01\n" +
-	" PurgeSoftDeletedAccountsSchedule\x12\x1d\n" +
-	"\aenabled\x18\x01 \x01(\bH\x01R\aenabled\x88\x01\x01\x12\x14\n" +
-	"\x04cron\x18\x02 \x01(\tH\x00R\x04cron\x127\n" +
-	"\binterval\x18\x03 \x01(\v2\x19.google.protobuf.DurationH\x00R\bintervalB\n" +
-	"\n" +
-	"\bscheduleB\n" +
-	"\n" +
-	"\b_enabled\"\xab\x01\n" +
+	"\f_full_vacuum\"\xab\x01\n" +
 	"#SendUsernameReleaseWarningsSchedule\x12\x1d\n" +
 	"\aenabled\x18\x01 \x01(\bH\x01R\aenabled\x88\x01\x01\x12\x14\n" +
 	"\x04cron\x18\x02 \x01(\tH\x00R\x04cron\x127\n" +
@@ -812,8 +812,8 @@ var file_quadsmith_config_server_jobs_proto_goTypes = []any{
 	(*CleanupExpiredOtpsSchedule)(nil),          // 1: quadsmith.config.CleanupExpiredOtpsSchedule
 	(*CleanupExpiredTokensSchedule)(nil),        // 2: quadsmith.config.CleanupExpiredTokensSchedule
 	(*CleanupOrphanedBlobsSchedule)(nil),        // 3: quadsmith.config.CleanupOrphanedBlobsSchedule
-	(*DatabaseMaintenanceSchedule)(nil),         // 4: quadsmith.config.DatabaseMaintenanceSchedule
-	(*PurgeSoftDeletedAccountsSchedule)(nil),    // 5: quadsmith.config.PurgeSoftDeletedAccountsSchedule
+	(*PurgeSoftDeletedAccountsSchedule)(nil),    // 4: quadsmith.config.PurgeSoftDeletedAccountsSchedule
+	(*RunDatabaseMaintenanceSchedule)(nil),      // 5: quadsmith.config.RunDatabaseMaintenanceSchedule
 	(*SendUsernameReleaseWarningsSchedule)(nil), // 6: quadsmith.config.SendUsernameReleaseWarningsSchedule
 	(*ServerConfig)(nil),                        // 7: quadsmith.config.ServerConfig
 	(*DatabaseConfig)(nil),                      // 8: quadsmith.config.DatabaseConfig
@@ -827,16 +827,16 @@ var file_quadsmith_config_server_jobs_proto_depIdxs = []int32{
 	1,  // 2: quadsmith.config.JobServerConfig.cleanup_expired_otps:type_name -> quadsmith.config.CleanupExpiredOtpsSchedule
 	2,  // 3: quadsmith.config.JobServerConfig.cleanup_expired_tokens:type_name -> quadsmith.config.CleanupExpiredTokensSchedule
 	3,  // 4: quadsmith.config.JobServerConfig.cleanup_orphaned_blobs:type_name -> quadsmith.config.CleanupOrphanedBlobsSchedule
-	4,  // 5: quadsmith.config.JobServerConfig.database_maintenance:type_name -> quadsmith.config.DatabaseMaintenanceSchedule
-	5,  // 6: quadsmith.config.JobServerConfig.purge_soft_deleted_accounts:type_name -> quadsmith.config.PurgeSoftDeletedAccountsSchedule
+	4,  // 5: quadsmith.config.JobServerConfig.purge_soft_deleted_accounts:type_name -> quadsmith.config.PurgeSoftDeletedAccountsSchedule
+	5,  // 6: quadsmith.config.JobServerConfig.run_database_maintenance:type_name -> quadsmith.config.RunDatabaseMaintenanceSchedule
 	6,  // 7: quadsmith.config.JobServerConfig.send_username_release_warnings:type_name -> quadsmith.config.SendUsernameReleaseWarningsSchedule
 	9,  // 8: quadsmith.config.JobServerConfig.groups:type_name -> quadsmith.config.InternalGroupConfig
 	10, // 9: quadsmith.config.JobServerConfig.bootstrap_tokens:type_name -> quadsmith.config.BootstrapTokenConfig
 	11, // 10: quadsmith.config.CleanupExpiredOtpsSchedule.interval:type_name -> google.protobuf.Duration
 	11, // 11: quadsmith.config.CleanupExpiredTokensSchedule.interval:type_name -> google.protobuf.Duration
 	11, // 12: quadsmith.config.CleanupOrphanedBlobsSchedule.interval:type_name -> google.protobuf.Duration
-	11, // 13: quadsmith.config.DatabaseMaintenanceSchedule.interval:type_name -> google.protobuf.Duration
-	11, // 14: quadsmith.config.PurgeSoftDeletedAccountsSchedule.interval:type_name -> google.protobuf.Duration
+	11, // 13: quadsmith.config.PurgeSoftDeletedAccountsSchedule.interval:type_name -> google.protobuf.Duration
+	11, // 14: quadsmith.config.RunDatabaseMaintenanceSchedule.interval:type_name -> google.protobuf.Duration
 	11, // 15: quadsmith.config.SendUsernameReleaseWarningsSchedule.interval:type_name -> google.protobuf.Duration
 	16, // [16:16] is the sub-list for method output_type
 	16, // [16:16] is the sub-list for method input_type
@@ -865,12 +865,12 @@ func file_quadsmith_config_server_jobs_proto_init() {
 		(*CleanupOrphanedBlobsSchedule_Interval)(nil),
 	}
 	file_quadsmith_config_server_jobs_proto_msgTypes[4].OneofWrappers = []any{
-		(*DatabaseMaintenanceSchedule_Cron)(nil),
-		(*DatabaseMaintenanceSchedule_Interval)(nil),
-	}
-	file_quadsmith_config_server_jobs_proto_msgTypes[5].OneofWrappers = []any{
 		(*PurgeSoftDeletedAccountsSchedule_Cron)(nil),
 		(*PurgeSoftDeletedAccountsSchedule_Interval)(nil),
+	}
+	file_quadsmith_config_server_jobs_proto_msgTypes[5].OneofWrappers = []any{
+		(*RunDatabaseMaintenanceSchedule_Cron)(nil),
+		(*RunDatabaseMaintenanceSchedule_Interval)(nil),
 	}
 	file_quadsmith_config_server_jobs_proto_msgTypes[6].OneofWrappers = []any{
 		(*SendUsernameReleaseWarningsSchedule_Cron)(nil),

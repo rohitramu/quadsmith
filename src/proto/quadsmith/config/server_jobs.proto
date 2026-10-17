@@ -21,8 +21,8 @@ message JobServerConfig {
   optional CleanupExpiredOtpsSchedule cleanup_expired_otps = 6;
   optional CleanupExpiredTokensSchedule cleanup_expired_tokens = 7;
   optional CleanupOrphanedBlobsSchedule cleanup_orphaned_blobs = 8;
-  optional DatabaseMaintenanceSchedule database_maintenance = 9;
-  optional PurgeSoftDeletedAccountsSchedule purge_soft_deleted_accounts = 10;
+  optional PurgeSoftDeletedAccountsSchedule purge_soft_deleted_accounts = 9;
+  optional RunDatabaseMaintenanceSchedule run_database_maintenance = 10;
   optional SendUsernameReleaseWarningsSchedule send_username_release_warnings = 11;
   repeated InternalGroupConfig groups = 12;
   repeated BootstrapTokenConfig bootstrap_tokens = 13;
@@ -52,21 +52,21 @@ message CleanupOrphanedBlobsSchedule {
   }
 }
 
-message DatabaseMaintenanceSchedule {
-  optional bool enabled = 1;
-  oneof schedule {
-    string cron = 2;
-    google.protobuf.Duration interval = 3;
-  }
-  optional bool full_vacuum = 4;
-}
-
 message PurgeSoftDeletedAccountsSchedule {
   optional bool enabled = 1;
   oneof schedule {
     string cron = 2;
     google.protobuf.Duration interval = 3;
   }
+}
+
+message RunDatabaseMaintenanceSchedule {
+  optional bool enabled = 1;
+  oneof schedule {
+    string cron = 2;
+    google.protobuf.Duration interval = 3;
+  }
+  optional bool full_vacuum = 4;
 }
 
 message SendUsernameReleaseWarningsSchedule {

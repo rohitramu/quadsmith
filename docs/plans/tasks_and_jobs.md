@@ -121,11 +121,18 @@ Keep `ListJobs` and `GetJob` on `OpsService` in `server-ops`.
 
 In
 [`src/proto/quadsmith/ops/ops.proto`](../../src/proto/quadsmith/ops/ops.proto),
-all five maintenance tasks are defined as dedicated RPCs under
-`// Maintenance & Cleanup Tasks`, and task inspection is exposed via `ListTasks`
-and `GetTask`:
+all seven operational and maintenance tasks are defined as dedicated RPCs
+(`RunDatabaseMaintenance`, `SeedDatabase`, and the five cleanup/purge tasks
+under `// Maintenance & Cleanup Tasks`), and task inspection is exposed via
+`ListTasks` and `GetTask`:
 
 ```protobuf
+// Database Maintenance & Stats (Public DB quadsmith_api)
+rpc RunDatabaseMaintenance(RunDatabaseMaintenanceRequest) returns (RunDatabaseMaintenanceResponse);
+
+// Catalog Seeding
+rpc SeedDatabase(SeedDatabaseRequest) returns (SeedDatabaseResponse);
+
 // Maintenance & Cleanup Tasks
 rpc CleanupExpiredOtps(CleanupExpiredOtpsRequest) returns (CleanupExpiredOtpsResponse);
 rpc CleanupExpiredTokens(CleanupExpiredTokensRequest) returns (CleanupExpiredTokensResponse);
@@ -137,6 +144,11 @@ rpc SendUsernameReleaseWarnings(SendUsernameReleaseWarningsRequest) returns (Sen
 rpc ListTasks(ListTasksRequest) returns (ListTasksResponse);
 rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
 ```
+
+When any of the seven task RPCs is executed on `server-ops`, the shared
+[`OpsInterceptor`](../../src/go/shared/pkg/opsauth/interceptor.go) synchronously
+writes the job execution audit record to `quadsmith_ops.internal_api_calls` and
+returns the generated job identifier in the `X-Job-Id` response header.
 
 #### Task Messages
 
@@ -293,9 +305,11 @@ Store job history only in an in-memory buffer inside `server-jobs`.
 In
 [`src/proto/quadsmith/config/server_jobs.proto`](../../src/proto/quadsmith/config/server_jobs.proto),
 `JobServerConfig` is updated to include `ServerConfig server = 2;`,
-`DatabaseConfig internal_database = 5;`, and strongly-typed schedule
-sub-messages. Each schedule supports both a cron expression and a typed duration
-via a `oneof schedule`:
+`DatabaseConfig internal_database = 5;`, strongly-typed schedule sub-messages,
+and RBAC `groups` and `bootstrap_tokens` (defined in
+[`src/proto/quadsmith/config/common.proto`](../../src/proto/quadsmith/config/common.proto)).
+Each schedule supports both a cron expression and a typed duration via a
+`oneof schedule`:
 
 ```protobuf
 message JobServerConfig {
@@ -309,8 +323,10 @@ message JobServerConfig {
   optional CleanupExpiredTokensSchedule cleanup_expired_tokens = 7;
   optional CleanupOrphanedBlobsSchedule cleanup_orphaned_blobs = 8;
   optional PurgeSoftDeletedAccountsSchedule purge_soft_deleted_accounts = 9;
-  optional SendUsernameReleaseWarningsSchedule send_username_release_warnings = 10;
-  optional DatabaseMaintenanceSchedule database_maintenance = 11;
+  optional RunDatabaseMaintenanceSchedule run_database_maintenance = 10;
+  optional SendUsernameReleaseWarningsSchedule send_username_release_warnings = 11;
+  repeated InternalGroupConfig groups = 12;
+  repeated BootstrapTokenConfig bootstrap_tokens = 13;
 }
 
 message CleanupExpiredOtpsSchedule {
@@ -345,21 +361,21 @@ message PurgeSoftDeletedAccountsSchedule {
   }
 }
 
-message SendUsernameReleaseWarningsSchedule {
-  optional bool enabled = 1;
-  oneof schedule {
-    string cron = 2;
-    google.protobuf.Duration interval = 3;
-  }
-}
-
-message DatabaseMaintenanceSchedule {
+message RunDatabaseMaintenanceSchedule {
   optional bool enabled = 1;
   oneof schedule {
     string cron = 2;
     google.protobuf.Duration interval = 3;
   }
   optional bool full_vacuum = 4;
+}
+
+message SendUsernameReleaseWarningsSchedule {
+  optional bool enabled = 1;
+  oneof schedule {
+    string cron = 2;
+    google.protobuf.Duration interval = 3;
+  }
 }
 ```
 
@@ -378,6 +394,7 @@ server {
   read_timeout { seconds: 30 }
   write_timeout { seconds: 60 }
   idle_timeout { seconds: 120 }
+  max_request_bytes: 2097152
 }
 
 ops_server_url: "http://127.0.0.1:8082"
@@ -403,6 +420,12 @@ cleanup_expired_tokens {
 cleanup_orphaned_blobs {
   enabled: true
   interval { seconds: 300 } # 5 minutes
+}
+
+run_database_maintenance {
+  enabled: false
+  cron: "0 3 * * 0"
+  full_vacuum: false
 }
 
 purge_soft_deleted_accounts {
@@ -431,12 +454,12 @@ send_username_release_warnings {
        `0 0,8,16 * * *`
      - 24-hour intervals: `0 0 * * *`
      - Multi-day intervals: Day-of-week patterns aligned from the Thursday epoch
-       (e.g., every 48h corresponds to alternating days).
+       (e.g., 7d corresponds to `0 0 * * 4`).
 - The converted string is fed directly into the cron engine, ensuring that both
   `interval` and `cron` schedules are handled through the exact same validated
   cron pipeline!
 - Startup validation parses all resulting cron strings using `robfig/cron/v3`
-  (`cron.ParseStandard`). If any expression is invalid, `server-jobs`
+  (`cron.NewParser(...)`). If any expression is invalid, `server-jobs`
   immediately aborts startup (`log.Fatalf`).
 
 <details>
@@ -479,7 +502,7 @@ In [`src/go/cli-ops/main.go`](../../src/go/cli-ops/main.go):
   description, target procedure, and default schedule.
 - `qsops tasks trigger <task-name>`: Calls the dedicated typed RPC on
   `OpsService` (e.g., `CleanupExpiredOtps`, `PurgeSoftDeletedAccounts`),
-  outputting the execution result and generated job ID.
+  outputting the execution result and generated job ID (`X-Job-Id`).
 
 #### 2. Jobs Commands (`qsops jobs` -> targets `server-jobs`)
 
@@ -511,12 +534,15 @@ Keep all commands under `qsops jobs` and multiplex RPC calls to both servers.
 [`src/go/server-jobs/main.go`](../../src/go/server-jobs/main.go) will be
 refactored into a full dual-mode daemon:
 
-1. **Connect RPC Server**: Initializes an `http.Server` on
-   `cfg.GetServer().GetPort()`, serving `jobsconnect.NewJobsServiceHandler(svc)`
+1. **Connect RPC Server & Shared Auth Interceptor**: Initializes an
+   `http.Server` on `cfg.GetServer().GetPort()`, serving
+   `jobsconnect.NewJobsServiceHandler(svc)` protected by the shared
+   [`opsauth.NewOpsInterceptor`](../../src/go/shared/pkg/opsauth/interceptor.go)
    and a standard `/healthz` endpoint.
 2. **Background Scheduler Goroutines**: For each strongly-typed task schedule
-   that is enabled, it spawns a ticker loop invoking the typed `OpsService` RPC
-   over the authenticated Connect client.
+   that is enabled, it registers a `robfig/cron/v3` job invoking the typed
+   `OpsService` RPC over the authenticated Connect client (`ROBOT` tokens bypass
+   interactive human JIT checks while still enforcing group RBAC).
 3. **Database Pool**: Connects to `quadsmith_ops` via `pgxpool.New` to query job
    execution records from `internal_api_calls`.
 4. **Docker & Sandbox Port Mapping**: In

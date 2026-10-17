@@ -354,6 +354,10 @@ func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 	if otpsRes.Msg.CleanedCount < 0 {
 		t.Errorf("Expected non-negative cleaned count, got %d", otpsRes.Msg.CleanedCount)
 	}
+	otpsJobID := otpsRes.Header().Get("X-Job-Id")
+	if otpsJobID == "" {
+		t.Errorf("Expected non-empty X-Job-Id header on CleanupExpiredOtps response")
+	}
 
 	purgeRes, err := operatorClient.PurgeSoftDeletedAccounts(ctx, connect.NewRequest(&pb.PurgeSoftDeletedAccountsRequest{}))
 	if err != nil {
@@ -378,6 +382,9 @@ func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ListJobs failed: %v", err)
 	}
+	if jobsRes.Header().Get("X-Job-Id") != "" {
+		t.Errorf("Expected no X-Job-Id header on read-only ListJobs response, got %q", jobsRes.Header().Get("X-Job-Id"))
+	}
 	if len(jobsRes.Msg.Jobs) == 0 {
 		t.Fatalf("Expected recorded jobs in JobsService after triggering tasks, got 0")
 	}
@@ -388,6 +395,29 @@ func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 	}
 	if getJobRes.Msg.Job.JobId != firstJob.JobId {
 		t.Errorf("Expected job ID %s, got %s", firstJob.JobId, getJobRes.Msg.Job.JobId)
+	}
+
+	// Verify ListJobs filtering by valid task_name and rejection of invalid task_name
+	taskFilter := "cleanup_expired_otps"
+	filteredJobsRes, err := jobsClient.ListJobs(ctx, connect.NewRequest(&jobspb.ListJobsRequest{
+		Limit:    &limitVal,
+		TaskName: &taskFilter,
+	}))
+	if err != nil {
+		t.Fatalf("ListJobs with task_name=%q failed: %v", taskFilter, err)
+	}
+	for _, j := range filteredJobsRes.Msg.GetJobs() {
+		if j.GetTaskName() != "cleanup_expired_otps" {
+			t.Errorf("Expected filtered job task_name 'cleanup_expired_otps', got %q", j.GetTaskName())
+		}
+	}
+
+	badTask := "nonexistent_task"
+	_, err = jobsClient.ListJobs(ctx, connect.NewRequest(&jobspb.ListJobsRequest{
+		TaskName: &badTask,
+	}))
+	if err == nil {
+		t.Errorf("Expected error for unknown task_name in ListJobs, got nil")
 	}
 
 	// Verify unauthenticated call to JobsService is rejected

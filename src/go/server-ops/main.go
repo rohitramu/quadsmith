@@ -42,8 +42,24 @@ func main() {
 	}
 
 	port := 8080
-	if cfg.Server != nil && cfg.Server.GetPort() > 0 {
-		port = int(cfg.Server.GetPort())
+	maxReqBytes := 1 << 20
+	var readTimeout, writeTimeout, idleTimeout time.Duration
+	if cfg.Server != nil {
+		if cfg.Server.GetPort() > 0 {
+			port = int(cfg.Server.GetPort())
+		}
+		if cfg.Server.GetMaxRequestBytes() > 0 {
+			maxReqBytes = int(cfg.Server.GetMaxRequestBytes())
+		}
+		if cfg.Server.ReadTimeout != nil {
+			readTimeout = cfg.Server.ReadTimeout.AsDuration()
+		}
+		if cfg.Server.WriteTimeout != nil {
+			writeTimeout = cfg.Server.WriteTimeout.AsDuration()
+		}
+		if cfg.Server.IdleTimeout != nil {
+			idleTimeout = cfg.Server.IdleTimeout.AsDuration()
+		}
 	}
 
 	ctx, cancel := context.WithCancel(context.Background())
@@ -66,7 +82,7 @@ func main() {
 
 	handlerOpts := []connect.HandlerOption{
 		connect.WithInterceptors(interceptor),
-		connect.WithReadMaxBytes(1 << 20),
+		connect.WithReadMaxBytes(maxReqBytes),
 	}
 
 	mux := http.NewServeMux()
@@ -83,6 +99,9 @@ func main() {
 		Addr:              ":" + strconv.Itoa(port),
 		Handler:           h2c.NewHandler(mux, &http2.Server{}),
 		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       readTimeout,
+		WriteTimeout:      writeTimeout,
+		IdleTimeout:       idleTimeout,
 	}
 
 	stop := make(chan os.Signal, 1)

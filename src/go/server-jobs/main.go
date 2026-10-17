@@ -77,8 +77,18 @@ func main() {
 
 	interceptor := opsauth.NewOpsInterceptor(dbPool, cfg.BootstrapTokens, cfg.Groups, nil)
 	service := jobs.NewService(dbPool, cfg)
+
+	maxReqBytes := 1 << 20
+	if cfg.Server != nil && cfg.Server.GetMaxRequestBytes() > 0 {
+		maxReqBytes = int(cfg.Server.GetMaxRequestBytes())
+	}
+
 	mux := http.NewServeMux()
-	path, handler := jobsconnect.NewJobsServiceHandler(service, connect.WithInterceptors(interceptor))
+	path, handler := jobsconnect.NewJobsServiceHandler(
+		service,
+		connect.WithInterceptors(interceptor),
+		connect.WithReadMaxBytes(maxReqBytes),
+	)
 	mux.Handle(path, handler)
 
 	// Healthcheck endpoint
@@ -88,14 +98,29 @@ func main() {
 	})
 
 	port := 8080
-	if cfg.Server != nil && cfg.Server.GetPort() > 0 {
-		port = int(cfg.Server.GetPort())
+	var readTimeout, writeTimeout, idleTimeout time.Duration
+	if cfg.Server != nil {
+		if cfg.Server.GetPort() > 0 {
+			port = int(cfg.Server.GetPort())
+		}
+		if cfg.Server.ReadTimeout != nil {
+			readTimeout = cfg.Server.ReadTimeout.AsDuration()
+		}
+		if cfg.Server.WriteTimeout != nil {
+			writeTimeout = cfg.Server.WriteTimeout.AsDuration()
+		}
+		if cfg.Server.IdleTimeout != nil {
+			idleTimeout = cfg.Server.IdleTimeout.AsDuration()
+		}
 	}
 
 	server := &http.Server{
 		Addr:              ":" + strconv.Itoa(port),
 		Handler:           h2c.NewHandler(mux, &http2.Server{}),
 		ReadHeaderTimeout: 5 * time.Second,
+		ReadTimeout:       readTimeout,
+		WriteTimeout:      writeTimeout,
+		IdleTimeout:       idleTimeout,
 	}
 
 	transport := &bearerAuthTransport{
@@ -221,29 +246,29 @@ func main() {
 		log.Printf("[JobRunner] Registered send_username_release_warnings on schedule %q", spec)
 	}
 
-	if s := cfg.GetDatabaseMaintenance(); s != nil && s.GetEnabled() {
+	if s := cfg.GetRunDatabaseMaintenance(); s != nil && s.GetEnabled() {
 		spec, err := scheduleToCron(s.GetCron(), s.GetInterval())
 		if err != nil {
-			log.Fatalf("server-jobs: invalid schedule for database_maintenance: %v", err)
+			log.Fatalf("server-jobs: invalid schedule for run_database_maintenance: %v", err)
 		}
 		fullVacuum := s.GetFullVacuum()
 		_, err = cronRunner.AddFunc(spec, func() {
-			log.Printf("[JobRunner] Triggering database_maintenance (full_vacuum=%v)...", fullVacuum)
+			log.Printf("[JobRunner] Triggering run_database_maintenance (full_vacuum=%v)...", fullVacuum)
 			t0 := time.Now()
 			res, err := opsClient.RunDatabaseMaintenance(ctx, connect.NewRequest(&opspb.RunDatabaseMaintenanceRequest{
 				FullVacuum: fullVacuum,
 			}))
 			dur := time.Since(t0)
 			if err != nil {
-				log.Printf("[JobRunner] database_maintenance failed after %v: %v", dur, err)
+				log.Printf("[JobRunner] run_database_maintenance failed after %v: %v", dur, err)
 			} else {
-				log.Printf("[JobRunner] database_maintenance completed in %v (%s)", dur, res.Msg.GetMessage())
+				log.Printf("[JobRunner] run_database_maintenance completed in %v (%s)", dur, res.Msg.GetMessage())
 			}
 		})
 		if err != nil {
-			log.Fatalf("server-jobs: failed to register database_maintenance cron %q: %v", spec, err)
+			log.Fatalf("server-jobs: failed to register run_database_maintenance cron %q: %v", spec, err)
 		}
-		log.Printf("[JobRunner] Registered database_maintenance on schedule %q", spec)
+		log.Printf("[JobRunner] Registered run_database_maintenance on schedule %q", spec)
 	}
 
 	cronRunner.Start()

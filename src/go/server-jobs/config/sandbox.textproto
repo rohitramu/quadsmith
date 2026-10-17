@@ -43,7 +43,7 @@ cleanup_orphaned_blobs {
   }
 }
 
-database_maintenance {
+run_database_maintenance {
   enabled: false
   cron: "0 3 * * 0"
   full_vacuum: false
@@ -91,7 +91,7 @@ bootstrap_tokens {
 bootstrap_tokens {
   id: "sandbox-viewer"
   name: "Sandbox Viewer Token"
-  token: "qs_op_sandbox_viewer_token_12345"
+  token: "qs_viewer_sandbox_token_99999"
   group_name: "viewers"
   type: "HUMAN"
 }

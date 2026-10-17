@@ -201,8 +201,9 @@ will be removed.
      `src/go/server-ops/config`.
    - Exposes port 8081.
 3. **Job Server (`src/go/server-jobs/Dockerfile`)**:
-   - Background daemon container copying only `/app/server-jobs` and
-     `src/go/server-jobs/config`.
+   - Background scheduler and job history server container copying only
+     `/app/server-jobs` and `src/go/server-jobs/config`.
+   - Exposes port 8080.
 4. **Web Server (`src/go/server-web/Dockerfile`)**:
    - Multi-stage compilation: Node.js builder executing `npm run build` in
      [`src/react/app-web`](../../src/react/app-web), and Go builder compiling

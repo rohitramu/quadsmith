@@ -287,8 +287,6 @@ func (s *OpsService) ListTasks(ctx context.Context, _ *connect.Request[pb.ListTa
 
 func (s *OpsService) GetTask(ctx context.Context, req *connect.Request[pb.GetTaskRequest]) (*connect.Response[pb.GetTaskResponse], error) {
 	name := strings.ToLower(strings.TrimSpace(req.Msg.GetTaskName()))
-	name = strings.TrimPrefix(name, "auth.")
-	name = strings.TrimPrefix(name, "blob.")
 
 	for _, t := range taskCatalog {
 		if strings.ToLower(t.Name) == name || strings.ToLower(t.Procedure) == name {
@@ -397,6 +395,7 @@ func (s *OpsService) ExchangeOAuthCode(ctx context.Context, req *connect.Request
 	// Generate persistent internal session token
 	tokenSecret := generateCryptoToken("qs_op_")
 	tokenHash := opsauth.HashToken(tokenSecret)
+	tokenUUID := auth.NewUUIDv7()
 	tokenID := fmt.Sprintf("tok_%d", time.Now().UnixNano())
 	expiresAt := time.Now().Add(24 * time.Hour)
 
@@ -404,8 +403,8 @@ func (s *OpsService) ExchangeOAuthCode(ctx context.Context, req *connect.Request
 		INSERT INTO internal_tokens (
 			uuid, id, name, type, group_name, token_hash, expires_at, created_at
 		) VALUES (
-			gen_random_uuid(), $1, $2, 'HUMAN', $3, $4, $5, NOW()
-		)`, tokenID, operatorName, groupName, tokenHash, expiresAt)
+			$1, $2, $3, 'HUMAN', $4, $5, $6, NOW()
+		)`, tokenUUID, tokenID, operatorName, groupName, tokenHash, expiresAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to issue session token: %w", err))
 	}
@@ -540,6 +539,7 @@ func (s *OpsService) CreateInternalToken(ctx context.Context, req *connect.Reque
 
 	tokenSecret := generateCryptoToken(prefix)
 	tokenHash := opsauth.HashToken(tokenSecret)
+	tokenUUID := auth.NewUUIDv7()
 	tokenID := fmt.Sprintf("tok_%d", time.Now().UnixNano())
 	expiresAt := time.Now().AddDate(0, 0, days)
 
@@ -549,10 +549,10 @@ func (s *OpsService) CreateInternalToken(ctx context.Context, req *connect.Reque
 		INSERT INTO internal_tokens (
 			uuid, id, name, type, group_name, token_hash, expires_at, created_at
 		) VALUES (
-			gen_random_uuid(), $1, $2, $3, $4, $5, $6, NOW()
+			$1, $2, $3, $4, $5, $6, $7, NOW()
 		)
 		RETURNING uuid, id, name, type, group_name, token_hash, expires_at, created_at`,
-		tokenID, name, tokenType, groupName, tokenHash, expiresAt,
+		tokenUUID, tokenID, name, tokenType, groupName, tokenHash, expiresAt,
 	).Scan(
 		&record.Uuid, &record.Id, &record.Name, &record.Type, &record.GroupName,
 		&record.TokenHash, &expiresAt, &createdAt,
@@ -653,6 +653,7 @@ func (s *OpsService) AcquireJitGrant(ctx context.Context, req *connect.Request[p
 		operation = "*"
 	}
 
+	grantUUID := auth.NewUUIDv7()
 	grantID := fmt.Sprintf("jit_%d", time.Now().UnixNano())
 	expiresAt := time.Now().Add(time.Duration(hours) * time.Hour)
 
@@ -662,10 +663,10 @@ func (s *OpsService) AcquireJitGrant(ctx context.Context, req *connect.Request[p
 		INSERT INTO jit_grants (
 			uuid, id, token_hash, operator, operator_type, reason, operation, status, hours, expires_at, created_at
 		) VALUES (
-			gen_random_uuid(), $1, '', $2, $3, $4, $5, 'ACTIVE', $6, $7, NOW()
+			$1, $2, '', $3, $4, $5, $6, 'ACTIVE', $7, $8, NOW()
 		)
 		RETURNING uuid, id, operator, operator_type, reason, operation, status, hours, expires_at, created_at`,
-		grantID, opCtx.Operator, opCtx.OperatorType, reason, operation, hours, expiresAt,
+		grantUUID, grantID, opCtx.Operator, opCtx.OperatorType, reason, operation, hours, expiresAt,
 	).Scan(
 		&grant.Uuid, &grant.Id, &grant.Operator, &grant.OperatorType, &grant.Reason,
 		&grant.Operation, &grant.Status, &grant.Hours, &expiresAt, &createdAt,

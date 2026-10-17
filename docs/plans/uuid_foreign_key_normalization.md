@@ -167,7 +167,7 @@ message InternalApiCallRecord {
 ```
 
 - **Write Path
-  ([`OpsInterceptor`](../../src/go/server-ops/pkg/ops/interceptor.go#L178-L216))**:
+  ([`OpsInterceptor`](../../src/go/shared/pkg/opsauth/interceptor.go))**:
   `checkJitGrant` queries `SELECT uuid::text, id, expires_at FROM jit_grants`,
   storing both `JitGrantUUID` and `JitGrantID` in `OperatorContext` and
   inserting `jit_grant_uuid` into `internal_api_calls`.
@@ -614,12 +614,12 @@ operator handles (such as `"developer@quadsmith.dev"` or `"ci-bot"`), which also
 appear in [`internal_tokens.name`](../../src/db/quadsmith_ops.sql#L27).
 
 Because operators can authenticate via static `bootstrap_tokens` defined in
-[`OpsServerConfig`](../../src/go/server-ops/pkg/ops/interceptor.go#L100-L108)
-(which have no row in `internal_tokens`), and because a single human operator
-acquires multiple ephemeral 24-hour OAuth session tokens in `internal_tokens`
-over time while their JIT grants apply across sessions to their operator
-principal name, `jit_grants.operator` and `internal_api_calls.caller` remain
-`TEXT` principal identifiers.
+[`OpsServerConfig`](../../src/go/shared/pkg/opsauth/interceptor.go) (which have
+no row in `internal_tokens`), and because a single human operator acquires
+multiple ephemeral 24-hour OAuth session tokens in `internal_tokens` over time
+while their JIT grants apply across sessions to their operator principal name,
+`jit_grants.operator` and `internal_api_calls.caller` remain `TEXT` principal
+identifiers.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
