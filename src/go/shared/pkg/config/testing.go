@@ -177,7 +177,7 @@ func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *configpb.Ops
 			AutoApprove:      proto.Bool(true),
 			DefaultHours:     proto.Int32(2),
 			MaxHours:         proto.Int32(12),
-			SensitiveMethods: []string{"SeedDatabase", "RevokeInternalToken"},
+			SensitiveMethods: []string{"RevokeInternalToken"},
 		},
 		Oauth: &configpb.OAuthConfig{
 			Provider:     proto.String("github"),
@@ -229,7 +229,7 @@ func NewTestJobServerConfig(t testing.TB) *configpb.JobServerConfig {
 		CleanupOrphanedBlobs: &configpb.CleanupOrphanedBlobsSchedule{
 			Enabled: proto.Bool(true),
 			Schedule: &configpb.CleanupOrphanedBlobsSchedule_Interval{
-				Interval: durationpb.New(5 * time.Minute),
+				Interval: durationpb.New(10 * time.Minute),
 			},
 		},
 		PurgeSoftDeletedAccounts: &configpb.PurgeSoftDeletedAccountsSchedule{

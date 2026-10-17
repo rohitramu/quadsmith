@@ -39,7 +39,7 @@ cleanup_expired_tokens {
 cleanup_orphaned_blobs {
   enabled: true
   interval {
-    seconds: 300
+    seconds: 600
   }
 }
 

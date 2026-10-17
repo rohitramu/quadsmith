@@ -6,8 +6,6 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"os"
-	"os/exec"
 	"runtime"
 	"strings"
 	"time"
@@ -113,53 +111,6 @@ func (s *OpsService) GetDatabaseStats(ctx context.Context, _ *connect.Request[pb
 }
 
 // ---------------------------------------------------------
-// Catalog Seeding
-// ---------------------------------------------------------
-
-func (s *OpsService) SeedDatabase(ctx context.Context, _ *connect.Request[pb.SeedDatabaseRequest]) (*connect.Response[pb.SeedDatabaseResponse], error) {
-	// Look for seeder binary
-	candidates := []string{
-		"seeder",
-		"./bin/seeder",
-		"bin/seeder",
-		"/app/seeder",
-		"/app/bin/seeder",
-	}
-
-	var foundBin string
-	for _, c := range candidates {
-		if path, err := exec.LookPath(c); err == nil {
-			foundBin = path
-			break
-		}
-		if info, err := os.Stat(c); err == nil && !info.IsDir() {
-			foundBin = c
-			break
-		}
-	}
-
-	if foundBin != "" {
-		cmd := exec.CommandContext(ctx, foundBin)
-		cmd.Env = os.Environ()
-		output, err := cmd.CombinedOutput()
-		if err != nil {
-			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("seeder failed: %w (output: %s)", err, string(output)))
-		}
-		return connect.NewResponse(&pb.SeedDatabaseResponse{
-			Success:       true,
-			RecordsSeeded: 50,
-			Message:       "Seeder executed successfully: " + strings.TrimSpace(string(output)),
-		}), nil
-	}
-
-	return connect.NewResponse(&pb.SeedDatabaseResponse{
-		Success:       true,
-		RecordsSeeded: 0,
-		Message:       "Seeder binary completed via ops plane",
-	}), nil
-}
-
-// ---------------------------------------------------------
 // Maintenance & Cleanup Tasks
 // ---------------------------------------------------------
 
@@ -211,20 +162,20 @@ var taskCatalog = []*pb.TaskDef{
 	{
 		Name:            "cleanup_expired_otps",
 		Procedure:       "CleanupExpiredOtps",
-		Description:     "Purges used and expired OTPs older than 24 hours",
+		Description:     "Purges used and expired OTPs",
 		DefaultInterval: "6h",
 	},
 	{
 		Name:            "cleanup_expired_tokens",
 		Procedure:       "CleanupExpiredTokens",
-		Description:     "Purges revoked or expired refresh tokens older than 7 days",
+		Description:     "Purges expired refresh tokens",
 		DefaultInterval: "12h",
 	},
 	{
 		Name:            "cleanup_orphaned_blobs",
 		Procedure:       "CleanupOrphanedBlobs",
-		Description:     "Deletes unreferenced blob objects older than 5 minutes",
-		DefaultInterval: "5m",
+		Description:     "Deletes unreferenced blob objects older than 10 minutes",
+		DefaultInterval: "10m",
 	},
 	{
 		Name:            "purge_soft_deleted_accounts",
@@ -237,12 +188,6 @@ var taskCatalog = []*pb.TaskDef{
 		Procedure:       "SendUsernameReleaseWarnings",
 		Description:     "Sends release warning notifications for archived usernames approaching their 30-day hold expiration",
 		DefaultInterval: "24h",
-	},
-	{
-		Name:            "seed_database",
-		Procedure:       "SeedDatabase",
-		Description:     "Seeds hardware catalog and sample fixtures into public database",
-		DefaultInterval: "manual",
 	},
 }
 

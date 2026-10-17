@@ -39,8 +39,6 @@ const (
 	// OpsServiceGetDatabaseStatsProcedure is the fully-qualified name of the OpsService's
 	// GetDatabaseStats RPC.
 	OpsServiceGetDatabaseStatsProcedure = "/quadsmith.ops.OpsService/GetDatabaseStats"
-	// OpsServiceSeedDatabaseProcedure is the fully-qualified name of the OpsService's SeedDatabase RPC.
-	OpsServiceSeedDatabaseProcedure = "/quadsmith.ops.OpsService/SeedDatabase"
 	// OpsServiceCleanupExpiredOtpsProcedure is the fully-qualified name of the OpsService's
 	// CleanupExpiredOtps RPC.
 	OpsServiceCleanupExpiredOtpsProcedure = "/quadsmith.ops.OpsService/CleanupExpiredOtps"
@@ -103,8 +101,6 @@ type OpsServiceClient interface {
 	GetSystemDiagnostics(context.Context, *connect.Request[ops.GetSystemDiagnosticsRequest]) (*connect.Response[ops.GetSystemDiagnosticsResponse], error)
 	// Database Stats (Public DB quadsmith_api)
 	GetDatabaseStats(context.Context, *connect.Request[ops.GetDatabaseStatsRequest]) (*connect.Response[ops.GetDatabaseStatsResponse], error)
-	// Catalog Seeding
-	SeedDatabase(context.Context, *connect.Request[ops.SeedDatabaseRequest]) (*connect.Response[ops.SeedDatabaseResponse], error)
 	// Maintenance & Cleanup Tasks
 	CleanupExpiredOtps(context.Context, *connect.Request[ops.CleanupExpiredOtpsRequest]) (*connect.Response[ops.CleanupExpiredOtpsResponse], error)
 	CleanupExpiredTokens(context.Context, *connect.Request[ops.CleanupExpiredTokensRequest]) (*connect.Response[ops.CleanupExpiredTokensResponse], error)
@@ -152,12 +148,6 @@ func NewOpsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 			httpClient,
 			baseURL+OpsServiceGetDatabaseStatsProcedure,
 			connect.WithSchema(opsServiceMethods.ByName("GetDatabaseStats")),
-			connect.WithClientOptions(opts...),
-		),
-		seedDatabase: connect.NewClient[ops.SeedDatabaseRequest, ops.SeedDatabaseResponse](
-			httpClient,
-			baseURL+OpsServiceSeedDatabaseProcedure,
-			connect.WithSchema(opsServiceMethods.ByName("SeedDatabase")),
 			connect.WithClientOptions(opts...),
 		),
 		cleanupExpiredOtps: connect.NewClient[ops.CleanupExpiredOtpsRequest, ops.CleanupExpiredOtpsResponse](
@@ -281,7 +271,6 @@ func NewOpsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 type opsServiceClient struct {
 	getSystemDiagnostics        *connect.Client[ops.GetSystemDiagnosticsRequest, ops.GetSystemDiagnosticsResponse]
 	getDatabaseStats            *connect.Client[ops.GetDatabaseStatsRequest, ops.GetDatabaseStatsResponse]
-	seedDatabase                *connect.Client[ops.SeedDatabaseRequest, ops.SeedDatabaseResponse]
 	cleanupExpiredOtps          *connect.Client[ops.CleanupExpiredOtpsRequest, ops.CleanupExpiredOtpsResponse]
 	cleanupExpiredTokens        *connect.Client[ops.CleanupExpiredTokensRequest, ops.CleanupExpiredTokensResponse]
 	cleanupOrphanedBlobs        *connect.Client[ops.CleanupOrphanedBlobsRequest, ops.CleanupOrphanedBlobsResponse]
@@ -311,11 +300,6 @@ func (c *opsServiceClient) GetSystemDiagnostics(ctx context.Context, req *connec
 // GetDatabaseStats calls quadsmith.ops.OpsService.GetDatabaseStats.
 func (c *opsServiceClient) GetDatabaseStats(ctx context.Context, req *connect.Request[ops.GetDatabaseStatsRequest]) (*connect.Response[ops.GetDatabaseStatsResponse], error) {
 	return c.getDatabaseStats.CallUnary(ctx, req)
-}
-
-// SeedDatabase calls quadsmith.ops.OpsService.SeedDatabase.
-func (c *opsServiceClient) SeedDatabase(ctx context.Context, req *connect.Request[ops.SeedDatabaseRequest]) (*connect.Response[ops.SeedDatabaseResponse], error) {
-	return c.seedDatabase.CallUnary(ctx, req)
 }
 
 // CleanupExpiredOtps calls quadsmith.ops.OpsService.CleanupExpiredOtps.
@@ -419,8 +403,6 @@ type OpsServiceHandler interface {
 	GetSystemDiagnostics(context.Context, *connect.Request[ops.GetSystemDiagnosticsRequest]) (*connect.Response[ops.GetSystemDiagnosticsResponse], error)
 	// Database Stats (Public DB quadsmith_api)
 	GetDatabaseStats(context.Context, *connect.Request[ops.GetDatabaseStatsRequest]) (*connect.Response[ops.GetDatabaseStatsResponse], error)
-	// Catalog Seeding
-	SeedDatabase(context.Context, *connect.Request[ops.SeedDatabaseRequest]) (*connect.Response[ops.SeedDatabaseResponse], error)
 	// Maintenance & Cleanup Tasks
 	CleanupExpiredOtps(context.Context, *connect.Request[ops.CleanupExpiredOtpsRequest]) (*connect.Response[ops.CleanupExpiredOtpsResponse], error)
 	CleanupExpiredTokens(context.Context, *connect.Request[ops.CleanupExpiredTokensRequest]) (*connect.Response[ops.CleanupExpiredTokensResponse], error)
@@ -464,12 +446,6 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 		OpsServiceGetDatabaseStatsProcedure,
 		svc.GetDatabaseStats,
 		connect.WithSchema(opsServiceMethods.ByName("GetDatabaseStats")),
-		connect.WithHandlerOptions(opts...),
-	)
-	opsServiceSeedDatabaseHandler := connect.NewUnaryHandler(
-		OpsServiceSeedDatabaseProcedure,
-		svc.SeedDatabase,
-		connect.WithSchema(opsServiceMethods.ByName("SeedDatabase")),
 		connect.WithHandlerOptions(opts...),
 	)
 	opsServiceCleanupExpiredOtpsHandler := connect.NewUnaryHandler(
@@ -592,8 +568,6 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 			opsServiceGetSystemDiagnosticsHandler.ServeHTTP(w, r)
 		case OpsServiceGetDatabaseStatsProcedure:
 			opsServiceGetDatabaseStatsHandler.ServeHTTP(w, r)
-		case OpsServiceSeedDatabaseProcedure:
-			opsServiceSeedDatabaseHandler.ServeHTTP(w, r)
 		case OpsServiceCleanupExpiredOtpsProcedure:
 			opsServiceCleanupExpiredOtpsHandler.ServeHTTP(w, r)
 		case OpsServiceCleanupExpiredTokensProcedure:
@@ -647,10 +621,6 @@ func (UnimplementedOpsServiceHandler) GetSystemDiagnostics(context.Context, *con
 
 func (UnimplementedOpsServiceHandler) GetDatabaseStats(context.Context, *connect.Request[ops.GetDatabaseStatsRequest]) (*connect.Response[ops.GetDatabaseStatsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.GetDatabaseStats is not implemented"))
-}
-
-func (UnimplementedOpsServiceHandler) SeedDatabase(context.Context, *connect.Request[ops.SeedDatabaseRequest]) (*connect.Response[ops.SeedDatabaseResponse], error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.SeedDatabase is not implemented"))
 }
 
 func (UnimplementedOpsServiceHandler) CleanupExpiredOtps(context.Context, *connect.Request[ops.CleanupExpiredOtpsRequest]) (*connect.Response[ops.CleanupExpiredOtpsResponse], error) {

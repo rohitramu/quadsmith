@@ -9,9 +9,9 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-// HandleCleanupOrphanedBlobs deletes blobs that are not referenced in blob_references and were created > 5 minutes ago.
+// HandleCleanupOrphanedBlobs deletes blobs that are not referenced in blob_references and were created > 10 minutes ago.
 func HandleCleanupOrphanedBlobs(ctx context.Context, pool *pgxpool.Pool) (int64, error) {
-	pruned, err := PruneOrphanBlobs(ctx, pool, 5*time.Minute)
+	pruned, err := PruneOrphanBlobs(ctx, pool, 10*time.Minute)
 	if err != nil {
 		return 0, fmt.Errorf("failed to prune orphaned blobs: %w", err)
 	}

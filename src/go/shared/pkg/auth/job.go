@@ -84,12 +84,11 @@ func HandleUsernameReleaseWarning(ctx context.Context, pool *pgxpool.Pool) (int6
 	return sentCount, nil
 }
 
-// HandleCleanupExpiredOTPs purges used OTPs and expired OTPs older than 24 hours.
+// HandleCleanupExpiredOTPs purges used and expired OTPs.
 func HandleCleanupExpiredOTPs(ctx context.Context, pool *pgxpool.Pool) (int64, error) {
 	cmd, err := pool.Exec(ctx, `
 		DELETE FROM email_otps 
-		WHERE (used_at IS NOT NULL OR expires_at < NOW()) 
-		  AND created_at < NOW() - INTERVAL '24 hours';`)
+		WHERE used_at IS NOT NULL OR expires_at < NOW();`)
 	if err != nil {
 		return 0, fmt.Errorf("failed to clean up expired OTPs: %w", err)
 	}
@@ -100,11 +99,11 @@ func HandleCleanupExpiredOTPs(ctx context.Context, pool *pgxpool.Pool) (int64, e
 	return rows, nil
 }
 
-// HandleCleanupExpiredTokens purges revoked or expired refresh tokens older than 7 days.
+// HandleCleanupExpiredTokens purges expired refresh tokens.
 func HandleCleanupExpiredTokens(ctx context.Context, pool *pgxpool.Pool) (int64, error) {
 	cmd, err := pool.Exec(ctx, `
 		DELETE FROM refresh_tokens 
-		WHERE expires_at < NOW() - INTERVAL '7 days';`)
+		WHERE expires_at < NOW();`)
 	if err != nil {
 		return 0, fmt.Errorf("failed to clean up expired refresh tokens: %w", err)
 	}

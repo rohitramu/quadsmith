@@ -17,9 +17,6 @@ service OpsService {
   // Database Stats (Public DB quadsmith_api)
   rpc GetDatabaseStats(GetDatabaseStatsRequest) returns (GetDatabaseStatsResponse);
 
-  // Catalog Seeding
-  rpc SeedDatabase(SeedDatabaseRequest) returns (SeedDatabaseResponse);
-
   // Maintenance & Cleanup Tasks
   rpc CleanupExpiredOtps(CleanupExpiredOtpsRequest) returns (CleanupExpiredOtpsResponse);
   rpc CleanupExpiredTokens(CleanupExpiredTokensRequest) returns (CleanupExpiredTokensResponse);
@@ -271,16 +268,6 @@ message RevokeJitGrantRequest {
 
 message RevokeJitGrantResponse {
   bool success = 1;
-}
-
-message SeedDatabaseRequest {
-  bool force = 1;
-}
-
-message SeedDatabaseResponse {
-  bool success = 1;
-  int32 records_seeded = 2;
-  string message = 3;
 }
 
 message SendUsernameReleaseWarningsRequest {}

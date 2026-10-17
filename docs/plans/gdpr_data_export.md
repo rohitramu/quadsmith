@@ -654,7 +654,8 @@ transient, in-flight authentication challenges as internal operational data:
 
 1. **Exclusion of Ephemeral `EmailOtp` Challenges (`EXPORT_DOMAIN_NONE`)**:
    - `EmailOtp` rows represent short-lived operational tokens (15-minute
-     expiration, with used/expired records purged automatically after 24 hours).
+     expiration, with used and expired records purged automatically by
+     background cleanup).
    - Because they are ephemeral and in-flight, they do not constitute a durable
      session audit log. Furthermore, exporting unverified challenges risks
      leaking IP/device metadata of third parties who mistyped the user's email
@@ -699,12 +700,12 @@ addresses in `security.json` alongside `RefreshToken`.
 
 **Pros:**
 
-- Provides visibility into recent in-flight login and verification challenges
-  generated within the last 24 hours.
+- Provides visibility into active in-flight login and verification challenges.
 
 **Cons:**
 
-- Incomplete as an audit trail since all rows are purged after 24 hours.
+- Incomplete as an audit trail since used and expired rows are purged
+  periodically.
 - Mixes transient protocol handshake buffers with durable session history.
 - Risks exposing IP/device metadata from mistyped third-party requests or
   anti-abuse counters.

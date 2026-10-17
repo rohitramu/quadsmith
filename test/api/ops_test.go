@@ -169,12 +169,24 @@ func TestOpsServer_JITElevation(t *testing.T) {
 	ctx := context.Background()
 	operatorClient := newOpsClient("qs_op_sandbox_token_12345")
 
-	// 1. SeedDatabase is a sensitive method requiring JIT elevation
-	_, err := operatorClient.SeedDatabase(ctx, connect.NewRequest(&pb.SeedDatabaseRequest{
-		Force: false,
+	// Create a temporary token so we have a valid target for RevokeInternalToken
+	createTokRes, err := operatorClient.CreateInternalToken(ctx, connect.NewRequest(&pb.CreateInternalTokenRequest{
+		Name:         "jit-elevation-test-token",
+		Type:         "ROBOT",
+		GroupName:    "robots",
+		DurationDays: 1,
+	}))
+	if err != nil {
+		t.Fatalf("CreateInternalToken failed: %v", err)
+	}
+	targetTokenID := createTokRes.Msg.Record.Id
+
+	// 1. RevokeInternalToken is a sensitive method requiring JIT elevation
+	_, err = operatorClient.RevokeInternalToken(ctx, connect.NewRequest(&pb.RevokeInternalTokenRequest{
+		Id: targetTokenID,
 	}))
 	if err == nil {
-		t.Fatalf("Expected SeedDatabase to fail without active JIT elevation")
+		t.Fatalf("Expected RevokeInternalToken to fail without active JIT elevation")
 	}
 	if connect.CodeOf(err) != connect.CodePermissionDenied {
 		t.Errorf("Expected CodePermissionDenied for JIT-required method, got %v: %v", connect.CodeOf(err), err)
@@ -183,7 +195,7 @@ func TestOpsServer_JITElevation(t *testing.T) {
 	// 2. Acquire JIT Elevation (auto-approved in sandbox/test)
 	grantRes, err := operatorClient.AcquireJitGrant(ctx, connect.NewRequest(&pb.AcquireJitGrantRequest{
 		Hours:     2,
-		Reason:    "E2E Integration Test Seed Database",
+		Reason:    "E2E Integration Test Revoke Internal Token",
 		Operation: "*",
 	}))
 	if err != nil {
@@ -207,21 +219,21 @@ func TestOpsServer_JITElevation(t *testing.T) {
 		t.Errorf("Expected active JIT grant %s in GetCurrentOperator", grant.Id)
 	}
 
-	// 4. Now SeedDatabase succeeds with active JIT!
-	seedRes, err := operatorClient.SeedDatabase(ctx, connect.NewRequest(&pb.SeedDatabaseRequest{
-		Force: false,
+	// 4. Now RevokeInternalToken succeeds with active JIT!
+	revTokRes, err := operatorClient.RevokeInternalToken(ctx, connect.NewRequest(&pb.RevokeInternalTokenRequest{
+		Id: targetTokenID,
 	}))
 	if err != nil {
-		t.Fatalf("SeedDatabase failed despite active JIT: %v", err)
+		t.Fatalf("RevokeInternalToken failed despite active JIT: %v", err)
 	}
-	if !seedRes.Msg.Success {
-		t.Errorf("Expected seed success: %s", seedRes.Msg.Message)
+	if !revTokRes.Msg.Success {
+		t.Errorf("Expected token revocation success")
 	}
 
 	// Verify audit record stores jit_grant_uuid and projects jit_grant_id via LEFT JOIN
 	time.Sleep(50 * time.Millisecond)
 	auditRes, err := operatorClient.ListInternalApiCalls(ctx, connect.NewRequest(&pb.ListInternalApiCallsRequest{
-		MethodFilter: "SeedDatabase",
+		MethodFilter: "RevokeInternalToken",
 		Limit:        5,
 	}))
 	if err != nil {
@@ -235,7 +247,7 @@ func TestOpsServer_JITElevation(t *testing.T) {
 		}
 	}
 	if !foundJitCall {
-		t.Errorf("Expected audit record for SeedDatabase with jit_grant_uuid=%s and jit_grant_id=%s", grant.Uuid, grant.Id)
+		t.Errorf("Expected audit record for RevokeInternalToken with jit_grant_uuid=%s and jit_grant_id=%s", grant.Uuid, grant.Id)
 	}
 
 	// 5. Extend JIT Grant
@@ -262,11 +274,11 @@ func TestOpsServer_JITElevation(t *testing.T) {
 	}
 
 	// 7. Verify subsequent sensitive method fails again
-	_, err = operatorClient.SeedDatabase(ctx, connect.NewRequest(&pb.SeedDatabaseRequest{
-		Force: false,
+	_, err = operatorClient.RevokeInternalToken(ctx, connect.NewRequest(&pb.RevokeInternalTokenRequest{
+		Id: targetTokenID,
 	}))
 	if err == nil {
-		t.Fatalf("Expected SeedDatabase to fail after JIT revocation")
+		t.Fatalf("Expected RevokeInternalToken to fail after JIT revocation")
 	}
 	if connect.CodeOf(err) != connect.CodePermissionDenied {
 		t.Errorf("Expected CodePermissionDenied after JIT revocation, got %v: %v", connect.CodeOf(err), err)
@@ -318,7 +330,6 @@ func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 		"cleanup_orphaned_blobs",
 		"purge_soft_deleted_accounts",
 		"send_username_release_warnings",
-		"seed_database",
 	}
 
 	for _, exp := range expectedTasks {

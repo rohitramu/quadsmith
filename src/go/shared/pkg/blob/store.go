@@ -383,7 +383,7 @@ func UnlinkEntityBlobs(ctx context.Context, tx pgx.Tx, entityType, targetUUID st
 func PruneOrphanBlobs(ctx context.Context, pool *pgxpool.Pool, gracePeriod time.Duration) (int64, error) {
 	intervalSeconds := int64(gracePeriod.Seconds())
 	if intervalSeconds <= 0 {
-		intervalSeconds = 300 // default 5 minutes
+		intervalSeconds = 600 // default 10 minutes
 	}
 
 	query := fmt.Sprintf(`

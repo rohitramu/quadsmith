@@ -19,13 +19,6 @@ export const getSystemDiagnostics = OpsService.method.getSystemDiagnostics;
 export const getDatabaseStats = OpsService.method.getDatabaseStats;
 
 /**
- * Catalog Seeding
- *
- * @generated from rpc quadsmith.ops.OpsService.SeedDatabase
- */
-export const seedDatabase = OpsService.method.seedDatabase;
-
-/**
  * Maintenance & Cleanup Tasks
  *
  * @generated from rpc quadsmith.ops.OpsService.CleanupExpiredOtps

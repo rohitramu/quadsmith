@@ -754,7 +754,6 @@ func newTasksCmd() *cobra.Command {
 		},
 	})
 
-	var forceSeed bool
 	triggerCmd := &cobra.Command{
 		Use:   "trigger [task_name]",
 		Short: "Immediately trigger execution of a task",
@@ -855,32 +854,11 @@ func newTasksCmd() *cobra.Command {
 				}
 				return nil
 
-			case "seed_database":
-				resp, err := client.SeedDatabase(ctx, connect.NewRequest(&pb.SeedDatabaseRequest{
-					Force: forceSeed,
-				}))
-				if err != nil {
-					return fmt.Errorf("failed to trigger seed_database: %w", err)
-				}
-				if jsonOut {
-					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
-					fmt.Println(string(out))
-					return nil
-				}
-				jobID := resp.Header().Get("X-Job-Id")
-				if jobID != "" {
-					fmt.Printf("✓ %s (records seeded: %d, Job ID: %s)\n", resp.Msg.GetMessage(), resp.Msg.GetRecordsSeeded(), jobID)
-				} else {
-					fmt.Printf("✓ %s (records seeded: %d)\n", resp.Msg.GetMessage(), resp.Msg.GetRecordsSeeded())
-				}
-				return nil
-
 			default:
 				return fmt.Errorf("unknown task %q; run 'qsops tasks list' to see available tasks", args[0])
 			}
 		},
 	}
-	triggerCmd.Flags().BoolVar(&forceSeed, "force", false, "Force re-seeding (for seed_database)")
 	cmd.AddCommand(triggerCmd)
 
 	return cmd

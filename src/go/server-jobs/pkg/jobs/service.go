@@ -54,8 +54,7 @@ func (s *Service) ListJobs(ctx context.Context, req *connect.Request[jobspb.List
 			'CleanupExpiredTokens',
 			'CleanupOrphanedBlobs',
 			'PurgeSoftDeletedAccounts',
-			'SendUsernameReleaseWarnings',
-			'SeedDatabase'
+			'SendUsernameReleaseWarnings'
 		  )
 		ORDER BY created_at DESC
 		LIMIT $2`
@@ -112,7 +111,7 @@ func (s *Service) GetJob(ctx context.Context, req *connect.Request[jobspb.GetJob
 		SELECT uuid::text, id, method, caller, caller_type, status, duration_ms, error_message, created_at
 		FROM internal_api_calls
 		WHERE (id = $1 OR uuid::text = $1)
-		  AND method IN ('CleanupExpiredOtps', 'CleanupExpiredTokens', 'CleanupOrphanedBlobs', 'PurgeSoftDeletedAccounts', 'SendUsernameReleaseWarnings', 'SeedDatabase')
+		  AND method IN ('CleanupExpiredOtps', 'CleanupExpiredTokens', 'CleanupOrphanedBlobs', 'PurgeSoftDeletedAccounts', 'SendUsernameReleaseWarnings')
 		LIMIT 1`
 
 	var uuid, id, method, caller, callerType, status string
@@ -203,8 +202,6 @@ func taskToProcedure(task string) string {
 		return "PurgeSoftDeletedAccounts"
 	case "send_username_release_warnings":
 		return "SendUsernameReleaseWarnings"
-	case "seed_database":
-		return "SeedDatabase"
 	default:
 		return ""
 	}
@@ -222,8 +219,6 @@ func procedureToTask(procedure string) string {
 		return "purge_soft_deleted_accounts"
 	case "SendUsernameReleaseWarnings":
 		return "send_username_release_warnings"
-	case "SeedDatabase":
-		return "seed_database"
 	default:
 		return strings.ToLower(procedure)
 	}

@@ -75,8 +75,7 @@ func isTaskMethod(methodName string) bool {
 		"CleanupExpiredTokens",
 		"CleanupOrphanedBlobs",
 		"PurgeSoftDeletedAccounts",
-		"SendUsernameReleaseWarnings",
-		"SeedDatabase":
+		"SendUsernameReleaseWarnings":
 		return true
 	default:
 		return false

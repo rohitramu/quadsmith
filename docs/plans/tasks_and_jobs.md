@@ -122,15 +122,11 @@ Keep `ListJobs` and `GetJob` on `OpsService` in `server-ops`.
 
 In
 [`src/proto/quadsmith/ops/ops.proto`](../../src/proto/quadsmith/ops/ops.proto),
-all six operational and maintenance tasks are defined as dedicated RPCs
-(`SeedDatabase` and the five cleanup/purge tasks under
-`// Maintenance & Cleanup Tasks`), and task inspection is exposed via
-`ListTasks` and `GetTask`:
+all five maintenance and cleanup tasks are defined as dedicated RPCs under
+`// Maintenance & Cleanup Tasks`, and task inspection is exposed via `ListTasks`
+and `GetTask`:
 
 ```protobuf
-// Catalog Seeding
-rpc SeedDatabase(SeedDatabaseRequest) returns (SeedDatabaseResponse);
-
 // Maintenance & Cleanup Tasks
 rpc CleanupExpiredOtps(CleanupExpiredOtpsRequest) returns (CleanupExpiredOtpsResponse);
 rpc CleanupExpiredTokens(CleanupExpiredTokensRequest) returns (CleanupExpiredTokensResponse);
@@ -143,7 +139,7 @@ rpc ListTasks(ListTasksRequest) returns (ListTasksResponse);
 rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
 ```
 
-When any of the six task RPCs is executed on `server-ops`, the shared
+When any of the five task RPCs is executed on `server-ops`, the shared
 [`OpsInterceptor`](../../src/go/shared/pkg/opsauth/interceptor.go) synchronously
 writes the job execution audit record to `quadsmith_ops.internal_api_calls` and
 returns the generated job identifier in the `X-Job-Id` response header.
@@ -408,7 +404,7 @@ cleanup_expired_tokens {
 
 cleanup_orphaned_blobs {
   enabled: true
-  interval { seconds: 300 } # 5 minutes
+  interval { seconds: 600 } # 10 minutes
 }
 
 purge_soft_deleted_accounts {
@@ -432,7 +428,7 @@ send_username_release_warnings {
      epoch ($T_k = k \times \text{duration}$).
   2. Because the Unix epoch begins at 00:00:00 UTC, recurring intervals align
      cleanly with standard UTC wall-clock boundaries:
-     - Intervals in minutes dividing 60 (e.g. 5m): `*/5 * * * *`
+     - Intervals in minutes dividing 60 (e.g. 10m): `*/10 * * * *`
      - Intervals in hours dividing 24 (e.g. 6h, 8h, 12h): `0 */6 * * *`,
        `0 0,8,16 * * *`
      - 24-hour intervals: `0 0 * * *`
@@ -483,10 +479,9 @@ In [`src/go/cli-ops/main.go`](../../src/go/cli-ops/main.go):
   tasks, descriptions, and target procedures.
 - `qsops tasks get <task-name>`: Calls `OpsService.GetTask`, displaying the full
   description, target procedure, and default schedule.
-- `qsops tasks trigger <task-name> [--force]`: Calls the dedicated typed RPC on
-  `OpsService` (e.g., `CleanupExpiredOtps`, `PurgeSoftDeletedAccounts`,
-  `SeedDatabase`), outputting the execution result and generated job ID
-  (`X-Job-Id`).
+- `qsops tasks trigger <task-name>`: Calls the dedicated typed RPC on
+  `OpsService` (e.g., `CleanupExpiredOtps`, `PurgeSoftDeletedAccounts`),
+  outputting the execution result and generated job ID (`X-Job-Id`).
 
 #### <a id="jobs-commands" >2. Jobs Commands (`qsops jobs` -> targets `server-jobs`)</a>
 
