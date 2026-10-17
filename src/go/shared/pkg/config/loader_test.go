@@ -413,4 +413,58 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if opsCliProd.GetOpsServerUrl() != "https://ops.quadsmith.com" {
 		t.Errorf("unexpected ops cli prod config: %+v", opsCliProd)
 	}
+
+	deployStaging, err := LoadDeployConfig("", "staging")
+	if err != nil {
+		t.Fatalf("failed to load deploy staging: %v", err)
+	}
+	if deployStaging.GetGcpProjectId() != "quadsmith-staging" || len(deployStaging.GetRegions()) == 0 {
+		t.Errorf("unexpected deploy staging config: %+v", deployStaging)
+	}
+
+	deployProd, err := LoadDeployConfig("", "prod")
+	if err != nil {
+		t.Fatalf("failed to load deploy prod: %v", err)
+	}
+	if deployProd.GetGcpProjectId() != "quadsmith-prod" || len(deployProd.GetRegions()) == 0 {
+		t.Errorf("unexpected deploy prod config: %+v", deployProd)
+	}
+}
+
+func TestValidateDeployConfig(t *testing.T) {
+	valid := &configpb.DeployConfig{
+		Environment:            proto.String("prod"),
+		GcpProjectId:           proto.String("quadsmith-prod"),
+		RegistryRegion:         proto.String("us-central1"),
+		DbBackupRetentionCount: proto.Int32(5),
+		Regions: []*configpb.RegionConfig{
+			{
+				Region: proto.String("us-central1"),
+				DbTier: proto.String("db-f1-micro"),
+				Nodes: []*configpb.VmNodeConfig{
+					{
+						Zone:        proto.String("us-central1-a"),
+						MachineType: proto.String("e2-micro"),
+					},
+				},
+			},
+		},
+	}
+	if err := ValidateDeployConfig(valid); err != nil {
+		t.Fatalf("expected valid deploy config, got error: %v", err)
+	}
+
+	// Zone mismatch with region should fail
+	invalidZone := proto.Clone(valid).(*configpb.DeployConfig)
+	invalidZone.Regions[0].Nodes[0].Zone = proto.String("europe-west1-b")
+	if err := ValidateDeployConfig(invalidZone); err == nil {
+		t.Error("expected error when node zone does not match region")
+	}
+
+	// Sandbox environment rejected for DeployConfig
+	sandboxCfg := proto.Clone(valid).(*configpb.DeployConfig)
+	sandboxCfg.Environment = proto.String("sandbox")
+	if err := ValidateDeployConfig(sandboxCfg); err == nil {
+		t.Error("expected error when deploy environment is sandbox")
+	}
 }

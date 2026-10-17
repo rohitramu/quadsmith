@@ -1,0 +1,14 @@
+environment: "staging"
+gcp_project_id: "quadsmith-staging"
+registry_region: "us-central1"
+
+regions {
+  region: "us-central1"
+  db_tier: "db-f1-micro"
+  nodes {
+    zone: "us-central1-a"
+    machine_type: "e2-micro"
+  }
+}
+
+db_backup_retention_count: 3

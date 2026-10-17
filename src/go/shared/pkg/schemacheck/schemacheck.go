@@ -109,13 +109,16 @@ func NewSchema() *Schema {
 }
 
 var (
-	createTableRegex  = regexp.MustCompile(`(?i)CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?([a-zA-Z0-9_"]+)\s*\(([\s\S]*?)\);`)
-	alterTableFkRegex = regexp.MustCompile(`(?i)ALTER\s+TABLE\s+([a-zA-Z0-9_"]+)\s+ADD\s+CONSTRAINT\s+([a-zA-Z0-9_"]+)\s+FOREIGN\s+KEY\s*\(([a-zA-Z0-9_"]+)\)\s+REFERENCES\s+([a-zA-Z0-9_"]+)\s*\(([a-zA-Z0-9_"]+)\);`)
-	createIndexRegex  = regexp.MustCompile(`(?i)CREATE\s+(?:UNIQUE\s+)?INDEX\s+(?:IF\s+NOT\s+EXISTS\s+)?([a-zA-Z0-9_"]+)\s+ON\s+([a-zA-Z0-9_"]+)\s*\(([a-zA-Z0-9_"]+)\);`)
+	createTableRegex  = regexp.MustCompile(`(?i)CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?(?:[a-zA-Z0-9_"]+\.)?([a-zA-Z0-9_"]+)\s*\(([\s\S]*?)\);`)
+	alterTableFkRegex = regexp.MustCompile(`(?i)ALTER\s+TABLE\s+(?:ONLY\s+)?(?:[a-zA-Z0-9_"]+\.)?([a-zA-Z0-9_"]+)\s+ADD\s+CONSTRAINT\s+([a-zA-Z0-9_"]+)\s+FOREIGN\s+KEY\s*\(([a-zA-Z0-9_"]+)\)\s+REFERENCES\s+(?:[a-zA-Z0-9_"]+\.)?([a-zA-Z0-9_"]+)\s*\(([a-zA-Z0-9_"]+)\);`)
+	createIndexRegex  = regexp.MustCompile(`(?i)CREATE\s+(?:UNIQUE\s+)?INDEX\s+(?:IF\s+NOT\s+EXISTS\s+)?([a-zA-Z0-9_"]+)\s+ON\s+(?:[a-zA-Z0-9_"]+\.)?([a-zA-Z0-9_"]+)\s*(?:USING\s+[a-zA-Z0-9_]+\s*)?\(([a-zA-Z0-9_"]+)\);`)
 )
 
 func cleanIdent(s string) string {
 	s = strings.TrimSpace(s)
+	if idx := strings.LastIndex(s, "."); idx != -1 {
+		s = s[idx+1:]
+	}
 	s = strings.Trim(s, `"`)
 	return s
 }

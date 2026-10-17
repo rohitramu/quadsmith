@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import { useMutation } from "@connectrpc/connect-query";
 import { useQueryClient } from "@tanstack/react-query";
+import { getApiBaseUrl, getStoredAccessToken } from "@quadsmith/shared";
 import { X, Upload, Plus, Trash2, AlertCircle, Loader2 } from "lucide-react";
 import { getComponentCollection } from "../lib/hardwareCollections";
 import { getComponentServiceDef } from "../lib/componentServices";
@@ -188,12 +189,18 @@ export function ComponentFormModal({
     setIsUploading(true);
     setFormError(null);
     try {
-      const resp = await fetch("/api/blobs", {
+      const headers: Record<string, string> = {
+        "Content-Type": file.type || "application/octet-stream",
+        "X-Filename": file.name,
+      };
+      const token = getStoredAccessToken();
+      if (token) {
+        headers["Authorization"] = `Bearer ${token}`;
+      }
+      const resp = await fetch(`${getApiBaseUrl()}/api/blobs`, {
         method: "POST",
-        headers: {
-          "Content-Type": file.type || "application/octet-stream",
-          "X-Filename": file.name,
-        },
+        headers,
+        credentials: "include",
         body: file,
       });
       if (!resp.ok) {

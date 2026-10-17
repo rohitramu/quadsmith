@@ -49,6 +49,14 @@ func main() {
 		}
 	}
 
+	for _, env := range []string{"staging", "prod"} {
+		checks = append(checks, configFileCheck{
+			path:      filepath.Join("deploy/config", fmt.Sprintf("%s.textproto", env)),
+			component: "deploy",
+			env:       env,
+		})
+	}
+
 	var errors []string
 	verifiedCount := 0
 
@@ -74,7 +82,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("✓ Validated all %d configuration files across %d applications (all fields explicitly declared, zero non-secret environment variables)\n",
+	fmt.Printf("✓ Validated all %d configuration files across %d applications and deploy topology (all fields explicitly declared, zero non-secret environment variables)\n",
 		verifiedCount, len(components))
 }
 
@@ -198,6 +206,18 @@ func validateConfigFile(check configFileCheck, raw []byte) error {
 		}
 		if cfg.Timeout == nil || cfg.Timeout.AsDuration() <= 0 {
 			return fmt.Errorf("timeout must be explicitly specified")
+		}
+
+	case "deploy":
+		var cfg pb.DeployConfig
+		if err := opts.Unmarshal(expanded, &cfg); err != nil {
+			return fmt.Errorf("failed to parse DeployConfig: %w", err)
+		}
+		if cfg.GetEnvironment() != check.env {
+			return fmt.Errorf("environment field %q does not match filename %q", cfg.GetEnvironment(), check.env)
+		}
+		if err := config.ValidateDeployConfig(&cfg); err != nil {
+			return err
 		}
 
 	default:

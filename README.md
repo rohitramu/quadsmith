@@ -15,3 +15,9 @@ _Note: All Go dependencies and build tools (like `buf` and `protoc` plugins) are
 hermetically vendored in the `vendor/` directory and will be built automatically
 during the compilation process. No internet connection is required to fetch Go
 modules during `make build`._
+
+## Deployment
+
+For staging and production cloud provisioning, zero-downtime blue-green
+rollouts, automated database migrations, and multi-region scaling, see the
+[Deployment & Operations Guide](deploy/README.md).

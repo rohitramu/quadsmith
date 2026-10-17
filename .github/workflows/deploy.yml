@@ -1,7 +1,21 @@
-name: Deploy Production
+name: Deploy
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Target deployment environment (staging or prod)"
+        required: true
+        default: "prod"
+        type: choice
+        options:
+          - staging
+          - prod
+      allow_breaking_changes:
+        description: "Approve and apply breaking SQL/API/seed schema changes"
+        required: false
+        default: false
+        type: boolean
   push:
     tags:
       - "v*"
@@ -9,11 +23,13 @@ on:
 env:
   GCP_REGION: us-central1
   GAR_REPOSITORY: quadsmith-docker
+  TARGET_ENV: ${{ inputs.environment || 'prod' }}
 
 jobs:
   build-and-push:
     name: Build & Push Images (${{ matrix.service }})
     runs-on: ubuntu-latest
+    if: ${{ secrets.GCP_SA_KEY != '' }}
     strategy:
       fail-fast: true
       matrix:
@@ -34,13 +50,30 @@ jobs:
       - name: Sync Go Vendor Dependencies
         run: cd src/go && go work vendor
 
+      - name: Extract GCP Project ID from deploy/config/${{ env.TARGET_ENV }}.textproto
+        id: config
+        run: |
+          PROJECT_ID="$(awk -F'"' '/^[[:space:]]*gcp_project_id:/ {print $2}' "deploy/config/${TARGET_ENV}.textproto")"
+          echo "project_id=${PROJECT_ID}" >> "$GITHUB_OUTPUT"
+
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
+      - name: Set up Cloud SDK & Ensure Artifact Registry Exists
+        uses: google-github-actions/setup-gcloud@v2
+
       - name: Configure Docker for Artifact Registry
-        run: gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev --quiet
+        run: |
+          gcloud artifacts repositories describe "${{ env.GAR_REPOSITORY }}" \
+            --location="${{ env.GCP_REGION }}" \
+            --project="${{ steps.config.outputs.project_id }}" >/dev/null 2>&1 || \
+            gcloud artifacts repositories create "${{ env.GAR_REPOSITORY }}" \
+              --repository-format=docker \
+              --location="${{ env.GCP_REGION }}" \
+              --project="${{ steps.config.outputs.project_id }}"
+          gcloud auth configure-docker ${{ env.GCP_REGION }}-docker.pkg.dev --quiet
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -52,15 +85,28 @@ jobs:
           file: src/go/${{ matrix.service }}/Dockerfile
           push: true
           tags: |
-            ${{ env.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/${{ matrix.service }}:latest
-            ${{ env.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/${{ env.GAR_REPOSITORY }}/${{ matrix.service }}:sha-${{ github.sha }}
+            ${{ env.GCP_REGION }}-docker.pkg.dev/${{ steps.config.outputs.project_id }}/${{ env.GAR_REPOSITORY }}/${{ matrix.service }}:latest
+            ${{ env.GCP_REGION }}-docker.pkg.dev/${{ steps.config.outputs.project_id }}/${{ env.GAR_REPOSITORY }}/${{ matrix.service }}:sha-${{ github.sha }}
 
-  deploy-vm:
-    name: Roll Out to e2-micro VM
+  migrate-db:
+    name: Provision Infrastructure & Run Automated DB Migration Gate
     needs: build-and-push
     runs-on: ubuntu-latest
+    if: ${{ secrets.GCP_SA_KEY != '' }}
+    environment: ${{ inputs.environment || 'prod' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.27"
+          cache-dependency-path: "src/go/go.work.sum"
+
+      - name: Sync Go Vendor Dependencies
+        run: cd src/go && go work vendor
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -70,17 +116,80 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Sync Compose & Nginx Manifests and Restart Services via IAP Tunnel
+      - name: Install PostgreSQL Client & psqldef
         run: |
-          gcloud compute scp --tunnel-through-iap --recurse \
-            src/deploy/docker-compose.prod.yaml \
-            src/deploy/nginx \
-            "${{ secrets.GCP_VM_NAME }}:/opt/quadsmith/src/deploy/" \
-            --project="${{ secrets.GCP_PROJECT_ID }}" \
-            --zone="${{ secrets.GCP_VM_ZONE }}"
+          sudo apt-get update && sudo apt-get install -y postgresql-client socat jq
+          curl -fsSL https://github.com/sqldef/sqldef/releases/latest/download/psqldef_linux_amd64.tar.gz | sudo tar -xz -C /usr/local/bin psqldef
 
-          gcloud compute ssh "${{ secrets.GCP_VM_NAME }}" \
-            --tunnel-through-iap \
-            --project="${{ secrets.GCP_PROJECT_ID }}" \
-            --zone="${{ secrets.GCP_VM_ZONE }}" \
-            --command="cd /opt/quadsmith && COMPOSE_PROFILES=primary docker compose -f src/deploy/docker-compose.prod.yaml pull && COMPOSE_PROFILES=primary docker compose -f src/deploy/docker-compose.prod.yaml up -d --remove-orphans"
+      - name: Run Provisioning, Breaking-Change Gate, Pre-Migration Backup & Schema Migration
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          QS_DB_PASSWORD: ${{ secrets.QS_DB_PASSWORD }}
+          QS_AUTH_SECRET: ${{ secrets.QS_AUTH_SECRET }}
+          QS_JOB_SERVER_AUTH_TOKEN: ${{ secrets.QS_JOB_SERVER_AUTH_TOKEN }}
+          QS_SMTP_PASSWORD: ${{ secrets.QS_SMTP_PASSWORD }}
+          QS_GOOGLE_CLIENT_ID: ${{ secrets.QS_GOOGLE_CLIENT_ID }}
+          QS_GOOGLE_CLIENT_SECRET: ${{ secrets.QS_GOOGLE_CLIENT_SECRET }}
+          QS_GITHUB_CLIENT_ID: ${{ secrets.QS_GITHUB_CLIENT_ID }}
+          QS_GITHUB_CLIENT_SECRET: ${{ secrets.QS_GITHUB_CLIENT_SECRET }}
+          QS_DISCORD_CLIENT_ID: ${{ secrets.QS_DISCORD_CLIENT_ID }}
+          QS_DISCORD_CLIENT_SECRET: ${{ secrets.QS_DISCORD_CLIENT_SECRET }}
+          QS_OAUTH_CLIENT_ID: ${{ secrets.QS_OAUTH_CLIENT_ID }}
+          QS_OAUTH_CLIENT_SECRET: ${{ secrets.QS_OAUTH_CLIENT_SECRET }}
+        run: |
+          make deploy \
+            ENV="${{ env.TARGET_ENV }}" \
+            STAGE=migrate \
+            ALLOW_BREAKING_CHANGES="${{ inputs.allow_breaking_changes || false }}" \
+            QS_IMAGE_TAG="sha-${{ github.sha }}"
+
+  deploy-vm:
+    name: Zero-Downtime Blue-Green Rollout to Regional VMs
+    needs: migrate-db
+    runs-on: ubuntu-latest
+    if: ${{ secrets.GCP_SA_KEY != '' }}
+    environment: ${{ inputs.environment || 'prod' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.27"
+          cache-dependency-path: "src/go/go.work.sum"
+
+      - name: Sync Go Vendor Dependencies
+        run: cd src/go && go work vendor
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Roll Out Blue-Green Deployment Across Regional Nodes
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          QS_DB_PASSWORD: ${{ secrets.QS_DB_PASSWORD }}
+          QS_AUTH_SECRET: ${{ secrets.QS_AUTH_SECRET }}
+          QS_JOB_SERVER_AUTH_TOKEN: ${{ secrets.QS_JOB_SERVER_AUTH_TOKEN }}
+          QS_SMTP_PASSWORD: ${{ secrets.QS_SMTP_PASSWORD }}
+          QS_GOOGLE_CLIENT_ID: ${{ secrets.QS_GOOGLE_CLIENT_ID }}
+          QS_GOOGLE_CLIENT_SECRET: ${{ secrets.QS_GOOGLE_CLIENT_SECRET }}
+          QS_GITHUB_CLIENT_ID: ${{ secrets.QS_GITHUB_CLIENT_ID }}
+          QS_GITHUB_CLIENT_SECRET: ${{ secrets.QS_GITHUB_CLIENT_SECRET }}
+          QS_DISCORD_CLIENT_ID: ${{ secrets.QS_DISCORD_CLIENT_ID }}
+          QS_DISCORD_CLIENT_SECRET: ${{ secrets.QS_DISCORD_CLIENT_SECRET }}
+          QS_OAUTH_CLIENT_ID: ${{ secrets.QS_OAUTH_CLIENT_ID }}
+          QS_OAUTH_CLIENT_SECRET: ${{ secrets.QS_OAUTH_CLIENT_SECRET }}
+        run: |
+          make deploy \
+            ENV="${{ env.TARGET_ENV }}" \
+            STAGE=rollout \
+            QS_IMAGE_TAG="sha-${{ github.sha }}"

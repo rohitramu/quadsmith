@@ -17,8 +17,8 @@ server {
 database {
   url: "${QS_DATABASE_URL}"
   name: "quadsmith_api"
-  max_connections: 25
-  min_connections: 2
+  max_connections: 15
+  min_connections: 1
 }
 
 auth {

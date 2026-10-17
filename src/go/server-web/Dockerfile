@@ -1,15 +1,3 @@
-FROM node:22 AS web-builder
-WORKDIR /app
-
-COPY src/react/package.json ./src/react/
-COPY src/react/shared/package.json ./src/react/shared/
-COPY src/react/app-web/package.json src/react/app-web/package-lock.json* ./src/react/app-web/
-RUN cd src/react && npm install
-
-COPY src/react/shared ./src/react/shared
-COPY src/react/app-web ./src/react/app-web
-RUN cd src/react/app-web && npm run build
-
 FROM golang:1.27 AS builder
 WORKDIR /app
 ENV GOWORK=/app/src/go/go.work
@@ -32,6 +20,20 @@ RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor -ldflags="-w -s" -o /app/bin/s
     GOOS=js GOARCH=wasm go build -mod=vendor -ldflags="-w -s" -o /app/bin/quadsmith-engine.wasm ./src/go/shared/cmd/wasm/main.go && \
     cp -f "$(go env GOROOT)/lib/wasm/wasm_exec.js" /app/bin/wasm_exec.js
 
+FROM node:22 AS web-builder
+WORKDIR /app
+
+COPY src/react/package.json ./src/react/
+COPY src/react/shared/package.json ./src/react/shared/
+COPY src/react/app-web/package.json src/react/app-web/package-lock.json* ./src/react/app-web/
+RUN cd src/react && npm install
+
+COPY src/react/shared ./src/react/shared
+COPY src/react/app-web ./src/react/app-web
+COPY --from=builder /app/bin/quadsmith-engine.wasm ./src/react/app-web/public/quadsmith-engine.wasm
+COPY --from=builder /app/bin/wasm_exec.js ./src/react/app-web/public/wasm_exec.js
+RUN cd src/react/app-web && npm run build
+
 FROM alpine:latest
 WORKDIR /app
 
@@ -41,9 +43,7 @@ EXPOSE 8080
 
 COPY --from=builder /app/bin/server-web /app/server-web
 COPY --from=web-builder /app/src/react/app-web/dist /app/src/react/app-web/dist
-COPY --from=builder /app/bin/quadsmith-engine.wasm /app/src/react/app-web/dist/quadsmith-engine.wasm
-COPY --from=builder /app/bin/wasm_exec.js /app/src/react/app-web/dist/wasm_exec.js
 COPY src/go/server-web/config /app/src/go/server-web/config
 
-ENTRYPOINT ["/app/server-web", "--config", "/app/src/go/server-web/config/prod.textproto"]
-
+ENV QS_CONFIG=/app/src/go/server-web/config/prod.textproto
+ENTRYPOINT ["/app/server-web"]

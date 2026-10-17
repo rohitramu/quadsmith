@@ -1,0 +1,140 @@
+services:
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${NGINX_PORT:-8084}:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/upstreams.conf:/etc/nginx/conf.d/upstreams.conf:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:80/healthz || exit 1"]
+      interval: 1s
+      timeout: 1s
+      retries: 30
+
+  api-blue:
+    image: ${QS_IMAGE_REGISTRY}/server-api:${QS_IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      - QS_CONFIG=/app/src/go/server-api/config/${QS_ENV:-prod}.textproto
+      - QS_DATABASE_URL=${QS_DATABASE_URL}
+      - QS_READ_DATABASE_URL=${QS_READ_DATABASE_URL:-}
+      - QS_PEER_DATABASE_URLS=${QS_PEER_DATABASE_URLS:-}
+      - QS_AUTH_SECRET=${QS_AUTH_SECRET}
+      - QS_SMTP_PASSWORD=${QS_SMTP_PASSWORD:-}
+      - QS_GOOGLE_CLIENT_ID=${QS_GOOGLE_CLIENT_ID}
+      - QS_GOOGLE_CLIENT_SECRET=${QS_GOOGLE_CLIENT_SECRET}
+      - QS_GITHUB_CLIENT_ID=${QS_GITHUB_CLIENT_ID}
+      - QS_GITHUB_CLIENT_SECRET=${QS_GITHUB_CLIENT_SECRET}
+      - QS_DISCORD_CLIENT_ID=${QS_DISCORD_CLIENT_ID}
+      - QS_DISCORD_CLIENT_SECRET=${QS_DISCORD_CLIENT_SECRET}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 1s
+      timeout: 2s
+      retries: 15
+
+  ops-blue:
+    image: ${QS_IMAGE_REGISTRY}/server-ops:${QS_IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      - QS_CONFIG=/app/src/go/server-ops/config/${QS_ENV:-prod}.textproto
+      - QS_DATABASE_URL=${QS_DATABASE_URL}
+      - QS_INTERNAL_DATABASE_URL=${QS_INTERNAL_DATABASE_URL}
+      - QS_OAUTH_CLIENT_ID=${QS_OAUTH_CLIENT_ID}
+      - QS_OAUTH_CLIENT_SECRET=${QS_OAUTH_CLIENT_SECRET}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 1s
+      timeout: 2s
+      retries: 15
+
+  jobs-blue:
+    image: ${QS_IMAGE_REGISTRY}/server-jobs:${QS_IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      - QS_CONFIG=/app/src/go/server-jobs/config/${QS_ENV:-prod}.textproto
+      - QS_OPS_SERVER_URL=http://ops-blue:8080
+      - QS_JOB_SERVER_AUTH_TOKEN=${QS_JOB_SERVER_AUTH_TOKEN}
+    depends_on:
+      ops-blue:
+        condition: service_healthy
+
+  web-blue:
+    image: ${QS_IMAGE_REGISTRY}/server-web:${QS_IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      - QS_CONFIG=/app/src/go/server-web/config/${QS_ENV:-prod}.textproto
+      - QS_API_URL=http://api-blue:8080
+    depends_on:
+      api-blue:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 1s
+      timeout: 2s
+      retries: 15
+
+  api-green:
+    image: ${QS_IMAGE_REGISTRY}/server-api:${QS_IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      - QS_CONFIG=/app/src/go/server-api/config/${QS_ENV:-prod}.textproto
+      - QS_DATABASE_URL=${QS_DATABASE_URL}
+      - QS_READ_DATABASE_URL=${QS_READ_DATABASE_URL:-}
+      - QS_PEER_DATABASE_URLS=${QS_PEER_DATABASE_URLS:-}
+      - QS_AUTH_SECRET=${QS_AUTH_SECRET}
+      - QS_SMTP_PASSWORD=${QS_SMTP_PASSWORD:-}
+      - QS_GOOGLE_CLIENT_ID=${QS_GOOGLE_CLIENT_ID}
+      - QS_GOOGLE_CLIENT_SECRET=${QS_GOOGLE_CLIENT_SECRET}
+      - QS_GITHUB_CLIENT_ID=${QS_GITHUB_CLIENT_ID}
+      - QS_GITHUB_CLIENT_SECRET=${QS_GITHUB_CLIENT_SECRET}
+      - QS_DISCORD_CLIENT_ID=${QS_DISCORD_CLIENT_ID}
+      - QS_DISCORD_CLIENT_SECRET=${QS_DISCORD_CLIENT_SECRET}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 1s
+      timeout: 2s
+      retries: 15
+
+  ops-green:
+    image: ${QS_IMAGE_REGISTRY}/server-ops:${QS_IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      - QS_CONFIG=/app/src/go/server-ops/config/${QS_ENV:-prod}.textproto
+      - QS_DATABASE_URL=${QS_DATABASE_URL}
+      - QS_INTERNAL_DATABASE_URL=${QS_INTERNAL_DATABASE_URL}
+      - QS_OAUTH_CLIENT_ID=${QS_OAUTH_CLIENT_ID}
+      - QS_OAUTH_CLIENT_SECRET=${QS_OAUTH_CLIENT_SECRET}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 1s
+      timeout: 2s
+      retries: 15
+
+  jobs-green:
+    image: ${QS_IMAGE_REGISTRY}/server-jobs:${QS_IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      - QS_CONFIG=/app/src/go/server-jobs/config/${QS_ENV:-prod}.textproto
+      - QS_OPS_SERVER_URL=http://ops-green:8080
+      - QS_JOB_SERVER_AUTH_TOKEN=${QS_JOB_SERVER_AUTH_TOKEN}
+    depends_on:
+      ops-green:
+        condition: service_healthy
+
+  web-green:
+    image: ${QS_IMAGE_REGISTRY}/server-web:${QS_IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      - QS_CONFIG=/app/src/go/server-web/config/${QS_ENV:-prod}.textproto
+      - QS_API_URL=http://api-green:8080
+    depends_on:
+      api-green:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 1s
+      timeout: 2s
+      retries: 15

@@ -291,4 +291,15 @@ func TestServeSPA_StaticCachingAndWasm(t *testing.T) {
 	if recWasm304.Body.Len() != 0 {
 		t.Errorf("Expected empty body on 304 response, got %d bytes", recWasm304.Body.Len())
 	}
+
+	// 3. Versioned WASM file (?v=<hash>) gets 1-year immutable Cache-Control
+	reqWasmVersioned := httptest.NewRequest(http.MethodGet, "/quadsmith-engine.wasm?v=a1b2c3d4e5f60123", nil)
+	recWasmVersioned := httptest.NewRecorder()
+	handler.ServeHTTP(recWasmVersioned, reqWasmVersioned)
+	if recWasmVersioned.Code != http.StatusOK {
+		t.Fatalf("Expected 200 for versioned WASM asset, got %d", recWasmVersioned.Code)
+	}
+	if got := recWasmVersioned.Header().Get("Cache-Control"); got != "public, max-age=31536000, immutable" {
+		t.Errorf("Expected immutable Cache-Control for versioned WASM (?v=), got %q", got)
+	}
 }

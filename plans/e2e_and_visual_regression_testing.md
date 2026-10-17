@@ -116,10 +116,9 @@ The runner container is completely decoupled from any specific host environment.
 It accepts a dynamic `BASE_URL` environment variable:
 
 - **Local Sandbox Execution**: When testing the local sandbox stack
-  ([`test/sandbox/docker-compose.yaml`](../test/sandbox/docker-compose.yaml)),
-  the container runs using Docker host networking (`--network host`), connecting
-  directly to `http://127.0.0.1:8080` (Web SPA) and `http://127.0.0.1:8081` (API
-  Server).
+  ([`deploy/docker-compose.yaml`](../deploy/docker-compose.yaml)), the container
+  runs using Docker host networking (`--network host`), connecting directly to
+  `http://127.0.0.1:8080` (Web SPA) and `http://127.0.0.1:8081` (API Server).
 - **Remote Environment Execution**: When testing remote environments (such as
   staging or production), the same container runs with
   `-e BASE_URL=https://staging.quadsmith.com` without requiring local backend
@@ -601,8 +600,9 @@ E2E in `make test`.
 
 1. Docker is available in both the local development environment and GitHub
    Actions runners.
-2. The sandbox stack in `test/sandbox/docker-compose.yaml` exposes the Web SPA
-   on port 8080 and API server on port 8081 with deterministic seed data.
+2. The sandbox stack in
+   [`deploy/docker-compose.yaml`](../deploy/docker-compose.yaml) exposes the Web
+   SPA on port 8080 and API server on port 8081 with deterministic seed data.
 3. Network host mode (`--network host`) operates reliably on Linux hosts (local
    Linux environment and Ubuntu CI).
 4. The 0.5% snapshot tolerance (`maxDiffPixelRatio: 0.005`) sufficiently

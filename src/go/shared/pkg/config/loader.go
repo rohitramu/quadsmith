@@ -219,6 +219,73 @@ func LoadCliConfig(configPath, envName string) (*configpb.CliConfig, error) {
 	return &cfg, nil
 }
 
+// LoadDeployConfig loads and validates live deployment configuration (staging or prod).
+func LoadDeployConfig(configPath, envName string) (*configpb.DeployConfig, error) {
+	resolvedPath := configPath
+	if resolvedPath == "" {
+		if envName == "" {
+			envName = os.Getenv("QS_ENV")
+			if envName == "" {
+				envName = "prod"
+			}
+		}
+		var err error
+		resolvedPath, err = FindDeployConfigFile(envName)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	var cfg configpb.DeployConfig
+	if err := Load(resolvedPath, &cfg); err != nil {
+		return nil, err
+	}
+
+	if err := ValidateDeployConfig(&cfg); err != nil {
+		return nil, err
+	}
+
+	return &cfg, nil
+}
+
+// FindDeployConfigFile locates deploy/config/<envName>.textproto from the current or parent directories.
+func FindDeployConfigFile(envName string) (string, error) {
+	filename := fmt.Sprintf("%s.textproto", strings.ToLower(envName))
+	candidates := []string{
+		filepath.Join("deploy", "config", filename),
+		filepath.Join("..", "deploy", "config", filename),
+		filepath.Join("..", "..", "deploy", "config", filename),
+		filepath.Join("..", "..", "..", "deploy", "config", filename),
+		filepath.Join("..", "..", "..", "..", "deploy", "config", filename),
+	}
+
+	for _, c := range candidates {
+		if info, err := os.Stat(c); err == nil && !info.IsDir() {
+			if abs, err := filepath.Abs(c); err == nil {
+				return abs, nil
+			}
+			return c, nil
+		}
+	}
+
+	if cwd, err := os.Getwd(); err == nil {
+		curr := cwd
+		for i := 0; i < 6; i++ {
+			target := filepath.Join(curr, "deploy", "config", filename)
+			if info, err := os.Stat(target); err == nil && !info.IsDir() {
+				return target, nil
+			}
+			parent := filepath.Dir(curr)
+			if parent == curr {
+				break
+			}
+			curr = parent
+		}
+	}
+
+	return "", fmt.Errorf("unable to locate deploy configuration file %q for environment %q", filename, envName)
+}
+
 func resolveConfigPath(binaryName, configPath, envName string) (string, error) {
 	if configPath != "" {
 		return configPath, nil
@@ -764,6 +831,75 @@ func ValidateCliConfig(c *configpb.CliConfig) error {
 
 	if len(errs) > 0 {
 		return formatErrors("CLI", errs)
+	}
+	return nil
+}
+
+// ValidateDeployConfig ensures live deployment configuration (staging or prod) is complete and valid.
+func ValidateDeployConfig(c *configpb.DeployConfig) error {
+	var errs []string
+
+	if err := ValidateNoUnsetFields(c); err != nil {
+		errs = append(errs, err.Error())
+	}
+
+	env := strings.TrimSpace(c.GetEnvironment())
+	if env == "" {
+		errs = append(errs, "environment must be explicitly specified (staging or prod)")
+	} else if env != "staging" && env != "prod" {
+		errs = append(errs, fmt.Sprintf("deploy environment must be 'staging' or 'prod' (got %q)", env))
+	}
+
+	if strings.TrimSpace(c.GetGcpProjectId()) == "" {
+		errs = append(errs, "gcp_project_id cannot be empty")
+	}
+
+	if strings.TrimSpace(c.GetRegistryRegion()) == "" {
+		errs = append(errs, "registry_region cannot be empty")
+	}
+
+	if len(c.GetRegions()) == 0 {
+		errs = append(errs, "at least one region must be defined in regions")
+	} else {
+		seenRegions := make(map[string]bool)
+		for i, r := range c.GetRegions() {
+			regName := strings.TrimSpace(r.GetRegion())
+			if regName == "" {
+				errs = append(errs, fmt.Sprintf("regions[%d].region cannot be empty", i))
+			} else if seenRegions[regName] {
+				errs = append(errs, fmt.Sprintf("duplicate region %q in regions[%d]", regName, i))
+			} else {
+				seenRegions[regName] = true
+			}
+
+			if strings.TrimSpace(r.GetDbTier()) == "" {
+				errs = append(errs, fmt.Sprintf("regions[%d].db_tier cannot be empty", i))
+			}
+
+			if len(r.GetNodes()) == 0 {
+				errs = append(errs, fmt.Sprintf("regions[%d].nodes must define at least one VM node", i))
+			} else {
+				for j, n := range r.GetNodes() {
+					zone := strings.TrimSpace(n.GetZone())
+					if zone == "" {
+						errs = append(errs, fmt.Sprintf("regions[%d].nodes[%d].zone cannot be empty", i, j))
+					} else if regName != "" && !strings.HasPrefix(zone, regName+"-") {
+						errs = append(errs, fmt.Sprintf("regions[%d].nodes[%d].zone %q must belong to region %q", i, j, zone, regName))
+					}
+					if strings.TrimSpace(n.GetMachineType()) == "" {
+						errs = append(errs, fmt.Sprintf("regions[%d].nodes[%d].machine_type cannot be empty", i, j))
+					}
+				}
+			}
+		}
+	}
+
+	if c.GetDbBackupRetentionCount() <= 0 {
+		errs = append(errs, fmt.Sprintf("db_backup_retention_count must be greater than 0 (got %d)", c.GetDbBackupRetentionCount()))
+	}
+
+	if len(errs) > 0 {
+		return formatErrors("Deploy", errs)
 	}
 	return nil
 }

@@ -28,4 +28,6 @@ EXPOSE 8080
 COPY --from=builder /app/bin/server-ops /app/server-ops
 COPY src/go/server-ops/config /app/src/go/server-ops/config
 
-ENTRYPOINT ["/app/server-ops", "--config", "/app/src/go/server-ops/config/prod.textproto"]
+ENV QS_CONFIG=/app/src/go/server-ops/config/prod.textproto
+ENTRYPOINT ["/app/server-ops"]
+

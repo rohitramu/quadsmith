@@ -35,6 +35,9 @@ func (g *GitHelper) ResolveBaseRef() (string, error) {
 	if envRef := os.Getenv("BREAKING_AGAINST_REF"); envRef != "" {
 		return strings.TrimSpace(envRef), nil
 	}
+	if envRef := os.Getenv("BREAKING_BASE_REF"); envRef != "" {
+		return strings.TrimSpace(envRef), nil
+	}
 
 	if prBase := os.Getenv("GITHUB_BASE_REF"); prBase != "" {
 		if g.refExists("origin/" + prBase) {

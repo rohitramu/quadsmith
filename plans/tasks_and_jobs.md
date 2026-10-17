@@ -35,9 +35,9 @@ logic like
 
 Furthermore, hosting `GetJob` and `ListJobs` RPCs on `server-jobs` via a
 separate `JobsService` coupled client tooling ([`qsops`](../src/go/cli-ops)),
-reverse-proxy routing ([`nginx.conf`](../src/deploy/nginx/nginx.conf)), and
-database connection pools directly to the scheduler process. Consolidating all
-task and job RPCs into [`OpsService`](../src/proto/quadsmith/ops/ops.proto) on
+reverse-proxy routing ([`nginx.conf`](../deploy/nginx/nginx.conf)), and database
+connection pools directly to the scheduler process. Consolidating all task and
+job RPCs into [`OpsService`](../src/proto/quadsmith/ops/ops.proto) on
 [`server-ops`](../src/go/server-ops) ensures that
 [`server-jobs`](../src/go/server-jobs) acts purely as a replaceable, headless
 scheduling mechanism without any HTTP APIs or database connections.

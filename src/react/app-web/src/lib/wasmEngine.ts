@@ -34,6 +34,11 @@ interface GoInstance {
   run(instance: WebAssembly.Instance): Promise<void>;
 }
 
+declare const __WASM_HASH__: string;
+
+const wasmVersionSuffix =
+  typeof __WASM_HASH__ !== "undefined" && __WASM_HASH__ ? `?v=${__WASM_HASH__}` : "";
+
 declare global {
   interface Window {
     Go?: new () => GoInstance;
@@ -98,7 +103,7 @@ class WasmEngineClient {
       }
 
       const script = document.createElement("script");
-      script.src = "/wasm_exec.js";
+      script.src = `/wasm_exec.js${wasmVersionSuffix}`;
       script.async = true;
       script.onload = () => resolve();
       script.onerror = (err) => reject(new Error(`Failed to load wasm_exec.js: ${err}`));
@@ -130,7 +135,7 @@ class WasmEngineClient {
           throw new Error("Go runtime constructor wasm_exec.js not available");
         }
 
-        const response = await fetch("/quadsmith-engine.wasm");
+        const response = await fetch(`/quadsmith-engine.wasm${wasmVersionSuffix}`);
         if (!response.ok) {
           throw new Error(`Failed to fetch quadsmith-engine.wasm: HTTP ${response.status}`);
         }

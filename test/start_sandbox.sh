@@ -10,14 +10,28 @@ export PORT="${1:-8080}"
 export DB_PORT="${DB_PORT:-5432}"
 export OPS_PORT="${OPS_PORT:-8082}"
 export API_PORT="${API_PORT:-8081}"
+export NGINX_PORT="${NGINX_PORT:-8084}"
+
+cleanup() {
+    docker compose -f deploy/docker-compose.yaml down -v >/dev/null 2>&1 || true
+    docker rm -f quadsmith-sandbox-db >/dev/null 2>&1 || true
+}
+trap cleanup EXIT INT TERM
 
 echo "--- Stopping any existing sandbox instance ---"
-docker compose -f test/sandbox/docker-compose.yaml down -v >/dev/null 2>&1 || true
+cleanup
+
+echo "--- Building and Starting Sandbox Database (quadsmith-sandbox-db on port $DB_PORT) ---"
+docker build -t quadsmith-sandbox-db -f test/sandbox/db/Dockerfile .
+docker run -d --name quadsmith-sandbox-db -p "${DB_PORT}:5432" quadsmith-sandbox-db >/dev/null
+until docker exec quadsmith-sandbox-db pg_isready -U postgres -d quadsmith_api >/dev/null 2>&1; do
+    sleep 0.1
+done
 
 echo "--- Building Sandbox Container Images ---"
-docker compose -f test/sandbox/docker-compose.yaml build
+docker compose -f deploy/docker-compose.yaml build
 
-echo "--- Starting Quadsmith Sandbox (Web on $PORT, Ops on $OPS_PORT, API on $API_PORT, DB on $DB_PORT) ---"
+echo "--- Starting Quadsmith Sandbox (Web on $PORT, Gateway on $NGINX_PORT, Ops on $OPS_PORT, API on $API_PORT, DB on $DB_PORT) ---"
 if [ -f "test/sandbox/db/seed_data/users.textproto" ]; then
     echo "Pre-seeded users:"
     awk '
@@ -26,4 +40,6 @@ if [ -f "test/sandbox/db/seed_data/users.textproto" ]; then
         /^[[:space:]]*}/ { if (email != "" && id != "") { print "  - " email " (@" id ")"; email=""; id="" } }
     ' test/sandbox/db/seed_data/users.textproto | sort
 fi
-docker compose -f test/sandbox/docker-compose.yaml up
+QS_DATABASE_URL="postgres://postgres:postgres@host.docker.internal:${DB_PORT}/quadsmith_api?sslmode=disable" \
+QS_INTERNAL_DATABASE_URL="postgres://postgres:postgres@host.docker.internal:${DB_PORT}/quadsmith_ops?sslmode=disable" \
+docker compose -f deploy/docker-compose.yaml up

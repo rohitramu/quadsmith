@@ -1,4 +1,4 @@
-.PHONY: all build sandbox generate fmt verify clean test update-snapshots vendor tool breaking-change test-breaking warn-breaking
+.PHONY: all build sandbox deploy db-migrate check-breaking generate fmt verify clean test update-snapshots vendor tool breaking-change test-breaking warn-breaking
 
 export GOWORK := $(shell pwd)/src/go/go.work
 
@@ -56,7 +56,7 @@ fmt: $(VENDOR_PLUGINS)
 	@echo "--- Formatting Protobuf with buf ---"
 	@cd src/proto && PATH="$(shell pwd)/bin:$$PATH" buf format -w
 	@echo "--- Formatting textproto files with txtpbfmt ---"
-	@find src test -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
+	@find src test deploy -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
 	@echo "--- Formatting SQL files with sql-formatter ---"
 	@for f in src/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$$f"; done
 
@@ -116,10 +116,34 @@ sandbox: generate bin/qs bin/qsops
 	@echo "--- Starting Quadsmith Sandbox (Docker) ---"
 	@./test/start_sandbox.sh $(PORT) || if [ $$? -eq 130 ]; then exit 0; else exit $$?; fi
 
-db-migrate: generate
+deploy:
+	@./deploy/deploy.sh --env=$(or $(ENV),prod) $(TOOL_ARGS)
+
+db-migrate:
 	@echo "--- Applying Database Schemas with psqldef ---"
-	@psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_api < src/db/quadsmith_api.sql
-	@psqldef -U postgres -W postgres -h 127.0.0.1 quadsmith_ops < src/db/quadsmith_ops.sql
+	@API_URL="$${QS_DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:5432/quadsmith_api?sslmode=disable}"; \
+	OPS_URL="$${QS_INTERNAL_DATABASE_URL:-postgres://postgres:postgres@127.0.0.1:5432/quadsmith_ops?sslmode=disable}"; \
+	run_psqldef() { \
+		local url="$$1" file="$$2"; \
+		local no_scheme="$${url#*://}"; \
+		local userpass="$${no_scheme%%@*}"; \
+		local user="$${userpass%%:*}"; \
+		local pass="$${userpass#*:}"; \
+		local hostportdb="$${no_scheme#*@}"; \
+		local hostport="$${hostportdb%%/*}"; \
+		local host="$${hostport%%:*}"; \
+		local port="$${hostport#*:}"; \
+		[ "$$port" = "$$host" ] && port="5432"; \
+		local db_and_query="$${hostportdb#*/}"; \
+		local db="$${db_and_query%%\?*}"; \
+		psqldef -U "$$user" -W "$$pass" -h "$$host" -p "$$port" $$([ "$${DRY_RUN:-}" = "true" ] && echo "--dry-run") "$$db" < "$$file"; \
+	}; \
+	run_psqldef "$$API_URL" src/db/quadsmith_api.sql && \
+	run_psqldef "$$OPS_URL" src/db/quadsmith_ops.sql
+
+check-breaking:
+	@echo "--- Running Strict Backwards-Compatibility Gate ---"
+	@cd src/go/shared && STRICT_BREAKING=1 go test -mod=vendor -count=1 -v ./internal/regression/...
 
 warn-breaking:
 	@if [ ! -s .tmp/breaking_warning.log ]; then \

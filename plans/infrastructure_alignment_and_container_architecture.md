@@ -236,7 +236,7 @@ select output images.
 
 Local sandbox development (`make sandbox`) and integration testing
 (`make test-e2e`) will transition to Docker Compose, housed cleanly in
-[`test/sandbox/docker-compose.yaml`](../test/sandbox/docker-compose.yaml).
+[`deploy/docker-compose.yaml`](../deploy/docker-compose.yaml).
 
 To overcome the standard 9-second cold database initialization penalty, a
 dedicated test database image
@@ -256,7 +256,8 @@ Empirical testing validates that this reduces Compose startup from 9,162 ms to
 
 The test harness scripts [`test/start_sandbox.sh`](../test/start_sandbox.sh) and
 [`test/run_sandbox_tests.sh`](../test/run_sandbox_tests.sh) will be refactored
-to orchestrate `docker compose -f test/sandbox/docker-compose.yaml`.
+to orchestrate `docker compose -f deploy/docker-compose.yaml` alongside the
+standalone `quadsmith-sandbox-db` container.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>

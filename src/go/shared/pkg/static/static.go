@@ -110,7 +110,7 @@ func ServeSPA(dir string, apiURL string) http.HandlerFunc {
 			info, err := os.Stat(fullPath)
 			if err == nil && !info.IsDir() {
 				// Static asset exists on disk (JS, CSS, WASM, images, etc.)
-				if strings.HasPrefix(cleanPath, "/assets/") {
+				if strings.HasPrefix(cleanPath, "/assets/") || r.URL.Query().Get("v") != "" {
 					w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
 				} else {
 					w.Header().Set("Cache-Control", "public, max-age=3600, stale-while-revalidate=86400")

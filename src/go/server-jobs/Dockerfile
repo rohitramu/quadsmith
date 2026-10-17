@@ -26,4 +26,6 @@ RUN apk --no-cache add ca-certificates tzdata
 COPY --from=builder /app/bin/server-jobs /app/server-jobs
 COPY src/go/server-jobs/config /app/src/go/server-jobs/config
 
-ENTRYPOINT ["/app/server-jobs", "--config", "/app/src/go/server-jobs/config/prod.textproto"]
+ENV QS_CONFIG=/app/src/go/server-jobs/config/prod.textproto
+ENTRYPOINT ["/app/server-jobs"]
+
