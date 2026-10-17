@@ -1187,6 +1187,9 @@ export function createMockTransport(options: MockTransportOptions = {}) {
       voteReview: (req) => {
         const rev = reviews.find((r) => r.id === req.reviewId || r.uuid === req.reviewId);
         if (rev) {
+          if (rev.userUuid === mockUser.uuid) {
+            throw new ConnectError("cannot vote on your own review", Code.PermissionDenied);
+          }
           if (req.voteType === 1) {
             rev.helpfulCount += 1;
           } else if (req.voteType === 2) {

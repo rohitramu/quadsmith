@@ -140,6 +140,9 @@ export function SocialReviewSection({
       });
       await refetchReviews();
     } catch (err: unknown) {
+      if (err instanceof Error && err.message.includes("cannot vote on your own review")) {
+        return;
+      }
       alert(err instanceof Error ? err.message : "Failed to register vote");
     }
   }
@@ -384,7 +387,7 @@ export function SocialReviewSection({
           reviews.map((review) => {
             const palette = getAvatarPalette(review.authorUsername || review.userUuid);
             const initial = getInitial(review.authorUsername || review.userUuid);
-            const isMyReview = user?.uuid === review.userUuid;
+            const isMyReview = Boolean(user?.uuid && user.uuid === review.userUuid);
             const isThreadOpen = openThreads[review.id] ?? false;
             const comments = review.commentCount;
 
@@ -458,12 +461,23 @@ export function SocialReviewSection({
                     {/* Yes button */}
                     <button
                       type="button"
-                      disabled={isArchived}
+                      disabled={isArchived || isMyReview}
                       onClick={() => handleVote(review.id, review.currentUserVote, true)}
-                      className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors cursor-pointer ${
+                      title={
+                        isArchived
+                          ? "Reviews are archived"
+                          : isMyReview
+                            ? "You cannot vote on your own review"
+                            : undefined
+                      }
+                      className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors ${
+                        isArchived || isMyReview
+                          ? "cursor-not-allowed opacity-50"
+                          : "cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-700"
+                      } ${
                         review.currentUserVote === ReviewVoteType.HELPFUL
                           ? "border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold"
-                          : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-600 dark:text-zinc-300"
+                          : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300"
                       }`}
                     >
                       <ThumbsUp size={13} />
@@ -478,12 +492,23 @@ export function SocialReviewSection({
                     {/* No button */}
                     <button
                       type="button"
-                      disabled={isArchived}
+                      disabled={isArchived || isMyReview}
                       onClick={() => handleVote(review.id, review.currentUserVote, false)}
-                      className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors cursor-pointer ${
+                      title={
+                        isArchived
+                          ? "Reviews are archived"
+                          : isMyReview
+                            ? "You cannot vote on your own review"
+                            : undefined
+                      }
+                      className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors ${
+                        isArchived || isMyReview
+                          ? "cursor-not-allowed opacity-50"
+                          : "cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-700"
+                      } ${
                         review.currentUserVote === ReviewVoteType.UNHELPFUL
                           ? "border-rose-500 bg-rose-500/10 text-rose-600 dark:text-rose-400 font-semibold"
-                          : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-500 dark:text-zinc-400"
+                          : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
                       }`}
                     >
                       <ThumbsDown size={13} />

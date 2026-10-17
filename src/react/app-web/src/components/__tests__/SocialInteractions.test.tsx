@@ -1,6 +1,9 @@
 import { describe, it, expect, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import { renderWithProviders } from "../../test/test-utils";
+import { create } from "@bufbuild/protobuf";
+import { ReviewSchema, ReviewVoteType } from "@quadsmith/shared/gen/quadsmith/api/social_pb";
+import { mockUser, mockBuild1 } from "../../test/mocks/fixtures";
 import { SocialToolbar } from "../SocialToolbar";
 import { SaveToCollectionModal } from "../SaveToCollectionModal";
 import { SocialReviewSection } from "../SocialReviewSection";
@@ -164,6 +167,45 @@ describe("Social Interactions Components", () => {
 
       // Count increases to 6 and displays directional label
       expect(await screen.findByRole("button", { name: /you voted yes\s*6/i })).toBeInTheDocument();
+    });
+
+    it("disables voting buttons on the user's own review", async () => {
+      const ownReview = create(ReviewSchema, {
+        uuid: "018f0000-0000-7000-0000-000000000999",
+        id: "review-own-user",
+        userUuid: mockUser.uuid,
+        entityUuid: mockBuild1.uuid,
+        isRecommended: true,
+        body: "My own test review writeup.",
+        isEdited: false,
+        createdAt: { seconds: 1717000000n, nanos: 0 },
+        updatedAt: { seconds: 1717000000n, nanos: 0 },
+        authorUsername: mockUser.id,
+        authorAvatarUrl: "",
+        helpfulCount: 3,
+        unhelpfulCount: 0,
+        commentCount: 0,
+        currentUserVote: ReviewVoteType.UNSPECIFIED,
+        isAuthorVerifiedOwner: false,
+      });
+
+      renderWithProviders(<SocialReviewSection target={target} entityName={targetName} />, {
+        transportOptions: {
+          reviews: [ownReview],
+        },
+      });
+
+      // Verify the review is rendered
+      expect(await screen.findByText("My own test review writeup.")).toBeInTheDocument();
+
+      // Voting buttons should be disabled and have helpful tooltip
+      const yesBtn = screen.getByRole("button", { name: /yes\s*3/i });
+      const noBtn = screen.getByRole("button", { name: /no\s*0/i });
+
+      expect(yesBtn).toBeDisabled();
+      expect(noBtn).toBeDisabled();
+      expect(yesBtn).toHaveAttribute("title", "You cannot vote on your own review");
+      expect(noBtn).toHaveAttribute("title", "You cannot vote on your own review");
     });
   });
 
