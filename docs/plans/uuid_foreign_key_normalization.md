@@ -344,8 +344,8 @@ We:
 ##### <a id="composite-fk-on-collection-and-entity-id" >Keep Denormalized Columns and Add Composite Foreign Keys</a>
 
 Retain `collection` and `entity_id` on `reviews`, `questions`, and
-`collection_items` and add
-`FOREIGN KEY (collection, entity_id) REFERENCES entities(collection, id) ON UPDATE CASCADE`.
+`collection_items` and add `FOREIGN KEY (collection, entity_id)`
+`REFERENCES entities(collection, id) ON UPDATE CASCADE`.
 
 **Pros:**
 

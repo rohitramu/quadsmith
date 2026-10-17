@@ -1,4 +1,4 @@
-.PHONY: all build sandbox generate clean test ci-test update-snapshots vendor tool breaking-change test-breaking warn-breaking
+.PHONY: all build sandbox generate fmt verify clean test update-snapshots vendor tool breaking-change test-breaking warn-breaking
 
 export GOWORK := $(shell pwd)/src/go/go.work
 
@@ -40,23 +40,25 @@ tidy:
 fmt: $(VENDOR_PLUGINS)
 	@echo "--- Formatting Python code ---"
 	@if command -v uvx >/dev/null 2>&1; then \
-		uvx ruff check --select I --fix tools/ >/dev/null 2>&1 || true; \
-		uvx ruff format tools/ >/dev/null 2>&1 || true; \
+		uvx ruff check --select I --fix tools/; \
+		uvx ruff format tools/; \
 	elif command -v ruff >/dev/null 2>&1; then \
-		ruff check --select I --fix tools/ >/dev/null 2>&1 || true; \
-		ruff format tools/ >/dev/null 2>&1 || true; \
+		ruff check --select I --fix tools/; \
+		ruff format tools/; \
 	fi
 	@echo "--- Formatting Go code with gofmt ---"
 	@gofmt -s -w $(shell find . -name "*.go" -not -path "*/vendor/*" -not -path "*/.tmp/*")
 	@echo "--- Formatting TypeScript, HTML, CSS with Prettier ---"
-	@npx --prefix src/react/app-web prettier --write "src/react/app-web/index.html" "src/react/app-web/src/**/*.{ts,tsx,css,html}" "src/react/shared/src/**/*.{ts,tsx,css,html}" >/dev/null 2>&1 || true
+	@npx --prefix src/react/app-web prettier --write "src/react/app-web/index.html" "src/react/app-web/src/**/*.{ts,tsx,css,html}" "src/react/shared/src/**/*.{ts,tsx,css,html}" >/dev/null
 	@echo "--- Formatting and linting Markdown ---"
-	@npx --prefix src/react/app-web prettier --ignore-path .prettierignore --write "**/*.md" >/dev/null 2>&1 || true
-	@npx --prefix src/react/app-web markdownlint -c .markdownlint.json --ignore-path .markdownlintignore --fix "**/*.md" >/dev/null 2>&1 || true
+	@npx --prefix src/react/app-web prettier --prose-wrap always --ignore-path .prettierignore --write "**/*.md" >/dev/null
+	@npx --prefix src/react/app-web markdownlint -c .markdownlint.json --ignore-path .markdownlintignore --fix "**/*.md"
 	@echo "--- Formatting Protobuf with buf ---"
 	@cd src/proto && PATH="$(shell pwd)/bin:$$PATH" buf format -w
 	@echo "--- Formatting textproto files with txtpbfmt ---"
 	@find src test -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
+	@echo "--- Formatting SQL files with sql-formatter ---"
+	@for f in src/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$$f"; done
 
 build: tidy fmt generate
 	@echo "--- Verifying Protobuf regex patterns (Go RE2) ---"
@@ -183,23 +185,11 @@ bin/.generate_cli.sentinel: $(CLI_FILES) bin/.generate_proto.sentinel
 
 generate: bin/.generate_proto.sentinel bin/.format_sql.sentinel bin/.generate_cli.sentinel
 
-test: generate bin/qs bin/qsops
-	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
-	@echo "--- Running Go Tests ---"
-	@cd src/go/shared && go test -mod=vendor -count=1 ./...
-	@cd src/go/server-api && go test -mod=vendor -count=1 ./...
-	@cd src/go/server-ops && go test -mod=vendor -count=1 ./...
-	@cd src/go/server-jobs && go test -mod=vendor -count=1 ./...
-	@cd src/go/server-web && go test -mod=vendor -count=1 ./...
-	@cd src/go/cli && go test -mod=vendor ./...
-	@cd src/go/cli-ops && go test -mod=vendor ./...
-	@echo "--- Running Web UI Tests ---"
-	@cd src/react/app-web && npm test
-	@echo "--- Running E2E Sandbox Tests (Desktop Chrome & Mobile Chrome) ---"
-	@./test/run_sandbox_tests.sh $(if $(PROJECT),--project $(PROJECT),--project chromium-desktop --project chromium-mobile) $(if $(SHARD),--shard=$(SHARD)) $(TOOL_ARGS)
-	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
+verify: generate fmt
+	@echo "--- Verifying Clean Git Working Tree ---"
+	@git diff --exit-code || (echo "Code generation or formatting is out of sync. Please run 'make generate fmt' and commit the changes." && exit 1)
 
-ci-test: generate bin/qs bin/qsops
+test: generate fmt bin/qs bin/qsops
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 	@echo "--- Running Go Tests ---"
 	@cd src/go/shared && go test -mod=vendor -count=1 ./...
@@ -212,24 +202,12 @@ ci-test: generate bin/qs bin/qsops
 	@echo "--- Running Web UI Tests ---"
 	@cd src/react/app-web && npm test
 	@echo "--- Running Full E2E Sandbox Tests (All Browsers & Profiles) ---"
-	@./test/run_sandbox_tests.sh $(if $(SHARD),--shard=$(SHARD)) $(TOOL_ARGS)
+	@./test/run_sandbox_tests.sh $(if $(PROJECT),--project=$(PROJECT)) $(if $(SHARD),--shard=$(SHARD)) $(TOOL_ARGS)
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 
 update-snapshots:
-	@echo "--- Building Web E2E Container ---"
-	@docker build -t quadsmith-web-e2e -f test/web/Dockerfile .
-	@echo "--- Updating Web Visual Regression Snapshots ---"
-	@mkdir -p .tmp/playwright-report
-	@mkdir -p test/web/snapshots
-	@docker run --rm --ipc=host --network host \
-		-v $(CURDIR)/test/web/snapshots:/app/snapshots \
-		-v $(CURDIR)/.tmp/playwright-report:/app/playwright-report \
-		-e BASE_URL=$${QS_WEB_URL:-http://127.0.0.1:8080} \
-		-e HOST_UID=$$(id -u) \
-		-e HOST_GID=$$(id -g) \
-		$${PLAYWRIGHT_WORKERS:+-e PLAYWRIGHT_WORKERS=$${PLAYWRIGHT_WORKERS}} \
-		-e UPDATE_SNAPSHOTS=true \
-		quadsmith-web-e2e $(if $(PROJECT),--project $(PROJECT)) $(TOOL_ARGS)
+	@echo "--- Updating Web Visual Regression Snapshots Across All Browsers ---"
+	@UPDATE_SNAPSHOTS=true ./test/run_sandbox_tests.sh $(if $(PROJECT),--project=$(PROJECT)) $(TOOL_ARGS)
 
 clean:
 	@echo "--- Cleaning Workspace ---"

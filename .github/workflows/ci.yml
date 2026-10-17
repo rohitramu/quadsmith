@@ -17,6 +17,7 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: "1.27"
+          cache-dependency-path: "src/go/go.work.sum"
 
       - name: Sync Go Vendor Dependencies
         run: cd src/go && go work vendor
@@ -38,43 +39,11 @@ jobs:
         run: npm ci
         working-directory: ./src/react
 
-      - name: Verify Code Generation
-        run: |
-          make generate
-          # Ensure that no files were modified by make generate
-          git diff --exit-code || (echo "Generated code is out of sync. Please run 'make generate' and commit the changes." && exit 1)
-
-      - name: Verify Code Formatting
-        run: |
-          # Format Go
-          find . -name "*.go" -not -path "*/vendor/*" -exec gofmt -s -w {} +
-
-          # Format Protobuf
-          cd src/proto && ../../bin/buf format -w && cd ../..
-
-          # Format Textproto
-          find src test -name "*.textproto" -exec ./bin/txtpbfmt -expand_all_children {} +
-
-          # Format TypeScript, HTML, and CSS
-          npx --prefix src/react/app-web prettier --write "src/react/app-web/index.html" "src/react/app-web/src/**/*.{ts,tsx,css,html}" "src/react/shared/src/**/*.{ts,tsx,css,html}"
-
-          # Format and Lint Markdown
-          npx --prefix src/react/app-web prettier --ignore-path .prettierignore --write "**/*.md"
-          npx --prefix src/react/app-web markdownlint -c .markdownlint.json --ignore-path .markdownlintignore --fix "**/*.md"
-
-          # Format Python (isort + ruff format)
-          uvx ruff check --select I --fix tools/
-          uvx ruff format tools/
-
-          # Format SQL
-          for f in src/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$f"; done
-
-          # Ensure that no files were modified by the formatters
-          git diff --exit-code || (echo "Code formatting is out of sync. Please ensure you are running formatters on Python, Go, TypeScript, HTML, CSS, Protobuf, Textproto, and Markdown files." && exit 1)
+      - name: Verify Code Generation & Formatting
+        run: make verify
 
   test:
     name: Test (Shard ${{ matrix.shard }})
-    needs: verify
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -92,6 +61,7 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: "1.27"
+          cache-dependency-path: "src/go/go.work.sum"
 
       - name: Sync Go Vendor Dependencies
         run: cd src/go && go work vendor
@@ -114,7 +84,7 @@ jobs:
         working-directory: ./src/react
 
       - name: Run Tests (Shard ${{ matrix.shard }})
-        run: make ci-test SHARD=${{ matrix.shard }}
+        run: make test SHARD=${{ matrix.shard }}
 
       - name: Upload Playwright Failure Report
         if: failure()

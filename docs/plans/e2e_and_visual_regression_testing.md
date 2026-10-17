@@ -68,7 +68,7 @@ and network faults).
 ```mermaid
 flowchart TD
     subgraph Execution Environments
-        LocalSandbox["Local Docker Sandbox (make test / make ci-test)"]
+        LocalSandbox["Local Docker Sandbox (make test)"]
         Staging["Staging Deployment (staging.quadsmith.com)"]
         Prod["Production Deployment (quadsmith.com)"]
     end
@@ -528,49 +528,51 @@ and CI workflows:
 
 1. **Sandbox Test Script (`test/run_sandbox_tests.sh`)**:
    - When `test/run_sandbox_tests.sh` executes (as part of `make test` or
-     `make ci-test`), it:
+     `make update-snapshots`), it:
      1. Starts and verifies the health of the Docker sandbox (`db`, `api`,
         `ops`, `jobs`, `web`).
      2. Runs Go sandbox tests (`go test -count=1 -v ./test/...`).
      3. Builds the Playwright container image (`quadsmith-web-e2e`).
-     4. Runs the Playwright container against `http://127.0.0.1:8080`, mounting
+     4. Runs the Playwright container against `http://127.0.0.1:8080` across all
+        5 browser profiles (`chromium-desktop`, `chromium-mobile`,
+        `firefox-desktop`, `webkit-desktop`, `webkit-mobile`), mounting
         `test/web/snapshots` and `.tmp/playwright-report`.
      5. Automatically cleans up sandbox containers via the existing `trap` on
         exit.
 2. **Targeted Makefile Commands**:
 
    ```makefile
-   # Run unit tests and sandbox E2E tests targeting Chrome Desktop & Chrome Mobile
-   test: generate bin/qs bin/qsops
-       @./test/run_sandbox_tests.sh $(if $(PROJECT),--project $(PROJECT),--project chromium-desktop --project chromium-mobile) $(if $(SHARD),--shard=$(SHARD)) $(TOOL_ARGS)
+   # Verify code generation, formatting, and linting without git diffs
+   verify: generate fmt
+       @git diff --exit-code
 
-   # Run unit tests and full sandbox test suite across all 5 browser profiles
-   ci-test: generate bin/qs bin/qsops
-       @./test/run_sandbox_tests.sh $(if $(SHARD),--shard=$(SHARD)) $(TOOL_ARGS)
+   # Run formatting, unit tests, and full sandbox E2E suite across all 5 browser profiles
+   test: generate fmt bin/qs bin/qsops
+       @./test/run_sandbox_tests.sh $(if $(PROJECT),--project=$(PROJECT)) $(if $(SHARD),--shard=$(SHARD)) $(TOOL_ARGS)
 
-   # Re-baseline golden screenshots after intentional UI changes
+   # Re-baseline golden screenshots across all 5 browser profiles against a fresh sandbox
    update-snapshots:
-       @docker build -t quadsmith-web-e2e -f test/web/Dockerfile .
-       @docker run --rm --network host \
-           -v $(CURDIR)/test/web/snapshots:/app/snapshots \
-           -v $(CURDIR)/.tmp/playwright-report:/app/playwright-report \
-           -e BASE_URL=$${QS_WEB_URL:-http://127.0.0.1:8080} \
-           -e UPDATE_SNAPSHOTS=true \
-           quadsmith-web-e2e $(if $(PROJECT),--project $(PROJECT)) $(TOOL_ARGS)
+       @UPDATE_SNAPSHOTS=true ./test/run_sandbox_tests.sh $(if $(PROJECT),--project=$(PROJECT)) $(TOOL_ARGS)
    ```
 
 3. **Continuous Integration Pipeline with Sharding
    (`.github/workflows/ci.yml`)**:
-   - `ci.yml` is structured into two sequential stages:
-     1. `verify`: Runs code generation, formatting, and linting checks in a
-        single job.
-     2. `test`: Executes `make ci-test SHARD=${{ matrix.shard }}` in parallel
+   - `ci.yml` executes two independent jobs in parallel on every push and pull
+     request:
+     1. `verify`: Runs `make verify` to enforce code generation, formatting, and
+        linting checks across Go, Protobuf, Textproto, TypeScript/HTML/CSS,
+        Markdown, Python, and SQL.
+     2. `test`: Executes `make test SHARD=${{ matrix.shard }}` in parallel
         across runner nodes using a sharding matrix (`shard: [1/2, 2/2]`).
-   - Both stages synchronize Go workspace vendor dependencies (`go work vendor`)
-     and install frozen web dependencies via `npm ci` prior to execution,
-     ensuring hermetic clean-runner builds without lockfile mutations.
-   - Each CI runner node executes a disjoint slice of the 110-test multi-browser
-     matrix concurrently, reducing CI wall-clock test execution time by ~50%.
+   - Running `verify` and `test` in parallel ensures formatting or documentation
+     linting errors never mask functional or visual regressions in the test
+     shards.
+   - Both jobs synchronize Go workspace vendor dependencies (`go work vendor`),
+     cache Go dependencies via `src/go/go.work.sum`, and install frozen web
+     dependencies via `npm ci` prior to execution, ensuring hermetic
+     clean-runner builds without lockfile mutations.
+   - Each CI runner node executes a disjoint slice of the multi-browser matrix
+     concurrently, reducing CI wall-clock test execution time by ~50%.
    - On failure, individual shard test reports from `.tmp/playwright-report` are
      uploaded via `actions/upload-artifact` using sanitized shard identifiers
      (e.g., `playwright-report-shard-1`) for immediate debugging.

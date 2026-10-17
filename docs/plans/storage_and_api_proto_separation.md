@@ -260,10 +260,12 @@ shared definition of the `entities`-inherited field set (`id`, `name`,
   remains byte-for-byte identical.
 - **`protoc-gen-store`**: Excludes the 8 inherited fields from `activeFields`
   (`INSERT INTO <child>`, `UPDATE <child>`, and `Export<PluralName>`) while
-  keeping all fields in `readableFields`
-  (`SELECT ... FROM <child> INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid`).
-  Because `activeFields` for `inherits: "entities"` tables contains the exact
-  same child-table columns as before, the `hasNonUUIDField` check in
+  keeping all fields in `readableFields` (`SELECT ... FROM <child>`
+  `INNER JOIN entities USING (uuid)`
+  `LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u`
+  `ON u.u_uuid = entities.user_uuid`). Because `activeFields` for
+  `inherits: "entities"` tables contains the exact same child-table columns as
+  before, the `hasNonUUIDField` check in
   [`protoc-gen-store/main.go`](../../src/go/shared/cmd/protoc-gen-store/main.go)
   and the generated `ExportBuilds` and `Export<Component>s` functions remain
   100% unchanged.

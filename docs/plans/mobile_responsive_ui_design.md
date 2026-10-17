@@ -587,8 +587,10 @@ metadata suffered from stark inconsistencies:
     and lacked an Add action entirely in the empty state.
 - **Unified `+ Add New` Button Standard**:
   - When viewing one's own profile (`isOwner`), all three tabs now display the
-    identical primary emerald button:
-    `inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-500/20 transition-colors cursor-pointer self-start sm:self-auto`.
+    identical primary emerald button (`bg-emerald-600 hover:bg-emerald-500`
+    `text-white font-semibold text-xs rounded-xl px-3.5 py-1.5 shadow-md`
+    `shadow-emerald-500/20 inline-flex items-center gap-1.5 cursor-pointer`
+    `self-start sm:self-auto`).
   - The button uses `<Plus size={14} />` with the clean text label `+ Add New`
     across both subheaders and empty states.
   - Accessible names (`aria-label="Add Build"`, `aria-label="Add Collection"`,
@@ -605,11 +607,12 @@ metadata suffered from stark inconsistencies:
     and
     [`CollectionIcon`](../../src/react/shared/src/components/CollectionIcon.tsx)
     primitives:
-    1. **Category Pills**: Render
-       `<CollectionBadge collection={collectionKey} label={item.collectionName} variant="pill" size="xs" />`,
-       instantly displaying the official design-system theme colors (e.g. red
-       for Motors, slate for Frames, blue for Flight Controllers, lime for
-       Batteries, teal for Propellers, and pink for Video Transmitters).
+    1. **Category Pills**: Render `<CollectionBadge>` with
+       `collection={collectionKey}`, `label={item.collectionName}`,
+       `variant="pill"`, and `size="xs"`, instantly displaying the official
+       design-system theme colors (e.g. red for Motors, slate for Frames, blue
+       for Flight Controllers, lime for Batteries, teal for Propellers, and pink
+       for Video Transmitters).
     2. **Component Icons**: Render
        `<CollectionIcon collection={collectionKey} color={true} size={18} />`
        housed inside an icon tile styled with `color.iconBgClass`, giving each

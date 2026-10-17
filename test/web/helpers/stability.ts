@@ -10,11 +10,7 @@ export async function preparePageForSnapshot(
   page: Page,
   options: StabilityOptions = {},
 ): Promise<void> {
-  const {
-    theme = "dark",
-    fixedTime = "2026-10-15T12:00:00Z",
-    disableAnimations = true,
-  } = options;
+  const { theme = "dark", fixedTime = "2026-10-15T12:00:00Z", disableAnimations = true } = options;
 
   // Freeze time clock for deterministic relative dates and timestamps
   try {
@@ -32,9 +28,7 @@ export async function preparePageForSnapshot(
         } else {
           document.documentElement.classList.remove("dark");
         }
-        window.dispatchEvent(
-          new CustomEvent("qs-theme-change", { detail: targetTheme }),
-        );
+        window.dispatchEvent(new CustomEvent("qs-theme-change", { detail: targetTheme }));
         window.dispatchEvent(
           new StorageEvent("storage", {
             key: "theme",
@@ -64,10 +58,16 @@ export async function preparePageForSnapshot(
     }
   }
 
-  // Disable CSS animations, keyframes, transitions, and smooth scrolling
+  // Disable CSS animations, keyframes, transitions, and smooth scrolling.
+  // Use page.evaluate instead of page.addStyleTag because Playwright's WebKit
+  // addStyleTag implementation listens for document securitypolicyviolation
+  // events and falsely rejects if an external image redirect triggers img-src CSP.
   if (disableAnimations) {
-    await page.addStyleTag({
-      content: `
+    await page.evaluate(() => {
+      if (document.getElementById("qs-stability-style")) return;
+      const style = document.createElement("style");
+      style.id = "qs-stability-style";
+      style.textContent = `
         *, *::before, *::after {
           -moz-animation: none !important;
           -webkit-animation: none !important;
@@ -80,7 +80,8 @@ export async function preparePageForSnapshot(
         input, textarea {
           caret-color: transparent !important;
         }
-      `,
+      `;
+      document.head.appendChild(style);
     });
   }
 

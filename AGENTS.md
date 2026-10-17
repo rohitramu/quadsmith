@@ -159,8 +159,8 @@ corroboration checks.
       with the proposal explanation directly under it (using Mermaid diagrams,
       tables, images, UI screenshots, UI concept images, artifacts, or code
       snippets with path references as appropriate), and nested collapsible
-      `<details><summary><strong>Alternatives considered</strong></summary> ... </details>`
-      containing 1 sub-heading per alternative
+      `<details><summary><strong>Alternatives considered</strong></summary>`
+      `... </details>` containing 1 sub-heading per alternative
       (`##### <a id="custom-anchor-text" >Alternative Name</a>`), each with an
       unbulleted ~2 sentence summary explaining the alternative, an unbulleted
       `**Pros:**` label, a blank line, a bulleted list of pros compared to the
@@ -168,8 +168,8 @@ corroboration checks.
       a bulleted list of cons compared to the proposal.
     - **4. Alternatives considered (optional)**: High-level conceptual
       alternatives inside a collapsible
-      `<details><summary><strong>Alternatives considered</strong></summary> ... </details>`
-      block, containing 1 sub-heading per alternative
+      `<details><summary><strong>Alternatives considered</strong></summary>`
+      `... </details>` block, containing 1 sub-heading per alternative
       (`### <a id="custom-anchor-text" >Alternative Name</a>`), each with an
       unbulleted ~2 sentence summary explaining the alternative, an unbulleted
       `**Pros:**` label, a blank line, a bulleted list of pros, a blank line, an
@@ -242,7 +242,7 @@ corroboration checks.
 
 - **Long-Running Commands & Non-Blocking Execution**:
   - Never execute potentially long-running commands (e.g., full test suites
-    `make test` / `make ci-test`, Docker container builds, heavy code
+    `make test`, `make update-snapshots`, Docker container builds, heavy code
     compilation, or benchmark scripts) with large synchronous wait windows that
     risk hanging indefinitely.
   - Always dispatch potentially long-running commands to the background using a
@@ -272,20 +272,23 @@ corroboration checks.
 - Always run `make test` and ensure all tests pass whenever you make changes to
   functional code, schemas, or tests. Do not consider a task complete or push
   code if there are failing tests.
-- You do not need to run the test suite if system behavior has not changed
-  (e.g., when only updating `AGENTS.md` or documentation).
+- When only updating `AGENTS.md` or documentation (where system behavior has not
+  changed), you do not need to run `make test`, but you **must** run
+  `make verify` (or `make fmt`) to ensure formatting and Markdown linting pass
+  before committing.
 - **Playwright Visual Regression Snapshots**:
   - Only update Playwright screenshots (`make update-snapshots` or
     `UPDATE_SNAPSHOTS=true`) when a change is explicitly expected to alter the
     visual rendering of those specific screens. Never update snapshots
     preemptively or blindly to silence test failures.
   - When screenshots are expected to change, always run the Playwright tests in
-    standard comparison mode first (`make test` or `make ci-test`) to verify
-    that **only** the expected screenshot comparisons fail and no unrelated
-    pages have regressed.
+    standard comparison mode first (`make test`) to verify that **only** the
+    expected screenshot comparisons fail across all 5 browser profiles and no
+    unrelated pages have regressed.
   - Once you have confirmed that only the expected screenshot comparisons fail,
-    update the snapshots, verify the modified files in `test/web/snapshots/`,
-    and re-run the tests to confirm they pass.
+    run `make update-snapshots` to update baselines across all 5 browser
+    profiles, verify the modified files in `test/web/snapshots/`, and re-run
+    `make test` to confirm they pass.
 
 ## UI Changes & Visual Previews
 
