@@ -754,7 +754,6 @@ func newTasksCmd() *cobra.Command {
 		},
 	})
 
-	var fullVacuum bool
 	var forceSeed bool
 	triggerCmd := &cobra.Command{
 		Use:   "trigger [task_name]",
@@ -856,26 +855,6 @@ func newTasksCmd() *cobra.Command {
 				}
 				return nil
 
-			case "run_database_maintenance":
-				resp, err := client.RunDatabaseMaintenance(ctx, connect.NewRequest(&pb.RunDatabaseMaintenanceRequest{
-					FullVacuum: fullVacuum,
-				}))
-				if err != nil {
-					return fmt.Errorf("failed to trigger run_database_maintenance: %w", err)
-				}
-				if jsonOut {
-					out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
-					fmt.Println(string(out))
-					return nil
-				}
-				jobID := resp.Header().Get("X-Job-Id")
-				if jobID != "" {
-					fmt.Printf("✓ %s (duration: %d ms, Job ID: %s)\n", resp.Msg.GetMessage(), resp.Msg.GetDurationMs(), jobID)
-				} else {
-					fmt.Printf("✓ %s (duration: %d ms)\n", resp.Msg.GetMessage(), resp.Msg.GetDurationMs())
-				}
-				return nil
-
 			case "seed_database":
 				resp, err := client.SeedDatabase(ctx, connect.NewRequest(&pb.SeedDatabaseRequest{
 					Force: forceSeed,
@@ -901,7 +880,6 @@ func newTasksCmd() *cobra.Command {
 			}
 		},
 	}
-	triggerCmd.Flags().BoolVar(&fullVacuum, "full-vacuum", false, "Execute FULL vacuum (for run_database_maintenance)")
 	triggerCmd.Flags().BoolVar(&forceSeed, "force", false, "Force re-seeding (for seed_database)")
 	cmd.AddCommand(triggerCmd)
 

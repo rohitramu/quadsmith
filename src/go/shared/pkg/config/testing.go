@@ -177,7 +177,7 @@ func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *configpb.Ops
 			AutoApprove:      proto.Bool(true),
 			DefaultHours:     proto.Int32(2),
 			MaxHours:         proto.Int32(12),
-			SensitiveMethods: []string{"RunDatabaseMaintenance", "SeedDatabase"},
+			SensitiveMethods: []string{"SeedDatabase", "RevokeInternalToken"},
 		},
 		Oauth: &configpb.OAuthConfig{
 			Provider:     proto.String("github"),
@@ -231,13 +231,6 @@ func NewTestJobServerConfig(t testing.TB) *configpb.JobServerConfig {
 			Schedule: &configpb.CleanupOrphanedBlobsSchedule_Interval{
 				Interval: durationpb.New(5 * time.Minute),
 			},
-		},
-		RunDatabaseMaintenance: &configpb.RunDatabaseMaintenanceSchedule{
-			Enabled: proto.Bool(false),
-			Schedule: &configpb.RunDatabaseMaintenanceSchedule_Cron{
-				Cron: "0 3 * * 0",
-			},
-			FullVacuum: proto.Bool(false),
 		},
 		PurgeSoftDeletedAccounts: &configpb.PurgeSoftDeletedAccountsSchedule{
 			Enabled: proto.Bool(true),

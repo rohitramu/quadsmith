@@ -169,12 +169,12 @@ func TestOpsServer_JITElevation(t *testing.T) {
 	ctx := context.Background()
 	operatorClient := newOpsClient("qs_op_sandbox_token_12345")
 
-	// 1. RunDatabaseMaintenance is a sensitive method requiring JIT elevation
-	_, err := operatorClient.RunDatabaseMaintenance(ctx, connect.NewRequest(&pb.RunDatabaseMaintenanceRequest{
-		FullVacuum: false,
+	// 1. SeedDatabase is a sensitive method requiring JIT elevation
+	_, err := operatorClient.SeedDatabase(ctx, connect.NewRequest(&pb.SeedDatabaseRequest{
+		Force: false,
 	}))
 	if err == nil {
-		t.Fatalf("Expected RunDatabaseMaintenance to fail without active JIT elevation")
+		t.Fatalf("Expected SeedDatabase to fail without active JIT elevation")
 	}
 	if connect.CodeOf(err) != connect.CodePermissionDenied {
 		t.Errorf("Expected CodePermissionDenied for JIT-required method, got %v: %v", connect.CodeOf(err), err)
@@ -183,7 +183,7 @@ func TestOpsServer_JITElevation(t *testing.T) {
 	// 2. Acquire JIT Elevation (auto-approved in sandbox/test)
 	grantRes, err := operatorClient.AcquireJitGrant(ctx, connect.NewRequest(&pb.AcquireJitGrantRequest{
 		Hours:     2,
-		Reason:    "E2E Integration Test Database Maintenance",
+		Reason:    "E2E Integration Test Seed Database",
 		Operation: "*",
 	}))
 	if err != nil {
@@ -207,21 +207,21 @@ func TestOpsServer_JITElevation(t *testing.T) {
 		t.Errorf("Expected active JIT grant %s in GetCurrentOperator", grant.Id)
 	}
 
-	// 4. Now RunDatabaseMaintenance succeeds with active JIT!
-	maintRes, err := operatorClient.RunDatabaseMaintenance(ctx, connect.NewRequest(&pb.RunDatabaseMaintenanceRequest{
-		FullVacuum: false,
+	// 4. Now SeedDatabase succeeds with active JIT!
+	seedRes, err := operatorClient.SeedDatabase(ctx, connect.NewRequest(&pb.SeedDatabaseRequest{
+		Force: false,
 	}))
 	if err != nil {
-		t.Fatalf("RunDatabaseMaintenance failed despite active JIT: %v", err)
+		t.Fatalf("SeedDatabase failed despite active JIT: %v", err)
 	}
-	if !maintRes.Msg.Success {
-		t.Errorf("Expected maintenance success: %s", maintRes.Msg.Message)
+	if !seedRes.Msg.Success {
+		t.Errorf("Expected seed success: %s", seedRes.Msg.Message)
 	}
 
 	// Verify audit record stores jit_grant_uuid and projects jit_grant_id via LEFT JOIN
 	time.Sleep(50 * time.Millisecond)
 	auditRes, err := operatorClient.ListInternalApiCalls(ctx, connect.NewRequest(&pb.ListInternalApiCallsRequest{
-		MethodFilter: "RunDatabaseMaintenance",
+		MethodFilter: "SeedDatabase",
 		Limit:        5,
 	}))
 	if err != nil {
@@ -235,7 +235,7 @@ func TestOpsServer_JITElevation(t *testing.T) {
 		}
 	}
 	if !foundJitCall {
-		t.Errorf("Expected audit record for RunDatabaseMaintenance with jit_grant_uuid=%s and jit_grant_id=%s", grant.Uuid, grant.Id)
+		t.Errorf("Expected audit record for SeedDatabase with jit_grant_uuid=%s and jit_grant_id=%s", grant.Uuid, grant.Id)
 	}
 
 	// 5. Extend JIT Grant
@@ -262,11 +262,11 @@ func TestOpsServer_JITElevation(t *testing.T) {
 	}
 
 	// 7. Verify subsequent sensitive method fails again
-	_, err = operatorClient.RunDatabaseMaintenance(ctx, connect.NewRequest(&pb.RunDatabaseMaintenanceRequest{
-		FullVacuum: false,
+	_, err = operatorClient.SeedDatabase(ctx, connect.NewRequest(&pb.SeedDatabaseRequest{
+		Force: false,
 	}))
 	if err == nil {
-		t.Fatalf("Expected RunDatabaseMaintenance to fail after JIT revocation")
+		t.Fatalf("Expected SeedDatabase to fail after JIT revocation")
 	}
 	if connect.CodeOf(err) != connect.CodePermissionDenied {
 		t.Errorf("Expected CodePermissionDenied after JIT revocation, got %v: %v", connect.CodeOf(err), err)
@@ -318,7 +318,6 @@ func TestOpsServer_TasksJobsAndAudit(t *testing.T) {
 		"cleanup_orphaned_blobs",
 		"purge_soft_deleted_accounts",
 		"send_username_release_warnings",
-		"run_database_maintenance",
 		"seed_database",
 	}
 

@@ -122,15 +122,12 @@ Keep `ListJobs` and `GetJob` on `OpsService` in `server-ops`.
 
 In
 [`src/proto/quadsmith/ops/ops.proto`](../../src/proto/quadsmith/ops/ops.proto),
-all seven operational and maintenance tasks are defined as dedicated RPCs
-(`RunDatabaseMaintenance`, `SeedDatabase`, and the five cleanup/purge tasks
-under `// Maintenance & Cleanup Tasks`), and task inspection is exposed via
+all six operational and maintenance tasks are defined as dedicated RPCs
+(`SeedDatabase` and the five cleanup/purge tasks under
+`// Maintenance & Cleanup Tasks`), and task inspection is exposed via
 `ListTasks` and `GetTask`:
 
 ```protobuf
-// Database Maintenance & Stats (Public DB quadsmith_api)
-rpc RunDatabaseMaintenance(RunDatabaseMaintenanceRequest) returns (RunDatabaseMaintenanceResponse);
-
 // Catalog Seeding
 rpc SeedDatabase(SeedDatabaseRequest) returns (SeedDatabaseResponse);
 
@@ -146,7 +143,7 @@ rpc ListTasks(ListTasksRequest) returns (ListTasksResponse);
 rpc GetTask(GetTaskRequest) returns (GetTaskResponse);
 ```
 
-When any of the seven task RPCs is executed on `server-ops`, the shared
+When any of the six task RPCs is executed on `server-ops`, the shared
 [`OpsInterceptor`](../../src/go/shared/pkg/opsauth/interceptor.go) synchronously
 writes the job execution audit record to `quadsmith_ops.internal_api_calls` and
 returns the generated job identifier in the `X-Job-Id` response header.
@@ -325,10 +322,9 @@ message JobServerConfig {
   optional CleanupExpiredTokensSchedule cleanup_expired_tokens = 7;
   optional CleanupOrphanedBlobsSchedule cleanup_orphaned_blobs = 8;
   optional PurgeSoftDeletedAccountsSchedule purge_soft_deleted_accounts = 9;
-  optional RunDatabaseMaintenanceSchedule run_database_maintenance = 10;
-  optional SendUsernameReleaseWarningsSchedule send_username_release_warnings = 11;
-  repeated InternalGroupConfig groups = 12;
-  repeated BootstrapTokenConfig bootstrap_tokens = 13;
+  optional SendUsernameReleaseWarningsSchedule send_username_release_warnings = 10;
+  repeated InternalGroupConfig groups = 11;
+  repeated BootstrapTokenConfig bootstrap_tokens = 12;
 }
 
 message CleanupExpiredOtpsSchedule {
@@ -361,15 +357,6 @@ message PurgeSoftDeletedAccountsSchedule {
     string cron = 2;
     google.protobuf.Duration interval = 3;
   }
-}
-
-message RunDatabaseMaintenanceSchedule {
-  optional bool enabled = 1;
-  oneof schedule {
-    string cron = 2;
-    google.protobuf.Duration interval = 3;
-  }
-  optional bool full_vacuum = 4;
 }
 
 message SendUsernameReleaseWarningsSchedule {
@@ -422,12 +409,6 @@ cleanup_expired_tokens {
 cleanup_orphaned_blobs {
   enabled: true
   interval { seconds: 300 } # 5 minutes
-}
-
-run_database_maintenance {
-  enabled: false
-  cron: "0 3 * * 0"
-  full_vacuum: false
 }
 
 purge_soft_deleted_accounts {
@@ -502,10 +483,10 @@ In [`src/go/cli-ops/main.go`](../../src/go/cli-ops/main.go):
   tasks, descriptions, and target procedures.
 - `qsops tasks get <task-name>`: Calls `OpsService.GetTask`, displaying the full
   description, target procedure, and default schedule.
-- `qsops tasks trigger <task-name> [--full-vacuum] [--force]`: Calls the
-  dedicated typed RPC on `OpsService` (e.g., `CleanupExpiredOtps`,
-  `PurgeSoftDeletedAccounts`, `RunDatabaseMaintenance`, `SeedDatabase`),
-  outputting the execution result and generated job ID (`X-Job-Id`).
+- `qsops tasks trigger <task-name> [--force]`: Calls the dedicated typed RPC on
+  `OpsService` (e.g., `CleanupExpiredOtps`, `PurgeSoftDeletedAccounts`,
+  `SeedDatabase`), outputting the execution result and generated job ID
+  (`X-Job-Id`).
 
 #### <a id="jobs-commands" >2. Jobs Commands (`qsops jobs` -> targets `server-jobs`)</a>
 

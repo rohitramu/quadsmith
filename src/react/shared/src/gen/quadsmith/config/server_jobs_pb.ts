@@ -21,7 +21,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_config_server_jobs: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiJxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9qb2JzLnByb3RvEhBxdWFkc21pdGguY29uZmlnIr4ICg9Kb2JTZXJ2ZXJDb25maWcSGAoLZW52aXJvbm1lbnQYASABKAlIAIgBARIuCgZzZXJ2ZXIYAiABKAsyHi5xdWFkc21pdGguY29uZmlnLlNlcnZlckNvbmZpZxIbCg5vcHNfc2VydmVyX3VybBgDIAEoCUgBiAEBEhcKCmF1dGhfdG9rZW4YBCABKAlIAogBARI7ChFpbnRlcm5hbF9kYXRhYmFzZRgFIAEoCzIgLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VDb25maWcSTwoUY2xlYW51cF9leHBpcmVkX290cHMYBiABKAsyLC5xdWFkc21pdGguY29uZmlnLkNsZWFudXBFeHBpcmVkT3Rwc1NjaGVkdWxlSAOIAQESUwoWY2xlYW51cF9leHBpcmVkX3Rva2VucxgHIAEoCzIuLnF1YWRzbWl0aC5jb25maWcuQ2xlYW51cEV4cGlyZWRUb2tlbnNTY2hlZHVsZUgEiAEBElMKFmNsZWFudXBfb3JwaGFuZWRfYmxvYnMYCCABKAsyLi5xdWFkc21pdGguY29uZmlnLkNsZWFudXBPcnBoYW5lZEJsb2JzU2NoZWR1bGVIBYgBARJcChtwdXJnZV9zb2Z0X2RlbGV0ZWRfYWNjb3VudHMYCSABKAsyMi5xdWFkc21pdGguY29uZmlnLlB1cmdlU29mdERlbGV0ZWRBY2NvdW50c1NjaGVkdWxlSAaIAQESVwoYcnVuX2RhdGFiYXNlX21haW50ZW5hbmNlGAogASgLMjAucXVhZHNtaXRoLmNvbmZpZy5SdW5EYXRhYmFzZU1haW50ZW5hbmNlU2NoZWR1bGVIB4gBARJiCh5zZW5kX3VzZXJuYW1lX3JlbGVhc2Vfd2FybmluZ3MYCyABKAsyNS5xdWFkc21pdGguY29uZmlnLlNlbmRVc2VybmFtZVJlbGVhc2VXYXJuaW5nc1NjaGVkdWxlSAiIAQESNQoGZ3JvdXBzGAwgAygLMiUucXVhZHNtaXRoLmNvbmZpZy5JbnRlcm5hbEdyb3VwQ29uZmlnEkAKEGJvb3RzdHJhcF90b2tlbnMYDSADKAsyJi5xdWFkc21pdGguY29uZmlnLkJvb3RzdHJhcFRva2VuQ29uZmlnQg4KDF9lbnZpcm9ubWVudEIRCg9fb3BzX3NlcnZlcl91cmxCDQoLX2F1dGhfdG9rZW5CFwoVX2NsZWFudXBfZXhwaXJlZF9vdHBzQhkKF19jbGVhbnVwX2V4cGlyZWRfdG9rZW5zQhkKF19jbGVhbnVwX29ycGhhbmVkX2Jsb2JzQh4KHF9wdXJnZV9zb2Z0X2RlbGV0ZWRfYWNjb3VudHNCGwoZX3J1bl9kYXRhYmFzZV9tYWludGVuYW5jZUIhCh9fc2VuZF91c2VybmFtZV9yZWxlYXNlX3dhcm5pbmdzIokBChpDbGVhbnVwRXhwaXJlZE90cHNTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSABCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWQiiwEKHENsZWFudXBFeHBpcmVkVG9rZW5zU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAQgoKCHNjaGVkdWxlQgoKCF9lbmFibGVkIosBChxDbGVhbnVwT3JwaGFuZWRCbG9ic1NjaGVkdWxlEhQKB2VuYWJsZWQYASABKAhIAYgBARIOCgRjcm9uGAIgASgJSAASLQoIaW50ZXJ2YWwYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IAEIKCghzY2hlZHVsZUIKCghfZW5hYmxlZCKPAQogUHVyZ2VTb2Z0RGVsZXRlZEFjY291bnRzU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAQgoKCHNjaGVkdWxlQgoKCF9lbmFibGVkIrcBCh5SdW5EYXRhYmFzZU1haW50ZW5hbmNlU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAEhgKC2Z1bGxfdmFjdXVtGAQgASgISAKIAQFCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWRCDgoMX2Z1bGxfdmFjdXVtIpIBCiNTZW5kVXNlcm5hbWVSZWxlYXNlV2FybmluZ3NTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSABCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWRCLloscXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2NvbmZpZztjb25maWdiBnByb3RvMw",
+    "CiJxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9qb2JzLnByb3RvEhBxdWFkc21pdGguY29uZmlnIsgHCg9Kb2JTZXJ2ZXJDb25maWcSGAoLZW52aXJvbm1lbnQYASABKAlIAIgBARIuCgZzZXJ2ZXIYAiABKAsyHi5xdWFkc21pdGguY29uZmlnLlNlcnZlckNvbmZpZxIbCg5vcHNfc2VydmVyX3VybBgDIAEoCUgBiAEBEhcKCmF1dGhfdG9rZW4YBCABKAlIAogBARI7ChFpbnRlcm5hbF9kYXRhYmFzZRgFIAEoCzIgLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VDb25maWcSTwoUY2xlYW51cF9leHBpcmVkX290cHMYBiABKAsyLC5xdWFkc21pdGguY29uZmlnLkNsZWFudXBFeHBpcmVkT3Rwc1NjaGVkdWxlSAOIAQESUwoWY2xlYW51cF9leHBpcmVkX3Rva2VucxgHIAEoCzIuLnF1YWRzbWl0aC5jb25maWcuQ2xlYW51cEV4cGlyZWRUb2tlbnNTY2hlZHVsZUgEiAEBElMKFmNsZWFudXBfb3JwaGFuZWRfYmxvYnMYCCABKAsyLi5xdWFkc21pdGguY29uZmlnLkNsZWFudXBPcnBoYW5lZEJsb2JzU2NoZWR1bGVIBYgBARJcChtwdXJnZV9zb2Z0X2RlbGV0ZWRfYWNjb3VudHMYCSABKAsyMi5xdWFkc21pdGguY29uZmlnLlB1cmdlU29mdERlbGV0ZWRBY2NvdW50c1NjaGVkdWxlSAaIAQESYgoec2VuZF91c2VybmFtZV9yZWxlYXNlX3dhcm5pbmdzGAogASgLMjUucXVhZHNtaXRoLmNvbmZpZy5TZW5kVXNlcm5hbWVSZWxlYXNlV2FybmluZ3NTY2hlZHVsZUgHiAEBEjUKBmdyb3VwcxgLIAMoCzIlLnF1YWRzbWl0aC5jb25maWcuSW50ZXJuYWxHcm91cENvbmZpZxJAChBib290c3RyYXBfdG9rZW5zGAwgAygLMiYucXVhZHNtaXRoLmNvbmZpZy5Cb290c3RyYXBUb2tlbkNvbmZpZ0IOCgxfZW52aXJvbm1lbnRCEQoPX29wc19zZXJ2ZXJfdXJsQg0KC19hdXRoX3Rva2VuQhcKFV9jbGVhbnVwX2V4cGlyZWRfb3Rwc0IZChdfY2xlYW51cF9leHBpcmVkX3Rva2Vuc0IZChdfY2xlYW51cF9vcnBoYW5lZF9ibG9ic0IeChxfcHVyZ2Vfc29mdF9kZWxldGVkX2FjY291bnRzQiEKH19zZW5kX3VzZXJuYW1lX3JlbGVhc2Vfd2FybmluZ3MiiQEKGkNsZWFudXBFeHBpcmVkT3Rwc1NjaGVkdWxlEhQKB2VuYWJsZWQYASABKAhIAYgBARIOCgRjcm9uGAIgASgJSAASLQoIaW50ZXJ2YWwYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IAEIKCghzY2hlZHVsZUIKCghfZW5hYmxlZCKLAQocQ2xlYW51cEV4cGlyZWRUb2tlbnNTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSABCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWQiiwEKHENsZWFudXBPcnBoYW5lZEJsb2JzU2NoZWR1bGUSFAoHZW5hYmxlZBgBIAEoCEgBiAEBEg4KBGNyb24YAiABKAlIABItCghpbnRlcnZhbBgDIAEoCzIZLmdvb2dsZS5wcm90b2J1Zi5EdXJhdGlvbkgAQgoKCHNjaGVkdWxlQgoKCF9lbmFibGVkIo8BCiBQdXJnZVNvZnREZWxldGVkQWNjb3VudHNTY2hlZHVsZRIUCgdlbmFibGVkGAEgASgISAGIAQESDgoEY3JvbhgCIAEoCUgAEi0KCGludGVydmFsGAMgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSABCCgoIc2NoZWR1bGVCCgoIX2VuYWJsZWQikgEKI1NlbmRVc2VybmFtZVJlbGVhc2VXYXJuaW5nc1NjaGVkdWxlEhQKB2VuYWJsZWQYASABKAhIAYgBARIOCgRjcm9uGAIgASgJSAASLQoIaW50ZXJ2YWwYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IAEIKCghzY2hlZHVsZUIKCghfZW5hYmxlZEIuWixxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvY29uZmlnO2NvbmZpZ2IGcHJvdG8z",
     [file_google_protobuf_duration, file_quadsmith_config_common],
   );
 
@@ -75,22 +75,17 @@ export type JobServerConfig = Message<"quadsmith.config.JobServerConfig"> & {
   purgeSoftDeletedAccounts?: PurgeSoftDeletedAccountsSchedule | undefined;
 
   /**
-   * @generated from field: optional quadsmith.config.RunDatabaseMaintenanceSchedule run_database_maintenance = 10;
-   */
-  runDatabaseMaintenance?: RunDatabaseMaintenanceSchedule | undefined;
-
-  /**
-   * @generated from field: optional quadsmith.config.SendUsernameReleaseWarningsSchedule send_username_release_warnings = 11;
+   * @generated from field: optional quadsmith.config.SendUsernameReleaseWarningsSchedule send_username_release_warnings = 10;
    */
   sendUsernameReleaseWarnings?: SendUsernameReleaseWarningsSchedule | undefined;
 
   /**
-   * @generated from field: repeated quadsmith.config.InternalGroupConfig groups = 12;
+   * @generated from field: repeated quadsmith.config.InternalGroupConfig groups = 11;
    */
   groups: InternalGroupConfig[];
 
   /**
-   * @generated from field: repeated quadsmith.config.BootstrapTokenConfig bootstrap_tokens = 13;
+   * @generated from field: repeated quadsmith.config.BootstrapTokenConfig bootstrap_tokens = 12;
    */
   bootstrapTokens: BootstrapTokenConfig[];
 };
@@ -259,50 +254,6 @@ export const PurgeSoftDeletedAccountsScheduleSchema: GenMessage<PurgeSoftDeleted
   messageDesc(file_quadsmith_config_server_jobs, 4);
 
 /**
- * @generated from message quadsmith.config.RunDatabaseMaintenanceSchedule
- */
-export type RunDatabaseMaintenanceSchedule =
-  Message<"quadsmith.config.RunDatabaseMaintenanceSchedule"> & {
-    /**
-     * @generated from field: optional bool enabled = 1;
-     */
-    enabled?: boolean | undefined;
-
-    /**
-     * @generated from oneof quadsmith.config.RunDatabaseMaintenanceSchedule.schedule
-     */
-    schedule:
-      | {
-          /**
-           * @generated from field: string cron = 2;
-           */
-          value: string;
-          case: "cron";
-        }
-      | {
-          /**
-           * @generated from field: google.protobuf.Duration interval = 3;
-           */
-          value: Duration;
-          case: "interval";
-        }
-      | { case: undefined; value?: undefined };
-
-    /**
-     * @generated from field: optional bool full_vacuum = 4;
-     */
-    fullVacuum?: boolean | undefined;
-  };
-
-/**
- * Describes the message quadsmith.config.RunDatabaseMaintenanceSchedule.
- * Use `create(RunDatabaseMaintenanceScheduleSchema)` to create a new message.
- */
-export const RunDatabaseMaintenanceScheduleSchema: GenMessage<RunDatabaseMaintenanceSchedule> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_config_server_jobs, 5);
-
-/**
  * @generated from message quadsmith.config.SendUsernameReleaseWarningsSchedule
  */
 export type SendUsernameReleaseWarningsSchedule =
@@ -339,4 +290,4 @@ export type SendUsernameReleaseWarningsSchedule =
  */
 export const SendUsernameReleaseWarningsScheduleSchema: GenMessage<SendUsernameReleaseWarningsSchedule> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_config_server_jobs, 6);
+  messageDesc(file_quadsmith_config_server_jobs, 5);

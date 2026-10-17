@@ -43,12 +43,6 @@ cleanup_orphaned_blobs {
   }
 }
 
-run_database_maintenance {
-  enabled: false
-  cron: "0 3 * * 0"
-  full_vacuum: false
-}
-
 purge_soft_deleted_accounts {
   enabled: true
   interval {

@@ -12,16 +12,11 @@ import { OpsService } from "./ops_pb";
 export const getSystemDiagnostics = OpsService.method.getSystemDiagnostics;
 
 /**
- * Database Maintenance & Stats (Public DB quadsmith_api)
+ * Database Stats (Public DB quadsmith_api)
  *
  * @generated from rpc quadsmith.ops.OpsService.GetDatabaseStats
  */
 export const getDatabaseStats = OpsService.method.getDatabaseStats;
-
-/**
- * @generated from rpc quadsmith.ops.OpsService.RunDatabaseMaintenance
- */
-export const runDatabaseMaintenance = OpsService.method.runDatabaseMaintenance;
 
 /**
  * Catalog Seeding

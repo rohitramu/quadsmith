@@ -256,31 +256,6 @@ func main() {
 		log.Printf("[JobRunner] Registered send_username_release_warnings on schedule %q", spec)
 	}
 
-	if s := cfg.GetRunDatabaseMaintenance(); s != nil && s.GetEnabled() {
-		spec, err := scheduleToCron(s.GetCron(), s.GetInterval())
-		if err != nil {
-			log.Fatalf("server-jobs: invalid schedule for run_database_maintenance: %v", err)
-		}
-		fullVacuum := s.GetFullVacuum()
-		_, err = cronRunner.AddFunc(spec, func() {
-			log.Printf("[JobRunner] Triggering run_database_maintenance (full_vacuum=%v)...", fullVacuum)
-			t0 := time.Now()
-			res, err := opsClient.RunDatabaseMaintenance(ctx, connect.NewRequest(&opspb.RunDatabaseMaintenanceRequest{
-				FullVacuum: fullVacuum,
-			}))
-			dur := time.Since(t0)
-			if err != nil {
-				log.Printf("[JobRunner] run_database_maintenance failed after %v: %v", dur, err)
-			} else {
-				log.Printf("[JobRunner] run_database_maintenance completed in %v (%s)", dur, res.Msg.GetMessage())
-			}
-		})
-		if err != nil {
-			log.Fatalf("server-jobs: failed to register run_database_maintenance cron %q: %v", spec, err)
-		}
-		log.Printf("[JobRunner] Registered run_database_maintenance on schedule %q", spec)
-	}
-
 	cronRunner.Start()
 
 	go func() {

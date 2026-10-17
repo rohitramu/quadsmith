@@ -55,7 +55,6 @@ func (s *Service) ListJobs(ctx context.Context, req *connect.Request[jobspb.List
 			'CleanupOrphanedBlobs',
 			'PurgeSoftDeletedAccounts',
 			'SendUsernameReleaseWarnings',
-			'RunDatabaseMaintenance',
 			'SeedDatabase'
 		  )
 		ORDER BY created_at DESC
@@ -113,7 +112,7 @@ func (s *Service) GetJob(ctx context.Context, req *connect.Request[jobspb.GetJob
 		SELECT uuid::text, id, method, caller, caller_type, status, duration_ms, error_message, created_at
 		FROM internal_api_calls
 		WHERE (id = $1 OR uuid::text = $1)
-		  AND method IN ('CleanupExpiredOtps', 'CleanupExpiredTokens', 'CleanupOrphanedBlobs', 'PurgeSoftDeletedAccounts', 'SendUsernameReleaseWarnings', 'RunDatabaseMaintenance', 'SeedDatabase')
+		  AND method IN ('CleanupExpiredOtps', 'CleanupExpiredTokens', 'CleanupOrphanedBlobs', 'PurgeSoftDeletedAccounts', 'SendUsernameReleaseWarnings', 'SeedDatabase')
 		LIMIT 1`
 
 	var uuid, id, method, caller, callerType, status string
@@ -167,10 +166,6 @@ func (s *Service) getScheduleForProcedure(procedure string) *string {
 		if sched := s.cfg.GetSendUsernameReleaseWarnings(); sched != nil {
 			return formatSchedule(sched.GetEnabled(), sched.GetCron(), sched.GetInterval())
 		}
-	case "RunDatabaseMaintenance":
-		if sched := s.cfg.GetRunDatabaseMaintenance(); sched != nil {
-			return formatSchedule(sched.GetEnabled(), sched.GetCron(), sched.GetInterval())
-		}
 	}
 	return nil
 }
@@ -208,8 +203,6 @@ func taskToProcedure(task string) string {
 		return "PurgeSoftDeletedAccounts"
 	case "send_username_release_warnings":
 		return "SendUsernameReleaseWarnings"
-	case "run_database_maintenance":
-		return "RunDatabaseMaintenance"
 	case "seed_database":
 		return "SeedDatabase"
 	default:
@@ -229,8 +222,6 @@ func procedureToTask(procedure string) string {
 		return "purge_soft_deleted_accounts"
 	case "SendUsernameReleaseWarnings":
 		return "send_username_release_warnings"
-	case "RunDatabaseMaintenance":
-		return "run_database_maintenance"
 	case "SeedDatabase":
 		return "seed_database"
 	default:

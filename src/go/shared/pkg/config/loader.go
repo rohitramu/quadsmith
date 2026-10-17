@@ -725,11 +725,6 @@ func ValidateJobServerConfig(c *configpb.JobServerConfig) error {
 		_, hasInterval := s.GetSchedule().(*configpb.CleanupOrphanedBlobsSchedule_Interval)
 		validateTaskSchedule("cleanup_orphaned_blobs", hasCron, s.GetCron(), hasInterval, s.GetInterval())
 	}
-	if s := c.GetRunDatabaseMaintenance(); s != nil {
-		_, hasCron := s.GetSchedule().(*configpb.RunDatabaseMaintenanceSchedule_Cron)
-		_, hasInterval := s.GetSchedule().(*configpb.RunDatabaseMaintenanceSchedule_Interval)
-		validateTaskSchedule("run_database_maintenance", hasCron, s.GetCron(), hasInterval, s.GetInterval())
-	}
 	if s := c.GetPurgeSoftDeletedAccounts(); s != nil {
 		_, hasCron := s.GetSchedule().(*configpb.PurgeSoftDeletedAccountsSchedule_Cron)
 		_, hasInterval := s.GetSchedule().(*configpb.PurgeSoftDeletedAccountsSchedule_Interval)

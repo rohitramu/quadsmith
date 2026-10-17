@@ -182,8 +182,7 @@ per-binary schema files under `src/proto/quadsmith/config/`:
   `DeveloperMapping`.
 - `server_jobs.proto`: `JobServerConfig`, `CleanupExpiredOtpsSchedule`,
   `CleanupExpiredTokensSchedule`, `CleanupOrphanedBlobsSchedule`,
-  `PurgeSoftDeletedAccountsSchedule`, `RunDatabaseMaintenanceSchedule`,
-  `SendUsernameReleaseWarningsSchedule`.
+  `PurgeSoftDeletedAccountsSchedule`, `SendUsernameReleaseWarningsSchedule`.
 - `server_web.proto`: `WebServerConfig`.
 - `cli.proto`: `CliConfig`.
 - `cli_ops.proto`: `OpsCliConfig`.

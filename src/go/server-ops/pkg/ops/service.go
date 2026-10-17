@@ -112,26 +112,6 @@ func (s *OpsService) GetDatabaseStats(ctx context.Context, _ *connect.Request[pb
 	}), nil
 }
 
-func (s *OpsService) RunDatabaseMaintenance(ctx context.Context, req *connect.Request[pb.RunDatabaseMaintenanceRequest]) (*connect.Response[pb.RunDatabaseMaintenanceResponse], error) {
-	t0 := time.Now()
-	query := "VACUUM ANALYZE;"
-	if req.Msg.GetFullVacuum() {
-		query = "VACUUM FULL ANALYZE;"
-	}
-
-	_, err := s.publicDb.Exec(ctx, query)
-	durationMs := time.Since(t0).Milliseconds()
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("maintenance failed: %w", err))
-	}
-
-	return connect.NewResponse(&pb.RunDatabaseMaintenanceResponse{
-		Success:    true,
-		Message:    fmt.Sprintf("Database maintenance executed successfully: %s", query),
-		DurationMs: durationMs,
-	}), nil
-}
-
 // ---------------------------------------------------------
 // Catalog Seeding
 // ---------------------------------------------------------
@@ -257,12 +237,6 @@ var taskCatalog = []*pb.TaskDef{
 		Procedure:       "SendUsernameReleaseWarnings",
 		Description:     "Sends release warning notifications for archived usernames approaching their 30-day hold expiration",
 		DefaultInterval: "24h",
-	},
-	{
-		Name:            "run_database_maintenance",
-		Procedure:       "RunDatabaseMaintenance",
-		Description:     "Executes PostgreSQL VACUUM and ANALYZE on public database tables",
-		DefaultInterval: "weekly",
 	},
 	{
 		Name:            "seed_database",

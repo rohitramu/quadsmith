@@ -14,9 +14,8 @@ service OpsService {
   // System Diagnostics
   rpc GetSystemDiagnostics(GetSystemDiagnosticsRequest) returns (GetSystemDiagnosticsResponse);
 
-  // Database Maintenance & Stats (Public DB quadsmith_api)
+  // Database Stats (Public DB quadsmith_api)
   rpc GetDatabaseStats(GetDatabaseStatsRequest) returns (GetDatabaseStatsResponse);
-  rpc RunDatabaseMaintenance(RunDatabaseMaintenanceRequest) returns (RunDatabaseMaintenanceResponse);
 
   // Catalog Seeding
   rpc SeedDatabase(SeedDatabaseRequest) returns (SeedDatabaseResponse);
@@ -272,16 +271,6 @@ message RevokeJitGrantRequest {
 
 message RevokeJitGrantResponse {
   bool success = 1;
-}
-
-message RunDatabaseMaintenanceRequest {
-  bool full_vacuum = 1;
-}
-
-message RunDatabaseMaintenanceResponse {
-  bool success = 1;
-  string message = 2;
-  int64 duration_ms = 3;
 }
 
 message SeedDatabaseRequest {
