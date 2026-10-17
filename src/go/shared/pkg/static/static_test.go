@@ -215,8 +215,80 @@ func TestServeSPA_ServesRegularUser(t *testing.T) {
 		t.Fatalf("Expected status 200 for regular user SPA request, got %d", rec.Code)
 	}
 
+	if got := rec.Header().Get("Cache-Control"); got != "no-cache" {
+		t.Errorf("Expected Cache-Control: no-cache for SPA HTML response, got %q", got)
+	}
+
 	body := rec.Body.String()
 	if !strings.Contains(body, "App") {
 		t.Errorf("Expected SPA HTML in response, got %s", body)
+	}
+}
+
+func TestServeSPA_StaticCachingAndWasm(t *testing.T) {
+	tempDir, err := os.MkdirTemp("", "static_cache_test_*")
+	if err != nil {
+		t.Fatalf("Failed to create temp dir: %v", err)
+	}
+	defer os.RemoveAll(tempDir)
+
+	assetsDir := filepath.Join(tempDir, "assets")
+	if err := os.MkdirAll(assetsDir, 0755); err != nil {
+		t.Fatalf("Failed to create assets dir: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(tempDir, "index.html"), []byte("<!doctype html><html><head><title>App</title></head><body>App</body></html>"), 0644); err != nil {
+		t.Fatalf("Failed to write index.html: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(assetsDir, "index-D8f3a1b2.js"), []byte("console.log('bundle');"), 0644); err != nil {
+		t.Fatalf("Failed to write hashed asset: %v", err)
+	}
+	if err := os.WriteFile(filepath.Join(tempDir, "quadsmith-engine.wasm"), []byte("\x00asm\x01\x00\x00\x00"), 0644); err != nil {
+		t.Fatalf("Failed to write wasm asset: %v", err)
+	}
+
+	handler := ServeSPA(tempDir, "")
+
+	// 1. Hashed bundle under /assets/* gets 1-year immutable Cache-Control + ETag
+	reqAsset := httptest.NewRequest(http.MethodGet, "/assets/index-D8f3a1b2.js", nil)
+	recAsset := httptest.NewRecorder()
+	handler.ServeHTTP(recAsset, reqAsset)
+	if recAsset.Code != http.StatusOK {
+		t.Fatalf("Expected 200 for hashed asset, got %d", recAsset.Code)
+	}
+	if got := recAsset.Header().Get("Cache-Control"); got != "public, max-age=31536000, immutable" {
+		t.Errorf("Expected immutable Cache-Control for /assets/*, got %q", got)
+	}
+	if recAsset.Header().Get("ETag") == "" {
+		t.Error("Expected ETag header on /assets/* response")
+	}
+
+	// 2. Unhashed WASM file gets revalidating Cache-Control, application/wasm Content-Type, ETag, and 304 support
+	reqWasm := httptest.NewRequest(http.MethodGet, "/quadsmith-engine.wasm", nil)
+	recWasm := httptest.NewRecorder()
+	handler.ServeHTTP(recWasm, reqWasm)
+	if recWasm.Code != http.StatusOK {
+		t.Fatalf("Expected 200 for WASM asset, got %d", recWasm.Code)
+	}
+	if got := recWasm.Header().Get("Cache-Control"); got != "public, max-age=3600, stale-while-revalidate=86400" {
+		t.Errorf("Expected revalidating Cache-Control for WASM, got %q", got)
+	}
+	if got := recWasm.Header().Get("Content-Type"); !strings.HasPrefix(got, "application/wasm") {
+		t.Errorf("Expected application/wasm Content-Type for WASM, got %q", got)
+	}
+	wasmETag := recWasm.Header().Get("ETag")
+	if wasmETag == "" {
+		t.Fatal("Expected non-empty ETag for WASM asset")
+	}
+
+	// Conditional request with If-None-Match returns 304 Not Modified with empty body
+	reqWasm304 := httptest.NewRequest(http.MethodGet, "/quadsmith-engine.wasm", nil)
+	reqWasm304.Header.Set("If-None-Match", wasmETag)
+	recWasm304 := httptest.NewRecorder()
+	handler.ServeHTTP(recWasm304, reqWasm304)
+	if recWasm304.Code != http.StatusNotModified {
+		t.Fatalf("Expected 304 Not Modified for matching ETag, got %d", recWasm304.Code)
+	}
+	if recWasm304.Body.Len() != 0 {
+		t.Errorf("Expected empty body on 304 response, got %d bytes", recWasm304.Body.Len())
 	}
 }

@@ -199,7 +199,7 @@ will be removed.
 2. **Ops Server (`src/go/server-ops/Dockerfile`)**:
    - Minimal Alpine runtime copying only `/app/server-ops` and
      `src/go/server-ops/config`.
-   - Exposes port 8081.
+   - Exposes port 8080.
 3. **Job Server (`src/go/server-jobs/Dockerfile`)**:
    - Background scheduler and job history server container copying only
      `/app/server-jobs` and `src/go/server-jobs/config`.
@@ -207,10 +207,10 @@ will be removed.
 4. **Web Server (`src/go/server-web/Dockerfile`)**:
    - Multi-stage compilation: Node.js builder executing `npm run build` in
      [`src/react/app-web`](../../src/react/app-web), and Go builder compiling
-     `server-web` from `src/go`.
+     `server-web` and stripped `quadsmith-engine.wasm` from `src/go`.
    - Minimal Alpine runtime copying the compiled binary, bundled static assets,
      and `src/go/server-web/config`.
-   - Exposes port 3000 / 443.
+   - Exposes port 8080.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>

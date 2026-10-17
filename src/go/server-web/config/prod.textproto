@@ -1,7 +1,7 @@
 environment: "prod"
 
 server {
-  port: 443
+  port: 8080
   read_timeout {
     seconds: 15
   }

@@ -1,7 +1,7 @@
 environment: "staging"
 
 server {
-  port: 443
+  port: 8080
   read_timeout {
     seconds: 30
   }
@@ -46,7 +46,7 @@ auth {
     }
   }
   oauth {
-    web_base_url: "https://staging.quadsmith.net"
+    web_base_url: "https://staging.quadsmith.com"
     providers {
       google {
         client_id: "${QS_GOOGLE_CLIENT_ID}"

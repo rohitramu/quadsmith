@@ -3,10 +3,13 @@ package static
 import (
 	"bytes"
 	"context"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"html"
 	"io"
+	"io/fs"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -63,17 +66,64 @@ func IsSocialCrawler(userAgent string) bool {
 	return crawlerRegex.MatchString(userAgent)
 }
 
+func precomputeETags(dir string) map[string]string {
+	etags := make(map[string]string)
+	if strings.TrimSpace(dir) == "" {
+		return etags
+	}
+	_ = filepath.WalkDir(dir, func(path string, d fs.DirEntry, err error) error {
+		if err != nil || d.IsDir() {
+			return nil
+		}
+		rel, err := filepath.Rel(dir, path)
+		if err != nil {
+			return nil
+		}
+		cleanRel := "/" + filepath.ToSlash(rel)
+		if cleanRel == "/index.html" {
+			return nil
+		}
+		f, err := os.Open(path)
+		if err != nil {
+			return nil
+		}
+		defer f.Close()
+		h := sha256.New()
+		if _, err := io.Copy(h, f); err == nil {
+			etags[cleanRel] = fmt.Sprintf(`"%s"`, hex.EncodeToString(h.Sum(nil)[:16]))
+		}
+		return nil
+	})
+	return etags
+}
+
 // ServeSPA serves a Single Page Application, dynamically injecting Open Graph and Twitter
 // card tags into index.html for crawlers and browser visits.
 func ServeSPA(dir string, apiURL string) http.HandlerFunc {
+	etags := precomputeETags(dir)
+	fileServer := http.FileServer(http.Dir(dir))
+
 	return func(w http.ResponseWriter, r *http.Request) {
-		cleanPath := filepath.Clean(r.URL.Path)
-		fullPath := filepath.Join(dir, cleanPath)
-		info, err := os.Stat(fullPath)
-		if err == nil && !info.IsDir() {
-			// Static asset exists on disk (JS, CSS, images, etc.)
-			http.FileServer(http.Dir(dir)).ServeHTTP(w, r)
-			return
+		cleanPath := filepath.ToSlash(filepath.Clean("/" + r.URL.Path))
+		if cleanPath != "/index.html" {
+			fullPath := filepath.Join(dir, filepath.FromSlash(cleanPath))
+			info, err := os.Stat(fullPath)
+			if err == nil && !info.IsDir() {
+				// Static asset exists on disk (JS, CSS, WASM, images, etc.)
+				if strings.HasPrefix(cleanPath, "/assets/") {
+					w.Header().Set("Cache-Control", "public, max-age=31536000, immutable")
+				} else {
+					w.Header().Set("Cache-Control", "public, max-age=3600, stale-while-revalidate=86400")
+				}
+				if strings.HasSuffix(cleanPath, ".wasm") {
+					w.Header().Set("Content-Type", "application/wasm")
+				}
+				if etag, ok := etags[cleanPath]; ok {
+					w.Header().Set("ETag", etag)
+				}
+				fileServer.ServeHTTP(w, r)
+				return
+			}
 		}
 
 		// Read base index.html
@@ -97,6 +147,7 @@ func ServeSPA(dir string, apiURL string) http.HandlerFunc {
 		renderedHTML := InjectMetaTags(string(indexBytes), meta)
 
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		w.Header().Set("Cache-Control", "no-cache")
 		w.WriteHeader(http.StatusOK)
 		_, _ = w.Write([]byte(renderedHTML))
 	}
@@ -319,7 +370,7 @@ func resolveAbsoluteURL(r *http.Request, rawURL string) string {
 	}
 	host := r.Host
 	if host == "" {
-		host = "quadsmith.net"
+		host = "quadsmith.com"
 	}
 	trimmed := strings.TrimPrefix(rawURL, "/")
 	if trimmed == "" {

@@ -89,7 +89,7 @@ build: tidy fmt generate
 	@./bin/qsops completion zsh > bin/qsops_completion.zsh || true
 	@echo "--- Building WebAssembly Core Engine ---"
 	@cp -f $$(go env GOROOT)/lib/wasm/wasm_exec.js src/react/app-web/public/wasm_exec.js
-	@GOOS=js GOARCH=wasm go build -mod=vendor -o src/react/app-web/public/quadsmith-engine.wasm ./src/go/shared/cmd/wasm/main.go
+	@GOOS=js GOARCH=wasm go build -mod=vendor -ldflags="-w -s" -o src/react/app-web/public/quadsmith-engine.wasm ./src/go/shared/cmd/wasm/main.go
 	@echo "--- Building Web UI ---"
 	@cd src/react/app-web && npm run build
 

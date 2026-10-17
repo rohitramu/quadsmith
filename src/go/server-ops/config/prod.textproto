@@ -17,15 +17,15 @@ server {
 database {
   url: "${QS_DATABASE_URL}"
   name: "quadsmith_api"
-  max_connections: 50
-  min_connections: 5
+  max_connections: 5
+  min_connections: 1
 }
 
 internal_database {
   url: "${QS_INTERNAL_DATABASE_URL}"
   name: "quadsmith_ops"
-  max_connections: 50
-  min_connections: 5
+  max_connections: 5
+  min_connections: 1
 }
 
 groups {

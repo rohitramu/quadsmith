@@ -52,7 +52,17 @@ func main() {
 		log.Fatalf("server-api: configuration validation failed: %v", err)
 	}
 
-	pool, err := pgxpool.New(context.Background(), cfg.Database.GetUrl())
+	poolCfg, err := pgxpool.ParseConfig(cfg.Database.GetUrl())
+	if err != nil {
+		log.Fatalf("Invalid database URL: %v\n", err)
+	}
+	if cfg.Database.GetMaxConnections() > 0 {
+		poolCfg.MaxConns = cfg.Database.GetMaxConnections()
+	}
+	if cfg.Database.GetMinConnections() > 0 {
+		poolCfg.MinConns = cfg.Database.GetMinConnections()
+	}
+	pool, err := pgxpool.NewWithConfig(context.Background(), poolCfg)
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)
 	}

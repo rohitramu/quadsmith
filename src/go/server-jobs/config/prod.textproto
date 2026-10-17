@@ -20,8 +20,8 @@ auth_token: "${QS_JOB_SERVER_AUTH_TOKEN}"
 internal_database {
   url: "${QS_INTERNAL_DATABASE_URL}"
   name: "quadsmith_ops"
-  max_connections: 25
-  min_connections: 2
+  max_connections: 5
+  min_connections: 1
 }
 
 cleanup_expired_otps {

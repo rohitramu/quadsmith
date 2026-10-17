@@ -1,7 +1,7 @@
 environment: "prod"
 
 server {
-  port: 443
+  port: 8080
   read_timeout {
     seconds: 30
   }
@@ -17,8 +17,8 @@ server {
 database {
   url: "${QS_DATABASE_URL}"
   name: "quadsmith_api"
-  max_connections: 50
-  min_connections: 5
+  max_connections: 15
+  min_connections: 1
 }
 
 auth {
@@ -47,13 +47,13 @@ auth {
       port: 587
       username: "resend"
       password: "${QS_SMTP_PASSWORD}"
-      from_address: "Quadsmith Auth <auth@quadsmith.net>"
-      reply_to: "support@quadsmith.net"
+      from_address: "Quadsmith Auth <auth@quadsmith.com>"
+      reply_to: "support@quadsmith.com"
       require_tls: true
     }
   }
   oauth {
-    web_base_url: "https://quadsmith.net"
+    web_base_url: "https://quadsmith.com"
     providers {
       google {
         client_id: "${QS_GOOGLE_CLIENT_ID}"

@@ -28,17 +28,22 @@ COPY src/go/vendor/ ./src/go/vendor/
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor -ldflags="-w -s" -o /app/bin/server-web ./src/go/server-web/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -mod=vendor -ldflags="-w -s" -o /app/bin/server-web ./src/go/server-web/main.go && \
+    GOOS=js GOARCH=wasm go build -mod=vendor -ldflags="-w -s" -o /app/bin/quadsmith-engine.wasm ./src/go/shared/cmd/wasm/main.go && \
+    cp -f "$(go env GOROOT)/lib/wasm/wasm_exec.js" /app/bin/wasm_exec.js
 
 FROM alpine:latest
 WORKDIR /app
 
 RUN apk --no-cache add ca-certificates tzdata
 
-EXPOSE 8080 443
+EXPOSE 8080
 
 COPY --from=builder /app/bin/server-web /app/server-web
 COPY --from=web-builder /app/src/react/app-web/dist /app/src/react/app-web/dist
+COPY --from=builder /app/bin/quadsmith-engine.wasm /app/src/react/app-web/dist/quadsmith-engine.wasm
+COPY --from=builder /app/bin/wasm_exec.js /app/src/react/app-web/dist/wasm_exec.js
 COPY src/go/server-web/config /app/src/go/server-web/config
 
 ENTRYPOINT ["/app/server-web", "--config", "/app/src/go/server-web/config/prod.textproto"]
+

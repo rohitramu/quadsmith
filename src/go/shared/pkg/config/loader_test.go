@@ -367,7 +367,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server staging: %v", err)
 	}
-	if apiStaging.Server.GetPort() != 443 {
+	if apiStaging.Server.GetPort() != 8080 {
 		t.Errorf("unexpected api-server staging port: %d", apiStaging.Server.GetPort())
 	}
 
@@ -376,8 +376,26 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server prod: %v", err)
 	}
-	if apiProd.Server.GetPort() != 443 {
+	if apiProd.Server.GetPort() != 8080 {
 		t.Errorf("unexpected api-server prod port: %d", apiProd.Server.GetPort())
+	}
+
+	webStagingPath := filepath.Join("..", "..", "..", "server-web", "config", "staging.textproto")
+	webStaging, err := LoadWebServerConfig(webStagingPath)
+	if err != nil {
+		t.Fatalf("failed to load web-server staging: %v", err)
+	}
+	if webStaging.Server.GetPort() != 8080 {
+		t.Errorf("unexpected web-server staging port: %d", webStaging.Server.GetPort())
+	}
+
+	webProdPath := filepath.Join("..", "..", "..", "server-web", "config", "prod.textproto")
+	webProd, err := LoadWebServerConfig(webProdPath)
+	if err != nil {
+		t.Fatalf("failed to load web-server prod: %v", err)
+	}
+	if webProd.Server.GetPort() != 8080 {
+		t.Errorf("unexpected web-server prod port: %d", webProd.Server.GetPort())
 	}
 
 	opsStagingPath := filepath.Join("..", "..", "..", "server-ops", "config", "staging.textproto")
