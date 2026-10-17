@@ -274,6 +274,18 @@ corroboration checks.
   code if there are failing tests.
 - You do not need to run the test suite if system behavior has not changed
   (e.g., when only updating `AGENTS.md` or documentation).
+- **Playwright Visual Regression Snapshots**:
+  - Only update Playwright screenshots (`make update-snapshots` or
+    `UPDATE_SNAPSHOTS=true`) when a change is explicitly expected to alter the
+    visual rendering of those specific screens. Never update snapshots
+    preemptively or blindly to silence test failures.
+  - When screenshots are expected to change, always run the Playwright tests in
+    standard comparison mode first (`make test` or `make ci-test`) to verify
+    that **only** the expected screenshot comparisons fail and no unrelated
+    pages have regressed.
+  - Once you have confirmed that only the expected screenshot comparisons fail,
+    update the snapshots, verify the modified files in `test/web/snapshots/`,
+    and re-run the tests to confirm they pass.
 
 ## UI Changes & Visual Previews
 
