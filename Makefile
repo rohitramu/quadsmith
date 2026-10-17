@@ -72,13 +72,11 @@ build: tidy fmt generate
 	@go build -mod=vendor -o bin/seeder ./src/go/shared/cmd/seeder
 	@echo "--- Building CLI (qs) binaries to bin/ ---"
 	@go build -mod=vendor -tags sandbox -o bin/qs-sandbox ./src/go/cli
-	@go build -mod=vendor -tags test -o bin/qs-test ./src/go/cli
 	@go build -mod=vendor -tags staging -o bin/qs-staging ./src/go/cli
 	@go build -mod=vendor -tags prod -o bin/qs-prod ./src/go/cli
 	@cp -f bin/qs-sandbox bin/qs
 	@echo "--- Building Operations CLI (qsops) binaries to bin/ ---"
 	@go build -mod=vendor -tags sandbox -o bin/qsops-sandbox ./src/go/cli-ops
-	@go build -mod=vendor -tags test -o bin/qsops-test ./src/go/cli-ops
 	@go build -mod=vendor -tags staging -o bin/qsops-staging ./src/go/cli-ops
 	@go build -mod=vendor -tags prod -o bin/qsops-prod ./src/go/cli-ops
 	@cp -f bin/qsops-sandbox bin/qsops

@@ -490,7 +490,7 @@ func ValidateAPIServerConfig(c *configpb.ApiServerConfig) error {
 	}
 
 	if strings.TrimSpace(c.GetEnvironment()) == "" {
-		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
+		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, staging, prod)")
 	}
 
 	if c.Server == nil {
@@ -540,7 +540,7 @@ func ValidateWebServerConfig(c *configpb.WebServerConfig) error {
 	}
 
 	if strings.TrimSpace(c.GetEnvironment()) == "" {
-		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
+		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, staging, prod)")
 	}
 
 	if c.Server == nil {
@@ -591,7 +591,7 @@ func ValidateOpsServerConfig(c *configpb.OpsServerConfig) error {
 	}
 
 	if strings.TrimSpace(c.GetEnvironment()) == "" {
-		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
+		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, staging, prod)")
 	}
 
 	if c.Server == nil {
@@ -645,7 +645,7 @@ func ValidateJobServerConfig(c *configpb.JobServerConfig) error {
 	}
 
 	if strings.TrimSpace(c.GetEnvironment()) == "" {
-		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
+		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, staging, prod)")
 	}
 
 	if c.Server == nil {
@@ -751,7 +751,7 @@ func ValidateOpsCliConfig(c *configpb.OpsCliConfig) error {
 	}
 
 	if strings.TrimSpace(c.GetEnvironment()) == "" {
-		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
+		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, staging, prod)")
 	}
 
 	if strings.TrimSpace(c.GetOpsServerUrl()) == "" {
@@ -791,7 +791,7 @@ func ValidateCliConfig(c *configpb.CliConfig) error {
 	}
 
 	if strings.TrimSpace(c.GetEnvironment()) == "" {
-		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, test, staging, prod)")
+		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, staging, prod)")
 	}
 
 	if strings.TrimSpace(c.GetApiUrl()) == "" {

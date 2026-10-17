@@ -366,9 +366,8 @@ message SendUsernameReleaseWarningsSchedule {
 
 The textproto configuration files across all environments
 ([`sandbox.textproto`](../../src/go/server-jobs/config/sandbox.textproto),
-[`staging.textproto`](../../src/go/server-jobs/config/staging.textproto),
-[`prod.textproto`](../../src/go/server-jobs/config/prod.textproto), and
-[`test.textproto`](../../src/go/server-jobs/config/test.textproto)) can specify
+[`staging.textproto`](../../src/go/server-jobs/config/staging.textproto), and
+[`prod.textproto`](../../src/go/server-jobs/config/prod.textproto)) can specify
 either a `cron` string or a typed `interval`:
 
 ```protobuf

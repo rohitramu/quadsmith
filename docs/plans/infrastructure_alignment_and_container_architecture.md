@@ -303,9 +303,8 @@ registered into the operational catalog and scheduled daemon (see
    - Register `purge_soft_deleted_accounts` (procedure
      `PurgeSoftDeletedAccounts`) in `ListTasks` with a default interval of `8h`.
 2. **Environment Configuration**:
-   - Add the typed schedule entry to all 4 job server textproto files:
+   - Add the typed schedule entry to all 3 job server textproto files:
      - [`sandbox.textproto`](../../src/go/server-jobs/config/sandbox.textproto)
-     - [`test.textproto`](../../src/go/server-jobs/config/test.textproto)
      - [`staging.textproto`](../../src/go/server-jobs/config/staging.textproto)
      - [`prod.textproto`](../../src/go/server-jobs/config/prod.textproto)
    - Configured with an 8-hour interval by default, allowing operator adjustment
@@ -404,7 +403,7 @@ merge minimal environment overlays using `proto.Merge` at runtime.
 
 **Pros:**
 
-- Eliminates repeating identical token TTLs and limits across 4 environment
+- Eliminates repeating identical token TTLs and limits across 3 environment
   files.
 - Makes environment files exceptionally small (5–10 lines).
 
@@ -425,7 +424,7 @@ merge minimal environment overlays using `proto.Merge` at runtime.
 2. The Table-Per-Type (TPT) PostgreSQL schema and seed dataset fit comfortably
    within the pre-seeded test database container layers.
 3. Network access to `smtp.resend.com` is only required in staging and
-   production; sandbox and test environments continue using console email stubs.
+   production; the sandbox environment continues using console email stubs.
 
 ---
 

@@ -1,4 +1,4 @@
-//go:build sandbox || (!test && !staging && !prod)
+//go:build sandbox || (!staging && !prod)
 
 package main
 

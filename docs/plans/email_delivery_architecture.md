@@ -602,8 +602,8 @@ message EmailConfig {
 
 This is embedded in `AuthConfig` and populated in textproto configurations via
 environment variable interpolation (e.g. `${QS_SMTP_HOST}`, `${QS_SMTP_PASS}`).
-In `test.textproto` and `sandbox.textproto`, `provider` is set to `"console"`.
-In `prod.textproto`, `provider` is set to `"smtp"`.
+In `sandbox.textproto`, `provider` is set to `"console"`. In `prod.textproto`,
+`provider` is set to `"smtp"`.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>

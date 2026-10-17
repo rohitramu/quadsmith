@@ -311,42 +311,6 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 		t.Errorf("unexpected cli sandbox config: %+v", cliSandbox)
 	}
 
-	// Test
-	apiTestPath := filepath.Join("..", "..", "..", "server-api", "config", "test.textproto")
-	apiTest, err := LoadAPIServerConfig(apiTestPath)
-	if err != nil {
-		t.Fatalf("failed to load api-server test: %v", err)
-	}
-	if apiTest.Server.GetPort() != 8080 {
-		t.Errorf("unexpected api-server test config: %+v", apiTest)
-	}
-
-	opsTestPath := filepath.Join("..", "..", "..", "server-ops", "config", "test.textproto")
-	opsTest, err := LoadOpsServerConfig(opsTestPath)
-	if err != nil {
-		t.Fatalf("failed to load ops-server test: %v", err)
-	}
-	if opsTest.Server.GetPort() != 8080 || opsTest.InternalDatabase.GetName() != "quadsmith_ops" {
-		t.Errorf("unexpected ops-server test config: %+v", opsTest)
-	}
-
-	jobTestPath := filepath.Join("..", "..", "..", "server-jobs", "config", "test.textproto")
-	jobTest, err := LoadJobServerConfig(jobTestPath)
-	if err != nil {
-		t.Fatalf("failed to load job-server test: %v", err)
-	}
-	if jobTest.Server.GetPort() != 8080 || jobTest.InternalDatabase.GetName() != "quadsmith_ops" {
-		t.Errorf("unexpected job-server test config: %+v", jobTest)
-	}
-
-	opsCliTest, err := LoadOpsCliConfig("", "test")
-	if err != nil {
-		t.Fatalf("failed to load ops cli test: %v", err)
-	}
-	if opsCliTest.GetOpsServerUrl() != "http://127.0.0.1:8082" || opsCliTest.GetJobsServerUrl() != "http://127.0.0.1:8083" {
-		t.Errorf("unexpected ops cli test config: %+v", opsCliTest)
-	}
-
 	// Staging & Prod (require QS_DATABASE_URL, QS_INTERNAL_DATABASE_URL, QS_JOB_SERVER_AUTH_TOKEN, and QS_AUTH_SECRET)
 	t.Setenv("QS_DATABASE_URL", "postgres://user:pass@db.example.com:5432/quadsmith_api")
 	t.Setenv("QS_INTERNAL_DATABASE_URL", "postgres://user:pass@db.example.com:5432/quadsmith_ops")

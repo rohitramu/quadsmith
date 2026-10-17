@@ -85,8 +85,8 @@ func loadSessionToken() string {
 		}
 	}
 
-	// Default fallback in sandbox/test environments
-	if embeddedConfig.GetEnvironment() == "sandbox" || embeddedConfig.GetEnvironment() == "test" {
+	// Default fallback in sandbox environment
+	if embeddedConfig.GetEnvironment() == "sandbox" {
 		return "qs_op_sandbox_token_12345"
 	}
 	return ""

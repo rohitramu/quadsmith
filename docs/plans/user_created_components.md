@@ -525,7 +525,7 @@ electrical safety checks:
   - `Frame`: `wheelbase_mm > 0`, `motor_count >= 3`.
 - **Author Attribution**:
   - All components and builds are created by users (with the seeder acting as a
-    user in sandbox and test environments).
+    user in the sandbox environment).
   - Rather than displaying artificial provenance columns or official badges,
     components display the author's username (`Added by @username`) with a
     clickable link to their user profile.

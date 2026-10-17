@@ -60,7 +60,7 @@ func WithEmailCooldown(d time.Duration) APIServerOption {
 func NewTestAPIServerConfig(t testing.TB, opts ...APIServerOption) *configpb.ApiServerConfig {
 	t.Helper()
 	cfg := &configpb.ApiServerConfig{
-		Environment: proto.String("test"),
+		Environment: proto.String("sandbox"),
 		Server: &configpb.ServerConfig{
 			Port:            proto.Int32(8080),
 			ReadTimeout:     durationpb.New(30 * time.Second),
@@ -75,8 +75,8 @@ func NewTestAPIServerConfig(t testing.TB, opts ...APIServerOption) *configpb.Api
 			MinConnections: proto.Int32(2),
 		},
 		Auth: &configpb.AuthConfig{
-			Secret:           proto.String("quadsmith-test-secret-key-32bytes-long!"),
-			DevPrintOtp:      proto.Bool(false),
+			Secret:           proto.String("quadsmith-dev-secret-key-32bytes-long!"),
+			DevPrintOtp:      proto.Bool(true),
 			SecureCookies:    proto.Bool(false),
 			TrustedProxyHops: proto.Int32(0),
 			AccessTokenTtl:   durationpb.New(1 * time.Hour),
@@ -119,7 +119,7 @@ func WithOpsServerPort(port int32) OpsServerOption {
 func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *configpb.OpsServerConfig {
 	t.Helper()
 	cfg := &configpb.OpsServerConfig{
-		Environment: proto.String("test"),
+		Environment: proto.String("sandbox"),
 		Server: &configpb.ServerConfig{
 			Port:            proto.Int32(8080),
 			ReadTimeout:     durationpb.New(30 * time.Second),
@@ -158,16 +158,16 @@ func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *configpb.Ops
 		},
 		BootstrapTokens: []*configpb.BootstrapTokenConfig{
 			{
-				Id:        proto.String("test-operator-token"),
-				Name:      proto.String("Test Operator Token"),
-				Token:     proto.String("qs_op_test_token_12345"),
+				Id:        proto.String("sandbox-operator"),
+				Name:      proto.String("Sandbox Operator Token"),
+				Token:     proto.String("qs_op_sandbox_token_12345"),
 				GroupName: proto.String("operators"),
 				Type:      proto.String("HUMAN"),
 			},
 			{
-				Id:        proto.String("test-robot-token"),
-				Name:      proto.String("Test Robot Token"),
-				Token:     proto.String("qs_robot_test_token_67890"),
+				Id:        proto.String("sandbox-robot"),
+				Name:      proto.String("Sandbox Robot Token"),
+				Token:     proto.String("qs_robot_sandbox_token_67890"),
 				GroupName: proto.String("robots"),
 				Type:      proto.String("ROBOT"),
 			},
@@ -198,7 +198,7 @@ func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *configpb.Ops
 func NewTestJobServerConfig(t testing.TB) *configpb.JobServerConfig {
 	t.Helper()
 	return &configpb.JobServerConfig{
-		Environment: proto.String("test"),
+		Environment: proto.String("sandbox"),
 		Server: &configpb.ServerConfig{
 			Port:            proto.Int32(8080),
 			ReadTimeout:     durationpb.New(30 * time.Second),
@@ -207,7 +207,7 @@ func NewTestJobServerConfig(t testing.TB) *configpb.JobServerConfig {
 			MaxRequestBytes: proto.Int64(2097152),
 		},
 		OpsServerUrl: proto.String("http://127.0.0.1:8082"),
-		AuthToken:    proto.String("qs_robot_test_token_67890"),
+		AuthToken:    proto.String("qs_robot_sandbox_token_67890"),
 		InternalDatabase: &configpb.DatabaseConfig{
 			Url:            proto.String("postgres://postgres:postgres@127.0.0.1:5432/quadsmith_ops?sslmode=disable"),
 			Name:           proto.String("quadsmith_ops"),
@@ -263,16 +263,16 @@ func NewTestJobServerConfig(t testing.TB) *configpb.JobServerConfig {
 		},
 		BootstrapTokens: []*configpb.BootstrapTokenConfig{
 			{
-				Id:        proto.String("test-operator-token"),
-				Name:      proto.String("Test Operator Token"),
-				Token:     proto.String("qs_op_test_token_12345"),
+				Id:        proto.String("sandbox-operator"),
+				Name:      proto.String("Sandbox Operator Token"),
+				Token:     proto.String("qs_op_sandbox_token_12345"),
 				GroupName: proto.String("operators"),
 				Type:      proto.String("HUMAN"),
 			},
 			{
-				Id:        proto.String("test-robot-token"),
-				Name:      proto.String("Test Robot Token"),
-				Token:     proto.String("qs_robot_test_token_67890"),
+				Id:        proto.String("sandbox-robot"),
+				Name:      proto.String("Sandbox Robot Token"),
+				Token:     proto.String("qs_robot_sandbox_token_67890"),
 				GroupName: proto.String("robots"),
 				Type:      proto.String("ROBOT"),
 			},

@@ -532,7 +532,7 @@ Mirroring `EmailConfig` in
 [`src/proto/quadsmith/config/server_api.proto`](../../src/proto/quadsmith/config/server_api.proto#L25-L60),
 we will add `OAuthConfig` to `AuthConfig` supporting both real provider
 credentials (`staging.textproto`, `prod.textproto`) and a deterministic `mock`
-mode (`sandbox.textproto`, `test.textproto`):
+mode (`sandbox.textproto`):
 
 ```protobuf
 // In src/proto/quadsmith/config/server_api.proto:

@@ -36,7 +36,7 @@ func main() {
 		{"src/go/cli-ops/config", "cli-ops"},
 	}
 
-	environments := []string{"sandbox", "test", "staging", "prod"}
+	environments := []string{"sandbox", "staging", "prod"}
 
 	for _, c := range components {
 		for _, env := range environments {
