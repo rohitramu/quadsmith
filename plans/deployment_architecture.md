@@ -320,7 +320,7 @@ rollout {
     seconds: 30
   }
   node_rollout_timeout {
-    seconds: 10800
+    seconds: 10800 # 3 hours
   }
   max_retries: 3
   retry_backoff {
@@ -329,31 +329,31 @@ rollout {
   ramp_stages {
     candidate_weight_percent: 1
     hold_duration {
-      seconds: 900
+      seconds: 900 # 15 minutes
     }
   }
   ramp_stages {
     candidate_weight_percent: 5
     hold_duration {
-      seconds: 900
+      seconds: 900 # 15 minutes
     }
   }
   ramp_stages {
     candidate_weight_percent: 10
     hold_duration {
-      seconds: 1800
+      seconds: 1800 # 30 minutes
     }
   }
   ramp_stages {
     candidate_weight_percent: 25
     hold_duration {
-      seconds: 1800
+      seconds: 1800 # 30 minutes
     }
   }
   ramp_stages {
     candidate_weight_percent: 50
     hold_duration {
-      seconds: 3600
+      seconds: 3600 # 1 hour
     }
   }
   ramp_stages {
@@ -1632,9 +1632,9 @@ flowchart TD
      `rollout.health_check_timeout` (`30s`), `deploy/deploy_blue_green.sh` steps
      through the configured `rollout.ramp_stages[]` (`1%` for `15m` &rarr; `5%`
      for `15m` &rarr; `10%` for `30m` &rarr; `25%` for `30m` &rarr; `50%` for
-     `1h` &rarr; `100%` in `prod`, totaling `2.5h`; `10%` for `5m` &rarr; `25%`
-     for `10m` &rarr; `50%` for `15m` &rarr; `100%` in `staging`, totaling
-     `30m`), writing weighted `server <svc>-<active>:8080 weight=<100-W>;` and
+     `1h` &rarr; `100%` in `prod`, totaling `2.5h`; `50%` for `5m` &rarr; `100%`
+     in `staging`, totaling `5m`), writing weighted
+     `server <svc>-<active>:8080 weight=<100-W>;` and
      `server <svc>-<next>:8080 weight=<W>;` entries to `upstreams.conf` and
      executing:
 
@@ -1650,8 +1650,8 @@ flowchart TD
 3. **Continuous Health-Check Gating, Timeouts, Retries, and Automatic
    Rollback**:
    - `deploy/deploy.sh` wraps IAP SCP/SSH operations in `run_with_retry` bounded
-     by `rollout.node_rollout_timeout` (`10800s` / 3h in `prod`, `2400s` / 40m
-     in `staging`) and `rollout.max_retries` (`3` attempts with `5s` exponential
+     by `rollout.node_rollout_timeout` (`10800s` / 3h in `prod`, `600s` / 10m in
+     `staging`) and `rollout.max_retries` (`3` attempts with `5s` exponential
      backoff). Because GCP IAP TCP tunnels can reset after ~60 minutes,
      `deploy/deploy.sh` launches `deploy/deploy_blue_green.sh` detached on the
      VM and polls `/opt/quadsmith/deploy/rollout.exit` via short-lived retried

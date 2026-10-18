@@ -21,7 +21,7 @@ rollout {
     seconds: 30
   }
   node_rollout_timeout {
-    seconds: 10800
+    seconds: 10800  # 3 hours
   }
   max_retries: 3
   retry_backoff {
@@ -30,31 +30,31 @@ rollout {
   ramp_stages {
     candidate_weight_percent: 1
     hold_duration {
-      seconds: 900
+      seconds: 900  # 15 minutes
     }
   }
   ramp_stages {
     candidate_weight_percent: 5
     hold_duration {
-      seconds: 900
+      seconds: 900  # 15 minutes
     }
   }
   ramp_stages {
     candidate_weight_percent: 10
     hold_duration {
-      seconds: 1800
+      seconds: 1800  # 30 minutes
     }
   }
   ramp_stages {
     candidate_weight_percent: 25
     hold_duration {
-      seconds: 1800
+      seconds: 1800  # 30 minutes
     }
   }
   ramp_stages {
     candidate_weight_percent: 50
     hold_duration {
-      seconds: 3600
+      seconds: 3600  # 1 hour
     }
   }
   ramp_stages {
