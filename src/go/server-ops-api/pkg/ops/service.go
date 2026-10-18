@@ -80,7 +80,7 @@ func (s *OpsService) GetSystemDiagnostics(ctx context.Context, _ *connect.Reques
 // Database Maintenance & Stats (Public DB quadsmith_api)
 // ---------------------------------------------------------
 
-func (s *OpsService) GetDatabaseStats(ctx context.Context, _ *connect.Request[pb.GetDatabaseStatsRequest]) (*connect.Response[pb.GetDatabaseStatsResponse], error) {
+func (s *OpsService) GetDatabaseStats(ctx context.Context, req *connect.Request[pb.GetDatabaseStatsRequest]) (*connect.Response[pb.GetDatabaseStatsResponse], error) {
 	dbName := s.cfg.Database.GetName()
 	if dbName == "" {
 		dbName = "quadsmith_api"
@@ -112,10 +112,15 @@ func (s *OpsService) GetDatabaseStats(ctx context.Context, _ *connect.Request[pb
 		})
 	}
 
+	filtered, err := filterAndSortTableStats(tables, req.Msg.GetFilter(), req.Msg.GetSort())
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
 	return connect.NewResponse(&pb.GetDatabaseStatsResponse{
 		DatabaseName:   dbName,
 		TotalSizeBytes: totalSize,
-		Tables:         tables,
+		Tables:         filtered,
 	}), nil
 }
 
@@ -286,7 +291,7 @@ var taskCatalog = []*pb.TaskDef{
 	},
 }
 
-func (s *OpsService) ListTasks(ctx context.Context, _ *connect.Request[pb.ListTasksRequest]) (*connect.Response[pb.ListTasksResponse], error) {
+func (s *OpsService) ListTasks(ctx context.Context, req *connect.Request[pb.ListTasksRequest]) (*connect.Response[pb.ListTasksResponse], error) {
 	tasks := make([]*pb.TaskDef, len(taskCatalog))
 	for i, t := range taskCatalog {
 		tasks[i] = &pb.TaskDef{
@@ -296,7 +301,11 @@ func (s *OpsService) ListTasks(ctx context.Context, _ *connect.Request[pb.ListTa
 			DefaultInterval: t.DefaultInterval,
 		}
 	}
-	return connect.NewResponse(&pb.ListTasksResponse{Tasks: tasks}), nil
+	filtered, err := filterAndSortTasks(tasks, req.Msg.GetFilter(), req.Msg.GetSort())
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+	return connect.NewResponse(&pb.ListTasksResponse{Tasks: filtered}), nil
 }
 
 func (s *OpsService) GetTask(ctx context.Context, req *connect.Request[pb.GetTaskRequest]) (*connect.Response[pb.GetTaskResponse], error) {
@@ -318,6 +327,10 @@ func (s *OpsService) GetTask(ctx context.Context, req *connect.Request[pb.GetTas
 }
 
 func (s *OpsService) ListJobs(ctx context.Context, req *connect.Request[pb.ListJobsRequest]) (*connect.Response[pb.ListJobsResponse], error) {
+	if _, err := filterAndSortJobs(nil, req.Msg.GetFilter(), req.Msg.GetSort()); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
 	limit := int(req.Msg.GetLimit())
 	if limit <= 0 || limit > 500 {
 		limit = 50
@@ -386,7 +399,12 @@ func (s *OpsService) ListJobs(ctx context.Context, req *connect.Request[pb.ListJ
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("error reading job records: %w", err))
 	}
 
-	return connect.NewResponse(&pb.ListJobsResponse{Jobs: records}), nil
+	filtered, err := filterAndSortJobs(records, req.Msg.GetFilter(), req.Msg.GetSort())
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	return connect.NewResponse(&pb.ListJobsResponse{Jobs: filtered}), nil
 }
 
 func (s *OpsService) GetJob(ctx context.Context, req *connect.Request[pb.GetJobRequest]) (*connect.Response[pb.GetJobResponse], error) {
@@ -452,6 +470,10 @@ func procedureToTask(procedure string) string {
 }
 
 func (s *OpsService) ListInternalApiCalls(ctx context.Context, req *connect.Request[pb.ListInternalApiCallsRequest]) (*connect.Response[pb.ListInternalApiCallsResponse], error) {
+	if _, err := filterAndSortInternalApiCalls(nil, req.Msg.GetFilter(), req.Msg.GetSort()); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
 	limit := int(req.Msg.GetLimit())
 	if limit <= 0 || limit > 500 {
 		limit = 50
@@ -515,7 +537,12 @@ func (s *OpsService) ListInternalApiCalls(ctx context.Context, req *connect.Requ
 		calls = append(calls, &r)
 	}
 
-	return connect.NewResponse(&pb.ListInternalApiCallsResponse{Calls: calls}), nil
+	filtered, err := filterAndSortInternalApiCalls(calls, req.Msg.GetFilter(), req.Msg.GetSort())
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	return connect.NewResponse(&pb.ListInternalApiCallsResponse{Calls: filtered}), nil
 }
 
 // ---------------------------------------------------------
@@ -608,7 +635,11 @@ func (s *OpsService) GetCurrentOperator(ctx context.Context, _ *connect.Request[
 	return connect.NewResponse(resp), nil
 }
 
-func (s *OpsService) ListIamUsers(ctx context.Context, _ *connect.Request[pb.ListIamUsersRequest]) (*connect.Response[pb.ListIamUsersResponse], error) {
+func (s *OpsService) ListIamUsers(ctx context.Context, req *connect.Request[pb.ListIamUsersRequest]) (*connect.Response[pb.ListIamUsersResponse], error) {
+	if _, err := filterAndSortIamUsers(nil, req.Msg.GetFilter(), req.Msg.GetSort()); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
 	rows, err := s.opsDb.Query(ctx, `
 		SELECT name, type, group_name, MAX(created_at) AS last_active
 		FROM internal_tokens
@@ -644,19 +675,30 @@ func (s *OpsService) ListIamUsers(ctx context.Context, _ *connect.Request[pb.Lis
 		})
 	}
 
-	return connect.NewResponse(&pb.ListIamUsersResponse{Users: users}), nil
+	filtered, err := filterAndSortIamUsers(users, req.Msg.GetFilter(), req.Msg.GetSort())
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	return connect.NewResponse(&pb.ListIamUsersResponse{Users: filtered}), nil
 }
 
-func (s *OpsService) ListIamGroups(ctx context.Context, _ *connect.Request[pb.ListIamGroupsRequest]) (*connect.Response[pb.ListIamGroupsResponse], error) {
+func (s *OpsService) ListIamGroups(ctx context.Context, req *connect.Request[pb.ListIamGroupsRequest]) (*connect.Response[pb.ListIamGroupsResponse], error) {
 	var groups []*pb.IamGroupSummary
-	for _, g := range s.cfg.Groups {
-		groups = append(groups, &pb.IamGroupSummary{
-			Name:           g.GetName(),
-			Description:    g.GetDescription(),
-			AllowedMethods: g.AllowedMethods,
-		})
+	if s.cfg != nil {
+		for _, g := range s.cfg.Groups {
+			groups = append(groups, &pb.IamGroupSummary{
+				Name:           g.GetName(),
+				Description:    g.GetDescription(),
+				AllowedMethods: g.AllowedMethods,
+			})
+		}
 	}
-	return connect.NewResponse(&pb.ListIamGroupsResponse{Groups: groups}), nil
+	filtered, err := filterAndSortIamGroups(groups, req.Msg.GetFilter(), req.Msg.GetSort())
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+	return connect.NewResponse(&pb.ListIamGroupsResponse{Groups: filtered}), nil
 }
 
 // ---------------------------------------------------------
@@ -721,7 +763,11 @@ func (s *OpsService) CreateInternalToken(ctx context.Context, req *connect.Reque
 	}), nil
 }
 
-func (s *OpsService) ListInternalTokens(ctx context.Context, _ *connect.Request[pb.ListInternalTokensRequest]) (*connect.Response[pb.ListInternalTokensResponse], error) {
+func (s *OpsService) ListInternalTokens(ctx context.Context, req *connect.Request[pb.ListInternalTokensRequest]) (*connect.Response[pb.ListInternalTokensResponse], error) {
+	if _, err := filterAndSortInternalTokens(nil, req.Msg.GetFilter(), req.Msg.GetSort()); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
 	rows, err := s.opsDb.Query(ctx, `
 		SELECT uuid, id, name, type, group_name, token_hash, expires_at, created_at, revoked_at
 		FROM internal_tokens
@@ -755,7 +801,12 @@ func (s *OpsService) ListInternalTokens(ctx context.Context, _ *connect.Request[
 		tokens = append(tokens, &r)
 	}
 
-	return connect.NewResponse(&pb.ListInternalTokensResponse{Tokens: tokens}), nil
+	filtered, err := filterAndSortInternalTokens(tokens, req.Msg.GetFilter(), req.Msg.GetSort())
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	return connect.NewResponse(&pb.ListInternalTokensResponse{Tokens: filtered}), nil
 }
 
 func (s *OpsService) RevokeInternalToken(ctx context.Context, req *connect.Request[pb.RevokeInternalTokenRequest]) (*connect.Response[pb.RevokeInternalTokenResponse], error) {
@@ -879,6 +930,10 @@ func (s *OpsService) ExtendJitGrant(ctx context.Context, req *connect.Request[pb
 }
 
 func (s *OpsService) ListJitGrants(ctx context.Context, req *connect.Request[pb.ListJitGrantsRequest]) (*connect.Response[pb.ListJitGrantsResponse], error) {
+	if _, err := filterAndSortJitGrants(nil, req.Msg.GetFilter(), req.Msg.GetSort()); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
 	query := `
 		SELECT uuid, id, operator, operator_type, reason, operation, status, hours, expires_at, created_at, extended_at, revoked_at
 		FROM jit_grants`
@@ -917,7 +972,12 @@ func (s *OpsService) ListJitGrants(ctx context.Context, req *connect.Request[pb.
 		grants = append(grants, &g)
 	}
 
-	return connect.NewResponse(&pb.ListJitGrantsResponse{Grants: grants}), nil
+	filtered, err := filterAndSortJitGrants(grants, req.Msg.GetFilter(), req.Msg.GetSort())
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	return connect.NewResponse(&pb.ListJitGrantsResponse{Grants: filtered}), nil
 }
 
 func (s *OpsService) RevokeJitGrant(ctx context.Context, req *connect.Request[pb.RevokeJitGrantRequest]) (*connect.Response[pb.RevokeJitGrantResponse], error) {

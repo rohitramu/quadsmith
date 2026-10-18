@@ -203,13 +203,18 @@ message GetTaskResponse {
 message ListJobsRequest {
   optional int32 limit = 1;
   optional string task_name = 2;
+  optional string filter = 3;
+  repeated string sort = 4;
 }
 
 message ListJobsResponse {
   repeated JobRecord jobs = 1;
 }
 
-message ListTasksRequest {}
+message ListTasksRequest {
+  optional string filter = 1;
+  repeated string sort = 2;
+}
 
 message ListTasksResponse {
   repeated TaskDef tasks = 1;
@@ -221,7 +226,10 @@ In
 
 - `ListJobs`: Queries job execution records from
   `quadsmith_ops.internal_api_calls` for all task procedures, ordered by
-  `created_at DESC` (latest on top), with optional filtering by `task_name`.
+  `created_at DESC` (latest on top) by default, with optional filtering by
+  `task_name`, CEL `filter`, and multi-column `sort` (`field` or `^field`).
+- `ListTasks`: Returns the registered task catalog, optionally filtered via CEL
+  `filter` and ordered by `sort`.
 - `GetJob`: Retrieves a specific job execution instance by its human-readable ID
   or UUID fallback (`WHERE (id = $1 OR uuid::text = $1)`).
 - `JobRecord` intentionally omits scheduler-specific interval configuration so
@@ -424,8 +432,9 @@ In
 
 #### <a id="tasks-commands" >1. Tasks Commands (`qsops tasks` -> targets `OpsService` on `server-ops-api`)</a>
 
-- `qsops tasks list`: Calls `OpsService.ListTasks`, displaying all defined
-  tasks, descriptions, and target procedures.
+- `qsops tasks list [-f|--filter <cel>] [-s|--sort <field,...>]`: Calls
+  `OpsService.ListTasks`, displaying defined tasks, descriptions, and target
+  procedures.
 - `qsops tasks get <task-name>`: Calls `OpsService.GetTask`, displaying the full
   description, target procedure, and default schedule.
 - `qsops tasks trigger <task-name>`: Calls the dedicated typed RPC on
@@ -436,8 +445,9 @@ In
 
 #### <a id="jobs-commands" >2. Jobs Commands (`qsops jobs` -> targets `OpsService` on `server-ops-api`)</a>
 
-- `qsops jobs list [--limit=N] [--task=name]`: Calls `OpsService.ListJobs`,
-  displaying the chronological execution history (latest on top).
+- `qsops jobs list [--limit=N] [--task=name] [-f|--filter <cel>] [-s|--sort <field,...>]`:
+  Calls `OpsService.ListJobs`, displaying the execution history (latest on top
+  by default).
 - `qsops jobs get <job-id>`: Calls `OpsService.GetJob`, displaying full
   execution details, runtime metrics, and caller information.
 

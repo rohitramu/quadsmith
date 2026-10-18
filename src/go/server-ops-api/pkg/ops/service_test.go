@@ -96,3 +96,67 @@ func TestTaskCatalog_SetUserRole(t *testing.T) {
 		t.Errorf("expected procedureToTask(SetUserRole) == set_user_role, got %s", task)
 	}
 }
+
+func TestListTasks_FilterAndSort(t *testing.T) {
+	svc := &OpsService{}
+	ctx := context.Background()
+
+	filter := `name.startsWith("cleanup_") && default_interval != "manual"`
+	resp, err := svc.ListTasks(ctx, connect.NewRequest(&pb.ListTasksRequest{
+		Filter: &filter,
+		Sort:   []string{"^name"},
+	}))
+	if err != nil {
+		t.Fatalf("unexpected error from ListTasks: %v", err)
+	}
+	tasks := resp.Msg.GetTasks()
+	if len(tasks) != 3 {
+		t.Fatalf("expected 3 cleanup tasks, got %d", len(tasks))
+	}
+	if tasks[0].GetName() < tasks[1].GetName() {
+		t.Errorf("expected descending sort by name, got %s then %s", tasks[0].GetName(), tasks[1].GetName())
+	}
+
+	// Invalid CEL expression returns CodeInvalidArgument
+	badFilter := `unknown_field == "foo"`
+	_, err = svc.ListTasks(ctx, connect.NewRequest(&pb.ListTasksRequest{
+		Filter: &badFilter,
+	}))
+	if err == nil || connect.CodeOf(err) != connect.CodeInvalidArgument {
+		t.Fatalf("expected CodeInvalidArgument for invalid filter, got %v", err)
+	}
+
+	// Invalid sort column returns CodeInvalidArgument
+	_, err = svc.ListTasks(ctx, connect.NewRequest(&pb.ListTasksRequest{
+		Sort: []string{"non_existent_col"},
+	}))
+	if err == nil || connect.CodeOf(err) != connect.CodeInvalidArgument {
+		t.Fatalf("expected CodeInvalidArgument for invalid sort column, got %v", err)
+	}
+}
+
+func TestFilterAndSortHelpers(t *testing.T) {
+	routes := []*pb.RouteMetricStat{
+		{ServiceName: "server-api", Route: "/a", TotalRequests: 10, ErrorCount: 0, P95RttMs: 3.5},
+		{ServiceName: "server-ops-api", Route: "/b", TotalRequests: 50, ErrorCount: 2, P95RttMs: 18.2},
+	}
+	filteredRoutes, err := filterAndSortRouteMetrics(routes, `error_count > 0 || p95_rtt_ms > 10.0`, []string{"^total_requests"})
+	if err != nil {
+		t.Fatalf("unexpected error filtering routes: %v", err)
+	}
+	if len(filteredRoutes) != 1 || filteredRoutes[0].GetRoute() != "/b" {
+		t.Fatalf("unexpected filtered routes: %+v", filteredRoutes)
+	}
+
+	tables := []*pb.TableStat{
+		{TableName: "motors", RowCount: 25, TotalSizeBytes: 65536},
+		{TableName: "empty_tbl", RowCount: 0, TotalSizeBytes: 8192},
+	}
+	filteredTables, err := filterAndSortTableStats(tables, `row_count > 0`, []string{"table_name"})
+	if err != nil {
+		t.Fatalf("unexpected error filtering tables: %v", err)
+	}
+	if len(filteredTables) != 1 || filteredTables[0].GetTableName() != "motors" {
+		t.Fatalf("unexpected filtered tables: %+v", filteredTables)
+	}
+}

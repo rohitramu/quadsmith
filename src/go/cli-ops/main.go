@@ -284,12 +284,19 @@ func newIamCmd() *cobra.Command {
 }
 
 func newIamUsersCmd() *cobra.Command {
-	return &cobra.Command{
+	var filter string
+	var sortOpts []string
+	cmd := &cobra.Command{
 		Use:   "users",
 		Short: "List active developer identities and session tokens",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := getOpsClient()
-			resp, err := client.ListIamUsers(cmd.Context(), connect.NewRequest(&pb.ListIamUsersRequest{}))
+			req := &pb.ListIamUsersRequest{Sort: sortOpts}
+			if strings.TrimSpace(filter) != "" {
+				f := strings.TrimSpace(filter)
+				req.Filter = &f
+			}
+			resp, err := client.ListIamUsers(cmd.Context(), connect.NewRequest(req))
 			if err != nil {
 				return fmt.Errorf("failed to list IAM users: %w", err)
 			}
@@ -317,15 +324,25 @@ func newIamUsersCmd() *cobra.Command {
 			return w.Flush()
 		},
 	}
+	cmd.Flags().StringVarP(&filter, "filter", "f", "", "CEL filter expression (e.g. 'group_name == \"admins\" && has_active_jit')")
+	cmd.Flags().StringSliceVarP(&sortOpts, "sort", "s", nil, "Columns to sort by (e.g. operator, ^group_name)")
+	return cmd
 }
 
 func newIamGroupsCmd() *cobra.Command {
-	return &cobra.Command{
+	var filter string
+	var sortOpts []string
+	cmd := &cobra.Command{
 		Use:   "groups",
 		Short: "List declarative IAM groups and allowed RPC methods",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := getOpsClient()
-			resp, err := client.ListIamGroups(cmd.Context(), connect.NewRequest(&pb.ListIamGroupsRequest{}))
+			req := &pb.ListIamGroupsRequest{Sort: sortOpts}
+			if strings.TrimSpace(filter) != "" {
+				f := strings.TrimSpace(filter)
+				req.Filter = &f
+			}
+			resp, err := client.ListIamGroups(cmd.Context(), connect.NewRequest(req))
 			if err != nil {
 				return fmt.Errorf("failed to list IAM groups: %w", err)
 			}
@@ -345,6 +362,9 @@ func newIamGroupsCmd() *cobra.Command {
 			return w.Flush()
 		},
 	}
+	cmd.Flags().StringVarP(&filter, "filter", "f", "", "CEL filter expression (e.g. 'name.contains(\"admin\")')")
+	cmd.Flags().StringSliceVarP(&sortOpts, "sort", "s", nil, "Columns to sort by (e.g. name, ^name)")
+	return cmd
 }
 
 func newIamTokensCmd() *cobra.Command {
@@ -353,12 +373,19 @@ func newIamTokensCmd() *cobra.Command {
 		Short: "Manage persistent operator and robot tokens",
 	}
 
-	cmd.AddCommand(&cobra.Command{
+	var tokenFilter string
+	var tokenSort []string
+	listTokensCmd := &cobra.Command{
 		Use:   "list",
 		Short: "List issued internal tokens",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := getOpsClient()
-			resp, err := client.ListInternalTokens(cmd.Context(), connect.NewRequest(&pb.ListInternalTokensRequest{}))
+			req := &pb.ListInternalTokensRequest{Sort: tokenSort}
+			if strings.TrimSpace(tokenFilter) != "" {
+				f := strings.TrimSpace(tokenFilter)
+				req.Filter = &f
+			}
+			resp, err := client.ListInternalTokens(cmd.Context(), connect.NewRequest(req))
 			if err != nil {
 				return fmt.Errorf("failed to list tokens: %w", err)
 			}
@@ -387,7 +414,10 @@ func newIamTokensCmd() *cobra.Command {
 			}
 			return w.Flush()
 		},
-	})
+	}
+	listTokensCmd.Flags().StringVarP(&tokenFilter, "filter", "f", "", "CEL filter expression (e.g. 'type == \"ROBOT\" && status == \"ACTIVE\"')")
+	listTokensCmd.Flags().StringSliceVarP(&tokenSort, "sort", "s", nil, "Columns to sort by (e.g. name, ^created_at)")
+	cmd.AddCommand(listTokensCmd)
 
 	var name, tokenType, group string
 	var days int
@@ -526,14 +556,22 @@ func newJitCmd() *cobra.Command {
 	cmd.AddCommand(extendCmd)
 
 	var allGrants bool
+	var jitFilter string
+	var jitSort []string
 	listCmd := &cobra.Command{
 		Use:   "list",
 		Short: "List active or historic JIT elevation grants",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := getOpsClient()
-			resp, err := client.ListJitGrants(cmd.Context(), connect.NewRequest(&pb.ListJitGrantsRequest{
+			req := &pb.ListJitGrantsRequest{
 				ActiveOnly: !allGrants,
-			}))
+				Sort:       jitSort,
+			}
+			if strings.TrimSpace(jitFilter) != "" {
+				f := strings.TrimSpace(jitFilter)
+				req.Filter = &f
+			}
+			resp, err := client.ListJitGrants(cmd.Context(), connect.NewRequest(req))
 			if err != nil {
 				return fmt.Errorf("failed to list JIT grants: %w", err)
 			}
@@ -555,6 +593,8 @@ func newJitCmd() *cobra.Command {
 		},
 	}
 	listCmd.Flags().BoolVar(&allGrants, "all", false, "Include revoked and expired grants")
+	listCmd.Flags().StringVarP(&jitFilter, "filter", "f", "", "CEL filter expression (e.g. 'hours >= 2 && status == \"ACTIVE\"')")
+	listCmd.Flags().StringSliceVarP(&jitSort, "sort", "s", nil, "Columns to sort by (e.g. ^hours, operator)")
 	cmd.AddCommand(listCmd)
 
 	cmd.AddCommand(&cobra.Command{
@@ -665,14 +705,17 @@ func newSystemCmd() *cobra.Command {
 	healthCmd.Flags().StringVar(&healthRegion, "region", "", "Filter by deployment region (e.g. us-central1, local)")
 	cmd.AddCommand(healthCmd)
 
-	var metricsRegion, metricsService, metricsRoute, metricsWindow string
+	var metricsRegion, metricsService, metricsRoute, metricsWindow, metricsFilter string
+	var metricsSort []string
 	var metricsFailedOnly bool
 	metricsCmd := &cobra.Command{
 		Use:   "metrics",
 		Short: "Query RED (Rate, Error, Duration) and resource metrics across services and routes",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := getOpsClient()
-			reqMsg := &pb.GetSystemMetricsRequest{}
+			reqMsg := &pb.GetSystemMetricsRequest{
+				Sort: metricsSort,
+			}
 			if strings.TrimSpace(metricsWindow) != "" {
 				w := strings.TrimSpace(metricsWindow)
 				reqMsg.Window = &w
@@ -684,6 +727,10 @@ func newSystemCmd() *cobra.Command {
 			if strings.TrimSpace(metricsService) != "" {
 				s := strings.TrimSpace(metricsService)
 				reqMsg.ServiceFilter = &s
+			}
+			if strings.TrimSpace(metricsFilter) != "" {
+				f := strings.TrimSpace(metricsFilter)
+				reqMsg.Filter = &f
 			}
 
 			resp, err := client.GetSystemMetrics(cmd.Context(), connect.NewRequest(reqMsg))
@@ -744,6 +791,8 @@ func newSystemCmd() *cobra.Command {
 	metricsCmd.Flags().StringVar(&metricsRoute, "route", "", "Substring filter for route or RPC procedure")
 	metricsCmd.Flags().StringVar(&metricsWindow, "window", "5m", "Aggregation window (5m, 1h, 24h)")
 	metricsCmd.Flags().BoolVar(&metricsFailedOnly, "failed-only", false, "Only show routes with non-zero error counts")
+	metricsCmd.Flags().StringVarP(&metricsFilter, "filter", "f", "", "CEL filter expression for routes (e.g. 'p95_rtt_ms > 10.0 || error_count > 0')")
+	metricsCmd.Flags().StringSliceVarP(&metricsSort, "sort", "s", nil, "Columns to sort routes by (e.g. ^p95_rtt_ms, ^total_requests)")
 	cmd.AddCommand(metricsCmd)
 
 	return cmd
@@ -755,12 +804,19 @@ func newDbCmd() *cobra.Command {
 		Short: "Public database statistics",
 	}
 
-	cmd.AddCommand(&cobra.Command{
+	var dbFilter string
+	var dbSort []string
+	statsCmd := &cobra.Command{
 		Use:   "stats",
 		Short: "Show table row counts and disk sizes in quadsmith_api",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := getOpsClient()
-			resp, err := client.GetDatabaseStats(cmd.Context(), connect.NewRequest(&pb.GetDatabaseStatsRequest{}))
+			req := &pb.GetDatabaseStatsRequest{Sort: dbSort}
+			if strings.TrimSpace(dbFilter) != "" {
+				f := strings.TrimSpace(dbFilter)
+				req.Filter = &f
+			}
+			resp, err := client.GetDatabaseStats(cmd.Context(), connect.NewRequest(req))
 			if err != nil {
 				return fmt.Errorf("failed to get database stats: %w", err)
 			}
@@ -783,7 +839,10 @@ func newDbCmd() *cobra.Command {
 			}
 			return w.Flush()
 		},
-	})
+	}
+	statsCmd.Flags().StringVarP(&dbFilter, "filter", "f", "", "CEL filter expression (e.g. 'row_count > 0')")
+	statsCmd.Flags().StringSliceVarP(&dbSort, "sort", "s", nil, "Columns to sort by (e.g. ^row_count, table_name)")
+	cmd.AddCommand(statsCmd)
 
 	return cmd
 }
@@ -798,12 +857,19 @@ func newTasksCmd() *cobra.Command {
 		Short: "Inspect and trigger background operational tasks",
 	}
 
-	cmd.AddCommand(&cobra.Command{
+	var taskFilter string
+	var taskSort []string
+	listTasksCmd := &cobra.Command{
 		Use:   "list",
 		Short: "List registered operational maintenance tasks",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := getOpsClient()
-			resp, err := client.ListTasks(cmd.Context(), connect.NewRequest(&pb.ListTasksRequest{}))
+			req := &pb.ListTasksRequest{Sort: taskSort}
+			if strings.TrimSpace(taskFilter) != "" {
+				f := strings.TrimSpace(taskFilter)
+				req.Filter = &f
+			}
+			resp, err := client.ListTasks(cmd.Context(), connect.NewRequest(req))
 			if err != nil {
 				return fmt.Errorf("failed to list tasks: %w", err)
 			}
@@ -822,7 +888,10 @@ func newTasksCmd() *cobra.Command {
 			}
 			return w.Flush()
 		},
-	})
+	}
+	listTasksCmd.Flags().StringVarP(&taskFilter, "filter", "f", "", "CEL filter expression (e.g. 'name.contains(\"cleanup\")')")
+	listTasksCmd.Flags().StringSliceVarP(&taskSort, "sort", "s", nil, "Columns to sort by (e.g. name, ^default_interval)")
+	cmd.AddCommand(listTasksCmd)
 
 	cmd.AddCommand(&cobra.Command{
 		Use:   "get [task_name]",
@@ -1040,19 +1109,27 @@ func newJobsCmd() *cobra.Command {
 
 	var limit int
 	var taskFilter string
+	var jobFilter string
+	var jobSort []string
 
 	listCmd := &cobra.Command{
 		Use:   "list",
 		Short: "List historical executions of background tasks (latest first)",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := getOpsClient()
-			listReq := &pb.ListJobsRequest{}
+			listReq := &pb.ListJobsRequest{
+				Sort: jobSort,
+			}
 			if limit > 0 {
 				l := int32(limit)
 				listReq.Limit = &l
 			}
 			if taskFilter != "" {
 				listReq.TaskName = &taskFilter
+			}
+			if strings.TrimSpace(jobFilter) != "" {
+				f := strings.TrimSpace(jobFilter)
+				listReq.Filter = &f
 			}
 			resp, err := client.ListJobs(cmd.Context(), connect.NewRequest(listReq))
 			if err != nil {
@@ -1080,6 +1157,8 @@ func newJobsCmd() *cobra.Command {
 	}
 	listCmd.Flags().IntVar(&limit, "limit", 50, "Maximum number of job records to return")
 	listCmd.Flags().StringVar(&taskFilter, "task", "", "Filter jobs by task name (e.g. cleanup_expired_otps)")
+	listCmd.Flags().StringVarP(&jobFilter, "filter", "f", "", "CEL filter expression (e.g. 'status == \"ERROR\" || duration_ms >= 50')")
+	listCmd.Flags().StringSliceVarP(&jobSort, "sort", "s", nil, "Columns to sort by (e.g. ^duration_ms, ^created_at)")
 	cmd.AddCommand(listCmd)
 
 	cmd.AddCommand(&cobra.Command{
@@ -1127,14 +1206,22 @@ func newJobsCmd() *cobra.Command {
 
 func newAuditCmd() *cobra.Command {
 	var limit int
+	var auditFilter string
+	var auditSort []string
 	cmd := &cobra.Command{
 		Use:   "audit",
 		Short: "View audit log of internal API calls across all services",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			client := getOpsClient()
-			resp, err := client.ListInternalApiCalls(cmd.Context(), connect.NewRequest(&pb.ListInternalApiCallsRequest{
+			req := &pb.ListInternalApiCallsRequest{
 				Limit: int32(limit),
-			}))
+				Sort:  auditSort,
+			}
+			if strings.TrimSpace(auditFilter) != "" {
+				f := strings.TrimSpace(auditFilter)
+				req.Filter = &f
+			}
+			resp, err := client.ListInternalApiCalls(cmd.Context(), connect.NewRequest(req))
 			if err != nil {
 				return fmt.Errorf("failed to fetch audit log: %w", err)
 			}
@@ -1160,5 +1247,7 @@ func newAuditCmd() *cobra.Command {
 		},
 	}
 	cmd.Flags().IntVar(&limit, "limit", 50, "Maximum number of audit records to return")
+	cmd.Flags().StringVarP(&auditFilter, "filter", "f", "", "CEL filter expression (e.g. 'status != \"OK\" || duration_ms >= 20')")
+	cmd.Flags().StringSliceVarP(&auditSort, "sort", "s", nil, "Columns to sort by (e.g. ^duration_ms, ^created_at)")
 	return cmd
 }

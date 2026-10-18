@@ -1428,6 +1428,8 @@ func (x *GetCurrentOperatorResponse) GetActiveJitGrant() *JitGrantRecord {
 
 type GetDatabaseStatsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        *string                `protobuf:"bytes,1,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
+	Sort          []string               `protobuf:"bytes,2,rep,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -1460,6 +1462,20 @@ func (x *GetDatabaseStatsRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use GetDatabaseStatsRequest.ProtoReflect.Descriptor instead.
 func (*GetDatabaseStatsRequest) Descriptor() ([]byte, []int) {
 	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *GetDatabaseStatsRequest) GetFilter() string {
+	if x != nil && x.Filter != nil {
+		return *x.Filter
+	}
+	return ""
+}
+
+func (x *GetDatabaseStatsRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
 }
 
 type GetDatabaseStatsResponse struct {
@@ -1975,6 +1991,8 @@ type GetSystemMetricsRequest struct {
 	RegionFilter  *string                `protobuf:"bytes,1,opt,name=region_filter,json=regionFilter,proto3,oneof" json:"region_filter,omitempty"`
 	ServiceFilter *string                `protobuf:"bytes,2,opt,name=service_filter,json=serviceFilter,proto3,oneof" json:"service_filter,omitempty"`
 	Window        *string                `protobuf:"bytes,3,opt,name=window,proto3,oneof" json:"window,omitempty"`
+	Filter        *string                `protobuf:"bytes,4,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2028,6 +2046,20 @@ func (x *GetSystemMetricsRequest) GetWindow() string {
 		return *x.Window
 	}
 	return ""
+}
+
+func (x *GetSystemMetricsRequest) GetFilter() string {
+	if x != nil && x.Filter != nil {
+		return *x.Filter
+	}
+	return ""
+}
+
+func (x *GetSystemMetricsRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
 }
 
 type GetSystemMetricsResponse struct {
@@ -2196,6 +2228,8 @@ func (x *GetTaskResponse) GetTask() *TaskDef {
 
 type ListIamGroupsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        *string                `protobuf:"bytes,1,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
+	Sort          []string               `protobuf:"bytes,2,rep,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2228,6 +2262,20 @@ func (x *ListIamGroupsRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ListIamGroupsRequest.ProtoReflect.Descriptor instead.
 func (*ListIamGroupsRequest) Descriptor() ([]byte, []int) {
 	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *ListIamGroupsRequest) GetFilter() string {
+	if x != nil && x.Filter != nil {
+		return *x.Filter
+	}
+	return ""
+}
+
+func (x *ListIamGroupsRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
 }
 
 type ListIamGroupsResponse struct {
@@ -2276,6 +2324,8 @@ func (x *ListIamGroupsResponse) GetGroups() []*IamGroupSummary {
 
 type ListIamUsersRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        *string                `protobuf:"bytes,1,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
+	Sort          []string               `protobuf:"bytes,2,rep,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2308,6 +2358,20 @@ func (x *ListIamUsersRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ListIamUsersRequest.ProtoReflect.Descriptor instead.
 func (*ListIamUsersRequest) Descriptor() ([]byte, []int) {
 	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{37}
+}
+
+func (x *ListIamUsersRequest) GetFilter() string {
+	if x != nil && x.Filter != nil {
+		return *x.Filter
+	}
+	return ""
+}
+
+func (x *ListIamUsersRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
 }
 
 type ListIamUsersResponse struct {
@@ -2359,6 +2423,8 @@ type ListInternalApiCallsRequest struct {
 	Limit         int32                  `protobuf:"varint,1,opt,name=limit,proto3" json:"limit,omitempty"`
 	CallerFilter  string                 `protobuf:"bytes,2,opt,name=caller_filter,json=callerFilter,proto3" json:"caller_filter,omitempty"`
 	MethodFilter  string                 `protobuf:"bytes,3,opt,name=method_filter,json=methodFilter,proto3" json:"method_filter,omitempty"`
+	Filter        *string                `protobuf:"bytes,4,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
+	Sort          []string               `protobuf:"bytes,5,rep,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2414,6 +2480,20 @@ func (x *ListInternalApiCallsRequest) GetMethodFilter() string {
 	return ""
 }
 
+func (x *ListInternalApiCallsRequest) GetFilter() string {
+	if x != nil && x.Filter != nil {
+		return *x.Filter
+	}
+	return ""
+}
+
+func (x *ListInternalApiCallsRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
 type ListInternalApiCallsResponse struct {
 	state         protoimpl.MessageState   `protogen:"open.v1"`
 	Calls         []*InternalApiCallRecord `protobuf:"bytes,1,rep,name=calls,proto3" json:"calls,omitempty"`
@@ -2460,6 +2540,8 @@ func (x *ListInternalApiCallsResponse) GetCalls() []*InternalApiCallRecord {
 
 type ListInternalTokensRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        *string                `protobuf:"bytes,1,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
+	Sort          []string               `protobuf:"bytes,2,rep,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2492,6 +2574,20 @@ func (x *ListInternalTokensRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ListInternalTokensRequest.ProtoReflect.Descriptor instead.
 func (*ListInternalTokensRequest) Descriptor() ([]byte, []int) {
 	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{41}
+}
+
+func (x *ListInternalTokensRequest) GetFilter() string {
+	if x != nil && x.Filter != nil {
+		return *x.Filter
+	}
+	return ""
+}
+
+func (x *ListInternalTokensRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
 }
 
 type ListInternalTokensResponse struct {
@@ -2541,6 +2637,8 @@ func (x *ListInternalTokensResponse) GetTokens() []*InternalTokenRecord {
 type ListJitGrantsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	ActiveOnly    bool                   `protobuf:"varint,1,opt,name=active_only,json=activeOnly,proto3" json:"active_only,omitempty"`
+	Filter        *string                `protobuf:"bytes,2,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
+	Sort          []string               `protobuf:"bytes,3,rep,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2580,6 +2678,20 @@ func (x *ListJitGrantsRequest) GetActiveOnly() bool {
 		return x.ActiveOnly
 	}
 	return false
+}
+
+func (x *ListJitGrantsRequest) GetFilter() string {
+	if x != nil && x.Filter != nil {
+		return *x.Filter
+	}
+	return ""
+}
+
+func (x *ListJitGrantsRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
 }
 
 type ListJitGrantsResponse struct {
@@ -2630,6 +2742,8 @@ type ListJobsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Limit         *int32                 `protobuf:"varint,1,opt,name=limit,proto3,oneof" json:"limit,omitempty"`
 	TaskName      *string                `protobuf:"bytes,2,opt,name=task_name,json=taskName,proto3,oneof" json:"task_name,omitempty"`
+	Filter        *string                `protobuf:"bytes,3,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
+	Sort          []string               `protobuf:"bytes,4,rep,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2676,6 +2790,20 @@ func (x *ListJobsRequest) GetTaskName() string {
 		return *x.TaskName
 	}
 	return ""
+}
+
+func (x *ListJobsRequest) GetFilter() string {
+	if x != nil && x.Filter != nil {
+		return *x.Filter
+	}
+	return ""
+}
+
+func (x *ListJobsRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
 }
 
 type ListJobsResponse struct {
@@ -2730,6 +2858,8 @@ type ListRouteRequestsRequest struct {
 	Window        *string                `protobuf:"bytes,4,opt,name=window,proto3,oneof" json:"window,omitempty"`
 	OnlyErrors    *bool                  `protobuf:"varint,5,opt,name=only_errors,json=onlyErrors,proto3,oneof" json:"only_errors,omitempty"`
 	Limit         *int32                 `protobuf:"varint,6,opt,name=limit,proto3,oneof" json:"limit,omitempty"`
+	Filter        *string                `protobuf:"bytes,7,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
+	Sort          []string               `protobuf:"bytes,8,rep,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2806,6 +2936,20 @@ func (x *ListRouteRequestsRequest) GetLimit() int32 {
 	return 0
 }
 
+func (x *ListRouteRequestsRequest) GetFilter() string {
+	if x != nil && x.Filter != nil {
+		return *x.Filter
+	}
+	return ""
+}
+
+func (x *ListRouteRequestsRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
+}
+
 type ListRouteRequestsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Requests      []*RouteRequestLog     `protobuf:"bytes,1,rep,name=requests,proto3" json:"requests,omitempty"`
@@ -2852,6 +2996,8 @@ func (x *ListRouteRequestsResponse) GetRequests() []*RouteRequestLog {
 
 type ListTasksRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	Filter        *string                `protobuf:"bytes,1,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
+	Sort          []string               `protobuf:"bytes,2,rep,name=sort,proto3" json:"sort,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -2884,6 +3030,20 @@ func (x *ListTasksRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use ListTasksRequest.ProtoReflect.Descriptor instead.
 func (*ListTasksRequest) Descriptor() ([]byte, []int) {
 	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{49}
+}
+
+func (x *ListTasksRequest) GetFilter() string {
+	if x != nil && x.Filter != nil {
+		return *x.Filter
+	}
+	return ""
+}
+
+func (x *ListTasksRequest) GetSort() []string {
+	if x != nil {
+		return x.Sort
+	}
+	return nil
 }
 
 type ListTasksResponse struct {
@@ -4274,8 +4434,11 @@ const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"group_name\x18\x03 \x01(\tR\tgroupName\x12H\n" +
 	"\x12session_expires_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\x10sessionExpiresAt\x12L\n" +
 	"\x10active_jit_grant\x18\x05 \x01(\v2\x1d.quadsmith.ops.JitGrantRecordH\x00R\x0eactiveJitGrant\x88\x01\x01B\x13\n" +
-	"\x11_active_jit_grant\"\x19\n" +
-	"\x17GetDatabaseStatsRequest\"\x9b\x01\n" +
+	"\x11_active_jit_grant\"U\n" +
+	"\x17GetDatabaseStatsRequest\x12\x1b\n" +
+	"\x06filter\x18\x01 \x01(\tH\x00R\x06filter\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\x02 \x03(\tR\x04sortB\t\n" +
+	"\a_filter\"\x9b\x01\n" +
 	"\x18GetDatabaseStatsResponse\x12#\n" +
 	"\rdatabase_name\x18\x01 \x01(\tR\fdatabaseName\x12(\n" +
 	"\x10total_size_bytes\x18\x02 \x01(\x03R\x0etotalSizeBytes\x120\n" +
@@ -4309,14 +4472,17 @@ const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"\x06region\x18\x03 \x01(\tR\x06region\x129\n" +
 	"\n" +
 	"checked_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\tcheckedAt\x12>\n" +
-	"\bservices\x18\x05 \x03(\v2\".quadsmith.ops.ServiceHealthStatusR\bservices\"\xbc\x01\n" +
+	"\bservices\x18\x05 \x03(\v2\".quadsmith.ops.ServiceHealthStatusR\bservices\"\xf8\x01\n" +
 	"\x17GetSystemMetricsRequest\x12(\n" +
 	"\rregion_filter\x18\x01 \x01(\tH\x00R\fregionFilter\x88\x01\x01\x12*\n" +
 	"\x0eservice_filter\x18\x02 \x01(\tH\x01R\rserviceFilter\x88\x01\x01\x12\x1b\n" +
-	"\x06window\x18\x03 \x01(\tH\x02R\x06window\x88\x01\x01B\x10\n" +
+	"\x06window\x18\x03 \x01(\tH\x02R\x06window\x88\x01\x01\x12\x1b\n" +
+	"\x06filter\x18\x04 \x01(\tH\x03R\x06filter\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sortB\x10\n" +
 	"\x0e_region_filterB\x11\n" +
 	"\x0f_service_filterB\t\n" +
-	"\a_window\"\xed\x01\n" +
+	"\a_windowB\t\n" +
+	"\a_filter\"\xed\x01\n" +
 	"\x18GetSystemMetricsResponse\x12 \n" +
 	"\venvironment\x18\x01 \x01(\tR\venvironment\x12\x16\n" +
 	"\x06region\x18\x02 \x01(\tR\x06region\x12\x16\n" +
@@ -4326,35 +4492,53 @@ const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"\x0eGetTaskRequest\x12\x1b\n" +
 	"\ttask_name\x18\x01 \x01(\tR\btaskName\"=\n" +
 	"\x0fGetTaskResponse\x12*\n" +
-	"\x04task\x18\x01 \x01(\v2\x16.quadsmith.ops.TaskDefR\x04task\"\x16\n" +
-	"\x14ListIamGroupsRequest\"O\n" +
+	"\x04task\x18\x01 \x01(\v2\x16.quadsmith.ops.TaskDefR\x04task\"R\n" +
+	"\x14ListIamGroupsRequest\x12\x1b\n" +
+	"\x06filter\x18\x01 \x01(\tH\x00R\x06filter\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\x02 \x03(\tR\x04sortB\t\n" +
+	"\a_filter\"O\n" +
 	"\x15ListIamGroupsResponse\x126\n" +
-	"\x06groups\x18\x01 \x03(\v2\x1e.quadsmith.ops.IamGroupSummaryR\x06groups\"\x15\n" +
-	"\x13ListIamUsersRequest\"K\n" +
+	"\x06groups\x18\x01 \x03(\v2\x1e.quadsmith.ops.IamGroupSummaryR\x06groups\"Q\n" +
+	"\x13ListIamUsersRequest\x12\x1b\n" +
+	"\x06filter\x18\x01 \x01(\tH\x00R\x06filter\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\x02 \x03(\tR\x04sortB\t\n" +
+	"\a_filter\"K\n" +
 	"\x14ListIamUsersResponse\x123\n" +
-	"\x05users\x18\x01 \x03(\v2\x1d.quadsmith.ops.IamUserSummaryR\x05users\"}\n" +
+	"\x05users\x18\x01 \x03(\v2\x1d.quadsmith.ops.IamUserSummaryR\x05users\"\xb9\x01\n" +
 	"\x1bListInternalApiCallsRequest\x12\x14\n" +
 	"\x05limit\x18\x01 \x01(\x05R\x05limit\x12#\n" +
 	"\rcaller_filter\x18\x02 \x01(\tR\fcallerFilter\x12#\n" +
-	"\rmethod_filter\x18\x03 \x01(\tR\fmethodFilter\"Z\n" +
+	"\rmethod_filter\x18\x03 \x01(\tR\fmethodFilter\x12\x1b\n" +
+	"\x06filter\x18\x04 \x01(\tH\x00R\x06filter\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\x05 \x03(\tR\x04sortB\t\n" +
+	"\a_filter\"Z\n" +
 	"\x1cListInternalApiCallsResponse\x12:\n" +
-	"\x05calls\x18\x01 \x03(\v2$.quadsmith.ops.InternalApiCallRecordR\x05calls\"\x1b\n" +
-	"\x19ListInternalTokensRequest\"X\n" +
+	"\x05calls\x18\x01 \x03(\v2$.quadsmith.ops.InternalApiCallRecordR\x05calls\"W\n" +
+	"\x19ListInternalTokensRequest\x12\x1b\n" +
+	"\x06filter\x18\x01 \x01(\tH\x00R\x06filter\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\x02 \x03(\tR\x04sortB\t\n" +
+	"\a_filter\"X\n" +
 	"\x1aListInternalTokensResponse\x12:\n" +
-	"\x06tokens\x18\x01 \x03(\v2\".quadsmith.ops.InternalTokenRecordR\x06tokens\"7\n" +
+	"\x06tokens\x18\x01 \x03(\v2\".quadsmith.ops.InternalTokenRecordR\x06tokens\"s\n" +
 	"\x14ListJitGrantsRequest\x12\x1f\n" +
 	"\vactive_only\x18\x01 \x01(\bR\n" +
-	"activeOnly\"N\n" +
+	"activeOnly\x12\x1b\n" +
+	"\x06filter\x18\x02 \x01(\tH\x00R\x06filter\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\x03 \x03(\tR\x04sortB\t\n" +
+	"\a_filter\"N\n" +
 	"\x15ListJitGrantsResponse\x125\n" +
-	"\x06grants\x18\x01 \x03(\v2\x1d.quadsmith.ops.JitGrantRecordR\x06grants\"f\n" +
+	"\x06grants\x18\x01 \x03(\v2\x1d.quadsmith.ops.JitGrantRecordR\x06grants\"\xa2\x01\n" +
 	"\x0fListJobsRequest\x12\x19\n" +
 	"\x05limit\x18\x01 \x01(\x05H\x00R\x05limit\x88\x01\x01\x12 \n" +
-	"\ttask_name\x18\x02 \x01(\tH\x01R\btaskName\x88\x01\x01B\b\n" +
+	"\ttask_name\x18\x02 \x01(\tH\x01R\btaskName\x88\x01\x01\x12\x1b\n" +
+	"\x06filter\x18\x03 \x01(\tH\x02R\x06filter\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\x04 \x03(\tR\x04sortB\b\n" +
 	"\x06_limitB\f\n" +
 	"\n" +
-	"_task_name\"@\n" +
+	"_task_nameB\t\n" +
+	"\a_filter\"@\n" +
 	"\x10ListJobsResponse\x12,\n" +
-	"\x04jobs\x18\x01 \x03(\v2\x18.quadsmith.ops.JobRecordR\x04jobs\"\xb7\x02\n" +
+	"\x04jobs\x18\x01 \x03(\v2\x18.quadsmith.ops.JobRecordR\x04jobs\"\xf3\x02\n" +
 	"\x18ListRouteRequestsRequest\x12(\n" +
 	"\rregion_filter\x18\x01 \x01(\tH\x00R\fregionFilter\x88\x01\x01\x12&\n" +
 	"\fservice_name\x18\x02 \x01(\tH\x01R\vserviceName\x88\x01\x01\x12\x19\n" +
@@ -4362,16 +4546,22 @@ const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"\x06window\x18\x04 \x01(\tH\x03R\x06window\x88\x01\x01\x12$\n" +
 	"\vonly_errors\x18\x05 \x01(\bH\x04R\n" +
 	"onlyErrors\x88\x01\x01\x12\x19\n" +
-	"\x05limit\x18\x06 \x01(\x05H\x05R\x05limit\x88\x01\x01B\x10\n" +
+	"\x05limit\x18\x06 \x01(\x05H\x05R\x05limit\x88\x01\x01\x12\x1b\n" +
+	"\x06filter\x18\a \x01(\tH\x06R\x06filter\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\b \x03(\tR\x04sortB\x10\n" +
 	"\x0e_region_filterB\x0f\n" +
 	"\r_service_nameB\b\n" +
 	"\x06_routeB\t\n" +
 	"\a_windowB\x0e\n" +
 	"\f_only_errorsB\b\n" +
-	"\x06_limit\"W\n" +
+	"\x06_limitB\t\n" +
+	"\a_filter\"W\n" +
 	"\x19ListRouteRequestsResponse\x12:\n" +
-	"\brequests\x18\x01 \x03(\v2\x1e.quadsmith.ops.RouteRequestLogR\brequests\"\x12\n" +
-	"\x10ListTasksRequest\"A\n" +
+	"\brequests\x18\x01 \x03(\v2\x1e.quadsmith.ops.RouteRequestLogR\brequests\"N\n" +
+	"\x10ListTasksRequest\x12\x1b\n" +
+	"\x06filter\x18\x01 \x01(\tH\x00R\x06filter\x88\x01\x01\x12\x12\n" +
+	"\x04sort\x18\x02 \x03(\tR\x04sortB\t\n" +
+	"\a_filter\"A\n" +
 	"\x11ListTasksResponse\x12,\n" +
 	"\x05tasks\x18\x01 \x03(\v2\x16.quadsmith.ops.TaskDefR\x05tasks\"!\n" +
 	"\x1fPurgeSoftDeletedAccountsRequest\"E\n" +
@@ -4706,10 +4896,17 @@ func file_quadsmith_ops_ops_proto_init() {
 	file_quadsmith_ops_ops_proto_msgTypes[0].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[3].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[20].OneofWrappers = []any{}
+	file_quadsmith_ops_ops_proto_msgTypes[21].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[29].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[31].OneofWrappers = []any{}
+	file_quadsmith_ops_ops_proto_msgTypes[35].OneofWrappers = []any{}
+	file_quadsmith_ops_ops_proto_msgTypes[37].OneofWrappers = []any{}
+	file_quadsmith_ops_ops_proto_msgTypes[39].OneofWrappers = []any{}
+	file_quadsmith_ops_ops_proto_msgTypes[41].OneofWrappers = []any{}
+	file_quadsmith_ops_ops_proto_msgTypes[43].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[45].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[47].OneofWrappers = []any{}
+	file_quadsmith_ops_ops_proto_msgTypes[49].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[67].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{

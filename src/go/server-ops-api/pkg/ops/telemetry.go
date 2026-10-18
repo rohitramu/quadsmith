@@ -242,6 +242,10 @@ func (s *OpsService) convertHealthResponse(hr telemetry.HealthResponse, mem runt
 }
 
 func (s *OpsService) GetSystemMetrics(ctx context.Context, req *connect.Request[pb.GetSystemMetricsRequest]) (*connect.Response[pb.GetSystemMetricsResponse], error) {
+	if _, err := filterAndSortRouteMetrics(nil, req.Msg.GetFilter(), req.Msg.GetSort()); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
 	window := strings.TrimSpace(req.Msg.GetWindow())
 	if window == "" {
 		window = "5m"
@@ -391,6 +395,11 @@ func (s *OpsService) GetSystemMetrics(ctx context.Context, req *connect.Request[
 			return routes[i].Route < routes[j].Route
 		})
 
+		filteredRoutes, err := filterAndSortRouteMetrics(routes, req.Msg.GetFilter(), req.Msg.GetSort())
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInvalidArgument, err)
+		}
+
 		avail := 100.0
 		if totalReqs > 0 {
 			avail = (float64(okReqs) / float64(totalReqs)) * 100.0
@@ -406,7 +415,7 @@ func (s *OpsService) GetSystemMetrics(ctx context.Context, req *connect.Request[
 			P50RttMs:            maxP50,
 			P95RttMs:            maxP95,
 			P99RttMs:            maxP99,
-			Routes:              routes,
+			Routes:              filteredRoutes,
 		})
 	}
 
@@ -445,6 +454,10 @@ func (s *OpsService) collectPeerSnapshots(ctx context.Context) []telemetry.Metri
 }
 
 func (s *OpsService) ListRouteRequests(ctx context.Context, req *connect.Request[pb.ListRouteRequestsRequest]) (*connect.Response[pb.ListRouteRequestsResponse], error) {
+	if _, err := filterAndSortRouteRequests(nil, req.Msg.GetFilter(), req.Msg.GetSort()); err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
 	limit := int(req.Msg.GetLimit())
 	if limit <= 0 || limit > 500 {
 		limit = 50
@@ -562,7 +575,7 @@ func (s *OpsService) ListRouteRequests(ctx context.Context, req *connect.Request
 				}
 				seenTraces[key] = true
 				records = append(records, rec)
-				if len(records) >= limit {
+				if len(records) >= limit*2 {
 					break
 				}
 			}
@@ -573,12 +586,17 @@ func (s *OpsService) ListRouteRequests(ctx context.Context, req *connect.Request
 		return records[i].GetOccurredAt().AsTime().After(records[j].GetOccurredAt().AsTime())
 	})
 
-	if len(records) > limit {
-		records = records[:limit]
+	filtered, err := filterAndSortRouteRequests(records, req.Msg.GetFilter(), req.Msg.GetSort())
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInvalidArgument, err)
+	}
+
+	if len(filtered) > limit {
+		filtered = filtered[:limit]
 	}
 
 	return connect.NewResponse(&pb.ListRouteRequestsResponse{
-		Requests: records,
+		Requests: filtered,
 	}), nil
 }
 

@@ -1016,6 +1016,70 @@ func TestOpsWeb_GrafanaProxyJITGating(t *testing.T) {
 	}
 }
 
+func TestOpsService_CELFilterAndSorting(t *testing.T) {
+	ctx := context.Background()
+	operatorClient := newOpsClient("qs_op_sandbox_token_12345")
+
+	// 1. ListTasks with CEL filter & descending sort
+	taskFilter := `name.startsWith("cleanup_")`
+	tasksRes, err := operatorClient.ListTasks(ctx, connect.NewRequest(&pb.ListTasksRequest{
+		Filter: &taskFilter,
+		Sort:   []string{"^name"},
+	}))
+	if err != nil {
+		t.Fatalf("ListTasks with CEL filter failed: %v", err)
+	}
+	if len(tasksRes.Msg.GetTasks()) != 3 {
+		t.Fatalf("Expected 3 cleanup tasks, got %d", len(tasksRes.Msg.GetTasks()))
+	}
+	if tasksRes.Msg.GetTasks()[0].GetName() < tasksRes.Msg.GetTasks()[1].GetName() {
+		t.Errorf("Expected descending sort order on tasks, got %s before %s",
+			tasksRes.Msg.GetTasks()[0].GetName(), tasksRes.Msg.GetTasks()[1].GetName())
+	}
+
+	// 2. GetDatabaseStats with CEL filter & ascending table_name sort
+	dbFilter := `table_name.contains("motor") || table_name == "frames"`
+	dbRes, err := operatorClient.GetDatabaseStats(ctx, connect.NewRequest(&pb.GetDatabaseStatsRequest{
+		Filter: &dbFilter,
+		Sort:   []string{"table_name"},
+	}))
+	if err != nil {
+		t.Fatalf("GetDatabaseStats with CEL filter failed: %v", err)
+	}
+	if len(dbRes.Msg.GetTables()) < 2 {
+		t.Fatalf("Expected at least 2 tables matching motor/frames filter, got %d", len(dbRes.Msg.GetTables()))
+	}
+	if dbRes.Msg.GetTables()[0].GetTableName() > dbRes.Msg.GetTables()[1].GetTableName() {
+		t.Errorf("Expected ascending table_name sort, got %s before %s",
+			dbRes.Msg.GetTables()[0].GetTableName(), dbRes.Msg.GetTables()[1].GetTableName())
+	}
+
+	// 3. Invalid CEL filter returns CodeInvalidArgument
+	invalidFilter := `unknown_column == 123`
+	_, err = operatorClient.GetDatabaseStats(ctx, connect.NewRequest(&pb.GetDatabaseStatsRequest{
+		Filter: &invalidFilter,
+	}))
+	if err == nil || connect.CodeOf(err) != connect.CodeInvalidArgument {
+		t.Errorf("Expected CodeInvalidArgument for invalid CEL filter, got %v", err)
+	}
+
+	// 4. Verify qsops CLI --filter and --sort flags
+	qsopsPath := resolveQSOpsPath(t)
+	cmdTasks := exec.Command(
+		qsopsPath, "tasks", "list",
+		"-f", `name.startsWith("cleanup_")`,
+		"-s", "^name",
+		"--token", "qs_op_sandbox_token_12345",
+	)
+	outTasks, err := cmdTasks.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops tasks list -f -s failed: %v, output: %s", err, string(outTasks))
+	}
+	if !containsString(string(outTasks), "cleanup_orphaned_blobs") || containsString(string(outTasks), "set_user_role") {
+		t.Errorf("Unexpected qsops tasks list filtered output: %s", string(outTasks))
+	}
+}
+
 func containsString(s, substr string) bool {
 	return len(s) >= len(substr) && (s == substr || (len(s) > len(substr) && stringContains(s, substr)))
 }

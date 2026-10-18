@@ -518,36 +518,48 @@ recent trace IDs by region and service from the terminal:
   status alongside each binary's `region`, `instance_id`, deep dependency
   checks, uptime, memory, goroutines, and DB pool usage.
 - `GetSystemMetrics(GetSystemMetricsRequest) returns (GetSystemMetricsResponse)`:
-  Accepts `region_filter` (optional), `service_filter` (optional), and `window`
-  (`"15m"`, `"1h"`, `"24h"`, `"7d"`, `"60d"`). Queries VictoriaMetrics (with an
-  in-memory ring-buffer fallback) to return per-region, per-service, and
-  per-route availability (`total_requests`, `success_count`, `error_count`,
-  `availability_percent`) and RTT percentiles (`p50_rtt_ms`, `p95_rtt_ms`,
-  `p99_rtt_ms`).
+  Accepts `region_filter` (optional), `service_filter` (optional), `window`
+  (`"15m"`, `"1h"`, `"24h"`, `"7d"`, `"60d"`), optional CEL `filter`, and
+  `repeated string sort`. Queries VictoriaMetrics (with an in-memory ring-buffer
+  fallback) to return per-region, per-service, and per-route availability
+  (`total_requests`, `success_count`, `error_count`, `availability_percent`) and
+  RTT percentiles (`p50_rtt_ms`, `p95_rtt_ms`, `p99_rtt_ms`), filtered and
+  sorted via `cel2sql.FilterAndSort`.
 - `ListRouteRequests(ListRouteRequestsRequest) returns (ListRouteRequestsResponse)`:
   Accepts `region_filter` (optional), `service_name` (optional), `route`,
-  `window`, `only_errors` (optional bool), and `limit` (default `50`). Queries
-  VictoriaLogs (with an in-memory ring-buffer fallback) to return recent
-  individual `RouteRequestLog` records (`trace_id` UUID v7, `region`,
-  `service_name`, `instance_id`, `route`, `method`, `status_code`, `success`,
-  `rtt_ms`, `occurred_at`).
+  `window`, `only_errors` (optional bool), `limit` (default `50`), optional CEL
+  `filter`, and `repeated string sort`. Queries VictoriaLogs (with an in-memory
+  ring-buffer fallback) to return recent individual `RouteRequestLog` records
+  (`trace_id` UUID v7, `region`, `service_name`, `instance_id`, `route`,
+  `method`, `status_code`, `success`, `rtt_ms`, `occurred_at`), filtered and
+  sorted via `cel2sql.FilterAndSort`.
+- **Unified CEL Filtering and Multi-Column Sorting Across All `OpsService`
+  Collections**: `GetDatabaseStats`, `ListTasks`, `ListJobs`,
+  `ListInternalApiCalls`, `ListIamUsers`, `ListIamGroups`, `ListInternalTokens`,
+  and `ListJitGrants` also accept optional CEL `filter` and
+  `repeated string sort` (`field` for ascending, `^field` or `-field` for
+  descending), evaluated by `src/go/shared/pkg/cel2sql/eval.go`.
 - `GetOAuthConfig(GetOAuthConfigRequest) returns (GetOAuthConfigResponse)`:
   Public (unauthenticated) RPC returning the GitHub OAuth `client_id`,
   `provider`, `environment`, `region`, and `authorize_url` so `app-ops-web` can
   initiate browser GitHub OAuth login (or 1-click sandbox login in `sandbox`).
 
-In [src/go/cli-ops/main.go](../src/go/cli-ops/main.go), extend `qsops system`:
+In [src/go/cli-ops/main.go](../src/go/cli-ops/main.go), extend `qsops`:
 
 - `qsops system health [--region <region>] [--json]`: Displays a table of all 5
   Go binaries (`REGION`, `INSTANCE`, `SERVICE`, `STATUS`, `UPTIME`, `RAM`,
   `GOROUTINES`, `CHECKS`) and each binary's deep dependency sub-checks and
   latencies.
 - `qsops system metrics` (`[--region <region>]` `[--service <name>]`
-  `[--route <route>]` `[--failed-only]` `[--window 1h|24h|7d|60d]` `[--json]`):
-  Displays per-region, per-service, and per-route request availability %, RPS,
-  and `P50 / P95 / P99` RTT (ms). When `--route <route>` is provided, drills
-  down via `ListRouteRequests` to display recent `TRACE ID` UUIDs, `REGION`,
+  `[--route <route>]` `[--failed-only]` `[--window 1h|24h|7d|60d]`
+  `[-f|--filter <cel>]` `[-s|--sort <field,...>]` `[--json]`): Displays
+  per-region, per-service, and per-route request availability %, RPS, and
+  `P50 / P95 / P99` RTT (ms). When `--route <route>` is provided, drills down
+  via `ListRouteRequests` to display recent `TRACE ID` UUIDs, `REGION`,
   `OUTCOME` (`SUCCESS` / `FAILED`), `HTTP CODE`, `RTT`, and `TIMESTAMP`.
+- `qsops` collection commands (`iam users`, `iam groups`, `iam tokens list`,
+  `jit list`, `db stats`, `tasks list`, `jobs list`, and `audit`) also accept
+  `-f|--filter` (CEL expression) and `-s|--sort` (`field` or `^field`).
 - `qsops system diag [--json]`: Retained as a convenient summary command.
 
 <details>
@@ -584,18 +596,28 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
    - **JIT Access Lease Management**: View active JIT countdown in the top
      header, request new 1–12h JIT leases (`AcquireJitGrant`), extend active
      leases (`ExtendJitGrant`), and revoke leases (`RevokeJitGrant`).
+   - **Interactive CEL Filtering (`SmartFilterInput`) & Sorting Across All
+     Collections**: Shares `SmartFilterInput` and `filterAndSortRecords` from
+     `src/react/shared` with the public catalog. Every collection view (Route
+     RED Metrics, Recent Traced Requests, Operational Tasks, Job History, Public
+     DB Statistics, Internal Bearer Tokens, and API Audit Log) provides a CEL
+     filter bar with field/operator autocomplete, quick filter presets, an
+     interactive collapsible **Common Expression Language (CEL) Filter Syntax**
+     helper with clickable field pills, a sort column/direction selector, and
+     sortable table headers.
    - **Operational Task Triggering**: Interactive list of all 6 registered tasks
      (`ListTasks`: `cleanup_expired_otps`, `cleanup_expired_tokens`,
      `cleanup_orphaned_blobs`, `purge_soft_deleted_accounts`,
      `send_username_release_warnings`, and a parameter form for `set_user_role`)
-     with 1-click manual trigger buttons.
-   - **Job History & Job Details Inspector**: Live table of `ListJobs` where
-     clicking any job row fetches and displays full job details (`GetJob`:
-     `job_id`, `task_name`, `procedure`, `caller_id`, `status`, duration,
-     timestamps, `region`, `X-Trace-Id` UUID, and execution output/error
-     message).
+     with 1-click manual trigger buttons, CEL filtering, and sorting.
+   - **Job History & Job Details Inspector**: Live table of `ListJobs` with CEL
+     filtering and sorting where clicking any job row fetches and displays full
+     job details (`GetJob`: `job_id`, `task_name`, `procedure`, `caller_id`,
+     `status`, duration, timestamps, `region`, `X-Trace-Id` UUID, and execution
+     output/error message).
    - **Database Stats, IAM & Audit Logs**: Views for `GetDatabaseStats`,
-     `ListInternalTokens`, and `ListInternalApiCalls`.
+     `ListInternalTokens`, and `ListInternalApiCalls` with CEL filtering and
+     sortable columns.
    - **JIT-Gated Link to Grafana (`/grafana/`)**: A prominent **"📊 Open Grafana
      Dashboard (`/grafana/`)"** button in the header that navigates to
      `/grafana/` when a JIT lease is active (or prompts the operator to activate

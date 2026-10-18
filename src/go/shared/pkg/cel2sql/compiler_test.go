@@ -107,3 +107,64 @@ func TestCompiler_NilSafety(t *testing.T) {
 		t.Errorf("Expected error when passing nil AST")
 	}
 }
+
+func TestFilterAndSort(t *testing.T) {
+	type sampleItem struct {
+		Name   string
+		Count  int64
+		Score  float64
+		Active bool
+	}
+
+	fields := map[string]bool{
+		"name":   true,
+		"count":  true,
+		"score":  true,
+		"active": true,
+	}
+
+	toMap := func(s sampleItem) map[string]any {
+		return map[string]any{
+			"name":   s.Name,
+			"count":  s.Count,
+			"score":  s.Score,
+			"active": s.Active,
+		}
+	}
+
+	items := []sampleItem{
+		{Name: "alpha", Count: 10, Score: 1.5, Active: true},
+		{Name: "beta", Count: 50, Score: 9.2, Active: false},
+		{Name: "gamma", Count: 25, Score: 4.0, Active: true},
+	}
+
+	// 1. Filter + Sort descending
+	got, err := cel2sql.FilterAndSort(items, `active && count >= 10`, []string{"^count"}, fields, toMap)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(got) != 2 || got[0].Name != "gamma" || got[1].Name != "alpha" {
+		t.Fatalf("unexpected filtered/sorted items: %+v", got)
+	}
+
+	// 2. String method filter + Sort ascending
+	got, err = cel2sql.FilterAndSort(items, `name.contains("a")`, []string{"score"}, fields, toMap)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(got) != 3 || got[0].Name != "alpha" || got[1].Name != "gamma" || got[2].Name != "beta" {
+		t.Fatalf("unexpected string-filtered/sorted items: %+v", got)
+	}
+
+	// 3. Invalid CEL syntax
+	_, err = cel2sql.FilterAndSort(items, `count >=`, nil, fields, toMap)
+	if err == nil {
+		t.Fatal("expected error for invalid CEL expression")
+	}
+
+	// 4. Unknown sort column
+	_, err = cel2sql.FilterAndSort(items, "", []string{"unknown_field"}, fields, toMap)
+	if err == nil {
+		t.Fatal("expected error for unknown sort column")
+	}
+}

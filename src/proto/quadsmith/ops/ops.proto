@@ -202,7 +202,10 @@ message GetCurrentOperatorResponse {
   optional JitGrantRecord active_jit_grant = 5;
 }
 
-message GetDatabaseStatsRequest {}
+message GetDatabaseStatsRequest {
+  optional string filter = 1;
+  repeated string sort = 2;
+}
 
 message GetDatabaseStatsResponse {
   string database_name = 1;
@@ -256,6 +259,8 @@ message GetSystemMetricsRequest {
   optional string region_filter = 1;
   optional string service_filter = 2;
   optional string window = 3;
+  optional string filter = 4;
+  repeated string sort = 5;
 }
 
 message GetSystemMetricsResponse {
@@ -274,13 +279,19 @@ message GetTaskResponse {
   TaskDef task = 1;
 }
 
-message ListIamGroupsRequest {}
+message ListIamGroupsRequest {
+  optional string filter = 1;
+  repeated string sort = 2;
+}
 
 message ListIamGroupsResponse {
   repeated IamGroupSummary groups = 1;
 }
 
-message ListIamUsersRequest {}
+message ListIamUsersRequest {
+  optional string filter = 1;
+  repeated string sort = 2;
+}
 
 message ListIamUsersResponse {
   repeated IamUserSummary users = 1;
@@ -290,13 +301,18 @@ message ListInternalApiCallsRequest {
   int32 limit = 1;
   string caller_filter = 2;
   string method_filter = 3;
+  optional string filter = 4;
+  repeated string sort = 5;
 }
 
 message ListInternalApiCallsResponse {
   repeated InternalApiCallRecord calls = 1;
 }
 
-message ListInternalTokensRequest {}
+message ListInternalTokensRequest {
+  optional string filter = 1;
+  repeated string sort = 2;
+}
 
 message ListInternalTokensResponse {
   repeated InternalTokenRecord tokens = 1;
@@ -304,6 +320,8 @@ message ListInternalTokensResponse {
 
 message ListJitGrantsRequest {
   bool active_only = 1;
+  optional string filter = 2;
+  repeated string sort = 3;
 }
 
 message ListJitGrantsResponse {
@@ -313,6 +331,8 @@ message ListJitGrantsResponse {
 message ListJobsRequest {
   optional int32 limit = 1;
   optional string task_name = 2;
+  optional string filter = 3;
+  repeated string sort = 4;
 }
 
 message ListJobsResponse {
@@ -326,13 +346,18 @@ message ListRouteRequestsRequest {
   optional string window = 4;
   optional bool only_errors = 5;
   optional int32 limit = 6;
+  optional string filter = 7;
+  repeated string sort = 8;
 }
 
 message ListRouteRequestsResponse {
   repeated RouteRequestLog requests = 1;
 }
 
-message ListTasksRequest {}
+message ListTasksRequest {
+  optional string filter = 1;
+  repeated string sort = 2;
+}
 
 message ListTasksResponse {
   repeated TaskDef tasks = 1;
