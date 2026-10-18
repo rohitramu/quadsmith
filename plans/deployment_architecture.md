@@ -1675,25 +1675,39 @@ environment-prefixed **GitHub Repository Secrets** (`PROD_*` for `prod` and
 `secrets[format('{0}_<SECRET>', env.ENV_PREFIX)]` in GitHub Actions and
 `resolve_env_secret` in [`deploy/deploy.sh`](../deploy/deploy.sh)), which works
 at **$0.00/month on private repositories on the GitHub Free plan** (where GitHub
-Environments are restricted to paid Pro/Team plans). A lightweight
-`check-credentials` job checks whether `<ENV_PREFIX>_GCP_SA_KEY` is set so that
-while iterating without live cloud credentials, the workflow cleanly skips
-without failing CI. Once secrets are configured, `.github/workflows/deploy.yml`
-executes `make deploy` across three chained stages (`build-and-push` &rarr;
-`migrate-db` &rarr; `deploy-vm`):
+Environments are restricted to paid Pro/Team plans). Commit promotion across
+environments follows a three-trigger model:
 
-1. **`build-and-push`**: Builds the 4 images in parallel using BuildKit (with
-   `cache-dependency-path: "src/go/go.work.sum"`) and pushes to
+- **Push to `main` &rarr; `staging`**: Every commit pushed or merged to `main`
+  automatically deploys to `staging`.
+- **Push a `v*` Tag &rarr; `prod`**: Pushing a release tag (`v*`) automatically
+  promotes that commit to `prod`.
+- **Manual Dispatch (`workflow_dispatch`) &rarr; `staging` or `prod`**: Supports
+  deploying any explicit commit SHA, tag, or branch via the `ref` input to
+  either `staging` or `prod`.
+
+Both `.github/workflows/deploy.yml` and `deploy/deploy.sh` fail fast if any
+required environment variable or secret is unset or empty, executing across four
+chained stages (`check-credentials` &rarr; `build-and-push` &rarr; `migrate-db`
+&rarr; `deploy-vm`):
+
+1. **`check-credentials`**: Verifies that all 16 required `<ENV_PREFIX>_*`
+   Repository Secrets are set and non-empty (aborting immediately with an
+   explicit error if any secret is missing) and checks out `inputs.ref` (or
+   `github.sha`) to resolve the canonical commit SHA (`deploy_sha`).
+2. **`build-and-push` (`needs: check-credentials`)**: Builds the 4 images in
+   parallel using BuildKit (with `cache-dependency-path: "src/go/go.work.sum"`)
+   and pushes to
    `us-central1-docker.pkg.dev/<PROJECT_ID>/quadsmith-docker/<image>:latest` and
-   `:sha-<COMMIT_SHA>`.
-2. **`migrate-db` (`needs: build-and-push`)**: Ensures the Cloud SQL topology
+   `:sha-<deploy_sha>`.
+3. **`migrate-db` (`needs: build-and-push`)**: Ensures the Cloud SQL topology
    and target SQL databases exist, opens the IAP tunnel to the primary Cloud SQL
    Private IP, checks `psqldef --dry-run`, and whenever schema changes are
    present, runs `make check-breaking` (or `make warn-breaking` if triggered via
    `workflow_dispatch` with `allow_breaking_changes: true`), creates a
    pre-migration Cloud SQL `ON_DEMAND` snapshot, applies `make db-migrate`, and
    seeds `internal_tokens`.
-3. **`deploy-vm` (`needs: migrate-db`)**: Reads
+4. **`deploy-vm` (`needs: migrate-db`)**: Reads
    `deploy/config/${ENV}.textproto`, ensures all GCP/Cloudflare/VM resources
    exist across `regions[].nodes[]`, syncs `/opt/quadsmith/.env` (with each
    region's local Cloud SQL read/write Private IPs) and `deploy/` over IAP SSH

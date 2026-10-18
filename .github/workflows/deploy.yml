@@ -1,6 +1,11 @@
 name: Deploy
 
 on:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
   workflow_dispatch:
     inputs:
       environment:
@@ -11,45 +16,99 @@ on:
         options:
           - staging
           - prod
+      ref:
+        description: "Git commit SHA, tag, or branch to deploy (defaults to selected branch/tag HEAD)"
+        required: false
+        default: ""
+        type: string
       allow_breaking_changes:
         description: "Approve and apply breaking SQL/API/seed schema changes"
         required: false
         default: false
         type: boolean
-  push:
-    tags:
-      - "v*"
+
+concurrency:
+  group: deploy-${{ (github.event_name == 'workflow_dispatch' && inputs.environment) || (github.ref == 'refs/heads/main' && 'staging') || 'prod' }}
+  cancel-in-progress: false
 
 env:
   GCP_REGION: us-central1
   GAR_REPOSITORY: quadsmith-docker
-  TARGET_ENV: ${{ inputs.environment || 'prod' }}
-  ENV_PREFIX: ${{ inputs.environment == 'staging' && 'STAGING' || 'PROD' }}
+  TARGET_ENV: ${{ (github.event_name == 'workflow_dispatch' && inputs.environment) || (github.ref == 'refs/heads/main' && 'staging') || 'prod' }}
+  ENV_PREFIX: ${{ ((github.event_name == 'workflow_dispatch' && inputs.environment == 'staging') || (github.event_name != 'workflow_dispatch' && github.ref == 'refs/heads/main')) && 'STAGING' || 'PROD' }}
 
 jobs:
   check-credentials:
-    name: Check Deployment Secrets (${{ inputs.environment || 'prod' }})
+    name: Validate Secrets & Resolve Ref (${{ (github.event_name == 'workflow_dispatch' && inputs.environment) || (github.ref == 'refs/heads/main' && 'staging') || 'prod' }})
     runs-on: ubuntu-latest
     outputs:
-      configured: ${{ steps.check.outputs.configured }}
+      deploy_sha: ${{ steps.ref.outputs.deploy_sha }}
     steps:
-      - name: Check if ${{ env.ENV_PREFIX }}_GCP_SA_KEY is configured in Repository Secrets
-        id: check
+      - name: Validate all required ${{ env.ENV_PREFIX }}_* Repository Secrets are non-empty
         env:
           GCP_SA_KEY: ${{ secrets[format('{0}_GCP_SA_KEY', env.ENV_PREFIX)] }}
+          CF_ACCOUNT_ID: ${{ secrets[format('{0}_CF_ACCOUNT_ID', env.ENV_PREFIX)] }}
+          CF_ZONE_ID: ${{ secrets[format('{0}_CF_ZONE_ID', env.ENV_PREFIX)] }}
+          CF_API_TOKEN: ${{ secrets[format('{0}_CF_API_TOKEN', env.ENV_PREFIX)] }}
+          QS_DB_PASSWORD: ${{ secrets[format('{0}_QS_DB_PASSWORD', env.ENV_PREFIX)] }}
+          QS_AUTH_SECRET: ${{ secrets[format('{0}_QS_AUTH_SECRET', env.ENV_PREFIX)] }}
+          QS_JOB_SERVER_AUTH_TOKEN: ${{ secrets[format('{0}_QS_JOB_SERVER_AUTH_TOKEN', env.ENV_PREFIX)] }}
+          QS_SMTP_PASSWORD: ${{ secrets[format('{0}_QS_SMTP_PASSWORD', env.ENV_PREFIX)] }}
+          QS_GOOGLE_CLIENT_ID: ${{ secrets[format('{0}_QS_GOOGLE_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_GOOGLE_CLIENT_SECRET: ${{ secrets[format('{0}_QS_GOOGLE_CLIENT_SECRET', env.ENV_PREFIX)] }}
+          QS_GITHUB_CLIENT_ID: ${{ secrets[format('{0}_QS_GITHUB_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_GITHUB_CLIENT_SECRET: ${{ secrets[format('{0}_QS_GITHUB_CLIENT_SECRET', env.ENV_PREFIX)] }}
+          QS_DISCORD_CLIENT_ID: ${{ secrets[format('{0}_QS_DISCORD_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_DISCORD_CLIENT_SECRET: ${{ secrets[format('{0}_QS_DISCORD_CLIENT_SECRET', env.ENV_PREFIX)] }}
+          QS_OAUTH_CLIENT_ID: ${{ secrets[format('{0}_QS_OAUTH_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_OAUTH_CLIENT_SECRET: ${{ secrets[format('{0}_QS_OAUTH_CLIENT_SECRET', env.ENV_PREFIX)] }}
         run: |
-          if [ -n "${GCP_SA_KEY}" ]; then
-            echo "configured=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "::notice::${ENV_PREFIX}_GCP_SA_KEY is not set in Repository Secrets; skipping cloud deployment."
-            echo "configured=false" >> "$GITHUB_OUTPUT"
+          REQUIRED_VARS=(
+            GCP_SA_KEY
+            CF_ACCOUNT_ID
+            CF_ZONE_ID
+            CF_API_TOKEN
+            QS_DB_PASSWORD
+            QS_AUTH_SECRET
+            QS_JOB_SERVER_AUTH_TOKEN
+            QS_SMTP_PASSWORD
+            QS_GOOGLE_CLIENT_ID
+            QS_GOOGLE_CLIENT_SECRET
+            QS_GITHUB_CLIENT_ID
+            QS_GITHUB_CLIENT_SECRET
+            QS_DISCORD_CLIENT_ID
+            QS_DISCORD_CLIENT_SECRET
+            QS_OAUTH_CLIENT_ID
+            QS_OAUTH_CLIENT_SECRET
+          )
+          MISSING=0
+          for var in "${REQUIRED_VARS[@]}"; do
+            if [ -z "${!var:-}" ]; then
+              echo "::error::Required repository secret ${ENV_PREFIX}_${var} is not set or is empty."
+              MISSING=1
+            fi
+          done
+          if [ "$MISSING" -ne 0 ]; then
+            exit 1
           fi
+          echo "All 16 ${ENV_PREFIX}_* repository secrets are set and non-empty."
+
+      - name: Check out target git ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+
+      - name: Resolve canonical commit SHA
+        id: ref
+        run: |
+          DEPLOY_SHA="$(git rev-parse HEAD)"
+          echo "Resolved deployment commit SHA: ${DEPLOY_SHA} (target environment: ${TARGET_ENV})"
+          echo "deploy_sha=${DEPLOY_SHA}" >> "$GITHUB_OUTPUT"
 
   build-and-push:
     name: Build & Push Images (${{ matrix.service }})
     needs: check-credentials
     runs-on: ubuntu-latest
-    if: ${{ needs.check-credentials.outputs.configured == 'true' }}
     strategy:
       fail-fast: true
       matrix:
@@ -60,6 +119,8 @@ jobs:
           - server-jobs
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.check-credentials.outputs.deploy_sha }}
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -106,15 +167,18 @@ jobs:
           push: true
           tags: |
             ${{ env.GCP_REGION }}-docker.pkg.dev/${{ steps.config.outputs.project_id }}/${{ env.GAR_REPOSITORY }}/${{ matrix.service }}:latest
-            ${{ env.GCP_REGION }}-docker.pkg.dev/${{ steps.config.outputs.project_id }}/${{ env.GAR_REPOSITORY }}/${{ matrix.service }}:sha-${{ github.sha }}
+            ${{ env.GCP_REGION }}-docker.pkg.dev/${{ steps.config.outputs.project_id }}/${{ env.GAR_REPOSITORY }}/${{ matrix.service }}:sha-${{ needs.check-credentials.outputs.deploy_sha }}
 
   migrate-db:
     name: Provision Infrastructure & Run Automated DB Migration Gate
-    needs: build-and-push
+    needs:
+      - check-credentials
+      - build-and-push
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ needs.check-credentials.outputs.deploy_sha }}
           fetch-depth: 0
 
       - name: Set up Go
@@ -161,14 +225,18 @@ jobs:
             ENV="${{ env.TARGET_ENV }}" \
             STAGE=migrate \
             ALLOW_BREAKING_CHANGES="${{ inputs.allow_breaking_changes || false }}" \
-            QS_IMAGE_TAG="sha-${{ github.sha }}"
+            QS_IMAGE_TAG="sha-${{ needs.check-credentials.outputs.deploy_sha }}"
 
   deploy-vm:
     name: Zero-Downtime Blue-Green Rollout to Regional VMs
-    needs: migrate-db
+    needs:
+      - check-credentials
+      - migrate-db
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.check-credentials.outputs.deploy_sha }}
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -208,4 +276,4 @@ jobs:
           make deploy \
             ENV="${{ env.TARGET_ENV }}" \
             STAGE=rollout \
-            QS_IMAGE_TAG="sha-${{ github.sha }}"
+            QS_IMAGE_TAG="sha-${{ needs.check-credentials.outputs.deploy_sha }}"

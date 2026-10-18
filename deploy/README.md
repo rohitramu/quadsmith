@@ -107,22 +107,23 @@ environment (`PROD_` for `prod`, `STAGING_` for `staging`). Both
 [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) and
 [`deploy.sh`](deploy.sh) automatically resolve `<ENV>_<SECRET_NAME>` (with
 [`deploy.sh`](deploy.sh) also accepting unprefixed `<SECRET_NAME>` when running
-from a local workstation):
+from a local workstation), and **fail immediately** if any required secret is
+unset or empty:
 
-| Repository Secret Name (`<ENV>` = `PROD` or `STAGING`)          | Purpose                                                                                                                    |
-| :-------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------- |
-| `<ENV>_GCP_SA_KEY`                                              | JSON key for the `quadsmith-cd` GCP service account                                                                        |
-| `<ENV>_CF_ACCOUNT_ID`                                           | Cloudflare Account ID                                                                                                      |
-| `<ENV>_CF_ZONE_ID`                                              | Cloudflare Zone ID for `quadsmith.com`                                                                                     |
-| `<ENV>_CF_API_TOKEN`                                            | Scoped Cloudflare API Token                                                                                                |
-| `<ENV>_QS_DB_PASSWORD`                                          | PostgreSQL `postgres` user password on Cloud SQL                                                                           |
-| `<ENV>_QS_AUTH_SECRET`                                          | HMAC-SHA256 secret used by `server-api` to sign JWTs                                                                       |
-| `<ENV>_QS_JOB_SERVER_AUTH_TOKEN`                                | Bearer token (`qs_op_...`) shared by `server-jobs` and `quadsmith_ops.internal_tokens`                                     |
-| `<ENV>_QS_SMTP_PASSWORD`                                        | SMTP password for transactional authentication emails (`PROD_QS_SMTP_PASSWORD` required for `prod`; optional in `staging`) |
-| `<ENV>_QS_GOOGLE_CLIENT_ID` / `<ENV>_QS_GOOGLE_CLIENT_SECRET`   | Google OAuth 2.0 Web Client credentials (`server-api`)                                                                     |
-| `<ENV>_QS_GITHUB_CLIENT_ID` / `<ENV>_QS_GITHUB_CLIENT_SECRET`   | GitHub OAuth App credentials (`server-api`)                                                                                |
-| `<ENV>_QS_DISCORD_CLIENT_ID` / `<ENV>_QS_DISCORD_CLIENT_SECRET` | Discord OAuth2 Application credentials (`server-api`)                                                                      |
-| `<ENV>_QS_OAUTH_CLIENT_ID` / `<ENV>_QS_OAUTH_CLIENT_SECRET`     | GitHub OAuth App credentials for `qsops` operator login (`server-ops`, `allowed_orgs: "quadsmith"`)                        |
+| Repository Secret Name (`<ENV>` = `PROD` or `STAGING`)          | Purpose                                                                                             |
+| :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- |
+| `<ENV>_GCP_SA_KEY`                                              | JSON key for the `quadsmith-cd` GCP service account                                                 |
+| `<ENV>_CF_ACCOUNT_ID`                                           | Cloudflare Account ID                                                                               |
+| `<ENV>_CF_ZONE_ID`                                              | Cloudflare Zone ID for `quadsmith.com`                                                              |
+| `<ENV>_CF_API_TOKEN`                                            | Scoped Cloudflare API Token                                                                         |
+| `<ENV>_QS_DB_PASSWORD`                                          | PostgreSQL `postgres` user password on Cloud SQL                                                    |
+| `<ENV>_QS_AUTH_SECRET`                                          | HMAC-SHA256 secret used by `server-api` to sign JWTs                                                |
+| `<ENV>_QS_JOB_SERVER_AUTH_TOKEN`                                | Bearer token (`qs_op_...`) shared by `server-jobs` and `quadsmith_ops.internal_tokens`              |
+| `<ENV>_QS_SMTP_PASSWORD`                                        | SMTP password for transactional authentication emails                                               |
+| `<ENV>_QS_GOOGLE_CLIENT_ID` / `<ENV>_QS_GOOGLE_CLIENT_SECRET`   | Google OAuth 2.0 Web Client credentials (`server-api`)                                              |
+| `<ENV>_QS_GITHUB_CLIENT_ID` / `<ENV>_QS_GITHUB_CLIENT_SECRET`   | GitHub OAuth App credentials (`server-api`)                                                         |
+| `<ENV>_QS_DISCORD_CLIENT_ID` / `<ENV>_QS_DISCORD_CLIENT_SECRET` | Discord OAuth2 Application credentials (`server-api`)                                               |
+| `<ENV>_QS_OAUTH_CLIENT_ID` / `<ENV>_QS_OAUTH_CLIENT_SECRET`     | GitHub OAuth App credentials for `qsops` operator login (`server-ops`, `allowed_orgs: "quadsmith"`) |
 
 ---
 
@@ -132,7 +133,7 @@ Infrastructure topology is defined declaratively in
 [`config/staging.textproto`](config/staging.textproto) and
 [`config/prod.textproto`](config/prod.textproto) and validated at build time by
 [`src/proto/quadsmith/config/deploy.proto`](../src/proto/quadsmith/config/deploy.proto)
-and `make build`:
+and `make verify` / `make build`:
 
 - **`gcp_project_id`**: Target Google Cloud project ID.
 - **`registry_region`**: GCP region hosting the `quadsmith-docker` Artifact
@@ -159,21 +160,44 @@ are never duplicated.
 
 ## 4. Running Deployments (`make deploy` & CI/CD)
 
-### Automated GitHub Actions Pipeline
+### Automated GitHub Actions Pipeline & Commit Promotion
 
-Pushing a version tag (`v*`) or triggering the **Deploy** workflow manually via
-`workflow_dispatch` runs
-[`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) across three
-sequential stages:
+[`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) controls which
+commits are deployed to `staging` and `prod`:
 
-1. **`build-and-push`**: Compiles and pushes `server-web`, `server-api`,
+- **Push to `main` &rarr; Auto-Deploy to `staging`**: Every commit pushed or
+  merged to `main` automatically deploys that commit to `staging`.
+- **Push a `v*` Tag &rarr; Auto-Deploy to `prod`**: Pushing a release tag (e.g.,
+  `git tag v1.2.0 && git push origin v1.2.0`) automatically deploys that tagged
+  commit to `prod`.
+- **Manual Dispatch (`workflow_dispatch`) &rarr; Deploy Any Commit / Tag /
+  Branch to `staging` or `prod`**: Trigger the workflow from the GitHub Actions
+  UI (**Actions &rarr; Deploy &rarr; Run workflow**) or via the GitHub CLI with
+  an explicit `environment` (`staging` or `prod`) and optional `ref` (commit
+  SHA, tag, or branch):
+
+  ```bash
+  # Deploy a specific commit SHA to staging
+  gh workflow run deploy.yml -f environment=staging -f ref=1491023
+
+  # Promote that exact commit SHA to prod
+  gh workflow run deploy.yml -f environment=prod -f ref=1491023
+  ```
+
+Each workflow run executes across four sequential stages:
+
+1. **`check-credentials`**: Verifies that all 16 `<ENV_PREFIX>_*` Repository
+   Secrets are set and non-empty (failing immediately if any secret is missing)
+   and resolves the canonical commit SHA (`deploy_sha`) for `inputs.ref` or
+   `github.sha`.
+2. **`build-and-push`**: Compiles and pushes `server-web`, `server-api`,
    `server-ops`, and `server-jobs` container images in parallel to Google
-   Artifact Registry (`:latest` and `:sha-<commit>`).
-2. **`migrate-db`**: Ensures all GCP, Cloud SQL, and Cloudflare resources exist,
+   Artifact Registry (`:latest` and `:sha-<deploy_sha>`).
+3. **`migrate-db`**: Ensures all GCP, Cloud SQL, and Cloudflare resources exist,
    runs the automated breaking-change gate, creates a Cloud SQL `ON_DEMAND`
    pre-migration snapshot when DDL changes are present, applies `psqldef` schema
    migrations, and seeds the `server-jobs` internal token.
-3. **`deploy-vm`**: Syncs `/opt/quadsmith/.env` and [`deploy/`](.) to each
+4. **`deploy-vm`**: Syncs `/opt/quadsmith/.env` and [`deploy/`](.) to each
    regional VM over IAP SSH and executes
    [`deploy_blue_green.sh`](deploy_blue_green.sh) for a zero-downtime blue-green
    cutover.

@@ -49,6 +49,39 @@ QS_DISCORD_CLIENT_SECRET="$(resolve_env_secret QS_DISCORD_CLIENT_SECRET)"
 QS_OAUTH_CLIENT_ID="$(resolve_env_secret QS_OAUTH_CLIENT_ID)"
 QS_OAUTH_CLIENT_SECRET="$(resolve_env_secret QS_OAUTH_CLIENT_SECRET)"
 
+REQUIRED_SECRETS=(
+    CF_ACCOUNT_ID
+    CF_ZONE_ID
+    CF_API_TOKEN
+    QS_DB_PASSWORD
+    QS_AUTH_SECRET
+    QS_JOB_SERVER_AUTH_TOKEN
+    QS_SMTP_PASSWORD
+    QS_GOOGLE_CLIENT_ID
+    QS_GOOGLE_CLIENT_SECRET
+    QS_GITHUB_CLIENT_ID
+    QS_GITHUB_CLIENT_SECRET
+    QS_DISCORD_CLIENT_ID
+    QS_DISCORD_CLIENT_SECRET
+    QS_OAUTH_CLIENT_ID
+    QS_OAUTH_CLIENT_SECRET
+)
+
+MISSING_SECRETS=()
+for secret_var in "${REQUIRED_SECRETS[@]}"; do
+    if [ -z "${!secret_var:-}" ]; then
+        MISSING_SECRETS+=("${ENV_PREFIX}_${secret_var} (or ${secret_var})")
+    fi
+done
+
+if [ "${#MISSING_SECRETS[@]}" -gt 0 ]; then
+    echo "Error: Required environment variables are not set or are empty for ENV=${ENV}:" >&2
+    for missing in "${MISSING_SECRETS[@]}"; do
+        echo "  - ${missing}" >&2
+    done
+    exit 1
+fi
+
 echo "--- Validating configuration files with check-config ---"
 go run -mod=vendor ./src/go/shared/cmd/check-config
 
@@ -207,10 +240,6 @@ ensure_cloud_sql_topology() {
 
 CF_TUNNEL_TOKEN="${QS_CLOUDFLARE_TUNNEL_TOKEN:-}"
 ensure_cloudflare_tunnel_and_edge() {
-    if [ -z "${CF_API_TOKEN:-}" ] || [ -z "${CF_ACCOUNT_ID:-}" ] || [ -z "${CF_ZONE_ID:-}" ]; then
-        echo "--- [3/4] Skipping Cloudflare API checks (CF_API_TOKEN / CF_ACCOUNT_ID / CF_ZONE_ID not set) ---"
-        return 0
-    fi
     echo "--- [3/4] Ensuring Cloudflare Tunnel, Proxied DNS CNAMEs & Edge Cache Rules (quadsmith-${ENV}) ---"
     local tunnel_name="quadsmith-${ENV}"
     local tunnel_resp
@@ -454,7 +483,7 @@ QS_IMAGE_TAG=${IMAGE_TAG}
 QS_DATABASE_URL=postgres://postgres:${QS_DB_PASSWORD}@${local_db_ip}:5432/quadsmith_api?sslmode=require
 QS_INTERNAL_DATABASE_URL=postgres://postgres:${QS_DB_PASSWORD}@${local_db_ip}:5432/quadsmith_ops?sslmode=require
 QS_AUTH_SECRET=${QS_AUTH_SECRET}
-QS_SMTP_PASSWORD=${QS_SMTP_PASSWORD:-}
+QS_SMTP_PASSWORD=${QS_SMTP_PASSWORD}
 QS_GOOGLE_CLIENT_ID=${QS_GOOGLE_CLIENT_ID}
 QS_GOOGLE_CLIENT_SECRET=${QS_GOOGLE_CLIENT_SECRET}
 QS_GITHUB_CLIENT_ID=${QS_GITHUB_CLIENT_ID}

@@ -7,6 +7,32 @@ cd "$ROOT_DIR"
 COMPOSE_FILE="deploy/docker-compose.blue-green.yaml"
 UPSTREAMS_FILE="deploy/nginx/upstreams.conf"
 
+REQUIRED_VARS=(
+    QS_ENV
+    QS_IMAGE_REGISTRY
+    QS_IMAGE_TAG
+    QS_DATABASE_URL
+    QS_INTERNAL_DATABASE_URL
+    QS_AUTH_SECRET
+    QS_SMTP_PASSWORD
+    QS_GOOGLE_CLIENT_ID
+    QS_GOOGLE_CLIENT_SECRET
+    QS_GITHUB_CLIENT_ID
+    QS_GITHUB_CLIENT_SECRET
+    QS_DISCORD_CLIENT_ID
+    QS_DISCORD_CLIENT_SECRET
+    QS_OAUTH_CLIENT_ID
+    QS_OAUTH_CLIENT_SECRET
+    QS_JOB_SERVER_AUTH_TOKEN
+)
+
+for var in "${REQUIRED_VARS[@]}"; do
+    if [ -z "${!var:-}" ]; then
+        echo "ERROR: Required runtime environment variable '${var}' is not set or is empty." >&2
+        exit 1
+    fi
+done
+
 write_upstreams() {
     local slot="$1"
     local tmp_file="${UPSTREAMS_FILE}.tmp"
