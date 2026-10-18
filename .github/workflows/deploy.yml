@@ -249,7 +249,7 @@ jobs:
       - check-credentials
       - migrate-db
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 240
     steps:
       - uses: actions/checkout@v4
         with:
@@ -357,7 +357,7 @@ jobs:
           QS_OAUTH_CLIENT_SECRET: ${{ secrets[format('{0}_QS_OAUTH_CLIENT_SECRET', env.ENV_PREFIX)] }}
         run: |
           echo "::warning::Deployment of ${{ needs.check-credentials.outputs.deploy_sha }} failed; rolling '${TARGET_ENV}' VM containers back to commit ${{ needs.check-credentials.outputs.previous_sha }}."
-          make deploy \
+          QS_FAST_ROLLBACK=true make deploy \
             ENV="${{ env.TARGET_ENV }}" \
             STAGE=rollout \
             QS_IMAGE_TAG="sha-${{ needs.check-credentials.outputs.previous_sha }}"

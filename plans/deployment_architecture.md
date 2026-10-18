@@ -320,28 +320,40 @@ rollout {
     seconds: 30
   }
   node_rollout_timeout {
-    seconds: 300
+    seconds: 10800
   }
   max_retries: 3
   retry_backoff {
     seconds: 5
   }
   ramp_stages {
+    candidate_weight_percent: 1
+    hold_duration {
+      seconds: 900
+    }
+  }
+  ramp_stages {
+    candidate_weight_percent: 5
+    hold_duration {
+      seconds: 900
+    }
+  }
+  ramp_stages {
     candidate_weight_percent: 10
     hold_duration {
-      seconds: 15
+      seconds: 1800
     }
   }
   ramp_stages {
     candidate_weight_percent: 25
     hold_duration {
-      seconds: 15
+      seconds: 1800
     }
   }
   ramp_stages {
     candidate_weight_percent: 50
     hold_duration {
-      seconds: 30
+      seconds: 3600
     }
   }
   ramp_stages {
@@ -1618,10 +1630,11 @@ flowchart TD
      in local sandbox and rewritten by `deploy/deploy_blue_green.sh` on the VM).
    - Once the candidate slot passes initial `/healthz` readiness within
      `rollout.health_check_timeout` (`30s`), `deploy/deploy_blue_green.sh` steps
-     through the configured `rollout.ramp_stages[]` (e.g., `10%` for `15s`
-     &rarr; `25%` for `15s` &rarr; `50%` for `30s` &rarr; `100%` in `prod`;
-     `25%` for `5s` &rarr; `50%` for `5s` &rarr; `100%` in `staging`), writing
-     weighted `server <svc>-<active>:8080 weight=<100-W>;` and
+     through the configured `rollout.ramp_stages[]` (`1%` for `15m` &rarr; `5%`
+     for `15m` &rarr; `10%` for `30m` &rarr; `25%` for `30m` &rarr; `50%` for
+     `1h` &rarr; `100%` in `prod`, totaling `2.5h`; `10%` for `5m` &rarr; `25%`
+     for `10m` &rarr; `50%` for `15m` &rarr; `100%` in `staging`, totaling
+     `30m`), writing weighted `server <svc>-<active>:8080 weight=<100-W>;` and
      `server <svc>-<next>:8080 weight=<W>;` entries to `upstreams.conf` and
      executing:
 
@@ -1636,13 +1649,17 @@ flowchart TD
      dropped packets** at every ramp step.
 3. **Continuous Health-Check Gating, Timeouts, Retries, and Automatic
    Rollback**:
-   - `deploy/deploy.sh` wraps IAP SCP/SSH rollout operations in `run_with_retry`
-     bounded by `rollout.node_rollout_timeout` (`300s` in `prod`, `180s` in
-     `staging`) and `rollout.max_retries` (`3` attempts with `5s` exponential
-     backoff), while `deploy/deploy_blue_green.sh` retries image pulls up to 3
-     times (`120s` timeout per attempt).
-   - During both initial readiness (`rollout.health_check_timeout`) and every
-     second of each intermediate stage's `hold_duration`,
+   - `deploy/deploy.sh` wraps IAP SCP/SSH operations in `run_with_retry` bounded
+     by `rollout.node_rollout_timeout` (`10800s` / 3h in `prod`, `2400s` / 40m
+     in `staging`) and `rollout.max_retries` (`3` attempts with `5s` exponential
+     backoff). Because GCP IAP TCP tunnels can reset after ~60 minutes,
+     `deploy/deploy.sh` launches `deploy/deploy_blue_green.sh` detached on the
+     VM and polls `/opt/quadsmith/deploy/rollout.exit` via short-lived retried
+     SSH calls so transient tunnel drops never interrupt multi-hour ramps.
+     Automated emergency rollbacks pass `QS_FAST_ROLLBACK=true` (`100:0`) so
+     traffic cuts back to `previous_sha` immediately after `/healthz` passes.
+   - During both initial readiness (`rollout.health_check_timeout`) and every 5
+     seconds of each intermediate stage's `hold_duration`,
      `deploy/deploy_blue_green.sh` polls
      `wget -q -O- http://<service>:8080/healthz` from inside the `nginx`
      container for `web-<next>`, `api-<next>`, and `ops-<next>` (and verifies

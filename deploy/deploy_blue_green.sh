@@ -178,8 +178,20 @@ if [ -n "$ACTIVE_SLOT" ] && [ "$ACTIVE_SLOT" != "$NEXT_SLOT" ]; then
         docker compose -f "$COMPOSE_FILE" exec -T nginx sh -c "nginx -t && nginx -s reload"
 
         if [ "$hold_sec" -gt 0 ]; then
-            for elapsed in $(seq 1 "$hold_sec"); do
-                sleep 1
+            elapsed=0
+            step_sec=5
+            if [ "$hold_sec" -lt 5 ]; then
+                step_sec=1
+            fi
+            while [ "$elapsed" -lt "$hold_sec" ]; do
+                remaining=$((hold_sec - elapsed))
+                if [ "$remaining" -lt "$step_sec" ]; then
+                    sleep "$remaining"
+                    elapsed=$((elapsed + remaining))
+                else
+                    sleep "$step_sec"
+                    elapsed=$((elapsed + step_sec))
+                fi
                 if ! check_candidate_health; then
                     echo "ERROR: Candidate slot (${NEXT_SLOT}) failed health check during ${candidate_weight}% traffic stage (${elapsed}s/${hold_sec}s). Reverting 100% traffic to ${ACTIVE_SLOT}..." >&2
                     write_weighted_upstreams "" 0 "$ACTIVE_SLOT" 100
@@ -188,6 +200,9 @@ if [ -n "$ACTIVE_SLOT" ] && [ "$ACTIVE_SLOT" != "$NEXT_SLOT" ]; then
                     docker compose -f "$COMPOSE_FILE" stop -t 10 "${CANDIDATE_SERVICES[@]}" || true
                     docker compose -f "$COMPOSE_FILE" rm -f "${CANDIDATE_SERVICES[@]}" || true
                     exit 1
+                fi
+                if [ $((elapsed % 60)) -eq 0 ] && [ "$elapsed" -lt "$hold_sec" ]; then
+                    echo "--- [Stage ${candidate_weight}%] Candidate slot (${NEXT_SLOT}) healthy (${elapsed}s / ${hold_sec}s elapsed) ---"
                 fi
             done
         fi

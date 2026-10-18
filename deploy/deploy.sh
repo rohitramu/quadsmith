@@ -160,6 +160,10 @@ read -r HEALTH_CHECK_TIMEOUT_SEC DRAIN_TIMEOUT_SEC NODE_ROLLOUT_TIMEOUT_SEC ROLL
     }
 ' "$CONFIG_FILE")
 
+if [ "${QS_FAST_ROLLBACK:-false}" = "true" ]; then
+    RAMP_STAGES_SPEC="100:0"
+fi
+
 run_with_retry() {
     local timeout_sec="$1"
     shift
@@ -560,11 +564,41 @@ EOF
             "${vm_name}:/opt/quadsmith/deploy/" \
             --project="$GCP_PROJECT_ID" --zone="$zone"
 
-        run_with_retry "$NODE_ROLLOUT_TIMEOUT_SEC" gcloud compute ssh "$vm_name" \
+        run_with_retry 60 gcloud compute ssh "$vm_name" \
             --tunnel-through-iap \
             --project="$GCP_PROJECT_ID" \
             --zone="$zone" \
-            --command="cd /opt/quadsmith && chmod +x deploy/deploy_blue_green.sh && set -a && source .env && set +a && ./deploy/deploy_blue_green.sh"
+            --command="cd /opt/quadsmith && chmod +x deploy/deploy_blue_green.sh && rm -f deploy/rollout.exit deploy/rollout.log && nohup bash -c 'set -a && source .env && set +a && ./deploy/deploy_blue_green.sh > deploy/rollout.log 2>&1; echo \$? > deploy/rollout.exit' </dev/null >/dev/null 2>&1 &"
+
+        local waited=0
+        local poll_interval=15
+        local rollout_rc=""
+        while [ "$waited" -lt "$NODE_ROLLOUT_TIMEOUT_SEC" ]; do
+            rollout_rc="$(run_with_retry 60 gcloud compute ssh "$vm_name" \
+                --tunnel-through-iap \
+                --project="$GCP_PROJECT_ID" \
+                --zone="$zone" \
+                --command="if [ -f /opt/quadsmith/deploy/rollout.exit ]; then tr -d '[:space:]' < /opt/quadsmith/deploy/rollout.exit; fi" || true)"
+            if [ -n "$rollout_rc" ]; then
+                break
+            fi
+            sleep "$poll_interval"
+            waited=$((waited + poll_interval))
+        done
+
+        run_with_retry 60 gcloud compute ssh "$vm_name" \
+            --tunnel-through-iap \
+            --project="$GCP_PROJECT_ID" \
+            --zone="$zone" \
+            --command="cat /opt/quadsmith/deploy/rollout.log 2>/dev/null || true"
+
+        if [ -z "$rollout_rc" ]; then
+            echo "Error: Rollout on ${vm_name} timed out after ${NODE_ROLLOUT_TIMEOUT_SEC}s." >&2
+            exit 1
+        elif [ "$rollout_rc" != "0" ]; then
+            echo "Error: Rollout on ${vm_name} failed with exit code ${rollout_rc}." >&2
+            exit "$rollout_rc"
+        fi
     done
 }
 

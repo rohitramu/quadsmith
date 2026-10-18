@@ -157,19 +157,23 @@ and `make verify` / `make build`:
     readiness checks.
   - **`drain_timeout`**: Graceful stop timeout (`30s` in `prod`, `15s` in
     `staging`) when draining the previous slot after 100% traffic cutover.
-  - **`node_rollout_timeout`**: Per-node SSH rollout wall-clock timeout (`300s`
-    in `prod`, `180s` in `staging`), enforced to exceed
+  - **`node_rollout_timeout`**: Per-node SSH rollout wall-clock timeout
+    (`10800s` / 3h in `prod`, `2400s` / 40m in `staging`), enforced to exceed
     `health_check_timeout + drain_timeout + sum(ramp_stages.hold_duration)`.
   - **`max_retries` & `retry_backoff`**: Automatic retry count (`3`) and initial
     exponential backoff (`5s`) for IAP SSH/SCP and container image pull
     operations.
   - **`ramp_stages[]`**: Ordered list of Nginx weighted traffic ramp stages
-    (`candidate_weight_percent` + `hold_duration`, e.g., `10%` for `15s` &rarr;
-    `25%` for `15s` &rarr; `50%` for `30s` &rarr; `100%` in `prod`; `25%` for
-    `5s` &rarr; `50%` for `5s` &rarr; `100%` in `staging`). During each stage's
-    `hold_duration`, [`deploy_blue_green.sh`](deploy_blue_green.sh) probes
-    `/healthz` every second and immediately reverts 100% of traffic back to the
-    previous slot if any check fails.
+    (`candidate_weight_percent` + `hold_duration`, e.g., `1%` for `15m` &rarr;
+    `5%` for `15m` &rarr; `10%` for `30m` &rarr; `25%` for `30m` &rarr; `50%`
+    for `1h` &rarr; `100%` in `prod`, totaling `2.5h`; `10%` for `5m` &rarr;
+    `25%` for `10m` &rarr; `50%` for `15m` &rarr; `100%` in `staging`, totaling
+    `30m`). During each stage's `hold_duration`,
+    [`deploy_blue_green.sh`](deploy_blue_green.sh) probes `/healthz` every 5
+    seconds and immediately reverts 100% of traffic back to the previous slot if
+    any check fails. Automated emergency rollbacks set `QS_FAST_ROLLBACK=true`
+    (`100:0`) so traffic cuts back to `previous_sha` immediately after
+    `/healthz` passes.
 
 Service hostnames (`quadsmith.com`, `api.quadsmith.com`, `ops.quadsmith.com`,
 and their `staging-*` counterparts) are derived automatically from the existing
