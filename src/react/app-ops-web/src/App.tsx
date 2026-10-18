@@ -15,6 +15,7 @@ import {
   type GetOAuthConfigResponse,
   type GetSystemHealthResponse,
   type GetSystemMetricsResponse,
+  type GetTraceResponse,
   type IamGroupSummary,
   type IamUserSummary,
   type InternalApiCallRecord,
@@ -24,6 +25,8 @@ import {
   type RouteRequestLog,
   type TableStat,
   type TaskDef,
+  type TraceLogRecord,
+  type TraceSpan,
 } from "@quadsmith/shared/gen/quadsmith/ops/ops_pb";
 
 const OPS_TOKEN_STORAGE_KEY = "qs_ops_token";
@@ -741,6 +744,10 @@ export default function App() {
   const [jobs, setJobs] = useState<JobRecord[]>([]);
   const [jobTaskFilter, setJobTaskFilter] = useState<string>("");
   const [selectedJob, setSelectedJob] = useState<JobRecord | null>(null);
+  const [selectedTraceId, setSelectedTraceId] = useState<string>("");
+  const [selectedTrace, setSelectedTrace] = useState<GetTraceResponse | null>(null);
+  const [traceLoading, setTraceLoading] = useState<boolean>(false);
+  const [traceError, setTraceError] = useState<string>("");
   const [dbStats, setDbStats] = useState<GetDatabaseStatsResponse | null>(null);
   const [iamUsers, setIamUsers] = useState<IamUserSummary[]>([]);
   const [iamGroups, setIamGroups] = useState<IamGroupSummary[]>([]);
@@ -1057,6 +1064,210 @@ export default function App() {
       setBannerError(err instanceof Error ? err.message : "Failed to revoke token");
     }
   };
+
+  const buildFallbackTrace = useCallback(
+    (traceId: string): GetTraceResponse => {
+      const spans: TraceSpan[] = [];
+      const logs: TraceLogRecord[] = [];
+      let totalRttMs = 0;
+      let success = true;
+      let rootService = "";
+      let rootRoute = "";
+      let rootMethod = "POST";
+      let statusCode = 200;
+      let region = "local";
+
+      for (const req of routeRequests) {
+        if (req.traceId === traceId) {
+          region = req.region || region;
+          if (!rootService) {
+            rootService = req.serviceName;
+            rootRoute = req.route;
+            rootMethod = req.method;
+            statusCode = req.statusCode;
+          }
+          if (req.rttMs > totalRttMs) {
+            totalRttMs = req.rttMs;
+          }
+          if (!req.success) {
+            success = false;
+            statusCode = req.statusCode;
+          }
+          const hopType = spans.length === 0 ? "ingress" : "internal_hop";
+          spans.push({
+            $typeName: "quadsmith.ops.TraceSpan",
+            spanId: `span_${req.serviceName}_${spans.length + 1}`,
+            serviceName: req.serviceName,
+            instanceId: req.instanceId || `${req.serviceName}-1`,
+            region: req.region || "local",
+            operation: req.route,
+            method: req.method,
+            statusCode: req.statusCode,
+            success: req.success,
+            durationMs: req.rttMs,
+            occurredAt: req.occurredAt,
+            attributes: {
+              hop_type: hopType,
+              route: req.route,
+              method: req.method,
+              status_code: String(req.statusCode),
+              rtt_ms: req.rttMs.toFixed(2),
+            },
+          });
+          logs.push({
+            $typeName: "quadsmith.ops.TraceLogRecord",
+            timestamp: req.occurredAt,
+            level: req.success ? "INFO" : "ERROR",
+            serviceName: req.serviceName,
+            instanceId: req.instanceId || `${req.serviceName}-1`,
+            region: req.region || "local",
+            message: "http_request",
+            attributes: {
+              route: req.route,
+              method: req.method,
+              status_code: String(req.statusCode),
+              rtt_ms: req.rttMs.toFixed(2),
+            },
+          });
+        }
+      }
+
+      for (const call of auditCalls) {
+        if (call.traceId === traceId) {
+          region = call.region || region;
+          if (!rootService) {
+            rootService = "server-ops-api";
+            rootRoute = call.method;
+          }
+          const rtt = Number(call.durationMs);
+          if (rtt > totalRttMs) {
+            totalRttMs = rtt;
+          }
+          const ok = call.status === "OK";
+          if (!ok) {
+            success = false;
+            statusCode = 500;
+          }
+          const attrs: { [key: string]: string } = {
+            hop_type: "audit",
+            route: call.method,
+            caller: call.caller,
+            caller_type: call.callerType,
+            group_name: call.groupName,
+            status: call.status,
+            duration_ms: String(rtt),
+          };
+          if (call.jitGrantId) {
+            attrs.jit_grant_id = call.jitGrantId;
+          }
+          spans.push({
+            $typeName: "quadsmith.ops.TraceSpan",
+            spanId: `span_audit_${spans.length + 1}`,
+            serviceName: "server-ops-api",
+            instanceId: "server-ops-api-1",
+            region: call.region || "local",
+            operation: call.method,
+            method: "POST",
+            statusCode: ok ? 200 : 500,
+            success: ok,
+            durationMs: rtt,
+            occurredAt: call.createdAt,
+            attributes: attrs,
+          });
+          logs.push({
+            $typeName: "quadsmith.ops.TraceLogRecord",
+            timestamp: call.createdAt,
+            level: ok ? "INFO" : "ERROR",
+            serviceName: "server-ops-api",
+            instanceId: "server-ops-api-1",
+            region: call.region || "local",
+            message: "ops_rpc_audit",
+            attributes: attrs,
+          });
+        }
+      }
+
+      for (const job of jobs) {
+        if (job.traceId === traceId) {
+          region = job.region || region;
+          const rtt = Number(job.durationMs);
+          if (rtt > totalRttMs) {
+            totalRttMs = rtt;
+          }
+          const ok = job.status === "OK";
+          if (!ok) {
+            success = false;
+            statusCode = 500;
+          }
+          if (!rootService) {
+            rootService = "server-ops-api";
+            rootRoute = job.procedure;
+          }
+          logs.push({
+            $typeName: "quadsmith.ops.TraceLogRecord",
+            timestamp: job.createdAt,
+            level: ok ? "INFO" : "ERROR",
+            serviceName: "server-ops-api",
+            instanceId: "server-ops-api-1",
+            region: job.region || "local",
+            message: "job_execution",
+            attributes: {
+              job_id: job.jobId,
+              task_name: job.taskName,
+              route: job.procedure,
+              caller: job.caller,
+              caller_type: job.callerType,
+              status: job.status,
+              rtt_ms: String(rtt),
+            },
+          });
+        }
+      }
+
+      return {
+        $typeName: "quadsmith.ops.GetTraceResponse",
+        traceId,
+        region,
+        rootService: rootService || "server-ops-api",
+        rootRoute: rootRoute || "/",
+        rootMethod,
+        statusCode,
+        totalRttMs,
+        success,
+        startedAt: spans[0]?.occurredAt ?? logs[0]?.timestamp,
+        spans,
+        logs,
+      };
+    },
+    [routeRequests, auditCalls, jobs],
+  );
+
+  const handleInspectTrace = useCallback(
+    async (rawTraceId: string) => {
+      const cleanId = rawTraceId.trim();
+      if (!cleanId || cleanId === "—") return;
+      setSelectedTraceId(cleanId);
+      setTraceLoading(true);
+      setTraceError("");
+      try {
+        const resp = await client.getTrace({ traceId: cleanId });
+        if ((resp.spans?.length ?? 0) > 0 || (resp.logs?.length ?? 0) > 0) {
+          setSelectedTrace(resp);
+        } else {
+          setSelectedTrace(buildFallbackTrace(cleanId));
+        }
+      } catch (err) {
+        const fallback = buildFallbackTrace(cleanId);
+        setSelectedTrace(fallback);
+        if (fallback.spans.length === 0 && fallback.logs.length === 0) {
+          setTraceError(err instanceof Error ? err.message : "Failed to load trace details");
+        }
+      } finally {
+        setTraceLoading(false);
+      }
+    },
+    [client, buildFallbackTrace],
+  );
 
   const allRoutes = useMemo(() => {
     const list: RouteMetricStat[] = [];
@@ -2093,7 +2304,17 @@ export default function App() {
                           <td className="py-2 px-3 text-slate-400">
                             {formatTimestamp(req.occurredAt)}
                           </td>
-                          <td className="py-2 px-3 text-amber-300">{req.traceId}</td>
+                          <td className="py-2 px-3">
+                            <button
+                              type="button"
+                              data-testid={`inspect-trace-${req.traceId}`}
+                              onClick={() => void handleInspectTrace(req.traceId)}
+                              title="Click to inspect full cross-service trace"
+                              className="text-amber-300 hover:text-amber-200 underline decoration-amber-500/50 hover:decoration-amber-300 font-mono cursor-pointer text-left"
+                            >
+                              {req.traceId}
+                            </button>
+                          </td>
                           <td className="py-2 px-3 text-slate-400">{req.region}</td>
                           <td className="py-2 px-3 text-sky-300">{req.serviceName}</td>
                           <td className="py-2 px-3 text-slate-300">{req.method}</td>
@@ -2419,7 +2640,20 @@ export default function App() {
                       className="hover:bg-slate-900/50 cursor-pointer"
                     >
                       <td className="py-2 px-3 text-sky-300 font-semibold">{j.jobId}</td>
-                      <td className="py-2 px-3 text-amber-300">{j.traceId}</td>
+                      <td className="py-2 px-3">
+                        <button
+                          type="button"
+                          data-testid={`inspect-trace-${j.traceId}`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            void handleInspectTrace(j.traceId);
+                          }}
+                          title="Click to inspect full cross-service trace"
+                          className="text-amber-300 hover:text-amber-200 underline decoration-amber-500/50 hover:decoration-amber-300 font-mono cursor-pointer text-left"
+                        >
+                          {j.traceId}
+                        </button>
+                      </td>
                       <td className="py-2 px-3 text-slate-400">{j.region}</td>
                       <td className="py-2 px-3 text-slate-100">{j.taskName}</td>
                       <td className="py-2 px-3 text-slate-300">
@@ -2449,7 +2683,15 @@ export default function App() {
               <div className="p-4 rounded-lg bg-[#090d16] border border-slate-700 space-y-2 text-xs font-mono">
                 <div className="flex items-center justify-between">
                   <span className="font-bold text-sky-300">
-                    Job Inspector: {selectedJob.jobId} (Trace: {selectedJob.traceId})
+                    Job Inspector: {selectedJob.jobId} (Trace:{" "}
+                    <button
+                      type="button"
+                      onClick={() => void handleInspectTrace(selectedJob.traceId)}
+                      className="text-amber-300 hover:text-amber-200 underline cursor-pointer"
+                    >
+                      {selectedJob.traceId}
+                    </button>
+                    )
                   </span>
                   <button
                     type="button"
@@ -3032,7 +3274,17 @@ export default function App() {
                     {auditEvalResult.items.map((c) => (
                       <tr key={c.uuid} className="hover:bg-slate-900/50">
                         <td className="py-2 px-3 text-slate-400">{formatTimestamp(c.createdAt)}</td>
-                        <td className="py-2 px-3 text-amber-300">{c.traceId}</td>
+                        <td className="py-2 px-3">
+                          <button
+                            type="button"
+                            data-testid={`inspect-trace-${c.traceId}`}
+                            onClick={() => void handleInspectTrace(c.traceId)}
+                            title="Click to inspect full cross-service trace"
+                            className="text-amber-300 hover:text-amber-200 underline decoration-amber-500/50 hover:decoration-amber-300 font-mono cursor-pointer text-left"
+                          >
+                            {c.traceId}
+                          </button>
+                        </td>
                         <td className="py-2 px-3 text-slate-400">{c.region}</td>
                         <td className="py-2 px-3 text-slate-100">{c.caller}</td>
                         <td className="py-2 px-3 text-slate-300">{c.groupName}</td>
@@ -3055,6 +3307,283 @@ export default function App() {
           </div>
         )}
       </main>
+
+      {/* Full Request Trace Inspector Modal */}
+      {selectedTraceId && (
+        <div
+          data-testid="trace-inspector-modal"
+          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+          onClick={() => {
+            setSelectedTraceId("");
+            setSelectedTrace(null);
+            setTraceError("");
+          }}
+        >
+          <div
+            className="bg-[#0b1120] border border-slate-700 rounded-xl max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="px-5 py-4 border-b border-slate-800 bg-[#111827] flex flex-wrap items-center justify-between gap-3">
+              <div className="space-y-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="px-2 py-0.5 rounded bg-amber-950/70 border border-amber-700 text-amber-300 text-[11px] font-mono font-bold uppercase tracking-wider">
+                    Full Request Trace
+                  </span>
+                  <span
+                    data-testid="trace-inspector-id"
+                    className="font-mono font-bold text-sm text-amber-300"
+                  >
+                    {selectedTraceId}
+                  </span>
+                  {selectedTrace && (
+                    <span
+                      className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold ${
+                        selectedTrace.success
+                          ? "bg-emerald-950/70 border border-emerald-700 text-emerald-300"
+                          : "bg-rose-950/70 border border-rose-700 text-rose-300"
+                      }`}
+                    >
+                      {selectedTrace.success ? "OK" : "ERROR"}
+                    </span>
+                  )}
+                </div>
+                {selectedTrace && (
+                  <div className="text-xs font-mono text-slate-400 flex flex-wrap items-center gap-3">
+                    <span>
+                      Region:{" "}
+                      <strong className="text-slate-200">{selectedTrace.region || "local"}</strong>
+                    </span>
+                    <span>
+                      Root:{" "}
+                      <strong className="text-sky-300">
+                        {selectedTrace.rootService || "—"} {selectedTrace.rootRoute || ""}
+                      </strong>
+                    </span>
+                    <span>
+                      Total Duration:{" "}
+                      <strong className="text-slate-200">
+                        {Number(selectedTrace.totalRttMs || 0).toFixed(2)} ms
+                      </strong>
+                    </span>
+                    <span>
+                      Spans:{" "}
+                      <strong className="text-slate-200">
+                        {(selectedTrace.spans ?? []).length}
+                      </strong>
+                    </span>
+                    <span>
+                      Logs:{" "}
+                      <strong className="text-slate-200">
+                        {(selectedTrace.logs ?? []).length}
+                      </strong>
+                    </span>
+                    {selectedTrace.startedAt && (
+                      <span>Started: {formatTimestamp(selectedTrace.startedAt)}</span>
+                    )}
+                  </div>
+                )}
+              </div>
+              <button
+                type="button"
+                data-testid="close-trace-inspector"
+                onClick={() => {
+                  setSelectedTraceId("");
+                  setSelectedTrace(null);
+                  setTraceError("");
+                }}
+                className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-mono cursor-pointer"
+              >
+                ✕ Close
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 overflow-y-auto space-y-6 text-xs font-mono">
+              {traceLoading && (
+                <div className="py-6 text-center text-slate-400">
+                  Loading cross-service spans and structured logs for trace {selectedTraceId}...
+                </div>
+              )}
+
+              {traceError && (
+                <div className="p-3 rounded-lg bg-rose-950/60 border border-rose-700 text-rose-200">
+                  {traceError}
+                </div>
+              )}
+
+              {selectedTrace && !traceLoading && (
+                <>
+                  {/* Cross-Service Span Waterfall */}
+                  <div className="space-y-3">
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">
+                      Cross-Service Hop Waterfall ({(selectedTrace.spans ?? []).length} Spans)
+                    </h3>
+                    <div
+                      data-testid="trace-spans-list"
+                      className="space-y-2 bg-[#090d16] border border-slate-800 rounded-lg p-3"
+                    >
+                      {(selectedTrace.spans ?? []).map((span, idx) => {
+                        const spanRtt = Number(span.durationMs || 0);
+                        const maxRtt = Math.max(
+                          Number(selectedTrace.totalRttMs || 1),
+                          spanRtt || 1,
+                          1,
+                        );
+                        const widthPct = Math.min(100, Math.max(8, (spanRtt / maxRtt) * 100));
+                        const attrs = span.attributes ?? {};
+                        const hopType = attrs.hop_type || (idx === 0 ? "ingress" : "hop");
+                        const caller = attrs.caller || "";
+                        const jitGrantId = attrs.jit_grant_id || "";
+                        return (
+                          <div
+                            key={`${span.serviceName}-${span.operation}-${idx}`}
+                            data-testid={`trace-span-row-${idx}`}
+                            className="p-2.5 rounded bg-[#111827] border border-slate-800/80 space-y-1.5"
+                          >
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                              <div className="flex flex-wrap items-center gap-2">
+                                <span className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] uppercase">
+                                  {hopType}
+                                </span>
+                                <span className="text-sky-300 font-bold">{span.serviceName}</span>
+                                <span className="text-slate-500">({span.instanceId})</span>
+                                <span className="text-slate-200 font-semibold">
+                                  {span.method} {span.operation}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-3">
+                                {caller && (
+                                  <span className="text-slate-400">
+                                    Caller: <strong className="text-slate-200">{caller}</strong>
+                                    {jitGrantId ? ` (JIT: ${jitGrantId})` : ""}
+                                  </span>
+                                )}
+                                <span
+                                  className={span.success ? "text-emerald-400" : "text-rose-400"}
+                                >
+                                  HTTP {span.statusCode}
+                                </span>
+                                <span className="text-amber-300 font-bold">
+                                  {spanRtt.toFixed(2)} ms
+                                </span>
+                              </div>
+                            </div>
+                            <div className="w-full h-2 rounded bg-slate-900 overflow-hidden">
+                              <div
+                                className={`h-full rounded ${
+                                  span.success ? "bg-sky-500" : "bg-rose-500"
+                                }`}
+                                style={{ width: `${widthPct}%` }}
+                              />
+                            </div>
+                          </div>
+                        );
+                      })}
+                      {(selectedTrace.spans ?? []).length === 0 && (
+                        <div className="py-3 text-center text-slate-500">
+                          No span hops recorded for this trace ID.
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Chronological Cross-Service Logs */}
+                  <div className="space-y-3">
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">
+                      Chronological Cross-Service Structured Logs (
+                      {(selectedTrace.logs ?? []).length} Events)
+                    </h3>
+                    <div className="overflow-x-auto bg-[#090d16] border border-slate-800 rounded-lg">
+                      <table
+                        data-testid="trace-logs-table"
+                        className="w-full text-left border-collapse text-xs font-mono"
+                      >
+                        <thead>
+                          <tr className="border-b border-slate-800 text-slate-400">
+                            <th className="py-2 px-3">TIMESTAMP</th>
+                            <th className="py-2 px-3">SERVICE</th>
+                            <th className="py-2 px-3">LEVEL</th>
+                            <th className="py-2 px-3">EVENT</th>
+                            <th className="py-2 px-3">ROUTE &amp; ATTRIBUTES</th>
+                            <th className="py-2 px-3">STATUS / RTT</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-800/60">
+                          {(selectedTrace.logs ?? []).map((log, idx) => {
+                            const attrs = log.attributes ?? {};
+                            const routeSummary =
+                              attrs.route || attrs.operation
+                                ? `${attrs.method ? `${attrs.method} ` : ""}${attrs.route || attrs.operation}`
+                                : log.message;
+                            const statusCode = attrs.status_code || attrs.status || "";
+                            const rttStr = attrs.rtt_ms || attrs.duration_ms || "";
+                            const attrPairs = Object.entries(attrs).filter(
+                              ([k]) =>
+                                k !== "route" &&
+                                k !== "method" &&
+                                k !== "status_code" &&
+                                k !== "rtt_ms" &&
+                                k !== "duration_ms",
+                            );
+                            return (
+                              <tr
+                                key={`${log.serviceName}-${log.message}-${idx}`}
+                                className="hover:bg-slate-900/50"
+                              >
+                                <td className="py-2 px-3 text-slate-400 whitespace-nowrap">
+                                  {formatTimestamp(log.timestamp)}
+                                </td>
+                                <td className="py-2 px-3 text-sky-300 whitespace-nowrap">
+                                  {log.serviceName}{" "}
+                                  <span className="text-slate-500">({log.instanceId})</span>
+                                </td>
+                                <td className="py-2 px-3">
+                                  <span
+                                    className={
+                                      log.level === "ERROR"
+                                        ? "text-rose-400 font-bold"
+                                        : log.level === "WARN"
+                                          ? "text-amber-300 font-bold"
+                                          : "text-emerald-400"
+                                    }
+                                  >
+                                    {log.level}
+                                  </span>
+                                </td>
+                                <td className="py-2 px-3 text-amber-300">{log.message}</td>
+                                <td className="py-2 px-3 text-slate-200">
+                                  <div>{routeSummary}</div>
+                                  {attrPairs.length > 0 && (
+                                    <div className="text-[11px] text-slate-500 break-all">
+                                      {attrPairs.map(([k, v]) => `${k}=${v}`).join(" · ")}
+                                    </div>
+                                  )}
+                                </td>
+                                <td className="py-2 px-3 whitespace-nowrap text-slate-300">
+                                  {statusCode ? `Status ${statusCode}` : "—"}
+                                  {rttStr ? ` · ${rttStr} ms` : ""}
+                                </td>
+                              </tr>
+                            );
+                          })}
+                          {(selectedTrace.logs ?? []).length === 0 && (
+                            <tr>
+                              <td colSpan={6} className="py-4 text-center text-slate-500">
+                                No structured log entries recorded for this trace ID.
+                              </td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

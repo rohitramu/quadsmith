@@ -952,6 +952,33 @@ func TestOpsServer_ServiceHealthAndObservability(t *testing.T) {
 	if !containsString(string(outMetrics), "SERVICE") || !containsString(string(outMetrics), "AVAILABILITY") {
 		t.Errorf("Expected 'SERVICE' and 'AVAILABILITY' in qsops system metrics output: %s", string(outMetrics))
 	}
+
+	// 6. Verify GetTrace RPC and qsops system trace CLI command for correlated trace_id
+	traceID := latestCall.GetTraceId()
+	traceRes, err := operatorClient.GetTrace(ctx, connect.NewRequest(&pb.GetTraceRequest{
+		TraceId: traceID,
+	}))
+	if err != nil {
+		t.Fatalf("GetTrace(%s) failed: %v", traceID, err)
+	}
+	if traceRes.Msg.GetTraceId() != traceID {
+		t.Errorf("Expected trace_id %q, got %q", traceID, traceRes.Msg.GetTraceId())
+	}
+	if len(traceRes.Msg.GetSpans()) == 0 {
+		t.Errorf("Expected at least 1 span in GetTrace(%s), got 0", traceID)
+	}
+	if len(traceRes.Msg.GetLogs()) == 0 {
+		t.Errorf("Expected at least 1 log entry in GetTrace(%s), got 0", traceID)
+	}
+
+	cmdTrace := exec.Command(qsopsPath, "system", "trace", traceID, "--token", "qs_op_sandbox_token_12345")
+	outTrace, err := cmdTrace.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops system trace %s failed: %v, output: %s", traceID, err, string(outTrace))
+	}
+	if !containsString(string(outTrace), traceID) || !containsString(string(outTrace), "CleanupExpiredOtps") {
+		t.Errorf("Expected trace_id %q and 'CleanupExpiredOtps' in qsops system trace output: %s", traceID, string(outTrace))
+	}
 }
 
 func TestOpsWeb_GrafanaProxyJITGating(t *testing.T) {

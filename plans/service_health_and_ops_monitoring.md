@@ -533,6 +533,13 @@ recent trace IDs by region and service from the terminal:
   (`trace_id` UUID v7, `region`, `service_name`, `instance_id`, `route`,
   `method`, `status_code`, `success`, `rtt_ms`, `occurred_at`), filtered and
   sorted via `cel2sql.FilterAndSort`.
+- `GetTrace(GetTraceRequest) returns (GetTraceResponse)`: Accepts a `trace_id`
+  UUID v7 and aggregates all cross-service `TraceSpan` hops (`span_id`,
+  `service_name`, `instance_id`, `region`, `operation`, `method`, `status_code`,
+  `success`, `duration_ms`, `occurred_at`, `attributes`) and chronological
+  `TraceLogRecord` events (`timestamp`, `level`, `service_name`, `instance_id`,
+  `region`, `message`, `attributes`) across VictoriaLogs, the in-memory ring
+  buffers of all 5 Go services, and `quadsmith_ops.internal_api_calls`.
 - **Unified CEL Filtering and Multi-Column Sorting Across All `OpsService`
   Collections**: `GetDatabaseStats`, `ListTasks`, `ListJobs`,
   `ListInternalApiCalls`, `ListIamUsers`, `ListIamGroups`, `ListInternalTokens`,
@@ -557,6 +564,9 @@ In [src/go/cli-ops/main.go](../src/go/cli-ops/main.go), extend `qsops`:
   `P50 / P95 / P99` RTT (ms). When `--route <route>` is provided, drills down
   via `ListRouteRequests` to display recent `TRACE ID` UUIDs, `REGION`,
   `OUTCOME` (`SUCCESS` / `FAILED`), `HTTP CODE`, `RTT`, and `TIMESTAMP`.
+- `qsops system trace <trace_id> [--json]`: Queries `OpsService.GetTrace` for a
+  specific `X-Trace-Id` UUID v7 and prints the cross-service hop waterfall and
+  chronological structured log events.
 - `qsops` collection commands (`iam users`, `iam groups`, `iam tokens list`,
   `jit list`, `db stats`, `tasks list`, `jobs list`, and `audit`) also accept
   `-f|--filter` (CEL expression) and `-s|--sort` (`field` or `^field`).
@@ -605,6 +615,12 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
      interactive collapsible **Common Expression Language (CEL) Filter Syntax**
      helper with clickable field pills, a sort column/direction selector, and
      sortable table headers.
+   - **Clickable Trace IDs & Full Request Trace Inspector Modal**: Every
+     `trace_id` displayed in Recent Traced Requests, Job Execution History, the
+     Job Inspector, and the Internal API Audit Log is a clickable button that
+     invokes `OpsService.GetTrace` and opens the **Full Request Trace
+     Inspector** modal displaying the Cross-Service Hop Waterfall (`spans`) and
+     Chronological Cross-Service Structured Logs (`logs`).
    - **Operational Task Triggering**: Interactive list of all 6 registered tasks
      (`ListTasks`: `cleanup_expired_otps`, `cleanup_expired_tokens`,
      `cleanup_orphaned_blobs`, `purge_soft_deleted_accounts`,

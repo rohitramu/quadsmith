@@ -2226,6 +2226,174 @@ func (x *GetTaskResponse) GetTask() *TaskDef {
 	return nil
 }
 
+type GetTraceRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TraceId       string                 `protobuf:"bytes,1,opt,name=trace_id,json=traceId,proto3" json:"trace_id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetTraceRequest) Reset() {
+	*x = GetTraceRequest{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[35]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetTraceRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTraceRequest) ProtoMessage() {}
+
+func (x *GetTraceRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[35]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTraceRequest.ProtoReflect.Descriptor instead.
+func (*GetTraceRequest) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{35}
+}
+
+func (x *GetTraceRequest) GetTraceId() string {
+	if x != nil {
+		return x.TraceId
+	}
+	return ""
+}
+
+type GetTraceResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	TraceId       string                 `protobuf:"bytes,1,opt,name=trace_id,json=traceId,proto3" json:"trace_id,omitempty"`
+	Region        string                 `protobuf:"bytes,2,opt,name=region,proto3" json:"region,omitempty"`
+	RootService   string                 `protobuf:"bytes,3,opt,name=root_service,json=rootService,proto3" json:"root_service,omitempty"`
+	RootRoute     string                 `protobuf:"bytes,4,opt,name=root_route,json=rootRoute,proto3" json:"root_route,omitempty"`
+	RootMethod    string                 `protobuf:"bytes,5,opt,name=root_method,json=rootMethod,proto3" json:"root_method,omitempty"`
+	StatusCode    int32                  `protobuf:"varint,6,opt,name=status_code,json=statusCode,proto3" json:"status_code,omitempty"`
+	Success       bool                   `protobuf:"varint,7,opt,name=success,proto3" json:"success,omitempty"`
+	TotalRttMs    float64                `protobuf:"fixed64,8,opt,name=total_rtt_ms,json=totalRttMs,proto3" json:"total_rtt_ms,omitempty"`
+	StartedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=started_at,json=startedAt,proto3" json:"started_at,omitempty"`
+	Spans         []*TraceSpan           `protobuf:"bytes,10,rep,name=spans,proto3" json:"spans,omitempty"`
+	Logs          []*TraceLogRecord      `protobuf:"bytes,11,rep,name=logs,proto3" json:"logs,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetTraceResponse) Reset() {
+	*x = GetTraceResponse{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[36]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetTraceResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetTraceResponse) ProtoMessage() {}
+
+func (x *GetTraceResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[36]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetTraceResponse.ProtoReflect.Descriptor instead.
+func (*GetTraceResponse) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{36}
+}
+
+func (x *GetTraceResponse) GetTraceId() string {
+	if x != nil {
+		return x.TraceId
+	}
+	return ""
+}
+
+func (x *GetTraceResponse) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+func (x *GetTraceResponse) GetRootService() string {
+	if x != nil {
+		return x.RootService
+	}
+	return ""
+}
+
+func (x *GetTraceResponse) GetRootRoute() string {
+	if x != nil {
+		return x.RootRoute
+	}
+	return ""
+}
+
+func (x *GetTraceResponse) GetRootMethod() string {
+	if x != nil {
+		return x.RootMethod
+	}
+	return ""
+}
+
+func (x *GetTraceResponse) GetStatusCode() int32 {
+	if x != nil {
+		return x.StatusCode
+	}
+	return 0
+}
+
+func (x *GetTraceResponse) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *GetTraceResponse) GetTotalRttMs() float64 {
+	if x != nil {
+		return x.TotalRttMs
+	}
+	return 0
+}
+
+func (x *GetTraceResponse) GetStartedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.StartedAt
+	}
+	return nil
+}
+
+func (x *GetTraceResponse) GetSpans() []*TraceSpan {
+	if x != nil {
+		return x.Spans
+	}
+	return nil
+}
+
+func (x *GetTraceResponse) GetLogs() []*TraceLogRecord {
+	if x != nil {
+		return x.Logs
+	}
+	return nil
+}
+
 type ListIamGroupsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Filter        *string                `protobuf:"bytes,1,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
@@ -2236,7 +2404,7 @@ type ListIamGroupsRequest struct {
 
 func (x *ListIamGroupsRequest) Reset() {
 	*x = ListIamGroupsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[35]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[37]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2248,7 +2416,7 @@ func (x *ListIamGroupsRequest) String() string {
 func (*ListIamGroupsRequest) ProtoMessage() {}
 
 func (x *ListIamGroupsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[35]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[37]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2261,7 +2429,7 @@ func (x *ListIamGroupsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListIamGroupsRequest.ProtoReflect.Descriptor instead.
 func (*ListIamGroupsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{35}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{37}
 }
 
 func (x *ListIamGroupsRequest) GetFilter() string {
@@ -2287,7 +2455,7 @@ type ListIamGroupsResponse struct {
 
 func (x *ListIamGroupsResponse) Reset() {
 	*x = ListIamGroupsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[36]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[38]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2299,7 +2467,7 @@ func (x *ListIamGroupsResponse) String() string {
 func (*ListIamGroupsResponse) ProtoMessage() {}
 
 func (x *ListIamGroupsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[36]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[38]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2312,7 +2480,7 @@ func (x *ListIamGroupsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListIamGroupsResponse.ProtoReflect.Descriptor instead.
 func (*ListIamGroupsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{36}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{38}
 }
 
 func (x *ListIamGroupsResponse) GetGroups() []*IamGroupSummary {
@@ -2332,7 +2500,7 @@ type ListIamUsersRequest struct {
 
 func (x *ListIamUsersRequest) Reset() {
 	*x = ListIamUsersRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[37]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[39]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2344,7 +2512,7 @@ func (x *ListIamUsersRequest) String() string {
 func (*ListIamUsersRequest) ProtoMessage() {}
 
 func (x *ListIamUsersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[37]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[39]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2357,7 +2525,7 @@ func (x *ListIamUsersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListIamUsersRequest.ProtoReflect.Descriptor instead.
 func (*ListIamUsersRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{37}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{39}
 }
 
 func (x *ListIamUsersRequest) GetFilter() string {
@@ -2383,7 +2551,7 @@ type ListIamUsersResponse struct {
 
 func (x *ListIamUsersResponse) Reset() {
 	*x = ListIamUsersResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[38]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[40]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2395,7 +2563,7 @@ func (x *ListIamUsersResponse) String() string {
 func (*ListIamUsersResponse) ProtoMessage() {}
 
 func (x *ListIamUsersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[38]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[40]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2408,7 +2576,7 @@ func (x *ListIamUsersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListIamUsersResponse.ProtoReflect.Descriptor instead.
 func (*ListIamUsersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{38}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{40}
 }
 
 func (x *ListIamUsersResponse) GetUsers() []*IamUserSummary {
@@ -2431,7 +2599,7 @@ type ListInternalApiCallsRequest struct {
 
 func (x *ListInternalApiCallsRequest) Reset() {
 	*x = ListInternalApiCallsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[39]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[41]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2443,7 +2611,7 @@ func (x *ListInternalApiCallsRequest) String() string {
 func (*ListInternalApiCallsRequest) ProtoMessage() {}
 
 func (x *ListInternalApiCallsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[39]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[41]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2456,7 +2624,7 @@ func (x *ListInternalApiCallsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInternalApiCallsRequest.ProtoReflect.Descriptor instead.
 func (*ListInternalApiCallsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{39}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{41}
 }
 
 func (x *ListInternalApiCallsRequest) GetLimit() int32 {
@@ -2503,7 +2671,7 @@ type ListInternalApiCallsResponse struct {
 
 func (x *ListInternalApiCallsResponse) Reset() {
 	*x = ListInternalApiCallsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[40]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[42]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2515,7 +2683,7 @@ func (x *ListInternalApiCallsResponse) String() string {
 func (*ListInternalApiCallsResponse) ProtoMessage() {}
 
 func (x *ListInternalApiCallsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[40]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[42]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2528,7 +2696,7 @@ func (x *ListInternalApiCallsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInternalApiCallsResponse.ProtoReflect.Descriptor instead.
 func (*ListInternalApiCallsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{40}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{42}
 }
 
 func (x *ListInternalApiCallsResponse) GetCalls() []*InternalApiCallRecord {
@@ -2548,7 +2716,7 @@ type ListInternalTokensRequest struct {
 
 func (x *ListInternalTokensRequest) Reset() {
 	*x = ListInternalTokensRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[41]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[43]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2560,7 +2728,7 @@ func (x *ListInternalTokensRequest) String() string {
 func (*ListInternalTokensRequest) ProtoMessage() {}
 
 func (x *ListInternalTokensRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[41]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[43]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2573,7 +2741,7 @@ func (x *ListInternalTokensRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInternalTokensRequest.ProtoReflect.Descriptor instead.
 func (*ListInternalTokensRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{41}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{43}
 }
 
 func (x *ListInternalTokensRequest) GetFilter() string {
@@ -2599,7 +2767,7 @@ type ListInternalTokensResponse struct {
 
 func (x *ListInternalTokensResponse) Reset() {
 	*x = ListInternalTokensResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[42]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[44]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2611,7 +2779,7 @@ func (x *ListInternalTokensResponse) String() string {
 func (*ListInternalTokensResponse) ProtoMessage() {}
 
 func (x *ListInternalTokensResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[42]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[44]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2624,7 +2792,7 @@ func (x *ListInternalTokensResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListInternalTokensResponse.ProtoReflect.Descriptor instead.
 func (*ListInternalTokensResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{42}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{44}
 }
 
 func (x *ListInternalTokensResponse) GetTokens() []*InternalTokenRecord {
@@ -2645,7 +2813,7 @@ type ListJitGrantsRequest struct {
 
 func (x *ListJitGrantsRequest) Reset() {
 	*x = ListJitGrantsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[43]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[45]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2657,7 +2825,7 @@ func (x *ListJitGrantsRequest) String() string {
 func (*ListJitGrantsRequest) ProtoMessage() {}
 
 func (x *ListJitGrantsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[43]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[45]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2670,7 +2838,7 @@ func (x *ListJitGrantsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListJitGrantsRequest.ProtoReflect.Descriptor instead.
 func (*ListJitGrantsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{43}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{45}
 }
 
 func (x *ListJitGrantsRequest) GetActiveOnly() bool {
@@ -2703,7 +2871,7 @@ type ListJitGrantsResponse struct {
 
 func (x *ListJitGrantsResponse) Reset() {
 	*x = ListJitGrantsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[44]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[46]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2715,7 +2883,7 @@ func (x *ListJitGrantsResponse) String() string {
 func (*ListJitGrantsResponse) ProtoMessage() {}
 
 func (x *ListJitGrantsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[44]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[46]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2728,7 +2896,7 @@ func (x *ListJitGrantsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListJitGrantsResponse.ProtoReflect.Descriptor instead.
 func (*ListJitGrantsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{44}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{46}
 }
 
 func (x *ListJitGrantsResponse) GetGrants() []*JitGrantRecord {
@@ -2750,7 +2918,7 @@ type ListJobsRequest struct {
 
 func (x *ListJobsRequest) Reset() {
 	*x = ListJobsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[45]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[47]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2762,7 +2930,7 @@ func (x *ListJobsRequest) String() string {
 func (*ListJobsRequest) ProtoMessage() {}
 
 func (x *ListJobsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[45]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[47]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2775,7 +2943,7 @@ func (x *ListJobsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListJobsRequest.ProtoReflect.Descriptor instead.
 func (*ListJobsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{45}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{47}
 }
 
 func (x *ListJobsRequest) GetLimit() int32 {
@@ -2815,7 +2983,7 @@ type ListJobsResponse struct {
 
 func (x *ListJobsResponse) Reset() {
 	*x = ListJobsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[46]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[48]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2827,7 +2995,7 @@ func (x *ListJobsResponse) String() string {
 func (*ListJobsResponse) ProtoMessage() {}
 
 func (x *ListJobsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[46]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[48]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2840,7 +3008,7 @@ func (x *ListJobsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListJobsResponse.ProtoReflect.Descriptor instead.
 func (*ListJobsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{46}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{48}
 }
 
 func (x *ListJobsResponse) GetJobs() []*JobRecord {
@@ -2866,7 +3034,7 @@ type ListRouteRequestsRequest struct {
 
 func (x *ListRouteRequestsRequest) Reset() {
 	*x = ListRouteRequestsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[47]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[49]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2878,7 +3046,7 @@ func (x *ListRouteRequestsRequest) String() string {
 func (*ListRouteRequestsRequest) ProtoMessage() {}
 
 func (x *ListRouteRequestsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[47]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[49]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2891,7 +3059,7 @@ func (x *ListRouteRequestsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRouteRequestsRequest.ProtoReflect.Descriptor instead.
 func (*ListRouteRequestsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{47}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{49}
 }
 
 func (x *ListRouteRequestsRequest) GetRegionFilter() string {
@@ -2959,7 +3127,7 @@ type ListRouteRequestsResponse struct {
 
 func (x *ListRouteRequestsResponse) Reset() {
 	*x = ListRouteRequestsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[48]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[50]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -2971,7 +3139,7 @@ func (x *ListRouteRequestsResponse) String() string {
 func (*ListRouteRequestsResponse) ProtoMessage() {}
 
 func (x *ListRouteRequestsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[48]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[50]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -2984,7 +3152,7 @@ func (x *ListRouteRequestsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListRouteRequestsResponse.ProtoReflect.Descriptor instead.
 func (*ListRouteRequestsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{48}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{50}
 }
 
 func (x *ListRouteRequestsResponse) GetRequests() []*RouteRequestLog {
@@ -3004,7 +3172,7 @@ type ListTasksRequest struct {
 
 func (x *ListTasksRequest) Reset() {
 	*x = ListTasksRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[49]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[51]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3016,7 +3184,7 @@ func (x *ListTasksRequest) String() string {
 func (*ListTasksRequest) ProtoMessage() {}
 
 func (x *ListTasksRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[49]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[51]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3029,7 +3197,7 @@ func (x *ListTasksRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTasksRequest.ProtoReflect.Descriptor instead.
 func (*ListTasksRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{49}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{51}
 }
 
 func (x *ListTasksRequest) GetFilter() string {
@@ -3055,7 +3223,7 @@ type ListTasksResponse struct {
 
 func (x *ListTasksResponse) Reset() {
 	*x = ListTasksResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[50]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[52]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3067,7 +3235,7 @@ func (x *ListTasksResponse) String() string {
 func (*ListTasksResponse) ProtoMessage() {}
 
 func (x *ListTasksResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[50]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[52]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3080,7 +3248,7 @@ func (x *ListTasksResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListTasksResponse.ProtoReflect.Descriptor instead.
 func (*ListTasksResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{50}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{52}
 }
 
 func (x *ListTasksResponse) GetTasks() []*TaskDef {
@@ -3098,7 +3266,7 @@ type PurgeSoftDeletedAccountsRequest struct {
 
 func (x *PurgeSoftDeletedAccountsRequest) Reset() {
 	*x = PurgeSoftDeletedAccountsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[51]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[53]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3110,7 +3278,7 @@ func (x *PurgeSoftDeletedAccountsRequest) String() string {
 func (*PurgeSoftDeletedAccountsRequest) ProtoMessage() {}
 
 func (x *PurgeSoftDeletedAccountsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[51]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[53]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3123,7 +3291,7 @@ func (x *PurgeSoftDeletedAccountsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurgeSoftDeletedAccountsRequest.ProtoReflect.Descriptor instead.
 func (*PurgeSoftDeletedAccountsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{51}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{53}
 }
 
 type PurgeSoftDeletedAccountsResponse struct {
@@ -3135,7 +3303,7 @@ type PurgeSoftDeletedAccountsResponse struct {
 
 func (x *PurgeSoftDeletedAccountsResponse) Reset() {
 	*x = PurgeSoftDeletedAccountsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[52]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[54]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3147,7 +3315,7 @@ func (x *PurgeSoftDeletedAccountsResponse) String() string {
 func (*PurgeSoftDeletedAccountsResponse) ProtoMessage() {}
 
 func (x *PurgeSoftDeletedAccountsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[52]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[54]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3160,7 +3328,7 @@ func (x *PurgeSoftDeletedAccountsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PurgeSoftDeletedAccountsResponse.ProtoReflect.Descriptor instead.
 func (*PurgeSoftDeletedAccountsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{52}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{54}
 }
 
 func (x *PurgeSoftDeletedAccountsResponse) GetPurgedCount() int64 {
@@ -3179,7 +3347,7 @@ type RevokeInternalTokenRequest struct {
 
 func (x *RevokeInternalTokenRequest) Reset() {
 	*x = RevokeInternalTokenRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[53]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[55]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3191,7 +3359,7 @@ func (x *RevokeInternalTokenRequest) String() string {
 func (*RevokeInternalTokenRequest) ProtoMessage() {}
 
 func (x *RevokeInternalTokenRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[53]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[55]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3204,7 +3372,7 @@ func (x *RevokeInternalTokenRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeInternalTokenRequest.ProtoReflect.Descriptor instead.
 func (*RevokeInternalTokenRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{53}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{55}
 }
 
 func (x *RevokeInternalTokenRequest) GetId() string {
@@ -3223,7 +3391,7 @@ type RevokeInternalTokenResponse struct {
 
 func (x *RevokeInternalTokenResponse) Reset() {
 	*x = RevokeInternalTokenResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[54]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[56]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3235,7 +3403,7 @@ func (x *RevokeInternalTokenResponse) String() string {
 func (*RevokeInternalTokenResponse) ProtoMessage() {}
 
 func (x *RevokeInternalTokenResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[54]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[56]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3248,7 +3416,7 @@ func (x *RevokeInternalTokenResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeInternalTokenResponse.ProtoReflect.Descriptor instead.
 func (*RevokeInternalTokenResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{54}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{56}
 }
 
 func (x *RevokeInternalTokenResponse) GetSuccess() bool {
@@ -3267,7 +3435,7 @@ type RevokeJitGrantRequest struct {
 
 func (x *RevokeJitGrantRequest) Reset() {
 	*x = RevokeJitGrantRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[55]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[57]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3279,7 +3447,7 @@ func (x *RevokeJitGrantRequest) String() string {
 func (*RevokeJitGrantRequest) ProtoMessage() {}
 
 func (x *RevokeJitGrantRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[55]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[57]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3292,7 +3460,7 @@ func (x *RevokeJitGrantRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeJitGrantRequest.ProtoReflect.Descriptor instead.
 func (*RevokeJitGrantRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{55}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{57}
 }
 
 func (x *RevokeJitGrantRequest) GetGrantId() string {
@@ -3311,7 +3479,7 @@ type RevokeJitGrantResponse struct {
 
 func (x *RevokeJitGrantResponse) Reset() {
 	*x = RevokeJitGrantResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[56]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[58]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3323,7 +3491,7 @@ func (x *RevokeJitGrantResponse) String() string {
 func (*RevokeJitGrantResponse) ProtoMessage() {}
 
 func (x *RevokeJitGrantResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[56]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[58]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3336,7 +3504,7 @@ func (x *RevokeJitGrantResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RevokeJitGrantResponse.ProtoReflect.Descriptor instead.
 func (*RevokeJitGrantResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{56}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{58}
 }
 
 func (x *RevokeJitGrantResponse) GetSuccess() bool {
@@ -3354,7 +3522,7 @@ type SendUsernameReleaseWarningsRequest struct {
 
 func (x *SendUsernameReleaseWarningsRequest) Reset() {
 	*x = SendUsernameReleaseWarningsRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[57]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[59]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3366,7 +3534,7 @@ func (x *SendUsernameReleaseWarningsRequest) String() string {
 func (*SendUsernameReleaseWarningsRequest) ProtoMessage() {}
 
 func (x *SendUsernameReleaseWarningsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[57]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[59]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3379,7 +3547,7 @@ func (x *SendUsernameReleaseWarningsRequest) ProtoReflect() protoreflect.Message
 
 // Deprecated: Use SendUsernameReleaseWarningsRequest.ProtoReflect.Descriptor instead.
 func (*SendUsernameReleaseWarningsRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{57}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{59}
 }
 
 type SendUsernameReleaseWarningsResponse struct {
@@ -3391,7 +3559,7 @@ type SendUsernameReleaseWarningsResponse struct {
 
 func (x *SendUsernameReleaseWarningsResponse) Reset() {
 	*x = SendUsernameReleaseWarningsResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[58]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[60]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3403,7 +3571,7 @@ func (x *SendUsernameReleaseWarningsResponse) String() string {
 func (*SendUsernameReleaseWarningsResponse) ProtoMessage() {}
 
 func (x *SendUsernameReleaseWarningsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[58]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[60]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3416,7 +3584,7 @@ func (x *SendUsernameReleaseWarningsResponse) ProtoReflect() protoreflect.Messag
 
 // Deprecated: Use SendUsernameReleaseWarningsResponse.ProtoReflect.Descriptor instead.
 func (*SendUsernameReleaseWarningsResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{58}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{60}
 }
 
 func (x *SendUsernameReleaseWarningsResponse) GetWarningCount() int64 {
@@ -3436,7 +3604,7 @@ type SetUserRoleRequest struct {
 
 func (x *SetUserRoleRequest) Reset() {
 	*x = SetUserRoleRequest{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[59]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[61]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3448,7 +3616,7 @@ func (x *SetUserRoleRequest) String() string {
 func (*SetUserRoleRequest) ProtoMessage() {}
 
 func (x *SetUserRoleRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[59]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[61]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3461,7 +3629,7 @@ func (x *SetUserRoleRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetUserRoleRequest.ProtoReflect.Descriptor instead.
 func (*SetUserRoleRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{59}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{61}
 }
 
 func (x *SetUserRoleRequest) GetUserId() string {
@@ -3490,7 +3658,7 @@ type SetUserRoleResponse struct {
 
 func (x *SetUserRoleResponse) Reset() {
 	*x = SetUserRoleResponse{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[60]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[62]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3502,7 +3670,7 @@ func (x *SetUserRoleResponse) String() string {
 func (*SetUserRoleResponse) ProtoMessage() {}
 
 func (x *SetUserRoleResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[60]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[62]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3515,7 +3683,7 @@ func (x *SetUserRoleResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SetUserRoleResponse.ProtoReflect.Descriptor instead.
 func (*SetUserRoleResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{60}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{62}
 }
 
 func (x *SetUserRoleResponse) GetUserUuid() string {
@@ -3557,7 +3725,7 @@ type IamGroupSummary struct {
 
 func (x *IamGroupSummary) Reset() {
 	*x = IamGroupSummary{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[61]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[63]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3569,7 +3737,7 @@ func (x *IamGroupSummary) String() string {
 func (*IamGroupSummary) ProtoMessage() {}
 
 func (x *IamGroupSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[61]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[63]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3582,7 +3750,7 @@ func (x *IamGroupSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IamGroupSummary.ProtoReflect.Descriptor instead.
 func (*IamGroupSummary) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{61}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{63}
 }
 
 func (x *IamGroupSummary) GetName() string {
@@ -3619,7 +3787,7 @@ type IamUserSummary struct {
 
 func (x *IamUserSummary) Reset() {
 	*x = IamUserSummary{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[62]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[64]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3631,7 +3799,7 @@ func (x *IamUserSummary) String() string {
 func (*IamUserSummary) ProtoMessage() {}
 
 func (x *IamUserSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[62]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[64]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3644,7 +3812,7 @@ func (x *IamUserSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IamUserSummary.ProtoReflect.Descriptor instead.
 func (*IamUserSummary) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{62}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{64}
 }
 
 func (x *IamUserSummary) GetOperator() string {
@@ -3700,7 +3868,7 @@ type RouteRequestLog struct {
 
 func (x *RouteRequestLog) Reset() {
 	*x = RouteRequestLog{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[63]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[65]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3712,7 +3880,7 @@ func (x *RouteRequestLog) String() string {
 func (*RouteRequestLog) ProtoMessage() {}
 
 func (x *RouteRequestLog) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[63]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[65]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3725,7 +3893,7 @@ func (x *RouteRequestLog) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RouteRequestLog.ProtoReflect.Descriptor instead.
 func (*RouteRequestLog) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{63}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{65}
 }
 
 func (x *RouteRequestLog) GetTraceId() string {
@@ -3818,7 +3986,7 @@ type ServiceHealthStatus struct {
 
 func (x *ServiceHealthStatus) Reset() {
 	*x = ServiceHealthStatus{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[64]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[66]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3830,7 +3998,7 @@ func (x *ServiceHealthStatus) String() string {
 func (*ServiceHealthStatus) ProtoMessage() {}
 
 func (x *ServiceHealthStatus) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[64]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[66]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3843,7 +4011,7 @@ func (x *ServiceHealthStatus) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ServiceHealthStatus.ProtoReflect.Descriptor instead.
 func (*ServiceHealthStatus) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{64}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{66}
 }
 
 func (x *ServiceHealthStatus) GetServiceName() string {
@@ -3948,7 +4116,7 @@ type ServiceMetricsSummary struct {
 
 func (x *ServiceMetricsSummary) Reset() {
 	*x = ServiceMetricsSummary{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[65]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[67]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -3960,7 +4128,7 @@ func (x *ServiceMetricsSummary) String() string {
 func (*ServiceMetricsSummary) ProtoMessage() {}
 
 func (x *ServiceMetricsSummary) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[65]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[67]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -3973,7 +4141,7 @@ func (x *ServiceMetricsSummary) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ServiceMetricsSummary.ProtoReflect.Descriptor instead.
 func (*ServiceMetricsSummary) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{65}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{67}
 }
 
 func (x *ServiceMetricsSummary) GetServiceName() string {
@@ -4057,7 +4225,7 @@ type TableStat struct {
 
 func (x *TableStat) Reset() {
 	*x = TableStat{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[66]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[68]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4069,7 +4237,7 @@ func (x *TableStat) String() string {
 func (*TableStat) ProtoMessage() {}
 
 func (x *TableStat) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[66]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[68]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4082,7 +4250,7 @@ func (x *TableStat) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TableStat.ProtoReflect.Descriptor instead.
 func (*TableStat) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{66}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{68}
 }
 
 func (x *TableStat) GetTableName() string {
@@ -4106,6 +4274,222 @@ func (x *TableStat) GetTotalSizeBytes() int64 {
 	return 0
 }
 
+type TraceLogRecord struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Timestamp     *timestamppb.Timestamp `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	Level         string                 `protobuf:"bytes,2,opt,name=level,proto3" json:"level,omitempty"`
+	ServiceName   string                 `protobuf:"bytes,3,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
+	InstanceId    string                 `protobuf:"bytes,4,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
+	Region        string                 `protobuf:"bytes,5,opt,name=region,proto3" json:"region,omitempty"`
+	Message       string                 `protobuf:"bytes,6,opt,name=message,proto3" json:"message,omitempty"`
+	Attributes    map[string]string      `protobuf:"bytes,7,rep,name=attributes,proto3" json:"attributes,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TraceLogRecord) Reset() {
+	*x = TraceLogRecord{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[69]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TraceLogRecord) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TraceLogRecord) ProtoMessage() {}
+
+func (x *TraceLogRecord) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[69]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TraceLogRecord.ProtoReflect.Descriptor instead.
+func (*TraceLogRecord) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{69}
+}
+
+func (x *TraceLogRecord) GetTimestamp() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Timestamp
+	}
+	return nil
+}
+
+func (x *TraceLogRecord) GetLevel() string {
+	if x != nil {
+		return x.Level
+	}
+	return ""
+}
+
+func (x *TraceLogRecord) GetServiceName() string {
+	if x != nil {
+		return x.ServiceName
+	}
+	return ""
+}
+
+func (x *TraceLogRecord) GetInstanceId() string {
+	if x != nil {
+		return x.InstanceId
+	}
+	return ""
+}
+
+func (x *TraceLogRecord) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+func (x *TraceLogRecord) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *TraceLogRecord) GetAttributes() map[string]string {
+	if x != nil {
+		return x.Attributes
+	}
+	return nil
+}
+
+type TraceSpan struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	SpanId        string                 `protobuf:"bytes,1,opt,name=span_id,json=spanId,proto3" json:"span_id,omitempty"`
+	ServiceName   string                 `protobuf:"bytes,2,opt,name=service_name,json=serviceName,proto3" json:"service_name,omitempty"`
+	InstanceId    string                 `protobuf:"bytes,3,opt,name=instance_id,json=instanceId,proto3" json:"instance_id,omitempty"`
+	Region        string                 `protobuf:"bytes,4,opt,name=region,proto3" json:"region,omitempty"`
+	Operation     string                 `protobuf:"bytes,5,opt,name=operation,proto3" json:"operation,omitempty"`
+	Method        string                 `protobuf:"bytes,6,opt,name=method,proto3" json:"method,omitempty"`
+	StatusCode    int32                  `protobuf:"varint,7,opt,name=status_code,json=statusCode,proto3" json:"status_code,omitempty"`
+	Success       bool                   `protobuf:"varint,8,opt,name=success,proto3" json:"success,omitempty"`
+	DurationMs    float64                `protobuf:"fixed64,9,opt,name=duration_ms,json=durationMs,proto3" json:"duration_ms,omitempty"`
+	OccurredAt    *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=occurred_at,json=occurredAt,proto3" json:"occurred_at,omitempty"`
+	Attributes    map[string]string      `protobuf:"bytes,11,rep,name=attributes,proto3" json:"attributes,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *TraceSpan) Reset() {
+	*x = TraceSpan{}
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[70]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TraceSpan) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TraceSpan) ProtoMessage() {}
+
+func (x *TraceSpan) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[70]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TraceSpan.ProtoReflect.Descriptor instead.
+func (*TraceSpan) Descriptor() ([]byte, []int) {
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{70}
+}
+
+func (x *TraceSpan) GetSpanId() string {
+	if x != nil {
+		return x.SpanId
+	}
+	return ""
+}
+
+func (x *TraceSpan) GetServiceName() string {
+	if x != nil {
+		return x.ServiceName
+	}
+	return ""
+}
+
+func (x *TraceSpan) GetInstanceId() string {
+	if x != nil {
+		return x.InstanceId
+	}
+	return ""
+}
+
+func (x *TraceSpan) GetRegion() string {
+	if x != nil {
+		return x.Region
+	}
+	return ""
+}
+
+func (x *TraceSpan) GetOperation() string {
+	if x != nil {
+		return x.Operation
+	}
+	return ""
+}
+
+func (x *TraceSpan) GetMethod() string {
+	if x != nil {
+		return x.Method
+	}
+	return ""
+}
+
+func (x *TraceSpan) GetStatusCode() int32 {
+	if x != nil {
+		return x.StatusCode
+	}
+	return 0
+}
+
+func (x *TraceSpan) GetSuccess() bool {
+	if x != nil {
+		return x.Success
+	}
+	return false
+}
+
+func (x *TraceSpan) GetDurationMs() float64 {
+	if x != nil {
+		return x.DurationMs
+	}
+	return 0
+}
+
+func (x *TraceSpan) GetOccurredAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.OccurredAt
+	}
+	return nil
+}
+
+func (x *TraceSpan) GetAttributes() map[string]string {
+	if x != nil {
+		return x.Attributes
+	}
+	return nil
+}
+
 type DependencyCheckResult struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
@@ -4118,7 +4502,7 @@ type DependencyCheckResult struct {
 
 func (x *DependencyCheckResult) Reset() {
 	*x = DependencyCheckResult{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[67]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[71]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4130,7 +4514,7 @@ func (x *DependencyCheckResult) String() string {
 func (*DependencyCheckResult) ProtoMessage() {}
 
 func (x *DependencyCheckResult) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[67]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[71]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4143,7 +4527,7 @@ func (x *DependencyCheckResult) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DependencyCheckResult.ProtoReflect.Descriptor instead.
 func (*DependencyCheckResult) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{67}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{71}
 }
 
 func (x *DependencyCheckResult) GetName() string {
@@ -4193,7 +4577,7 @@ type RouteMetricStat struct {
 
 func (x *RouteMetricStat) Reset() {
 	*x = RouteMetricStat{}
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[68]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[72]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -4205,7 +4589,7 @@ func (x *RouteMetricStat) String() string {
 func (*RouteMetricStat) ProtoMessage() {}
 
 func (x *RouteMetricStat) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_ops_ops_proto_msgTypes[68]
+	mi := &file_quadsmith_ops_ops_proto_msgTypes[72]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -4218,7 +4602,7 @@ func (x *RouteMetricStat) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use RouteMetricStat.ProtoReflect.Descriptor instead.
 func (*RouteMetricStat) Descriptor() ([]byte, []int) {
-	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{68}
+	return file_quadsmith_ops_ops_proto_rawDescGZIP(), []int{72}
 }
 
 func (x *RouteMetricStat) GetRoute() string {
@@ -4492,7 +4876,27 @@ const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"\x0eGetTaskRequest\x12\x1b\n" +
 	"\ttask_name\x18\x01 \x01(\tR\btaskName\"=\n" +
 	"\x0fGetTaskResponse\x12*\n" +
-	"\x04task\x18\x01 \x01(\v2\x16.quadsmith.ops.TaskDefR\x04task\"R\n" +
+	"\x04task\x18\x01 \x01(\v2\x16.quadsmith.ops.TaskDefR\x04task\",\n" +
+	"\x0fGetTraceRequest\x12\x19\n" +
+	"\btrace_id\x18\x01 \x01(\tR\atraceId\"\xa3\x03\n" +
+	"\x10GetTraceResponse\x12\x19\n" +
+	"\btrace_id\x18\x01 \x01(\tR\atraceId\x12\x16\n" +
+	"\x06region\x18\x02 \x01(\tR\x06region\x12!\n" +
+	"\froot_service\x18\x03 \x01(\tR\vrootService\x12\x1d\n" +
+	"\n" +
+	"root_route\x18\x04 \x01(\tR\trootRoute\x12\x1f\n" +
+	"\vroot_method\x18\x05 \x01(\tR\n" +
+	"rootMethod\x12\x1f\n" +
+	"\vstatus_code\x18\x06 \x01(\x05R\n" +
+	"statusCode\x12\x18\n" +
+	"\asuccess\x18\a \x01(\bR\asuccess\x12 \n" +
+	"\ftotal_rtt_ms\x18\b \x01(\x01R\n" +
+	"totalRttMs\x129\n" +
+	"\n" +
+	"started_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tstartedAt\x12.\n" +
+	"\x05spans\x18\n" +
+	" \x03(\v2\x18.quadsmith.ops.TraceSpanR\x05spans\x121\n" +
+	"\x04logs\x18\v \x03(\v2\x1d.quadsmith.ops.TraceLogRecordR\x04logs\"R\n" +
 	"\x14ListIamGroupsRequest\x12\x1b\n" +
 	"\x06filter\x18\x01 \x01(\tH\x00R\x06filter\x88\x01\x01\x12\x12\n" +
 	"\x04sort\x18\x02 \x03(\tR\x04sortB\t\n" +
@@ -4648,7 +5052,43 @@ const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"\n" +
 	"table_name\x18\x01 \x01(\tR\ttableName\x12\x1b\n" +
 	"\trow_count\x18\x02 \x01(\x03R\browCount\x12(\n" +
-	"\x10total_size_bytes\x18\x03 \x01(\x03R\x0etotalSizeBytes\"\x8d\x01\n" +
+	"\x10total_size_bytes\x18\x03 \x01(\x03R\x0etotalSizeBytes\"\xe4\x02\n" +
+	"\x0eTraceLogRecord\x128\n" +
+	"\ttimestamp\x18\x01 \x01(\v2\x1a.google.protobuf.TimestampR\ttimestamp\x12\x14\n" +
+	"\x05level\x18\x02 \x01(\tR\x05level\x12!\n" +
+	"\fservice_name\x18\x03 \x01(\tR\vserviceName\x12\x1f\n" +
+	"\vinstance_id\x18\x04 \x01(\tR\n" +
+	"instanceId\x12\x16\n" +
+	"\x06region\x18\x05 \x01(\tR\x06region\x12\x18\n" +
+	"\amessage\x18\x06 \x01(\tR\amessage\x12M\n" +
+	"\n" +
+	"attributes\x18\a \x03(\v2-.quadsmith.ops.TraceLogRecord.AttributesEntryR\n" +
+	"attributes\x1a=\n" +
+	"\x0fAttributesEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xd8\x03\n" +
+	"\tTraceSpan\x12\x17\n" +
+	"\aspan_id\x18\x01 \x01(\tR\x06spanId\x12!\n" +
+	"\fservice_name\x18\x02 \x01(\tR\vserviceName\x12\x1f\n" +
+	"\vinstance_id\x18\x03 \x01(\tR\n" +
+	"instanceId\x12\x16\n" +
+	"\x06region\x18\x04 \x01(\tR\x06region\x12\x1c\n" +
+	"\toperation\x18\x05 \x01(\tR\toperation\x12\x16\n" +
+	"\x06method\x18\x06 \x01(\tR\x06method\x12\x1f\n" +
+	"\vstatus_code\x18\a \x01(\x05R\n" +
+	"statusCode\x12\x18\n" +
+	"\asuccess\x18\b \x01(\bR\asuccess\x12\x1f\n" +
+	"\vduration_ms\x18\t \x01(\x01R\n" +
+	"durationMs\x12;\n" +
+	"\voccurred_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\n" +
+	"occurredAt\x12H\n" +
+	"\n" +
+	"attributes\x18\v \x03(\v2(.quadsmith.ops.TraceSpan.AttributesEntryR\n" +
+	"attributes\x1a=\n" +
+	"\x0fAttributesEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8d\x01\n" +
 	"\x15DependencyCheckResult\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x16\n" +
 	"\x06status\x18\x02 \x01(\tR\x06status\x12\x1d\n" +
@@ -4673,12 +5113,13 @@ const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"p95_rtt_ms\x18\n" +
 	" \x01(\x01R\bp95RttMs\x12\x1c\n" +
 	"\n" +
-	"p99_rtt_ms\x18\v \x01(\x01R\bp99RttMs2\x81\x16\n" +
+	"p99_rtt_ms\x18\v \x01(\x01R\bp99RttMs2\xce\x16\n" +
 	"\n" +
 	"OpsService\x12o\n" +
 	"\x14GetSystemDiagnostics\x12*.quadsmith.ops.GetSystemDiagnosticsRequest\x1a+.quadsmith.ops.GetSystemDiagnosticsResponse\x12`\n" +
 	"\x0fGetSystemHealth\x12%.quadsmith.ops.GetSystemHealthRequest\x1a&.quadsmith.ops.GetSystemHealthResponse\x12c\n" +
-	"\x10GetSystemMetrics\x12&.quadsmith.ops.GetSystemMetricsRequest\x1a'.quadsmith.ops.GetSystemMetricsResponse\x12f\n" +
+	"\x10GetSystemMetrics\x12&.quadsmith.ops.GetSystemMetricsRequest\x1a'.quadsmith.ops.GetSystemMetricsResponse\x12K\n" +
+	"\bGetTrace\x12\x1e.quadsmith.ops.GetTraceRequest\x1a\x1f.quadsmith.ops.GetTraceResponse\x12f\n" +
 	"\x11ListRouteRequests\x12'.quadsmith.ops.ListRouteRequestsRequest\x1a(.quadsmith.ops.ListRouteRequestsResponse\x12c\n" +
 	"\x10GetDatabaseStats\x12&.quadsmith.ops.GetDatabaseStatsRequest\x1a'.quadsmith.ops.GetDatabaseStatsResponse\x12i\n" +
 	"\x12CleanupExpiredOtps\x12(.quadsmith.ops.CleanupExpiredOtpsRequest\x1a).quadsmith.ops.CleanupExpiredOtpsResponse\x12o\n" +
@@ -4717,7 +5158,7 @@ func file_quadsmith_ops_ops_proto_rawDescGZIP() []byte {
 	return file_quadsmith_ops_ops_proto_rawDescData
 }
 
-var file_quadsmith_ops_ops_proto_msgTypes = make([]protoimpl.MessageInfo, 69)
+var file_quadsmith_ops_ops_proto_msgTypes = make([]protoimpl.MessageInfo, 75)
 var file_quadsmith_ops_ops_proto_goTypes = []any{
 	(*InternalApiCallRecord)(nil),               // 0: quadsmith.ops.InternalApiCallRecord
 	(*InternalTokenRecord)(nil),                 // 1: quadsmith.ops.InternalTokenRecord
@@ -4754,138 +5195,153 @@ var file_quadsmith_ops_ops_proto_goTypes = []any{
 	(*GetSystemMetricsResponse)(nil),            // 32: quadsmith.ops.GetSystemMetricsResponse
 	(*GetTaskRequest)(nil),                      // 33: quadsmith.ops.GetTaskRequest
 	(*GetTaskResponse)(nil),                     // 34: quadsmith.ops.GetTaskResponse
-	(*ListIamGroupsRequest)(nil),                // 35: quadsmith.ops.ListIamGroupsRequest
-	(*ListIamGroupsResponse)(nil),               // 36: quadsmith.ops.ListIamGroupsResponse
-	(*ListIamUsersRequest)(nil),                 // 37: quadsmith.ops.ListIamUsersRequest
-	(*ListIamUsersResponse)(nil),                // 38: quadsmith.ops.ListIamUsersResponse
-	(*ListInternalApiCallsRequest)(nil),         // 39: quadsmith.ops.ListInternalApiCallsRequest
-	(*ListInternalApiCallsResponse)(nil),        // 40: quadsmith.ops.ListInternalApiCallsResponse
-	(*ListInternalTokensRequest)(nil),           // 41: quadsmith.ops.ListInternalTokensRequest
-	(*ListInternalTokensResponse)(nil),          // 42: quadsmith.ops.ListInternalTokensResponse
-	(*ListJitGrantsRequest)(nil),                // 43: quadsmith.ops.ListJitGrantsRequest
-	(*ListJitGrantsResponse)(nil),               // 44: quadsmith.ops.ListJitGrantsResponse
-	(*ListJobsRequest)(nil),                     // 45: quadsmith.ops.ListJobsRequest
-	(*ListJobsResponse)(nil),                    // 46: quadsmith.ops.ListJobsResponse
-	(*ListRouteRequestsRequest)(nil),            // 47: quadsmith.ops.ListRouteRequestsRequest
-	(*ListRouteRequestsResponse)(nil),           // 48: quadsmith.ops.ListRouteRequestsResponse
-	(*ListTasksRequest)(nil),                    // 49: quadsmith.ops.ListTasksRequest
-	(*ListTasksResponse)(nil),                   // 50: quadsmith.ops.ListTasksResponse
-	(*PurgeSoftDeletedAccountsRequest)(nil),     // 51: quadsmith.ops.PurgeSoftDeletedAccountsRequest
-	(*PurgeSoftDeletedAccountsResponse)(nil),    // 52: quadsmith.ops.PurgeSoftDeletedAccountsResponse
-	(*RevokeInternalTokenRequest)(nil),          // 53: quadsmith.ops.RevokeInternalTokenRequest
-	(*RevokeInternalTokenResponse)(nil),         // 54: quadsmith.ops.RevokeInternalTokenResponse
-	(*RevokeJitGrantRequest)(nil),               // 55: quadsmith.ops.RevokeJitGrantRequest
-	(*RevokeJitGrantResponse)(nil),              // 56: quadsmith.ops.RevokeJitGrantResponse
-	(*SendUsernameReleaseWarningsRequest)(nil),  // 57: quadsmith.ops.SendUsernameReleaseWarningsRequest
-	(*SendUsernameReleaseWarningsResponse)(nil), // 58: quadsmith.ops.SendUsernameReleaseWarningsResponse
-	(*SetUserRoleRequest)(nil),                  // 59: quadsmith.ops.SetUserRoleRequest
-	(*SetUserRoleResponse)(nil),                 // 60: quadsmith.ops.SetUserRoleResponse
-	(*IamGroupSummary)(nil),                     // 61: quadsmith.ops.IamGroupSummary
-	(*IamUserSummary)(nil),                      // 62: quadsmith.ops.IamUserSummary
-	(*RouteRequestLog)(nil),                     // 63: quadsmith.ops.RouteRequestLog
-	(*ServiceHealthStatus)(nil),                 // 64: quadsmith.ops.ServiceHealthStatus
-	(*ServiceMetricsSummary)(nil),               // 65: quadsmith.ops.ServiceMetricsSummary
-	(*TableStat)(nil),                           // 66: quadsmith.ops.TableStat
-	(*DependencyCheckResult)(nil),               // 67: quadsmith.ops.DependencyCheckResult
-	(*RouteMetricStat)(nil),                     // 68: quadsmith.ops.RouteMetricStat
-	(*timestamppb.Timestamp)(nil),               // 69: google.protobuf.Timestamp
+	(*GetTraceRequest)(nil),                     // 35: quadsmith.ops.GetTraceRequest
+	(*GetTraceResponse)(nil),                    // 36: quadsmith.ops.GetTraceResponse
+	(*ListIamGroupsRequest)(nil),                // 37: quadsmith.ops.ListIamGroupsRequest
+	(*ListIamGroupsResponse)(nil),               // 38: quadsmith.ops.ListIamGroupsResponse
+	(*ListIamUsersRequest)(nil),                 // 39: quadsmith.ops.ListIamUsersRequest
+	(*ListIamUsersResponse)(nil),                // 40: quadsmith.ops.ListIamUsersResponse
+	(*ListInternalApiCallsRequest)(nil),         // 41: quadsmith.ops.ListInternalApiCallsRequest
+	(*ListInternalApiCallsResponse)(nil),        // 42: quadsmith.ops.ListInternalApiCallsResponse
+	(*ListInternalTokensRequest)(nil),           // 43: quadsmith.ops.ListInternalTokensRequest
+	(*ListInternalTokensResponse)(nil),          // 44: quadsmith.ops.ListInternalTokensResponse
+	(*ListJitGrantsRequest)(nil),                // 45: quadsmith.ops.ListJitGrantsRequest
+	(*ListJitGrantsResponse)(nil),               // 46: quadsmith.ops.ListJitGrantsResponse
+	(*ListJobsRequest)(nil),                     // 47: quadsmith.ops.ListJobsRequest
+	(*ListJobsResponse)(nil),                    // 48: quadsmith.ops.ListJobsResponse
+	(*ListRouteRequestsRequest)(nil),            // 49: quadsmith.ops.ListRouteRequestsRequest
+	(*ListRouteRequestsResponse)(nil),           // 50: quadsmith.ops.ListRouteRequestsResponse
+	(*ListTasksRequest)(nil),                    // 51: quadsmith.ops.ListTasksRequest
+	(*ListTasksResponse)(nil),                   // 52: quadsmith.ops.ListTasksResponse
+	(*PurgeSoftDeletedAccountsRequest)(nil),     // 53: quadsmith.ops.PurgeSoftDeletedAccountsRequest
+	(*PurgeSoftDeletedAccountsResponse)(nil),    // 54: quadsmith.ops.PurgeSoftDeletedAccountsResponse
+	(*RevokeInternalTokenRequest)(nil),          // 55: quadsmith.ops.RevokeInternalTokenRequest
+	(*RevokeInternalTokenResponse)(nil),         // 56: quadsmith.ops.RevokeInternalTokenResponse
+	(*RevokeJitGrantRequest)(nil),               // 57: quadsmith.ops.RevokeJitGrantRequest
+	(*RevokeJitGrantResponse)(nil),              // 58: quadsmith.ops.RevokeJitGrantResponse
+	(*SendUsernameReleaseWarningsRequest)(nil),  // 59: quadsmith.ops.SendUsernameReleaseWarningsRequest
+	(*SendUsernameReleaseWarningsResponse)(nil), // 60: quadsmith.ops.SendUsernameReleaseWarningsResponse
+	(*SetUserRoleRequest)(nil),                  // 61: quadsmith.ops.SetUserRoleRequest
+	(*SetUserRoleResponse)(nil),                 // 62: quadsmith.ops.SetUserRoleResponse
+	(*IamGroupSummary)(nil),                     // 63: quadsmith.ops.IamGroupSummary
+	(*IamUserSummary)(nil),                      // 64: quadsmith.ops.IamUserSummary
+	(*RouteRequestLog)(nil),                     // 65: quadsmith.ops.RouteRequestLog
+	(*ServiceHealthStatus)(nil),                 // 66: quadsmith.ops.ServiceHealthStatus
+	(*ServiceMetricsSummary)(nil),               // 67: quadsmith.ops.ServiceMetricsSummary
+	(*TableStat)(nil),                           // 68: quadsmith.ops.TableStat
+	(*TraceLogRecord)(nil),                      // 69: quadsmith.ops.TraceLogRecord
+	(*TraceSpan)(nil),                           // 70: quadsmith.ops.TraceSpan
+	(*DependencyCheckResult)(nil),               // 71: quadsmith.ops.DependencyCheckResult
+	(*RouteMetricStat)(nil),                     // 72: quadsmith.ops.RouteMetricStat
+	nil,                                         // 73: quadsmith.ops.TraceLogRecord.AttributesEntry
+	nil,                                         // 74: quadsmith.ops.TraceSpan.AttributesEntry
+	(*timestamppb.Timestamp)(nil),               // 75: google.protobuf.Timestamp
 }
 var file_quadsmith_ops_ops_proto_depIdxs = []int32{
-	69, // 0: quadsmith.ops.InternalApiCallRecord.created_at:type_name -> google.protobuf.Timestamp
-	69, // 1: quadsmith.ops.InternalTokenRecord.expires_at:type_name -> google.protobuf.Timestamp
-	69, // 2: quadsmith.ops.InternalTokenRecord.created_at:type_name -> google.protobuf.Timestamp
-	69, // 3: quadsmith.ops.InternalTokenRecord.revoked_at:type_name -> google.protobuf.Timestamp
-	69, // 4: quadsmith.ops.JitGrantRecord.expires_at:type_name -> google.protobuf.Timestamp
-	69, // 5: quadsmith.ops.JitGrantRecord.created_at:type_name -> google.protobuf.Timestamp
-	69, // 6: quadsmith.ops.JitGrantRecord.extended_at:type_name -> google.protobuf.Timestamp
-	69, // 7: quadsmith.ops.JitGrantRecord.revoked_at:type_name -> google.protobuf.Timestamp
-	69, // 8: quadsmith.ops.JobRecord.created_at:type_name -> google.protobuf.Timestamp
+	75, // 0: quadsmith.ops.InternalApiCallRecord.created_at:type_name -> google.protobuf.Timestamp
+	75, // 1: quadsmith.ops.InternalTokenRecord.expires_at:type_name -> google.protobuf.Timestamp
+	75, // 2: quadsmith.ops.InternalTokenRecord.created_at:type_name -> google.protobuf.Timestamp
+	75, // 3: quadsmith.ops.InternalTokenRecord.revoked_at:type_name -> google.protobuf.Timestamp
+	75, // 4: quadsmith.ops.JitGrantRecord.expires_at:type_name -> google.protobuf.Timestamp
+	75, // 5: quadsmith.ops.JitGrantRecord.created_at:type_name -> google.protobuf.Timestamp
+	75, // 6: quadsmith.ops.JitGrantRecord.extended_at:type_name -> google.protobuf.Timestamp
+	75, // 7: quadsmith.ops.JitGrantRecord.revoked_at:type_name -> google.protobuf.Timestamp
+	75, // 8: quadsmith.ops.JobRecord.created_at:type_name -> google.protobuf.Timestamp
 	2,  // 9: quadsmith.ops.AcquireJitGrantResponse.grant:type_name -> quadsmith.ops.JitGrantRecord
 	1,  // 10: quadsmith.ops.CreateInternalTokenResponse.record:type_name -> quadsmith.ops.InternalTokenRecord
-	69, // 11: quadsmith.ops.ExchangeOAuthCodeResponse.expires_at:type_name -> google.protobuf.Timestamp
+	75, // 11: quadsmith.ops.ExchangeOAuthCodeResponse.expires_at:type_name -> google.protobuf.Timestamp
 	2,  // 12: quadsmith.ops.ExtendJitGrantResponse.grant:type_name -> quadsmith.ops.JitGrantRecord
-	69, // 13: quadsmith.ops.GetCurrentOperatorResponse.session_expires_at:type_name -> google.protobuf.Timestamp
+	75, // 13: quadsmith.ops.GetCurrentOperatorResponse.session_expires_at:type_name -> google.protobuf.Timestamp
 	2,  // 14: quadsmith.ops.GetCurrentOperatorResponse.active_jit_grant:type_name -> quadsmith.ops.JitGrantRecord
-	66, // 15: quadsmith.ops.GetDatabaseStatsResponse.tables:type_name -> quadsmith.ops.TableStat
+	68, // 15: quadsmith.ops.GetDatabaseStatsResponse.tables:type_name -> quadsmith.ops.TableStat
 	3,  // 16: quadsmith.ops.GetJobResponse.job:type_name -> quadsmith.ops.JobRecord
-	69, // 17: quadsmith.ops.GetSystemHealthResponse.checked_at:type_name -> google.protobuf.Timestamp
-	64, // 18: quadsmith.ops.GetSystemHealthResponse.services:type_name -> quadsmith.ops.ServiceHealthStatus
-	69, // 19: quadsmith.ops.GetSystemMetricsResponse.generated_at:type_name -> google.protobuf.Timestamp
-	65, // 20: quadsmith.ops.GetSystemMetricsResponse.services:type_name -> quadsmith.ops.ServiceMetricsSummary
+	75, // 17: quadsmith.ops.GetSystemHealthResponse.checked_at:type_name -> google.protobuf.Timestamp
+	66, // 18: quadsmith.ops.GetSystemHealthResponse.services:type_name -> quadsmith.ops.ServiceHealthStatus
+	75, // 19: quadsmith.ops.GetSystemMetricsResponse.generated_at:type_name -> google.protobuf.Timestamp
+	67, // 20: quadsmith.ops.GetSystemMetricsResponse.services:type_name -> quadsmith.ops.ServiceMetricsSummary
 	4,  // 21: quadsmith.ops.GetTaskResponse.task:type_name -> quadsmith.ops.TaskDef
-	61, // 22: quadsmith.ops.ListIamGroupsResponse.groups:type_name -> quadsmith.ops.IamGroupSummary
-	62, // 23: quadsmith.ops.ListIamUsersResponse.users:type_name -> quadsmith.ops.IamUserSummary
-	0,  // 24: quadsmith.ops.ListInternalApiCallsResponse.calls:type_name -> quadsmith.ops.InternalApiCallRecord
-	1,  // 25: quadsmith.ops.ListInternalTokensResponse.tokens:type_name -> quadsmith.ops.InternalTokenRecord
-	2,  // 26: quadsmith.ops.ListJitGrantsResponse.grants:type_name -> quadsmith.ops.JitGrantRecord
-	3,  // 27: quadsmith.ops.ListJobsResponse.jobs:type_name -> quadsmith.ops.JobRecord
-	63, // 28: quadsmith.ops.ListRouteRequestsResponse.requests:type_name -> quadsmith.ops.RouteRequestLog
-	4,  // 29: quadsmith.ops.ListTasksResponse.tasks:type_name -> quadsmith.ops.TaskDef
-	69, // 30: quadsmith.ops.IamUserSummary.last_active_at:type_name -> google.protobuf.Timestamp
-	69, // 31: quadsmith.ops.RouteRequestLog.occurred_at:type_name -> google.protobuf.Timestamp
-	67, // 32: quadsmith.ops.ServiceHealthStatus.checks:type_name -> quadsmith.ops.DependencyCheckResult
-	68, // 33: quadsmith.ops.ServiceMetricsSummary.routes:type_name -> quadsmith.ops.RouteMetricStat
-	27, // 34: quadsmith.ops.OpsService.GetSystemDiagnostics:input_type -> quadsmith.ops.GetSystemDiagnosticsRequest
-	29, // 35: quadsmith.ops.OpsService.GetSystemHealth:input_type -> quadsmith.ops.GetSystemHealthRequest
-	31, // 36: quadsmith.ops.OpsService.GetSystemMetrics:input_type -> quadsmith.ops.GetSystemMetricsRequest
-	47, // 37: quadsmith.ops.OpsService.ListRouteRequests:input_type -> quadsmith.ops.ListRouteRequestsRequest
-	21, // 38: quadsmith.ops.OpsService.GetDatabaseStats:input_type -> quadsmith.ops.GetDatabaseStatsRequest
-	7,  // 39: quadsmith.ops.OpsService.CleanupExpiredOtps:input_type -> quadsmith.ops.CleanupExpiredOtpsRequest
-	9,  // 40: quadsmith.ops.OpsService.CleanupExpiredTokens:input_type -> quadsmith.ops.CleanupExpiredTokensRequest
-	11, // 41: quadsmith.ops.OpsService.CleanupOrphanedBlobs:input_type -> quadsmith.ops.CleanupOrphanedBlobsRequest
-	51, // 42: quadsmith.ops.OpsService.PurgeSoftDeletedAccounts:input_type -> quadsmith.ops.PurgeSoftDeletedAccountsRequest
-	57, // 43: quadsmith.ops.OpsService.SendUsernameReleaseWarnings:input_type -> quadsmith.ops.SendUsernameReleaseWarningsRequest
-	59, // 44: quadsmith.ops.OpsService.SetUserRole:input_type -> quadsmith.ops.SetUserRoleRequest
-	23, // 45: quadsmith.ops.OpsService.GetJob:input_type -> quadsmith.ops.GetJobRequest
-	33, // 46: quadsmith.ops.OpsService.GetTask:input_type -> quadsmith.ops.GetTaskRequest
-	39, // 47: quadsmith.ops.OpsService.ListInternalApiCalls:input_type -> quadsmith.ops.ListInternalApiCallsRequest
-	45, // 48: quadsmith.ops.OpsService.ListJobs:input_type -> quadsmith.ops.ListJobsRequest
-	49, // 49: quadsmith.ops.OpsService.ListTasks:input_type -> quadsmith.ops.ListTasksRequest
-	15, // 50: quadsmith.ops.OpsService.ExchangeOAuthCode:input_type -> quadsmith.ops.ExchangeOAuthCodeRequest
-	19, // 51: quadsmith.ops.OpsService.GetCurrentOperator:input_type -> quadsmith.ops.GetCurrentOperatorRequest
-	25, // 52: quadsmith.ops.OpsService.GetOAuthConfig:input_type -> quadsmith.ops.GetOAuthConfigRequest
-	37, // 53: quadsmith.ops.OpsService.ListIamUsers:input_type -> quadsmith.ops.ListIamUsersRequest
-	35, // 54: quadsmith.ops.OpsService.ListIamGroups:input_type -> quadsmith.ops.ListIamGroupsRequest
-	13, // 55: quadsmith.ops.OpsService.CreateInternalToken:input_type -> quadsmith.ops.CreateInternalTokenRequest
-	41, // 56: quadsmith.ops.OpsService.ListInternalTokens:input_type -> quadsmith.ops.ListInternalTokensRequest
-	53, // 57: quadsmith.ops.OpsService.RevokeInternalToken:input_type -> quadsmith.ops.RevokeInternalTokenRequest
-	5,  // 58: quadsmith.ops.OpsService.AcquireJitGrant:input_type -> quadsmith.ops.AcquireJitGrantRequest
-	17, // 59: quadsmith.ops.OpsService.ExtendJitGrant:input_type -> quadsmith.ops.ExtendJitGrantRequest
-	43, // 60: quadsmith.ops.OpsService.ListJitGrants:input_type -> quadsmith.ops.ListJitGrantsRequest
-	55, // 61: quadsmith.ops.OpsService.RevokeJitGrant:input_type -> quadsmith.ops.RevokeJitGrantRequest
-	28, // 62: quadsmith.ops.OpsService.GetSystemDiagnostics:output_type -> quadsmith.ops.GetSystemDiagnosticsResponse
-	30, // 63: quadsmith.ops.OpsService.GetSystemHealth:output_type -> quadsmith.ops.GetSystemHealthResponse
-	32, // 64: quadsmith.ops.OpsService.GetSystemMetrics:output_type -> quadsmith.ops.GetSystemMetricsResponse
-	48, // 65: quadsmith.ops.OpsService.ListRouteRequests:output_type -> quadsmith.ops.ListRouteRequestsResponse
-	22, // 66: quadsmith.ops.OpsService.GetDatabaseStats:output_type -> quadsmith.ops.GetDatabaseStatsResponse
-	8,  // 67: quadsmith.ops.OpsService.CleanupExpiredOtps:output_type -> quadsmith.ops.CleanupExpiredOtpsResponse
-	10, // 68: quadsmith.ops.OpsService.CleanupExpiredTokens:output_type -> quadsmith.ops.CleanupExpiredTokensResponse
-	12, // 69: quadsmith.ops.OpsService.CleanupOrphanedBlobs:output_type -> quadsmith.ops.CleanupOrphanedBlobsResponse
-	52, // 70: quadsmith.ops.OpsService.PurgeSoftDeletedAccounts:output_type -> quadsmith.ops.PurgeSoftDeletedAccountsResponse
-	58, // 71: quadsmith.ops.OpsService.SendUsernameReleaseWarnings:output_type -> quadsmith.ops.SendUsernameReleaseWarningsResponse
-	60, // 72: quadsmith.ops.OpsService.SetUserRole:output_type -> quadsmith.ops.SetUserRoleResponse
-	24, // 73: quadsmith.ops.OpsService.GetJob:output_type -> quadsmith.ops.GetJobResponse
-	34, // 74: quadsmith.ops.OpsService.GetTask:output_type -> quadsmith.ops.GetTaskResponse
-	40, // 75: quadsmith.ops.OpsService.ListInternalApiCalls:output_type -> quadsmith.ops.ListInternalApiCallsResponse
-	46, // 76: quadsmith.ops.OpsService.ListJobs:output_type -> quadsmith.ops.ListJobsResponse
-	50, // 77: quadsmith.ops.OpsService.ListTasks:output_type -> quadsmith.ops.ListTasksResponse
-	16, // 78: quadsmith.ops.OpsService.ExchangeOAuthCode:output_type -> quadsmith.ops.ExchangeOAuthCodeResponse
-	20, // 79: quadsmith.ops.OpsService.GetCurrentOperator:output_type -> quadsmith.ops.GetCurrentOperatorResponse
-	26, // 80: quadsmith.ops.OpsService.GetOAuthConfig:output_type -> quadsmith.ops.GetOAuthConfigResponse
-	38, // 81: quadsmith.ops.OpsService.ListIamUsers:output_type -> quadsmith.ops.ListIamUsersResponse
-	36, // 82: quadsmith.ops.OpsService.ListIamGroups:output_type -> quadsmith.ops.ListIamGroupsResponse
-	14, // 83: quadsmith.ops.OpsService.CreateInternalToken:output_type -> quadsmith.ops.CreateInternalTokenResponse
-	42, // 84: quadsmith.ops.OpsService.ListInternalTokens:output_type -> quadsmith.ops.ListInternalTokensResponse
-	54, // 85: quadsmith.ops.OpsService.RevokeInternalToken:output_type -> quadsmith.ops.RevokeInternalTokenResponse
-	6,  // 86: quadsmith.ops.OpsService.AcquireJitGrant:output_type -> quadsmith.ops.AcquireJitGrantResponse
-	18, // 87: quadsmith.ops.OpsService.ExtendJitGrant:output_type -> quadsmith.ops.ExtendJitGrantResponse
-	44, // 88: quadsmith.ops.OpsService.ListJitGrants:output_type -> quadsmith.ops.ListJitGrantsResponse
-	56, // 89: quadsmith.ops.OpsService.RevokeJitGrant:output_type -> quadsmith.ops.RevokeJitGrantResponse
-	62, // [62:90] is the sub-list for method output_type
-	34, // [34:62] is the sub-list for method input_type
-	34, // [34:34] is the sub-list for extension type_name
-	34, // [34:34] is the sub-list for extension extendee
-	0,  // [0:34] is the sub-list for field type_name
+	75, // 22: quadsmith.ops.GetTraceResponse.started_at:type_name -> google.protobuf.Timestamp
+	70, // 23: quadsmith.ops.GetTraceResponse.spans:type_name -> quadsmith.ops.TraceSpan
+	69, // 24: quadsmith.ops.GetTraceResponse.logs:type_name -> quadsmith.ops.TraceLogRecord
+	63, // 25: quadsmith.ops.ListIamGroupsResponse.groups:type_name -> quadsmith.ops.IamGroupSummary
+	64, // 26: quadsmith.ops.ListIamUsersResponse.users:type_name -> quadsmith.ops.IamUserSummary
+	0,  // 27: quadsmith.ops.ListInternalApiCallsResponse.calls:type_name -> quadsmith.ops.InternalApiCallRecord
+	1,  // 28: quadsmith.ops.ListInternalTokensResponse.tokens:type_name -> quadsmith.ops.InternalTokenRecord
+	2,  // 29: quadsmith.ops.ListJitGrantsResponse.grants:type_name -> quadsmith.ops.JitGrantRecord
+	3,  // 30: quadsmith.ops.ListJobsResponse.jobs:type_name -> quadsmith.ops.JobRecord
+	65, // 31: quadsmith.ops.ListRouteRequestsResponse.requests:type_name -> quadsmith.ops.RouteRequestLog
+	4,  // 32: quadsmith.ops.ListTasksResponse.tasks:type_name -> quadsmith.ops.TaskDef
+	75, // 33: quadsmith.ops.IamUserSummary.last_active_at:type_name -> google.protobuf.Timestamp
+	75, // 34: quadsmith.ops.RouteRequestLog.occurred_at:type_name -> google.protobuf.Timestamp
+	71, // 35: quadsmith.ops.ServiceHealthStatus.checks:type_name -> quadsmith.ops.DependencyCheckResult
+	72, // 36: quadsmith.ops.ServiceMetricsSummary.routes:type_name -> quadsmith.ops.RouteMetricStat
+	75, // 37: quadsmith.ops.TraceLogRecord.timestamp:type_name -> google.protobuf.Timestamp
+	73, // 38: quadsmith.ops.TraceLogRecord.attributes:type_name -> quadsmith.ops.TraceLogRecord.AttributesEntry
+	75, // 39: quadsmith.ops.TraceSpan.occurred_at:type_name -> google.protobuf.Timestamp
+	74, // 40: quadsmith.ops.TraceSpan.attributes:type_name -> quadsmith.ops.TraceSpan.AttributesEntry
+	27, // 41: quadsmith.ops.OpsService.GetSystemDiagnostics:input_type -> quadsmith.ops.GetSystemDiagnosticsRequest
+	29, // 42: quadsmith.ops.OpsService.GetSystemHealth:input_type -> quadsmith.ops.GetSystemHealthRequest
+	31, // 43: quadsmith.ops.OpsService.GetSystemMetrics:input_type -> quadsmith.ops.GetSystemMetricsRequest
+	35, // 44: quadsmith.ops.OpsService.GetTrace:input_type -> quadsmith.ops.GetTraceRequest
+	49, // 45: quadsmith.ops.OpsService.ListRouteRequests:input_type -> quadsmith.ops.ListRouteRequestsRequest
+	21, // 46: quadsmith.ops.OpsService.GetDatabaseStats:input_type -> quadsmith.ops.GetDatabaseStatsRequest
+	7,  // 47: quadsmith.ops.OpsService.CleanupExpiredOtps:input_type -> quadsmith.ops.CleanupExpiredOtpsRequest
+	9,  // 48: quadsmith.ops.OpsService.CleanupExpiredTokens:input_type -> quadsmith.ops.CleanupExpiredTokensRequest
+	11, // 49: quadsmith.ops.OpsService.CleanupOrphanedBlobs:input_type -> quadsmith.ops.CleanupOrphanedBlobsRequest
+	53, // 50: quadsmith.ops.OpsService.PurgeSoftDeletedAccounts:input_type -> quadsmith.ops.PurgeSoftDeletedAccountsRequest
+	59, // 51: quadsmith.ops.OpsService.SendUsernameReleaseWarnings:input_type -> quadsmith.ops.SendUsernameReleaseWarningsRequest
+	61, // 52: quadsmith.ops.OpsService.SetUserRole:input_type -> quadsmith.ops.SetUserRoleRequest
+	23, // 53: quadsmith.ops.OpsService.GetJob:input_type -> quadsmith.ops.GetJobRequest
+	33, // 54: quadsmith.ops.OpsService.GetTask:input_type -> quadsmith.ops.GetTaskRequest
+	41, // 55: quadsmith.ops.OpsService.ListInternalApiCalls:input_type -> quadsmith.ops.ListInternalApiCallsRequest
+	47, // 56: quadsmith.ops.OpsService.ListJobs:input_type -> quadsmith.ops.ListJobsRequest
+	51, // 57: quadsmith.ops.OpsService.ListTasks:input_type -> quadsmith.ops.ListTasksRequest
+	15, // 58: quadsmith.ops.OpsService.ExchangeOAuthCode:input_type -> quadsmith.ops.ExchangeOAuthCodeRequest
+	19, // 59: quadsmith.ops.OpsService.GetCurrentOperator:input_type -> quadsmith.ops.GetCurrentOperatorRequest
+	25, // 60: quadsmith.ops.OpsService.GetOAuthConfig:input_type -> quadsmith.ops.GetOAuthConfigRequest
+	39, // 61: quadsmith.ops.OpsService.ListIamUsers:input_type -> quadsmith.ops.ListIamUsersRequest
+	37, // 62: quadsmith.ops.OpsService.ListIamGroups:input_type -> quadsmith.ops.ListIamGroupsRequest
+	13, // 63: quadsmith.ops.OpsService.CreateInternalToken:input_type -> quadsmith.ops.CreateInternalTokenRequest
+	43, // 64: quadsmith.ops.OpsService.ListInternalTokens:input_type -> quadsmith.ops.ListInternalTokensRequest
+	55, // 65: quadsmith.ops.OpsService.RevokeInternalToken:input_type -> quadsmith.ops.RevokeInternalTokenRequest
+	5,  // 66: quadsmith.ops.OpsService.AcquireJitGrant:input_type -> quadsmith.ops.AcquireJitGrantRequest
+	17, // 67: quadsmith.ops.OpsService.ExtendJitGrant:input_type -> quadsmith.ops.ExtendJitGrantRequest
+	45, // 68: quadsmith.ops.OpsService.ListJitGrants:input_type -> quadsmith.ops.ListJitGrantsRequest
+	57, // 69: quadsmith.ops.OpsService.RevokeJitGrant:input_type -> quadsmith.ops.RevokeJitGrantRequest
+	28, // 70: quadsmith.ops.OpsService.GetSystemDiagnostics:output_type -> quadsmith.ops.GetSystemDiagnosticsResponse
+	30, // 71: quadsmith.ops.OpsService.GetSystemHealth:output_type -> quadsmith.ops.GetSystemHealthResponse
+	32, // 72: quadsmith.ops.OpsService.GetSystemMetrics:output_type -> quadsmith.ops.GetSystemMetricsResponse
+	36, // 73: quadsmith.ops.OpsService.GetTrace:output_type -> quadsmith.ops.GetTraceResponse
+	50, // 74: quadsmith.ops.OpsService.ListRouteRequests:output_type -> quadsmith.ops.ListRouteRequestsResponse
+	22, // 75: quadsmith.ops.OpsService.GetDatabaseStats:output_type -> quadsmith.ops.GetDatabaseStatsResponse
+	8,  // 76: quadsmith.ops.OpsService.CleanupExpiredOtps:output_type -> quadsmith.ops.CleanupExpiredOtpsResponse
+	10, // 77: quadsmith.ops.OpsService.CleanupExpiredTokens:output_type -> quadsmith.ops.CleanupExpiredTokensResponse
+	12, // 78: quadsmith.ops.OpsService.CleanupOrphanedBlobs:output_type -> quadsmith.ops.CleanupOrphanedBlobsResponse
+	54, // 79: quadsmith.ops.OpsService.PurgeSoftDeletedAccounts:output_type -> quadsmith.ops.PurgeSoftDeletedAccountsResponse
+	60, // 80: quadsmith.ops.OpsService.SendUsernameReleaseWarnings:output_type -> quadsmith.ops.SendUsernameReleaseWarningsResponse
+	62, // 81: quadsmith.ops.OpsService.SetUserRole:output_type -> quadsmith.ops.SetUserRoleResponse
+	24, // 82: quadsmith.ops.OpsService.GetJob:output_type -> quadsmith.ops.GetJobResponse
+	34, // 83: quadsmith.ops.OpsService.GetTask:output_type -> quadsmith.ops.GetTaskResponse
+	42, // 84: quadsmith.ops.OpsService.ListInternalApiCalls:output_type -> quadsmith.ops.ListInternalApiCallsResponse
+	48, // 85: quadsmith.ops.OpsService.ListJobs:output_type -> quadsmith.ops.ListJobsResponse
+	52, // 86: quadsmith.ops.OpsService.ListTasks:output_type -> quadsmith.ops.ListTasksResponse
+	16, // 87: quadsmith.ops.OpsService.ExchangeOAuthCode:output_type -> quadsmith.ops.ExchangeOAuthCodeResponse
+	20, // 88: quadsmith.ops.OpsService.GetCurrentOperator:output_type -> quadsmith.ops.GetCurrentOperatorResponse
+	26, // 89: quadsmith.ops.OpsService.GetOAuthConfig:output_type -> quadsmith.ops.GetOAuthConfigResponse
+	40, // 90: quadsmith.ops.OpsService.ListIamUsers:output_type -> quadsmith.ops.ListIamUsersResponse
+	38, // 91: quadsmith.ops.OpsService.ListIamGroups:output_type -> quadsmith.ops.ListIamGroupsResponse
+	14, // 92: quadsmith.ops.OpsService.CreateInternalToken:output_type -> quadsmith.ops.CreateInternalTokenResponse
+	44, // 93: quadsmith.ops.OpsService.ListInternalTokens:output_type -> quadsmith.ops.ListInternalTokensResponse
+	56, // 94: quadsmith.ops.OpsService.RevokeInternalToken:output_type -> quadsmith.ops.RevokeInternalTokenResponse
+	6,  // 95: quadsmith.ops.OpsService.AcquireJitGrant:output_type -> quadsmith.ops.AcquireJitGrantResponse
+	18, // 96: quadsmith.ops.OpsService.ExtendJitGrant:output_type -> quadsmith.ops.ExtendJitGrantResponse
+	46, // 97: quadsmith.ops.OpsService.ListJitGrants:output_type -> quadsmith.ops.ListJitGrantsResponse
+	58, // 98: quadsmith.ops.OpsService.RevokeJitGrant:output_type -> quadsmith.ops.RevokeJitGrantResponse
+	70, // [70:99] is the sub-list for method output_type
+	41, // [41:70] is the sub-list for method input_type
+	41, // [41:41] is the sub-list for extension type_name
+	41, // [41:41] is the sub-list for extension extendee
+	0,  // [0:41] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_ops_ops_proto_init() }
@@ -4899,7 +5355,6 @@ func file_quadsmith_ops_ops_proto_init() {
 	file_quadsmith_ops_ops_proto_msgTypes[21].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[29].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[31].OneofWrappers = []any{}
-	file_quadsmith_ops_ops_proto_msgTypes[35].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[37].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[39].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[41].OneofWrappers = []any{}
@@ -4907,14 +5362,15 @@ func file_quadsmith_ops_ops_proto_init() {
 	file_quadsmith_ops_ops_proto_msgTypes[45].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[47].OneofWrappers = []any{}
 	file_quadsmith_ops_ops_proto_msgTypes[49].OneofWrappers = []any{}
-	file_quadsmith_ops_ops_proto_msgTypes[67].OneofWrappers = []any{}
+	file_quadsmith_ops_ops_proto_msgTypes[51].OneofWrappers = []any{}
+	file_quadsmith_ops_ops_proto_msgTypes[71].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_ops_ops_proto_rawDesc), len(file_quadsmith_ops_ops_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   69,
+			NumMessages:   75,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

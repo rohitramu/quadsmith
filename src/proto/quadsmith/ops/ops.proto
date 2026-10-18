@@ -15,6 +15,7 @@ service OpsService {
   rpc GetSystemDiagnostics(GetSystemDiagnosticsRequest) returns (GetSystemDiagnosticsResponse);
   rpc GetSystemHealth(GetSystemHealthRequest) returns (GetSystemHealthResponse);
   rpc GetSystemMetrics(GetSystemMetricsRequest) returns (GetSystemMetricsResponse);
+  rpc GetTrace(GetTraceRequest) returns (GetTraceResponse);
   rpc ListRouteRequests(ListRouteRequestsRequest) returns (ListRouteRequestsResponse);
 
   // Database Stats (Public DB quadsmith_api)
@@ -279,6 +280,24 @@ message GetTaskResponse {
   TaskDef task = 1;
 }
 
+message GetTraceRequest {
+  string trace_id = 1;
+}
+
+message GetTraceResponse {
+  string trace_id = 1;
+  string region = 2;
+  string root_service = 3;
+  string root_route = 4;
+  string root_method = 5;
+  int32 status_code = 6;
+  bool success = 7;
+  double total_rtt_ms = 8;
+  google.protobuf.Timestamp started_at = 9;
+  repeated TraceSpan spans = 10;
+  repeated TraceLogRecord logs = 11;
+}
+
 message ListIamGroupsRequest {
   optional string filter = 1;
   repeated string sort = 2;
@@ -466,6 +485,30 @@ message TableStat {
   string table_name = 1;
   int64 row_count = 2;
   int64 total_size_bytes = 3;
+}
+
+message TraceLogRecord {
+  google.protobuf.Timestamp timestamp = 1;
+  string level = 2;
+  string service_name = 3;
+  string instance_id = 4;
+  string region = 5;
+  string message = 6;
+  map<string, string> attributes = 7;
+}
+
+message TraceSpan {
+  string span_id = 1;
+  string service_name = 2;
+  string instance_id = 3;
+  string region = 4;
+  string operation = 5;
+  string method = 6;
+  int32 status_code = 7;
+  bool success = 8;
+  double duration_ms = 9;
+  google.protobuf.Timestamp occurred_at = 10;
+  map<string, string> attributes = 11;
 }
 
 message DependencyCheckResult {

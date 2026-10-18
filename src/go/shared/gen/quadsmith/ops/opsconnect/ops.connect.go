@@ -42,6 +42,8 @@ const (
 	// OpsServiceGetSystemMetricsProcedure is the fully-qualified name of the OpsService's
 	// GetSystemMetrics RPC.
 	OpsServiceGetSystemMetricsProcedure = "/quadsmith.ops.OpsService/GetSystemMetrics"
+	// OpsServiceGetTraceProcedure is the fully-qualified name of the OpsService's GetTrace RPC.
+	OpsServiceGetTraceProcedure = "/quadsmith.ops.OpsService/GetTrace"
 	// OpsServiceListRouteRequestsProcedure is the fully-qualified name of the OpsService's
 	// ListRouteRequests RPC.
 	OpsServiceListRouteRequestsProcedure = "/quadsmith.ops.OpsService/ListRouteRequests"
@@ -119,6 +121,7 @@ type OpsServiceClient interface {
 	GetSystemDiagnostics(context.Context, *connect.Request[ops.GetSystemDiagnosticsRequest]) (*connect.Response[ops.GetSystemDiagnosticsResponse], error)
 	GetSystemHealth(context.Context, *connect.Request[ops.GetSystemHealthRequest]) (*connect.Response[ops.GetSystemHealthResponse], error)
 	GetSystemMetrics(context.Context, *connect.Request[ops.GetSystemMetricsRequest]) (*connect.Response[ops.GetSystemMetricsResponse], error)
+	GetTrace(context.Context, *connect.Request[ops.GetTraceRequest]) (*connect.Response[ops.GetTraceResponse], error)
 	ListRouteRequests(context.Context, *connect.Request[ops.ListRouteRequestsRequest]) (*connect.Response[ops.ListRouteRequestsResponse], error)
 	// Database Stats (Public DB quadsmith_api)
 	GetDatabaseStats(context.Context, *connect.Request[ops.GetDatabaseStatsRequest]) (*connect.Response[ops.GetDatabaseStatsResponse], error)
@@ -179,6 +182,12 @@ func NewOpsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 			httpClient,
 			baseURL+OpsServiceGetSystemMetricsProcedure,
 			connect.WithSchema(opsServiceMethods.ByName("GetSystemMetrics")),
+			connect.WithClientOptions(opts...),
+		),
+		getTrace: connect.NewClient[ops.GetTraceRequest, ops.GetTraceResponse](
+			httpClient,
+			baseURL+OpsServiceGetTraceProcedure,
+			connect.WithSchema(opsServiceMethods.ByName("GetTrace")),
 			connect.WithClientOptions(opts...),
 		),
 		listRouteRequests: connect.NewClient[ops.ListRouteRequestsRequest, ops.ListRouteRequestsResponse](
@@ -339,6 +348,7 @@ type opsServiceClient struct {
 	getSystemDiagnostics        *connect.Client[ops.GetSystemDiagnosticsRequest, ops.GetSystemDiagnosticsResponse]
 	getSystemHealth             *connect.Client[ops.GetSystemHealthRequest, ops.GetSystemHealthResponse]
 	getSystemMetrics            *connect.Client[ops.GetSystemMetricsRequest, ops.GetSystemMetricsResponse]
+	getTrace                    *connect.Client[ops.GetTraceRequest, ops.GetTraceResponse]
 	listRouteRequests           *connect.Client[ops.ListRouteRequestsRequest, ops.ListRouteRequestsResponse]
 	getDatabaseStats            *connect.Client[ops.GetDatabaseStatsRequest, ops.GetDatabaseStatsResponse]
 	cleanupExpiredOtps          *connect.Client[ops.CleanupExpiredOtpsRequest, ops.CleanupExpiredOtpsResponse]
@@ -379,6 +389,11 @@ func (c *opsServiceClient) GetSystemHealth(ctx context.Context, req *connect.Req
 // GetSystemMetrics calls quadsmith.ops.OpsService.GetSystemMetrics.
 func (c *opsServiceClient) GetSystemMetrics(ctx context.Context, req *connect.Request[ops.GetSystemMetricsRequest]) (*connect.Response[ops.GetSystemMetricsResponse], error) {
 	return c.getSystemMetrics.CallUnary(ctx, req)
+}
+
+// GetTrace calls quadsmith.ops.OpsService.GetTrace.
+func (c *opsServiceClient) GetTrace(ctx context.Context, req *connect.Request[ops.GetTraceRequest]) (*connect.Response[ops.GetTraceResponse], error) {
+	return c.getTrace.CallUnary(ctx, req)
 }
 
 // ListRouteRequests calls quadsmith.ops.OpsService.ListRouteRequests.
@@ -512,6 +527,7 @@ type OpsServiceHandler interface {
 	GetSystemDiagnostics(context.Context, *connect.Request[ops.GetSystemDiagnosticsRequest]) (*connect.Response[ops.GetSystemDiagnosticsResponse], error)
 	GetSystemHealth(context.Context, *connect.Request[ops.GetSystemHealthRequest]) (*connect.Response[ops.GetSystemHealthResponse], error)
 	GetSystemMetrics(context.Context, *connect.Request[ops.GetSystemMetricsRequest]) (*connect.Response[ops.GetSystemMetricsResponse], error)
+	GetTrace(context.Context, *connect.Request[ops.GetTraceRequest]) (*connect.Response[ops.GetTraceResponse], error)
 	ListRouteRequests(context.Context, *connect.Request[ops.ListRouteRequestsRequest]) (*connect.Response[ops.ListRouteRequestsResponse], error)
 	// Database Stats (Public DB quadsmith_api)
 	GetDatabaseStats(context.Context, *connect.Request[ops.GetDatabaseStatsRequest]) (*connect.Response[ops.GetDatabaseStatsResponse], error)
@@ -568,6 +584,12 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 		OpsServiceGetSystemMetricsProcedure,
 		svc.GetSystemMetrics,
 		connect.WithSchema(opsServiceMethods.ByName("GetSystemMetrics")),
+		connect.WithHandlerOptions(opts...),
+	)
+	opsServiceGetTraceHandler := connect.NewUnaryHandler(
+		OpsServiceGetTraceProcedure,
+		svc.GetTrace,
+		connect.WithSchema(opsServiceMethods.ByName("GetTrace")),
 		connect.WithHandlerOptions(opts...),
 	)
 	opsServiceListRouteRequestsHandler := connect.NewUnaryHandler(
@@ -728,6 +750,8 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 			opsServiceGetSystemHealthHandler.ServeHTTP(w, r)
 		case OpsServiceGetSystemMetricsProcedure:
 			opsServiceGetSystemMetricsHandler.ServeHTTP(w, r)
+		case OpsServiceGetTraceProcedure:
+			opsServiceGetTraceHandler.ServeHTTP(w, r)
 		case OpsServiceListRouteRequestsProcedure:
 			opsServiceListRouteRequestsHandler.ServeHTTP(w, r)
 		case OpsServiceGetDatabaseStatsProcedure:
@@ -797,6 +821,10 @@ func (UnimplementedOpsServiceHandler) GetSystemHealth(context.Context, *connect.
 
 func (UnimplementedOpsServiceHandler) GetSystemMetrics(context.Context, *connect.Request[ops.GetSystemMetricsRequest]) (*connect.Response[ops.GetSystemMetricsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.GetSystemMetrics is not implemented"))
+}
+
+func (UnimplementedOpsServiceHandler) GetTrace(context.Context, *connect.Request[ops.GetTraceRequest]) (*connect.Response[ops.GetTraceResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.GetTrace is not implemented"))
 }
 
 func (UnimplementedOpsServiceHandler) ListRouteRequests(context.Context, *connect.Request[ops.ListRouteRequestsRequest]) (*connect.Response[ops.ListRouteRequestsResponse], error) {

@@ -125,9 +125,11 @@ func newOpsWebHandler(cfg *configpb.OpsWebServerConfig, reg *telemetry.Registry)
 		}
 
 		proxyReq := r.Clone(r.Context())
-		// Prevent spoofing of Grafana auth proxy headers
+		// Prevent spoofing of Grafana auth proxy headers and avoid CSRF port-mismatch on /grafana/api/ds/query
 		proxyReq.Header.Del("X-WEBAUTH-USER")
 		proxyReq.Header.Del("X-WEBAUTH-ROLE")
+		proxyReq.Header.Del("Origin")
+		proxyReq.Header.Del("Referer")
 		proxyReq.Header.Set("X-WEBAUTH-USER", resp.Msg.GetOperator())
 		proxyReq.Header.Set("X-WEBAUTH-ROLE", "Admin")
 		if traceID := telemetry.TraceIDFromContext(r.Context()); traceID != "" {

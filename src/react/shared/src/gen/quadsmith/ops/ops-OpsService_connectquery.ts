@@ -22,6 +22,11 @@ export const getSystemHealth = OpsService.method.getSystemHealth;
 export const getSystemMetrics = OpsService.method.getSystemMetrics;
 
 /**
+ * @generated from rpc quadsmith.ops.OpsService.GetTrace
+ */
+export const getTrace = OpsService.method.getTrace;
+
+/**
  * @generated from rpc quadsmith.ops.OpsService.ListRouteRequests
  */
 export const listRouteRequests = OpsService.method.listRouteRequests;

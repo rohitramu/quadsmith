@@ -2,8 +2,8 @@
   "uid": "quadsmith-health",
   "title": "Quadsmith Service Health & RED Telemetry",
   "schemaVersion": 39,
-  "version": 1,
-  "refresh": "10s",
+  "version": 2,
+  "refresh": "5s",
   "style": "dark",
   "time": {
     "from": "now-15m",
@@ -13,13 +13,17 @@
     "list": [
       {
         "name": "region",
+        "label": "Region",
         "type": "query",
         "datasource": {
           "type": "prometheus",
           "uid": "victoriametrics"
         },
-        "query": "label_values(quadsmith_service_health_status, region)",
+        "definition": "label_values(quadsmith_health_status, region)",
+        "query": "label_values(quadsmith_health_status, region)",
+        "refresh": 1,
         "includeAll": true,
+        "allValue": ".*",
         "multi": true,
         "current": {
           "selected": true,
@@ -29,13 +33,37 @@
       },
       {
         "name": "service",
+        "label": "Service",
         "type": "query",
         "datasource": {
           "type": "prometheus",
           "uid": "victoriametrics"
         },
-        "query": "label_values(quadsmith_service_health_status, service)",
+        "definition": "label_values(quadsmith_health_status, service)",
+        "query": "label_values(quadsmith_health_status, service)",
+        "refresh": 1,
         "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "route",
+        "label": "Route",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "victoriametrics"
+        },
+        "definition": "label_values(quadsmith_http_requests_total, route)",
+        "query": "label_values(quadsmith_http_requests_total, route)",
+        "refresh": 1,
+        "includeAll": true,
+        "allValue": ".*",
         "multi": true,
         "current": {
           "selected": true,
@@ -48,40 +76,189 @@
   "panels": [
     {
       "id": 1,
-      "title": "Service Health Status (2=HEALTHY, 1=DEGRADED, 0=UNHEALTHY)",
+      "title": "Service Health Status (1 = HEALTHY, 0 = UNHEALTHY)",
       "type": "stat",
-      "gridPos": { "h": 6, "w": 12, "x": 0, "y": 0 },
+      "gridPos": { "h": 5, "w": 12, "x": 0, "y": 0 },
       "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": { "text": "UNHEALTHY", "color": "red" },
+                "1": { "text": "HEALTHY", "color": "green" }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "green", "value": 1 }
+            ]
+          }
+        },
+        "overrides": []
+      },
       "targets": [
         {
-          "expr": "quadsmith_service_health_status{region=~\"$region\",service=~\"$service\"}",
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "quadsmith_health_status{region=~\"$region\",service=~\"$service\"}",
           "legendFormat": "{{service}} ({{region}})"
         }
       ]
     },
     {
       "id": 2,
-      "title": "Per-Route Request Rate (RPS)",
-      "type": "timeseries",
-      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "title": "Service Uptime",
+      "type": "stat",
+      "gridPos": { "h": 5, "w": 12, "x": 12, "y": 0 },
       "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "blue", "value": null }]
+          }
+        },
+        "overrides": []
+      },
       "targets": [
         {
-          "expr": "sum by (service, region, route) (rate(quadsmith_http_requests_total{region=~\"$region\",service=~\"$service\"}[5m]))",
-          "legendFormat": "{{service}} {{route}} ({{region}})"
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "quadsmith_uptime_seconds{region=~\"$region\",service=~\"$service\"}",
+          "legendFormat": "{{service}} ({{region}})"
         }
       ]
     },
     {
       "id": 3,
-      "title": "Per-Route P95 RTT (ms)",
+      "title": "Dependency Check Latency (ms)",
       "type": "timeseries",
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 },
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 5 },
+      "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+      "fieldConfig": {
+        "defaults": { "unit": "ms" },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "quadsmith_dependency_check_latency_ms{region=~\"$region\",service=~\"$service\"}",
+          "legendFormat": "{{service}} · {{check}} ({{region}})"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Total HTTP / RPC Requests by Route & Status",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 5 },
       "datasource": { "type": "prometheus", "uid": "victoriametrics" },
       "targets": [
         {
-          "expr": "histogram_quantile(0.95, sum by (le, service, region, route) (rate(quadsmith_http_request_duration_ms_bucket{region=~\"$region\",service=~\"$service\"}[5m])))",
-          "legendFormat": "p95 {{service}} {{route}}"
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "sum by (service, region, route, status_code) (quadsmith_http_requests_total{region=~\"$region\",service=~\"$service\",route=~\"$route\"})",
+          "legendFormat": "{{service}} {{route}} [{{status_code}}]"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Per-Route Request Rate (RPS)",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 12 },
+      "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+      "fieldConfig": {
+        "defaults": { "unit": "reqps" },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "sum by (service, region, route) (rate(quadsmith_http_requests_total{region=~\"$region\",service=~\"$service\",route=~\"$route\"}[1m]))",
+          "legendFormat": "{{service}} {{route}} ({{region}})"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Per-Route Latency — P95 & Mean RTT (ms)",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 12 },
+      "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+      "fieldConfig": {
+        "defaults": { "unit": "ms" },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "histogram_quantile(0.95, sum by (le, service, region, route) (rate(quadsmith_http_request_duration_ms_bucket{region=~\"$region\",service=~\"$service\",route=~\"$route\"}[5m])))",
+          "legendFormat": "P95 {{service}} {{route}}"
+        },
+        {
+          "refId": "B",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "sum by (service, region, route) (quadsmith_http_request_duration_ms_sum{region=~\"$region\",service=~\"$service\",route=~\"$route\"}) / clamp_min(sum by (service, region, route) (quadsmith_http_request_duration_ms_count{region=~\"$region\",service=~\"$service\",route=~\"$route\"}), 1)",
+          "legendFormat": "Mean {{service}} {{route}}"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Go Runtime Memory Allocated & Goroutines",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 19 },
+      "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "quadsmith_memory_allocated_bytes{region=~\"$region\",service=~\"$service\"}",
+          "legendFormat": "{{service}} heap bytes"
+        },
+        {
+          "refId": "B",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "quadsmith_goroutines{region=~\"$region\",service=~\"$service\"}",
+          "legendFormat": "{{service}} goroutines"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "PostgreSQL Connection Pool (Acquired / Idle / Max)",
+      "type": "timeseries",
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 19 },
+      "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "quadsmith_db_acquired_conns{region=~\"$region\",service=~\"$service\"}",
+          "legendFormat": "{{service}} acquired"
+        },
+        {
+          "refId": "B",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "quadsmith_db_idle_conns{region=~\"$region\",service=~\"$service\"}",
+          "legendFormat": "{{service}} idle"
+        },
+        {
+          "refId": "C",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "quadsmith_db_max_conns{region=~\"$region\",service=~\"$service\"}",
+          "legendFormat": "{{service}} max"
         }
       ]
     }

@@ -160,3 +160,15 @@ func TestFilterAndSortHelpers(t *testing.T) {
 		t.Fatalf("unexpected filtered tables: %+v", filteredTables)
 	}
 }
+
+func TestGetTrace_Validation(t *testing.T) {
+	svc := &OpsService{}
+	ctx := context.Background()
+
+	_, err := svc.GetTrace(ctx, connect.NewRequest(&pb.GetTraceRequest{
+		TraceId: "   ",
+	}))
+	if err == nil || connect.CodeOf(err) != connect.CodeInvalidArgument {
+		t.Fatalf("expected CodeInvalidArgument for empty trace_id, got %v", err)
+	}
+}

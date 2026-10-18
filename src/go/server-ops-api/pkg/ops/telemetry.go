@@ -649,6 +649,7 @@ func (s *OpsService) queryVictoriaLogs(ctx context.Context, region, service, rou
 			Time       string  `json:"_time"`
 			Region     string  `json:"region"`
 			Service    string  `json:"service"`
+			Instance   string  `json:"instance"`
 			InstanceID string  `json:"instance_id"`
 			TraceID    string  `json:"trace_id"`
 			Route      string  `json:"route"`
@@ -664,11 +665,15 @@ func (s *OpsService) queryVictoriaLogs(ctx context.Context, region, service, rou
 		if parsed, err := time.Parse(time.RFC3339Nano, row.Time); err == nil {
 			ts = parsed
 		}
+		instID := row.Instance
+		if instID == "" {
+			instID = row.InstanceID
+		}
 		results = append(results, &pb.RouteRequestLog{
 			TraceId:     row.TraceID,
 			Region:      row.Region,
 			ServiceName: row.Service,
-			InstanceId:  row.InstanceID,
+			InstanceId:  instID,
 			Route:       row.Route,
 			Method:      row.Method,
 			StatusCode:  row.StatusCode,
@@ -678,4 +683,386 @@ func (s *OpsService) queryVictoriaLogs(ctx context.Context, region, service, rou
 		})
 	}
 	return results
+}
+
+func (s *OpsService) GetTrace(ctx context.Context, req *connect.Request[pb.GetTraceRequest]) (*connect.Response[pb.GetTraceResponse], error) {
+	traceID := strings.TrimSpace(req.Msg.GetTraceId())
+	if traceID == "" {
+		return nil, connect.NewError(connect.CodeInvalidArgument, fmt.Errorf("trace_id is required"))
+	}
+
+	currentRegion := telemetry.CurrentRegion()
+	spanByKey := make(map[string]*pb.TraceSpan)
+	var spanOrder []string
+	seenLogs := make(map[string]bool)
+	var logs []*pb.TraceLogRecord
+
+	upsertSpan := func(sp *pb.TraceSpan) {
+		key := sp.GetServiceName() + "|" + sp.GetMethod() + "|" + sp.GetOperation()
+		if existing, ok := spanByKey[key]; ok {
+			if sp.GetDurationMs() > existing.GetDurationMs() {
+				existing.DurationMs = sp.GetDurationMs()
+			}
+			if existing.Attributes == nil {
+				existing.Attributes = make(map[string]string)
+			}
+			for k, v := range sp.GetAttributes() {
+				existing.Attributes[k] = v
+			}
+			return
+		}
+		if sp.Attributes == nil {
+			sp.Attributes = make(map[string]string)
+		}
+		spanByKey[key] = sp
+		spanOrder = append(spanOrder, key)
+	}
+
+	addLog := func(lr *pb.TraceLogRecord) {
+		key := fmt.Sprintf("%d|%s|%s|%s", lr.GetTimestamp().AsTime().UnixNano(), lr.GetServiceName(), lr.GetLevel(), lr.GetMessage())
+		if seenLogs[key] {
+			return
+		}
+		seenLogs[key] = true
+		logs = append(logs, lr)
+	}
+
+	// 1. Collect from VictoriaLogs if reachable
+	for _, vlLog := range s.queryVictoriaLogsForTrace(ctx, traceID) {
+		addLog(vlLog)
+		if vlLog.GetMessage() == "http_request" {
+			route := vlLog.GetAttributes()["route"]
+			method := vlLog.GetAttributes()["method"]
+			if method == "" {
+				method = "POST"
+			}
+			statusCode := int32(200)
+			if scStr := vlLog.GetAttributes()["status_code"]; scStr != "" {
+				_, _ = fmt.Sscanf(scStr, "%d", &statusCode)
+			}
+			success := vlLog.GetAttributes()["success"] != "false" && statusCode < 400
+			var rttMs float64
+			if rttStr := vlLog.GetAttributes()["rtt_ms"]; rttStr != "" {
+				_, _ = fmt.Sscanf(rttStr, "%f", &rttMs)
+			}
+			upsertSpan(&pb.TraceSpan{
+				SpanId:      fmt.Sprintf("span_%s_%d", vlLog.GetServiceName(), len(spanOrder)+1),
+				ServiceName: vlLog.GetServiceName(),
+				InstanceId:  vlLog.GetInstanceId(),
+				Region:      vlLog.GetRegion(),
+				Operation:   route,
+				Method:      method,
+				StatusCode:  statusCode,
+				Success:     success,
+				DurationMs:  rttMs,
+				OccurredAt:  vlLog.GetTimestamp(),
+				Attributes:  vlLog.GetAttributes(),
+			})
+		}
+	}
+
+	// 2. Collect from in-memory telemetry ring buffers across server-ops-api and all peer services
+	var snapshots []telemetry.MetricsSnapshot
+	if s.telemetry != nil {
+		snapshots = append(snapshots, s.telemetry.Snapshot())
+	}
+	snapshots = append(snapshots, s.collectPeerSnapshots(ctx)...)
+
+	for _, snap := range snapshots {
+		for _, ev := range snap.RecentRequests {
+			if !strings.EqualFold(ev.TraceID, traceID) {
+				continue
+			}
+			attrs := map[string]string{
+				"route":       ev.Route,
+				"method":      ev.Method,
+				"status_code": fmt.Sprintf("%d", ev.StatusCode),
+				"rtt_ms":      fmt.Sprintf("%.2f", ev.RttMs),
+			}
+			upsertSpan(&pb.TraceSpan{
+				SpanId:      fmt.Sprintf("span_%s_%d", ev.ServiceName, len(spanOrder)+1),
+				ServiceName: ev.ServiceName,
+				InstanceId:  ev.InstanceID,
+				Region:      ev.Region,
+				Operation:   ev.Route,
+				Method:      ev.Method,
+				StatusCode:  ev.StatusCode,
+				Success:     ev.Success,
+				DurationMs:  ev.RttMs,
+				OccurredAt:  timestamppb.New(ev.OccurredAt),
+				Attributes:  attrs,
+			})
+		}
+		for _, le := range snap.RecentLogs {
+			if !strings.EqualFold(le.TraceID, traceID) {
+				continue
+			}
+			addLog(&pb.TraceLogRecord{
+				Timestamp:   timestamppb.New(le.Timestamp),
+				Level:       le.Level,
+				ServiceName: le.ServiceName,
+				InstanceId:  le.InstanceID,
+				Region:      le.Region,
+				Message:     le.Message,
+				Attributes:  le.Attributes,
+			})
+		}
+	}
+
+	// 3. Enrich with quadsmith_ops.internal_api_calls audit records matching traceID
+	if s.opsDb != nil {
+		rows, err := s.opsDb.Query(ctx, `
+			SELECT
+				c.uuid::text,
+				c.id,
+				c.method,
+				c.caller,
+				c.caller_type,
+				c.group_name,
+				COALESCE(j.id, ''),
+				c.status,
+				COALESCE(c.error_message, ''),
+				c.duration_ms,
+				c.created_at
+			FROM internal_api_calls c
+			LEFT JOIN jit_grants j ON c.jit_grant_uuid = j.uuid
+			WHERE c.uuid::text = $1 OR c.id = $1
+			ORDER BY c.created_at ASC`, traceID)
+		if err == nil {
+			defer rows.Close()
+			for rows.Next() {
+				var uuid, callID, method, caller, callerType, groupName, jitGrantID, status, errMsg string
+				var durationMs int64
+				var createdAt time.Time
+				if scanErr := rows.Scan(&uuid, &callID, &method, &caller, &callerType, &groupName, &jitGrantID, &status, &errMsg, &durationMs, &createdAt); scanErr != nil {
+					continue
+				}
+				route := "/quadsmith.ops.OpsService/" + method
+				statusCode := int32(200)
+				success := true
+				level := "INFO"
+				if status != "OK" {
+					statusCode = 500
+					success = false
+					level = "ERROR"
+				}
+				attrs := map[string]string{
+					"audit_call_id": callID,
+					"method":        method,
+					"route":         route,
+					"caller":        caller,
+					"caller_type":   callerType,
+					"group_name":    groupName,
+					"status":        status,
+					"duration_ms":   fmt.Sprintf("%d", durationMs),
+				}
+				if jitGrantID != "" {
+					attrs["jit_grant_id"] = jitGrantID
+				}
+				if errMsg != "" {
+					attrs["error_message"] = errMsg
+				}
+				upsertSpan(&pb.TraceSpan{
+					SpanId:      "span_audit_" + callID,
+					ServiceName: "server-ops-api",
+					InstanceId:  "server-ops-api-1",
+					Region:      currentRegion,
+					Operation:   route,
+					Method:      "POST",
+					StatusCode:  statusCode,
+					Success:     success,
+					DurationMs:  float64(durationMs),
+					OccurredAt:  timestamppb.New(createdAt),
+					Attributes:  attrs,
+				})
+				addLog(&pb.TraceLogRecord{
+					Timestamp:   timestamppb.New(createdAt),
+					Level:       level,
+					ServiceName: "server-ops-api",
+					InstanceId:  "server-ops-api-1",
+					Region:      currentRegion,
+					Message:     "ops_rpc_audit",
+					Attributes:  attrs,
+				})
+			}
+		}
+	}
+
+	var spans []*pb.TraceSpan
+	for _, key := range spanOrder {
+		spans = append(spans, spanByKey[key])
+	}
+
+	sort.Slice(spans, func(i, j int) bool {
+		return spans[i].GetOccurredAt().AsTime().Before(spans[j].GetOccurredAt().AsTime())
+	})
+	sort.Slice(logs, func(i, j int) bool {
+		return logs[i].GetTimestamp().AsTime().Before(logs[j].GetTimestamp().AsTime())
+	})
+
+	// Synthesize a log entry for each span if no logs were captured yet (e.g. from older audit rows)
+	if len(logs) == 0 && len(spans) > 0 {
+		for _, sp := range spans {
+			lvl := "INFO"
+			if !sp.GetSuccess() {
+				lvl = "ERROR"
+			}
+			logs = append(logs, &pb.TraceLogRecord{
+				Timestamp:   sp.GetOccurredAt(),
+				Level:       lvl,
+				ServiceName: sp.GetServiceName(),
+				InstanceId:  sp.GetInstanceId(),
+				Region:      sp.GetRegion(),
+				Message:     "http_request",
+				Attributes:  sp.GetAttributes(),
+			})
+		}
+	}
+
+	rootService := "server-ops-api"
+	rootRoute := "/"
+	rootMethod := "POST"
+	rootRegion := currentRegion
+	rootStatus := int32(200)
+	rootSuccess := true
+	totalRtt := 0.0
+	startedAt := time.Now().UTC()
+
+	if len(spans) > 0 {
+		first := spans[0]
+		rootService = first.GetServiceName()
+		rootRoute = first.GetOperation()
+		rootMethod = first.GetMethod()
+		if first.GetRegion() != "" {
+			rootRegion = first.GetRegion()
+		}
+		rootStatus = first.GetStatusCode()
+		rootSuccess = first.GetSuccess()
+		startedAt = first.GetOccurredAt().AsTime()
+		for _, sp := range spans {
+			if sp.GetDurationMs() > totalRtt {
+				totalRtt = sp.GetDurationMs()
+			}
+			if !sp.GetSuccess() {
+				rootSuccess = false
+				rootStatus = sp.GetStatusCode()
+			}
+		}
+	} else if len(logs) > 0 {
+		firstLog := logs[0]
+		rootService = firstLog.GetServiceName()
+		if firstLog.GetRegion() != "" {
+			rootRegion = firstLog.GetRegion()
+		}
+		if r := firstLog.GetAttributes()["route"]; r != "" {
+			rootRoute = r
+		}
+		if m := firstLog.GetAttributes()["method"]; m != "" {
+			rootMethod = m
+		}
+		startedAt = firstLog.GetTimestamp().AsTime()
+	}
+
+	return connect.NewResponse(&pb.GetTraceResponse{
+		TraceId:     traceID,
+		Region:      rootRegion,
+		RootService: rootService,
+		RootRoute:   rootRoute,
+		RootMethod:  rootMethod,
+		StatusCode:  rootStatus,
+		Success:     rootSuccess,
+		TotalRttMs:  totalRtt,
+		StartedAt:   timestamppb.New(startedAt),
+		Spans:       spans,
+		Logs:        logs,
+	}), nil
+}
+
+func (s *OpsService) queryVictoriaLogsForTrace(ctx context.Context, traceID string) []*pb.TraceLogRecord {
+	vlURL := strings.TrimSpace(os.Getenv("QS_VICTORIA_LOGS_URL"))
+	if vlURL == "" {
+		return nil
+	}
+
+	form := url.Values{}
+	form.Set("query", fmt.Sprintf(`trace_id:%q`, traceID))
+	form.Set("limit", "200")
+
+	client := &http.Client{Timeout: 800 * time.Millisecond}
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, strings.TrimRight(vlURL, "/")+"/select/logsql/query", bytes.NewBufferString(form.Encode()))
+	if err != nil {
+		return nil
+	}
+	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		return nil
+	}
+
+	var out []*pb.TraceLogRecord
+	scanner := bufio.NewScanner(resp.Body)
+	for scanner.Scan() {
+		raw := make(map[string]any)
+		if err := json.Unmarshal(scanner.Bytes(), &raw); err != nil {
+			continue
+		}
+		strVal := func(keys ...string) string {
+			for _, k := range keys {
+				if v, ok := raw[k]; ok && v != nil {
+					if s, isStr := v.(string); isStr && s != "" {
+						return s
+					}
+					return fmt.Sprintf("%v", v)
+				}
+			}
+			return ""
+		}
+
+		rowTraceID := strVal("trace_id")
+		if rowTraceID == "" {
+			continue
+		}
+		ts := time.Now().UTC()
+		if tStr := strVal("_time", "time"); tStr != "" {
+			if parsed, err := time.Parse(time.RFC3339Nano, tStr); err == nil {
+				ts = parsed
+			}
+		}
+		level := strVal("level")
+		if level == "" {
+			level = "INFO"
+		}
+		msg := strVal("_msg", "msg")
+		svc := strVal("service")
+		inst := strVal("instance", "instance_id")
+		region := strVal("region")
+
+		attrs := make(map[string]string)
+		for k, v := range raw {
+			switch k {
+			case "_time", "time", "_msg", "msg", "_stream", "_stream_id", "level", "service", "instance", "instance_id", "region", "trace_id":
+				continue
+			default:
+				if v != nil {
+					attrs[k] = fmt.Sprintf("%v", v)
+				}
+			}
+		}
+
+		out = append(out, &pb.TraceLogRecord{
+			Timestamp:   timestamppb.New(ts),
+			Level:       level,
+			ServiceName: svc,
+			InstanceId:  inst,
+			Region:      region,
+			Message:     msg,
+			Attributes:  attrs,
+		})
+	}
+	return out
 }

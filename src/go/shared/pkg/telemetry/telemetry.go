@@ -207,6 +207,18 @@ type RouteRequestEntry struct {
 	OccurredAt  time.Time `json:"occurred_at"`
 }
 
+// TraceLogEntry represents a single structured log line emitted during a traced request.
+type TraceLogEntry struct {
+	TraceID     string            `json:"trace_id"`
+	Timestamp   time.Time         `json:"timestamp"`
+	Level       string            `json:"level"`
+	ServiceName string            `json:"service_name"`
+	InstanceID  string            `json:"instance_id"`
+	Region      string            `json:"region"`
+	Message     string            `json:"message"`
+	Attributes  map[string]string `json:"attributes,omitempty"`
+}
+
 // MetricsSnapshot is the structured JSON representation returned by GET /metrics?format=json.
 type MetricsSnapshot struct {
 	ServiceName          string                `json:"service_name"`
@@ -227,6 +239,7 @@ type MetricsSnapshot struct {
 	SchedulerFailures    int64                 `json:"scheduler_failures"`
 	Routes               []RouteMetricSnapshot `json:"routes"`
 	RecentRequests       []RouteRequestEntry   `json:"recent_requests"`
+	RecentLogs           []TraceLogEntry       `json:"recent_logs,omitempty"`
 }
 
 type registeredCheck struct {
@@ -258,8 +271,9 @@ type routeStats struct {
 }
 
 const (
-	maxRouteSamples = 512
-	maxRingEntries  = 500
+	maxRouteSamples   = 512
+	maxRingEntries    = 500
+	maxLogRingEntries = 1000
 )
 
 // Registry manages health checks, Prometheus metrics, ingress Trace ID generation,
@@ -292,6 +306,7 @@ type Registry struct {
 	routes         map[routeKey]*routeStats
 	statusCounters map[statusCounterKey]int64
 	recentRing     []RouteRequestEntry
+	recentLogs     []TraceLogEntry
 
 	logCh           chan []byte
 	victoriaLogsURL string
@@ -321,6 +336,7 @@ func NewRegistry(serviceName, environment string, trustInternalHop bool) *Regist
 		routes:             make(map[routeKey]*routeStats),
 		statusCounters:     make(map[statusCounterKey]int64),
 		recentRing:         make([]RouteRequestEntry, 0, maxRingEntries),
+		recentLogs:         make([]TraceLogEntry, 0, maxLogRingEntries),
 		victoriaLogsURL:    vlURL,
 		httpClient:         &http.Client{Timeout: 2 * time.Second},
 	}
@@ -553,11 +569,13 @@ func (w *statusCapturingResponseWriter) Flush() {
 func (r *Registry) Middleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
 		var traceID string
+		hopType := "ingress"
 		incomingHopToken := req.Header.Get(InternalHopTokenHeader)
 		incomingTraceID := strings.TrimSpace(req.Header.Get(TraceIDHeader))
 
 		if r.trustInternalHop && r.internalHopToken != "" && incomingHopToken == r.internalHopToken && IsValidUUID(incomingTraceID) {
 			traceID = incomingTraceID
+			hopType = "internal_hop"
 		} else {
 			// Strictly ignore any client-supplied X-Trace-Id and generate a fresh UUID v7 at ingress.
 			traceID = NewTraceID()
@@ -577,6 +595,15 @@ func (r *Registry) Middleware(next http.Handler) http.Handler {
 		ctx = WithLogger(ctx, reqLogger)
 		req = req.WithContext(ctx)
 
+		route := normalizeRoute(req.URL.Path)
+		if route != "/metrics" && route != "/healthz" && req.Method != http.MethodOptions {
+			r.EmitLog(ctx, "INFO", "request_started", map[string]any{
+				"route":    route,
+				"method":   req.Method,
+				"hop_type": hopType,
+			})
+		}
+
 		rw := &statusCapturingResponseWriter{
 			ResponseWriter: w,
 			statusCode:     http.StatusOK,
@@ -586,7 +613,6 @@ func (r *Registry) Middleware(next http.Handler) http.Handler {
 		next.ServeHTTP(rw, req)
 		rttMs := math.Round(float64(time.Since(t0).Microseconds())/10.0) / 100.0
 
-		route := normalizeRoute(req.URL.Path)
 		if route == "/metrics" || req.Method == http.MethodOptions {
 			return
 		}
@@ -702,13 +728,30 @@ func (r *Registry) RecordRequest(traceID, route, method string, statusCode int, 
 		RttMs:       rttMs,
 		OccurredAt:  now,
 	}
-	if len(r.recentRing) >= maxRingEntries {
-		copy(r.recentRing, r.recentRing[1:])
-		r.recentRing[len(r.recentRing)-1] = entry
-	} else {
-		r.recentRing = append(r.recentRing, entry)
+	// Avoid letting frequent /healthz checks flood the ring buffer and evict application requests
+	updatedHealthzInPlace := false
+	if route == "/healthz" && success {
+		for idx := range r.recentRing {
+			if r.recentRing[idx].Route == "/healthz" && r.recentRing[idx].Success {
+				r.recentRing[idx] = entry
+				updatedHealthzInPlace = true
+				break
+			}
+		}
+	}
+	if !updatedHealthzInPlace {
+		if len(r.recentRing) >= maxRingEntries {
+			copy(r.recentRing, r.recentRing[1:])
+			r.recentRing[len(r.recentRing)-1] = entry
+		} else {
+			r.recentRing = append(r.recentRing, entry)
+		}
 	}
 	r.metricsMu.Unlock()
+
+	if route == "/healthz" && success && updatedHealthzInPlace {
+		return
+	}
 
 	level := "INFO"
 	if !success {
@@ -723,12 +766,13 @@ func (r *Registry) RecordRequest(traceID, route, method string, statusCode int, 
 	})
 }
 
-// EmitLog writes a structured JSON log record (carrying trace_id and region) to stdout and queues it
-// for asynchronous batch shipping to VictoriaLogs.
+// EmitLog writes a structured JSON log record (carrying trace_id and region) to the in-memory ring buffer
+// and queues it for asynchronous batch shipping to VictoriaLogs.
 func (r *Registry) EmitLog(ctx context.Context, level, msg string, attrs map[string]any) {
 	traceID := TraceIDFromContext(ctx)
+	now := time.Now().UTC()
 	payload := map[string]any{
-		"time":     time.Now().UTC().Format(time.RFC3339Nano),
+		"time":     now.Format(time.RFC3339Nano),
 		"level":    level,
 		"msg":      msg,
 		"region":   r.region,
@@ -738,9 +782,33 @@ func (r *Registry) EmitLog(ctx context.Context, level, msg string, attrs map[str
 	if traceID != "" {
 		payload["trace_id"] = traceID
 	}
+	strAttrs := make(map[string]string, len(attrs))
 	for k, v := range attrs {
 		payload[k] = v
+		strAttrs[k] = fmt.Sprintf("%v", v)
 	}
+
+	if traceID != "" {
+		logEntry := TraceLogEntry{
+			TraceID:     traceID,
+			Timestamp:   now,
+			Level:       level,
+			ServiceName: r.serviceName,
+			InstanceID:  r.instanceID,
+			Region:      r.region,
+			Message:     msg,
+			Attributes:  strAttrs,
+		}
+		r.metricsMu.Lock()
+		if len(r.recentLogs) >= maxLogRingEntries {
+			copy(r.recentLogs, r.recentLogs[1:])
+			r.recentLogs[len(r.recentLogs)-1] = logEntry
+		} else {
+			r.recentLogs = append(r.recentLogs, logEntry)
+		}
+		r.metricsMu.Unlock()
+	}
+
 	line, err := json.Marshal(payload)
 	if err != nil {
 		return
@@ -878,6 +946,9 @@ func (r *Registry) Snapshot() MetricsSnapshot {
 		// Reverse order (newest first)
 		recent[i] = r.recentRing[len(r.recentRing)-1-i]
 	}
+
+	recentLogs := make([]TraceLogEntry, len(r.recentLogs))
+	copy(recentLogs, r.recentLogs)
 	r.metricsMu.RUnlock()
 
 	return MetricsSnapshot{
@@ -899,6 +970,7 @@ func (r *Registry) Snapshot() MetricsSnapshot {
 		SchedulerFailures:    r.schedulerFailures.Load(),
 		Routes:               routes,
 		RecentRequests:       recent,
+		RecentLogs:           recentLogs,
 	}
 }
 
@@ -910,6 +982,13 @@ func (r *Registry) MetricsHandler() http.HandlerFunc {
 			w.Header().Set("Content-Type", "application/json; charset=utf-8")
 			_ = json.NewEncoder(w).Encode(r.Snapshot())
 			return
+		}
+
+		r.lastHealthMu.RLock()
+		hasCheckLatencies := len(r.lastCheckLatencies) > 0
+		r.lastHealthMu.RUnlock()
+		if !hasCheckLatencies {
+			_ = r.EvaluateHealth(req.Context(), true)
 		}
 
 		var mem runtime.MemStats

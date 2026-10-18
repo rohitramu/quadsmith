@@ -18,10 +18,10 @@ services:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:9000/healthz || exit 1"]
-      interval: 100ms
-      timeout: 1s
-      retries: 50
-      start_period: 5s
+      interval: 200ms
+      timeout: 2s
+      retries: 100
+      start_period: 15s
 
   api:
     image: ${QS_IMAGE_REGISTRY:-quadsmith}/server-api:${QS_IMAGE_TAG:-latest}
@@ -52,10 +52,10 @@ services:
       - QS_VICTORIA_LOGS_URL=http://victorialogs:9428
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8081/healthz || exit 1"]
-      interval: 100ms
-      timeout: 1s
-      retries: 50
-      start_period: 5s
+      interval: 200ms
+      timeout: 2s
+      retries: 100
+      start_period: 15s
 
   ops-api:
     image: ${QS_IMAGE_REGISTRY:-quadsmith}/server-ops-api:${QS_IMAGE_TAG:-latest}
@@ -82,10 +82,10 @@ services:
       - QS_VICTORIA_LOGS_URL=http://victorialogs:9428
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8082/healthz || exit 1"]
-      interval: 100ms
-      timeout: 1s
-      retries: 50
-      start_period: 5s
+      interval: 200ms
+      timeout: 2s
+      retries: 100
+      start_period: 15s
 
   ops-web:
     image: ${QS_IMAGE_REGISTRY:-quadsmith}/server-ops-web:${QS_IMAGE_TAG:-latest}
@@ -109,10 +109,10 @@ services:
         condition: service_started
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8083/healthz || exit 1"]
-      interval: 100ms
-      timeout: 1s
-      retries: 50
-      start_period: 5s
+      interval: 200ms
+      timeout: 2s
+      retries: 100
+      start_period: 15s
 
   cron:
     image: ${QS_IMAGE_REGISTRY:-quadsmith}/server-cron:${QS_IMAGE_TAG:-latest}
@@ -134,10 +134,10 @@ services:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8084/healthz || exit 1"]
-      interval: 100ms
-      timeout: 1s
-      retries: 50
-      start_period: 5s
+      interval: 200ms
+      timeout: 2s
+      retries: 100
+      start_period: 15s
 
   web:
     image: ${QS_IMAGE_REGISTRY:-quadsmith}/server-web:${QS_IMAGE_TAG:-latest}
@@ -158,10 +158,10 @@ services:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
-      interval: 100ms
-      timeout: 1s
-      retries: 50
-      start_period: 5s
+      interval: 200ms
+      timeout: 2s
+      retries: 100
+      start_period: 15s
 
   victoriametrics:
     image: victoriametrics/victoria-metrics:v1.115.0

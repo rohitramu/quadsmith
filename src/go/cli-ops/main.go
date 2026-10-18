@@ -795,6 +795,60 @@ func newSystemCmd() *cobra.Command {
 	metricsCmd.Flags().StringSliceVarP(&metricsSort, "sort", "s", nil, "Columns to sort routes by (e.g. ^p95_rtt_ms, ^total_requests)")
 	cmd.AddCommand(metricsCmd)
 
+	traceCmd := &cobra.Command{
+		Use:   "trace [trace_id]",
+		Short: "Inspect the full end-to-end multi-hop trace and logs for a request Trace ID",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.GetTrace(cmd.Context(), connect.NewRequest(&pb.GetTraceRequest{
+				TraceId: args[0],
+			}))
+			if err != nil {
+				return fmt.Errorf("failed to get trace %s: %w", args[0], err)
+			}
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			t := resp.Msg
+			fmt.Printf("TRACE ID:\t%s\n", t.GetTraceId())
+			fmt.Printf("ROOT SERVICE:\t%s (%s)\n", t.GetRootService(), t.GetRegion())
+			fmt.Printf("ROOT ROUTE:\t%s %s\n", t.GetRootMethod(), t.GetRootRoute())
+			fmt.Printf("STATUS:\t\t%d (success=%t)\n", t.GetStatusCode(), t.GetSuccess())
+			fmt.Printf("TOTAL RTT:\t%.2f ms\n\n", t.GetTotalRttMs())
+
+			sw := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(sw, "SERVICE\tREGION\tMETHOD\tOPERATION\tSTATUS\tDURATION (MS)\n")
+			for _, sp := range t.GetSpans() {
+				fmt.Fprintf(sw, "%s\t%s\t%s\t%s\t%d\t%.2f\n",
+					sp.GetServiceName(),
+					sp.GetRegion(),
+					sp.GetMethod(),
+					sp.GetOperation(),
+					sp.GetStatusCode(),
+					sp.GetDurationMs())
+			}
+			_ = sw.Flush()
+
+			fmt.Println()
+			lw := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(lw, "TIMESTAMP\tLEVEL\tSERVICE\tMESSAGE\n")
+			for _, lg := range t.GetLogs() {
+				fmt.Fprintf(lw, "%s\t%s\t%s\t%s\n",
+					lg.GetTimestamp().AsTime().Format(time.RFC3339),
+					lg.GetLevel(),
+					lg.GetServiceName(),
+					lg.GetMessage())
+			}
+			return lw.Flush()
+		},
+	}
+	cmd.AddCommand(traceCmd)
+
 	return cmd
 }
 
