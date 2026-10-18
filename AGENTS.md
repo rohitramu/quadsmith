@@ -140,6 +140,10 @@ corroboration checks.
       from the Table of Contents).
     - **Document All Discussed Alternatives**: Document all alternatives
       explored during discussion, regardless of quality or viability.
+    - **Short, Direct Sentences**: Keep every sentence in a plan short and to
+      the point. Break complex ideas into multiple short sentences or bulleted
+      lists rather than chaining multiple clauses into a single long run-on
+      sentence.
     - **Concise Bulleted Summaries**: Use concise bulleted short items whenever
       helpful to explain complex concepts cleanly across plans, alternatives,
       and chat explanations.
@@ -150,7 +154,8 @@ corroboration checks.
       StackExchange.
     - **1. Background (optional)**: Context, and explicit references to any
       superseded plans.
-    - **2. Goal**
+    - **2. Goal**: 1–3 short, direct sentences (or a concise bulleted list)
+      stating what the plan achieves without run-on clauses.
     - **3. Proposal**: Starts with `> **TL;DR:** <explanation>` blockquote (at
       most 5 statements, with each statement 20 words or less, crisp and punchy,
       formatted as either a short paragraph or concise bulleted list), followed
