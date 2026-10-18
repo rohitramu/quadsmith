@@ -15,9 +15,14 @@ import { useDocumentMeta } from "@quadsmith/shared";
 import { BatteryCombobox } from "../components/BatteryCombobox";
 import { BatteryPickerModal } from "../components/BatteryPickerModal";
 import { ComponentFormModal } from "../components/ComponentFormModal";
-import { CollectionIcon } from "@quadsmith/shared";
-import { getCollectionColor } from "@quadsmith/shared";
-import { getTwrDescription, getTwrColor, getHoverThrottleColor } from "@quadsmith/shared";
+import {
+  CollectionIcon,
+  ErrorBoundary,
+  getCollectionColor,
+  getTwrDescription,
+  getTwrColor,
+  getHoverThrottleColor,
+} from "@quadsmith/shared";
 import {
   ForgeProvider,
   useForge,
@@ -93,6 +98,7 @@ function BuildWizardContent() {
     // Evaluator
     electricalLimits,
     evaluatedMetrics,
+    evaluationError,
     dryWeightG,
     allUpWeightG,
     payloadWeightG,
@@ -429,237 +435,262 @@ function BuildWizardContent() {
         {/* Left Column (8 cols): Active Step Component */}
         <div className="lg:col-span-8 space-y-4">
           {/* Mobile Collapsible Progress & Telemetry Bar (lg:hidden) */}
-          <div
-            data-testid="forge-mobile-progress-bar"
-            className="lg:hidden rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm overflow-hidden"
-          >
-            {/* Step progress bar track */}
-            <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800">
+          <div className="lg:hidden">
+            <ErrorBoundary
+              variant="panel"
+              title="Telemetry Error"
+              resetKeys={[selectedBatteryId, activeStep]}
+              onReset={() => setSelectedBatteryId("")}
+            >
               <div
-                className="h-full bg-blue-600 transition-all duration-300"
-                style={{ width: `${(activeStep / 12) * 100}%` }}
-              />
-            </div>
+                data-testid="forge-mobile-progress-bar"
+                className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm overflow-hidden"
+              >
+                {/* Step progress bar track */}
+                <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800">
+                  <div
+                    className="h-full bg-blue-600 transition-all duration-300"
+                    style={{ width: `${(activeStep / 12) * 100}%` }}
+                  />
+                </div>
 
-            {/* Always-visible summary header strip */}
-            <div className="p-3 flex flex-wrap items-center justify-between gap-2.5">
-              <div className="flex items-center gap-2 min-w-0">
-                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
-                  Step {activeStep} of 12 •{" "}
-                  {allForgeStepsList.find((s) => s.step === activeStep)?.title || "Review"}
-                </span>
-              </div>
+                {/* Always-visible summary header strip */}
+                <div className="p-3 flex flex-wrap items-center justify-between gap-2.5">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                      Step {activeStep} of 12 •{" "}
+                      {allForgeStepsList.find((s) => s.step === activeStep)?.title || "Review"}
+                    </span>
+                  </div>
 
-              <div className="flex items-center gap-1.5 flex-wrap">
-                {/* Dry Weight Pill */}
-                <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
-                  Dry wt:{" "}
-                  <span className="font-bold text-blue-600 dark:text-blue-400">
-                    {dryWeightG.toFixed(1)}g
-                  </span>
-                </span>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {/* Dry Weight Pill */}
+                    <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                      Dry wt:{" "}
+                      <span className="font-bold text-blue-600 dark:text-blue-400">
+                        {dryWeightG.toFixed(1)}g
+                      </span>
+                    </span>
 
-                {/* TWR Pill */}
-                {evaluatedMetrics?.thrustToWeightRatio != null ? (
-                  <span
-                    className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-md border ${getTwrColor(evaluatedMetrics.thrustToWeightRatio).badge}`}
-                  >
-                    TWR: {evaluatedMetrics.thrustToWeightRatio.toFixed(1)}:1
-                  </span>
-                ) : (
-                  <span className="text-[11px] font-mono text-zinc-400 px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800">
-                    TWR: —
-                  </span>
+                    {/* TWR Pill */}
+                    {evaluatedMetrics?.thrustToWeightRatio != null ? (
+                      <span
+                        className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-md border ${getTwrColor(Number(evaluatedMetrics.thrustToWeightRatio ?? 0)).badge}`}
+                      >
+                        TWR: {Number(evaluatedMetrics.thrustToWeightRatio ?? 0).toFixed(1)}:1
+                      </span>
+                    ) : (
+                      <span className="text-[11px] font-mono text-zinc-400 px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800">
+                        TWR: —
+                      </span>
+                    )}
+
+                    {/* Parts Toggle Button */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMobilePartsOpen(!mobilePartsOpen);
+                        if (!mobilePartsOpen) setMobileTelemetryOpen(false);
+                      }}
+                      className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg border transition-colors cursor-pointer ${
+                        mobilePartsOpen
+                          ? "bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
+                          : "border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                      }`}
+                      aria-expanded={mobilePartsOpen}
+                      aria-label="Toggle parts drawer"
+                    >
+                      <span>Parts ({equippedCount}/11)</span>
+                      <ChevronDown
+                        size={13}
+                        className={`transition-transform duration-200 ${mobilePartsOpen ? "rotate-180" : ""}`}
+                      />
+                    </button>
+
+                    {/* Telemetry Toggle Button */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setMobileTelemetryOpen(!mobileTelemetryOpen);
+                        if (!mobileTelemetryOpen) setMobilePartsOpen(false);
+                      }}
+                      className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg border transition-colors cursor-pointer ${
+                        mobileTelemetryOpen
+                          ? "bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
+                          : "border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                      }`}
+                      aria-expanded={mobileTelemetryOpen}
+                      aria-label="Toggle telemetry drawer"
+                    >
+                      <Gauge size={13} />
+                      <span>Telemetry</span>
+                      <ChevronDown
+                        size={13}
+                        className={`transition-transform duration-200 ${mobileTelemetryOpen ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Expandable Parts Drawer */}
+                {mobilePartsOpen && (
+                  <div className="p-3 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs max-h-64 overflow-y-auto custom-scroll pr-1">
+                      {allForgeStepsList.map((part) => {
+                        const isCurrent = activeStep === part.step;
+                        const isUnlocked = unlockedSteps.includes(part.step);
+
+                        return (
+                          <button
+                            key={part.step}
+                            type="button"
+                            disabled={!isUnlocked}
+                            onClick={() => {
+                              if (isUnlocked) {
+                                setActiveStep(part.step);
+                                setMobilePartsOpen(false);
+                              }
+                            }}
+                            className={`p-2 rounded-xl border flex items-center justify-between gap-2 text-left transition-all ${
+                              isCurrent
+                                ? "border-blue-500 bg-blue-50/70 dark:bg-blue-950/40 ring-1 ring-blue-500/40"
+                                : isUnlocked
+                                  ? "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 cursor-pointer"
+                                  : "border-zinc-100 dark:border-zinc-800/40 opacity-40 cursor-not-allowed"
+                            }`}
+                          >
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className="text-[10px] font-mono text-zinc-400 font-bold shrink-0">
+                                {part.step}.
+                              </span>
+                              <div className="min-w-0">
+                                <span className="font-semibold text-[11px] text-zinc-800 dark:text-zinc-200 truncate block">
+                                  {part.label}
+                                </span>
+                                <span className="text-[10px] text-zinc-400 truncate block">
+                                  {part.item?.name ||
+                                    (part.omitted
+                                      ? "Omitted"
+                                      : isUnlocked
+                                        ? "Not selected"
+                                        : "Locked")}
+                                </span>
+                              </div>
+                            </div>
+                            {isCurrent && (
+                              <span className="text-[9px] px-1.5 py-0.5 rounded font-bold bg-blue-600 text-white shrink-0">
+                                Active
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 )}
 
-                {/* Parts Toggle Button */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMobilePartsOpen(!mobilePartsOpen);
-                    if (!mobilePartsOpen) setMobileTelemetryOpen(false);
-                  }}
-                  className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg border transition-colors cursor-pointer ${
-                    mobilePartsOpen
-                      ? "bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
-                      : "border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                  }`}
-                  aria-expanded={mobilePartsOpen}
-                  aria-label="Toggle parts drawer"
-                >
-                  <span>Parts ({equippedCount}/11)</span>
-                  <ChevronDown
-                    size={13}
-                    className={`transition-transform duration-200 ${mobilePartsOpen ? "rotate-180" : ""}`}
-                  />
-                </button>
-
-                {/* Telemetry Toggle Button */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setMobileTelemetryOpen(!mobileTelemetryOpen);
-                    if (!mobileTelemetryOpen) setMobilePartsOpen(false);
-                  }}
-                  className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg border transition-colors cursor-pointer ${
-                    mobileTelemetryOpen
-                      ? "bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
-                      : "border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                  }`}
-                  aria-expanded={mobileTelemetryOpen}
-                  aria-label="Toggle telemetry drawer"
-                >
-                  <Gauge size={13} />
-                  <span>Telemetry</span>
-                  <ChevronDown
-                    size={13}
-                    className={`transition-transform duration-200 ${mobileTelemetryOpen ? "rotate-180" : ""}`}
-                  />
-                </button>
-              </div>
-            </div>
-
-            {/* Expandable Parts Drawer */}
-            {mobilePartsOpen && (
-              <div className="p-3 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs max-h-64 overflow-y-auto custom-scroll pr-1">
-                  {allForgeStepsList.map((part) => {
-                    const isCurrent = activeStep === part.step;
-                    const isUnlocked = unlockedSteps.includes(part.step);
-
-                    return (
-                      <button
-                        key={part.step}
-                        type="button"
-                        disabled={!isUnlocked}
-                        onClick={() => {
-                          if (isUnlocked) {
-                            setActiveStep(part.step);
-                            setMobilePartsOpen(false);
-                          }
-                        }}
-                        className={`p-2 rounded-xl border flex items-center justify-between gap-2 text-left transition-all ${
-                          isCurrent
-                            ? "border-blue-500 bg-blue-50/70 dark:bg-blue-950/40 ring-1 ring-blue-500/40"
-                            : isUnlocked
-                              ? "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 cursor-pointer"
-                              : "border-zinc-100 dark:border-zinc-800/40 opacity-40 cursor-not-allowed"
-                        }`}
+                {/* Expandable Telemetry Drawer */}
+                {mobileTelemetryOpen && (
+                  <div className="p-3.5 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40 space-y-3">
+                    {evaluationError && (
+                      <div
+                        role="alert"
+                        className="p-2.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-xs"
                       >
-                        <div className="flex items-center gap-2 min-w-0">
-                          <span className="text-[10px] font-mono text-zinc-400 font-bold shrink-0">
-                            {part.step}.
-                          </span>
-                          <div className="min-w-0">
-                            <span className="font-semibold text-[11px] text-zinc-800 dark:text-zinc-200 truncate block">
-                              {part.label}
-                            </span>
-                            <span className="text-[10px] text-zinc-400 truncate block">
-                              {part.item?.name ||
-                                (part.omitted ? "Omitted" : isUnlocked ? "Not selected" : "Locked")}
-                            </span>
-                          </div>
-                        </div>
-                        {isCurrent && (
-                          <span className="text-[9px] px-1.5 py-0.5 rounded font-bold bg-blue-600 text-white shrink-0">
-                            Active
-                          </span>
-                        )}
+                        Evaluation error: {evaluationError}
+                      </div>
+                    )}
+
+                    {/* Live Flight Metrics Grid */}
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                      <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                        <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
+                          AUW
+                        </span>
+                        <span className="text-sm font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                          {allUpWeightG > 0 ? `${allUpWeightG.toFixed(1)}g` : "—"}
+                        </span>
+                      </div>
+                      <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                        <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
+                          TWR
+                        </span>
+                        <span
+                          className={`text-sm font-mono font-bold ${evaluatedMetrics?.thrustToWeightRatio != null ? getTwrColor(Number(evaluatedMetrics.thrustToWeightRatio ?? 0)).text : "text-zinc-400"}`}
+                        >
+                          {evaluatedMetrics?.thrustToWeightRatio != null
+                            ? `${Number(evaluatedMetrics.thrustToWeightRatio ?? 0).toFixed(1)}:1`
+                            : "—"}
+                        </span>
+                      </div>
+                      <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                        <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
+                          Hover Throttle
+                        </span>
+                        <span
+                          className={`text-sm font-mono font-bold ${evaluatedMetrics?.hoverThrottlePercent != null ? getHoverThrottleColor(Number(evaluatedMetrics.hoverThrottlePercent ?? 0)).text : "text-zinc-400"}`}
+                        >
+                          {evaluatedMetrics?.hoverThrottlePercent != null
+                            ? `${Number(evaluatedMetrics.hoverThrottlePercent ?? 0).toFixed(0)}%`
+                            : "—"}
+                        </span>
+                      </div>
+                      <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                        <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
+                          Est. Flight
+                        </span>
+                        <span className="text-sm font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                          {evaluatedMetrics
+                            ? Number(evaluatedMetrics.minFlightTimeMin ?? 0) > 0 &&
+                              Number(evaluatedMetrics.maxFlightTimeMin ?? 0) > 0
+                              ? `${Number(evaluatedMetrics.minFlightTimeMin ?? 0).toFixed(1)}–${Number(evaluatedMetrics.maxFlightTimeMin ?? 0).toFixed(1)} min`
+                              : Number(evaluatedMetrics.maxFlightTimeMin ?? 0) > 0
+                                ? `~${Number(evaluatedMetrics.maxFlightTimeMin ?? 0).toFixed(1)} min`
+                                : "—"
+                            : "—"}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Battery Selection Quick Row */}
+                    <div className="flex items-center gap-2 pt-1">
+                      <div className="flex-1 min-w-0">
+                        <BatteryCombobox
+                          selectedBatteryId={selectedBatteryId}
+                          onSelectBattery={(id) => setSelectedBatteryId(id)}
+                          batteries={comboboxBatteries}
+                          ariaLabel="Select mobile test battery"
+                          className="w-full text-xs"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setIsBatteryModalOpen(true)}
+                        className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shrink-0 cursor-pointer"
+                      >
+                        Browse
                       </button>
-                    );
-                  })}
-                </div>
+                    </div>
+                  </div>
+                )}
               </div>
-            )}
-
-            {/* Expandable Telemetry Drawer */}
-            {mobileTelemetryOpen && (
-              <div className="p-3.5 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40 space-y-3">
-                {/* Live Flight Metrics Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
-                      AUW
-                    </span>
-                    <span className="text-sm font-mono font-bold text-zinc-900 dark:text-zinc-100">
-                      {allUpWeightG > 0 ? `${allUpWeightG.toFixed(1)}g` : "—"}
-                    </span>
-                  </div>
-                  <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
-                      TWR
-                    </span>
-                    <span
-                      className={`text-sm font-mono font-bold ${evaluatedMetrics?.thrustToWeightRatio != null ? getTwrColor(evaluatedMetrics.thrustToWeightRatio).text : "text-zinc-400"}`}
-                    >
-                      {evaluatedMetrics?.thrustToWeightRatio != null
-                        ? `${evaluatedMetrics.thrustToWeightRatio.toFixed(1)}:1`
-                        : "—"}
-                    </span>
-                  </div>
-                  <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
-                      Hover Throttle
-                    </span>
-                    <span
-                      className={`text-sm font-mono font-bold ${evaluatedMetrics?.hoverThrottlePercent != null ? getHoverThrottleColor(evaluatedMetrics.hoverThrottlePercent).text : "text-zinc-400"}`}
-                    >
-                      {evaluatedMetrics?.hoverThrottlePercent != null
-                        ? `${evaluatedMetrics.hoverThrottlePercent.toFixed(0)}%`
-                        : "—"}
-                    </span>
-                  </div>
-                  <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-                    <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
-                      Est. Flight
-                    </span>
-                    <span className="text-sm font-mono font-bold text-zinc-900 dark:text-zinc-100">
-                      {evaluatedMetrics
-                        ? evaluatedMetrics.minFlightTimeMin > 0 &&
-                          evaluatedMetrics.maxFlightTimeMin > 0
-                          ? `${evaluatedMetrics.minFlightTimeMin.toFixed(1)}–${evaluatedMetrics.maxFlightTimeMin.toFixed(1)} min`
-                          : evaluatedMetrics.maxFlightTimeMin > 0
-                            ? `~${evaluatedMetrics.maxFlightTimeMin.toFixed(1)} min`
-                            : "—"
-                        : "—"}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Battery Selection Quick Row */}
-                <div className="flex items-center gap-2 pt-1">
-                  <div className="flex-1 min-w-0">
-                    <BatteryCombobox
-                      selectedBatteryId={selectedBatteryId}
-                      onSelectBattery={(id) => setSelectedBatteryId(id)}
-                      batteries={comboboxBatteries}
-                      ariaLabel="Select mobile test battery"
-                      className="w-full text-xs"
-                    />
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => setIsBatteryModalOpen(true)}
-                    className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shrink-0 cursor-pointer"
-                  >
-                    Browse
-                  </button>
-                </div>
-              </div>
-            )}
+            </ErrorBoundary>
           </div>
-          {activeStep === 1 && <FrameStep />}
-          {activeStep === 2 && <FlightControllerStep />}
-          {activeStep === 3 && <ReceiverStep />}
-          {activeStep === 4 && <ReceiverAntennaStep />}
-          {activeStep === 5 && <EscStep />}
-          {activeStep === 6 && <MotorStep />}
-          {activeStep === 7 && <PropellerStep />}
-          {activeStep === 8 && <CameraStep />}
-          {activeStep === 9 && <VtxStep />}
-          {activeStep === 10 && <VtxAntennaStep />}
-          {activeStep === 11 && <GpsStep />}
-          {activeStep === 12 && <ReviewStep />}
+
+          <ErrorBoundary variant="panel" title="Step Render Error" resetKeys={[activeStep]}>
+            {activeStep === 1 && <FrameStep />}
+            {activeStep === 2 && <FlightControllerStep />}
+            {activeStep === 3 && <ReceiverStep />}
+            {activeStep === 4 && <ReceiverAntennaStep />}
+            {activeStep === 5 && <EscStep />}
+            {activeStep === 6 && <MotorStep />}
+            {activeStep === 7 && <PropellerStep />}
+            {activeStep === 8 && <CameraStep />}
+            {activeStep === 9 && <VtxStep />}
+            {activeStep === 10 && <VtxAntennaStep />}
+            {activeStep === 11 && <GpsStep />}
+            {activeStep === 12 && <ReviewStep />}
+          </ErrorBoundary>
 
           {currentStepConfig && (
             <div className="mt-4 flex items-center justify-between p-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs text-xs">
@@ -824,235 +855,253 @@ function BuildWizardContent() {
           </div>
 
           {/* Live Evaluator Card */}
-          <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-4 shadow-sm">
-            <div className="border-b border-zinc-200 dark:border-zinc-800 pb-2.5">
-              <div className="flex items-center gap-2">
-                <Gauge className="text-blue-600 dark:text-blue-400 shrink-0" size={16} />
-                <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
-                  Build Evaluator
-                </h3>
+          <ErrorBoundary
+            variant="panel"
+            title="Build Evaluator Error"
+            resetKeys={[selectedBatteryId, payloadWeightG]}
+            onReset={() => setSelectedBatteryId("")}
+          >
+            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-4 shadow-sm">
+              <div className="border-b border-zinc-200 dark:border-zinc-800 pb-2.5">
+                <div className="flex items-center gap-2">
+                  <Gauge className="text-blue-600 dark:text-blue-400 shrink-0" size={16} />
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+                    Build Evaluator
+                  </h3>
+                </div>
+                <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 leading-snug">
+                  Calculated flight metrics are theoretical estimates based on analytical physics
+                  models.
+                </p>
               </div>
-              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 leading-snug">
-                Calculated flight metrics are theoretical estimates based on analytical physics
-                models.
-              </p>
-            </div>
 
-            {/* Test Battery Selection with Browse Button */}
-            <div className="space-y-1.5 text-xs">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-1.5">
-                  <label className="block font-semibold text-zinc-700 dark:text-zinc-300">
-                    Test Battery (Runtime Parameter)
-                  </label>
-                  {!activeBattery && (
-                    <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
-                      Required
+              {/* Test Battery Selection with Browse Button */}
+              <div className="space-y-1.5 text-xs">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <label className="block font-semibold text-zinc-700 dark:text-zinc-300">
+                      Test Battery (Runtime Parameter)
+                    </label>
+                    {!activeBattery && (
+                      <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                        Required
+                      </span>
+                    )}
+                  </div>
+                  {electricalLimits?.connector ? (
+                    <span className="text-[10px] text-blue-600 dark:text-blue-400 font-mono font-medium">
+                      {electricalLimits.connector}
                     </span>
-                  )}
+                  ) : null}
                 </div>
-                {electricalLimits?.connector ? (
-                  <span className="text-[10px] text-blue-600 dark:text-blue-400 font-mono font-medium">
-                    {electricalLimits.connector}
-                  </span>
-                ) : null}
+
+                <div className="flex items-center gap-1.5">
+                  <BatteryCombobox
+                    selectedBatteryId={selectedBatteryId}
+                    onSelectBattery={(id) => setSelectedBatteryId(id)}
+                    batteries={comboboxBatteries}
+                    ariaLabel="Select test battery"
+                    className="flex-1 min-w-0"
+                  />
+
+                  <button
+                    type="button"
+                    onClick={() => setIsBatteryModalOpen(true)}
+                    title="Browse all compatible batteries"
+                    aria-label="Browse all compatible batteries"
+                    className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors text-xs font-medium flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
+                  >
+                    <Search size={12} className="text-zinc-400" />
+                    <span>Browse</span>
+                  </button>
+                </div>
+
+                {activeBattery ? (
+                  <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 flex items-center gap-2">
+                    <span>
+                      {activeBattery.cellCountS}S ({activeBattery.minVoltage}V -{" "}
+                      {activeBattery.maxVoltage}V)
+                    </span>
+                    <span>• {activeBattery.capacityMah}mAh</span>
+                    <span>• {activeBattery.weightG}g</span>
+                  </div>
+                ) : (
+                  <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-[11px] flex items-start gap-2 mt-1">
+                    <AlertCircle size={14} className="text-amber-500 mt-0.5 shrink-0" />
+                    <p className="leading-tight">
+                      <span className="font-bold">Evaluation Paused:</span> Select a test battery to
+                      calculate thrust-to-weight, hover throttle, and flight times.
+                    </p>
+                  </div>
+                )}
               </div>
 
-              <div className="flex items-center gap-1.5">
-                <BatteryCombobox
-                  selectedBatteryId={selectedBatteryId}
-                  onSelectBattery={(id) => setSelectedBatteryId(id)}
-                  batteries={comboboxBatteries}
-                  ariaLabel="Select test battery"
-                  className="flex-1 min-w-0"
-                />
-
-                <button
-                  type="button"
-                  onClick={() => setIsBatteryModalOpen(true)}
-                  title="Browse all compatible batteries"
-                  aria-label="Browse all compatible batteries"
-                  className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors text-xs font-medium flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
+              {evaluationError && (
+                <div
+                  role="alert"
+                  className="p-3 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-xs"
                 >
-                  <Search size={12} className="text-zinc-400" />
-                  <span>Browse</span>
-                </button>
-              </div>
-
-              {activeBattery ? (
-                <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 flex items-center gap-2">
-                  <span>
-                    {activeBattery.cellCountS}S ({activeBattery.minVoltage}V -{" "}
-                    {activeBattery.maxVoltage}V)
-                  </span>
-                  <span>• {activeBattery.capacityMah}mAh</span>
-                  <span>• {activeBattery.weightG}g</span>
-                </div>
-              ) : (
-                <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-[11px] flex items-start gap-2 mt-1">
-                  <AlertCircle size={14} className="text-amber-500 mt-0.5 shrink-0" />
-                  <p className="leading-tight">
-                    <span className="font-bold">Evaluation Paused:</span> Select a test battery to
-                    calculate thrust-to-weight, hover throttle, and flight times.
-                  </p>
+                  Evaluation error: {evaluationError}
                 </div>
               )}
-            </div>
 
-            {/* Runtime Payload Simulation */}
-            <div className="bg-zinc-50 dark:bg-zinc-950/60 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-2 text-xs">
-              <div className="flex items-center justify-between">
-                <span className="font-semibold text-zinc-700 dark:text-zinc-300">
-                  Payload Simulation
-                </span>
-                <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
-                  +{payloadWeightG.toFixed(2)}g
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  onClick={() => adjustPayload(-10)}
-                  disabled={payloadWeightG <= 0}
-                  aria-label="Remove 10g"
-                  className="w-7 h-7 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-30 disabled:cursor-not-allowed text-zinc-700 dark:text-zinc-200 transition-colors cursor-pointer shrink-0 font-bold"
-                >
-                  -
-                </button>
-                <div className="relative flex-1 flex items-center">
-                  <input
-                    type="text"
-                    inputMode="decimal"
-                    value={payloadInput}
-                    onChange={(e) => handlePayloadInput(e.target.value)}
-                    placeholder="0"
-                    className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-700 rounded-lg px-2.5 py-1 pr-6 text-xs font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500 text-center"
-                  />
-                  <span className="absolute right-2 text-xs text-zinc-400 font-mono pointer-events-none select-none">
-                    g
+              {/* Runtime Payload Simulation */}
+              <div className="bg-zinc-50 dark:bg-zinc-950/60 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-2 text-xs">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-zinc-700 dark:text-zinc-300">
+                    Payload Simulation
+                  </span>
+                  <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
+                    +{payloadWeightG.toFixed(2)}g
                   </span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => adjustPayload(10)}
-                  aria-label="Add 10g"
-                  className="w-7 h-7 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 transition-colors cursor-pointer shrink-0 font-bold"
-                >
-                  +
-                </button>
-              </div>
-              <div className="flex gap-1 text-[10px]">
-                <button
-                  type="button"
-                  onClick={() => setPresetPayload(0)}
-                  className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
-                    payloadWeightG === 0
-                      ? "bg-blue-600 text-white"
-                      : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
-                  }`}
-                >
-                  Bare (0g)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPresetPayload(16)}
-                  className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
-                    payloadWeightG === 16
-                      ? "bg-blue-600 text-white"
-                      : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
-                  }`}
-                >
-                  Thumb (+16g)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPresetPayload(133)}
-                  className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
-                    payloadWeightG === 133
-                      ? "bg-blue-600 text-white"
-                      : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
-                  }`}
-                >
-                  GoPro (+133g)
-                </button>
-              </div>
-            </div>
-
-            {/* TWR Hero Metric */}
-            <div className="text-center p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800">
-              <div className="text-[11px] uppercase font-semibold text-zinc-500">
-                Estimated Thrust-to-Weight
-              </div>
-              <div
-                className={`text-3xl font-extrabold mt-1 ${
-                  evaluatedMetrics
-                    ? getTwrColor(evaluatedMetrics.thrustToWeightRatio).text
-                    : "text-zinc-400"
-                }`}
-              >
-                {evaluatedMetrics
-                  ? `${evaluatedMetrics.thrustToWeightRatio.toFixed(2)} : 1`
-                  : "-- : 1"}
-              </div>
-              <span
-                className={`inline-block mt-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold border transition-colors ${
-                  evaluatedMetrics
-                    ? getTwrColor(evaluatedMetrics.thrustToWeightRatio).badge
-                    : !activeBattery
-                      ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20"
-                      : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-transparent"
-                }`}
-              >
-                {evaluatedMetrics
-                  ? getTwrDescription(evaluatedMetrics.thrustToWeightRatio)
-                  : !activeBattery
-                    ? "Select Battery to Calculate"
-                    : "Select Propulsion Parts"}
-              </span>
-            </div>
-
-            {/* Telemetry Metrics Grid */}
-            <div className="grid grid-cols-2 gap-2 text-xs">
-              <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-800">
-                <span className="text-zinc-500">Dry Weight</span>
-                <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
-                  {dryWeightG.toFixed(2)}g
+                <div className="flex items-center gap-1.5">
+                  <button
+                    type="button"
+                    onClick={() => adjustPayload(-10)}
+                    disabled={payloadWeightG <= 0}
+                    aria-label="Remove 10g"
+                    className="w-7 h-7 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-30 disabled:cursor-not-allowed text-zinc-700 dark:text-zinc-200 transition-colors cursor-pointer shrink-0 font-bold"
+                  >
+                    -
+                  </button>
+                  <div className="relative flex-1 flex items-center">
+                    <input
+                      type="text"
+                      inputMode="decimal"
+                      value={payloadInput}
+                      onChange={(e) => handlePayloadInput(e.target.value)}
+                      placeholder="0"
+                      className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-700 rounded-lg px-2.5 py-1 pr-6 text-xs font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500 text-center"
+                    />
+                    <span className="absolute right-2 text-xs text-zinc-400 font-mono pointer-events-none select-none">
+                      g
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => adjustPayload(10)}
+                    aria-label="Add 10g"
+                    className="w-7 h-7 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 transition-colors cursor-pointer shrink-0 font-bold"
+                  >
+                    +
+                  </button>
+                </div>
+                <div className="flex gap-1 text-[10px]">
+                  <button
+                    type="button"
+                    onClick={() => setPresetPayload(0)}
+                    className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
+                      payloadWeightG === 0
+                        ? "bg-blue-600 text-white"
+                        : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+                    }`}
+                  >
+                    Bare (0g)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPresetPayload(16)}
+                    className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
+                      payloadWeightG === 16
+                        ? "bg-blue-600 text-white"
+                        : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+                    }`}
+                  >
+                    Thumb (+16g)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setPresetPayload(133)}
+                    className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
+                      payloadWeightG === 133
+                        ? "bg-blue-600 text-white"
+                        : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+                    }`}
+                  >
+                    GoPro (+133g)
+                  </button>
                 </div>
               </div>
-              <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-800">
-                <span className="text-zinc-500">All-Up Weight</span>
-                <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
-                  {allUpWeightG.toFixed(2)}g
+
+              {/* TWR Hero Metric */}
+              <div className="text-center p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800">
+                <div className="text-[11px] uppercase font-semibold text-zinc-500">
+                  Estimated Thrust-to-Weight
                 </div>
-              </div>
-              <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-800">
-                <span className="text-zinc-500">Hover Throttle</span>
                 <div
-                  className={`text-sm font-bold font-mono mt-0.5 ${
+                  className={`text-3xl font-extrabold mt-1 ${
                     evaluatedMetrics
-                      ? getHoverThrottleColor(evaluatedMetrics.hoverThrottlePercent).text
+                      ? getTwrColor(Number(evaluatedMetrics.thrustToWeightRatio ?? 0)).text
                       : "text-zinc-400"
                   }`}
                 >
                   {evaluatedMetrics
-                    ? `${evaluatedMetrics.hoverThrottlePercent.toFixed(1)}%`
-                    : "--%"}
+                    ? `${Number(evaluatedMetrics.thrustToWeightRatio ?? 0).toFixed(2)} : 1`
+                    : "-- : 1"}
                 </div>
-              </div>
-              <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-800">
-                <span className="text-zinc-500">Est. Flight Time</span>
-                <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
+                <span
+                  className={`inline-block mt-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold border transition-colors ${
+                    evaluatedMetrics
+                      ? getTwrColor(Number(evaluatedMetrics.thrustToWeightRatio ?? 0)).badge
+                      : !activeBattery
+                        ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20"
+                        : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-transparent"
+                  }`}
+                >
                   {evaluatedMetrics
-                    ? evaluatedMetrics.minFlightTimeMin > 0 && evaluatedMetrics.maxFlightTimeMin > 0
-                      ? `${evaluatedMetrics.minFlightTimeMin.toFixed(1)}–${evaluatedMetrics.maxFlightTimeMin.toFixed(1)} min`
-                      : evaluatedMetrics.maxFlightTimeMin > 0
-                        ? `~${evaluatedMetrics.maxFlightTimeMin.toFixed(1)} min`
-                        : "-- min"
-                    : "-- min"}
+                    ? getTwrDescription(Number(evaluatedMetrics.thrustToWeightRatio ?? 0))
+                    : !activeBattery
+                      ? "Select Battery to Calculate"
+                      : "Select Propulsion Parts"}
+                </span>
+              </div>
+
+              {/* Telemetry Metrics Grid */}
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-800">
+                  <span className="text-zinc-500">Dry Weight</span>
+                  <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
+                    {dryWeightG.toFixed(2)}g
+                  </div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-800">
+                  <span className="text-zinc-500">All-Up Weight</span>
+                  <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
+                    {allUpWeightG.toFixed(2)}g
+                  </div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-800">
+                  <span className="text-zinc-500">Hover Throttle</span>
+                  <div
+                    className={`text-sm font-bold font-mono mt-0.5 ${
+                      evaluatedMetrics
+                        ? getHoverThrottleColor(Number(evaluatedMetrics.hoverThrottlePercent ?? 0))
+                            .text
+                        : "text-zinc-400"
+                    }`}
+                  >
+                    {evaluatedMetrics
+                      ? `${Number(evaluatedMetrics.hoverThrottlePercent ?? 0).toFixed(1)}%`
+                      : "--%"}
+                  </div>
+                </div>
+                <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-800">
+                  <span className="text-zinc-500">Est. Flight Time</span>
+                  <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
+                    {evaluatedMetrics
+                      ? Number(evaluatedMetrics.minFlightTimeMin ?? 0) > 0 &&
+                        Number(evaluatedMetrics.maxFlightTimeMin ?? 0) > 0
+                        ? `${Number(evaluatedMetrics.minFlightTimeMin ?? 0).toFixed(1)}–${Number(evaluatedMetrics.maxFlightTimeMin ?? 0).toFixed(1)} min`
+                        : Number(evaluatedMetrics.maxFlightTimeMin ?? 0) > 0
+                          ? `~${Number(evaluatedMetrics.maxFlightTimeMin ?? 0).toFixed(1)} min`
+                          : "-- min"
+                      : "-- min"}
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ErrorBoundary>
         </div>
       </div>
 

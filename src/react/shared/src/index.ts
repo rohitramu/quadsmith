@@ -3,6 +3,7 @@ export * from "./components/CollectionBadge";
 export * from "./components/CollectionIcon";
 export * from "./components/CopyFilterButton";
 export * from "./components/EllipsisHint";
+export * from "./components/ErrorBoundary";
 
 // Hooks
 export * from "./hooks/useDocumentMeta";

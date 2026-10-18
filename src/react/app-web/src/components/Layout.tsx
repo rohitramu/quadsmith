@@ -30,6 +30,7 @@ import { getCollectionColor } from "@quadsmith/shared";
 import { CollectionBadge } from "@quadsmith/shared";
 import { CollectionIcon } from "@quadsmith/shared";
 import { EllipsisHint } from "@quadsmith/shared";
+import { ErrorBoundary } from "@quadsmith/shared";
 import { useAuth } from "../context/AuthContext";
 import { getAvatarPalette, getInitial } from "@quadsmith/shared";
 
@@ -757,7 +758,13 @@ export function Layout() {
             {user?.activeBan && location.pathname !== "/account" ? (
               <AccountRestrictedPage />
             ) : (
-              <Outlet />
+              <ErrorBoundary
+                variant="page"
+                title="Page failed to render"
+                resetKeys={[location.pathname]}
+              >
+                <Outlet />
+              </ErrorBoundary>
             )}
           </div>
         </main>

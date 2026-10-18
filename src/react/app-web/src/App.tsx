@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TransportProvider } from "@connectrpc/connect-query";
 import type { Transport } from "@connectrpc/connect";
 import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
+import { ErrorBoundary } from "@quadsmith/shared";
 import { transport as defaultTransport } from "./lib/api";
 import { AuthProvider } from "./context/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
@@ -70,7 +71,9 @@ export function App({
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <BrowserRouter>
-            <AppRoutes />
+            <ErrorBoundary variant="page" title="Application Error">
+              <AppRoutes />
+            </ErrorBoundary>
           </BrowserRouter>
         </AuthProvider>
       </QueryClientProvider>

@@ -1145,4 +1145,33 @@ describe("BuildWizardPage Component", () => {
     expect(within(mobileBar).getByText("23%")).toBeInTheDocument();
     expect(within(mobileBar).getByText("3.2–8.5 min")).toBeInTheDocument();
   });
+
+  it("displays an inline evaluation error alert instead of crashing when wasmEngine.evaluateComponents throws", async () => {
+    vi.spyOn(wasmEngine, "getIsReady").mockReturnValue(true);
+    vi.spyOn(wasmEngine, "checkCompatibility").mockReturnValue({ messages: [] } as any);
+    vi.spyOn(wasmEngine, "evaluateComponents").mockImplementation(() => {
+      throw new Error("WASM physics solver failed to converge");
+    });
+
+    const user = userEvent.setup();
+    renderWizard({
+      route: "/builds/new?from=bando-basher-5-inch",
+    });
+
+    const stepNav = await screen.findByRole("navigation", { name: "Build Steps" });
+    const step7Tab = within(stepNav).getByRole("button", { name: /^step 7:/i });
+    await waitFor(() => expect(step7Tab).toBeEnabled());
+
+    // Select a test battery
+    const batteryCombobox = screen.getByRole("combobox", { name: /select test battery/i });
+    await user.click(batteryCombobox);
+    const batteryOption = await screen.findByText(/Black Series 1500mAh 6S/i);
+    await user.click(batteryOption);
+
+    // Inline error alert renders inside the evaluator card while the rest of The Forge stays intact
+    expect(
+      await screen.findByText(/Evaluation error: WASM physics solver failed to converge/i),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 1, name: "The Forge" })).toBeInTheDocument();
+  });
 });

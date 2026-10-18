@@ -556,6 +556,7 @@ interface ForgeContextType {
     compatibleConnectors?: string[];
   };
   evaluatedMetrics: EvaluateBuildResponse | null;
+  evaluationError: string | null;
   wasmCompatibility: CheckCompatibilityResponse | null;
   dryWeightG: number;
   allUpWeightG: number;
@@ -1259,19 +1260,25 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
   const fullAssembled = useMemo(() => buildAssembledUpTo(11), [buildAssembledUpTo]);
 
   // Live Evaluator Metrics
-  const evaluatedMetrics = useMemo(() => {
+  const { evaluatedMetrics, evaluationError } = useMemo<{
+    evaluatedMetrics: EvaluateBuildResponse | null;
+    evaluationError: string | null;
+  }>(() => {
     if (!isWasmReady || !selectedFrame || !selectedMotor || !selectedProp || !activeBattery) {
-      return null;
+      return { evaluatedMetrics: null, evaluationError: null };
     }
     try {
-      return wasmEngine.evaluateComponents(
+      const metrics = wasmEngine.evaluateComponents(
         create(EvaluateComponentsRequestSchema, {
           components: fullAssembled,
           payloadWeightG,
         }),
       );
-    } catch {
-      return null;
+      return { evaluatedMetrics: metrics, evaluationError: null };
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Failed to evaluate build flight metrics.";
+      return { evaluatedMetrics: null, evaluationError: message };
     }
   }, [
     isWasmReady,
@@ -2213,6 +2220,7 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
 
     electricalLimits,
     evaluatedMetrics,
+    evaluationError,
     wasmCompatibility,
     dryWeightG,
     allUpWeightG,
