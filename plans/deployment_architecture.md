@@ -217,6 +217,8 @@ syntax = "proto3";
 
 package quadsmith.config;
 
+import "google/protobuf/duration.proto";
+
 option go_package = "quadsmith/shared/gen/quadsmith/config;config";
 
 // ---------------------------------------------------------
@@ -229,12 +231,27 @@ message DeployConfig {
   optional string registry_region = 3;
   repeated RegionConfig regions = 4;
   optional int32 db_backup_retention_count = 5;
+  optional RolloutConfig rollout = 6;
 }
 
 message RegionConfig {
   optional string region = 1;
   optional string db_tier = 2;
   repeated VmNodeConfig nodes = 3;
+}
+
+message RolloutConfig {
+  optional google.protobuf.Duration health_check_timeout = 1;
+  optional google.protobuf.Duration drain_timeout = 2;
+  optional google.protobuf.Duration node_rollout_timeout = 3;
+  optional int32 max_retries = 4;
+  optional google.protobuf.Duration retry_backoff = 5;
+  repeated TrafficRampStage ramp_stages = 6;
+}
+
+message TrafficRampStage {
+  optional int32 candidate_weight_percent = 1;
+  optional google.protobuf.Duration hold_duration = 2;
 }
 
 message VmNodeConfig {
@@ -274,8 +291,9 @@ not duplicated in `DeployConfig`:
   (`src/db/quadsmith_api.sql` and `src/db/quadsmith_ops.sql`) live as constants
   in `deploy/deploy.sh`.
 
-Each live environment (`staging` and `prod`) declares its regional compute and
-database topology concisely:
+Each live environment (`staging` and `prod`) declares its regional compute,
+database topology, rollout timeouts/retries, and staged Blue-Green traffic ramp
+concisely:
 
 ```textproto
 # deploy/config/prod.textproto
@@ -293,6 +311,46 @@ regions {
 }
 
 db_backup_retention_count: 5
+
+rollout {
+  health_check_timeout {
+    seconds: 30
+  }
+  drain_timeout {
+    seconds: 30
+  }
+  node_rollout_timeout {
+    seconds: 300
+  }
+  max_retries: 3
+  retry_backoff {
+    seconds: 5
+  }
+  ramp_stages {
+    candidate_weight_percent: 10
+    hold_duration {
+      seconds: 15
+    }
+  }
+  ramp_stages {
+    candidate_weight_percent: 25
+    hold_duration {
+      seconds: 15
+    }
+  }
+  ramp_stages {
+    candidate_weight_percent: 50
+    hold_duration {
+      seconds: 30
+    }
+  }
+  ramp_stages {
+    candidate_weight_percent: 100
+    hold_duration {
+      seconds: 0
+    }
+  }
+}
 ```
 
 This nested `regions` &rarr; `nodes` structure directly supports all three
@@ -1553,34 +1611,51 @@ flowchart TD
    - During the ~5-second overlap window, running both slots adds only **~80 MB
      of RAM** (~329 MB total on the 1 GB VM) and opens only **3 initial database
      connections** (`min_connections: 1` on `api-<next>` and `ops-<next>`).
-2. **Atomic Nginx Upstream Switching (`deploy/nginx/upstreams.conf`)**:
+2. **Staged Weighted Nginx Upstream Ramp-Up (`deploy/nginx/upstreams.conf`)**:
    - `deploy/nginx/upstreams.conf` is mounted into the `nginx` container at
      `/etc/nginx/conf.d/upstreams.conf` and included by
      `deploy/nginx/nginx.conf` (defaulting to `web:8080`, `api:8080`, `ops:8080`
-     in local sandbox and rewritten by `deploy/deploy_blue_green.sh` to
-     `web-<slot>:8080`, `api-<slot>:8080`, `ops-<slot>:8080` on the VM).
-   - Once the candidate slot passes `/healthz`, `deploy/deploy_blue_green.sh`
-     atomically updates `upstreams.conf` and executes:
+     in local sandbox and rewritten by `deploy/deploy_blue_green.sh` on the VM).
+   - Once the candidate slot passes initial `/healthz` readiness within
+     `rollout.health_check_timeout` (`30s`), `deploy/deploy_blue_green.sh` steps
+     through the configured `rollout.ramp_stages[]` (e.g., `10%` for `15s`
+     &rarr; `25%` for `15s` &rarr; `50%` for `30s` &rarr; `100%` in `prod`;
+     `25%` for `5s` &rarr; `50%` for `5s` &rarr; `100%` in `staging`), writing
+     weighted `server <svc>-<active>:8080 weight=<100-W>;` and
+     `server <svc>-<next>:8080 weight=<W>;` entries to `upstreams.conf` and
+     executing:
 
      ```bash
      docker compose -f deploy/docker-compose.blue-green.yaml exec -T nginx sh -c "nginx -t && nginx -s reload"
      ```
 
    - [Nginx's `reload` signal (`SIGHUP`)](https://nginx.org/en/docs/control.html#reconfiguration)
-     spawns new worker processes routing to the new slot while signaling old
-     worker processes to finish serving all in-flight requests (including 100 MB
-     `/api/blobs` uploads) before exiting—guaranteeing **zero dropped packets**.
-3. **Health-Check Gating and Automatic Rollback**:
-   - `deploy/deploy_blue_green.sh` polls
+     spawns new worker processes with the updated upstream weights while
+     signaling old worker processes to finish serving all in-flight requests
+     (including 100 MB `/api/blobs` uploads) before exiting—guaranteeing **zero
+     dropped packets** at every ramp step.
+3. **Continuous Health-Check Gating, Timeouts, Retries, and Automatic
+   Rollback**:
+   - `deploy/deploy.sh` wraps IAP SCP/SSH rollout operations in `run_with_retry`
+     bounded by `rollout.node_rollout_timeout` (`300s` in `prod`, `180s` in
+     `staging`) and `rollout.max_retries` (`3` attempts with `5s` exponential
+     backoff), while `deploy/deploy_blue_green.sh` retries image pulls up to 3
+     times (`120s` timeout per attempt).
+   - During both initial readiness (`rollout.health_check_timeout`) and every
+     second of each intermediate stage's `hold_duration`,
+     `deploy/deploy_blue_green.sh` polls
      `wget -q -O- http://<service>:8080/healthz` from inside the `nginx`
      container for `web-<next>`, `api-<next>`, and `ops-<next>` (and verifies
-     `jobs-<next>` is `running`) every 1 second for up to 15 seconds.
-   - If any candidate container fails to return `200 OK` within 15 seconds,
-     `upstreams.conf` is untouched, the failing candidate container logs
-     (`--tail=50`) are dumped, the candidate slot is stopped and removed, and
-     the script exits `1` with zero customer impact.
-   - After a successful reload onto `<next>`, the script waits 2 seconds and
-     stops the previous slot with `--timeout 30`, freeing the ~80 MB of RAM.
+     `jobs-<next>` is `running`).
+   - If any candidate container fails a health check during initial readiness or
+     during any traffic ramp stage, `deploy/deploy_blue_green.sh` immediately
+     rewrites `upstreams.conf` with 100% weight on `<active>`, reloads Nginx,
+     dumps the failing candidate container logs (`--tail=50`), stops and removes
+     the candidate slot, and exits `1`.
+   - Once the `100%` stage completes, the script records `.active_slot`, waits 2
+     seconds, and drains/stops the previous slot with
+     `--timeout ${QS_ROLLOUT_DRAIN_TIMEOUT_SEC}` (`30s` in `prod`, `15s` in
+     `staging`), freeing the ~80 MB of RAM.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -1720,9 +1795,10 @@ chained stages (`check-credentials` &rarr; `build-and-push` &rarr; `migrate-db`
    force-updates the `staging` or `prod` Git tag in GitHub to `deploy_sha`.
 5. **`rollback` (Automatic on Failure)**: If `migrate-db` or `deploy-vm` fails
    and an existing `staging` or `prod` tag (`previous_sha`) is present, the
-   workflow automatically checks out `previous_sha` and runs `STAGE=migrate` and
-   `STAGE=rollout` with `QS_IMAGE_TAG=sha-<previous_sha>` to restore the
-   environment to the last known good deployment.
+   workflow automatically checks out `previous_sha` and runs `STAGE=rollout`
+   with `QS_IMAGE_TAG=sha-<previous_sha>` to restore all regional VMs to the
+   last known good container release (emitting an explicit Emergency Recovery
+   Runbook summary if the rollback job itself fails).
 
 #### <a id="operator-deployment-guide-deploy-readme-md" >Operator Deployment Guide (`deploy/README.md`)</a>
 

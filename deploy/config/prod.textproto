@@ -12,3 +12,43 @@ regions {
 }
 
 db_backup_retention_count: 5
+
+rollout {
+  health_check_timeout {
+    seconds: 30
+  }
+  drain_timeout {
+    seconds: 30
+  }
+  node_rollout_timeout {
+    seconds: 300
+  }
+  max_retries: 3
+  retry_backoff {
+    seconds: 5
+  }
+  ramp_stages {
+    candidate_weight_percent: 10
+    hold_duration {
+      seconds: 15
+    }
+  }
+  ramp_stages {
+    candidate_weight_percent: 25
+    hold_duration {
+      seconds: 15
+    }
+  }
+  ramp_stages {
+    candidate_weight_percent: 50
+    hold_duration {
+      seconds: 30
+    }
+  }
+  ramp_stages {
+    candidate_weight_percent: 100
+    hold_duration {
+      seconds: 0
+    }
+  }
+}

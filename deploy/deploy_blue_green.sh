@@ -6,6 +6,7 @@ cd "$ROOT_DIR"
 
 COMPOSE_FILE="deploy/docker-compose.blue-green.yaml"
 UPSTREAMS_FILE="deploy/nginx/upstreams.conf"
+ACTIVE_SLOT_FILE="deploy/.active_slot"
 
 REQUIRED_VARS=(
     QS_ENV
@@ -24,6 +25,9 @@ REQUIRED_VARS=(
     QS_OAUTH_CLIENT_ID
     QS_OAUTH_CLIENT_SECRET
     QS_JOB_SERVER_AUTH_TOKEN
+    QS_ROLLOUT_HEALTH_TIMEOUT_SEC
+    QS_ROLLOUT_DRAIN_TIMEOUT_SEC
+    QS_ROLLOUT_RAMP_STAGES
 )
 
 for var in "${REQUIRED_VARS[@]}"; do
@@ -33,66 +37,121 @@ for var in "${REQUIRED_VARS[@]}"; do
     fi
 done
 
-write_upstreams() {
-    local slot="$1"
+write_weighted_upstreams() {
+    local active_slot="$1"
+    local active_weight="$2"
+    local candidate_slot="$3"
+    local candidate_weight="$4"
     local tmp_file="${UPSTREAMS_FILE}.tmp"
-    cat > "$tmp_file" <<EOF
+
+    if [ -n "$active_slot" ] && [ "$active_weight" -gt 0 ] && [ "$candidate_weight" -lt 100 ]; then
+        cat > "$tmp_file" <<EOF
 upstream web_upstream {
-    server web-${slot}:8080;
+    server web-${active_slot}:8080 weight=${active_weight};
+    server web-${candidate_slot}:8080 weight=${candidate_weight};
     keepalive 16;
 }
 
 upstream api_upstream {
-    server api-${slot}:8080;
+    server api-${active_slot}:8080 weight=${active_weight};
+    server api-${candidate_slot}:8080 weight=${candidate_weight};
     keepalive 32;
 }
 
 upstream ops_upstream {
-    server ops-${slot}:8080;
+    server ops-${active_slot}:8080 weight=${active_weight};
+    server ops-${candidate_slot}:8080 weight=${candidate_weight};
     keepalive 8;
 }
 EOF
+    else
+        cat > "$tmp_file" <<EOF
+upstream web_upstream {
+    server web-${candidate_slot}:8080 weight=100;
+    keepalive 16;
+}
+
+upstream api_upstream {
+    server api-${candidate_slot}:8080 weight=100;
+    keepalive 32;
+}
+
+upstream ops_upstream {
+    server ops-${candidate_slot}:8080 weight=100;
+    keepalive 8;
+}
+EOF
+    fi
     mv -f "$tmp_file" "$UPSTREAMS_FILE"
 }
 
+check_candidate_health() {
+    docker compose -f "$COMPOSE_FILE" exec -T nginx sh -c "
+        wget -q -O - http://api-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1 &&
+        wget -q -O - http://ops-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1 &&
+        wget -q -O - http://web-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1
+    " && [ -n "$(docker compose -f "$COMPOSE_FILE" ps -q --status running "jobs-${NEXT_SLOT}" 2>/dev/null || true)" ]
+}
+
 ACTIVE_SLOT=""
-if grep -q "api-blue:8080" "$UPSTREAMS_FILE" 2>/dev/null && \
-   [ -n "$(docker compose -f "$COMPOSE_FILE" ps -q api-blue 2>/dev/null || true)" ]; then
-    ACTIVE_SLOT="blue"
-    NEXT_SLOT="green"
-elif grep -q "api-green:8080" "$UPSTREAMS_FILE" 2>/dev/null && \
-     [ -n "$(docker compose -f "$COMPOSE_FILE" ps -q api-green 2>/dev/null || true)" ]; then
-    ACTIVE_SLOT="green"
-    NEXT_SLOT="blue"
-else
-    ACTIVE_SLOT=""
-    NEXT_SLOT="blue"
+if [ -f "$ACTIVE_SLOT_FILE" ]; then
+    RECORDED_SLOT="$(tr -d '[:space:]' < "$ACTIVE_SLOT_FILE")"
+    if [ "$RECORDED_SLOT" = "blue" ] && [ -n "$(docker compose -f "$COMPOSE_FILE" ps -q api-blue 2>/dev/null || true)" ]; then
+        ACTIVE_SLOT="blue"
+        NEXT_SLOT="green"
+    elif [ "$RECORDED_SLOT" = "green" ] && [ -n "$(docker compose -f "$COMPOSE_FILE" ps -q api-green 2>/dev/null || true)" ]; then
+        ACTIVE_SLOT="green"
+        NEXT_SLOT="blue"
+    fi
+fi
+
+if [ -z "$ACTIVE_SLOT" ]; then
+    if grep -q "api-blue:8080" "$UPSTREAMS_FILE" 2>/dev/null && \
+       [ -n "$(docker compose -f "$COMPOSE_FILE" ps -q api-blue 2>/dev/null || true)" ]; then
+        ACTIVE_SLOT="blue"
+        NEXT_SLOT="green"
+    elif grep -q "api-green:8080" "$UPSTREAMS_FILE" 2>/dev/null && \
+         [ -n "$(docker compose -f "$COMPOSE_FILE" ps -q api-green 2>/dev/null || true)" ]; then
+        ACTIVE_SLOT="green"
+        NEXT_SLOT="blue"
+    else
+        ACTIVE_SLOT=""
+        NEXT_SLOT="blue"
+    fi
 fi
 
 CANDIDATE_SERVICES=("api-${NEXT_SLOT}" "ops-${NEXT_SLOT}" "jobs-${NEXT_SLOT}" "web-${NEXT_SLOT}")
 
-echo "--- Blue-Green Cutover: active=${ACTIVE_SLOT:-none} -> candidate=${NEXT_SLOT} ---"
+echo "--- Blue-Green Cutover: active=${ACTIVE_SLOT:-none} -> candidate=${NEXT_SLOT} (ramp=${QS_ROLLOUT_RAMP_STAGES}) ---"
 
 echo "--- Pulling candidate slot (${NEXT_SLOT}) images ---"
-docker compose -f "$COMPOSE_FILE" pull "${CANDIDATE_SERVICES[@]}"
+PULL_ATTEMPT=1
+while true; do
+    if timeout --foreground 120s docker compose -f "$COMPOSE_FILE" pull "${CANDIDATE_SERVICES[@]}"; then
+        break
+    fi
+    if [ "$PULL_ATTEMPT" -ge 3 ]; then
+        echo "ERROR: Failed to pull candidate slot (${NEXT_SLOT}) images after ${PULL_ATTEMPT} attempts." >&2
+        exit 1
+    fi
+    echo "Warning: Image pull attempt ${PULL_ATTEMPT}/3 failed; retrying in 5s..." >&2
+    sleep 5
+    PULL_ATTEMPT=$((PULL_ATTEMPT + 1))
+done
 
 echo "--- Starting candidate slot (${NEXT_SLOT}) containers ---"
 docker compose -f "$COMPOSE_FILE" up -d "${CANDIDATE_SERVICES[@]}"
 
 if [ -z "$ACTIVE_SLOT" ]; then
-    write_upstreams "$NEXT_SLOT"
+    write_weighted_upstreams "" 0 "$NEXT_SLOT" 100
 fi
 
 docker compose -f "$COMPOSE_FILE" up -d nginx
 
-echo "--- Gating cutover on /healthz readiness for slot ${NEXT_SLOT} (timeout: 15s) ---"
+echo "--- Gating cutover on /healthz readiness for slot ${NEXT_SLOT} (timeout: ${QS_ROLLOUT_HEALTH_TIMEOUT_SEC}s) ---"
 HEALTHY=false
-for _ in $(seq 1 15); do
-    if docker compose -f "$COMPOSE_FILE" exec -T nginx sh -c "
-        wget -q -O - http://api-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1 &&
-        wget -q -O - http://ops-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1 &&
-        wget -q -O - http://web-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1
-    " && [ -n "$(docker compose -f "$COMPOSE_FILE" ps -q --status running "jobs-${NEXT_SLOT}" 2>/dev/null || true)" ]; then
+for _ in $(seq 1 "$QS_ROLLOUT_HEALTH_TIMEOUT_SEC"); do
+    if check_candidate_health; then
         HEALTHY=true
         break
     fi
@@ -100,22 +159,52 @@ for _ in $(seq 1 15); do
 done
 
 if [ "$HEALTHY" != "true" ]; then
-    echo "ERROR: Candidate slot (${NEXT_SLOT}) failed health checks within 15s. Rolling back..."
+    echo "ERROR: Candidate slot (${NEXT_SLOT}) failed initial health checks within ${QS_ROLLOUT_HEALTH_TIMEOUT_SEC}s. Aborting..." >&2
     docker compose -f "$COMPOSE_FILE" logs --tail=50 "${CANDIDATE_SERVICES[@]}" || true
     docker compose -f "$COMPOSE_FILE" stop -t 10 "${CANDIDATE_SERVICES[@]}" || true
     docker compose -f "$COMPOSE_FILE" rm -f "${CANDIDATE_SERVICES[@]}" || true
     exit 1
 fi
 
-echo "--- Candidate slot (${NEXT_SLOT}) is healthy. Switching Nginx upstreams and reloading ---"
-write_upstreams "$NEXT_SLOT"
-docker compose -f "$COMPOSE_FILE" exec -T nginx sh -c "nginx -t && nginx -s reload"
+if [ -n "$ACTIVE_SLOT" ] && [ "$ACTIVE_SLOT" != "$NEXT_SLOT" ]; then
+    IFS=',' read -r -a STAGE_ENTRIES <<< "$QS_ROLLOUT_RAMP_STAGES"
+    for stage_entry in "${STAGE_ENTRIES[@]}"; do
+        candidate_weight="${stage_entry%%:*}"
+        hold_sec="${stage_entry##*:}"
+        active_weight=$((100 - candidate_weight))
+
+        echo "--- Traffic Ramp Stage: ${ACTIVE_SLOT}=${active_weight}% -> ${NEXT_SLOT}=${candidate_weight}% (hold: ${hold_sec}s) ---"
+        write_weighted_upstreams "$ACTIVE_SLOT" "$active_weight" "$NEXT_SLOT" "$candidate_weight"
+        docker compose -f "$COMPOSE_FILE" exec -T nginx sh -c "nginx -t && nginx -s reload"
+
+        if [ "$hold_sec" -gt 0 ]; then
+            for elapsed in $(seq 1 "$hold_sec"); do
+                sleep 1
+                if ! check_candidate_health; then
+                    echo "ERROR: Candidate slot (${NEXT_SLOT}) failed health check during ${candidate_weight}% traffic stage (${elapsed}s/${hold_sec}s). Reverting 100% traffic to ${ACTIVE_SLOT}..." >&2
+                    write_weighted_upstreams "" 0 "$ACTIVE_SLOT" 100
+                    docker compose -f "$COMPOSE_FILE" exec -T nginx sh -c "nginx -t && nginx -s reload"
+                    docker compose -f "$COMPOSE_FILE" logs --tail=50 "${CANDIDATE_SERVICES[@]}" || true
+                    docker compose -f "$COMPOSE_FILE" stop -t 10 "${CANDIDATE_SERVICES[@]}" || true
+                    docker compose -f "$COMPOSE_FILE" rm -f "${CANDIDATE_SERVICES[@]}" || true
+                    exit 1
+                fi
+            done
+        fi
+    done
+else
+    echo "--- Initial slot (${NEXT_SLOT}) healthy. Reloading Nginx with 100% traffic on ${NEXT_SLOT} ---"
+    write_weighted_upstreams "" 0 "$NEXT_SLOT" 100
+    docker compose -f "$COMPOSE_FILE" exec -T nginx sh -c "nginx -t && nginx -s reload"
+fi
+
+printf '%s\n' "$NEXT_SLOT" > "$ACTIVE_SLOT_FILE"
 
 if [ -n "$ACTIVE_SLOT" ] && [ "$ACTIVE_SLOT" != "$NEXT_SLOT" ]; then
     OLD_SERVICES=("web-${ACTIVE_SLOT}" "jobs-${ACTIVE_SLOT}" "api-${ACTIVE_SLOT}" "ops-${ACTIVE_SLOT}")
-    echo "--- Draining and stopping previous slot (${ACTIVE_SLOT}) ---"
+    echo "--- Draining and stopping previous slot (${ACTIVE_SLOT}, timeout: ${QS_ROLLOUT_DRAIN_TIMEOUT_SEC}s) ---"
     sleep 2
-    docker compose -f "$COMPOSE_FILE" stop -t 30 "${OLD_SERVICES[@]}" || true
+    docker compose -f "$COMPOSE_FILE" stop -t "$QS_ROLLOUT_DRAIN_TIMEOUT_SEC" "${OLD_SERVICES[@]}" || true
     docker compose -f "$COMPOSE_FILE" rm -f "${OLD_SERVICES[@]}" || true
 fi
 

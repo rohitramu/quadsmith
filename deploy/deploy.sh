@@ -132,6 +132,55 @@ for line in "${TOPOLOGY_LINES[@]}"; do
     fi
 done
 
+read -r HEALTH_CHECK_TIMEOUT_SEC DRAIN_TIMEOUT_SEC NODE_ROLLOUT_TIMEOUT_SEC ROLLOUT_MAX_RETRIES ROLLOUT_RETRY_BACKOFF_SEC RAMP_STAGES_SPEC < <(awk '
+    /^[[:space:]]*rollout[[:space:]]*\{/ { in_rollout=1; next }
+    in_rollout && /^[[:space:]]*health_check_timeout[[:space:]]*\{/ { blk="health"; next }
+    in_rollout && /^[[:space:]]*drain_timeout[[:space:]]*\{/ { blk="drain"; next }
+    in_rollout && /^[[:space:]]*node_rollout_timeout[[:space:]]*\{/ { blk="node"; next }
+    in_rollout && /^[[:space:]]*retry_backoff[[:space:]]*\{/ { blk="backoff"; next }
+    in_rollout && /^[[:space:]]*ramp_stages[[:space:]]*\{/ { blk="stage"; w=""; h="0"; next }
+    in_rollout && blk=="stage" && /^[[:space:]]*hold_duration[[:space:]]*\{/ { subblk="hold"; next }
+    in_rollout && blk=="stage" && /^[[:space:]]*candidate_weight_percent:/ { w=$2; next }
+    in_rollout && blk=="stage" && subblk=="hold" && /^[[:space:]]*seconds:/ { h=$2; next }
+    in_rollout && blk=="stage" && subblk=="hold" && /^[[:space:]]*\}/ { subblk=""; next }
+    in_rollout && blk=="stage" && subblk=="" && /^[[:space:]]*\}/ {
+        stages = (stages == "" ? "" : stages ",") w ":" h;
+        blk="";
+        next
+    }
+    in_rollout && blk=="health" && /^[[:space:]]*seconds:/ { health=$2; next }
+    in_rollout && blk=="drain" && /^[[:space:]]*seconds:/ { drain=$2; next }
+    in_rollout && blk=="node" && /^[[:space:]]*seconds:/ { node=$2; next }
+    in_rollout && blk=="backoff" && /^[[:space:]]*seconds:/ { backoff=$2; next }
+    in_rollout && (blk=="health" || blk=="drain" || blk=="node" || blk=="backoff") && /^[[:space:]]*\}/ { blk=""; next }
+    in_rollout && blk=="" && /^[[:space:]]*max_retries:/ { retries=$2; next }
+    in_rollout && blk=="" && /^[[:space:]]*\}/ { in_rollout=0; next }
+    END {
+        printf "%s %s %s %s %s %s\n", health, drain, node, retries, backoff, stages
+    }
+' "$CONFIG_FILE")
+
+run_with_retry() {
+    local timeout_sec="$1"
+    shift
+    local attempt=1
+    local delay="$ROLLOUT_RETRY_BACKOFF_SEC"
+    while true; do
+        if timeout --foreground "${timeout_sec}s" "$@"; then
+            return 0
+        fi
+        local rc=$?
+        if [ "$attempt" -ge "$ROLLOUT_MAX_RETRIES" ]; then
+            echo "Error: Command failed after ${attempt} attempts (last exit code: ${rc}): $*" >&2
+            return "$rc"
+        fi
+        echo "Warning: Attempt ${attempt}/${ROLLOUT_MAX_RETRIES} failed (exit code ${rc}). Retrying in ${delay}s..." >&2
+        sleep "$delay"
+        attempt=$((attempt + 1))
+        delay=$((delay * 2))
+    done
+}
+
 ensure_gcp_network_and_registry() {
     echo "--- [1/4] Ensuring GCP Artifact Registry, IAP Firewall, Cloud NAT & Private Services Access (${GCP_PROJECT_ID}) ---"
     if ! gcloud artifacts repositories describe "$GAR_REPOSITORY" \
@@ -327,7 +376,7 @@ ensure_compute_nodes() {
             fi
         fi
 
-        gcloud compute ssh "$vm_name" \
+        run_with_retry 180 gcloud compute ssh "$vm_name" \
             --tunnel-through-iap \
             --project="$GCP_PROJECT_ID" \
             --zone="$zone" \
@@ -493,14 +542,17 @@ QS_DISCORD_CLIENT_SECRET=${QS_DISCORD_CLIENT_SECRET}
 QS_OAUTH_CLIENT_ID=${QS_OAUTH_CLIENT_ID}
 QS_OAUTH_CLIENT_SECRET=${QS_OAUTH_CLIENT_SECRET}
 QS_JOB_SERVER_AUTH_TOKEN=${QS_JOB_SERVER_AUTH_TOKEN}
+QS_ROLLOUT_HEALTH_TIMEOUT_SEC=${HEALTH_CHECK_TIMEOUT_SEC}
+QS_ROLLOUT_DRAIN_TIMEOUT_SEC=${DRAIN_TIMEOUT_SEC}
+QS_ROLLOUT_RAMP_STAGES=${RAMP_STAGES_SPEC}
 EOF
 
-        gcloud compute scp --tunnel-through-iap \
+        run_with_retry 60 gcloud compute scp --tunnel-through-iap \
             "$env_tmp" "${vm_name}:/opt/quadsmith/.env" \
             --project="$GCP_PROJECT_ID" --zone="$zone"
         rm -f "$env_tmp"
 
-        gcloud compute scp --tunnel-through-iap --recurse \
+        run_with_retry 60 gcloud compute scp --tunnel-through-iap --recurse \
             deploy/docker-compose.yaml \
             deploy/docker-compose.blue-green.yaml \
             deploy/deploy_blue_green.sh \
@@ -508,7 +560,7 @@ EOF
             "${vm_name}:/opt/quadsmith/deploy/" \
             --project="$GCP_PROJECT_ID" --zone="$zone"
 
-        gcloud compute ssh "$vm_name" \
+        run_with_retry "$NODE_ROLLOUT_TIMEOUT_SEC" gcloud compute ssh "$vm_name" \
             --tunnel-through-iap \
             --project="$GCP_PROJECT_ID" \
             --zone="$zone" \

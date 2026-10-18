@@ -4,6 +4,8 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import type { Duration } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_duration } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
@@ -12,7 +14,8 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_config_deploy: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Ch1xdWFkc21pdGgvY29uZmlnL2RlcGxveS5wcm90bxIQcXVhZHNtaXRoLmNvbmZpZyKRAgoMRGVwbG95Q29uZmlnEhgKC2Vudmlyb25tZW50GAEgASgJSACIAQESGwoOZ2NwX3Byb2plY3RfaWQYAiABKAlIAYgBARIcCg9yZWdpc3RyeV9yZWdpb24YAyABKAlIAogBARIvCgdyZWdpb25zGAQgAygLMh4ucXVhZHNtaXRoLmNvbmZpZy5SZWdpb25Db25maWcSJgoZZGJfYmFja3VwX3JldGVudGlvbl9jb3VudBgFIAEoBUgDiAEBQg4KDF9lbnZpcm9ubWVudEIRCg9fZ2NwX3Byb2plY3RfaWRCEgoQX3JlZ2lzdHJ5X3JlZ2lvbkIcChpfZGJfYmFja3VwX3JldGVudGlvbl9jb3VudCJ/CgxSZWdpb25Db25maWcSEwoGcmVnaW9uGAEgASgJSACIAQESFAoHZGJfdGllchgCIAEoCUgBiAEBEi0KBW5vZGVzGAMgAygLMh4ucXVhZHNtaXRoLmNvbmZpZy5WbU5vZGVDb25maWdCCQoHX3JlZ2lvbkIKCghfZGJfdGllciJWCgxWbU5vZGVDb25maWcSEQoEem9uZRgBIAEoCUgAiAEBEhkKDG1hY2hpbmVfdHlwZRgCIAEoCUgBiAEBQgcKBV96b25lQg8KDV9tYWNoaW5lX3R5cGVCLloscXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2NvbmZpZztjb25maWdiBnByb3RvMw",
+    "Ch1xdWFkc21pdGgvY29uZmlnL2RlcGxveS5wcm90bxIQcXVhZHNtaXRoLmNvbmZpZyLUAgoMRGVwbG95Q29uZmlnEhgKC2Vudmlyb25tZW50GAEgASgJSACIAQESGwoOZ2NwX3Byb2plY3RfaWQYAiABKAlIAYgBARIcCg9yZWdpc3RyeV9yZWdpb24YAyABKAlIAogBARIvCgdyZWdpb25zGAQgAygLMh4ucXVhZHNtaXRoLmNvbmZpZy5SZWdpb25Db25maWcSJgoZZGJfYmFja3VwX3JldGVudGlvbl9jb3VudBgFIAEoBUgDiAEBEjUKB3JvbGxvdXQYBiABKAsyHy5xdWFkc21pdGguY29uZmlnLlJvbGxvdXRDb25maWdIBIgBAUIOCgxfZW52aXJvbm1lbnRCEQoPX2djcF9wcm9qZWN0X2lkQhIKEF9yZWdpc3RyeV9yZWdpb25CHAoaX2RiX2JhY2t1cF9yZXRlbnRpb25fY291bnRCCgoIX3JvbGxvdXQifwoMUmVnaW9uQ29uZmlnEhMKBnJlZ2lvbhgBIAEoCUgAiAEBEhQKB2RiX3RpZXIYAiABKAlIAYgBARItCgVub2RlcxgDIAMoCzIeLnF1YWRzbWl0aC5jb25maWcuVm1Ob2RlQ29uZmlnQgkKB19yZWdpb25CCgoIX2RiX3RpZXIisgMKDVJvbGxvdXRDb25maWcSPAoUaGVhbHRoX2NoZWNrX3RpbWVvdXQYASABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IAIgBARI1Cg1kcmFpbl90aW1lb3V0GAIgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSAGIAQESPAoUbm9kZV9yb2xsb3V0X3RpbWVvdXQYAyABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IAogBARIYCgttYXhfcmV0cmllcxgEIAEoBUgDiAEBEjUKDXJldHJ5X2JhY2tvZmYYBSABKAsyGS5nb29nbGUucHJvdG9idWYuRHVyYXRpb25IBIgBARI3CgtyYW1wX3N0YWdlcxgGIAMoCzIiLnF1YWRzbWl0aC5jb25maWcuVHJhZmZpY1JhbXBTdGFnZUIXChVfaGVhbHRoX2NoZWNrX3RpbWVvdXRCEAoOX2RyYWluX3RpbWVvdXRCFwoVX25vZGVfcm9sbG91dF90aW1lb3V0Qg4KDF9tYXhfcmV0cmllc0IQCg5fcmV0cnlfYmFja29mZiKfAQoQVHJhZmZpY1JhbXBTdGFnZRIlChhjYW5kaWRhdGVfd2VpZ2h0X3BlcmNlbnQYASABKAVIAIgBARI1Cg1ob2xkX2R1cmF0aW9uGAIgASgLMhkuZ29vZ2xlLnByb3RvYnVmLkR1cmF0aW9uSAGIAQFCGwoZX2NhbmRpZGF0ZV93ZWlnaHRfcGVyY2VudEIQCg5faG9sZF9kdXJhdGlvbiJWCgxWbU5vZGVDb25maWcSEQoEem9uZRgBIAEoCUgAiAEBEhkKDG1hY2hpbmVfdHlwZRgCIAEoCUgBiAEBQgcKBV96b25lQg8KDV9tYWNoaW5lX3R5cGVCLloscXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2NvbmZpZztjb25maWdiBnByb3RvMw",
+    [file_google_protobuf_duration],
   );
 
 /**
@@ -43,6 +46,11 @@ export type DeployConfig = Message<"quadsmith.config.DeployConfig"> & {
    * @generated from field: optional int32 db_backup_retention_count = 5;
    */
   dbBackupRetentionCount?: number | undefined;
+
+  /**
+   * @generated from field: optional quadsmith.config.RolloutConfig rollout = 6;
+   */
+  rollout?: RolloutConfig | undefined;
 };
 
 /**
@@ -82,6 +90,72 @@ export const RegionConfigSchema: GenMessage<RegionConfig> =
   messageDesc(file_quadsmith_config_deploy, 1);
 
 /**
+ * @generated from message quadsmith.config.RolloutConfig
+ */
+export type RolloutConfig = Message<"quadsmith.config.RolloutConfig"> & {
+  /**
+   * @generated from field: optional google.protobuf.Duration health_check_timeout = 1;
+   */
+  healthCheckTimeout?: Duration | undefined;
+
+  /**
+   * @generated from field: optional google.protobuf.Duration drain_timeout = 2;
+   */
+  drainTimeout?: Duration | undefined;
+
+  /**
+   * @generated from field: optional google.protobuf.Duration node_rollout_timeout = 3;
+   */
+  nodeRolloutTimeout?: Duration | undefined;
+
+  /**
+   * @generated from field: optional int32 max_retries = 4;
+   */
+  maxRetries?: number | undefined;
+
+  /**
+   * @generated from field: optional google.protobuf.Duration retry_backoff = 5;
+   */
+  retryBackoff?: Duration | undefined;
+
+  /**
+   * @generated from field: repeated quadsmith.config.TrafficRampStage ramp_stages = 6;
+   */
+  rampStages: TrafficRampStage[];
+};
+
+/**
+ * Describes the message quadsmith.config.RolloutConfig.
+ * Use `create(RolloutConfigSchema)` to create a new message.
+ */
+export const RolloutConfigSchema: GenMessage<RolloutConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_deploy, 2);
+
+/**
+ * @generated from message quadsmith.config.TrafficRampStage
+ */
+export type TrafficRampStage = Message<"quadsmith.config.TrafficRampStage"> & {
+  /**
+   * @generated from field: optional int32 candidate_weight_percent = 1;
+   */
+  candidateWeightPercent?: number | undefined;
+
+  /**
+   * @generated from field: optional google.protobuf.Duration hold_duration = 2;
+   */
+  holdDuration?: Duration | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.TrafficRampStage.
+ * Use `create(TrafficRampStageSchema)` to create a new message.
+ */
+export const TrafficRampStageSchema: GenMessage<TrafficRampStage> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_deploy, 3);
+
+/**
  * @generated from message quadsmith.config.VmNodeConfig
  */
 export type VmNodeConfig = Message<"quadsmith.config.VmNodeConfig"> & {
@@ -102,4 +176,4 @@ export type VmNodeConfig = Message<"quadsmith.config.VmNodeConfig"> & {
  */
 export const VmNodeConfigSchema: GenMessage<VmNodeConfig> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_config_deploy, 2);
+  messageDesc(file_quadsmith_config_deploy, 4);

@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package quadsmith.config;
 
+import "google/protobuf/duration.proto";
+
 option go_package = "quadsmith/shared/gen/quadsmith/config;config";
 
 // ---------------------------------------------------------
@@ -14,12 +16,27 @@ message DeployConfig {
   optional string registry_region = 3;
   repeated RegionConfig regions = 4;
   optional int32 db_backup_retention_count = 5;
+  optional RolloutConfig rollout = 6;
 }
 
 message RegionConfig {
   optional string region = 1;
   optional string db_tier = 2;
   repeated VmNodeConfig nodes = 3;
+}
+
+message RolloutConfig {
+  optional google.protobuf.Duration health_check_timeout = 1;
+  optional google.protobuf.Duration drain_timeout = 2;
+  optional google.protobuf.Duration node_rollout_timeout = 3;
+  optional int32 max_retries = 4;
+  optional google.protobuf.Duration retry_backoff = 5;
+  repeated TrafficRampStage ramp_stages = 6;
+}
+
+message TrafficRampStage {
+  optional int32 candidate_weight_percent = 1;
+  optional google.protobuf.Duration hold_duration = 2;
 }
 
 message VmNodeConfig {

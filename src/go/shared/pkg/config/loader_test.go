@@ -449,6 +449,23 @@ func TestValidateDeployConfig(t *testing.T) {
 				},
 			},
 		},
+		Rollout: &configpb.RolloutConfig{
+			HealthCheckTimeout: durationpb.New(30 * time.Second),
+			DrainTimeout:       durationpb.New(30 * time.Second),
+			NodeRolloutTimeout: durationpb.New(300 * time.Second),
+			MaxRetries:         proto.Int32(3),
+			RetryBackoff:       durationpb.New(5 * time.Second),
+			RampStages: []*configpb.TrafficRampStage{
+				{
+					CandidateWeightPercent: proto.Int32(25),
+					HoldDuration:           durationpb.New(15 * time.Second),
+				},
+				{
+					CandidateWeightPercent: proto.Int32(100),
+					HoldDuration:           durationpb.New(0),
+				},
+			},
+		},
 	}
 	if err := ValidateDeployConfig(valid); err != nil {
 		t.Fatalf("expected valid deploy config, got error: %v", err)
@@ -466,5 +483,32 @@ func TestValidateDeployConfig(t *testing.T) {
 	sandboxCfg.Environment = proto.String("sandbox")
 	if err := ValidateDeployConfig(sandboxCfg); err == nil {
 		t.Error("expected error when deploy environment is sandbox")
+	}
+
+	// Non-monotonic ramp stages should fail
+	nonMonotonic := proto.Clone(valid).(*configpb.DeployConfig)
+	nonMonotonic.Rollout.RampStages = []*configpb.TrafficRampStage{
+		{
+			CandidateWeightPercent: proto.Int32(50),
+			HoldDuration:           durationpb.New(10 * time.Second),
+		},
+		{
+			CandidateWeightPercent: proto.Int32(25),
+			HoldDuration:           durationpb.New(10 * time.Second),
+		},
+		{
+			CandidateWeightPercent: proto.Int32(100),
+			HoldDuration:           durationpb.New(0),
+		},
+	}
+	if err := ValidateDeployConfig(nonMonotonic); err == nil {
+		t.Error("expected error when ramp_stages weights are not strictly increasing")
+	}
+
+	// Final ramp stage not reaching 100% should fail
+	incompleteRamp := proto.Clone(valid).(*configpb.DeployConfig)
+	incompleteRamp.Rollout.RampStages[1].CandidateWeightPercent = proto.Int32(80)
+	if err := ValidateDeployConfig(incompleteRamp); err == nil {
+		t.Error("expected error when final ramp_stages entry does not reach 100%")
 	}
 }

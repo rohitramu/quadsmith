@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"time"
 
 	"google.golang.org/protobuf/encoding/prototext"
 	"google.golang.org/protobuf/proto"
@@ -896,6 +897,66 @@ func ValidateDeployConfig(c *configpb.DeployConfig) error {
 
 	if c.GetDbBackupRetentionCount() <= 0 {
 		errs = append(errs, fmt.Sprintf("db_backup_retention_count must be greater than 0 (got %d)", c.GetDbBackupRetentionCount()))
+	}
+
+	if r := c.GetRollout(); r == nil {
+		errs = append(errs, "rollout configuration must be specified")
+	} else {
+		var totalRampHold time.Duration
+		if r.GetHealthCheckTimeout() == nil || r.GetHealthCheckTimeout().AsDuration() <= 0 {
+			errs = append(errs, "rollout.health_check_timeout must be greater than 0")
+		}
+		if r.GetDrainTimeout() == nil || r.GetDrainTimeout().AsDuration() <= 0 {
+			errs = append(errs, "rollout.drain_timeout must be greater than 0")
+		}
+		if r.GetNodeRolloutTimeout() == nil || r.GetNodeRolloutTimeout().AsDuration() <= 0 {
+			errs = append(errs, "rollout.node_rollout_timeout must be greater than 0")
+		}
+		if r.GetMaxRetries() < 1 {
+			errs = append(errs, fmt.Sprintf("rollout.max_retries must be at least 1 (got %d)", r.GetMaxRetries()))
+		}
+		if r.GetRetryBackoff() == nil || r.GetRetryBackoff().AsDuration() <= 0 {
+			errs = append(errs, "rollout.retry_backoff must be greater than 0")
+		}
+		stages := r.GetRampStages()
+		if len(stages) == 0 {
+			errs = append(errs, "rollout.ramp_stages must define at least one stage")
+		} else {
+			prevWeight := int32(0)
+			for i, st := range stages {
+				w := st.GetCandidateWeightPercent()
+				if w < 1 || w > 100 {
+					errs = append(errs, fmt.Sprintf("rollout.ramp_stages[%d].candidate_weight_percent must be between 1 and 100 (got %d)", i, w))
+				} else if w <= prevWeight {
+					errs = append(errs, fmt.Sprintf("rollout.ramp_stages[%d].candidate_weight_percent (%d) must be strictly greater than previous stage (%d)", i, w, prevWeight))
+				}
+				prevWeight = w
+
+				isFinal := i == len(stages)-1
+				if st.GetHoldDuration() == nil {
+					errs = append(errs, fmt.Sprintf("rollout.ramp_stages[%d].hold_duration must be specified", i))
+				} else {
+					hold := st.GetHoldDuration().AsDuration()
+					if !isFinal && hold <= 0 {
+						errs = append(errs, fmt.Sprintf("rollout.ramp_stages[%d].hold_duration must be greater than 0 for intermediate stage", i))
+					} else if isFinal && hold < 0 {
+						errs = append(errs, fmt.Sprintf("rollout.ramp_stages[%d].hold_duration cannot be negative", i))
+					}
+					if hold > 0 {
+						totalRampHold += hold
+					}
+				}
+			}
+			if stages[len(stages)-1].GetCandidateWeightPercent() != 100 {
+				errs = append(errs, fmt.Sprintf("final rollout.ramp_stages entry must reach candidate_weight_percent: 100 (got %d)", stages[len(stages)-1].GetCandidateWeightPercent()))
+			}
+		}
+		if r.GetHealthCheckTimeout() != nil && r.GetDrainTimeout() != nil && r.GetNodeRolloutTimeout() != nil {
+			minRequired := r.GetHealthCheckTimeout().AsDuration() + r.GetDrainTimeout().AsDuration() + totalRampHold
+			if r.GetNodeRolloutTimeout().AsDuration() <= minRequired {
+				errs = append(errs, fmt.Sprintf("rollout.node_rollout_timeout (%s) must exceed health_check_timeout + drain_timeout + sum(ramp_stages.hold_duration) (%s)", r.GetNodeRolloutTimeout().AsDuration(), minRequired))
+			}
+		}
 	}
 
 	if len(errs) > 0 {

@@ -9,6 +9,7 @@ package config
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	durationpb "google.golang.org/protobuf/types/known/durationpb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -28,6 +29,7 @@ type DeployConfig struct {
 	RegistryRegion         *string                `protobuf:"bytes,3,opt,name=registry_region,json=registryRegion,proto3,oneof" json:"registry_region,omitempty"`
 	Regions                []*RegionConfig        `protobuf:"bytes,4,rep,name=regions,proto3" json:"regions,omitempty"`
 	DbBackupRetentionCount *int32                 `protobuf:"varint,5,opt,name=db_backup_retention_count,json=dbBackupRetentionCount,proto3,oneof" json:"db_backup_retention_count,omitempty"`
+	Rollout                *RolloutConfig         `protobuf:"bytes,6,opt,name=rollout,proto3,oneof" json:"rollout,omitempty"`
 	unknownFields          protoimpl.UnknownFields
 	sizeCache              protoimpl.SizeCache
 }
@@ -97,6 +99,13 @@ func (x *DeployConfig) GetDbBackupRetentionCount() int32 {
 	return 0
 }
 
+func (x *DeployConfig) GetRollout() *RolloutConfig {
+	if x != nil {
+		return x.Rollout
+	}
+	return nil
+}
+
 type RegionConfig struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Region        *string                `protobuf:"bytes,1,opt,name=region,proto3,oneof" json:"region,omitempty"`
@@ -157,6 +166,142 @@ func (x *RegionConfig) GetNodes() []*VmNodeConfig {
 	return nil
 }
 
+type RolloutConfig struct {
+	state              protoimpl.MessageState `protogen:"open.v1"`
+	HealthCheckTimeout *durationpb.Duration   `protobuf:"bytes,1,opt,name=health_check_timeout,json=healthCheckTimeout,proto3,oneof" json:"health_check_timeout,omitempty"`
+	DrainTimeout       *durationpb.Duration   `protobuf:"bytes,2,opt,name=drain_timeout,json=drainTimeout,proto3,oneof" json:"drain_timeout,omitempty"`
+	NodeRolloutTimeout *durationpb.Duration   `protobuf:"bytes,3,opt,name=node_rollout_timeout,json=nodeRolloutTimeout,proto3,oneof" json:"node_rollout_timeout,omitempty"`
+	MaxRetries         *int32                 `protobuf:"varint,4,opt,name=max_retries,json=maxRetries,proto3,oneof" json:"max_retries,omitempty"`
+	RetryBackoff       *durationpb.Duration   `protobuf:"bytes,5,opt,name=retry_backoff,json=retryBackoff,proto3,oneof" json:"retry_backoff,omitempty"`
+	RampStages         []*TrafficRampStage    `protobuf:"bytes,6,rep,name=ramp_stages,json=rampStages,proto3" json:"ramp_stages,omitempty"`
+	unknownFields      protoimpl.UnknownFields
+	sizeCache          protoimpl.SizeCache
+}
+
+func (x *RolloutConfig) Reset() {
+	*x = RolloutConfig{}
+	mi := &file_quadsmith_config_deploy_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RolloutConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RolloutConfig) ProtoMessage() {}
+
+func (x *RolloutConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_config_deploy_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RolloutConfig.ProtoReflect.Descriptor instead.
+func (*RolloutConfig) Descriptor() ([]byte, []int) {
+	return file_quadsmith_config_deploy_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *RolloutConfig) GetHealthCheckTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.HealthCheckTimeout
+	}
+	return nil
+}
+
+func (x *RolloutConfig) GetDrainTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.DrainTimeout
+	}
+	return nil
+}
+
+func (x *RolloutConfig) GetNodeRolloutTimeout() *durationpb.Duration {
+	if x != nil {
+		return x.NodeRolloutTimeout
+	}
+	return nil
+}
+
+func (x *RolloutConfig) GetMaxRetries() int32 {
+	if x != nil && x.MaxRetries != nil {
+		return *x.MaxRetries
+	}
+	return 0
+}
+
+func (x *RolloutConfig) GetRetryBackoff() *durationpb.Duration {
+	if x != nil {
+		return x.RetryBackoff
+	}
+	return nil
+}
+
+func (x *RolloutConfig) GetRampStages() []*TrafficRampStage {
+	if x != nil {
+		return x.RampStages
+	}
+	return nil
+}
+
+type TrafficRampStage struct {
+	state                  protoimpl.MessageState `protogen:"open.v1"`
+	CandidateWeightPercent *int32                 `protobuf:"varint,1,opt,name=candidate_weight_percent,json=candidateWeightPercent,proto3,oneof" json:"candidate_weight_percent,omitempty"`
+	HoldDuration           *durationpb.Duration   `protobuf:"bytes,2,opt,name=hold_duration,json=holdDuration,proto3,oneof" json:"hold_duration,omitempty"`
+	unknownFields          protoimpl.UnknownFields
+	sizeCache              protoimpl.SizeCache
+}
+
+func (x *TrafficRampStage) Reset() {
+	*x = TrafficRampStage{}
+	mi := &file_quadsmith_config_deploy_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *TrafficRampStage) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TrafficRampStage) ProtoMessage() {}
+
+func (x *TrafficRampStage) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_config_deploy_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TrafficRampStage.ProtoReflect.Descriptor instead.
+func (*TrafficRampStage) Descriptor() ([]byte, []int) {
+	return file_quadsmith_config_deploy_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *TrafficRampStage) GetCandidateWeightPercent() int32 {
+	if x != nil && x.CandidateWeightPercent != nil {
+		return *x.CandidateWeightPercent
+	}
+	return 0
+}
+
+func (x *TrafficRampStage) GetHoldDuration() *durationpb.Duration {
+	if x != nil {
+		return x.HoldDuration
+	}
+	return nil
+}
+
 type VmNodeConfig struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Zone          *string                `protobuf:"bytes,1,opt,name=zone,proto3,oneof" json:"zone,omitempty"`
@@ -167,7 +312,7 @@ type VmNodeConfig struct {
 
 func (x *VmNodeConfig) Reset() {
 	*x = VmNodeConfig{}
-	mi := &file_quadsmith_config_deploy_proto_msgTypes[2]
+	mi := &file_quadsmith_config_deploy_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -179,7 +324,7 @@ func (x *VmNodeConfig) String() string {
 func (*VmNodeConfig) ProtoMessage() {}
 
 func (x *VmNodeConfig) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_config_deploy_proto_msgTypes[2]
+	mi := &file_quadsmith_config_deploy_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -192,7 +337,7 @@ func (x *VmNodeConfig) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use VmNodeConfig.ProtoReflect.Descriptor instead.
 func (*VmNodeConfig) Descriptor() ([]byte, []int) {
-	return file_quadsmith_config_deploy_proto_rawDescGZIP(), []int{2}
+	return file_quadsmith_config_deploy_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *VmNodeConfig) GetZone() string {
@@ -213,24 +358,46 @@ var File_quadsmith_config_deploy_proto protoreflect.FileDescriptor
 
 const file_quadsmith_config_deploy_proto_rawDesc = "" +
 	"\n" +
-	"\x1dquadsmith/config/deploy.proto\x12\x10quadsmith.config\"\xdd\x02\n" +
+	"\x1dquadsmith/config/deploy.proto\x12\x10quadsmith.config\x1a\x1egoogle/protobuf/duration.proto\"\xa9\x03\n" +
 	"\fDeployConfig\x12%\n" +
 	"\venvironment\x18\x01 \x01(\tH\x00R\venvironment\x88\x01\x01\x12)\n" +
 	"\x0egcp_project_id\x18\x02 \x01(\tH\x01R\fgcpProjectId\x88\x01\x01\x12,\n" +
 	"\x0fregistry_region\x18\x03 \x01(\tH\x02R\x0eregistryRegion\x88\x01\x01\x128\n" +
 	"\aregions\x18\x04 \x03(\v2\x1e.quadsmith.config.RegionConfigR\aregions\x12>\n" +
-	"\x19db_backup_retention_count\x18\x05 \x01(\x05H\x03R\x16dbBackupRetentionCount\x88\x01\x01B\x0e\n" +
+	"\x19db_backup_retention_count\x18\x05 \x01(\x05H\x03R\x16dbBackupRetentionCount\x88\x01\x01\x12>\n" +
+	"\arollout\x18\x06 \x01(\v2\x1f.quadsmith.config.RolloutConfigH\x04R\arollout\x88\x01\x01B\x0e\n" +
 	"\f_environmentB\x11\n" +
 	"\x0f_gcp_project_idB\x12\n" +
 	"\x10_registry_regionB\x1c\n" +
-	"\x1a_db_backup_retention_count\"\x96\x01\n" +
+	"\x1a_db_backup_retention_countB\n" +
+	"\n" +
+	"\b_rollout\"\x96\x01\n" +
 	"\fRegionConfig\x12\x1b\n" +
 	"\x06region\x18\x01 \x01(\tH\x00R\x06region\x88\x01\x01\x12\x1c\n" +
 	"\adb_tier\x18\x02 \x01(\tH\x01R\x06dbTier\x88\x01\x01\x124\n" +
 	"\x05nodes\x18\x03 \x03(\v2\x1e.quadsmith.config.VmNodeConfigR\x05nodesB\t\n" +
 	"\a_regionB\n" +
 	"\n" +
-	"\b_db_tier\"i\n" +
+	"\b_db_tier\"\x8e\x04\n" +
+	"\rRolloutConfig\x12P\n" +
+	"\x14health_check_timeout\x18\x01 \x01(\v2\x19.google.protobuf.DurationH\x00R\x12healthCheckTimeout\x88\x01\x01\x12C\n" +
+	"\rdrain_timeout\x18\x02 \x01(\v2\x19.google.protobuf.DurationH\x01R\fdrainTimeout\x88\x01\x01\x12P\n" +
+	"\x14node_rollout_timeout\x18\x03 \x01(\v2\x19.google.protobuf.DurationH\x02R\x12nodeRolloutTimeout\x88\x01\x01\x12$\n" +
+	"\vmax_retries\x18\x04 \x01(\x05H\x03R\n" +
+	"maxRetries\x88\x01\x01\x12C\n" +
+	"\rretry_backoff\x18\x05 \x01(\v2\x19.google.protobuf.DurationH\x04R\fretryBackoff\x88\x01\x01\x12C\n" +
+	"\vramp_stages\x18\x06 \x03(\v2\".quadsmith.config.TrafficRampStageR\n" +
+	"rampStagesB\x17\n" +
+	"\x15_health_check_timeoutB\x10\n" +
+	"\x0e_drain_timeoutB\x17\n" +
+	"\x15_node_rollout_timeoutB\x0e\n" +
+	"\f_max_retriesB\x10\n" +
+	"\x0e_retry_backoff\"\xc5\x01\n" +
+	"\x10TrafficRampStage\x12=\n" +
+	"\x18candidate_weight_percent\x18\x01 \x01(\x05H\x00R\x16candidateWeightPercent\x88\x01\x01\x12C\n" +
+	"\rhold_duration\x18\x02 \x01(\v2\x19.google.protobuf.DurationH\x01R\fholdDuration\x88\x01\x01B\x1b\n" +
+	"\x19_candidate_weight_percentB\x10\n" +
+	"\x0e_hold_duration\"i\n" +
 	"\fVmNodeConfig\x12\x17\n" +
 	"\x04zone\x18\x01 \x01(\tH\x00R\x04zone\x88\x01\x01\x12&\n" +
 	"\fmachine_type\x18\x02 \x01(\tH\x01R\vmachineType\x88\x01\x01B\a\n" +
@@ -249,20 +416,30 @@ func file_quadsmith_config_deploy_proto_rawDescGZIP() []byte {
 	return file_quadsmith_config_deploy_proto_rawDescData
 }
 
-var file_quadsmith_config_deploy_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_quadsmith_config_deploy_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_quadsmith_config_deploy_proto_goTypes = []any{
-	(*DeployConfig)(nil), // 0: quadsmith.config.DeployConfig
-	(*RegionConfig)(nil), // 1: quadsmith.config.RegionConfig
-	(*VmNodeConfig)(nil), // 2: quadsmith.config.VmNodeConfig
+	(*DeployConfig)(nil),        // 0: quadsmith.config.DeployConfig
+	(*RegionConfig)(nil),        // 1: quadsmith.config.RegionConfig
+	(*RolloutConfig)(nil),       // 2: quadsmith.config.RolloutConfig
+	(*TrafficRampStage)(nil),    // 3: quadsmith.config.TrafficRampStage
+	(*VmNodeConfig)(nil),        // 4: quadsmith.config.VmNodeConfig
+	(*durationpb.Duration)(nil), // 5: google.protobuf.Duration
 }
 var file_quadsmith_config_deploy_proto_depIdxs = []int32{
 	1, // 0: quadsmith.config.DeployConfig.regions:type_name -> quadsmith.config.RegionConfig
-	2, // 1: quadsmith.config.RegionConfig.nodes:type_name -> quadsmith.config.VmNodeConfig
-	2, // [2:2] is the sub-list for method output_type
-	2, // [2:2] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	2, // 1: quadsmith.config.DeployConfig.rollout:type_name -> quadsmith.config.RolloutConfig
+	4, // 2: quadsmith.config.RegionConfig.nodes:type_name -> quadsmith.config.VmNodeConfig
+	5, // 3: quadsmith.config.RolloutConfig.health_check_timeout:type_name -> google.protobuf.Duration
+	5, // 4: quadsmith.config.RolloutConfig.drain_timeout:type_name -> google.protobuf.Duration
+	5, // 5: quadsmith.config.RolloutConfig.node_rollout_timeout:type_name -> google.protobuf.Duration
+	5, // 6: quadsmith.config.RolloutConfig.retry_backoff:type_name -> google.protobuf.Duration
+	3, // 7: quadsmith.config.RolloutConfig.ramp_stages:type_name -> quadsmith.config.TrafficRampStage
+	5, // 8: quadsmith.config.TrafficRampStage.hold_duration:type_name -> google.protobuf.Duration
+	9, // [9:9] is the sub-list for method output_type
+	9, // [9:9] is the sub-list for method input_type
+	9, // [9:9] is the sub-list for extension type_name
+	9, // [9:9] is the sub-list for extension extendee
+	0, // [0:9] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_config_deploy_proto_init() }
@@ -273,13 +450,15 @@ func file_quadsmith_config_deploy_proto_init() {
 	file_quadsmith_config_deploy_proto_msgTypes[0].OneofWrappers = []any{}
 	file_quadsmith_config_deploy_proto_msgTypes[1].OneofWrappers = []any{}
 	file_quadsmith_config_deploy_proto_msgTypes[2].OneofWrappers = []any{}
+	file_quadsmith_config_deploy_proto_msgTypes[3].OneofWrappers = []any{}
+	file_quadsmith_config_deploy_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_config_deploy_proto_rawDesc), len(file_quadsmith_config_deploy_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -150,6 +150,26 @@ and `make verify` / `make build`:
   snapshots retained (`5` in `prod`, `3` in `staging`) before automatically
   pruning older `ON_DEMAND` snapshots (in addition to Cloud SQL's 7 free daily
   automated backups and 7-day continuous PITR).
+- **`rollout`**: Declarative Blue-Green rollout timeouts, retry policy, and
+  staged traffic ramp-up schedule:
+  - **`health_check_timeout`**: Maximum wait time (`30s`) for candidate slot
+    containers (`api`, `ops`, `web`, `jobs`) to pass initial `/healthz`
+    readiness checks.
+  - **`drain_timeout`**: Graceful stop timeout (`30s` in `prod`, `15s` in
+    `staging`) when draining the previous slot after 100% traffic cutover.
+  - **`node_rollout_timeout`**: Per-node SSH rollout wall-clock timeout (`300s`
+    in `prod`, `180s` in `staging`), enforced to exceed
+    `health_check_timeout + drain_timeout + sum(ramp_stages.hold_duration)`.
+  - **`max_retries` & `retry_backoff`**: Automatic retry count (`3`) and initial
+    exponential backoff (`5s`) for IAP SSH/SCP and container image pull
+    operations.
+  - **`ramp_stages[]`**: Ordered list of Nginx weighted traffic ramp stages
+    (`candidate_weight_percent` + `hold_duration`, e.g., `10%` for `15s` &rarr;
+    `25%` for `15s` &rarr; `50%` for `30s` &rarr; `100%` in `prod`; `25%` for
+    `5s` &rarr; `50%` for `5s` &rarr; `100%` in `staging`). During each stage's
+    `hold_duration`, [`deploy_blue_green.sh`](deploy_blue_green.sh) probes
+    `/healthz` every second and immediately reverts 100% of traffic back to the
+    previous slot if any check fails.
 
 Service hostnames (`quadsmith.com`, `api.quadsmith.com`, `ops.quadsmith.com`,
 and their `staging-*` counterparts) are derived automatically from the existing
@@ -203,15 +223,16 @@ failure-recovery `rollback` job:
    pre-migration snapshot when DDL changes are present, applies `psqldef` schema
    migrations, and seeds the `server-jobs` internal token.
 4. **`deploy-vm`**: Syncs `/opt/quadsmith/.env` and [`deploy/`](.) to each
-   regional VM over IAP SSH, executes
-   [`deploy_blue_green.sh`](deploy_blue_green.sh) for a zero-downtime blue-green
-   cutover, and upon success force-updates the `staging` or `prod` Git tag in
-   GitHub to `deploy_sha`.
+   regional VM over IAP SSH (with automatic retries and timeouts), executes
+   [`deploy_blue_green.sh`](deploy_blue_green.sh) to gradually ramp traffic
+   across the configured `ramp_stages[]`, and upon success force-updates the
+   `staging` or `prod` Git tag in GitHub to `deploy_sha`.
 5. **`rollback` (Automatic on Failure)**: If `migrate-db` or `deploy-vm` fails
    and an existing `staging` or `prod` tag (`previous_sha`) is present, the
-   workflow automatically checks out `previous_sha` and runs `STAGE=migrate` and
-   `STAGE=rollout` with `QS_IMAGE_TAG=sha-<previous_sha>` to restore the
-   environment to the last known good deployment.
+   workflow automatically checks out `previous_sha` and runs `STAGE=rollout`
+   with `QS_IMAGE_TAG=sha-<previous_sha>` to restore all regional VMs to the
+   last known good container release (emitting an explicit Emergency Recovery
+   Runbook summary if the rollback job itself fails).
 
 ### Running From an Operator Workstation
 

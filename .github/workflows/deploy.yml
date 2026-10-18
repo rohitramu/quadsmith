@@ -44,6 +44,7 @@ jobs:
   check-credentials:
     name: Validate Secrets & Resolve Ref (${{ (github.event_name == 'workflow_dispatch' && inputs.environment) || (github.ref == 'refs/heads/main' && 'staging') || 'prod' }})
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     outputs:
       deploy_sha: ${{ steps.ref.outputs.deploy_sha }}
       previous_sha: ${{ steps.ref.outputs.previous_sha }}
@@ -122,6 +123,7 @@ jobs:
     name: Build & Push Images (${{ matrix.service }})
     needs: check-credentials
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     strategy:
       fail-fast: true
       matrix:
@@ -188,6 +190,7 @@ jobs:
       - check-credentials
       - build-and-push
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
         with:
@@ -246,6 +249,7 @@ jobs:
       - check-credentials
       - migrate-db
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -309,6 +313,7 @@ jobs:
       - deploy-vm
     if: ${{ failure() && needs.check-credentials.result == 'success' && needs.check-credentials.outputs.previous_sha != '' && (needs.migrate-db.result == 'failure' || needs.deploy-vm.result == 'failure') }}
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Check out last known good '${{ env.TARGET_ENV }}' commit (${{ needs.check-credentials.outputs.previous_sha }})
         uses: actions/checkout@v4
@@ -333,12 +338,7 @@ jobs:
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Install PostgreSQL Client & psqldef
-        run: |
-          sudo apt-get update && sudo apt-get install -y postgresql-client socat jq
-          curl -fsSL https://github.com/sqldef/sqldef/releases/latest/download/psqldef_linux_amd64.tar.gz | sudo tar -xz -C /usr/local/bin psqldef
-
-      - name: Roll back database schema and regional VMs to '${{ env.TARGET_ENV }}' tag (${{ needs.check-credentials.outputs.previous_sha }})
+      - name: Roll back regional VM containers to '${{ env.TARGET_ENV }}' tag (${{ needs.check-credentials.outputs.previous_sha }})
         env:
           CF_ACCOUNT_ID: ${{ secrets[format('{0}_CF_ACCOUNT_ID', env.ENV_PREFIX)] }}
           CF_ZONE_ID: ${{ secrets[format('{0}_CF_ZONE_ID', env.ENV_PREFIX)] }}
@@ -356,13 +356,29 @@ jobs:
           QS_OAUTH_CLIENT_ID: ${{ secrets[format('{0}_QS_OAUTH_CLIENT_ID', env.ENV_PREFIX)] }}
           QS_OAUTH_CLIENT_SECRET: ${{ secrets[format('{0}_QS_OAUTH_CLIENT_SECRET', env.ENV_PREFIX)] }}
         run: |
-          echo "::warning::Deployment of ${{ needs.check-credentials.outputs.deploy_sha }} failed; rolling '${TARGET_ENV}' back to commit ${{ needs.check-credentials.outputs.previous_sha }}."
-          make deploy \
-            ENV="${{ env.TARGET_ENV }}" \
-            STAGE=migrate \
-            ALLOW_BREAKING_CHANGES=true \
-            QS_IMAGE_TAG="sha-${{ needs.check-credentials.outputs.previous_sha }}"
+          echo "::warning::Deployment of ${{ needs.check-credentials.outputs.deploy_sha }} failed; rolling '${TARGET_ENV}' VM containers back to commit ${{ needs.check-credentials.outputs.previous_sha }}."
           make deploy \
             ENV="${{ env.TARGET_ENV }}" \
             STAGE=rollout \
             QS_IMAGE_TAG="sha-${{ needs.check-credentials.outputs.previous_sha }}"
+
+      - name: Emit emergency manual recovery instructions
+        if: failure()
+        run: |
+          echo "::error::Automated rollback of '${TARGET_ENV}' to commit ${{ needs.check-credentials.outputs.previous_sha }} failed. Manual recovery commands:"
+          cat <<EOF | tee -a "$GITHUB_STEP_SUMMARY"
+          ### Emergency Recovery Runbook (\`${TARGET_ENV}\`)
+          - **Failed Deployment Commit**: \`${{ needs.check-credentials.outputs.deploy_sha }}\`
+          - **Last Known Good (\`${TARGET_ENV}\` Tag) Commit**: \`${{ needs.check-credentials.outputs.previous_sha }}\`
+
+          #### 1. Re-run Container Rollback to \`${TARGET_ENV}\` Tag
+          \`\`\`bash
+          gh workflow run deploy.yml -f environment=${TARGET_ENV} -f ref=${{ needs.check-credentials.outputs.previous_sha }}
+          \`\`\`
+
+          #### 2. Restore Cloud SQL Pre-Migration Snapshot (Only if Breaking DDL Was Applied)
+          \`\`\`bash
+          gcloud sql backups list --instance=quadsmith-db-${TARGET_ENV}-us-central1 --project=quadsmith-${TARGET_ENV}
+          gcloud sql backups restore <BACKUP_ID> --restore-instance=quadsmith-db-${TARGET_ENV}-us-central1 --project=quadsmith-${TARGET_ENV}
+          \`\`\`
+          EOF
