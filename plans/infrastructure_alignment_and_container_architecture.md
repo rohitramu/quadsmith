@@ -198,20 +198,20 @@ will be removed.
    - Multi-stage build compiling `server-api` with `CGO_ENABLED=0`.
    - Minimal Alpine runtime copying only `/app/server-api` and
      `src/go/server-api/config`.
-   - Exposes port 8080.
+   - Exposes port 8081.
 2. **Ops API Server (`src/go/server-ops-api/Dockerfile`)**:
    - Minimal Alpine runtime copying only `/app/server-ops-api` and
      `src/go/server-ops-api/config`.
-   - Exposes port 8080.
+   - Exposes port 8082.
 3. **Ops Web Server (`src/go/server-ops-web/Dockerfile`)**:
    - Multi-stage compilation building
      [`src/react/app-ops-web`](../src/react/app-ops-web) and `server-ops-web`,
      copying the compiled binary, static bundle, and
      `src/go/server-ops-web/config`.
-   - Exposes port 8080.
+   - Exposes port 8083.
 4. **Cron Server (`src/go/server-cron/Dockerfile`)**:
    - Background scheduler container copying `/app/server-cron` and
-     `src/go/server-cron/config`, exposing internal port 8080 for `/healthz` and
+     `src/go/server-cron/config`, exposing internal port 8084 for `/healthz` and
      `/metrics`.
 5. **Web Server (`src/go/server-web/Dockerfile`)**:
    - Multi-stage compilation: Node.js builder executing `npm run build` in

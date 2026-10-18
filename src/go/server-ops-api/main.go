@@ -60,7 +60,7 @@ func main() {
 		log.Fatalf("server-ops-api: configuration validation failed: %v", err)
 	}
 
-	port := 8080
+	port := 8082
 	maxReqBytes := 1 << 20
 	var readTimeout, writeTimeout, idleTimeout time.Duration
 	if cfg.Server != nil {

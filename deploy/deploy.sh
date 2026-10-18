@@ -311,10 +311,10 @@ ensure_cloudflare_tunnel_and_edge() {
         tunnel_id="$(printf '%s' "$create_resp" | grep -oE '"id":"[^"]+"' | head -n1 | cut -d'"' -f4)"
     fi
 
-    # Configure tunnel ingress to forward all traffic to local Nginx gateway on 127.0.0.1:8084
+    # Configure tunnel ingress to forward all traffic to local Nginx gateway on 127.0.0.1:9000
     curl -fsSL -X PUT -H "Authorization: Bearer ${CF_API_TOKEN}" \
         -H "Content-Type: application/json" \
-        -d "{\"config\":{\"ingress\":[{\"service\":\"http://127.0.0.1:8084\"}]}}" \
+        -d "{\"config\":{\"ingress\":[{\"service\":\"http://127.0.0.1:9000\"}]}}" \
         "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT_ID}/cfd_tunnel/${tunnel_id}/configurations" >/dev/null
 
     if [ -z "$CF_TUNNEL_TOKEN" ]; then

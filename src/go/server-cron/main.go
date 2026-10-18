@@ -198,7 +198,7 @@ func main() {
 	reg.SetSchedulerRegisteredTasks(registeredTasks)
 	cronRunner.Start()
 
-	port := 8080
+	port := 8084
 	var readTimeout, writeTimeout, idleTimeout time.Duration
 	if cfg.Server != nil {
 		if cfg.Server.GetPort() > 0 {

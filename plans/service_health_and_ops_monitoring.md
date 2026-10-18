@@ -114,11 +114,11 @@ flowchart TD
     end
 
     subgraph Fleet["5 Go Binaries (Generate Trace ID at Ingress, Propagate Internally)"]
-        SW["server-web\n/healthz | /metrics"]
-        SA["server-api\n/healthz | /metrics"]
-        SOW["server-ops-web (app-ops-web + JIT Proxy)\n/healthz | /metrics"]
-        SOA["server-ops-api (OpsService)\n/healthz | /metrics"]
-        SC["server-cron (Cron + HTTP :8080)\n/healthz | /metrics"]
+        SW["server-web (:8080)\n/healthz | /metrics"]
+        SA["server-api (:8081)\n/healthz | /metrics"]
+        SOW["server-ops-web (app-ops-web + JIT Proxy :8083)\n/healthz | /metrics"]
+        SOA["server-ops-api (OpsService :8082)\n/healthz | /metrics"]
+        SC["server-cron (Cron + HTTP :8084)\n/healthz | /metrics"]
     end
 
     subgraph Observability["Internal Observability Stack (~55 MB RAM, 60-Day Persistent Volumes)"]
@@ -222,7 +222,7 @@ src/
 │   │   ├── Dockerfile
 │   │   ├── go.mod
 │   │   └── main.go
-│   └── server-cron/                                      # Cron scheduler + internal /healthz & /metrics (:8080)
+│   └── server-cron/                                      # Cron scheduler + internal /healthz & /metrics (:8084)
 │       ├── config/{sandbox,staging,prod}.textproto
 │       ├── Dockerfile
 │       ├── go.mod
@@ -248,11 +248,11 @@ Domain, container, and port assignments across all three environments:
 | `server-api`                       | `api` (`api-blue`/`green`)         | `127.0.0.1:8081`    | `staging-api.quadsmith.com`     | `api.quadsmith.com`       |
 | `server-ops-api`                   | `ops-api` (`ops-api-blue`/`green`) | `127.0.0.1:8082`    | `staging-ops-api.quadsmith.com` | `ops-api.quadsmith.com`   |
 | `server-ops-web`                   | `ops-web` (`ops-web-blue`/`green`) | `127.0.0.1:8083`    | `staging-ops.quadsmith.com`     | `ops.quadsmith.com`       |
-| `server-cron`                      | `cron` (`cron-blue`/`green`)       | `127.0.0.1:8085`    | Internal Docker `:8080`         | Internal Docker `:8080`   |
+| `server-cron`                      | `cron` (`cron-blue`/`green`)       | `127.0.0.1:8084`    | Internal Docker `:8084`         | Internal Docker `:8084`   |
 | `grafana/grafana-oss`              | `grafana`                          | Internal `:3000`    | `staging-ops.../grafana/` (JIT) | `ops.../grafana/` (JIT)   |
 | `victoriametrics/victoria-metrics` | `victoria-metrics` (`vm_data`)     | Internal `:8428`    | Internal Docker `:8428`         | Internal Docker `:8428`   |
 | `victoriametrics/victoria-logs`    | `victoria-logs` (`vl_data`)        | Internal `:9428`    | Internal Docker `:9428`         | Internal Docker `:9428`   |
-| `nginx`                            | `nginx`                            | `127.0.0.1:8084`    | `127.0.0.1:8084` (Tunnel)       | `127.0.0.1:8084` (Tunnel) |
+| `nginx`                            | `nginx`                            | `127.0.0.1:9000`    | `127.0.0.1:9000` (Tunnel)       | `127.0.0.1:9000` (Tunnel) |
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>

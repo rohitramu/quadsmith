@@ -815,7 +815,7 @@ func TestOpsServer_ServiceHealthAndObservability(t *testing.T) {
 		{"server-api", getAPIURL()},
 		{"server-ops-api", getOpsURL()},
 		{"server-ops-web", "http://127.0.0.1:8083"},
-		{"server-cron", "http://127.0.0.1:8085"},
+		{"server-cron", "http://127.0.0.1:8084"},
 		{"server-web", "http://127.0.0.1:8080"},
 	}
 
@@ -861,7 +861,7 @@ func TestOpsServer_ServiceHealthAndObservability(t *testing.T) {
 	}
 
 	// 2. Verify Nginx blocks external /metrics with 403 Forbidden
-	nginxMetricsResp, err := client.Get("http://127.0.0.1:8084/metrics")
+	nginxMetricsResp, err := client.Get("http://127.0.0.1:9000/metrics")
 	if err == nil {
 		nginxMetricsResp.Body.Close()
 		if nginxMetricsResp.StatusCode != http.StatusForbidden {

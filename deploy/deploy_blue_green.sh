@@ -53,20 +53,20 @@ upstream web_upstream {
 }
 
 upstream api_upstream {
-    server api-${active_slot}:8080 weight=${active_weight};
-    server api-${candidate_slot}:8080 weight=${candidate_weight};
+    server api-${active_slot}:8081 weight=${active_weight};
+    server api-${candidate_slot}:8081 weight=${candidate_weight};
     keepalive 32;
 }
 
 upstream ops_api_upstream {
-    server ops-api-${active_slot}:8080 weight=${active_weight};
-    server ops-api-${candidate_slot}:8080 weight=${candidate_weight};
+    server ops-api-${active_slot}:8082 weight=${active_weight};
+    server ops-api-${candidate_slot}:8082 weight=${candidate_weight};
     keepalive 8;
 }
 
 upstream ops_web_upstream {
-    server ops-web-${active_slot}:8080 weight=${active_weight};
-    server ops-web-${candidate_slot}:8080 weight=${candidate_weight};
+    server ops-web-${active_slot}:8083 weight=${active_weight};
+    server ops-web-${candidate_slot}:8083 weight=${candidate_weight};
     keepalive 8;
 }
 EOF
@@ -78,17 +78,17 @@ upstream web_upstream {
 }
 
 upstream api_upstream {
-    server api-${candidate_slot}:8080 weight=100;
+    server api-${candidate_slot}:8081 weight=100;
     keepalive 32;
 }
 
 upstream ops_api_upstream {
-    server ops-api-${candidate_slot}:8080 weight=100;
+    server ops-api-${candidate_slot}:8082 weight=100;
     keepalive 8;
 }
 
 upstream ops_web_upstream {
-    server ops-web-${candidate_slot}:8080 weight=100;
+    server ops-web-${candidate_slot}:8083 weight=100;
     keepalive 8;
 }
 EOF
@@ -98,10 +98,10 @@ EOF
 
 check_candidate_health() {
     docker compose -f "$COMPOSE_FILE" exec -T nginx sh -c "
-        wget -q -O - http://api-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1 &&
-        wget -q -O - http://ops-api-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1 &&
-        wget -q -O - http://ops-web-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1 &&
-        wget -q -O - http://cron-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1 &&
+        wget -q -O - http://api-${NEXT_SLOT}:8081/healthz >/dev/null 2>&1 &&
+        wget -q -O - http://ops-api-${NEXT_SLOT}:8082/healthz >/dev/null 2>&1 &&
+        wget -q -O - http://ops-web-${NEXT_SLOT}:8083/healthz >/dev/null 2>&1 &&
+        wget -q -O - http://cron-${NEXT_SLOT}:8084/healthz >/dev/null 2>&1 &&
         wget -q -O - http://web-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1
     " && [ -n "$(docker compose -f "$COMPOSE_FILE" ps -q --status running "cron-${NEXT_SLOT}" 2>/dev/null || true)" ]
 }
@@ -119,11 +119,11 @@ if [ -f "$ACTIVE_SLOT_FILE" ]; then
 fi
 
 if [ -z "$ACTIVE_SLOT" ]; then
-    if grep -q "api-blue:8080" "$UPSTREAMS_FILE" 2>/dev/null && \
+    if grep -q "api-blue:8081" "$UPSTREAMS_FILE" 2>/dev/null && \
        [ -n "$(docker compose -f "$COMPOSE_FILE" ps -q api-blue 2>/dev/null || true)" ]; then
         ACTIVE_SLOT="blue"
         NEXT_SLOT="green"
-    elif grep -q "api-green:8080" "$UPSTREAMS_FILE" 2>/dev/null && \
+    elif grep -q "api-green:8081" "$UPSTREAMS_FILE" 2>/dev/null && \
          [ -n "$(docker compose -f "$COMPOSE_FILE" ps -q api-green 2>/dev/null || true)" ]; then
         ACTIVE_SLOT="green"
         NEXT_SLOT="blue"

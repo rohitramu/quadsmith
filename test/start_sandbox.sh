@@ -10,9 +10,9 @@ export PORT="${1:-8080}"
 export DB_PORT="${DB_PORT:-5432}"
 export OPS_PORT="${OPS_PORT:-8082}"
 export OPS_WEB_PORT="${OPS_WEB_PORT:-8083}"
-export CRON_PORT="${CRON_PORT:-8085}"
+export CRON_PORT="${CRON_PORT:-8084}"
 export API_PORT="${API_PORT:-8081}"
-export NGINX_PORT="${NGINX_PORT:-8084}"
+export NGINX_PORT="${NGINX_PORT:-9000}"
 
 cleanup() {
     docker compose -f deploy/docker-compose.yaml down -v --remove-orphans >/dev/null 2>&1 || true

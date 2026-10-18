@@ -70,16 +70,16 @@ func (s *OpsService) peerTargets() []peerTarget {
 			{serviceName: "server-web", url: envOrDefault("QS_PEER_WEB_HEALTHZ", "http://127.0.0.1:8080/healthz"), defaultDeps: []string{"static_assets", "wasm_engine", "upstream:server-api"}},
 			{serviceName: "server-ops-api", url: "", defaultDeps: []string{"postgres:quadsmith_api", "postgres:quadsmith_ops"}},
 			{serviceName: "server-ops-web", url: envOrDefault("QS_PEER_OPS_WEB_HEALTHZ", "http://127.0.0.1:8083/healthz"), defaultDeps: []string{"static_assets", "upstream:server-ops-api", "upstream:grafana"}},
-			{serviceName: "server-cron", url: envOrDefault("QS_PEER_CRON_HEALTHZ", "http://127.0.0.1:8085/healthz"), defaultDeps: []string{"scheduler_loop", "upstream:server-ops-api"}},
+			{serviceName: "server-cron", url: envOrDefault("QS_PEER_CRON_HEALTHZ", "http://127.0.0.1:8084/healthz"), defaultDeps: []string{"scheduler_loop", "upstream:server-ops-api"}},
 		}
 	}
 
 	return []peerTarget{
-		{serviceName: "server-api", url: envOrDefault("QS_PEER_API_HEALTHZ", "http://api:8080/healthz"), defaultDeps: []string{"postgres:quadsmith_api"}},
+		{serviceName: "server-api", url: envOrDefault("QS_PEER_API_HEALTHZ", "http://api:8081/healthz"), defaultDeps: []string{"postgres:quadsmith_api"}},
 		{serviceName: "server-web", url: envOrDefault("QS_PEER_WEB_HEALTHZ", "http://web:8080/healthz"), defaultDeps: []string{"static_assets", "wasm_engine", "upstream:server-api"}},
 		{serviceName: "server-ops-api", url: "", defaultDeps: []string{"postgres:quadsmith_api", "postgres:quadsmith_ops"}},
-		{serviceName: "server-ops-web", url: envOrDefault("QS_PEER_OPS_WEB_HEALTHZ", "http://ops-web:8080/healthz"), defaultDeps: []string{"static_assets", "upstream:server-ops-api", "upstream:grafana"}},
-		{serviceName: "server-cron", url: envOrDefault("QS_PEER_CRON_HEALTHZ", "http://cron:8080/healthz"), defaultDeps: []string{"scheduler_loop", "upstream:server-ops-api"}},
+		{serviceName: "server-ops-web", url: envOrDefault("QS_PEER_OPS_WEB_HEALTHZ", "http://ops-web:8083/healthz"), defaultDeps: []string{"static_assets", "upstream:server-ops-api", "upstream:grafana"}},
+		{serviceName: "server-cron", url: envOrDefault("QS_PEER_CRON_HEALTHZ", "http://cron:8084/healthz"), defaultDeps: []string{"scheduler_loop", "upstream:server-ops-api"}},
 	}
 }
 

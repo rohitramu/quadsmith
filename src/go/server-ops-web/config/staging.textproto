@@ -1,7 +1,7 @@
 environment: "staging"
 
 server {
-  port: 8080
+  port: 8083
   read_timeout {
     seconds: 15
   }
@@ -15,5 +15,5 @@ server {
 }
 
 static_dir: "/app/dist"
-ops_api_url: "http://ops-api:8080"
+ops_api_url: "http://ops-api:8082"
 grafana_url: "http://grafana:3000"

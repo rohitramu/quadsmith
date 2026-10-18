@@ -24,7 +24,7 @@ WORKDIR /app
 
 RUN apk --no-cache add ca-certificates tzdata
 
-EXPOSE 8080
+EXPOSE 8081
 
 COPY --from=builder /app/bin/server-api /app/server-api
 COPY src/go/server-api/config /app/src/go/server-api/config

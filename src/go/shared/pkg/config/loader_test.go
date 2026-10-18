@@ -267,7 +267,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server sandbox: %v", err)
 	}
-	if apiSandbox.Server.GetPort() != 8080 || apiSandbox.Database.GetName() != "quadsmith_api" {
+	if apiSandbox.Server.GetPort() != 8081 || apiSandbox.Database.GetName() != "quadsmith_api" {
 		t.Errorf("unexpected api-server sandbox config: %+v", apiSandbox)
 	}
 
@@ -276,7 +276,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-api-server sandbox: %v", err)
 	}
-	if opsSandbox.Server.GetPort() != 8080 || opsSandbox.Database.GetName() != "quadsmith_api" || opsSandbox.InternalDatabase.GetName() != "quadsmith_ops" {
+	if opsSandbox.Server.GetPort() != 8082 || opsSandbox.Database.GetName() != "quadsmith_api" || opsSandbox.InternalDatabase.GetName() != "quadsmith_ops" {
 		t.Errorf("unexpected ops-api-server sandbox config: %+v", opsSandbox)
 	}
 
@@ -285,7 +285,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-web-server sandbox: %v", err)
 	}
-	if opsWebSandbox.Server.GetPort() != 8080 || opsWebSandbox.GetStaticDir() != "src/react/app-ops-web/dist" {
+	if opsWebSandbox.Server.GetPort() != 8083 || opsWebSandbox.GetStaticDir() != "src/react/app-ops-web/dist" {
 		t.Errorf("unexpected ops-web-server sandbox config: %+v", opsWebSandbox)
 	}
 
@@ -294,7 +294,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load cron-server sandbox: %v", err)
 	}
-	if cronSandbox.GetOpsServerUrl() != "http://127.0.0.1:8082" || !cronSandbox.GetCleanupExpiredOtps().GetEnabled() {
+	if cronSandbox.Server.GetPort() != 8084 || cronSandbox.GetOpsServerUrl() != "http://127.0.0.1:8082" || !cronSandbox.GetCleanupExpiredOtps().GetEnabled() {
 		t.Errorf("unexpected cron-server sandbox config: %+v", cronSandbox)
 	}
 
@@ -343,7 +343,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server staging: %v", err)
 	}
-	if apiStaging.Server.GetPort() != 8080 {
+	if apiStaging.Server.GetPort() != 8081 {
 		t.Errorf("unexpected api-server staging port: %d", apiStaging.Server.GetPort())
 	}
 
@@ -352,7 +352,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load api-server prod: %v", err)
 	}
-	if apiProd.Server.GetPort() != 8080 {
+	if apiProd.Server.GetPort() != 8081 {
 		t.Errorf("unexpected api-server prod port: %d", apiProd.Server.GetPort())
 	}
 
@@ -379,7 +379,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-api-server staging: %v", err)
 	}
-	if opsStaging.Server.GetPort() != 8080 {
+	if opsStaging.Server.GetPort() != 8082 {
 		t.Errorf("unexpected ops-api-server staging port: %d", opsStaging.Server.GetPort())
 	}
 
@@ -388,7 +388,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-api-server prod: %v", err)
 	}
-	if opsProd.Server.GetPort() != 8080 {
+	if opsProd.Server.GetPort() != 8082 {
 		t.Errorf("unexpected ops-api-server prod port: %d", opsProd.Server.GetPort())
 	}
 
@@ -397,7 +397,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-web-server staging: %v", err)
 	}
-	if opsWebStaging.Server.GetPort() != 8080 {
+	if opsWebStaging.Server.GetPort() != 8083 {
 		t.Errorf("unexpected ops-web-server staging port: %d", opsWebStaging.Server.GetPort())
 	}
 
@@ -406,7 +406,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops-web-server prod: %v", err)
 	}
-	if opsWebProd.Server.GetPort() != 8080 {
+	if opsWebProd.Server.GetPort() != 8083 {
 		t.Errorf("unexpected ops-web-server prod port: %d", opsWebProd.Server.GetPort())
 	}
 
@@ -415,8 +415,8 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load cron-server staging: %v", err)
 	}
-	if cronStaging.GetOpsServerUrl() != "https://staging-ops-api.quadsmith.com" {
-		t.Errorf("unexpected cron-server staging ops_server_url: %s", cronStaging.GetOpsServerUrl())
+	if cronStaging.Server.GetPort() != 8084 || cronStaging.GetOpsServerUrl() != "https://staging-ops-api.quadsmith.com" {
+		t.Errorf("unexpected cron-server staging config: %+v", cronStaging)
 	}
 
 	cronProdPath := filepath.Join("..", "..", "..", "server-cron", "config", "prod.textproto")
@@ -424,8 +424,8 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load cron-server prod: %v", err)
 	}
-	if cronProd.GetOpsServerUrl() != "https://ops-api.quadsmith.com" {
-		t.Errorf("unexpected cron-server prod ops_server_url: %s", cronProd.GetOpsServerUrl())
+	if cronProd.Server.GetPort() != 8084 || cronProd.GetOpsServerUrl() != "https://ops-api.quadsmith.com" {
+		t.Errorf("unexpected cron-server prod config: %+v", cronProd)
 	}
 
 	opsCliStaging, err := LoadOpsCliConfig("", "staging")

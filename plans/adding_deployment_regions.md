@@ -458,7 +458,7 @@ gcloud compute ssh quadsmith-prod-europe-west1-b-1 \
   --zone=europe-west1-b \
   --project=quadsmith-prod \
   --tunnel-through-iap \
-  --command="curl -sf http://127.0.0.1:8084/healthz && docker ps"
+  --command="curl -sf http://127.0.0.1:9000/healthz && docker ps"
 ```
 
 #### 4. Regional Cost Progression Summary

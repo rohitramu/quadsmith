@@ -62,7 +62,7 @@ func NewTestAPIServerConfig(t testing.TB, opts ...APIServerOption) *configpb.Api
 	cfg := &configpb.ApiServerConfig{
 		Environment: proto.String("sandbox"),
 		Server: &configpb.ServerConfig{
-			Port:            proto.Int32(8080),
+			Port:            proto.Int32(8081),
 			ReadTimeout:     durationpb.New(30 * time.Second),
 			WriteTimeout:    durationpb.New(60 * time.Second),
 			IdleTimeout:     durationpb.New(120 * time.Second),
@@ -121,7 +121,7 @@ func NewTestOpsApiServerConfig(t testing.TB, opts ...OpsApiServerOption) *config
 	cfg := &configpb.OpsApiServerConfig{
 		Environment: proto.String("sandbox"),
 		Server: &configpb.ServerConfig{
-			Port:            proto.Int32(8080),
+			Port:            proto.Int32(8082),
 			ReadTimeout:     durationpb.New(30 * time.Second),
 			WriteTimeout:    durationpb.New(60 * time.Second),
 			IdleTimeout:     durationpb.New(120 * time.Second),
@@ -200,7 +200,7 @@ func NewTestOpsWebServerConfig(t testing.TB) *configpb.OpsWebServerConfig {
 	return &configpb.OpsWebServerConfig{
 		Environment: proto.String("sandbox"),
 		Server: &configpb.ServerConfig{
-			Port:            proto.Int32(8080),
+			Port:            proto.Int32(8083),
 			ReadTimeout:     durationpb.New(15 * time.Second),
 			WriteTimeout:    durationpb.New(15 * time.Second),
 			IdleTimeout:     durationpb.New(120 * time.Second),
@@ -217,7 +217,7 @@ func NewTestCronServerConfig(t testing.TB) *configpb.CronServerConfig {
 	return &configpb.CronServerConfig{
 		Environment: proto.String("sandbox"),
 		Server: &configpb.ServerConfig{
-			Port:            proto.Int32(8080),
+			Port:            proto.Int32(8084),
 			ReadTimeout:     durationpb.New(15 * time.Second),
 			WriteTimeout:    durationpb.New(15 * time.Second),
 			IdleTimeout:     durationpb.New(120 * time.Second),

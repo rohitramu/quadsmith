@@ -24,7 +24,7 @@ WORKDIR /app
 
 RUN apk --no-cache add ca-certificates tzdata
 
-EXPOSE 8080
+EXPOSE 8084
 
 COPY --from=builder /app/bin/server-cron /app/server-cron
 COPY src/go/server-cron/config /app/src/go/server-cron/config

@@ -146,12 +146,12 @@ flowchart TD
             Tunnel["Standalone cloudflared Container (--network host)"]
 
             subgraph Compose["Top-Level deploy/ Stack (docker-compose.yaml / docker-compose.blue-green.yaml)"]
-                Nginx["Nginx Gateway (127.0.0.1:8084 -> :80, upstreams.conf)"]
+                Nginx["Nginx Gateway (127.0.0.1:9000 -> :9000, upstreams.conf)"]
                 Web["server-web (:8080, active slot)"]
-                API["server-api (:8080, active slot)"]
-                OpsWeb["server-ops-web (:8080, active slot)"]
-                Ops["server-ops-api (:8080, active slot)"]
-                Jobs["server-cron (Cron Daemon, active slot)"]
+                API["server-api (:8081, active slot)"]
+                OpsWeb["server-ops-web (:8083, active slot)"]
+                Ops["server-ops-api (:8082, active slot)"]
+                Jobs["server-cron (:8084, active slot)"]
 
                 Nginx -->|Host: quadsmith.com| Web
                 Nginx -->|Host: api.quadsmith.com| API
@@ -162,7 +162,7 @@ flowchart TD
                 Jobs -->|Task RPC| Ops
             end
 
-            Tunnel -->|http://127.0.0.1:8084| Nginx
+            Tunnel -->|http://127.0.0.1:9000| Nginx
         end
 
         DB[("GCP Cloud SQL for PostgreSQL (db-f1-micro, --no-assign-ip)<br>Private VPC IP 10.x.1.x | 10 GB SSD | PITR Enabled<br>Logical DBs: quadsmith_api & quadsmith_ops")]
@@ -276,20 +276,20 @@ not duplicated in `DeployConfig`:
   - **`server-web` (`web:8080`)**: host of `auth.oauth.web_base_url` in
     [`src/go/server-api/config/{staging,prod}.textproto`](../src/go/server-api/config/prod.textproto#L56)
     (`staging.quadsmith.com` / `quadsmith.com` + `www.quadsmith.com`).
-  - **`server-api` (`api:8080`)**: host of `api_url` in
+  - **`server-api` (`api:8081`)**: host of `api_url` in
     [`src/go/server-web/config/{staging,prod}.textproto`](../src/go/server-web/config/prod.textproto#L18)
     (`staging-api.quadsmith.com` / `api.quadsmith.com`).
-  - **`server-ops-api` (`ops-api:8080`)**: host of `ops_server_url` in
+  - **`server-ops-api` (`ops-api:8082`)**: host of `ops_server_url` in
     [`src/go/cli-ops/config/{staging,prod}.textproto`](../src/go/cli-ops/config/prod.textproto#L2)
     (`staging-ops-api.quadsmith.com` / `ops-api.quadsmith.com`).
-  - **`server-ops-web` (`ops-web:8080`)**: internal ops web console & JIT-gated
+  - **`server-ops-web` (`ops-web:8083`)**: internal ops web console & JIT-gated
     Grafana proxy (`staging-ops.quadsmith.com` / `ops.quadsmith.com`).
-  - **`server-cron`**: headless background cron daemon (no inbound HTTP port or
-    hostname). All hostnames for the environment route through the environment's
-    Cloudflare Tunnel (`quadsmith-${ENV}`) to the local Nginx gateway
-    (`127.0.0.1:8084`), where `deploy/nginx/nginx.conf` dispatches each `Host`
-    header to `web_upstream`, `api_upstream`, `ops_api_upstream`, or
-    `ops_web_upstream`.
+  - **`server-cron` (`cron:8084`)**: background cron daemon exposing internal
+    `/healthz` & `/metrics` on `:8084` (no public hostname). All hostnames for
+    the environment route through the environment's Cloudflare Tunnel
+    (`quadsmith-${ENV}`) to the local Nginx gateway (`127.0.0.1:9000`), where
+    `deploy/nginx/nginx.conf` dispatches each `Host` header to `web_upstream`,
+    `api_upstream`, `ops_api_upstream`, or `ops_web_upstream`.
 - **Host, Cloud SQL & Runtime Constants**: Debian 12 OS image, 30 GB
   `pd-standard` boot disk, 2 GB swapfile, Google's fixed IAP TCP forwarding
   range (`35.235.240.0/20`), deterministic VM naming
@@ -480,7 +480,7 @@ It establishes redundant, outbound-only QUIC/HTTP2 tunnels to Cloudflare's
 global Anycast edge. In Cloudflare DNS, `CNAME` records for `@`, `www`, `api`,
 `ops-api`, and `ops` (or `staging`, `staging-api`, `staging-ops-api`, and
 `staging-ops`) point to `<tunnel-uuid>.cfargotunnel.com`, routing all traffic
-down the tunnel to `http://127.0.0.1:8084` (where the `nginx` container binds on
+down the tunnel to `http://127.0.0.1:9000` (where the `nginx` container binds on
 the VM's loopback interface).
 
 Running `cloudflared` as a standalone container outside `docker-compose.yaml`
@@ -649,22 +649,25 @@ GCP Cloud SQL.
 ### <a id="ultra-lean-nginx-reverse-proxy-and-subdomain-routing" >Ultra-Lean Nginx Reverse Proxy and Subdomain Routing</a>
 
 A dedicated, Alpine-based Nginx container (`nginx:alpine`) acts as the internal
-ingress gateway on port 80 within the Docker Compose network (bound to
-`127.0.0.1:${NGINX_PORT:-8084}:80` on the host loopback interface).
+ingress gateway on port 9000 within the Docker Compose network (bound to
+`127.0.0.1:${NGINX_PORT:-9000}:9000` on the host loopback interface).
 
-To ensure all four HTTP-serving Go services (`server-web`, `server-api`,
-`server-ops-api`, and `server-ops-web`; `server-cron` is a headless cron client)
-listen on a uniform internal port (`8080`) behind Nginx and redirect OAuth flows
-to the canonical domain,
+To ensure all five Go services listen on monotonically increasing ports from
+`8080` onwards (`server-web` on `8080`, `server-api` on `8081`, `server-ops-api`
+on `8082`, `server-ops-web` on `8083`, and `server-cron` on `8084`) with 1:1
+port parity between host and container across `sandbox`, `staging`, and `prod`,
+and redirect OAuth flows to the canonical domain,
 [`src/go/server-web/config/prod.textproto`](../src/go/server-web/config/prod.textproto)
-and
+(`port: 8080`),
 [`src/go/server-api/config/prod.textproto`](../src/go/server-api/config/prod.textproto)
-(along with their `staging.textproto` counterparts) are updated from `port: 443`
-to `port: 8080`, matching
-[`server-ops-api`](../src/go/server-ops-api/config/prod.textproto) and
-[`server-ops-web`](../src/go/server-ops-web/config/prod.textproto), and
-`server-api`'s `oauth.web_base_url`, `from_address`, and `reply_to` fields are
-aligned from `quadsmith.net` to `quadsmith.com`.
+(`port: 8081`),
+[`server-ops-api`](../src/go/server-ops-api/config/prod.textproto)
+(`port: 8082`),
+[`server-ops-web`](../src/go/server-ops-web/config/prod.textproto)
+(`port: 8083`), and [`server-cron`](../src/go/server-cron/config/prod.textproto)
+(`port: 8084`) are aligned across their `sandbox`, `staging`, and `prod`
+counterparts, and `server-api`'s `oauth.web_base_url`, `from_address`, and
+`reply_to` fields are aligned from `quadsmith.net` to `quadsmith.com`.
 
 Furthermore, three critical proxy and security behaviors are configured across
 `nginx.conf` and `server-web`:
@@ -686,7 +689,7 @@ Furthermore, three critical proxy and security behaviors are configured across
 3. **Media Blob Routing on Both Web & API Hosts + Content-Security-Policy**:
    Because `<img src="/blobs/...">` and `<video src="/blobs/...">` elements
    rendered by the React SPA resolve relative to `quadsmith.com` (or
-   `http://127.0.0.1:8084` in local gateway tests), the `quadsmith.com`
+   `http://127.0.0.1:9000` in local gateway tests), the `quadsmith.com`
    (`default_server`) block in `nginx.conf` proxies `location /blobs/` and
    `location /api/blobs` directly to `http://api_upstream`, while
    [`ComponentFormModal.tsx`](../src/react/app-web/src/components/ComponentFormModal.tsx)
@@ -724,7 +727,7 @@ http {
 
     # Web SPA & Dynamic Open Graph Server (Default Server)
     server {
-        listen 80 default_server;
+        listen 9000 default_server;
         server_name quadsmith.com www.quadsmith.com staging.quadsmith.com _;
         client_max_body_size 10m;
 
@@ -750,7 +753,7 @@ http {
 
     # Public ConnectRPC API & Plain HTTP Blob Streaming
     server {
-        listen 80;
+        listen 9000;
         server_name api.quadsmith.com staging-api.quadsmith.com;
         client_max_body_size 100m;
 
@@ -766,7 +769,7 @@ http {
 
     # Internal Ops ConnectRPC API
     server {
-        listen 80;
+        listen 9000;
         server_name ops-api.quadsmith.com staging-ops-api.quadsmith.com;
         client_max_body_size 2m;
 
@@ -777,7 +780,7 @@ http {
 
     # Internal Ops Web Console & Embedded Grafana Proxy
     server {
-        listen 80;
+        listen 9000;
         server_name ops.quadsmith.com staging-ops.quadsmith.com;
         client_max_body_size 2m;
 
@@ -941,9 +944,9 @@ live environments, both `test/sandbox/docker-compose.yaml` and
     PostgreSQL database as a standalone container (`quadsmith-sandbox-db`) on
     `127.0.0.1:${DB_PORT:-5432}` before starting the Compose stack.
   - In `staging` and `prod`, `cloudflared` runs as a standalone host container
-    forwarding to `127.0.0.1:${NGINX_PORT:-8084}`, while `api` and `ops-api`
+    forwarding to `127.0.0.1:${NGINX_PORT:-9000}`, while `api` and `ops-api`
     connect to the Private VPC IP of the GCP Cloud SQL instance (`cron` is a
-    pure stateless RPC client calling `http://ops-api:8080`).
+    pure stateless RPC client calling `http://ops-api:8082`).
 - **Zero Profiles Needed**: Because all five maintenance tasks in
   [`src/go/shared/pkg/auth/job.go`](../src/go/shared/pkg/auth/job.go) and
   [`src/go/shared/pkg/blob/cleanup.go`](../src/go/shared/pkg/blob/cleanup.go)
@@ -971,7 +974,7 @@ services:
     image: nginx:alpine
     restart: unless-stopped
     ports:
-      - "127.0.0.1:${NGINX_PORT:-8084}:80"
+      - "127.0.0.1:${NGINX_PORT:-9000}:9000"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./nginx/upstreams.conf:/etc/nginx/conf.d/upstreams.conf:ro
@@ -985,7 +988,8 @@ services:
       ops-web:
         condition: service_healthy
     healthcheck:
-      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:80/healthz || exit 1"]
+      test:
+        ["CMD-SHELL", "wget -q -O - http://127.0.0.1:9000/healthz || exit 1"]
       interval: 100ms
       timeout: 1s
       retries: 50
@@ -998,7 +1002,7 @@ services:
       dockerfile: src/go/server-api/Dockerfile
     restart: unless-stopped
     ports:
-      - "127.0.0.1:${API_PORT:-8081}:8080"
+      - "127.0.0.1:${API_PORT:-8081}:8081"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
@@ -1016,7 +1020,7 @@ services:
       - QS_DISCORD_CLIENT_SECRET=${QS_DISCORD_CLIENT_SECRET:-}
     healthcheck:
       test:
-        ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+        ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8081/healthz || exit 1"]
       interval: 100ms
       timeout: 1s
       retries: 50
@@ -1029,7 +1033,7 @@ services:
       dockerfile: src/go/server-ops-api/Dockerfile
     restart: unless-stopped
     ports:
-      - "127.0.0.1:${OPS_PORT:-8082}:8080"
+      - "127.0.0.1:${OPS_PORT:-8082}:8082"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
@@ -1040,7 +1044,7 @@ services:
       - QS_OAUTH_CLIENT_SECRET=${QS_OAUTH_CLIENT_SECRET:-}
     healthcheck:
       test:
-        ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+        ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8082/healthz || exit 1"]
       interval: 100ms
       timeout: 1s
       retries: 50
@@ -1053,16 +1057,16 @@ services:
       dockerfile: src/go/server-ops-web/Dockerfile
     restart: unless-stopped
     ports:
-      - "127.0.0.1:${OPS_WEB_PORT:-8083}:8080"
+      - "127.0.0.1:${OPS_WEB_PORT:-8083}:8083"
     environment:
       - QS_CONFIG=/app/src/go/server-ops-web/config/${QS_ENV:-sandbox}.textproto
-      - QS_OPS_SERVER_URL=http://ops-api:8080
+      - QS_OPS_SERVER_URL=http://ops-api:8082
     depends_on:
       ops-api:
         condition: service_healthy
     healthcheck:
       test:
-        ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+        ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8083/healthz || exit 1"]
       interval: 100ms
       timeout: 1s
       retries: 50
@@ -1074,9 +1078,11 @@ services:
       context: ..
       dockerfile: src/go/server-cron/Dockerfile
     restart: unless-stopped
+    ports:
+      - "127.0.0.1:${CRON_PORT:-8084}:8084"
     environment:
       - QS_CONFIG=/app/src/go/server-cron/config/${QS_ENV:-sandbox}.textproto
-      - QS_OPS_SERVER_URL=http://ops-api:8080
+      - QS_OPS_SERVER_URL=http://ops-api:8082
       - QS_CRON_SERVER_AUTH_TOKEN=${QS_CRON_SERVER_AUTH_TOKEN:-}
     depends_on:
       ops-api:
@@ -1092,7 +1098,7 @@ services:
       - "127.0.0.1:${PORT:-8080}:8080"
     environment:
       - QS_CONFIG=/app/src/go/server-web/config/${QS_ENV:-sandbox}.textproto
-      - QS_API_URL=http://api:8080
+      - QS_API_URL=http://api:8081
     depends_on:
       api:
         condition: service_healthy
@@ -1125,8 +1131,8 @@ database container and the unified Compose stack:
    until healthy before starting `deploy/docker-compose.yaml`.
 3. **Gateway Readiness Verification**: `is_sandbox_ready` in
    `test/run_sandbox_tests.sh` verifies
-   `http://127.0.0.1:${NGINX_PORT:-8084}/healthz` in addition to `web`, `api`,
-   `ops-api`, and `ops-web` (while `cron` runs as a headless cron client).
+   `http://127.0.0.1:${NGINX_PORT:-9000}/healthz` in addition to `web`, `api`,
+   `ops-api`, `ops-web`, and `cron`.
 
 #### <a id="memory-budget-and-host-hygiene" >Memory Budget & Host Hygiene</a>
 
@@ -1369,7 +1375,7 @@ Infrastructure Checks** (driven by `deploy/config/${ENV}.textproto` inside
        Cloud SQL instance to construct `QS_DATABASE_URL`,
        `QS_INTERNAL_DATABASE_URL`, and `QS_PEER_DATABASE_URLS`.
   3. **`ensure_cloudflare_tunnel_and_edge`**: Ensures the named Cloudflare
-     Tunnel (`quadsmith-${ENV}` -> `http://127.0.0.1:8084`), proxied `CNAME`
+     Tunnel (`quadsmith-${ENV}` -> `http://127.0.0.1:9000`), proxied `CNAME`
      records (read from `server-api`, `server-web`, and `cli-ops` `.textproto`
      configs), Smart Tiered Cache, and RFC `Cache-Control` Cache Rule exist.
   4. **`ensure_compute_nodes`**: Iterates over `regions[].nodes[]` in
@@ -1393,7 +1399,7 @@ Infrastructure Checks** (driven by `deploy/config/${ENV}.textproto` inside
 | **Cloudflare Edge & DNS**              | Add `quadsmith.com` domain to Cloudflare account.                                                                                              | Ensure Cloudflare Tunnel (`quadsmith-${ENV}`), proxied `CNAME` records, Smart Tiered Cache, and RFC `Cache-Control` Cache Rule exist.                                                                                                   | **None** _(Tunnel and edge cache rules stay active; new `?v=<hash>` WASM & Vite bundle URLs bust cache automatically)_.                                                                                                                 |
 | **GCP Cloud SQL (Primary & Replicas)** | Enable `sqladmin.googleapis.com` & `servicenetworking.googleapis.com`.                                                                         | Ensure primary `quadsmith-db-${ENV}-${region}` (`--no-assign-ip`, daily backups at `04:00 UTC`, 7-day PITR), logical DBs (`quadsmith_api`, `quadsmith_ops`), and any regional read replicas exist at `db_tier`; seed `internal_tokens`. | Run `psqldef --dry-run`; **when DDL changes exist**, run `make check-breaking`, create Cloud SQL `ON_DEMAND` pre-migration snapshot (retaining `db_backup_retention_count` snapshots), and apply `make db-migrate` over Private VPC IP. |
 | **Compute Engine Host VMs**            | Enable `compute.googleapis.com` & `iap.googleapis.com`.                                                                                        | For each node in `regions[].nodes[]`: ensure VM (`--no-address`, `machine_type`, 30 GB disk), 2 GB `/swapfile`, `/etc/docker/daemon.json` log rotation, daily image prune cron, and standalone `cloudflared` container are running.     | **None** _(Host OS, swap, Docker daemon, and standalone `cloudflared` container remain uninterrupted and 100% stateless)_.                                                                                                              |
-| **Application Containers & Nginx**     | **None.**                                                                                                                                      | Ensure persistent `nginx` gateway container is running on `127.0.0.1:8084`.                                                                                                                                                             | SCP `deploy/` manifests over IAP to each VM node; pull new images into inactive `blue`/`green` slot; gate on `/healthz`; run `nginx -s reload`; drain & remove old slot.                                                                |
+| **Application Containers & Nginx**     | **None.**                                                                                                                                      | Ensure persistent `nginx` gateway container is running on `127.0.0.1:9000`.                                                                                                                                                             | SCP `deploy/` manifests over IAP to each VM node; pull new images into inactive `blue`/`green` slot; gate on `/healthz`; run `nginx -s reload`; drain & remove old slot.                                                                |
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -1662,22 +1668,22 @@ flowchart TD
      `make sandbox` and `make test` runs, the dual-slot `blue` and `green`
      service definitions live in `deploy/docker-compose.blue-green.yaml`.
    - `nginx` (and the standalone `cloudflared` container) run continuously so
-     the Cloudflare edge tunnel and `127.0.0.1:8084` gateway never restart
+     the Cloudflare edge tunnel and `127.0.0.1:9000` gateway never restart
      during application deployments.
    - `blue` slot (`web-blue`, `api-blue`, `ops-api-blue`, `ops-web-blue`,
      `cron-blue`) and `green` slot (`web-green`, `api-green`, `ops-api-green`,
      `ops-web-green`, `cron-green`) isolate internal service communication
-     (`web-<slot>` &rarr; `http://api-<slot>:8080`, `ops-web-<slot>` &rarr;
-     `http://ops-api-<slot>:8080`, `cron-<slot>` &rarr;
-     `http://ops-api-<slot>:8080`).
+     (`web-<slot>` &rarr; `http://api-<slot>:8081`, `ops-web-<slot>` &rarr;
+     `http://ops-api-<slot>:8082`, `cron-<slot>` &rarr;
+     `http://ops-api-<slot>:8082`).
    - During the ~5-second overlap window, running both slots adds only **~95 MB
      of RAM** (~359 MB total on the 1 GB VM) and opens only **3 initial database
      connections** (`min_connections: 1` on `api-<next>` and `ops-api-<next>`).
 2. **Staged Weighted Nginx Upstream Ramp-Up (`deploy/nginx/upstreams.conf`)**:
    - `deploy/nginx/upstreams.conf` is mounted into the `nginx` container at
      `/etc/nginx/conf.d/upstreams.conf` and included by
-     `deploy/nginx/nginx.conf` (defaulting to `web:8080`, `api:8080`,
-     `ops-api:8080`, `ops-web:8080` in local sandbox and rewritten by
+     `deploy/nginx/nginx.conf` (defaulting to `web:8080`, `api:8081`,
+     `ops-api:8082`, `ops-web:8083` in local sandbox and rewritten by
      `deploy/deploy_blue_green.sh` on the VM).
    - Once the candidate slot passes initial `/healthz` readiness within
      `rollout.health_check_timeout` (`30s`), `deploy/deploy_blue_green.sh` steps
@@ -1685,8 +1691,8 @@ flowchart TD
      for `15m` &rarr; `10%` for `30m` &rarr; `25%` for `30m` &rarr; `50%` for
      `1h` &rarr; `100%` in `prod`, totaling `2.5h`; `50%` for `5m` &rarr; `100%`
      in `staging`, totaling `5m`), writing weighted
-     `server <svc>-<active>:8080 weight=<100-W>;` and
-     `server <svc>-<next>:8080 weight=<W>;` entries to `upstreams.conf` and
+     `server <svc>-<active>:<port> weight=<100-W>;` and
+     `server <svc>-<next>:<port> weight=<W>;` entries to `upstreams.conf` and
      executing:
 
      ```bash
@@ -1712,9 +1718,9 @@ flowchart TD
    - During both initial readiness (`rollout.health_check_timeout`) and every 5
      seconds of each intermediate stage's `hold_duration`,
      `deploy/deploy_blue_green.sh` polls
-     `wget -q -O- http://<service>:8080/healthz` from inside the `nginx`
-     container for `web-<next>`, `api-<next>`, `ops-api-<next>`, and
-     `ops-web-<next>` (and verifies `cron-<next>` is `running`).
+     `wget -q -O- http://<service>:<port>/healthz` from inside the `nginx`
+     container for `web-<next>:8080`, `api-<next>:8081`, `ops-api-<next>:8082`,
+     `ops-web-<next>:8083`, and `cron-<next>:8084`.
    - If any candidate container fails a health check during initial readiness or
      during any traffic ramp stage, `deploy/deploy_blue_green.sh` immediately
      rewrites `upstreams.conf` with 100% weight on `<active>`, reloads Nginx,
@@ -1730,7 +1736,7 @@ flowchart TD
 
 ##### <a id="alt-host-port-mapping-per-slot" >Bind Blue and Green Slots to Distinct Host Ports</a>
 
-Expose `blue` on host ports `8080–8083` and `green` on `8090–8093` instead of
+Expose `blue` on host ports `8080–8084` and `green` on `8090–8094` instead of
 using Docker bridge network service names.
 
 **Pros:**
@@ -1745,7 +1751,7 @@ using Docker bridge network service names.
 
 ##### <a id="alt-nginx-backup-directive-only" >Static Nginx `upstream` with `backup` Directive</a>
 
-List both `server api-blue:8080;` and `server api-green:8080 backup;` in a
+List both `server api-blue:8081;` and `server api-green:8081 backup;` in a
 static `nginx.conf` without reloading Nginx.
 
 **Pros:**
