@@ -60,11 +60,7 @@ fmt: $(VENDOR_PLUGINS)
 	@echo "--- Formatting SQL files with sql-formatter ---"
 	@for f in src/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$$f"; done
 
-build: tidy fmt generate
-	@echo "--- Verifying Protobuf regex patterns (Go RE2) ---"
-	@go run -mod=vendor ./src/go/shared/cmd/check-regex
-	@echo "--- Validating all application configurations ---"
-	@go run -mod=vendor ./src/go/shared/cmd/check-config
+build: verify
 	@echo "--- Building all Go server binaries to bin/ ---"
 	@mkdir -p bin
 	@go build -mod=vendor -o bin/server-api ./src/go/server-api/main.go
@@ -209,11 +205,19 @@ bin/.generate_cli.sentinel: $(CLI_FILES) bin/.generate_proto.sentinel
 
 generate: bin/.generate_proto.sentinel bin/.format_sql.sentinel bin/.generate_cli.sentinel
 
-verify: generate fmt
-	@echo "--- Verifying Clean Git Working Tree ---"
-	@git diff --exit-code || (echo "Code generation or formatting is out of sync. Please run 'make generate fmt' and commit the changes." && exit 1)
+verify: tidy generate fmt
+	@echo "--- Verifying Protobuf regex patterns (Go RE2) ---"
+	@go run -mod=vendor ./src/go/shared/cmd/check-regex
+	@echo "--- Validating all application configurations ---"
+	@go run -mod=vendor ./src/go/shared/cmd/check-config
+	@echo "--- Verifying shell scripts syntax ---"
+	@bash -n deploy/deploy.sh deploy/deploy_blue_green.sh test/run_sandbox_tests.sh test/start_sandbox.sh .githooks/pre-commit
+	@if [ "$${CI:-false}" = "true" ]; then \
+		echo "--- Verifying Clean Git Working Tree (CI) ---"; \
+		git diff --exit-code || (echo "Code generation or formatting is out of sync. Please run 'make generate fmt' and commit the changes." && exit 1); \
+	fi
 
-test: build
+test: verify build
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
 	@echo "--- Running Go Tests ---"
 	@cd src/go/shared && go test -mod=vendor -count=1 ./...

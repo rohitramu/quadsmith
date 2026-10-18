@@ -540,12 +540,17 @@ and CI workflows:
 2. **Targeted Makefile Commands**:
 
    ```makefile
-   # Verify code generation, formatting, and linting without git diffs
-   verify: generate fmt
-       @git diff --exit-code
+   # Verify code generation, formatting, config/regex validation, and shell syntax
+   verify: tidy generate fmt
+       @go run -mod=vendor ./src/go/shared/cmd/check-regex
+       @go run -mod=vendor ./src/go/shared/cmd/check-config
+       @bash -n deploy/deploy.sh deploy/deploy_blue_green.sh test/run_sandbox_tests.sh test/start_sandbox.sh .githooks/pre-commit
+       @if [ "$${CI:-false}" = "true" ]; then \
+           git diff --exit-code; \
+       fi
 
-   # Run formatting, unit tests, and full sandbox E2E suite across all 5 browser profiles
-   test: generate fmt bin/qs bin/qsops
+   # Run verification, build, unit tests, and full sandbox E2E suite across all 5 browser profiles
+   test: verify build
        @./test/run_sandbox_tests.sh $(if $(PROJECT),--project=$(PROJECT)) $(if $(SHARD),--shard=$(SHARD)) $(TOOL_ARGS)
 
    # Re-baseline golden screenshots across all 5 browser profiles against a fresh sandbox
@@ -557,9 +562,9 @@ and CI workflows:
    (`.github/workflows/ci.yml`)**:
    - `ci.yml` executes two independent jobs in parallel on every push and pull
      request:
-     1. `verify`: Runs `make verify` to enforce code generation, formatting, and
-        linting checks across Go, Protobuf, Textproto, TypeScript/HTML/CSS,
-        Markdown, Python, and SQL.
+     1. `verify`: Runs `make verify` to enforce code generation, formatting,
+        config/regex validation, shell syntax, and linting checks across Go,
+        Protobuf, Textproto, TypeScript/HTML/CSS, Markdown, Python, and SQL.
      2. `test`: Executes `make test SHARD=${{ matrix.shard }}` in parallel
         across runner nodes using a sharding matrix (`shard: [1/2, 2/2]`).
    - Running `verify` and `test` in parallel ensures formatting or documentation

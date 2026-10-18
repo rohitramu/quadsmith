@@ -268,13 +268,19 @@ corroboration checks.
 
 ## Testing
 
-- Always run `make test` and ensure all tests pass whenever you make changes to
-  functional code, schemas, or tests. Do not consider a task complete or push
-  code if there are failing tests.
-- When only updating `AGENTS.md` or documentation (where system behavior has not
-  changed), you do not need to run `make test`, but you **must** run
-  `make verify` (or `make fmt`) to ensure formatting and Markdown linting pass
-  before committing.
+- Only run `make test` when making changes to files under `src/`, `test/`,
+  `deploy/docker-compose.yaml`, `deploy/nginx/`, `.dockerignore`, or build/test
+  rules in `Makefile`. Always ensure all tests pass before considering a task
+  complete or pushing code.
+- `make test` automatically runs `make verify`, so if `make test` is run,
+  `make verify` does not need to be run separately.
+- When only modifying files outside those paths (such as `AGENTS.md`,
+  `README.md`, `plans/`, `deploy/README.md`, `.github/workflows/`, or cloud-only
+  deployment scripts and configs like `deploy/deploy.sh`,
+  `deploy/deploy_blue_green.sh`, `deploy/docker-compose.blue-green.yaml`, and
+  `deploy/config/*.textproto`), do not run `make test`; run `make verify`
+  instead to ensure formatting, Markdown linting, config validation, and shell
+  syntax checks pass before committing.
 - **Playwright Visual Regression Snapshots**:
   - Only update Playwright screenshots (`make update-snapshots` or
     `UPDATE_SNAPSHOTS=true`) when a change is explicitly expected to alter the
