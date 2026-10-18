@@ -588,7 +588,7 @@ func newJitCmd() *cobra.Command {
 func newSystemCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "system",
-		Short: "System and daemon diagnostics",
+		Short: "System, service health, and telemetry diagnostics",
 	}
 
 	cmd.AddCommand(&cobra.Command{
@@ -619,6 +619,132 @@ func newSystemCmd() *cobra.Command {
 			return w.Flush()
 		},
 	})
+
+	var healthRegion string
+	healthCmd := &cobra.Command{
+		Use:   "health",
+		Short: "Inspect deep dependency health across all 5 Quadsmith Go services",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			reqMsg := &pb.GetSystemHealthRequest{}
+			if strings.TrimSpace(healthRegion) != "" {
+				r := strings.TrimSpace(healthRegion)
+				reqMsg.RegionFilter = &r
+			}
+			resp, err := client.GetSystemHealth(cmd.Context(), connect.NewRequest(reqMsg))
+			if err != nil {
+				return fmt.Errorf("failed to get system health: %w", err)
+			}
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			msg := resp.Msg
+			fmt.Printf("OVERALL STATUS: %s (region: %s)\n\n", msg.GetStatus(), msg.GetRegion())
+			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(w, "SERVICE\tREGION\tINSTANCE\tSTATUS\tUPTIME\tCHECKS\n")
+			for _, svc := range msg.GetServices() {
+				var checkSummaries []string
+				for _, c := range svc.GetChecks() {
+					checkSummaries = append(checkSummaries, fmt.Sprintf("%s=%s(%.1fms)", c.GetName(), c.GetStatus(), c.GetLatencyMs()))
+				}
+				fmt.Fprintf(w, "%s\t%s\t%s\t%s\t%ds\t%s\n",
+					svc.GetServiceName(),
+					svc.GetRegion(),
+					svc.GetInstanceId(),
+					svc.GetStatus(),
+					svc.GetUptimeSeconds(),
+					strings.Join(checkSummaries, ", "))
+			}
+			return w.Flush()
+		},
+	}
+	healthCmd.Flags().StringVar(&healthRegion, "region", "", "Filter by deployment region (e.g. us-central1, local)")
+	cmd.AddCommand(healthCmd)
+
+	var metricsRegion, metricsService, metricsRoute, metricsWindow string
+	var metricsFailedOnly bool
+	metricsCmd := &cobra.Command{
+		Use:   "metrics",
+		Short: "Query RED (Rate, Error, Duration) and resource metrics across services and routes",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			reqMsg := &pb.GetSystemMetricsRequest{}
+			if strings.TrimSpace(metricsWindow) != "" {
+				w := strings.TrimSpace(metricsWindow)
+				reqMsg.Window = &w
+			}
+			if strings.TrimSpace(metricsRegion) != "" {
+				r := strings.TrimSpace(metricsRegion)
+				reqMsg.RegionFilter = &r
+			}
+			if strings.TrimSpace(metricsService) != "" {
+				s := strings.TrimSpace(metricsService)
+				reqMsg.ServiceFilter = &s
+			}
+
+			resp, err := client.GetSystemMetrics(cmd.Context(), connect.NewRequest(reqMsg))
+			if err != nil {
+				return fmt.Errorf("failed to get system metrics: %w", err)
+			}
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(resp.Msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			msg := resp.Msg
+			w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(w, "SERVICE\tREGION\tTOTAL REQS\tOK\tERRORS\tAVAILABILITY\tP50 (MS)\tP95 (MS)\tP99 (MS)\n")
+			for _, s := range msg.GetServices() {
+				fmt.Fprintf(w, "%s\t%s\t%d\t%d\t%d\t%.2f%%\t%.1f\t%.1f\t%.1f\n",
+					s.GetServiceName(),
+					s.GetRegion(),
+					s.GetTotalRequests(),
+					s.GetSuccessCount(),
+					s.GetErrorCount(),
+					s.GetAvailabilityPercent(),
+					s.GetP50RttMs(),
+					s.GetP95RttMs(),
+					s.GetP99RttMs())
+			}
+			_ = w.Flush()
+
+			fmt.Println()
+			rw := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+			fmt.Fprintf(rw, "SERVICE\tREGION\tROUTE\tMETHOD\tREQS\tERRORS\tAVAILABILITY\tP95 (MS)\n")
+			for _, s := range msg.GetServices() {
+				for _, r := range s.GetRoutes() {
+					if metricsRoute != "" && !strings.Contains(strings.ToLower(r.GetRoute()), strings.ToLower(metricsRoute)) {
+						continue
+					}
+					if metricsFailedOnly && r.GetErrorCount() == 0 {
+						continue
+					}
+					fmt.Fprintf(rw, "%s\t%s\t%s\t%s\t%d\t%d\t%.2f%%\t%.1f\n",
+						r.GetServiceName(),
+						r.GetRegion(),
+						r.GetRoute(),
+						r.GetMethod(),
+						r.GetTotalRequests(),
+						r.GetErrorCount(),
+						r.GetAvailabilityPercent(),
+						r.GetP95RttMs())
+				}
+			}
+			return rw.Flush()
+		},
+	}
+	metricsCmd.Flags().StringVar(&metricsRegion, "region", "", "Filter by deployment region (e.g. us-central1, local)")
+	metricsCmd.Flags().StringVar(&metricsService, "service", "", "Filter by service name (e.g. server-api, server-ops-api)")
+	metricsCmd.Flags().StringVar(&metricsRoute, "route", "", "Substring filter for route or RPC procedure")
+	metricsCmd.Flags().StringVar(&metricsWindow, "window", "5m", "Aggregation window (5m, 1h, 24h)")
+	metricsCmd.Flags().BoolVar(&metricsFailedOnly, "failed-only", false, "Only show routes with non-zero error counts")
+	cmd.AddCommand(metricsCmd)
 
 	return cmd
 }

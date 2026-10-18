@@ -11,8 +11,11 @@ option go_package = "quadsmith/shared/gen/quadsmith/ops;ops";
 // ---------------------------------------------------------
 
 service OpsService {
-  // System Diagnostics
+  // System Health, Metrics & Diagnostics
   rpc GetSystemDiagnostics(GetSystemDiagnosticsRequest) returns (GetSystemDiagnosticsResponse);
+  rpc GetSystemHealth(GetSystemHealthRequest) returns (GetSystemHealthResponse);
+  rpc GetSystemMetrics(GetSystemMetricsRequest) returns (GetSystemMetricsResponse);
+  rpc ListRouteRequests(ListRouteRequestsRequest) returns (ListRouteRequestsResponse);
 
   // Database Stats (Public DB quadsmith_api)
   rpc GetDatabaseStats(GetDatabaseStatsRequest) returns (GetDatabaseStatsResponse);
@@ -35,6 +38,7 @@ service OpsService {
   // Authentication & IAM
   rpc ExchangeOAuthCode(ExchangeOAuthCodeRequest) returns (ExchangeOAuthCodeResponse);
   rpc GetCurrentOperator(GetCurrentOperatorRequest) returns (GetCurrentOperatorResponse);
+  rpc GetOAuthConfig(GetOAuthConfigRequest) returns (GetOAuthConfigResponse);
   rpc ListIamUsers(ListIamUsersRequest) returns (ListIamUsersResponse);
   rpc ListIamGroups(ListIamGroupsRequest) returns (ListIamGroupsResponse);
 
@@ -67,6 +71,8 @@ message InternalApiCallRecord {
   optional string error_message = 10;
   int64 duration_ms = 11;
   google.protobuf.Timestamp created_at = 12;
+  string region = 13;
+  string trace_id = 14;
 }
 
 message InternalTokenRecord {
@@ -108,6 +114,8 @@ message JobRecord {
   int64 duration_ms = 8;
   optional string error_message = 9;
   google.protobuf.Timestamp created_at = 10;
+  string region = 11;
+  string trace_id = 12;
 }
 
 message TaskDef {
@@ -210,6 +218,16 @@ message GetJobResponse {
   JobRecord job = 1;
 }
 
+message GetOAuthConfigRequest {}
+
+message GetOAuthConfigResponse {
+  string provider = 1;
+  string client_id = 2;
+  string environment = 3;
+  string region = 4;
+  string authorize_url = 5;
+}
+
 message GetSystemDiagnosticsRequest {}
 
 message GetSystemDiagnosticsResponse {
@@ -220,6 +238,32 @@ message GetSystemDiagnosticsResponse {
   int32 num_goroutines = 5;
   int32 active_database_connections = 6;
   int32 active_internal_connections = 7;
+}
+
+message GetSystemHealthRequest {
+  optional string region_filter = 1;
+}
+
+message GetSystemHealthResponse {
+  string status = 1;
+  string environment = 2;
+  string region = 3;
+  google.protobuf.Timestamp checked_at = 4;
+  repeated ServiceHealthStatus services = 5;
+}
+
+message GetSystemMetricsRequest {
+  optional string region_filter = 1;
+  optional string service_filter = 2;
+  optional string window = 3;
+}
+
+message GetSystemMetricsResponse {
+  string environment = 1;
+  string region = 2;
+  string window = 3;
+  google.protobuf.Timestamp generated_at = 4;
+  repeated ServiceMetricsSummary services = 5;
 }
 
 message GetTaskRequest {
@@ -273,6 +317,19 @@ message ListJobsRequest {
 
 message ListJobsResponse {
   repeated JobRecord jobs = 1;
+}
+
+message ListRouteRequestsRequest {
+  optional string region_filter = 1;
+  optional string service_name = 2;
+  optional string route = 3;
+  optional string window = 4;
+  optional bool only_errors = 5;
+  optional int32 limit = 6;
+}
+
+message ListRouteRequestsResponse {
+  repeated RouteRequestLog requests = 1;
 }
 
 message ListTasksRequest {}
@@ -339,8 +396,70 @@ message IamUserSummary {
   bool has_active_jit = 5;
 }
 
+message RouteRequestLog {
+  string trace_id = 1;
+  string region = 2;
+  string service_name = 3;
+  string instance_id = 4;
+  string route = 5;
+  string method = 6;
+  int32 status_code = 7;
+  bool success = 8;
+  double rtt_ms = 9;
+  google.protobuf.Timestamp occurred_at = 10;
+}
+
+message ServiceHealthStatus {
+  string service_name = 1;
+  string region = 2;
+  string instance_id = 3;
+  string status = 4;
+  string version = 5;
+  int64 uptime_seconds = 6;
+  int64 memory_allocated_bytes = 7;
+  int32 num_goroutines = 8;
+  int32 db_acquired_conns = 9;
+  int32 db_idle_conns = 10;
+  int32 db_max_conns = 11;
+  repeated DependencyCheckResult checks = 12;
+}
+
+message ServiceMetricsSummary {
+  string service_name = 1;
+  string region = 2;
+  int64 total_requests = 3;
+  int64 success_count = 4;
+  int64 error_count = 5;
+  double availability_percent = 6;
+  double p50_rtt_ms = 7;
+  double p95_rtt_ms = 8;
+  double p99_rtt_ms = 9;
+  repeated RouteMetricStat routes = 10;
+}
+
 message TableStat {
   string table_name = 1;
   int64 row_count = 2;
   int64 total_size_bytes = 3;
+}
+
+message DependencyCheckResult {
+  string name = 1;
+  string status = 2;
+  double latency_ms = 3;
+  optional string message = 4;
+}
+
+message RouteMetricStat {
+  string route = 1;
+  string method = 2;
+  string region = 3;
+  string service_name = 4;
+  int64 total_requests = 5;
+  int64 success_count = 6;
+  int64 error_count = 7;
+  double availability_percent = 8;
+  double p50_rtt_ms = 9;
+  double p95_rtt_ms = 10;
+  double p99_rtt_ms = 11;
 }

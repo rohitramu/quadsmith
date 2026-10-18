@@ -36,6 +36,15 @@ const (
 	// OpsServiceGetSystemDiagnosticsProcedure is the fully-qualified name of the OpsService's
 	// GetSystemDiagnostics RPC.
 	OpsServiceGetSystemDiagnosticsProcedure = "/quadsmith.ops.OpsService/GetSystemDiagnostics"
+	// OpsServiceGetSystemHealthProcedure is the fully-qualified name of the OpsService's
+	// GetSystemHealth RPC.
+	OpsServiceGetSystemHealthProcedure = "/quadsmith.ops.OpsService/GetSystemHealth"
+	// OpsServiceGetSystemMetricsProcedure is the fully-qualified name of the OpsService's
+	// GetSystemMetrics RPC.
+	OpsServiceGetSystemMetricsProcedure = "/quadsmith.ops.OpsService/GetSystemMetrics"
+	// OpsServiceListRouteRequestsProcedure is the fully-qualified name of the OpsService's
+	// ListRouteRequests RPC.
+	OpsServiceListRouteRequestsProcedure = "/quadsmith.ops.OpsService/ListRouteRequests"
 	// OpsServiceGetDatabaseStatsProcedure is the fully-qualified name of the OpsService's
 	// GetDatabaseStats RPC.
 	OpsServiceGetDatabaseStatsProcedure = "/quadsmith.ops.OpsService/GetDatabaseStats"
@@ -73,6 +82,9 @@ const (
 	// OpsServiceGetCurrentOperatorProcedure is the fully-qualified name of the OpsService's
 	// GetCurrentOperator RPC.
 	OpsServiceGetCurrentOperatorProcedure = "/quadsmith.ops.OpsService/GetCurrentOperator"
+	// OpsServiceGetOAuthConfigProcedure is the fully-qualified name of the OpsService's GetOAuthConfig
+	// RPC.
+	OpsServiceGetOAuthConfigProcedure = "/quadsmith.ops.OpsService/GetOAuthConfig"
 	// OpsServiceListIamUsersProcedure is the fully-qualified name of the OpsService's ListIamUsers RPC.
 	OpsServiceListIamUsersProcedure = "/quadsmith.ops.OpsService/ListIamUsers"
 	// OpsServiceListIamGroupsProcedure is the fully-qualified name of the OpsService's ListIamGroups
@@ -103,8 +115,11 @@ const (
 
 // OpsServiceClient is a client for the quadsmith.ops.OpsService service.
 type OpsServiceClient interface {
-	// System Diagnostics
+	// System Health, Metrics & Diagnostics
 	GetSystemDiagnostics(context.Context, *connect.Request[ops.GetSystemDiagnosticsRequest]) (*connect.Response[ops.GetSystemDiagnosticsResponse], error)
+	GetSystemHealth(context.Context, *connect.Request[ops.GetSystemHealthRequest]) (*connect.Response[ops.GetSystemHealthResponse], error)
+	GetSystemMetrics(context.Context, *connect.Request[ops.GetSystemMetricsRequest]) (*connect.Response[ops.GetSystemMetricsResponse], error)
+	ListRouteRequests(context.Context, *connect.Request[ops.ListRouteRequestsRequest]) (*connect.Response[ops.ListRouteRequestsResponse], error)
 	// Database Stats (Public DB quadsmith_api)
 	GetDatabaseStats(context.Context, *connect.Request[ops.GetDatabaseStatsRequest]) (*connect.Response[ops.GetDatabaseStatsResponse], error)
 	// Maintenance & Cleanup Tasks
@@ -123,6 +138,7 @@ type OpsServiceClient interface {
 	// Authentication & IAM
 	ExchangeOAuthCode(context.Context, *connect.Request[ops.ExchangeOAuthCodeRequest]) (*connect.Response[ops.ExchangeOAuthCodeResponse], error)
 	GetCurrentOperator(context.Context, *connect.Request[ops.GetCurrentOperatorRequest]) (*connect.Response[ops.GetCurrentOperatorResponse], error)
+	GetOAuthConfig(context.Context, *connect.Request[ops.GetOAuthConfigRequest]) (*connect.Response[ops.GetOAuthConfigResponse], error)
 	ListIamUsers(context.Context, *connect.Request[ops.ListIamUsersRequest]) (*connect.Response[ops.ListIamUsersResponse], error)
 	ListIamGroups(context.Context, *connect.Request[ops.ListIamGroupsRequest]) (*connect.Response[ops.ListIamGroupsResponse], error)
 	// Dynamic Token Management
@@ -151,6 +167,24 @@ func NewOpsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 			httpClient,
 			baseURL+OpsServiceGetSystemDiagnosticsProcedure,
 			connect.WithSchema(opsServiceMethods.ByName("GetSystemDiagnostics")),
+			connect.WithClientOptions(opts...),
+		),
+		getSystemHealth: connect.NewClient[ops.GetSystemHealthRequest, ops.GetSystemHealthResponse](
+			httpClient,
+			baseURL+OpsServiceGetSystemHealthProcedure,
+			connect.WithSchema(opsServiceMethods.ByName("GetSystemHealth")),
+			connect.WithClientOptions(opts...),
+		),
+		getSystemMetrics: connect.NewClient[ops.GetSystemMetricsRequest, ops.GetSystemMetricsResponse](
+			httpClient,
+			baseURL+OpsServiceGetSystemMetricsProcedure,
+			connect.WithSchema(opsServiceMethods.ByName("GetSystemMetrics")),
+			connect.WithClientOptions(opts...),
+		),
+		listRouteRequests: connect.NewClient[ops.ListRouteRequestsRequest, ops.ListRouteRequestsResponse](
+			httpClient,
+			baseURL+OpsServiceListRouteRequestsProcedure,
+			connect.WithSchema(opsServiceMethods.ByName("ListRouteRequests")),
 			connect.WithClientOptions(opts...),
 		),
 		getDatabaseStats: connect.NewClient[ops.GetDatabaseStatsRequest, ops.GetDatabaseStatsResponse](
@@ -237,6 +271,12 @@ func NewOpsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 			connect.WithSchema(opsServiceMethods.ByName("GetCurrentOperator")),
 			connect.WithClientOptions(opts...),
 		),
+		getOAuthConfig: connect.NewClient[ops.GetOAuthConfigRequest, ops.GetOAuthConfigResponse](
+			httpClient,
+			baseURL+OpsServiceGetOAuthConfigProcedure,
+			connect.WithSchema(opsServiceMethods.ByName("GetOAuthConfig")),
+			connect.WithClientOptions(opts...),
+		),
 		listIamUsers: connect.NewClient[ops.ListIamUsersRequest, ops.ListIamUsersResponse](
 			httpClient,
 			baseURL+OpsServiceListIamUsersProcedure,
@@ -297,6 +337,9 @@ func NewOpsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 // opsServiceClient implements OpsServiceClient.
 type opsServiceClient struct {
 	getSystemDiagnostics        *connect.Client[ops.GetSystemDiagnosticsRequest, ops.GetSystemDiagnosticsResponse]
+	getSystemHealth             *connect.Client[ops.GetSystemHealthRequest, ops.GetSystemHealthResponse]
+	getSystemMetrics            *connect.Client[ops.GetSystemMetricsRequest, ops.GetSystemMetricsResponse]
+	listRouteRequests           *connect.Client[ops.ListRouteRequestsRequest, ops.ListRouteRequestsResponse]
 	getDatabaseStats            *connect.Client[ops.GetDatabaseStatsRequest, ops.GetDatabaseStatsResponse]
 	cleanupExpiredOtps          *connect.Client[ops.CleanupExpiredOtpsRequest, ops.CleanupExpiredOtpsResponse]
 	cleanupExpiredTokens        *connect.Client[ops.CleanupExpiredTokensRequest, ops.CleanupExpiredTokensResponse]
@@ -311,6 +354,7 @@ type opsServiceClient struct {
 	listTasks                   *connect.Client[ops.ListTasksRequest, ops.ListTasksResponse]
 	exchangeOAuthCode           *connect.Client[ops.ExchangeOAuthCodeRequest, ops.ExchangeOAuthCodeResponse]
 	getCurrentOperator          *connect.Client[ops.GetCurrentOperatorRequest, ops.GetCurrentOperatorResponse]
+	getOAuthConfig              *connect.Client[ops.GetOAuthConfigRequest, ops.GetOAuthConfigResponse]
 	listIamUsers                *connect.Client[ops.ListIamUsersRequest, ops.ListIamUsersResponse]
 	listIamGroups               *connect.Client[ops.ListIamGroupsRequest, ops.ListIamGroupsResponse]
 	createInternalToken         *connect.Client[ops.CreateInternalTokenRequest, ops.CreateInternalTokenResponse]
@@ -325,6 +369,21 @@ type opsServiceClient struct {
 // GetSystemDiagnostics calls quadsmith.ops.OpsService.GetSystemDiagnostics.
 func (c *opsServiceClient) GetSystemDiagnostics(ctx context.Context, req *connect.Request[ops.GetSystemDiagnosticsRequest]) (*connect.Response[ops.GetSystemDiagnosticsResponse], error) {
 	return c.getSystemDiagnostics.CallUnary(ctx, req)
+}
+
+// GetSystemHealth calls quadsmith.ops.OpsService.GetSystemHealth.
+func (c *opsServiceClient) GetSystemHealth(ctx context.Context, req *connect.Request[ops.GetSystemHealthRequest]) (*connect.Response[ops.GetSystemHealthResponse], error) {
+	return c.getSystemHealth.CallUnary(ctx, req)
+}
+
+// GetSystemMetrics calls quadsmith.ops.OpsService.GetSystemMetrics.
+func (c *opsServiceClient) GetSystemMetrics(ctx context.Context, req *connect.Request[ops.GetSystemMetricsRequest]) (*connect.Response[ops.GetSystemMetricsResponse], error) {
+	return c.getSystemMetrics.CallUnary(ctx, req)
+}
+
+// ListRouteRequests calls quadsmith.ops.OpsService.ListRouteRequests.
+func (c *opsServiceClient) ListRouteRequests(ctx context.Context, req *connect.Request[ops.ListRouteRequestsRequest]) (*connect.Response[ops.ListRouteRequestsResponse], error) {
+	return c.listRouteRequests.CallUnary(ctx, req)
 }
 
 // GetDatabaseStats calls quadsmith.ops.OpsService.GetDatabaseStats.
@@ -397,6 +456,11 @@ func (c *opsServiceClient) GetCurrentOperator(ctx context.Context, req *connect.
 	return c.getCurrentOperator.CallUnary(ctx, req)
 }
 
+// GetOAuthConfig calls quadsmith.ops.OpsService.GetOAuthConfig.
+func (c *opsServiceClient) GetOAuthConfig(ctx context.Context, req *connect.Request[ops.GetOAuthConfigRequest]) (*connect.Response[ops.GetOAuthConfigResponse], error) {
+	return c.getOAuthConfig.CallUnary(ctx, req)
+}
+
 // ListIamUsers calls quadsmith.ops.OpsService.ListIamUsers.
 func (c *opsServiceClient) ListIamUsers(ctx context.Context, req *connect.Request[ops.ListIamUsersRequest]) (*connect.Response[ops.ListIamUsersResponse], error) {
 	return c.listIamUsers.CallUnary(ctx, req)
@@ -444,8 +508,11 @@ func (c *opsServiceClient) RevokeJitGrant(ctx context.Context, req *connect.Requ
 
 // OpsServiceHandler is an implementation of the quadsmith.ops.OpsService service.
 type OpsServiceHandler interface {
-	// System Diagnostics
+	// System Health, Metrics & Diagnostics
 	GetSystemDiagnostics(context.Context, *connect.Request[ops.GetSystemDiagnosticsRequest]) (*connect.Response[ops.GetSystemDiagnosticsResponse], error)
+	GetSystemHealth(context.Context, *connect.Request[ops.GetSystemHealthRequest]) (*connect.Response[ops.GetSystemHealthResponse], error)
+	GetSystemMetrics(context.Context, *connect.Request[ops.GetSystemMetricsRequest]) (*connect.Response[ops.GetSystemMetricsResponse], error)
+	ListRouteRequests(context.Context, *connect.Request[ops.ListRouteRequestsRequest]) (*connect.Response[ops.ListRouteRequestsResponse], error)
 	// Database Stats (Public DB quadsmith_api)
 	GetDatabaseStats(context.Context, *connect.Request[ops.GetDatabaseStatsRequest]) (*connect.Response[ops.GetDatabaseStatsResponse], error)
 	// Maintenance & Cleanup Tasks
@@ -464,6 +531,7 @@ type OpsServiceHandler interface {
 	// Authentication & IAM
 	ExchangeOAuthCode(context.Context, *connect.Request[ops.ExchangeOAuthCodeRequest]) (*connect.Response[ops.ExchangeOAuthCodeResponse], error)
 	GetCurrentOperator(context.Context, *connect.Request[ops.GetCurrentOperatorRequest]) (*connect.Response[ops.GetCurrentOperatorResponse], error)
+	GetOAuthConfig(context.Context, *connect.Request[ops.GetOAuthConfigRequest]) (*connect.Response[ops.GetOAuthConfigResponse], error)
 	ListIamUsers(context.Context, *connect.Request[ops.ListIamUsersRequest]) (*connect.Response[ops.ListIamUsersResponse], error)
 	ListIamGroups(context.Context, *connect.Request[ops.ListIamGroupsRequest]) (*connect.Response[ops.ListIamGroupsResponse], error)
 	// Dynamic Token Management
@@ -488,6 +556,24 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 		OpsServiceGetSystemDiagnosticsProcedure,
 		svc.GetSystemDiagnostics,
 		connect.WithSchema(opsServiceMethods.ByName("GetSystemDiagnostics")),
+		connect.WithHandlerOptions(opts...),
+	)
+	opsServiceGetSystemHealthHandler := connect.NewUnaryHandler(
+		OpsServiceGetSystemHealthProcedure,
+		svc.GetSystemHealth,
+		connect.WithSchema(opsServiceMethods.ByName("GetSystemHealth")),
+		connect.WithHandlerOptions(opts...),
+	)
+	opsServiceGetSystemMetricsHandler := connect.NewUnaryHandler(
+		OpsServiceGetSystemMetricsProcedure,
+		svc.GetSystemMetrics,
+		connect.WithSchema(opsServiceMethods.ByName("GetSystemMetrics")),
+		connect.WithHandlerOptions(opts...),
+	)
+	opsServiceListRouteRequestsHandler := connect.NewUnaryHandler(
+		OpsServiceListRouteRequestsProcedure,
+		svc.ListRouteRequests,
+		connect.WithSchema(opsServiceMethods.ByName("ListRouteRequests")),
 		connect.WithHandlerOptions(opts...),
 	)
 	opsServiceGetDatabaseStatsHandler := connect.NewUnaryHandler(
@@ -574,6 +660,12 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 		connect.WithSchema(opsServiceMethods.ByName("GetCurrentOperator")),
 		connect.WithHandlerOptions(opts...),
 	)
+	opsServiceGetOAuthConfigHandler := connect.NewUnaryHandler(
+		OpsServiceGetOAuthConfigProcedure,
+		svc.GetOAuthConfig,
+		connect.WithSchema(opsServiceMethods.ByName("GetOAuthConfig")),
+		connect.WithHandlerOptions(opts...),
+	)
 	opsServiceListIamUsersHandler := connect.NewUnaryHandler(
 		OpsServiceListIamUsersProcedure,
 		svc.ListIamUsers,
@@ -632,6 +724,12 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 		switch r.URL.Path {
 		case OpsServiceGetSystemDiagnosticsProcedure:
 			opsServiceGetSystemDiagnosticsHandler.ServeHTTP(w, r)
+		case OpsServiceGetSystemHealthProcedure:
+			opsServiceGetSystemHealthHandler.ServeHTTP(w, r)
+		case OpsServiceGetSystemMetricsProcedure:
+			opsServiceGetSystemMetricsHandler.ServeHTTP(w, r)
+		case OpsServiceListRouteRequestsProcedure:
+			opsServiceListRouteRequestsHandler.ServeHTTP(w, r)
 		case OpsServiceGetDatabaseStatsProcedure:
 			opsServiceGetDatabaseStatsHandler.ServeHTTP(w, r)
 		case OpsServiceCleanupExpiredOtpsProcedure:
@@ -660,6 +758,8 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 			opsServiceExchangeOAuthCodeHandler.ServeHTTP(w, r)
 		case OpsServiceGetCurrentOperatorProcedure:
 			opsServiceGetCurrentOperatorHandler.ServeHTTP(w, r)
+		case OpsServiceGetOAuthConfigProcedure:
+			opsServiceGetOAuthConfigHandler.ServeHTTP(w, r)
 		case OpsServiceListIamUsersProcedure:
 			opsServiceListIamUsersHandler.ServeHTTP(w, r)
 		case OpsServiceListIamGroupsProcedure:
@@ -689,6 +789,18 @@ type UnimplementedOpsServiceHandler struct{}
 
 func (UnimplementedOpsServiceHandler) GetSystemDiagnostics(context.Context, *connect.Request[ops.GetSystemDiagnosticsRequest]) (*connect.Response[ops.GetSystemDiagnosticsResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.GetSystemDiagnostics is not implemented"))
+}
+
+func (UnimplementedOpsServiceHandler) GetSystemHealth(context.Context, *connect.Request[ops.GetSystemHealthRequest]) (*connect.Response[ops.GetSystemHealthResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.GetSystemHealth is not implemented"))
+}
+
+func (UnimplementedOpsServiceHandler) GetSystemMetrics(context.Context, *connect.Request[ops.GetSystemMetricsRequest]) (*connect.Response[ops.GetSystemMetricsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.GetSystemMetrics is not implemented"))
+}
+
+func (UnimplementedOpsServiceHandler) ListRouteRequests(context.Context, *connect.Request[ops.ListRouteRequestsRequest]) (*connect.Response[ops.ListRouteRequestsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.ListRouteRequests is not implemented"))
 }
 
 func (UnimplementedOpsServiceHandler) GetDatabaseStats(context.Context, *connect.Request[ops.GetDatabaseStatsRequest]) (*connect.Response[ops.GetDatabaseStatsResponse], error) {
@@ -745,6 +857,10 @@ func (UnimplementedOpsServiceHandler) ExchangeOAuthCode(context.Context, *connec
 
 func (UnimplementedOpsServiceHandler) GetCurrentOperator(context.Context, *connect.Request[ops.GetCurrentOperatorRequest]) (*connect.Response[ops.GetCurrentOperatorResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.GetCurrentOperator is not implemented"))
+}
+
+func (UnimplementedOpsServiceHandler) GetOAuthConfig(context.Context, *connect.Request[ops.GetOAuthConfigRequest]) (*connect.Response[ops.GetOAuthConfigResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.GetOAuthConfig is not implemented"))
 }
 
 func (UnimplementedOpsServiceHandler) ListIamUsers(context.Context, *connect.Request[ops.ListIamUsersRequest]) (*connect.Response[ops.ListIamUsersResponse], error) {

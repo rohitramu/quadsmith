@@ -105,10 +105,10 @@ func NewTestAPIServerConfig(t testing.TB, opts ...APIServerOption) *configpb.Api
 	return cfg
 }
 
-type OpsServerOption func(*configpb.OpsServerConfig)
+type OpsApiServerOption func(*configpb.OpsApiServerConfig)
 
-func WithOpsServerPort(port int32) OpsServerOption {
-	return func(c *configpb.OpsServerConfig) {
+func WithOpsApiServerPort(port int32) OpsApiServerOption {
+	return func(c *configpb.OpsApiServerConfig) {
 		if c.Server == nil {
 			c.Server = &configpb.ServerConfig{}
 		}
@@ -116,9 +116,9 @@ func WithOpsServerPort(port int32) OpsServerOption {
 	}
 }
 
-func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *configpb.OpsServerConfig {
+func NewTestOpsApiServerConfig(t testing.TB, opts ...OpsApiServerOption) *configpb.OpsApiServerConfig {
 	t.Helper()
-	cfg := &configpb.OpsServerConfig{
+	cfg := &configpb.OpsApiServerConfig{
 		Environment: proto.String("sandbox"),
 		Server: &configpb.ServerConfig{
 			Port:            proto.Int32(8080),
@@ -195,10 +195,34 @@ func NewTestOpsServerConfig(t testing.TB, opts ...OpsServerOption) *configpb.Ops
 	return cfg
 }
 
-func NewTestJobServerConfig(t testing.TB) *configpb.JobServerConfig {
+func NewTestOpsWebServerConfig(t testing.TB) *configpb.OpsWebServerConfig {
 	t.Helper()
-	return &configpb.JobServerConfig{
-		Environment:  proto.String("sandbox"),
+	return &configpb.OpsWebServerConfig{
+		Environment: proto.String("sandbox"),
+		Server: &configpb.ServerConfig{
+			Port:            proto.Int32(8080),
+			ReadTimeout:     durationpb.New(15 * time.Second),
+			WriteTimeout:    durationpb.New(15 * time.Second),
+			IdleTimeout:     durationpb.New(120 * time.Second),
+			MaxRequestBytes: proto.Int64(10485760),
+		},
+		StaticDir:  proto.String("src/react/app-ops-web/dist"),
+		OpsApiUrl:  proto.String("http://127.0.0.1:8082"),
+		GrafanaUrl: proto.String("http://127.0.0.1:3000"),
+	}
+}
+
+func NewTestCronServerConfig(t testing.TB) *configpb.CronServerConfig {
+	t.Helper()
+	return &configpb.CronServerConfig{
+		Environment: proto.String("sandbox"),
+		Server: &configpb.ServerConfig{
+			Port:            proto.Int32(8080),
+			ReadTimeout:     durationpb.New(15 * time.Second),
+			WriteTimeout:    durationpb.New(15 * time.Second),
+			IdleTimeout:     durationpb.New(120 * time.Second),
+			MaxRequestBytes: proto.Int64(2097152),
+		},
 		OpsServerUrl: proto.String("http://127.0.0.1:8082"),
 		AuthToken:    proto.String("qs_robot_sandbox_token_67890"),
 		CleanupExpiredOtps: &configpb.CleanupExpiredOtpsSchedule{

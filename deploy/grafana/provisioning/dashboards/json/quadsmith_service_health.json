@@ -1,0 +1,89 @@
+{
+  "uid": "quadsmith-health",
+  "title": "Quadsmith Service Health & RED Telemetry",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "10s",
+  "style": "dark",
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "region",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "victoriametrics"
+        },
+        "query": "label_values(quadsmith_service_health_status, region)",
+        "includeAll": true,
+        "multi": true,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "service",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "victoriametrics"
+        },
+        "query": "label_values(quadsmith_service_health_status, service)",
+        "includeAll": true,
+        "multi": true,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Service Health Status (2=HEALTHY, 1=DEGRADED, 0=UNHEALTHY)",
+      "type": "stat",
+      "gridPos": { "h": 6, "w": 12, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+      "targets": [
+        {
+          "expr": "quadsmith_service_health_status{region=~\"$region\",service=~\"$service\"}",
+          "legendFormat": "{{service}} ({{region}})"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Per-Route Request Rate (RPS)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+      "targets": [
+        {
+          "expr": "sum by (service, region, route) (rate(quadsmith_http_requests_total{region=~\"$region\",service=~\"$service\"}[5m]))",
+          "legendFormat": "{{service}} {{route}} ({{region}})"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Per-Route P95 RTT (ms)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 },
+      "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum by (le, service, region, route) (rate(quadsmith_http_request_duration_ms_bucket{region=~\"$region\",service=~\"$service\"}[5m])))",
+          "legendFormat": "p95 {{service}} {{route}}"
+        }
+      ]
+    }
+  ]
+}

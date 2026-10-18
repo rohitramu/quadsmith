@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"io"
 	"net/http"
 	"os"
 	"os/exec"
@@ -800,6 +801,218 @@ func TestOpsServer_SetUserRoleAndBanRoleDemotion(t *testing.T) {
 	_, err = user1ApiClient.ListBans(ctx, connect.NewRequest(&apipb.ListBansRequest{}))
 	if err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
 		t.Fatalf("Expected CodePermissionDenied for ListBans immediately after demoting user1 to USER, got %v", err)
+	}
+}
+
+func TestOpsServer_ServiceHealthAndObservability(t *testing.T) {
+	ctx := context.Background()
+	client := &http.Client{Timeout: 5 * time.Second}
+
+	services := []struct {
+		name string
+		url  string
+	}{
+		{"server-api", getAPIURL()},
+		{"server-ops-api", getOpsURL()},
+		{"server-ops-web", "http://127.0.0.1:8083"},
+		{"server-cron", "http://127.0.0.1:8085"},
+		{"server-web", "http://127.0.0.1:8080"},
+	}
+
+	// 1. Verify /healthz returns structured JSON with status=HEALTHY, service, region, and X-Trace-Id header,
+	//    and /metrics exposes quadsmith_service_info + quadsmith_http_requests_total across all 5 services.
+	for _, svc := range services {
+		req, _ := http.NewRequestWithContext(ctx, http.MethodGet, svc.url+"/healthz", nil)
+		// Attempt to spoof X-Trace-Id without hop token; service must ignore it and mint a fresh UUIDv7
+		req.Header.Set("X-Trace-Id", "spoofed-client-trace-id")
+		resp, err := client.Do(req)
+		if err != nil {
+			t.Fatalf("GET %s/healthz failed: %v", svc.url, err)
+		}
+		bodyBytes, _ := io.ReadAll(resp.Body)
+		resp.Body.Close()
+
+		if resp.StatusCode != http.StatusOK {
+			t.Errorf("Expected 200 from %s/healthz, got %d", svc.name, resp.StatusCode)
+		}
+		traceID := resp.Header.Get("X-Trace-Id")
+		if traceID == "" || traceID == "spoofed-client-trace-id" {
+			t.Errorf("Expected fresh server-minted X-Trace-Id on %s/healthz, got %q", svc.name, traceID)
+		}
+		body := string(bodyBytes)
+		if !containsString(body, `"status":"HEALTHY"`) || !containsString(body, `"service":"`+svc.name+`"`) || !containsString(body, `"region":`) {
+			t.Errorf("Unexpected %s/healthz body: %s", svc.name, body)
+		}
+
+		// Verify /metrics
+		mResp, err := client.Get(svc.url + "/metrics")
+		if err != nil {
+			t.Fatalf("GET %s/metrics failed: %v", svc.url, err)
+		}
+		mBytes, _ := io.ReadAll(mResp.Body)
+		mResp.Body.Close()
+		if mResp.StatusCode != http.StatusOK {
+			t.Errorf("Expected 200 from %s/metrics, got %d", svc.name, mResp.StatusCode)
+		}
+		mBody := string(mBytes)
+		if !containsString(mBody, `quadsmith_health_status{`) || !containsString(mBody, `service="`+svc.name+`"`) {
+			t.Errorf("Expected quadsmith_health_status for %s in /metrics output", svc.name)
+		}
+	}
+
+	// 2. Verify Nginx blocks external /metrics with 403 Forbidden
+	nginxMetricsResp, err := client.Get("http://127.0.0.1:8084/metrics")
+	if err == nil {
+		nginxMetricsResp.Body.Close()
+		if nginxMetricsResp.StatusCode != http.StatusForbidden {
+			t.Errorf("Expected 403 Forbidden from Nginx /metrics, got %d", nginxMetricsResp.StatusCode)
+		}
+	}
+
+	// 3. Verify GetSystemHealth, GetSystemMetrics, and GetOAuthConfig RPCs on server-ops-api
+	operatorClient := newOpsClient("qs_op_sandbox_token_12345")
+
+	healthRes, err := operatorClient.GetSystemHealth(ctx, connect.NewRequest(&pb.GetSystemHealthRequest{}))
+	if err != nil {
+		t.Fatalf("GetSystemHealth failed: %v", err)
+	}
+	if len(healthRes.Msg.GetServices()) < 5 {
+		t.Errorf("Expected at least 5 services in GetSystemHealth, got %d", len(healthRes.Msg.GetServices()))
+	}
+	for _, sh := range healthRes.Msg.GetServices() {
+		if sh.GetServiceName() == "server-ops-api" && sh.GetStatus() != "HEALTHY" {
+			t.Errorf("Expected server-ops-api to be HEALTHY in GetSystemHealth, got %q", sh.GetStatus())
+		}
+	}
+
+	win := "1h"
+	metricsRes, err := operatorClient.GetSystemMetrics(ctx, connect.NewRequest(&pb.GetSystemMetricsRequest{
+		Window: &win,
+	}))
+	if err != nil {
+		t.Fatalf("GetSystemMetrics failed: %v", err)
+	}
+	if metricsRes.Msg.GetWindow() != "1h" {
+		t.Errorf("Expected window '1h', got %q", metricsRes.Msg.GetWindow())
+	}
+
+	oauthRes, err := operatorClient.GetOAuthConfig(ctx, connect.NewRequest(&pb.GetOAuthConfigRequest{}))
+	if err != nil {
+		t.Fatalf("GetOAuthConfig failed: %v", err)
+	}
+	if oauthRes.Msg == nil {
+		t.Errorf("Expected non-nil GetOAuthConfigResponse")
+	}
+
+	// 4. Verify trace_id and region are recorded on InternalApiCallRecord and JobRecord
+	otpRes, err := operatorClient.CleanupExpiredOtps(ctx, connect.NewRequest(&pb.CleanupExpiredOtpsRequest{}))
+	if err != nil {
+		t.Fatalf("CleanupExpiredOtps failed: %v", err)
+	}
+	jobID := otpRes.Header().Get("X-Job-Id")
+	jobRes, err := operatorClient.GetJob(ctx, connect.NewRequest(&pb.GetJobRequest{JobId: jobID}))
+	if err != nil {
+		t.Fatalf("GetJob(%s) failed: %v", jobID, err)
+	}
+	if jobRes.Msg.GetJob().GetTraceId() == "" || jobRes.Msg.GetJob().GetRegion() == "" {
+		t.Errorf("Expected non-empty trace_id and region on JobRecord, got trace_id=%q region=%q",
+			jobRes.Msg.GetJob().GetTraceId(), jobRes.Msg.GetJob().GetRegion())
+	}
+
+	time.Sleep(50 * time.Millisecond)
+	callsRes, err := operatorClient.ListInternalApiCalls(ctx, connect.NewRequest(&pb.ListInternalApiCallsRequest{
+		MethodFilter: "CleanupExpiredOtps",
+		Limit:        5,
+	}))
+	if err != nil || len(callsRes.Msg.GetCalls()) == 0 {
+		t.Fatalf("ListInternalApiCalls(CleanupExpiredOtps) failed: %v", err)
+	}
+	latestCall := callsRes.Msg.GetCalls()[0]
+	if latestCall.GetTraceId() == "" || latestCall.GetRegion() == "" {
+		t.Errorf("Expected non-empty trace_id and region on InternalApiCallRecord, got trace_id=%q region=%q",
+			latestCall.GetTraceId(), latestCall.GetRegion())
+	}
+
+	// 5. Verify qsops system health and qsops system metrics CLI commands
+	qsopsPath := resolveQSOpsPath(t)
+	cmdHealth := exec.Command(qsopsPath, "system", "health", "--token", "qs_op_sandbox_token_12345")
+	outHealth, err := cmdHealth.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops system health failed: %v, output: %s", err, string(outHealth))
+	}
+	if !containsString(string(outHealth), "server-ops-api") || !containsString(string(outHealth), "HEALTHY") {
+		t.Errorf("Expected 'server-ops-api' and 'HEALTHY' in qsops system health output: %s", string(outHealth))
+	}
+
+	cmdMetrics := exec.Command(qsopsPath, "system", "metrics", "--window", "1h", "--token", "qs_op_sandbox_token_12345")
+	outMetrics, err := cmdMetrics.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops system metrics failed: %v, output: %s", err, string(outMetrics))
+	}
+	if !containsString(string(outMetrics), "SERVICE") || !containsString(string(outMetrics), "AVAILABILITY") {
+		t.Errorf("Expected 'SERVICE' and 'AVAILABILITY' in qsops system metrics output: %s", string(outMetrics))
+	}
+}
+
+func TestOpsWeb_GrafanaProxyJITGating(t *testing.T) {
+	ctx := context.Background()
+	opsWebURL := "http://127.0.0.1:8083"
+	client := &http.Client{Timeout: 5 * time.Second}
+	operatorClient := newOpsClient("qs_op_sandbox_token_12345")
+
+	// Revoke any pre-existing active JIT grants on sandbox operator
+	if grantsRes, err := operatorClient.ListJitGrants(ctx, connect.NewRequest(&pb.ListJitGrantsRequest{ActiveOnly: true})); err == nil {
+		for _, g := range grantsRes.Msg.GetGrants() {
+			_, _ = operatorClient.RevokeJitGrant(ctx, connect.NewRequest(&pb.RevokeJitGrantRequest{GrantId: g.GetId()}))
+		}
+	}
+
+	// 1. Unauthenticated /grafana/* -> 403 Forbidden
+	resp1, err := client.Get(opsWebURL + "/grafana/api/health")
+	if err != nil {
+		t.Fatalf("GET /grafana/api/health failed: %v", err)
+	}
+	resp1.Body.Close()
+	if resp1.StatusCode != http.StatusForbidden {
+		t.Errorf("Expected 403 Forbidden for unauthenticated /grafana/*, got %d", resp1.StatusCode)
+	}
+
+	// 2. Authenticated operator WITHOUT active JIT -> 403 Forbidden
+	req2, _ := http.NewRequestWithContext(ctx, http.MethodGet, opsWebURL+"/grafana/api/health", nil)
+	req2.Header.Set("Authorization", "Bearer qs_op_sandbox_token_12345")
+	resp2, err := client.Do(req2)
+	if err != nil {
+		t.Fatalf("Authenticated GET /grafana/api/health failed: %v", err)
+	}
+	body2, _ := io.ReadAll(resp2.Body)
+	resp2.Body.Close()
+	if resp2.StatusCode != http.StatusForbidden {
+		t.Errorf("Expected 403 Forbidden without active JIT grant, got %d (%s)", resp2.StatusCode, string(body2))
+	}
+
+	// 3. Acquire JIT grant -> /grafana/* is allowed past the JIT gate (not 401/403)
+	grantRes, err := operatorClient.AcquireJitGrant(ctx, connect.NewRequest(&pb.AcquireJitGrantRequest{
+		Hours:     1,
+		Reason:    "E2E test Grafana JIT proxy gating",
+		Operation: "*",
+	}))
+	if err != nil {
+		t.Fatalf("AcquireJitGrant failed: %v", err)
+	}
+	grantID := grantRes.Msg.GetGrant().GetId()
+	defer func() {
+		_, _ = operatorClient.RevokeJitGrant(ctx, connect.NewRequest(&pb.RevokeJitGrantRequest{GrantId: grantID}))
+	}()
+
+	req3, _ := http.NewRequestWithContext(ctx, http.MethodGet, opsWebURL+"/grafana/api/health", nil)
+	req3.Header.Set("Authorization", "Bearer qs_op_sandbox_token_12345")
+	resp3, err := client.Do(req3)
+	if err != nil {
+		t.Fatalf("JIT-elevated GET /grafana/api/health failed: %v", err)
+	}
+	resp3.Body.Close()
+	if resp3.StatusCode == http.StatusUnauthorized || resp3.StatusCode == http.StatusForbidden {
+		t.Errorf("Expected JIT-elevated request to pass auth/JIT gate, got %d", resp3.StatusCode)
 	}
 }
 

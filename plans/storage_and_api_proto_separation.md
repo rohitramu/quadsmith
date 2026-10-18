@@ -70,8 +70,8 @@ occurrences of `(quadsmith.sql.column) = {ignore: true}` across the repository):
    in [`auth`](../src/go/shared/pkg/auth),
    [`social`](../src/go/shared/pkg/social/service.go),
    [`blob`](../src/go/shared/pkg/blob), and
-   [`ops`](../src/go/server-ops/pkg/ops/service.go). However, because their SQL
-   table definitions lived in `quadsmith.api` and `quadsmith.ops`:
+   [`ops`](../src/go/server-ops-api/pkg/ops/service.go). However, because their
+   SQL table definitions lived in `quadsmith.api` and `quadsmith.ops`:
    - 13 purely internal storage tables (`RefreshToken`, `EmailOtp`,
      `UsernameHistory`, `OAuthAccount`, `UserEmailOAuthAccount`, `BannedEmail`,
      `Entity`, `ReviewVote`, `QuestionVote`, `AnswerVote`, `UserReputation`,

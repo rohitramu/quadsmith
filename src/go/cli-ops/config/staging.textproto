@@ -1,5 +1,5 @@
 environment: "staging"
-ops_server_url: "https://staging-ops.quadsmith.com"
+ops_server_url: "https://staging-ops-api.quadsmith.com"
 timeout {
   seconds: 30
 }

@@ -14,6 +14,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"quadsmith/shared/pkg/authcontext"
+	"quadsmith/shared/pkg/telemetry"
 
 	configpb "quadsmith/shared/gen/quadsmith/config"
 )
@@ -91,8 +92,8 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 			methodName = procedure[idx+1:]
 		}
 
-		// Public endpoint: ExchangeOAuthCode does not require auth
-		if methodName == "ExchangeOAuthCode" {
+		// Public endpoints: ExchangeOAuthCode and GetOAuthConfig do not require auth
+		if methodName == "ExchangeOAuthCode" || methodName == "GetOAuthConfig" {
 			return next(ctx, req)
 		}
 
@@ -135,7 +136,7 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 		res, err := next(ctx, req)
 		durationMs := time.Since(t0).Milliseconds()
 
-		if strings.HasPrefix(procedure, "/quadsmith.ops.OpsService/") {
+		if strings.HasPrefix(procedure, "/quadsmith.ops.OpsService/") && in.opsDb != nil {
 			status := "OK"
 			var errMsg *string
 			if err != nil {
@@ -144,7 +145,7 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 				errMsg = &msg
 			}
 
-			callID := in.logAudit(methodName, opCtx, status, errMsg, durationMs)
+			callID := in.logAudit(ctx, methodName, opCtx, status, errMsg, durationMs)
 			if res != nil && isTaskMethod(methodName) {
 				res.Header().Set("X-Job-Id", callID)
 			}
@@ -257,11 +258,14 @@ func (in *OpsInterceptor) checkJitGrant(ctx context.Context, operator, methodNam
 	return grantUUID, grantID, nil
 }
 
-func (in *OpsInterceptor) logAudit(method string, opCtx *OperatorContext, status string, errMsg *string, durationMs int64) string {
+func (in *OpsInterceptor) logAudit(reqCtx context.Context, method string, opCtx *OperatorContext, status string, errMsg *string, durationMs int64) string {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	callUUID := authcontext.NewUUIDv7()
+	callUUID := telemetry.TraceIDFromContext(reqCtx)
+	if !telemetry.IsValidUUID(callUUID) {
+		callUUID = authcontext.NewUUIDv7()
+	}
 	callID := fmt.Sprintf("call_%d", time.Now().UnixNano())
 	var jitUUID *string
 	if opCtx.JitGrantUUID != "" {
@@ -277,7 +281,18 @@ func (in *OpsInterceptor) logAudit(method string, opCtx *OperatorContext, status
 		callUUID, callID, method, opCtx.Operator, opCtx.OperatorType, opCtx.GroupName, jitUUID, status, errMsg, durationMs,
 	)
 	if err != nil {
-		log.Printf("[AuditLogger] Failed to write audit record for %s: %v", method, err)
+		// Fallback to a fresh UUID v7 if the trace ID was already recorded by another RPC in the same trace
+		callUUID = authcontext.NewUUIDv7()
+		if _, retryErr := in.opsDb.Exec(ctx, `
+			INSERT INTO internal_api_calls (
+				uuid, id, method, caller, caller_type, group_name, jit_grant_uuid, status, error_message, duration_ms, created_at
+			) VALUES (
+				$1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW()
+			)`,
+			callUUID, callID, method, opCtx.Operator, opCtx.OperatorType, opCtx.GroupName, jitUUID, status, errMsg, durationMs,
+		); retryErr != nil {
+			log.Printf("[AuditLogger] Failed to write audit record for %s: %v", method, retryErr)
+		}
 	}
 	return callID
 }

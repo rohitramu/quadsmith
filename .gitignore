@@ -18,7 +18,10 @@ node_modules/
 /server
 /server-api
 /server-ops
+/server-ops-api
+/server-ops-web
 /server-jobs
+/server-cron
 /server-web
 /api-server
 /ops-server
@@ -33,7 +36,10 @@ node_modules/
 # In-package binary executables if 'go build' is run inside package/module folders
 **/server-api/server-api
 **/server-ops/server-ops
+**/server-ops-api/server-ops-api
+**/server-ops-web/server-ops-web
 **/server-jobs/server-jobs
+**/server-cron/server-cron
 **/server-web/server-web
 **/cli-ops/cli-ops
 **/cli-ops/qsops

@@ -178,9 +178,10 @@ per-binary schema files under `src/proto/quadsmith/config/`:
   `BootstrapTokenConfig`, `InternalGroupConfig`).
 - `server_api.proto`: `ApiServerConfig`, `AuthConfig`, `EmailConfig`,
   `ConsoleEmailConfig`, `SmtpConfig`.
-- `server_ops.proto`: `OpsServerConfig`, `JitPolicyConfig`, `OAuthConfig`,
-  `DeveloperMapping`.
-- `server_jobs.proto`: `JobServerConfig`, `CleanupExpiredOtpsSchedule`,
+- `server_ops_api.proto`: `OpsApiServerConfig`, `JitPolicyConfig`,
+  `OAuthConfig`, `DeveloperMapping`.
+- `server_ops_web.proto`: `OpsWebServerConfig`.
+- `server_cron.proto`: `CronServerConfig`, `CleanupExpiredOtpsSchedule`,
   `CleanupExpiredTokensSchedule`, `CleanupOrphanedBlobsSchedule`,
   `PurgeSoftDeletedAccountsSchedule`, `SendUsernameReleaseWarningsSchedule`.
 - `server_web.proto`: `WebServerConfig`.

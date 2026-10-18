@@ -58,9 +58,15 @@ upstream api_upstream {
     keepalive 32;
 }
 
-upstream ops_upstream {
-    server ops-${active_slot}:8080 weight=${active_weight};
-    server ops-${candidate_slot}:8080 weight=${candidate_weight};
+upstream ops_api_upstream {
+    server ops-api-${active_slot}:8080 weight=${active_weight};
+    server ops-api-${candidate_slot}:8080 weight=${candidate_weight};
+    keepalive 8;
+}
+
+upstream ops_web_upstream {
+    server ops-web-${active_slot}:8080 weight=${active_weight};
+    server ops-web-${candidate_slot}:8080 weight=${candidate_weight};
     keepalive 8;
 }
 EOF
@@ -76,8 +82,13 @@ upstream api_upstream {
     keepalive 32;
 }
 
-upstream ops_upstream {
-    server ops-${candidate_slot}:8080 weight=100;
+upstream ops_api_upstream {
+    server ops-api-${candidate_slot}:8080 weight=100;
+    keepalive 8;
+}
+
+upstream ops_web_upstream {
+    server ops-web-${candidate_slot}:8080 weight=100;
     keepalive 8;
 }
 EOF
@@ -88,9 +99,11 @@ EOF
 check_candidate_health() {
     docker compose -f "$COMPOSE_FILE" exec -T nginx sh -c "
         wget -q -O - http://api-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1 &&
-        wget -q -O - http://ops-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1 &&
+        wget -q -O - http://ops-api-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1 &&
+        wget -q -O - http://ops-web-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1 &&
+        wget -q -O - http://cron-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1 &&
         wget -q -O - http://web-${NEXT_SLOT}:8080/healthz >/dev/null 2>&1
-    " && [ -n "$(docker compose -f "$COMPOSE_FILE" ps -q --status running "jobs-${NEXT_SLOT}" 2>/dev/null || true)" ]
+    " && [ -n "$(docker compose -f "$COMPOSE_FILE" ps -q --status running "cron-${NEXT_SLOT}" 2>/dev/null || true)" ]
 }
 
 ACTIVE_SLOT=""
@@ -120,9 +133,12 @@ if [ -z "$ACTIVE_SLOT" ]; then
     fi
 fi
 
-CANDIDATE_SERVICES=("api-${NEXT_SLOT}" "ops-${NEXT_SLOT}" "jobs-${NEXT_SLOT}" "web-${NEXT_SLOT}")
+CANDIDATE_SERVICES=("api-${NEXT_SLOT}" "ops-api-${NEXT_SLOT}" "ops-web-${NEXT_SLOT}" "cron-${NEXT_SLOT}" "web-${NEXT_SLOT}")
 
 echo "--- Blue-Green Cutover: active=${ACTIVE_SLOT:-none} -> candidate=${NEXT_SLOT} (ramp=${QS_ROLLOUT_RAMP_STAGES}) ---"
+
+echo "--- Ensuring standing telemetry stack (victoriametrics, victorialogs, grafana) ---"
+docker compose -f "$COMPOSE_FILE" up -d victoriametrics victorialogs grafana
 
 echo "--- Pulling candidate slot (${NEXT_SLOT}) images ---"
 PULL_ATTEMPT=1
@@ -216,7 +232,7 @@ fi
 printf '%s\n' "$NEXT_SLOT" > "$ACTIVE_SLOT_FILE"
 
 if [ -n "$ACTIVE_SLOT" ] && [ "$ACTIVE_SLOT" != "$NEXT_SLOT" ]; then
-    OLD_SERVICES=("web-${ACTIVE_SLOT}" "jobs-${ACTIVE_SLOT}" "api-${ACTIVE_SLOT}" "ops-${ACTIVE_SLOT}")
+    OLD_SERVICES=("web-${ACTIVE_SLOT}" "cron-${ACTIVE_SLOT}" "ops-web-${ACTIVE_SLOT}" "ops-api-${ACTIVE_SLOT}" "api-${ACTIVE_SLOT}")
     echo "--- Draining and stopping previous slot (${ACTIVE_SLOT}, timeout: ${QS_ROLLOUT_DRAIN_TIMEOUT_SEC}s) ---"
     sleep 2
     docker compose -f "$COMPOSE_FILE" stop -t "$QS_ROLLOUT_DRAIN_TIMEOUT_SEC" "${OLD_SERVICES[@]}" || true

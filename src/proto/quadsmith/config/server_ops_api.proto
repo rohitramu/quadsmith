@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package quadsmith.config;
+
+import "quadsmith/config/common.proto";
+
+option go_package = "quadsmith/shared/gen/quadsmith/config;config";
+
+// ---------------------------------------------------------
+// Domain model
+// ---------------------------------------------------------
+
+message OpsApiServerConfig {
+  optional string environment = 1;
+  ServerConfig server = 2;
+  DatabaseConfig database = 3; // quadsmith_api
+  DatabaseConfig internal_database = 4; // quadsmith_ops
+  repeated InternalGroupConfig groups = 5;
+  repeated BootstrapTokenConfig bootstrap_tokens = 6;
+  JitPolicyConfig jit = 7;
+  OAuthConfig oauth = 8;
+}
+
+message JitPolicyConfig {
+  optional bool enabled = 1;
+  optional bool auto_approve = 2;
+  optional int32 default_hours = 3;
+  optional int32 max_hours = 4;
+  repeated string sensitive_methods = 5;
+}
+
+message OAuthConfig {
+  optional string provider = 1; // "github", "google", etc.
+  optional string client_id = 2;
+  optional string client_secret = 3;
+  repeated string allowed_orgs = 4;
+  optional string default_group = 5;
+  repeated DeveloperMapping developer_mappings = 6;
+}
+
+message DeveloperMapping {
+  optional string email = 1;
+  optional string group_name = 2;
+}

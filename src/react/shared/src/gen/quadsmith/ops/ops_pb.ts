@@ -14,7 +14,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_ops_ops: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChdxdWFkc21pdGgvb3BzL29wcy5wcm90bxINcXVhZHNtaXRoLm9wcyLZAgoVSW50ZXJuYWxBcGlDYWxsUmVjb3JkEgwKBHV1aWQYASABKAkSCgoCaWQYAiABKAkSDgoGbWV0aG9kGAMgASgJEg4KBmNhbGxlchgEIAEoCRITCgtjYWxsZXJfdHlwZRgFIAEoCRISCgpncm91cF9uYW1lGAYgASgJEhsKDmppdF9ncmFudF91dWlkGAcgASgJSACIAQESGQoMaml0X2dyYW50X2lkGAggASgJSAGIAQESDgoGc3RhdHVzGAkgASgJEhoKDWVycm9yX21lc3NhZ2UYCiABKAlIAogBARITCgtkdXJhdGlvbl9tcxgLIAEoAxIuCgpjcmVhdGVkX2F0GAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEIRCg9faml0X2dyYW50X3V1aWRCDwoNX2ppdF9ncmFudF9pZEIQCg5fZXJyb3JfbWVzc2FnZSKDAgoTSW50ZXJuYWxUb2tlblJlY29yZBIMCgR1dWlkGAEgASgJEgoKAmlkGAIgASgJEgwKBG5hbWUYAyABKAkSDAoEdHlwZRgEIAEoCRISCgpncm91cF9uYW1lGAUgASgJEhIKCnRva2VuX2hhc2gYBiABKAkSLgoKZXhwaXJlc19hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKY3JlYXRlZF9hdBgIIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKcmV2b2tlZF9hdBgJIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAi6gIKDkppdEdyYW50UmVjb3JkEgwKBHV1aWQYASABKAkSCgoCaWQYAiABKAkSEgoKdG9rZW5faGFzaBgDIAEoCRIQCghvcGVyYXRvchgEIAEoCRIVCg1vcGVyYXRvcl90eXBlGAUgASgJEg4KBnJlYXNvbhgGIAEoCRIRCglvcGVyYXRpb24YByABKAkSDgoGc3RhdHVzGAggASgJEg0KBWhvdXJzGAkgASgFEi4KCmV4cGlyZXNfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmNyZWF0ZWRfYXQYCyABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi8KC2V4dGVuZGVkX2F0GAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpyZXZva2VkX2F0GA0gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcCL3AQoJSm9iUmVjb3JkEgwKBHV1aWQYASABKAkSDgoGam9iX2lkGAIgASgJEhEKCXRhc2tfbmFtZRgDIAEoCRIRCglwcm9jZWR1cmUYBCABKAkSDgoGY2FsbGVyGAUgASgJEhMKC2NhbGxlcl90eXBlGAYgASgJEg4KBnN0YXR1cxgHIAEoCRITCgtkdXJhdGlvbl9tcxgIIAEoAxIaCg1lcnJvcl9tZXNzYWdlGAkgASgJSACIAQESLgoKY3JlYXRlZF9hdBgKIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBCEAoOX2Vycm9yX21lc3NhZ2UiWQoHVGFza0RlZhIMCgRuYW1lGAEgASgJEhEKCXByb2NlZHVyZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIYChBkZWZhdWx0X2ludGVydmFsGAQgASgJIkoKFkFjcXVpcmVKaXRHcmFudFJlcXVlc3QSDQoFaG91cnMYASABKAUSDgoGcmVhc29uGAIgASgJEhEKCW9wZXJhdGlvbhgDIAEoCSJHChdBY3F1aXJlSml0R3JhbnRSZXNwb25zZRIsCgVncmFudBgBIAEoCzIdLnF1YWRzbWl0aC5vcHMuSml0R3JhbnRSZWNvcmQiGwoZQ2xlYW51cEV4cGlyZWRPdHBzUmVxdWVzdCIzChpDbGVhbnVwRXhwaXJlZE90cHNSZXNwb25zZRIVCg1jbGVhbmVkX2NvdW50GAEgASgDIh0KG0NsZWFudXBFeHBpcmVkVG9rZW5zUmVxdWVzdCI1ChxDbGVhbnVwRXhwaXJlZFRva2Vuc1Jlc3BvbnNlEhUKDWNsZWFuZWRfY291bnQYASABKAMiHQobQ2xlYW51cE9ycGhhbmVkQmxvYnNSZXF1ZXN0IjUKHENsZWFudXBPcnBoYW5lZEJsb2JzUmVzcG9uc2USFQoNY2xlYW5lZF9jb3VudBgBIAEoAyJjChpDcmVhdGVJbnRlcm5hbFRva2VuUmVxdWVzdBIMCgRuYW1lGAEgASgJEgwKBHR5cGUYAiABKAkSEgoKZ3JvdXBfbmFtZRgDIAEoCRIVCg1kdXJhdGlvbl9kYXlzGAQgASgFInkKG0NyZWF0ZUludGVybmFsVG9rZW5SZXNwb25zZRIQCgh0b2tlbl9pZBgBIAEoCRIUCgx0b2tlbl9zZWNyZXQYAiABKAkSMgoGcmVjb3JkGAMgASgLMiIucXVhZHNtaXRoLm9wcy5JbnRlcm5hbFRva2VuUmVjb3JkIlUKGEV4Y2hhbmdlT0F1dGhDb2RlUmVxdWVzdBIMCgRjb2RlGAEgASgJEhUKDWNvZGVfdmVyaWZpZXIYAiABKAkSFAoMcmVkaXJlY3RfdXJpGAMgASgJIoABChlFeGNoYW5nZU9BdXRoQ29kZVJlc3BvbnNlEg0KBXRva2VuGAEgASgJEi4KCmV4cGlyZXNfYXQYAiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhAKCG9wZXJhdG9yGAMgASgJEhIKCmdyb3VwX25hbWUYBCABKAkiOAoVRXh0ZW5kSml0R3JhbnRSZXF1ZXN0EhAKCGdyYW50X2lkGAEgASgJEg0KBWhvdXJzGAIgASgFIkYKFkV4dGVuZEppdEdyYW50UmVzcG9uc2USLAoFZ3JhbnQYASABKAsyHS5xdWFkc21pdGgub3BzLkppdEdyYW50UmVjb3JkIhsKGUdldEN1cnJlbnRPcGVyYXRvclJlcXVlc3Qi5AEKGkdldEN1cnJlbnRPcGVyYXRvclJlc3BvbnNlEhAKCG9wZXJhdG9yGAEgASgJEhUKDW9wZXJhdG9yX3R5cGUYAiABKAkSEgoKZ3JvdXBfbmFtZRgDIAEoCRI2ChJzZXNzaW9uX2V4cGlyZXNfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjwKEGFjdGl2ZV9qaXRfZ3JhbnQYBSABKAsyHS5xdWFkc21pdGgub3BzLkppdEdyYW50UmVjb3JkSACIAQFCEwoRX2FjdGl2ZV9qaXRfZ3JhbnQiGQoXR2V0RGF0YWJhc2VTdGF0c1JlcXVlc3QidQoYR2V0RGF0YWJhc2VTdGF0c1Jlc3BvbnNlEhUKDWRhdGFiYXNlX25hbWUYASABKAkSGAoQdG90YWxfc2l6ZV9ieXRlcxgCIAEoAxIoCgZ0YWJsZXMYAyADKAsyGC5xdWFkc21pdGgub3BzLlRhYmxlU3RhdCIfCg1HZXRKb2JSZXF1ZXN0Eg4KBmpvYl9pZBgBIAEoCSI3Cg5HZXRKb2JSZXNwb25zZRIlCgNqb2IYASABKAsyGC5xdWFkc21pdGgub3BzLkpvYlJlY29yZCIdChtHZXRTeXN0ZW1EaWFnbm9zdGljc1JlcXVlc3Qi3gEKHEdldFN5c3RlbURpYWdub3N0aWNzUmVzcG9uc2USDwoHdmVyc2lvbhgBIAEoCRITCgtlbnZpcm9ubWVudBgCIAEoCRIWCg51cHRpbWVfc2Vjb25kcxgDIAEoAxIeChZtZW1vcnlfYWxsb2NhdGVkX2J5dGVzGAQgASgDEhYKDm51bV9nb3JvdXRpbmVzGAUgASgFEiMKG2FjdGl2ZV9kYXRhYmFzZV9jb25uZWN0aW9ucxgGIAEoBRIjChthY3RpdmVfaW50ZXJuYWxfY29ubmVjdGlvbnMYByABKAUiIwoOR2V0VGFza1JlcXVlc3QSEQoJdGFza19uYW1lGAEgASgJIjcKD0dldFRhc2tSZXNwb25zZRIkCgR0YXNrGAEgASgLMhYucXVhZHNtaXRoLm9wcy5UYXNrRGVmIhYKFExpc3RJYW1Hcm91cHNSZXF1ZXN0IkcKFUxpc3RJYW1Hcm91cHNSZXNwb25zZRIuCgZncm91cHMYASADKAsyHi5xdWFkc21pdGgub3BzLklhbUdyb3VwU3VtbWFyeSIVChNMaXN0SWFtVXNlcnNSZXF1ZXN0IkQKFExpc3RJYW1Vc2Vyc1Jlc3BvbnNlEiwKBXVzZXJzGAEgAygLMh0ucXVhZHNtaXRoLm9wcy5JYW1Vc2VyU3VtbWFyeSJaChtMaXN0SW50ZXJuYWxBcGlDYWxsc1JlcXVlc3QSDQoFbGltaXQYASABKAUSFQoNY2FsbGVyX2ZpbHRlchgCIAEoCRIVCg1tZXRob2RfZmlsdGVyGAMgASgJIlMKHExpc3RJbnRlcm5hbEFwaUNhbGxzUmVzcG9uc2USMwoFY2FsbHMYASADKAsyJC5xdWFkc21pdGgub3BzLkludGVybmFsQXBpQ2FsbFJlY29yZCIbChlMaXN0SW50ZXJuYWxUb2tlbnNSZXF1ZXN0IlAKGkxpc3RJbnRlcm5hbFRva2Vuc1Jlc3BvbnNlEjIKBnRva2VucxgBIAMoCzIiLnF1YWRzbWl0aC5vcHMuSW50ZXJuYWxUb2tlblJlY29yZCIrChRMaXN0Sml0R3JhbnRzUmVxdWVzdBITCgthY3RpdmVfb25seRgBIAEoCCJGChVMaXN0Sml0R3JhbnRzUmVzcG9uc2USLQoGZ3JhbnRzGAEgAygLMh0ucXVhZHNtaXRoLm9wcy5KaXRHcmFudFJlY29yZCJVCg9MaXN0Sm9ic1JlcXVlc3QSEgoFbGltaXQYASABKAVIAIgBARIWCgl0YXNrX25hbWUYAiABKAlIAYgBAUIICgZfbGltaXRCDAoKX3Rhc2tfbmFtZSI6ChBMaXN0Sm9ic1Jlc3BvbnNlEiYKBGpvYnMYASADKAsyGC5xdWFkc21pdGgub3BzLkpvYlJlY29yZCISChBMaXN0VGFza3NSZXF1ZXN0IjoKEUxpc3RUYXNrc1Jlc3BvbnNlEiUKBXRhc2tzGAEgAygLMhYucXVhZHNtaXRoLm9wcy5UYXNrRGVmIiEKH1B1cmdlU29mdERlbGV0ZWRBY2NvdW50c1JlcXVlc3QiOAogUHVyZ2VTb2Z0RGVsZXRlZEFjY291bnRzUmVzcG9uc2USFAoMcHVyZ2VkX2NvdW50GAEgASgDIigKGlJldm9rZUludGVybmFsVG9rZW5SZXF1ZXN0EgoKAmlkGAEgASgJIi4KG1Jldm9rZUludGVybmFsVG9rZW5SZXNwb25zZRIPCgdzdWNjZXNzGAEgASgIIikKFVJldm9rZUppdEdyYW50UmVxdWVzdBIQCghncmFudF9pZBgBIAEoCSIpChZSZXZva2VKaXRHcmFudFJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiJAoiU2VuZFVzZXJuYW1lUmVsZWFzZVdhcm5pbmdzUmVxdWVzdCI8CiNTZW5kVXNlcm5hbWVSZWxlYXNlV2FybmluZ3NSZXNwb25zZRIVCg13YXJuaW5nX2NvdW50GAEgASgDIjMKElNldFVzZXJSb2xlUmVxdWVzdBIPCgd1c2VyX2lkGAEgASgJEgwKBHJvbGUYAiABKAkiXwoTU2V0VXNlclJvbGVSZXNwb25zZRIRCgl1c2VyX3V1aWQYASABKAkSEAoIdXNlcm5hbWUYAiABKAkSFQoNcHJldmlvdXNfcm9sZRgDIAEoCRIMCgRyb2xlGAQgASgJIk0KD0lhbUdyb3VwU3VtbWFyeRIMCgRuYW1lGAEgASgJEhMKC2Rlc2NyaXB0aW9uGAIgASgJEhcKD2FsbG93ZWRfbWV0aG9kcxgDIAMoCSKQAQoOSWFtVXNlclN1bW1hcnkSEAoIb3BlcmF0b3IYASABKAkSDAoEdHlwZRgCIAEoCRISCgpncm91cF9uYW1lGAMgASgJEjIKDmxhc3RfYWN0aXZlX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIWCg5oYXNfYWN0aXZlX2ppdBgFIAEoCCJMCglUYWJsZVN0YXQSEgoKdGFibGVfbmFtZRgBIAEoCRIRCglyb3dfY291bnQYAiABKAMSGAoQdG90YWxfc2l6ZV9ieXRlcxgDIAEoAzLzEgoKT3BzU2VydmljZRJvChRHZXRTeXN0ZW1EaWFnbm9zdGljcxIqLnF1YWRzbWl0aC5vcHMuR2V0U3lzdGVtRGlhZ25vc3RpY3NSZXF1ZXN0GisucXVhZHNtaXRoLm9wcy5HZXRTeXN0ZW1EaWFnbm9zdGljc1Jlc3BvbnNlEmMKEEdldERhdGFiYXNlU3RhdHMSJi5xdWFkc21pdGgub3BzLkdldERhdGFiYXNlU3RhdHNSZXF1ZXN0GicucXVhZHNtaXRoLm9wcy5HZXREYXRhYmFzZVN0YXRzUmVzcG9uc2USaQoSQ2xlYW51cEV4cGlyZWRPdHBzEigucXVhZHNtaXRoLm9wcy5DbGVhbnVwRXhwaXJlZE90cHNSZXF1ZXN0GikucXVhZHNtaXRoLm9wcy5DbGVhbnVwRXhwaXJlZE90cHNSZXNwb25zZRJvChRDbGVhbnVwRXhwaXJlZFRva2VucxIqLnF1YWRzbWl0aC5vcHMuQ2xlYW51cEV4cGlyZWRUb2tlbnNSZXF1ZXN0GisucXVhZHNtaXRoLm9wcy5DbGVhbnVwRXhwaXJlZFRva2Vuc1Jlc3BvbnNlEm8KFENsZWFudXBPcnBoYW5lZEJsb2JzEioucXVhZHNtaXRoLm9wcy5DbGVhbnVwT3JwaGFuZWRCbG9ic1JlcXVlc3QaKy5xdWFkc21pdGgub3BzLkNsZWFudXBPcnBoYW5lZEJsb2JzUmVzcG9uc2USewoYUHVyZ2VTb2Z0RGVsZXRlZEFjY291bnRzEi4ucXVhZHNtaXRoLm9wcy5QdXJnZVNvZnREZWxldGVkQWNjb3VudHNSZXF1ZXN0Gi8ucXVhZHNtaXRoLm9wcy5QdXJnZVNvZnREZWxldGVkQWNjb3VudHNSZXNwb25zZRKEAQobU2VuZFVzZXJuYW1lUmVsZWFzZVdhcm5pbmdzEjEucXVhZHNtaXRoLm9wcy5TZW5kVXNlcm5hbWVSZWxlYXNlV2FybmluZ3NSZXF1ZXN0GjIucXVhZHNtaXRoLm9wcy5TZW5kVXNlcm5hbWVSZWxlYXNlV2FybmluZ3NSZXNwb25zZRJUCgtTZXRVc2VyUm9sZRIhLnF1YWRzbWl0aC5vcHMuU2V0VXNlclJvbGVSZXF1ZXN0GiIucXVhZHNtaXRoLm9wcy5TZXRVc2VyUm9sZVJlc3BvbnNlEkUKBkdldEpvYhIcLnF1YWRzbWl0aC5vcHMuR2V0Sm9iUmVxdWVzdBodLnF1YWRzbWl0aC5vcHMuR2V0Sm9iUmVzcG9uc2USSAoHR2V0VGFzaxIdLnF1YWRzbWl0aC5vcHMuR2V0VGFza1JlcXVlc3QaHi5xdWFkc21pdGgub3BzLkdldFRhc2tSZXNwb25zZRJvChRMaXN0SW50ZXJuYWxBcGlDYWxscxIqLnF1YWRzbWl0aC5vcHMuTGlzdEludGVybmFsQXBpQ2FsbHNSZXF1ZXN0GisucXVhZHNtaXRoLm9wcy5MaXN0SW50ZXJuYWxBcGlDYWxsc1Jlc3BvbnNlEksKCExpc3RKb2JzEh4ucXVhZHNtaXRoLm9wcy5MaXN0Sm9ic1JlcXVlc3QaHy5xdWFkc21pdGgub3BzLkxpc3RKb2JzUmVzcG9uc2USTgoJTGlzdFRhc2tzEh8ucXVhZHNtaXRoLm9wcy5MaXN0VGFza3NSZXF1ZXN0GiAucXVhZHNtaXRoLm9wcy5MaXN0VGFza3NSZXNwb25zZRJmChFFeGNoYW5nZU9BdXRoQ29kZRInLnF1YWRzbWl0aC5vcHMuRXhjaGFuZ2VPQXV0aENvZGVSZXF1ZXN0GigucXVhZHNtaXRoLm9wcy5FeGNoYW5nZU9BdXRoQ29kZVJlc3BvbnNlEmkKEkdldEN1cnJlbnRPcGVyYXRvchIoLnF1YWRzbWl0aC5vcHMuR2V0Q3VycmVudE9wZXJhdG9yUmVxdWVzdBopLnF1YWRzbWl0aC5vcHMuR2V0Q3VycmVudE9wZXJhdG9yUmVzcG9uc2USVwoMTGlzdElhbVVzZXJzEiIucXVhZHNtaXRoLm9wcy5MaXN0SWFtVXNlcnNSZXF1ZXN0GiMucXVhZHNtaXRoLm9wcy5MaXN0SWFtVXNlcnNSZXNwb25zZRJaCg1MaXN0SWFtR3JvdXBzEiMucXVhZHNtaXRoLm9wcy5MaXN0SWFtR3JvdXBzUmVxdWVzdBokLnF1YWRzbWl0aC5vcHMuTGlzdElhbUdyb3Vwc1Jlc3BvbnNlEmwKE0NyZWF0ZUludGVybmFsVG9rZW4SKS5xdWFkc21pdGgub3BzLkNyZWF0ZUludGVybmFsVG9rZW5SZXF1ZXN0GioucXVhZHNtaXRoLm9wcy5DcmVhdGVJbnRlcm5hbFRva2VuUmVzcG9uc2USaQoSTGlzdEludGVybmFsVG9rZW5zEigucXVhZHNtaXRoLm9wcy5MaXN0SW50ZXJuYWxUb2tlbnNSZXF1ZXN0GikucXVhZHNtaXRoLm9wcy5MaXN0SW50ZXJuYWxUb2tlbnNSZXNwb25zZRJsChNSZXZva2VJbnRlcm5hbFRva2VuEikucXVhZHNtaXRoLm9wcy5SZXZva2VJbnRlcm5hbFRva2VuUmVxdWVzdBoqLnF1YWRzbWl0aC5vcHMuUmV2b2tlSW50ZXJuYWxUb2tlblJlc3BvbnNlEmAKD0FjcXVpcmVKaXRHcmFudBIlLnF1YWRzbWl0aC5vcHMuQWNxdWlyZUppdEdyYW50UmVxdWVzdBomLnF1YWRzbWl0aC5vcHMuQWNxdWlyZUppdEdyYW50UmVzcG9uc2USXQoORXh0ZW5kSml0R3JhbnQSJC5xdWFkc21pdGgub3BzLkV4dGVuZEppdEdyYW50UmVxdWVzdBolLnF1YWRzbWl0aC5vcHMuRXh0ZW5kSml0R3JhbnRSZXNwb25zZRJaCg1MaXN0Sml0R3JhbnRzEiMucXVhZHNtaXRoLm9wcy5MaXN0Sml0R3JhbnRzUmVxdWVzdBokLnF1YWRzbWl0aC5vcHMuTGlzdEppdEdyYW50c1Jlc3BvbnNlEl0KDlJldm9rZUppdEdyYW50EiQucXVhZHNtaXRoLm9wcy5SZXZva2VKaXRHcmFudFJlcXVlc3QaJS5xdWFkc21pdGgub3BzLlJldm9rZUppdEdyYW50UmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL29wcztvcHNiBnByb3RvMw",
+    "ChdxdWFkc21pdGgvb3BzL29wcy5wcm90bxINcXVhZHNtaXRoLm9wcyL7AgoVSW50ZXJuYWxBcGlDYWxsUmVjb3JkEgwKBHV1aWQYASABKAkSCgoCaWQYAiABKAkSDgoGbWV0aG9kGAMgASgJEg4KBmNhbGxlchgEIAEoCRITCgtjYWxsZXJfdHlwZRgFIAEoCRISCgpncm91cF9uYW1lGAYgASgJEhsKDmppdF9ncmFudF91dWlkGAcgASgJSACIAQESGQoMaml0X2dyYW50X2lkGAggASgJSAGIAQESDgoGc3RhdHVzGAkgASgJEhoKDWVycm9yX21lc3NhZ2UYCiABKAlIAogBARITCgtkdXJhdGlvbl9tcxgLIAEoAxIuCgpjcmVhdGVkX2F0GAwgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIOCgZyZWdpb24YDSABKAkSEAoIdHJhY2VfaWQYDiABKAlCEQoPX2ppdF9ncmFudF91dWlkQg8KDV9qaXRfZ3JhbnRfaWRCEAoOX2Vycm9yX21lc3NhZ2UigwIKE0ludGVybmFsVG9rZW5SZWNvcmQSDAoEdXVpZBgBIAEoCRIKCgJpZBgCIAEoCRIMCgRuYW1lGAMgASgJEgwKBHR5cGUYBCABKAkSEgoKZ3JvdXBfbmFtZRgFIAEoCRISCgp0b2tlbl9oYXNoGAYgASgJEi4KCmV4cGlyZXNfYXQYByABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCmNyZWF0ZWRfYXQYCCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEi4KCnJldm9rZWRfYXQYCSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIuoCCg5KaXRHcmFudFJlY29yZBIMCgR1dWlkGAEgASgJEgoKAmlkGAIgASgJEhIKCnRva2VuX2hhc2gYAyABKAkSEAoIb3BlcmF0b3IYBCABKAkSFQoNb3BlcmF0b3JfdHlwZRgFIAEoCRIOCgZyZWFzb24YBiABKAkSEQoJb3BlcmF0aW9uGAcgASgJEg4KBnN0YXR1cxgIIAEoCRINCgVob3VycxgJIAEoBRIuCgpleHBpcmVzX2F0GAogASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgpjcmVhdGVkX2F0GAsgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIvCgtleHRlbmRlZF9hdBgMIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKcmV2b2tlZF9hdBgNIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXAimQIKCUpvYlJlY29yZBIMCgR1dWlkGAEgASgJEg4KBmpvYl9pZBgCIAEoCRIRCgl0YXNrX25hbWUYAyABKAkSEQoJcHJvY2VkdXJlGAQgASgJEg4KBmNhbGxlchgFIAEoCRITCgtjYWxsZXJfdHlwZRgGIAEoCRIOCgZzdGF0dXMYByABKAkSEwoLZHVyYXRpb25fbXMYCCABKAMSGgoNZXJyb3JfbWVzc2FnZRgJIAEoCUgAiAEBEi4KCmNyZWF0ZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEg4KBnJlZ2lvbhgLIAEoCRIQCgh0cmFjZV9pZBgMIAEoCUIQCg5fZXJyb3JfbWVzc2FnZSJZCgdUYXNrRGVmEgwKBG5hbWUYASABKAkSEQoJcHJvY2VkdXJlGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJEhgKEGRlZmF1bHRfaW50ZXJ2YWwYBCABKAkiSgoWQWNxdWlyZUppdEdyYW50UmVxdWVzdBINCgVob3VycxgBIAEoBRIOCgZyZWFzb24YAiABKAkSEQoJb3BlcmF0aW9uGAMgASgJIkcKF0FjcXVpcmVKaXRHcmFudFJlc3BvbnNlEiwKBWdyYW50GAEgASgLMh0ucXVhZHNtaXRoLm9wcy5KaXRHcmFudFJlY29yZCIbChlDbGVhbnVwRXhwaXJlZE90cHNSZXF1ZXN0IjMKGkNsZWFudXBFeHBpcmVkT3Rwc1Jlc3BvbnNlEhUKDWNsZWFuZWRfY291bnQYASABKAMiHQobQ2xlYW51cEV4cGlyZWRUb2tlbnNSZXF1ZXN0IjUKHENsZWFudXBFeHBpcmVkVG9rZW5zUmVzcG9uc2USFQoNY2xlYW5lZF9jb3VudBgBIAEoAyIdChtDbGVhbnVwT3JwaGFuZWRCbG9ic1JlcXVlc3QiNQocQ2xlYW51cE9ycGhhbmVkQmxvYnNSZXNwb25zZRIVCg1jbGVhbmVkX2NvdW50GAEgASgDImMKGkNyZWF0ZUludGVybmFsVG9rZW5SZXF1ZXN0EgwKBG5hbWUYASABKAkSDAoEdHlwZRgCIAEoCRISCgpncm91cF9uYW1lGAMgASgJEhUKDWR1cmF0aW9uX2RheXMYBCABKAUieQobQ3JlYXRlSW50ZXJuYWxUb2tlblJlc3BvbnNlEhAKCHRva2VuX2lkGAEgASgJEhQKDHRva2VuX3NlY3JldBgCIAEoCRIyCgZyZWNvcmQYAyABKAsyIi5xdWFkc21pdGgub3BzLkludGVybmFsVG9rZW5SZWNvcmQiVQoYRXhjaGFuZ2VPQXV0aENvZGVSZXF1ZXN0EgwKBGNvZGUYASABKAkSFQoNY29kZV92ZXJpZmllchgCIAEoCRIUCgxyZWRpcmVjdF91cmkYAyABKAkigAEKGUV4Y2hhbmdlT0F1dGhDb2RlUmVzcG9uc2USDQoFdG9rZW4YASABKAkSLgoKZXhwaXJlc19hdBgCIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASEAoIb3BlcmF0b3IYAyABKAkSEgoKZ3JvdXBfbmFtZRgEIAEoCSI4ChVFeHRlbmRKaXRHcmFudFJlcXVlc3QSEAoIZ3JhbnRfaWQYASABKAkSDQoFaG91cnMYAiABKAUiRgoWRXh0ZW5kSml0R3JhbnRSZXNwb25zZRIsCgVncmFudBgBIAEoCzIdLnF1YWRzbWl0aC5vcHMuSml0R3JhbnRSZWNvcmQiGwoZR2V0Q3VycmVudE9wZXJhdG9yUmVxdWVzdCLkAQoaR2V0Q3VycmVudE9wZXJhdG9yUmVzcG9uc2USEAoIb3BlcmF0b3IYASABKAkSFQoNb3BlcmF0b3JfdHlwZRgCIAEoCRISCgpncm91cF9uYW1lGAMgASgJEjYKEnNlc3Npb25fZXhwaXJlc19hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASPAoQYWN0aXZlX2ppdF9ncmFudBgFIAEoCzIdLnF1YWRzbWl0aC5vcHMuSml0R3JhbnRSZWNvcmRIAIgBAUITChFfYWN0aXZlX2ppdF9ncmFudCIZChdHZXREYXRhYmFzZVN0YXRzUmVxdWVzdCJ1ChhHZXREYXRhYmFzZVN0YXRzUmVzcG9uc2USFQoNZGF0YWJhc2VfbmFtZRgBIAEoCRIYChB0b3RhbF9zaXplX2J5dGVzGAIgASgDEigKBnRhYmxlcxgDIAMoCzIYLnF1YWRzbWl0aC5vcHMuVGFibGVTdGF0Ih8KDUdldEpvYlJlcXVlc3QSDgoGam9iX2lkGAEgASgJIjcKDkdldEpvYlJlc3BvbnNlEiUKA2pvYhgBIAEoCzIYLnF1YWRzbWl0aC5vcHMuSm9iUmVjb3JkIhcKFUdldE9BdXRoQ29uZmlnUmVxdWVzdCJ5ChZHZXRPQXV0aENvbmZpZ1Jlc3BvbnNlEhAKCHByb3ZpZGVyGAEgASgJEhEKCWNsaWVudF9pZBgCIAEoCRITCgtlbnZpcm9ubWVudBgDIAEoCRIOCgZyZWdpb24YBCABKAkSFQoNYXV0aG9yaXplX3VybBgFIAEoCSIdChtHZXRTeXN0ZW1EaWFnbm9zdGljc1JlcXVlc3Qi3gEKHEdldFN5c3RlbURpYWdub3N0aWNzUmVzcG9uc2USDwoHdmVyc2lvbhgBIAEoCRITCgtlbnZpcm9ubWVudBgCIAEoCRIWCg51cHRpbWVfc2Vjb25kcxgDIAEoAxIeChZtZW1vcnlfYWxsb2NhdGVkX2J5dGVzGAQgASgDEhYKDm51bV9nb3JvdXRpbmVzGAUgASgFEiMKG2FjdGl2ZV9kYXRhYmFzZV9jb25uZWN0aW9ucxgGIAEoBRIjChthY3RpdmVfaW50ZXJuYWxfY29ubmVjdGlvbnMYByABKAUiRgoWR2V0U3lzdGVtSGVhbHRoUmVxdWVzdBIaCg1yZWdpb25fZmlsdGVyGAEgASgJSACIAQFCEAoOX3JlZ2lvbl9maWx0ZXIitAEKF0dldFN5c3RlbUhlYWx0aFJlc3BvbnNlEg4KBnN0YXR1cxgBIAEoCRITCgtlbnZpcm9ubWVudBgCIAEoCRIOCgZyZWdpb24YAyABKAkSLgoKY2hlY2tlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASNAoIc2VydmljZXMYBSADKAsyIi5xdWFkc21pdGgub3BzLlNlcnZpY2VIZWFsdGhTdGF0dXMilwEKF0dldFN5c3RlbU1ldHJpY3NSZXF1ZXN0EhoKDXJlZ2lvbl9maWx0ZXIYASABKAlIAIgBARIbCg5zZXJ2aWNlX2ZpbHRlchgCIAEoCUgBiAEBEhMKBndpbmRvdxgDIAEoCUgCiAEBQhAKDl9yZWdpb25fZmlsdGVyQhEKD19zZXJ2aWNlX2ZpbHRlckIJCgdfd2luZG93IrkBChhHZXRTeXN0ZW1NZXRyaWNzUmVzcG9uc2USEwoLZW52aXJvbm1lbnQYASABKAkSDgoGcmVnaW9uGAIgASgJEg4KBndpbmRvdxgDIAEoCRIwCgxnZW5lcmF0ZWRfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjYKCHNlcnZpY2VzGAUgAygLMiQucXVhZHNtaXRoLm9wcy5TZXJ2aWNlTWV0cmljc1N1bW1hcnkiIwoOR2V0VGFza1JlcXVlc3QSEQoJdGFza19uYW1lGAEgASgJIjcKD0dldFRhc2tSZXNwb25zZRIkCgR0YXNrGAEgASgLMhYucXVhZHNtaXRoLm9wcy5UYXNrRGVmIhYKFExpc3RJYW1Hcm91cHNSZXF1ZXN0IkcKFUxpc3RJYW1Hcm91cHNSZXNwb25zZRIuCgZncm91cHMYASADKAsyHi5xdWFkc21pdGgub3BzLklhbUdyb3VwU3VtbWFyeSIVChNMaXN0SWFtVXNlcnNSZXF1ZXN0IkQKFExpc3RJYW1Vc2Vyc1Jlc3BvbnNlEiwKBXVzZXJzGAEgAygLMh0ucXVhZHNtaXRoLm9wcy5JYW1Vc2VyU3VtbWFyeSJaChtMaXN0SW50ZXJuYWxBcGlDYWxsc1JlcXVlc3QSDQoFbGltaXQYASABKAUSFQoNY2FsbGVyX2ZpbHRlchgCIAEoCRIVCg1tZXRob2RfZmlsdGVyGAMgASgJIlMKHExpc3RJbnRlcm5hbEFwaUNhbGxzUmVzcG9uc2USMwoFY2FsbHMYASADKAsyJC5xdWFkc21pdGgub3BzLkludGVybmFsQXBpQ2FsbFJlY29yZCIbChlMaXN0SW50ZXJuYWxUb2tlbnNSZXF1ZXN0IlAKGkxpc3RJbnRlcm5hbFRva2Vuc1Jlc3BvbnNlEjIKBnRva2VucxgBIAMoCzIiLnF1YWRzbWl0aC5vcHMuSW50ZXJuYWxUb2tlblJlY29yZCIrChRMaXN0Sml0R3JhbnRzUmVxdWVzdBITCgthY3RpdmVfb25seRgBIAEoCCJGChVMaXN0Sml0R3JhbnRzUmVzcG9uc2USLQoGZ3JhbnRzGAEgAygLMh0ucXVhZHNtaXRoLm9wcy5KaXRHcmFudFJlY29yZCJVCg9MaXN0Sm9ic1JlcXVlc3QSEgoFbGltaXQYASABKAVIAIgBARIWCgl0YXNrX25hbWUYAiABKAlIAYgBAUIICgZfbGltaXRCDAoKX3Rhc2tfbmFtZSI6ChBMaXN0Sm9ic1Jlc3BvbnNlEiYKBGpvYnMYASADKAsyGC5xdWFkc21pdGgub3BzLkpvYlJlY29yZCL6AQoYTGlzdFJvdXRlUmVxdWVzdHNSZXF1ZXN0EhoKDXJlZ2lvbl9maWx0ZXIYASABKAlIAIgBARIZCgxzZXJ2aWNlX25hbWUYAiABKAlIAYgBARISCgVyb3V0ZRgDIAEoCUgCiAEBEhMKBndpbmRvdxgEIAEoCUgDiAEBEhgKC29ubHlfZXJyb3JzGAUgASgISASIAQESEgoFbGltaXQYBiABKAVIBYgBAUIQCg5fcmVnaW9uX2ZpbHRlckIPCg1fc2VydmljZV9uYW1lQggKBl9yb3V0ZUIJCgdfd2luZG93Qg4KDF9vbmx5X2Vycm9yc0IICgZfbGltaXQiTQoZTGlzdFJvdXRlUmVxdWVzdHNSZXNwb25zZRIwCghyZXF1ZXN0cxgBIAMoCzIeLnF1YWRzbWl0aC5vcHMuUm91dGVSZXF1ZXN0TG9nIhIKEExpc3RUYXNrc1JlcXVlc3QiOgoRTGlzdFRhc2tzUmVzcG9uc2USJQoFdGFza3MYASADKAsyFi5xdWFkc21pdGgub3BzLlRhc2tEZWYiIQofUHVyZ2VTb2Z0RGVsZXRlZEFjY291bnRzUmVxdWVzdCI4CiBQdXJnZVNvZnREZWxldGVkQWNjb3VudHNSZXNwb25zZRIUCgxwdXJnZWRfY291bnQYASABKAMiKAoaUmV2b2tlSW50ZXJuYWxUb2tlblJlcXVlc3QSCgoCaWQYASABKAkiLgobUmV2b2tlSW50ZXJuYWxUb2tlblJlc3BvbnNlEg8KB3N1Y2Nlc3MYASABKAgiKQoVUmV2b2tlSml0R3JhbnRSZXF1ZXN0EhAKCGdyYW50X2lkGAEgASgJIikKFlJldm9rZUppdEdyYW50UmVzcG9uc2USDwoHc3VjY2VzcxgBIAEoCCIkCiJTZW5kVXNlcm5hbWVSZWxlYXNlV2FybmluZ3NSZXF1ZXN0IjwKI1NlbmRVc2VybmFtZVJlbGVhc2VXYXJuaW5nc1Jlc3BvbnNlEhUKDXdhcm5pbmdfY291bnQYASABKAMiMwoSU2V0VXNlclJvbGVSZXF1ZXN0Eg8KB3VzZXJfaWQYASABKAkSDAoEcm9sZRgCIAEoCSJfChNTZXRVc2VyUm9sZVJlc3BvbnNlEhEKCXVzZXJfdXVpZBgBIAEoCRIQCgh1c2VybmFtZRgCIAEoCRIVCg1wcmV2aW91c19yb2xlGAMgASgJEgwKBHJvbGUYBCABKAkiTQoPSWFtR3JvdXBTdW1tYXJ5EgwKBG5hbWUYASABKAkSEwoLZGVzY3JpcHRpb24YAiABKAkSFwoPYWxsb3dlZF9tZXRob2RzGAMgAygJIpABCg5JYW1Vc2VyU3VtbWFyeRIQCghvcGVyYXRvchgBIAEoCRIMCgR0eXBlGAIgASgJEhIKCmdyb3VwX25hbWUYAyABKAkSMgoObGFzdF9hY3RpdmVfYXQYBCABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEhYKDmhhc19hY3RpdmVfaml0GAUgASgIIuQBCg9Sb3V0ZVJlcXVlc3RMb2cSEAoIdHJhY2VfaWQYASABKAkSDgoGcmVnaW9uGAIgASgJEhQKDHNlcnZpY2VfbmFtZRgDIAEoCRITCgtpbnN0YW5jZV9pZBgEIAEoCRINCgVyb3V0ZRgFIAEoCRIOCgZtZXRob2QYBiABKAkSEwoLc3RhdHVzX2NvZGUYByABKAUSDwoHc3VjY2VzcxgIIAEoCBIOCgZydHRfbXMYCSABKAESLwoLb2NjdXJyZWRfYXQYCiABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wIr8CChNTZXJ2aWNlSGVhbHRoU3RhdHVzEhQKDHNlcnZpY2VfbmFtZRgBIAEoCRIOCgZyZWdpb24YAiABKAkSEwoLaW5zdGFuY2VfaWQYAyABKAkSDgoGc3RhdHVzGAQgASgJEg8KB3ZlcnNpb24YBSABKAkSFgoOdXB0aW1lX3NlY29uZHMYBiABKAMSHgoWbWVtb3J5X2FsbG9jYXRlZF9ieXRlcxgHIAEoAxIWCg5udW1fZ29yb3V0aW5lcxgIIAEoBRIZChFkYl9hY3F1aXJlZF9jb25ucxgJIAEoBRIVCg1kYl9pZGxlX2Nvbm5zGAogASgFEhQKDGRiX21heF9jb25ucxgLIAEoBRI0CgZjaGVja3MYDCADKAsyJC5xdWFkc21pdGgub3BzLkRlcGVuZGVuY3lDaGVja1Jlc3VsdCKLAgoVU2VydmljZU1ldHJpY3NTdW1tYXJ5EhQKDHNlcnZpY2VfbmFtZRgBIAEoCRIOCgZyZWdpb24YAiABKAkSFgoOdG90YWxfcmVxdWVzdHMYAyABKAMSFQoNc3VjY2Vzc19jb3VudBgEIAEoAxITCgtlcnJvcl9jb3VudBgFIAEoAxIcChRhdmFpbGFiaWxpdHlfcGVyY2VudBgGIAEoARISCgpwNTBfcnR0X21zGAcgASgBEhIKCnA5NV9ydHRfbXMYCCABKAESEgoKcDk5X3J0dF9tcxgJIAEoARIuCgZyb3V0ZXMYCiADKAsyHi5xdWFkc21pdGgub3BzLlJvdXRlTWV0cmljU3RhdCJMCglUYWJsZVN0YXQSEgoKdGFibGVfbmFtZRgBIAEoCRIRCglyb3dfY291bnQYAiABKAMSGAoQdG90YWxfc2l6ZV9ieXRlcxgDIAEoAyJrChVEZXBlbmRlbmN5Q2hlY2tSZXN1bHQSDAoEbmFtZRgBIAEoCRIOCgZzdGF0dXMYAiABKAkSEgoKbGF0ZW5jeV9tcxgDIAEoARIUCgdtZXNzYWdlGAQgASgJSACIAQFCCgoIX21lc3NhZ2Ui9AEKD1JvdXRlTWV0cmljU3RhdBINCgVyb3V0ZRgBIAEoCRIOCgZtZXRob2QYAiABKAkSDgoGcmVnaW9uGAMgASgJEhQKDHNlcnZpY2VfbmFtZRgEIAEoCRIWCg50b3RhbF9yZXF1ZXN0cxgFIAEoAxIVCg1zdWNjZXNzX2NvdW50GAYgASgDEhMKC2Vycm9yX2NvdW50GAcgASgDEhwKFGF2YWlsYWJpbGl0eV9wZXJjZW50GAggASgBEhIKCnA1MF9ydHRfbXMYCSABKAESEgoKcDk1X3J0dF9tcxgKIAEoARISCgpwOTlfcnR0X21zGAsgASgBMoEWCgpPcHNTZXJ2aWNlEm8KFEdldFN5c3RlbURpYWdub3N0aWNzEioucXVhZHNtaXRoLm9wcy5HZXRTeXN0ZW1EaWFnbm9zdGljc1JlcXVlc3QaKy5xdWFkc21pdGgub3BzLkdldFN5c3RlbURpYWdub3N0aWNzUmVzcG9uc2USYAoPR2V0U3lzdGVtSGVhbHRoEiUucXVhZHNtaXRoLm9wcy5HZXRTeXN0ZW1IZWFsdGhSZXF1ZXN0GiYucXVhZHNtaXRoLm9wcy5HZXRTeXN0ZW1IZWFsdGhSZXNwb25zZRJjChBHZXRTeXN0ZW1NZXRyaWNzEiYucXVhZHNtaXRoLm9wcy5HZXRTeXN0ZW1NZXRyaWNzUmVxdWVzdBonLnF1YWRzbWl0aC5vcHMuR2V0U3lzdGVtTWV0cmljc1Jlc3BvbnNlEmYKEUxpc3RSb3V0ZVJlcXVlc3RzEicucXVhZHNtaXRoLm9wcy5MaXN0Um91dGVSZXF1ZXN0c1JlcXVlc3QaKC5xdWFkc21pdGgub3BzLkxpc3RSb3V0ZVJlcXVlc3RzUmVzcG9uc2USYwoQR2V0RGF0YWJhc2VTdGF0cxImLnF1YWRzbWl0aC5vcHMuR2V0RGF0YWJhc2VTdGF0c1JlcXVlc3QaJy5xdWFkc21pdGgub3BzLkdldERhdGFiYXNlU3RhdHNSZXNwb25zZRJpChJDbGVhbnVwRXhwaXJlZE90cHMSKC5xdWFkc21pdGgub3BzLkNsZWFudXBFeHBpcmVkT3Rwc1JlcXVlc3QaKS5xdWFkc21pdGgub3BzLkNsZWFudXBFeHBpcmVkT3Rwc1Jlc3BvbnNlEm8KFENsZWFudXBFeHBpcmVkVG9rZW5zEioucXVhZHNtaXRoLm9wcy5DbGVhbnVwRXhwaXJlZFRva2Vuc1JlcXVlc3QaKy5xdWFkc21pdGgub3BzLkNsZWFudXBFeHBpcmVkVG9rZW5zUmVzcG9uc2USbwoUQ2xlYW51cE9ycGhhbmVkQmxvYnMSKi5xdWFkc21pdGgub3BzLkNsZWFudXBPcnBoYW5lZEJsb2JzUmVxdWVzdBorLnF1YWRzbWl0aC5vcHMuQ2xlYW51cE9ycGhhbmVkQmxvYnNSZXNwb25zZRJ7ChhQdXJnZVNvZnREZWxldGVkQWNjb3VudHMSLi5xdWFkc21pdGgub3BzLlB1cmdlU29mdERlbGV0ZWRBY2NvdW50c1JlcXVlc3QaLy5xdWFkc21pdGgub3BzLlB1cmdlU29mdERlbGV0ZWRBY2NvdW50c1Jlc3BvbnNlEoQBChtTZW5kVXNlcm5hbWVSZWxlYXNlV2FybmluZ3MSMS5xdWFkc21pdGgub3BzLlNlbmRVc2VybmFtZVJlbGVhc2VXYXJuaW5nc1JlcXVlc3QaMi5xdWFkc21pdGgub3BzLlNlbmRVc2VybmFtZVJlbGVhc2VXYXJuaW5nc1Jlc3BvbnNlElQKC1NldFVzZXJSb2xlEiEucXVhZHNtaXRoLm9wcy5TZXRVc2VyUm9sZVJlcXVlc3QaIi5xdWFkc21pdGgub3BzLlNldFVzZXJSb2xlUmVzcG9uc2USRQoGR2V0Sm9iEhwucXVhZHNtaXRoLm9wcy5HZXRKb2JSZXF1ZXN0Gh0ucXVhZHNtaXRoLm9wcy5HZXRKb2JSZXNwb25zZRJICgdHZXRUYXNrEh0ucXVhZHNtaXRoLm9wcy5HZXRUYXNrUmVxdWVzdBoeLnF1YWRzbWl0aC5vcHMuR2V0VGFza1Jlc3BvbnNlEm8KFExpc3RJbnRlcm5hbEFwaUNhbGxzEioucXVhZHNtaXRoLm9wcy5MaXN0SW50ZXJuYWxBcGlDYWxsc1JlcXVlc3QaKy5xdWFkc21pdGgub3BzLkxpc3RJbnRlcm5hbEFwaUNhbGxzUmVzcG9uc2USSwoITGlzdEpvYnMSHi5xdWFkc21pdGgub3BzLkxpc3RKb2JzUmVxdWVzdBofLnF1YWRzbWl0aC5vcHMuTGlzdEpvYnNSZXNwb25zZRJOCglMaXN0VGFza3MSHy5xdWFkc21pdGgub3BzLkxpc3RUYXNrc1JlcXVlc3QaIC5xdWFkc21pdGgub3BzLkxpc3RUYXNrc1Jlc3BvbnNlEmYKEUV4Y2hhbmdlT0F1dGhDb2RlEicucXVhZHNtaXRoLm9wcy5FeGNoYW5nZU9BdXRoQ29kZVJlcXVlc3QaKC5xdWFkc21pdGgub3BzLkV4Y2hhbmdlT0F1dGhDb2RlUmVzcG9uc2USaQoSR2V0Q3VycmVudE9wZXJhdG9yEigucXVhZHNtaXRoLm9wcy5HZXRDdXJyZW50T3BlcmF0b3JSZXF1ZXN0GikucXVhZHNtaXRoLm9wcy5HZXRDdXJyZW50T3BlcmF0b3JSZXNwb25zZRJdCg5HZXRPQXV0aENvbmZpZxIkLnF1YWRzbWl0aC5vcHMuR2V0T0F1dGhDb25maWdSZXF1ZXN0GiUucXVhZHNtaXRoLm9wcy5HZXRPQXV0aENvbmZpZ1Jlc3BvbnNlElcKDExpc3RJYW1Vc2VycxIiLnF1YWRzbWl0aC5vcHMuTGlzdElhbVVzZXJzUmVxdWVzdBojLnF1YWRzbWl0aC5vcHMuTGlzdElhbVVzZXJzUmVzcG9uc2USWgoNTGlzdElhbUdyb3VwcxIjLnF1YWRzbWl0aC5vcHMuTGlzdElhbUdyb3Vwc1JlcXVlc3QaJC5xdWFkc21pdGgub3BzLkxpc3RJYW1Hcm91cHNSZXNwb25zZRJsChNDcmVhdGVJbnRlcm5hbFRva2VuEikucXVhZHNtaXRoLm9wcy5DcmVhdGVJbnRlcm5hbFRva2VuUmVxdWVzdBoqLnF1YWRzbWl0aC5vcHMuQ3JlYXRlSW50ZXJuYWxUb2tlblJlc3BvbnNlEmkKEkxpc3RJbnRlcm5hbFRva2VucxIoLnF1YWRzbWl0aC5vcHMuTGlzdEludGVybmFsVG9rZW5zUmVxdWVzdBopLnF1YWRzbWl0aC5vcHMuTGlzdEludGVybmFsVG9rZW5zUmVzcG9uc2USbAoTUmV2b2tlSW50ZXJuYWxUb2tlbhIpLnF1YWRzbWl0aC5vcHMuUmV2b2tlSW50ZXJuYWxUb2tlblJlcXVlc3QaKi5xdWFkc21pdGgub3BzLlJldm9rZUludGVybmFsVG9rZW5SZXNwb25zZRJgCg9BY3F1aXJlSml0R3JhbnQSJS5xdWFkc21pdGgub3BzLkFjcXVpcmVKaXRHcmFudFJlcXVlc3QaJi5xdWFkc21pdGgub3BzLkFjcXVpcmVKaXRHcmFudFJlc3BvbnNlEl0KDkV4dGVuZEppdEdyYW50EiQucXVhZHNtaXRoLm9wcy5FeHRlbmRKaXRHcmFudFJlcXVlc3QaJS5xdWFkc21pdGgub3BzLkV4dGVuZEppdEdyYW50UmVzcG9uc2USWgoNTGlzdEppdEdyYW50cxIjLnF1YWRzbWl0aC5vcHMuTGlzdEppdEdyYW50c1JlcXVlc3QaJC5xdWFkc21pdGgub3BzLkxpc3RKaXRHcmFudHNSZXNwb25zZRJdCg5SZXZva2VKaXRHcmFudBIkLnF1YWRzbWl0aC5vcHMuUmV2b2tlSml0R3JhbnRSZXF1ZXN0GiUucXVhZHNtaXRoLm9wcy5SZXZva2VKaXRHcmFudFJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9vcHM7b3BzYgZwcm90bzM",
     [file_google_protobuf_timestamp],
   );
 
@@ -81,6 +81,16 @@ export type InternalApiCallRecord = Message<"quadsmith.ops.InternalApiCallRecord
    * @generated from field: google.protobuf.Timestamp created_at = 12;
    */
   createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: string region = 13;
+   */
+  region: string;
+
+  /**
+   * @generated from field: string trace_id = 14;
+   */
+  traceId: string;
 };
 
 /**
@@ -284,6 +294,16 @@ export type JobRecord = Message<"quadsmith.ops.JobRecord"> & {
    * @generated from field: google.protobuf.Timestamp created_at = 10;
    */
   createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: string region = 11;
+   */
+  region: string;
+
+  /**
+   * @generated from field: string trace_id = 12;
+   */
+  traceId: string;
 };
 
 /**
@@ -768,6 +788,57 @@ export const GetJobResponseSchema: GenMessage<GetJobResponse> =
   messageDesc(file_quadsmith_ops_ops, 24);
 
 /**
+ * @generated from message quadsmith.ops.GetOAuthConfigRequest
+ */
+export type GetOAuthConfigRequest = Message<"quadsmith.ops.GetOAuthConfigRequest"> & {};
+
+/**
+ * Describes the message quadsmith.ops.GetOAuthConfigRequest.
+ * Use `create(GetOAuthConfigRequestSchema)` to create a new message.
+ */
+export const GetOAuthConfigRequestSchema: GenMessage<GetOAuthConfigRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 25);
+
+/**
+ * @generated from message quadsmith.ops.GetOAuthConfigResponse
+ */
+export type GetOAuthConfigResponse = Message<"quadsmith.ops.GetOAuthConfigResponse"> & {
+  /**
+   * @generated from field: string provider = 1;
+   */
+  provider: string;
+
+  /**
+   * @generated from field: string client_id = 2;
+   */
+  clientId: string;
+
+  /**
+   * @generated from field: string environment = 3;
+   */
+  environment: string;
+
+  /**
+   * @generated from field: string region = 4;
+   */
+  region: string;
+
+  /**
+   * @generated from field: string authorize_url = 5;
+   */
+  authorizeUrl: string;
+};
+
+/**
+ * Describes the message quadsmith.ops.GetOAuthConfigResponse.
+ * Use `create(GetOAuthConfigResponseSchema)` to create a new message.
+ */
+export const GetOAuthConfigResponseSchema: GenMessage<GetOAuthConfigResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 26);
+
+/**
  * @generated from message quadsmith.ops.GetSystemDiagnosticsRequest
  */
 export type GetSystemDiagnosticsRequest = Message<"quadsmith.ops.GetSystemDiagnosticsRequest"> & {};
@@ -778,7 +849,7 @@ export type GetSystemDiagnosticsRequest = Message<"quadsmith.ops.GetSystemDiagno
  */
 export const GetSystemDiagnosticsRequestSchema: GenMessage<GetSystemDiagnosticsRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 25);
+  messageDesc(file_quadsmith_ops_ops, 27);
 
 /**
  * @generated from message quadsmith.ops.GetSystemDiagnosticsResponse
@@ -826,7 +897,129 @@ export type GetSystemDiagnosticsResponse = Message<"quadsmith.ops.GetSystemDiagn
  */
 export const GetSystemDiagnosticsResponseSchema: GenMessage<GetSystemDiagnosticsResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 26);
+  messageDesc(file_quadsmith_ops_ops, 28);
+
+/**
+ * @generated from message quadsmith.ops.GetSystemHealthRequest
+ */
+export type GetSystemHealthRequest = Message<"quadsmith.ops.GetSystemHealthRequest"> & {
+  /**
+   * @generated from field: optional string region_filter = 1;
+   */
+  regionFilter?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.ops.GetSystemHealthRequest.
+ * Use `create(GetSystemHealthRequestSchema)` to create a new message.
+ */
+export const GetSystemHealthRequestSchema: GenMessage<GetSystemHealthRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 29);
+
+/**
+ * @generated from message quadsmith.ops.GetSystemHealthResponse
+ */
+export type GetSystemHealthResponse = Message<"quadsmith.ops.GetSystemHealthResponse"> & {
+  /**
+   * @generated from field: string status = 1;
+   */
+  status: string;
+
+  /**
+   * @generated from field: string environment = 2;
+   */
+  environment: string;
+
+  /**
+   * @generated from field: string region = 3;
+   */
+  region: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp checked_at = 4;
+   */
+  checkedAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: repeated quadsmith.ops.ServiceHealthStatus services = 5;
+   */
+  services: ServiceHealthStatus[];
+};
+
+/**
+ * Describes the message quadsmith.ops.GetSystemHealthResponse.
+ * Use `create(GetSystemHealthResponseSchema)` to create a new message.
+ */
+export const GetSystemHealthResponseSchema: GenMessage<GetSystemHealthResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 30);
+
+/**
+ * @generated from message quadsmith.ops.GetSystemMetricsRequest
+ */
+export type GetSystemMetricsRequest = Message<"quadsmith.ops.GetSystemMetricsRequest"> & {
+  /**
+   * @generated from field: optional string region_filter = 1;
+   */
+  regionFilter?: string | undefined;
+
+  /**
+   * @generated from field: optional string service_filter = 2;
+   */
+  serviceFilter?: string | undefined;
+
+  /**
+   * @generated from field: optional string window = 3;
+   */
+  window?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.ops.GetSystemMetricsRequest.
+ * Use `create(GetSystemMetricsRequestSchema)` to create a new message.
+ */
+export const GetSystemMetricsRequestSchema: GenMessage<GetSystemMetricsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 31);
+
+/**
+ * @generated from message quadsmith.ops.GetSystemMetricsResponse
+ */
+export type GetSystemMetricsResponse = Message<"quadsmith.ops.GetSystemMetricsResponse"> & {
+  /**
+   * @generated from field: string environment = 1;
+   */
+  environment: string;
+
+  /**
+   * @generated from field: string region = 2;
+   */
+  region: string;
+
+  /**
+   * @generated from field: string window = 3;
+   */
+  window: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp generated_at = 4;
+   */
+  generatedAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: repeated quadsmith.ops.ServiceMetricsSummary services = 5;
+   */
+  services: ServiceMetricsSummary[];
+};
+
+/**
+ * Describes the message quadsmith.ops.GetSystemMetricsResponse.
+ * Use `create(GetSystemMetricsResponseSchema)` to create a new message.
+ */
+export const GetSystemMetricsResponseSchema: GenMessage<GetSystemMetricsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 32);
 
 /**
  * @generated from message quadsmith.ops.GetTaskRequest
@@ -844,7 +1037,7 @@ export type GetTaskRequest = Message<"quadsmith.ops.GetTaskRequest"> & {
  */
 export const GetTaskRequestSchema: GenMessage<GetTaskRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 27);
+  messageDesc(file_quadsmith_ops_ops, 33);
 
 /**
  * @generated from message quadsmith.ops.GetTaskResponse
@@ -862,7 +1055,7 @@ export type GetTaskResponse = Message<"quadsmith.ops.GetTaskResponse"> & {
  */
 export const GetTaskResponseSchema: GenMessage<GetTaskResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 28);
+  messageDesc(file_quadsmith_ops_ops, 34);
 
 /**
  * @generated from message quadsmith.ops.ListIamGroupsRequest
@@ -875,7 +1068,7 @@ export type ListIamGroupsRequest = Message<"quadsmith.ops.ListIamGroupsRequest">
  */
 export const ListIamGroupsRequestSchema: GenMessage<ListIamGroupsRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 29);
+  messageDesc(file_quadsmith_ops_ops, 35);
 
 /**
  * @generated from message quadsmith.ops.ListIamGroupsResponse
@@ -893,7 +1086,7 @@ export type ListIamGroupsResponse = Message<"quadsmith.ops.ListIamGroupsResponse
  */
 export const ListIamGroupsResponseSchema: GenMessage<ListIamGroupsResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 30);
+  messageDesc(file_quadsmith_ops_ops, 36);
 
 /**
  * @generated from message quadsmith.ops.ListIamUsersRequest
@@ -906,7 +1099,7 @@ export type ListIamUsersRequest = Message<"quadsmith.ops.ListIamUsersRequest"> &
  */
 export const ListIamUsersRequestSchema: GenMessage<ListIamUsersRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 31);
+  messageDesc(file_quadsmith_ops_ops, 37);
 
 /**
  * @generated from message quadsmith.ops.ListIamUsersResponse
@@ -924,7 +1117,7 @@ export type ListIamUsersResponse = Message<"quadsmith.ops.ListIamUsersResponse">
  */
 export const ListIamUsersResponseSchema: GenMessage<ListIamUsersResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 32);
+  messageDesc(file_quadsmith_ops_ops, 38);
 
 /**
  * @generated from message quadsmith.ops.ListInternalApiCallsRequest
@@ -952,7 +1145,7 @@ export type ListInternalApiCallsRequest = Message<"quadsmith.ops.ListInternalApi
  */
 export const ListInternalApiCallsRequestSchema: GenMessage<ListInternalApiCallsRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 33);
+  messageDesc(file_quadsmith_ops_ops, 39);
 
 /**
  * @generated from message quadsmith.ops.ListInternalApiCallsResponse
@@ -970,7 +1163,7 @@ export type ListInternalApiCallsResponse = Message<"quadsmith.ops.ListInternalAp
  */
 export const ListInternalApiCallsResponseSchema: GenMessage<ListInternalApiCallsResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 34);
+  messageDesc(file_quadsmith_ops_ops, 40);
 
 /**
  * @generated from message quadsmith.ops.ListInternalTokensRequest
@@ -983,7 +1176,7 @@ export type ListInternalTokensRequest = Message<"quadsmith.ops.ListInternalToken
  */
 export const ListInternalTokensRequestSchema: GenMessage<ListInternalTokensRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 35);
+  messageDesc(file_quadsmith_ops_ops, 41);
 
 /**
  * @generated from message quadsmith.ops.ListInternalTokensResponse
@@ -1001,7 +1194,7 @@ export type ListInternalTokensResponse = Message<"quadsmith.ops.ListInternalToke
  */
 export const ListInternalTokensResponseSchema: GenMessage<ListInternalTokensResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 36);
+  messageDesc(file_quadsmith_ops_ops, 42);
 
 /**
  * @generated from message quadsmith.ops.ListJitGrantsRequest
@@ -1019,7 +1212,7 @@ export type ListJitGrantsRequest = Message<"quadsmith.ops.ListJitGrantsRequest">
  */
 export const ListJitGrantsRequestSchema: GenMessage<ListJitGrantsRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 37);
+  messageDesc(file_quadsmith_ops_ops, 43);
 
 /**
  * @generated from message quadsmith.ops.ListJitGrantsResponse
@@ -1037,7 +1230,7 @@ export type ListJitGrantsResponse = Message<"quadsmith.ops.ListJitGrantsResponse
  */
 export const ListJitGrantsResponseSchema: GenMessage<ListJitGrantsResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 38);
+  messageDesc(file_quadsmith_ops_ops, 44);
 
 /**
  * @generated from message quadsmith.ops.ListJobsRequest
@@ -1060,7 +1253,7 @@ export type ListJobsRequest = Message<"quadsmith.ops.ListJobsRequest"> & {
  */
 export const ListJobsRequestSchema: GenMessage<ListJobsRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 39);
+  messageDesc(file_quadsmith_ops_ops, 45);
 
 /**
  * @generated from message quadsmith.ops.ListJobsResponse
@@ -1078,7 +1271,68 @@ export type ListJobsResponse = Message<"quadsmith.ops.ListJobsResponse"> & {
  */
 export const ListJobsResponseSchema: GenMessage<ListJobsResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 40);
+  messageDesc(file_quadsmith_ops_ops, 46);
+
+/**
+ * @generated from message quadsmith.ops.ListRouteRequestsRequest
+ */
+export type ListRouteRequestsRequest = Message<"quadsmith.ops.ListRouteRequestsRequest"> & {
+  /**
+   * @generated from field: optional string region_filter = 1;
+   */
+  regionFilter?: string | undefined;
+
+  /**
+   * @generated from field: optional string service_name = 2;
+   */
+  serviceName?: string | undefined;
+
+  /**
+   * @generated from field: optional string route = 3;
+   */
+  route?: string | undefined;
+
+  /**
+   * @generated from field: optional string window = 4;
+   */
+  window?: string | undefined;
+
+  /**
+   * @generated from field: optional bool only_errors = 5;
+   */
+  onlyErrors?: boolean | undefined;
+
+  /**
+   * @generated from field: optional int32 limit = 6;
+   */
+  limit?: number | undefined;
+};
+
+/**
+ * Describes the message quadsmith.ops.ListRouteRequestsRequest.
+ * Use `create(ListRouteRequestsRequestSchema)` to create a new message.
+ */
+export const ListRouteRequestsRequestSchema: GenMessage<ListRouteRequestsRequest> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 47);
+
+/**
+ * @generated from message quadsmith.ops.ListRouteRequestsResponse
+ */
+export type ListRouteRequestsResponse = Message<"quadsmith.ops.ListRouteRequestsResponse"> & {
+  /**
+   * @generated from field: repeated quadsmith.ops.RouteRequestLog requests = 1;
+   */
+  requests: RouteRequestLog[];
+};
+
+/**
+ * Describes the message quadsmith.ops.ListRouteRequestsResponse.
+ * Use `create(ListRouteRequestsResponseSchema)` to create a new message.
+ */
+export const ListRouteRequestsResponseSchema: GenMessage<ListRouteRequestsResponse> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 48);
 
 /**
  * @generated from message quadsmith.ops.ListTasksRequest
@@ -1091,7 +1345,7 @@ export type ListTasksRequest = Message<"quadsmith.ops.ListTasksRequest"> & {};
  */
 export const ListTasksRequestSchema: GenMessage<ListTasksRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 41);
+  messageDesc(file_quadsmith_ops_ops, 49);
 
 /**
  * @generated from message quadsmith.ops.ListTasksResponse
@@ -1109,7 +1363,7 @@ export type ListTasksResponse = Message<"quadsmith.ops.ListTasksResponse"> & {
  */
 export const ListTasksResponseSchema: GenMessage<ListTasksResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 42);
+  messageDesc(file_quadsmith_ops_ops, 50);
 
 /**
  * @generated from message quadsmith.ops.PurgeSoftDeletedAccountsRequest
@@ -1123,7 +1377,7 @@ export type PurgeSoftDeletedAccountsRequest =
  */
 export const PurgeSoftDeletedAccountsRequestSchema: GenMessage<PurgeSoftDeletedAccountsRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 43);
+  messageDesc(file_quadsmith_ops_ops, 51);
 
 /**
  * @generated from message quadsmith.ops.PurgeSoftDeletedAccountsResponse
@@ -1142,7 +1396,7 @@ export type PurgeSoftDeletedAccountsResponse =
  */
 export const PurgeSoftDeletedAccountsResponseSchema: GenMessage<PurgeSoftDeletedAccountsResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 44);
+  messageDesc(file_quadsmith_ops_ops, 52);
 
 /**
  * @generated from message quadsmith.ops.RevokeInternalTokenRequest
@@ -1160,7 +1414,7 @@ export type RevokeInternalTokenRequest = Message<"quadsmith.ops.RevokeInternalTo
  */
 export const RevokeInternalTokenRequestSchema: GenMessage<RevokeInternalTokenRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 45);
+  messageDesc(file_quadsmith_ops_ops, 53);
 
 /**
  * @generated from message quadsmith.ops.RevokeInternalTokenResponse
@@ -1178,7 +1432,7 @@ export type RevokeInternalTokenResponse = Message<"quadsmith.ops.RevokeInternalT
  */
 export const RevokeInternalTokenResponseSchema: GenMessage<RevokeInternalTokenResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 46);
+  messageDesc(file_quadsmith_ops_ops, 54);
 
 /**
  * @generated from message quadsmith.ops.RevokeJitGrantRequest
@@ -1196,7 +1450,7 @@ export type RevokeJitGrantRequest = Message<"quadsmith.ops.RevokeJitGrantRequest
  */
 export const RevokeJitGrantRequestSchema: GenMessage<RevokeJitGrantRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 47);
+  messageDesc(file_quadsmith_ops_ops, 55);
 
 /**
  * @generated from message quadsmith.ops.RevokeJitGrantResponse
@@ -1214,7 +1468,7 @@ export type RevokeJitGrantResponse = Message<"quadsmith.ops.RevokeJitGrantRespon
  */
 export const RevokeJitGrantResponseSchema: GenMessage<RevokeJitGrantResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 48);
+  messageDesc(file_quadsmith_ops_ops, 56);
 
 /**
  * @generated from message quadsmith.ops.SendUsernameReleaseWarningsRequest
@@ -1228,7 +1482,7 @@ export type SendUsernameReleaseWarningsRequest =
  */
 export const SendUsernameReleaseWarningsRequestSchema: GenMessage<SendUsernameReleaseWarningsRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 49);
+  messageDesc(file_quadsmith_ops_ops, 57);
 
 /**
  * @generated from message quadsmith.ops.SendUsernameReleaseWarningsResponse
@@ -1247,7 +1501,7 @@ export type SendUsernameReleaseWarningsResponse =
  */
 export const SendUsernameReleaseWarningsResponseSchema: GenMessage<SendUsernameReleaseWarningsResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 50);
+  messageDesc(file_quadsmith_ops_ops, 58);
 
 /**
  * @generated from message quadsmith.ops.SetUserRoleRequest
@@ -1274,7 +1528,7 @@ export type SetUserRoleRequest = Message<"quadsmith.ops.SetUserRoleRequest"> & {
  */
 export const SetUserRoleRequestSchema: GenMessage<SetUserRoleRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 51);
+  messageDesc(file_quadsmith_ops_ops, 59);
 
 /**
  * @generated from message quadsmith.ops.SetUserRoleResponse
@@ -1307,7 +1561,7 @@ export type SetUserRoleResponse = Message<"quadsmith.ops.SetUserRoleResponse"> &
  */
 export const SetUserRoleResponseSchema: GenMessage<SetUserRoleResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 52);
+  messageDesc(file_quadsmith_ops_ops, 60);
 
 /**
  * @generated from message quadsmith.ops.IamGroupSummary
@@ -1335,7 +1589,7 @@ export type IamGroupSummary = Message<"quadsmith.ops.IamGroupSummary"> & {
  */
 export const IamGroupSummarySchema: GenMessage<IamGroupSummary> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 53);
+  messageDesc(file_quadsmith_ops_ops, 61);
 
 /**
  * @generated from message quadsmith.ops.IamUserSummary
@@ -1373,7 +1627,206 @@ export type IamUserSummary = Message<"quadsmith.ops.IamUserSummary"> & {
  */
 export const IamUserSummarySchema: GenMessage<IamUserSummary> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 54);
+  messageDesc(file_quadsmith_ops_ops, 62);
+
+/**
+ * @generated from message quadsmith.ops.RouteRequestLog
+ */
+export type RouteRequestLog = Message<"quadsmith.ops.RouteRequestLog"> & {
+  /**
+   * @generated from field: string trace_id = 1;
+   */
+  traceId: string;
+
+  /**
+   * @generated from field: string region = 2;
+   */
+  region: string;
+
+  /**
+   * @generated from field: string service_name = 3;
+   */
+  serviceName: string;
+
+  /**
+   * @generated from field: string instance_id = 4;
+   */
+  instanceId: string;
+
+  /**
+   * @generated from field: string route = 5;
+   */
+  route: string;
+
+  /**
+   * @generated from field: string method = 6;
+   */
+  method: string;
+
+  /**
+   * @generated from field: int32 status_code = 7;
+   */
+  statusCode: number;
+
+  /**
+   * @generated from field: bool success = 8;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: double rtt_ms = 9;
+   */
+  rttMs: number;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp occurred_at = 10;
+   */
+  occurredAt?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message quadsmith.ops.RouteRequestLog.
+ * Use `create(RouteRequestLogSchema)` to create a new message.
+ */
+export const RouteRequestLogSchema: GenMessage<RouteRequestLog> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 63);
+
+/**
+ * @generated from message quadsmith.ops.ServiceHealthStatus
+ */
+export type ServiceHealthStatus = Message<"quadsmith.ops.ServiceHealthStatus"> & {
+  /**
+   * @generated from field: string service_name = 1;
+   */
+  serviceName: string;
+
+  /**
+   * @generated from field: string region = 2;
+   */
+  region: string;
+
+  /**
+   * @generated from field: string instance_id = 3;
+   */
+  instanceId: string;
+
+  /**
+   * @generated from field: string status = 4;
+   */
+  status: string;
+
+  /**
+   * @generated from field: string version = 5;
+   */
+  version: string;
+
+  /**
+   * @generated from field: int64 uptime_seconds = 6;
+   */
+  uptimeSeconds: bigint;
+
+  /**
+   * @generated from field: int64 memory_allocated_bytes = 7;
+   */
+  memoryAllocatedBytes: bigint;
+
+  /**
+   * @generated from field: int32 num_goroutines = 8;
+   */
+  numGoroutines: number;
+
+  /**
+   * @generated from field: int32 db_acquired_conns = 9;
+   */
+  dbAcquiredConns: number;
+
+  /**
+   * @generated from field: int32 db_idle_conns = 10;
+   */
+  dbIdleConns: number;
+
+  /**
+   * @generated from field: int32 db_max_conns = 11;
+   */
+  dbMaxConns: number;
+
+  /**
+   * @generated from field: repeated quadsmith.ops.DependencyCheckResult checks = 12;
+   */
+  checks: DependencyCheckResult[];
+};
+
+/**
+ * Describes the message quadsmith.ops.ServiceHealthStatus.
+ * Use `create(ServiceHealthStatusSchema)` to create a new message.
+ */
+export const ServiceHealthStatusSchema: GenMessage<ServiceHealthStatus> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 64);
+
+/**
+ * @generated from message quadsmith.ops.ServiceMetricsSummary
+ */
+export type ServiceMetricsSummary = Message<"quadsmith.ops.ServiceMetricsSummary"> & {
+  /**
+   * @generated from field: string service_name = 1;
+   */
+  serviceName: string;
+
+  /**
+   * @generated from field: string region = 2;
+   */
+  region: string;
+
+  /**
+   * @generated from field: int64 total_requests = 3;
+   */
+  totalRequests: bigint;
+
+  /**
+   * @generated from field: int64 success_count = 4;
+   */
+  successCount: bigint;
+
+  /**
+   * @generated from field: int64 error_count = 5;
+   */
+  errorCount: bigint;
+
+  /**
+   * @generated from field: double availability_percent = 6;
+   */
+  availabilityPercent: number;
+
+  /**
+   * @generated from field: double p50_rtt_ms = 7;
+   */
+  p50RttMs: number;
+
+  /**
+   * @generated from field: double p95_rtt_ms = 8;
+   */
+  p95RttMs: number;
+
+  /**
+   * @generated from field: double p99_rtt_ms = 9;
+   */
+  p99RttMs: number;
+
+  /**
+   * @generated from field: repeated quadsmith.ops.RouteMetricStat routes = 10;
+   */
+  routes: RouteMetricStat[];
+};
+
+/**
+ * Describes the message quadsmith.ops.ServiceMetricsSummary.
+ * Use `create(ServiceMetricsSummarySchema)` to create a new message.
+ */
+export const ServiceMetricsSummarySchema: GenMessage<ServiceMetricsSummary> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 65);
 
 /**
  * @generated from message quadsmith.ops.TableStat
@@ -1401,14 +1854,115 @@ export type TableStat = Message<"quadsmith.ops.TableStat"> & {
  */
 export const TableStatSchema: GenMessage<TableStat> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_ops_ops, 55);
+  messageDesc(file_quadsmith_ops_ops, 66);
+
+/**
+ * @generated from message quadsmith.ops.DependencyCheckResult
+ */
+export type DependencyCheckResult = Message<"quadsmith.ops.DependencyCheckResult"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string status = 2;
+   */
+  status: string;
+
+  /**
+   * @generated from field: double latency_ms = 3;
+   */
+  latencyMs: number;
+
+  /**
+   * @generated from field: optional string message = 4;
+   */
+  message?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.ops.DependencyCheckResult.
+ * Use `create(DependencyCheckResultSchema)` to create a new message.
+ */
+export const DependencyCheckResultSchema: GenMessage<DependencyCheckResult> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 67);
+
+/**
+ * @generated from message quadsmith.ops.RouteMetricStat
+ */
+export type RouteMetricStat = Message<"quadsmith.ops.RouteMetricStat"> & {
+  /**
+   * @generated from field: string route = 1;
+   */
+  route: string;
+
+  /**
+   * @generated from field: string method = 2;
+   */
+  method: string;
+
+  /**
+   * @generated from field: string region = 3;
+   */
+  region: string;
+
+  /**
+   * @generated from field: string service_name = 4;
+   */
+  serviceName: string;
+
+  /**
+   * @generated from field: int64 total_requests = 5;
+   */
+  totalRequests: bigint;
+
+  /**
+   * @generated from field: int64 success_count = 6;
+   */
+  successCount: bigint;
+
+  /**
+   * @generated from field: int64 error_count = 7;
+   */
+  errorCount: bigint;
+
+  /**
+   * @generated from field: double availability_percent = 8;
+   */
+  availabilityPercent: number;
+
+  /**
+   * @generated from field: double p50_rtt_ms = 9;
+   */
+  p50RttMs: number;
+
+  /**
+   * @generated from field: double p95_rtt_ms = 10;
+   */
+  p95RttMs: number;
+
+  /**
+   * @generated from field: double p99_rtt_ms = 11;
+   */
+  p99RttMs: number;
+};
+
+/**
+ * Describes the message quadsmith.ops.RouteMetricStat.
+ * Use `create(RouteMetricStatSchema)` to create a new message.
+ */
+export const RouteMetricStatSchema: GenMessage<RouteMetricStat> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_ops_ops, 68);
 
 /**
  * @generated from service quadsmith.ops.OpsService
  */
 export const OpsService: GenService<{
   /**
-   * System Diagnostics
+   * System Health, Metrics & Diagnostics
    *
    * @generated from rpc quadsmith.ops.OpsService.GetSystemDiagnostics
    */
@@ -1416,6 +1970,30 @@ export const OpsService: GenService<{
     methodKind: "unary";
     input: typeof GetSystemDiagnosticsRequestSchema;
     output: typeof GetSystemDiagnosticsResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.ops.OpsService.GetSystemHealth
+   */
+  getSystemHealth: {
+    methodKind: "unary";
+    input: typeof GetSystemHealthRequestSchema;
+    output: typeof GetSystemHealthResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.ops.OpsService.GetSystemMetrics
+   */
+  getSystemMetrics: {
+    methodKind: "unary";
+    input: typeof GetSystemMetricsRequestSchema;
+    output: typeof GetSystemMetricsResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.ops.OpsService.ListRouteRequests
+   */
+  listRouteRequests: {
+    methodKind: "unary";
+    input: typeof ListRouteRequestsRequestSchema;
+    output: typeof ListRouteRequestsResponseSchema;
   };
   /**
    * Database Stats (Public DB quadsmith_api)
@@ -1536,6 +2114,14 @@ export const OpsService: GenService<{
     methodKind: "unary";
     input: typeof GetCurrentOperatorRequestSchema;
     output: typeof GetCurrentOperatorResponseSchema;
+  };
+  /**
+   * @generated from rpc quadsmith.ops.OpsService.GetOAuthConfig
+   */
+  getOAuthConfig: {
+    methodKind: "unary";
+    input: typeof GetOAuthConfigRequestSchema;
+    output: typeof GetOAuthConfigResponseSchema;
   };
   /**
    * @generated from rpc quadsmith.ops.OpsService.ListIamUsers

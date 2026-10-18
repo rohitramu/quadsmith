@@ -261,7 +261,7 @@ sending an email challenge. The download starts in a single click.
 
 ##### <a id="asynchronous-background-job-with-email-download-link" >Asynchronous Background Job with Email Download Link</a>
 
-Enqueuing a background worker job in `server-jobs` that builds the `.zip` file
+Enqueuing a background worker job in `server-cron` that builds the `.zip` file
 asynchronously, uploads it to temporary storage, and emails a download link when
 complete. The user cannot download the archive directly in the modal.
 
@@ -940,7 +940,7 @@ data.
 
 ### <a id="asynchronous-s3-object-storage-export-pipeline" >Asynchronous S3 Object Storage Export Pipeline</a>
 
-Offloading data export generation to an asynchronous job queue (`server-jobs`)
+Offloading data export generation to an asynchronous job queue (`server-cron`)
 that queries the database, writes a `.zip` file to an external S3-compatible
 object bucket, and emails a pre-signed bucket URL to the user minutes or hours
 later. This architecture is common in large social networks with terabytes of

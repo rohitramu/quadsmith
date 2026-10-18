@@ -26,10 +26,11 @@ In [`deployment_architecture.md`](deployment_architecture.md) (which, together
 with this plan and
 [`scaling_deployment_regions.md`](scaling_deployment_regions.md), supersedes
 [`e2_micro_deployment_and_evolution.md`](archive/e2_micro_deployment_and_evolution.md)),
-Quadsmith's initial production deployment runs all four stateless Go services
+Quadsmith's initial production deployment runs all five stateless Go services
 ([`server-web`](../src/go/server-web), [`server-api`](../src/go/server-api),
-[`server-ops`](../src/go/server-ops), and
-[`server-jobs`](../src/go/server-jobs)) alongside an ultra-lean Nginx gateway on
+[`server-ops-web`](../src/go/server-ops-web),
+[`server-ops-api`](../src/go/server-ops-api), and
+[`server-cron`](../src/go/server-cron)) alongside an ultra-lean Nginx gateway on
 a single Google Cloud Platform `e2-micro` VM in `us-central1`, connected to a
 Private-IP **GCP Cloud SQL for PostgreSQL** instance (`db-f1-micro`) in
 `us-central1` and exposed outbound via a standalone `cloudflared` container.
@@ -345,22 +346,22 @@ and because all five maintenance tasks in
 [`src/go/shared/pkg/blob/cleanup.go`](../src/go/shared/pkg/blob/cleanup.go) are
 strictly idempotent (`FOR UPDATE OF hh SKIP LOCKED`), running the identical
 zero-profile [`deploy/docker-compose.yaml`](../deploy/docker-compose.yaml)
-(including `server-ops` and the headless `server-jobs` cron daemon) in every
-region cleans up that region's expired OTPs, expired refresh tokens, orphaned
-blobs, and soft-deleted accounts locally against its own regional Cloud SQL
-primary (`<0.8 ms` RTT).
+(including `server-ops-api`, `server-ops-web`, and the `server-cron` cron
+daemon) in every region cleans up that region's expired OTPs, expired refresh
+tokens, orphaned blobs, and soft-deleted accounts locally against its own
+regional Cloud SQL primary (`<0.8 ms` RTT).
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
 
-##### <a id="alt-centralized-cron-in-us-only" >Run `server-jobs` Only in `us-central1` Targeting All Regional Databases</a>
+##### <a id="alt-centralized-cron-in-us-only" >Run `server-cron` Only in `us-central1` Targeting All Regional Databases</a>
 
-Run a single `server-jobs` scheduler in `us-central1` that iterates over all
+Run a single `server-cron` scheduler in `us-central1` that iterates over all
 regional Cloud SQL databases across the global VPC.
 
 **Pros:**
 
-- Saves ~10 MB of idle `server-jobs` container RAM in secondary regions.
+- Saves ~10 MB of idle `server-cron` container RAM in secondary regions.
 
 **Cons:**
 

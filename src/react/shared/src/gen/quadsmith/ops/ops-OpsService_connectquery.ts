@@ -5,11 +5,26 @@
 import { OpsService } from "./ops_pb";
 
 /**
- * System Diagnostics
+ * System Health, Metrics & Diagnostics
  *
  * @generated from rpc quadsmith.ops.OpsService.GetSystemDiagnostics
  */
 export const getSystemDiagnostics = OpsService.method.getSystemDiagnostics;
+
+/**
+ * @generated from rpc quadsmith.ops.OpsService.GetSystemHealth
+ */
+export const getSystemHealth = OpsService.method.getSystemHealth;
+
+/**
+ * @generated from rpc quadsmith.ops.OpsService.GetSystemMetrics
+ */
+export const getSystemMetrics = OpsService.method.getSystemMetrics;
+
+/**
+ * @generated from rpc quadsmith.ops.OpsService.ListRouteRequests
+ */
+export const listRouteRequests = OpsService.method.listRouteRequests;
 
 /**
  * Database Stats (Public DB quadsmith_api)
@@ -88,6 +103,11 @@ export const exchangeOAuthCode = OpsService.method.exchangeOAuthCode;
  * @generated from rpc quadsmith.ops.OpsService.GetCurrentOperator
  */
 export const getCurrentOperator = OpsService.method.getCurrentOperator;
+
+/**
+ * @generated from rpc quadsmith.ops.OpsService.GetOAuthConfig
+ */
+export const getOAuthConfig = OpsService.method.getOAuthConfig;
 
 /**
  * @generated from rpc quadsmith.ops.OpsService.ListIamUsers

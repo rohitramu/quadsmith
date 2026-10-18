@@ -171,7 +171,7 @@ message InternalApiCallRecord {
   storing both `JitGrantUUID` and `JitGrantID` in `OperatorContext` and
   inserting `jit_grant_uuid` into `internal_api_calls`.
 - **Read Path
-  ([`OpsService.ListInternalApiCalls`](../src/go/server-ops/pkg/ops/service.go#L335-L398))**:
+  ([`OpsService.ListInternalApiCalls`](../src/go/server-ops-api/pkg/ops/service.go#L335-L398))**:
   Performs `LEFT JOIN jit_grants j ON j.uuid = c.jit_grant_uuid` to populate
   both `r.JitGrantUuid` and `r.JitGrantId` (`j.id`), preserving identical CLI
   output in [`cli-ops`](../src/go/cli-ops/main.go#L780-L782) and the Ops Web UI.
@@ -231,7 +231,7 @@ Treat `internal_api_calls` as an unlinked flat text log with no foreign key to
 **Cons:**
 
 - `jit_grants` are never hard-deleted (they transition to `EXPIRED` or `REVOKED`
-  in [`ops/service.go`](../src/go/server-ops/pkg/ops/service.go)), so
+  in [`ops/service.go`](../src/go/server-ops-api/pkg/ops/service.go)), so
   sacrificing referential integrity provides no practical benefit.
 
 </details>
@@ -622,10 +622,10 @@ operator handles (such as `"developer@quadsmith.dev"` or `"ci-bot"`), which also
 appear in [`internal_tokens.name`](../src/db/quadsmith_ops.sql#L27).
 
 Because operators can authenticate via static `bootstrap_tokens` defined in
-[`OpsServerConfig`](../src/go/shared/pkg/opsauth/interceptor.go) (which have no
-row in `internal_tokens`), and because a single human operator acquires multiple
-ephemeral 24-hour OAuth session tokens in `internal_tokens` over time while
-their JIT grants apply across sessions to their operator principal name,
+[`OpsApiServerConfig`](../src/go/shared/pkg/opsauth/interceptor.go) (which have
+no row in `internal_tokens`), and because a single human operator acquires
+multiple ephemeral 24-hour OAuth session tokens in `internal_tokens` over time
+while their JIT grants apply across sessions to their operator principal name,
 `jit_grants.operator` and `internal_api_calls.caller` remain `TEXT` principal
 identifiers.
 
@@ -647,7 +647,8 @@ and `internal_api_calls.caller` with
 **Cons:**
 
 - Requires synchronizing static config `bootstrap_tokens` and OAuth developer
-  mappings from `OpsServerConfig` into the `operators` table on server startup.
+  mappings from `OpsApiServerConfig` into the `operators` table on server
+  startup.
 - Adds an extra table and join to a lightweight internal operations database
   that only has three tables.
 

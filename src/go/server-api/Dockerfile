@@ -6,8 +6,9 @@ COPY src/go/go.work src/go/go.work.sum* ./src/go/
 COPY src/go/build_deps/go.mod src/go/build_deps/go.sum* ./src/go/build_deps/
 COPY src/go/shared/go.mod src/go/shared/go.sum* ./src/go/shared/
 COPY src/go/server-api/go.mod src/go/server-api/go.sum* ./src/go/server-api/
-COPY src/go/server-ops/go.mod src/go/server-ops/go.sum* ./src/go/server-ops/
-COPY src/go/server-jobs/go.mod src/go/server-jobs/go.sum* ./src/go/server-jobs/
+COPY src/go/server-ops-api/go.mod src/go/server-ops-api/go.sum* ./src/go/server-ops-api/
+COPY src/go/server-ops-web/go.mod src/go/server-ops-web/go.sum* ./src/go/server-ops-web/
+COPY src/go/server-cron/go.mod src/go/server-cron/go.sum* ./src/go/server-cron/
 COPY src/go/server-web/go.mod src/go/server-web/go.sum* ./src/go/server-web/
 COPY src/go/cli/go.mod src/go/cli/go.sum* ./src/go/cli/
 COPY src/go/cli-ops/go.mod src/go/cli-ops/go.sum* ./src/go/cli-ops/

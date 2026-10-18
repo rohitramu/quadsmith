@@ -103,8 +103,8 @@ func LoadAPIServerConfig(configPath string) (*configpb.ApiServerConfig, error) {
 	return &cfg, nil
 }
 
-// LoadOpsServerConfig loads and validates the internal ops server configuration from an explicit file path.
-func LoadOpsServerConfig(configPath string) (*configpb.OpsServerConfig, error) {
+// LoadOpsApiServerConfig loads and validates the internal ops API server configuration from an explicit file path.
+func LoadOpsApiServerConfig(configPath string) (*configpb.OpsApiServerConfig, error) {
 	if configPath == "" {
 		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
 			configPath = envFile
@@ -113,22 +113,22 @@ func LoadOpsServerConfig(configPath string) (*configpb.OpsServerConfig, error) {
 		}
 	}
 
-	var cfg configpb.OpsServerConfig
+	var cfg configpb.OpsApiServerConfig
 	if err := Load(configPath, &cfg); err != nil {
 		return nil, err
 	}
 
-	applyOpsServerEnvOverrides(&cfg)
+	applyOpsApiServerEnvOverrides(&cfg)
 
-	if err := ValidateOpsServerConfig(&cfg); err != nil {
+	if err := ValidateOpsApiServerConfig(&cfg); err != nil {
 		return nil, err
 	}
 
 	return &cfg, nil
 }
 
-// LoadJobServerConfig loads and validates the job scheduler configuration from an explicit file path.
-func LoadJobServerConfig(configPath string) (*configpb.JobServerConfig, error) {
+// LoadOpsWebServerConfig loads and validates the internal ops web server configuration from an explicit file path.
+func LoadOpsWebServerConfig(configPath string) (*configpb.OpsWebServerConfig, error) {
 	if configPath == "" {
 		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
 			configPath = envFile
@@ -137,14 +137,38 @@ func LoadJobServerConfig(configPath string) (*configpb.JobServerConfig, error) {
 		}
 	}
 
-	var cfg configpb.JobServerConfig
+	var cfg configpb.OpsWebServerConfig
 	if err := Load(configPath, &cfg); err != nil {
 		return nil, err
 	}
 
-	applyJobServerEnvOverrides(&cfg)
+	applyOpsWebServerEnvOverrides(&cfg)
 
-	if err := ValidateJobServerConfig(&cfg); err != nil {
+	if err := ValidateOpsWebServerConfig(&cfg); err != nil {
+		return nil, err
+	}
+
+	return &cfg, nil
+}
+
+// LoadCronServerConfig loads and validates the cron scheduler configuration from an explicit file path.
+func LoadCronServerConfig(configPath string) (*configpb.CronServerConfig, error) {
+	if configPath == "" {
+		if envFile := os.Getenv("QS_CONFIG"); envFile != "" {
+			configPath = envFile
+		} else {
+			return nil, fmt.Errorf("configuration file path must be explicitly provided (use --config flag or QS_CONFIG env var)")
+		}
+	}
+
+	var cfg configpb.CronServerConfig
+	if err := Load(configPath, &cfg); err != nil {
+		return nil, err
+	}
+
+	applyCronServerEnvOverrides(&cfg)
+
+	if err := ValidateCronServerConfig(&cfg); err != nil {
 		return nil, err
 	}
 
@@ -409,7 +433,7 @@ func applyAPIServerEnvOverrides(cfg *configpb.ApiServerConfig) {
 	}
 }
 
-func applyOpsServerEnvOverrides(cfg *configpb.OpsServerConfig) {
+func applyOpsApiServerEnvOverrides(cfg *configpb.OpsApiServerConfig) {
 	if cfg.Database != nil {
 		applyDatabaseEnvOverrides(cfg.Database)
 	}
@@ -426,7 +450,16 @@ func applyOpsServerEnvOverrides(cfg *configpb.OpsServerConfig) {
 	}
 }
 
-func applyJobServerEnvOverrides(cfg *configpb.JobServerConfig) {
+func applyOpsWebServerEnvOverrides(cfg *configpb.OpsWebServerConfig) {
+	if v := os.Getenv("QS_OPS_API_URL"); v != "" {
+		cfg.OpsApiUrl = &v
+	}
+	if v := os.Getenv("QS_GRAFANA_URL"); v != "" {
+		cfg.GrafanaUrl = &v
+	}
+}
+
+func applyCronServerEnvOverrides(cfg *configpb.CronServerConfig) {
 	if v := os.Getenv("QS_JOB_SERVER_AUTH_TOKEN"); v != "" {
 		cfg.AuthToken = &v
 	}
@@ -644,8 +677,68 @@ func ValidateWebServerConfig(c *configpb.WebServerConfig) error {
 	return nil
 }
 
-// ValidateOpsServerConfig ensures all configuration required by the internal ops server is present and valid.
-func ValidateOpsServerConfig(c *configpb.OpsServerConfig) error {
+// ValidateOpsWebServerConfig ensures all configuration required by the internal ops web server daemon is present and valid.
+func ValidateOpsWebServerConfig(c *configpb.OpsWebServerConfig) error {
+	var errs []string
+
+	if err := ValidateNoUnsetFields(c); err != nil {
+		errs = append(errs, err.Error())
+	}
+
+	if strings.TrimSpace(c.GetEnvironment()) == "" {
+		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, staging, prod)")
+	}
+
+	if c.Server == nil {
+		errs = append(errs, "server configuration section is missing")
+	} else {
+		if c.Server.GetPort() < 1 || c.Server.GetPort() > 65535 {
+			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.GetPort()))
+		}
+		if c.Server.ReadTimeout != nil && c.Server.ReadTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.read_timeout must be greater than 0")
+		}
+		if c.Server.WriteTimeout != nil && c.Server.WriteTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.write_timeout must be greater than 0")
+		}
+		if c.Server.IdleTimeout != nil && c.Server.IdleTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.idle_timeout must be greater than 0")
+		}
+		if c.Server.GetMaxRequestBytes() <= 0 {
+			errs = append(errs, "server.max_request_bytes must be greater than 0")
+		}
+	}
+
+	if strings.TrimSpace(c.GetStaticDir()) == "" {
+		errs = append(errs, "static_dir cannot be empty")
+	}
+
+	if strings.TrimSpace(c.GetOpsApiUrl()) == "" {
+		errs = append(errs, "ops_api_url cannot be empty")
+	} else {
+		u, err := url.Parse(c.GetOpsApiUrl())
+		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
+			errs = append(errs, fmt.Sprintf("ops_api_url must be a valid HTTP or HTTPS URL (got %q)", c.GetOpsApiUrl()))
+		}
+	}
+
+	if strings.TrimSpace(c.GetGrafanaUrl()) == "" {
+		errs = append(errs, "grafana_url cannot be empty")
+	} else {
+		u, err := url.Parse(c.GetGrafanaUrl())
+		if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" {
+			errs = append(errs, fmt.Sprintf("grafana_url must be a valid HTTP or HTTPS URL (got %q)", c.GetGrafanaUrl()))
+		}
+	}
+
+	if len(errs) > 0 {
+		return formatErrors("Ops Web Server", errs)
+	}
+	return nil
+}
+
+// ValidateOpsApiServerConfig ensures all configuration required by the internal ops API server is present and valid.
+func ValidateOpsApiServerConfig(c *configpb.OpsApiServerConfig) error {
 	var errs []string
 
 	if err := ValidateNoUnsetFields(c); err != nil {
@@ -693,13 +786,13 @@ func ValidateOpsServerConfig(c *configpb.OpsServerConfig) error {
 	}
 
 	if len(errs) > 0 {
-		return formatErrors("Ops Server", errs)
+		return formatErrors("Ops API Server", errs)
 	}
 	return nil
 }
 
-// ValidateJobServerConfig ensures all configuration required by the job server is present and valid.
-func ValidateJobServerConfig(c *configpb.JobServerConfig) error {
+// ValidateCronServerConfig ensures all configuration required by the cron server is present and valid.
+func ValidateCronServerConfig(c *configpb.CronServerConfig) error {
 	var errs []string
 
 	if err := ValidateNoUnsetFields(c); err != nil {
@@ -708,6 +801,26 @@ func ValidateJobServerConfig(c *configpb.JobServerConfig) error {
 
 	if strings.TrimSpace(c.GetEnvironment()) == "" {
 		errs = append(errs, "environment must be explicitly specified (e.g. sandbox, staging, prod)")
+	}
+
+	if c.Server == nil {
+		errs = append(errs, "server configuration section is missing")
+	} else {
+		if c.Server.GetPort() < 1 || c.Server.GetPort() > 65535 {
+			errs = append(errs, fmt.Sprintf("server.port must be between 1 and 65535 (got %d)", c.Server.GetPort()))
+		}
+		if c.Server.ReadTimeout != nil && c.Server.ReadTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.read_timeout must be greater than 0")
+		}
+		if c.Server.WriteTimeout != nil && c.Server.WriteTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.write_timeout must be greater than 0")
+		}
+		if c.Server.IdleTimeout != nil && c.Server.IdleTimeout.AsDuration() <= 0 {
+			errs = append(errs, "server.idle_timeout must be greater than 0")
+		}
+		if c.Server.GetMaxRequestBytes() <= 0 {
+			errs = append(errs, "server.max_request_bytes must be greater than 0")
+		}
 	}
 
 	if strings.TrimSpace(c.GetOpsServerUrl()) == "" {
@@ -769,7 +882,7 @@ func ValidateJobServerConfig(c *configpb.JobServerConfig) error {
 	}
 
 	if len(errs) > 0 {
-		return formatErrors("Job Server", errs)
+		return formatErrors("Cron Server", errs)
 	}
 	return nil
 }

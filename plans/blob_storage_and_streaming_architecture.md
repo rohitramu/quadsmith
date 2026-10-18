@@ -405,7 +405,7 @@ or Google Cloud Storage. Under this design:
 ### <a id="adaptive-bitrate-video-transcoding-hls" >Adaptive Bitrate Video Transcoding (HLS)</a>
 
 Implement a background video transcoding worker in
-[`src/go/server-jobs`](../src/go/server-jobs) to convert uploaded raw MP4/WebM
+[`src/go/server-cron`](../src/go/server-cron) to convert uploaded raw MP4/WebM
 videos into HTTP Live Streaming (HLS) multi-rate profiles (`.m3u8` playlists and
 `.ts` / `.m4s` segments).
 

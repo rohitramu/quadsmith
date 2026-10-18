@@ -45,17 +45,19 @@ Subsequently, background workers and operations maintenance were refactored in
    24h—with SQL-engine maintenance delegated natively to PostgreSQL
    `autovacuum`—plus the manual `SetUserRole` task, alongside `ListTasks`,
    `GetTask`, `ListJobs`, and `GetJob`) are owned and served by
-   [`server-ops`](../src/go/server-ops) under `OpsService`, protected by
+   [`server-ops-api`](../src/go/server-ops-api) under `OpsService`, protected by
    [`opsauth.NewOpsInterceptor`](../src/go/shared/pkg/opsauth/interceptor.go).
-2. **Headless Scheduler** ([`server-jobs`](../src/go/server-jobs)) operates
-   purely as a headless background cron daemon with zero HTTP APIs or database
-   connections, running typed background schedulers via `robfig/cron/v3` that
-   trigger the 5 maintenance RPCs on `server-ops`.
-3. **Public APIs & Blobs** are served by [`server-api`](../src/go/server-api)
+2. **Cron Scheduler** ([`server-cron`](../src/go/server-cron)) operates as a
+   background cron daemon with zero public RPCs or database connections, running
+   typed background schedulers via `robfig/cron/v3` that trigger the 5
+   maintenance RPCs on `server-ops-api`.
+3. **Ops Console Web UI & JIT-Gated Grafana Proxy** are served by
+   [`server-ops-web`](../src/go/server-ops-web) (`src/react/app-ops-web`).
+4. **Public APIs & Blobs** are served by [`server-api`](../src/go/server-api)
    via ConnectRPC alongside plain HTTP media endpoints (`/api/blobs`,
    `/blobs/{id}`) documented in
    [`blob_storage_and_streaming_architecture.md`](blob_storage_and_streaming_architecture.md).
-4. **Web Frontend & Social Previews** are served by
+5. **Web Frontend & Social Previews** are served by
    [`server-web`](../src/go/server-web), which serves the React 19 SPA, the 17.5
    MB WebAssembly physics engine
    ([`quadsmith-engine.wasm`](../src/react/app-web/public/quadsmith-engine.wasm)),
@@ -91,16 +93,17 @@ colocated operator runbook in `deploy/README.md`.
 
 ## <a id="2-goal" >2. Goal</a>
 
-Deploy Quadsmith's four stateless Go services (`server-web`, `server-api`,
-`server-ops`, `server-jobs`) to a Google Cloud Platform Always Free `e2-micro`
-VM ($0.00/mo compute) running Docker Compose with zero public IP and zero open
-inbound firewall ports via Cloudflare Tunnel, backed by **GCP Cloud SQL for
-PostgreSQL** (`db-f1-micro`, ~$10.50/mo) over a Private Services Access internal
-VPC IP (`--no-assign-ip`, <0.8 ms latency, $0.00/GB internal bandwidth),
-orchestrated from a top-level `deploy/` directory via a single convergent
-`make deploy` command (`deploy/config/{staging,prod}.textproto`) with automated
-SQL backup/migration gating, zero-downtime blue-green container cutover, and
-operator documentation in `deploy/README.md`.
+Deploy Quadsmith's five stateless Go services (`server-web`, `server-api`,
+`server-ops-web`, `server-ops-api`, `server-cron`) to a Google Cloud Platform
+Always Free `e2-micro` VM ($0.00/mo compute) running Docker Compose with zero
+public IP and zero open inbound firewall ports via Cloudflare Tunnel, backed by
+**GCP Cloud SQL for PostgreSQL** (`db-f1-micro`, ~$10.50/mo) over a Private
+Services Access internal VPC IP (`--no-assign-ip`, <0.8 ms latency, $0.00/GB
+internal bandwidth), orchestrated from a top-level `deploy/` directory via a
+single convergent `make deploy` command
+(`deploy/config/{staging,prod}.textproto`) with automated SQL backup/migration
+gating, zero-downtime blue-green container cutover, and operator documentation
+in `deploy/README.md`.
 
 ---
 
@@ -111,7 +114,7 @@ operator documentation in `deploy/README.md`.
 > - Organize stack orchestration in top-level `deploy/` with per-region
 >   `DeployConfig` textprotos (`deploy/config/{staging,prod}.textproto`) and
 >   `deploy/README.md`.
-> - Deploy 4 stateless Go services + Nginx (~4 MB RAM) on 1 GCP `e2-micro` VM
+> - Deploy 5 stateless Go services + Nginx (~4 MB RAM) on 1 GCP `e2-micro` VM
 >   ($0/mo) behind Cloudflare Tunnel with zero public IP.
 > - Pair with Private-IP GCP Cloud SQL (`db-f1-micro`, ~$10.50/mo) for <0.8 ms
 >   SQL RTT and $0/GB internal VPC bandwidth.
@@ -124,19 +127,19 @@ This proposal defines Quadsmith's baseline production architecture leveraging
 GCP's Always Free `e2-micro` compute tier, **GCP Cloud SQL for PostgreSQL** over
 Private VPC Peering, and Cloudflare's Anycast edge while preserving portability
 across cloud and CDN providers. By delegating PostgreSQL persistence to GCP
-Cloud SQL over an internal Private Services Access IP, all four services on the
-VM remain 100% stateless ("cattle, not pets"), enjoy sub-millisecond database
-latency (`0.3 – 0.8 ms` RTT), and incur **$0.00/GB** in database network
-transfer (completely exempt from GCP's 1 GB/month internet egress limit).
-Cloudflare Tunnel (`cloudflared`) connects outbound to Cloudflare, eliminating
-public IPv4 addresses on both the VM and Cloud SQL. An ultra-lean Nginx gateway
-routes subdomains to the active blue/green container slot, while standard HTTP
-`Cache-Control` headers allow Cloudflare to absorb 99% of static asset, WASM,
-and media blob traffic at the edge.
+Cloud SQL over an internal Private Services Access IP, all five Go services on
+the VM remain 100% stateless ("cattle, not pets"), enjoy sub-millisecond
+database latency (`0.3 – 0.8 ms` RTT), and incur **$0.00/GB** in database
+network transfer (completely exempt from GCP's 1 GB/month internet egress
+limit). Cloudflare Tunnel (`cloudflared`) connects outbound to Cloudflare,
+eliminating public IPv4 addresses on both the VM and Cloud SQL. An ultra-lean
+Nginx gateway routes subdomains to the active blue/green container slot, while
+standard HTTP `Cache-Control` headers allow Cloudflare to absorb 99% of static
+asset, WASM, and media blob traffic at the edge.
 
 ```mermaid
 flowchart TD
-    CF["Cloudflare Edge (RFC Cache-Control Respect Mode: quadsmith.com, api, ops)"]
+    CF["Cloudflare Edge (RFC Cache-Control Respect Mode: quadsmith.com, api, ops, ops-api)"]
 
     subgraph VPC["Global GCP VPC (us-central1 | Private Services Access 10.x.x.x — Zero Public IPs)"]
         subgraph VM["GCP e2-micro VM (us-central1-a, 2 vCPU burstable, 1 GB RAM, 30 GB pd-standard Disk)"]
@@ -146,13 +149,16 @@ flowchart TD
                 Nginx["Nginx Gateway (127.0.0.1:8084 -> :80, upstreams.conf)"]
                 Web["server-web (:8080, active slot)"]
                 API["server-api (:8080, active slot)"]
-                Ops["server-ops (:8080, active slot)"]
-                Jobs["server-jobs (Headless Cron, active slot)"]
+                OpsWeb["server-ops-web (:8080, active slot)"]
+                Ops["server-ops-api (:8080, active slot)"]
+                Jobs["server-cron (Cron Daemon, active slot)"]
 
                 Nginx -->|Host: quadsmith.com| Web
                 Nginx -->|Host: api.quadsmith.com| API
-                Nginx -->|Host: ops.quadsmith.com| Ops
+                Nginx -->|Host: ops.quadsmith.com| OpsWeb
+                Nginx -->|Host: ops-api.quadsmith.com| Ops
                 Web -->|OG RPC| API
+                OpsWeb -->|JIT Check RPC| Ops
                 Jobs -->|Task RPC| Ops
             end
 
@@ -273,14 +279,17 @@ not duplicated in `DeployConfig`:
   - **`server-api` (`api:8080`)**: host of `api_url` in
     [`src/go/server-web/config/{staging,prod}.textproto`](../src/go/server-web/config/prod.textproto#L18)
     (`staging-api.quadsmith.com` / `api.quadsmith.com`).
-  - **`server-ops` (`ops:8080`)**: host of `ops_server_url` in
+  - **`server-ops-api` (`ops-api:8080`)**: host of `ops_server_url` in
     [`src/go/cli-ops/config/{staging,prod}.textproto`](../src/go/cli-ops/config/prod.textproto#L2)
-    (`staging-ops.quadsmith.com` / `ops.quadsmith.com`).
-  - **`server-jobs`**: headless background cron daemon (no inbound HTTP port or
+    (`staging-ops-api.quadsmith.com` / `ops-api.quadsmith.com`).
+  - **`server-ops-web` (`ops-web:8080`)**: internal ops web console & JIT-gated
+    Grafana proxy (`staging-ops.quadsmith.com` / `ops.quadsmith.com`).
+  - **`server-cron`**: headless background cron daemon (no inbound HTTP port or
     hostname). All hostnames for the environment route through the environment's
     Cloudflare Tunnel (`quadsmith-${ENV}`) to the local Nginx gateway
     (`127.0.0.1:8084`), where `deploy/nginx/nginx.conf` dispatches each `Host`
-    header to `web_upstream`, `api_upstream`, or `ops_upstream`.
+    header to `web_upstream`, `api_upstream`, `ops_api_upstream`, or
+    `ops_web_upstream`.
 - **Host, Cloud SQL & Runtime Constants**: Debian 12 OS image, 30 GB
   `pd-standard` boot disk, 2 GB swapfile, Google's fixed IAP TCP forwarding
   range (`35.235.240.0/20`), deterministic VM naming
@@ -469,10 +478,10 @@ docker run -d \
 
 It establishes redundant, outbound-only QUIC/HTTP2 tunnels to Cloudflare's
 global Anycast edge. In Cloudflare DNS, `CNAME` records for `@`, `www`, `api`,
-and `ops` (or `staging`, `staging-api`, and `staging-ops`) point to
-`<tunnel-uuid>.cfargotunnel.com`, routing all traffic down the tunnel to
-`http://127.0.0.1:8084` (where the `nginx` container binds on the VM's loopback
-interface).
+`ops-api`, and `ops` (or `staging`, `staging-api`, `staging-ops-api`, and
+`staging-ops`) point to `<tunnel-uuid>.cfargotunnel.com`, routing all traffic
+down the tunnel to `http://127.0.0.1:8084` (where the `nginx` container binds on
+the VM's loopback interface).
 
 Running `cloudflared` as a standalone container outside `docker-compose.yaml`
 delivers three critical advantages:
@@ -590,7 +599,7 @@ Cloud SQL.
 **Cons:**
 
 - **CU-Hour Quota Exhaustion**: Neon Free Tier caps active compute at 100
-  CU-hours/month (400 hours/month at minimum 0.25 CU). Because `server-jobs`
+  CU-hours/month (400 hours/month at minimum 0.25 CU). Because `server-cron`
   runs `cleanup_orphaned_blobs` every 10 minutes and Neon stays awake for 5
   minutes after each query (and `pgxpool` `min_connections: 1` sends 1-minute
   keepalives), a 0.25 CU instance stays awake 365–730 hours/month (91–182.5
@@ -609,7 +618,7 @@ Cloud SQL.
 **Pros:**
 
 - Always-on nano instance at $0.00/month for up to 2 projects (`staging` and
-  `prod`) with zero cold starts as long as `server-jobs` runs at least weekly.
+  `prod`) with zero cold starts as long as `server-cron` runs at least weekly.
 
 **Cons:**
 
@@ -643,18 +652,19 @@ A dedicated, Alpine-based Nginx container (`nginx:alpine`) acts as the internal
 ingress gateway on port 80 within the Docker Compose network (bound to
 `127.0.0.1:${NGINX_PORT:-8084}:80` on the host loopback interface).
 
-To ensure all three HTTP-serving Go services (`server-web`, `server-api`, and
-`server-ops`; `server-jobs` is a headless cron client) listen on a uniform
-internal port (`8080`) behind Nginx and redirect OAuth flows to the canonical
-domain,
+To ensure all four HTTP-serving Go services (`server-web`, `server-api`,
+`server-ops-api`, and `server-ops-web`; `server-cron` is a headless cron client)
+listen on a uniform internal port (`8080`) behind Nginx and redirect OAuth flows
+to the canonical domain,
 [`src/go/server-web/config/prod.textproto`](../src/go/server-web/config/prod.textproto)
 and
 [`src/go/server-api/config/prod.textproto`](../src/go/server-api/config/prod.textproto)
 (along with their `staging.textproto` counterparts) are updated from `port: 443`
 to `port: 8080`, matching
-[`server-ops`](../src/go/server-ops/config/prod.textproto), and `server-api`'s
-`oauth.web_base_url`, `from_address`, and `reply_to` fields are aligned from
-`quadsmith.net` to `quadsmith.com`.
+[`server-ops-api`](../src/go/server-ops-api/config/prod.textproto) and
+[`server-ops-web`](../src/go/server-ops-web/config/prod.textproto), and
+`server-api`'s `oauth.web_base_url`, `from_address`, and `reply_to` fields are
+aligned from `quadsmith.net` to `quadsmith.com`.
 
 Furthermore, three critical proxy and security behaviors are configured across
 `nginx.conf` and `server-web`:
@@ -757,11 +767,22 @@ http {
     # Internal Ops ConnectRPC API
     server {
         listen 80;
+        server_name ops-api.quadsmith.com staging-ops-api.quadsmith.com;
+        client_max_body_size 2m;
+
+        location / {
+            proxy_pass http://ops_api_upstream;
+        }
+    }
+
+    # Internal Ops Web Console & Embedded Grafana Proxy
+    server {
+        listen 80;
         server_name ops.quadsmith.com staging-ops.quadsmith.com;
         client_max_body_size 2m;
 
         location / {
-            proxy_pass http://ops_upstream;
+            proxy_pass http://ops_web_upstream;
         }
     }
 }
@@ -920,19 +941,20 @@ live environments, both `test/sandbox/docker-compose.yaml` and
     PostgreSQL database as a standalone container (`quadsmith-sandbox-db`) on
     `127.0.0.1:${DB_PORT:-5432}` before starting the Compose stack.
   - In `staging` and `prod`, `cloudflared` runs as a standalone host container
-    forwarding to `127.0.0.1:${NGINX_PORT:-8084}`, while `api` and `ops` connect
-    to the Private VPC IP of the GCP Cloud SQL instance (`jobs` is a pure
-    stateless RPC client calling `http://ops:8080`).
+    forwarding to `127.0.0.1:${NGINX_PORT:-8084}`, while `api` and `ops-api`
+    connect to the Private VPC IP of the GCP Cloud SQL instance (`cron` is a
+    pure stateless RPC client calling `http://ops-api:8080`).
 - **Zero Profiles Needed**: Because all five maintenance tasks in
   [`src/go/shared/pkg/auth/job.go`](../src/go/shared/pkg/auth/job.go) and
   [`src/go/shared/pkg/blob/cleanup.go`](../src/go/shared/pkg/blob/cleanup.go)
   are idempotent (with `SendUsernameReleaseWarnings` using transactional
-  `FOR UPDATE OF hh SKIP LOCKED`), `jobs` runs unconditionally on every node,
-  and all five Compose services (`nginx`, `api`, `ops`, `jobs`, `web`) start in
-  every environment without any `profiles:` configuration.
+  `FOR UPDATE OF hh SKIP LOCKED`), `cron` runs unconditionally on every node,
+  and all Compose services (`nginx`, `api`, `ops-api`, `ops-web`, `cron`, `web`)
+  start in every environment without any `profiles:` configuration.
 - **Clean `QS_CONFIG` Environment Selection Across the 3 Environments**:
-  - Each service's Dockerfile (`src/go/server-{api,ops,jobs,web}/Dockerfile`)
-    sets `ENV QS_CONFIG=/app/src/go/server-<name>/config/prod.textproto` and
+  - Each service's Dockerfile
+    (`src/go/server-{api,ops-api,ops-web,cron,web}/Dockerfile`) sets
+    `ENV QS_CONFIG=/app/src/go/server-<name>/config/prod.textproto` and
     `ENTRYPOINT ["/app/server-<name>"]` (removing the hardcoded `--config` CLI
     flag so `QS_CONFIG` is respected natively).
   - Locally, `docker compose -f deploy/docker-compose.yaml up --build` builds
@@ -958,7 +980,9 @@ services:
         condition: service_healthy
       api:
         condition: service_healthy
-      ops:
+      ops-api:
+        condition: service_healthy
+      ops-web:
         condition: service_healthy
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:80/healthz || exit 1"]
@@ -998,18 +1022,18 @@ services:
       retries: 50
       start_period: 200ms
 
-  ops:
-    image: ${QS_IMAGE_REGISTRY:-quadsmith}/server-ops:${QS_IMAGE_TAG:-latest}
+  ops-api:
+    image: ${QS_IMAGE_REGISTRY:-quadsmith}/server-ops-api:${QS_IMAGE_TAG:-latest}
     build:
       context: ..
-      dockerfile: src/go/server-ops/Dockerfile
+      dockerfile: src/go/server-ops-api/Dockerfile
     restart: unless-stopped
     ports:
       - "127.0.0.1:${OPS_PORT:-8082}:8080"
     extra_hosts:
       - "host.docker.internal:host-gateway"
     environment:
-      - QS_CONFIG=/app/src/go/server-ops/config/${QS_ENV:-sandbox}.textproto
+      - QS_CONFIG=/app/src/go/server-ops-api/config/${QS_ENV:-sandbox}.textproto
       - QS_DATABASE_URL=${QS_DATABASE_URL:-postgres://postgres:postgres@host.docker.internal:${DB_PORT:-5432}/quadsmith_api?sslmode=disable}
       - QS_INTERNAL_DATABASE_URL=${QS_INTERNAL_DATABASE_URL:-postgres://postgres:postgres@host.docker.internal:${DB_PORT:-5432}/quadsmith_ops?sslmode=disable}
       - QS_OAUTH_CLIENT_ID=${QS_OAUTH_CLIENT_ID:-}
@@ -1022,18 +1046,40 @@ services:
       retries: 50
       start_period: 200ms
 
-  jobs:
-    image: ${QS_IMAGE_REGISTRY:-quadsmith}/server-jobs:${QS_IMAGE_TAG:-latest}
+  ops-web:
+    image: ${QS_IMAGE_REGISTRY:-quadsmith}/server-ops-web:${QS_IMAGE_TAG:-latest}
     build:
       context: ..
-      dockerfile: src/go/server-jobs/Dockerfile
+      dockerfile: src/go/server-ops-web/Dockerfile
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${OPS_WEB_PORT:-8083}:8080"
+    environment:
+      - QS_CONFIG=/app/src/go/server-ops-web/config/${QS_ENV:-sandbox}.textproto
+      - QS_OPS_SERVER_URL=http://ops-api:8080
+    depends_on:
+      ops-api:
+        condition: service_healthy
+    healthcheck:
+      test:
+        ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 100ms
+      timeout: 1s
+      retries: 50
+      start_period: 200ms
+
+  cron:
+    image: ${QS_IMAGE_REGISTRY:-quadsmith}/server-cron:${QS_IMAGE_TAG:-latest}
+    build:
+      context: ..
+      dockerfile: src/go/server-cron/Dockerfile
     restart: unless-stopped
     environment:
-      - QS_CONFIG=/app/src/go/server-jobs/config/${QS_ENV:-sandbox}.textproto
-      - QS_OPS_SERVER_URL=http://ops:8080
-      - QS_JOB_SERVER_AUTH_TOKEN=${QS_JOB_SERVER_AUTH_TOKEN:-}
+      - QS_CONFIG=/app/src/go/server-cron/config/${QS_ENV:-sandbox}.textproto
+      - QS_OPS_SERVER_URL=http://ops-api:8080
+      - QS_CRON_SERVER_AUTH_TOKEN=${QS_CRON_SERVER_AUTH_TOKEN:-}
     depends_on:
-      ops:
+      ops-api:
         condition: service_healthy
 
   web:
@@ -1080,7 +1126,7 @@ database container and the unified Compose stack:
 3. **Gateway Readiness Verification**: `is_sandbox_ready` in
    `test/run_sandbox_tests.sh` verifies
    `http://127.0.0.1:${NGINX_PORT:-8084}/healthz` in addition to `web`, `api`,
-   and `ops` (while `jobs` runs as a headless cron client).
+   `ops-api`, and `ops-web` (while `cron` runs as a headless cron client).
 
 #### <a id="memory-budget-and-host-hygiene" >Memory Budget & Host Hygiene</a>
 
@@ -1092,10 +1138,11 @@ The memory budget for the 1 GB VM is strictly disciplined:
 | `nginx`                      | C (Alpine)                     | ~4 MB             | ~10 MB              |
 | `server-web`                 | Go (static asset & OG handler) | ~25 MB            | ~40 MB              |
 | `server-api`                 | Go (ConnectRPC + pgxpool)      | ~25 MB            | ~45 MB              |
-| `server-ops`                 | Go (ConnectRPC + pgxpool)      | ~20 MB            | ~35 MB              |
-| `server-jobs`                | Go (headless cron client)      | ~10 MB            | ~20 MB              |
+| `server-ops-api`             | Go (ConnectRPC + pgxpool)      | ~20 MB            | ~35 MB              |
+| `server-ops-web`             | Go (static SPA & JIT proxy)    | ~15 MB            | ~25 MB              |
+| `server-cron`                | Go (headless cron client)      | ~10 MB            | ~20 MB              |
 | Linux OS / systemd / Docker  | Linux Kernel / Dockerd         | ~150 MB           | ~200 MB             |
-| **Total**                    |                                | **~249 MB**       | **~375 MB**         |
+| **Total**                    |                                | **~264 MB**       | **~400 MB**         |
 
 To guarantee host stability, prevent out-of-memory kernel panics, and stay
 within Cloud SQL connection limits:
@@ -1104,26 +1151,26 @@ within Cloud SQL connection limits:
    [`src/go/server-api/main.go`](../src/go/server-api/main.go) to apply
    `max_connections` and `min_connections` via `pgxpool.ParseConfig` /
    `pgxpool.NewWithConfig`, matching
-   [`server-ops`](../src/go/server-ops/main.go). Right-size both
+   [`server-ops-api`](../src/go/server-ops-api/main.go). Right-size both
    `prod.textproto` and `staging.textproto` connection pools for single-node
    deployment (`server-api`: `max_connections: 15, min_connections: 1`;
-   `server-ops`: `max_connections: 5, min_connections: 1` on both `database` and
-   `internal_database`), capping total VM connections at 20 on `quadsmith_api`
-   and 5 on `quadsmith_ops` (with only 3 total idle connections, since
-   `server-jobs` has zero database pools).
+   `server-ops-api`: `max_connections: 5, min_connections: 1` on both `database`
+   and `internal_database`), capping total VM connections at 20 on
+   `quadsmith_api` and 5 on `quadsmith_ops` (with only 3 total idle connections,
+   since `server-cron` and `server-ops-web` have zero database pools).
 2. **Database-Backed Operations Token Seeding**: Rather than embedding static
    `bootstrap_tokens` in
-   [`server-ops/config/prod.textproto`](../src/go/server-ops/config/prod.textproto)
+   [`server-ops-api/config/prod.textproto`](../src/go/server-ops-api/config/prod.textproto)
    or
-   [`server-ops/config/staging.textproto`](../src/go/server-ops/config/staging.textproto),
-   initial `ROBOT` (`QS_JOB_SERVER_AUTH_TOKEN`, `group_name = 'robots'`) and
+   [`server-ops-api/config/staging.textproto`](../src/go/server-ops-api/config/staging.textproto),
+   initial `ROBOT` (`QS_CRON_SERVER_AUTH_TOKEN`, `group_name = 'robots'`) and
    operator `HUMAN` (`group_name = 'operators'`) token SHA-256 hashes are seeded
    directly into `quadsmith_ops.internal_tokens` via SQL during database setup,
    allowing every live token to be audited and revoked dynamically via
    `RevokeInternalToken`.
 3. **Low-Overhead Background Task Schedules**: With `RunDatabaseMaintenance` and
    `SeedDatabase` removed in favor of PostgreSQL `autovacuum` and
-   `cleanup_orphaned_blobs` scheduled every 10 minutes (`600s`), `server-jobs`
+   `cleanup_orphaned_blobs` scheduled every 10 minutes (`600s`), `server-cron`
    executes only ~153 background task RPCs per day (~4,600/month across all 5
    tasks)—a 90% reduction in background database wakeups and
    `quadsmith_ops.internal_api_calls` audit log growth.
@@ -1154,8 +1201,8 @@ Maintain two distinct files (`test/sandbox/docker-compose.yaml` and
 
 **Cons:**
 
-- Duplicates `api`, `ops`, `jobs`, and `web` service definitions across two
-  files that can drift out of sync.
+- Duplicates `api`, `ops-api`, `ops-web`, `cron`, and `web` service definitions
+  across two files that can drift out of sync.
 - Does not exercise `nginx.conf` routing during local `make sandbox` or
   `make test` runs.
 
@@ -1195,7 +1242,8 @@ Include a `db` service running PostgreSQL in the production Compose stack on the
 ##### <a id="alt-config-bootstrap-tokens" >Static Bootstrap Tokens in Production Configs</a>
 
 Define `bootstrap_tokens` entries templated with environment variables in
-`server-ops/config/prod.textproto` and `server-ops/config/staging.textproto`.
+`server-ops-api/config/prod.textproto` and
+`server-ops-api/config/staging.textproto`.
 
 **Pros:**
 
@@ -1236,7 +1284,7 @@ flowchart TD
         end
 
         subgraph PhaseB["Phase B: SQL Backup, Migration Gate & Blue-Green Rollout (Runs on Every Deploy)"]
-            Build["5. Build & Push 4 Service Images to GAR (:latest & :sha-<commit>)"]
+            Build["5. Build & Push 5 Service Images to GAR (:latest & :sha-<commit>)"]
             Diff{"6. psqldef --dry-run Detects Pending Schema Changes?"}
             Backup["7a. Run make check-breaking, Create Cloud SQL ON_DEMAND Pre-Migration Snapshot & Apply make db-migrate"]
             Seed["7b. Ensure Robot & Initial Operator Token SHA-256 Hashes in quadsmith_ops.internal_tokens"]
@@ -1291,7 +1339,7 @@ Infrastructure Checks** (driven by `deploy/config/${ENV}.textproto` inside
   3. **OAuth, SMTP, DB & Auth Secrets**: Create OAuth 2.0 client IDs/secrets in
      Google Cloud Console, GitHub Developer Settings, and Discord Developer
      Portal, plus `QS_DB_PASSWORD` (`openssl rand -hex 24`), `QS_SMTP_PASSWORD`,
-     `QS_AUTH_SECRET` (`openssl rand -hex 32`), and `QS_JOB_SERVER_AUTH_TOKEN`
+     `QS_AUTH_SECRET` (`openssl rand -hex 32`), and `QS_CRON_SERVER_AUTH_TOKEN`
      (`openssl rand -hex 32`).
 - **Part B: Idempotent Bootstrap Functions in `deploy/deploy.sh`**:
   1. **`ensure_gcp_network_and_registry`**: Ensures the Artifact Registry
@@ -1341,7 +1389,7 @@ Infrastructure Checks** (driven by `deploy/config/${ENV}.textproto` inside
 | :------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Deployment Config**                  | Author `deploy/config/{staging,prod}.textproto` (project, regions, `db_tier`, `nodes`).                                                        | Load & validate `deploy/config/${ENV}.textproto` via `check-config` / `LoadDeployConfig`.                                                                                                                                               | Read target regions, Cloud SQL tiers, and VM specs from `deploy/config/${ENV}.textproto`.                                                                                                                                               |
 | **Accounts, IAM & VPC**                | Create Cloudflare Zone & API token; create GCP Project, Billing link & `quadsmith-cd` SA; create OAuth apps; store GitHub Environment Secrets. | Ensure IAP firewall rule (`35.235.240.0/20` -> `:22`), Cloud NAT, and global VPC Private Services Access (`/16`) exist.                                                                                                                 | Authenticate GitHub Actions runner via `GCP_SA_KEY`; sync runtime `/opt/quadsmith/.env` to each VM node over IAP.                                                                                                                       |
-| **Artifact Registry**                  | Enable `artifactregistry.googleapis.com`.                                                                                                      | Ensure `quadsmith-docker` repository & 3-version retention cleanup policy exist in `registry_region`.                                                                                                                                   | Build & push `server-web`, `server-api`, `server-ops`, and `server-jobs` (`:latest` & `:sha-<commit>`).                                                                                                                                 |
+| **Artifact Registry**                  | Enable `artifactregistry.googleapis.com`.                                                                                                      | Ensure `quadsmith-docker` repository & 3-version retention cleanup policy exist in `registry_region`.                                                                                                                                   | Build & push `server-web`, `server-api`, `server-ops-api`, `server-ops-web`, and `server-cron` (`:latest` & `:sha-<commit>`).                                                                                                           |
 | **Cloudflare Edge & DNS**              | Add `quadsmith.com` domain to Cloudflare account.                                                                                              | Ensure Cloudflare Tunnel (`quadsmith-${ENV}`), proxied `CNAME` records, Smart Tiered Cache, and RFC `Cache-Control` Cache Rule exist.                                                                                                   | **None** _(Tunnel and edge cache rules stay active; new `?v=<hash>` WASM & Vite bundle URLs bust cache automatically)_.                                                                                                                 |
 | **GCP Cloud SQL (Primary & Replicas)** | Enable `sqladmin.googleapis.com` & `servicenetworking.googleapis.com`.                                                                         | Ensure primary `quadsmith-db-${ENV}-${region}` (`--no-assign-ip`, daily backups at `04:00 UTC`, 7-day PITR), logical DBs (`quadsmith_api`, `quadsmith_ops`), and any regional read replicas exist at `db_tier`; seed `internal_tokens`. | Run `psqldef --dry-run`; **when DDL changes exist**, run `make check-breaking`, create Cloud SQL `ON_DEMAND` pre-migration snapshot (retaining `db_backup_retention_count` snapshots), and apply `make db-migrate` over Private VPC IP. |
 | **Compute Engine Host VMs**            | Enable `compute.googleapis.com` & `iap.googleapis.com`.                                                                                        | For each node in `regions[].nodes[]`: ensure VM (`--no-address`, `machine_type`, 30 GB disk), 2 GB `/swapfile`, `/etc/docker/daemon.json` log rotation, daily image prune cron, and standalone `cloudflared` container are running.     | **None** _(Host OS, swap, Docker daemon, and standalone `cloudflared` container remain uninterrupted and 100% stateless)_.                                                                                                              |
@@ -1389,7 +1437,7 @@ over its Private IP without ever exposing Cloud SQL to the public internet:
 ```mermaid
 flowchart TD
     subgraph Stage1["Step 1: Build & Push Images"]
-        Build["Compile & Push 4 Docker Images (server-web, server-api, server-ops, server-jobs)"]
+        Build["Compile & Push 5 Docker Images (server-web, server-api, server-ops-api, server-ops-web, server-cron)"]
     end
 
     subgraph Stage2["Step 2: Cloud SQL Bootstrap, Backup & Migration Gate (Over IAP Tunnel to Private VPC IP)"]
@@ -1478,7 +1526,7 @@ flowchart TD
    - After `make db-migrate` applies the declarative schema inside PostgreSQL's
      transactional DDL wrapper, execute an idempotent
      `INSERT INTO internal_tokens (...) ON CONFLICT (token_hash) DO NOTHING` on
-     `quadsmith_ops` so the `ROBOT` token (`QS_JOB_SERVER_AUTH_TOKEN`) and any
+     `quadsmith_ops` so the `ROBOT` token (`QS_CRON_SERVER_AUTH_TOKEN`) and any
      configured initial operator `HUMAN` token hash are guaranteed to exist.
 
 <details>
@@ -1575,20 +1623,20 @@ removed tables, columns, or indexes instead of failing the gate.
 
 ### <a id="zero-downtime-blue-green-container-cutover-and-automatic-rollback" >Zero-Downtime Blue-Green Container Cutover and Automatic Rollback</a>
 
-Because `server-web` (~25 MB), `server-api` (~25 MB), `server-ops` (~20 MB), and
-the headless `server-jobs` scheduler (~10 MB) consume only **~80 MB of combined
-idle RAM**—and the 1 GB `e2-micro` VM has ~751 MB of available RAM plus a 2 GB
-swapfile—the host can comfortably run both the active (`blue`) and candidate
-(`green`) container sets side-by-side for the few seconds required to verify
-`/healthz` readiness and reload Nginx, eliminating the ~1–2 second
-`502 Bad Gateway` window of in-place container recreation.
+Because `server-web` (~25 MB), `server-api` (~25 MB), `server-ops-api` (~20 MB),
+`server-ops-web` (~15 MB), and the headless `server-cron` scheduler (~10 MB)
+consume only **~95 MB of combined idle RAM**—and the 1 GB `e2-micro` VM has ~736
+MB of available RAM plus a 2 GB swapfile—the host can comfortably run both the
+active (`blue`) and candidate (`green`) container sets side-by-side for the few
+seconds required to verify `/healthz` readiness and reload Nginx, eliminating
+the ~1–2 second `502 Bad Gateway` window of in-place container recreation.
 
 ```mermaid
 flowchart TD
     Start["deploy/deploy.sh Invokes deploy/deploy_blue_green.sh on VM"]
     Detect["Detect Active Slot (blue) & Select Candidate Slot (green)"]
-    Boot["Pull Images & Start Candidate Slot (web-green, api-green, ops-green, jobs-green)"]
-    Health{"Poll HTTP /healthz on web-green, api-green, ops-green (Up to 15s)"}
+    Boot["Pull Images & Start Candidate Slot (web-green, api-green, ops-api-green, ops-web-green, cron-green)"]
+    Health{"Poll HTTP /healthz on web-green, api-green, ops-api-green, ops-web-green (Up to 15s)"}
 
     subgraph Cutover["Atomic Cutover & Teardown"]
         Switch["Write nginx/upstreams.conf -> green & Run nginx -t && nginx -s reload"]
@@ -1604,7 +1652,7 @@ flowchart TD
     end
 
     Start --> Detect --> Boot --> Health
-    Health -->|All 3 HTTP Services Return 200 OK| Switch
+    Health -->|All 4 HTTP Services Return 200 OK| Switch
     Health -->|Any Timeout or Non-200| Logs
 ```
 
@@ -1616,18 +1664,21 @@ flowchart TD
    - `nginx` (and the standalone `cloudflared` container) run continuously so
      the Cloudflare edge tunnel and `127.0.0.1:8084` gateway never restart
      during application deployments.
-   - `blue` slot (`web-blue`, `api-blue`, `ops-blue`, `jobs-blue`) and `green`
-     slot (`web-green`, `api-green`, `ops-green`, `jobs-green`) isolate internal
-     service communication (`web-<slot>` &rarr; `http://api-<slot>:8080`,
-     `jobs-<slot>` &rarr; `http://ops-<slot>:8080`).
-   - During the ~5-second overlap window, running both slots adds only **~80 MB
-     of RAM** (~329 MB total on the 1 GB VM) and opens only **3 initial database
-     connections** (`min_connections: 1` on `api-<next>` and `ops-<next>`).
+   - `blue` slot (`web-blue`, `api-blue`, `ops-api-blue`, `ops-web-blue`,
+     `cron-blue`) and `green` slot (`web-green`, `api-green`, `ops-api-green`,
+     `ops-web-green`, `cron-green`) isolate internal service communication
+     (`web-<slot>` &rarr; `http://api-<slot>:8080`, `ops-web-<slot>` &rarr;
+     `http://ops-api-<slot>:8080`, `cron-<slot>` &rarr;
+     `http://ops-api-<slot>:8080`).
+   - During the ~5-second overlap window, running both slots adds only **~95 MB
+     of RAM** (~359 MB total on the 1 GB VM) and opens only **3 initial database
+     connections** (`min_connections: 1` on `api-<next>` and `ops-api-<next>`).
 2. **Staged Weighted Nginx Upstream Ramp-Up (`deploy/nginx/upstreams.conf`)**:
    - `deploy/nginx/upstreams.conf` is mounted into the `nginx` container at
      `/etc/nginx/conf.d/upstreams.conf` and included by
-     `deploy/nginx/nginx.conf` (defaulting to `web:8080`, `api:8080`, `ops:8080`
-     in local sandbox and rewritten by `deploy/deploy_blue_green.sh` on the VM).
+     `deploy/nginx/nginx.conf` (defaulting to `web:8080`, `api:8080`,
+     `ops-api:8080`, `ops-web:8080` in local sandbox and rewritten by
+     `deploy/deploy_blue_green.sh` on the VM).
    - Once the candidate slot passes initial `/healthz` readiness within
      `rollout.health_check_timeout` (`30s`), `deploy/deploy_blue_green.sh` steps
      through the configured `rollout.ramp_stages[]` (`1%` for `15m` &rarr; `5%`
@@ -1662,8 +1713,8 @@ flowchart TD
      seconds of each intermediate stage's `hold_duration`,
      `deploy/deploy_blue_green.sh` polls
      `wget -q -O- http://<service>:8080/healthz` from inside the `nginx`
-     container for `web-<next>`, `api-<next>`, and `ops-<next>` (and verifies
-     `jobs-<next>` is `running`).
+     container for `web-<next>`, `api-<next>`, `ops-api-<next>`, and
+     `ops-web-<next>` (and verifies `cron-<next>` is `running`).
    - If any candidate container fails a health check during initial readiness or
      during any traffic ramp stage, `deploy/deploy_blue_green.sh` immediately
      rewrites `upstreams.conf` with 100% weight on `<active>`, reloads Nginx,
@@ -1672,14 +1723,14 @@ flowchart TD
    - Once the `100%` stage completes, the script records `.active_slot`, waits 2
      seconds, and drains/stops the previous slot with
      `--timeout ${QS_ROLLOUT_DRAIN_TIMEOUT_SEC}` (`30s` in `prod`, `15s` in
-     `staging`), freeing the ~80 MB of RAM.
+     `staging`), freeing the ~95 MB of RAM.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
 
 ##### <a id="alt-host-port-mapping-per-slot" >Bind Blue and Green Slots to Distinct Host Ports</a>
 
-Expose `blue` on host ports `8080–8082` and `green` on `8090–8092` instead of
+Expose `blue` on host ports `8080–8083` and `green` on `8090–8093` instead of
 using Docker bridge network service names.
 
 **Pros:**
@@ -1754,8 +1805,8 @@ Docker images are hosted in a private **Google Artifact Registry** repository
   access tokens.
 - **Automated Retention Cleanup**: Configure an Artifact Registry cleanup policy
   retaining only the **3 most recent tagged versions** of each image. Because
-  the four Alpine Go images total ~120 MB compressed per build, 3 versions
-  consume ~360 MB, remaining comfortably within Artifact Registry's **500 MB
+  the five Alpine Go images total ~145 MB compressed per build, 3 versions
+  consume ~435 MB, remaining comfortably within Artifact Registry's **500 MB
   free storage tier**.
 
 #### <a id="github-actions-deployment-pipeline" >GitHub Actions Deployment Pipeline (`.github/workflows/deploy.yml`)</a>
@@ -1791,7 +1842,7 @@ chained stages (`check-credentials` &rarr; `build-and-push` &rarr; `migrate-db`
    `github.sha`) to resolve the canonical commit SHA (`deploy_sha`), and
    resolves the commit currently pointed to by the `staging` or `prod` Git tag
    (`previous_sha`).
-2. **`build-and-push` (`needs: check-credentials`)**: Builds the 4 images in
+2. **`build-and-push` (`needs: check-credentials`)**: Builds the 5 images in
    parallel using BuildKit (with `cache-dependency-path: "src/go/go.work.sum"`)
    and pushes to
    `us-central1-docker.pkg.dev/<PROJECT_ID>/quadsmith-docker/<image>:latest` and
@@ -1835,7 +1886,7 @@ root [`README.md`](../README.md)) structured into eight actionable sections:
    (`<ENV>_CF_ACCOUNT_ID`, `<ENV>_CF_ZONE_ID`, `<ENV>_CF_API_TOKEN`), GCP
    project & `quadsmith-cd` deployer service account (`<ENV>_GCP_SA_KEY`), OAuth
    provider credentials, and internal secrets (`<ENV>_QS_DB_PASSWORD`,
-   `<ENV>_QS_AUTH_SECRET`, `<ENV>_QS_JOB_SERVER_AUTH_TOKEN`), plus a complete
+   `<ENV>_QS_AUTH_SECRET`, `<ENV>_QS_CRON_SERVER_AUTH_TOKEN`), plus a complete
    table of environment-prefixed GitHub Repository Secrets (`PROD_*` and
    `STAGING_*`).
 3. **Deployment Configuration (`deploy/config/{staging,prod}.textproto`)**:
@@ -1974,9 +2025,9 @@ internet egress** and **~3.5 ms of Go CPU time** per app load:
   Cloudflare Tiered Cache (~50–100 MB/month total to seed Upper-Tier PoPs across
   releases).
 - **Zero Database Egress Overhead**: Because Cloud SQL communicates with
-  `server-api` and `server-ops` over same-region Private VPC Peering, neither
-  SQL queries nor 100 MB `BYTEA` blob uploads/reads consume any of GCP's 1
-  GB/month free internet egress allowance.
+  `server-api` and `server-ops-api` over same-region Private VPC Peering,
+  neither SQL queries nor 100 MB `BYTEA` blob uploads/reads consume any of GCP's
+  1 GB/month free internet egress allowance.
 - **Within 1 GB Free GCP Internet Egress (~$10.50/mo Total for Cloud SQL)**:
   Supports **~45,000 – 60,000 app loads/month** ($\frac{920,000\text{
   KB}}{20\text{ KB}} \approx 46,000\text{ – }60,000$ after accounting for
@@ -2056,7 +2107,7 @@ PostgreSQL Flexible Server `B1ms`) instead of GCP (`e2-micro` + Cloud SQL
 
 ### <a id="fly-io-independent-micro-vm-deployment" >Fly.io Independent Micro-VM Deployment</a>
 
-Deploy Quadsmith's four services across four dedicated micro-VMs on Fly.io from
+Deploy Quadsmith's five services across five dedicated micro-VMs on Fly.io from
 day one.
 
 **Pros:**
@@ -2068,13 +2119,14 @@ day one.
 
 - Costs ~$8.00 – $12.00/month for compute alone compared to GCP's $0.00/month
   Always Free `e2-micro` tier, plus Fly Postgres is unmanaged.
-- Requires maintaining four separate `fly.toml` manifests and deployment
+- Requires maintaining five separate `fly.toml` manifests and deployment
   pipelines.
 
 ### <a id="direct-cloud-run-and-cloud-scheduler-deployment-on-day-one" >Direct Cloud Run and Cloud Scheduler Deployment on Day One</a>
 
-Deploy `server-web`, `server-api`, and `server-ops` as serverless containers on
-GCP Cloud Run from day one, using Cloud Scheduler for maintenance triggers.
+Deploy `server-web`, `server-api`, `server-ops-api`, and `server-ops-web` as
+serverless containers on GCP Cloud Run from day one, using Cloud Scheduler for
+maintenance triggers.
 
 **Pros:**
 
@@ -2184,7 +2236,7 @@ executed by `golang-migrate` or `goose`.
 
 ### <a id="execute-migrations-inside-service-container-entrypoints" >Execute Migrations Inside Service Container Entrypoints</a>
 
-Bundle `psqldef` and `src/db/*.sql` inside the `server-api` and `server-ops`
+Bundle `psqldef` and `src/db/*.sql` inside the `server-api` and `server-ops-api`
 Docker images and run `psqldef` automatically inside `main.go` on container
 startup.
 
@@ -2227,9 +2279,11 @@ and use `deploy.update_config.order: start-first` in Compose.
    SQL for PostgreSQL instance.
 2. The domain (`quadsmith.com`) is registered and its nameservers are delegated
    to a Cloudflare account (Free Tier is sufficient).
-3. Administrative access to `ops.quadsmith.com` (`server-ops`) is doubly
-   protected at the edge by a **Cloudflare Zero Trust Access policy** and inside
-   the binary by `opsauth.NewOpsInterceptor` (`quadsmith_ops.internal_tokens`).
+3. Administrative access to `ops-api.quadsmith.com` (`server-ops-api`) and
+   `ops.quadsmith.com` (`server-ops-web`) is doubly protected at the edge by a
+   **Cloudflare Zero Trust Access policy** and inside the binaries by
+   `opsauth.NewOpsInterceptor` (`quadsmith_ops.internal_tokens`) and JIT-gated
+   proxy verification.
 4. All schema migrations deployed via automated CI/CD are backwards-compatible
    (expand-and-contract pattern) so active `blue` containers continue
    functioning during the ~5–10 second window between `make db-migrate`

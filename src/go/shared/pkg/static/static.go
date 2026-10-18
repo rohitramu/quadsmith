@@ -16,6 +16,8 @@ import (
 	"regexp"
 	"strings"
 	"time"
+
+	"quadsmith/shared/pkg/telemetry"
 )
 
 // PageMeta defines the Open Graph, Twitter, and SEO metadata for a page.
@@ -302,6 +304,12 @@ func fetchConnectRPC(ctx context.Context, endpoint string, body []byte) ([]byte,
 		return nil, err
 	}
 	req.Header.Set("Content-Type", "application/json")
+	traceID := telemetry.TraceIDFromContext(ctx)
+	if !telemetry.IsValidUUID(traceID) {
+		traceID = telemetry.NewTraceID()
+	}
+	req.Header.Set(telemetry.TraceIDHeader, traceID)
+	req.Header.Set(telemetry.InternalHopTokenHeader, telemetry.InternalHopToken())
 
 	resp, err := crawlerHTTPClient.Do(req)
 	if err != nil {

@@ -29,8 +29,9 @@ func main() {
 		component string
 	}{
 		{"src/go/server-api/config", "server-api"},
-		{"src/go/server-ops/config", "server-ops"},
-		{"src/go/server-jobs/config", "server-jobs"},
+		{"src/go/server-ops-api/config", "server-ops-api"},
+		{"src/go/server-ops-web/config", "server-ops-web"},
+		{"src/go/server-cron/config", "server-cron"},
 		{"src/go/server-web/config", "server-web"},
 		{"src/go/cli/config", "cli"},
 		{"src/go/cli-ops/config", "cli-ops"},
@@ -127,15 +128,15 @@ func validateConfigFile(check configFileCheck, raw []byte) error {
 			return fmt.Errorf("database connection limits must be explicitly specified")
 		}
 
-	case "server-ops":
-		var cfg pb.OpsServerConfig
+	case "server-ops-api":
+		var cfg pb.OpsApiServerConfig
 		if err := opts.Unmarshal(expanded, &cfg); err != nil {
-			return fmt.Errorf("failed to parse OpsServerConfig: %w", err)
+			return fmt.Errorf("failed to parse OpsApiServerConfig: %w", err)
 		}
 		if cfg.GetEnvironment() != check.env {
 			return fmt.Errorf("environment field %q does not match filename %q", cfg.GetEnvironment(), check.env)
 		}
-		if err := config.ValidateOpsServerConfig(&cfg); err != nil {
+		if err := config.ValidateOpsApiServerConfig(&cfg); err != nil {
 			return err
 		}
 		if cfg.Server == nil || cfg.Server.IdleTimeout == nil || cfg.Server.GetMaxRequestBytes() <= 0 {
@@ -148,16 +149,37 @@ func validateConfigFile(check configFileCheck, raw []byte) error {
 			return fmt.Errorf("internal database connection limits must be explicitly specified")
 		}
 
-	case "server-jobs":
-		var cfg pb.JobServerConfig
+	case "server-ops-web":
+		var cfg pb.OpsWebServerConfig
 		if err := opts.Unmarshal(expanded, &cfg); err != nil {
-			return fmt.Errorf("failed to parse JobServerConfig: %w", err)
+			return fmt.Errorf("failed to parse OpsWebServerConfig: %w", err)
 		}
 		if cfg.GetEnvironment() != check.env {
 			return fmt.Errorf("environment field %q does not match filename %q", cfg.GetEnvironment(), check.env)
 		}
-		if err := config.ValidateJobServerConfig(&cfg); err != nil {
+		if err := config.ValidateOpsWebServerConfig(&cfg); err != nil {
 			return err
+		}
+		if cfg.Server == nil || cfg.Server.IdleTimeout == nil || cfg.Server.GetMaxRequestBytes() <= 0 {
+			return fmt.Errorf("server timeouts and limits must be explicitly specified")
+		}
+		if strings.TrimSpace(cfg.GetStaticDir()) == "" {
+			return fmt.Errorf("static_dir must be explicitly specified")
+		}
+
+	case "server-cron":
+		var cfg pb.CronServerConfig
+		if err := opts.Unmarshal(expanded, &cfg); err != nil {
+			return fmt.Errorf("failed to parse CronServerConfig: %w", err)
+		}
+		if cfg.GetEnvironment() != check.env {
+			return fmt.Errorf("environment field %q does not match filename %q", cfg.GetEnvironment(), check.env)
+		}
+		if err := config.ValidateCronServerConfig(&cfg); err != nil {
+			return err
+		}
+		if cfg.Server == nil || cfg.Server.IdleTimeout == nil || cfg.Server.GetMaxRequestBytes() <= 0 {
+			return fmt.Errorf("server timeouts and limits must be explicitly specified")
 		}
 
 	case "server-web":

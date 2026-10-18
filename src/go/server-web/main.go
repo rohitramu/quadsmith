@@ -6,7 +6,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
+	"strings"
 	"time"
 
 	"golang.org/x/net/http2"
@@ -14,18 +16,28 @@ import (
 
 	"quadsmith/shared/pkg/config"
 	"quadsmith/shared/pkg/static"
+	"quadsmith/shared/pkg/telemetry"
 
 	configpb "quadsmith/shared/gen/quadsmith/config"
 )
 
 func buildHandler(cfg *configpb.WebServerConfig) http.Handler {
+	env := cfg.GetEnvironment()
+	if env == "" {
+		env = "sandbox"
+	}
+	reg := telemetry.NewRegistry("server-web", env, false)
+
+	staticDir := cfg.GetStaticDir()
+	reg.AddCheck("static_assets", telemetry.FileExistsCheck(filepath.Join(staticDir, "index.html")))
+	reg.AddCheck("wasm_engine", telemetry.FileExistsCheck(filepath.Join(staticDir, "quadsmith-engine.wasm")))
+	reg.AddUpstreamCheck("upstream:server-api", telemetry.HTTPHealthCheck(strings.TrimRight(cfg.GetApiUrl(), "/")+"/healthz"))
+
 	mux := http.NewServeMux()
 
-	// Health check
-	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte("ok\n"))
-	})
+	// Deep health check and Prometheus metrics endpoints
+	mux.HandleFunc("/healthz", reg.HealthzHandler())
+	mux.HandleFunc("/metrics", reg.MetricsHandler())
 
 	// SPA & static asset handler
 	mux.Handle("/", static.ServeSPA(cfg.GetStaticDir(), cfg.GetApiUrl()))
@@ -35,7 +47,7 @@ func buildHandler(cfg *configpb.WebServerConfig) http.Handler {
 		maxBytes = 10 << 20 // 10MB
 	}
 
-	return securityHeadersMiddleware(dynamicMaxBytesHandler(mux, maxBytes))
+	return reg.Middleware(securityHeadersMiddleware(dynamicMaxBytesHandler(mux, maxBytes)))
 }
 
 func main() {

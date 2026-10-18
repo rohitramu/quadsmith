@@ -13,10 +13,43 @@ services:
       timeout: 1s
       retries: 30
 
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:v1.115.0
+    restart: unless-stopped
+    command:
+      - "-promscrape.config=/etc/victoriametrics/scrape.yml"
+      - "-retentionPeriod=30d"
+      - "-storageDataPath=/storage"
+    volumes:
+      - ./victoriametrics/scrape.yml:/etc/victoriametrics/scrape.yml:ro
+      - vm_data:/storage
+
+  victorialogs:
+    image: victoriametrics/victoria-logs:v1.15.0-victorialogs
+    restart: unless-stopped
+    command:
+      - "-retentionPeriod=14d"
+      - "-storageDataPath=/vlogs"
+    volumes:
+      - vl_data:/vlogs
+
+  grafana:
+    image: grafana/grafana-oss:11.5.2
+    restart: unless-stopped
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini:ro
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana_data:/var/lib/grafana
+    depends_on:
+      - victoriametrics
+      - victorialogs
+
   api-blue:
     image: ${QS_IMAGE_REGISTRY}/server-api:${QS_IMAGE_TAG:-latest}
     restart: unless-stopped
     environment:
+      - QS_ENV=${QS_ENV:-prod}
+      - QS_REGION=${QS_REGION:-us-central1}
       - QS_CONFIG=/app/src/go/server-api/config/${QS_ENV:-prod}.textproto
       - QS_DATABASE_URL=${QS_DATABASE_URL}
       - QS_READ_DATABASE_URL=${QS_READ_DATABASE_URL:-}
@@ -29,44 +62,82 @@ services:
       - QS_GITHUB_CLIENT_SECRET=${QS_GITHUB_CLIENT_SECRET}
       - QS_DISCORD_CLIENT_ID=${QS_DISCORD_CLIENT_ID}
       - QS_DISCORD_CLIENT_SECRET=${QS_DISCORD_CLIENT_SECRET}
+      - QS_VICTORIA_LOGS_URL=http://victorialogs:9428
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
       interval: 1s
       timeout: 2s
       retries: 15
 
-  ops-blue:
-    image: ${QS_IMAGE_REGISTRY}/server-ops:${QS_IMAGE_TAG:-latest}
+  ops-api-blue:
+    image: ${QS_IMAGE_REGISTRY}/server-ops-api:${QS_IMAGE_TAG:-latest}
     restart: unless-stopped
     environment:
-      - QS_CONFIG=/app/src/go/server-ops/config/${QS_ENV:-prod}.textproto
+      - QS_ENV=${QS_ENV:-prod}
+      - QS_REGION=${QS_REGION:-us-central1}
+      - QS_CONFIG=/app/src/go/server-ops-api/config/${QS_ENV:-prod}.textproto
       - QS_DATABASE_URL=${QS_DATABASE_URL}
       - QS_INTERNAL_DATABASE_URL=${QS_INTERNAL_DATABASE_URL}
       - QS_OAUTH_CLIENT_ID=${QS_OAUTH_CLIENT_ID}
       - QS_OAUTH_CLIENT_SECRET=${QS_OAUTH_CLIENT_SECRET}
+      - QS_PEER_API_HEALTHZ=http://api-blue:8080/healthz
+      - QS_PEER_WEB_HEALTHZ=http://web-blue:8080/healthz
+      - QS_PEER_OPS_WEB_HEALTHZ=http://ops-web-blue:8080/healthz
+      - QS_PEER_CRON_HEALTHZ=http://cron-blue:8080/healthz
+      - QS_VICTORIA_LOGS_URL=http://victorialogs:9428
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
       interval: 1s
       timeout: 2s
       retries: 15
 
-  jobs-blue:
-    image: ${QS_IMAGE_REGISTRY}/server-jobs:${QS_IMAGE_TAG:-latest}
+  ops-web-blue:
+    image: ${QS_IMAGE_REGISTRY}/server-ops-web:${QS_IMAGE_TAG:-latest}
     restart: unless-stopped
     environment:
-      - QS_CONFIG=/app/src/go/server-jobs/config/${QS_ENV:-prod}.textproto
-      - QS_OPS_SERVER_URL=http://ops-blue:8080
-      - QS_JOB_SERVER_AUTH_TOKEN=${QS_JOB_SERVER_AUTH_TOKEN}
+      - QS_ENV=${QS_ENV:-prod}
+      - QS_REGION=${QS_REGION:-us-central1}
+      - QS_CONFIG=/app/src/go/server-ops-web/config/${QS_ENV:-prod}.textproto
+      - QS_OPS_API_URL=http://ops-api-blue:8080
+      - QS_GRAFANA_URL=http://grafana:3000
+      - QS_VICTORIA_LOGS_URL=http://victorialogs:9428
     depends_on:
-      ops-blue:
+      ops-api-blue:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 1s
+      timeout: 2s
+      retries: 15
+
+  cron-blue:
+    image: ${QS_IMAGE_REGISTRY}/server-cron:${QS_IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      - QS_ENV=${QS_ENV:-prod}
+      - QS_REGION=${QS_REGION:-us-central1}
+      - QS_CONFIG=/app/src/go/server-cron/config/${QS_ENV:-prod}.textproto
+      - QS_OPS_SERVER_URL=http://ops-api-blue:8080
+      - QS_JOB_SERVER_AUTH_TOKEN=${QS_JOB_SERVER_AUTH_TOKEN}
+      - QS_VICTORIA_LOGS_URL=http://victorialogs:9428
+    depends_on:
+      ops-api-blue:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 1s
+      timeout: 2s
+      retries: 15
 
   web-blue:
     image: ${QS_IMAGE_REGISTRY}/server-web:${QS_IMAGE_TAG:-latest}
     restart: unless-stopped
     environment:
+      - QS_ENV=${QS_ENV:-prod}
+      - QS_REGION=${QS_REGION:-us-central1}
       - QS_CONFIG=/app/src/go/server-web/config/${QS_ENV:-prod}.textproto
       - QS_API_URL=http://api-blue:8080
+      - QS_VICTORIA_LOGS_URL=http://victorialogs:9428
     depends_on:
       api-blue:
         condition: service_healthy
@@ -80,6 +151,8 @@ services:
     image: ${QS_IMAGE_REGISTRY}/server-api:${QS_IMAGE_TAG:-latest}
     restart: unless-stopped
     environment:
+      - QS_ENV=${QS_ENV:-prod}
+      - QS_REGION=${QS_REGION:-us-central1}
       - QS_CONFIG=/app/src/go/server-api/config/${QS_ENV:-prod}.textproto
       - QS_DATABASE_URL=${QS_DATABASE_URL}
       - QS_READ_DATABASE_URL=${QS_READ_DATABASE_URL:-}
@@ -92,44 +165,82 @@ services:
       - QS_GITHUB_CLIENT_SECRET=${QS_GITHUB_CLIENT_SECRET}
       - QS_DISCORD_CLIENT_ID=${QS_DISCORD_CLIENT_ID}
       - QS_DISCORD_CLIENT_SECRET=${QS_DISCORD_CLIENT_SECRET}
+      - QS_VICTORIA_LOGS_URL=http://victorialogs:9428
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
       interval: 1s
       timeout: 2s
       retries: 15
 
-  ops-green:
-    image: ${QS_IMAGE_REGISTRY}/server-ops:${QS_IMAGE_TAG:-latest}
+  ops-api-green:
+    image: ${QS_IMAGE_REGISTRY}/server-ops-api:${QS_IMAGE_TAG:-latest}
     restart: unless-stopped
     environment:
-      - QS_CONFIG=/app/src/go/server-ops/config/${QS_ENV:-prod}.textproto
+      - QS_ENV=${QS_ENV:-prod}
+      - QS_REGION=${QS_REGION:-us-central1}
+      - QS_CONFIG=/app/src/go/server-ops-api/config/${QS_ENV:-prod}.textproto
       - QS_DATABASE_URL=${QS_DATABASE_URL}
       - QS_INTERNAL_DATABASE_URL=${QS_INTERNAL_DATABASE_URL}
       - QS_OAUTH_CLIENT_ID=${QS_OAUTH_CLIENT_ID}
       - QS_OAUTH_CLIENT_SECRET=${QS_OAUTH_CLIENT_SECRET}
+      - QS_PEER_API_HEALTHZ=http://api-green:8080/healthz
+      - QS_PEER_WEB_HEALTHZ=http://web-green:8080/healthz
+      - QS_PEER_OPS_WEB_HEALTHZ=http://ops-web-green:8080/healthz
+      - QS_PEER_CRON_HEALTHZ=http://cron-green:8080/healthz
+      - QS_VICTORIA_LOGS_URL=http://victorialogs:9428
     healthcheck:
       test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
       interval: 1s
       timeout: 2s
       retries: 15
 
-  jobs-green:
-    image: ${QS_IMAGE_REGISTRY}/server-jobs:${QS_IMAGE_TAG:-latest}
+  ops-web-green:
+    image: ${QS_IMAGE_REGISTRY}/server-ops-web:${QS_IMAGE_TAG:-latest}
     restart: unless-stopped
     environment:
-      - QS_CONFIG=/app/src/go/server-jobs/config/${QS_ENV:-prod}.textproto
-      - QS_OPS_SERVER_URL=http://ops-green:8080
-      - QS_JOB_SERVER_AUTH_TOKEN=${QS_JOB_SERVER_AUTH_TOKEN}
+      - QS_ENV=${QS_ENV:-prod}
+      - QS_REGION=${QS_REGION:-us-central1}
+      - QS_CONFIG=/app/src/go/server-ops-web/config/${QS_ENV:-prod}.textproto
+      - QS_OPS_API_URL=http://ops-api-green:8080
+      - QS_GRAFANA_URL=http://grafana:3000
+      - QS_VICTORIA_LOGS_URL=http://victorialogs:9428
     depends_on:
-      ops-green:
+      ops-api-green:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 1s
+      timeout: 2s
+      retries: 15
+
+  cron-green:
+    image: ${QS_IMAGE_REGISTRY}/server-cron:${QS_IMAGE_TAG:-latest}
+    restart: unless-stopped
+    environment:
+      - QS_ENV=${QS_ENV:-prod}
+      - QS_REGION=${QS_REGION:-us-central1}
+      - QS_CONFIG=/app/src/go/server-cron/config/${QS_ENV:-prod}.textproto
+      - QS_OPS_SERVER_URL=http://ops-api-green:8080
+      - QS_JOB_SERVER_AUTH_TOKEN=${QS_JOB_SERVER_AUTH_TOKEN}
+      - QS_VICTORIA_LOGS_URL=http://victorialogs:9428
+    depends_on:
+      ops-api-green:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:8080/healthz || exit 1"]
+      interval: 1s
+      timeout: 2s
+      retries: 15
 
   web-green:
     image: ${QS_IMAGE_REGISTRY}/server-web:${QS_IMAGE_TAG:-latest}
     restart: unless-stopped
     environment:
+      - QS_ENV=${QS_ENV:-prod}
+      - QS_REGION=${QS_REGION:-us-central1}
       - QS_CONFIG=/app/src/go/server-web/config/${QS_ENV:-prod}.textproto
       - QS_API_URL=http://api-green:8080
+      - QS_VICTORIA_LOGS_URL=http://victorialogs:9428
     depends_on:
       api-green:
         condition: service_healthy
@@ -138,3 +249,8 @@ services:
       interval: 1s
       timeout: 2s
       retries: 15
+
+volumes:
+  vm_data:
+  vl_data:
+  grafana_data:

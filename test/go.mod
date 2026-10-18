@@ -27,4 +27,4 @@ require (
 
 replace quadsmith/shared => ../src/go/shared
 
-replace quadsmith/server-ops => ../src/go/server-ops
+replace quadsmith/server-ops-api => ../src/go/server-ops-api

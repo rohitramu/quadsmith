@@ -20,7 +20,7 @@ ifeq (tool,$(firstword $(MAKECMDGOALS)))
   $(foreach arg,$(TOOL_ARGS),$(eval $(arg):;@:))
 endif
 
-MODULES        := src/go/shared src/go/server-api src/go/server-ops src/go/server-jobs src/go/server-web src/go/cli src/go/cli-ops test src/go/build_deps
+MODULES        := src/go/shared src/go/server-api src/go/server-ops-api src/go/server-ops-web src/go/server-cron src/go/server-web src/go/cli src/go/cli-ops test src/go/build_deps
 VENDOR_PLUGINS := bin/protoc-gen-go bin/protoc-gen-connect-go bin/buf bin/txtpbfmt
 CUSTOM_PLUGINS := bin/protoc-gen-sql bin/protoc-gen-store bin/protoc-gen-server
 PROTO_FILES    := $(shell find src/proto -type f 2>/dev/null)
@@ -49,7 +49,7 @@ fmt: $(VENDOR_PLUGINS)
 	@echo "--- Formatting Go code with gofmt ---"
 	@gofmt -s -w $(shell find . -name "*.go" -not -path "*/vendor/*" -not -path "*/.tmp/*")
 	@echo "--- Formatting TypeScript, HTML, CSS with Prettier ---"
-	@npx --prefix src/react/app-web prettier --write "src/react/app-web/index.html" "src/react/app-web/src/**/*.{ts,tsx,css,html}" "src/react/shared/src/**/*.{ts,tsx,css,html}" >/dev/null
+	@npx --prefix src/react/app-web prettier --write "src/react/app-web/index.html" "src/react/app-web/src/**/*.{ts,tsx,css,html}" "src/react/app-ops-web/index.html" "src/react/app-ops-web/src/**/*.{ts,tsx,css,html}" "src/react/shared/src/**/*.{ts,tsx,css,html}" >/dev/null
 	@echo "--- Formatting and linting Markdown ---"
 	@npx --prefix src/react/app-web prettier --prose-wrap always --ignore-path .prettierignore --write "**/*.md" >/dev/null
 	@npx --prefix src/react/app-web markdownlint -c .markdownlint.json --ignore-path .markdownlintignore --fix "**/*.md"
@@ -64,8 +64,9 @@ build: verify
 	@echo "--- Building all Go server binaries to bin/ ---"
 	@mkdir -p bin
 	@go build -mod=vendor -o bin/server-api ./src/go/server-api/main.go
-	@go build -mod=vendor -o bin/server-ops ./src/go/server-ops/main.go
-	@go build -mod=vendor -o bin/server-jobs ./src/go/server-jobs/main.go
+	@go build -mod=vendor -o bin/server-ops-api ./src/go/server-ops-api/main.go
+	@go build -mod=vendor -o bin/server-ops-web ./src/go/server-ops-web/main.go
+	@go build -mod=vendor -o bin/server-cron ./src/go/server-cron/main.go
 	@go build -mod=vendor -o bin/server-web ./src/go/server-web/main.go
 	@go build -mod=vendor -o bin/seeder ./src/go/shared/cmd/seeder
 	@echo "--- Building CLI (qs) binaries to bin/ ---"
@@ -86,8 +87,9 @@ build: verify
 	@echo "--- Building WebAssembly Core Engine ---"
 	@cp -f $$(go env GOROOT)/lib/wasm/wasm_exec.js src/react/app-web/public/wasm_exec.js
 	@GOOS=js GOARCH=wasm go build -mod=vendor -ldflags="-w -s" -o src/react/app-web/public/quadsmith-engine.wasm ./src/go/shared/cmd/wasm/main.go
-	@echo "--- Building Web UI ---"
+	@echo "--- Building Web UI & Ops Console UI ---"
 	@cd src/react/app-web && npm run build
+	@cd src/react/app-ops-web && npm run build
 
 bin/qsops: $(OPS_CLI_FILES) bin/.generate_proto.sentinel src/go/vendor/modules.txt
 	@mkdir -p bin
@@ -222,13 +224,15 @@ test: verify build
 	@echo "--- Running Go Tests ---"
 	@cd src/go/shared && go test -mod=vendor -count=1 ./...
 	@cd src/go/server-api && go test -mod=vendor -count=1 ./...
-	@cd src/go/server-ops && go test -mod=vendor -count=1 ./...
-	@cd src/go/server-jobs && go test -mod=vendor -count=1 ./...
+	@cd src/go/server-ops-api && go test -mod=vendor -count=1 ./...
+	@cd src/go/server-ops-web && go test -mod=vendor -count=1 ./...
+	@cd src/go/server-cron && go test -mod=vendor -count=1 ./...
 	@cd src/go/server-web && go test -mod=vendor -count=1 ./...
 	@cd src/go/cli && go test -mod=vendor ./...
 	@cd src/go/cli-ops && go test -mod=vendor ./...
-	@echo "--- Running Web UI Tests ---"
+	@echo "--- Running Web UI & Ops Console UI Tests ---"
 	@cd src/react/app-web && npm test
+	@cd src/react/app-ops-web && npm test
 	@echo "--- Running Full E2E Sandbox Tests (All Browsers & Profiles) ---"
 	@./test/run_sandbox_tests.sh $(if $(PROJECT),--project=$(PROJECT)) $(if $(SHARD),--shard=$(SHARD)) $(TOOL_ARGS)
 	@rm -f .tmp/breaking_warning.log .tmp/breaking_*.log .tmp/clean_*.log
@@ -243,7 +247,7 @@ clean:
 
 vendor:
 	@echo "--- Updating and vendoring dependencies ---"
-	@for mod in src/go/shared src/go/server-api src/go/server-ops src/go/server-jobs src/go/server-web src/go/cli src/go/cli-ops test; do \
+	@for mod in src/go/shared src/go/server-api src/go/server-ops-api src/go/server-ops-web src/go/server-cron src/go/server-web src/go/cli src/go/cli-ops test; do \
 		echo "Updating $$mod..."; \
 		(cd $$mod && go get -u ./... && go mod tidy) || exit 1; \
 	done

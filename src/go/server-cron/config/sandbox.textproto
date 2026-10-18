@@ -1,0 +1,49 @@
+environment: "sandbox"
+
+server {
+  port: 8080
+  read_timeout {
+    seconds: 15
+  }
+  write_timeout {
+    seconds: 15
+  }
+  idle_timeout {
+    seconds: 120
+  }
+  max_request_bytes: 2097152
+}
+
+ops_server_url: "http://127.0.0.1:8082"
+auth_token: "${QS_JOB_SERVER_AUTH_TOKEN:-qs_robot_sandbox_token_67890}"
+
+cleanup_expired_otps {
+  enabled: true
+  interval {
+    seconds: 21600
+  }
+}
+
+cleanup_expired_tokens {
+  enabled: true
+  cron: "0 */12 * * *"
+}
+
+cleanup_orphaned_blobs {
+  enabled: true
+  interval {
+    seconds: 600
+  }
+}
+
+purge_soft_deleted_accounts {
+  enabled: true
+  interval {
+    seconds: 28800
+  }
+}
+
+send_username_release_warnings {
+  enabled: true
+  cron: "0 0 * * *"
+}

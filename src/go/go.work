@@ -3,8 +3,9 @@ go 1.27.1
 use (
 	./shared
 	./server-api
-	./server-ops
-	./server-jobs
+	./server-ops-api
+	./server-ops-web
+	./server-cron
 	./server-web
 	./cli
 	./cli-ops

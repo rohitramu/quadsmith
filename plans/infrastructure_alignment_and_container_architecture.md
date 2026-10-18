@@ -102,9 +102,11 @@ src/
 │   │   └── go.mod (quadsmith/shared)
 │   ├── server-api/                    # ConnectRPC API server (Go) + Dockerfile
 │   │   ├── main.go, config/
-│   ├── server-ops/                    # Operations & admin server (Go) + Dockerfile
+│   ├── server-ops-api/                # Operations & admin API server (Go) + Dockerfile
 │   │   ├── main.go, config/
-│   ├── server-jobs/                   # Scheduled jobs daemon (Go) + Dockerfile
+│   ├── server-ops-web/                # Operations Web SPA & JIT Grafana proxy (Go) + Dockerfile
+│   │   ├── main.go, config/
+│   ├── server-cron/                   # Scheduled cron daemon (Go) + Dockerfile
 │   │   ├── main.go, config/
 │   ├── server-web/                    # Standalone Web HTTP/2 reverse proxy (Go) + Dockerfile
 │   │   ├── main.go, config/
@@ -122,9 +124,10 @@ src/
 └── react/                             # All React / TypeScript web applications
     ├── app-web/                       # Primary React 19 SPA (Vite, Tailwind CSS)
     │   ├── src/, public/, package.json, vite.config.ts
-    ├── shared/                        # Shared UI components, hooks, lib, & generated protos
-    │   ├── src/, package.json, tsconfig.json
-    └── (future) app-ops/              # Future administrative & review web portal
+    ├── app-ops-web/                   # Administrative & operations web portal
+    │   ├── src/, package.json, vite.config.ts
+    └── shared/                        # Shared UI components, hooks, lib, & generated protos
+        ├── src/, package.json, tsconfig.json
 ```
 
 Key architectural benefits of this structure:
@@ -146,7 +149,7 @@ Key architectural benefits of this structure:
      `server-web` completely self-contained like the other Go servers.
 4. **Clean Multi-App Frontend Expansion**:
    - React applications reside under `src/react/` with standard peer naming
-     (`app-web/`). When adding an operations portal (`app-ops/`) or shared
+     (`app-web/`). When adding an operations portal (`app-ops-web/`) or shared
      components (`shared/`), they configure standard npm/pnpm workspaces without
      affecting the Go workspace.
 
@@ -196,14 +199,21 @@ will be removed.
    - Minimal Alpine runtime copying only `/app/server-api` and
      `src/go/server-api/config`.
    - Exposes port 8080.
-2. **Ops Server (`src/go/server-ops/Dockerfile`)**:
-   - Minimal Alpine runtime copying only `/app/server-ops` and
-     `src/go/server-ops/config`.
+2. **Ops API Server (`src/go/server-ops-api/Dockerfile`)**:
+   - Minimal Alpine runtime copying only `/app/server-ops-api` and
+     `src/go/server-ops-api/config`.
    - Exposes port 8080.
-3. **Job Server (`src/go/server-jobs/Dockerfile`)**:
-   - Headless background scheduler container copying only `/app/server-jobs` and
-     `src/go/server-jobs/config` (exposes no network ports).
-4. **Web Server (`src/go/server-web/Dockerfile`)**:
+3. **Ops Web Server (`src/go/server-ops-web/Dockerfile`)**:
+   - Multi-stage compilation building
+     [`src/react/app-ops-web`](../src/react/app-ops-web) and `server-ops-web`,
+     copying the compiled binary, static bundle, and
+     `src/go/server-ops-web/config`.
+   - Exposes port 8080.
+4. **Cron Server (`src/go/server-cron/Dockerfile`)**:
+   - Background scheduler container copying `/app/server-cron` and
+     `src/go/server-cron/config`, exposing internal port 8080 for `/healthz` and
+     `/metrics`.
+5. **Web Server (`src/go/server-web/Dockerfile`)**:
    - Multi-stage compilation: Node.js builder executing `npm run build` in
      [`src/react/app-web`](../src/react/app-web), and Go builder compiling
      `server-web` and stripped `quadsmith-engine.wasm` from `src/go`.
@@ -299,14 +309,14 @@ registered into the operational catalog and scheduled daemon (see
 [`tasks_and_jobs.md`](tasks_and_jobs.md)):
 
 1. **Ops Service Catalog
-   ([`service.go`](../src/go/server-ops/pkg/ops/service.go))**:
+   ([`service.go`](../src/go/server-ops-api/pkg/ops/service.go))**:
    - Register `purge_soft_deleted_accounts` (procedure
      `PurgeSoftDeletedAccounts`) in `ListTasks` with a default interval of `8h`.
 2. **Environment Configuration**:
-   - Add the typed schedule entry to all 3 job server textproto files:
-     - [`sandbox.textproto`](../src/go/server-jobs/config/sandbox.textproto)
-     - [`staging.textproto`](../src/go/server-jobs/config/staging.textproto)
-     - [`prod.textproto`](../src/go/server-jobs/config/prod.textproto)
+   - Add the typed schedule entry to all 3 cron server textproto files:
+     - [`sandbox.textproto`](../src/go/server-cron/config/sandbox.textproto)
+     - [`staging.textproto`](../src/go/server-cron/config/staging.textproto)
+     - [`prod.textproto`](../src/go/server-cron/config/prod.textproto)
    - Configured with an 8-hour interval by default, allowing operator adjustment
      per environment without code modification.
 

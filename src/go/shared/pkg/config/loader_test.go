@@ -246,11 +246,14 @@ func TestLoadServerConfigs_ExplicitPathRequired(t *testing.T) {
 	if _, err := LoadAPIServerConfig(""); err == nil {
 		t.Fatal("expected error when configPath is empty for LoadAPIServerConfig")
 	}
-	if _, err := LoadOpsServerConfig(""); err == nil {
-		t.Fatal("expected error when configPath is empty for LoadOpsServerConfig")
+	if _, err := LoadOpsApiServerConfig(""); err == nil {
+		t.Fatal("expected error when configPath is empty for LoadOpsApiServerConfig")
 	}
-	if _, err := LoadJobServerConfig(""); err == nil {
-		t.Fatal("expected error when configPath is empty for LoadJobServerConfig")
+	if _, err := LoadOpsWebServerConfig(""); err == nil {
+		t.Fatal("expected error when configPath is empty for LoadOpsWebServerConfig")
+	}
+	if _, err := LoadCronServerConfig(""); err == nil {
+		t.Fatal("expected error when configPath is empty for LoadCronServerConfig")
 	}
 	if _, err := LoadWebServerConfig(""); err == nil {
 		t.Fatal("expected error when configPath is empty for LoadWebServerConfig")
@@ -268,22 +271,31 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 		t.Errorf("unexpected api-server sandbox config: %+v", apiSandbox)
 	}
 
-	opsSandboxPath := filepath.Join("..", "..", "..", "server-ops", "config", "sandbox.textproto")
-	opsSandbox, err := LoadOpsServerConfig(opsSandboxPath)
+	opsSandboxPath := filepath.Join("..", "..", "..", "server-ops-api", "config", "sandbox.textproto")
+	opsSandbox, err := LoadOpsApiServerConfig(opsSandboxPath)
 	if err != nil {
-		t.Fatalf("failed to load ops-server sandbox: %v", err)
+		t.Fatalf("failed to load ops-api-server sandbox: %v", err)
 	}
 	if opsSandbox.Server.GetPort() != 8080 || opsSandbox.Database.GetName() != "quadsmith_api" || opsSandbox.InternalDatabase.GetName() != "quadsmith_ops" {
-		t.Errorf("unexpected ops-server sandbox config: %+v", opsSandbox)
+		t.Errorf("unexpected ops-api-server sandbox config: %+v", opsSandbox)
 	}
 
-	jobSandboxPath := filepath.Join("..", "..", "..", "server-jobs", "config", "sandbox.textproto")
-	jobSandbox, err := LoadJobServerConfig(jobSandboxPath)
+	opsWebSandboxPath := filepath.Join("..", "..", "..", "server-ops-web", "config", "sandbox.textproto")
+	opsWebSandbox, err := LoadOpsWebServerConfig(opsWebSandboxPath)
 	if err != nil {
-		t.Fatalf("failed to load job-server sandbox: %v", err)
+		t.Fatalf("failed to load ops-web-server sandbox: %v", err)
 	}
-	if jobSandbox.GetOpsServerUrl() != "http://127.0.0.1:8082" || !jobSandbox.GetCleanupExpiredOtps().GetEnabled() {
-		t.Errorf("unexpected job-server sandbox config: %+v", jobSandbox)
+	if opsWebSandbox.Server.GetPort() != 8080 || opsWebSandbox.GetStaticDir() != "src/react/app-ops-web/dist" {
+		t.Errorf("unexpected ops-web-server sandbox config: %+v", opsWebSandbox)
+	}
+
+	cronSandboxPath := filepath.Join("..", "..", "..", "server-cron", "config", "sandbox.textproto")
+	cronSandbox, err := LoadCronServerConfig(cronSandboxPath)
+	if err != nil {
+		t.Fatalf("failed to load cron-server sandbox: %v", err)
+	}
+	if cronSandbox.GetOpsServerUrl() != "http://127.0.0.1:8082" || !cronSandbox.GetCleanupExpiredOtps().GetEnabled() {
+		t.Errorf("unexpected cron-server sandbox config: %+v", cronSandbox)
 	}
 
 	webSandboxPath := filepath.Join("..", "..", "..", "server-web", "config", "sandbox.textproto")
@@ -362,47 +374,65 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 		t.Errorf("unexpected web-server prod port: %d", webProd.Server.GetPort())
 	}
 
-	opsStagingPath := filepath.Join("..", "..", "..", "server-ops", "config", "staging.textproto")
-	opsStaging, err := LoadOpsServerConfig(opsStagingPath)
+	opsStagingPath := filepath.Join("..", "..", "..", "server-ops-api", "config", "staging.textproto")
+	opsStaging, err := LoadOpsApiServerConfig(opsStagingPath)
 	if err != nil {
-		t.Fatalf("failed to load ops-server staging: %v", err)
+		t.Fatalf("failed to load ops-api-server staging: %v", err)
 	}
 	if opsStaging.Server.GetPort() != 8080 {
-		t.Errorf("unexpected ops-server staging port: %d", opsStaging.Server.GetPort())
+		t.Errorf("unexpected ops-api-server staging port: %d", opsStaging.Server.GetPort())
 	}
 
-	opsProdPath := filepath.Join("..", "..", "..", "server-ops", "config", "prod.textproto")
-	opsProd, err := LoadOpsServerConfig(opsProdPath)
+	opsProdPath := filepath.Join("..", "..", "..", "server-ops-api", "config", "prod.textproto")
+	opsProd, err := LoadOpsApiServerConfig(opsProdPath)
 	if err != nil {
-		t.Fatalf("failed to load ops-server prod: %v", err)
+		t.Fatalf("failed to load ops-api-server prod: %v", err)
 	}
 	if opsProd.Server.GetPort() != 8080 {
-		t.Errorf("unexpected ops-server prod port: %d", opsProd.Server.GetPort())
+		t.Errorf("unexpected ops-api-server prod port: %d", opsProd.Server.GetPort())
 	}
 
-	jobStagingPath := filepath.Join("..", "..", "..", "server-jobs", "config", "staging.textproto")
-	jobStaging, err := LoadJobServerConfig(jobStagingPath)
+	opsWebStagingPath := filepath.Join("..", "..", "..", "server-ops-web", "config", "staging.textproto")
+	opsWebStaging, err := LoadOpsWebServerConfig(opsWebStagingPath)
 	if err != nil {
-		t.Fatalf("failed to load job-server staging: %v", err)
+		t.Fatalf("failed to load ops-web-server staging: %v", err)
 	}
-	if jobStaging.GetOpsServerUrl() != "https://staging-ops.quadsmith.com" {
-		t.Errorf("unexpected job-server staging ops_server_url: %s", jobStaging.GetOpsServerUrl())
+	if opsWebStaging.Server.GetPort() != 8080 {
+		t.Errorf("unexpected ops-web-server staging port: %d", opsWebStaging.Server.GetPort())
 	}
 
-	jobProdPath := filepath.Join("..", "..", "..", "server-jobs", "config", "prod.textproto")
-	jobProd, err := LoadJobServerConfig(jobProdPath)
+	opsWebProdPath := filepath.Join("..", "..", "..", "server-ops-web", "config", "prod.textproto")
+	opsWebProd, err := LoadOpsWebServerConfig(opsWebProdPath)
 	if err != nil {
-		t.Fatalf("failed to load job-server prod: %v", err)
+		t.Fatalf("failed to load ops-web-server prod: %v", err)
 	}
-	if jobProd.GetOpsServerUrl() != "https://ops.quadsmith.com" {
-		t.Errorf("unexpected job-server prod ops_server_url: %s", jobProd.GetOpsServerUrl())
+	if opsWebProd.Server.GetPort() != 8080 {
+		t.Errorf("unexpected ops-web-server prod port: %d", opsWebProd.Server.GetPort())
+	}
+
+	cronStagingPath := filepath.Join("..", "..", "..", "server-cron", "config", "staging.textproto")
+	cronStaging, err := LoadCronServerConfig(cronStagingPath)
+	if err != nil {
+		t.Fatalf("failed to load cron-server staging: %v", err)
+	}
+	if cronStaging.GetOpsServerUrl() != "https://staging-ops-api.quadsmith.com" {
+		t.Errorf("unexpected cron-server staging ops_server_url: %s", cronStaging.GetOpsServerUrl())
+	}
+
+	cronProdPath := filepath.Join("..", "..", "..", "server-cron", "config", "prod.textproto")
+	cronProd, err := LoadCronServerConfig(cronProdPath)
+	if err != nil {
+		t.Fatalf("failed to load cron-server prod: %v", err)
+	}
+	if cronProd.GetOpsServerUrl() != "https://ops-api.quadsmith.com" {
+		t.Errorf("unexpected cron-server prod ops_server_url: %s", cronProd.GetOpsServerUrl())
 	}
 
 	opsCliStaging, err := LoadOpsCliConfig("", "staging")
 	if err != nil {
 		t.Fatalf("failed to load ops cli staging: %v", err)
 	}
-	if opsCliStaging.GetOpsServerUrl() != "https://staging-ops.quadsmith.com" {
+	if opsCliStaging.GetOpsServerUrl() != "https://staging-ops-api.quadsmith.com" {
 		t.Errorf("unexpected ops cli staging config: %+v", opsCliStaging)
 	}
 
@@ -410,7 +440,7 @@ func TestLoadBinaryConfigFiles(t *testing.T) {
 	if err != nil {
 		t.Fatalf("failed to load ops cli prod: %v", err)
 	}
-	if opsCliProd.GetOpsServerUrl() != "https://ops.quadsmith.com" {
+	if opsCliProd.GetOpsServerUrl() != "https://ops-api.quadsmith.com" {
 		t.Errorf("unexpected ops cli prod config: %+v", opsCliProd)
 	}
 

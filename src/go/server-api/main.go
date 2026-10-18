@@ -29,6 +29,7 @@ import (
 	"quadsmith/shared/pkg/engines/search"
 	"quadsmith/shared/pkg/export"
 	"quadsmith/shared/pkg/social"
+	"quadsmith/shared/pkg/telemetry"
 
 	pb "quadsmith/shared/gen/quadsmith/api"
 	"quadsmith/shared/gen/quadsmith/api/apiconnect"
@@ -70,6 +71,10 @@ func main() {
 
 	// Ensure pg_trgm extension is available for fuzzy text completion search
 	_, _ = pool.Exec(context.Background(), "CREATE EXTENSION IF NOT EXISTS pg_trgm;")
+
+	reg := telemetry.NewRegistry("server-api", cfg.GetEnvironment(), true)
+	reg.AddCheck("postgres:quadsmith_api", telemetry.PostgresPingCheck(pool))
+	reg.SetDBPools(pool)
 
 	mux := http.NewServeMux()
 
@@ -155,11 +160,9 @@ func main() {
 	// GDPR account data export streaming endpoint
 	mux.Handle("/api/account/export", export.NewExportHandler(pool))
 
-	// Health check
-	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte("ok\n"))
-	})
+	// Deep health check and Prometheus metrics endpoints
+	mux.HandleFunc("/healthz", reg.HealthzHandler())
+	mux.HandleFunc("/metrics", reg.MetricsHandler())
 
 	// Root path handler for API server
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -182,8 +185,8 @@ func main() {
 		maxBytes = 2 << 20
 	}
 
-	// Wrap root handler with security headers and route-aware request body size limit
-	rootHandler := securityHeadersMiddleware(dynamicMaxBytesHandler(mux, maxBytes))
+	// Wrap root handler with security headers, route-aware request body size limit, and telemetry middleware
+	rootHandler := reg.Middleware(securityHeadersMiddleware(dynamicMaxBytesHandler(mux, maxBytes)))
 
 	readTimeout := 30 * time.Second
 	if cfg.Server.ReadTimeout != nil && cfg.Server.ReadTimeout.AsDuration() > 0 {
@@ -267,6 +270,7 @@ func newCORSMiddleware() *cors.Cors {
 			"Grpc-Message",
 			"Grpc-Status-Details-Bin",
 			"Connect-End-Stream",
+			"X-Trace-Id",
 		},
 		AllowCredentials: true,
 	})

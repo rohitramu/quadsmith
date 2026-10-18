@@ -140,8 +140,8 @@ flowchart TD
     end
 
     subgraph OptionC["Option 3: Elastic Intra-Region Horizontal Autoscaling (Cloud Run + Cloud Scheduler)"]
-        C1["Deploy server-web, server-api, server-ops to Regional Cloud Run with Direct VPC Egress"]
-        C2["Autoscales 1 -> 1,000+ Containers on Demand; Retire server-jobs for Cloud Scheduler"]
+        C1["Deploy server-web, server-api, server-ops-web, server-ops-api to Regional Cloud Run with Direct VPC Egress"]
+        C2["Autoscales 1 -> 1,000+ Containers on Demand; Retire server-cron for Cloud Scheduler"]
         C1 --> C2
     end
 
@@ -153,8 +153,8 @@ flowchart TD
 #### 1. The Fixed ~235 MB Per-VM OS & Daemon Memory Tax (Why Vertical Wins First for RAM/CPU per Dollar)
 
 Every Compute Engine VM running our Docker stack pays a fixed memory tax before
-a single Go container (`server-web`, `server-api`, `server-ops`, `server-jobs`)
-allocates heap memory:
+a single Go container (`server-web`, `server-api`, `server-ops-web`,
+`server-ops-api`, `server-cron`) allocates heap memory:
 
 - **Linux Kernel + systemd + journald**: ~150 MB – 200 MB
 - **Docker Engine (`dockerd` + `containerd`)**: ~65 MB
@@ -212,10 +212,10 @@ Comparing **1 vertically scaled VM** against **multiple horizontally scaled
      spikes where provisioning peak VM capacity 24/7 would waste money during
      off-peak hours), graduating that region to **GCP Cloud Run** (with
      `--concurrency=80`, `--min-instances=1` on `server-web` and `server-api`,
-     `--min-instances=0` on `server-ops`, **Direct VPC Egress** to the regional
-     Cloud SQL Private IP, and **Google Cloud Scheduler** replacing
-     `server-jobs` for $0.20/mo) provides instant elastic horizontal scaling
-     with zero Linux host administration.
+     `--min-instances=0` on `server-ops-web` and `server-ops-api`, **Direct VPC
+     Egress** to the regional Cloud SQL Private IP, and **Google Cloud
+     Scheduler** replacing `server-cron` for $0.20/mo) provides instant elastic
+     horizontal scaling with zero Linux host administration.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -455,13 +455,14 @@ When a region requires elastic 1,000–10,000+ RPS horizontal autoscaling:
 ```mermaid
 flowchart TD
     subgraph CF["Cloudflare Global Edge (DNS, WAF, Tiered Cache, Zero Trust Access)"]
-        Edge["Subdomain Routing (quadsmith.com | api | ops)"]
+        Edge["Subdomain Routing (quadsmith.com | api | ops | ops-api)"]
     end
 
     subgraph CloudRun["Regional GCP Cloud Run (Direct VPC Egress | Autoscaling 1–1,000+ Instances)"]
         CRWeb["server-web (--concurrency=80, --min-instances=1)"]
         CRApi["server-api (--concurrency=80, --min-instances=1)"]
-        CROps["server-ops (--concurrency=80, --min-instances=0)"]
+        CROpsWeb["server-ops-web (--concurrency=80, --min-instances=0)"]
+        CROpsApi["server-ops-api (--concurrency=80, --min-instances=0)"]
     end
 
     subgraph Scheduler["Google Cloud Scheduler ($0.20/mo | 5 Cron Jobs)"]
@@ -476,23 +477,25 @@ flowchart TD
 
     Edge -->|quadsmith.com| CRWeb
     Edge -->|api.quadsmith.com| CRApi
-    Edge -->|ops.quadsmith.com| CROps
-    Cron -->|5 Scheduled ConnectRPC Calls| CROps
-    CRWeb & CRApi & CROps -->|Direct VPC Egress| Pooler
+    Edge -->|ops.quadsmith.com| CROpsWeb
+    Edge -->|ops-api.quadsmith.com| CROpsApi
+    Cron -->|5 Scheduled ConnectRPC Calls| CROpsApi
+    CRWeb & CRApi & CROpsApi -->|Direct VPC Egress| Pooler
     CRApi -->|Presigned S3 URLs| R2
 ```
 
-1. **Deploy `server-web`, `server-api`, and `server-ops` to Cloud Run** in the
-   target region from the existing `us-central1-docker.pkg.dev` Artifact
-   Registry images with `--network=default --subnet=default` (**Direct VPC
-   Egress**, $0 extra VPC connector cost) pointing to the region's Cloud SQL
-   Private IP via PgBouncer (`MaxConns: 10` per instance, `--concurrency=80`).
+1. **Deploy `server-web`, `server-api`, `server-ops-web`, and `server-ops-api`
+   to Cloud Run** in the target region from the existing
+   `us-central1-docker.pkg.dev` Artifact Registry images with
+   `--network=default --subnet=default` (**Direct VPC Egress**, $0 extra VPC
+   connector cost) pointing to the region's Cloud SQL Private IP via PgBouncer
+   (`MaxConns: 10` per instance, `--concurrency=80`).
 2. **Cut Over Scheduled Maintenance to Google Cloud Scheduler ($0.20/mo)**:
    Provision the 5 Cloud Scheduler HTTP jobs (`cleanup-expired-otps`,
    `cleanup-expired-tokens`, `cleanup-orphaned-blobs`,
    `purge-soft-deleted-accounts`, `send-username-release-warnings`) targeting
-   `OpsService` on `server-ops`, retiring the headless `server-jobs` container
-   in that region.
+   `OpsService` on `server-ops-api`, retiring the `server-cron` container in
+   that region.
 3. **Shift Cloudflare Edge Routing & Decommission Fixed VMs**: Point Cloudflare
    origin routing for the region to the Cloud Run custom domain endpoints and
    remove the fixed VM `nodes` once `cloudflared` logs confirm zero incoming VM

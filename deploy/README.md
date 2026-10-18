@@ -90,12 +90,13 @@ Store the contents of `gcp-sa-key.json` as the `PROD_GCP_SA_KEY` (or
 ### Step 3: Generate Cryptographic Application Secrets
 
 Generate 256-bit random values for the database password, JWT signing secret,
-and headless job runner token:
+internal hop token, and headless cron job runner token:
 
 ```bash
 openssl rand -hex 32 # -> <ENV>_QS_DB_PASSWORD
 openssl rand -hex 32 # -> <ENV>_QS_AUTH_SECRET
-echo "qs_op_$(openssl rand -hex 24)" # -> <ENV>_QS_JOB_SERVER_AUTH_TOKEN
+openssl rand -hex 32 # -> <ENV>_QS_INTERNAL_HOP_TOKEN
+echo "qs_op_$(openssl rand -hex 24)" # -> <ENV>_QS_CRON_SERVER_AUTH_TOKEN
 ```
 
 ### Step 4: Configure GitHub Repository Secrets (`PROD_*` & `STAGING_*`)
@@ -110,20 +111,21 @@ environment (`PROD_` for `prod`, `STAGING_` for `staging`). Both
 from a local workstation), and **fail immediately** if any required secret is
 unset or empty:
 
-| Repository Secret Name (`<ENV>` = `PROD` or `STAGING`)          | Purpose                                                                                             |
-| :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- |
-| `<ENV>_GCP_SA_KEY`                                              | JSON key for the `quadsmith-cd` GCP service account                                                 |
-| `<ENV>_CF_ACCOUNT_ID`                                           | Cloudflare Account ID                                                                               |
-| `<ENV>_CF_ZONE_ID`                                              | Cloudflare Zone ID for `quadsmith.com`                                                              |
-| `<ENV>_CF_API_TOKEN`                                            | Scoped Cloudflare API Token                                                                         |
-| `<ENV>_QS_DB_PASSWORD`                                          | PostgreSQL `postgres` user password on Cloud SQL                                                    |
-| `<ENV>_QS_AUTH_SECRET`                                          | HMAC-SHA256 secret used by `server-api` to sign JWTs                                                |
-| `<ENV>_QS_JOB_SERVER_AUTH_TOKEN`                                | Bearer token (`qs_op_...`) shared by `server-jobs` and `quadsmith_ops.internal_tokens`              |
-| `<ENV>_QS_SMTP_PASSWORD`                                        | SMTP password for transactional authentication emails                                               |
-| `<ENV>_QS_GOOGLE_CLIENT_ID` / `<ENV>_QS_GOOGLE_CLIENT_SECRET`   | Google OAuth 2.0 Web Client credentials (`server-api`)                                              |
-| `<ENV>_QS_GITHUB_CLIENT_ID` / `<ENV>_QS_GITHUB_CLIENT_SECRET`   | GitHub OAuth App credentials (`server-api`)                                                         |
-| `<ENV>_QS_DISCORD_CLIENT_ID` / `<ENV>_QS_DISCORD_CLIENT_SECRET` | Discord OAuth2 Application credentials (`server-api`)                                               |
-| `<ENV>_QS_OAUTH_CLIENT_ID` / `<ENV>_QS_OAUTH_CLIENT_SECRET`     | GitHub OAuth App credentials for `qsops` operator login (`server-ops`, `allowed_orgs: "quadsmith"`) |
+| Repository Secret Name (`<ENV>` = `PROD` or `STAGING`)          | Purpose                                                                                                 |
+| :-------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------ |
+| `<ENV>_GCP_SA_KEY`                                              | JSON key for the `quadsmith-cd` GCP service account                                                     |
+| `<ENV>_CF_ACCOUNT_ID`                                           | Cloudflare Account ID                                                                                   |
+| `<ENV>_CF_ZONE_ID`                                              | Cloudflare Zone ID for `quadsmith.com`                                                                  |
+| `<ENV>_CF_API_TOKEN`                                            | Scoped Cloudflare API Token                                                                             |
+| `<ENV>_QS_DB_PASSWORD`                                          | PostgreSQL `postgres` user password on Cloud SQL                                                        |
+| `<ENV>_QS_AUTH_SECRET`                                          | HMAC-SHA256 secret used by `server-api` to sign JWTs                                                    |
+| `<ENV>_QS_CRON_SERVER_AUTH_TOKEN`                               | Bearer token (`qs_op_...`) shared by `server-cron` and `quadsmith_ops.internal_tokens`                  |
+| `<ENV>_QS_INTERNAL_HOP_TOKEN`                                   | Shared secret authenticating internal service-to-service `X-Trace-Id` propagation                       |
+| `<ENV>_QS_SMTP_PASSWORD`                                        | SMTP password for transactional authentication emails                                                   |
+| `<ENV>_QS_GOOGLE_CLIENT_ID` / `<ENV>_QS_GOOGLE_CLIENT_SECRET`   | Google OAuth 2.0 Web Client credentials (`server-api`)                                                  |
+| `<ENV>_QS_GITHUB_CLIENT_ID` / `<ENV>_QS_GITHUB_CLIENT_SECRET`   | GitHub OAuth App credentials (`server-api`)                                                             |
+| `<ENV>_QS_DISCORD_CLIENT_ID` / `<ENV>_QS_DISCORD_CLIENT_SECRET` | Discord OAuth2 Application credentials (`server-api`)                                                   |
+| `<ENV>_QS_OAUTH_CLIENT_ID` / `<ENV>_QS_OAUTH_CLIENT_SECRET`     | GitHub OAuth App credentials for `qsops` operator login (`server-ops-api`, `allowed_orgs: "quadsmith"`) |
 
 ---
 
@@ -153,8 +155,8 @@ and `make verify` / `make build`:
 - **`rollout`**: Declarative Blue-Green rollout timeouts, retry policy, and
   staged traffic ramp-up schedule:
   - **`health_check_timeout`**: Maximum wait time (`30s`) for candidate slot
-    containers (`api`, `ops`, `web`, `jobs`) to pass initial `/healthz`
-    readiness checks.
+    containers (`api`, `ops-api`, `ops-web`, `web`, `cron`) to pass initial
+    `/healthz` readiness checks.
   - **`drain_timeout`**: Graceful stop timeout (`30s` in `prod`, `15s` in
     `staging`) when draining the previous slot after 100% traffic cutover.
   - **`node_rollout_timeout`**: Per-node SSH rollout wall-clock timeout
@@ -175,9 +177,9 @@ and `make verify` / `make build`:
     `/healthz` passes.
 
 Service hostnames (`quadsmith.com`, `api.quadsmith.com`, `ops.quadsmith.com`,
-and their `staging-*` counterparts) are derived automatically from the existing
-component configs in `src/go/*/config/{staging,prod}.textproto` so domain names
-are never duplicated.
+`ops-api.quadsmith.com`, and their `staging-*` counterparts) are derived
+automatically from the existing component configs in
+`src/go/*/config/{staging,prod}.textproto` so domain names are never duplicated.
 
 ---
 
@@ -213,18 +215,18 @@ each environment:
 Each workflow run executes across four sequential stages plus an automatic
 failure-recovery `rollback` job:
 
-1. **`check-credentials`**: Verifies that all 16 `<ENV_PREFIX>_*` Repository
+1. **`check-credentials`**: Verifies that all `<ENV_PREFIX>_*` Repository
    Secrets are set and non-empty (failing immediately if any secret is missing),
    resolves the canonical commit SHA (`deploy_sha`) for `inputs.ref` or
    `github.sha`, and records the commit currently pointed to by the `staging` or
    `prod` Git tag (`previous_sha`).
 2. **`build-and-push`**: Compiles and pushes `server-web`, `server-api`,
-   `server-ops`, and `server-jobs` container images in parallel to Google
-   Artifact Registry (`:latest` and `:sha-<deploy_sha>`).
+   `server-ops-api`, `server-ops-web`, and `server-cron` container images in
+   parallel to Google Artifact Registry (`:latest` and `:sha-<deploy_sha>`).
 3. **`migrate-db`**: Ensures all GCP, Cloud SQL, and Cloudflare resources exist,
    runs the automated breaking-change gate, creates a Cloud SQL `ON_DEMAND`
    pre-migration snapshot when DDL changes are present, applies `psqldef` schema
-   migrations, and seeds the `server-jobs` internal token.
+   migrations, and seeds the `server-cron` internal token.
 4. **`deploy-vm`**: Syncs `/opt/quadsmith/.env` and [`deploy/`](.) to each
    regional VM over IAP SSH (with automatic retries and timeouts), executes
    [`deploy_blue_green.sh`](deploy_blue_green.sh) to gradually ramp traffic

@@ -130,8 +130,9 @@ jobs:
         service:
           - server-web
           - server-api
-          - server-ops
-          - server-jobs
+          - server-ops-api
+          - server-ops-web
+          - server-cron
     steps:
       - uses: actions/checkout@v4
         with:

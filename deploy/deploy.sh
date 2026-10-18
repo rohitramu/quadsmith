@@ -96,7 +96,8 @@ IMAGE_TAG="${QS_IMAGE_TAG:-sha-${GIT_SHA}}"
 # Extract service hostnames from single-source-of-truth component textprotos
 WEB_HOST="$(awk -F'"' '/web_base_url:/ {print $2}' "src/go/server-api/config/${ENV}.textproto" | sed -E 's|^https?://||; s|/.*$||')"
 API_HOST="$(awk -F'"' '/api_url:/ {print $2}' "src/go/server-web/config/${ENV}.textproto" | sed -E 's|^https?://||; s|/.*$||')"
-OPS_HOST="$(awk -F'"' '/ops_server_url:/ {print $2}' "src/go/cli-ops/config/${ENV}.textproto" | sed -E 's|^https?://||; s|/.*$||')"
+OPS_API_HOST="$(awk -F'"' '/ops_server_url:/ {print $2}' "src/go/cli-ops/config/${ENV}.textproto" | sed -E 's|^https?://||; s|/.*$||')"
+OPS_WEB_HOST="${OPS_API_HOST/ops-api/ops}"
 
 # Parse regions and nodes from deploy/config/${ENV}.textproto:
 # Emits lines: REGION|<region>|<db_tier> and NODE|<region>|<zone>|<machine_type>|<idx>
@@ -329,7 +330,7 @@ ensure_cloudflare_tunnel_and_edge() {
         -d '{"value":"on"}' \
         "https://api.cloudflare.com/client/v4/zones/${CF_ZONE_ID}/argo/tiered_caching" >/dev/null || true
 
-    local hostnames=("$WEB_HOST" "$API_HOST" "$OPS_HOST")
+    local hostnames=("$WEB_HOST" "$API_HOST" "$OPS_API_HOST" "$OPS_WEB_HOST")
     if [ "$ENV" = "prod" ]; then
         hostnames+=("www.${WEB_HOST}")
     fi
@@ -398,7 +399,7 @@ ensure_compute_nodes() {
                     sudo apt-get update -qq
                     sudo apt-get install -y -qq docker.io docker-compose-plugin wget curl
                 fi
-                sudo mkdir -p /etc/docker /opt/quadsmith/deploy/nginx
+                sudo mkdir -p /etc/docker /opt/quadsmith/deploy/nginx /opt/quadsmith/deploy/victoriametrics /opt/quadsmith/deploy/grafana
                 sudo chown -R \"\$(whoami)\" /opt/quadsmith
                 if [ ! -f /etc/docker/daemon.json ]; then
                     echo '{\"log-driver\":\"json-file\",\"log-opts\":{\"max-size\":\"10m\",\"max-file\":\"3\"}}' | sudo tee /etc/docker/daemon.json >/dev/null
@@ -415,9 +416,9 @@ ensure_compute_nodes() {
 }
 
 build_and_push_images() {
-    echo "--- Building and pushing 4 service images to ${IMAGE_REGISTRY} (tag: ${IMAGE_TAG}) ---"
+    echo "--- Building and pushing 5 service images to ${IMAGE_REGISTRY} (tag: ${IMAGE_TAG}) ---"
     gcloud auth configure-docker "${REGISTRY_REGION}-docker.pkg.dev" --quiet
-    for svc in server-web server-api server-ops server-jobs; do
+    for svc in server-web server-api server-ops-api server-ops-web server-cron; do
         docker build -f "src/go/${svc}/Dockerfile" \
             -t "${IMAGE_REGISTRY}/${svc}:latest" \
             -t "${IMAGE_REGISTRY}/${svc}:${IMAGE_TAG}" \
@@ -505,7 +506,7 @@ run_migration_gate_and_seed() {
     robot_hash="$(printf '%s' "${QS_JOB_SERVER_AUTH_TOKEN}" | sha256sum | awk '{print $1}')"
     PGPASSWORD="${QS_DB_PASSWORD}" PGSSLMODE=require psql -h 127.0.0.1 -p "$local_port" -U postgres -d quadsmith_ops -v ON_ERROR_STOP=1 -c "
         INSERT INTO internal_tokens (uuid, id, name, token_hash, token_type, group_name)
-        VALUES ('018f0000-0000-7000-8000-000000000001', 'tok_robot_jobs', 'server-jobs scheduler', '${robot_hash}', 'ROBOT', 'robots')
+        VALUES ('018f0000-0000-7000-8000-000000000001', 'tok_robot_jobs', 'server-cron scheduler', '${robot_hash}', 'ROBOT', 'robots')
         ON CONFLICT (token_hash) DO NOTHING;
     "
 
@@ -531,6 +532,7 @@ rollout_blue_green_nodes() {
         mkdir -p .tmp
         cat > "$env_tmp" <<EOF
 QS_ENV=${ENV}
+QS_REGION=${reg}
 QS_IMAGE_REGISTRY=${IMAGE_REGISTRY}
 QS_IMAGE_TAG=${IMAGE_TAG}
 QS_DATABASE_URL=postgres://postgres:${QS_DB_PASSWORD}@${local_db_ip}:5432/quadsmith_api?sslmode=require
@@ -561,6 +563,8 @@ EOF
             deploy/docker-compose.blue-green.yaml \
             deploy/deploy_blue_green.sh \
             deploy/nginx \
+            deploy/victoriametrics \
+            deploy/grafana \
             "${vm_name}:/opt/quadsmith/deploy/" \
             --project="$GCP_PROJECT_ID" --zone="$zone"
 

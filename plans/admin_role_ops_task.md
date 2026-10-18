@@ -22,7 +22,7 @@ stored in `users.role` (`'USER'` and `'ADMIN'`), as established in
 [`user_auth.md`](user_auth.md) and
 [`structured_bans_and_account_restrictions.md`](structured_bans_and_account_restrictions.md).
 Meanwhile, operational tasks and job audit tracking are managed through
-`OpsService` in `server-ops` and the `qsops` CLI, as detailed in
+`OpsService` in `server-ops-api` and the `qsops` CLI, as detailed in
 [`tasks_and_jobs.md`](tasks_and_jobs.md).
 
 Currently, there is no operational task in `OpsService` or `qsops` to promote a
@@ -53,7 +53,7 @@ administrative privileges on account suspension:
 ## <a id="2-goal" >2. Goal</a>
 
 Provide an audited, JIT-protected `set_user_role` ops task (`SetUserRole` RPC)
-in `server-ops` and `qsops` for promoting users to `ADMIN` (or demoting to
+in `server-ops-api` and `qsops` for promoting users to `ADMIN` (or demoting to
 `USER`), automatically revert a user's role to `USER` if they receive a ban, and
 ensure there is no other way in the system for a user to become an admin.
 
@@ -81,7 +81,7 @@ demotions in `quadsmith_ops.internal_api_calls`.
 ```mermaid
 sequenceDiagram
     participant Op as Human Operator (qsops)
-    participant Int as OpsInterceptor (server-ops)
+    participant Int as OpsInterceptor (server-ops-api)
     participant Ops as OpsService.SetUserRole
     participant OpsDB as quadsmith_ops DB
     participant ApiDB as quadsmith_api DB
@@ -132,7 +132,7 @@ message SetUserRoleResponse {
 ```
 
 In
-[`src/go/server-ops/pkg/ops/service.go`](../src/go/server-ops/pkg/ops/service.go)
+[`src/go/server-ops-api/pkg/ops/service.go`](../src/go/server-ops-api/pkg/ops/service.go)
 and
 [`src/go/shared/pkg/opsauth/interceptor.go`](../src/go/shared/pkg/opsauth/interceptor.go):
 
@@ -142,12 +142,12 @@ and
 - Include `"SetUserRole"` in `isTaskMethod` in
   [`src/go/shared/pkg/opsauth/interceptor.go`](../src/go/shared/pkg/opsauth/interceptor.go)
   and in the `ListJobs` / `GetJob` task method filters in
-  [`src/go/server-ops/pkg/ops/service.go`](../src/go/server-ops/pkg/ops/service.go)
+  [`src/go/server-ops-api/pkg/ops/service.go`](../src/go/server-ops-api/pkg/ops/service.go)
   so every role update returns an `X-Job-Id` header and is inspectable via
   `qsops jobs list` and `qsops jobs get`.
 - Because `set_user_role` is an on-demand, parameterized operator task rather
   than a recurring background ticker, no schedule field is added to
-  [`src/proto/quadsmith/config/server_jobs.proto`](../src/proto/quadsmith/config/server_jobs.proto).
+  [`src/proto/quadsmith/config/server_cron.proto`](../src/proto/quadsmith/config/server_cron.proto).
 - Update active plan [`tasks_and_jobs.md`](tasks_and_jobs.md) to reflect the
   addition of `SetUserRole` (`set_user_role`) on `OpsService`.
 
@@ -246,10 +246,10 @@ Changing a user's administrative privileges is a high-sensitivity operation:
 
 1. **JIT Policy Configuration**: Add `"SetUserRole"` to `jit.sensitive_methods`
    across
-   [`src/go/server-ops/config/sandbox.textproto`](../src/go/server-ops/config/sandbox.textproto),
-   [`src/go/server-ops/config/staging.textproto`](../src/go/server-ops/config/staging.textproto),
+   [`src/go/server-ops-api/config/sandbox.textproto`](../src/go/server-ops-api/config/sandbox.textproto),
+   [`src/go/server-ops-api/config/staging.textproto`](../src/go/server-ops-api/config/staging.textproto),
    and
-   [`src/go/server-ops/config/prod.textproto`](../src/go/server-ops/config/prod.textproto),
+   [`src/go/server-ops-api/config/prod.textproto`](../src/go/server-ops-api/config/prod.textproto),
    as well as default test configurations in
    [`src/go/shared/pkg/config/testing.go`](../src/go/shared/pkg/config/testing.go).
 2. **HUMAN-Only Execution in Interceptor and Handler**:
