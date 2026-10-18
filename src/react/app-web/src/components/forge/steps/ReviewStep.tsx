@@ -1,5 +1,15 @@
 import { useMemo } from "react";
-import { ArrowLeft, Save, AlertCircle, Loader2, ShieldCheck, Lock, Globe } from "lucide-react";
+import { Link } from "react-router-dom";
+import {
+  ArrowLeft,
+  Save,
+  AlertCircle,
+  Loader2,
+  ShieldCheck,
+  ShieldAlert,
+  Lock,
+  Globe,
+} from "lucide-react";
 import { useForge } from "../ForgeContext";
 import { CollectionIcon } from "@quadsmith/shared";
 import { getCollectionColor } from "@quadsmith/shared";
@@ -363,6 +373,36 @@ export function ReviewStep() {
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Hardware & Flight Safety Disclaimer */}
+      <div
+        data-testid="review-safety-disclaimer"
+        className="p-3.5 rounded-2xl border border-amber-500/20 bg-amber-500/5 flex items-start gap-3 text-xs text-zinc-300"
+      >
+        <ShieldAlert size={16} className="text-amber-400 shrink-0 mt-0.5" />
+        <p className="leading-relaxed">
+          <strong className="text-amber-300">Hardware &amp; Flight Safety Notice:</strong>{" "}
+          Compatibility checks and{" "}
+          <span className="text-amber-400 font-semibold">Experimental Build Evaluator</span> metrics
+          are theoretical estimates. Before assembly or flight, always verify manufacturer
+          datasheets, wiring pinouts, electrical ratings, and propeller clearance, and test first
+          power-up with a current-limiting smoke stopper. Review our{" "}
+          <Link
+            to="/terms#disclaimers"
+            className="text-amber-400 hover:text-amber-300 underline underline-offset-2 font-medium"
+          >
+            Safety Disclaimers
+          </Link>{" "}
+          and{" "}
+          <Link
+            to="/terms"
+            className="text-amber-400 hover:text-amber-300 underline underline-offset-2 font-medium"
+          >
+            Terms of Service
+          </Link>
+          .
+        </p>
       </div>
 
       {/* Navigation Footer */}

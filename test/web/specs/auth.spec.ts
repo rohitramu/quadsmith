@@ -11,6 +11,7 @@ test.describe("Authentication Flows", () => {
     // Header and navigation should NOT be rendered on login page
     await expect(page.locator("nav")).not.toBeVisible();
     await expect(page.getByRole("textbox", { name: /email/i })).toBeVisible();
+    await expect(page.getByRole("link", { name: /terms of service/i })).toBeVisible();
 
     // Visual snapshot comparison
     await expect(page).toHaveScreenshot("login-step1.png", {

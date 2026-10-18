@@ -1,4 +1,5 @@
 import { useState, useMemo, useRef, useEffect } from "react";
+import { Link } from "react-router-dom";
 import {
   Hammer,
   RotateCcw,
@@ -10,6 +11,7 @@ import {
   ChevronDown,
   ClipboardCheck,
   Plus,
+  FlaskConical,
 } from "lucide-react";
 import { useDocumentMeta } from "@quadsmith/shared";
 import { BatteryCombobox } from "../components/BatteryCombobox";
@@ -588,6 +590,27 @@ function BuildWizardContent() {
                 {/* Expandable Telemetry Drawer */}
                 {mobileTelemetryOpen && (
                   <div className="p-3.5 border-t border-zinc-800 bg-zinc-950/40 space-y-3">
+                    <div className="flex items-center justify-between gap-2 pb-2 border-b border-zinc-800/80">
+                      <div className="flex items-center gap-2">
+                        <Gauge size={14} className="text-blue-400 shrink-0" />
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-200">
+                          Build Evaluator
+                        </span>
+                        <Link
+                          to="/terms#experimental-evaluator"
+                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30"
+                        >
+                          <FlaskConical size={10} className="shrink-0" />
+                          <span>Experimental</span>
+                        </Link>
+                      </div>
+                      <Link
+                        to="/terms#disclaimers"
+                        className="text-[11px] text-amber-400/90 hover:text-amber-300 underline underline-offset-2 font-medium"
+                      >
+                        Disclaimers
+                      </Link>
+                    </div>
                     {evaluationError && (
                       <div
                         role="alert"
@@ -850,15 +873,33 @@ function BuildWizardContent() {
           >
             <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4 space-y-4 shadow-sm">
               <div className="border-b border-zinc-800 pb-2.5">
-                <div className="flex items-center gap-2">
-                  <Gauge className="text-blue-400 shrink-0" size={16} />
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-200">
-                    Build Evaluator
-                  </h3>
+                <div className="flex items-center justify-between gap-2 flex-wrap">
+                  <div className="flex items-center gap-2">
+                    <Gauge className="text-blue-400 shrink-0" size={16} />
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-200">
+                      Build Evaluator
+                    </h3>
+                  </div>
+                  <Link
+                    to="/terms#experimental-evaluator"
+                    data-testid="forge-evaluator-experimental-badge"
+                    title="Experimental physics engine — click to view modeling assumptions and safety disclaimers"
+                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition-colors"
+                  >
+                    <FlaskConical size={11} className="shrink-0" />
+                    <span>Experimental</span>
+                  </Link>
                 </div>
-                <p className="text-[11px] text-zinc-400 mt-1 leading-snug">
+                <p className="text-[11px] text-zinc-400 mt-1.5 leading-snug">
                   Calculated flight metrics are theoretical estimates based on analytical physics
-                  models.
+                  models.{" "}
+                  <Link
+                    to="/terms#disclaimers"
+                    className="text-amber-400/90 hover:text-amber-300 underline underline-offset-2 font-medium transition-colors"
+                  >
+                    Safety disclaimers
+                  </Link>
+                  .
                 </p>
               </div>
 

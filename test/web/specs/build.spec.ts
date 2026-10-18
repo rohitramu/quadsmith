@@ -12,8 +12,9 @@ test.describe("Build Profile Showcase & Battery Simulator", () => {
     await page.goto(BUILD_URL);
     await preparePageForSnapshot(page);
 
-    // Verify build name and hardware list
+    // Verify build name, Experimental evaluator badge, and hardware list
     await expect(page.getByRole("heading", { name: /Bando Basher/i })).toBeVisible();
+    await expect(page.getByTestId("evaluator-experimental-badge")).toBeVisible();
     await expect(page.getByRole("heading", { name: "Hardware" })).toBeVisible();
 
     // Visual snapshot comparison

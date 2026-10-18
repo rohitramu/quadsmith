@@ -62,6 +62,7 @@ import {
   Search,
   Hammer,
   Edit,
+  FlaskConical,
 } from "lucide-react";
 
 interface BomComponentProps {
@@ -603,23 +604,44 @@ export function BuildProfilePage() {
         >
           <section className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 shadow-xs">
             <div className="mb-6 pb-4 border-b border-zinc-800">
-              <h2 className="text-xl font-bold text-zinc-100 flex items-center gap-2">
-                <Gauge className="text-blue-400" size={22} />
-                <span>Build Evaluation & Performance</span>
-                {isFetchingEvaluation && (
-                  <span
-                    role="status"
-                    aria-label="Updating evaluation"
-                    className="inline-flex items-center gap-1 text-xs font-normal text-blue-400 bg-blue-950/60 border border-blue-800/60 px-2 py-0.5 rounded-full"
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <h2 className="text-xl font-bold text-zinc-100 flex items-center gap-2">
+                    <Gauge className="text-blue-400" size={22} />
+                    <span>Build Evaluation &amp; Performance</span>
+                  </h2>
+                  <Link
+                    to="/terms#experimental-evaluator"
+                    data-testid="evaluator-experimental-badge"
+                    title="Experimental physics engine — click to view modeling assumptions and safety disclaimers"
+                    className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition-colors"
                   >
-                    <RefreshCw size={11} className="animate-spin" />
-                    <span>Updating...</span>
-                  </span>
-                )}
-              </h2>
-              <p className="text-xs sm:text-sm text-zinc-400 mt-1">
+                    <FlaskConical size={12} className="shrink-0" />
+                    <span>Experimental</span>
+                  </Link>
+                  {isFetchingEvaluation && (
+                    <span
+                      role="status"
+                      aria-label="Updating evaluation"
+                      className="inline-flex items-center gap-1 text-xs font-normal text-blue-400 bg-blue-950/60 border border-blue-800/60 px-2 py-0.5 rounded-full"
+                    >
+                      <RefreshCw size={11} className="animate-spin" />
+                      <span>Updating...</span>
+                    </span>
+                  )}
+                </div>
+              </div>
+              <p className="text-xs sm:text-sm text-zinc-400 mt-1.5 leading-relaxed">
                 Calculated flight metrics are theoretical estimates based on analytical physics
-                models.
+                models and do not guarantee electrical compatibility, thermal limits, or
+                airworthiness.{" "}
+                <Link
+                  to="/terms#disclaimers"
+                  className="text-amber-400/90 hover:text-amber-300 underline underline-offset-2 font-medium transition-colors"
+                >
+                  Read safety disclaimers
+                </Link>
+                .
               </p>
             </div>
 

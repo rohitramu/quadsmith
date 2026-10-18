@@ -13,6 +13,9 @@ describe("WasmLoadingIndicator Component", () => {
     render(<WasmLoadingIndicator progress={mockProgress} />);
 
     expect(screen.getByText("Build Evaluator")).toBeInTheDocument();
+    expect(screen.getByTestId("wasm-evaluator-experimental-badge")).toHaveTextContent(
+      /experimental/i,
+    );
     expect(screen.getByText("Loading physics engine...")).toBeInTheDocument();
     expect(screen.getByText("> 3s Delayed")).toBeInTheDocument();
     expect(screen.getByText("Downloading Physics Engine")).toBeInTheDocument();

@@ -10,6 +10,7 @@
   - [Multi-Profile Flight Time and Range Boundary Estimation](#multi-profile-flight-time-and-range-boundary-estimation)
   - [Handling Quality via Disk Loading and Torque-to-Inertia Ratios](#handling-quality-via-disk-loading-and-torque-to-inertia-ratios)
   - [Continuous Payload Capacity Curves and Threshold Markers](#continuous-payload-capacity-curves-and-threshold-markers)
+  - [Experimental Designation and Safety Disclaimers](#experimental-designation-and-safety-disclaimers)
 - [3. Assumptions](#3-assumptions)
 
 ---
@@ -43,6 +44,8 @@ battery and payload parameters.
 > - Assess flight agility and prop wash handling through
 >   [disk loading](https://en.wikipedia.org/wiki/Disk_loading) and
 >   torque-to-inertia ratios, accompanied by continuous payload vs. TWR curves.
+> - Label all evaluator surfaces as `"Experimental"` and link directly to
+>   hardware, electrical, and flight safety disclaimers (`/terms`).
 
 The Build Evaluator acts as a pure domain logic service within the Quadsmith
 platform. It ingests an assembled quadcopter hardware configuration (frame
@@ -197,6 +200,59 @@ standardized benchmark thresholds:
   authority).
 - **Absolute Usability Floor**: $1.5:1$ TWR (minimum threshold for reliable
   outdoor flight control).
+
+### <a id="experimental-designation-and-safety-disclaimers" >Experimental Designation and Safety Disclaimers</a>
+
+Because analytical flight dynamics models rely on idealized blade-element
+momentum theory, standard sea-level atmosphere, and simplified internal
+resistance sag curves, all Build Evaluator surfaces across the web application
+are explicitly labeled with an **`Experimental`** badge:
+
+- **Build Profile Dashboard**
+  ([`BuildProfilePage.tsx`](../src/react/app-web/src/pages/BuildProfilePage.tsx)):
+  Displays the `Experimental` badge alongside `Build Evaluation & Performance`
+  and links directly to `/terms#experimental-evaluator` and
+  `/terms#disclaimers`.
+- **The Forge Live Evaluator**
+  ([`BuildWizardPage.tsx`](../src/react/app-web/src/pages/BuildWizardPage.tsx)):
+  Displays the `Experimental` badge and safety disclaimer links in both the
+  desktop evaluator card and the mobile collapsible telemetry drawer, plus a
+  pre-save hardware and flight safety notice in Step 12
+  ([`ReviewStep.tsx`](../src/react/app-web/src/components/forge/steps/ReviewStep.tsx)).
+- **Build Cards & WASM Engine Loader**
+  ([`BuildCard.tsx`](../src/react/app-web/src/components/BuildCard.tsx),
+  [`WasmLoadingIndicator.tsx`](../src/react/app-web/src/components/WasmLoadingIndicator.tsx)):
+  Marks quick-evaluated card metrics and the WebAssembly physics loader as
+  `Experimental`.
+- **Terms of Service & Disclaimers Page**
+  ([`TermsOfServicePage.tsx`](../src/react/app-web/src/pages/TermsOfServicePage.tsx)):
+  Provides dedicated documentation at `/terms` covering LiPo electrical safety,
+  high-RPM propeller safety, RF/aviation regulations, catalog specification
+  verification, experimental evaluator modeling limits, `"AS IS"` warranty
+  disclaimers, and data privacy.
+
+<details>
+<summary><strong>Alternatives considered</strong></summary>
+
+##### <a id="blocking-modal-disclaimer-on-every-build-evaluation" >Blocking Modal Disclaimer on Every Build Evaluation</a>
+
+Display a mandatory click-through modal dialog before allowing users to view any
+Build Profile or open The Forge configurator.
+
+**Pros:**
+
+- Guarantees every user clicks an acknowledgment button before seeing flight
+  estimates.
+
+**Cons:**
+
+- Degrades browsing and configuration UX with repetitive modal friction on every
+  session.
+- Persistent inline `Experimental` badges, contextual safety notices, and a
+  dedicated `/terms` page communicate the exact boundaries without blocking
+  read-only exploration.
+
+</details>
 
 ---
 

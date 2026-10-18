@@ -1,4 +1,4 @@
-import { Loader2, Download } from "lucide-react";
+import { Loader2, Download, FlaskConical } from "lucide-react";
 import type { ProgressInfo } from "../lib/wasmEngine";
 
 export interface WasmLoadingIndicatorProps {
@@ -25,7 +25,16 @@ export function WasmLoadingIndicator({ progress, className = "" }: WasmLoadingIn
             <Loader2 className="w-4 h-4 animate-spin" />
           </div>
           <div>
-            <h3 className="text-sm font-bold text-zinc-100 leading-tight">Build Evaluator</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-bold text-zinc-100 leading-tight">Build Evaluator</h3>
+              <span
+                data-testid="wasm-evaluator-experimental-badge"
+                className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30"
+              >
+                <FlaskConical className="w-2.5 h-2.5 shrink-0" />
+                <span>Experimental</span>
+              </span>
+            </div>
             <p className="text-[11px] text-zinc-400">Loading physics engine...</p>
           </div>
         </div>

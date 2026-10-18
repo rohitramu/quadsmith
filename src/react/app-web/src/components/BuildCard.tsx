@@ -17,6 +17,7 @@ import {
   Camera,
   Compass,
   Hammer,
+  FlaskConical,
 } from "lucide-react";
 import { useState } from "react";
 import { getCollectionColor } from "@quadsmith/shared";
@@ -207,6 +208,13 @@ export function BuildCard({
           <div className="pt-3 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
             {evaluation ? (
               <div className="flex items-center gap-4 text-zinc-400 flex-wrap">
+                <span
+                  className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30"
+                  title="Experimental Build Evaluator theoretical estimates"
+                >
+                  <FlaskConical size={10} className="shrink-0" />
+                  <span>Experimental</span>
+                </span>
                 <span className="flex items-center gap-1.5 font-medium" title="All Up Weight (AUW)">
                   <Weight size={13} className="text-zinc-400" />
                   <strong className="text-zinc-200 font-mono">
@@ -434,7 +442,14 @@ export function BuildCard({
         {/* Evaluation Metrics Preview */}
         <div className="pt-3 border-t border-zinc-800/60 flex items-center justify-between text-xs">
           {evaluation ? (
-            <div className="flex items-center gap-3 text-zinc-400">
+            <div className="flex items-center gap-3 text-zinc-400 flex-wrap">
+              <span
+                className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30"
+                title="Experimental Build Evaluator theoretical estimates"
+              >
+                <FlaskConical size={10} className="shrink-0" />
+                <span>Experimental</span>
+              </span>
               <span className="flex items-center gap-1 font-medium" title="All Up Weight (AUW)">
                 <Weight size={13} className="text-zinc-400" />
                 {evaluation.allUpWeightG.toFixed(2)}g

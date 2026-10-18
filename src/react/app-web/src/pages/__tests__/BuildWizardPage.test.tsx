@@ -75,6 +75,12 @@ describe("BuildWizardPage Component", () => {
 
     // Selected Parts section under Evaluator
     expect(screen.getByText("Selected Parts")).toBeInTheDocument();
+
+    // Build Evaluator is marked as Experimental
+    const experimentalBadge = screen.getByTestId("forge-evaluator-experimental-badge");
+    expect(experimentalBadge).toBeInTheDocument();
+    expect(experimentalBadge).toHaveTextContent(/experimental/i);
+    expect(experimentalBadge).toHaveAttribute("href", "/terms#experimental-evaluator");
   });
 
   it("supports editing existing builds via /builds/:buildId/edit, pre-populating components and displaying 'Save Changes'", async () => {
@@ -95,8 +101,9 @@ describe("BuildWizardPage Component", () => {
     expect(step12Tab).toBeEnabled();
     await user.click(step12Tab);
 
-    // Review & Save step should display "Save Changes" instead of "Save & Create Build"
+    // Review & Save step should display "Save Changes" instead of "Save & Create Build" and show safety disclaimer
     expect(await screen.findByRole("button", { name: /Save Changes/i })).toBeInTheDocument();
+    expect(screen.getByTestId("review-safety-disclaimer")).toBeInTheDocument();
   });
 
   it("allows searching for frames and filtering products in real time", async () => {

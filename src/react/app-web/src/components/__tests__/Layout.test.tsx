@@ -93,6 +93,11 @@ describe("Layout Component", () => {
       "/components/software",
     );
     expect(screen.getByRole("link", { name: "Gear" })).toHaveAttribute("href", "/components/gear");
+    expect(screen.getByRole("link", { name: /Terms & Disclaimers/i })).toHaveAttribute(
+      "href",
+      "/terms",
+    );
+    expect(screen.getByTestId("global-legal-footer")).toBeInTheDocument();
 
     // No expand/collapse toggle buttons
     expect(screen.queryByRole("button", { name: /Expand Hardware menu/i })).not.toBeInTheDocument();

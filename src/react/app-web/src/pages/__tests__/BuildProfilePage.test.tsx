@@ -42,6 +42,15 @@ describe("BuildProfilePage Component", () => {
       }),
     ).toBeInTheDocument();
 
+    const experimentalBadge = screen.getByTestId("evaluator-experimental-badge");
+    expect(experimentalBadge).toBeInTheDocument();
+    expect(experimentalBadge).toHaveTextContent(/experimental/i);
+    expect(experimentalBadge).toHaveAttribute("href", "/terms#experimental-evaluator");
+    expect(screen.getByRole("link", { name: /read safety disclaimers/i })).toHaveAttribute(
+      "href",
+      "/terms#disclaimers",
+    );
+
     // Check AUW, TWR, Max Accel, Top Speed, Hover Throttle, Flight Time metrics
     expect(await screen.findByText("All-Up Weight")).toBeInTheDocument();
     expect(await screen.findByText("565.50")).toBeInTheDocument();

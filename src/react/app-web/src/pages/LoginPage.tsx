@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
+import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import { ConnectError, Code } from "@connectrpc/connect";
 import { Loader2, Mail, AlertTriangle, Lock, Check } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
@@ -684,6 +684,27 @@ export function LoginPage() {
             Use a different email
           </button>
         </div>
+
+        <p
+          data-testid="login-legal-notice"
+          className="text-[11px] text-zinc-500 text-center pt-2 border-t border-zinc-800/80 leading-relaxed"
+        >
+          By completing account setup, you agree to our{" "}
+          <Link
+            to="/terms"
+            className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
+          >
+            Terms of Service
+          </Link>{" "}
+          and acknowledge our{" "}
+          <Link
+            to="/terms#disclaimers"
+            className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
+          >
+            Safety Disclaimers
+          </Link>
+          .
+        </p>
       </div>
     </div>
   );
@@ -862,6 +883,27 @@ export function LoginPage() {
                 <span>Continue with Discord</span>
               </button>
             </div>
+
+            <p
+              data-testid="login-legal-notice"
+              className="text-[11px] text-zinc-500 text-center pt-3 border-t border-zinc-800/80 leading-relaxed"
+            >
+              By continuing, you agree to our{" "}
+              <Link
+                to="/terms"
+                className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
+              >
+                Terms of Service
+              </Link>{" "}
+              and acknowledge our{" "}
+              <Link
+                to="/terms#disclaimers"
+                className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
+              >
+                Safety Disclaimers
+              </Link>
+              .
+            </p>
           </div>
         </div>
       )}

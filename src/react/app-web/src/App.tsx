@@ -4,7 +4,7 @@ import type { Transport } from "@connectrpc/connect";
 import { BrowserRouter, Routes, Route, Navigate, useParams } from "react-router-dom";
 import { ErrorBoundary } from "@quadsmith/shared";
 import { transport as defaultTransport } from "./lib/api";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Layout } from "./components/Layout";
 import { LoginPage } from "./pages/LoginPage";
@@ -18,12 +18,24 @@ import { HomePage } from "./pages/HomePage";
 import { BuildProfilePage } from "./pages/BuildProfilePage";
 import { BuildWizardPage } from "./pages/BuildWizardPage";
 import { BuildFeedPage } from "./pages/BuildFeedPage";
+import { TermsOfServicePage } from "./pages/TermsOfServicePage";
 
 const defaultQueryClient = new QueryClient();
 
 function UserCollectionsRedirect() {
   const { id } = useParams<{ id: string }>();
   return <Navigate to={`/users/${id}?tab=collections`} replace />;
+}
+
+function TermsRoute() {
+  const { isAuthenticated, isLoading } = useAuth();
+  if (isLoading) {
+    return null;
+  }
+  if (!isAuthenticated) {
+    return <TermsOfServicePage standalone />;
+  }
+  return <Layout />;
 }
 
 export function AppRoutes() {
@@ -33,6 +45,11 @@ export function AppRoutes() {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/login/verify" element={<LoginPage />} />
       <Route path="/verify" element={<LoginPage />} />
+
+      {/* Public & Authenticated Terms of Service / Disclaimers Route */}
+      <Route element={<TermsRoute />}>
+        <Route path="/terms" element={<TermsOfServicePage />} />
+      </Route>
 
       {/* Protected Routes */}
       <Route element={<ProtectedRoute />}>
