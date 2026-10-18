@@ -84,8 +84,8 @@ gcloud iam service-accounts keys create gcp-sa-key.json \
   --iam-account="quadsmith-cd@${PROJECT_ID}.iam.gserviceaccount.com"
 ```
 
-Store the contents of `gcp-sa-key.json` as the `GCP_SA_KEY` secret and delete
-the local key file.
+Store the contents of `gcp-sa-key.json` as the `PROD_GCP_SA_KEY` (or
+`STAGING_GCP_SA_KEY`) repository secret and delete the local key file.
 
 ### Step 3: Generate Cryptographic Application Secrets
 
@@ -93,30 +93,36 @@ Generate 256-bit random values for the database password, JWT signing secret,
 and headless job runner token:
 
 ```bash
-openssl rand -hex 32 # -> QS_DB_PASSWORD
-openssl rand -hex 32 # -> QS_AUTH_SECRET
-echo "qs_op_$(openssl rand -hex 24)" # -> QS_JOB_SERVER_AUTH_TOKEN
+openssl rand -hex 32 # -> <ENV>_QS_DB_PASSWORD
+openssl rand -hex 32 # -> <ENV>_QS_AUTH_SECRET
+echo "qs_op_$(openssl rand -hex 24)" # -> <ENV>_QS_JOB_SERVER_AUTH_TOKEN
 ```
 
-### Step 4: Configure GitHub Environment Secrets
+### Step 4: Configure GitHub Repository Secrets (`PROD_*` & `STAGING_*`)
 
-In GitHub (**Settings &rarr; Environments**), create the `staging` and `prod`
-environments and populate the following secrets:
+Because GitHub Free restricts GitHub Environments on private repositories, all
+secrets are stored as standard **Repository Secrets** (**Settings &rarr; Secrets
+and variables &rarr; Actions &rarr; New repository secret**) prefixed by
+environment (`PROD_` for `prod`, `STAGING_` for `staging`). Both
+[`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) and
+[`deploy.sh`](deploy.sh) automatically resolve `<ENV>_<SECRET_NAME>` (with
+[`deploy.sh`](deploy.sh) also accepting unprefixed `<SECRET_NAME>` when running
+from a local workstation):
 
-| Secret Name                                         | Purpose                                                                                |
-| :-------------------------------------------------- | :------------------------------------------------------------------------------------- |
-| `GCP_SA_KEY`                                        | JSON key for the `quadsmith-cd` GCP service account                                    |
-| `CF_ACCOUNT_ID`                                     | Cloudflare Account ID                                                                  |
-| `CF_ZONE_ID`                                        | Cloudflare Zone ID for `quadsmith.com`                                                 |
-| `CF_API_TOKEN`                                      | Scoped Cloudflare API Token                                                            |
-| `QS_DB_PASSWORD`                                    | PostgreSQL `postgres` user password on Cloud SQL                                       |
-| `QS_AUTH_SECRET`                                    | HMAC-SHA256 secret used by `server-api` to sign JWTs                                   |
-| `QS_JOB_SERVER_AUTH_TOKEN`                          | Bearer token (`qs_op_...`) shared by `server-jobs` and `quadsmith_ops.internal_tokens` |
-| `QS_SMTP_PASSWORD`                                  | SMTP password for transactional authentication emails                                  |
-| `QS_GOOGLE_CLIENT_ID` / `QS_GOOGLE_CLIENT_SECRET`   | Google OAuth 2.0 Web Client credentials (`server-api`)                                 |
-| `QS_GITHUB_CLIENT_ID` / `QS_GITHUB_CLIENT_SECRET`   | GitHub OAuth App credentials (`server-api`)                                            |
-| `QS_DISCORD_CLIENT_ID` / `QS_DISCORD_CLIENT_SECRET` | Discord OAuth2 Application credentials (`server-api`)                                  |
-| `QS_OAUTH_CLIENT_ID` / `QS_OAUTH_CLIENT_SECRET`     | Google OAuth 2.0 credentials for `qsops` operator login (`server-ops`)                 |
+| Repository Secret Name (`<ENV>` = `PROD` or `STAGING`)          | Purpose                                                                                                                    |
+| :-------------------------------------------------------------- | :------------------------------------------------------------------------------------------------------------------------- |
+| `<ENV>_GCP_SA_KEY`                                              | JSON key for the `quadsmith-cd` GCP service account                                                                        |
+| `<ENV>_CF_ACCOUNT_ID`                                           | Cloudflare Account ID                                                                                                      |
+| `<ENV>_CF_ZONE_ID`                                              | Cloudflare Zone ID for `quadsmith.com`                                                                                     |
+| `<ENV>_CF_API_TOKEN`                                            | Scoped Cloudflare API Token                                                                                                |
+| `<ENV>_QS_DB_PASSWORD`                                          | PostgreSQL `postgres` user password on Cloud SQL                                                                           |
+| `<ENV>_QS_AUTH_SECRET`                                          | HMAC-SHA256 secret used by `server-api` to sign JWTs                                                                       |
+| `<ENV>_QS_JOB_SERVER_AUTH_TOKEN`                                | Bearer token (`qs_op_...`) shared by `server-jobs` and `quadsmith_ops.internal_tokens`                                     |
+| `<ENV>_QS_SMTP_PASSWORD`                                        | SMTP password for transactional authentication emails (`PROD_QS_SMTP_PASSWORD` required for `prod`; optional in `staging`) |
+| `<ENV>_QS_GOOGLE_CLIENT_ID` / `<ENV>_QS_GOOGLE_CLIENT_SECRET`   | Google OAuth 2.0 Web Client credentials (`server-api`)                                                                     |
+| `<ENV>_QS_GITHUB_CLIENT_ID` / `<ENV>_QS_GITHUB_CLIENT_SECRET`   | GitHub OAuth App credentials (`server-api`)                                                                                |
+| `<ENV>_QS_DISCORD_CLIENT_ID` / `<ENV>_QS_DISCORD_CLIENT_SECRET` | Discord OAuth2 Application credentials (`server-api`)                                                                      |
+| `<ENV>_QS_OAUTH_CLIENT_ID` / `<ENV>_QS_OAUTH_CLIENT_SECRET`     | GitHub OAuth App credentials for `qsops` operator login (`server-ops`, `allowed_orgs: "quadsmith"`)                        |
 
 ---
 
@@ -412,7 +418,7 @@ docker compose -f docker-compose.blue-green.yaml logs --tail=100 -f
 ### Authenticating with the Operations CLI (`qsops`)
 
 Build the production operations CLI (`make build` outputs `bin/qsops-prod`) and
-authenticate via Google OAuth:
+authenticate via GitHub OAuth:
 
 ```bash
 ./bin/qsops-prod auth login

@@ -1669,11 +1669,17 @@ Docker images are hosted in a private **Google Artifact Registry** repository
 #### <a id="github-actions-deployment-pipeline" >GitHub Actions Deployment Pipeline (`.github/workflows/deploy.yml`)</a>
 
 The CI/CD workflow in
-[`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) is guarded so
-that while iterating without live environments (when `QS_GCP_PROJECT_ID` is not
-configured in GitHub Secrets), the workflow cleanly skips without failing CI.
-Once secrets are configured, `.github/workflows/deploy.yml` executes
-`make deploy ENV=prod` (or in three chained stages: `build-and-push` &rarr;
+[`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) uses
+environment-prefixed **GitHub Repository Secrets** (`PROD_*` for `prod` and
+`STAGING_*` for `staging`, resolved dynamically via
+`secrets[format('{0}_<SECRET>', env.ENV_PREFIX)]` in GitHub Actions and
+`resolve_env_secret` in [`deploy/deploy.sh`](../deploy/deploy.sh)), which works
+at **$0.00/month on private repositories on the GitHub Free plan** (where GitHub
+Environments are restricted to paid Pro/Team plans). A lightweight
+`check-credentials` job checks whether `<ENV_PREFIX>_GCP_SA_KEY` is set so that
+while iterating without live cloud credentials, the workflow cleanly skips
+without failing CI. Once secrets are configured, `.github/workflows/deploy.yml`
+executes `make deploy` across three chained stages (`build-and-push` &rarr;
 `migrate-db` &rarr; `deploy-vm`):
 
 1. **`build-and-push`**: Builds the 4 images in parallel using BuildKit (with
@@ -1709,10 +1715,12 @@ root [`README.md`](../README.md)) structured into eight actionable sections:
    `make deploy`).
 2. **One-Time Account & Secret Setup Checklist**: Step-by-step instructions and
    exact CLI/console commands to create the Cloudflare zone & scoped API token
-   (`CF_ACCOUNT_ID`, `CF_ZONE_ID`, `CF_API_TOKEN`), GCP project & `quadsmith-cd`
-   deployer service account (`GCP_SA_KEY`), OAuth provider credentials, and
-   secrets (`QS_DB_PASSWORD`, `QS_AUTH_SECRET`, `QS_JOB_SERVER_AUTH_TOKEN`),
-   plus a complete table of required GitHub Environment Secrets.
+   (`<ENV>_CF_ACCOUNT_ID`, `<ENV>_CF_ZONE_ID`, `<ENV>_CF_API_TOKEN`), GCP
+   project & `quadsmith-cd` deployer service account (`<ENV>_GCP_SA_KEY`), OAuth
+   provider credentials, and internal secrets (`<ENV>_QS_DB_PASSWORD`,
+   `<ENV>_QS_AUTH_SECRET`, `<ENV>_QS_JOB_SERVER_AUTH_TOKEN`), plus a complete
+   table of environment-prefixed GitHub Repository Secrets (`PROD_*` and
+   `STAGING_*`).
 3. **Deployment Configuration (`deploy/config/{staging,prod}.textproto`)**:
    Documents the `DeployConfig` fields (`gcp_project_id`, `registry_region`,
    `regions`, `db_tier`, `nodes`, `db_backup_retention_count`) and how
@@ -1728,7 +1736,7 @@ root [`README.md`](../README.md)) structured into eight actionable sections:
    `make check-breaking` migration gate, and step-by-step rollback instructions
    for container rollbacks, additive schema reverts, in-place snapshot restores
    (`gcloud sql backups restore`), and 1-second PITR clone recovery
-   (`gcloud sql instances clone --point-in-time=...`).
+   (`gcloud sql instances clone --point-in-time`).
 6. **Adding New Geographic Regions**: Step-by-step instructions for monitoring
    geographic traffic telemetry, appending a new `regions` block to
    `deploy/config/prod.textproto`, provisioning a local Cloud SQL cross-region
@@ -1747,6 +1755,29 @@ root [`README.md`](../README.md)) structured into eight actionable sections:
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
+
+##### <a id="alt-github-environment-secrets-or-gcp-secret-manager" >GitHub Environment-Scoped Secrets (`Settings -> Environments`) or GCP Secret Manager</a>
+
+Store secrets inside GitHub Environments (`environment: staging` /
+`environment: prod`) or inside Google Cloud Secret Manager
+(`gcloud secrets versions access`).
+
+**Pros:**
+
+- GitHub Environments allow using unprefixed secret names in
+  `.github/workflows/deploy.yml`, while GCP Secret Manager allows fetching
+  secrets directly via `gcloud` from any authenticated workstation with only
+  `<ENV>_GCP_SA_KEY` stored in GitHub.
+
+**Cons:**
+
+- GitHub restricts `Settings -> Environments` on private repositories on the
+  GitHub Free plan (requiring a paid GitHub Pro or GitHub Team subscription),
+  whereas environment-prefixed Repository Secrets (`PROD_*` and `STAGING_*`) are
+  100% free on private repositories.
+- Storing 15 individual secrets per environment in GCP Secret Manager exceeds
+  the 6 free secret versions/month Always Free tier (~$0.54–$1.44/month) and
+  adds another GCP service dependency.
 
 ##### <a id="alt-ghcr" >GitHub Container Registry (`ghcr.io`)</a>
 

@@ -24,12 +24,32 @@ env:
   GCP_REGION: us-central1
   GAR_REPOSITORY: quadsmith-docker
   TARGET_ENV: ${{ inputs.environment || 'prod' }}
+  ENV_PREFIX: ${{ inputs.environment == 'staging' && 'STAGING' || 'PROD' }}
 
 jobs:
+  check-credentials:
+    name: Check Deployment Secrets (${{ inputs.environment || 'prod' }})
+    runs-on: ubuntu-latest
+    outputs:
+      configured: ${{ steps.check.outputs.configured }}
+    steps:
+      - name: Check if ${{ env.ENV_PREFIX }}_GCP_SA_KEY is configured in Repository Secrets
+        id: check
+        env:
+          GCP_SA_KEY: ${{ secrets[format('{0}_GCP_SA_KEY', env.ENV_PREFIX)] }}
+        run: |
+          if [ -n "${GCP_SA_KEY}" ]; then
+            echo "configured=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::${ENV_PREFIX}_GCP_SA_KEY is not set in Repository Secrets; skipping cloud deployment."
+            echo "configured=false" >> "$GITHUB_OUTPUT"
+          fi
+
   build-and-push:
     name: Build & Push Images (${{ matrix.service }})
+    needs: check-credentials
     runs-on: ubuntu-latest
-    if: ${{ secrets.GCP_SA_KEY != '' }}
+    if: ${{ needs.check-credentials.outputs.configured == 'true' }}
     strategy:
       fail-fast: true
       matrix:
@@ -59,7 +79,7 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          credentials_json: ${{ secrets[format('{0}_GCP_SA_KEY', env.ENV_PREFIX)] }}
 
       - name: Set up Cloud SDK & Ensure Artifact Registry Exists
         uses: google-github-actions/setup-gcloud@v2
@@ -92,8 +112,6 @@ jobs:
     name: Provision Infrastructure & Run Automated DB Migration Gate
     needs: build-and-push
     runs-on: ubuntu-latest
-    if: ${{ secrets.GCP_SA_KEY != '' }}
-    environment: ${{ inputs.environment || 'prod' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -111,7 +129,7 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          credentials_json: ${{ secrets[format('{0}_GCP_SA_KEY', env.ENV_PREFIX)] }}
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
@@ -123,21 +141,21 @@ jobs:
 
       - name: Run Provisioning, Breaking-Change Gate, Pre-Migration Backup & Schema Migration
         env:
-          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          QS_DB_PASSWORD: ${{ secrets.QS_DB_PASSWORD }}
-          QS_AUTH_SECRET: ${{ secrets.QS_AUTH_SECRET }}
-          QS_JOB_SERVER_AUTH_TOKEN: ${{ secrets.QS_JOB_SERVER_AUTH_TOKEN }}
-          QS_SMTP_PASSWORD: ${{ secrets.QS_SMTP_PASSWORD }}
-          QS_GOOGLE_CLIENT_ID: ${{ secrets.QS_GOOGLE_CLIENT_ID }}
-          QS_GOOGLE_CLIENT_SECRET: ${{ secrets.QS_GOOGLE_CLIENT_SECRET }}
-          QS_GITHUB_CLIENT_ID: ${{ secrets.QS_GITHUB_CLIENT_ID }}
-          QS_GITHUB_CLIENT_SECRET: ${{ secrets.QS_GITHUB_CLIENT_SECRET }}
-          QS_DISCORD_CLIENT_ID: ${{ secrets.QS_DISCORD_CLIENT_ID }}
-          QS_DISCORD_CLIENT_SECRET: ${{ secrets.QS_DISCORD_CLIENT_SECRET }}
-          QS_OAUTH_CLIENT_ID: ${{ secrets.QS_OAUTH_CLIENT_ID }}
-          QS_OAUTH_CLIENT_SECRET: ${{ secrets.QS_OAUTH_CLIENT_SECRET }}
+          CF_ACCOUNT_ID: ${{ secrets[format('{0}_CF_ACCOUNT_ID', env.ENV_PREFIX)] }}
+          CF_ZONE_ID: ${{ secrets[format('{0}_CF_ZONE_ID', env.ENV_PREFIX)] }}
+          CF_API_TOKEN: ${{ secrets[format('{0}_CF_API_TOKEN', env.ENV_PREFIX)] }}
+          QS_DB_PASSWORD: ${{ secrets[format('{0}_QS_DB_PASSWORD', env.ENV_PREFIX)] }}
+          QS_AUTH_SECRET: ${{ secrets[format('{0}_QS_AUTH_SECRET', env.ENV_PREFIX)] }}
+          QS_JOB_SERVER_AUTH_TOKEN: ${{ secrets[format('{0}_QS_JOB_SERVER_AUTH_TOKEN', env.ENV_PREFIX)] }}
+          QS_SMTP_PASSWORD: ${{ secrets[format('{0}_QS_SMTP_PASSWORD', env.ENV_PREFIX)] }}
+          QS_GOOGLE_CLIENT_ID: ${{ secrets[format('{0}_QS_GOOGLE_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_GOOGLE_CLIENT_SECRET: ${{ secrets[format('{0}_QS_GOOGLE_CLIENT_SECRET', env.ENV_PREFIX)] }}
+          QS_GITHUB_CLIENT_ID: ${{ secrets[format('{0}_QS_GITHUB_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_GITHUB_CLIENT_SECRET: ${{ secrets[format('{0}_QS_GITHUB_CLIENT_SECRET', env.ENV_PREFIX)] }}
+          QS_DISCORD_CLIENT_ID: ${{ secrets[format('{0}_QS_DISCORD_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_DISCORD_CLIENT_SECRET: ${{ secrets[format('{0}_QS_DISCORD_CLIENT_SECRET', env.ENV_PREFIX)] }}
+          QS_OAUTH_CLIENT_ID: ${{ secrets[format('{0}_QS_OAUTH_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_OAUTH_CLIENT_SECRET: ${{ secrets[format('{0}_QS_OAUTH_CLIENT_SECRET', env.ENV_PREFIX)] }}
         run: |
           make deploy \
             ENV="${{ env.TARGET_ENV }}" \
@@ -149,8 +167,6 @@ jobs:
     name: Zero-Downtime Blue-Green Rollout to Regional VMs
     needs: migrate-db
     runs-on: ubuntu-latest
-    if: ${{ secrets.GCP_SA_KEY != '' }}
-    environment: ${{ inputs.environment || 'prod' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -166,28 +182,28 @@ jobs:
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          credentials_json: ${{ secrets.GCP_SA_KEY }}
+          credentials_json: ${{ secrets[format('{0}_GCP_SA_KEY', env.ENV_PREFIX)] }}
 
       - name: Set up Cloud SDK
         uses: google-github-actions/setup-gcloud@v2
 
       - name: Roll Out Blue-Green Deployment Across Regional Nodes
         env:
-          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
-          CF_ZONE_ID: ${{ secrets.CF_ZONE_ID }}
-          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
-          QS_DB_PASSWORD: ${{ secrets.QS_DB_PASSWORD }}
-          QS_AUTH_SECRET: ${{ secrets.QS_AUTH_SECRET }}
-          QS_JOB_SERVER_AUTH_TOKEN: ${{ secrets.QS_JOB_SERVER_AUTH_TOKEN }}
-          QS_SMTP_PASSWORD: ${{ secrets.QS_SMTP_PASSWORD }}
-          QS_GOOGLE_CLIENT_ID: ${{ secrets.QS_GOOGLE_CLIENT_ID }}
-          QS_GOOGLE_CLIENT_SECRET: ${{ secrets.QS_GOOGLE_CLIENT_SECRET }}
-          QS_GITHUB_CLIENT_ID: ${{ secrets.QS_GITHUB_CLIENT_ID }}
-          QS_GITHUB_CLIENT_SECRET: ${{ secrets.QS_GITHUB_CLIENT_SECRET }}
-          QS_DISCORD_CLIENT_ID: ${{ secrets.QS_DISCORD_CLIENT_ID }}
-          QS_DISCORD_CLIENT_SECRET: ${{ secrets.QS_DISCORD_CLIENT_SECRET }}
-          QS_OAUTH_CLIENT_ID: ${{ secrets.QS_OAUTH_CLIENT_ID }}
-          QS_OAUTH_CLIENT_SECRET: ${{ secrets.QS_OAUTH_CLIENT_SECRET }}
+          CF_ACCOUNT_ID: ${{ secrets[format('{0}_CF_ACCOUNT_ID', env.ENV_PREFIX)] }}
+          CF_ZONE_ID: ${{ secrets[format('{0}_CF_ZONE_ID', env.ENV_PREFIX)] }}
+          CF_API_TOKEN: ${{ secrets[format('{0}_CF_API_TOKEN', env.ENV_PREFIX)] }}
+          QS_DB_PASSWORD: ${{ secrets[format('{0}_QS_DB_PASSWORD', env.ENV_PREFIX)] }}
+          QS_AUTH_SECRET: ${{ secrets[format('{0}_QS_AUTH_SECRET', env.ENV_PREFIX)] }}
+          QS_JOB_SERVER_AUTH_TOKEN: ${{ secrets[format('{0}_QS_JOB_SERVER_AUTH_TOKEN', env.ENV_PREFIX)] }}
+          QS_SMTP_PASSWORD: ${{ secrets[format('{0}_QS_SMTP_PASSWORD', env.ENV_PREFIX)] }}
+          QS_GOOGLE_CLIENT_ID: ${{ secrets[format('{0}_QS_GOOGLE_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_GOOGLE_CLIENT_SECRET: ${{ secrets[format('{0}_QS_GOOGLE_CLIENT_SECRET', env.ENV_PREFIX)] }}
+          QS_GITHUB_CLIENT_ID: ${{ secrets[format('{0}_QS_GITHUB_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_GITHUB_CLIENT_SECRET: ${{ secrets[format('{0}_QS_GITHUB_CLIENT_SECRET', env.ENV_PREFIX)] }}
+          QS_DISCORD_CLIENT_ID: ${{ secrets[format('{0}_QS_DISCORD_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_DISCORD_CLIENT_SECRET: ${{ secrets[format('{0}_QS_DISCORD_CLIENT_SECRET', env.ENV_PREFIX)] }}
+          QS_OAUTH_CLIENT_ID: ${{ secrets[format('{0}_QS_OAUTH_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_OAUTH_CLIENT_SECRET: ${{ secrets[format('{0}_QS_OAUTH_CLIENT_SECRET', env.ENV_PREFIX)] }}
         run: |
           make deploy \
             ENV="${{ env.TARGET_ENV }}" \

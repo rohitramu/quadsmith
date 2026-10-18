@@ -22,6 +22,33 @@ if [ ! -f "$CONFIG_FILE" ]; then
     exit 1
 fi
 
+ENV_PREFIX="$(echo "$ENV" | tr '[:lower:]' '[:upper:]')"
+resolve_env_secret() {
+    local base_name="$1"
+    local prefixed_name="${ENV_PREFIX}_${base_name}"
+    if [ -n "${!prefixed_name:-}" ]; then
+        printf '%s' "${!prefixed_name}"
+    else
+        printf '%s' "${!base_name:-}"
+    fi
+}
+
+CF_ACCOUNT_ID="$(resolve_env_secret CF_ACCOUNT_ID)"
+CF_ZONE_ID="$(resolve_env_secret CF_ZONE_ID)"
+CF_API_TOKEN="$(resolve_env_secret CF_API_TOKEN)"
+QS_DB_PASSWORD="$(resolve_env_secret QS_DB_PASSWORD)"
+QS_AUTH_SECRET="$(resolve_env_secret QS_AUTH_SECRET)"
+QS_JOB_SERVER_AUTH_TOKEN="$(resolve_env_secret QS_JOB_SERVER_AUTH_TOKEN)"
+QS_SMTP_PASSWORD="$(resolve_env_secret QS_SMTP_PASSWORD)"
+QS_GOOGLE_CLIENT_ID="$(resolve_env_secret QS_GOOGLE_CLIENT_ID)"
+QS_GOOGLE_CLIENT_SECRET="$(resolve_env_secret QS_GOOGLE_CLIENT_SECRET)"
+QS_GITHUB_CLIENT_ID="$(resolve_env_secret QS_GITHUB_CLIENT_ID)"
+QS_GITHUB_CLIENT_SECRET="$(resolve_env_secret QS_GITHUB_CLIENT_SECRET)"
+QS_DISCORD_CLIENT_ID="$(resolve_env_secret QS_DISCORD_CLIENT_ID)"
+QS_DISCORD_CLIENT_SECRET="$(resolve_env_secret QS_DISCORD_CLIENT_SECRET)"
+QS_OAUTH_CLIENT_ID="$(resolve_env_secret QS_OAUTH_CLIENT_ID)"
+QS_OAUTH_CLIENT_SECRET="$(resolve_env_secret QS_OAUTH_CLIENT_SECRET)"
+
 echo "--- Validating configuration files with check-config ---"
 go run -mod=vendor ./src/go/shared/cmd/check-config
 
