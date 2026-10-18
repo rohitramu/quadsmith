@@ -70,11 +70,13 @@ import {
 } from "@quadsmith/shared/gen/quadsmith/api/components_pb";
 import {
   CheckComponentsCompatibilityRequestSchema,
+  type CheckCompatibilityResponse,
   type CompatibilityMessage,
 } from "@quadsmith/shared/gen/quadsmith/api/compatibility_pb";
 import {
   EvaluateComponentsRequestSchema,
   GetComponentsElectricalLimitsRequestSchema,
+  type EvaluateBuildResponse,
 } from "@quadsmith/shared/gen/quadsmith/api/evaluator_pb";
 import { wasmEngine, useWasmEngine } from "../../lib/wasmEngine";
 
@@ -551,9 +553,10 @@ interface ForgeContextType {
     maxVoltage: number;
     maxCurrentA: number;
     connector: string;
+    compatibleConnectors?: string[];
   };
-  evaluatedMetrics: any;
-  wasmCompatibility: any;
+  evaluatedMetrics: EvaluateBuildResponse | null;
+  wasmCompatibility: CheckCompatibilityResponse | null;
   dryWeightG: number;
   allUpWeightG: number;
   payloadWeightG: number;
@@ -1283,7 +1286,13 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
   // Electrical Limits
   const electricalLimits = useMemo(() => {
     if (!isWasmReady) {
-      return { minVoltage: 0, maxVoltage: 0, maxCurrentA: 0, connector: "" };
+      return {
+        minVoltage: 0,
+        maxVoltage: 0,
+        maxCurrentA: 0,
+        connector: "",
+        compatibleConnectors: [] as string[],
+      };
     }
     try {
       return wasmEngine.computeElectricalLimits(
@@ -1292,7 +1301,13 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
         }),
       );
     } catch {
-      return { minVoltage: 0, maxVoltage: 0, maxCurrentA: 0, connector: "" };
+      return {
+        minVoltage: 0,
+        maxVoltage: 0,
+        maxCurrentA: 0,
+        connector: "",
+        compatibleConnectors: [] as string[],
+      };
     }
   }, [isWasmReady, fullAssembled]);
 
@@ -1312,7 +1327,18 @@ export function ForgeProvider({ children }: { children: React.ReactNode }) {
       if (electricalLimits.maxVoltage > 0 && b.minVoltage > electricalLimits.maxVoltage) {
         return false;
       }
-      if (electricalLimits.connector && b.connector && electricalLimits.connector !== b.connector) {
+      if (
+        electricalLimits.compatibleConnectors &&
+        electricalLimits.compatibleConnectors.length > 0
+      ) {
+        if (b.connector && !electricalLimits.compatibleConnectors.includes(b.connector)) {
+          return false;
+        }
+      } else if (
+        electricalLimits.connector &&
+        b.connector &&
+        electricalLimits.connector !== b.connector
+      ) {
         return false;
       }
       return true;

@@ -21,6 +21,7 @@ import { checkVtxAntennaCompatibility } from "../../components/forge/ForgeContex
 import { create } from "@bufbuild/protobuf";
 import { VideoTransmitterSchema } from "@quadsmith/shared/gen/quadsmith/api/video_transmitter_pb";
 import { AntennaSchema } from "@quadsmith/shared/gen/quadsmith/api/antenna_pb";
+import { EvaluateBuildResponseSchema } from "@quadsmith/shared/gen/quadsmith/api/evaluator_pb";
 import type { RenderWithProvidersOptions } from "../../test/test-utils";
 
 function SavedProfile() {
@@ -1089,5 +1090,59 @@ describe("BuildWizardPage Component", () => {
     expect(within(mobileBar).getByText("AUW")).toBeInTheDocument();
     expect(within(mobileBar).getByText("Hover Throttle")).toBeInTheDocument();
     expect(within(mobileBar).getByText("Est. Flight")).toBeInTheDocument();
+  });
+
+  it("evaluates and displays live flight metrics on desktop and mobile when a battery is selected with propulsion components", async () => {
+    vi.spyOn(wasmEngine, "getIsReady").mockReturnValue(true);
+    vi.spyOn(wasmEngine, "checkCompatibility").mockReturnValue({ messages: [] } as any);
+    vi.spyOn(wasmEngine, "evaluateComponents").mockReturnValue(
+      create(EvaluateBuildResponseSchema, {
+        thrustToWeightRatio: 11.4,
+        hoverThrottlePercent: 22.5,
+        allUpWeightG: 654.0,
+        minFlightTimeMin: 3.2,
+        maxFlightTimeMin: 8.5,
+        maxAccelerationMps2: 102.0,
+        topSpeedKmh: 165.0,
+        hoverRpm: 14200,
+      }),
+    );
+
+    const user = userEvent.setup();
+    renderWizard({
+      route: "/builds/new?from=bando-basher-5-inch",
+    });
+
+    // Wait for build components (Frame, Motor, Propeller) to hydrate
+    const stepNav = await screen.findByRole("navigation", { name: "Build Steps" });
+    const step7Tab = within(stepNav).getByRole("button", { name: /^step 7:/i });
+    await waitFor(() => expect(step7Tab).toBeEnabled());
+
+    // Select a test battery in the Live Evaluator
+    const batteryCombobox = screen.getByRole("combobox", { name: /select test battery/i });
+    await user.click(batteryCombobox);
+    const batteryOption = await screen.findByText(/Black Series 1500mAh 6S/i);
+    await user.click(batteryOption);
+
+    // Desktop Live Evaluator metrics should render without crashing
+    expect(await screen.findByText("11.40 : 1")).toBeInTheDocument();
+    expect(screen.getByText("22.5%")).toBeInTheDocument();
+    expect(screen.getAllByText("3.2–8.5 min").length).toBeGreaterThanOrEqual(1);
+
+    // Mobile progress bar TWR pill should render with valid badge classes
+    const mobileBar = screen.getByTestId("forge-mobile-progress-bar");
+    const mobileTwrPill = within(mobileBar).getByText("TWR: 11.4:1");
+    expect(mobileTwrPill).toBeInTheDocument();
+    expect(mobileTwrPill.className).not.toContain("[object Object]");
+
+    // Open mobile telemetry drawer and verify metrics
+    const telemetryToggleBtn = within(mobileBar).getByRole("button", {
+      name: /toggle telemetry drawer/i,
+    });
+    await user.click(telemetryToggleBtn);
+
+    expect(within(mobileBar).getByText("11.4:1")).toBeInTheDocument();
+    expect(within(mobileBar).getByText("23%")).toBeInTheDocument();
+    expect(within(mobileBar).getByText("3.2–8.5 min")).toBeInTheDocument();
   });
 });

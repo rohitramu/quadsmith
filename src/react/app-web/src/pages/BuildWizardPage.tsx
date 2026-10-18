@@ -125,6 +125,14 @@ function BuildWizardContent() {
   const [mobilePartsOpen, setMobilePartsOpen] = useState(false);
   const [mobileTelemetryOpen, setMobileTelemetryOpen] = useState(false);
 
+  const comboboxBatteries = useMemo(() => {
+    if (!activeBattery) return compatibleBatteries;
+    const isAlreadyInList = compatibleBatteries.some(
+      (b) => b.id === activeBattery.id || b.uuid === activeBattery.uuid,
+    );
+    return isAlreadyInList ? compatibleBatteries : [activeBattery, ...compatibleBatteries];
+  }, [compatibleBatteries, activeBattery]);
+
   const currentStepConfig = useMemo(() => {
     switch (activeStep) {
       case 1:
@@ -452,11 +460,11 @@ function BuildWizardContent() {
                 </span>
 
                 {/* TWR Pill */}
-                {evaluatedMetrics?.twr != null ? (
+                {evaluatedMetrics?.thrustToWeightRatio != null ? (
                   <span
-                    className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-md ${getTwrColor(evaluatedMetrics.twr)}`}
+                    className={`text-[11px] font-mono font-bold px-2 py-0.5 rounded-md border ${getTwrColor(evaluatedMetrics.thrustToWeightRatio).badge}`}
                   >
-                    TWR: {evaluatedMetrics.twr.toFixed(1)}:1
+                    TWR: {evaluatedMetrics.thrustToWeightRatio.toFixed(1)}:1
                   </span>
                 ) : (
                   <span className="text-[11px] font-mono text-zinc-400 px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800">
@@ -582,9 +590,11 @@ function BuildWizardContent() {
                       TWR
                     </span>
                     <span
-                      className={`text-sm font-mono font-bold ${evaluatedMetrics?.twr != null ? getTwrColor(evaluatedMetrics.twr) : "text-zinc-400"}`}
+                      className={`text-sm font-mono font-bold ${evaluatedMetrics?.thrustToWeightRatio != null ? getTwrColor(evaluatedMetrics.thrustToWeightRatio).text : "text-zinc-400"}`}
                     >
-                      {evaluatedMetrics?.twr != null ? `${evaluatedMetrics.twr.toFixed(1)}:1` : "—"}
+                      {evaluatedMetrics?.thrustToWeightRatio != null
+                        ? `${evaluatedMetrics.thrustToWeightRatio.toFixed(1)}:1`
+                        : "—"}
                     </span>
                   </div>
                   <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
@@ -592,7 +602,7 @@ function BuildWizardContent() {
                       Hover Throttle
                     </span>
                     <span
-                      className={`text-sm font-mono font-bold ${evaluatedMetrics?.hoverThrottlePercent != null ? getHoverThrottleColor(evaluatedMetrics.hoverThrottlePercent) : "text-zinc-400"}`}
+                      className={`text-sm font-mono font-bold ${evaluatedMetrics?.hoverThrottlePercent != null ? getHoverThrottleColor(evaluatedMetrics.hoverThrottlePercent).text : "text-zinc-400"}`}
                     >
                       {evaluatedMetrics?.hoverThrottlePercent != null
                         ? `${evaluatedMetrics.hoverThrottlePercent.toFixed(0)}%`
@@ -604,8 +614,13 @@ function BuildWizardContent() {
                       Est. Flight
                     </span>
                     <span className="text-sm font-mono font-bold text-zinc-900 dark:text-zinc-100">
-                      {evaluatedMetrics?.estimatedFlightTimeMin != null
-                        ? `${evaluatedMetrics.estimatedFlightTimeMin.toFixed(1)} min`
+                      {evaluatedMetrics
+                        ? evaluatedMetrics.minFlightTimeMin > 0 &&
+                          evaluatedMetrics.maxFlightTimeMin > 0
+                          ? `${evaluatedMetrics.minFlightTimeMin.toFixed(1)}–${evaluatedMetrics.maxFlightTimeMin.toFixed(1)} min`
+                          : evaluatedMetrics.maxFlightTimeMin > 0
+                            ? `~${evaluatedMetrics.maxFlightTimeMin.toFixed(1)} min`
+                            : "—"
                         : "—"}
                     </span>
                   </div>
@@ -617,7 +632,7 @@ function BuildWizardContent() {
                     <BatteryCombobox
                       selectedBatteryId={selectedBatteryId}
                       onSelectBattery={(id) => setSelectedBatteryId(id)}
-                      batteries={compatibleBatteries}
+                      batteries={comboboxBatteries}
                       ariaLabel="Select mobile test battery"
                       className="w-full text-xs"
                     />
@@ -847,7 +862,7 @@ function BuildWizardContent() {
                 <BatteryCombobox
                   selectedBatteryId={selectedBatteryId}
                   onSelectBattery={(id) => setSelectedBatteryId(id)}
-                  batteries={compatibleBatteries}
+                  batteries={comboboxBatteries}
                   ariaLabel="Select test battery"
                   className="flex-1 min-w-0"
                 />
@@ -1028,7 +1043,11 @@ function BuildWizardContent() {
                 <span className="text-zinc-500">Est. Flight Time</span>
                 <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
                   {evaluatedMetrics
-                    ? `${evaluatedMetrics.flightTimeMinutes.toFixed(1)} min`
+                    ? evaluatedMetrics.minFlightTimeMin > 0 && evaluatedMetrics.maxFlightTimeMin > 0
+                      ? `${evaluatedMetrics.minFlightTimeMin.toFixed(1)}–${evaluatedMetrics.maxFlightTimeMin.toFixed(1)} min`
+                      : evaluatedMetrics.maxFlightTimeMin > 0
+                        ? `~${evaluatedMetrics.maxFlightTimeMin.toFixed(1)} min`
+                        : "-- min"
                     : "-- min"}
                 </div>
               </div>
