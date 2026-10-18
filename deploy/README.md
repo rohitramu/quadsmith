@@ -318,10 +318,16 @@ Once `quadsmith-db-prod-recovery` is ready, you can either:
 
 ## 6. Adding New Geographic Regions
 
-When Cloudflare Analytics shows sustained traffic (>15–20% of monthly sessions
-or >5,000 MAU) in a continent not yet served by a local compute region (such as
-Europe or Asia-Pacific) and `server-api` p95 latency in that geography exceeds
-150 ms:
+See
+[`../plans/adding_deployment_regions.md`](../plans/adding_deployment_regions.md)
+for the complete multi-region expansion architecture, telemetry thresholds, and
+per-user regional data residency design (`users.home_region` + PostgreSQL 16+
+Logical Replication).
+
+When Cloudflare Analytics shows sustained traffic ($\ge 15\%$ of dynamic
+requests or $\ge 10,000$ MAU) in a continent not yet served by a local compute
+region (such as Europe or Asia-Pacific) and edge-to-origin latency in that
+geography exceeds 120 ms P50:
 
 1. Append a new `regions` entry to
    [`config/prod.textproto`](config/prod.textproto):
@@ -337,30 +343,33 @@ Europe or Asia-Pacific) and `server-api` p95 latency in that geography exceeds
    }
    ```
 
-2. Run `make build` to validate the updated configuration with `check-config`.
+2. Run `make verify` to validate the updated configuration with `check-config`.
 3. Commit and run `make deploy ENV=prod`. [`deploy.sh`](deploy.sh) will
    automatically:
-   - Provision the regional subnet and Cloud NAT in `europe-west1`.
-   - Provision the in-region Cloud SQL read replica
-     (`quadsmith-db-prod-europe-west1`) replicating asynchronously from
-     `quadsmith-db-prod-us-central1`.
+   - Provision the regional Cloud SQL instance
+     (`quadsmith-db-prod-europe-west1`) over the global GCP VPC
+     (`--no-assign-ip`).
    - Provision the `quadsmith-prod-europe-west1-b-1` VM, join it to the shared
-     Cloudflare Tunnel (`cloudflared` automatically serves regional users from
-     the nearest healthy connector), wire `QS_READ_DATABASE_URL` to the local
-     read replica IP and `QS_DATABASE_URL` to the primary write IP, and roll out
-     the application containers.
+     Cloudflare Tunnel (`cloudflared` automatically routes regional users to the
+     nearest healthy connector), configure the regional database URLs, and roll
+     out the application containers.
 
 ---
 
 ## 7. Scaling a Region Vertically or Horizontally
 
-When a specific region experiences resource saturation (VM memory >80% or swap
-thrashing, VM CPU >70% with depleted burst credits, or Cloud SQL CPU >70% / disk
-I/O saturation), evaluate **vertical scaling** (stepping up `machine_type` or
+See
+[`../plans/scaling_deployment_regions.md`](../plans/scaling_deployment_regions.md)
+for the full per-region vertical vs. horizontal compute, Cloud SQL, and
+Cloudflare R2 blob storage scaling comparison and workflows.
+
+When a specific region experiences resource saturation (VM memory >75% or swap
+activity, VM CPU >70% with depleted burst credits, or Cloud SQL CPU >70% /
+memory >80%), evaluate **vertical scaling** (stepping up `machine_type` or
 `db_tier` in place) against **horizontal scaling** (adding VM nodes to `nodes[]`
 in that region):
 
-- **Memory Pressure (`e2-micro` 1 GB RAM >80% or Cloud SQL `db-f1-micro` 0.6 GB
+- **Memory Pressure (`e2-micro` 1 GB RAM >75% or Cloud SQL `db-f1-micro` 0.6 GB
   RAM buffer-cache misses)**: Prefer **vertical scaling** (`e2-micro` &rarr;
   `e2-small` 2 GB RAM or `e2-medium` 4 GB RAM; `db-f1-micro` &rarr;
   `db-g1-small` 1.7 GB RAM). Updating `machine_type` or `db_tier` in

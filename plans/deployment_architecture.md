@@ -74,11 +74,10 @@ validating or applying `psqldef` database migrations, or performing
 zero-downtime blue-green cutovers.
 
 This plan—together with its two companion operational plans,
-[`adding_deployment_regions.md`](../deploy/README.md#6-adding-new-geographic-regions)
-(for adding new geographic regions when telemetry shows underserved regional
-traffic) and
-[`scaling_deployment_regions.md`](../deploy/README.md#7-scaling-a-region-vertically-or-horizontally)
-(for scaling individual regions vertically or horizontally based on per-region
+[`adding_deployment_regions.md`](adding_deployment_regions.md) (for adding new
+geographic regions when telemetry shows underserved regional traffic) and
+[`scaling_deployment_regions.md`](scaling_deployment_regions.md) (for scaling
+individual regions vertically or horizontally based on per-region
 telemetry)—supersedes
 [`e2_micro_deployment_and_evolution.md`](archive/e2_micro_deployment_and_evolution.md).
 It establishes a top-level `deploy/` directory, typed per-region deployment
@@ -300,18 +299,17 @@ This nested `regions` &rarr; `nodes` structure directly supports all three
 evolution paths without schema changes:
 
 1. **Adding a New Region** (detailed in
-   [`adding_deployment_regions.md`](../deploy/README.md#6-adding-new-geographic-regions)):
-   Append a new `regions { ... }` block (e.g., `region: "europe-west1"`).
+   [`adding_deployment_regions.md`](adding_deployment_regions.md)): Append a new
+   `regions { ... }` block (e.g., `region: "europe-west1"`).
 2. **Scaling a Specific Region Vertically** (detailed in
-   [`scaling_deployment_regions.md`](../deploy/README.md#7-scaling-a-region-vertically-or-horizontally)):
-   Update `machine_type` (e.g., `"e2-small"`) or `db_tier` (e.g.,
-   `"db-g1-small"`) inside that specific region's block while leaving other
-   regions untouched.
+   [`scaling_deployment_regions.md`](scaling_deployment_regions.md)): Update
+   `machine_type` (e.g., `"e2-small"`) or `db_tier` (e.g., `"db-g1-small"`)
+   inside that specific region's block while leaving other regions untouched.
 3. **Scaling a Specific Region Horizontally** (detailed in
-   [`scaling_deployment_regions.md`](../deploy/README.md#7-scaling-a-region-vertically-or-horizontally)):
-   Append an additional `nodes { zone: "us-central1-b" ... }` block inside that
-   region's `regions` entry so multiple VMs in the region share the regional
-   Cloud SQL instance and Cloudflare Tunnel.
+   [`scaling_deployment_regions.md`](scaling_deployment_regions.md)): Append an
+   additional `nodes { zone: "us-central1-b" ... }` block inside that region's
+   `regions` entry so multiple VMs in the region share the regional Cloud SQL
+   instance and Cloudflare Tunnel.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -488,7 +486,7 @@ only):
   creation (`--backup-start-time=04:00 --enable-point-in-time-recovery`), which
   both protects production data and serves as the prerequisite for spinning up
   cross-region Cloud SQL read replicas in
-  [`adding_deployment_regions.md`](../deploy/README.md#6-adding-new-geographic-regions).
+  [`adding_deployment_regions.md`](adding_deployment_regions.md).
 - **Connection Limit Tuning (`max_connections=100`)**: Cloud SQL's default
   `max_connections` on `db-f1-micro` (25) is raised to `100` via
   `--database-flags=max_connections=100` so primary and read replica instances
@@ -1247,8 +1245,8 @@ Infrastructure Checks** (driven by `deploy/config/${ENV}.textproto` inside
        subscriptions (replicating the PII-free `users` stub, hardware catalog,
        and public community tables while keeping user PII strictly local to each
        region, as detailed in
-       [`adding_deployment_regions.md`](../deploy/README.md#6-adding-new-geographic-regions))
-       are active across the regional primaries.
+       [`adding_deployment_regions.md`](adding_deployment_regions.md)) are
+       active across the regional primaries.
      - Queries the Private VPC IP (`ipAddresses[0].ipAddress`) of each regional
        Cloud SQL instance to construct `QS_DATABASE_URL`,
        `QS_INTERNAL_DATABASE_URL`, and `QS_PEER_DATABASE_URLS`.
@@ -1735,13 +1733,13 @@ root [`README.md`](../README.md)) structured into eight actionable sections:
    geographic traffic telemetry, appending a new `regions` block to
    `deploy/config/prod.textproto`, provisioning a local Cloud SQL cross-region
    read replica, and verifying regional routing (per
-   [`adding_deployment_regions.md`](../deploy/README.md#6-adding-new-geographic-regions)).
+   [`adding_deployment_regions.md`](adding_deployment_regions.md)).
 7. **Scaling a Region Vertically or Horizontally**: Step-by-step decision matrix
    and instructions for scaling an individual region's VM (`machine_type`) or
    Cloud SQL instance (`db_tier`) vertically vs. adding intra-region horizontal
    VM nodes (`nodes[]`) or graduating a region to Cloud Run + Cloud Scheduler,
    plus offloading `/blobs/*` to Cloudflare R2 (per
-   [`scaling_deployment_regions.md`](../deploy/README.md#7-scaling-a-region-vertically-or-horizontally)).
+   [`scaling_deployment_regions.md`](scaling_deployment_regions.md)).
 8. **Day-2 Operations & Troubleshooting (`qsops` & IAP SSH)**: Provides
    copy-pasteable commands for connecting to zero-public-IP VMs over IAP
    (`gcloud compute ssh --tunnel-through-iap`), inspecting container health and
@@ -1941,7 +1939,7 @@ GCP Cloud Run from day one, using Cloud Scheduler for maintenance triggers.
   ~$35+/month per service for `--min-instances=1`, whereas the Always Free
   `e2-micro` VM stays warm 24/7 at $0.00/month (leaving Cloud Run as an optional
   per-region horizontal scaling graduation path in
-  [`scaling_deployment_regions.md`](../deploy/README.md#7-scaling-a-region-vertically-or-horizontally)).
+  [`scaling_deployment_regions.md`](scaling_deployment_regions.md)).
 
 ### <a id="separate-one-time-bootstrap-target-make-env-bootstrap-distinct-from-make-deploy" >Separate One-Time Bootstrap Target (`make env-bootstrap`) Distinct from `make deploy`</a>
 
