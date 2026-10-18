@@ -1676,25 +1676,29 @@ environment-prefixed **GitHub Repository Secrets** (`PROD_*` for `prod` and
 `resolve_env_secret` in [`deploy/deploy.sh`](../deploy/deploy.sh)), which works
 at **$0.00/month on private repositories on the GitHub Free plan** (where GitHub
 Environments are restricted to paid Pro/Team plans). Commit promotion across
-environments follows a three-trigger model:
+environments follows a three-trigger model and maintains live **`staging`** and
+**`prod` Git tags** pointing to the latest successfully deployed commit in each
+environment:
 
 - **Push to `main` &rarr; `staging`**: Every commit pushed or merged to `main`
-  automatically deploys to `staging`.
+  automatically deploys to `staging` and moves the `staging` Git tag on success.
 - **Push a `v*` Tag &rarr; `prod`**: Pushing a release tag (`v*`) automatically
-  promotes that commit to `prod`.
+  promotes that commit to `prod` and moves the `prod` Git tag on success.
 - **Manual Dispatch (`workflow_dispatch`) &rarr; `staging` or `prod`**: Supports
-  deploying any explicit commit SHA, tag, or branch via the `ref` input to
-  either `staging` or `prod`.
+  deploying any explicit commit SHA, tag (including `ref=staging`), or branch
+  via the `ref` input to either `staging` or `prod`.
 
 Both `.github/workflows/deploy.yml` and `deploy/deploy.sh` fail fast if any
 required environment variable or secret is unset or empty, executing across four
 chained stages (`check-credentials` &rarr; `build-and-push` &rarr; `migrate-db`
-&rarr; `deploy-vm`):
+&rarr; `deploy-vm`) plus an automatic `rollback` recovery job on failure:
 
 1. **`check-credentials`**: Verifies that all 16 required `<ENV_PREFIX>_*`
    Repository Secrets are set and non-empty (aborting immediately with an
-   explicit error if any secret is missing) and checks out `inputs.ref` (or
-   `github.sha`) to resolve the canonical commit SHA (`deploy_sha`).
+   explicit error if any secret is missing), checks out `inputs.ref` (or
+   `github.sha`) to resolve the canonical commit SHA (`deploy_sha`), and
+   resolves the commit currently pointed to by the `staging` or `prod` Git tag
+   (`previous_sha`).
 2. **`build-and-push` (`needs: check-credentials`)**: Builds the 4 images in
    parallel using BuildKit (with `cache-dependency-path: "src/go/go.work.sum"`)
    and pushes to
@@ -1711,8 +1715,14 @@ chained stages (`check-credentials` &rarr; `build-and-push` &rarr; `migrate-db`
    `deploy/config/${ENV}.textproto`, ensures all GCP/Cloudflare/VM resources
    exist across `regions[].nodes[]`, syncs `/opt/quadsmith/.env` (with each
    region's local Cloud SQL read/write Private IPs) and `deploy/` over IAP SSH
-   (`gcloud compute ssh --tunnel-through-iap`), and executes
-   `deploy/deploy_blue_green.sh` sequentially across each node.
+   (`gcloud compute ssh --tunnel-through-iap`), executes
+   `deploy/deploy_blue_green.sh` sequentially across each node, and upon success
+   force-updates the `staging` or `prod` Git tag in GitHub to `deploy_sha`.
+5. **`rollback` (Automatic on Failure)**: If `migrate-db` or `deploy-vm` fails
+   and an existing `staging` or `prod` tag (`previous_sha`) is present, the
+   workflow automatically checks out `previous_sha` and runs `STAGE=migrate` and
+   `STAGE=rollout` with `QS_IMAGE_TAG=sha-<previous_sha>` to restore the
+   environment to the last known good deployment.
 
 #### <a id="operator-deployment-guide-deploy-readme-md" >Operator Deployment Guide (`deploy/README.md`)</a>
 

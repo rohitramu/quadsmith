@@ -160,16 +160,19 @@ are never duplicated.
 
 ## 4. Running Deployments (`make deploy` & CI/CD)
 
-### Automated GitHub Actions Pipeline & Commit Promotion
+### Automated GitHub Actions Pipeline, Environment Tags & Commit Promotion
 
 [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) controls which
-commits are deployed to `staging` and `prod`:
+commits are deployed to `staging` and `prod` and maintains live **`staging`**
+and **`prod` Git tags** pointing to the latest successfully deployed commit in
+each environment:
 
 - **Push to `main` &rarr; Auto-Deploy to `staging`**: Every commit pushed or
-  merged to `main` automatically deploys that commit to `staging`.
+  merged to `main` automatically deploys that commit to `staging` and moves the
+  `staging` Git tag to that commit on success.
 - **Push a `v*` Tag &rarr; Auto-Deploy to `prod`**: Pushing a release tag (e.g.,
   `git tag v1.2.0 && git push origin v1.2.0`) automatically deploys that tagged
-  commit to `prod`.
+  commit to `prod` and moves the `prod` Git tag to that commit on success.
 - **Manual Dispatch (`workflow_dispatch`) &rarr; Deploy Any Commit / Tag /
   Branch to `staging` or `prod`**: Trigger the workflow from the GitHub Actions
   UI (**Actions &rarr; Deploy &rarr; Run workflow**) or via the GitHub CLI with
@@ -180,16 +183,18 @@ commits are deployed to `staging` and `prod`:
   # Deploy a specific commit SHA to staging
   gh workflow run deploy.yml -f environment=staging -f ref=1491023
 
-  # Promote that exact commit SHA to prod
-  gh workflow run deploy.yml -f environment=prod -f ref=1491023
+  # Promote the currently deployed staging commit (via the 'staging' tag) to prod
+  gh workflow run deploy.yml -f environment=prod -f ref=staging
   ```
 
-Each workflow run executes across four sequential stages:
+Each workflow run executes across four sequential stages plus an automatic
+failure-recovery `rollback` job:
 
 1. **`check-credentials`**: Verifies that all 16 `<ENV_PREFIX>_*` Repository
-   Secrets are set and non-empty (failing immediately if any secret is missing)
-   and resolves the canonical commit SHA (`deploy_sha`) for `inputs.ref` or
-   `github.sha`.
+   Secrets are set and non-empty (failing immediately if any secret is missing),
+   resolves the canonical commit SHA (`deploy_sha`) for `inputs.ref` or
+   `github.sha`, and records the commit currently pointed to by the `staging` or
+   `prod` Git tag (`previous_sha`).
 2. **`build-and-push`**: Compiles and pushes `server-web`, `server-api`,
    `server-ops`, and `server-jobs` container images in parallel to Google
    Artifact Registry (`:latest` and `:sha-<deploy_sha>`).
@@ -198,9 +203,15 @@ Each workflow run executes across four sequential stages:
    pre-migration snapshot when DDL changes are present, applies `psqldef` schema
    migrations, and seeds the `server-jobs` internal token.
 4. **`deploy-vm`**: Syncs `/opt/quadsmith/.env` and [`deploy/`](.) to each
-   regional VM over IAP SSH and executes
+   regional VM over IAP SSH, executes
    [`deploy_blue_green.sh`](deploy_blue_green.sh) for a zero-downtime blue-green
-   cutover.
+   cutover, and upon success force-updates the `staging` or `prod` Git tag in
+   GitHub to `deploy_sha`.
+5. **`rollback` (Automatic on Failure)**: If `migrate-db` or `deploy-vm` fails
+   and an existing `staging` or `prod` tag (`previous_sha`) is present, the
+   workflow automatically checks out `previous_sha` and runs `STAGE=migrate` and
+   `STAGE=rollout` with `QS_IMAGE_TAG=sha-<previous_sha>` to restore the
+   environment to the last known good deployment.
 
 ### Running From an Operator Workstation
 
@@ -266,13 +277,17 @@ Because normal schema changes are additive and backwards-compatible, the
 previous container release continues to run cleanly against the current database
 schema:
 
-- **Automatic Rollback During Cutover**: If any candidate container in the new
-  slot (`blue` or `green`) fails `/healthz` within 15 seconds,
-  [`deploy_blue_green.sh`](deploy_blue_green.sh) automatically aborts, dumps the
-  failing container logs, tears down the candidate slot, and leaves Nginx
-  routing 100% of traffic to the previous slot.
-- **Manual Rollback After Cutover**: Re-run the `rollout` stage pinned to the
-  previous commit's image tag:
+- **Automatic Per-Node & CI Rollback During Cutover**: If any candidate
+  container in the new slot (`blue` or `green`) fails `/healthz` within 15
+  seconds, [`deploy_blue_green.sh`](deploy_blue_green.sh) automatically aborts,
+  dumps the failing container logs, tears down the candidate slot, and leaves
+  Nginx routing 100% of traffic to the previous slot, while the `rollback` job
+  in [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml)
+  automatically converges all nodes and schema back to the latest `staging` or
+  `prod` Git tag (`previous_sha`).
+- **Manual Rollback After Cutover**: Trigger `deploy.yml` with `ref` set to an
+  earlier commit SHA, or re-run the `rollout` stage locally pinned to a previous
+  commit's image tag:
 
   ```bash
   make deploy ENV=prod STAGE=rollout QS_IMAGE_TAG=sha-<previous_commit_sha>

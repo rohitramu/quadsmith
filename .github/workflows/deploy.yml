@@ -27,6 +27,9 @@ on:
         default: false
         type: boolean
 
+permissions:
+  contents: write
+
 concurrency:
   group: deploy-${{ (github.event_name == 'workflow_dispatch' && inputs.environment) || (github.ref == 'refs/heads/main' && 'staging') || 'prod' }}
   cancel-in-progress: false
@@ -43,6 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       deploy_sha: ${{ steps.ref.outputs.deploy_sha }}
+      previous_sha: ${{ steps.ref.outputs.previous_sha }}
     steps:
       - name: Validate all required ${{ env.ENV_PREFIX }}_* Repository Secrets are non-empty
         env:
@@ -97,13 +101,22 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ inputs.ref || github.sha }}
+          fetch-depth: 0
 
-      - name: Resolve canonical commit SHA
+      - name: Resolve canonical commit SHA and current '${{ env.TARGET_ENV }}' tag
         id: ref
         run: |
+          git fetch origin --tags --force
           DEPLOY_SHA="$(git rev-parse HEAD)"
+          PREVIOUS_SHA="$(git rev-parse "refs/tags/${TARGET_ENV}^{commit}" 2>/dev/null || true)"
           echo "Resolved deployment commit SHA: ${DEPLOY_SHA} (target environment: ${TARGET_ENV})"
+          if [ -n "${PREVIOUS_SHA}" ]; then
+            echo "Current '${TARGET_ENV}' tag points to last known good commit: ${PREVIOUS_SHA}"
+          else
+            echo "No existing '${TARGET_ENV}' tag found (initial deployment to ${TARGET_ENV})."
+          fi
           echo "deploy_sha=${DEPLOY_SHA}" >> "$GITHUB_OUTPUT"
+          echo "previous_sha=${PREVIOUS_SHA}" >> "$GITHUB_OUTPUT"
 
   build-and-push:
     name: Build & Push Images (${{ matrix.service }})
@@ -237,6 +250,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: ${{ needs.check-credentials.outputs.deploy_sha }}
+          fetch-depth: 0
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -277,3 +291,78 @@ jobs:
             ENV="${{ env.TARGET_ENV }}" \
             STAGE=rollout \
             QS_IMAGE_TAG="sha-${{ needs.check-credentials.outputs.deploy_sha }}"
+
+      - name: Tag deployed commit as '${{ env.TARGET_ENV }}'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -f "${TARGET_ENV}" "${{ needs.check-credentials.outputs.deploy_sha }}"
+          git push origin "refs/tags/${TARGET_ENV}" --force
+          echo "Successfully tagged commit ${{ needs.check-credentials.outputs.deploy_sha }} as '${TARGET_ENV}'."
+
+  rollback:
+    name: Roll Back to Latest '${{ (github.event_name == 'workflow_dispatch' && inputs.environment) || (github.ref == 'refs/heads/main' && 'staging') || 'prod' }}' Tag on Failure
+    needs:
+      - check-credentials
+      - build-and-push
+      - migrate-db
+      - deploy-vm
+    if: ${{ failure() && needs.check-credentials.result == 'success' && needs.check-credentials.outputs.previous_sha != '' && (needs.migrate-db.result == 'failure' || needs.deploy-vm.result == 'failure') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out last known good '${{ env.TARGET_ENV }}' commit (${{ needs.check-credentials.outputs.previous_sha }})
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.check-credentials.outputs.previous_sha }}
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.27"
+          cache-dependency-path: "src/go/go.work.sum"
+
+      - name: Sync Go Vendor Dependencies
+        run: cd src/go && go work vendor
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets[format('{0}_GCP_SA_KEY', env.ENV_PREFIX)] }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Install PostgreSQL Client & psqldef
+        run: |
+          sudo apt-get update && sudo apt-get install -y postgresql-client socat jq
+          curl -fsSL https://github.com/sqldef/sqldef/releases/latest/download/psqldef_linux_amd64.tar.gz | sudo tar -xz -C /usr/local/bin psqldef
+
+      - name: Roll back database schema and regional VMs to '${{ env.TARGET_ENV }}' tag (${{ needs.check-credentials.outputs.previous_sha }})
+        env:
+          CF_ACCOUNT_ID: ${{ secrets[format('{0}_CF_ACCOUNT_ID', env.ENV_PREFIX)] }}
+          CF_ZONE_ID: ${{ secrets[format('{0}_CF_ZONE_ID', env.ENV_PREFIX)] }}
+          CF_API_TOKEN: ${{ secrets[format('{0}_CF_API_TOKEN', env.ENV_PREFIX)] }}
+          QS_DB_PASSWORD: ${{ secrets[format('{0}_QS_DB_PASSWORD', env.ENV_PREFIX)] }}
+          QS_AUTH_SECRET: ${{ secrets[format('{0}_QS_AUTH_SECRET', env.ENV_PREFIX)] }}
+          QS_JOB_SERVER_AUTH_TOKEN: ${{ secrets[format('{0}_QS_JOB_SERVER_AUTH_TOKEN', env.ENV_PREFIX)] }}
+          QS_SMTP_PASSWORD: ${{ secrets[format('{0}_QS_SMTP_PASSWORD', env.ENV_PREFIX)] }}
+          QS_GOOGLE_CLIENT_ID: ${{ secrets[format('{0}_QS_GOOGLE_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_GOOGLE_CLIENT_SECRET: ${{ secrets[format('{0}_QS_GOOGLE_CLIENT_SECRET', env.ENV_PREFIX)] }}
+          QS_GITHUB_CLIENT_ID: ${{ secrets[format('{0}_QS_GITHUB_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_GITHUB_CLIENT_SECRET: ${{ secrets[format('{0}_QS_GITHUB_CLIENT_SECRET', env.ENV_PREFIX)] }}
+          QS_DISCORD_CLIENT_ID: ${{ secrets[format('{0}_QS_DISCORD_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_DISCORD_CLIENT_SECRET: ${{ secrets[format('{0}_QS_DISCORD_CLIENT_SECRET', env.ENV_PREFIX)] }}
+          QS_OAUTH_CLIENT_ID: ${{ secrets[format('{0}_QS_OAUTH_CLIENT_ID', env.ENV_PREFIX)] }}
+          QS_OAUTH_CLIENT_SECRET: ${{ secrets[format('{0}_QS_OAUTH_CLIENT_SECRET', env.ENV_PREFIX)] }}
+        run: |
+          echo "::warning::Deployment of ${{ needs.check-credentials.outputs.deploy_sha }} failed; rolling '${TARGET_ENV}' back to commit ${{ needs.check-credentials.outputs.previous_sha }}."
+          make deploy \
+            ENV="${{ env.TARGET_ENV }}" \
+            STAGE=migrate \
+            ALLOW_BREAKING_CHANGES=true \
+            QS_IMAGE_TAG="sha-${{ needs.check-credentials.outputs.previous_sha }}"
+          make deploy \
+            ENV="${{ env.TARGET_ENV }}" \
+            STAGE=rollout \
+            QS_IMAGE_TAG="sha-${{ needs.check-credentials.outputs.previous_sha }}"
