@@ -6,6 +6,7 @@ cd "$ROOT_DIR"
 
 COMPOSE_FILE="deploy/docker-compose.blue-green.yaml"
 UPSTREAMS_FILE="deploy/nginx/upstreams.conf"
+SCRAPE_FILE="deploy/victoriametrics/scrape.yml"
 ACTIVE_SLOT_FILE="deploy/.active_slot"
 
 REQUIRED_VARS=(
@@ -36,6 +37,54 @@ for var in "${REQUIRED_VARS[@]}"; do
         exit 1
     fi
 done
+
+write_scrape_targets() {
+    local active_slot="$1"
+    local candidate_slot="$2"
+    local tmp_file="${SCRAPE_FILE}.tmp"
+
+    if [ -n "$active_slot" ] && [ -n "$candidate_slot" ] && [ "$active_slot" != "$candidate_slot" ]; then
+        cat > "$tmp_file" <<EOF
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "quadsmith-services"
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - "web-${active_slot}:8080"
+          - "api-${active_slot}:8081"
+          - "ops-api-${active_slot}:8082"
+          - "ops-web-${active_slot}:8083"
+          - "cron-${active_slot}:8084"
+          - "web-${candidate_slot}:8080"
+          - "api-${candidate_slot}:8081"
+          - "ops-api-${candidate_slot}:8082"
+          - "ops-web-${candidate_slot}:8083"
+          - "cron-${candidate_slot}:8084"
+EOF
+    else
+        local slot="${candidate_slot:-$active_slot}"
+        cat > "$tmp_file" <<EOF
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: "quadsmith-services"
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - "web-${slot}:8080"
+          - "api-${slot}:8081"
+          - "ops-api-${slot}:8082"
+          - "ops-web-${slot}:8083"
+          - "cron-${slot}:8084"
+EOF
+    fi
+    cat "$tmp_file" > "$SCRAPE_FILE"
+    rm -f "$tmp_file"
+}
 
 write_weighted_upstreams() {
     local active_slot="$1"
@@ -93,7 +142,8 @@ upstream ops_web_upstream {
 }
 EOF
     fi
-    mv -f "$tmp_file" "$UPSTREAMS_FILE"
+    cat "$tmp_file" > "$UPSTREAMS_FILE"
+    rm -f "$tmp_file"
 }
 
 check_candidate_health() {
@@ -137,6 +187,12 @@ CANDIDATE_SERVICES=("api-${NEXT_SLOT}" "ops-api-${NEXT_SLOT}" "ops-web-${NEXT_SL
 
 echo "--- Blue-Green Cutover: active=${ACTIVE_SLOT:-none} -> candidate=${NEXT_SLOT} (ramp=${QS_ROLLOUT_RAMP_STAGES}) ---"
 
+if [ -n "$ACTIVE_SLOT" ]; then
+    write_scrape_targets "$ACTIVE_SLOT" "$ACTIVE_SLOT"
+else
+    write_scrape_targets "$NEXT_SLOT" "$NEXT_SLOT"
+fi
+
 echo "--- Ensuring standing telemetry stack (victoriametrics, victorialogs, grafana) ---"
 docker compose -f "$COMPOSE_FILE" up -d victoriametrics victorialogs grafana
 
@@ -157,6 +213,7 @@ done
 
 echo "--- Starting candidate slot (${NEXT_SLOT}) containers ---"
 docker compose -f "$COMPOSE_FILE" up -d "${CANDIDATE_SERVICES[@]}"
+write_scrape_targets "$ACTIVE_SLOT" "$NEXT_SLOT"
 
 if [ -z "$ACTIVE_SLOT" ]; then
     write_weighted_upstreams "" 0 "$NEXT_SLOT" 100
@@ -176,6 +233,9 @@ done
 
 if [ "$HEALTHY" != "true" ]; then
     echo "ERROR: Candidate slot (${NEXT_SLOT}) failed initial health checks within ${QS_ROLLOUT_HEALTH_TIMEOUT_SEC}s. Aborting..." >&2
+    if [ -n "$ACTIVE_SLOT" ]; then
+        write_scrape_targets "$ACTIVE_SLOT" "$ACTIVE_SLOT"
+    fi
     docker compose -f "$COMPOSE_FILE" logs --tail=50 "${CANDIDATE_SERVICES[@]}" || true
     docker compose -f "$COMPOSE_FILE" stop -t 10 "${CANDIDATE_SERVICES[@]}" || true
     docker compose -f "$COMPOSE_FILE" rm -f "${CANDIDATE_SERVICES[@]}" || true
@@ -211,6 +271,7 @@ if [ -n "$ACTIVE_SLOT" ] && [ "$ACTIVE_SLOT" != "$NEXT_SLOT" ]; then
                 if ! check_candidate_health; then
                     echo "ERROR: Candidate slot (${NEXT_SLOT}) failed health check during ${candidate_weight}% traffic stage (${elapsed}s/${hold_sec}s). Reverting 100% traffic to ${ACTIVE_SLOT}..." >&2
                     write_weighted_upstreams "" 0 "$ACTIVE_SLOT" 100
+                    write_scrape_targets "$ACTIVE_SLOT" "$ACTIVE_SLOT"
                     docker compose -f "$COMPOSE_FILE" exec -T nginx sh -c "nginx -t && nginx -s reload"
                     docker compose -f "$COMPOSE_FILE" logs --tail=50 "${CANDIDATE_SERVICES[@]}" || true
                     docker compose -f "$COMPOSE_FILE" stop -t 10 "${CANDIDATE_SERVICES[@]}" || true
@@ -229,6 +290,7 @@ else
     docker compose -f "$COMPOSE_FILE" exec -T nginx sh -c "nginx -t && nginx -s reload"
 fi
 
+write_scrape_targets "$NEXT_SLOT" "$NEXT_SLOT"
 printf '%s\n' "$NEXT_SLOT" > "$ACTIVE_SLOT_FILE"
 
 if [ -n "$ACTIVE_SLOT" ] && [ "$ACTIVE_SLOT" != "$NEXT_SLOT" ]; then

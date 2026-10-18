@@ -18,6 +18,7 @@ services:
     restart: unless-stopped
     command:
       - "-promscrape.config=/etc/victoriametrics/scrape.yml"
+      - "-promscrape.configCheckInterval=5s"
       - "-retentionPeriod=30d"
       - "-storageDataPath=/storage"
     volumes:
