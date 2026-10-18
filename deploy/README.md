@@ -23,13 +23,17 @@ environments (`sandbox`, `staging`, and `prod`):
   - **Edge & Ingress**: Cloudflare DNS, CDN (with Smart Tiered Cache and RFC
     `Cache-Control` compliance), and outbound-only Cloudflare Tunnels
     (`cloudflared`).
-  - **Compute**: Zero-public-IP Linux VMs on Google Cloud Compute Engine (starts
-    with the Always Free `e2-micro` in `us-central1-a`), provisioned with a 2 GB
-    `/swapfile`, `journald` 100 MB log cap, and Docker `json-file` log rotation.
-  - **Database**: Managed **GCP Cloud SQL for PostgreSQL** (Enterprise Edition,
-    starting on `db-f1-micro` with 10 GB SSD, `max_connections=100`, daily PITR
-    backups, and `--no-assign-ip` Private VPC IP only) hosting both the
-    `quadsmith_api` and `quadsmith_ops` logical databases.
+  - **100% Stateless Compute VMs**: Zero-public-IP Linux VMs on Google Cloud
+    Compute Engine (starting with the Always Free `e2-micro` in
+    `us-central1-a`), provisioned with a 2 GB `/swapfile`, `journald` 100 MB log
+    cap, and Docker `json-file` log rotation. VMs hold zero persistent data or
+    backups and can be replaced or scaled horizontally at any time.
+  - **Managed Database & Native Backups**: **GCP Cloud SQL for PostgreSQL**
+    (Enterprise Edition, starting on `db-f1-micro` with 10 GB SSD,
+    `max_connections=100`, daily automated backups, 7-day 1-second Point-in-Time
+    Recovery, pre-migration on-demand snapshots, and `--no-assign-ip` Private
+    VPC IP only) hosting both the `quadsmith_api` and `quadsmith_ops` logical
+    databases.
 
 ---
 
@@ -129,15 +133,16 @@ and `make build`:
   Registry repository (`us-central1`).
 - **`regions[]`**: Ordered list of regional deployments. The first entry
   (`regions[0]`) is the primary region hosting the writable Cloud SQL instance
-  (`quadsmith-db-<env>`), while subsequent entries automatically provision
-  in-region Cloud SQL cross-region read replicas
-  (`quadsmith-db-<env>-<region>`).
+  (`quadsmith-db-<env>-<region>`), while subsequent entries automatically
+  provision in-region Cloud SQL cross-region read replicas.
   - **`db_tier`**: Cloud SQL machine tier for the region (`db-f1-micro` by
     default).
   - **`nodes[]`**: Ordered list of stateless Compute Engine VMs (`zone` +
     `machine_type`) running the Docker Compose application stack in that region.
-- **`db_backup_retention_count`**: Number of pre-migration `pg_dump -Fc` backups
-  retained on the primary VM before rotating oldest files (default: `10`).
+- **`db_backup_retention_count`**: Number of Cloud SQL `ON_DEMAND` pre-migration
+  snapshots retained (`5` in `prod`, `3` in `staging`) before automatically
+  pruning older `ON_DEMAND` snapshots (in addition to Cloud SQL's 7 free daily
+  automated backups and 7-day continuous PITR).
 
 Service hostnames (`quadsmith.com`, `api.quadsmith.com`, `ops.quadsmith.com`,
 and their `staging-*` counterparts) are derived automatically from the existing
@@ -157,11 +162,11 @@ sequential stages:
 
 1. **`build-and-push`**: Compiles and pushes `server-web`, `server-api`,
    `server-ops`, and `server-jobs` container images in parallel to Google
-   Artifact Registry.
+   Artifact Registry (`:latest` and `:sha-<commit>`).
 2. **`migrate-db`**: Ensures all GCP, Cloud SQL, and Cloudflare resources exist,
-   runs the automated breaking-change gate, captures a pre-migration database
-   backup when DDL changes are present, applies `psqldef` schema migrations, and
-   seeds the `server-jobs` internal token.
+   runs the automated breaking-change gate, creates a Cloud SQL `ON_DEMAND`
+   pre-migration snapshot when DDL changes are present, applies `psqldef` schema
+   migrations, and seeds the `server-jobs` internal token.
 3. **`deploy-vm`**: Syncs `/opt/quadsmith/.env` and [`deploy/`](.) to each
    regional VM over IAP SSH and executes
    [`deploy_blue_green.sh`](deploy_blue_green.sh) for a zero-downtime blue-green
@@ -173,54 +178,141 @@ With `gcloud`, `docker`, `psql`, `psqldef`, `jq`, and `socat` installed and the
 required environment variables exported, run:
 
 ```bash
-# Full convergent deployment to staging or prod
+# Full convergent deployment to staging or prod (build + migrate + rollout)
 make deploy ENV=staging
 make deploy ENV=prod
 
 # Run only a specific stage (build | migrate | rollout)
+make deploy ENV=prod STAGE=build
 make deploy ENV=prod STAGE=migrate
 make deploy ENV=prod STAGE=rollout
 ```
 
 ---
 
-## 5. Database Migrations, Pre-Migration Backups & Rollbacks
+## 5. Backup Schedule, Database Migrations & Rollback Runbook
+
+### Three-Tier Cloud SQL Backup Schedule
+
+All database backups are stored natively in **GCP Cloud SQL** as incremental
+block-level snapshots and Write-Ahead Log (WAL) streams. Zero backup files are
+stored on any Compute Engine VM, keeping all VMs 100% stateless:
+
+| Backup Tier                                     | Schedule / Trigger                                                                                                                  | Retention Window                                                                         | Recovery Granularity                          | Purpose                                                                         |
+| :---------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- | :-------------------------------------------- | :------------------------------------------------------------------------------ |
+| **1. Daily Automated Backups**                  | Automatically every day at **`04:00 UTC`**                                                                                          | **7 daily snapshots** _(included free with Cloud SQL)_                                   | 24-hour snapshots                             | Baseline disaster recovery                                                      |
+| **2. Continuous Point-in-Time Recovery (PITR)** | Continuous streaming of PostgreSQL WAL logs (`--enable-point-in-time-recovery`)                                                     | Rolling **7 days**                                                                       | **Any exact second** (`YYYY-MM-DDTHH:MM:SSZ`) | Recovering to the exact second before an accidental write, delete, or migration |
+| **3. Pre-Migration On-Demand Snapshots**        | Triggered automatically by [`deploy.sh`](deploy.sh) right before `make db-migrate` whenever `psqldef --dry-run` detects DDL changes | Most recent **`db_backup_retention_count`** migrations (`5` in `prod`, `3` in `staging`) | Exact pre-migration state                     | Named pre-migration restore points that **never expire after 7 days**           |
+
+### Automated Database Migration Gate
 
 During the `migrate` stage, [`deploy.sh`](deploy.sh) opens an encrypted IAP TCP
 tunnel through the primary VM to the Cloud SQL Private IP and runs
 `psqldef --dry-run` for both `quadsmith_api` and `quadsmith_ops`:
 
 1. **Zero-DDL Fast Path**: If `psqldef --dry-run` outputs no DDL statements,
-   backups and migrations are skipped cleanly.
+   pre-migration snapshot creation and schema migration are skipped cleanly.
 2. **Automated Breaking-Change Gate (`make check-breaking`)**: When DDL changes
    are detected, [`deploy.sh`](deploy.sh) exports the live schemas via
    `psqldef --export` and runs `make check-breaking` (`STRICT_BREAKING=1`). If a
    dropped table, dropped column, incompatible type change, or un-defaulted
    `NOT NULL` column is detected, the deployment aborts before touching Cloud
    SQL.
-   - To intentionally apply a breaking schema change, trigger
-     `.github/workflows/deploy.yml` via `workflow_dispatch` with
-     `allow_breaking_changes: true` (or pass `--allow-breaking-changes=true` to
-     `deploy/deploy.sh`).
-3. **Automated Pre-Migration Snapshot (`pg_dump -Fc`)**: Before applying any
-   DDL, [`deploy.sh`](deploy.sh) streams a compressed `pg_dump -Fc` snapshot of
-   both `quadsmith_api` and `quadsmith_ops` to `/opt/quadsmith/backups/` on the
-   primary VM (alongside Cloud SQL's managed daily backups and PITR).
-4. **Restoring a Pre-Migration Snapshot**:
+   - **Approving an Intentional Breaking Change**: Trigger
+     [`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml) via
+     `workflow_dispatch` with `allow_breaking_changes: true` (or run
+     `make deploy ENV=prod ALLOW_BREAKING_CHANGES=true`).
+3. **Pre-Migration Cloud SQL Snapshot & PITR Timestamp Log**: Before applying
+   DDL, [`deploy.sh`](deploy.sh) prints the exact UTC timestamp
+   (`Pre-migration PITR restore timestamp: YYYY-MM-DDTHH:MM:SSZ`), creates a
+   Cloud SQL `ON_DEMAND` snapshot (`gcloud sql backups create`), and prunes
+   older `ON_DEMAND` snapshots beyond `db_backup_retention_count`.
+
+### Complete Rollback Runbook
+
+#### Scenario A: Rolling Back Application Code / Containers (No DB Restore Needed)
+
+Because normal schema changes are additive and backwards-compatible, the
+previous container release continues to run cleanly against the current database
+schema:
+
+- **Automatic Rollback During Cutover**: If any candidate container in the new
+  slot (`blue` or `green`) fails `/healthz` within 15 seconds,
+  [`deploy_blue_green.sh`](deploy_blue_green.sh) automatically aborts, dumps the
+  failing container logs, tears down the candidate slot, and leaves Nginx
+  routing 100% of traffic to the previous slot.
+- **Manual Rollback After Cutover**: Re-run the `rollout` stage pinned to the
+  previous commit's image tag:
+
+  ```bash
+  make deploy ENV=prod STAGE=rollout QS_IMAGE_TAG=sha-<previous_commit_sha>
+  ```
+
+#### Scenario B: Rolling Back an Additive Schema Change (No Data Lost)
+
+If a migration added a table, column, or index that you want to remove without
+losing existing data:
+
+1. Revert the schema commit in git (`git revert <commit_sha>`).
+2. Run `make deploy` with `ALLOW_BREAKING_CHANGES=true` so `psqldef` applies the
+   reverse `DROP` statement inside a single PostgreSQL transaction:
+
+   ```bash
+   make deploy ENV=prod ALLOW_BREAKING_CHANGES=true
+   ```
+
+#### Scenario C: In-Place Restore from a Pre-Migration On-Demand or Daily Snapshot
+
+To roll the entire Cloud SQL instance back in place to a pre-migration
+`ON_DEMAND` snapshot (or one of the 7 daily `AUTOMATED` backups):
 
 ```bash
-gcloud compute ssh quadsmith-prod-us-central1-a-1 \
-  --tunnel-through-iap \
-  --project=quadsmith-prod \
-  --zone=us-central1-a \
-  --command='
-    source /opt/quadsmith/.env
-    DB_HOST="$(echo "$QS_DATABASE_URL" | sed -E "s|.*@([^:/]+).*|\1|")"
-    PGPASSWORD="$QS_DB_PASSWORD" pg_restore --clean --if-exists --no-owner \
-      -h "$DB_HOST" -U postgres -d quadsmith_api \
-      /opt/quadsmith/backups/quadsmith_api_<timestamp>.dump
-  '
+# 1. List available backups (shows ID, WINDOW_START_TIME, TYPE, and DESCRIPTION)
+gcloud sql backups list \
+  --instance=quadsmith-db-prod-us-central1 \
+  --project=quadsmith-prod
+
+# 2. Restore the selected BACKUP_ID in place
+gcloud sql backups restore <BACKUP_ID> \
+  --restore-instance=quadsmith-db-prod-us-central1 \
+  --project=quadsmith-prod
 ```
+
+#### Scenario D: Point-in-Time Recovery (PITR) to an Exact Second Within the Last 7 Days
+
+If an accidental data modification or bad migration occurred and you want to
+rewind to the exact second before it happened (using the
+`Pre-migration PITR restore timestamp` logged by [`deploy.sh`](deploy.sh) or any
+UTC timestamp within the last 7 days):
+
+```bash
+# 1. Clone the primary instance to the exact target second
+gcloud sql instances clone quadsmith-db-prod-us-central1 \
+  quadsmith-db-prod-recovery \
+  --point-in-time="2026-10-18T00:12:34Z" \
+  --project=quadsmith-prod
+```
+
+Once `quadsmith-db-prod-recovery` is ready, you can either:
+
+1. **Surgically restore a single table or database** (preserving all unaffected
+   data written after the incident) by piping `pg_dump` from the recovery
+   clone's Private IP into `quadsmith-db-prod-us-central1`, and then deleting
+   the temporary clone:
+
+   ```bash
+   gcloud sql instances delete quadsmith-db-prod-recovery --project=quadsmith-prod
+   ```
+
+2. **Take a snapshot of the recovery clone and restore it onto the primary**:
+
+   ```bash
+   gcloud sql backups create --instance=quadsmith-db-prod-recovery --project=quadsmith-prod
+   gcloud sql backups restore <RECOVERY_BACKUP_ID> \
+     --restore-instance=quadsmith-db-prod-us-central1 \
+     --project=quadsmith-prod
+   gcloud sql instances delete quadsmith-db-prod-recovery --project=quadsmith-prod
+   ```
 
 ---
 
@@ -251,7 +343,7 @@ Europe or Asia-Pacific) and `server-api` p95 latency in that geography exceeds
    - Provision the regional subnet and Cloud NAT in `europe-west1`.
    - Provision the in-region Cloud SQL read replica
      (`quadsmith-db-prod-europe-west1`) replicating asynchronously from
-     `quadsmith-db-prod`.
+     `quadsmith-db-prod-us-central1`.
    - Provision the `quadsmith-prod-europe-west1-b-1` VM, join it to the shared
      Cloudflare Tunnel (`cloudflared` automatically serves regional users from
      the nearest healthy connector), wire `QS_READ_DATABASE_URL` to the local

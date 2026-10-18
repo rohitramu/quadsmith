@@ -287,9 +287,9 @@ ensure_compute_nodes() {
                 fi
                 if ! command -v docker >/dev/null 2>&1; then
                     sudo apt-get update -qq
-                    sudo apt-get install -y -qq docker.io docker-compose-plugin postgresql-client wget curl
+                    sudo apt-get install -y -qq docker.io docker-compose-plugin wget curl
                 fi
-                sudo mkdir -p /etc/docker /opt/quadsmith/backups /opt/quadsmith/deploy/nginx
+                sudo mkdir -p /etc/docker /opt/quadsmith/deploy/nginx
                 sudo chown -R \"\$(whoami)\" /opt/quadsmith
                 if [ ! -f /etc/docker/daemon.json ]; then
                     echo '{\"log-driver\":\"json-file\",\"log-opts\":{\"max-size\":\"10m\",\"max-file\":\"3\"}}' | sudo tee /etc/docker/daemon.json >/dev/null
@@ -319,9 +319,9 @@ build_and_push_images() {
 }
 
 run_migration_gate_and_seed() {
+    local instance_name="quadsmith-db-${ENV}-${PRIMARY_REGION}"
     local primary_db_ip="${REGION_DB_IPS[$PRIMARY_REGION]:-}"
     if [ -z "$primary_db_ip" ]; then
-        local instance_name="quadsmith-db-${ENV}-${PRIMARY_REGION}"
         primary_db_ip="$(gcloud sql instances describe "$instance_name" --project="$GCP_PROJECT_ID" --format="value(ipAddresses[0].ipAddress)")"
         REGION_DB_IPS["$PRIMARY_REGION"]="$primary_db_ip"
     fi
@@ -355,22 +355,32 @@ run_migration_gate_and_seed() {
                 QS_LIVE_SCHEMA_DIR="$(pwd)/.tmp/live_schema" make check-breaking
             fi
 
-            local ts
+            local ts pitr_ts
             ts="$(date -u +%Y%m%dT%H%M%SZ)"
-            echo "--- Taking pre-migration pg_dump -Fc backups on ${PRIMARY_VM} (retaining ${BACKUP_RETENTION}) ---"
-            gcloud compute ssh "$PRIMARY_VM" \
-                --tunnel-through-iap \
-                --project="$GCP_PROJECT_ID" \
-                --zone="$PRIMARY_ZONE" \
-                --command="
-                    set -e
-                    PGPASSWORD='${QS_DB_PASSWORD}' pg_dump -Fc --no-owner --no-acl -h '${primary_db_ip}' -U postgres quadsmith_api \
-                        > /opt/quadsmith/backups/quadsmith_api_${ts}_${GIT_SHA}.dump
-                    PGPASSWORD='${QS_DB_PASSWORD}' pg_dump -Fc --no-owner --no-acl -h '${primary_db_ip}' -U postgres quadsmith_ops \
-                        > /opt/quadsmith/backups/quadsmith_ops_${ts}_${GIT_SHA}.dump
-                    ls -1t /opt/quadsmith/backups/quadsmith_api_*.dump 2>/dev/null | tail -n +\$((${BACKUP_RETENTION} + 1)) | xargs -r rm -f
-                    ls -1t /opt/quadsmith/backups/quadsmith_ops_*.dump 2>/dev/null | tail -n +\$((${BACKUP_RETENTION} + 1)) | xargs -r rm -f
-                "
+            pitr_ts="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+            echo "--- Creating Cloud SQL ON_DEMAND pre-migration backup on ${instance_name} (retaining ${BACKUP_RETENTION}) ---"
+            echo "--- Pre-migration PITR restore timestamp: ${pitr_ts} ---"
+            gcloud sql backups create \
+                --instance="$instance_name" \
+                --description="Pre-migration ${GIT_SHA} (${ts})" \
+                --project="$GCP_PROJECT_ID"
+
+            mapfile -t OLD_BACKUP_IDS < <(
+                gcloud sql backups list \
+                    --instance="$instance_name" \
+                    --project="$GCP_PROJECT_ID" \
+                    --filter="type=ON_DEMAND AND status=SUCCESSFUL" \
+                    --sort-by="~windowStartTime" \
+                    --format="value(id)" | tail -n +$((BACKUP_RETENTION + 1))
+            )
+            for old_id in "${OLD_BACKUP_IDS[@]}"; do
+                [ -z "$old_id" ] && continue
+                echo "--- Pruning expired ON_DEMAND backup ID ${old_id} on ${instance_name} ---"
+                gcloud sql backups delete "$old_id" \
+                    --instance="$instance_name" \
+                    --project="$GCP_PROJECT_ID" \
+                    --quiet
+            done
         fi
 
         echo "--- Applying declarative database migrations via make db-migrate ---"
@@ -378,7 +388,7 @@ run_migration_gate_and_seed() {
         QS_INTERNAL_DATABASE_URL="postgres://postgres:${QS_DB_PASSWORD}@127.0.0.1:${local_port}/quadsmith_ops?sslmode=require" \
         make db-migrate
     else
-        echo "--- Zero pending DDL changes detected; skipping pre-migration pg_dump ---"
+        echo "--- Zero pending DDL changes detected; skipping pre-migration Cloud SQL backup ---"
     fi
 
     echo "--- Ensuring robot token hash in quadsmith_ops.internal_tokens ---"

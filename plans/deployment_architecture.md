@@ -84,9 +84,9 @@ telemetry)—supersedes
 It establishes a top-level `deploy/` directory, typed per-region deployment
 infrastructure configurations (`deploy/config/{staging,prod}.textproto`), a
 single convergent `make deploy` command (handling idempotent GCP/CF/VM/Cloud SQL
-bootstrap, pre-migration `pg_dump` backups, `make check-breaking`, and
-`make db-migrate`), zero-downtime blue-green container cutover, and a colocated
-operator runbook in `deploy/README.md`.
+bootstrap, pre-migration Cloud SQL `ON_DEMAND` snapshots, `make check-breaking`,
+and `make db-migrate`), zero-downtime blue-green container cutover, and a
+colocated operator runbook in `deploy/README.md`.
 
 ---
 
@@ -116,8 +116,8 @@ operator documentation in `deploy/README.md`.
 >   ($0/mo) behind Cloudflare Tunnel with zero public IP.
 > - Pair with Private-IP GCP Cloud SQL (`db-f1-micro`, ~$10.50/mo) for <0.8 ms
 >   SQL RTT and $0/GB internal VPC bandwidth.
-> - Unify idempotent GCP/CF/VM/Cloud SQL bootstrap, pre-migration `pg_dump`
->   backups, `make check-breaking`, and `make db-migrate` under `make deploy`.
+> - Unify idempotent GCP/CF/VM/Cloud SQL bootstrap, pre-migration Cloud SQL
+>   snapshots, `make check-breaking`, and `make db-migrate` under `make deploy`.
 > - Perform zero-downtime blue-green container cutovers (`nginx -s reload`)
 >   gated on `/healthz` with automatic rollback.
 
@@ -1147,12 +1147,12 @@ Define `bootstrap_tokens` entries templated with environment variables in
 To compare the candidate provisioning mechanisms across our engineering
 criteria:
 
-| Provisioning Approach                                                   | Config Source of Truth                                                       | External State Backend Needed                               | Third-Party SDK / Plugin Bloat                                   | Suitability for Quadsmith                                                     |
-| :---------------------------------------------------------------------- | :--------------------------------------------------------------------------- | :---------------------------------------------------------- | :--------------------------------------------------------------- | :---------------------------------------------------------------------------- |
-| **Convergent `make deploy` + `deploy/config/*.textproto`** _(Proposed)_ | **`deploy/config/{staging,prod}.textproto`** _(validated by `check-config`)_ | **None** _(queries live GCP/CF/PG APIs directly)_           | **Zero** _(uses `gcloud`, `curl`, `psql`, `pg_dump`, `psqldef`)_ | **Optimal** _(single command for 1st and 100th deploy)_                       |
-| **Terraform / OpenTofu**                                                | Separate `.tf` / `.tfvars` HCL files                                         | **Yes** _(requires bootstrapping a GCS state bucket first)_ | **3 Providers** (`google`, `cloudflare`, `postgresql`)           | **Overkill** _(plaintext secrets in `tfstate`; chicken-and-egg bucket)_       |
-| **Custom Go SDK CLI (`qsops infra`)**                                   | `.textproto`                                                                 | **None**                                                    | **Heavy** (`cloud.google.com/go`, `cloudflare-go` in `go.work`)  | **Poor** _(pollutes application `go.work.sum` with cloud control-plane SDKs)_ |
-| **Manual Web Console (ClickOps)**                                       | None _(ad-hoc console clicks)_                                               | **None**                                                    | **Zero**                                                         | **Poor** _(error-prone, undocumented drift across environments)_              |
+| Provisioning Approach                                                   | Config Source of Truth                                                       | External State Backend Needed                               | Third-Party SDK / Plugin Bloat                                  | Suitability for Quadsmith                                                     |
+| :---------------------------------------------------------------------- | :--------------------------------------------------------------------------- | :---------------------------------------------------------- | :-------------------------------------------------------------- | :---------------------------------------------------------------------------- |
+| **Convergent `make deploy` + `deploy/config/*.textproto`** _(Proposed)_ | **`deploy/config/{staging,prod}.textproto`** _(validated by `check-config`)_ | **None** _(queries live GCP/CF/PG APIs directly)_           | **Zero** _(uses `gcloud`, `curl`, `psql`, `psqldef`)_           | **Optimal** _(single command for 1st and 100th deploy)_                       |
+| **Terraform / OpenTofu**                                                | Separate `.tf` / `.tfvars` HCL files                                         | **Yes** _(requires bootstrapping a GCS state bucket first)_ | **3 Providers** (`google`, `cloudflare`, `postgresql`)          | **Overkill** _(plaintext secrets in `tfstate`; chicken-and-egg bucket)_       |
+| **Custom Go SDK CLI (`qsops infra`)**                                   | `.textproto`                                                                 | **None**                                                    | **Heavy** (`cloud.google.com/go`, `cloudflare-go` in `go.work`) | **Poor** _(pollutes application `go.work.sum` with cloud control-plane SDKs)_ |
+| **Manual Web Console (ClickOps)**                                       | None _(ad-hoc console clicks)_                                               | **None**                                                    | **Zero**                                                        | **Poor** _(error-prone, undocumented drift across environments)_              |
 
 ```mermaid
 flowchart TD
@@ -1170,7 +1170,7 @@ flowchart TD
         subgraph PhaseB["Phase B: SQL Backup, Migration Gate & Blue-Green Rollout (Runs on Every Deploy)"]
             Build["5. Build & Push 4 Service Images to GAR (:latest & :sha-<commit>)"]
             Diff{"6. psqldef --dry-run Detects Pending Schema Changes?"}
-            Backup["7a. Run make check-breaking, Take pg_dump -Fc Pre-Migration Backup & Apply make db-migrate"]
+            Backup["7a. Run make check-breaking, Create Cloud SQL ON_DEMAND Pre-Migration Snapshot & Apply make db-migrate"]
             Seed["7b. Ensure Robot & Initial Operator Token SHA-256 Hashes in quadsmith_ops.internal_tokens"]
             BlueGreen["8. Sync .env (with Local Cloud SQL Private IPs) & deploy/ to Each VM Node -> Run deploy_blue_green.sh"]
 
@@ -1261,23 +1261,23 @@ Infrastructure Checks** (driven by `deploy/config/${ENV}.textproto` inside
      `machine_type`), ensures the `--no-address` Debian 12 VM exists, matches
      the configured `machine_type` (resizing in place if changed), and has its 2
      GB swapfile, Docker daemon log rotation, daily image prune cron, Artifact
-     Registry auth, `postgresql-client` tools, and standalone `cloudflared`
-     daemon container running.
+     Registry auth, and standalone `cloudflared` daemon container running—with
+     zero persistent state or backup files on the VM disk.
   5. **`run_migration_gate_and_seed`**: Executes the 4-step database migration
      gate (check `psqldef --dry-run` &rarr; if DDL diff is non-empty, run
-     `make check-breaking` and `pg_dump -Fc` backup retaining
-     `db_backup_retention_count` dumps &rarr; apply `make db-migrate` and seed
-     `internal_tokens`).
+     `make check-breaking` and create a Cloud SQL `ON_DEMAND` pre-migration
+     snapshot retaining `db_backup_retention_count` snapshots &rarr; apply
+     `make db-migrate` and seed `internal_tokens`).
 
-| Subsystem / Layer                      | Tier 1: One-Time Human Account Setup _(Browser / CLI Once)_                                                                                    | Tier 2: Idempotent Bootstrap in `make deploy` _(Created on 1st Run; ~3s No-Op Thereafter)_                                                                                                                                          | Tier 3: Recurring Per-Deployment Rollout in `make deploy` _(Runs on Every Release)_                                                                                                                                     |
-| :------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Deployment Config**                  | Author `deploy/config/{staging,prod}.textproto` (project, regions, `db_tier`, `nodes`).                                                        | Load & validate `deploy/config/${ENV}.textproto` via `check-config` / `LoadDeployConfig`.                                                                                                                                           | Read target regions, Cloud SQL tiers, and VM specs from `deploy/config/${ENV}.textproto`.                                                                                                                               |
-| **Accounts, IAM & VPC**                | Create Cloudflare Zone & API token; create GCP Project, Billing link & `quadsmith-cd` SA; create OAuth apps; store GitHub Environment Secrets. | Ensure IAP firewall rule (`35.235.240.0/20` -> `:22`), Cloud NAT, and global VPC Private Services Access (`/16`) exist.                                                                                                             | Authenticate GitHub Actions runner via `GCP_SA_KEY`; sync runtime `/opt/quadsmith/.env` to each VM node over IAP.                                                                                                       |
-| **Artifact Registry**                  | Enable `artifactregistry.googleapis.com`.                                                                                                      | Ensure `quadsmith-docker` repository & 3-version retention cleanup policy exist in `registry_region`.                                                                                                                               | Build & push `server-web`, `server-api`, `server-ops`, and `server-jobs` (`:latest` & `:sha-<commit>`).                                                                                                                 |
-| **Cloudflare Edge & DNS**              | Add `quadsmith.com` domain to Cloudflare account.                                                                                              | Ensure Cloudflare Tunnel (`quadsmith-${ENV}`), proxied `CNAME` records, Smart Tiered Cache, and RFC `Cache-Control` Cache Rule exist.                                                                                               | **None** _(Tunnel and edge cache rules stay active; new `?v=<hash>` WASM & Vite bundle URLs bust cache automatically)_.                                                                                                 |
-| **GCP Cloud SQL (Primary & Replicas)** | Enable `sqladmin.googleapis.com` & `servicenetworking.googleapis.com`.                                                                         | Ensure primary `quadsmith-db-${ENV}` (`--no-assign-ip`, PITR), logical DBs (`quadsmith_api`, `quadsmith_ops`), and any regional read replicas (`regions[1..N]`) exist at their configured `db_tier`; seed `internal_tokens`.        | Run `psqldef --dry-run`; **when DDL changes exist**, run `make check-breaking`, take pre-migration `pg_dump -Fc` backup (retaining `db_backup_retention_count` dumps), and apply `make db-migrate` over Private VPC IP. |
-| **Compute Engine Host VMs**            | Enable `compute.googleapis.com` & `iap.googleapis.com`.                                                                                        | For each node in `regions[].nodes[]`: ensure VM (`--no-address`, `machine_type`, 30 GB disk), 2 GB `/swapfile`, `/etc/docker/daemon.json` log rotation, daily image prune cron, and standalone `cloudflared` container are running. | **None** _(Host OS, swap, Docker daemon, and standalone `cloudflared` container remain uninterrupted)_.                                                                                                                 |
-| **Application Containers & Nginx**     | **None.**                                                                                                                                      | Ensure persistent `nginx` gateway container is running on `127.0.0.1:8084`.                                                                                                                                                         | SCP `deploy/` manifests over IAP to each VM node; pull new images into inactive `blue`/`green` slot; gate on `/healthz`; run `nginx -s reload`; drain & remove old slot.                                                |
+| Subsystem / Layer                      | Tier 1: One-Time Human Account Setup _(Browser / CLI Once)_                                                                                    | Tier 2: Idempotent Bootstrap in `make deploy` _(Created on 1st Run; ~3s No-Op Thereafter)_                                                                                                                                              | Tier 3: Recurring Per-Deployment Rollout in `make deploy` _(Runs on Every Release)_                                                                                                                                                     |
+| :------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Deployment Config**                  | Author `deploy/config/{staging,prod}.textproto` (project, regions, `db_tier`, `nodes`).                                                        | Load & validate `deploy/config/${ENV}.textproto` via `check-config` / `LoadDeployConfig`.                                                                                                                                               | Read target regions, Cloud SQL tiers, and VM specs from `deploy/config/${ENV}.textproto`.                                                                                                                                               |
+| **Accounts, IAM & VPC**                | Create Cloudflare Zone & API token; create GCP Project, Billing link & `quadsmith-cd` SA; create OAuth apps; store GitHub Environment Secrets. | Ensure IAP firewall rule (`35.235.240.0/20` -> `:22`), Cloud NAT, and global VPC Private Services Access (`/16`) exist.                                                                                                                 | Authenticate GitHub Actions runner via `GCP_SA_KEY`; sync runtime `/opt/quadsmith/.env` to each VM node over IAP.                                                                                                                       |
+| **Artifact Registry**                  | Enable `artifactregistry.googleapis.com`.                                                                                                      | Ensure `quadsmith-docker` repository & 3-version retention cleanup policy exist in `registry_region`.                                                                                                                                   | Build & push `server-web`, `server-api`, `server-ops`, and `server-jobs` (`:latest` & `:sha-<commit>`).                                                                                                                                 |
+| **Cloudflare Edge & DNS**              | Add `quadsmith.com` domain to Cloudflare account.                                                                                              | Ensure Cloudflare Tunnel (`quadsmith-${ENV}`), proxied `CNAME` records, Smart Tiered Cache, and RFC `Cache-Control` Cache Rule exist.                                                                                                   | **None** _(Tunnel and edge cache rules stay active; new `?v=<hash>` WASM & Vite bundle URLs bust cache automatically)_.                                                                                                                 |
+| **GCP Cloud SQL (Primary & Replicas)** | Enable `sqladmin.googleapis.com` & `servicenetworking.googleapis.com`.                                                                         | Ensure primary `quadsmith-db-${ENV}-${region}` (`--no-assign-ip`, daily backups at `04:00 UTC`, 7-day PITR), logical DBs (`quadsmith_api`, `quadsmith_ops`), and any regional read replicas exist at `db_tier`; seed `internal_tokens`. | Run `psqldef --dry-run`; **when DDL changes exist**, run `make check-breaking`, create Cloud SQL `ON_DEMAND` pre-migration snapshot (retaining `db_backup_retention_count` snapshots), and apply `make db-migrate` over Private VPC IP. |
+| **Compute Engine Host VMs**            | Enable `compute.googleapis.com` & `iap.googleapis.com`.                                                                                        | For each node in `regions[].nodes[]`: ensure VM (`--no-address`, `machine_type`, 30 GB disk), 2 GB `/swapfile`, `/etc/docker/daemon.json` log rotation, daily image prune cron, and standalone `cloudflared` container are running.     | **None** _(Host OS, swap, Docker daemon, and standalone `cloudflared` container remain uninterrupted and 100% stateless)_.                                                                                                              |
+| **Application Containers & Nginx**     | **None.**                                                                                                                                      | Ensure persistent `nginx` gateway container is running on `127.0.0.1:8084`.                                                                                                                                                             | SCP `deploy/` manifests over IAP to each VM node; pull new images into inactive `blue`/`green` slot; gate on `/healthz`; run `nginx -s reload`; drain & remove old slot.                                                                |
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -1329,7 +1329,7 @@ flowchart TD
         DryRun{"psqldef --dry-run Detects Pending DDL Changes?"}
         Check["Export Live Schema via psqldef --export -> Run make check-breaking (STRICT_BREAKING=1)"]
         Guard{"Breaking Schema Change Detected?"}
-        Dump["Take Pre-Migration pg_dump -Fc Backup into /opt/quadsmith/backups (Retain db_backup_retention_count)"]
+        Dump["Create Cloud SQL ON_DEMAND Pre-Migration Snapshot & Prune Old Snapshots > db_backup_retention_count"]
         Apply["Run make db-migrate (Transactional psqldef Apply) & Seed internal_tokens"]
         Create --> DryRun
         DryRun -->|Yes (Existing DB)| Check --> Guard
@@ -1351,9 +1351,8 @@ flowchart TD
 
 1. **Idempotent Cloud SQL Database Creation (One-Time Setup)**:
    - `make deploy` verifies that `quadsmith_api` and `quadsmith_ops` exist on
-     `quadsmith-db-${ENV}` via
-     `gcloud sql databases list --instance=quadsmith-db-${ENV}` and creates them
-     if missing.
+     `quadsmith-db-${ENV}-${PRIMARY_REGION}` via `gcloud sql databases list` and
+     creates them if missing.
 2. **Extend `schema_breaking_test.go` and Add `make check-breaking`**:
    - Update
      [`src/go/shared/internal/regression/schema_breaking_test.go`](../src/go/shared/internal/regression/schema_breaking_test.go)
@@ -1370,30 +1369,40 @@ flowchart TD
 
      ```makefile
      check-breaking:
-     	@echo "--- Checking for Breaking Schema & API Changes (Strict Mode) ---"
-     	@cd src/go/shared && STRICT_BREAKING=1 go test -mod=vendor -count=1 ./internal/regression/...
+     	@echo "--- Running Strict Backwards-Compatibility Gate ---"
+     	@cd src/go/shared && STRICT_BREAKING=1 go test -mod=vendor -count=1 -v ./internal/regression/...
      ```
 
      To intentionally deploy a breaking schema change, an operator can trigger
      `deploy.yml` via `workflow_dispatch` with `allow_breaking_changes: true`,
      which runs `make warn-breaking` instead of failing the gate.
-3. **Conditional Pre-Migration Database Backup (`pg_dump -Fc`)**:
-   - Whenever `psqldef --dry-run` detects pending schema migrations on an
-     existing database, `make deploy` runs
-     `pg_dump --format=custom --no-owner --no-acl` on the primary VM against
-     Cloud SQL's Private IP (`<0.8 ms` local VPC transfer) for both
-     `quadsmith_api` and `quadsmith_ops` _before_ applying the migration
-     (`quadsmith_api_<timestamp>_<git_sha>.dump` and
-     `quadsmith_ops_<timestamp>_<git_sha>.dump`), stores the compressed dumps in
-     `/opt/quadsmith/backups` on the primary VM, and rotates them to retain the
-     most recent `db_backup_retention_count` (`5` in `prod`, `3` in `staging`)
-     snapshots (complementing Cloud SQL's automated daily snapshots and PITR).
+3. **Three-Tier Stateless Cloud SQL Backup Schedule (`ON_DEMAND` Pre-Migration
+   Snapshots + Daily Automated Backups + 7-Day PITR)**:
+   - To keep all Compute Engine VMs 100% stateless (zero `.dump` files on VM
+     boot disks), all backups are managed natively by **GCP Cloud SQL** across
+     three complementary tiers:
+     1. **Daily Automated Backups (`04:00 UTC`)**: 7 daily incremental block
+        snapshots included free ($0.00/mo) with every Cloud SQL instance.
+     2. **Continuous 7-Day Point-in-Time Recovery (PITR)**: Continuous
+        PostgreSQL Write-Ahead Log (WAL) archiving
+        (`--enable-point-in-time-recovery`) allowing recovery to any exact
+        second within a rolling 7-day window.
+     3. **Conditional Pre-Migration `ON_DEMAND` Snapshots
+        (`db_backup_retention_count`)**: Whenever `psqldef --dry-run` detects
+        pending schema migrations on an existing database, `make deploy` logs
+        the exact UTC PITR timestamp (`Pre-migration PITR restore timestamp`),
+        creates a native block-level Cloud SQL snapshot via
+        `gcloud sql backups create` on `quadsmith-db-${ENV}-${PRIMARY_REGION}`,
+        and prunes older `ON_DEMAND` snapshots beyond
+        `db_backup_retention_count` (`5` in `prod`, `3` in `staging`, costing
+        only ~$0.02–$0.40/mo for incremental changed blocks). Unlike PITR, these
+        explicit pre-migration snapshots never age out after 7 days.
    - If `psqldef --dry-run` reports zero schema changes (a code-only or
-     frontend-only deployment), the backup and migration steps are skipped in <1
-     second.
+     frontend-only deployment), the pre-migration snapshot and migration steps
+     are skipped in <1 second.
 4. **Parameterized `make db-migrate` & Idempotent Token Seeding**:
    - Decouple `db-migrate` from the `generate` prerequisite in
-     [`Makefile`](../Makefile#L119-L122) and parse `QS_DATABASE_URL` and
+     [`Makefile`](../Makefile) and parse `QS_DATABASE_URL` and
      `QS_INTERNAL_DATABASE_URL` (defaulting to
      `postgres://postgres:postgres@127.0.0.1:5432/quadsmith_{api,ops}?sslmode=disable`
      for local sandbox runs) into `psqldef` flags (`-h`, `-p`, `-U`, `-W`,
@@ -1406,6 +1415,44 @@ flowchart TD
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
+
+##### <a id="alt-vm-local-pg-dump-backups" >Store `pg_dump -Fc` Pre-Migration Snapshots on the Primary VM Disk (`/opt/quadsmith/backups`) or in GCS</a>
+
+Run `pg_dump -Fc` over SSH and store `.dump` files on the primary VM's 30 GB
+boot disk (or upload them to a Google Cloud Storage bucket) instead of using
+native Cloud SQL `ON_DEMAND` block snapshots.
+
+**Pros:**
+
+- Produces standalone `.dump` files that can be passed directly to `pg_restore`.
+
+**Cons:**
+
+- Storing backups on the primary VM violates VM statelessness ("cattle, not
+  pets")—if the VM is recreated, resized, or replaced, local backups are lost.
+- Because `pg_dump` exports a full copy of all `BYTEA` media blobs in
+  `quadsmith_api.blobs` on every schema migration rather than incremental
+  changed blocks, 5 retained dumps of a 6 GB database would consume 30 GB and
+  exhaust the `e2-micro`'s 30 GB disk (or cost ~$0.90/mo in GCS vs.
+  ~$0.08–$0.40/mo for incremental Cloud SQL snapshots).
+
+##### <a id="alt-daily-backups-and-pitr-only" >Rely Solely on Cloud SQL's 7 Daily Automated Backups and 7-Day PITR Without Pre-Migration `ON_DEMAND` Snapshots</a>
+
+Remove `db_backup_retention_count` and pre-migration snapshot creation, relying
+exclusively on Cloud SQL's 7 free automated daily backups and 7-day continuous
+WAL Point-in-Time Recovery (PITR).
+
+**Pros:**
+
+- Incurs $0.00/month in additional snapshot storage beyond the 7 included daily
+  backups.
+
+**Cons:**
+
+- Both automated daily backups and PITR expire on a strict 7-day rolling window;
+  if a subtle schema migration regression is discovered more than 7 days after a
+  release, the pre-migration state is no longer recoverable, whereas `ON_DEMAND`
+  snapshots persist until rotated by newer migrations.
 
 ##### <a id="alt-migrate-before-build" >Run Database Migrations Before or in Parallel with Image Builds</a>
 
@@ -1421,21 +1468,6 @@ with Docker image builds, to shave ~15 seconds off total pipeline duration.
 - If a Docker image build fails compilation or asset bundling, the production
   database schema has already been mutated while the old application containers
   remain deployed.
-
-##### <a id="alt-unconditional-pg-dump-every-deploy" >Run Full `pg_dump` Backups on Every Code Deployment Regardless of Schema Diff</a>
-
-Execute `pg_dump` on every single deployment even when `src/db/*.sql` has not
-changed.
-
-**Pros:**
-
-- Creates a local `.dump` file on every container release.
-
-**Cons:**
-
-- Slows down code-only deployments when zero DDL changes are being applied and
-  Cloud SQL already maintains continuous WAL Point-in-Time Recovery (PITR) for
-  runtime data.
 
 ##### <a id="alt-custom-migrate-db-regex-script" >Custom `migrate_db.sh` Script Regex-Matching `psqldef --dry-run` Output</a>
 
@@ -1654,9 +1686,9 @@ Once secrets are configured, `.github/workflows/deploy.yml` executes
    and target SQL databases exist, opens the IAP tunnel to the primary Cloud SQL
    Private IP, checks `psqldef --dry-run`, and whenever schema changes are
    present, runs `make check-breaking` (or `make warn-breaking` if triggered via
-   `workflow_dispatch` with `allow_breaking_changes: true`), takes a
-   pre-migration `pg_dump -Fc` backup, applies `make db-migrate`, and seeds
-   `internal_tokens`.
+   `workflow_dispatch` with `allow_breaking_changes: true`), creates a
+   pre-migration Cloud SQL `ON_DEMAND` snapshot, applies `make db-migrate`, and
+   seeds `internal_tokens`.
 3. **`deploy-vm` (`needs: migrate-db`)**: Reads
    `deploy/config/${ENV}.textproto`, ensures all GCP/Cloudflare/VM resources
    exist across `regions[].nodes[]`, syncs `/opt/quadsmith/.env` (with each
@@ -1691,13 +1723,14 @@ root [`README.md`](../README.md)) structured into eight actionable sections:
 4. **Running Deployments (`make deploy ENV=staging|prod` & CI/CD)**: Shows how
    the single convergent `make deploy` command works both from GitHub Actions
    (`.github/workflows/deploy.yml`) and from an operator workstation.
-5. **Database Migrations, Pre-Migration Backups & Rollbacks**: Explains how
-   `make deploy` automatically provisions Cloud SQL (`quadsmith_api` and
-   `quadsmith_ops`), runs `make check-breaking`, takes a compressed
-   `pg_dump -Fc` snapshot into `/opt/quadsmith/backups` whenever schema changes
-   are detected, applies `make db-migrate`, and how an operator can restore a
-   `.dump` snapshot via `pg_restore` or approve a breaking schema change via
-   `workflow_dispatch` (`allow_breaking_changes: true`).
+5. **Backup Schedule, Database Migrations & Rollback Runbook**: Documents the
+   three-tier stateless Cloud SQL backup schedule (7 free daily automated
+   backups at `04:00 UTC`, 7-day 1-second continuous PITR, and pre-migration
+   `ON_DEMAND` snapshots rotated to `db_backup_retention_count`), the automated
+   `make check-breaking` migration gate, and step-by-step rollback instructions
+   for container rollbacks, additive schema reverts, in-place snapshot restores
+   (`gcloud sql backups restore`), and 1-second PITR clone recovery
+   (`gcloud sql instances clone --point-in-time=...`).
 6. **Adding New Geographic Regions**: Step-by-step instructions for monitoring
    geographic traffic telemetry, appending a new `regions` block to
    `deploy/config/prod.textproto`, provisioning a local Cloud SQL cross-region
