@@ -17,6 +17,7 @@ import { useDocumentMeta } from "@quadsmith/shared";
 import { BatteryCombobox } from "../components/BatteryCombobox";
 import { BatteryPickerModal } from "../components/BatteryPickerModal";
 import { ComponentFormModal } from "../components/ComponentFormModal";
+import { SafetyDisclaimersButton } from "../components/SafetyDisclaimersModal";
 import {
   CollectionIcon,
   ErrorBoundary,
@@ -604,12 +605,9 @@ function BuildWizardContent() {
                           <span>Experimental</span>
                         </Link>
                       </div>
-                      <Link
-                        to="/terms#disclaimers"
-                        className="text-[11px] text-amber-400/90 hover:text-amber-300 underline underline-offset-2 font-medium"
-                      >
-                        Disclaimers
-                      </Link>
+                      <SafetyDisclaimersButton className="text-[11px] text-amber-400/90 hover:text-amber-300 underline underline-offset-2 font-medium cursor-pointer">
+                        Safety disclaimers
+                      </SafetyDisclaimersButton>
                     </div>
                     {evaluationError && (
                       <div
@@ -883,7 +881,7 @@ function BuildWizardContent() {
                   <Link
                     to="/terms#experimental-evaluator"
                     data-testid="forge-evaluator-experimental-badge"
-                    title="Experimental physics engine — click to view modeling assumptions and safety disclaimers"
+                    title="Experimental Build Evaluator — provided AS IS without warranties of airworthiness or safety"
                     className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition-colors"
                   >
                     <FlaskConical size={11} className="shrink-0" />
@@ -891,15 +889,8 @@ function BuildWizardContent() {
                   </Link>
                 </div>
                 <p className="text-[11px] text-zinc-400 mt-1.5 leading-snug">
-                  Calculated flight metrics are theoretical estimates based on analytical physics
-                  models.{" "}
-                  <Link
-                    to="/terms#disclaimers"
-                    className="text-amber-400/90 hover:text-amber-300 underline underline-offset-2 font-medium transition-colors"
-                  >
-                    Safety disclaimers
-                  </Link>
-                  .
+                  Provided &ldquo;AS IS&rdquo; without warranties of airworthiness or safety.{" "}
+                  <SafetyDisclaimersButton>Safety disclaimers</SafetyDisclaimersButton>.
                 </p>
               </div>
 

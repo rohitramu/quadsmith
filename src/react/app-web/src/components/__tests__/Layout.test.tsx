@@ -97,6 +97,9 @@ describe("Layout Component", () => {
       "href",
       "/terms",
     );
+    expect(
+      screen.getAllByRole("button", { name: /Safety Disclaimers/i }).length,
+    ).toBeGreaterThanOrEqual(1);
     expect(screen.getByTestId("global-legal-footer")).toBeInTheDocument();
 
     // No expand/collapse toggle buttons

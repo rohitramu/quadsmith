@@ -16,6 +16,7 @@ import { getAvatarPalette, getInitial } from "@quadsmith/shared";
 import { EmailVerificationForm } from "../components/EmailVerificationForm";
 import { ChallengeApprovalScreen } from "../components/ChallengeApprovalScreen";
 import { GoogleIcon, GitHubIcon, DiscordIcon } from "../components/OAuthIcons";
+import { SafetyDisclaimersButton } from "../components/SafetyDisclaimersModal";
 
 export function LoginPage() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -697,12 +698,9 @@ export function LoginPage() {
             Terms of Service
           </Link>{" "}
           and acknowledge our{" "}
-          <Link
-            to="/terms#disclaimers"
-            className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
-          >
+          <SafetyDisclaimersButton className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors cursor-pointer">
             Safety Disclaimers
-          </Link>
+          </SafetyDisclaimersButton>
           .
         </p>
       </div>

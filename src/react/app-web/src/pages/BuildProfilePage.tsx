@@ -41,6 +41,7 @@ import { UserBadge } from "../components/UserBadge";
 import { BatteryCombobox } from "../components/BatteryCombobox";
 import { SocialToolbar } from "../components/SocialToolbar";
 import { SocialTabs, type SocialTabType } from "../components/SocialTabs";
+import { SafetyDisclaimersButton } from "../components/SafetyDisclaimersModal";
 import { useAuth } from "../context/AuthContext";
 import {
   ChevronRight,
@@ -613,7 +614,7 @@ export function BuildProfilePage() {
                   <Link
                     to="/terms#experimental-evaluator"
                     data-testid="evaluator-experimental-badge"
-                    title="Experimental physics engine — click to view modeling assumptions and safety disclaimers"
+                    title="Experimental Build Evaluator — provided AS IS without warranties of airworthiness or safety"
                     className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition-colors"
                   >
                     <FlaskConical size={12} className="shrink-0" />
@@ -632,16 +633,9 @@ export function BuildProfilePage() {
                 </div>
               </div>
               <p className="text-xs sm:text-sm text-zinc-400 mt-1.5 leading-relaxed">
-                Calculated flight metrics are theoretical estimates based on analytical physics
-                models and do not guarantee electrical compatibility, thermal limits, or
-                airworthiness.{" "}
-                <Link
-                  to="/terms#disclaimers"
-                  className="text-amber-400/90 hover:text-amber-300 underline underline-offset-2 font-medium transition-colors"
-                >
-                  Read safety disclaimers
-                </Link>
-                .
+                The Build Evaluator is an experimental feature provided &ldquo;AS IS&rdquo; without
+                warranties of airworthiness or safety.{" "}
+                <SafetyDisclaimersButton>Safety disclaimers</SafetyDisclaimersButton>.
               </p>
             </div>
 

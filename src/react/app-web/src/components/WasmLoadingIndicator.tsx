@@ -70,8 +70,8 @@ export function WasmLoadingIndicator({ progress, className = "" }: WasmLoadingIn
       </div>
 
       <p className="text-[11px] text-zinc-400 mt-4 leading-normal">
-        Compiling aerodynamic momentum theory and battery sag models in browser memory for
-        zero-latency slider calculations.
+        Initializing the experimental Build Evaluator in browser memory. Provided &ldquo;AS
+        IS&rdquo; without warranties of airworthiness or safety.
       </p>
     </div>
   );

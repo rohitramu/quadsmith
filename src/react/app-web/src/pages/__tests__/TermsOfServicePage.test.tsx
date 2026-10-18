@@ -5,8 +5,8 @@ import { TermsOfServicePage } from "../TermsOfServicePage";
 import { AppRoutes } from "../../App";
 
 describe("TermsOfServicePage Component", () => {
-  it("renders Terms of Service, FPV safety disclaimers, Experimental Build Evaluator section, and Privacy summary", () => {
-    renderWithProviders(<TermsOfServicePage />, { route: "/terms" });
+  it("renders Terms of Service, FPV safety disclaimers, Experimental Build Evaluator section, and Privacy summary", async () => {
+    const { user } = renderWithProviders(<TermsOfServicePage />, { route: "/terms" });
 
     expect(
       screen.getByRole("heading", {
@@ -18,16 +18,16 @@ describe("TermsOfServicePage Component", () => {
     // Critical safety warning callout
     expect(screen.getByRole("note", { name: /critical safety warning/i })).toBeInTheDocument();
 
-    // Section 1: Safety & Engineering Disclaimers
+    // Section 1: Safety Disclaimers
     expect(
       screen.getByRole("heading", {
         level: 2,
-        name: /safety & engineering disclaimers/i,
+        name: /^safety disclaimers$/i,
       }),
     ).toBeInTheDocument();
     expect(screen.getByText(/electrical & lipo battery safety/i)).toBeInTheDocument();
     expect(screen.getByText(/mechanical & flight safety/i)).toBeInTheDocument();
-    expect(screen.getByText(/rf spectrum & aviation compliance/i)).toBeInTheDocument();
+    expect(screen.getByText(/local rules & regulations/i)).toBeInTheDocument();
     expect(screen.getByText(/catalog data & hardware revisions/i)).toBeInTheDocument();
 
     // Section 2: Experimental Build Evaluator & Compatibility Engine
@@ -37,7 +37,7 @@ describe("TermsOfServicePage Component", () => {
         name: /experimental build evaluator & compatibility engine/i,
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/idealized aerodynamic & electrical assumptions/i)).toBeInTheDocument();
+    expect(screen.getByText(/provided “as is” without warranty:/i)).toBeInTheDocument();
 
     // Section 3: Terms of Service
     expect(
@@ -58,6 +58,15 @@ describe("TermsOfServicePage Component", () => {
         name: /data & privacy/i,
       }),
     ).toBeInTheDocument();
+
+    // Clicking "Safety Disclaimers" button opens the Safety Disclaimers modal
+    const safetyBtn = screen.getByRole("button", { name: /safety disclaimers/i });
+    await user.click(safetyBtn);
+    expect(screen.getByTestId("safety-disclaimers-modal")).toBeInTheDocument();
+
+    const closeBtn = screen.getByTestId("acknowledge-safety-disclaimers-btn");
+    await user.click(closeBtn);
+    expect(screen.queryByTestId("safety-disclaimers-modal")).not.toBeInTheDocument();
   });
 
   it("renders standalone header when accessed by unauthenticated users via /terms", async () => {

@@ -203,33 +203,36 @@ standardized benchmark thresholds:
 
 ### <a id="experimental-designation-and-safety-disclaimers" >Experimental Designation and Safety Disclaimers</a>
 
-Because analytical flight dynamics models rely on idealized blade-element
-momentum theory, standard sea-level atmosphere, and simplified internal
-resistance sag curves, all Build Evaluator surfaces across the web application
-are explicitly labeled with an **`Experimental`** badge:
+All Build Evaluator surfaces across the web application are explicitly labeled
+with an **`Experimental`** badge. They state that the Build Evaluator is
+provided `"AS IS"` without warranties of airworthiness or safety:
 
 - **Build Profile Dashboard**
   ([`BuildProfilePage.tsx`](../src/react/app-web/src/pages/BuildProfilePage.tsx)):
-  Displays the `Experimental` badge alongside `Build Evaluation & Performance`
-  and links directly to `/terms#experimental-evaluator` and
-  `/terms#disclaimers`.
+  Displays the `Experimental` badge alongside `Build Evaluation & Performance`,
+  states that the Build Evaluator is provided `"AS IS"` without warranties of
+  airworthiness or safety, and opens the safety disclaimers modal when
+  `Safety disclaimers` is clicked.
 - **The Forge Live Evaluator**
   ([`BuildWizardPage.tsx`](../src/react/app-web/src/pages/BuildWizardPage.tsx)):
-  Displays the `Experimental` badge and safety disclaimer links in both the
-  desktop evaluator card and the mobile collapsible telemetry drawer, plus a
-  pre-save hardware and flight safety notice in Step 12
-  ([`ReviewStep.tsx`](../src/react/app-web/src/components/forge/steps/ReviewStep.tsx)).
+  Displays the `Experimental` badge and `Safety disclaimers` modal trigger in
+  both the desktop evaluator card and the mobile collapsible telemetry drawer.
+  Step 12
+  ([`ReviewStep.tsx`](../src/react/app-web/src/components/forge/steps/ReviewStep.tsx))
+  also displays a pre-save hardware, flight safety, and local compliance notice.
 - **Build Cards & WASM Engine Loader**
   ([`BuildCard.tsx`](../src/react/app-web/src/components/BuildCard.tsx),
   [`WasmLoadingIndicator.tsx`](../src/react/app-web/src/components/WasmLoadingIndicator.tsx)):
-  Marks quick-evaluated card metrics and the WebAssembly physics loader as
-  `Experimental`.
-- **Terms of Service & Disclaimers Page**
-  ([`TermsOfServicePage.tsx`](../src/react/app-web/src/pages/TermsOfServicePage.tsx)):
-  Provides dedicated documentation at `/terms` covering LiPo electrical safety,
-  high-RPM propeller safety, RF/aviation regulations, catalog specification
-  verification, experimental evaluator modeling limits, `"AS IS"` warranty
-  disclaimers, and data privacy.
+  Marks quick-evaluated card outputs and the WebAssembly loader as
+  `Experimental` and provided `"AS IS"` without warranties of airworthiness or
+  safety.
+- **Safety Disclaimers Modal & Terms of Service Page**
+  ([`SafetyDisclaimersModal.tsx`](../src/react/app-web/src/components/SafetyDisclaimersModal.tsx),
+  [`TermsOfServicePage.tsx`](../src/react/app-web/src/pages/TermsOfServicePage.tsx)):
+  Clicking `Safety Disclaimers` anywhere in the application opens a modal dialog
+  covering LiPo electrical safety, mechanical and propeller safety, compliance
+  with local rules and regulations, and manufacturer specification verification,
+  alongside the full `/terms` page.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -248,9 +251,9 @@ Build Profile or open The Forge configurator.
 
 - Degrades browsing and configuration UX with repetitive modal friction on every
   session.
-- Persistent inline `Experimental` badges, contextual safety notices, and a
-  dedicated `/terms` page communicate the exact boundaries without blocking
-  read-only exploration.
+- Persistent inline `Experimental` badges, on-demand `Safety Disclaimers` modal
+  dialogs, and the `/terms` page communicate the exact boundaries without
+  blocking read-only exploration.
 
 </details>
 

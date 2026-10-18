@@ -1,19 +1,11 @@
 import { Link } from "react-router-dom";
-import {
-  ShieldAlert,
-  FlaskConical,
-  Zap,
-  Wind,
-  Radio,
-  Layers,
-  Scale,
-  Lock,
-  ChevronRight,
-  AlertTriangle,
-  CheckCircle2,
-} from "lucide-react";
+import { ShieldAlert, FlaskConical, Scale, Lock, ChevronRight, CheckCircle2 } from "lucide-react";
 import { useDocumentMeta } from "@quadsmith/shared";
 import logo from "../assets/quadsmith-logo.svg";
+import {
+  SafetyDisclaimersButton,
+  SafetyDisclaimersCards,
+} from "../components/SafetyDisclaimersModal";
 
 export interface TermsOfServicePageProps {
   standalone?: boolean;
@@ -23,7 +15,7 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
   useDocumentMeta({
     title: "Terms of Service & Disclaimers — Quadsmith",
     description:
-      "Quadsmith Terms of Service, FPV drone hardware and LiPo electrical safety disclaimers, and Experimental Build Evaluator documentation.",
+      "Quadsmith Terms of Service, FPV drone hardware and LiPo electrical safety disclaimers, local compliance responsibilities, and Experimental Build Evaluator notice.",
     image: "/og-default.png",
   });
 
@@ -51,7 +43,7 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
       <header className="p-6 sm:p-8 rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900/80 to-zinc-950 shadow-xs space-y-4">
         <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
           <Scale size={13} className="shrink-0" />
-          <span>Legal, Safety &amp; Engineering Documentation</span>
+          <span>Legal &amp; Safety Documentation</span>
         </div>
 
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-50 text-balance">
@@ -59,19 +51,18 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
         </h1>
 
         <p className="text-sm sm:text-base text-zinc-400 leading-relaxed text-pretty">
-          Quadsmith is an engineering reference catalog, compatibility checker, and experimental
-          flight performance simulator for FPV multirotor builders. Please review these safety
-          disclaimers and terms carefully before assembling, powering, or flying any aircraft.
+          Quadsmith is a reference catalog, compatibility checker, and experimental build evaluator
+          for FPV multirotor builders. Please review these safety disclaimers and terms carefully
+          before assembling, powering, or flying any aircraft, and always comply with local rules
+          and regulations.
         </p>
 
         {/* Quick Section Navigation */}
         <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
-          <a
-            href="#disclaimers"
-            className="px-3 py-1.5 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 font-medium transition-colors"
-          >
-            Safety &amp; Engineering Disclaimers
-          </a>
+          <SafetyDisclaimersButton className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 font-medium transition-colors cursor-pointer">
+            <ShieldAlert size={12} className="text-amber-400 shrink-0" />
+            <span>Safety Disclaimers</span>
+          </SafetyDisclaimersButton>
           <a
             href="#experimental-evaluator"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/15 text-amber-300 font-medium transition-colors"
@@ -95,7 +86,7 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
       </header>
 
       {/* ============================================================ */}
-      {/* SECTION 1: SAFETY & ENGINEERING DISCLAIMERS                  */}
+      {/* SECTION 1: SAFETY DISCLAIMERS                                */}
       {/* ============================================================ */}
       <section
         id="disclaimers"
@@ -108,95 +99,15 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
             className="text-xl sm:text-2xl font-bold text-zinc-100 flex items-center gap-2.5 text-balance"
           >
             <ShieldAlert className="text-amber-400 shrink-0" size={22} />
-            <span>Safety &amp; Engineering Disclaimers</span>
+            <span>Safety Disclaimers</span>
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            Critical hardware, electrical, mechanical, and regulatory warnings for multirotor
-            builders and pilots.
+            Critical hardware, electrical, mechanical, and local compliance responsibilities for
+            multirotor builders and pilots.
           </p>
         </div>
 
-        {/* Critical Warning Callout */}
-        <div
-          role="note"
-          aria-label="Critical Safety Warning"
-          className="p-4 sm:p-5 rounded-xl border border-amber-500/30 bg-amber-950/25 text-amber-200 flex items-start gap-3.5"
-        >
-          <AlertTriangle className="text-amber-400 shrink-0 mt-0.5" size={20} />
-          <div className="space-y-1 text-xs sm:text-sm leading-relaxed text-pretty">
-            <p className="font-bold text-amber-100">
-              Important Hardware, Electrical, and Flight Safety Notice
-            </p>
-            <p className="text-amber-200/90">
-              FPV drones combine high-discharge lithium batteries, high-current brushless power
-              systems, rapidly spinning propellers, and radio frequency transmitters. Improper
-              wiring, voltage mismatches, or mechanical failures can cause fires, severe personal
-              injury, or property damage. Always verify every component against official
-              manufacturer datasheets and test on the bench before applying full battery power.
-            </p>
-          </div>
-        </div>
-
-        {/* 4 Detailed Disclaimer Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="p-5 rounded-xl border border-zinc-800 bg-zinc-950/70 space-y-2.5">
-            <div className="flex items-center gap-2 text-sm font-bold text-zinc-100">
-              <Zap size={16} className="text-amber-400 shrink-0" />
-              <h3>Electrical &amp; LiPo Battery Safety</h3>
-            </div>
-            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed text-pretty">
-              Lithium Polymer (LiPo/LiHV) and Lithium-Ion batteries carry severe risks of fire,
-              explosion, and thermal runaway if short-circuited, overcharged, punctured, or operated
-              beyond their continuous or burst current ratings. Never rely solely on software
-              compatibility checks for wiring. Always inspect board silkscreens, verify pinouts and
-              polarity with a digital multimeter, and use a current-limiting smoke stopper when
-              powering a build for the first time.
-            </p>
-          </div>
-
-          <div className="p-5 rounded-xl border border-zinc-800 bg-zinc-950/70 space-y-2.5">
-            <div className="flex items-center gap-2 text-sm font-bold text-zinc-100">
-              <Wind size={16} className="text-rose-400 shrink-0" />
-              <h3>Mechanical &amp; Flight Safety</h3>
-            </div>
-            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed text-pretty">
-              High-RPM brushless motors and propellers can inflict severe lacerations and eye
-              injuries. Always remove all propellers before connecting a battery on the bench for
-              flight controller configuration, ESC flashing, or motor direction testing. Verify that
-              motor mounting screws do not contact or short stator windings, confirm frame
-              clearances, and validate receiver failsafe behavior prior to every flight.
-            </p>
-          </div>
-
-          <div className="p-5 rounded-xl border border-zinc-800 bg-zinc-950/70 space-y-2.5">
-            <div className="flex items-center gap-2 text-sm font-bold text-zinc-100">
-              <Radio size={16} className="text-blue-400 shrink-0" />
-              <h3>RF Spectrum &amp; Aviation Compliance</h3>
-            </div>
-            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed text-pretty">
-              Operating Unmanned Aircraft Systems (UAS) and radio/video transmitters (VTX and RC
-              control links) is governed by national and local aviation and telecommunications
-              authorities (such as FAA Part 107 / Recreational Flyer rules, Remote ID, EASA, and
-              FCC/CE amateur radio regulations). Catalog listings of transmit power levels or
-              frequency bands do not constitute legal authorization to operate those transmitters in
-              your jurisdiction.
-            </p>
-          </div>
-
-          <div className="p-5 rounded-xl border border-zinc-800 bg-zinc-950/70 space-y-2.5">
-            <div className="flex items-center gap-2 text-sm font-bold text-zinc-100">
-              <Layers size={16} className="text-emerald-400 shrink-0" />
-              <h3>Catalog Data &amp; Hardware Revisions</h3>
-            </div>
-            <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed text-pretty">
-              Component specifications, dimensions, weights, and compatibility rules are compiled
-              from manufacturer documentation and community contributions on a best-effort basis.
-              Manufacturers frequently revise PCB layouts, JST connector pinouts, and mounting
-              tolerances between production batches without notice. Always treat the manufacturer’s
-              official manual for your exact hardware revision as the primary source of truth.
-            </p>
-          </div>
-        </div>
+        <SafetyDisclaimersCards />
       </section>
 
       {/* ============================================================ */}
@@ -222,46 +133,44 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
             </span>
           </div>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            Why Build Evaluator telemetry and compatibility checks are designated as Experimental.
+            Why the Build Evaluator and compatibility checks are designated as Experimental.
           </p>
         </div>
 
         <div className="space-y-4 text-xs sm:text-sm text-zinc-300 leading-relaxed text-pretty">
           <p>
             The Quadsmith <strong>Build Evaluator</strong> (featured on Build Profile pages, Build
-            Feed cards, and live inside The Forge configurator) is an{" "}
-            <strong className="text-amber-400">Experimental</strong> analytical physics engine. All
-            computed telemetry—including All-Up Weight (AUW), Thrust-to-Weight Ratio (TWR), Hover
-            Throttle percentage, Maximum Acceleration, Top Speed, and Estimated Flight Time—are{" "}
-            <strong>theoretical estimates</strong> rather than guaranteed empirical measurements.
+            Feed cards, and inside The Forge configurator) is an{" "}
+            <strong className="text-amber-400">Experimental</strong> feature provided strictly{" "}
+            <strong>&ldquo;AS IS&rdquo;</strong> and <strong>&ldquo;AS AVAILABLE&rdquo;</strong>{" "}
+            without warranties of airworthiness, compatibility, or safety.
           </p>
 
           <ul className="space-y-2.5 bg-zinc-950/70 p-5 rounded-xl border border-zinc-800">
             <li className="flex items-start gap-2.5">
               <CheckCircle2 size={16} className="text-amber-400 shrink-0 mt-0.5" />
               <span>
-                <strong>Idealized Aerodynamic &amp; Electrical Assumptions:</strong> Calculations
-                assume standard sea-level air density (1.225 kg/m³), momentum-theory propeller
-                thrust and power coefficients, simplified internal battery resistance voltage sag,
-                and uniform motor electromechanical efficiency.
+                <strong>Provided &ldquo;AS IS&rdquo; Without Warranty:</strong> The Build Evaluator
+                is an experimental tool for general informational comparison only and makes no
+                representations or warranties regarding flight performance, airworthiness, or
+                operational safety.
               </span>
             </li>
             <li className="flex items-start gap-2.5">
               <CheckCircle2 size={16} className="text-amber-400 shrink-0 mt-0.5" />
               <span>
-                <strong>Real-World Performance Deviations:</strong> Actual flight performance and
-                current draw vary significantly based on propeller blade airfoil geometry, stator
-                magnetic saturation, ESC PWM frequency and timing, PID and filter tuning, ambient
-                temperature, altitude, wind, and battery health.
+                <strong>Advisory Compatibility Checks:</strong> Compatibility checks evaluate basic
+                mounting patterns, propeller sizes, voltage ranges, and protocols on a best-effort
+                basis. Passing compatibility checks does not guarantee physical fitment, electrical
+                compatibility, or safe operation.
               </span>
             </li>
             <li className="flex items-start gap-2.5">
               <CheckCircle2 size={16} className="text-amber-400 shrink-0 mt-0.5" />
               <span>
-                <strong>Advisory Compatibility Checks:</strong> The Compatibility Checker evaluates
-                modeled mounting patterns, propeller clearance, voltage ranges, and RF protocols. It
-                cannot detect every 3D physical interference, standoff collision, capacitor
-                clearance issue, or custom wiring requirement.
+                <strong>Independent Verification Required:</strong> Always verify physical
+                clearances, wiring pinouts, and voltage ratings against official manufacturer
+                datasheets, and test your aircraft safely before flight.
               </span>
             </li>
           </ul>
@@ -296,7 +205,8 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
               By accessing or using Quadsmith—including browsing the component catalog, configuring
               builds in The Forge, using the Experimental Build Evaluator, signing into an account,
               or interacting with the Quadsmith API or CLI—you agree to be bound by these Terms of
-              Service and all Safety &amp; Engineering Disclaimers on this page.
+              Service and all Safety Disclaimers, and you agree to comply with all applicable local
+              rules and regulations.
             </p>
           </div>
 
@@ -305,12 +215,12 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
               2. &ldquo;AS IS&rdquo; &amp; &ldquo;AS AVAILABLE&rdquo; Disclaimer of Warranties
             </h3>
             <p className="text-zinc-400">
-              Quadsmith and all catalog data, compatibility diagnostics, and experimental physics
-              evaluations are provided strictly on an <strong>&ldquo;AS IS&rdquo;</strong> and{" "}
+              Quadsmith and all catalog data, compatibility checks, and the Experimental Build
+              Evaluator are provided strictly on an <strong>&ldquo;AS IS&rdquo;</strong> and{" "}
               <strong>&ldquo;AS AVAILABLE&rdquo;</strong> basis, without warranties of any kind,
               either express, implied, or statutory—including, without limitation, implied
-              warranties of merchantability, fitness for a particular purpose, safety, accuracy, or
-              non-infringement.
+              warranties of merchantability, fitness for a particular purpose, airworthiness,
+              safety, accuracy, or non-infringement.
             </p>
           </div>
 
@@ -324,8 +234,8 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
               extent permitted by law, Quadsmith, its operators, maintainers, and contributors shall
               not be liable for any direct, indirect, incidental, special, consequential, or
               exemplary damages—including damaged or destroyed electronics, battery fires, lost
-              aircraft (&ldquo;flyaways&rdquo;), personal injury, property damage, or regulatory
-              fines—arising from your use of or reliance on this platform.
+              aircraft (&ldquo;flyaways&rdquo;), personal injury, property damage, or legal
+              penalties—arising from your use of or reliance on this platform.
             </p>
           </div>
 
@@ -387,9 +297,8 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
           </p>
           <p>
             Authenticated users can inspect and revoke active sessions, download a complete
-            machine-readable <code>.zip</code> archive of their personal data (GDPR Article 15 &amp;
-            20 Data Export), or initiate account deletion with a 30-day restoration grace period at
-            any time from{" "}
+            machine-readable <code>.zip</code> archive of their personal data, or initiate account
+            deletion with a 30-day restoration grace period at any time from{" "}
             <Link
               to="/account"
               className="text-blue-400 hover:text-blue-300 underline underline-offset-2 font-medium"

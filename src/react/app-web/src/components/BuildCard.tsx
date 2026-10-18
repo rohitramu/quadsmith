@@ -210,7 +210,7 @@ export function BuildCard({
               <div className="flex items-center gap-4 text-zinc-400 flex-wrap">
                 <span
                   className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30"
-                  title="Experimental Build Evaluator theoretical estimates"
+                  title="Experimental Build Evaluator — provided AS IS without warranties of airworthiness or safety"
                 >
                   <FlaskConical size={10} className="shrink-0" />
                   <span>Experimental</span>

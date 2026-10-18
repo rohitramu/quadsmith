@@ -33,7 +33,7 @@ describe("BuildProfilePage Component", () => {
   });
 
   it("renders build evaluation metrics dashboard and compatibility badge", async () => {
-    renderBuildProfile();
+    const { user } = renderBuildProfile();
 
     expect(
       await screen.findByRole("heading", {
@@ -46,10 +46,13 @@ describe("BuildProfilePage Component", () => {
     expect(experimentalBadge).toBeInTheDocument();
     expect(experimentalBadge).toHaveTextContent(/experimental/i);
     expect(experimentalBadge).toHaveAttribute("href", "/terms#experimental-evaluator");
-    expect(screen.getByRole("link", { name: /read safety disclaimers/i })).toHaveAttribute(
-      "href",
-      "/terms#disclaimers",
-    );
+
+    const safetyBtn = screen.getByRole("button", { name: /^safety disclaimers$/i });
+    expect(safetyBtn).toBeInTheDocument();
+    await user.click(safetyBtn);
+    expect(screen.getByTestId("safety-disclaimers-modal")).toBeInTheDocument();
+    await user.click(screen.getByTestId("close-safety-disclaimers-modal"));
+    expect(screen.queryByTestId("safety-disclaimers-modal")).not.toBeInTheDocument();
 
     // Check AUW, TWR, Max Accel, Top Speed, Hover Throttle, Flight Time metrics
     expect(await screen.findByText("All-Up Weight")).toBeInTheDocument();
