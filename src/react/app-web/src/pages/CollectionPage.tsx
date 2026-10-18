@@ -111,7 +111,7 @@ function PropertySelector({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors shadow-xs cursor-pointer"
+        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-zinc-900 border border-zinc-800 rounded-lg text-zinc-300 hover:bg-zinc-800 transition-colors shadow-xs cursor-pointer"
         title="Customize and reorder visible properties"
       >
         <SlidersHorizontal size={14} />
@@ -119,9 +119,9 @@ function PropertySelector({
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-full mt-1.5 w-72 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-xl z-50 p-2.5 text-xs">
-          <div className="flex items-center justify-between px-2 py-1.5 border-b border-zinc-100 dark:border-zinc-800 mb-2">
-            <span className="font-semibold text-zinc-800 dark:text-zinc-200">
+        <div className="absolute right-0 top-full mt-1.5 w-72 bg-zinc-900 border border-zinc-800 rounded-lg shadow-xl z-50 p-2.5 text-xs">
+          <div className="flex items-center justify-between px-2 py-1.5 border-b border-zinc-800 mb-2">
+            <span className="font-semibold text-zinc-200">
               Properties{" "}
               <span className="font-normal text-zinc-400">
                 ({visibleProperties.length} visible)
@@ -130,7 +130,7 @@ function PropertySelector({
             <button
               type="button"
               onClick={resetToDefault}
-              className="text-[11px] text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+              className="text-[11px] text-blue-400 hover:underline cursor-pointer"
             >
               Reset to Default
             </button>
@@ -138,7 +138,7 @@ function PropertySelector({
 
           {/* Visible Properties (Reorderable) */}
           <div className="mb-2">
-            <div className="px-2 py-0.5 text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider flex justify-between items-center">
+            <div className="px-2 py-0.5 text-[10px] font-semibold text-zinc-500 uppercase tracking-wider flex justify-between items-center">
               <span>Visible (drag or arrows)</span>
             </div>
             <div className="space-y-1 mt-1 max-h-56 overflow-y-auto">
@@ -184,34 +184,31 @@ function PropertySelector({
                   }}
                   className={`flex items-center gap-1.5 px-2 py-1 rounded transition-colors group ${
                     draggedIndex === idx
-                      ? "opacity-30 bg-zinc-100 dark:bg-zinc-800"
+                      ? "opacity-30 bg-zinc-800"
                       : dragOverIndex === idx
-                        ? "border-t-2 border-blue-500 bg-blue-50/50 dark:bg-blue-950/30"
-                        : "hover:bg-zinc-50 dark:hover:bg-zinc-800/60 bg-zinc-50/50 dark:bg-zinc-900/50 border border-zinc-100 dark:border-zinc-800/70"
+                        ? "border-t-2 border-blue-500 bg-blue-950/30"
+                        : "hover:bg-zinc-800/60 bg-zinc-900/50 border border-zinc-800/70"
                   }`}
                 >
                   <span
                     title="Drag to reorder"
                     className="cursor-grab active:cursor-grabbing shrink-0 flex items-center"
                   >
-                    <GripVertical
-                      size={13}
-                      className="text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200"
-                    />
+                    <GripVertical size={13} className="text-zinc-400 group-hover:text-zinc-200" />
                   </span>
                   <input
                     type="checkbox"
                     checked={true}
                     disabled={visibleProperties.length <= 1}
                     onChange={() => hideProperty(prop.id)}
-                    className="rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 cursor-pointer disabled:opacity-40"
+                    className="rounded border-zinc-700 text-blue-600 focus:ring-blue-500 cursor-pointer disabled:opacity-40"
                     title={
                       visibleProperties.length <= 1
                         ? "At least one property must be visible"
                         : "Hide property"
                     }
                   />
-                  <span className="font-medium text-zinc-800 dark:text-zinc-200 flex-1 truncate select-none">
+                  <span className="font-medium text-zinc-200 flex-1 truncate select-none">
                     {prop.title}
                   </span>
                   <div className="flex items-center gap-0.5 shrink-0">
@@ -219,7 +216,7 @@ function PropertySelector({
                       type="button"
                       disabled={idx === 0}
                       onClick={() => moveProperty(idx, -1)}
-                      className="p-0.5 rounded text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 disabled:opacity-20 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed"
+                      className="p-0.5 rounded text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 disabled:opacity-20 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed"
                       title="Move up / left"
                     >
                       <ChevronUp size={13} />
@@ -228,7 +225,7 @@ function PropertySelector({
                       type="button"
                       disabled={idx === visibleProperties.length - 1}
                       onClick={() => moveProperty(idx, 1)}
-                      className="p-0.5 rounded text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700 disabled:opacity-20 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed"
+                      className="p-0.5 rounded text-zinc-400 hover:text-zinc-200 hover:bg-zinc-700 disabled:opacity-20 disabled:hover:bg-transparent cursor-pointer disabled:cursor-not-allowed"
                       title="Move down / right"
                     >
                       <ChevronDown size={13} />
@@ -241,8 +238,8 @@ function PropertySelector({
 
           {/* Hidden Properties */}
           {hiddenProperties.length > 0 && (
-            <div className="border-t border-zinc-100 dark:border-zinc-800 pt-2">
-              <div className="px-2 py-0.5 text-[10px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+            <div className="border-t border-zinc-800 pt-2">
+              <div className="px-2 py-0.5 text-[10px] font-semibold text-zinc-500 uppercase tracking-wider">
                 <span>Hidden Properties (click to show)</span>
               </div>
               <div className="space-y-0.5 mt-1 max-h-36 overflow-y-auto">
@@ -255,22 +252,17 @@ function PropertySelector({
                       e.dataTransfer.setData("text/quadsmith-hidden-id", prop.id);
                     }}
                     onClick={() => showProperty(prop.id)}
-                    className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-zinc-50 dark:hover:bg-zinc-800/60 cursor-pointer select-none text-zinc-500 dark:text-zinc-400 group"
+                    className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-zinc-800/60 cursor-pointer select-none text-zinc-400 group"
                     title="Click to add or drag into visible list"
                   >
                     <input
                       type="checkbox"
                       checked={false}
                       onChange={() => showProperty(prop.id)}
-                      className="rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                      className="rounded border-zinc-700 text-blue-600 focus:ring-blue-500 cursor-pointer"
                     />
-                    <span className="flex-1 truncate group-hover:text-zinc-700 dark:group-hover:text-zinc-300">
-                      {prop.title}
-                    </span>
-                    <Plus
-                      size={12}
-                      className="text-zinc-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-200 shrink-0"
-                    />
+                    <span className="flex-1 truncate group-hover:text-zinc-300">{prop.title}</span>
+                    <Plus size={12} className="text-zinc-400 group-hover:text-zinc-200 shrink-0" />
                   </div>
                 ))}
               </div>
@@ -479,19 +471,15 @@ export function CollectionTableView({
     <div>
       <nav
         aria-label="Breadcrumb"
-        className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap"
+        className="mb-4 text-sm text-zinc-400 flex items-center gap-1.5 flex-wrap"
       >
         <Link
           to={categoryId ? `/components/${categoryId}` : "/"}
-          className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
+          className="capitalize hover:text-zinc-100 hover:underline transition-colors"
         >
           {categoryId || "Home"}
         </Link>
-        <ChevronRight
-          size={14}
-          className="text-zinc-400 dark:text-zinc-500 shrink-0"
-          aria-hidden="true"
-        />
+        <ChevronRight size={14} className="text-zinc-500 shrink-0" aria-hidden="true" />
         <CollectionBadge collection={collection.id} label={collection.name} size="md" />
       </nav>
 
@@ -538,7 +526,7 @@ export function CollectionTableView({
                 {count > 0 ? (
                   <>
                     Showing{" "}
-                    <span className="font-medium text-zinc-700 dark:text-zinc-300">
+                    <span className="font-medium text-zinc-300">
                       {startItem}–{endItem}
                     </span>{" "}
                     components
@@ -548,9 +536,7 @@ export function CollectionTableView({
                 )}
               </span>
               {isFetching && !isLoading && (
-                <span className="text-zinc-400 dark:text-zinc-500 animate-pulse">
-                  (updating...)
-                </span>
+                <span className="text-zinc-500 animate-pulse">(updating...)</span>
               )}
             </div>
 
@@ -596,7 +582,7 @@ export function CollectionTableView({
                       : "Sort descending (click for ascending)"
                   }
                   aria-label={sortDir === "asc" ? "Sort ascending" : "Sort descending"}
-                  className="p-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors shadow-xs cursor-pointer shrink-0"
+                  className="p-1.5 rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 transition-colors shadow-xs cursor-pointer shrink-0"
                 >
                   {sortDir === "desc" ? <ArrowDown size={14} /> : <ArrowUp size={14} />}
                 </button>
@@ -612,7 +598,7 @@ export function CollectionTableView({
           </div>
 
           {items.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 p-8 text-center text-sm text-zinc-500">
+            <div className="rounded-2xl border border-dashed border-zinc-800 p-8 text-center text-sm text-zinc-500">
               No {collection.name.toLowerCase()} found matching the active filters.
             </div>
           ) : (
@@ -626,14 +612,14 @@ export function CollectionTableView({
                   <article
                     key={item.id}
                     data-testid="catalog-card"
-                    className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/90 p-4 sm:p-5 shadow-xs hover:border-zinc-300 dark:hover:border-zinc-700 hover:shadow-md transition-all flex flex-col justify-between"
+                    className="rounded-2xl border border-zinc-800 bg-zinc-900/90 p-4 sm:p-5 shadow-xs hover:border-zinc-700 hover:shadow-md transition-all flex flex-col justify-between"
                   >
                     <div>
                       {/* Header: Thumbnail + Badges/Manufacturer + Name + Community/Internal */}
-                      <div className="flex items-start gap-3 pb-3 mb-3 border-b border-zinc-100 dark:border-zinc-800/80">
+                      <div className="flex items-start gap-3 pb-3 mb-3 border-b border-zinc-800/80">
                         {/* Thumbnail / Icon */}
                         <div
-                          className={`w-12 h-12 rounded-xl shrink-0 flex items-center justify-center overflow-hidden border border-zinc-200/80 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/80 ${colColor.textClass}`}
+                          className={`w-12 h-12 rounded-xl shrink-0 flex items-center justify-center overflow-hidden border border-zinc-800 bg-zinc-800/80 ${colColor.textClass}`}
                         >
                           {item.primaryDisplayImage ? (
                             <img
@@ -652,19 +638,19 @@ export function CollectionTableView({
                             <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
                               <CollectionBadge collection={collection.id} size="xs" />
                               {item.manufacturer && (
-                                <span className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider truncate">
+                                <span className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider truncate">
                                   {item.manufacturer}
                                 </span>
                               )}
                             </div>
                             <div className="flex items-center gap-1 shrink-0">
                               {(item.isUserCreated || item.is_user_created) && (
-                                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
                                   Community
                                 </span>
                               )}
                               {item.is_internal_only && (
-                                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
                                   Internal
                                 </span>
                               )}
@@ -673,7 +659,7 @@ export function CollectionTableView({
 
                           <Link
                             to={productUrl}
-                            className="font-bold text-sm sm:text-base text-zinc-900 dark:text-zinc-50 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors line-clamp-1 block"
+                            className="font-bold text-sm sm:text-base text-zinc-50 hover:text-emerald-400 transition-colors line-clamp-1 block"
                             aria-label={`View ${item.name || item.id}`}
                           >
                             {item.name || item.id}
@@ -688,12 +674,12 @@ export function CollectionTableView({
                           .map((col) => (
                             <div
                               key={col.id}
-                              className="bg-zinc-50 dark:bg-zinc-800/50 rounded-xl px-2.5 py-1.5 border border-zinc-100 dark:border-zinc-800/80 flex flex-col min-w-0"
+                              className="bg-zinc-800/50 rounded-xl px-2.5 py-1.5 border border-zinc-800/80 flex flex-col min-w-0"
                             >
-                              <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500 truncate">
+                              <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-500 truncate">
                                 {col.title}
                               </span>
-                              <div className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate mt-0.5">
+                              <div className="text-xs font-semibold text-zinc-200 truncate mt-0.5">
                                 {col.renderCell(item)}
                               </div>
                             </div>
@@ -702,20 +688,20 @@ export function CollectionTableView({
 
                       {/* Description if present */}
                       {item.description && (
-                        <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-3 leading-relaxed">
+                        <p className="text-xs text-zinc-400 line-clamp-2 mt-3 leading-relaxed">
                           {item.description}
                         </p>
                       )}
                     </div>
 
                     {/* Footer Direct Link & ID */}
-                    <div className="mt-3.5 pt-2.5 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-xs">
-                      <span className="font-mono text-[11px] text-zinc-400 dark:text-zinc-500 truncate">
+                    <div className="mt-3.5 pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs">
+                      <span className="font-mono text-[11px] text-zinc-500 truncate">
                         {item.id}
                       </span>
                       <Link
                         to={productUrl}
-                        className="inline-flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400 hover:underline shrink-0"
+                        className="inline-flex items-center gap-1 font-semibold text-emerald-400 hover:underline shrink-0"
                       >
                         <span>Details</span>
                         <ExternalLink size={12} />
@@ -729,7 +715,7 @@ export function CollectionTableView({
 
           {/* Bottom Pagination Controls */}
           {(count > 0 || pageIndex > 0) && (
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-6 text-xs text-zinc-500 dark:text-zinc-400">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-3 mt-6 text-xs text-zinc-400">
               {/* Rows per page selector */}
               <div className="flex items-center gap-2">
                 <span>Rows per page:</span>
@@ -745,7 +731,7 @@ export function CollectionTableView({
                   ariaLabel="Rows per page"
                   size="sm"
                 />
-                <span className="text-zinc-300 dark:text-zinc-700">|</span>
+                <span className="text-zinc-700">|</span>
                 <span>
                   Showing {startItem}–{endItem}
                 </span>
@@ -753,15 +739,13 @@ export function CollectionTableView({
 
               {/* Page navigation controls */}
               <div className="flex items-center gap-1.5">
-                <span className="mr-2 font-medium text-zinc-700 dark:text-zinc-300">
-                  Page {pageIndex + 1}
-                </span>
+                <span className="mr-2 font-medium text-zinc-300">Page {pageIndex + 1}</span>
                 <button
                   type="button"
                   onClick={handleFirstPage}
                   disabled={!hasPrevPage || isFetching}
                   title="First Page"
-                  className="p-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-zinc-700 dark:text-zinc-300 shadow-xs"
+                  className="p-1.5 rounded border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-zinc-300 shadow-xs"
                 >
                   <ChevronsLeft size={14} />
                 </button>
@@ -770,7 +754,7 @@ export function CollectionTableView({
                   onClick={handlePrevPage}
                   disabled={!hasPrevPage || isFetching}
                   title="Previous Page"
-                  className="flex items-center gap-1 px-2.5 py-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-zinc-700 dark:text-zinc-300 shadow-xs"
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-zinc-300 shadow-xs"
                 >
                   <ChevronLeft size={14} />
                   <span>Previous</span>
@@ -780,7 +764,7 @@ export function CollectionTableView({
                   onClick={handleNextPage}
                   disabled={!hasNextPage || isFetching}
                   title="Next Page"
-                  className="flex items-center gap-1 px-2.5 py-1.5 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-zinc-700 dark:text-zinc-300 shadow-xs"
+                  className="flex items-center gap-1 px-2.5 py-1.5 rounded border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed transition-colors cursor-pointer text-zinc-300 shadow-xs"
                 >
                   <span>Next</span>
                   <ChevronRight size={14} />
@@ -812,19 +796,15 @@ export function CollectionPage() {
       <div>
         <nav
           aria-label="Breadcrumb"
-          className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap"
+          className="mb-4 text-sm text-zinc-400 flex items-center gap-1.5 flex-wrap"
         >
           <Link
             to={`/components/${categoryId}`}
-            className="capitalize hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
+            className="capitalize hover:text-zinc-100 hover:underline transition-colors"
           >
             {categoryId}
           </Link>
-          <ChevronRight
-            size={14}
-            className="text-zinc-400 dark:text-zinc-500 shrink-0"
-            aria-hidden="true"
-          />
+          <ChevronRight size={14} className="text-zinc-500 shrink-0" aria-hidden="true" />
           <CollectionBadge
             collection={collectionId}
             label={collectionId?.replace(/[-_]/g, " ")}

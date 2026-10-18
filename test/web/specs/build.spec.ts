@@ -5,32 +5,19 @@ import { loginAs, SEEDED_PILOT } from "../helpers/auth";
 test.describe("Build Profile Showcase & Battery Simulator", () => {
   const BUILD_URL = "/builds/bando-basher-5-inch";
 
-  test("renders build profile, hardware specs, and battery simulator in dark mode", async ({
+  test("renders build profile, hardware specs, and battery simulator", async ({
     page,
   }) => {
     await loginAs(page, SEEDED_PILOT);
     await page.goto(BUILD_URL);
-    await preparePageForSnapshot(page, { theme: "dark" });
+    await preparePageForSnapshot(page);
 
     // Verify build name and hardware list
     await expect(page.getByRole("heading", { name: /Bando Basher/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Hardware" })).toBeVisible();
 
-    // Visual snapshot comparison (Dark Mode)
-    await expect(page).toHaveScreenshot("build-profile-dark.png", {
-      fullPage: true,
-    });
-  });
-
-  test("renders build profile cleanly in light mode", async ({ page }) => {
-    await loginAs(page, SEEDED_PILOT);
-    await page.goto(BUILD_URL);
-    await preparePageForSnapshot(page, { theme: "light" });
-
-    await expect(page.getByRole("heading", { name: /Bando Basher/i })).toBeVisible();
-
-    // Visual snapshot comparison (Light Mode)
-    await expect(page).toHaveScreenshot("build-profile-light.png", {
+    // Visual snapshot comparison
+    await expect(page).toHaveScreenshot("build-profile.png", {
       fullPage: true,
     });
   });

@@ -111,7 +111,7 @@ describe("LoginPage Component", () => {
     inputs.forEach((input, index) => {
       expect(input.value).toBe("");
       expect(input.placeholder).toBe(wrongDigits[index]);
-      expect(input.className).toMatch(/border-zinc-300/);
+      expect(input.className).toMatch(/border-zinc-700/);
       expect(input.className).not.toMatch(/border-amber-500/);
       expect(input.className).not.toMatch(/border-rose-500/);
     });
@@ -128,7 +128,7 @@ describe("LoginPage Component", () => {
     expect(finalBadge.className).toMatch(/text-rose-500/);
 
     inputs.forEach((input) => {
-      expect(input.className).toMatch(/border-zinc-300/);
+      expect(input.className).toMatch(/border-zinc-700/);
       expect(input.className).not.toMatch(/border-amber-500/);
       expect(input.className).not.toMatch(/border-rose-500/);
     });
@@ -388,7 +388,7 @@ describe("LoginPage Component", () => {
     // Avatar preview dynamically updates to initial "R" with palette badge styling
     const avatarPreview = screen.getByTestId("avatar-preview");
     expect(avatarPreview.textContent).toBe("R");
-    expect(avatarPreview.className).toMatch(/bg-purple-100/);
+    expect(avatarPreview.className).toMatch(/bg-purple-950\/60/);
   });
 
   it("updates display image live preview and completes setup successfully", async () => {
@@ -482,7 +482,7 @@ describe("LoginPage Component", () => {
       expect(submitBtn).toBeDisabled();
       expect(submitBtn.className).toMatch(/cursor-not-allowed/);
       expect(submitBtn.className).not.toMatch(/cursor-pointer/);
-      expect(submitBtn.className).toMatch(/bg-zinc-100/);
+      expect(submitBtn.className).toMatch(/bg-zinc-800/);
 
       // Typing email enables the button
       fireEvent.change(emailInput, { target: { value: "pilot@example.com" } });
@@ -537,7 +537,7 @@ describe("LoginPage Component", () => {
       expect(postCooldownBtn).toBeDisabled();
       expect(postCooldownBtn.className).toMatch(/cursor-not-allowed/);
       expect(postCooldownBtn.className).not.toMatch(/cursor-pointer/);
-      expect(postCooldownBtn.className).toMatch(/bg-zinc-100/);
+      expect(postCooldownBtn.className).toMatch(/bg-zinc-800/);
       expect(screen.queryByText("→")).not.toBeInTheDocument();
 
       // Now entering an email address after cooldown expires enables the button

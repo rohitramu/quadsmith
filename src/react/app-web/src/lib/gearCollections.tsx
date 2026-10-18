@@ -32,9 +32,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
       id: "id",
       title: "ID",
       renderCell: (m) => (
-        <span className="relative z-20 font-mono text-xs text-zinc-700 dark:text-zinc-300 select-all">
-          {m.id}
-        </span>
+        <span className="relative z-20 font-mono text-xs text-zinc-300 select-all">{m.id}</span>
       ),
     },
     uuid: {
@@ -42,7 +40,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
       title: "UUID",
       renderCell: (m) => (
         <span
-          className="relative z-20 font-mono text-[11px] text-zinc-500 dark:text-zinc-400 select-all block truncate max-w-[140px]"
+          className="relative z-20 font-mono text-[11px] text-zinc-400 select-all block truncate max-w-[140px]"
           title={m.uuid}
         >
           {m.uuid}
@@ -57,9 +55,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
     name: {
       id: "name",
       title: "Name",
-      renderCell: (m) => (
-        <span className="font-medium text-zinc-900 dark:text-zinc-100">{m.name || m.id}</span>
-      ),
+      renderCell: (m) => <span className="font-medium text-zinc-100">{m.name || m.id}</span>,
     },
     weight_g: {
       id: "weight_g",
@@ -79,7 +75,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
           <img
             src={m.primaryDisplayImage}
             alt={m.name || m.id}
-            className="w-9 h-9 object-cover rounded-md border border-zinc-200 dark:border-zinc-800 shadow-2xs"
+            className="w-9 h-9 object-cover rounded-md border border-zinc-800 shadow-2xs"
             loading="lazy"
           />
         ) : (
@@ -432,7 +428,7 @@ export const GEAR_COLLECTIONS: HardwareCollectionDef[] = [
         id: "tool_type",
         title: "Tool Type",
         renderCell: (m) => (
-          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200">
+          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-zinc-800 text-zinc-200">
             {m.toolType || "-"}
           </span>
         ),

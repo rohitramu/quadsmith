@@ -10,8 +10,7 @@ export interface AvatarPalette {
 
 /**
  * AVATAR_PALETTES provides all 32 distinct color presets derived directly from
- * the authoritative UI color palette in collectionColors.ts, featuring comprehensive
- * light and dark mode variants.
+ * the authoritative UI color palette in collectionColors.ts.
  */
 export const AVATAR_PALETTES: AvatarPalette[] = COLOR_PALETTE.map((c) => ({
   name: c.colorName,

@@ -45,11 +45,10 @@ end-to-end browser verification.
 
 Establish a fully containerized, hermetic end-to-end (E2E) and visual regression
 testing architecture using Playwright within `test/web`, running multi-browser
-test suites across desktop and mobile viewports with light and dark themes
-against any target environment via `BASE_URL`, validating core user journeys,
-component catalogs, The Forge wizard, administrative ban lock screens, account
-deletion flows, and negative failure modes (invalid inputs, disabled controls,
-and network faults).
+test suites across desktop and mobile viewports against any target environment
+via `BASE_URL`, validating core user journeys, component catalogs, The Forge
+wizard, administrative ban lock screens, account deletion flows, and negative
+failure modes (invalid inputs, disabled controls, and network faults).
 
 ---
 
@@ -60,7 +59,7 @@ and network faults).
 > - Containerize Playwright in a dedicated Docker runner targeting any
 >   `BASE_URL`.
 > - Group all browser E2E, visual, and resilience tests under `test/web`.
-> - Test multi-browser matrix across desktop and mobile with dual themes.
+> - Test multi-browser matrix across desktop and mobile viewports.
 > - Default to 1 worker per browser profile to maximize parallel throughput.
 > - Verify negative failure modes: invalid inputs, disabled controls, and
 >   network drops.
@@ -96,7 +95,7 @@ flowchart TD
     subgraph Test Scenarios
         HappyPath["Happy-Path Flows (Catalogs, Forge Wizard, Builds, Profile)"]
         NegativeCases["Failure Cases (Bad Inputs, Disabled Buttons, Route Aborts)"]
-        VisualBaselines["Visual Snapshots (Desktop/Mobile, Light/Dark Modes)"]
+        VisualBaselines["Visual Snapshots (Desktop/Mobile Viewports)"]
         Specs --> HappyPath
         Specs --> NegativeCases
         Specs --> VisualBaselines
@@ -186,7 +185,7 @@ test/web/
 │   ├── faults.ts               # Network route aborts and mock failure helpers
 │   └── stability.ts            # Animation suppression and clock freezing
 ├── specs/
-│   ├── home.spec.ts            # Home page, navbar, theme toggles, footer
+│   ├── home.spec.ts            # Home page, navbar, and footer
 │   ├── catalog.spec.ts         # Component catalog, table columns, filter inputs
 │   ├── product.spec.ts         # Product detail specs, compatibility hover card
 │   ├── forge.spec.ts           # The Forge 11-step wizard and build editing
@@ -244,16 +243,12 @@ prevent flaky tests:
    - **Desktop Viewport**: Standard `1280x800` viewport.
    - **Mobile Viewport**: Standard `390x844` viewport (emulating modern iPhone
      and Android displays).
-2. **Dual Theme Coverage**:
-   - Every surface is captured in both **Light Mode** and **Dark Mode**.
-   - Tests toggle theme states deterministically via the UI theme button or by
-     initializing `localStorage.setItem('theme', 'dark')`.
-3. **Snapshot Diff Tolerance & Thresholds**:
+2. **Snapshot Diff Tolerance & Thresholds**:
    - `maxDiffPixelRatio: 0.005` (0.5% allowed pixel difference): Absorbs minor
      anti-aliasing and subpixel font rasterization differences across GPUs
      without masking genuine layout, alignment, or color defects.
    - `threshold: 0.2`: Strict color difference sensitivity per pixel.
-4. **Deterministic Snapshot Stabilization (`helpers/stability.ts`)**:
+3. **Deterministic Snapshot Stabilization (`helpers/stability.ts`)**:
    - **Disabled Animations**: `animations: 'disabled'` disables CSS keyframes,
      transitions, and pulse indicators during screenshot capture.
    - **Frozen Clock**: Uses `page.clock.setFixedTime('2026-10-15T12:00:00Z')` to
@@ -262,7 +257,7 @@ prevent flaky tests:
      masked using `mask: [page.locator('[data-testid="dynamic-id"]')]`.
    - **Font Readiness**: Enforces `await document.fonts.ready` prior to snapshot
      capture.
-5. **Dynamic Default Worker Allocation (50% CPU Threads)**:
+4. **Dynamic Default Worker Allocation (50% CPU Threads)**:
    - Configured by default to allocate 50% of available CPU threads
      (`Math.max(2, Math.floor(os.cpus().length / 2))`).
    - Balances parallel test execution across browser profiles while leaving
@@ -328,7 +323,7 @@ surfaces using deterministic seed data provided by
 
 1. **Home Page & Navigation (`home.spec.ts`)**:
    - Full page rendering with hero, featured builds, and footer.
-   - Header navigation, search dialog toggle, and theme switching.
+   - Header navigation and search dialog toggle.
    - Desktop vs. mobile responsive drawer and menu layout.
 2. **Component Catalogs & Customization (`catalog.spec.ts`)**:
    - Component catalog data tables (e.g. Motors, Frames, Flight Controllers).
@@ -478,7 +473,7 @@ To enable seamless iteration while keeping the repository clean:
 1. **Committed Golden Baselines (`test/web/snapshots/`)**:
    - Reference screenshots are tracked in Git under `test/web/snapshots/`.
    - Filenames follow Playwright's canonical naming convention:
-     `<spec>-<test-name>-<browser>-<viewport>-<theme>.png`.
+     `<spec>/<snapshot-name>-<browser>-<viewport>-linux.png`.
 2. **Host Volume Mounting**:
    - When running the container, `test/web/snapshots` is volume-mounted into
      `/app/snapshots`.

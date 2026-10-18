@@ -81,20 +81,16 @@ export function CopyFilterButton({
         aria-label={ariaLabel}
         data-testid="copy-filter-button"
         title={formattedFilter}
-        className={`p-1 rounded-md text-zinc-500 hover:text-zinc-800 dark:text-zinc-400 dark:hover:text-zinc-100 hover:bg-zinc-200/60 dark:hover:bg-zinc-700/50 transition-colors cursor-pointer inline-flex items-center justify-center shrink-0 ${className}`}
+        className={`p-1 rounded-md text-zinc-400 hover:text-zinc-100 hover:bg-zinc-700/50 transition-colors cursor-pointer inline-flex items-center justify-center shrink-0 ${className}`}
       >
-        {copied ? (
-          <Check size={13} className="text-emerald-600 dark:text-emerald-400" />
-        ) : (
-          <Copy size={13} />
-        )}
+        {copied ? <Check size={13} className="text-emerald-400" /> : <Copy size={13} />}
       </button>
 
       {/* Floating Hover Hint */}
       {isHovered && (
         <div
           role="tooltip"
-          className={`absolute left-0 z-50 pointer-events-none px-3 py-2 rounded-lg text-[11px] font-mono whitespace-pre-wrap leading-relaxed bg-zinc-900 text-zinc-100 dark:bg-zinc-950 dark:text-zinc-100 border border-zinc-700/80 dark:border-zinc-800 shadow-xl max-w-[calc(100vw-3rem)] sm:max-w-md w-max break-words select-none transition-all duration-150 ${
+          className={`absolute left-0 z-50 pointer-events-none px-3 py-2 rounded-lg text-[11px] font-mono whitespace-pre-wrap leading-relaxed bg-zinc-950 text-zinc-100 border border-zinc-800 shadow-xl max-w-[calc(100vw-3rem)] sm:max-w-md w-max break-words select-none transition-all duration-150 ${
             placement === "top" ? "bottom-full mb-2" : "top-full mt-2"
           }`}
         >
@@ -102,8 +98,8 @@ export function CopyFilterButton({
           <div
             className={`absolute left-2.5 border-4 border-transparent ${
               placement === "top"
-                ? "top-full -mt-[1px] border-t-zinc-900 dark:border-t-zinc-950"
-                : "bottom-full -mb-[1px] border-b-zinc-900 dark:border-b-zinc-950"
+                ? "top-full -mt-[1px] border-t-zinc-950"
+                : "bottom-full -mb-[1px] border-b-zinc-950"
             }`}
           />
         </div>

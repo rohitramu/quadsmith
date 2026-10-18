@@ -166,17 +166,17 @@ export function UserHoverCard({
             }}
             onMouseLeave={handleMouseLeave}
           >
-            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl p-4 text-left backdrop-blur-md">
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-900 shadow-xl p-4 text-left backdrop-blur-md">
               {isLoading ? (
                 <div className="space-y-3 animate-pulse">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-zinc-200 dark:bg-zinc-800" />
+                    <div className="w-10 h-10 rounded-full bg-zinc-800" />
                     <div className="space-y-1.5 flex-1">
-                      <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-24" />
-                      <div className="h-3 bg-zinc-200 dark:bg-zinc-800 rounded w-16" />
+                      <div className="h-4 bg-zinc-800 rounded w-24" />
+                      <div className="h-3 bg-zinc-800 rounded w-16" />
                     </div>
                   </div>
-                  <div className="h-8 bg-zinc-100 dark:bg-zinc-800/50 rounded-lg" />
+                  <div className="h-8 bg-zinc-800/50 rounded-lg" />
                 </div>
               ) : (
                 <>
@@ -186,7 +186,7 @@ export function UserHoverCard({
                       <img
                         src={profile.avatarUrl}
                         alt={cleanUsername}
-                        className="w-10 h-10 rounded-full object-cover border border-zinc-200 dark:border-zinc-800 shrink-0"
+                        className="w-10 h-10 rounded-full object-cover border border-zinc-800 shrink-0"
                       />
                     ) : (
                       <div
@@ -198,11 +198,11 @@ export function UserHoverCard({
                     <div className="min-w-0 flex-1">
                       <Link
                         to={`/users/${cleanUsername}`}
-                        className="font-bold text-sm text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 hover:underline block truncate"
+                        className="font-bold text-sm text-zinc-100 hover:text-blue-400 hover:underline block truncate"
                       >
                         @{cleanUsername}
                       </Link>
-                      <span className="flex items-center gap-1 text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5">
+                      <span className="flex items-center gap-1 text-[11px] text-zinc-400 mt-0.5">
                         <Calendar size={11} className="shrink-0" />
                         <span>Joined {formatJoinedDate(profile?.createdAt?.seconds)}</span>
                       </span>
@@ -211,30 +211,30 @@ export function UserHoverCard({
 
                   {/* Bio (if available) */}
                   {profile?.bio && (
-                    <p className="mt-2.5 text-xs text-zinc-600 dark:text-zinc-300 line-clamp-2 leading-relaxed">
+                    <p className="mt-2.5 text-xs text-zinc-300 line-clamp-2 leading-relaxed">
                       {profile.bio}
                     </p>
                   )}
 
                   {/* Pilot Stats */}
                   <div className="grid grid-cols-2 gap-2 mt-3">
-                    <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-800 text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                    <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-zinc-800/60 border border-zinc-800 text-xs font-medium text-zinc-300">
                       <Wrench size={13} className="text-blue-500 shrink-0" />
                       <span>
                         {profile?.buildCount ?? 0} {profile?.buildCount === 1 ? "build" : "builds"}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-200/60 dark:border-zinc-800 text-xs font-medium text-zinc-700 dark:text-zinc-300">
+                    <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-zinc-800/60 border border-zinc-800 text-xs font-medium text-zinc-300">
                       <Star size={13} className="text-amber-500 fill-amber-500/20 shrink-0" />
                       <span>{profile?.reputationScore ?? 0} rep</span>
                     </div>
                   </div>
 
                   {/* Action Link */}
-                  <div className="mt-3 pt-2 border-t border-zinc-100 dark:border-zinc-800/80 flex justify-end">
+                  <div className="mt-3 pt-2 border-t border-zinc-800/80 flex justify-end">
                     <Link
                       to={`/users/${cleanUsername}`}
-                      className="text-xs font-medium text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-1 transition-colors"
+                      className="text-xs font-medium text-blue-400 hover:underline inline-flex items-center gap-1 transition-colors"
                     >
                       View profile
                       <ArrowRight size={12} />

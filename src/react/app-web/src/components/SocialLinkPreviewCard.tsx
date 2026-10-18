@@ -14,21 +14,15 @@ const LINK_TYPE_LABELS: Record<number, string> = {
 };
 
 const LINK_TYPE_STYLES: Record<number, string> = {
-  [ReferenceLinkType.PURCHASE]:
-    "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800",
-  [ReferenceLinkType.PRODUCT_PAGE]:
-    "bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 border-blue-200 dark:border-blue-800",
-  [ReferenceLinkType.DOCUMENTATION]:
-    "bg-purple-50 text-purple-700 dark:bg-purple-950/40 dark:text-purple-300 border-purple-200 dark:border-purple-800",
-  [ReferenceLinkType.REVIEW]:
-    "bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 border-amber-200 dark:border-amber-800",
-  [ReferenceLinkType.FORUM_POST]:
-    "bg-sky-50 text-sky-700 dark:bg-sky-950/40 dark:text-sky-300 border-sky-200 dark:border-sky-800",
+  [ReferenceLinkType.PURCHASE]: "bg-emerald-950/40 text-emerald-300 border-emerald-800",
+  [ReferenceLinkType.PRODUCT_PAGE]: "bg-blue-950/40 text-blue-300 border-blue-800",
+  [ReferenceLinkType.DOCUMENTATION]: "bg-purple-950/40 text-purple-300 border-purple-800",
+  [ReferenceLinkType.REVIEW]: "bg-amber-950/40 text-amber-300 border-amber-800",
+  [ReferenceLinkType.FORUM_POST]: "bg-sky-950/40 text-sky-300 border-sky-800",
 };
 
 export const OTHER_LABEL = "Other";
-export const OTHER_STYLE =
-  "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 border-zinc-200 dark:border-zinc-700";
+export const OTHER_STYLE = "bg-zinc-800 text-zinc-300 border-zinc-700";
 
 export function validateReferenceLink(link: {
   types?: (ReferenceLinkType | number)[];
@@ -193,11 +187,11 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
       href={link.url}
       target="_blank"
       rel="noopener noreferrer"
-      className={`group flex flex-col sm:flex-row items-stretch bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-xl overflow-hidden transition-all shadow-xs hover:shadow-sm ${className}`}
+      className={`group flex flex-col sm:flex-row items-stretch bg-zinc-900 hover:bg-zinc-800/80 border border-zinc-800 hover:border-zinc-700 rounded-xl overflow-hidden transition-all shadow-xs hover:shadow-sm ${className}`}
     >
       {/* Thumbnail Image (if available) */}
       {hasImage && (
-        <div className="sm:w-36 h-28 sm:h-auto shrink-0 bg-zinc-100 dark:bg-zinc-800 relative overflow-hidden">
+        <div className="sm:w-36 h-28 sm:h-auto shrink-0 bg-zinc-800 relative overflow-hidden">
           <img
             src={preview.image}
             alt=""
@@ -214,7 +208,7 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
           {/* Header Row: Site Favicon/Host, Badge Chips, External Icon */}
           <div className="flex items-center justify-between gap-2 mb-1.5">
             <div className="flex flex-wrap items-center gap-2 min-w-0">
-              <div className="flex items-center gap-1.5 text-xs text-zinc-500 dark:text-zinc-400 shrink-0 font-medium">
+              <div className="flex items-center gap-1.5 text-xs text-zinc-400 shrink-0 font-medium">
                 {preview?.favicon && !faviconError ? (
                   <img
                     src={preview.favicon}
@@ -227,10 +221,7 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
                 )}
                 <span className="truncate max-w-[160px] sm:max-w-xs">{siteName}</span>
               </div>
-              <span
-                className="w-1.5 h-1.5 rounded-full bg-zinc-300 dark:bg-zinc-600 shrink-0"
-                aria-hidden="true"
-              />
+              <span className="w-1.5 h-1.5 rounded-full bg-zinc-600 shrink-0" aria-hidden="true" />
               <div className="flex flex-wrap items-center gap-1.5">
                 {isInferredOther ? (
                   <span
@@ -254,35 +245,31 @@ export function SocialLinkPreviewCard({ link, className = "" }: SocialLinkPrevie
                 )}
               </div>
             </div>
-            <ExternalLink className="w-4 h-4 text-zinc-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 shrink-0 transition-colors" />
+            <ExternalLink className="w-4 h-4 text-zinc-400 group-hover:text-blue-400 shrink-0 transition-colors" />
           </div>
 
           {/* Title */}
           {isLoading ? (
             <div
-              className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-2/3 animate-pulse my-1"
+              className="h-4 bg-zinc-800 rounded w-2/3 animate-pulse my-1"
               data-testid="link-preview-skeleton"
             />
           ) : (
-            <h4 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 line-clamp-1 transition-colors">
+            <h4 className="text-sm font-semibold text-zinc-100 group-hover:text-blue-400 line-clamp-1 transition-colors">
               {title}
             </h4>
           )}
 
           {/* Description Snippet (if available) */}
           {isLoading ? (
-            <div className="h-3 bg-zinc-100 dark:bg-zinc-800/60 rounded w-5/6 animate-pulse mt-1" />
+            <div className="h-3 bg-zinc-800/60 rounded w-5/6 animate-pulse mt-1" />
           ) : description ? (
-            <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2 mt-1 leading-relaxed">
-              {description}
-            </p>
+            <p className="text-xs text-zinc-400 line-clamp-2 mt-1 leading-relaxed">{description}</p>
           ) : null}
         </div>
 
         {/* URL footer */}
-        <div className="mt-2 text-[11px] font-mono text-zinc-400 dark:text-zinc-500 truncate">
-          {link.url}
-        </div>
+        <div className="mt-2 text-[11px] font-mono text-zinc-500 truncate">{link.url}</div>
       </div>
     </a>
   );

@@ -8,10 +8,9 @@ import { HARDWARE_COLLECTIONS } from "../../lib/hardwareCollections";
 describe("Layout Component", () => {
   beforeEach(() => {
     localStorage.clear();
-    document.documentElement.classList.remove("dark");
   });
 
-  it("renders top navbar with logo, search input, and theme toggle", () => {
+  it("renders top navbar with logo and search input", () => {
     renderWithProviders(<Layout />, { route: "/" });
 
     // Logo
@@ -23,10 +22,6 @@ describe("Layout Component", () => {
     // Search Bar
     const searchInput = screen.getByPlaceholderText(/search/i);
     expect(searchInput).toBeInTheDocument();
-
-    // Theme Toggle Button
-    const themeBtn = screen.getByRole("button", { name: "Toggle theme" });
-    expect(themeBtn).toBeInTheDocument();
   });
 
   it("focuses search bar on '/' keyboard shortcut", async () => {
@@ -38,26 +33,6 @@ describe("Layout Component", () => {
 
     await user.keyboard("/");
     expect(searchInput).toHaveFocus();
-  });
-
-  it("toggles light and dark themes correctly and persists to localStorage", async () => {
-    const { user } = renderWithProviders(<Layout />, { route: "/" });
-
-    // Initial state is dark by default
-    expect(document.documentElement.classList.contains("dark")).toBe(true);
-    expect(localStorage.getItem("theme")).toBe("dark");
-
-    const themeButton = screen.getByRole("button", { name: "Toggle theme" });
-
-    // Toggle to light mode
-    await user.click(themeButton);
-    expect(document.documentElement.classList.contains("dark")).toBe(false);
-    expect(localStorage.getItem("theme")).toBe("light");
-
-    // Toggle back to dark mode
-    await user.click(themeButton);
-    expect(document.documentElement.classList.contains("dark")).toBe(true);
-    expect(localStorage.getItem("theme")).toBe("dark");
   });
 
   it("opens mobile navigation drawer on hamburger menu click and closes on close button or backdrop click", async () => {
@@ -96,7 +71,7 @@ describe("Layout Component", () => {
     expect(feedLink).toHaveAttribute("href", "/builds");
     const feedIcon = feedLink.querySelector("svg");
     expect(feedIcon).toBeInTheDocument();
-    expect(feedIcon).toHaveClass("text-blue-600");
+    expect(feedIcon).toHaveClass("text-blue-400");
 
     const wizardLink = screen.getByRole("link", { name: /The Forge/i });
     expect(wizardLink).toHaveAttribute("href", "/builds/new");
@@ -140,8 +115,7 @@ describe("Layout Component", () => {
     renderWithProviders(<Layout />, { route: "/builds/new" });
 
     const forgeLink = screen.getByRole("link", { name: /The Forge/i });
-    expect(forgeLink).toHaveClass("text-blue-600");
-    expect(forgeLink).toHaveClass("dark:text-blue-400");
+    expect(forgeLink).toHaveClass("text-blue-400");
     const forgeIcon = forgeLink.querySelector("svg");
     expect(forgeIcon).toHaveClass("text-[#FF6D00]");
   });
@@ -150,10 +124,9 @@ describe("Layout Component", () => {
     renderWithProviders(<Layout />, { route: "/builds" });
 
     const feedLink = screen.getByRole("link", { name: /Build Feed/i });
-    expect(feedLink).toHaveClass("text-blue-600");
-    expect(feedLink).toHaveClass("dark:text-blue-400");
+    expect(feedLink).toHaveClass("text-blue-400");
     const feedIcon = feedLink.querySelector("svg");
-    expect(feedIcon).toHaveClass("text-blue-600");
+    expect(feedIcon).toHaveClass("text-blue-400");
   });
 
   it("shows account dropdown menu only on click and provides distinct Public Profile button", async () => {
@@ -191,7 +164,7 @@ describe("Layout Component", () => {
 
     const logoutBtn = screen.getByRole("menuitem", { name: /log out/i });
     expect(logoutBtn).toBeInTheDocument();
-    expect(logoutBtn).toHaveClass("text-rose-600");
+    expect(logoutBtn).toHaveClass("text-rose-400");
 
     // Clicking avatar again toggles menu closed
     await user.click(accountBtn);

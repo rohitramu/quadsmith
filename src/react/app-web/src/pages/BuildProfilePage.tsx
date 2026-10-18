@@ -100,25 +100,21 @@ function BomComponentCard({
     <>
       <div className="flex items-center gap-3 min-w-0">
         <div
-          className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200/80 dark:border-zinc-700/60 ${colColor.textClass}`}
+          className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 bg-zinc-800 border border-zinc-700/60 ${colColor.textClass}`}
         >
           {icon ?? <CollectionIcon collection={collectionId} size={18} />}
         </div>
         <div className="min-w-0">
-          <div className="text-xs uppercase font-semibold text-zinc-400 dark:text-zinc-500 mb-0.5">
-            {label}
-          </div>
+          <div className="text-xs uppercase font-semibold text-zinc-500 mb-0.5">{label}</div>
           {isLoading ? (
             <div className="text-sm text-zinc-400 animate-pulse">Loading {label}...</div>
           ) : error || !item ? (
-            <div className="text-sm font-mono text-zinc-600 dark:text-zinc-400 truncate max-w-xs">
-              {uuid}
-            </div>
+            <div className="text-sm font-mono text-zinc-400 truncate max-w-xs">{uuid}</div>
           ) : (
             <div>
               <Link
                 to={`/${targetPath}/${item.id || item.uuid}`}
-                className="text-sm font-bold text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors truncate block"
+                className="text-sm font-bold text-zinc-100 hover:text-blue-400 transition-colors truncate block"
               >
                 {item.name || item.id}
               </Link>
@@ -131,7 +127,7 @@ function BomComponentCard({
       {item && (
         <Link
           to={`/${targetPath}/${item.id || item.uuid}`}
-          className="text-xs text-zinc-400 hover:text-blue-600 dark:hover:text-blue-400 p-1.5 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shrink-0"
+          className="text-xs text-zinc-400 hover:text-blue-400 p-1.5 rounded-md hover:bg-zinc-800 transition-colors shrink-0"
           title={`View ${item.name || item.id} in catalog`}
         >
           <ExternalLink size={14} />
@@ -141,7 +137,7 @@ function BomComponentCard({
   );
 
   const cardClasses =
-    "flex items-center justify-between p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors";
+    "flex items-center justify-between p-3.5 rounded-xl border border-zinc-800 bg-zinc-900/60 hover:border-zinc-700 transition-colors";
 
   if (item) {
     return (
@@ -521,18 +517,15 @@ export function BuildProfilePage() {
       {/* Breadcrumb Navigation */}
       <nav
         aria-label="Breadcrumb"
-        className="mb-4 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap"
+        className="mb-4 text-sm text-zinc-400 flex items-center gap-1.5 flex-wrap"
       >
-        <Link
-          to="/"
-          className="hover:text-zinc-900 dark:hover:text-zinc-100 hover:underline transition-colors"
-        >
+        <Link to="/" className="hover:text-zinc-100 hover:underline transition-colors">
           Home
         </Link>
-        <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" />
+        <ChevronRight size={14} className="text-zinc-500 shrink-0" />
         <CollectionBadge collection="builds" label="Builds" size="md" to="/" />
-        <ChevronRight size={14} className="text-zinc-400 dark:text-zinc-500 shrink-0" />
-        <span className="text-zinc-900 dark:text-zinc-100 font-medium truncate max-w-md">
+        <ChevronRight size={14} className="text-zinc-500 shrink-0" />
+        <span className="text-zinc-100 font-medium truncate max-w-md">
           {build.name || build.id}
         </span>
       </nav>
@@ -541,17 +534,17 @@ export function BuildProfilePage() {
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-50">
               {build.name}
             </h1>
             {build.authorUsername && (
-              <div className="mt-2 text-sm text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5">
+              <div className="mt-2 text-sm text-zinc-400 flex items-center gap-1.5">
                 <span>Created by</span>
                 <UserBadge username={build.authorUsername} size="sm" />
               </div>
             )}
             {build.description && (
-              <p className="mt-3 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 leading-relaxed max-w-3xl">
+              <p className="mt-3 text-base sm:text-lg text-zinc-400 leading-relaxed max-w-3xl">
                 {build.description}
               </p>
             )}
@@ -572,7 +565,7 @@ export function BuildProfilePage() {
             {isCreator && (
               <Link
                 to={`/builds/${build.id || buildId}/edit`}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-xs sm:text-sm font-medium text-zinc-700 dark:text-zinc-300 shadow-2xs transition-colors cursor-pointer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 sm:px-4 sm:py-2.5 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-xs sm:text-sm font-medium text-zinc-300 shadow-2xs transition-colors cursor-pointer"
               >
                 <Edit size={15} className="text-zinc-400" />
                 <span>Edit Build</span>
@@ -608,57 +601,51 @@ export function BuildProfilePage() {
           title="Evaluation Error"
           resetKeys={[selectedBatteryId, payloadWeightG]}
         >
-          <section className="p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/60 dark:bg-zinc-900/40 shadow-xs">
-            <div className="mb-6 pb-4 border-b border-zinc-200 dark:border-zinc-800">
-              <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
-                <Gauge className="text-blue-600 dark:text-blue-400" size={22} />
+          <section className="p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40 shadow-xs">
+            <div className="mb-6 pb-4 border-b border-zinc-800">
+              <h2 className="text-xl font-bold text-zinc-100 flex items-center gap-2">
+                <Gauge className="text-blue-400" size={22} />
                 <span>Build Evaluation & Performance</span>
                 {isFetchingEvaluation && (
                   <span
                     role="status"
                     aria-label="Updating evaluation"
-                    className="inline-flex items-center gap-1 text-xs font-normal text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/60 border border-blue-200/60 dark:border-blue-800/60 px-2 py-0.5 rounded-full"
+                    className="inline-flex items-center gap-1 text-xs font-normal text-blue-400 bg-blue-950/60 border border-blue-800/60 px-2 py-0.5 rounded-full"
                   >
                     <RefreshCw size={11} className="animate-spin" />
                     <span>Updating...</span>
                   </span>
                 )}
               </h2>
-              <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+              <p className="text-xs sm:text-sm text-zinc-400 mt-1">
                 Calculated flight metrics are theoretical estimates based on analytical physics
                 models.
               </p>
             </div>
 
             {limitsError || batteryError || compatibilityError ? (
-              <div
-                role="alert"
-                className="p-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-sm"
-              >
+              <div role="alert" className="p-4 rounded-xl bg-red-950/40 text-red-400 text-sm">
                 Failed to load build parameters:{" "}
                 {limitsError?.message || batteryError?.message || compatibilityError?.message}
               </div>
             ) : hasComponentConflict ? (
               <div
                 role="alert"
-                className="p-5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-300 flex items-start gap-3.5"
+                className="p-5 rounded-xl bg-red-950/40 border border-red-900/60 text-red-300 flex items-start gap-3.5"
               >
-                <AlertOctagon
-                  className="text-red-600 dark:text-red-400 shrink-0 mt-0.5"
-                  size={20}
-                />
+                <AlertOctagon className="text-red-400 shrink-0 mt-0.5" size={20} />
                 <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-red-900 dark:text-red-200">
+                  <h3 className="text-sm font-semibold text-red-200">
                     Component Compatibility Conflict
                   </h3>
-                  <p className="text-xs sm:text-sm mt-1 text-red-700 dark:text-red-300/90 leading-relaxed">
+                  <p className="text-xs sm:text-sm mt-1 text-red-300/90 leading-relaxed">
                     The components in this build are physically or electrically incompatible with
                     each other. Build evaluation cannot be calculated until these conflicts are
                     resolved.
                   </p>
                   <ul className="list-disc list-inside text-xs sm:text-sm mt-2.5 space-y-1">
                     {componentIncompatibilities.map((msg, i) => (
-                      <li key={i} className="font-medium text-red-800 dark:text-red-200">
+                      <li key={i} className="font-medium text-red-200">
                         {msg}
                       </li>
                     ))}
@@ -668,17 +655,14 @@ export function BuildProfilePage() {
             ) : hasNoCompatibleBatteries ? (
               <div
                 role="alert"
-                className="p-5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-300 flex items-start gap-3.5"
+                className="p-5 rounded-xl bg-red-950/40 border border-red-900/60 text-red-300 flex items-start gap-3.5"
               >
-                <AlertTriangle
-                  className="text-red-600 dark:text-red-400 shrink-0 mt-0.5"
-                  size={20}
-                />
+                <AlertTriangle className="text-red-400 shrink-0 mt-0.5" size={20} />
                 <div className="flex-1">
-                  <h3 className="text-sm font-semibold text-red-900 dark:text-red-200">
+                  <h3 className="text-sm font-semibold text-red-200">
                     No Compatible Batteries Found
                   </h3>
-                  <p className="text-xs sm:text-sm mt-1 text-red-700 dark:text-red-300/90 leading-relaxed">
+                  <p className="text-xs sm:text-sm mt-1 text-red-300/90 leading-relaxed">
                     No batteries in the database match the electrical requirements for this build
                     {electricalLimits?.minVoltage &&
                     electricalLimits?.maxVoltage &&
@@ -696,12 +680,12 @@ export function BuildProfilePage() {
             ) : isBatteryLoading ? (
               <div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 animate-pulse">
-                  <div className="h-24 bg-zinc-200/70 dark:bg-zinc-800/70 rounded-xl" />
-                  <div className="h-24 bg-zinc-200/70 dark:bg-zinc-800/70 rounded-xl" />
+                  <div className="h-24 bg-zinc-800/70 rounded-xl" />
+                  <div className="h-24 bg-zinc-800/70 rounded-xl" />
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6 animate-pulse">
                   {[1, 2, 3, 4, 5, 6].map((i) => (
-                    <div key={i} className="h-28 bg-zinc-200/70 dark:bg-zinc-800/70 rounded-xl" />
+                    <div key={i} className="h-28 bg-zinc-800/70 rounded-xl" />
                   ))}
                 </div>
               </div>
@@ -710,9 +694,9 @@ export function BuildProfilePage() {
                 {/* Runtime Flight Parameters: Battery & Payload */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                   {/* Battery Selector */}
-                  <div className="bg-white dark:bg-zinc-950 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs flex flex-col justify-between">
+                  <div className="bg-zinc-950 p-3.5 rounded-xl border border-zinc-800/80 shadow-xs flex flex-col justify-between">
                     <div className="flex items-center justify-between text-xs mb-1.5">
-                      <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                      <span className="font-semibold text-zinc-300 flex items-center gap-1.5">
                         <Zap size={13} className="text-amber-500" />
                         Battery
                       </span>
@@ -746,7 +730,7 @@ export function BuildProfilePage() {
                         onClick={() => setIsBatteryModalOpen(true)}
                         title="Browse all compatible batteries"
                         aria-label="Browse all compatible batteries"
-                        className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors text-xs font-medium flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
+                        className="px-2.5 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 transition-colors text-xs font-medium flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
                       >
                         <Search size={12} className="text-zinc-400" />
                         <span>Browse</span>
@@ -754,8 +738,8 @@ export function BuildProfilePage() {
                     </div>
 
                     {activeBattery && (
-                      <div className="flex items-center gap-2 text-[10px] text-zinc-500 dark:text-zinc-400 mt-1">
-                        <span className="font-semibold text-zinc-700 dark:text-zinc-300 font-mono">
+                      <div className="flex items-center gap-2 text-[10px] text-zinc-400 mt-1">
+                        <span className="font-semibold text-zinc-300 font-mono">
                           {activeBattery.weightG.toFixed(2)}g
                         </span>
                         <span>•</span>
@@ -765,7 +749,7 @@ export function BuildProfilePage() {
                         {activeBattery.connector ? (
                           <>
                             <span>•</span>
-                            <span className="font-semibold text-blue-600 dark:text-blue-400">
+                            <span className="font-semibold text-blue-400">
                               {activeBattery.connector}
                             </span>
                           </>
@@ -781,13 +765,13 @@ export function BuildProfilePage() {
                   </div>
 
                   {/* Interactive Payload Weight Text Box */}
-                  <div className="bg-white dark:bg-zinc-950 p-3.5 rounded-xl border border-zinc-200 dark:border-zinc-800/80 shadow-xs flex flex-col justify-between">
+                  <div className="bg-zinc-950 p-3.5 rounded-xl border border-zinc-800/80 shadow-xs flex flex-col justify-between">
                     <div className="flex items-center justify-between text-xs mb-1.5">
-                      <span className="font-semibold text-zinc-700 dark:text-zinc-300 flex items-center gap-1.5">
+                      <span className="font-semibold text-zinc-300 flex items-center gap-1.5">
                         <Sliders size={13} className="text-blue-500" />
                         Payload
                       </span>
-                      <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
+                      <span className="font-mono font-bold text-blue-400">
                         +{payloadWeightG.toFixed(2)}g
                       </span>
                     </div>
@@ -802,7 +786,7 @@ export function BuildProfilePage() {
                         disabled={payloadWeightG <= 0}
                         title="Remove 10g"
                         aria-label="Remove 10 grams"
-                        className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
+                        className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 disabled:opacity-30 disabled:cursor-not-allowed text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
                       >
                         <Minus size={14} />
                       </button>
@@ -819,7 +803,7 @@ export function BuildProfilePage() {
                             }
                           }}
                           placeholder="0"
-                          className="w-full bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg px-3 py-1.5 pr-7 text-sm font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xs text-center"
+                          className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-1.5 pr-7 text-sm font-mono text-zinc-100 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-xs text-center"
                           aria-label="Payload weight in grams"
                         />
                         <span className="absolute right-2.5 text-xs text-zinc-400 font-mono pointer-events-none select-none">
@@ -836,7 +820,7 @@ export function BuildProfilePage() {
                         }}
                         title="Add 10g"
                         aria-label="Add 10 grams"
-                        className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
+                        className="w-8 h-8 flex items-center justify-center rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 transition-colors cursor-pointer shrink-0 shadow-xs"
                       >
                         <Plus size={14} />
                       </button>
@@ -848,7 +832,7 @@ export function BuildProfilePage() {
                         className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
                           payloadWeightG === 0
                             ? "bg-blue-600 text-white"
-                            : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                            : "bg-zinc-800 text-zinc-500 hover:text-zinc-300"
                         }`}
                       >
                         Bare (0g)
@@ -859,7 +843,7 @@ export function BuildProfilePage() {
                         className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
                           payloadWeightG === 16
                             ? "bg-blue-600 text-white"
-                            : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                            : "bg-zinc-800 text-zinc-500 hover:text-zinc-300"
                         }`}
                       >
                         Thumb (+16g)
@@ -870,7 +854,7 @@ export function BuildProfilePage() {
                         className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
                           payloadWeightG === 133
                             ? "bg-blue-600 text-white"
-                            : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                            : "bg-zinc-800 text-zinc-500 hover:text-zinc-300"
                         }`}
                       >
                         GoPro (+133g)
@@ -881,11 +865,11 @@ export function BuildProfilePage() {
 
                 {/* Evaluation Metrics Cards */}
                 {!selectedBatteryId ? (
-                  <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 flex items-start gap-3 mb-6">
+                  <div className="p-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 flex items-start gap-3 mb-6">
                     <AlertCircle size={20} className="shrink-0 mt-0.5 text-amber-500" />
                     <div>
                       <div className="font-bold text-sm">No Compatible Batteries</div>
-                      <p className="text-xs mt-1 text-amber-700 dark:text-amber-400 leading-relaxed">
+                      <p className="text-xs mt-1 text-amber-400 leading-relaxed">
                         No batteries in the database match this build's electrical voltage and
                         current limits.
                       </p>
@@ -897,20 +881,20 @@ export function BuildProfilePage() {
                       {[1, 2, 3, 4, 5, 6].map((i) => (
                         <div
                           key={i}
-                          className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between animate-pulse"
+                          className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between animate-pulse"
                         >
-                          <div className="h-3.5 bg-zinc-200 dark:bg-zinc-800 rounded w-24" />
+                          <div className="h-3.5 bg-zinc-800 rounded w-24" />
                           <div>
-                            <div className="h-7 bg-zinc-200 dark:bg-zinc-800 rounded w-16 mb-2" />
-                            <div className="h-3 bg-zinc-100 dark:bg-zinc-800/60 rounded w-28" />
+                            <div className="h-7 bg-zinc-800 rounded w-16 mb-2" />
+                            <div className="h-3 bg-zinc-800/60 rounded w-28" />
                           </div>
                         </div>
                       ))}
                     </div>
-                    <div className="h-11 rounded-xl bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 animate-pulse" />
+                    <div className="h-11 rounded-xl bg-zinc-900 border border-zinc-800 animate-pulse" />
                   </div>
                 ) : evalError ? (
-                  <div className="p-4 rounded-xl bg-red-50 dark:bg-red-950/40 text-red-600 dark:text-red-400 text-sm">
+                  <div className="p-4 rounded-xl bg-red-950/40 text-red-400 text-sm">
                     Evaluation error: {evalError.message}
                   </div>
                 ) : activeEvaluation ? (
@@ -921,13 +905,13 @@ export function BuildProfilePage() {
                   >
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
                       {/* Metric 1: AUW Total Weight */}
-                      <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                      <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
                         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
                           <Weight size={14} />
                           <span>All-Up Weight</span>
                         </div>
                         <div>
-                          <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                          <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-100">
                             {activeEvaluation.allUpWeightG.toFixed(2)}
                             <span className="text-sm font-normal text-zinc-500 ml-1">g</span>
                           </div>
@@ -940,7 +924,7 @@ export function BuildProfilePage() {
                       </div>
 
                       {/* Metric 2: Thrust-to-Weight Ratio */}
-                      <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                      <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
                         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
                           <Gauge size={14} />
                           <span>Thrust / Weight</span>
@@ -959,13 +943,13 @@ export function BuildProfilePage() {
                       </div>
 
                       {/* Metric 3: Max Acceleration */}
-                      <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                      <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
                         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
                           <Rocket size={14} />
                           <span>Max Acceleration</span>
                         </div>
                         <div>
-                          <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                          <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-100">
                             {activeEvaluation.maxAccelerationMps2.toFixed(1)}
                             <span className="text-sm font-normal text-zinc-500 ml-1">m/s²</span>
                           </div>
@@ -978,13 +962,13 @@ export function BuildProfilePage() {
                       </div>
 
                       {/* Metric 4: Top Speed */}
-                      <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                      <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
                         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
                           <Wind size={14} />
                           <span>Top Speed</span>
                         </div>
                         <div>
-                          <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-900 dark:text-zinc-100">
+                          <div className="text-2xl sm:text-3xl font-bold mt-1 text-zinc-100">
                             {Math.round(activeEvaluation.topSpeedKmh)}
                             <span className="text-sm font-normal text-zinc-500 ml-1">km/h</span>
                           </div>
@@ -997,7 +981,7 @@ export function BuildProfilePage() {
                       </div>
 
                       {/* Metric 5: Hover Throttle */}
-                      <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                      <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
                         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
                           <Zap size={14} />
                           <span>Hover Throttle</span>
@@ -1010,7 +994,7 @@ export function BuildProfilePage() {
                             <span className="text-sm font-normal text-zinc-500 ml-1">%</span>
                           </div>
                           {/* Progress bar */}
-                          <div className="w-full bg-zinc-100 dark:bg-zinc-800 h-1.5 rounded-full mt-2 overflow-hidden">
+                          <div className="w-full bg-zinc-800 h-1.5 rounded-full mt-2 overflow-hidden">
                             <div
                               className={`h-full rounded-full transition-all duration-300 ${getHoverThrottleColor(activeEvaluation.hoverThrottlePercent).bar}`}
                               style={{
@@ -1031,13 +1015,13 @@ export function BuildProfilePage() {
                       </div>
 
                       {/* Metric 6: Estimated Flight Time */}
-                      <div className="p-4 rounded-xl bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
+                      <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 shadow-xs min-h-[116px] flex flex-col justify-between">
                         <div className="flex items-center gap-1.5 text-xs font-semibold uppercase text-zinc-400">
                           <Clock size={14} />
                           <span>Est. Flight Time</span>
                         </div>
                         <div>
-                          <div className="text-xl sm:text-2xl lg:text-3xl font-bold mt-1 text-blue-600 dark:text-blue-400">
+                          <div className="text-xl sm:text-2xl lg:text-3xl font-bold mt-1 text-blue-400">
                             {activeEvaluation.minFlightTimeMin > 0 &&
                             activeEvaluation.maxFlightTimeMin > 0
                               ? `${activeEvaluation.minFlightTimeMin.toFixed(1)} – ${activeEvaluation.maxFlightTimeMin.toFixed(1)}`
@@ -1065,7 +1049,7 @@ export function BuildProfilePage() {
                       return (
                         <>
                           {errors.length > 0 && (
-                            <div className="mb-3 p-4 rounded-xl bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-400 flex items-start gap-3">
+                            <div className="mb-3 p-4 rounded-xl bg-red-950/30 border border-red-900/60 text-red-400 flex items-start gap-3">
                               <AlertOctagon size={20} className="shrink-0 mt-0.5 text-red-600" />
                               <div>
                                 <div className="font-bold text-sm">
@@ -1081,7 +1065,7 @@ export function BuildProfilePage() {
                           )}
 
                           {warnings.length > 0 && (
-                            <div className="mb-3 p-4 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 text-amber-800 dark:text-amber-400 flex items-start gap-3">
+                            <div className="mb-3 p-4 rounded-xl bg-amber-950/30 border border-amber-900/60 text-amber-400 flex items-start gap-3">
                               <AlertTriangle size={20} className="shrink-0 mt-0.5 text-amber-600" />
                               <div>
                                 <div className="font-bold text-sm">Evaluation Warnings</div>
@@ -1108,8 +1092,8 @@ export function BuildProfilePage() {
       {/* HARDWARE (BOM) SECTION                                       */}
       {/* ============================================================ */}
       <section className="mb-10">
-        <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-4 flex items-center gap-2">
-          <Layers className="text-blue-600 dark:text-blue-400" size={22} />
+        <h2 className="text-xl font-bold text-zinc-100 mb-4 flex items-center gap-2">
+          <Layers className="text-blue-400" size={22} />
           <span>Hardware</span>
         </h2>
 
@@ -1143,9 +1127,7 @@ export function BuildProfilePage() {
       {/* ============================================================ */}
       {build.referenceLinks && build.referenceLinks.length > 0 && (
         <section className="mt-8 mb-12">
-          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-3">
-            Reference Links & Documentation
-          </h2>
+          <h2 className="text-xl font-bold text-zinc-100 mb-3">Reference Links & Documentation</h2>
           <ReferenceLinksList links={build.referenceLinks} />
         </section>
       )}

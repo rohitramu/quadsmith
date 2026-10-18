@@ -8,7 +8,7 @@
   - [Slide-Over Mobile Navigation Drawer and Viewport Reclamation](#slide-over-mobile-navigation-drawer-and-viewport-reclamation)
   - [Single-Row Header, Responsive Search Hints, and Slash Shortcut](#single-row-header-responsive-search-hints-and-slash-shortcut)
   - [Unified Responsive Spec Card Grid and Toolbar Sorting in Component Catalogs](#unified-responsive-spec-card-grid-and-toolbar-sorting-in-component-catalogs)
-  - [Custom-Styled Dropdown Menus and Theme-Aware Scrollbars](#custom-styled-dropdown-menus-and-theme-aware-scrollbars)
+  - [Custom-Styled Dropdown Menus and Scrollbars](#custom-styled-dropdown-menus-and-scrollbars)
   - [Compact Collapsible Build Progress and Live Telemetry Bar in The Forge](#compact-collapsible-build-progress-and-live-telemetry-bar-in-the-forge)
   - [Touch-Aware Hover Card Suppression and Tap-to-Toggle Popovers](#touch-aware-hover-card-suppression-and-tap-to-toggle-popovers)
   - [User Profile Page: Consistent Add Actions and Authoritative Component Styling](#user-profile-page-consistent-add-actions-and-authoritative-component-styling)
@@ -49,7 +49,7 @@ application in [`src/react/app-web`](../src/react/app-web):
   multi-column HTML tables overflow horizontally on mobile and become cramped on
   desktop whenever several hardware specification columns are enabled, while
   native `<select>` dropdowns and default OS scrollbars clash with the
-  application's dark/light aesthetic.
+  application's dark aesthetic.
 - **Buried Telemetry in The Forge**: In
   [`BuildWizardPage.tsx`](../src/react/app-web/src/pages/BuildWizardPage.tsx)
   (from
@@ -256,9 +256,9 @@ are replaced with responsive sizing (`w-auto md:w-64 shrink-0`):
      via `hidden sm:inline`), plus a compact status badge (`SUSPENDED`) when
      applicable.
   3. Flexible inline search input (`flex-1 min-w-0 max-w-md mx-1 sm:mx-4`).
-  4. Theme toggle button and a consistent circular **User Avatar Icon**
-     (`w-8 h-8 rounded-full`) across both mobile and desktop viewports (without
-     expanding into a full-name text pill on desktop).
+  4. A consistent circular **User Avatar Icon** (`w-8 h-8 rounded-full`) across
+     both mobile and desktop viewports (without expanding into a full-name text
+     pill on desktop).
 - **Viewport-Aware Search Hint & `/` Keyboard Shortcut**:
   - On mobile (`< 640px` / `< sm`), the search input placeholder renders as
     `"Search"`.
@@ -388,18 +388,18 @@ Default to the responsive Card Grid on all viewports while providing a
 
 </details>
 
-### <a id="custom-styled-dropdown-menus-and-theme-aware-scrollbars" >Custom-Styled Dropdown Menus and Theme-Aware Scrollbars</a>
+### <a id="custom-styled-dropdown-menus-and-scrollbars" >Custom-Styled Dropdown Menus and Scrollbars</a>
 
 To eliminate unstyled native OS `<select>` menus and default browser scrollbars:
 
 - **Reusable `StyledSelect` Popover Component
   ([`src/react/app-web/src/components/StyledSelect.tsx`](../src/react/app-web/src/components/StyledSelect.tsx))**:
   - Renders a styled button trigger
-    (`rounded-lg border border-slate-300 dark:border-slate-800 bg-white dark:bg-slate-900`)
-    and a floating custom popover menu
-    (`rounded-xl border shadow-xl z-50 max-h-60 overflow-y-auto`) with active
-    option checkmarks (`✓`), hover highlights, `Escape` / outside-click
-    dismissal, and accessible `role="listbox"` / `role="option"` semantics.
+    (`rounded-lg border border-slate-800 bg-slate-900`) and a floating custom
+    popover menu (`rounded-xl border shadow-xl z-50 max-h-60 overflow-y-auto`)
+    with active option checkmarks (`✓`), hover highlights, `Escape` /
+    outside-click dismissal, and accessible `role="listbox"` / `role="option"`
+    semantics.
   - Replaces all native `<select>` elements across the application:
     1. [`CollectionPage.tsx`](../src/react/app-web/src/pages/CollectionPage.tsx):
        Toolbar **Sort** selector and **Page Size** (`10 / page`, `20 / page`,
@@ -410,14 +410,14 @@ To eliminate unstyled native OS `<select>` menus and default browser scrollbars:
        and
        [`SocialReviewSection.tsx`](../src/react/app-web/src/components/SocialReviewSection.tsx):
        Discussion and review sort selectors.
-- **Custom Theme-Aware Scrollbars
+- **Custom Scrollbars
   ([`src/react/app-web/src/index.css`](../src/react/app-web/src/index.css))**:
   - Configures both standard CSS Scrollbars
     (`scrollbar-width: thin; scrollbar-color: ...`) and WebKit scrollbar
     pseudo-elements (`::-webkit-scrollbar`, `::-webkit-scrollbar-track`,
-    `::-webkit-scrollbar-thumb`) with pill-rounded thumbs and light/dark slate
-    tokens so page scrollbars, dropdown menus, slide-over drawers, and
-    horizontal tab bars match Quadsmith's design system.
+    `::-webkit-scrollbar-thumb`) with pill-rounded thumbs and dark slate tokens
+    so page scrollbars, dropdown menus, slide-over drawers, and horizontal tab
+    bars match Quadsmith's design system.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -434,7 +434,7 @@ open `<option>` popup menu to the operating system.
 **Cons:**
 
 - The open `<option>` list is still rendered by the OS window manager and cannot
-  be styled with custom borders, padding, checkmarks, or dark/light theme tokens
+  be styled with custom borders, padding, checkmarks, or dark theme tokens
   across browsers.
 
 </details>
@@ -598,9 +598,8 @@ metadata suffered from stark inconsistencies:
     [`UserProfilePage.test.tsx`](../src/react/app-web/src/pages/__tests__/UserProfilePage.test.tsx).
 - **Authoritative Component Category Pills and Icons**:
   - Previously, contributed component cards rendered hardcoded neutral badge
-    classes (`bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400`)
-    and a generic `<Cpu size={18} />` placeholder icon regardless of hardware
-    category.
+    classes (`bg-zinc-800 text-zinc-400`) and a generic `<Cpu size={18} />`
+    placeholder icon regardless of hardware category.
   - We replace the generic markup with `@quadsmith/shared`'s authoritative
     [`CollectionBadge`](../src/react/shared/src/components/CollectionBadge.tsx)
     and

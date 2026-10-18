@@ -37,9 +37,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
       id: "id",
       title: "ID",
       renderCell: (m) => (
-        <span className="relative z-20 font-mono text-xs text-zinc-700 dark:text-zinc-300 select-all">
-          {m.id}
-        </span>
+        <span className="relative z-20 font-mono text-xs text-zinc-300 select-all">{m.id}</span>
       ),
     },
     uuid: {
@@ -47,7 +45,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
       title: "UUID",
       renderCell: (m) => (
         <span
-          className="relative z-20 font-mono text-[11px] text-zinc-500 dark:text-zinc-400 select-all block truncate max-w-[140px]"
+          className="relative z-20 font-mono text-[11px] text-zinc-400 select-all block truncate max-w-[140px]"
           title={m.uuid}
         >
           {m.uuid}
@@ -62,9 +60,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
     name: {
       id: "name",
       title: "Name",
-      renderCell: (m) => (
-        <span className="font-medium text-zinc-900 dark:text-zinc-100">{m.name || m.id}</span>
-      ),
+      renderCell: (m) => <span className="font-medium text-zinc-100">{m.name || m.id}</span>,
     },
     description: {
       id: "description",
@@ -79,7 +75,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
           <img
             src={m.primaryDisplayImage}
             alt={m.name || m.id}
-            className="w-9 h-9 object-cover rounded-md border border-zinc-200 dark:border-zinc-800 shadow-2xs"
+            className="w-9 h-9 object-cover rounded-md border border-zinc-800 shadow-2xs"
             loading="lazy"
           />
         ) : (
@@ -138,7 +134,7 @@ export const SOFTWARE_COLLECTIONS: HardwareCollectionDef[] = [
         id: "version",
         title: "Version",
         renderCell: (m) => (
-          <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+          <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">
             {m.version || "-"}
           </span>
         ),
@@ -158,7 +154,7 @@ export const SOFTWARE_COLLECTIONS: HardwareCollectionDef[] = [
         title: "Open Source",
         renderCell: (m) =>
           m.isOpenSource ? (
-            <span className="text-emerald-600 dark:text-emerald-400 font-medium">Yes</span>
+            <span className="text-emerald-400 font-medium">Yes</span>
           ) : (
             <span className="text-zinc-400">No</span>
           ),
@@ -172,7 +168,7 @@ export const SOFTWARE_COLLECTIONS: HardwareCollectionDef[] = [
               href={m.repositoryUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 hover:underline text-xs"
+              className="text-blue-400 hover:underline text-xs"
             >
               {m.repositoryUrl.replace(/^https?:\/\/(www\.)?github\.com\//, "")}
             </a>
@@ -201,7 +197,7 @@ export const SOFTWARE_COLLECTIONS: HardwareCollectionDef[] = [
               href={m.repositoryUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 dark:text-blue-400 hover:underline"
+              className="text-blue-400 hover:underline"
             >
               {m.repositoryUrl}
             </a>
@@ -261,7 +257,7 @@ export const SOFTWARE_COLLECTIONS: HardwareCollectionDef[] = [
         id: "version",
         title: "Version",
         renderCell: (m) => (
-          <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+          <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">
             {m.version || "-"}
           </span>
         ),
@@ -281,7 +277,7 @@ export const SOFTWARE_COLLECTIONS: HardwareCollectionDef[] = [
         title: "Open Source",
         renderCell: (m) =>
           m.isOpenSource ? (
-            <span className="text-emerald-600 dark:text-emerald-400 font-medium">Yes</span>
+            <span className="text-emerald-400 font-medium">Yes</span>
           ) : (
             <span className="text-zinc-400">No</span>
           ),
@@ -338,7 +334,7 @@ export const SOFTWARE_COLLECTIONS: HardwareCollectionDef[] = [
         id: "version",
         title: "Version",
         renderCell: (m) => (
-          <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+          <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">
             {m.version || "-"}
           </span>
         ),
@@ -403,7 +399,7 @@ export const SOFTWARE_COLLECTIONS: HardwareCollectionDef[] = [
         id: "version",
         title: "Version",
         renderCell: (m) => (
-          <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+          <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">
             {m.version || "-"}
           </span>
         ),
@@ -418,7 +414,7 @@ export const SOFTWARE_COLLECTIONS: HardwareCollectionDef[] = [
         title: "Open Source",
         renderCell: (m) =>
           m.isOpenSource ? (
-            <span className="text-emerald-600 dark:text-emerald-400 font-medium">Yes</span>
+            <span className="text-emerald-400 font-medium">Yes</span>
           ) : (
             <span className="text-zinc-400">No</span>
           ),
@@ -473,7 +469,7 @@ export const SOFTWARE_COLLECTIONS: HardwareCollectionDef[] = [
         id: "version",
         title: "Version",
         renderCell: (m) => (
-          <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+          <span className="font-mono text-xs font-semibold px-2 py-0.5 rounded bg-zinc-800 text-zinc-300">
             {m.version || "-"}
           </span>
         ),
@@ -482,7 +478,7 @@ export const SOFTWARE_COLLECTIONS: HardwareCollectionDef[] = [
         id: "category",
         title: "Category",
         renderCell: (m) => (
-          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-50 dark:bg-blue-950/60 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800/60">
+          <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-950/60 text-blue-300 border border-blue-800/60">
             {m.category || "-"}
           </span>
         ),

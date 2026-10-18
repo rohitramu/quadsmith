@@ -301,9 +301,9 @@ export function ComponentFormModal({
       aria-labelledby="component-form-modal-title"
       className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
     >
-      <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
         {/* Modal Header */}
-        <div className="px-6 py-4 border-b border-zinc-200 dark:border-zinc-800 flex items-center justify-between bg-zinc-50 dark:bg-zinc-900/50">
+        <div className="px-6 py-4 border-b border-zinc-800 flex items-center justify-between bg-zinc-900/50">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-red-600 text-white flex items-center justify-center font-bold text-sm shadow-xs">
               {isEditing ? "✎" : "+"}
@@ -327,7 +327,7 @@ export function ComponentFormModal({
             type="button"
             onClick={onClose}
             aria-label="Close modal"
-            className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 p-1.5 rounded-lg hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+            className="text-zinc-400 hover:text-zinc-200 p-1.5 rounded-lg hover:bg-zinc-800 transition-colors cursor-pointer"
           >
             <X size={18} />
           </button>
@@ -337,7 +337,7 @@ export function ComponentFormModal({
         <form onSubmit={handleSubmit} className="flex-1 flex flex-col overflow-hidden">
           <div className="p-6 overflow-y-auto space-y-6 flex-1 text-sm">
             {formError && (
-              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-400 text-xs flex items-start gap-2">
+              <div className="p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-xs flex items-start gap-2">
                 <AlertCircle size={16} className="shrink-0 mt-0.5" />
                 <span className="leading-relaxed">{formError}</span>
               </div>
@@ -352,7 +352,7 @@ export function ComponentFormModal({
                 <div>
                   <label
                     htmlFor="input-manufacturer"
-                    className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+                    className="block text-xs font-medium text-zinc-300 mb-1"
                   >
                     Manufacturer *
                   </label>
@@ -363,13 +363,13 @@ export function ComponentFormModal({
                     value={manufacturer}
                     onChange={(e) => setManufacturer(e.target.value)}
                     placeholder="e.g. T-Motor, SpeedyBee, Tattu"
-                    className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-red-500 focus:outline-none text-xs"
+                    className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800 text-zinc-100 focus:ring-2 focus:ring-red-500 focus:outline-none text-xs"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="input-model-name"
-                    className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+                    className="block text-xs font-medium text-zinc-300 mb-1"
                   >
                     Model Name *
                   </label>
@@ -380,7 +380,7 @@ export function ComponentFormModal({
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     placeholder="e.g. F80 Pro, F405 V4, R-Line V5"
-                    className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-red-500 focus:outline-none text-xs"
+                    className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800 text-zinc-100 focus:ring-2 focus:ring-red-500 focus:outline-none text-xs"
                   />
                 </div>
               </div>
@@ -388,7 +388,7 @@ export function ComponentFormModal({
               <div>
                 <label
                   htmlFor="input-description"
-                  className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1"
+                  className="block text-xs font-medium text-zinc-300 mb-1"
                 >
                   Description
                 </label>
@@ -398,14 +398,14 @@ export function ComponentFormModal({
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Optional overview or technical notes..."
-                  className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-red-500 focus:outline-none text-xs"
+                  className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800 text-zinc-100 focus:ring-2 focus:ring-red-500 focus:outline-none text-xs"
                 />
               </div>
             </div>
 
             {/* Technical Specifications */}
             {specFields.length > 0 && (
-              <div className="space-y-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
+              <div className="space-y-4 pt-4 border-t border-zinc-800">
                 <h3 className="font-semibold text-xs text-zinc-400 uppercase tracking-wider">
                   {singularLabel} Specifications
                 </h3>
@@ -427,7 +427,7 @@ export function ComponentFormModal({
                           />
                           <label
                             htmlFor={`field-${field.name}`}
-                            className="text-xs font-medium text-zinc-700 dark:text-zinc-300 cursor-pointer"
+                            className="text-xs font-medium text-zinc-300 cursor-pointer"
                           >
                             {label}
                           </label>
@@ -438,7 +438,7 @@ export function ComponentFormModal({
                     return (
                       <div key={field.name}>
                         <label
-                          className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1 truncate"
+                          className="block text-xs font-medium text-zinc-300 mb-1 truncate"
                           title={field.description || label}
                         >
                           {label}
@@ -449,7 +449,7 @@ export function ComponentFormModal({
                           value={val}
                           onChange={(e) => handleSpecChange(camel, e.target.value)}
                           placeholder={field.description || ""}
-                          className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-red-500 focus:outline-none text-xs"
+                          className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800 text-zinc-100 focus:ring-2 focus:ring-red-500 focus:outline-none text-xs"
                         />
                       </div>
                     );
@@ -459,12 +459,12 @@ export function ComponentFormModal({
             )}
 
             {/* Imagery & Media */}
-            <div className="space-y-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
+            <div className="space-y-4 pt-4 border-t border-zinc-800">
               <h3 className="font-semibold text-xs text-zinc-400 uppercase tracking-wider">
                 Imagery & Media
               </h3>
               <div>
-                <label className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1">
+                <label className="block text-xs font-medium text-zinc-300 mb-1">
                   Primary Display Image URL
                 </label>
                 <input
@@ -472,24 +472,22 @@ export function ComponentFormModal({
                   value={primaryDisplayImage}
                   onChange={(e) => setPrimaryDisplayImage(e.target.value)}
                   placeholder="https://... or /blobs/<id>"
-                  className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 focus:ring-2 focus:ring-red-500 focus:outline-none text-xs"
+                  className="w-full px-3 py-2 rounded-lg border border-zinc-700 bg-zinc-800 text-zinc-100 focus:ring-2 focus:ring-red-500 focus:outline-none text-xs"
                 />
               </div>
 
               {primaryDisplayImage && (
-                <div className="flex items-center gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/40">
+                <div className="flex items-center gap-3 p-3 rounded-xl border border-zinc-800 bg-zinc-800/40">
                   <img
                     src={primaryDisplayImage}
                     alt="Preview"
-                    className="w-14 h-14 rounded-lg object-cover bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700"
+                    className="w-14 h-14 rounded-lg object-cover bg-zinc-900 border border-zinc-700"
                     onError={(e) => {
                       (e.target as HTMLElement).style.display = "none";
                     }}
                   />
                   <div className="text-xs text-zinc-500 truncate">
-                    <span className="font-medium text-zinc-700 dark:text-zinc-300 block">
-                      Preview
-                    </span>
+                    <span className="font-medium text-zinc-300 block">Preview</span>
                     <span className="truncate block font-mono text-[11px]">
                       {primaryDisplayImage}
                     </span>
@@ -510,7 +508,7 @@ export function ComponentFormModal({
               />
               <div
                 onClick={() => fileInputRef.current?.click()}
-                className="border-2 border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl p-4 text-center hover:border-red-500 transition-colors cursor-pointer bg-zinc-50 dark:bg-zinc-800/30"
+                className="border-2 border-dashed border-zinc-700 rounded-xl p-4 text-center hover:border-red-500 transition-colors cursor-pointer bg-zinc-800/30"
               >
                 {isUploading ? (
                   <div className="flex flex-col items-center justify-center py-2 text-zinc-500">
@@ -520,7 +518,7 @@ export function ComponentFormModal({
                 ) : (
                   <>
                     <Upload size={24} className="mx-auto text-zinc-400 mb-1.5" />
-                    <p className="text-xs text-zinc-600 dark:text-zinc-400 font-medium">
+                    <p className="text-xs text-zinc-400 font-medium">
                       Click to upload photo or drag & drop
                     </p>
                     <p className="text-[11px] text-zinc-400">
@@ -532,7 +530,7 @@ export function ComponentFormModal({
             </div>
 
             {/* Reference Links */}
-            <div className="space-y-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
+            <div className="space-y-4 pt-4 border-t border-zinc-800">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold text-xs text-zinc-400 uppercase tracking-wider">
                   Reference Links
@@ -540,7 +538,7 @@ export function ComponentFormModal({
                 <button
                   type="button"
                   onClick={handleAddLink}
-                  className="inline-flex items-center gap-1 text-xs font-semibold text-red-600 dark:text-red-400 hover:underline cursor-pointer"
+                  className="inline-flex items-center gap-1 text-xs font-semibold text-red-400 hover:underline cursor-pointer"
                 >
                   <Plus size={14} /> Add Link
                 </button>
@@ -557,19 +555,19 @@ export function ComponentFormModal({
                         value={link.label}
                         onChange={(e) => handleLinkChange(idx, "label", e.target.value)}
                         placeholder="Label (e.g. Official Manual)"
-                        className="w-1/3 px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100"
+                        className="w-1/3 px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-800 text-xs text-zinc-100"
                       />
                       <input
                         type="url"
                         value={link.url}
                         onChange={(e) => handleLinkChange(idx, "url", e.target.value)}
                         placeholder="https://example.com/spec-sheet"
-                        className="flex-1 px-3 py-1.5 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-xs text-zinc-900 dark:text-zinc-100"
+                        className="flex-1 px-3 py-1.5 rounded-lg border border-zinc-700 bg-zinc-800 text-xs text-zinc-100"
                       />
                       <button
                         type="button"
                         onClick={() => handleRemoveLink(idx)}
-                        className="p-1.5 text-zinc-400 hover:text-red-500 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                        className="p-1.5 text-zinc-400 hover:text-red-500 rounded-lg hover:bg-zinc-800"
                       >
                         <Trash2 size={14} />
                       </button>
@@ -581,14 +579,14 @@ export function ComponentFormModal({
           </div>
 
           {/* Modal Footer */}
-          <div className="px-6 py-3.5 border-t border-zinc-200 dark:border-zinc-800 flex items-center justify-between bg-zinc-50 dark:bg-zinc-900/50">
+          <div className="px-6 py-3.5 border-t border-zinc-800 flex items-center justify-between bg-zinc-900/50">
             <span className="text-xs text-zinc-500">* Required fields</span>
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 onClick={onClose}
                 disabled={isSubmitting}
-                className="px-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 text-xs font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                className="px-4 py-2 rounded-lg border border-zinc-700 text-xs font-medium hover:bg-zinc-800 transition-colors cursor-pointer"
               >
                 Cancel
               </button>

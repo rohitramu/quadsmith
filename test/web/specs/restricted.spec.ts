@@ -60,7 +60,7 @@ test.describe("Administrative Ban Lockout & Account Deletion Flows", () => {
   }) => {
     await loginAs(page, SEEDED_PILOT);
     await page.goto("/");
-    await preparePageForSnapshot(page, { theme: "dark" });
+    await preparePageForSnapshot(page);
 
     // Lock screen indicator
     await expect(page.locator('[data-testid="account-restricted-screen"]')).toBeVisible();
@@ -69,8 +69,8 @@ test.describe("Administrative Ban Lockout & Account Deletion Flows", () => {
       page.getByText("Violation of community flight safety guidelines."),
     ).toBeVisible();
 
-    // Visual snapshot comparison (Lock Screen Dark Mode)
-    await expect(page).toHaveScreenshot("account-restricted-lockscreen-dark.png", {
+    // Visual snapshot comparison (Lock Screen)
+    await expect(page).toHaveScreenshot("account-restricted-lockscreen.png", {
       fullPage: true,
     });
   });
@@ -80,7 +80,7 @@ test.describe("Administrative Ban Lockout & Account Deletion Flows", () => {
   }) => {
     await loginAs(page, SEEDED_PILOT);
     await page.goto("/account");
-    await preparePageForSnapshot(page, { theme: "dark" });
+    await preparePageForSnapshot(page);
 
     // Verify restriction alert banner on account settings
     await expect(
@@ -94,7 +94,7 @@ test.describe("Administrative Ban Lockout & Account Deletion Flows", () => {
     }
 
     // Visual snapshot comparison (Account Settings Banned State)
-    await expect(page).toHaveScreenshot("account-banned-settings-dark.png", {
+    await expect(page).toHaveScreenshot("account-banned-settings.png", {
       fullPage: true,
     });
   });
@@ -104,7 +104,7 @@ test.describe("Administrative Ban Lockout & Account Deletion Flows", () => {
   }) => {
     await loginAs(page, SEEDED_PILOT);
     await page.goto("/account");
-    await preparePageForSnapshot(page, { theme: "dark" });
+    await preparePageForSnapshot(page);
 
     // Find and click Delete Account button
     const deleteBtn = page.getByRole("button", { name: /delete account/i });
@@ -117,6 +117,6 @@ test.describe("Administrative Ban Lockout & Account Deletion Flows", () => {
     ).toBeVisible();
 
     // Visual snapshot comparison (Account Deletion Modal)
-    await expect(page).toHaveScreenshot("account-deletion-modal-dark.png");
+    await expect(page).toHaveScreenshot("account-deletion-modal.png");
   });
 });

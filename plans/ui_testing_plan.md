@@ -61,7 +61,7 @@ flowchart TD
             V --> QueryClient
             V --> MemRouter
 
-            MemRouter --> LayoutTests[Layout & Theme Tests]
+            MemRouter --> LayoutTests[Layout & Navigation Tests]
             MemRouter --> NavFlowTests[Full Navigation Flow Tests]
             MemRouter --> CollectionTests[Collection Table, Filter & Columns]
             MemRouter --> ProductTests[Product Details & Specs]
@@ -83,8 +83,7 @@ flowchart TD
 Component and navigation tests execute within Vitest using JSDOM as the virtual
 DOM environment. Tests render components using `@testing-library/react` and
 dispatch user interactions via `@testing-library/user-event`. This architecture
-verifies layout rendering, theme switching (dark/light mode toggles and
-`localStorage` persistence), sidebar navigation, catalog grids, and data table
+verifies layout rendering, sidebar navigation, catalog grids, and data table
 interactions in milliseconds.
 
 <details>
@@ -198,6 +197,6 @@ testing suite using Playwright is planned:
   and Go backend sandbox (`make sandbox`).
 - **Visual Regression Testing**: Screenshot comparisons (`toHaveScreenshot()`)
   to detect unintended visual styling or CSS regressions across viewport
-  breakpoints and color themes.
+  breakpoints.
 - **Unified Target**: Integrated directly into `make test` for full
   multi-browser validation across local development and CI.

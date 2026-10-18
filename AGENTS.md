@@ -337,19 +337,18 @@ pages, layouts, or styling):
   - **100% Pure-CSS Interactivity**: Do not rely on JavaScript for state
     changes, tabs, or calculations in mobile embeds (Android WebView inline
     embeds frequently sandbox or disable script execution). Implement all
-    interactive states (tabs, progress levels, payload weights, theme toggles)
-    using hidden radio/checkbox inputs (`<input type="radio" class="sr-only">`)
-    and CSS `:checked` sibling selectors (`#radio:checked ~ .container ...`).
+    interactive states (tabs, progress levels, payload weights) using hidden
+    radio/checkbox inputs (`<input type="radio" class="sr-only">`) and CSS
+    `:checked` sibling selectors (`#radio:checked ~ .container ...`).
   - **Discrete Tap Presets Over Draggable Sliders**: Continuous
     `<input type="range">` drag gestures are intercepted and canceled by
     Android's parent scroll view (`touchcancel`). Use discrete, tap-friendly
     pill buttons (`[ 0% ]`, `[ 25% ]`, `[ 50% ]`, `[ 75% ]`, `[ 100% ]` or
     `[ 0g ]`, `[ 60g ]`, `[ 120g ]`, `[ 250g ]`, `[ 400g ]`) with
     `touch-action: manipulation;`.
-- **Theme Toggle in Previews**: Always include an interactive light/dark mode
-  theme toggle (using CSS `:checked` fallback on mobile and JavaScript on
-  desktop) in generated HTML preview artifacts, enabling visual verification in
-  both light and dark themes.
+- **Dark-Theme Only**: Quadsmith uses a dark-only theme (`color-scheme: dark`).
+  Never add light-mode styles, `dark:` Tailwind variants, or theme toggles in
+  application code or HTML preview artifacts.
 - **Pre-Share Rendering Verification**: Always verify that HTML previews render
   correctly before sharing them with the user. Run headless Chrome
   (`google-chrome-stable --headless --disable-gpu --screenshot=<path> ...`)

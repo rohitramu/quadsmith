@@ -224,7 +224,7 @@ export function UserProfilePage() {
         </p>
         <Link
           to="/"
-          className="inline-block px-4 py-2 rounded-xl text-xs font-semibold bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900"
+          className="inline-block px-4 py-2 rounded-xl text-xs font-semibold bg-zinc-100 text-zinc-900"
         >
           Return Home
         </Link>
@@ -240,14 +240,14 @@ export function UserProfilePage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 space-y-8">
       {/* User Profile Header Card */}
-      <div className="p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm space-y-6">
+      <div className="p-8 rounded-2xl border border-zinc-800 bg-zinc-900 shadow-sm space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="flex items-center gap-5">
             {profile.avatarUrl ? (
               <img
                 src={profile.avatarUrl}
                 alt={profile.id}
-                className="w-20 h-20 rounded-full object-cover border-2 border-zinc-200 dark:border-zinc-800 shadow-md"
+                className="w-20 h-20 rounded-full object-cover border-2 border-zinc-800 shadow-md"
               />
             ) : (
               <div
@@ -279,7 +279,7 @@ export function UserProfilePage() {
           </div>
 
           {/* Interactive Stats Badges */}
-          <div className="flex items-center gap-4 bg-zinc-50 dark:bg-zinc-950 p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 flex-wrap">
+          <div className="flex items-center gap-4 bg-zinc-950 p-4 rounded-xl border border-zinc-800 flex-wrap">
             <button
               type="button"
               onClick={() => handleTabChange("builds")}
@@ -296,7 +296,7 @@ export function UserProfilePage() {
               </div>
             </button>
 
-            <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800" />
+            <div className="h-8 w-px bg-zinc-800" />
 
             <button
               type="button"
@@ -314,7 +314,7 @@ export function UserProfilePage() {
               </div>
             </button>
 
-            <div className="h-8 w-px bg-zinc-200 dark:bg-zinc-800" />
+            <div className="h-8 w-px bg-zinc-800" />
 
             <div className="flex items-center gap-3">
               <div className="p-2.5 rounded-lg bg-amber-500/10 text-amber-500">
@@ -330,19 +330,19 @@ export function UserProfilePage() {
 
         {/* Bio */}
         {profile.bio && (
-          <div className="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed">
+          <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 text-xs text-zinc-300 leading-relaxed">
             {profile.bio}
           </div>
         )}
       </div>
 
       {/* Larger Tabbed Section */}
-      <div className="p-4 sm:p-6 lg:p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs space-y-6">
+      <div className="p-4 sm:p-6 lg:p-8 rounded-2xl border border-zinc-800 bg-zinc-900 shadow-xs space-y-6">
         {/* Tab Navigation Bar */}
         <div
           role="tablist"
           aria-label="User profile content"
-          className="flex items-center gap-1 sm:gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-px overflow-x-auto whitespace-nowrap scrollbar-thin"
+          className="flex items-center gap-1 sm:gap-2 border-b border-zinc-800 pb-px overflow-x-auto whitespace-nowrap scrollbar-thin"
         >
           <button
             role="tab"
@@ -353,8 +353,8 @@ export function UserProfilePage() {
             onClick={() => handleTabChange("builds")}
             className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2.5 sm:py-3 border-b-2 font-bold text-xs sm:text-sm transition-colors cursor-pointer shrink-0 ${
               activeTab === "builds"
-                ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
-                : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
+                ? "border-emerald-500 text-emerald-400"
+                : "border-transparent text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
             }`}
           >
             <Hammer size={15} />
@@ -362,8 +362,8 @@ export function UserProfilePage() {
             <span
               className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono transition-colors ${
                 activeTab === "builds"
-                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                  : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
+                  ? "bg-emerald-500/10 text-emerald-400"
+                  : "bg-zinc-800 text-zinc-400"
               }`}
             >
               {displayBuildCount}
@@ -379,8 +379,8 @@ export function UserProfilePage() {
             onClick={() => handleTabChange("collections")}
             className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2.5 sm:py-3 border-b-2 font-bold text-xs sm:text-sm transition-colors cursor-pointer shrink-0 ${
               activeTab === "collections"
-                ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
-                : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
+                ? "border-emerald-500 text-emerald-400"
+                : "border-transparent text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
             }`}
           >
             <Bookmark size={15} />
@@ -388,8 +388,8 @@ export function UserProfilePage() {
             <span
               className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono transition-colors ${
                 activeTab === "collections"
-                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                  : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
+                  ? "bg-emerald-500/10 text-emerald-400"
+                  : "bg-zinc-800 text-zinc-400"
               }`}
             >
               {displayColCount}
@@ -405,8 +405,8 @@ export function UserProfilePage() {
             onClick={() => handleTabChange("components")}
             className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2.5 sm:py-3 border-b-2 font-bold text-xs sm:text-sm transition-colors cursor-pointer shrink-0 ${
               activeTab === "components"
-                ? "border-emerald-500 text-emerald-600 dark:text-emerald-400"
-                : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
+                ? "border-emerald-500 text-emerald-400"
+                : "border-transparent text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
             }`}
           >
             <Cpu size={15} />
@@ -414,8 +414,8 @@ export function UserProfilePage() {
             <span
               className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono transition-colors ${
                 activeTab === "components"
-                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                  : "bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
+                  ? "bg-emerald-500/10 text-emerald-400"
+                  : "bg-zinc-800 text-zinc-400"
               }`}
             >
               {contributedComponents.length}
@@ -434,11 +434,11 @@ export function UserProfilePage() {
             {/* Builds Section Subheader */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
               <div>
-                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                <h3 className="text-base font-bold text-zinc-100 flex items-center gap-2">
                   <Hammer size={18} className="text-emerald-500" />
                   <span>Authored Builds</span>
                 </h3>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                <p className="text-xs text-zinc-400 mt-0.5">
                   Verified quadcopter builds and component bills of materials engineered by @
                   {profile.id}.
                 </p>
@@ -462,17 +462,17 @@ export function UserProfilePage() {
                 {[1, 2].map((n) => (
                   <div
                     key={n}
-                    className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white dark:bg-zinc-900 animate-pulse space-y-4"
+                    className="rounded-2xl border border-zinc-800 p-6 bg-zinc-900 animate-pulse space-y-4"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-zinc-200 dark:bg-zinc-800" />
+                      <div className="w-10 h-10 rounded-xl bg-zinc-800" />
                       <div className="space-y-2 flex-1">
-                        <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-1/3" />
-                        <div className="h-3 bg-zinc-100 dark:bg-zinc-800/60 rounded w-1/4" />
+                        <div className="h-4 bg-zinc-800 rounded w-1/3" />
+                        <div className="h-3 bg-zinc-800/60 rounded w-1/4" />
                       </div>
                     </div>
-                    <div className="h-28 bg-zinc-100 dark:bg-zinc-800/40 rounded-xl" />
-                    <div className="h-4 bg-zinc-100 dark:bg-zinc-800/60 rounded w-3/4" />
+                    <div className="h-28 bg-zinc-800/40 rounded-xl" />
+                    <div className="h-4 bg-zinc-800/60 rounded w-3/4" />
                   </div>
                 ))}
               </div>
@@ -480,10 +480,8 @@ export function UserProfilePage() {
 
             {/* Error Alert */}
             {buildsError && (
-              <div className="p-6 rounded-2xl border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/30 text-center space-y-3">
-                <p className="text-xs text-red-600 dark:text-red-400">
-                  Failed to load builds: {buildsError.message}
-                </p>
+              <div className="p-6 rounded-2xl border border-red-900/60 bg-red-950/30 text-center space-y-3">
+                <p className="text-xs text-red-400">Failed to load builds: {buildsError.message}</p>
                 <button
                   type="button"
                   onClick={() => refetchBuilds()}
@@ -497,13 +495,11 @@ export function UserProfilePage() {
 
             {/* Empty State */}
             {!isLoadingBuilds && !buildsError && builds.length === 0 && (
-              <div className="p-12 text-center rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-400 text-xs space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mx-auto text-zinc-400">
+              <div className="p-12 text-center rounded-2xl border border-dashed border-zinc-800 bg-zinc-950 text-zinc-400 text-xs space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-zinc-800 flex items-center justify-center mx-auto text-zinc-400">
                   <Hammer size={20} />
                 </div>
-                <p className="font-bold text-sm text-zinc-700 dark:text-zinc-200">
-                  No published builds yet
-                </p>
+                <p className="font-bold text-sm text-zinc-200">No published builds yet</p>
                 <p className="text-zinc-500 max-w-sm mx-auto">
                   When @{profile.id} creates and publishes quadcopter builds, they will appear here.
                 </p>
@@ -541,7 +537,7 @@ export function UserProfilePage() {
               )}
 
               {!isLoadingBuilds && !hasNextBuilds && builds.length > 0 && (
-                <div className="inline-flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-500 font-medium">
+                <div className="inline-flex items-center gap-2 text-xs text-zinc-500 font-medium">
                   <CheckCircle size={14} className="text-emerald-500" />
                   <span>You&apos;ve caught up with all builds by @{profile.id}</span>
                 </div>
@@ -561,11 +557,11 @@ export function UserProfilePage() {
             {/* Collections Section Subheader with subtle plus button */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
               <div>
-                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                <h3 className="text-base font-bold text-zinc-100 flex items-center gap-2">
                   <Bookmark size={18} className="text-blue-500" />
                   <span>Curated Collections</span>
                 </h3>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                <p className="text-xs text-zinc-400 mt-0.5">
                   Curated quadcopter builds, hardware wishlists, and component pairings.
                 </p>
               </div>
@@ -590,11 +586,11 @@ export function UserProfilePage() {
                 {[1, 2, 3].map((n) => (
                   <div
                     key={n}
-                    className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-5 bg-white dark:bg-zinc-900 animate-pulse space-y-3"
+                    className="rounded-2xl border border-zinc-800 p-5 bg-zinc-900 animate-pulse space-y-3"
                   >
-                    <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-1/2" />
-                    <div className="h-10 bg-zinc-100 dark:bg-zinc-800/60 rounded" />
-                    <div className="h-3 bg-zinc-200 dark:bg-zinc-800 rounded w-1/4 pt-2" />
+                    <div className="h-4 bg-zinc-800 rounded w-1/2" />
+                    <div className="h-10 bg-zinc-800/60 rounded" />
+                    <div className="h-3 bg-zinc-800 rounded w-1/4 pt-2" />
                   </div>
                 ))}
               </div>
@@ -602,8 +598,8 @@ export function UserProfilePage() {
 
             {/* Error Alert */}
             {collectionsError && (
-              <div className="p-6 rounded-2xl border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/30 text-center space-y-3">
-                <p className="text-xs text-red-600 dark:text-red-400">
+              <div className="p-6 rounded-2xl border border-red-900/60 bg-red-950/30 text-center space-y-3">
+                <p className="text-xs text-red-400">
                   Failed to load collections: {collectionsError.message}
                 </p>
                 <button
@@ -619,13 +615,11 @@ export function UserProfilePage() {
 
             {/* Empty State with "Add Collection" button */}
             {!isLoadingCollections && !collectionsError && collections.length === 0 && (
-              <div className="p-12 text-center rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 text-zinc-400 text-xs space-y-3">
-                <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mx-auto text-zinc-400">
+              <div className="p-12 text-center rounded-2xl border border-dashed border-zinc-800 bg-zinc-950 text-zinc-400 text-xs space-y-3">
+                <div className="w-12 h-12 rounded-2xl bg-zinc-800 flex items-center justify-center mx-auto text-zinc-400">
                   <Bookmark size={20} />
                 </div>
-                <p className="font-bold text-sm text-zinc-700 dark:text-zinc-200">
-                  No collections found
-                </p>
+                <p className="font-bold text-sm text-zinc-200">No collections found</p>
                 <p className="text-zinc-500 max-w-sm mx-auto">
                   {isOwner
                     ? "You haven't created any collections yet. Collections help you group parts, plan builds, and save favorites."
@@ -659,7 +653,7 @@ export function UserProfilePage() {
                       }
                       navigate(`/users/${profile.id}/collections/${col.id}`);
                     }}
-                    className="relative group rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-5 gap-3 hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:shadow-md transition-all shadow-2xs flex flex-col justify-between cursor-pointer"
+                    className="relative group rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 gap-3 hover:border-blue-500/50 hover:shadow-md transition-all shadow-2xs flex flex-col justify-between cursor-pointer"
                   >
                     {/* Stretched clickable card link opening the collection page across entire height and width */}
                     <Link
@@ -679,7 +673,7 @@ export function UserProfilePage() {
                             )}
                           </div>
                           <div className="min-w-0">
-                            <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100 group-hover:text-blue-500 transition-colors truncate">
+                            <h4 className="font-bold text-sm text-zinc-100 group-hover:text-blue-500 transition-colors truncate">
                               {col.name}
                             </h4>
                             <div className="text-[10px] text-zinc-400 truncate mt-0.5">
@@ -694,14 +688,14 @@ export function UserProfilePage() {
                       </div>
 
                       {col.description && (
-                        <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2 leading-relaxed">
+                        <p className="text-xs text-zinc-400 line-clamp-2 leading-relaxed">
                           {col.description}
                         </p>
                       )}
                     </div>
 
                     {/* Bottom footer with item count and delete button */}
-                    <div className="flex items-center justify-between text-xs text-zinc-500 pt-3 border-t border-zinc-100 dark:border-zinc-800 pointer-events-none">
+                    <div className="flex items-center justify-between text-xs text-zinc-500 pt-3 border-t border-zinc-800 pointer-events-none">
                       <span className="font-mono">{col.itemCount} items</span>
                       {isOwner && !col.isSystemCollection && (
                         <button
@@ -741,11 +735,11 @@ export function UserProfilePage() {
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
               <div>
-                <h3 className="text-base font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+                <h3 className="text-base font-bold text-zinc-100 flex items-center gap-2">
                   <Cpu size={18} className="text-blue-500" />
                   <span>Contributed Components</span>
                 </h3>
-                <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5">
+                <p className="text-xs text-zinc-400 mt-0.5">
                   Hardware, gear, and software specifications cataloged by @{id}.
                 </p>
               </div>
@@ -772,13 +766,11 @@ export function UserProfilePage() {
                 <Loader2 size={24} className="animate-spin text-blue-500" />
               </div>
             ) : contributedComponents.length === 0 ? (
-              <div className="text-center py-16 px-4 rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 space-y-3">
-                <div className="w-12 h-12 rounded-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mx-auto text-zinc-400">
+              <div className="text-center py-16 px-4 rounded-2xl border border-dashed border-zinc-800 space-y-3">
+                <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center mx-auto text-zinc-400">
                   <Cpu size={24} />
                 </div>
-                <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100">
-                  No Components Contributed Yet
-                </h4>
+                <h4 className="text-sm font-bold text-zinc-100">No Components Contributed Yet</h4>
                 <p className="text-xs text-zinc-500 max-w-sm mx-auto">
                   {isOwner
                     ? "Contribute custom motors, frames, electronics, or firmware to Quadsmith's catalog."
@@ -812,7 +804,7 @@ export function UserProfilePage() {
                   return (
                     <div
                       key={item.uuid || item.id}
-                      className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-all flex flex-col justify-between space-y-3 group"
+                      className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800/50 transition-all flex flex-col justify-between space-y-3 group"
                     >
                       <div className="space-y-2">
                         <div className="flex items-center justify-between">
@@ -830,7 +822,7 @@ export function UserProfilePage() {
                                 setCreateModalCollectionId(item.path.split("/").pop() || "motors");
                                 setIsComponentModalOpen(true);
                               }}
-                              className="text-xs text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
+                              className="text-xs text-blue-400 hover:underline cursor-pointer"
                             >
                               Edit
                             </button>
@@ -842,11 +834,11 @@ export function UserProfilePage() {
                             <img
                               src={item.primaryDisplayImage}
                               alt={item.name}
-                              className="w-10 h-10 rounded-lg object-cover bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 shrink-0"
+                              className="w-10 h-10 rounded-lg object-cover bg-zinc-800 border border-zinc-700 shrink-0"
                             />
                           ) : (
                             <div
-                              className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border border-zinc-200/80 dark:border-zinc-700/60 ${colColor.iconBgClass} ${colColor.textClass}`}
+                              className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border border-zinc-700/60 ${colColor.iconBgClass} ${colColor.textClass}`}
                             >
                               <CollectionIcon collection={collectionKey} color={true} size={18} />
                             </div>
@@ -854,7 +846,7 @@ export function UserProfilePage() {
                           <div className="min-w-0 flex-1">
                             <Link
                               to={`/${item.path}/${item.id}`}
-                              className="font-bold text-sm text-zinc-900 dark:text-zinc-100 hover:underline truncate block"
+                              className="font-bold text-sm text-zinc-100 hover:underline truncate block"
                             >
                               {item.name}
                             </Link>
@@ -867,11 +859,11 @@ export function UserProfilePage() {
                         </div>
                       </div>
 
-                      <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800/80 flex items-center justify-between text-[11px] text-zinc-400 font-mono">
+                      <div className="pt-2 border-t border-zinc-800/80 flex items-center justify-between text-[11px] text-zinc-400 font-mono">
                         <span>{item.id}</span>
                         <Link
                           to={`/${item.path}/${item.id}`}
-                          className="text-blue-600 dark:text-blue-400 font-sans font-medium hover:underline"
+                          className="text-blue-400 font-sans font-medium hover:underline"
                         >
                           View &rarr;
                         </Link>
@@ -893,11 +885,11 @@ export function UserProfilePage() {
           aria-labelledby="create-col-modal-title"
           className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in"
         >
-          <div className="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden p-6 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md shadow-2xl overflow-hidden p-6 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
               <h3
                 id="create-col-modal-title"
-                className="font-bold text-base text-zinc-900 dark:text-zinc-100 flex items-center gap-2"
+                className="font-bold text-base text-zinc-100 flex items-center gap-2"
               >
                 <Bookmark size={18} className="text-blue-500" />
                 <span>Create Collection</span>
@@ -905,7 +897,7 @@ export function UserProfilePage() {
               <button
                 type="button"
                 onClick={() => setIsCreateOpen(false)}
-                className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 p-1 rounded-lg cursor-pointer"
+                className="text-zinc-400 hover:text-zinc-200 p-1 rounded-lg cursor-pointer"
                 aria-label="Close modal"
               >
                 <X size={18} />
@@ -916,7 +908,7 @@ export function UserProfilePage() {
               <div className="space-y-1.5">
                 <label
                   htmlFor="new-col-name-input"
-                  className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300"
+                  className="block text-xs font-semibold text-zinc-300"
                 >
                   Name
                 </label>
@@ -926,7 +918,7 @@ export function UserProfilePage() {
                   value={newColName}
                   onChange={(e) => setNewColName(e.target.value)}
                   placeholder="e.g. Cinematic Freestyle 6S Rigs"
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 p-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
+                  className="w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-sm text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
                   required
                   autoFocus
                 />
@@ -935,7 +927,7 @@ export function UserProfilePage() {
               <div className="space-y-1.5">
                 <label
                   htmlFor="new-col-desc-input"
-                  className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300"
+                  className="block text-xs font-semibold text-zinc-300"
                 >
                   Description (optional)
                 </label>
@@ -945,15 +937,15 @@ export function UserProfilePage() {
                   value={newColDesc}
                   onChange={(e) => setNewColDesc(e.target.value)}
                   placeholder="Notes on what is collected here..."
-                  className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 p-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
+                  className="w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-sm text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-2 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+              <div className="flex items-center justify-end gap-2 pt-3 border-t border-zinc-800">
                 <button
                   type="button"
                   onClick={() => setIsCreateOpen(false)}
-                  className="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-300 hover:bg-zinc-800 transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>

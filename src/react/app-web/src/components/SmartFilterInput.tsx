@@ -364,7 +364,7 @@ export function SmartFilterInput({
             }}
             onKeyDown={handleKeyDown}
             placeholder={placeholder}
-            className="w-full pl-9 pr-24 py-2.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-mono"
+            className="w-full pl-9 pr-24 py-2.5 bg-zinc-900 border border-zinc-800 rounded-lg text-sm text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all font-mono"
           />
 
           <div className="absolute inset-y-0 right-0 pr-2 flex items-center gap-1">
@@ -373,7 +373,7 @@ export function SmartFilterInput({
                 type="button"
                 onClick={handleClear}
                 title="Clear filter"
-                className="p-1 rounded-md text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+                className="p-1 rounded-md text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
               >
                 <X size={15} />
               </button>
@@ -384,8 +384,8 @@ export function SmartFilterInput({
               title="CEL Syntax Guide"
               className={`p-1.5 rounded-md text-xs font-medium transition-colors flex items-center gap-1 ${
                 showHelp
-                  ? "bg-blue-100 text-blue-700 dark:bg-blue-950 dark:text-blue-300"
-                  : "text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                  ? "bg-blue-950 text-blue-300"
+                  : "text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800"
               }`}
             >
               <HelpCircle size={15} />
@@ -406,18 +406,15 @@ export function SmartFilterInput({
       {showSuggestions && suggestions.length > 0 && (
         <div
           ref={dropdownRef}
-          className="absolute z-50 mt-1.5 w-full max-w-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-lg shadow-xl overflow-hidden text-sm"
+          className="absolute z-50 mt-1.5 w-full max-w-2xl bg-zinc-900 border border-zinc-800 rounded-lg shadow-xl overflow-hidden text-sm"
         >
-          <div className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400 bg-zinc-50 dark:bg-zinc-950/50 border-b border-zinc-200 dark:border-zinc-800 flex justify-between items-center">
+          <div className="px-3 py-1.5 text-xs font-semibold uppercase tracking-wider text-zinc-400 bg-zinc-950/50 border-b border-zinc-800 flex justify-between items-center">
             <span>Query Autocompletion</span>
             <span className="text-[10px] text-zinc-400 font-normal">
               Use ↑↓ to navigate, Tab to insert, Enter to apply
             </span>
           </div>
-          <div
-            ref={listRef}
-            className="max-h-60 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800/50"
-          >
+          <div ref={listRef} className="max-h-60 overflow-y-auto divide-y divide-zinc-800/50">
             {suggestions.map((item, idx) => (
               <div
                 key={item.id}
@@ -428,20 +425,20 @@ export function SmartFilterInput({
                 onMouseEnter={() => setSelectedIndex(idx)}
                 className={`px-3 py-2 flex items-center justify-between cursor-pointer transition-colors ${
                   idx === selectedIndex
-                    ? "bg-blue-50 dark:bg-blue-950/60 text-blue-900 dark:text-blue-100"
-                    : "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 text-zinc-700 dark:text-zinc-300"
+                    ? "bg-blue-950/60 text-blue-100"
+                    : "hover:bg-zinc-800/40 text-zinc-300"
                 }`}
               >
                 <div className="flex items-center gap-2.5">
                   <span
                     className={`text-[10px] uppercase font-bold px-1.5 py-0.5 rounded ${
                       item.category === "Field"
-                        ? "bg-emerald-100 dark:bg-emerald-950/70 text-emerald-700 dark:text-emerald-300"
+                        ? "bg-emerald-950/70 text-emerald-300"
                         : item.category === "Method"
-                          ? "bg-purple-100 dark:bg-purple-950/70 text-purple-700 dark:text-purple-300"
+                          ? "bg-purple-950/70 text-purple-300"
                           : item.category === "Operator"
-                            ? "bg-amber-100 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300"
-                            : "bg-blue-100 dark:bg-blue-950/70 text-blue-700 dark:text-blue-300"
+                            ? "bg-amber-950/70 text-amber-300"
+                            : "bg-blue-950/70 text-blue-300"
                     }`}
                   >
                     {item.category}
@@ -472,8 +469,8 @@ export function SmartFilterInput({
               }}
               className={`text-xs px-2.5 py-1 rounded-full border transition-colors font-mono cursor-pointer ${
                 query === preset.query
-                  ? "bg-blue-50 dark:bg-blue-950/60 border-blue-300 dark:border-blue-800 text-blue-700 dark:text-blue-300"
-                  : "bg-zinc-50 dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-700"
+                  ? "bg-blue-950/60 border-blue-800 text-blue-300"
+                  : "bg-zinc-900 border-zinc-800 text-zinc-400 hover:border-zinc-700"
               }`}
             >
               {preset.label}
@@ -484,22 +481,22 @@ export function SmartFilterInput({
 
       {/* Error message */}
       {error && (
-        <div className="mt-2 text-xs text-red-500 dark:text-red-400 flex items-center gap-1.5">
+        <div className="mt-2 text-xs text-red-400 flex items-center gap-1.5">
           <span>Invalid filter expression: {error}</span>
         </div>
       )}
 
       {/* Collapsible Syntax Guide */}
       {showHelp && (
-        <div className="mt-3 p-4 bg-zinc-50 dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 rounded-lg text-xs space-y-3">
-          <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2">
-            <h4 className="font-semibold text-zinc-800 dark:text-zinc-200 flex items-center gap-1.5">
+        <div className="mt-3 p-4 bg-zinc-900/70 border border-zinc-800 rounded-lg text-xs space-y-3">
+          <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
+            <h4 className="font-semibold text-zinc-200 flex items-center gap-1.5">
               <span>Common Expression Language (CEL) Filter Syntax</span>
             </h4>
             <button
               type="button"
               onClick={() => setShowHelp(false)}
-              className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200"
+              className="text-zinc-400 hover:text-zinc-200"
             >
               <X size={14} />
             </button>
@@ -507,59 +504,47 @@ export function SmartFilterInput({
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <p className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">String Matching</p>
-              <ul className="space-y-1 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
+              <p className="font-semibold text-zinc-300 mb-1">String Matching</p>
+              <ul className="space-y-1 font-mono text-[11px] text-zinc-400">
                 <li>
-                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
+                  <code className="bg-zinc-800 px-1 py-0.5 rounded">
                     manufacturer.contains("T-Motor")
                   </code>
                 </li>
                 <li>
-                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
-                    name.startsWith("Velox")
-                  </code>
+                  <code className="bg-zinc-800 px-1 py-0.5 rounded">name.startsWith("Velox")</code>
                 </li>
                 <li>
-                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
-                    manufacturer == "Emax"
-                  </code>
+                  <code className="bg-zinc-800 px-1 py-0.5 rounded">manufacturer == "Emax"</code>
                 </li>
               </ul>
             </div>
             <div>
-              <p className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
-                Numeric Comparison
-              </p>
-              <ul className="space-y-1 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
+              <p className="font-semibold text-zinc-300 mb-1">Numeric Comparison</p>
+              <ul className="space-y-1 font-mono text-[11px] text-zinc-400">
                 <li>
-                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
-                    kv &gt;= 1900
-                  </code>
+                  <code className="bg-zinc-800 px-1 py-0.5 rounded">kv &gt;= 1900</code>
                 </li>
                 <li>
-                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
-                    weight_g &lt; 35.0
-                  </code>
+                  <code className="bg-zinc-800 px-1 py-0.5 rounded">weight_g &lt; 35.0</code>
                 </li>
                 <li>
-                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
+                  <code className="bg-zinc-800 px-1 py-0.5 rounded">
                     stator_diameter_mm == 22.0
                   </code>
                 </li>
               </ul>
             </div>
             <div>
-              <p className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
-                Compound Conditions
-              </p>
-              <ul className="space-y-1 font-mono text-[11px] text-zinc-600 dark:text-zinc-400">
+              <p className="font-semibold text-zinc-300 mb-1">Compound Conditions</p>
+              <ul className="space-y-1 font-mono text-[11px] text-zinc-400">
                 <li>
-                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
+                  <code className="bg-zinc-800 px-1 py-0.5 rounded">
                     kv &gt;= 1750 &amp;&amp; kv &lt;= 2000
                   </code>
                 </li>
                 <li>
-                  <code className="bg-zinc-200 dark:bg-zinc-800 px-1 py-0.5 rounded">
+                  <code className="bg-zinc-800 px-1 py-0.5 rounded">
                     manufacturer == "T-Motor" || kv &gt; 2400
                   </code>
                 </li>
@@ -567,8 +552,8 @@ export function SmartFilterInput({
             </div>
           </div>
 
-          <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800">
-            <p className="font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
+          <div className="pt-2 border-t border-zinc-800">
+            <p className="font-semibold text-zinc-300 mb-1">
               Available Fields for this Collection:
             </p>
             <div className="flex flex-wrap gap-2">
@@ -581,7 +566,7 @@ export function SmartFilterInput({
                     setQuery(sample);
                     handleApply(sample);
                   }}
-                  className="font-mono text-[11px] bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 px-2 py-0.5 rounded hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                  className="font-mono text-[11px] bg-zinc-800 border border-zinc-700 px-2 py-0.5 rounded hover:border-blue-400 hover:text-blue-400 transition-colors"
                   title={`Click to test: ${f.examples[0] || f.name}`}
                 >
                   {f.name} <span className="text-zinc-400 text-[10px]">({f.type})</span>

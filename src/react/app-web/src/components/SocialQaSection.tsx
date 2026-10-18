@@ -173,24 +173,24 @@ export function SocialQaSection({
   return (
     <div className="space-y-6">
       {/* Q&A Header & Ask Question CTA */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/40">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40">
         <div className="space-y-1">
-          <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+          <h3 className="font-bold text-base text-zinc-100 flex items-center gap-2">
             <HelpCircle size={18} className="text-blue-500" />
             <span>Technical Q&A</span>
           </h3>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="text-xs text-zinc-400">
             Have questions about component fitment, motor KV pairing, or firmware configurations?
             Ask the community and the build creator.
           </p>
         </div>
 
         {isArchived ? (
-          <div className="p-2.5 px-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs text-center font-medium">
+          <div className="p-2.5 px-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs text-center font-medium">
             Archived entity: Q&A is read-only.
           </div>
         ) : isBuildAuthor ? (
-          <div className="p-2.5 px-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs text-center font-medium">
+          <div className="p-2.5 px-4 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs text-center font-medium">
             Build creators cannot ask questions on their own builds.
           </div>
         ) : (
@@ -209,16 +209,16 @@ export function SocialQaSection({
       {isQuestionComposerOpen && !isArchived && !isBuildAuthor && (
         <form
           onSubmit={handleAskQuestion}
-          className="rounded-2xl border-2 border-blue-500/30 bg-white dark:bg-zinc-900/90 p-6 space-y-4 shadow-xl"
+          className="rounded-2xl border-2 border-blue-500/30 bg-zinc-900/90 p-6 space-y-4 shadow-xl"
         >
           <div className="flex items-center justify-between">
-            <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+            <h3 className="font-bold text-sm text-zinc-100">
               Ask a Technical Question {entityName ? `about ${entityName}` : ""}
             </h3>
             <button
               type="button"
               onClick={() => setIsQuestionComposerOpen(false)}
-              className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 text-xs"
+              className="text-zinc-400 hover:text-zinc-200 text-xs"
             >
               Cancel
             </button>
@@ -231,28 +231,24 @@ export function SocialQaSection({
           )}
 
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-zinc-600 dark:text-zinc-400">
-              Question Title
-            </label>
+            <label className="block text-xs font-semibold text-zinc-400">Question Title</label>
             <input
               type="text"
               value={qTitle}
               onChange={(e) => setQTitle(e.target.value)}
               placeholder="e.g., What length standoffs are needed to fit the DJI O3 air unit?"
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 p-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
+              className="w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-sm text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
             />
           </div>
 
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-zinc-600 dark:text-zinc-400">
-              Details & Context
-            </label>
+            <label className="block text-xs font-semibold text-zinc-400">Details & Context</label>
             <textarea
               rows={4}
               value={qBody}
               onChange={(e) => setQBody(e.target.value)}
               placeholder="Include your exact hardware variant, symptoms, firmware version, or wiring attempt..."
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 p-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
+              className="w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-sm text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
             />
           </div>
 
@@ -272,7 +268,7 @@ export function SocialQaSection({
       {/* Questions List & Sort */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+          <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
             Questions & Answers ({questions.length})
           </span>
           <div className="flex items-center gap-2 text-xs">
@@ -292,7 +288,7 @@ export function SocialQaSection({
             <Loader2 className="animate-spin text-blue-500" size={24} />
           </div>
         ) : questions.length === 0 ? (
-          <div className="p-8 text-center rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 text-zinc-400 text-xs">
+          <div className="p-8 text-center rounded-2xl border border-dashed border-zinc-800 text-zinc-400 text-xs">
             No technical questions yet. Ask something about this {target.type}!
           </div>
         ) : (
@@ -303,7 +299,7 @@ export function SocialQaSection({
             return (
               <div
                 key={q.id}
-                className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-6 space-y-6 shadow-2xs"
+                className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6 space-y-6 shadow-2xs"
               >
                 {/* Question Header & Voting Column */}
                 <div className="flex items-start gap-4">
@@ -315,25 +311,23 @@ export function SocialQaSection({
                         onClick={() => handleVoteQ(q.id, q.currentUserVote, 1)}
                         className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                           q.currentUserVote === 1
-                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                            : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500"
+                            ? "bg-emerald-500/10 text-emerald-400"
+                            : "hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500"
                         }`}
                         title="Upvote (+1 rep to author)"
                       >
                         <ChevronUp size={20} />
                       </button>
                     )}
-                    <span className="font-bold text-sm font-mono text-zinc-900 dark:text-zinc-100">
-                      {q.netScore}
-                    </span>
+                    <span className="font-bold text-sm font-mono text-zinc-100">{q.netScore}</span>
                     {!isAsker && !isArchived && (
                       <button
                         type="button"
                         onClick={() => handleVoteQ(q.id, q.currentUserVote, -1)}
                         className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
                           q.currentUserVote === -1
-                            ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
-                            : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-400 hover:text-rose-500"
+                            ? "bg-rose-500/10 text-rose-400"
+                            : "hover:bg-zinc-800 text-zinc-400 hover:text-rose-500"
                         }`}
                         title="Downvote (-2 rep to author, costs voter -2 rep • requires 100 rep)"
                       >
@@ -346,17 +340,17 @@ export function SocialQaSection({
                   <div className="space-y-2 flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       {q.hasAcceptedAnswer ? (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center gap-1">
                           <Check size={10} />
                           <span>Solved</span>
                         </span>
                       ) : (
-                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-500 text-[10px]">
+                        <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-zinc-800 text-zinc-500">
                           Open
                         </span>
                       )}
                       <span className="text-xs text-zinc-400">•</span>
-                      <span className="text-xs text-zinc-500 dark:text-zinc-400 inline-flex items-center gap-1.5">
+                      <span className="text-xs text-zinc-400 inline-flex items-center gap-1.5">
                         <span>Asked by</span>
                         <UserBadge username={q.authorUsername} size="xs" />
                       </span>
@@ -375,17 +369,15 @@ export function SocialQaSection({
                       )}
                     </div>
 
-                    <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100 leading-snug">
-                      {q.title}
-                    </h2>
+                    <h2 className="text-base font-bold text-zinc-100 leading-snug">{q.title}</h2>
 
-                    <div className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-line">
+                    <div className="text-sm text-zinc-300 leading-relaxed whitespace-pre-line">
                       {q.body}
                     </div>
 
                     {/* Micro comments under question */}
                     {comments.length > 0 && (
-                      <div className="pt-2 border-t border-zinc-100 dark:border-zinc-800/80 text-xs text-zinc-600 dark:text-zinc-400 space-y-1.5 pl-2">
+                      <div className="pt-2 border-t border-zinc-800/80 text-xs text-zinc-400 space-y-1.5 pl-2">
                         {comments.map((c) => (
                           <div key={c.uuid} className="flex items-start gap-2">
                             <span className="text-zinc-400 font-mono">↳</span>
@@ -418,12 +410,12 @@ export function SocialQaSection({
                             }
                           }}
                           placeholder="Add a clarification comment..."
-                          className="flex-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-3 py-1 text-xs text-zinc-900 dark:text-zinc-200 placeholder-zinc-400 focus:outline-hidden"
+                          className="flex-1 rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-1 text-xs text-zinc-200 placeholder-zinc-400 focus:outline-hidden"
                         />
                         <button
                           type="button"
                           onClick={() => handleAddQComment(q.id)}
-                          className="px-2.5 py-1 rounded-lg bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-xs text-zinc-700 dark:text-zinc-300 font-medium"
+                          className="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs text-zinc-300 font-medium"
                         >
                           Comment
                         </button>
@@ -433,8 +425,8 @@ export function SocialQaSection({
                 </div>
 
                 {/* Answers Section */}
-                <div className="space-y-4 pt-4 border-t border-zinc-200 dark:border-zinc-800">
-                  <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+                <div className="space-y-4 pt-4 border-t border-zinc-800">
+                  <div className="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-zinc-400">
                     <span>{q.answerCount} Answers</span>
                     {!isArchived && (
                       <button
@@ -453,7 +445,7 @@ export function SocialQaSection({
                   {/* Inline Answer Composer */}
                   {answeringQuestionId === q.id && !isArchived && (
                     <div className="p-4 rounded-xl border border-blue-500/30 bg-blue-500/5 space-y-3">
-                      <label className="block text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                      <label className="block text-xs font-semibold text-zinc-300">
                         Your Answer
                       </label>
                       <textarea
@@ -461,13 +453,13 @@ export function SocialQaSection({
                         value={answerBody}
                         onChange={(e) => setAnswerBody(e.target.value)}
                         placeholder="Provide an actionable solution, exact clearance dimensions, or wiring pinout..."
-                        className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-950 p-3 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-hidden"
+                        className="w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-xs text-zinc-100 placeholder-zinc-400 focus:outline-hidden"
                       />
                       <div className="flex justify-end gap-2">
                         <button
                           type="button"
                           onClick={() => setAnsweringQuestionId(null)}
-                          className="px-3 py-1.5 rounded-lg text-xs text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
+                          className="px-3 py-1.5 rounded-lg text-xs text-zinc-500 hover:text-zinc-300"
                         >
                           Cancel
                         </button>
@@ -600,10 +592,10 @@ function QuestionAnswersList({
             key={ans.uuid}
             className={`rounded-xl p-5 space-y-3 transition-colors ${
               isAccepted
-                ? "border border-emerald-500/40 bg-emerald-500/5 dark:bg-emerald-950/20"
+                ? "border border-emerald-500/40 bg-emerald-950/20"
                 : isEndorsed
-                  ? "border border-amber-500/40 bg-amber-500/5 dark:bg-amber-950/20"
-                  : "border border-zinc-200 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-950/40"
+                  ? "border border-amber-500/40 bg-amber-950/20"
+                  : "border border-zinc-800/80 bg-zinc-950/40"
             }`}
           >
             {/* Header: Badges & Author info */}
@@ -619,7 +611,7 @@ function QuestionAnswersList({
                   <button
                     type="button"
                     onClick={() => handleAccept(ans.uuid)}
-                    className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-dashed border-emerald-500/40 hover:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold cursor-pointer"
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-dashed border-emerald-500/40 hover:bg-emerald-500/10 text-emerald-400 text-xs font-semibold cursor-pointer"
                   >
                     <Check size={13} />
                     <span>Accept as Solution (+30 Rep)</span>
@@ -628,7 +620,7 @@ function QuestionAnswersList({
 
                 {/* Author Verified Star Badge */}
                 {isEndorsed ? (
-                  <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-600 dark:text-amber-400 font-bold text-xs">
+                  <div className="flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-500/20 border border-amber-500/30 text-amber-400 font-bold text-xs">
                     <Star size={13} className="fill-current" />
                     <span>Author Verified</span>
                   </div>
@@ -636,7 +628,7 @@ function QuestionAnswersList({
                   <button
                     type="button"
                     onClick={() => handleEndorse(ans.uuid)}
-                    className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-dashed border-amber-500/40 hover:bg-amber-500/10 text-amber-600 dark:text-amber-400 text-xs font-semibold cursor-pointer"
+                    className="flex items-center gap-1 px-2.5 py-1 rounded-lg border border-dashed border-amber-500/40 hover:bg-amber-500/10 text-amber-400 text-xs font-semibold cursor-pointer"
                   >
                     <Star size={13} />
                     <span>Verify as Creator (+20 Rep)</span>
@@ -644,7 +636,7 @@ function QuestionAnswersList({
                 ) : null}
               </div>
 
-              <div className="text-[11px] text-zinc-500 dark:text-zinc-400 flex items-center gap-1.5 flex-wrap">
+              <div className="text-[11px] text-zinc-400 flex items-center gap-1.5 flex-wrap">
                 <span>Answered by</span>
                 <UserBadge username={ans.authorUsername} size="xs" />
                 <span>•</span>
@@ -661,25 +653,23 @@ function QuestionAnswersList({
                     onClick={() => handleVote(ans.uuid, ans.currentUserVote, 1)}
                     className={`p-1 rounded-md transition-colors cursor-pointer ${
                       ans.currentUserVote === 1
-                        ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                        : "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500"
+                        ? "bg-emerald-500/10 text-emerald-400"
+                        : "hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500"
                     }`}
                     title="Upvote (+1 rep)"
                   >
                     <ChevronUp size={16} />
                   </button>
                 )}
-                <span className="font-bold text-xs font-mono text-zinc-900 dark:text-zinc-100">
-                  {ans.netScore}
-                </span>
+                <span className="font-bold text-xs font-mono text-zinc-100">{ans.netScore}</span>
                 {!isMyAnswer && !isArchived && (
                   <button
                     type="button"
                     onClick={() => handleVote(ans.uuid, ans.currentUserVote, -1)}
                     className={`p-1 rounded-md transition-colors cursor-pointer ${
                       ans.currentUserVote === -1
-                        ? "bg-rose-500/10 text-rose-600 dark:text-rose-400"
-                        : "hover:bg-zinc-200 dark:hover:bg-zinc-800 text-zinc-400 hover:text-rose-500"
+                        ? "bg-rose-500/10 text-rose-400"
+                        : "hover:bg-zinc-800 text-zinc-400 hover:text-rose-500"
                     }`}
                     title="Downvote (-2 rep, costs voter -2 rep • requires 100 rep)"
                   >
@@ -688,14 +678,14 @@ function QuestionAnswersList({
                 )}
               </div>
 
-              <div className="text-sm text-zinc-800 dark:text-zinc-200 leading-relaxed whitespace-pre-line flex-1">
+              <div className="text-sm text-zinc-200 leading-relaxed whitespace-pre-line flex-1">
                 {ans.body}
               </div>
             </div>
 
             {/* Micro comments under answer */}
             {comments.length > 0 && (
-              <div className="pt-2 border-t border-zinc-200 dark:border-zinc-800/80 text-xs text-zinc-600 dark:text-zinc-400 pl-4 space-y-1">
+              <div className="pt-2 border-t border-zinc-800/80 text-xs text-zinc-400 pl-4 space-y-1">
                 {comments.map((c) => (
                   <p key={c.uuid}>
                     <UserBadge username={c.authorUsername} size="xs" />
@@ -725,12 +715,12 @@ function QuestionAnswersList({
                     }
                   }}
                   placeholder="Clarify this answer..."
-                  className="flex-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 px-2.5 py-1 text-xs text-zinc-900 dark:text-zinc-200 placeholder-zinc-400 focus:outline-hidden"
+                  className="flex-1 rounded-lg border border-zinc-800 bg-zinc-950 px-2.5 py-1 text-xs text-zinc-200 placeholder-zinc-400 focus:outline-hidden"
                 />
                 <button
                   type="button"
                   onClick={() => handleAddComment(ans.uuid)}
-                  className="px-2.5 py-1 rounded-lg bg-zinc-200 dark:bg-zinc-800 hover:bg-zinc-300 dark:hover:bg-zinc-700 text-xs text-zinc-700 dark:text-zinc-300 font-medium"
+                  className="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs text-zinc-300 font-medium"
                 >
                   Reply
                 </button>

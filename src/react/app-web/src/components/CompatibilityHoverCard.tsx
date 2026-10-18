@@ -128,7 +128,7 @@ export function CompatibilityHoverCard({
         onClick={handleToggleClick}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        className={`underline decoration-dotted underline-offset-2 decoration-zinc-400 dark:decoration-zinc-500 hover:decoration-zinc-700 dark:hover:decoration-zinc-300 transition-colors cursor-help ${className}`}
+        className={`underline decoration-dotted underline-offset-2 decoration-zinc-500 hover:decoration-zinc-300 transition-colors cursor-help ${className}`}
       >
         {children}
       </span>
@@ -147,21 +147,21 @@ export function CompatibilityHoverCard({
           onMouseDown={(e) => {
             e.stopPropagation();
           }}
-          className={`absolute right-0 z-50 w-80 max-w-[calc(100vw-2rem)] p-3 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl transition-all duration-150 text-left ${
+          className={`absolute right-0 z-50 w-80 max-w-[calc(100vw-2rem)] p-3 rounded-xl bg-zinc-900 border border-zinc-800 shadow-xl transition-all duration-150 text-left ${
             placement === "top" ? "bottom-full mb-2.5" : "top-full mt-2.5"
           }`}
         >
           {/* Arrow */}
           <div
-            className={`absolute right-4 w-2.5 h-2.5 rotate-45 bg-white dark:bg-zinc-900 ${
+            className={`absolute right-4 w-2.5 h-2.5 rotate-45 bg-zinc-900 ${
               placement === "top"
-                ? "bottom-[-6px] border-r border-b border-zinc-200 dark:border-zinc-800"
-                : "top-[-6px] border-l border-t border-zinc-200 dark:border-zinc-800"
+                ? "bottom-[-6px] border-r border-b border-zinc-800"
+                : "top-[-6px] border-l border-t border-zinc-800"
             }`}
           />
 
           <div className="flex items-center justify-between gap-2 mb-1.5">
-            <span className="text-xs font-semibold text-zinc-900 dark:text-zinc-100 flex items-center gap-1.5">
+            <span className="text-xs font-semibold text-zinc-100 flex items-center gap-1.5">
               <span>Compatibility Filter</span>
             </span>
             <button
@@ -169,14 +169,14 @@ export function CompatibilityHoverCard({
               data-testid="copy-filter-button"
               onClick={handleCopy}
               title="Copy filter to clipboard"
-              className="p-1 rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors cursor-pointer"
+              className="p-1 rounded-md hover:bg-zinc-800 text-zinc-500 hover:text-zinc-100 transition-colors cursor-pointer"
             >
               {copied ? <Check size={13} className="text-emerald-500" /> : <Copy size={13} />}
             </button>
           </div>
 
-          <div className="bg-zinc-100 dark:bg-zinc-950 p-2 rounded-lg border border-zinc-200/60 dark:border-zinc-800/80 overflow-x-auto">
-            <pre className="text-[11px] font-mono text-zinc-800 dark:text-zinc-200 whitespace-pre leading-relaxed selection:bg-blue-500/20">
+          <div className="bg-zinc-950 p-2 rounded-lg border border-zinc-800/80 overflow-x-auto">
+            <pre className="text-[11px] font-mono text-zinc-200 whitespace-pre leading-relaxed selection:bg-blue-500/20">
               {formattedFilter}
             </pre>
           </div>

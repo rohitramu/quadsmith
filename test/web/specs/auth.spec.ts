@@ -2,30 +2,18 @@ import { test, expect } from "@playwright/test";
 import { preparePageForSnapshot } from "../helpers/stability";
 
 test.describe("Authentication Flows", () => {
-  test("renders Login Step 1 (email form) without navigation header in dark mode", async ({
+  test("renders Login Step 1 (email form) without navigation header", async ({
     page,
   }) => {
     await page.goto("/login");
-    await preparePageForSnapshot(page, { theme: "dark" });
+    await preparePageForSnapshot(page);
 
     // Header and navigation should NOT be rendered on login page
     await expect(page.locator("nav")).not.toBeVisible();
     await expect(page.getByRole("textbox", { name: /email/i })).toBeVisible();
 
-    // Visual snapshot comparison (Dark Mode)
-    await expect(page).toHaveScreenshot("login-step1-dark.png", {
-      fullPage: true,
-    });
-  });
-
-  test("renders Login Step 1 in light mode", async ({ page }) => {
-    await page.goto("/login");
-    await preparePageForSnapshot(page, { theme: "light" });
-
-    await expect(page.getByRole("textbox", { name: /email/i })).toBeVisible();
-
-    // Visual snapshot comparison (Light Mode)
-    await expect(page).toHaveScreenshot("login-step1-light.png", {
+    // Visual snapshot comparison
+    await expect(page).toHaveScreenshot("login-step1.png", {
       fullPage: true,
     });
   });
@@ -34,7 +22,7 @@ test.describe("Authentication Flows", () => {
     page,
   }) => {
     await page.goto("/login");
-    await preparePageForSnapshot(page, { theme: "dark" });
+    await preparePageForSnapshot(page);
 
     const emailInput = page.getByRole("textbox", { name: /email/i });
     await emailInput.fill("pilot@example.com");
@@ -80,10 +68,10 @@ test.describe("Authentication Flows", () => {
       timeout: 10000,
     });
 
-    await preparePageForSnapshot(page, { theme: "dark" });
+    await preparePageForSnapshot(page);
 
     // Visual snapshot comparison (Step 2 OTP Entry)
-    await expect(page).toHaveScreenshot("login-step2-dark.png", {
+    await expect(page).toHaveScreenshot("login-step2.png", {
       fullPage: true,
     });
   });

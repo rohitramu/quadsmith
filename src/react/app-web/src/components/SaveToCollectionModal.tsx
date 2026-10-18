@@ -143,21 +143,18 @@ export function SaveToCollectionModal({
       aria-labelledby="collection-modal-title"
       className="fixed inset-0 z-50 bg-black/70 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
     >
-      <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 space-y-5 shadow-2xl">
+      <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 p-6 space-y-5 shadow-2xl">
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Bookmark className="w-5 h-5 text-blue-500" />
-            <h3
-              id="collection-modal-title"
-              className="font-bold text-base text-zinc-900 dark:text-zinc-100"
-            >
+            <h3 id="collection-modal-title" className="font-bold text-base text-zinc-100">
               Save to Collection
             </h3>
           </div>
           <button
             onClick={onClose}
-            className="p-1 rounded-lg text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            className="p-1 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
             aria-label="Close"
           >
             <X size={18} />
@@ -165,9 +162,8 @@ export function SaveToCollectionModal({
         </div>
 
         {targetName && (
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 truncate">
-            Saving:{" "}
-            <span className="font-semibold text-zinc-800 dark:text-zinc-200">{targetName}</span>
+          <p className="text-xs text-zinc-400 truncate">
+            Saving: <span className="font-semibold text-zinc-200">{targetName}</span>
           </p>
         )}
 
@@ -217,25 +213,25 @@ export function SaveToCollectionModal({
                     }
                     className={`w-full flex items-center justify-between p-3 rounded-xl border text-left transition-all cursor-pointer group ${
                       isAdded
-                        ? "border-emerald-500/40 bg-emerald-50/50 dark:bg-emerald-950/20 hover:bg-emerald-100/50 dark:hover:bg-emerald-900/30"
-                        : "border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/60 hover:bg-zinc-100 dark:hover:bg-zinc-800/40"
+                        ? "border-emerald-500/40 bg-emerald-950/20 hover:bg-emerald-900/30"
+                        : "border-zinc-800 bg-zinc-950/60 hover:bg-zinc-800/40"
                     }`}
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <div
                         className={`w-8 h-8 rounded-lg flex items-center justify-center shrink-0 transition-colors ${
                           isAdded
-                            ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                            ? "bg-emerald-500/10 text-emerald-400"
                             : "bg-blue-500/10 text-blue-500"
                         }`}
                       >
                         <Bookmark size={14} />
                       </div>
                       <div className="min-w-0">
-                        <div className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate flex items-center gap-2">
+                        <div className="text-sm font-semibold text-zinc-100 truncate flex items-center gap-2">
                           <span>{col.name}</span>
                           {isAdded && (
-                            <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-sm bg-emerald-500/15 text-emerald-600 dark:text-emerald-400">
+                            <span className="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded-sm bg-emerald-500/15 text-emerald-400">
                               Added
                             </span>
                           )}
@@ -261,7 +257,7 @@ export function SaveToCollectionModal({
                       ) : (
                         <div
                           data-testid="plus-icon"
-                          className="w-6 h-6 rounded-full border border-zinc-300 dark:border-zinc-700 flex items-center justify-center text-zinc-400 group-hover:border-blue-500 group-hover:text-blue-500 transition-colors"
+                          className="w-6 h-6 rounded-full border border-zinc-700 flex items-center justify-center text-zinc-400 group-hover:border-blue-500 group-hover:text-blue-500 transition-colors"
                           title="Add to collection"
                         >
                           <Plus size={14} />
@@ -279,9 +275,9 @@ export function SaveToCollectionModal({
         {isAuthenticated && (
           <form
             onSubmit={handleCreateNewCollection}
-            className="pt-3 border-t border-zinc-200 dark:border-zinc-800 space-y-2.5"
+            className="pt-3 border-t border-zinc-800 space-y-2.5"
           >
-            <label className="block text-xs font-semibold text-zinc-600 dark:text-zinc-400">
+            <label className="block text-xs font-semibold text-zinc-400">
               Create New Collection
             </label>
             <div className="flex gap-2">
@@ -290,12 +286,12 @@ export function SaveToCollectionModal({
                 value={newColName}
                 onChange={(e) => setNewColName(e.target.value)}
                 placeholder="Collection name (e.g. 5-inch Inspo)"
-                className="flex-1 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
+                className="flex-1 rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-xs text-zinc-100 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
               />
               <button
                 type="submit"
                 disabled={isCreating || !newColName.trim()}
-                className="px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white text-xs font-semibold disabled:opacity-50 transition-colors flex items-center gap-1.5"
+                className="px-3.5 py-2 rounded-xl bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-semibold disabled:opacity-50 transition-colors flex items-center gap-1.5"
               >
                 {isCreating && <Loader2 size={12} className="animate-spin" />}
                 <span>Create</span>

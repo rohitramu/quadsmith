@@ -8,7 +8,7 @@ test.describe("Failure Modes, Input Validations & Fault Injection", () => {
     page,
   }) => {
     await page.goto("/login");
-    await preparePageForSnapshot(page, { theme: "dark" });
+    await preparePageForSnapshot(page);
 
     const emailInput = page.getByRole("textbox", { name: /email/i });
     await emailInput.fill("invalid-email-format");
@@ -21,20 +21,20 @@ test.describe("Failure Modes, Input Validations & Fault Injection", () => {
     ).toBeVisible({ timeout: 5000 });
 
     // Visual snapshot comparison (Invalid Input Error State)
-    await expect(page).toHaveScreenshot("login-invalid-email-error-dark.png");
+    await expect(page).toHaveScreenshot("login-invalid-email-error.png");
   });
 
   test("suppresses clicks on disabled Forge wizard controls", async ({ page }) => {
     await loginAs(page, SEEDED_PILOT);
     await page.goto("/builds/new");
-    await preparePageForSnapshot(page, { theme: "dark" });
+    await preparePageForSnapshot(page);
 
     // In The Forge, "Next" or step advance should be disabled until a frame is selected
     const nextBtn = page.getByRole("button", { name: /next|continue/i });
     if (await nextBtn.isVisible()) {
       await expect(nextBtn).toBeDisabled();
-      // Attempt click (force click should not advance step)
-      await nextBtn.click({ force: true });
+      // Attempt click (clicking disabled control should not advance step)
+      await nextBtn.dispatchEvent("click");
       // Should still be on Step 1
       await expect(page.getByText(/Frame Chassis/i).first()).toBeVisible();
     }
@@ -52,7 +52,7 @@ test.describe("Failure Modes, Input Validations & Fault Injection", () => {
     );
 
     await page.goto("/components/hardware/motors");
-    await preparePageForSnapshot(page, { theme: "dark" });
+    await preparePageForSnapshot(page);
 
     // Verify error state / empty state renders without white-screening
     await expect(
@@ -79,12 +79,12 @@ test.describe("Failure Modes, Input Validations & Fault Injection", () => {
     );
 
     await page.goto("/builds/bando-basher-5-inch");
-    await preparePageForSnapshot(page, { theme: "dark" });
+    await preparePageForSnapshot(page);
 
     // Verify page renders without crashing
     await expect(page.getByRole("heading", { name: /Bando Basher/i })).toBeVisible();
 
     // Visual snapshot comparison (Fault Injected Evaluator State)
-    await expect(page).toHaveScreenshot("build-evaluator-server-error-dark.png");
+    await expect(page).toHaveScreenshot("build-evaluator-server-error.png");
   });
 });

@@ -8,7 +8,7 @@ export function ProtectedRoute({ children }: { children?: React.ReactNode }) {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen w-full items-center justify-center bg-white dark:bg-zinc-950 text-zinc-400">
+      <div className="flex h-screen w-full items-center justify-center bg-zinc-950 text-zinc-400">
         <div className="flex flex-col items-center gap-3">
           <Loader2 size={24} className="animate-spin text-blue-500" />
           <span className="text-xs font-mono">Authenticating session...</span>

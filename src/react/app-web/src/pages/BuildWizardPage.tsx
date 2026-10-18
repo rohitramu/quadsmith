@@ -404,17 +404,15 @@ function BuildWizardContent() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-zinc-800 pb-5">
         <div>
           <div className="flex items-center gap-2.5">
             <div className="w-9 h-9 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center">
               <Hammer className="text-[#FF6D00]" size={20} />
             </div>
-            <h1 className="text-2xl font-black tracking-tight text-zinc-900 dark:text-zinc-100">
-              The Forge
-            </h1>
+            <h1 className="text-2xl font-black tracking-tight text-zinc-100">The Forge</h1>
           </div>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
+          <p className="text-xs text-zinc-400 mt-1">
             Component configurator with strict sequential validation and real-time physics
             simulation.
           </p>
@@ -423,7 +421,7 @@ function BuildWizardContent() {
         <button
           type="button"
           onClick={resetBuild}
-          className="flex items-center gap-1.5 self-start sm:self-center px-3 py-1.5 rounded-xl border border-red-200 dark:border-red-900/40 bg-red-50/50 dark:bg-red-950/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 text-xs font-bold transition-colors cursor-pointer"
+          className="flex items-center gap-1.5 self-start sm:self-center px-3 py-1.5 rounded-xl border border-red-900/40 bg-red-950/20 text-red-400 hover:bg-red-900/30 text-xs font-bold transition-colors cursor-pointer"
         >
           <RotateCcw size={13} />
           <span>Reset Build</span>
@@ -444,10 +442,10 @@ function BuildWizardContent() {
             >
               <div
                 data-testid="forge-mobile-progress-bar"
-                className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-sm overflow-hidden"
+                className="rounded-2xl border border-zinc-800 bg-zinc-900 shadow-sm overflow-hidden"
               >
                 {/* Step progress bar track */}
-                <div className="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800">
+                <div className="h-1.5 w-full bg-zinc-800">
                   <div
                     className="h-full bg-blue-600 transition-all duration-300"
                     style={{ width: `${(activeStep / 12) * 100}%` }}
@@ -457,7 +455,7 @@ function BuildWizardContent() {
                 {/* Always-visible summary header strip */}
                 <div className="p-3 flex flex-wrap items-center justify-between gap-2.5">
                   <div className="flex items-center gap-2 min-w-0">
-                    <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                    <span className="text-xs font-bold text-zinc-100 truncate">
                       Step {activeStep} of 12 •{" "}
                       {allForgeStepsList.find((s) => s.step === activeStep)?.title || "Review"}
                     </span>
@@ -465,11 +463,9 @@ function BuildWizardContent() {
 
                   <div className="flex items-center gap-1.5 flex-wrap">
                     {/* Dry Weight Pill */}
-                    <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                    <span className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-zinc-800 text-zinc-300">
                       Dry wt:{" "}
-                      <span className="font-bold text-blue-600 dark:text-blue-400">
-                        {dryWeightG.toFixed(1)}g
-                      </span>
+                      <span className="font-bold text-blue-400">{dryWeightG.toFixed(1)}g</span>
                     </span>
 
                     {/* TWR Pill */}
@@ -480,7 +476,7 @@ function BuildWizardContent() {
                         TWR: {Number(evaluatedMetrics.thrustToWeightRatio ?? 0).toFixed(1)}:1
                       </span>
                     ) : (
-                      <span className="text-[11px] font-mono text-zinc-400 px-2 py-0.5 rounded-md bg-zinc-100 dark:bg-zinc-800">
+                      <span className="text-[11px] font-mono text-zinc-400 px-2 py-0.5 rounded-md bg-zinc-800">
                         TWR: —
                       </span>
                     )}
@@ -494,8 +490,8 @@ function BuildWizardContent() {
                       }}
                       className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg border transition-colors cursor-pointer ${
                         mobilePartsOpen
-                          ? "bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
-                          : "border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                          ? "bg-blue-950/40 border-blue-700 text-blue-400"
+                          : "border-zinc-800 text-zinc-300 hover:bg-zinc-800"
                       }`}
                       aria-expanded={mobilePartsOpen}
                       aria-label="Toggle parts drawer"
@@ -516,8 +512,8 @@ function BuildWizardContent() {
                       }}
                       className={`inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg border transition-colors cursor-pointer ${
                         mobileTelemetryOpen
-                          ? "bg-blue-50 dark:bg-blue-950/40 border-blue-300 dark:border-blue-700 text-blue-600 dark:text-blue-400"
-                          : "border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                          ? "bg-blue-950/40 border-blue-700 text-blue-400"
+                          : "border-zinc-800 text-zinc-300 hover:bg-zinc-800"
                       }`}
                       aria-expanded={mobileTelemetryOpen}
                       aria-label="Toggle telemetry drawer"
@@ -534,7 +530,7 @@ function BuildWizardContent() {
 
                 {/* Expandable Parts Drawer */}
                 {mobilePartsOpen && (
-                  <div className="p-3 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40">
+                  <div className="p-3 border-t border-zinc-800 bg-zinc-950/40">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs max-h-64 overflow-y-auto custom-scroll pr-1">
                       {allForgeStepsList.map((part) => {
                         const isCurrent = activeStep === part.step;
@@ -553,10 +549,10 @@ function BuildWizardContent() {
                             }}
                             className={`p-2 rounded-xl border flex items-center justify-between gap-2 text-left transition-all ${
                               isCurrent
-                                ? "border-blue-500 bg-blue-50/70 dark:bg-blue-950/40 ring-1 ring-blue-500/40"
+                                ? "border-blue-500 bg-blue-950/40 ring-1 ring-blue-500/40"
                                 : isUnlocked
-                                  ? "border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-50 dark:hover:bg-zinc-800 cursor-pointer"
-                                  : "border-zinc-100 dark:border-zinc-800/40 opacity-40 cursor-not-allowed"
+                                  ? "border-zinc-800 bg-zinc-900 hover:bg-zinc-800 cursor-pointer"
+                                  : "border-zinc-800/40 opacity-40 cursor-not-allowed"
                             }`}
                           >
                             <div className="flex items-center gap-2 min-w-0">
@@ -564,7 +560,7 @@ function BuildWizardContent() {
                                 {part.step}.
                               </span>
                               <div className="min-w-0">
-                                <span className="font-semibold text-[11px] text-zinc-800 dark:text-zinc-200 truncate block">
+                                <span className="font-semibold text-[11px] text-zinc-200 truncate block">
                                   {part.label}
                                 </span>
                                 <span className="text-[10px] text-zinc-400 truncate block">
@@ -591,11 +587,11 @@ function BuildWizardContent() {
 
                 {/* Expandable Telemetry Drawer */}
                 {mobileTelemetryOpen && (
-                  <div className="p-3.5 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-950/40 space-y-3">
+                  <div className="p-3.5 border-t border-zinc-800 bg-zinc-950/40 space-y-3">
                     {evaluationError && (
                       <div
                         role="alert"
-                        className="p-2.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-xs"
+                        className="p-2.5 rounded-xl bg-red-950/40 border border-red-900/60 text-red-400 text-xs"
                       >
                         Evaluation error: {evaluationError}
                       </div>
@@ -603,15 +599,15 @@ function BuildWizardContent() {
 
                     {/* Live Flight Metrics Grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                      <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                      <div className="p-2.5 rounded-xl border border-zinc-800 bg-zinc-900">
                         <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
                           AUW
                         </span>
-                        <span className="text-sm font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                        <span className="text-sm font-mono font-bold text-zinc-100">
                           {allUpWeightG > 0 ? `${allUpWeightG.toFixed(1)}g` : "—"}
                         </span>
                       </div>
-                      <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                      <div className="p-2.5 rounded-xl border border-zinc-800 bg-zinc-900">
                         <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
                           TWR
                         </span>
@@ -623,7 +619,7 @@ function BuildWizardContent() {
                             : "—"}
                         </span>
                       </div>
-                      <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                      <div className="p-2.5 rounded-xl border border-zinc-800 bg-zinc-900">
                         <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
                           Hover Throttle
                         </span>
@@ -635,11 +631,11 @@ function BuildWizardContent() {
                             : "—"}
                         </span>
                       </div>
-                      <div className="p-2.5 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                      <div className="p-2.5 rounded-xl border border-zinc-800 bg-zinc-900">
                         <span className="text-[10px] text-zinc-400 uppercase tracking-wider block">
                           Est. Flight
                         </span>
-                        <span className="text-sm font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                        <span className="text-sm font-mono font-bold text-zinc-100">
                           {evaluatedMetrics
                             ? Number(evaluatedMetrics.minFlightTimeMin ?? 0) > 0 &&
                               Number(evaluatedMetrics.maxFlightTimeMin ?? 0) > 0
@@ -666,7 +662,7 @@ function BuildWizardContent() {
                       <button
                         type="button"
                         onClick={() => setIsBatteryModalOpen(true)}
-                        className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-semibold text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shrink-0 cursor-pointer"
+                        className="px-2.5 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 text-xs font-semibold text-zinc-300 hover:bg-zinc-800 transition-colors shrink-0 cursor-pointer"
                       >
                         Browse
                       </button>
@@ -693,14 +689,14 @@ function BuildWizardContent() {
           </ErrorBoundary>
 
           {currentStepConfig && (
-            <div className="mt-4 flex items-center justify-between p-3.5 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xs text-xs">
+            <div className="mt-4 flex items-center justify-between p-3.5 rounded-2xl border border-zinc-800 bg-zinc-900 shadow-xs text-xs">
               <span className="text-zinc-500">
                 Don't see your {currentStepConfig.title.toLowerCase()} in the catalog?
               </span>
               <button
                 type="button"
                 onClick={() => setIsCustomComponentModalOpen(true)}
-                className="inline-flex items-center gap-1 font-semibold text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:underline cursor-pointer"
+                className="inline-flex items-center gap-1 font-semibold text-red-400 hover:text-red-300 hover:underline cursor-pointer"
               >
                 <Plus size={14} />
                 <span>Add custom {currentStepConfig.title.toLowerCase()}</span>
@@ -712,21 +708,20 @@ function BuildWizardContent() {
         {/* Right Column (4 cols): Persistent Steps & Parts Summary & Live Evaluator */}
         <div className="lg:col-span-4 space-y-4 sticky top-6">
           {/* Selected Parts / Build Steps Card */}
-          <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-3 shadow-sm">
-            <div className="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-2">
+          <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4 space-y-3 shadow-sm">
+            <div className="flex items-center justify-between border-b border-zinc-800 pb-2">
               <div className="flex items-center gap-2">
                 <Hammer className="text-[#FF6D00] shrink-0" size={15} />
-                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 uppercase tracking-wider">
+                <span className="text-xs font-bold text-zinc-100 uppercase tracking-wider">
                   Selected Parts
                 </span>
               </div>
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-zinc-600 dark:text-zinc-400 font-mono">
-                  Dry:{" "}
-                  <span className="text-blue-600 dark:text-blue-400">{dryWeightG.toFixed(1)}g</span>
+                <span className="text-xs font-bold text-zinc-400 font-mono">
+                  Dry: <span className="text-blue-400">{dryWeightG.toFixed(1)}g</span>
                 </span>
-                <span className="text-zinc-300 dark:text-zinc-700">•</span>
-                <span className="text-xs font-semibold text-blue-600 dark:text-blue-400">
+                <span className="text-zinc-700">•</span>
+                <span className="text-xs font-semibold text-blue-400">
                   {equippedCount} / 11 Parts
                 </span>
               </div>
@@ -747,21 +742,19 @@ function BuildWizardContent() {
                   const progress = stepProgressText ? stepProgressText[part.step] : undefined;
                   const colorDef = part.collectionId ? getCollectionColor(part.collectionId) : null;
 
-                  let borderClass = "border-zinc-100 dark:border-zinc-800/80";
-                  let bgClass = "hover:bg-zinc-50 dark:hover:bg-zinc-800/40 cursor-pointer";
+                  let borderClass = "border-zinc-800/80";
+                  let bgClass = "hover:bg-zinc-800/40 cursor-pointer";
 
                   if (isCurrent) {
                     borderClass =
-                      "border-blue-500 bg-blue-50/70 dark:bg-blue-950/40 ring-1 ring-blue-500/40 shadow-xs";
+                      "border-blue-500 bg-blue-950/40 ring-1 ring-blue-500/40 shadow-xs";
                     bgClass = "cursor-default";
                   } else if (hasConflict) {
-                    borderClass =
-                      "border-amber-500 ring-1 ring-amber-500/30 bg-amber-50/50 dark:bg-amber-950/20";
+                    borderClass = "border-amber-500 ring-1 ring-amber-500/30 bg-amber-950/20";
                   } else if (hasBatteryConflict) {
-                    borderClass =
-                      "border-amber-400/80 ring-1 ring-amber-400/20 bg-amber-50/30 dark:bg-amber-950/15";
+                    borderClass = "border-amber-400/80 ring-1 ring-amber-400/20 bg-amber-950/15";
                   } else if (!isUnlocked) {
-                    borderClass = "border-zinc-100 dark:border-zinc-800/40 opacity-40";
+                    borderClass = "border-zinc-800/40 opacity-40";
                     bgClass = "cursor-not-allowed";
                   }
 
@@ -788,9 +781,7 @@ function BuildWizardContent() {
                             <ClipboardCheck
                               size={14}
                               className={
-                                isComplete
-                                  ? "text-emerald-500 shrink-0"
-                                  : "text-zinc-400 dark:text-zinc-500 shrink-0"
+                                isComplete ? "text-emerald-500 shrink-0" : "text-zinc-500 shrink-0"
                               }
                             />
                           ) : part.collectionId && colorDef ? (
@@ -799,15 +790,13 @@ function BuildWizardContent() {
                               size={14}
                               color={isSelected && !part.omitted ? colorDef.hex : undefined}
                               className={
-                                isSelected && !part.omitted
-                                  ? "shrink-0"
-                                  : "text-zinc-400 dark:text-zinc-500 shrink-0"
+                                isSelected && !part.omitted ? "shrink-0" : "text-zinc-500 shrink-0"
                               }
                             />
                           ) : null}
                         </div>
                         <div className="min-w-0">
-                          <div className="font-semibold text-zinc-800 dark:text-zinc-200 text-[11px] truncate flex items-center gap-1">
+                          <div className="font-semibold text-zinc-200 text-[11px] truncate flex items-center gap-1">
                             <span className="text-zinc-400 font-normal">{part.step}.</span>
                             <span>{part.label}</span>
                           </div>
@@ -835,13 +824,11 @@ function BuildWizardContent() {
                           </span>
                         )}
                         {part.weightG > 0 ? (
-                          <span className="font-mono text-zinc-600 dark:text-zinc-400 text-[10px]">
+                          <span className="font-mono text-zinc-400 text-[10px]">
                             {part.weightG.toFixed(1)}g
                           </span>
                         ) : part.step === 12 ? (
-                          <span className="text-[10px] font-semibold text-emerald-600 dark:text-emerald-400">
-                            Save
-                          </span>
+                          <span className="text-[10px] font-semibold text-emerald-400">Save</span>
                         ) : (
                           <span className="font-mono text-zinc-400 text-[10px]">--</span>
                         )}
@@ -861,15 +848,15 @@ function BuildWizardContent() {
             resetKeys={[selectedBatteryId, payloadWeightG]}
             onReset={() => setSelectedBatteryId("")}
           >
-            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 space-y-4 shadow-sm">
-              <div className="border-b border-zinc-200 dark:border-zinc-800 pb-2.5">
+            <div className="rounded-2xl border border-zinc-800 bg-zinc-900 p-4 space-y-4 shadow-sm">
+              <div className="border-b border-zinc-800 pb-2.5">
                 <div className="flex items-center gap-2">
-                  <Gauge className="text-blue-600 dark:text-blue-400 shrink-0" size={16} />
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+                  <Gauge className="text-blue-400 shrink-0" size={16} />
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-200">
                     Build Evaluator
                   </h3>
                 </div>
-                <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-1 leading-snug">
+                <p className="text-[11px] text-zinc-400 mt-1 leading-snug">
                   Calculated flight metrics are theoretical estimates based on analytical physics
                   models.
                 </p>
@@ -879,17 +866,17 @@ function BuildWizardContent() {
               <div className="space-y-1.5 text-xs">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1.5">
-                    <label className="block font-semibold text-zinc-700 dark:text-zinc-300">
+                    <label className="block font-semibold text-zinc-300">
                       Test Battery (Runtime Parameter)
                     </label>
                     {!activeBattery && (
-                      <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20">
+                      <span className="text-[9px] px-1.5 py-0.2 rounded font-bold bg-amber-500/10 text-amber-400 border border-amber-500/20">
                         Required
                       </span>
                     )}
                   </div>
                   {electricalLimits?.connector ? (
-                    <span className="text-[10px] text-blue-600 dark:text-blue-400 font-mono font-medium">
+                    <span className="text-[10px] text-blue-400 font-mono font-medium">
                       {electricalLimits.connector}
                     </span>
                   ) : null}
@@ -909,7 +896,7 @@ function BuildWizardContent() {
                     onClick={() => setIsBatteryModalOpen(true)}
                     title="Browse all compatible batteries"
                     aria-label="Browse all compatible batteries"
-                    className="px-2.5 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 transition-colors text-xs font-medium flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
+                    className="px-2.5 py-1.5 rounded-lg border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-zinc-300 transition-colors text-xs font-medium flex items-center gap-1 shrink-0 cursor-pointer shadow-xs"
                   >
                     <Search size={12} className="text-zinc-400" />
                     <span>Browse</span>
@@ -917,7 +904,7 @@ function BuildWizardContent() {
                 </div>
 
                 {activeBattery ? (
-                  <div className="text-[10px] text-zinc-500 dark:text-zinc-400 mt-1 flex items-center gap-2">
+                  <div className="text-[10px] text-zinc-400 mt-1 flex items-center gap-2">
                     <span>
                       {activeBattery.cellCountS}S ({activeBattery.minVoltage}V -{" "}
                       {activeBattery.maxVoltage}V)
@@ -926,7 +913,7 @@ function BuildWizardContent() {
                     <span>• {activeBattery.weightG}g</span>
                   </div>
                 ) : (
-                  <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-800 dark:text-amber-300 text-[11px] flex items-start gap-2 mt-1">
+                  <div className="p-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-300 text-[11px] flex items-start gap-2 mt-1">
                     <AlertCircle size={14} className="text-amber-500 mt-0.5 shrink-0" />
                     <p className="leading-tight">
                       <span className="font-bold">Evaluation Paused:</span> Select a test battery to
@@ -939,19 +926,17 @@ function BuildWizardContent() {
               {evaluationError && (
                 <div
                   role="alert"
-                  className="p-3 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-600 dark:text-red-400 text-xs"
+                  className="p-3 rounded-xl bg-red-950/40 border border-red-900/60 text-red-400 text-xs"
                 >
                   Evaluation error: {evaluationError}
                 </div>
               )}
 
               {/* Runtime Payload Simulation */}
-              <div className="bg-zinc-50 dark:bg-zinc-950/60 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 space-y-2 text-xs">
+              <div className="bg-zinc-950/60 p-3 rounded-xl border border-zinc-800 space-y-2 text-xs">
                 <div className="flex items-center justify-between">
-                  <span className="font-semibold text-zinc-700 dark:text-zinc-300">
-                    Payload Simulation
-                  </span>
-                  <span className="font-mono font-bold text-blue-600 dark:text-blue-400">
+                  <span className="font-semibold text-zinc-300">Payload Simulation</span>
+                  <span className="font-mono font-bold text-blue-400">
                     +{payloadWeightG.toFixed(2)}g
                   </span>
                 </div>
@@ -961,7 +946,7 @@ function BuildWizardContent() {
                     onClick={() => adjustPayload(-10)}
                     disabled={payloadWeightG <= 0}
                     aria-label="Remove 10g"
-                    className="w-7 h-7 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 disabled:opacity-30 disabled:cursor-not-allowed text-zinc-700 dark:text-zinc-200 transition-colors cursor-pointer shrink-0 font-bold"
+                    className="w-7 h-7 flex items-center justify-center rounded-lg border border-zinc-700 bg-zinc-800 hover:bg-zinc-700 disabled:opacity-30 disabled:cursor-not-allowed text-zinc-200 transition-colors cursor-pointer shrink-0 font-bold"
                   >
                     -
                   </button>
@@ -972,7 +957,7 @@ function BuildWizardContent() {
                       value={payloadInput}
                       onChange={(e) => handlePayloadInput(e.target.value)}
                       placeholder="0"
-                      className="w-full bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-700 rounded-lg px-2.5 py-1 pr-6 text-xs font-mono text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500 text-center"
+                      className="w-full bg-zinc-950 border border-zinc-700 rounded-lg px-2.5 py-1 pr-6 text-xs font-mono text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500 text-center"
                     />
                     <span className="absolute right-2 text-xs text-zinc-400 font-mono pointer-events-none select-none">
                       g
@@ -982,7 +967,7 @@ function BuildWizardContent() {
                     type="button"
                     onClick={() => adjustPayload(10)}
                     aria-label="Add 10g"
-                    className="w-7 h-7 flex items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 transition-colors cursor-pointer shrink-0 font-bold"
+                    className="w-7 h-7 flex items-center justify-center rounded-lg border border-zinc-700 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 transition-colors cursor-pointer shrink-0 font-bold"
                   >
                     +
                   </button>
@@ -994,7 +979,7 @@ function BuildWizardContent() {
                     className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
                       payloadWeightG === 0
                         ? "bg-blue-600 text-white"
-                        : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+                        : "bg-zinc-800 text-zinc-400 hover:text-zinc-200"
                     }`}
                   >
                     Bare (0g)
@@ -1005,7 +990,7 @@ function BuildWizardContent() {
                     className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
                       payloadWeightG === 16
                         ? "bg-blue-600 text-white"
-                        : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+                        : "bg-zinc-800 text-zinc-400 hover:text-zinc-200"
                     }`}
                   >
                     Thumb (+16g)
@@ -1016,7 +1001,7 @@ function BuildWizardContent() {
                     className={`px-2 py-0.5 rounded cursor-pointer transition-colors font-medium ${
                       payloadWeightG === 133
                         ? "bg-blue-600 text-white"
-                        : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200"
+                        : "bg-zinc-800 text-zinc-400 hover:text-zinc-200"
                     }`}
                   >
                     GoPro (+133g)
@@ -1025,7 +1010,7 @@ function BuildWizardContent() {
               </div>
 
               {/* TWR Hero Metric */}
-              <div className="text-center p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800">
+              <div className="text-center p-3 rounded-xl bg-zinc-950/60 border border-zinc-800">
                 <div className="text-[11px] uppercase font-semibold text-zinc-500">
                   Estimated Thrust-to-Weight
                 </div>
@@ -1045,8 +1030,8 @@ function BuildWizardContent() {
                     evaluatedMetrics
                       ? getTwrColor(Number(evaluatedMetrics.thrustToWeightRatio ?? 0)).badge
                       : !activeBattery
-                        ? "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20"
-                        : "bg-zinc-200 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 border-transparent"
+                        ? "bg-amber-500/10 text-amber-400 border-amber-500/20"
+                        : "bg-zinc-800 text-zinc-400 border-transparent"
                   }`}
                 >
                   {evaluatedMetrics
@@ -1059,19 +1044,19 @@ function BuildWizardContent() {
 
               {/* Telemetry Metrics Grid */}
               <div className="grid grid-cols-2 gap-2 text-xs">
-                <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-800">
+                <div className="p-2.5 rounded-xl bg-zinc-950/40 border border-zinc-800">
                   <span className="text-zinc-500">Dry Weight</span>
-                  <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
+                  <div className="text-sm font-bold text-zinc-100 font-mono mt-0.5">
                     {dryWeightG.toFixed(2)}g
                   </div>
                 </div>
-                <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-800">
+                <div className="p-2.5 rounded-xl bg-zinc-950/40 border border-zinc-800">
                   <span className="text-zinc-500">All-Up Weight</span>
-                  <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
+                  <div className="text-sm font-bold text-zinc-100 font-mono mt-0.5">
                     {allUpWeightG.toFixed(2)}g
                   </div>
                 </div>
-                <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-800">
+                <div className="p-2.5 rounded-xl bg-zinc-950/40 border border-zinc-800">
                   <span className="text-zinc-500">Hover Throttle</span>
                   <div
                     className={`text-sm font-bold font-mono mt-0.5 ${
@@ -1086,9 +1071,9 @@ function BuildWizardContent() {
                       : "--%"}
                   </div>
                 </div>
-                <div className="p-2.5 rounded-xl bg-zinc-50 dark:bg-zinc-950/40 border border-zinc-200 dark:border-zinc-800">
+                <div className="p-2.5 rounded-xl bg-zinc-950/40 border border-zinc-800">
                   <span className="text-zinc-500">Est. Flight Time</span>
-                  <div className="text-sm font-bold text-zinc-900 dark:text-zinc-100 font-mono mt-0.5">
+                  <div className="text-sm font-bold text-zinc-100 font-mono mt-0.5">
                     {evaluatedMetrics
                       ? Number(evaluatedMetrics.minFlightTimeMin ?? 0) > 0 &&
                         Number(evaluatedMetrics.maxFlightTimeMin ?? 0) > 0

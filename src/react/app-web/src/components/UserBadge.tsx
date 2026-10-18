@@ -45,11 +45,10 @@ export function UserBadge({
     ? getAvatarPalette(cleanUsername)
     : {
         name: "zinc",
-        badgeClass:
-          "bg-zinc-100 text-zinc-700 border-zinc-200 dark:bg-zinc-800 dark:text-zinc-300 dark:border-zinc-700",
-        bgClass: "bg-zinc-100 dark:bg-zinc-800",
-        textClass: "text-zinc-700 dark:text-zinc-300",
-        borderClass: "border-zinc-200 dark:border-zinc-700",
+        badgeClass: "bg-zinc-800 text-zinc-300 border-zinc-700",
+        bgClass: "bg-zinc-800",
+        textClass: "text-zinc-300",
+        borderClass: "border-zinc-700",
       };
 
   const initial = getInitial(cleanUsername);
@@ -73,19 +72,18 @@ export function UserBadge({
     lg: "text-lg sm:text-xl px-4 py-1.5 rounded-xl gap-2",
   }[size];
 
-  let borderClasses = `border-[2px] ${palette.borderClass} dark:border-[1px]`;
+  let borderClasses = `border-[1px] ${palette.borderClass}`;
   const fontClasses = "font-bold";
   let badgeTitle: string | undefined = undefined;
   let shadowClasses = "";
 
   if (isAuthor) {
-    borderClasses = "border-[3px] border-[#ca8a04] dark:border-[1px] dark:border-[#fbbf24]";
+    borderClasses = "border-[1px] border-[#fbbf24]";
     badgeTitle = "Author";
   }
 
   if (isSelfBadge) {
-    shadowClasses =
-      "shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)] dark:shadow-[0_0_6px_2px_rgba(161,161,170,0.65)]";
+    shadowClasses = "shadow-[0_0_6px_2px_rgba(161,161,170,0.65)]";
     if (!isAuthor) {
       badgeTitle = "You";
     }
@@ -149,9 +147,7 @@ export function UserBadge({
 
     return (
       <span data-testid="user-badge-container" className="inline-flex items-center gap-1.5">
-        <span className={`text-zinc-500 dark:text-zinc-400 font-sans ${prefixSize}`}>
-          {prefix.trim()}{" "}
-        </span>
+        <span className={`text-zinc-400 font-sans ${prefixSize}`}>{prefix.trim()} </span>
         {pillElement}
       </span>
     );

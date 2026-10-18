@@ -53,7 +53,7 @@ export function BuildFeedPage() {
   return (
     <div className="max-w-3xl mx-auto">
       {/* Page Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-zinc-200 dark:border-zinc-800">
+      <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-zinc-800">
         <div>
           <div className="flex items-center gap-2.5 mb-1.5">
             <div
@@ -61,11 +61,11 @@ export function BuildFeedPage() {
             >
               <GalleryVertical size={18} />
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-50">
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-zinc-50">
               Build Feed
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 max-w-xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-zinc-400 max-w-xl leading-relaxed">
             Explore verified community and curated quadcopter builds. Inspect detailed Bills of
             Materials, component compatibility, and simulated flight performance.
           </p>
@@ -75,7 +75,7 @@ export function BuildFeedPage() {
       {/* Social-Style Auto-Loading Builds Stream */}
       <section aria-label="Builds Feed">
         <div className="flex items-center justify-between mb-4 px-1">
-          <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+          <span className="text-xs font-semibold uppercase tracking-wider text-zinc-400">
             All Builds
           </span>
           {builds.length > 0 && (
@@ -91,17 +91,17 @@ export function BuildFeedPage() {
             {[1, 2].map((n) => (
               <div
                 key={n}
-                className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 bg-white dark:bg-zinc-900 animate-pulse space-y-4"
+                className="rounded-2xl border border-zinc-800 p-6 bg-zinc-900 animate-pulse space-y-4"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-zinc-200 dark:bg-zinc-800" />
+                  <div className="w-10 h-10 rounded-xl bg-zinc-800" />
                   <div className="space-y-2 flex-1">
-                    <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-1/3" />
-                    <div className="h-3 bg-zinc-100 dark:bg-zinc-800/60 rounded w-1/4" />
+                    <div className="h-4 bg-zinc-800 rounded w-1/3" />
+                    <div className="h-3 bg-zinc-800/60 rounded w-1/4" />
                   </div>
                 </div>
-                <div className="h-32 bg-zinc-100 dark:bg-zinc-800/40 rounded-xl" />
-                <div className="h-4 bg-zinc-100 dark:bg-zinc-800/60 rounded w-3/4" />
+                <div className="h-32 bg-zinc-800/40 rounded-xl" />
+                <div className="h-4 bg-zinc-800/60 rounded w-3/4" />
               </div>
             ))}
           </div>
@@ -109,10 +109,8 @@ export function BuildFeedPage() {
 
         {/* Feed Error State */}
         {error && (
-          <div className="p-6 rounded-2xl border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/30 text-center">
-            <p className="text-sm text-red-600 dark:text-red-400 mb-3">
-              Failed to load builds: {error.message}
-            </p>
+          <div className="p-6 rounded-2xl border border-red-900/60 bg-red-950/30 text-center">
+            <p className="text-sm text-red-400 mb-3">Failed to load builds: {error.message}</p>
             <button
               type="button"
               onClick={() => refetch()}
@@ -126,7 +124,7 @@ export function BuildFeedPage() {
 
         {/* Empty State */}
         {!isLoading && !error && builds.length === 0 && (
-          <div className="p-8 rounded-2xl border border-zinc-200 dark:border-zinc-800 text-center bg-white dark:bg-zinc-900">
+          <div className="p-8 rounded-2xl border border-zinc-800 text-center bg-zinc-900">
             <p className="text-zinc-500 text-sm">No builds found in the catalog.</p>
           </div>
         )}
@@ -148,7 +146,7 @@ export function BuildFeedPage() {
           )}
 
           {!isLoading && !hasNextPage && builds.length > 0 && (
-            <div className="inline-flex items-center gap-2 text-xs text-zinc-400 dark:text-zinc-500 font-medium">
+            <div className="inline-flex items-center gap-2 text-xs text-zinc-500 font-medium">
               <CheckCircle size={14} className="text-emerald-500" />
               <span>You&apos;ve caught up with all builds!</span>
             </div>

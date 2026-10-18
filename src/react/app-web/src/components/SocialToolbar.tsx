@@ -77,7 +77,7 @@ export function SocialToolbar({
 
   return (
     <>
-      <div className="pt-4 border-t border-zinc-200 dark:border-zinc-800/80 flex flex-wrap items-center justify-between gap-4">
+      <div className="pt-4 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-4">
         {/* Action Buttons: Like, Save to Collection, Share */}
         <div className="flex items-center gap-3">
           {/* 1-Click Like Button */}
@@ -88,7 +88,7 @@ export function SocialToolbar({
             className={`flex items-center gap-2 px-4 py-2 rounded-xl border transition-all text-xs font-semibold cursor-pointer active:scale-95 group ${
               isLiked
                 ? "border-rose-500/40 bg-rose-500/10 text-rose-500 hover:bg-rose-500/20"
-                : "border-zinc-300 dark:border-zinc-700 bg-zinc-100/80 dark:bg-zinc-800/70 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200"
+                : "border-zinc-700 bg-zinc-800/70 hover:bg-zinc-700 text-zinc-200"
             }`}
             title={isAuthenticated ? (isLiked ? "Unlike" : "Like") : "Log in to like"}
           >
@@ -98,12 +98,12 @@ export function SocialToolbar({
               <Heart
                 size={16}
                 className={`transition-transform group-hover:scale-110 ${
-                  isLiked ? "fill-rose-500 text-rose-500" : "text-zinc-500 dark:text-zinc-400"
+                  isLiked ? "fill-rose-500 text-rose-500" : "text-zinc-400"
                 }`}
               />
             )}
             <span>{isLiked ? "Liked" : "Like"}</span>
-            <span className="px-1.5 py-0.5 rounded-md bg-white dark:bg-zinc-900 text-zinc-700 dark:text-zinc-300 font-mono text-[11px] border border-zinc-200 dark:border-zinc-800">
+            <span className="px-1.5 py-0.5 rounded-md bg-zinc-900 text-zinc-300 font-mono text-[11px] border border-zinc-800">
               {likeCount}
             </span>
           </button>
@@ -112,9 +112,9 @@ export function SocialToolbar({
           <button
             type="button"
             onClick={() => setIsCollectionModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-100/80 dark:bg-zinc-800/70 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-700 dark:text-zinc-200 transition-all text-xs font-semibold cursor-pointer active:scale-95"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl border border-zinc-700 bg-zinc-800/70 hover:bg-zinc-700 text-zinc-200 transition-all text-xs font-semibold cursor-pointer active:scale-95"
           >
-            <Bookmark size={16} className="text-zinc-500 dark:text-zinc-400" />
+            <Bookmark size={16} className="text-zinc-400" />
             <span>Save to Collection</span>
           </button>
 
@@ -122,7 +122,7 @@ export function SocialToolbar({
           <button
             type="button"
             onClick={handleShare}
-            className="p-2 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-100/80 dark:bg-zinc-800/70 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-500 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 transition-colors"
+            className="p-2 rounded-xl border border-zinc-700 bg-zinc-800/70 hover:bg-zinc-700 text-zinc-400 hover:text-zinc-200 transition-colors"
             title="Share Link"
           >
             {copiedShare ? <Check size={16} className="text-emerald-500" /> : <Share2 size={16} />}
@@ -147,7 +147,7 @@ export function SocialToolbar({
           <button
             type="button"
             onClick={onJumpToReviews}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
           >
             <ThumbsUp size={13} />
             <span>Reviews ({reviewCount})</span>
@@ -157,7 +157,7 @@ export function SocialToolbar({
           <button
             type="button"
             onClick={onJumpToQa}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
           >
             <HelpCircle size={13} />
             <span>Q&A ({questionCount})</span>

@@ -6,8 +6,7 @@ import type {
   GetLoginChallengeDetailsResponse,
   ApproveLoginChallengeResponse,
 } from "@quadsmith/shared/gen/quadsmith/api/auth_pb";
-import logoDark from "../assets/quadsmith-logo-dark.svg";
-import logoLight from "../assets/quadsmith-logo-light.svg";
+import logo from "../assets/quadsmith-logo.svg";
 
 export interface ChallengeApprovalScreenProps {
   token: string;
@@ -15,7 +14,6 @@ export interface ChallengeApprovalScreenProps {
   onDenied?: () => void;
   onError?: (err: Error) => void;
   className?: string;
-  theme?: "light" | "dark";
 }
 
 export function ChallengeApprovalScreen({
@@ -24,7 +22,6 @@ export function ChallengeApprovalScreen({
   onDenied,
   onError,
   className = "",
-  theme: propTheme,
 }: ChallengeApprovalScreenProps) {
   const { getLoginChallengeDetails, approveLoginChallenge, denyLoginChallenge } = useAuth();
 
@@ -45,9 +42,6 @@ export function ChallengeApprovalScreen({
     onDeniedRef.current = onDenied;
     onErrorRef.current = onError;
   }, [onApproved, onDenied, onError]);
-
-  const activeTheme =
-    propTheme || (typeof localStorage !== "undefined" && localStorage.getItem("theme")) || "dark";
 
   useEffect(() => {
     if (!token) return;
@@ -190,16 +184,10 @@ export function ChallengeApprovalScreen({
       {/* Header */}
       <div className="text-center space-y-3">
         <div className="flex justify-center">
-          <img
-            src={activeTheme === "dark" ? logoDark : logoLight}
-            alt="Quadsmith"
-            className="h-10 w-auto"
-          />
+          <img src={logo} alt="Quadsmith" className="h-10 w-auto" />
         </div>
-        <h1 className="text-xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100">
-          {title}
-        </h1>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">{subtitle}</p>
+        <h1 className="text-xl font-bold tracking-tight text-zinc-100">{title}</h1>
+        <p className="text-xs text-zinc-400">{subtitle}</p>
       </div>
 
       {approvalState === "loading" && (
@@ -215,7 +203,7 @@ export function ChallengeApprovalScreen({
       {approvalState === "error" && (
         <div
           data-testid="approval-error-card"
-          className="p-4 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-400 text-xs space-y-2"
+          className="p-4 rounded-xl border border-rose-500/30 bg-rose-500/10 text-rose-400 text-xs space-y-2"
         >
           <div className="flex items-center gap-2 font-semibold">
             <AlertTriangle size={16} />
@@ -235,11 +223,9 @@ export function ChallengeApprovalScreen({
           <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-500 flex items-center justify-center mx-auto">
             <Check size={24} />
           </div>
-          <h2 className="text-lg font-bold text-emerald-700 dark:text-emerald-400">
-            {successTitle}
-          </h2>
-          <p className="text-xs text-zinc-600 dark:text-zinc-400">{successMessage}</p>
-          <div className="pt-2 text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+          <h2 className="text-lg font-bold text-emerald-400">{successTitle}</h2>
+          <p className="text-xs text-zinc-400">{successMessage}</p>
+          <div className="pt-2 text-[11px] text-zinc-400 font-medium">
             ✓ You can safely close this window now.
           </div>
         </div>
@@ -253,9 +239,9 @@ export function ChallengeApprovalScreen({
           <div className="w-12 h-12 rounded-full bg-rose-500/20 text-rose-500 flex items-center justify-center mx-auto">
             <Lock size={24} />
           </div>
-          <h2 className="text-lg font-bold text-rose-700 dark:text-rose-400">{deniedTitle}</h2>
-          <p className="text-xs text-zinc-600 dark:text-zinc-400">{deniedMessage}</p>
-          <div className="pt-2 text-[11px] text-zinc-500 dark:text-zinc-400 font-medium">
+          <h2 className="text-lg font-bold text-rose-400">{deniedTitle}</h2>
+          <p className="text-xs text-zinc-400">{deniedMessage}</p>
+          <div className="pt-2 text-[11px] text-zinc-400 font-medium">
             ✓ You can safely close this window now.
           </div>
         </div>
@@ -267,29 +253,29 @@ export function ChallengeApprovalScreen({
         challengeDetails && (
           <div className="space-y-6">
             {/* Metadata Card */}
-            <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/60 space-y-3 text-xs">
-              <div className="flex items-center justify-between pb-2 border-b border-zinc-200 dark:border-zinc-800">
-                <span className="text-zinc-500 dark:text-zinc-400">Account</span>
-                <span className="font-mono font-medium text-zinc-900 dark:text-zinc-100">
+            <div className="p-4 rounded-xl border border-zinc-800 bg-zinc-950/60 space-y-3 text-xs">
+              <div className="flex items-center justify-between pb-2 border-b border-zinc-800">
+                <span className="text-zinc-400">Account</span>
+                <span className="font-mono font-medium text-zinc-100">
                   {challengeDetails.email}
                 </span>
               </div>
-              <div className="flex items-center justify-between pb-2 border-b border-zinc-200 dark:border-zinc-800">
-                <span className="text-zinc-500 dark:text-zinc-400">Requesting Device</span>
-                <span className="font-medium text-zinc-900 dark:text-zinc-100">
+              <div className="flex items-center justify-between pb-2 border-b border-zinc-800">
+                <span className="text-zinc-400">Requesting Device</span>
+                <span className="font-medium text-zinc-100">
                   {challengeDetails.deviceHint || "Web Browser"}
                 </span>
               </div>
-              <div className="flex items-center justify-between pb-2 border-b border-zinc-200 dark:border-zinc-800">
-                <span className="text-zinc-500 dark:text-zinc-400">IP & Location</span>
-                <span className="font-mono text-[11px] text-zinc-900 dark:text-zinc-100">
+              <div className="flex items-center justify-between pb-2 border-b border-zinc-800">
+                <span className="text-zinc-400">IP & Location</span>
+                <span className="font-mono text-[11px] text-zinc-100">
                   {challengeDetails.ipAddress}
                   {challengeDetails.locationHint ? ` (${challengeDetails.locationHint})` : ""}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-zinc-500 dark:text-zinc-400">Expires</span>
-                <span className="text-zinc-700 dark:text-zinc-300">Within 15 minutes</span>
+                <span className="text-zinc-400">Expires</span>
+                <span className="text-zinc-300">Within 15 minutes</span>
               </div>
             </div>
 
@@ -320,7 +306,7 @@ export function ChallengeApprovalScreen({
                 data-testid="deny-login-btn"
                 disabled={approvalState !== "prompt"}
                 onClick={handleDeny}
-                className="w-full py-2.5 px-4 rounded-xl font-medium text-xs text-rose-600 dark:text-rose-400 bg-zinc-100 dark:bg-zinc-900 hover:bg-zinc-200 dark:hover:bg-zinc-800 border border-zinc-200 dark:border-zinc-800 disabled:opacity-60 transition flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-2.5 px-4 rounded-xl font-medium text-xs text-rose-400 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 disabled:opacity-60 transition flex items-center justify-center gap-1.5 cursor-pointer"
               >
                 {approvalState === "denying" ? (
                   <>

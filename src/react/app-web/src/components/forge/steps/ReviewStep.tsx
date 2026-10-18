@@ -224,7 +224,7 @@ export function ReviewStep() {
     <div className="space-y-4">
       {/* Save Error Banner */}
       {saveError && (
-        <div className="p-3.5 rounded-xl border border-red-500/30 bg-red-500/10 text-red-800 dark:text-red-300 flex items-start gap-3 text-xs">
+        <div className="p-3.5 rounded-xl border border-red-500/30 bg-red-500/10 text-red-300 flex items-start gap-3 text-xs">
           <AlertCircle size={16} className="text-red-500 mt-0.5 shrink-0" />
           <div>
             <span className="font-bold">Error Saving Build</span>
@@ -234,21 +234,18 @@ export function ReviewStep() {
       )}
 
       {/* Bill of Materials Card */}
-      <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
+      <div className="p-4 rounded-2xl border border-zinc-800 bg-zinc-900 space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <ShieldCheck size={18} className="text-emerald-500" />
-            <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-              Bill of Materials (BOM)
-            </h3>
+            <h3 className="font-bold text-sm text-zinc-100">Bill of Materials (BOM)</h3>
           </div>
-          <div className="text-xs font-mono font-bold text-zinc-600 dark:text-zinc-400">
-            Dry Weight:{" "}
-            <span className="text-blue-600 dark:text-blue-400">{dryWeightG.toFixed(1)}g</span>
+          <div className="text-xs font-mono font-bold text-zinc-400">
+            Dry Weight: <span className="text-blue-400">{dryWeightG.toFixed(1)}g</span>
           </div>
         </div>
 
-        <div className="divide-y divide-zinc-100 dark:divide-zinc-800 overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 text-xs">
+        <div className="divide-y divide-zinc-800 overflow-hidden rounded-xl border border-zinc-800 text-xs">
           {bomItems.map((item) => {
             const isSelected =
               !item.omitted &&
@@ -261,9 +258,7 @@ export function ReviewStep() {
               <div
                 key={item.id}
                 className={`p-2.5 flex items-center justify-between gap-2 transition-colors ${
-                  !isSelected
-                    ? "opacity-60 bg-zinc-50 dark:bg-zinc-950/40"
-                    : "bg-white dark:bg-zinc-900"
+                  !isSelected ? "opacity-60 bg-zinc-950/40" : "bg-zinc-900"
                 }`}
               >
                 <div className="flex items-center gap-2.5 min-w-0">
@@ -271,27 +266,25 @@ export function ReviewStep() {
                     collectionId={item.collectionId}
                     size={14}
                     color={isSelected ? colorDef.hex : undefined}
-                    className={isSelected ? "" : "text-zinc-400 dark:text-zinc-500"}
+                    className={isSelected ? "" : "text-zinc-500"}
                   />
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="font-bold text-zinc-900 dark:text-zinc-100 truncate">
-                        {item.name}
-                      </span>
+                      <span className="font-bold text-zinc-100 truncate">{item.name}</span>
                       {item.qty > 1 && (
-                        <span className="text-[10px] px-1.5 py-0.2 rounded font-mono font-bold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                        <span className="text-[10px] px-1.5 py-0.2 rounded font-mono font-bold bg-zinc-800 text-zinc-300">
                           x{item.qty}
                         </span>
                       )}
                     </div>
-                    <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                    <span className="text-[10px] text-zinc-500">
                       {item.label} {item.manufacturer ? `• by ${item.manufacturer}` : ""}
                     </span>
                   </div>
                 </div>
 
                 <div className="text-right shrink-0">
-                  <span className="font-mono text-zinc-700 dark:text-zinc-300 font-semibold text-xs">
+                  <span className="font-mono text-zinc-300 font-semibold text-xs">
                     {item.weightG > 0 ? `${item.weightG.toFixed(1)}g` : "--"}
                   </span>
                 </div>
@@ -302,17 +295,12 @@ export function ReviewStep() {
       </div>
 
       {/* Build Details Form */}
-      <div className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3">
-        <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-          Build Metadata &amp; Visibility
-        </h3>
+      <div className="p-4 rounded-2xl border border-zinc-800 bg-zinc-900 space-y-3">
+        <h3 className="font-bold text-sm text-zinc-100">Build Metadata &amp; Visibility</h3>
 
         <div className="space-y-3 text-xs">
           <div>
-            <label
-              htmlFor="build-name"
-              className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1"
-            >
+            <label htmlFor="build-name" className="block font-semibold text-zinc-300 mb-1">
               Build Name
             </label>
             <input
@@ -321,24 +309,22 @@ export function ReviewStep() {
               value={buildName}
               onChange={(e) => setBuildName(e.target.value)}
               placeholder="e.g., Apex 5 Light Freestyle"
-              className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500 font-medium"
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500 font-medium"
             />
           </div>
 
           <div>
-            <label className="block font-semibold text-zinc-700 dark:text-zinc-300 mb-1">
-              Description
-            </label>
+            <label className="block font-semibold text-zinc-300 mb-1">Description</label>
             <textarea
               rows={2}
               value={buildDesc}
               onChange={(e) => setBuildDesc(e.target.value)}
               placeholder="Brief description of build purpose, PID tune, or custom 3D prints..."
-              className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl p-3 text-xs text-zinc-900 dark:text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-3 text-xs text-zinc-100 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
 
-          <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800">
+          <div className="flex items-center justify-between p-3 rounded-xl bg-zinc-950 border border-zinc-800">
             <div className="flex items-center gap-2.5">
               {isPrivate ? (
                 <Lock size={15} className="text-zinc-500" />
@@ -346,10 +332,10 @@ export function ReviewStep() {
                 <Globe size={15} className="text-blue-500" />
               )}
               <div>
-                <span className="font-bold text-zinc-800 dark:text-zinc-200">
+                <span className="font-bold text-zinc-200">
                   {isPrivate ? "Private Build" : "Public Build"}
                 </span>
-                <p className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                <p className="text-[11px] text-zinc-400">
                   {isPrivate
                     ? "Only you can view and edit this build configuration."
                     : "Visible in the community showcase and public search."}
@@ -364,7 +350,7 @@ export function ReviewStep() {
               aria-label="Build Visibility"
               onClick={() => setIsPrivate(!isPrivate)}
               className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 ${
-                !isPrivate ? "bg-blue-600" : "bg-zinc-300 dark:bg-zinc-700"
+                !isPrivate ? "bg-blue-600" : "bg-zinc-700"
               }`}
             >
               <span className="sr-only">Build Visibility</span>
@@ -384,7 +370,7 @@ export function ReviewStep() {
         <button
           type="button"
           onClick={handlePrevStep}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-zinc-400 hover:bg-zinc-800 transition-colors"
         >
           <ArrowLeft size={14} />
           <span>Back: GPS</span>

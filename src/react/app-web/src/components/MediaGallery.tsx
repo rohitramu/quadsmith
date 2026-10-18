@@ -19,14 +19,14 @@ export function MediaGallery({ primaryDisplayImage, media = [], title }: MediaGa
   return (
     <section aria-label="Media Gallery" className="mt-8">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+        <h2 className="text-xl font-bold text-zinc-100 flex items-center gap-2">
           <span>{title || "Media Gallery"}</span>
         </h2>
       </div>
 
       {/* Primary Display Image */}
       {hasPrimaryImage && (
-        <div className="mb-6 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-2 sm:p-4 flex items-center justify-center shadow-xs">
+        <div className="mb-6 rounded-2xl overflow-hidden border border-zinc-800 bg-zinc-900 p-2 sm:p-4 flex items-center justify-center shadow-xs">
           <img
             src={primaryDisplayImage}
             alt="Primary Display"
@@ -55,7 +55,7 @@ export function MediaGallery({ primaryDisplayImage, media = [], title }: MediaGa
             return (
               <div
                 key={index}
-                className="flex flex-col rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 overflow-hidden shadow-xs group"
+                className="flex flex-col rounded-xl border border-zinc-800 bg-zinc-900 overflow-hidden shadow-xs group"
               >
                 {/* Media Container */}
                 {isYoutube && embedUrl ? (
@@ -96,14 +96,12 @@ export function MediaGallery({ primaryDisplayImage, media = [], title }: MediaGa
                     />
                   </div>
                 ) : isModel3D ? (
-                  <div className="relative aspect-video w-full bg-gradient-to-br from-indigo-900/30 to-blue-900/30 dark:from-indigo-950/50 dark:to-blue-950/50 border-b border-zinc-200 dark:border-zinc-800 flex flex-col items-center justify-center p-6 text-center">
-                    <Box className="w-14 h-14 text-indigo-500 dark:text-indigo-400 mb-3 animate-pulse" />
-                    <span className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+                  <div className="relative aspect-video w-full bg-gradient-to-br from-indigo-950/50 to-blue-950/50 border-b border-zinc-800 flex flex-col items-center justify-center p-6 text-center">
+                    <Box className="w-14 h-14 text-indigo-400 mb-3 animate-pulse" />
+                    <span className="text-sm font-semibold text-zinc-100">
                       {item.title || "3D Printable Model"}
                     </span>
-                    <span className="text-xs text-zinc-500 dark:text-zinc-400 mt-1">
-                      STL / 3MF / STEP Part
-                    </span>
+                    <span className="text-xs text-zinc-400 mt-1">STL / 3MF / STEP Part</span>
                     <a
                       href={item.url}
                       download
@@ -114,7 +112,7 @@ export function MediaGallery({ primaryDisplayImage, media = [], title }: MediaGa
                     </a>
                   </div>
                 ) : (
-                  <div className="relative aspect-video w-full bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center overflow-hidden">
+                  <div className="relative aspect-video w-full bg-zinc-800 flex items-center justify-center overflow-hidden">
                     <img
                       src={item.url}
                       alt={item.title || `Media Item ${index + 1}`}
@@ -128,7 +126,7 @@ export function MediaGallery({ primaryDisplayImage, media = [], title }: MediaGa
                 <div className="p-3.5 flex flex-col justify-between flex-1 gap-2">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium rounded-full bg-zinc-800 text-zinc-300">
                         {isYoutube ? (
                           <>
                             <Film size={11} className="text-red-500" />
@@ -152,15 +150,13 @@ export function MediaGallery({ primaryDisplayImage, media = [], title }: MediaGa
                         )}
                       </span>
                       {item.title && (
-                        <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">
+                        <h3 className="text-sm font-semibold text-zinc-100 truncate">
                           {item.title}
                         </h3>
                       )}
                     </div>
                     {item.description && (
-                      <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2">
-                        {item.description}
-                      </p>
+                      <p className="text-xs text-zinc-400 line-clamp-2">{item.description}</p>
                     )}
                   </div>
 
@@ -168,7 +164,7 @@ export function MediaGallery({ primaryDisplayImage, media = [], title }: MediaGa
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 self-start font-medium"
+                    className="text-xs text-blue-400 hover:underline flex items-center gap-1 self-start font-medium"
                   >
                     <span>
                       {isYoutube

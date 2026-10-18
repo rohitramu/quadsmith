@@ -106,7 +106,7 @@ export function SocialTabs({
     <section id="social-hub" className="mt-12 space-y-6">
       {/* Archived Read-Only Banner */}
       {isArchived && (
-        <div className="p-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300 text-xs flex items-center gap-3">
+        <div className="p-4 rounded-2xl border border-amber-500/30 bg-amber-500/10 text-amber-300 text-xs flex items-center gap-3">
           <Archive size={18} className="shrink-0 text-amber-500" />
           <div>
             <span className="font-bold">Archived Entity (Read-Only): </span>
@@ -118,19 +118,19 @@ export function SocialTabs({
 
       {/* Tab Navigation Bar */}
       {/* Tab Navigation Bar */}
-      <div className="flex items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 pb-px overflow-x-auto whitespace-nowrap scrollbar-thin">
+      <div className="flex items-center gap-2 border-b border-zinc-800 pb-px overflow-x-auto whitespace-nowrap scrollbar-thin">
         <button
           type="button"
           onClick={() => handleTabSelect("reviews")}
           className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer shrink-0 ${
             activeTab === "reviews"
-              ? "border-blue-500 text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
+              ? "border-blue-500 text-blue-400"
+              : "border-transparent text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
           }`}
         >
           <ThumbsUp size={16} />
           <span>User Reviews</span>
-          <span className="px-2 py-0.5 rounded-full text-[11px] bg-blue-500/10 text-blue-600 dark:text-blue-400 font-mono">
+          <span className="px-2 py-0.5 rounded-full text-[11px] bg-blue-500/10 text-blue-400 font-mono">
             {reviewCount}
           </span>
         </button>
@@ -140,13 +140,13 @@ export function SocialTabs({
           onClick={() => handleTabSelect("qa")}
           className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer shrink-0 ${
             activeTab === "qa"
-              ? "border-blue-500 text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
+              ? "border-blue-500 text-blue-400"
+              : "border-transparent text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
           }`}
         >
           <HelpCircle size={16} />
           <span>Technical Q&A</span>
-          <span className="px-2 py-0.5 rounded-full text-[11px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-mono">
+          <span className="px-2 py-0.5 rounded-full text-[11px] bg-zinc-800 text-zinc-400 font-mono">
             {questionCount}
           </span>
         </button>
@@ -157,13 +157,13 @@ export function SocialTabs({
             onClick={() => handleTabSelect("similar")}
             className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer shrink-0 ${
               activeTab === "similar"
-                ? "border-blue-500 text-blue-600 dark:text-blue-400"
-                : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
+                ? "border-blue-500 text-blue-400"
+                : "border-transparent text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
             }`}
           >
             <Sparkles size={16} />
             <span>Similar Builds</span>
-            <span className="px-2 py-0.5 rounded-full text-[11px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-mono">
+            <span className="px-2 py-0.5 rounded-full text-[11px] bg-zinc-800 text-zinc-400 font-mono">
               {similarCount}
             </span>
           </button>
@@ -174,13 +174,13 @@ export function SocialTabs({
           onClick={() => handleTabSelect("collections")}
           className={`flex items-center gap-2 px-5 py-3 border-b-2 font-bold text-sm transition-colors cursor-pointer shrink-0 ${
             activeTab === "collections"
-              ? "border-blue-500 text-blue-600 dark:text-blue-400"
-              : "border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700"
+              ? "border-blue-500 text-blue-400"
+              : "border-transparent text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
           }`}
         >
           <Bookmark size={16} />
           <span>Collections</span>
-          <span className="px-2 py-0.5 rounded-full text-[11px] bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400 font-mono">
+          <span className="px-2 py-0.5 rounded-full text-[11px] bg-zinc-800 text-zinc-400 font-mono">
             {collections.length}
           </span>
         </button>
@@ -238,13 +238,13 @@ export function SocialTabs({
           id="collections"
           className={`space-y-6 animate-in fade-in duration-150 ${activeTab === "collections" ? "" : "hidden"}`}
         >
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/40">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40">
             <div className="space-y-1">
-              <h3 className="font-bold text-base text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+              <h3 className="font-bold text-base text-zinc-100 flex items-center gap-2">
                 <Bookmark size={18} className="text-blue-500" />
                 <span>Collections Featuring This Item</span>
               </h3>
-              <p className="text-xs text-zinc-500 dark:text-zinc-400">
+              <p className="text-xs text-zinc-400">
                 Users organize builds and components into custom public and private collections for
                 project inspiration, bando parts lists, and gear bags.
               </p>
@@ -261,7 +261,7 @@ export function SocialTabs({
 
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {collections.length === 0 ? (
-              <div className="col-span-full p-8 text-center rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 text-zinc-400 text-xs">
+              <div className="col-span-full p-8 text-center rounded-2xl border border-dashed border-zinc-800 text-zinc-400 text-xs">
                 No collections created yet. Use the Save to Collection button to start a new
                 collection!
               </div>
@@ -269,7 +269,7 @@ export function SocialTabs({
               collections.map((col) => (
                 <div
                   key={col.id}
-                  className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-5 space-y-3 hover:border-zinc-300 dark:hover:border-zinc-700 transition-colors shadow-2xs"
+                  className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-5 space-y-3 hover:border-zinc-700 transition-colors shadow-2xs"
                 >
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
@@ -277,9 +277,7 @@ export function SocialTabs({
                         {col.isSystemCollection ? "❤️" : col.name.slice(0, 2).toUpperCase()}
                       </div>
                       <div>
-                        <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-                          {col.name}
-                        </h4>
+                        <h4 className="font-bold text-sm text-zinc-100">{col.name}</h4>
                         <div className="text-[10px] text-zinc-500 mt-0.5">
                           {col.isSystemCollection ? (
                             <span>Default Likes</span>
@@ -292,12 +290,10 @@ export function SocialTabs({
                   </div>
 
                   {col.description && (
-                    <p className="text-xs text-zinc-600 dark:text-zinc-400 line-clamp-2">
-                      {col.description}
-                    </p>
+                    <p className="text-xs text-zinc-400 line-clamp-2">{col.description}</p>
                   )}
 
-                  <div className="flex items-center justify-between text-xs text-zinc-500 pt-2 border-t border-zinc-100 dark:border-zinc-800">
+                  <div className="flex items-center justify-between text-xs text-zinc-500 pt-2 border-t border-zinc-800">
                     <span className="font-mono">{col.itemCount} items</span>
                     <Link
                       to={`/users/${col.authorUsername}/collections/${col.id}`}

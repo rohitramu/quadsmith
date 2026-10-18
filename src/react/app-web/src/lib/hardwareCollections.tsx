@@ -105,9 +105,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
       id: "id",
       title: "ID",
       renderCell: (m) => (
-        <span className="relative z-20 font-mono text-xs text-zinc-700 dark:text-zinc-300 select-all">
-          {m.id}
-        </span>
+        <span className="relative z-20 font-mono text-xs text-zinc-300 select-all">{m.id}</span>
       ),
     },
     uuid: {
@@ -115,7 +113,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
       title: "UUID",
       renderCell: (m) => (
         <span
-          className="relative z-20 font-mono text-[11px] text-zinc-500 dark:text-zinc-400 select-all block truncate max-w-[140px]"
+          className="relative z-20 font-mono text-[11px] text-zinc-400 select-all block truncate max-w-[140px]"
           title={m.uuid}
         >
           {m.uuid}
@@ -130,9 +128,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
     name: {
       id: "name",
       title: "Name",
-      renderCell: (m) => (
-        <span className="font-medium text-zinc-900 dark:text-zinc-100">{m.name || m.id}</span>
-      ),
+      renderCell: (m) => <span className="font-medium text-zinc-100">{m.name || m.id}</span>,
     },
     is_internal_only: {
       id: "is_internal_only",
@@ -158,7 +154,7 @@ function createStandardColumns(): Record<string, ColumnConfig> {
           <img
             src={m.primaryDisplayImage}
             alt={m.name || m.id}
-            className="w-9 h-9 object-cover rounded-md border border-zinc-200 dark:border-zinc-800 shadow-2xs"
+            className="w-9 h-9 object-cover rounded-md border border-zinc-800 shadow-2xs"
             loading="lazy"
           />
         ) : (

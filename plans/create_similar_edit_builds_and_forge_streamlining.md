@@ -481,7 +481,8 @@ Run the test suite using `make test`:
    - Render `create_similar_preview_desktop.html` and
      `create_similar_preview_mobile.html` across viewports using headless
      Chrome.
-   - Inspect screenshots for visual clarity, button alignment, and theme parity.
+   - Inspect screenshots for visual clarity, button alignment, and dark-theme
+     consistency.
 2. **End-to-End Browser Flow**:
    - Navigate to `/builds/:buildId` as creator -> click "Edit Build" -> modify a
      component -> click "Save Changes" -> verify build profile updated.

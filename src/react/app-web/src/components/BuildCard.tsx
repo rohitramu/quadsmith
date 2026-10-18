@@ -105,7 +105,7 @@ export function BuildCard({
     return (
       <Link
         to={`/builds/${build.id}`}
-        className="group relative flex flex-col sm:flex-row rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-xs hover:shadow-md hover:border-blue-500/50 dark:hover:border-blue-500/50 transition-all duration-200 cursor-pointer block no-underline text-inherit"
+        className="group relative flex flex-col sm:flex-row rounded-2xl border border-zinc-800 bg-zinc-900 overflow-hidden shadow-xs hover:shadow-md hover:border-blue-500/50 transition-all duration-200 cursor-pointer block no-underline text-inherit"
       >
         {/* Card trim line */}
         <div className={`h-1 sm:h-auto w-full sm:w-1.5 ${buildColor.trimClass} shrink-0`} />
@@ -120,7 +120,7 @@ export function BuildCard({
               loading="lazy"
             />
           ) : (
-            <div className="w-full h-full min-h-[140px] flex flex-col items-center justify-center p-4 bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-900 dark:to-zinc-800 text-zinc-400">
+            <div className="w-full h-full min-h-[140px] flex flex-col items-center justify-center p-4 bg-gradient-to-br from-zinc-900 to-zinc-800 text-zinc-400">
               <Compass size={36} className="transform rotate-45 text-blue-500/60 mb-1" />
               <span className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">
                 Complete Build
@@ -142,10 +142,10 @@ export function BuildCard({
             <div className="flex items-start justify-between gap-3 mb-2">
               <div className="min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <h4 className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <h4 className="text-base sm:text-lg font-bold text-zinc-100 group-hover:text-blue-400 transition-colors">
                     {build.name}
                   </h4>
-                  <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300">
+                  <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-zinc-800 text-zinc-300">
                     {categoryTag}
                   </span>
                 </div>
@@ -160,10 +160,10 @@ export function BuildCard({
                 <span
                   className={`px-3 py-1 rounded-full text-xs font-extrabold border shrink-0 ${
                     similarityScore >= 80
-                      ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                      ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
                       : similarityScore >= 50
-                        ? "bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30"
-                        : "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30"
+                        ? "bg-blue-500/15 text-blue-400 border-blue-500/30"
+                        : "bg-amber-500/15 text-amber-400 border-amber-500/30"
                   }`}
                 >
                   {Math.round(similarityScore)}% Match
@@ -173,7 +173,7 @@ export function BuildCard({
 
             {/* Description */}
             {build.description && (
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2 leading-relaxed mb-3">
+              <p className="text-sm text-zinc-400 line-clamp-2 leading-relaxed mb-3">
                 {build.description}
               </p>
             )}
@@ -181,7 +181,7 @@ export function BuildCard({
             {/* Matching Specifications Breakdown Chips */}
             {matchDetails && matchDetails.length > 0 && (
               <div className="space-y-1.5 mb-3">
-                <div className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+                <div className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">
                   Matching Specifications
                 </div>
                 <div className="flex flex-wrap gap-1.5">
@@ -190,8 +190,8 @@ export function BuildCard({
                       key={idx}
                       className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-lg font-medium ${
                         detail.exactMatch
-                          ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20"
-                          : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
+                          ? "bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                          : "bg-zinc-800 text-zinc-300 border border-zinc-700"
                       }`}
                     >
                       <span className="text-emerald-500 font-bold">✓</span>
@@ -204,18 +204,18 @@ export function BuildCard({
           </div>
 
           {/* Bottom Bar: Evaluation Metrics Preview */}
-          <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div className="pt-3 border-t border-zinc-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
             {evaluation ? (
-              <div className="flex items-center gap-4 text-zinc-600 dark:text-zinc-400 flex-wrap">
+              <div className="flex items-center gap-4 text-zinc-400 flex-wrap">
                 <span className="flex items-center gap-1.5 font-medium" title="All Up Weight (AUW)">
                   <Weight size={13} className="text-zinc-400" />
-                  <strong className="text-zinc-800 dark:text-zinc-200 font-mono">
+                  <strong className="text-zinc-200 font-mono">
                     {evaluation.allUpWeightG.toFixed(2)}g
                   </strong>{" "}
                   AUW
                 </span>
                 <span
-                  className="flex items-center gap-1.5 font-medium text-emerald-600 dark:text-emerald-400"
+                  className="flex items-center gap-1.5 font-medium text-emerald-400"
                   title="Thrust to Weight Ratio"
                 >
                   <Gauge size={13} />
@@ -226,7 +226,7 @@ export function BuildCard({
                 </span>
                 {evaluation.maxFlightTimeMin > 0 && (
                   <span
-                    className="flex items-center gap-1.5 font-medium text-blue-600 dark:text-blue-400"
+                    className="flex items-center gap-1.5 font-medium text-blue-400"
                     title="Flight Time"
                   >
                     <Clock size={13} />
@@ -239,7 +239,7 @@ export function BuildCard({
                 )}
                 {evaluation.topSpeedKmh > 0 && (
                   <span
-                    className="flex items-center gap-1.5 font-medium text-indigo-600 dark:text-indigo-400"
+                    className="flex items-center gap-1.5 font-medium text-indigo-400"
                     title="Top Speed"
                   >
                     <Compass size={13} />
@@ -248,14 +248,12 @@ export function BuildCard({
                 )}
               </div>
             ) : !isLoadingLimits && !electricalLimits?.defaultBatteryId ? (
-              <div className="text-red-500/80 dark:text-red-400/80 text-xs italic">
-                No compatible batteries
-              </div>
+              <div className="text-red-400/80 text-xs italic">No compatible batteries</div>
             ) : (
               <div className="text-zinc-400 text-xs italic">Evaluating build specs...</div>
             )}
 
-            <div className="flex items-center gap-1 text-zinc-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors ml-auto">
+            <div className="flex items-center gap-1 text-zinc-400 group-hover:text-blue-400 transition-colors ml-auto">
               <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" />
             </div>
           </div>
@@ -265,7 +263,7 @@ export function BuildCard({
   }
 
   return (
-    <article className="group relative flex flex-col rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden shadow-xs hover:shadow-md transition-all duration-200">
+    <article className="group relative flex flex-col rounded-2xl border border-zinc-800 bg-zinc-900 overflow-hidden shadow-xs hover:shadow-md transition-all duration-200">
       {/* Card top trim line */}
       <div className={`h-1 w-full ${buildColor.trimClass}`} />
 
@@ -276,17 +274,17 @@ export function BuildCard({
             <img
               src={build.primaryDisplayImage}
               alt=""
-              className="w-10 h-10 rounded-xl object-cover shadow-xs shrink-0 border border-zinc-200 dark:border-zinc-800"
+              className="w-10 h-10 rounded-xl object-cover shadow-xs shrink-0 border border-zinc-800"
             />
           ) : (
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 dark:from-blue-600 dark:to-indigo-700 flex items-center justify-center text-white font-bold text-sm shadow-xs shrink-0 select-none">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center text-white font-bold text-sm shadow-xs shrink-0 select-none">
               {build.name.charAt(0) || "Q"}
             </div>
           )}
           <div className="min-w-0">
             <Link
               to={`/builds/${build.id}`}
-              className="text-base sm:text-lg font-bold text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 transition-colors line-clamp-1"
+              className="text-base sm:text-lg font-bold text-zinc-100 hover:text-blue-400 transition-colors line-clamp-1"
             >
               {build.name}
             </Link>
@@ -295,9 +293,7 @@ export function BuildCard({
               <span>•</span>
               <CollectionBadge collection="builds" label="Build" size="xs" />
               <span>•</span>
-              <span className="text-blue-600 dark:text-blue-400 font-sans font-medium">
-                {categoryTag}
-              </span>
+              <span className="text-blue-400 font-sans font-medium">{categoryTag}</span>
             </div>
           </div>
         </div>
@@ -307,10 +303,10 @@ export function BuildCard({
             <span
               className={`px-2.5 py-1 rounded-full text-xs font-extrabold border ${
                 similarityScore >= 80
-                  ? "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border-emerald-500/30"
+                  ? "bg-emerald-500/15 text-emerald-400 border-emerald-500/30"
                   : similarityScore >= 50
-                    ? "bg-blue-500/15 text-blue-600 dark:text-blue-400 border-blue-500/30"
-                    : "bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/30"
+                    ? "bg-blue-500/15 text-blue-400 border-blue-500/30"
+                    : "bg-amber-500/15 text-amber-400 border-amber-500/30"
               }`}
             >
               {Math.round(similarityScore)}% Match
@@ -320,7 +316,7 @@ export function BuildCard({
             type="button"
             onClick={handleShare}
             title="Share build link"
-            className="p-2 rounded-lg text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors shrink-0 cursor-pointer"
+            className="p-2 rounded-lg text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors shrink-0 cursor-pointer"
           >
             {copied ? <Check size={16} className="text-emerald-500" /> : <Share2 size={16} />}
           </button>
@@ -332,7 +328,7 @@ export function BuildCard({
         to={`/builds/${build.id}`}
         tabIndex={-1}
         aria-hidden="true"
-        className="block relative bg-gradient-to-b from-zinc-100/80 to-zinc-50 dark:from-zinc-950/60 dark:to-zinc-900/40 border-y border-zinc-100 dark:border-zinc-800/60 overflow-hidden"
+        className="block relative bg-gradient-to-b from-zinc-950/60 to-zinc-900/40 border-y border-zinc-800/60 overflow-hidden"
       >
         {build.primaryDisplayImage ? (
           <div className="relative h-44 w-full overflow-hidden bg-zinc-900">
@@ -353,13 +349,13 @@ export function BuildCard({
           <div className="px-5 py-6 text-center">
             <div className="relative z-10 flex flex-col items-center justify-center py-2">
               {/* Stylized Quad Silhouette */}
-              <div className="w-20 h-20 rounded-full bg-blue-50 dark:bg-blue-950/40 border border-blue-100 dark:border-blue-900/60 flex items-center justify-center text-blue-600 dark:text-blue-400 mb-3 shadow-inner group-hover:scale-105 transition-transform duration-200">
+              <div className="w-20 h-20 rounded-full bg-blue-950/40 border border-blue-900/60 flex items-center justify-center text-blue-400 mb-3 shadow-inner group-hover:scale-105 transition-transform duration-200">
                 <Compass size={38} className="transform rotate-45" />
               </div>
-              <span className="text-xs uppercase tracking-wider font-semibold text-zinc-400 dark:text-zinc-500">
+              <span className="text-xs uppercase tracking-wider font-semibold text-zinc-500">
                 Complete Build Profile
               </span>
-              <span className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mt-0.5">
+              <span className="text-sm font-medium text-zinc-300 mt-0.5">
                 {componentCount} hardware components configured
               </span>
             </div>
@@ -371,7 +367,7 @@ export function BuildCard({
       <div className="p-4 sm:p-5 pt-3 flex-1 flex flex-col justify-between">
         <div>
           {build.description && (
-            <p className="text-sm text-zinc-600 dark:text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
+            <p className="text-sm text-zinc-400 line-clamp-2 mb-4 leading-relaxed">
               {build.description}
             </p>
           )}
@@ -379,31 +375,31 @@ export function BuildCard({
           {/* Quick Hardware Component Badges */}
           <div className="flex flex-wrap gap-1.5 mb-4">
             {build.frameUuid && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 border border-zinc-200/50 dark:border-zinc-700/50">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-zinc-800/80 text-zinc-400 border border-zinc-700/50">
                 <Layers size={11} className="text-zinc-400" />
                 <span>Frame</span>
               </span>
             )}
             {build.motorUuid && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 border border-zinc-200/50 dark:border-zinc-700/50">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-zinc-800/80 text-zinc-400 border border-zinc-700/50">
                 <Cpu size={11} className="text-zinc-400" />
                 <span>4x Motors</span>
               </span>
             )}
             {build.flightControllerUuid && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 border border-zinc-200/50 dark:border-zinc-700/50">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-zinc-800/80 text-zinc-400 border border-zinc-700/50">
                 <Cpu size={11} className="text-zinc-400" />
                 <span>FC Stack</span>
               </span>
             )}
             {build.videoTransmitterUuid && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 border border-zinc-200/50 dark:border-zinc-700/50">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-zinc-800/80 text-zinc-400 border border-zinc-700/50">
                 <Radio size={11} className="text-zinc-400" />
                 <span>VTX</span>
               </span>
             )}
             {build.cameraUuids.length > 0 && (
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-zinc-100 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-400 border border-zinc-200/50 dark:border-zinc-700/50">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-xs bg-zinc-800/80 text-zinc-400 border border-zinc-700/50">
                 <Camera size={11} className="text-zinc-400" />
                 <span>Cam</span>
               </span>
@@ -412,8 +408,8 @@ export function BuildCard({
 
           {/* Similarity Matching Breakdown Chips */}
           {matchDetails && matchDetails.length > 0 && (
-            <div className="mb-4 pt-3 border-t border-zinc-100 dark:border-zinc-800/80 space-y-1.5">
-              <div className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase tracking-wider">
+            <div className="mb-4 pt-3 border-t border-zinc-800/80 space-y-1.5">
+              <div className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider">
                 Matching Specifications
               </div>
               <div className="flex flex-wrap gap-1.5">
@@ -422,8 +418,8 @@ export function BuildCard({
                     key={idx}
                     className={`inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-md font-medium ${
                       detail.exactMatch
-                        ? "bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20"
-                        : "bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700"
+                        ? "bg-blue-500/10 text-blue-400 border border-blue-500/20"
+                        : "bg-zinc-800 text-zinc-300 border border-zinc-700"
                     }`}
                   >
                     <span>✓</span>
@@ -436,15 +432,15 @@ export function BuildCard({
         </div>
 
         {/* Evaluation Metrics Preview */}
-        <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/60 flex items-center justify-between text-xs">
+        <div className="pt-3 border-t border-zinc-800/60 flex items-center justify-between text-xs">
           {evaluation ? (
-            <div className="flex items-center gap-3 text-zinc-600 dark:text-zinc-400">
+            <div className="flex items-center gap-3 text-zinc-400">
               <span className="flex items-center gap-1 font-medium" title="All Up Weight (AUW)">
                 <Weight size={13} className="text-zinc-400" />
                 {evaluation.allUpWeightG.toFixed(2)}g
               </span>
               <span
-                className="flex items-center gap-1 font-medium text-emerald-600 dark:text-emerald-400"
+                className="flex items-center gap-1 font-medium text-emerald-400"
                 title="Thrust to Weight Ratio"
               >
                 <Gauge size={13} />
@@ -452,7 +448,7 @@ export function BuildCard({
               </span>
               {evaluation.maxFlightTimeMin > 0 && (
                 <span
-                  className="flex items-center gap-1 font-medium text-blue-600 dark:text-blue-400"
+                  className="flex items-center gap-1 font-medium text-blue-400"
                   title="Estimated Flight Time (Freestyle to Cruise)"
                 >
                   <Clock size={13} />
@@ -463,9 +459,7 @@ export function BuildCard({
               )}
             </div>
           ) : !isLoadingLimits && !electricalLimits?.defaultBatteryId ? (
-            <div className="text-red-500/80 dark:text-red-400/80 text-xs italic">
-              No compatible batteries
-            </div>
+            <div className="text-red-400/80 text-xs italic">No compatible batteries</div>
           ) : (
             <div className="text-zinc-400 text-xs italic">Evaluating build specs...</div>
           )}
@@ -473,18 +467,18 @@ export function BuildCard({
           <div className="flex items-center gap-3">
             <Link
               to={`/builds/new?from=${build.id || build.uuid}`}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 text-orange-600 dark:text-orange-400 border border-orange-500/20 hover:border-orange-500/30 text-xs font-semibold transition-all group/forge"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-orange-500/10 hover:bg-orange-500/20 text-orange-400 border border-orange-500/20 hover:border-orange-500/30 text-xs font-semibold transition-all group/forge"
               title="Open this build configuration in The Forge to build a similar aircraft"
             >
               <Hammer
                 size={12}
-                className="text-orange-600 dark:text-orange-400 group-hover/forge:-rotate-12 transition-transform shrink-0"
+                className="text-orange-400 group-hover/forge:-rotate-12 transition-transform shrink-0"
               />
               <span>Build Similar</span>
             </Link>
             <Link
               to={`/builds/${build.id}`}
-              className="flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 group-hover:translate-x-0.5 transition-all"
+              className="flex items-center gap-1 text-xs font-semibold text-blue-400 hover:text-blue-300 group-hover:translate-x-0.5 transition-all"
             >
               <span>View Profile</span>
               <ChevronRight size={14} />

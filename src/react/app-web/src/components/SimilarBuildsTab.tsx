@@ -25,14 +25,14 @@ export function SimilarBuildsTab({ buildId }: SimilarBuildsTabProps) {
           {[1, 2, 3].map((n) => (
             <div
               key={n}
-              className="rounded-2xl border border-zinc-200 dark:border-zinc-800 p-5 bg-white dark:bg-zinc-900 animate-pulse flex flex-col sm:flex-row gap-5"
+              className="rounded-2xl border border-zinc-800 p-5 bg-zinc-900 animate-pulse flex flex-col sm:flex-row gap-5"
             >
-              <div className="sm:w-56 h-40 rounded-xl bg-zinc-200 dark:bg-zinc-800 shrink-0" />
+              <div className="sm:w-56 h-40 rounded-xl bg-zinc-800 shrink-0" />
               <div className="flex-1 space-y-3">
-                <div className="h-5 bg-zinc-200 dark:bg-zinc-800 rounded w-1/3" />
-                <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-2/3" />
-                <div className="h-8 bg-zinc-100 dark:bg-zinc-800/60 rounded w-1/2" />
-                <div className="h-4 bg-zinc-200 dark:bg-zinc-800 rounded w-1/4 mt-4" />
+                <div className="h-5 bg-zinc-800 rounded w-1/3" />
+                <div className="h-4 bg-zinc-800 rounded w-2/3" />
+                <div className="h-8 bg-zinc-800/60 rounded w-1/2" />
+                <div className="h-4 bg-zinc-800 rounded w-1/4 mt-4" />
               </div>
             </div>
           ))}
@@ -43,7 +43,7 @@ export function SimilarBuildsTab({ buildId }: SimilarBuildsTabProps) {
       {error && !isLoading && (
         <div
           role="alert"
-          className="p-5 rounded-2xl border border-red-200 dark:border-red-900/60 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 text-xs"
+          className="p-5 rounded-2xl border border-red-900/60 bg-red-950/40 text-red-300 text-xs"
         >
           Failed to load similar builds: {error.message}
         </div>
@@ -51,15 +51,13 @@ export function SimilarBuildsTab({ buildId }: SimilarBuildsTabProps) {
 
       {/* Empty State */}
       {!isLoading && !error && similarBuilds.length === 0 && (
-        <div className="p-12 text-center rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 space-y-4">
-          <div className="w-12 h-12 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center mx-auto text-zinc-400">
+        <div className="p-12 text-center rounded-2xl border border-dashed border-zinc-800 bg-zinc-900/40 space-y-4">
+          <div className="w-12 h-12 rounded-2xl bg-zinc-800 flex items-center justify-center mx-auto text-zinc-400">
             <Layers size={24} />
           </div>
           <div className="space-y-1">
-            <h4 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-              No Similar Builds Found
-            </h4>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400 max-w-sm mx-auto">
+            <h4 className="font-bold text-sm text-zinc-100">No Similar Builds Found</h4>
+            <p className="text-xs text-zinc-400 max-w-sm mx-auto">
               No other builds in the database share 25% or more of this quadcopter&apos;s
               components. Be the first to build a variant!
             </p>
@@ -74,7 +72,7 @@ export function SimilarBuildsTab({ buildId }: SimilarBuildsTabProps) {
             </Link>
             <Link
               to="/"
-              className="px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold text-xs transition-colors flex items-center gap-1.5"
+              className="px-4 py-2 rounded-xl border border-zinc-800 hover:bg-zinc-800 text-zinc-300 font-semibold text-xs transition-colors flex items-center gap-1.5"
             >
               <Compass size={14} />
               <span>Explore Build Feed</span>

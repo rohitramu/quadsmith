@@ -35,21 +35,13 @@ export function CategoryPage() {
     <div>
       <div className="flex items-center gap-3 mb-6">
         {categoryId === "hardware" && (
-          <Cpu size={32} className="text-zinc-600 dark:text-zinc-400 shrink-0" aria-hidden="true" />
+          <Cpu size={32} className="text-zinc-400 shrink-0" aria-hidden="true" />
         )}
         {categoryId === "software" && (
-          <Code2
-            size={32}
-            className="text-zinc-600 dark:text-zinc-400 shrink-0"
-            aria-hidden="true"
-          />
+          <Code2 size={32} className="text-zinc-400 shrink-0" aria-hidden="true" />
         )}
         {categoryId === "gear" && (
-          <Wrench
-            size={32}
-            className="text-zinc-600 dark:text-zinc-400 shrink-0"
-            aria-hidden="true"
-          />
+          <Wrench size={32} className="text-zinc-400 shrink-0" aria-hidden="true" />
         )}
         <h1 className="text-3xl font-bold capitalize">{categoryId}</h1>
       </div>
@@ -61,7 +53,7 @@ export function CategoryPage() {
             <Link
               key={c.id}
               to={`/${getCollectionPath(c)}`}
-              className={`relative flex flex-col justify-between p-6 border border-zinc-200 dark:border-zinc-800 rounded-xl transition-all bg-zinc-50 dark:bg-zinc-900 group overflow-hidden shadow-xs hover:shadow-md ${colColor.hoverBorderClass}`}
+              className={`relative flex flex-col justify-between p-6 border border-zinc-800 rounded-xl transition-all bg-zinc-900 group overflow-hidden shadow-xs hover:shadow-md ${colColor.hoverBorderClass}`}
             >
               {/* Card top trim line */}
               <div className={`absolute top-0 left-0 right-0 h-1.5 ${colColor.trimClass}`} />
@@ -73,11 +65,11 @@ export function CategoryPage() {
                     size={22}
                     className={`${colColor.textClass} shrink-0`}
                   />
-                  <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100 group-hover:text-zinc-700 dark:group-hover:text-zinc-300 transition-colors">
+                  <h2 className="text-xl font-semibold text-zinc-100 group-hover:text-zinc-300 transition-colors">
                     {c.name}
                   </h2>
                 </div>
-                <p className="text-zinc-500 dark:text-zinc-400 text-sm leading-relaxed">
+                <p className="text-zinc-400 text-sm leading-relaxed">
                   {c.description || `Browse all ${c.name.toLowerCase()}`}
                 </p>
               </div>

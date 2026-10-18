@@ -99,43 +99,37 @@ export function getTwrColor(twr: number): {
 } {
   if (twr >= 8.0) {
     return {
-      text: "text-purple-600 dark:text-purple-400",
-      badge:
-        "bg-purple-100 text-purple-700 dark:bg-purple-950/60 dark:text-purple-400 border-purple-200 dark:border-purple-800/50",
+      text: "text-purple-400",
+      badge: "bg-purple-950/60 text-purple-400 border-purple-800/50",
     };
   }
   if (twr >= 5.5) {
     return {
-      text: "text-emerald-600 dark:text-emerald-400",
-      badge:
-        "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50",
+      text: "text-emerald-400",
+      badge: "bg-emerald-950/60 text-emerald-400 border-emerald-800/50",
     };
   }
   if (twr >= 4.0) {
     return {
-      text: "text-cyan-600 dark:text-cyan-400",
-      badge:
-        "bg-cyan-100 text-cyan-700 dark:bg-cyan-950/60 dark:text-cyan-400 border-cyan-200 dark:border-cyan-800/50",
+      text: "text-cyan-400",
+      badge: "bg-cyan-950/60 text-cyan-400 border-cyan-800/50",
     };
   }
   if (twr >= 2.8) {
     return {
-      text: "text-sky-600 dark:text-sky-400",
-      badge:
-        "bg-sky-100 text-sky-700 dark:bg-sky-950/60 dark:text-sky-400 border-sky-200 dark:border-sky-800/50",
+      text: "text-sky-400",
+      badge: "bg-sky-950/60 text-sky-400 border-sky-800/50",
     };
   }
   if (twr >= 1.8) {
     return {
-      text: "text-amber-600 dark:text-amber-400",
-      badge:
-        "bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400 border-amber-200 dark:border-amber-800/50",
+      text: "text-amber-400",
+      badge: "bg-amber-950/60 text-amber-400 border-amber-800/50",
     };
   }
   return {
-    text: "text-rose-600 dark:text-rose-400",
-    badge:
-      "bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-400 border-rose-200 dark:border-rose-800/50",
+    text: "text-rose-400",
+    badge: "bg-rose-950/60 text-rose-400 border-rose-800/50",
   };
 }
 
@@ -155,9 +149,8 @@ export function getHoverThrottleColor(hover: number): {
 } {
   if (hover < 35) {
     return {
-      text: "text-emerald-600 dark:text-emerald-400",
-      badge:
-        "bg-emerald-100 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800/50",
+      text: "text-emerald-400",
+      badge: "bg-emerald-950/60 text-emerald-400 border-emerald-800/50",
       bar: "bg-emerald-500",
       category: "Effortless (<35%)",
       description: "Ample thrust headroom for aggressive maneuvers & punchouts",
@@ -165,9 +158,8 @@ export function getHoverThrottleColor(hover: number): {
   }
   if (hover < 50) {
     return {
-      text: "text-sky-600 dark:text-sky-400",
-      badge:
-        "bg-sky-100 text-sky-700 dark:bg-sky-950/60 dark:text-sky-400 border-sky-200 dark:border-sky-800/50",
+      text: "text-sky-400",
+      badge: "bg-sky-950/60 text-sky-400 border-sky-800/50",
       bar: "bg-sky-500",
       category: "Cruising (35–50%)",
       description: "Balanced efficiency for cruising and cinematic flight",
@@ -175,18 +167,16 @@ export function getHoverThrottleColor(hover: number): {
   }
   if (hover < 65) {
     return {
-      text: "text-amber-600 dark:text-amber-400",
-      badge:
-        "bg-amber-100 text-amber-700 dark:bg-amber-950/60 dark:text-amber-400 border-amber-200 dark:border-amber-800/50",
+      text: "text-amber-400",
+      badge: "bg-amber-950/60 text-amber-400 border-amber-800/50",
       bar: "bg-amber-500",
       category: "Heavy (50–65%)",
       description: "Heavy payload; limited headroom for recovery from steep dives",
     };
   }
   return {
-    text: "text-rose-600 dark:text-rose-400",
-    badge:
-      "bg-rose-100 text-rose-700 dark:bg-rose-950/60 dark:text-rose-400 border-rose-200 dark:border-rose-800/50",
+    text: "text-rose-400",
+    badge: "bg-rose-950/60 text-rose-400 border-rose-800/50",
     bar: "bg-rose-500",
     category: "Overloaded (≥65%)",
     description: "Critical load; motor strain and thermal saturation risk",

@@ -11,7 +11,7 @@ import {
 import { HARDWARE_COLLECTIONS } from "../hardwareCollections";
 
 describe("collectionColors module", () => {
-  it("defines an authoritative color palette of at least 25 distinct colors with light and dark variants", () => {
+  it("defines an authoritative color palette of at least 25 distinct colors", () => {
     expect(COLOR_PALETTE.length).toBeGreaterThanOrEqual(25);
 
     // Verify all hex codes in palette are unique
@@ -22,18 +22,17 @@ describe("collectionColors module", () => {
     const colorNames = new Set(COLOR_PALETTE.map((c) => c.colorName.toLowerCase()));
     expect(colorNames.size).toBe(COLOR_PALETTE.length);
 
-    // Verify each color has both light mode and dark mode styling classes
+    // Verify each color has styling classes
     for (const color of COLOR_PALETTE) {
       expect(color.badgeClass).toContain("bg-");
-      expect(color.badgeClass).toContain("dark:bg-");
       expect(color.badgeClass).toContain("text-");
-      expect(color.badgeClass).toContain("dark:text-");
-      expect(color.bgClass).toContain("dark:bg-");
-      expect(color.textClass).toContain("dark:text-");
-      expect(color.borderClass).toContain("dark:border-");
+      expect(color.badgeClass).toContain("border-");
+      expect(color.bgClass).toContain("bg-");
+      expect(color.textClass).toContain("text-");
+      expect(color.borderClass).toContain("border-");
       expect(color.trimClass).toContain("bg-");
       expect(color.dotClass).toContain("bg-");
-      expect(color.iconBgClass).toContain("dark:bg-");
+      expect(color.iconBgClass).toContain("bg-");
       expect(color.hoverBorderClass).toContain("hover:border-");
     }
   });
@@ -111,14 +110,14 @@ describe("collectionColors module", () => {
     expect(getCollectionColor("build").id).toBe("builds");
     expect(getCollectionColor("builds").id).toBe("builds");
     expect(getCollectionColor("builds").hex).toBe("#3b82f6");
-    expect(getCollectionColor("builds").textClass).toBe("text-blue-600 dark:text-blue-400");
+    expect(getCollectionColor("builds").textClass).toBe("text-blue-400");
     expect(getCollectionColor("the-forge").id).toBe("the-forge");
     expect(getCollectionColor("the-forge").hex).toBe("#FF6D00");
-    expect(getCollectionColor("the-forge").textClass).toBe("text-[#FF6D00] dark:text-[#FF6D00]");
+    expect(getCollectionColor("the-forge").textClass).toBe("text-[#FF6D00]");
     expect(getCollectionColor("forge").id).toBe("the-forge");
     expect(getCollectionColor("build-wizard").id).toBe("the-forge");
     expect(getCollectionColor("build-wizard").hex).toBe("#FF6D00");
-    expect(getCollectionColor("build-wizard").textClass).toBe("text-[#FF6D00] dark:text-[#FF6D00]");
+    expect(getCollectionColor("build-wizard").textClass).toBe("text-[#FF6D00]");
     expect(getCollectionColor("builds/new").id).toBe("the-forge");
     expect(getCollectionColor("builds/new").hex).toBe("#FF6D00");
 

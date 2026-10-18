@@ -81,7 +81,7 @@ describe("BatteryPickerModal Component", () => {
     // Incompatible battery badge should be displayed
     const badge = screen.getByText(/Incompatible/i);
     expect(badge).toBeInTheDocument();
-    expect(badge.className).toContain("text-amber-700");
+    expect(badge.className).toContain("text-amber-400");
 
     // Incompatible card should have the Forge styling classes
     const incompatibleCard = badge.closest(".group");

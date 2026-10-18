@@ -221,13 +221,13 @@ function ProductHoverCardPresenter({
               transform: coords.placeAbove ? "translateY(-100%)" : "none",
               zIndex: 9999,
             }}
-            className="w-80 max-w-[calc(100vw-2rem)] p-3.5 bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 rounded-xl shadow-xl transition-opacity animate-in fade-in zoom-in-95 duration-150 pointer-events-auto"
+            className="w-80 max-w-[calc(100vw-2rem)] p-3.5 bg-zinc-900 border border-zinc-800 rounded-xl shadow-xl transition-opacity animate-in fade-in zoom-in-95 duration-150 pointer-events-auto"
             data-testid="product-hover-card"
           >
             {/* Header: Thumbnail + Title + Badge */}
             <div className="flex items-start gap-3">
               <div
-                className={`w-12 h-12 rounded-lg shrink-0 flex items-center justify-center overflow-hidden border border-zinc-200/80 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/80 ${colColor.textClass}`}
+                className={`w-12 h-12 rounded-lg shrink-0 flex items-center justify-center overflow-hidden border border-zinc-800 bg-zinc-800/80 ${colColor.textClass}`}
               >
                 {product.primaryDisplayImage ? (
                   <img
@@ -244,12 +244,12 @@ function ProductHoverCardPresenter({
                 <div className="flex items-center gap-1.5 mb-0.5">
                   <CollectionBadge collection={collectionId} size="xs" />
                   {product.manufacturer && (
-                    <span className="text-[11px] font-semibold text-zinc-400 dark:text-zinc-500 uppercase truncate">
+                    <span className="text-[11px] font-semibold text-zinc-500 uppercase truncate">
                       {product.manufacturer}
                     </span>
                   )}
                 </div>
-                <h4 className="text-sm font-bold text-zinc-900 dark:text-zinc-100 truncate">
+                <h4 className="text-sm font-bold text-zinc-100 truncate">
                   {product.name || product.id}
                 </h4>
               </div>
@@ -257,19 +257,19 @@ function ProductHoverCardPresenter({
 
             {/* Spec Highlights Grid */}
             {collection?.highlights && collection.highlights.length > 0 && (
-              <div className="grid grid-cols-2 gap-1.5 mt-3 pt-2.5 border-t border-zinc-100 dark:border-zinc-800/80">
+              <div className="grid grid-cols-2 gap-1.5 mt-3 pt-2.5 border-t border-zinc-800/80">
                 {collection.highlights.slice(0, 4).map((h) => {
                   let val = h.value(product);
                   if (val == null || val === "" || val === "-") val = "N/A";
                   return (
                     <div
                       key={h.label}
-                      className="bg-zinc-50 dark:bg-zinc-800/50 p-1.5 rounded-md border border-zinc-100 dark:border-zinc-800/60"
+                      className="bg-zinc-800/50 p-1.5 rounded-md border border-zinc-800/60"
                     >
-                      <span className="text-[10px] uppercase font-semibold text-zinc-400 dark:text-zinc-500 block truncate">
+                      <span className="text-[10px] uppercase font-semibold text-zinc-500 block truncate">
                         {h.label}
                       </span>
-                      <span className="text-xs font-semibold text-zinc-800 dark:text-zinc-200 truncate block">
+                      <span className="text-xs font-semibold text-zinc-200 truncate block">
                         {val}
                       </span>
                     </div>
@@ -280,16 +280,16 @@ function ProductHoverCardPresenter({
 
             {/* Description Clamped */}
             {product.description && (
-              <p className="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2 mt-2 leading-relaxed">
+              <p className="text-xs text-zinc-400 line-clamp-2 mt-2 leading-relaxed">
                 {product.description}
               </p>
             )}
 
             {/* Footer Direct Link */}
-            <div className="mt-2.5 pt-2 border-t border-zinc-100 dark:border-zinc-800 flex items-center justify-end">
+            <div className="mt-2.5 pt-2 border-t border-zinc-800 flex items-center justify-end">
               <Link
                 to={productUrl}
-                className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-blue-400 hover:underline"
               >
                 <span>Details</span>
                 <ExternalLink size={12} />

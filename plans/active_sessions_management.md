@@ -136,9 +136,7 @@ gracefully as the user accumulates multiple device logins:
      `max-h-[224px] overflow-y-auto pr-1.5 space-y-2`.
    - Exactly 3 sessions fit within the container with the 4th session partially
      peeking below the fold to visually signal scrollability.
-   - Styled with custom subtle scrollbar thumb rules
-     (`rgba(161, 161, 170, 0.35)` in light theme, `rgba(82, 82, 91, 0.5)` in
-     dark theme).
+   - Styled with custom subtle scrollbar thumb rules (`rgba(82, 82, 91, 0.5)`).
    - If 3 or fewer sessions exist, the container renders naturally without a
      scrollbar.
 3. **Current Device Status Indicator**:

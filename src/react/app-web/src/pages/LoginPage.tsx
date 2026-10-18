@@ -1,10 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ConnectError, Code } from "@connectrpc/connect";
-import { Moon, Sun, Loader2, Mail, AlertTriangle, Lock, Check } from "lucide-react";
+import { Loader2, Mail, AlertTriangle, Lock, Check } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-import logoDark from "../assets/quadsmith-logo-dark.svg";
-import logoLight from "../assets/quadsmith-logo-light.svg";
+import logo from "../assets/quadsmith-logo.svg";
 import {
   OtpVerificationErrorSchema,
   LoginChallengeStatus,
@@ -36,7 +35,6 @@ export function LoginPage() {
   const oauthCode = searchParams.get("code");
   const oauthState = searchParams.get("state");
 
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
   const [step, setStep] = useState<"email" | "otp" | "setup">(magicToken ? "otp" : "email");
   const [isOAuthProcessing, setIsOAuthProcessing] = useState(Boolean(oauthCode && oauthState));
   const [isOAuthLoading, setIsOAuthLoading] = useState(false);
@@ -97,35 +95,6 @@ export function LoginPage() {
     }, 1000);
     return () => clearInterval(timer);
   }, [rateLimitCooldown]);
-
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  useEffect(() => {
-    const handleStorage = (e: StorageEvent) => {
-      if (e.key === "theme" && (e.newValue === "light" || e.newValue === "dark")) {
-        setTheme(e.newValue);
-      }
-    };
-    const handleCustom = (e: Event) => {
-      const detail = (e as CustomEvent).detail;
-      if (detail === "light" || detail === "dark") {
-        setTheme(detail);
-      }
-    };
-    window.addEventListener("storage", handleStorage);
-    window.addEventListener("qs-theme-change", handleCustom);
-    return () => {
-      window.removeEventListener("storage", handleStorage);
-      window.removeEventListener("qs-theme-change", handleCustom);
-    };
-  }, []);
 
   // If already logged in, redirect immediately (unless viewing an approval magic link or completing OAuth)
   useEffect(() => {
@@ -345,8 +314,6 @@ export function LoginPage() {
     return () => clearTimeout(timeout);
   }, [username, checkUsernameAvailable]);
 
-  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
-
   const handleSendEmail = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     const trimmed = email.trim();
@@ -469,12 +436,12 @@ export function LoginPage() {
         data-testid="otp-error-banner"
         className={`p-3.5 rounded-xl border text-xs flex items-start gap-2.5 ${
           isExhausted || isRateLimited || isDenied
-            ? "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
+            ? "border-red-500/30 bg-red-500/10 text-red-400"
             : remainingAttempts === 2
-              ? "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300"
+              ? "border-amber-500/30 bg-amber-500/10 text-amber-300"
               : remainingAttempts === 1
-                ? "border-rose-500/30 bg-rose-500/10 text-rose-700 dark:text-rose-400"
-                : "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-400"
+                ? "border-rose-500/30 bg-rose-500/10 text-rose-400"
+                : "border-red-500/30 bg-red-500/10 text-red-400"
         }`}
       >
         {isExhausted || isRateLimited || isDenied ? (
@@ -526,17 +493,17 @@ export function LoginPage() {
           !isDenied ? (
             <div
               data-testid="waiting-for-approval-banner"
-              className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center gap-3 text-xs text-left"
+              className="p-3.5 rounded-xl border border-blue-500/20 bg-blue-500/10 text-blue-400 flex items-center gap-3 text-xs text-left"
             >
               <div className="relative flex items-center justify-center w-4 h-4 shrink-0">
                 <span className="absolute w-3.5 h-3.5 rounded-full bg-blue-400/40 animate-ping"></span>
                 <span className="w-2 h-2 rounded-full bg-blue-500"></span>
               </div>
               <div className="space-y-0.5 flex-1">
-                <p className="font-semibold text-zinc-900 dark:text-zinc-100">
+                <p className="font-semibold text-zinc-100">
                   Waiting for magic link approval on your other device...
                 </p>
-                <p className="text-[11px] text-zinc-600 dark:text-zinc-400">
+                <p className="text-[11px] text-zinc-400">
                   Click the magic link in your email on your phone to instantly log in here, or
                   enter the 6-digit code below.
                 </p>
@@ -558,7 +525,7 @@ export function LoginPage() {
             data-testid="avatar-preview"
             className={`w-16 h-16 rounded-full border flex items-center justify-center font-bold text-2xl shadow-2xs overflow-hidden relative transition-colors duration-150 ${
               avatarUrl && !avatarLoadError
-                ? "border-zinc-200 dark:border-zinc-800"
+                ? "border-zinc-800"
                 : getAvatarPalette(username.trim().toLowerCase() || email).badgeClass
             }`}
           >
@@ -577,7 +544,7 @@ export function LoginPage() {
           </div>
         </div>
         <h1 className="text-xl font-bold tracking-tight">Account Setup</h1>
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+        <p className="text-xs text-zinc-400">
           Your username is your public display identifier across Quadsmith.
         </p>
       </div>
@@ -587,10 +554,7 @@ export function LoginPage() {
         {/* Username Input */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label
-              htmlFor="usernameInput"
-              className="text-xs font-semibold text-zinc-700 dark:text-zinc-300"
-            >
+            <label htmlFor="usernameInput" className="text-xs font-semibold text-zinc-300">
               Username
             </label>
             {usernameStatus === "checking" ? (
@@ -620,14 +584,14 @@ export function LoginPage() {
               spellCheck={false}
               aria-invalid={usernameStatus === "invalid" || usernameStatus === "unavailable"}
               aria-describedby="username-feedback"
-              className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-mono text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none transition ${
+              className={`w-full px-3.5 py-2.5 rounded-xl border text-xs font-mono text-zinc-100 placeholder:text-zinc-600 focus:outline-none transition ${
                 usernameStatus === "available"
                   ? "border-emerald-500/80 bg-emerald-500/5 focus:ring-2 focus:ring-emerald-500"
                   : usernameStatus === "unavailable"
                     ? "border-amber-500 bg-amber-500/5 focus:ring-2 focus:ring-amber-500"
                     : usernameStatus === "invalid"
                       ? "border-rose-500 bg-rose-500/5 focus:ring-2 focus:ring-rose-500"
-                      : "border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 focus:ring-2 focus:ring-blue-500"
+                      : "border-zinc-700 bg-zinc-950 focus:ring-2 focus:ring-blue-500"
               }`}
             />
           </div>
@@ -636,12 +600,12 @@ export function LoginPage() {
             data-testid="username-feedback"
             className={`text-[10px] ${
               usernameStatus === "available"
-                ? "text-emerald-600 dark:text-emerald-400 font-medium"
+                ? "text-emerald-400 font-medium"
                 : usernameStatus === "unavailable"
-                  ? "text-amber-600 dark:text-amber-400 font-medium"
+                  ? "text-amber-400 font-medium"
                   : usernameStatus === "invalid"
-                    ? "text-rose-600 dark:text-rose-400 font-medium"
-                    : "text-zinc-500 dark:text-zinc-400"
+                    ? "text-rose-400 font-medium"
+                    : "text-zinc-400"
             }`}
           >
             {usernameMessage ||
@@ -652,10 +616,7 @@ export function LoginPage() {
         {/* Display Image URL (Optional) */}
         <div className="space-y-1.5">
           <div className="flex items-center justify-between">
-            <label
-              htmlFor="avatarUrlInput"
-              className="text-xs font-semibold text-zinc-700 dark:text-zinc-300"
-            >
+            <label htmlFor="avatarUrlInput" className="text-xs font-semibold text-zinc-300">
               Display Image URL
             </label>
             <span className="text-[10px] text-zinc-400 font-normal">Optional</span>
@@ -670,9 +631,9 @@ export function LoginPage() {
               setAvatarLoadError(false);
               setAvatarUrl(e.target.value);
             }}
-            className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            className="w-full px-3.5 py-2.5 rounded-xl border border-zinc-700 bg-zinc-950 text-xs text-zinc-100 placeholder:text-zinc-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           />
-          <p className="text-[10px] text-zinc-400 dark:text-zinc-500">
+          <p className="text-[10px] text-zinc-500">
             Provide an image link, or leave blank to display your initial with adaptive category
             palette.
           </p>
@@ -683,7 +644,7 @@ export function LoginPage() {
       {setupError && (
         <div
           data-testid="setup-error-banner"
-          className="p-3 rounded-xl text-xs bg-rose-500/10 border border-rose-500/30 text-rose-700 dark:text-rose-400 font-medium flex items-center gap-2"
+          className="p-3 rounded-xl text-xs bg-rose-500/10 border border-rose-500/30 text-rose-400 font-medium flex items-center gap-2"
         >
           <AlertTriangle size={15} className="shrink-0 text-rose-500" />
           <span>{setupError}</span>
@@ -699,7 +660,7 @@ export function LoginPage() {
           onClick={handleCompleteSetup}
           className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
             usernameStatus !== "available" || isCompletingSetup
-              ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
+              ? "text-zinc-500 bg-zinc-800 border border-zinc-700 cursor-not-allowed opacity-60"
               : "text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 cursor-pointer"
           }`}
         >
@@ -718,7 +679,7 @@ export function LoginPage() {
           <button
             type="button"
             onClick={handleResetToEmail}
-            className="text-[11px] text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 transition cursor-pointer underline-offset-2 hover:underline"
+            className="text-[11px] text-zinc-400 hover:text-zinc-300 transition cursor-pointer underline-offset-2 hover:underline"
           >
             Use a different email
           </button>
@@ -728,7 +689,7 @@ export function LoginPage() {
   );
 
   return (
-    <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 bg-zinc-100 dark:bg-zinc-950 text-zinc-900 dark:text-zinc-50 font-sans relative">
+    <div className="min-h-screen w-full flex flex-col items-center justify-center p-4 bg-zinc-950 text-zinc-50 font-sans relative">
       <style>{`
         @keyframes slideInTrack {
           from {
@@ -740,24 +701,15 @@ export function LoginPage() {
         }
       `}</style>
 
-      {/* Theme Switcher Button */}
-      <button
-        onClick={toggleTheme}
-        aria-label="Toggle theme"
-        className="absolute top-4 right-4 p-2.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 shadow-2xs transition"
-      >
-        {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
-      </button>
-
       {/* CLI Login Approved Screen */}
       {cliLoginApproved && (
-        <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl p-8 space-y-6 text-center">
+        <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 shadow-xl p-8 space-y-6 text-center">
           <div className="w-12 h-12 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center mx-auto border border-emerald-500/20">
             <Check size={24} />
           </div>
           <div className="space-y-2">
             <h1 className="text-xl font-bold tracking-tight">CLI Login Approved</h1>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-xs text-zinc-400">
               You are now signed in to Quadsmith CLI on your terminal. You can safely close this
               window.
             </p>
@@ -767,40 +719,34 @@ export function LoginPage() {
 
       {/* OAuth In-Progress Screen */}
       {isOAuthProcessing && !cliLoginApproved && (
-        <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl p-8 space-y-6 text-center">
+        <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 shadow-xl p-8 space-y-6 text-center">
           <div className="flex justify-center">
             <Loader2 size={32} className="animate-spin text-blue-500" />
           </div>
           <div className="space-y-1">
             <h2 className="text-base font-semibold">Completing authentication...</h2>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
-              Exchanging credentials with provider...
-            </p>
+            <p className="text-xs text-zinc-400">Exchanging credentials with provider...</p>
           </div>
         </div>
       )}
 
       {/* DEVICE B: Magic Link Approval Screen */}
       {magicToken && !cliLoginApproved && !isOAuthProcessing && (
-        <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl overflow-hidden relative">
-          <ChallengeApprovalScreen token={magicToken} theme={theme as "light" | "dark"} />
+        <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 shadow-xl overflow-hidden relative">
+          <ChallengeApprovalScreen token={magicToken} />
         </div>
       )}
 
       {/* DEVICE A: STEP 1: Email Form Modal */}
       {!magicToken && !cliLoginApproved && !isOAuthProcessing && step === "email" && (
-        <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl p-8 space-y-6">
+        <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 shadow-xl p-8 space-y-6">
           {/* Header Logo */}
           <div className="text-center space-y-3">
             <div className="flex justify-center">
-              <img
-                src={theme === "dark" ? logoDark : logoLight}
-                alt="Quadsmith"
-                className="h-10 w-auto"
-              />
+              <img src={logo} alt="Quadsmith" className="h-10 w-auto" />
             </div>
             <h1 className="text-xl font-bold tracking-tight">Sign in to Quadsmith</h1>
-            <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="text-xs text-zinc-400">
               Design, evaluate, and share high-performance FPV drone builds.
             </p>
           </div>
@@ -811,7 +757,7 @@ export function LoginPage() {
               <div>
                 <label
                   htmlFor="emailInput"
-                  className="block text-xs font-medium text-zinc-700 dark:text-zinc-300 mb-1.5"
+                  className="block text-xs font-medium text-zinc-300 mb-1.5"
                 >
                   Email Address
                 </label>
@@ -829,7 +775,7 @@ export function LoginPage() {
                     placeholder="alex@quadsmith.dev"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 text-sm text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-zinc-700 bg-zinc-950 text-sm text-zinc-100 placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
               </div>
@@ -847,7 +793,7 @@ export function LoginPage() {
                     disabled={isSendDisabled}
                     className={`w-full py-2.5 rounded-xl font-semibold text-xs transition shadow-sm flex items-center justify-center gap-2 ${
                       isSendDisabled
-                        ? "text-zinc-400 dark:text-zinc-500 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 cursor-not-allowed opacity-60"
+                        ? "text-zinc-500 bg-zinc-800 border border-zinc-700 cursor-not-allowed opacity-60"
                         : "text-white bg-blue-600 hover:bg-blue-500 active:bg-blue-700 cursor-pointer"
                     }`}
                   >
@@ -878,11 +824,11 @@ export function LoginPage() {
 
             {/* OAuth Continue With Buttons */}
             <div className="relative flex items-center py-1">
-              <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800"></div>
-              <span className="flex-shrink mx-3 text-[10px] font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+              <div className="flex-grow border-t border-zinc-800"></div>
+              <span className="flex-shrink mx-3 text-[10px] font-semibold uppercase tracking-wider text-zinc-500">
                 Or continue with
               </span>
-              <div className="flex-grow border-t border-zinc-200 dark:border-zinc-800"></div>
+              <div className="flex-grow border-t border-zinc-800"></div>
             </div>
 
             <div className="space-y-2.5">
@@ -890,7 +836,7 @@ export function LoginPage() {
                 type="button"
                 disabled={isOAuthLoading}
                 onClick={() => handleOAuthLogin(OAuthProvider.OAUTH_PROVIDER_GOOGLE)}
-                className="w-full py-2.5 px-4 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800/90 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-100 font-semibold text-xs transition flex items-center justify-center gap-2.5 shadow-2xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-2.5 px-4 rounded-xl border border-zinc-700 bg-zinc-800/90 hover:bg-zinc-800 text-zinc-100 font-semibold text-xs transition flex items-center justify-center gap-2.5 shadow-2xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <GoogleIcon className="w-4 h-4 shrink-0" />
                 <span>Continue with Google</span>
@@ -900,7 +846,7 @@ export function LoginPage() {
                 type="button"
                 disabled={isOAuthLoading}
                 onClick={() => handleOAuthLogin(OAuthProvider.OAUTH_PROVIDER_GITHUB)}
-                className="w-full py-2.5 px-4 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800/90 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-100 font-semibold text-xs transition flex items-center justify-center gap-2.5 shadow-2xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-2.5 px-4 rounded-xl border border-zinc-700 bg-zinc-800/90 hover:bg-zinc-800 text-zinc-100 font-semibold text-xs transition flex items-center justify-center gap-2.5 shadow-2xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <GitHubIcon className="w-4 h-4 shrink-0 fill-current" />
                 <span>Continue with GitHub</span>
@@ -910,7 +856,7 @@ export function LoginPage() {
                 type="button"
                 disabled={isOAuthLoading}
                 onClick={() => handleOAuthLogin(OAuthProvider.OAUTH_PROVIDER_DISCORD)}
-                className="w-full py-2.5 px-4 rounded-xl border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800/90 hover:bg-zinc-50 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-100 font-semibold text-xs transition flex items-center justify-center gap-2.5 shadow-2xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-2.5 px-4 rounded-xl border border-zinc-700 bg-zinc-800/90 hover:bg-zinc-800 text-zinc-100 font-semibold text-xs transition flex items-center justify-center gap-2.5 shadow-2xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <DiscordIcon className="w-4 h-4 shrink-0" />
                 <span>Continue with Discord</span>
@@ -922,14 +868,14 @@ export function LoginPage() {
 
       {/* DEVICE A: STEP 2: Verify Email Modal */}
       {!magicToken && !cliLoginApproved && !isOAuthProcessing && step === "otp" && (
-        <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl overflow-hidden relative">
+        <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 shadow-xl overflow-hidden relative">
           {renderVerifyEmailScreen(false)}
         </div>
       )}
 
       {/* DEVICE A: STEP 3: Sliding Transition into Account Setup */}
       {!magicToken && !cliLoginApproved && !isOAuthProcessing && step === "setup" && (
-        <div className="w-full max-w-md rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl overflow-hidden relative">
+        <div className="w-full max-w-md rounded-2xl border border-zinc-800 bg-zinc-900 shadow-xl overflow-hidden relative">
           <div
             data-testid="sliding-container"
             className="flex w-[200%] items-start"

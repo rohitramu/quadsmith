@@ -66,7 +66,7 @@ export function CollectionBadge({
       <span
         data-testid="collection-badge"
         title={color.name}
-        className={`inline-flex items-center gap-1.5 font-medium font-mono shrink-0 transition-colors text-zinc-700 dark:text-zinc-300 select-none ${textSizes[size]} ${className}`}
+        className={`inline-flex items-center gap-1.5 font-medium font-mono shrink-0 transition-colors text-zinc-300 select-none ${textSizes[size]} ${className}`}
       >
         {withIcon && <CollectionIcon collection={collection} color={true} size={iconSizes[size]} />}
         <span className="truncate">{displayText}</span>

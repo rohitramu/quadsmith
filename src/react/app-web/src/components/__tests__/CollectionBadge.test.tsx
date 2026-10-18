@@ -11,8 +11,8 @@ describe("CollectionBadge Component", () => {
     expect(badge).toBeInTheDocument();
 
     const container = screen.getByTestId("collection-badge");
-    expect(container).toHaveClass("text-zinc-700");
-    expect(container).not.toHaveClass("bg-lime-100");
+    expect(container).toHaveClass("text-zinc-300");
+    expect(container).not.toHaveClass("bg-lime-950/60");
     // Contains SVG icon and text span
     expect(container.querySelector("svg")).toBeInTheDocument();
   });
@@ -24,7 +24,7 @@ describe("CollectionBadge Component", () => {
     expect(badge).toBeInTheDocument();
 
     const container = screen.getByTestId("collection-badge");
-    expect(container).toHaveClass("bg-lime-100");
+    expect(container).toHaveClass("bg-lime-950/60");
     expect(container.children.length).toBe(1);
   });
 

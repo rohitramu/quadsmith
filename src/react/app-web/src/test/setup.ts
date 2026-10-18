@@ -9,13 +9,10 @@ afterEach(() => {
   if (typeof localStorage !== "undefined") {
     localStorage.clear();
   }
-  if (typeof document !== "undefined") {
-    document.documentElement.classList.remove("dark");
-  }
   vi.restoreAllMocks();
 });
 
-// Mock window.matchMedia for theme detection and responsive queries
+// Mock window.matchMedia for responsive queries
 if (typeof window !== "undefined") {
   Object.defineProperty(window, "matchMedia", {
     writable: true,

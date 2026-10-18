@@ -134,7 +134,7 @@ export function StyledSelect<T extends string | number = string>({
         }
         disabled={disabled}
         onClick={() => !disabled && setIsOpen((prev) => !prev)}
-        className={`w-full flex items-center justify-between font-medium border bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 text-zinc-800 dark:text-zinc-200 transition-colors shadow-xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${sizeClasses} ${buttonClassName}`}
+        className={`w-full flex items-center justify-between font-medium border bg-zinc-900 border-zinc-800 hover:border-zinc-700 text-zinc-200 transition-colors shadow-xs cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${sizeClasses} ${buttonClassName}`}
       >
         <span className="flex items-center gap-1.5 truncate">
           {selectedOption?.icon}
@@ -142,7 +142,7 @@ export function StyledSelect<T extends string | number = string>({
         </span>
         <ChevronDown
           size={size === "sm" ? 12 : 14}
-          className={`text-zinc-400 dark:text-zinc-500 shrink-0 transition-transform duration-150 ${
+          className={`text-zinc-500 shrink-0 transition-transform duration-150 ${
             isOpen ? "rotate-180" : ""
           }`}
           aria-hidden="true"
@@ -155,7 +155,7 @@ export function StyledSelect<T extends string | number = string>({
           id={listboxId}
           role="listbox"
           aria-label={ariaLabel}
-          className={`absolute left-0 z-50 mt-1 min-w-full max-h-60 overflow-y-auto rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-xl py-1 text-xs focus:outline-hidden ${menuClassName}`}
+          className={`absolute left-0 z-50 mt-1 min-w-full max-h-60 overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-900 shadow-xl py-1 text-xs focus:outline-hidden ${menuClassName}`}
         >
           {options.map((option, idx) => {
             const isSelected = option.value === value;
@@ -169,21 +169,15 @@ export function StyledSelect<T extends string | number = string>({
                 onClick={() => handleSelect(option.value)}
                 onMouseEnter={() => setHighlightedIndex(idx)}
                 className={`flex items-center justify-between gap-3 px-3 py-1.5 cursor-pointer select-none transition-colors ${
-                  isHighlighted
-                    ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100"
-                    : "text-zinc-700 dark:text-zinc-300"
-                } ${isSelected ? "font-semibold text-emerald-600 dark:text-emerald-400" : ""}`}
+                  isHighlighted ? "bg-zinc-800 text-zinc-100" : "text-zinc-300"
+                } ${isSelected ? "font-semibold text-emerald-400" : ""}`}
               >
                 <div className="flex items-center gap-2 truncate">
                   {option.icon}
                   <span className="truncate">{option.label}</span>
                 </div>
                 {isSelected && (
-                  <Check
-                    size={12}
-                    className="text-emerald-600 dark:text-emerald-400 shrink-0"
-                    aria-hidden="true"
-                  />
+                  <Check size={12} className="text-emerald-400 shrink-0" aria-hidden="true" />
                 )}
               </div>
             );

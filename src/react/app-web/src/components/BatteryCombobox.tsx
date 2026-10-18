@@ -206,7 +206,7 @@ export function BatteryCombobox({
                 ? "No compatible batteries"
                 : displayLabel || placeholder
           }
-          className="w-full pl-8 pr-14 py-1.5 rounded-lg bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-blue-500 font-medium transition-all shadow-xs truncate cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full pl-8 pr-14 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 hover:border-zinc-700 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-1 focus:ring-blue-500 font-medium transition-all shadow-xs truncate cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
           data-testid="battery-combobox-input"
           data-battery-id={selectedBatteryId}
         />
@@ -217,7 +217,7 @@ export function BatteryCombobox({
               type="button"
               onClick={handleClear}
               aria-label="Clear search"
-              className="p-1 rounded text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors"
+              className="p-1 rounded text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 transition-colors"
             >
               <X size={12} />
             </button>
@@ -232,7 +232,7 @@ export function BatteryCombobox({
               }
             }}
             aria-label="Toggle battery list"
-            className="p-1 rounded text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+            className="p-1 rounded text-zinc-400 hover:text-zinc-200 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <ChevronDown
               size={13}
@@ -248,11 +248,11 @@ export function BatteryCombobox({
           role="listbox"
           aria-label="Batteries"
           ref={listRef}
-          className="absolute left-0 right-0 top-full mt-1 z-50 rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-100"
+          className="absolute left-0 right-0 top-full mt-1 z-50 rounded-xl bg-zinc-900 border border-zinc-800 shadow-xl overflow-hidden animate-in fade-in zoom-in-95 duration-100"
           data-testid="battery-combobox-dropdown"
         >
           {/* Header count info */}
-          <div className="px-3 py-1.5 border-b border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950/60 flex items-center justify-between text-[10px] text-zinc-500 dark:text-zinc-400">
+          <div className="px-3 py-1.5 border-b border-zinc-800 bg-zinc-950/60 flex items-center justify-between text-[10px] text-zinc-400">
             <span>
               {displayItems.length === 0
                 ? "No compatible batteries"
@@ -264,9 +264,9 @@ export function BatteryCombobox({
           </div>
 
           {/* List items */}
-          <ul className="max-h-60 overflow-y-auto divide-y divide-zinc-100 dark:divide-zinc-800/40 text-xs">
+          <ul className="max-h-60 overflow-y-auto divide-y divide-zinc-800/40 text-xs">
             {displayItems.length === 0 ? (
-              <li className="p-3 text-center text-xs text-zinc-400 dark:text-zinc-500">
+              <li className="p-3 text-center text-xs text-zinc-500">
                 {isSearching
                   ? "Searching batteries..."
                   : debouncedQuery
@@ -287,11 +287,9 @@ export function BatteryCombobox({
                     productId={bId}
                     as="li"
                     placement="side"
-                    className={`p-2.5 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 cursor-pointer flex items-center justify-between transition-colors ${
-                      isSelected
-                        ? "bg-blue-50/80 dark:bg-blue-950/30 border-l-2 border-blue-500"
-                        : ""
-                    } ${isHighlighted ? "bg-zinc-100 dark:bg-zinc-800" : ""}`}
+                    className={`p-2.5 hover:bg-zinc-800/80 cursor-pointer flex items-center justify-between transition-colors ${
+                      isSelected ? "bg-blue-950/30 border-l-2 border-blue-500" : ""
+                    } ${isHighlighted ? "bg-zinc-800" : ""}`}
                   >
                     <div
                       role="option"
@@ -302,17 +300,15 @@ export function BatteryCombobox({
                       <span
                         className={`w-2 h-2 rounded-full shrink-0 ${
                           b.cellCountS === 6
-                            ? "bg-amber-500 dark:bg-amber-400"
+                            ? "bg-amber-400"
                             : b.cellCountS === 4
-                              ? "bg-emerald-500 dark:bg-emerald-400"
-                              : "bg-blue-500 dark:bg-blue-400"
+                              ? "bg-emerald-400"
+                              : "bg-blue-400"
                         }`}
                       />
                       <div className="min-w-0 flex-1">
-                        <div className="font-medium text-zinc-900 dark:text-zinc-100 truncate">
-                          {b.name}
-                        </div>
-                        <div className="text-[10px] text-zinc-500 dark:text-zinc-400 font-mono flex items-center gap-1.5 flex-wrap">
+                        <div className="font-medium text-zinc-100 truncate">{b.name}</div>
+                        <div className="text-[10px] text-zinc-400 font-mono flex items-center gap-1.5 flex-wrap">
                           {b.cellCountS ? <span>{b.cellCountS}S</span> : null}
                           {b.capacityMah ? <span>• {b.capacityMah}mAh</span> : null}
                           {b.weightG ? <span>• {b.weightG.toFixed(2)}g</span> : null}
@@ -320,9 +316,7 @@ export function BatteryCombobox({
                         </div>
                       </div>
                     </div>
-                    {isSelected && (
-                      <Check size={14} className="text-blue-600 dark:text-blue-400 shrink-0 ml-2" />
-                    )}
+                    {isSelected && <Check size={14} className="text-blue-400 shrink-0 ml-2" />}
                   </ProductHoverCard>
                 );
               })

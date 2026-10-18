@@ -261,13 +261,13 @@ export function EllipsisHint() {
         zIndex: 99999,
         opacity: coords ? 1 : 0,
       }}
-      className="fixed z-[99999] pointer-events-none px-3 py-1.5 rounded-lg text-xs font-medium leading-relaxed bg-zinc-900/95 dark:bg-zinc-800/95 text-zinc-100 dark:text-zinc-100 shadow-xl border border-zinc-700/80 dark:border-zinc-600/80 backdrop-blur-xs select-none break-words transition-opacity duration-150"
+      className="fixed z-[99999] pointer-events-none px-3 py-1.5 rounded-lg text-xs font-medium leading-relaxed bg-zinc-800/95 text-zinc-100 shadow-xl border border-zinc-600/80 backdrop-blur-xs select-none break-words transition-opacity duration-150"
     >
       {activeHint.text}
       {coords && (
         <div
           style={{ left: `${coords.arrowOffset}px` }}
-          className={`absolute -translate-x-1/2 w-2 h-2 rotate-45 bg-zinc-900 dark:bg-zinc-800 border-zinc-700/80 dark:border-zinc-600/80 ${
+          className={`absolute -translate-x-1/2 w-2 h-2 rotate-45 bg-zinc-800 border-zinc-600/80 ${
             activeHint.placeAbove
               ? "bottom-[-5px] border-r border-b"
               : "top-[-5px] border-l border-t"

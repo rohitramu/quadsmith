@@ -70,7 +70,7 @@ export function ReceiverStep() {
     <div className="space-y-4">
       {/* Compatibility Conflict Banner */}
       {conflictMsg && (
-        <div className="p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300 flex items-start gap-3 text-xs">
+        <div className="p-3.5 rounded-xl border border-amber-500/30 bg-amber-500/10 text-amber-300 flex items-start gap-3 text-xs">
           <AlertCircle size={16} className="text-amber-500 mt-0.5 shrink-0" />
           <div>
             <span className="font-bold">Incompatibility Detected</span>
@@ -80,10 +80,7 @@ export function ReceiverStep() {
       )}
 
       {/* Main Container */}
-      <div
-        id="section-rx"
-        className="p-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 space-y-3"
-      >
+      <div id="section-rx" className="p-4 rounded-2xl border border-zinc-800 bg-zinc-900 space-y-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <CollectionIcon
@@ -91,10 +88,8 @@ export function ReceiverStep() {
               size={16}
               color={getCollectionColor("receivers")}
             />
-            <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
-              3. Radio Control Receiver
-            </h3>
-            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-zinc-100 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-400">
+            <h3 className="font-bold text-sm text-zinc-100">3. Radio Control Receiver</h3>
+            <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded bg-zinc-800 text-zinc-400">
               Required
             </span>
           </div>
@@ -107,18 +102,18 @@ export function ReceiverStep() {
                   ?.scrollIntoView({ behavior: "smooth", block: "center" });
               }}
               title="Scroll to selected receiver"
-              className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
+              className="text-xs font-semibold text-emerald-400 hover:text-emerald-300 hover:underline flex items-center gap-1 px-1.5 py-0.5 rounded bg-emerald-950/40 border border-emerald-800/60 transition-all cursor-pointer shadow-2xs"
             >
               <Check size={12} strokeWidth={2.5} /> Selected
             </button>
           ) : (
-            <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 truncate max-w-[200px]">
+            <span className="text-xs font-semibold text-blue-400 truncate max-w-[200px]">
               None selected
             </span>
           )}
         </div>
 
-        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+        <p className="text-xs text-zinc-400">
           The receiver picks up control stick inputs from your radio transmitter (ExpressLRS,
           Crossfire, etc.).
         </p>
@@ -135,26 +130,24 @@ export function ReceiverStep() {
           }}
           className={`p-3.5 rounded-xl border transition-all flex items-center justify-between gap-3 ${
             !fcHasIntegratedRx
-              ? "opacity-40 cursor-not-allowed border-zinc-200 dark:border-zinc-800 bg-zinc-100/50 dark:bg-zinc-900/40"
+              ? "opacity-40 cursor-not-allowed border-zinc-800 bg-zinc-900/40"
               : isUsingIntegrated
-                ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs cursor-pointer"
+                ? "border-blue-500 bg-blue-950/30 ring-1 ring-blue-500 shadow-xs cursor-pointer"
                 : "border-purple-500/30 bg-purple-500/5 hover:border-purple-500/60 cursor-pointer"
           }`}
         >
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center shrink-0">
               <Sparkles size={16} />
             </div>
             <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
-                  Use Integrated FC Receiver
-                </span>
-                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                <span className="text-xs font-bold text-zinc-100">Use Integrated FC Receiver</span>
+                <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
                   Built-in
                 </span>
               </div>
-              <p className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 truncate">
+              <p className="text-[11px] text-zinc-400 mt-0.5 truncate">
                 {integratedRx
                   ? `${integratedRx.name} (${integratedRx.protocol || "ExpressLRS"})`
                   : selectedFc
@@ -180,7 +173,7 @@ export function ReceiverStep() {
               value={search}
               onChange={(e) => setSearchQuery("receivers", e.target.value)}
               placeholder="Search external receivers by name, brand, protocol..."
-              className="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full bg-zinc-950 border border-zinc-800 rounded-xl pl-9 pr-8 py-1.5 text-xs text-zinc-100 placeholder-zinc-400 focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             {search && (
               <button
@@ -193,12 +186,12 @@ export function ReceiverStep() {
             )}
           </div>
 
-          <label className="flex items-center gap-1.5 cursor-pointer text-xs text-zinc-600 dark:text-zinc-400 select-none shrink-0">
+          <label className="flex items-center gap-1.5 cursor-pointer text-xs text-zinc-400 select-none shrink-0">
             <input
               type="checkbox"
               checked={isCompatibleOnly}
               onChange={() => toggleCompatibleOnly("receivers")}
-              className="rounded border-zinc-300 dark:border-zinc-700 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5 cursor-pointer"
+              className="rounded border-zinc-700 text-blue-600 focus:ring-blue-500 h-3.5 w-3.5 cursor-pointer"
             />
             <CompatibilityHoverCard filter={getCelFilterForStep(3)}>
               <span>Compatible only</span>
@@ -228,11 +221,11 @@ export function ReceiverStep() {
                 className={`p-3 rounded-xl border transition-all cursor-pointer flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
                   isSelected
                     ? isIncompatible
-                      ? "border-amber-500 bg-amber-50/50 dark:bg-amber-950/30 ring-1 ring-amber-500 shadow-xs"
-                      : "border-blue-500 bg-blue-50/50 dark:bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
+                      ? "border-amber-500 bg-amber-950/30 ring-1 ring-amber-500 shadow-xs"
+                      : "border-blue-500 bg-blue-950/30 ring-1 ring-blue-500 shadow-xs"
                     : isIncompatible
-                      ? "border-zinc-200 dark:border-zinc-800 bg-zinc-50/30 dark:bg-zinc-900/30 opacity-60 hover:opacity-100 hover:border-zinc-400 dark:hover:border-zinc-700"
-                      : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/60 hover:border-zinc-400 dark:hover:border-zinc-700"
+                      ? "border-zinc-800 bg-zinc-900/30 opacity-60 hover:opacity-100 hover:border-zinc-700"
+                      : "border-zinc-800 bg-zinc-900/60 hover:border-zinc-700"
                 }`}
               >
                 <div
@@ -245,32 +238,30 @@ export function ReceiverStep() {
                   className="flex-1 min-w-0"
                 >
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs font-bold text-zinc-900 dark:text-zinc-100 truncate">
-                      {r.name}
-                    </span>
+                    <span className="text-xs font-bold text-zinc-100 truncate">{r.name}</span>
                     {isIncompatible && (
                       <span
                         title={compat.reason}
-                        className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 shrink-0 flex items-center gap-1"
+                        className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0 flex items-center gap-1"
                       >
                         <AlertCircle size={10} />
                         <span>Incompatible</span>
                       </span>
                     )}
                     {r.protocol && (
-                      <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 shrink-0">
+                      <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-purple-500/10 text-purple-400 border border-purple-500/20 shrink-0">
                         {r.protocol}
                       </span>
                     )}
                     {r.frequencyBandMhz && (
-                      <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20 shrink-0">
+                      <span className="text-[10px] px-2 py-0.5 rounded-full font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20 shrink-0">
                         {r.frequencyBandMhz >= 1000
                           ? `${(r.frequencyBandMhz / 1000).toFixed(1)} GHz`
                           : `${r.frequencyBandMhz} MHz`}
                       </span>
                     )}
                   </div>
-                  <div className="text-[11px] text-zinc-500 dark:text-zinc-400 mt-0.5 flex items-center gap-2 flex-wrap">
+                  <div className="text-[11px] text-zinc-400 mt-0.5 flex items-center gap-2 flex-wrap">
                     <span>by {r.manufacturer}</span>
                     {r.weightG ? <span>• {r.weightG.toFixed(1)}g</span> : null}
                     {r.hasTelemetry ? <span>• Telemetry</span> : null}
@@ -299,7 +290,7 @@ export function ReceiverStep() {
         <button
           type="button"
           onClick={handlePrevStep}
-          className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+          className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-zinc-400 hover:bg-zinc-800 transition-colors"
         >
           <ArrowLeft size={14} />
           <span>Back: Flight Controller</span>

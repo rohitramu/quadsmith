@@ -161,10 +161,10 @@ export function SocialReviewSection({
   return (
     <div className="space-y-6">
       {/* Community Sentiment Aggregate Breakdown & Write Review CTA */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/70 dark:bg-zinc-900/40">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6 rounded-2xl border border-zinc-800 bg-zinc-900/40">
         <div className="md:col-span-2 space-y-3">
           <div className="flex items-center gap-2">
-            <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-zinc-400">
               Community Sentiment
             </h3>
             {totalReviews > 0 && tierColors ? (
@@ -174,37 +174,37 @@ export function SocialReviewSection({
                 {tierLabel}
               </span>
             ) : (
-              <span className="px-2 py-0.5 rounded text-[10px] font-semibold border border-zinc-200 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800 text-zinc-500">
+              <span className="px-2 py-0.5 rounded text-[10px] font-semibold border border-zinc-700 bg-zinc-800 text-zinc-500">
                 No Reviews
               </span>
             )}
           </div>
 
           <div className="flex items-baseline gap-3">
-            <span className="text-3xl font-extrabold text-zinc-900 dark:text-zinc-50">
+            <span className="text-3xl font-extrabold text-zinc-50">
               {totalReviews > 0 ? `${positivePercent}% Recommended` : "No reviews yet"}
             </span>
             {totalReviews > 0 && (
-              <span className="text-xs text-zinc-500 dark:text-zinc-400 font-mono">
+              <span className="text-xs text-zinc-400 font-mono">
                 ({recommendedCount} positive / {notRecommendedCount} negative)
               </span>
             )}
           </div>
 
-          <p className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+          <p className="text-xs text-zinc-400 leading-relaxed">
             Reviews on Quadsmith use Steam-style binary recommendations to provide clear, actionable
             purchasing and flight consensus.
           </p>
 
           {/* Qualitative Tier Progress */}
           <div className="space-y-1.5 pt-2">
-            <div className="flex justify-between text-[11px] text-zinc-500 dark:text-zinc-400 font-mono">
+            <div className="flex justify-between text-[11px] text-zinc-400 font-mono">
               <span>Consensus</span>
               <span>
                 {totalReviews > 0 ? `${positivePercent}% (${tierLabel})` : "No consensus yet"}
               </span>
             </div>
-            <div className="h-2 w-full bg-zinc-200 dark:bg-zinc-800 rounded-full overflow-hidden flex">
+            <div className="h-2 w-full bg-zinc-800 rounded-full overflow-hidden flex">
               {totalReviews > 0 ? (
                 <>
                   <div
@@ -217,21 +217,21 @@ export function SocialReviewSection({
                   />
                 </>
               ) : (
-                <div className="bg-zinc-300 dark:bg-zinc-700 h-full w-full opacity-30" />
+                <div className="bg-zinc-700 h-full w-full opacity-30" />
               )}
             </div>
           </div>
         </div>
 
         {/* Write Review Button Box */}
-        <div className="flex flex-col justify-center items-start md:items-end border-t md:border-t-0 md:border-l border-zinc-200 dark:border-zinc-800 pt-4 md:pt-0 md:pl-6">
+        <div className="flex flex-col justify-center items-start md:items-end border-t md:border-t-0 md:border-l border-zinc-800 pt-4 md:pt-0 md:pl-6">
           {isArchived ? (
-            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs text-center md:text-right">
+            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs text-center md:text-right">
               <AlertCircle size={16} className="inline mr-1 mb-0.5" />
               Archived entity: Reviews are read-only.
             </div>
           ) : isAuthorOfBuild ? (
-            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs text-center md:text-right">
+            <div className="p-3 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-xs text-center md:text-right">
               <AlertCircle size={16} className="inline mr-1 mb-0.5" />
               Build creators cannot review their own builds.
             </div>
@@ -241,9 +241,7 @@ export function SocialReviewSection({
             </div>
           ) : existingUserReview ? (
             <div className="text-xs text-zinc-500 text-center md:text-right space-y-1">
-              <p className="font-semibold text-emerald-600 dark:text-emerald-400">
-                You reviewed this {target.type}.
-              </p>
+              <p className="font-semibold text-emerald-400">You reviewed this {target.type}.</p>
               <button
                 type="button"
                 onClick={() => handleDeleteReview(existingUserReview.id)}
@@ -263,9 +261,7 @@ export function SocialReviewSection({
                 <ThumbsUp size={14} />
                 <span>{isComposerOpen ? "Close Composer" : "Write a Review"}</span>
               </button>
-              <span className="text-[11px] text-zinc-400 dark:text-zinc-500 mt-2">
-                1 review per user • Editable
-              </span>
+              <span className="text-[11px] text-zinc-500 mt-2">1 review per user • Editable</span>
             </>
           )}
         </div>
@@ -275,16 +271,16 @@ export function SocialReviewSection({
       {isComposerOpen && !isAuthorOfBuild && (
         <form
           onSubmit={handleSubmitReview}
-          className="rounded-2xl border-2 border-blue-500/30 bg-white dark:bg-zinc-900/90 p-6 space-y-4 shadow-xl"
+          className="rounded-2xl border-2 border-blue-500/30 bg-zinc-900/90 p-6 space-y-4 shadow-xl"
         >
           <div className="flex items-center justify-between">
-            <h3 className="font-bold text-sm text-zinc-900 dark:text-zinc-100">
+            <h3 className="font-bold text-sm text-zinc-100">
               Your Review {entityName ? `of ${entityName}` : ""}
             </h3>
             <button
               type="button"
               onClick={() => setIsComposerOpen(false)}
-              className="text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 text-xs"
+              className="text-zinc-400 hover:text-zinc-200 text-xs"
             >
               Cancel
             </button>
@@ -298,7 +294,7 @@ export function SocialReviewSection({
 
           {/* Recommendation Toggle Buttons */}
           <div className="space-y-2">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400">
               Do you recommend this {target.type}?
             </label>
             <div className="grid grid-cols-2 gap-3 max-w-md">
@@ -307,8 +303,8 @@ export function SocialReviewSection({
                 onClick={() => setIsRecommended(true)}
                 className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                   isRecommended
-                    ? "border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 shadow-sm"
-                    : "border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                    ? "border-emerald-500 bg-emerald-500/10 text-emerald-400 shadow-sm"
+                    : "border-zinc-800 bg-zinc-800/50 text-zinc-400 hover:bg-zinc-800"
                 }`}
               >
                 <ThumbsUp size={16} className={isRecommended ? "fill-current" : ""} />
@@ -320,8 +316,8 @@ export function SocialReviewSection({
                 onClick={() => setIsRecommended(false)}
                 className={`flex items-center justify-center gap-2 py-3 px-4 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                   !isRecommended
-                    ? "border-rose-500 bg-rose-500/10 text-rose-600 dark:text-rose-400 shadow-sm"
-                    : "border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-800"
+                    ? "border-rose-500 bg-rose-500/10 text-rose-400 shadow-sm"
+                    : "border-zinc-800 bg-zinc-800/50 text-zinc-400 hover:bg-zinc-800"
                 }`}
               >
                 <ThumbsDown size={16} className={!isRecommended ? "fill-current" : ""} />
@@ -332,15 +328,13 @@ export function SocialReviewSection({
 
           {/* Review Text */}
           <div className="space-y-1.5">
-            <label className="block text-xs font-semibold text-zinc-600 dark:text-zinc-400">
-              Review Writeup
-            </label>
+            <label className="block text-xs font-semibold text-zinc-400">Review Writeup</label>
             <textarea
               rows={4}
               value={reviewBody}
               onChange={(e) => setReviewBody(e.target.value)}
               placeholder="Describe flight characteristics, build assembly notes, motor thermals, durability, or component fitment..."
-              className="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-950 p-3 text-sm text-zinc-900 dark:text-zinc-100 placeholder-zinc-400 dark:placeholder-zinc-500 focus:outline-hidden focus:border-blue-500"
+              className="w-full rounded-xl border border-zinc-700 bg-zinc-950 p-3 text-sm text-zinc-100 placeholder-zinc-500 focus:outline-hidden focus:border-blue-500"
             />
           </div>
 
@@ -360,7 +354,7 @@ export function SocialReviewSection({
       {/* Reviews List & Sort Header */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+          <span className="text-xs font-bold uppercase tracking-wider text-zinc-400">
             User Reviews ({reviews.length})
           </span>
           <div className="flex items-center gap-2 text-xs">
@@ -380,7 +374,7 @@ export function SocialReviewSection({
             <Loader2 className="animate-spin text-blue-500" size={24} />
           </div>
         ) : reviews.length === 0 ? (
-          <div className="p-8 text-center rounded-2xl border border-dashed border-zinc-200 dark:border-zinc-800 text-zinc-400 text-xs">
+          <div className="p-8 text-center rounded-2xl border border-dashed border-zinc-800 text-zinc-400 text-xs">
             No reviews yet. Be the first to share your evaluation!
           </div>
         ) : (
@@ -394,7 +388,7 @@ export function SocialReviewSection({
             return (
               <div
                 key={review.id}
-                className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-6 space-y-4 shadow-2xs"
+                className="rounded-2xl border border-zinc-800 bg-zinc-900/60 p-6 space-y-4 shadow-2xs"
               >
                 {/* Header: User Info & Recommendation Badge */}
                 <div className="flex items-start justify-between gap-4">
@@ -403,7 +397,7 @@ export function SocialReviewSection({
                       <img
                         src={review.authorAvatarUrl}
                         alt={review.authorUsername}
-                        className="w-10 h-10 rounded-full object-cover border border-zinc-200 dark:border-zinc-800"
+                        className="w-10 h-10 rounded-full object-cover border border-zinc-800"
                       />
                     ) : (
                       <div
@@ -431,8 +425,8 @@ export function SocialReviewSection({
                   <div
                     className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl border font-bold text-xs ${
                       review.isRecommended
-                        ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                        : "border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400"
+                        ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
+                        : "border-rose-500/30 bg-rose-500/10 text-rose-400"
                     }`}
                   >
                     {review.isRecommended ? (
@@ -450,12 +444,12 @@ export function SocialReviewSection({
                 </div>
 
                 {/* Review Body */}
-                <div className="text-sm text-zinc-700 dark:text-zinc-300 leading-relaxed whitespace-pre-line">
+                <div className="text-sm text-zinc-300 leading-relaxed whitespace-pre-line">
                   {review.body}
                 </div>
 
                 {/* Helpfulness Bar & Thread Toggle */}
-                <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/80 flex items-center justify-between text-xs flex-wrap gap-2">
+                <div className="pt-3 border-t border-zinc-800/80 flex items-center justify-between text-xs flex-wrap gap-2">
                   <div className="flex items-center gap-3">
                     {!isMyReview && !isArchived ? (
                       <>
@@ -464,10 +458,10 @@ export function SocialReviewSection({
                         <button
                           type="button"
                           onClick={() => handleVote(review.id, review.currentUserVote, true)}
-                          className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-700 ${
+                          className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors cursor-pointer hover:bg-zinc-700 ${
                             review.currentUserVote === ReviewVoteType.HELPFUL
-                              ? "border-emerald-500 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-semibold"
-                              : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-600 dark:text-zinc-300"
+                              ? "border-emerald-500 bg-emerald-500/10 text-emerald-400 font-semibold"
+                              : "border-zinc-700 bg-zinc-800 text-zinc-300"
                           }`}
                         >
                           <ThumbsUp size={13} />
@@ -485,10 +479,10 @@ export function SocialReviewSection({
                         <button
                           type="button"
                           onClick={() => handleVote(review.id, review.currentUserVote, false)}
-                          className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-700 ${
+                          className={`flex items-center gap-1.5 px-3 py-1 rounded-lg border transition-colors cursor-pointer hover:bg-zinc-700 ${
                             review.currentUserVote === ReviewVoteType.UNHELPFUL
-                              ? "border-rose-500 bg-rose-500/10 text-rose-600 dark:text-rose-400 font-semibold"
-                              : "border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400"
+                              ? "border-rose-500 bg-rose-500/10 text-rose-400 font-semibold"
+                              : "border-zinc-700 bg-zinc-800 text-zinc-400"
                           }`}
                         >
                           <ThumbsDown size={13} />
@@ -606,7 +600,7 @@ function ReviewCommentsThread({
   }
 
   return (
-    <div className="space-y-3 pt-3 pl-4 border-l-2 border-zinc-200 dark:border-zinc-800">
+    <div className="space-y-3 pt-3 pl-4 border-l-2 border-zinc-800">
       {isLoading ? (
         <div className="py-2 flex justify-center text-zinc-400">
           <Loader2 size={14} className="animate-spin text-blue-500" />
@@ -615,7 +609,7 @@ function ReviewCommentsThread({
         comments.map((c) => (
           <div
             key={c.uuid}
-            className="p-3 rounded-xl bg-zinc-50 dark:bg-zinc-950/60 border border-zinc-200 dark:border-zinc-800/80 text-xs space-y-1"
+            className="p-3 rounded-xl bg-zinc-950/60 border border-zinc-800/80 text-xs space-y-1"
           >
             <div className="flex items-center justify-between text-zinc-500">
               <UserBadge username={c.authorUsername} size="xs" />
@@ -635,7 +629,7 @@ function ReviewCommentsThread({
                 )}
               </div>
             </div>
-            <p className="text-zinc-700 dark:text-zinc-300">{c.body}</p>
+            <p className="text-zinc-300">{c.body}</p>
           </div>
         ))
       )}
@@ -654,13 +648,13 @@ function ReviewCommentsThread({
               }
             }}
             placeholder={`Reply to @${review.authorUsername || "author"}'s review...`}
-            className="flex-1 rounded-lg border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-950 px-3 py-1.5 text-xs text-zinc-900 dark:text-zinc-200 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
+            className="flex-1 rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-1.5 text-xs text-zinc-200 placeholder-zinc-400 focus:outline-hidden focus:border-blue-500"
           />
           <button
             type="button"
             onClick={handlePost}
             disabled={isPosting || !replyText.trim()}
-            className="px-3 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 dark:bg-zinc-800 dark:hover:bg-zinc-700 text-white text-xs font-medium disabled:opacity-50 transition-colors flex items-center gap-1 cursor-pointer"
+            className="px-3 py-1.5 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-medium disabled:opacity-50 transition-colors flex items-center gap-1 cursor-pointer"
           >
             {isPosting ? <Loader2 size={12} className="animate-spin" /> : <Send size={12} />}
             <span>Post</span>

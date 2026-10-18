@@ -19,7 +19,7 @@ describe("UserBadge Component", () => {
     expect(badge).toBeInTheDocument();
     expect(badge).toHaveTextContent("@alex");
     expect(badge.className).toContain(palette.borderClass.split(" ")[0]);
-    expect(badge.className).not.toContain("shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)]");
+    expect(badge.className).not.toContain("shadow-[0_0_6px_2px_rgba(161,161,170,0.65)]");
     expect(badge.className).toContain("font-bold");
     expect(badge.className).toContain(palette.bgClass.split(" ")[0]);
   });
@@ -42,7 +42,7 @@ describe("UserBadge Component", () => {
     const container = screen.getByTestId("user-badge-container");
     expect(container).toHaveTextContent("Added by @rotor_king");
     expect(container.firstChild).toHaveTextContent("Added by");
-    expect(container.firstChild).toHaveClass("text-zinc-500");
+    expect(container.firstChild).toHaveClass("text-zinc-400");
   });
 
   it("renders with gold border and Author title when isAuthor is true (no glow when not self)", () => {
@@ -58,9 +58,8 @@ describe("UserBadge Component", () => {
 
     const badge = screen.getByTestId("user-badge");
     expect(badge).toHaveAttribute("title", "Author");
-    expect(badge.className).toContain("border-[#ca8a04]");
-    expect(badge.className).toContain("dark:border-[#fbbf24]");
-    expect(badge.className).not.toContain("shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)]");
+    expect(badge.className).toContain("border-[#fbbf24]");
+    expect(badge.className).not.toContain("shadow-[0_0_6px_2px_rgba(161,161,170,0.65)]");
   });
 
   it("renders with signature border, halo shadow, bold font, and You title when isSelf is true", () => {
@@ -81,7 +80,7 @@ describe("UserBadge Component", () => {
     expect(badge.className).toContain("px-2.5");
     expect(badge.className).toContain("py-1");
     expect(badge.className).toContain(palette.borderClass.split(" ")[0]);
-    expect(badge.className).toContain("shadow-[0_0_6px_2.5px_rgba(39,39,42,0.55)]");
+    expect(badge.className).toContain("shadow-[0_0_6px_2px_rgba(161,161,170,0.65)]");
   });
 
   it("respects withAt=false", () => {
@@ -110,7 +109,7 @@ describe("UserBadge Component", () => {
 
     const badge = screen.getByTestId("user-badge");
     expect(badge).toHaveTextContent("@community");
-    expect(badge.className).toContain("bg-zinc-100");
+    expect(badge.className).toContain("bg-zinc-800");
   });
 
   it("links to user profile page by default for valid users", () => {

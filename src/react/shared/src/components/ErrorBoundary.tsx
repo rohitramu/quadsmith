@@ -97,20 +97,20 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           <div
             role="alert"
             data-testid="error-boundary-fallback"
-            className="rounded-2xl border border-red-200 dark:border-red-900/60 bg-red-50/70 dark:bg-red-950/30 p-4 space-y-3 shadow-xs"
+            className="rounded-2xl border border-red-900/60 bg-red-950/30 p-4 space-y-3 shadow-xs"
           >
             <div className="flex items-start gap-2.5">
-              <AlertTriangle className="text-red-600 dark:text-red-400 shrink-0 mt-0.5" size={18} />
+              <AlertTriangle className="text-red-400 shrink-0 mt-0.5" size={18} />
               <div className="min-w-0 flex-1">
-                <h3 className="text-xs font-bold uppercase tracking-wider text-red-900 dark:text-red-200">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-red-200">
                   {title || "Component Error"}
                 </h3>
-                <p className="text-xs text-red-700 dark:text-red-300/90 mt-1 leading-relaxed">
+                <p className="text-xs text-red-300/90 mt-1 leading-relaxed">
                   {description ||
                     "An unexpected error occurred in this panel. Your other selections and page state remain intact."}
                 </p>
                 {error.message && (
-                  <div className="mt-2 px-2.5 py-1.5 rounded-lg bg-red-100/80 dark:bg-red-950/70 border border-red-200/80 dark:border-red-900/50 text-[11px] font-mono text-red-800 dark:text-red-300 break-words">
+                  <div className="mt-2 px-2.5 py-1.5 rounded-lg bg-red-950/70 border border-red-900/50 text-[11px] font-mono text-red-300 break-words">
                     {error.message}
                   </div>
                 )}
@@ -134,32 +134,32 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
         <div
           role="alert"
           data-testid="error-boundary-fallback"
-          className="max-w-xl mx-auto my-8 rounded-2xl border border-red-200 dark:border-red-900/60 bg-white dark:bg-zinc-900 p-6 shadow-sm space-y-4"
+          className="max-w-xl mx-auto my-8 rounded-2xl border border-red-900/60 bg-zinc-900 p-6 shadow-sm space-y-4"
         >
           <div className="flex items-start gap-3.5">
             <div className="w-10 h-10 rounded-xl bg-red-500/10 border border-red-500/20 flex items-center justify-center shrink-0">
-              <AlertTriangle className="text-red-600 dark:text-red-400" size={20} />
+              <AlertTriangle className="text-red-400" size={20} />
             </div>
             <div className="min-w-0 flex-1">
-              <h2 className="text-base font-bold text-zinc-900 dark:text-zinc-100">
+              <h2 className="text-base font-bold text-zinc-100">
                 {title || "Something went wrong"}
               </h2>
-              <p className="text-xs sm:text-sm text-zinc-600 dark:text-zinc-400 mt-1 leading-relaxed">
+              <p className="text-xs sm:text-sm text-zinc-400 mt-1 leading-relaxed">
                 {description ||
                   "An unexpected error occurred while rendering this section. You can try again or navigate to another page."}
               </p>
               {error.message && (
-                <div className="mt-3 px-3 py-2 rounded-xl bg-zinc-100 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 text-xs font-mono text-red-600 dark:text-red-400 break-words">
+                <div className="mt-3 px-3 py-2 rounded-xl bg-zinc-950 border border-zinc-800 text-xs font-mono text-red-400 break-words">
                   {error.message}
                 </div>
               )}
             </div>
           </div>
-          <div className="flex items-center justify-end gap-2 pt-2 border-t border-zinc-200 dark:border-zinc-800">
+          <div className="flex items-center justify-end gap-2 pt-2 border-t border-zinc-800">
             <button
               type="button"
               onClick={() => window.location.reload()}
-              className="px-3.5 py-2 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-800/60 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-semibold transition-colors cursor-pointer"
+              className="px-3.5 py-2 rounded-xl border border-zinc-800 bg-zinc-800/60 hover:bg-zinc-800 text-zinc-300 text-xs font-semibold transition-colors cursor-pointer"
             >
               Reload Page
             </button>
