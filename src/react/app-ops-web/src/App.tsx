@@ -752,6 +752,9 @@ export default function App() {
   const [traceCelFilter, setTraceCelFilter] = useState<string>(DEFAULT_SERVICE_CEL_FILTER);
   const [traceSortField, setTraceSortField] = useState<string>("occurred_at");
   const [traceSortDir, setTraceSortDir] = useState<SortDirection>("desc");
+  const [tracePage, setTracePage] = useState<number>(1);
+  const [tracePageSize, setTracePageSize] = useState<number>(25);
+  const [traceHistoryLimit, setTraceHistoryLimit] = useState<number>(500);
 
   const [taskCelFilter, setTaskCelFilter] = useState<string>("");
   const [taskSortField, setTaskSortField] = useState<string>("name");
@@ -898,7 +901,7 @@ export default function App() {
           regionFilter: reqRegion,
           serviceName: reqService,
           window: metricsWindow,
-          limit: 50,
+          limit: traceHistoryLimit,
         }),
         client.listTasks({}),
         client.listJobs({
@@ -928,7 +931,7 @@ export default function App() {
     } finally {
       setLoading(false);
     }
-  }, [client, token, regionFilter, serviceFilter, metricsWindow, jobTaskFilter]);
+  }, [client, token, regionFilter, serviceFilter, metricsWindow, traceHistoryLimit, jobTaskFilter]);
 
   useEffect(() => {
     void refreshDashboard();
@@ -1356,6 +1359,7 @@ export default function App() {
 
   const handleSelectRouteFromMetrics = useCallback((r: RouteMetricStat) => {
     setTraceCelFilter((prev) => applyRouteToTraceCelFilter(prev, r.route, r.serviceName));
+    setTracePage(1);
     setTelemetrySubTab("traces");
   }, []);
 
@@ -1441,6 +1445,34 @@ export default function App() {
       ),
     [routeRequests, traceCelFilter, traceSortField, traceSortDir],
   );
+
+  const totalTracePages = useMemo(
+    () => Math.max(1, Math.ceil(traceEvalResult.items.length / tracePageSize)),
+    [traceEvalResult.items.length, tracePageSize],
+  );
+
+  const safeTracePage = useMemo(
+    () => Math.min(Math.max(1, tracePage), totalTracePages),
+    [tracePage, totalTracePages],
+  );
+
+  const pagedTraceItems = useMemo(() => {
+    const startIdx = (safeTracePage - 1) * tracePageSize;
+    return traceEvalResult.items.slice(startIdx, startIdx + tracePageSize);
+  }, [traceEvalResult.items, safeTracePage, tracePageSize]);
+
+  useEffect(() => {
+    setTracePage(1);
+  }, [
+    traceCelFilter,
+    traceSortField,
+    traceSortDir,
+    tracePageSize,
+    serviceFilter,
+    regionFilter,
+    metricsWindow,
+    traceHistoryLimit,
+  ]);
 
   const taskEvalResult = useMemo(
     () =>
@@ -2046,7 +2078,11 @@ export default function App() {
                     <option value="5m">Window: 5m</option>
                     <option value="15m">Window: 15m</option>
                     <option value="1h">Window: 1h</option>
+                    <option value="6h">Window: 6h</option>
                     <option value="24h">Window: 24h</option>
+                    <option value="7d">Window: 7d</option>
+                    <option value="60d">Window: 60d</option>
+                    <option value="all">Window: All History</option>
                   </select>
                 </div>
               </div>
@@ -2362,6 +2398,41 @@ export default function App() {
                     <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
                       Recent Traced Requests (VictoriaLogs / Ring Buffer)
                     </h3>
+
+                    <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
+                      <label className="flex items-center gap-1.5 text-slate-400">
+                        <span>History Depth:</span>
+                        <select
+                          aria-label="History Depth"
+                          data-testid="traces-history-limit-select"
+                          value={traceHistoryLimit}
+                          onChange={(e) => setTraceHistoryLimit(Number(e.target.value))}
+                          className="bg-[#090d16] border border-slate-700 rounded px-2 py-1 text-xs font-mono text-slate-200"
+                        >
+                          <option value={100}>Fetch 100</option>
+                          <option value={250}>Fetch 250</option>
+                          <option value={500}>Fetch 500</option>
+                          <option value={1000}>Fetch 1000</option>
+                          <option value={2000}>Fetch 2000</option>
+                        </select>
+                      </label>
+
+                      <label className="flex items-center gap-1.5 text-slate-400">
+                        <span>Page Size:</span>
+                        <select
+                          aria-label="Traced Requests Page Size"
+                          data-testid="traces-page-size-select"
+                          value={tracePageSize}
+                          onChange={(e) => setTracePageSize(Number(e.target.value))}
+                          className="bg-[#090d16] border border-slate-700 rounded px-2 py-1 text-xs font-mono text-slate-200"
+                        >
+                          <option value={10}>10 / page</option>
+                          <option value={25}>25 / page</option>
+                          <option value={50}>50 / page</option>
+                          <option value={100}>100 / page</option>
+                        </select>
+                      </label>
+                    </div>
                   </div>
 
                   <SmartFilterInput
@@ -2529,7 +2600,7 @@ export default function App() {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-800/60">
-                        {traceEvalResult.items.map((req, idx) => (
+                        {pagedTraceItems.map((req, idx) => (
                           <tr
                             key={`${req.traceId}-${req.serviceName}-${idx}`}
                             className="hover:bg-slate-900/50"
@@ -2560,7 +2631,7 @@ export default function App() {
                             <td className="py-2 px-3">{req.rttMs.toFixed(2)} ms</td>
                           </tr>
                         ))}
-                        {traceEvalResult.items.length === 0 && (
+                        {pagedTraceItems.length === 0 && (
                           <tr>
                             <td colSpan={8} className="py-4 text-center text-slate-500">
                               No traced requests match current filters.
@@ -2569,6 +2640,69 @@ export default function App() {
                         )}
                       </tbody>
                     </table>
+                  </div>
+
+                  {/* Pagination Bar */}
+                  <div
+                    data-testid="traces-pagination-bar"
+                    className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-800/80 text-xs font-mono"
+                  >
+                    <div data-testid="traces-page-indicator" className="text-slate-400">
+                      Page <strong className="text-slate-200">{safeTracePage}</strong> of{" "}
+                      <strong className="text-slate-200">{totalTracePages}</strong>
+                      {traceEvalResult.items.length > 0 && (
+                        <>
+                          {" "}
+                          · Showing{" "}
+                          <strong className="text-slate-200">
+                            {(safeTracePage - 1) * tracePageSize + 1}–
+                            {Math.min(safeTracePage * tracePageSize, traceEvalResult.items.length)}
+                          </strong>{" "}
+                          of{" "}
+                          <strong className="text-slate-200">{traceEvalResult.items.length}</strong>{" "}
+                          matching requests
+                        </>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        type="button"
+                        data-testid="traces-first-page-btn"
+                        disabled={safeTracePage <= 1}
+                        onClick={() => setTracePage(1)}
+                        className="px-2.5 py-1 rounded border border-slate-700 bg-[#090d16] text-slate-300 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                      >
+                        « First
+                      </button>
+                      <button
+                        type="button"
+                        data-testid="traces-prev-page-btn"
+                        disabled={safeTracePage <= 1}
+                        onClick={() => setTracePage((p) => Math.max(1, p - 1))}
+                        className="px-2.5 py-1 rounded border border-slate-700 bg-[#090d16] text-slate-300 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                      >
+                        ‹ Prev
+                      </button>
+                      <button
+                        type="button"
+                        data-testid="traces-next-page-btn"
+                        disabled={safeTracePage >= totalTracePages}
+                        onClick={() => setTracePage((p) => Math.min(totalTracePages, p + 1))}
+                        className="px-2.5 py-1 rounded border border-slate-700 bg-[#090d16] text-slate-300 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                      >
+                        Next ›
+                      </button>
+                      <button
+                        type="button"
+                        data-testid="traces-last-page-btn"
+                        disabled={safeTracePage >= totalTracePages}
+                        onClick={() => setTracePage(totalTracePages)}
+                        className="px-2.5 py-1 rounded border border-slate-700 bg-[#090d16] text-slate-300 hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                      >
+                        Last »
+                      </button>
+                    </div>
                   </div>
                 </div>
               )}

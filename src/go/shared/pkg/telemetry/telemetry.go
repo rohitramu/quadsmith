@@ -440,8 +440,8 @@ type routeStats struct {
 
 const (
 	maxRouteSamples   = 512
-	maxRingEntries    = 500
-	maxLogRingEntries = 1000
+	maxRingEntries    = 1000
+	maxLogRingEntries = 2000
 )
 
 // Registry manages health checks, Prometheus metrics, ingress Trace ID generation,

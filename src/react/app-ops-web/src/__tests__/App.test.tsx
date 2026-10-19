@@ -374,6 +374,21 @@ describe("Ops Console App", () => {
 
       fireEvent.click(screen.getByTestId("close-trace-inspector"));
       expect(screen.queryByTestId("trace-inspector-modal")).not.toBeInTheDocument();
+
+      // Verify pagination bar and historical lookback controls are rendered on Tab 2
+      expect(screen.getByTestId("traces-pagination-bar")).toBeInTheDocument();
+      expect(screen.getByTestId("traces-page-indicator")).toHaveTextContent("Page 1 of 1");
+      expect(screen.getByTestId("traces-history-limit-select")).toHaveValue("500");
+      expect(screen.getByTestId("traces-page-size-select")).toHaveValue("25");
+      expect(screen.getByTestId("traces-prev-page-btn")).toBeDisabled();
+      expect(screen.getByTestId("traces-next-page-btn")).toBeDisabled();
+
+      // Clear the route filter so both API requests show up (2 requests total)
+      fireEvent.change(tracesFilterInput, {
+        target: { value: 'service_name == "server-api" && !route.startsWith("/healthz")' },
+      });
+      fireEvent.click(screen.getByTestId("traces-cel-apply-btn"));
+      await screen.findByTestId(`inspect-trace-${otherApiTraceId}`);
     } finally {
       fetchSpy.mockRestore();
       setOpsCookieAndStorage(null);

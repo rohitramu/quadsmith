@@ -453,20 +453,69 @@ func (s *OpsService) collectPeerSnapshots(ctx context.Context) []telemetry.Metri
 	return out
 }
 
+func parseLookbackWindow(window string) (time.Duration, string, bool) {
+	w := strings.ToLower(strings.TrimSpace(window))
+	switch w {
+	case "", "all":
+		return 0, "", false
+	case "5m":
+		return 5 * time.Minute, "5m", true
+	case "15m":
+		return 15 * time.Minute, "15m", true
+	case "1h":
+		return time.Hour, "1h", true
+	case "6h":
+		return 6 * time.Hour, "6h", true
+	case "24h", "1d":
+		return 24 * time.Hour, "24h", true
+	case "7d":
+		return 7 * 24 * time.Hour, "7d", true
+	case "30d":
+		return 30 * 24 * time.Hour, "30d", true
+	case "60d":
+		return 60 * 24 * time.Hour, "60d", true
+	default:
+		if d, err := time.ParseDuration(w); err == nil && d > 0 {
+			return d, w, true
+		}
+		return 0, "", false
+	}
+}
+
 func (s *OpsService) ListRouteRequests(ctx context.Context, req *connect.Request[pb.ListRouteRequestsRequest]) (*connect.Response[pb.ListRouteRequestsResponse], error) {
 	if _, err := filterAndSortRouteRequests(nil, req.Msg.GetFilter(), req.Msg.GetSort()); err != nil {
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
 
 	limit := int(req.Msg.GetLimit())
-	if limit <= 0 || limit > 500 {
+	if limit <= 0 {
 		limit = 50
+	}
+	if limit > 2000 {
+		limit = 2000
+	}
+	offset := int(req.Msg.GetOffset())
+	if offset < 0 {
+		offset = 0
+	}
+
+	candidateLimit := limit + offset
+	if candidateLimit < 500 {
+		candidateLimit = 500
+	}
+	if candidateLimit > 5000 {
+		candidateLimit = 5000
 	}
 
 	regionFilter := strings.TrimSpace(req.Msg.GetRegionFilter())
 	serviceFilter := strings.TrimSpace(req.Msg.GetServiceName())
 	routeFilter := strings.TrimSpace(req.Msg.GetRoute())
 	onlyErrors := req.Msg.GetOnlyErrors()
+	lookbackDur, vlWindow, hasWindow := parseLookbackWindow(req.Msg.GetWindow())
+	var cutoff time.Time
+	if hasWindow {
+		cutoff = time.Now().UTC().Add(-lookbackDur)
+	}
 	currentRegion := telemetry.CurrentRegion()
 
 	seenTraces := make(map[string]bool)
@@ -485,11 +534,14 @@ func (s *OpsService) ListRouteRequests(ctx context.Context, req *connect.Request
 		if onlyErrors && rec.Success {
 			return false
 		}
+		if hasWindow && rec.GetOccurredAt().IsValid() && rec.GetOccurredAt().AsTime().Before(cutoff) {
+			return false
+		}
 		return true
 	}
 
 	// 1. Query VictoriaLogs if configured/reachable
-	for _, r := range s.queryVictoriaLogs(ctx, regionFilter, serviceFilter, routeFilter, onlyErrors, limit) {
+	for _, r := range s.queryVictoriaLogs(ctx, regionFilter, serviceFilter, routeFilter, vlWindow, onlyErrors, candidateLimit) {
 		if !matchesFilters(r) {
 			continue
 		}
@@ -537,7 +589,7 @@ func (s *OpsService) ListRouteRequests(ctx context.Context, req *connect.Request
 			SELECT uuid::text, method, status, duration_ms, created_at
 			FROM internal_api_calls
 			ORDER BY created_at DESC
-			LIMIT $1`, limit*2)
+			LIMIT $1`, candidateLimit)
 		if err == nil {
 			defer rows.Close()
 			for rows.Next() {
@@ -575,7 +627,7 @@ func (s *OpsService) ListRouteRequests(ctx context.Context, req *connect.Request
 				}
 				seenTraces[key] = true
 				records = append(records, rec)
-				if len(records) >= limit*2 {
+				if len(records) >= candidateLimit*2 {
 					break
 				}
 			}
@@ -583,7 +635,12 @@ func (s *OpsService) ListRouteRequests(ctx context.Context, req *connect.Request
 	}
 
 	sort.Slice(records, func(i, j int) bool {
-		return records[i].GetOccurredAt().AsTime().After(records[j].GetOccurredAt().AsTime())
+		ti := records[i].GetOccurredAt().AsTime()
+		tj := records[j].GetOccurredAt().AsTime()
+		if !ti.Equal(tj) {
+			return ti.After(tj)
+		}
+		return records[i].GetTraceId() > records[j].GetTraceId()
 	})
 
 	filtered, err := filterAndSortRouteRequests(records, req.Msg.GetFilter(), req.Msg.GetSort())
@@ -591,16 +648,25 @@ func (s *OpsService) ListRouteRequests(ctx context.Context, req *connect.Request
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
 
-	if len(filtered) > limit {
-		filtered = filtered[:limit]
+	totalCount := len(filtered)
+	var paged []*pb.RouteRequestLog
+	if offset < totalCount {
+		end := offset + limit
+		if end > totalCount {
+			end = totalCount
+		}
+		paged = filtered[offset:end]
 	}
+	hasMore := offset+limit < totalCount
 
 	return connect.NewResponse(&pb.ListRouteRequestsResponse{
-		Requests: filtered,
+		Requests:   paged,
+		TotalCount: int32(totalCount),
+		HasMore:    hasMore,
 	}), nil
 }
 
-func (s *OpsService) queryVictoriaLogs(ctx context.Context, region, service, route string, onlyErrors bool, limit int) []*pb.RouteRequestLog {
+func (s *OpsService) queryVictoriaLogs(ctx context.Context, region, service, route, window string, onlyErrors bool, limit int) []*pb.RouteRequestLog {
 	vlURL := strings.TrimSpace(os.Getenv("QS_VICTORIA_LOGS_URL"))
 	if vlURL == "" {
 		return nil
@@ -608,6 +674,9 @@ func (s *OpsService) queryVictoriaLogs(ctx context.Context, region, service, rou
 
 	var parts []string
 	parts = append(parts, `_msg:"http_request"`)
+	if window != "" {
+		parts = append(parts, fmt.Sprintf(`_time:%s`, window))
+	}
 	if region != "" && !strings.EqualFold(region, "all") {
 		parts = append(parts, fmt.Sprintf(`region:%q`, region))
 	}

@@ -989,6 +989,49 @@ func TestOpsServer_ServiceHealthAndObservability(t *testing.T) {
 	if !containsString(string(outTrace), traceID) || !containsString(string(outTrace), "CleanupExpiredOtps") {
 		t.Errorf("Expected trace_id %q and 'CleanupExpiredOtps' in qsops system trace output: %s", traceID, string(outTrace))
 	}
+
+	// 7. Verify ListRouteRequests pagination (limit, offset, total_count, has_more) and historical window
+	pageLimit := int32(2)
+	pageOffset0 := int32(0)
+	pageOffset1 := int32(1)
+	allWin := "all"
+	pageFilter := `route != "/healthz" && route != "/metrics" && !route.endsWith("ListRouteRequests")`
+	page1Res, err := operatorClient.ListRouteRequests(ctx, connect.NewRequest(&pb.ListRouteRequestsRequest{
+		Window: &allWin,
+		Filter: &pageFilter,
+		Sort:   []string{"^trace_id"},
+		Limit:  &pageLimit,
+		Offset: &pageOffset0,
+	}))
+	if err != nil {
+		t.Fatalf("ListRouteRequests(offset=0, limit=2) failed: %v", err)
+	}
+	if len(page1Res.Msg.GetRequests()) == 0 {
+		t.Fatalf("Expected non-empty requests from ListRouteRequests, got 0")
+	}
+	if page1Res.Msg.GetTotalCount() < int32(len(page1Res.Msg.GetRequests())) {
+		t.Errorf("Expected total_count (%d) >= len(requests) (%d)", page1Res.Msg.GetTotalCount(), len(page1Res.Msg.GetRequests()))
+	}
+
+	if page1Res.Msg.GetTotalCount() > 1 {
+		page2Res, err := operatorClient.ListRouteRequests(ctx, connect.NewRequest(&pb.ListRouteRequestsRequest{
+			Window: &allWin,
+			Filter: &pageFilter,
+			Sort:   []string{"^trace_id"},
+			Limit:  &pageLimit,
+			Offset: &pageOffset1,
+		}))
+		if err != nil {
+			t.Fatalf("ListRouteRequests(offset=1, limit=2) failed: %v", err)
+		}
+		if len(page2Res.Msg.GetRequests()) == 0 {
+			t.Fatalf("Expected non-empty requests at offset=1 when total_count=%d", page1Res.Msg.GetTotalCount())
+		}
+		if page1Res.Msg.GetRequests()[1].GetTraceId() != page2Res.Msg.GetRequests()[0].GetTraceId() {
+			t.Errorf("Expected page1[1].trace_id (%s) == page2[0].trace_id (%s)",
+				page1Res.Msg.GetRequests()[1].GetTraceId(), page2Res.Msg.GetRequests()[0].GetTraceId())
+		}
+	}
 }
 
 func TestOpsWeb_GrafanaProxyJITGating(t *testing.T) {

@@ -368,10 +368,13 @@ message ListRouteRequestsRequest {
   optional int32 limit = 6;
   optional string filter = 7;
   repeated string sort = 8;
+  optional int32 offset = 9;
 }
 
 message ListRouteRequestsResponse {
   repeated RouteRequestLog requests = 1;
+  int32 total_count = 2;
+  bool has_more = 3;
 }
 
 message ListTasksRequest {

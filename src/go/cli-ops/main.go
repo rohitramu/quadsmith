@@ -778,6 +778,7 @@ func newSystemCmd() *cobra.Command {
 	var metricsRegion, metricsService, metricsRoute, metricsWindow, metricsFilter string
 	var metricsSort []string
 	var metricsFailedOnly bool
+	var metricsLimit, metricsOffset int
 	metricsCmd := &cobra.Command{
 		Use:   "metrics",
 		Short: "Query RED (Rate, Error, Duration) and resource metrics across services and routes",
@@ -853,16 +854,70 @@ func newSystemCmd() *cobra.Command {
 						r.GetP95RttMs())
 				}
 			}
-			return rw.Flush()
+			if err := rw.Flush(); err != nil {
+				return err
+			}
+
+			if strings.TrimSpace(metricsRoute) != "" || metricsOffset > 0 {
+				lim := int32(metricsLimit)
+				off := int32(metricsOffset)
+				rrReq := &pb.ListRouteRequestsRequest{
+					Limit:  &lim,
+					Offset: &off,
+				}
+				if strings.TrimSpace(metricsWindow) != "" {
+					win := strings.TrimSpace(metricsWindow)
+					rrReq.Window = &win
+				}
+				if strings.TrimSpace(metricsRegion) != "" {
+					reg := strings.TrimSpace(metricsRegion)
+					rrReq.RegionFilter = &reg
+				}
+				if strings.TrimSpace(metricsService) != "" {
+					svc := strings.TrimSpace(metricsService)
+					rrReq.ServiceName = &svc
+				}
+				if strings.TrimSpace(metricsRoute) != "" {
+					rt := strings.TrimSpace(metricsRoute)
+					rrReq.Route = &rt
+				}
+				if metricsFailedOnly {
+					rrReq.OnlyErrors = &metricsFailedOnly
+				}
+				rrResp, rrErr := client.ListRouteRequests(cmd.Context(), connect.NewRequest(rrReq))
+				if rrErr == nil {
+					fmt.Printf("\nTRACED REQUESTS (offset=%d, limit=%d, total=%d, has_more=%t):\n",
+						metricsOffset, metricsLimit, rrResp.Msg.GetTotalCount(), rrResp.Msg.GetHasMore())
+					tw := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
+					fmt.Fprintf(tw, "OCCURRED AT\tTRACE ID\tSERVICE\tROUTE\tSTATUS\tRTT (MS)\n")
+					for _, reqLog := range rrResp.Msg.GetRequests() {
+						ts := ""
+						if reqLog.GetOccurredAt().IsValid() {
+							ts = reqLog.GetOccurredAt().AsTime().Format(time.RFC3339)
+						}
+						fmt.Fprintf(tw, "%s\t%s\t%s\t%s\t%d\t%.2f\n",
+							ts,
+							reqLog.GetTraceId(),
+							reqLog.GetServiceName(),
+							reqLog.GetRoute(),
+							reqLog.GetStatusCode(),
+							reqLog.GetRttMs())
+					}
+					return tw.Flush()
+				}
+			}
+			return nil
 		},
 	}
 	metricsCmd.Flags().StringVar(&metricsRegion, "region", "", "Filter by deployment region (e.g. us-central1, local)")
 	metricsCmd.Flags().StringVar(&metricsService, "service", "", "Filter by service name (e.g. server-api, server-ops-api)")
 	metricsCmd.Flags().StringVar(&metricsRoute, "route", "", "Substring filter for route or RPC procedure")
-	metricsCmd.Flags().StringVar(&metricsWindow, "window", "5m", "Aggregation window (5m, 1h, 24h)")
+	metricsCmd.Flags().StringVar(&metricsWindow, "window", "5m", "Aggregation/lookback window (5m, 15m, 1h, 6h, 24h, 7d, 60d, all)")
 	metricsCmd.Flags().BoolVar(&metricsFailedOnly, "failed-only", false, "Only show routes with non-zero error counts")
 	metricsCmd.Flags().StringVarP(&metricsFilter, "filter", "f", "", "CEL filter expression for routes (e.g. 'p95_rtt_ms > 10.0 || error_count > 0')")
 	metricsCmd.Flags().StringSliceVarP(&metricsSort, "sort", "s", nil, "Columns to sort routes by (e.g. ^p95_rtt_ms, ^total_requests)")
+	metricsCmd.Flags().IntVar(&metricsLimit, "limit", 50, "Maximum number of traced requests to return per page")
+	metricsCmd.Flags().IntVar(&metricsOffset, "offset", 0, "Zero-based pagination offset for traced requests")
 	cmd.AddCommand(metricsCmd)
 
 	traceCmd := &cobra.Command{

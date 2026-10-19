@@ -527,11 +527,14 @@ recent trace IDs by region and service from the terminal:
   sorted via `cel2sql.FilterAndSort`.
 - `ListRouteRequests(ListRouteRequestsRequest) returns (ListRouteRequestsResponse)`:
   Accepts `region_filter` (optional), `service_name` (optional), `route`,
-  `window`, `only_errors` (optional bool), `limit` (default `50`), optional CEL
-  `filter`, and `repeated string sort`. Queries VictoriaLogs (with an in-memory
-  ring-buffer fallback) to return recent individual `RouteRequestLog` records
-  (`trace_id` UUID v7, `region`, `service_name`, `instance_id`, `route`,
-  `method`, `status_code`, `success`, `rtt_ms`, `occurred_at`), filtered and
+  `window` (`"5m"`, `"15m"`, `"1h"`, `"6h"`, `"24h"`, `"7d"`, `"60d"`, or
+  `"all"`), `only_errors` (optional bool), `limit` (default `50`, up to `2000`),
+  `offset` (default `0`), optional CEL `filter`, and `repeated string sort`.
+  Queries VictoriaLogs across the requested historical time window (with
+  in-memory ring-buffer and `quadsmith_ops.internal_api_calls` merging) to
+  return paginated `RouteRequestLog` records (`trace_id` UUID v7, `region`,
+  `service_name`, `instance_id`, `route`, `method`, `status_code`, `success`,
+  `rtt_ms`, `occurred_at`) alongside `total_count` and `has_more`, filtered and
   sorted via `cel2sql.FilterAndSort`.
 - `GetTrace(GetTraceRequest) returns (GetTraceResponse)`: Accepts a `trace_id`
   UUID v7 and aggregates all cross-service `TraceSpan` hops (`span_id`,
@@ -548,7 +551,7 @@ recent trace IDs by region and service from the terminal:
   `ListInternalApiCalls`, `ListIamUsers`, `ListIamGroups`, `ListInternalTokens`,
   and `ListJitGrants` also accept optional CEL `filter` and
   `repeated string sort` (`field` for ascending, `^field` or `-field` for
-  descending), evaluated by `src/go/shared/pkg/cel2sql/eval.go`.
+  descending), evaluated by `src/go/shared/pkg/cel2sql.FilterAndSort`.
 - `GetOAuthConfig(GetOAuthConfigRequest) returns (GetOAuthConfigResponse)`:
   Public (unauthenticated) RPC returning the GitHub OAuth `client_id`,
   `provider`, `environment`, `region`, and `authorize_url` so `app-ops-web` can
@@ -561,12 +564,14 @@ In [src/go/cli-ops/main.go](../src/go/cli-ops/main.go), extend `qsops`:
   `GOROUTINES`, `CHECKS`) and each binary's deep dependency sub-checks and
   latencies.
 - `qsops system metrics` (`[--region <region>]` `[--service <name>]`
-  `[--route <route>]` `[--failed-only]` `[--window 1h|24h|7d|60d]`
-  `[-f|--filter <cel>]` `[-s|--sort <field,...>]` `[--json]`): Displays
-  per-region, per-service, and per-route request availability %, RPS, and
-  `P50 / P95 / P99` RTT (ms). When `--route <route>` is provided, drills down
-  via `ListRouteRequests` to display recent `TRACE ID` UUIDs, `REGION`,
-  `OUTCOME` (`SUCCESS` / `FAILED`), `HTTP CODE`, `RTT`, and `TIMESTAMP`.
+  `[--route <route>]` `[--failed-only]` `[--window 5m|15m|1h|6h|24h|7d|60d|all]`
+  `[--limit <n>]` `[--offset <n>]` `[-f|--filter <cel>]`
+  `[-s|--sort <field,...>]` `[--json]`): Displays per-region, per-service, and
+  per-route request availability %, RPS, and `P50 / P95 / P99` RTT (ms). When
+  `--route <route>` or `--offset <n>` is provided, drills down via
+  `ListRouteRequests` to display paginated `TRACE ID` UUIDs, `REGION`, `OUTCOME`
+  (`SUCCESS` / `FAILED`), `HTTP CODE`, `RTT`, and `TIMESTAMP` with pagination
+  summary (`offset`, `limit`, `total`, `has_more`).
 - `qsops system trace <trace_id> [--json]`: Queries `OpsService.GetTrace` for a
   specific `X-Trace-Id` UUID v7 and prints the cross-service hop waterfall and
   chronological structured log events.
@@ -622,13 +627,18 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
      `service_name == "server-api" && route != "/healthz" && route != "/metrics"`
      so the Ops UI focuses on public API server (`server-api`) application
      traffic while filtering out internal health and metrics scrape endpoints.
-   - **Tabbed Per-Route RED Metrics & Recent Traced Requests Explorer**: Renders
-     the telemetry explorer inside a 2-tab sub-navigation
+   - **Tabbed Per-Route RED Metrics & Paginated Traced Requests Explorer**:
+     Renders the telemetry explorer inside a 2-tab sub-navigation
      (`1. Per-Route RED Metrics` as the default first tab and
      `2. Recent Traced Requests` as the second tab). Clicking any route row in
      `1. Per-Route RED Metrics` automatically switches to
      `2. Recent Traced Requests` and applies `route == "<clicked_route>"` to the
-     traced requests CEL filter.
+     traced requests CEL filter. Operators can look further into the past via
+     the extended lookback window selector (`5m`, `15m`, `1h`, `6h`, `24h`,
+     `7d`, `60d`, or `All History`) and configurable **History Depth** (`100` to
+     `2,000` traced requests fetched from VictoriaLogs), and page through
+     matching requests using **Page Size** (`10`, `25`, `50`, or `100` per page)
+     and `First / Prev / Next / Last` pagination controls.
    - **Vertical 5-Service Deep Health Cards with Direct `/healthz` & `/metrics`
      Links**: Renders the 5 monitored services (`server-api`, `server-web`,
      `server-ops-api`, `server-ops-web`, and `server-cron`) in a vertical stack

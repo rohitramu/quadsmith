@@ -3028,6 +3028,7 @@ type ListRouteRequestsRequest struct {
 	Limit         *int32                 `protobuf:"varint,6,opt,name=limit,proto3,oneof" json:"limit,omitempty"`
 	Filter        *string                `protobuf:"bytes,7,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
 	Sort          []string               `protobuf:"bytes,8,rep,name=sort,proto3" json:"sort,omitempty"`
+	Offset        *int32                 `protobuf:"varint,9,opt,name=offset,proto3,oneof" json:"offset,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3118,9 +3119,18 @@ func (x *ListRouteRequestsRequest) GetSort() []string {
 	return nil
 }
 
+func (x *ListRouteRequestsRequest) GetOffset() int32 {
+	if x != nil && x.Offset != nil {
+		return *x.Offset
+	}
+	return 0
+}
+
 type ListRouteRequestsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Requests      []*RouteRequestLog     `protobuf:"bytes,1,rep,name=requests,proto3" json:"requests,omitempty"`
+	TotalCount    int32                  `protobuf:"varint,2,opt,name=total_count,json=totalCount,proto3" json:"total_count,omitempty"`
+	HasMore       bool                   `protobuf:"varint,3,opt,name=has_more,json=hasMore,proto3" json:"has_more,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -3160,6 +3170,20 @@ func (x *ListRouteRequestsResponse) GetRequests() []*RouteRequestLog {
 		return x.Requests
 	}
 	return nil
+}
+
+func (x *ListRouteRequestsResponse) GetTotalCount() int32 {
+	if x != nil {
+		return x.TotalCount
+	}
+	return 0
+}
+
+func (x *ListRouteRequestsResponse) GetHasMore() bool {
+	if x != nil {
+		return x.HasMore
+	}
+	return false
 }
 
 type ListTasksRequest struct {
@@ -5062,7 +5086,7 @@ const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"_task_nameB\t\n" +
 	"\a_filter\"@\n" +
 	"\x10ListJobsResponse\x12,\n" +
-	"\x04jobs\x18\x01 \x03(\v2\x18.quadsmith.ops.JobRecordR\x04jobs\"\xf3\x02\n" +
+	"\x04jobs\x18\x01 \x03(\v2\x18.quadsmith.ops.JobRecordR\x04jobs\"\x9b\x03\n" +
 	"\x18ListRouteRequestsRequest\x12(\n" +
 	"\rregion_filter\x18\x01 \x01(\tH\x00R\fregionFilter\x88\x01\x01\x12&\n" +
 	"\fservice_name\x18\x02 \x01(\tH\x01R\vserviceName\x88\x01\x01\x12\x19\n" +
@@ -5072,16 +5096,21 @@ const file_quadsmith_ops_ops_proto_rawDesc = "" +
 	"onlyErrors\x88\x01\x01\x12\x19\n" +
 	"\x05limit\x18\x06 \x01(\x05H\x05R\x05limit\x88\x01\x01\x12\x1b\n" +
 	"\x06filter\x18\a \x01(\tH\x06R\x06filter\x88\x01\x01\x12\x12\n" +
-	"\x04sort\x18\b \x03(\tR\x04sortB\x10\n" +
+	"\x04sort\x18\b \x03(\tR\x04sort\x12\x1b\n" +
+	"\x06offset\x18\t \x01(\x05H\aR\x06offset\x88\x01\x01B\x10\n" +
 	"\x0e_region_filterB\x0f\n" +
 	"\r_service_nameB\b\n" +
 	"\x06_routeB\t\n" +
 	"\a_windowB\x0e\n" +
 	"\f_only_errorsB\b\n" +
 	"\x06_limitB\t\n" +
-	"\a_filter\"W\n" +
+	"\a_filterB\t\n" +
+	"\a_offset\"\x93\x01\n" +
 	"\x19ListRouteRequestsResponse\x12:\n" +
-	"\brequests\x18\x01 \x03(\v2\x1e.quadsmith.ops.RouteRequestLogR\brequests\"N\n" +
+	"\brequests\x18\x01 \x03(\v2\x1e.quadsmith.ops.RouteRequestLogR\brequests\x12\x1f\n" +
+	"\vtotal_count\x18\x02 \x01(\x05R\n" +
+	"totalCount\x12\x19\n" +
+	"\bhas_more\x18\x03 \x01(\bR\ahasMore\"N\n" +
 	"\x10ListTasksRequest\x12\x1b\n" +
 	"\x06filter\x18\x01 \x01(\tH\x00R\x06filter\x88\x01\x01\x12\x12\n" +
 	"\x04sort\x18\x02 \x03(\tR\x04sortB\t\n" +
