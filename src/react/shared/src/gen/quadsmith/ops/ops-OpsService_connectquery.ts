@@ -125,6 +125,11 @@ export const listIamUsers = OpsService.method.listIamUsers;
 export const listIamGroups = OpsService.method.listIamGroups;
 
 /**
+ * @generated from rpc quadsmith.ops.OpsService.LoginAsQuadsmith
+ */
+export const loginAsQuadsmith = OpsService.method.loginAsQuadsmith;
+
+/**
  * Dynamic Token Management
  *
  * @generated from rpc quadsmith.ops.OpsService.CreateInternalToken

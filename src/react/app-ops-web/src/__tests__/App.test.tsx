@@ -220,4 +220,61 @@ describe("Ops Console App", () => {
       setOpsCookieAndStorage(null);
     }
   });
+
+  it("renders JIT-gated Log in as @quadsmith button and triggers LoginAsQuadsmith when elevated", async () => {
+    const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
+      const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
+      let payload: Record<string, unknown> = {};
+      if (url.endsWith("/GetCurrentOperator")) {
+        payload = {
+          operator: "rohitramu",
+          operatorType: "HUMAN",
+          groupName: "admins",
+          activeJitGrant: {
+            id: "jit_test_1",
+            operator: "rohitramu",
+            hours: 2,
+            reason: "Testing @quadsmith login",
+            status: "ACTIVE",
+            operation: "*",
+          },
+        };
+      } else if (url.endsWith("/LoginAsQuadsmith")) {
+        payload = {
+          accessToken: "sys_access_token_123",
+          refreshToken: "sys_refresh_token_456",
+          username: "quadsmith",
+          userUuid: "018f0000-0000-7000-8000-000000000000",
+          role: "SYSTEM",
+          sessionUuid: "sys_session_789",
+        };
+      }
+      return new Response(JSON.stringify(payload), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    });
+
+    try {
+      setOpsCookieAndStorage("qs_op_sandbox_token_12345");
+      render(<App />);
+
+      const loginBtn = await screen.findByTestId("login-quadsmith-btn");
+      expect(loginBtn).toHaveTextContent(/Log in as @quadsmith/i);
+      fireEvent.click(loginBtn);
+
+      await vi.waitFor(() => {
+        expect(openSpy).toHaveBeenCalledWith(
+          expect.stringContaining("ops_refresh_token=sys_refresh_token_456"),
+          "_blank",
+          "noopener,noreferrer",
+        );
+      });
+    } finally {
+      openSpy.mockRestore();
+      fetchSpy.mockRestore();
+      setOpsCookieAndStorage(null);
+    }
+  });
 });

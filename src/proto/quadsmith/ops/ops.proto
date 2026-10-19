@@ -42,6 +42,7 @@ service OpsService {
   rpc GetOAuthConfig(GetOAuthConfigRequest) returns (GetOAuthConfigResponse);
   rpc ListIamUsers(ListIamUsersRequest) returns (ListIamUsersResponse);
   rpc ListIamGroups(ListIamGroupsRequest) returns (ListIamGroupsResponse);
+  rpc LoginAsQuadsmith(LoginAsQuadsmithRequest) returns (LoginAsQuadsmithResponse);
 
   // Dynamic Token Management
   rpc CreateInternalToken(CreateInternalTokenRequest) returns (CreateInternalTokenResponse);
@@ -380,6 +381,17 @@ message ListTasksRequest {
 
 message ListTasksResponse {
   repeated TaskDef tasks = 1;
+}
+
+message LoginAsQuadsmithRequest {}
+
+message LoginAsQuadsmithResponse {
+  string access_token = 1;
+  string refresh_token = 2;
+  string user_uuid = 3;
+  string username = 4;
+  string role = 5;
+  google.protobuf.Timestamp expires_at = 6;
 }
 
 message PurgeSoftDeletedAccountsRequest {}

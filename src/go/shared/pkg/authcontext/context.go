@@ -9,7 +9,16 @@ import (
 
 type contextKey string
 
-const userContextKey = contextKey("quadsmith_user_context")
+const (
+	userContextKey = contextKey("quadsmith_user_context")
+
+	SystemUserUUID   = "018f0000-0000-7000-8000-000000000000"
+	SystemUserHandle = "quadsmith"
+
+	RoleUser   = "USER"
+	RoleAdmin  = "ADMIN"
+	RoleSystem = "SYSTEM"
+)
 
 // UserContext carries the authenticated user's identity through context.Context
 type UserContext struct {
@@ -19,6 +28,16 @@ type UserContext struct {
 	Role        string
 	SessionUUID string
 	IsBanned    bool
+}
+
+// IsAdmin returns true if the user holds administrative or system privileges ("ADMIN" or "SYSTEM").
+func (u *UserContext) IsAdmin() bool {
+	return u != nil && (u.Role == RoleAdmin || u.Role == RoleSystem)
+}
+
+// IsSystem returns true if the user is the elevated @quadsmith system user ("SYSTEM").
+func (u *UserContext) IsSystem() bool {
+	return u != nil && u.Role == RoleSystem
 }
 
 // WithUserContext injects UserContext into context.Context

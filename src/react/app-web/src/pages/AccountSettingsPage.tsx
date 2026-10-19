@@ -741,6 +741,7 @@ export function AccountSettingsPage() {
     : 0;
 
   const isBanned = Boolean(user?.activeBan);
+  const isSystemAccount = user?.role === "SYSTEM" || user?.id === "quadsmith";
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
@@ -803,7 +804,20 @@ export function AccountSettingsPage() {
             <h1 className="text-2xl font-bold tracking-tight">Account Settings</h1>
             <div className="flex items-center gap-2.5 mt-1.5 flex-wrap">
               <UserBadge username={user?.id} size="sm" withHoverCard={false} to={null} />
-              {!isBanned ? (
+              {isSystemAccount && (
+                <span
+                  data-testid="system-role-badge"
+                  className="px-2 py-0.5 text-[10px] font-mono font-bold text-amber-300 bg-amber-500/15 border border-amber-500/30 rounded-md"
+                >
+                  SYSTEM
+                </span>
+              )}
+              {isSystemAccount ? (
+                <span className="px-2 py-0.5 text-[11px] font-medium text-zinc-400 bg-zinc-800/60 rounded-md flex items-center gap-1">
+                  <Lock size={10} />
+                  System handle locked
+                </span>
+              ) : !isBanned ? (
                 <button
                   type="button"
                   onClick={openChangeUsernameModal}
@@ -1383,14 +1397,25 @@ export function AccountSettingsPage() {
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={() => setIsDeleteModalOpen(true)}
-            className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-rose-600 hover:bg-rose-500 transition shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0"
-          >
-            <Trash2 size={14} />
-            <span>Delete Account</span>
-          </button>
+          {isSystemAccount ? (
+            <span
+              data-testid="system-account-delete-locked"
+              title="The @quadsmith system account is permanently protected from deletion"
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-zinc-500 bg-zinc-900 border border-zinc-800 flex items-center gap-1.5 cursor-not-allowed shrink-0"
+            >
+              <Lock size={14} />
+              <span>Protected System Account</span>
+            </span>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setIsDeleteModalOpen(true)}
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-rose-600 hover:bg-rose-500 transition shadow-sm flex items-center gap-1.5 cursor-pointer shrink-0"
+            >
+              <Trash2 size={14} />
+              <span>Delete Account</span>
+            </button>
+          )}
         </div>
       </section>
 

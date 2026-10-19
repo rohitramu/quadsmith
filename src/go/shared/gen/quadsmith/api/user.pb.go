@@ -170,7 +170,7 @@ type User struct {
 	// (See `_validate.proto` for comprehensive documentation on RE2 regex restrictions and ReDoS guarantees).
 	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	Email         string                 `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"` // Verified primary email
-	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`   // "USER", "ADMIN"
+	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"`   // "USER", "ADMIN", "SYSTEM"
 	LastRenamedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=last_renamed_at,json=lastRenamedAt,proto3" json:"last_renamed_at,omitempty"`
 	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=deleted_at,json=deletedAt,proto3" json:"deleted_at,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`

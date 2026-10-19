@@ -73,6 +73,7 @@ services:
       - QS_CONFIG=/app/src/go/server-ops-api/config/${QS_ENV:-sandbox}.textproto
       - QS_DATABASE_URL=${QS_DATABASE_URL:-postgres://postgres:postgres@host.docker.internal:${DB_PORT:-5432}/quadsmith_api?sslmode=disable}
       - QS_INTERNAL_DATABASE_URL=${QS_INTERNAL_DATABASE_URL:-postgres://postgres:postgres@host.docker.internal:${DB_PORT:-5432}/quadsmith_ops?sslmode=disable}
+      - QS_AUTH_SECRET=${QS_AUTH_SECRET:-}
       - QS_OAUTH_CLIENT_ID=${QS_OAUTH_CLIENT_ID:-}
       - QS_OAUTH_CLIENT_SECRET=${QS_OAUTH_CLIENT_SECRET:-}
       - QS_PEER_API_HEALTHZ=http://api:8081/healthz

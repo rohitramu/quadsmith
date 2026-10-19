@@ -12,6 +12,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"google.golang.org/protobuf/encoding/prototext"
 
+	"quadsmith/shared/pkg/auth"
 	"quadsmith/shared/pkg/authcontext"
 	"quadsmith/shared/pkg/config"
 
@@ -143,6 +144,9 @@ func main() {
 				panic(err)
 			}
 		}
+	}
+	if _, err := auth.EnsureSystemUser(ctx, tx); err != nil {
+		panic(fmt.Errorf("failed to seed @quadsmith system user: %w", err))
 	}
 
 	// Motors

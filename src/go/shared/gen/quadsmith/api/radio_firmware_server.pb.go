@@ -238,7 +238,7 @@ func (s *RadioFirmwareServiceHandler) UpdateRadioFirmware(ctx context.Context, r
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	if userCtx.Role != "ADMIN" {
+	if !userCtx.IsAdmin() {
 		if existingUserUUID == nil || *existingUserUUID != userCtx.UserUUID {
 			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("you do not have permission to update this component"))
 		}
@@ -353,7 +353,7 @@ func (s *RadioFirmwareServiceHandler) DeleteRadioFirmware(ctx context.Context, r
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	if userCtx.Role != "ADMIN" {
+	if !userCtx.IsAdmin() {
 		if existingUserUUID == nil || *existingUserUUID != userCtx.UserUUID {
 			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("you do not have permission to delete this component"))
 		}

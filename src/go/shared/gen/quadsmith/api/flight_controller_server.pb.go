@@ -244,7 +244,7 @@ func (s *FlightControllerServiceHandler) UpdateFlightController(ctx context.Cont
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	if userCtx.Role != "ADMIN" {
+	if !userCtx.IsAdmin() {
 		if existingUserUUID == nil || *existingUserUUID != userCtx.UserUUID {
 			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("you do not have permission to update this component"))
 		}
@@ -365,7 +365,7 @@ func (s *FlightControllerServiceHandler) DeleteFlightController(ctx context.Cont
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	if userCtx.Role != "ADMIN" {
+	if !userCtx.IsAdmin() {
 		if existingUserUUID == nil || *existingUserUUID != userCtx.UserUUID {
 			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("you do not have permission to delete this component"))
 		}

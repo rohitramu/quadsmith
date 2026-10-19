@@ -93,7 +93,7 @@ export type User = Message<"quadsmith.api.User"> & {
   email: string;
 
   /**
-   * "USER", "ADMIN"
+   * "USER", "ADMIN", "SYSTEM"
    *
    * @generated from field: string role = 4;
    */

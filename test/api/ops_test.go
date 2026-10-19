@@ -1107,6 +1107,143 @@ func TestOpsService_CELFilterAndSorting(t *testing.T) {
 	}
 }
 
+func TestOpsServer_LoginAsQuadsmithAndSystemAccountProtections(t *testing.T) {
+	ctx := context.Background()
+	pubPool, err := pgxpool.New(ctx, getDBURL())
+	if err != nil {
+		t.Fatalf("Failed to connect to quadsmith_api DB: %v", err)
+	}
+	defer pubPool.Close()
+
+	// 1. Verify @quadsmith system user exists with role = 'SYSTEM' and DB CHECK constraints hold
+	var sysUUID, sysRole string
+	if err := pubPool.QueryRow(ctx, `SELECT uuid::text, role FROM users WHERE id = 'quadsmith'`).Scan(&sysUUID, &sysRole); err != nil {
+		t.Fatalf("Expected @quadsmith system user to exist in quadsmith_api.users: %v", err)
+	}
+	if sysUUID != auth.SystemUserUUID || sysRole != "SYSTEM" {
+		t.Fatalf("Expected @quadsmith uuid=%s role=SYSTEM, got uuid=%s role=%s", auth.SystemUserUUID, sysUUID, sysRole)
+	}
+
+	// PostgreSQL CHECK constraint must reject changing @quadsmith role or soft-deleting @quadsmith
+	if _, err := pubPool.Exec(ctx, `UPDATE users SET role = 'ADMIN' WHERE id = 'quadsmith'`); err == nil {
+		t.Fatalf("Expected PostgreSQL CHECK constraint to reject changing @quadsmith role to ADMIN")
+	}
+	if _, err := pubPool.Exec(ctx, `UPDATE users SET deleted_at = NOW() WHERE id = 'quadsmith'`); err == nil {
+		t.Fatalf("Expected PostgreSQL CHECK constraint to reject soft-deleting @quadsmith")
+	}
+
+	operatorClient := newOpsClient("qs_op_sandbox_token_12345")
+	robotClient := newOpsClient("qs_robot_sandbox_token_67890")
+
+	// Revoke any pre-existing active JIT grants on sandbox operator
+	if grantsRes, err := operatorClient.ListJitGrants(ctx, connect.NewRequest(&pb.ListJitGrantsRequest{ActiveOnly: true})); err == nil {
+		for _, g := range grantsRes.Msg.GetGrants() {
+			_, _ = operatorClient.RevokeJitGrant(ctx, connect.NewRequest(&pb.RevokeJitGrantRequest{GrantId: g.GetId()}))
+		}
+	}
+
+	// 2. Without JIT grant -> PermissionDenied; with ROBOT token -> PermissionDenied
+	if _, err := operatorClient.LoginAsQuadsmith(ctx, connect.NewRequest(&pb.LoginAsQuadsmithRequest{})); err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("Expected CodePermissionDenied when calling LoginAsQuadsmith without JIT grant, got %v", err)
+	}
+	if _, err := robotClient.LoginAsQuadsmith(ctx, connect.NewRequest(&pb.LoginAsQuadsmithRequest{})); err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("Expected CodePermissionDenied when calling LoginAsQuadsmith with ROBOT token, got %v", err)
+	}
+
+	// 3. Acquire JIT grant for HUMAN operator
+	grantRes, err := operatorClient.AcquireJitGrant(ctx, connect.NewRequest(&pb.AcquireJitGrantRequest{
+		Hours:     1,
+		Reason:    "E2E test for LoginAsQuadsmith",
+		Operation: "*",
+	}))
+	if err != nil {
+		t.Fatalf("AcquireJitGrant failed: %v", err)
+	}
+	grantID := grantRes.Msg.GetGrant().GetId()
+	defer func() {
+		_, _ = operatorClient.RevokeJitGrant(ctx, connect.NewRequest(&pb.RevokeJitGrantRequest{GrantId: grantID}))
+	}()
+
+	// 4. Call LoginAsQuadsmith via OpsService
+	loginRes, err := operatorClient.LoginAsQuadsmith(ctx, connect.NewRequest(&pb.LoginAsQuadsmithRequest{}))
+	if err != nil {
+		t.Fatalf("LoginAsQuadsmith failed: %v", err)
+	}
+	if loginRes.Msg.GetUsername() != "quadsmith" || loginRes.Msg.GetUserUuid() != auth.SystemUserUUID || loginRes.Msg.GetRole() != "SYSTEM" {
+		t.Fatalf("Unexpected LoginAsQuadsmith user fields: username=%q uuid=%q role=%q",
+			loginRes.Msg.GetUsername(), loginRes.Msg.GetUserUuid(), loginRes.Msg.GetRole())
+	}
+	if loginRes.Msg.GetAccessToken() == "" || loginRes.Msg.GetRefreshToken() == "" || loginRes.Msg.GetExpiresAt() == nil {
+		t.Fatalf("Expected non-empty access_token, refresh_token, and expires_at from LoginAsQuadsmith")
+	}
+
+	// 5. Authenticate to public AuthService & UserService as @quadsmith
+	qsHTTPClient := &http.Client{
+		Transport: &authRoundTripper{base: http.DefaultTransport, token: loginRes.Msg.GetAccessToken()},
+		Timeout:   5 * time.Second,
+	}
+	qsAuthClient := apiconnect.NewAuthServiceClient(qsHTTPClient, getAPIURL())
+	qsUserClient := apiconnect.NewUserServiceClient(qsHTTPClient, getAPIURL())
+
+	meRes, err := qsAuthClient.GetCurrentUser(ctx, connect.NewRequest(&apipb.GetCurrentUserRequest{}))
+	if err != nil {
+		t.Fatalf("GetCurrentUser as @quadsmith failed: %v", err)
+	}
+	if meRes.Msg.GetId() != "quadsmith" || meRes.Msg.GetRole() != "SYSTEM" {
+		t.Errorf("Expected @quadsmith role=SYSTEM in GetCurrentUser, got id=%q role=%q",
+			meRes.Msg.GetId(), meRes.Msg.GetRole())
+	}
+
+	// Verify @quadsmith has full admin privileges (e.g., ListBans)
+	if _, err := qsUserClient.ListBans(ctx, connect.NewRequest(&apipb.ListBansRequest{})); err != nil {
+		t.Fatalf("Expected @quadsmith SYSTEM role to have admin access to ListBans: %v", err)
+	}
+
+	// Verify @quadsmith cannot rename handle, delete account, or be banned/role-modified
+	if _, err := qsAuthClient.ChangeUsername(ctx, connect.NewRequest(&apipb.ChangeUsernameRequest{NewUsername: "not_quadsmith"})); err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Errorf("Expected ChangeUsername to be rejected with CodePermissionDenied for @quadsmith, got %v", err)
+	}
+	if _, err := qsAuthClient.DeleteAccount(ctx, connect.NewRequest(&apipb.DeleteAccountRequest{Username: "quadsmith"})); err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Errorf("Expected DeleteAccount to be rejected with CodePermissionDenied for @quadsmith, got %v", err)
+	}
+	if _, err := qsUserClient.BanUser(ctx, connect.NewRequest(&apipb.BanUserRequest{UserId: "quadsmith", Reason: "attempting to ban system"})); err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Errorf("Expected BanUser targeting @quadsmith to be rejected with CodePermissionDenied, got %v", err)
+	}
+	if _, err := operatorClient.SetUserRole(ctx, connect.NewRequest(&pb.SetUserRoleRequest{UserId: "quadsmith", Role: "USER"})); err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Errorf("Expected SetUserRole targeting @quadsmith to be rejected with CodePermissionDenied, got %v", err)
+	}
+
+	// Verify RefreshToken works with the minted refresh_token (used by app-web ops_refresh_token handoff)
+	refRes, err := qsAuthClient.RefreshToken(ctx, connect.NewRequest(&apipb.RefreshTokenRequest{
+		RefreshToken: loginRes.Msg.GetRefreshToken(),
+	}))
+	if err != nil {
+		t.Fatalf("RefreshToken for @quadsmith failed: %v", err)
+	}
+	if refRes.Msg.GetUser().GetId() != "quadsmith" || refRes.Msg.GetUser().GetRole() != "SYSTEM" || refRes.Msg.GetAccessToken() == "" {
+		t.Errorf("Unexpected RefreshToken response for @quadsmith: %+v", refRes.Msg)
+	}
+
+	// 6. Verify qsops login-quadsmith CLI command writes valid qs config
+	qsopsPath := resolveQSOpsPath(t)
+	tmpConfig := filepath.Join(t.TempDir(), "config.json")
+	cmd := exec.Command(qsopsPath, "login-quadsmith", "--qs-config", tmpConfig, "--token", "qs_op_sandbox_token_12345")
+	out, err := cmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops login-quadsmith failed: %v, output: %s", err, string(out))
+	}
+	if !containsString(string(out), "Authenticated public 'qs' CLI as @quadsmith (role: SYSTEM)") {
+		t.Errorf("Unexpected qsops login-quadsmith output: %s", string(out))
+	}
+	cfgBytes, err := os.ReadFile(tmpConfig)
+	if err != nil {
+		t.Fatalf("Failed to read written qs config file: %v", err)
+	}
+	if !containsString(string(cfgBytes), `"user_id": "quadsmith"`) || !containsString(string(cfgBytes), `"access_token":`) {
+		t.Errorf("Expected user_id=quadsmith and access_token in written config.json, got: %s", string(cfgBytes))
+	}
+}
+
 func containsString(s, substr string) bool {
 	return len(s) >= len(substr) && (s == substr || (len(s) > len(substr) && stringContains(s, substr)))
 }

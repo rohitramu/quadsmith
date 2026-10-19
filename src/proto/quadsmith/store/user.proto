@@ -202,7 +202,7 @@ message RefreshToken {
 message User {
   option (quadsmith.sql.table) = {
     name: "users"
-    checks: "role IN ('USER', 'ADMIN')"
+    checks: "(id = 'quadsmith' AND role = 'SYSTEM' AND deleted_at IS NULL) OR (id != 'quadsmith' AND role IN ('USER', 'ADMIN'))"
   };
   option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_ACCOUNT};
 
@@ -240,7 +240,7 @@ message User {
       read_only: true
     },
     (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
-  ]; // "USER", "ADMIN"
+  ]; // "USER", "ADMIN", "SYSTEM"
   google.protobuf.Timestamp last_renamed_at = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
   google.protobuf.Timestamp deleted_at = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
   google.protobuf.Timestamp created_at = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];

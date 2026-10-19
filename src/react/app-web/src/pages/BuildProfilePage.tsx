@@ -182,7 +182,10 @@ export function BuildProfilePage() {
   const isCreator =
     isAuthenticated &&
     user &&
-    (user.uuid === build?.userUuid || user.id === build?.authorUsername || user.role === "ADMIN");
+    (user.uuid === build?.userUuid ||
+      user.id === build?.authorUsername ||
+      user.role === "ADMIN" ||
+      user.role === "SYSTEM");
 
   useDocumentMeta({
     title: build ? `${build.name} — FPV Drone Build — Quadsmith` : "Build Profile — Quadsmith",

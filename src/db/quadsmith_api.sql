@@ -350,7 +350,17 @@ CREATE TABLE IF NOT EXISTS users (
   deleted_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ,
   updated_at TIMESTAMPTZ,
-  CHECK (role IN ('USER', 'ADMIN'))
+  CHECK (
+    (
+      id = 'quadsmith'
+      AND role = 'SYSTEM'
+      AND deleted_at IS NULL
+    )
+    OR (
+      id != 'quadsmith'
+      AND role IN ('USER', 'ADMIN')
+    )
+  )
 );
 
 CREATE INDEX IF NOT EXISTS idx_users_id ON users (id);

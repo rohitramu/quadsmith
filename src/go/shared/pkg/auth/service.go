@@ -107,6 +107,10 @@ func NewAuthService(db *pgxpool.Pool, protoCfg ...*config.AuthConfig) *AuthServi
 		sender = email.NewConsoleEmailSender()
 	}
 
+	if db != nil {
+		_, _ = EnsureSystemUser(context.Background(), db)
+	}
+
 	return &AuthService{
 		db:          db,
 		cfg:         authCfg,
@@ -166,6 +170,9 @@ func (s *AuthService) SendEmailOtp(ctx context.Context, req *connect.Request[pb.
 	if purpose == pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_EXPORT_DATA || purpose == pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_DELETE_ACCOUNT {
 		if userCtx == nil {
 			return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+		}
+		if purpose == pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_DELETE_ACCOUNT && (userCtx.IsSystem() || strings.EqualFold(userCtx.UserID, SystemUserHandle)) {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("the @quadsmith system account cannot be deleted"))
 		}
 		if email == "" {
 			_ = s.db.QueryRow(ctx, `
@@ -580,6 +587,9 @@ func (s *AuthService) VerifyEmailOtp(ctx context.Context, req *connect.Request[p
 	case pb.EmailOtpPurpose_EMAIL_OTP_PURPOSE_DELETE_ACCOUNT:
 		if userCtx == nil {
 			return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+		}
+		if userCtx.IsSystem() || strings.EqualFold(userCtx.UserID, SystemUserHandle) || userCtx.UserUUID == SystemUserUUID {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("the @quadsmith system account cannot be deleted"))
 		}
 		now := time.Now()
 		purgeAt := now.Add(30 * 24 * time.Hour)
@@ -1019,6 +1029,9 @@ func (s *AuthService) GetLoginChallengeStatus(ctx context.Context, req *connect.
 			}), nil
 
 		case "delete_account":
+			if userUUID == SystemUserUUID || (userCtx != nil && (userCtx.IsSystem() || strings.EqualFold(userCtx.UserID, SystemUserHandle))) {
+				return nil, connect.NewError(connect.CodePermissionDenied, errors.New("the @quadsmith system account cannot be deleted"))
+			}
 			now := time.Now()
 			purgeAt := now.Add(30 * 24 * time.Hour)
 			_, err = s.db.Exec(ctx, `UPDATE users SET deleted_at = $1 WHERE uuid = $2`, now, userUUID)
@@ -1819,6 +1832,9 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 	if userCtx == nil {
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 	}
+	if userCtx.IsSystem() || strings.EqualFold(userCtx.UserID, SystemUserHandle) || userCtx.UserUUID == SystemUserUUID {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("the @quadsmith system account cannot be merged"))
+	}
 
 	email := strings.ToLower(strings.TrimSpace(req.Msg.GetEmail()))
 	ticket := strings.TrimSpace(req.Msg.GetMergeTicket())
@@ -1896,14 +1912,17 @@ func (s *AuthService) MergeAccount(ctx context.Context, req *connect.Request[pb.
 	var currentUsername string
 	_ = s.db.QueryRow(ctx, `SELECT id FROM users WHERE uuid = $1`, userCtx.UserUUID).Scan(&currentUsername)
 
-	var otherUsername, otherEmail string
+	var otherUsername, otherEmail, otherRole string
 	err := s.db.QueryRow(ctx, `
-		SELECT u.id, COALESCE(ue.email, '')
+		SELECT u.id, COALESCE(ue.email, ''), u.role
 		FROM users u
 		LEFT JOIN user_emails ue ON ue.user_uuid = u.uuid AND ue.is_primary = true
-		WHERE u.uuid = $1`, otherUserUUID).Scan(&otherUsername, &otherEmail)
+		WHERE u.uuid = $1`, otherUserUUID).Scan(&otherUsername, &otherEmail, &otherRole)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("account to merge was not found"))
+	}
+	if otherRole == RoleSystem || strings.EqualFold(otherUsername, SystemUserHandle) || otherUserUUID == SystemUserUUID || strings.EqualFold(currentUsername, SystemUserHandle) {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("the @quadsmith system account cannot be merged"))
 	}
 
 	// Begin atomic merge transaction
@@ -3063,6 +3082,9 @@ func (s *AuthService) ChangeUsername(ctx context.Context, req *connect.Request[p
 	if userCtx == nil {
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 	}
+	if userCtx.IsSystem() || strings.EqualFold(userCtx.UserID, SystemUserHandle) || userCtx.UserUUID == SystemUserUUID {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("the @quadsmith system account cannot be renamed"))
+	}
 
 	newUsername := strings.ToLower(strings.TrimSpace(req.Msg.GetNewUsername()))
 	if err := ValidateUsername(newUsername); err != nil {
@@ -3074,6 +3096,9 @@ func (s *AuthService) ChangeUsername(ctx context.Context, req *connect.Request[p
 	err := s.db.QueryRow(ctx, `SELECT id, last_renamed_at FROM users WHERE uuid = $1 AND deleted_at IS NULL`, userCtx.UserUUID).Scan(&currentUsername, &lastRenamedAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("user not found"))
+	}
+	if strings.EqualFold(currentUsername, SystemUserHandle) {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("the @quadsmith system account cannot be renamed"))
 	}
 
 	if strings.ToLower(currentUsername) == newUsername {
@@ -3795,6 +3820,9 @@ func (s *AuthService) DeleteAccount(ctx context.Context, req *connect.Request[pb
 	if userCtx == nil {
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 	}
+	if userCtx.IsSystem() || strings.EqualFold(userCtx.UserID, SystemUserHandle) || userCtx.UserUUID == SystemUserUUID {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("the @quadsmith system account cannot be deleted"))
+	}
 
 	username := strings.ToLower(strings.TrimSpace(req.Msg.GetUsername()))
 	if username == "" {
@@ -3809,6 +3837,9 @@ func (s *AuthService) DeleteAccount(ctx context.Context, req *connect.Request[pb
 			return nil, connect.NewError(connect.CodeNotFound, errors.New("active user not found"))
 		}
 		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+	if strings.EqualFold(currentUsername, SystemUserHandle) {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("the @quadsmith system account cannot be deleted"))
 	}
 	if !strings.EqualFold(username, currentUsername) {
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("username does not match your account"))
@@ -4032,7 +4063,7 @@ func (s *UserService) GetUser(ctx context.Context, req *connect.Request[pb.GetUs
 	if userCtx == nil {
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 	}
-	if userCtx.Role != "ADMIN" && userCtx.UserUUID != user.Uuid {
+	if !userCtx.IsAdmin() && userCtx.UserUUID != user.Uuid {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("permission denied"))
 	}
 
@@ -4201,7 +4232,7 @@ func (s *UserService) BanUser(ctx context.Context, req *connect.Request[pb.BanUs
 	if userCtx == nil {
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 	}
-	if userCtx.Role != "ADMIN" {
+	if !userCtx.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("admin privileges required"))
 	}
 
@@ -4216,16 +4247,20 @@ func (s *UserService) BanUser(ctx context.Context, req *connect.Request[pb.BanUs
 	}
 	internalNotes := strings.TrimSpace(req.Msg.GetInternalNotes())
 
-	var targetUUID, targetHandle string
+	var targetUUID, targetHandle, targetRole string
 	err := s.db.QueryRow(ctx, `
-		SELECT uuid, id FROM users
+		SELECT uuid, id, role FROM users
 		WHERE LOWER(id) = LOWER($1) OR uuid::text = $1
-		LIMIT 1`, targetID).Scan(&targetUUID, &targetHandle)
+		LIMIT 1`, targetID).Scan(&targetUUID, &targetHandle, &targetRole)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil, connect.NewError(connect.CodeNotFound, errors.New("target user not found"))
 		}
 		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	if targetRole == RoleSystem || strings.EqualFold(targetHandle, SystemUserHandle) || targetUUID == SystemUserUUID {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("the @quadsmith system account cannot be banned"))
 	}
 
 	if targetUUID == userCtx.UserUUID {
@@ -4324,7 +4359,7 @@ func (s *UserService) UpdateBan(ctx context.Context, req *connect.Request[pb.Upd
 	if userCtx == nil {
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 	}
-	if userCtx.Role != "ADMIN" {
+	if !userCtx.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("admin privileges required"))
 	}
 
@@ -4461,7 +4496,7 @@ func (s *UserService) ListBans(ctx context.Context, req *connect.Request[pb.List
 	if userCtx == nil {
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 	}
-	if userCtx.Role != "ADMIN" {
+	if !userCtx.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("admin privileges required"))
 	}
 
@@ -4635,7 +4670,7 @@ func (s *UserService) GetUserBanStatus(ctx context.Context, req *connect.Request
 	}
 
 	// Privacy: Users may only inspect their own ban status; admins may inspect anyone
-	if userCtx.Role != "ADMIN" && userCtx.UserUUID != targetUUID {
+	if !userCtx.IsAdmin() && userCtx.UserUUID != targetUUID {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("permission denied"))
 	}
 

@@ -54,6 +54,7 @@ jit {
   max_hours: 12
   sensitive_methods: "RevokeInternalToken"
   sensitive_methods: "SetUserRole"
+  sensitive_methods: "LoginAsQuadsmith"
 }
 
 oauth {

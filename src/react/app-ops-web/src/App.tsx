@@ -970,6 +970,36 @@ export default function App() {
     }
   };
 
+  const handleLoginAsQuadsmith = async () => {
+    setBannerError("");
+    setBannerMessage("");
+    try {
+      const resp = await client.loginAsQuadsmith({});
+      let baseUrl = "http://localhost:8080";
+      if (typeof window !== "undefined") {
+        const { protocol, hostname, port } = window.location;
+        if (port === "8083") {
+          baseUrl = `${protocol}//${hostname}:8080`;
+        } else if (hostname.startsWith("ops.")) {
+          const mainHost = hostname.slice(4);
+          baseUrl = `${protocol}//${mainHost}${port ? `:${port}` : ""}`;
+        } else {
+          baseUrl = `${protocol}//${hostname}:8080`;
+        }
+      }
+      const targetUrl = `${baseUrl}/?ops_refresh_token=${encodeURIComponent(resp.refreshToken)}`;
+      if (typeof window !== "undefined" && typeof window.open === "function") {
+        window.open(targetUrl, "_blank", "noopener,noreferrer");
+      }
+      setBannerMessage(
+        `Authenticated as @${resp.username} (${resp.role}). Opened Quadsmith Web SPA in a new tab.`,
+      );
+      await refreshDashboard();
+    } catch (err) {
+      setBannerError(err instanceof Error ? err.message : "Failed to log in as @quadsmith");
+    }
+  };
+
   const handleTriggerTask = async (taskName: string) => {
     setBannerError("");
     setBannerMessage("");
@@ -1649,26 +1679,45 @@ export default function App() {
           )}
         </div>
 
-        {/* JIT-gated Grafana Deep-Dive Link */}
+        {/* JIT-gated @quadsmith Impersonation & Grafana Deep-Dive Links */}
         <div className="flex items-center gap-2">
           {hasActiveJit ? (
-            <a
-              href="/grafana/d/quadsmith-health/quadsmith-service-health"
-              target="_blank"
-              rel="noreferrer"
-              data-testid="open-grafana-btn"
-              className="px-3 py-1.5 rounded bg-sky-600/25 hover:bg-sky-600/35 text-sky-200 border border-sky-500/40 text-xs font-mono font-semibold transition"
-            >
-              📊 Open Grafana Dashboard (/grafana/)
-            </a>
+            <>
+              <button
+                type="button"
+                data-testid="login-quadsmith-btn"
+                onClick={() => void handleLoginAsQuadsmith()}
+                className="px-3 py-1.5 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 text-xs font-mono font-semibold transition cursor-pointer"
+              >
+                🚀 Log in as @quadsmith
+              </button>
+              <a
+                href="/grafana/d/quadsmith-health/quadsmith-service-health"
+                target="_blank"
+                rel="noreferrer"
+                data-testid="open-grafana-btn"
+                className="px-3 py-1.5 rounded bg-sky-600/25 hover:bg-sky-600/35 text-sky-200 border border-sky-500/40 text-xs font-mono font-semibold transition"
+              >
+                📊 Open Grafana Dashboard (/grafana/)
+              </a>
+            </>
           ) : (
-            <span
-              data-testid="open-grafana-btn"
-              title="Acquire an active JIT lease to access /grafana/*"
-              className="px-3 py-1.5 rounded bg-slate-900 text-slate-500 border border-slate-800 text-xs font-mono cursor-not-allowed"
-            >
-              🔒 Grafana Dashboard (Requires JIT)
-            </span>
+            <>
+              <span
+                data-testid="login-quadsmith-btn"
+                title="Acquire an active JIT lease to log in as @quadsmith"
+                className="px-3 py-1.5 rounded bg-slate-900 text-slate-500 border border-slate-800 text-xs font-mono cursor-not-allowed"
+              >
+                🔒 Log in as @quadsmith (Requires JIT)
+              </span>
+              <span
+                data-testid="open-grafana-btn"
+                title="Acquire an active JIT lease to access /grafana/*"
+                className="px-3 py-1.5 rounded bg-slate-900 text-slate-500 border border-slate-800 text-xs font-mono cursor-not-allowed"
+              >
+                🔒 Grafana Dashboard (Requires JIT)
+              </span>
+            </>
           )}
         </div>
       </section>

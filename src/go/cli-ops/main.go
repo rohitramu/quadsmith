@@ -157,6 +157,7 @@ func newRootCmd() *cobra.Command {
 
 	// Auth & IAM commands
 	rootCmd.AddCommand(newLoginCmd())
+	rootCmd.AddCommand(newLoginQuadsmithCmd())
 	rootCmd.AddCommand(newLogoutCmd())
 	rootCmd.AddCommand(newWhoamiCmd())
 	rootCmd.AddCommand(newIamCmd())
@@ -211,6 +212,75 @@ func newLoginCmd() *cobra.Command {
 		},
 	}
 	cmd.Flags().StringVar(&code, "code", "", "OAuth authorization code (defaults to sandbox dev code)")
+	return cmd
+}
+
+type PublicCLIConfig struct {
+	AccessToken  string `json:"access_token,omitempty"`
+	RefreshToken string `json:"refresh_token,omitempty"`
+	UserUUID     string `json:"user_uuid,omitempty"`
+	UserID       string `json:"user_id,omitempty"`
+	Email        string `json:"email,omitempty"`
+}
+
+func publicCLIConfigPath(customPath string) string {
+	if customPath != "" {
+		return customPath
+	}
+	if custom := os.Getenv("QS_CONFIG"); custom != "" {
+		return custom
+	}
+	home, err := os.UserHomeDir()
+	if err != nil {
+		home = "."
+	}
+	return filepath.Join(home, ".quadsmith", "config.json")
+}
+
+func newLoginQuadsmithCmd() *cobra.Command {
+	var qsConfigPath string
+	cmd := &cobra.Command{
+		Use:   "login-quadsmith",
+		Short: "Authenticate the public 'qs' CLI as the @quadsmith system user (requires active JIT elevation)",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			client := getOpsClient()
+			resp, err := client.LoginAsQuadsmith(cmd.Context(), connect.NewRequest(&pb.LoginAsQuadsmithRequest{}))
+			if err != nil {
+				return fmt.Errorf("login-quadsmith failed: %w", err)
+			}
+
+			msg := resp.Msg
+			targetPath := publicCLIConfigPath(qsConfigPath)
+			if err := os.MkdirAll(filepath.Dir(targetPath), 0700); err != nil {
+				return fmt.Errorf("failed to create config directory: %w", err)
+			}
+
+			cliCfg := PublicCLIConfig{
+				AccessToken:  msg.GetAccessToken(),
+				RefreshToken: msg.GetRefreshToken(),
+				UserUUID:     msg.GetUserUuid(),
+				UserID:       msg.GetUsername(),
+			}
+			data, err := json.MarshalIndent(cliCfg, "", "  ")
+			if err != nil {
+				return fmt.Errorf("failed to marshal CLI config: %w", err)
+			}
+			if err := os.WriteFile(targetPath, data, 0600); err != nil {
+				return fmt.Errorf("failed to write CLI config to %s: %w", targetPath, err)
+			}
+
+			if jsonOut {
+				out, _ := protojson.MarshalOptions{Multiline: true, Indent: "  "}.Marshal(msg)
+				fmt.Println(string(out))
+				return nil
+			}
+
+			fmt.Printf("✓ Authenticated public 'qs' CLI as @%s (role: %s)\n", msg.GetUsername(), msg.GetRole())
+			fmt.Printf("  Session written to %s (expires: %s)\n", targetPath, msg.GetExpiresAt().AsTime().Format(time.RFC1123))
+			return nil
+		},
+	}
+	cmd.Flags().StringVar(&qsConfigPath, "qs-config", "", "Path to public qs CLI config.json (defaults to $QS_CONFIG or ~/.quadsmith/config.json)")
 	return cmd
 }
 

@@ -121,6 +121,8 @@ func HandlePurgeSoftDeletedAccounts(ctx context.Context, pool *pgxpool.Pool) (in
 		SELECT uuid, id FROM users
 		WHERE deleted_at IS NOT NULL
 		  AND deleted_at <= NOW() - INTERVAL '30 days'
+		  AND role != 'SYSTEM'
+		  AND id != 'quadsmith'
 		  AND id NOT LIKE 'deleted-%';`)
 	if err != nil {
 		return 0, fmt.Errorf("failed to query expired soft-deleted users: %w", err)

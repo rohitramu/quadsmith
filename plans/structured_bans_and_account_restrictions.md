@@ -731,8 +731,10 @@ banned user believe everything is functioning normally.
 
 ## <a id="5-assumptions" >5. Assumptions</a>
 
-1. Only accounts with `role = 'ADMIN'` are authorized to invoke `BanUser`,
-   `UpdateBan`, and `ListBans`.
+1. Only accounts with `role = 'ADMIN'` or `role = 'SYSTEM'` (`@quadsmith`) are
+   authorized to invoke `BanUser`, `UpdateBan`, and `ListBans`, and the
+   `@quadsmith` system account itself is permanently protected from being
+   banned.
 2. Banned accounts retain verified email addresses and OAuth associations to
    allow authentication and unbanning.
 3. Public communal content created prior to the ban remains visible without

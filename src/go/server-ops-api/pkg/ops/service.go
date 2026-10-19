@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"os"
 	"runtime"
 	"strings"
 	"time"
@@ -35,6 +36,12 @@ type OpsService struct {
 }
 
 func NewOpsService(publicDb, opsDb *pgxpool.Pool, cfg *configpb.OpsApiServerConfig, reg ...*telemetry.Registry) *OpsService {
+	if secret := os.Getenv("QS_AUTH_SECRET"); secret != "" {
+		auth.SetMasterSecret(secret)
+	}
+	if publicDb != nil {
+		_, _ = auth.EnsureSystemUser(context.Background(), publicDb)
+	}
 	var r *telemetry.Registry
 	if len(reg) > 0 && reg[0] != nil {
 		r = reg[0]
@@ -205,6 +212,10 @@ func (s *OpsService) SetUserRole(ctx context.Context, req *connect.Request[pb.Se
 			return nil, connect.NewError(connect.CodeNotFound, fmt.Errorf("user %q not found", userID))
 		}
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to query user: %w", err))
+	}
+
+	if previousRole == auth.RoleSystem || strings.EqualFold(username, auth.SystemUserHandle) || userUUID == auth.SystemUserUUID {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot modify role of the @quadsmith system account"))
 	}
 
 	if deletedAt != nil {
@@ -699,6 +710,53 @@ func (s *OpsService) ListIamGroups(ctx context.Context, req *connect.Request[pb.
 		return nil, connect.NewError(connect.CodeInvalidArgument, err)
 	}
 	return connect.NewResponse(&pb.ListIamGroupsResponse{Groups: filtered}), nil
+}
+
+func (s *OpsService) LoginAsQuadsmith(ctx context.Context, _ *connect.Request[pb.LoginAsQuadsmithRequest]) (*connect.Response[pb.LoginAsQuadsmithResponse], error) {
+	opCtx := opsauth.OperatorContextFromContext(ctx)
+	if opCtx == nil || opCtx.GroupName == "unauthenticated" || opCtx.OperatorType == "UNKNOWN" {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
+	}
+	if opCtx.OperatorType != "HUMAN" {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("sensitive procedure requires a HUMAN operator"))
+	}
+
+	userUUID, err := auth.EnsureSystemUser(ctx, s.publicDb)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to ensure @quadsmith system user: %w", err))
+	}
+
+	sessionUUID := auth.NewUUIDv7()
+	rawRefreshToken, tokenHash, err := auth.GenerateRefreshToken()
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to generate refresh token: %w", err))
+	}
+
+	now := time.Now()
+	expiresAt := now.Add(auth.RefreshTokenTTL)
+	deviceHint := fmt.Sprintf("Ops Login (%s)", opCtx.Operator)
+
+	_, err = s.publicDb.Exec(ctx, `
+		INSERT INTO refresh_tokens (uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, ip_address, location_hint, created_at)
+		VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, '127.0.0.1', 'Ops Console', $5)
+	`, sessionUUID, userUUID, tokenHash, expiresAt, now, deviceHint)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create @quadsmith session: %w", err))
+	}
+
+	accessToken, err := auth.SignAccessToken(userUUID, auth.SystemUserHandle, "", sessionUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign access token: %w", err))
+	}
+
+	return connect.NewResponse(&pb.LoginAsQuadsmithResponse{
+		AccessToken:  accessToken,
+		RefreshToken: rawRefreshToken,
+		UserUuid:     userUUID,
+		Username:     auth.SystemUserHandle,
+		Role:         auth.RoleSystem,
+		ExpiresAt:    timestamppb.New(expiresAt),
+	}), nil
 }
 
 // ---------------------------------------------------------

@@ -192,6 +192,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     async function initAuth() {
       try {
+        if (typeof window !== "undefined") {
+          const params = new URLSearchParams(window.location.search);
+          const opsRefreshToken = params.get("ops_refresh_token");
+          if (opsRefreshToken) {
+            params.delete("ops_refresh_token");
+            const remaining = params.toString();
+            const cleanUrl =
+              window.location.pathname + (remaining ? `?${remaining}` : "") + window.location.hash;
+            window.history.replaceState({}, document.title, cleanUrl);
+
+            const res = await authClient.refreshToken({ refreshToken: opsRefreshToken });
+            if (mounted && authMutationRef.current === startMutation) {
+              if (res.accessToken) setAccessToken(res.accessToken);
+              if (res.user) setUser(res.user);
+              if (res.profile) setProfile(res.profile);
+              try {
+                const emailsRes = await authClient.listUserEmails({});
+                if (mounted && authMutationRef.current === startMutation) {
+                  setEmails(emailsRes.emails || []);
+                }
+              } catch {
+                // ignore
+              }
+            }
+            return;
+          }
+        }
+
         const token = getAccessToken();
         if (token) {
           try {

@@ -561,7 +561,7 @@ type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Uuid          string                 `protobuf:"bytes,1,opt,name=uuid,proto3" json:"uuid,omitempty"`
 	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
-	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"` // "USER", "ADMIN"
+	Role          string                 `protobuf:"bytes,4,opt,name=role,proto3" json:"role,omitempty"` // "USER", "ADMIN", "SYSTEM"
 	LastRenamedAt *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=last_renamed_at,json=lastRenamedAt,proto3" json:"last_renamed_at,omitempty"`
 	DeletedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=deleted_at,json=deletedAt,proto3" json:"deleted_at,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
@@ -1047,7 +1047,7 @@ const file_quadsmith_store_user_proto_rawDesc = "" +
 	"\rlocation_hint\x18\t \x01(\tB\f\xc2\xf3\x18\x04:\x02''\xc0\xf0\x19\x03R\flocationHint\x12?\n" +
 	"\n" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt:\x1a\xc2\xf3\x18\x10\n" +
-	"\x0erefresh_tokens\xc2\xf0\x19\x02\b\x03\"\x8e\x04\n" +
+	"\x0erefresh_tokens\xc2\xf0\x19\x02\b\x03\"\xe8\x04\n" +
 	"\x04User\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x82\x01\n" +
@@ -1062,8 +1062,8 @@ const file_quadsmith_store_user_proto_rawDesc = "" +
 	"\n" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt\x12?\n" +
 	"\n" +
-	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tupdatedAt:,\xc2\xf3\x18\"\n" +
-	"\x05users\x12\x19role IN ('USER', 'ADMIN')\xc2\xf0\x19\x02\b\x02\"\x90\x03\n" +
+	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tupdatedAt:\x85\x01\xc2\xf3\x18{\n" +
+	"\x05users\x12r(id = 'quadsmith' AND role = 'SYSTEM' AND deleted_at IS NULL) OR (id != 'quadsmith' AND role IN ('USER', 'ADMIN'))\xc2\xf0\x19\x02\b\x02\"\x90\x03\n" +
 	"\tUserEmail\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x124\n" +

@@ -11,6 +11,7 @@
   - [Account Status Preconditions and Automatic Role Demotion on Ban](#account-status-preconditions-and-automatic-role-demotion-on-ban)
   - [Eliminating Alternative Role Mutation Pathways](#eliminating-alternative-role-mutation-pathways)
   - [Database-Authoritative Role Resolution and Role-Free Access JWTs](#database-authoritative-role-resolution-and-role-free-access-jwts)
+  - [Quadsmith System Account and Ops Impersonation](#quadsmith-system-account-and-ops-impersonation)
 - [4. Assumptions](#4-assumptions)
 
 ---
@@ -558,16 +559,70 @@ it in `AuthenticateHTTPRequest` when `pool != nil`.
 
 </details>
 
+### <a id="quadsmith-system-account-and-ops-impersonation" >Quadsmith System Account and Ops Impersonation</a>
+
+In addition to `'USER'` and `'ADMIN'`, Quadsmith provisions a dedicated,
+immutable system account (`@quadsmith`, UUID
+`018f0000-0000-7000-8000-000000000000`) with the elevated `'SYSTEM'` role:
+
+1. **Database-Enforced Exclusivity & Immutability**:
+   - The `users` table enforces a database `CHECK` constraint that restricts
+     `role = 'SYSTEM'` and `deleted_at IS NULL` to `id = 'quadsmith'`, while
+     restricting all other accounts (`id != 'quadsmith'`) to `'USER'` or
+     `'ADMIN'`.
+   - `@quadsmith` is automatically provisioned via `auth.EnsureSystemUser` at
+     service startup and database seeding without any email or OAuth rows, so it
+     can never be logged into via the public SPA's email OTP or OAuth login
+     flows.
+   - `@quadsmith` is strictly protected from deletion (`DeleteAccount`,
+     `SendEmailOtp` with `delete_account` purpose, and
+     `HandlePurgeSoftDeletedAccounts`), banning (`BanUser`), renaming
+     (`ChangeUsername`), account merging (`MergeAccount`), and role modification
+     (`OpsService.SetUserRole`).
+2. **JIT-Gated Ops Login (`OpsService.LoginAsQuadsmith`)**:
+   - `OpsService` exposes `LoginAsQuadsmith`, configured in
+     `jit.sensitive_methods` so only a `HUMAN` operator with an active JIT grant
+     can mint a session for `@quadsmith`.
+   - `qsops login-quadsmith` invokes `LoginAsQuadsmith` and writes the minted
+     `@quadsmith` session directly to `~/.quadsmith/config.json` (or
+     `--qs-config` / `QS_CONFIG`) so the `qs` CLI is immediately authenticated
+     as `@quadsmith`.
+   - `app-ops-web` provides a JIT-gated **Log in as @quadsmith** button in the
+     JIT Elevation bar that calls `LoginAsQuadsmith` and opens `app-web` with a
+     one-time `?ops_refresh_token=...` handoff parameter, which `AuthContext`
+     immediately exchanges via `RefreshSession` and strips from the URL bar.
+
+<details>
+<summary><strong>Alternatives considered</strong></summary>
+
+##### <a id="alt-magic-link-or-otp-for-quadsmith" >Allow Email OTP or OAuth Login for @quadsmith on the Main SPA</a>
+
+Link an operator email address or shared OAuth account to `@quadsmith` and log
+in through the main web application's `/login` page.
+
+**Pros:**
+
+- Reuses existing public login UI without adding an `OpsService` RPC.
+
+**Cons:**
+
+- Exposes the `@quadsmith` system account to public login endpoints and removes
+  the requirement for an audited `HUMAN` operator token with an active JIT
+  elevation lease.
+
+</details>
+
 ---
 
 ## <a id="4-assumptions" >4. Assumptions</a>
 
-1. Valid user roles in `quadsmith_api.users` are strictly `'USER'` and
-   `'ADMIN'`.
-2. Every newly registered or seeded user starts with `role = 'USER'` via the
-   PostgreSQL column default, and can only be promoted to `'ADMIN'` by a `HUMAN`
-   operator executing the `set_user_role` ops task (`OpsService.SetUserRole`)
-   with an active JIT grant.
+1. Valid user roles in `quadsmith_api.users` are `'USER'` and `'ADMIN'` for
+   regular accounts, plus `'SYSTEM'` reserved exclusively for the immutable
+   `@quadsmith` account.
+2. Every newly registered or seeded regular user starts with `role = 'USER'` via
+   the PostgreSQL column default, and can only be promoted to `'ADMIN'` by a
+   `HUMAN` operator executing the `set_user_role` ops task
+   (`OpsService.SetUserRole`) with an active JIT grant.
 3. Banning a user (`UserService.BanUser`) or purging an expired soft-deleted
    account (`HandlePurgeSoftDeletedAccounts`) automatically resets `users.role`
    back to `'USER'`. Expiring or revoking a ban leaves the user at `'USER'`.

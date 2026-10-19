@@ -157,9 +157,13 @@ Session state uses a two-tier token model:
   their ability to obtain new access tokens, forcing re-authentication once the
   current 1-hour JWT expires.
 - **Role Immutability in Store**: In PostgreSQL, `users.role` defaults to
-  `'USER'` with a `CHECK (role IN ('USER', 'ADMIN'))` constraint and is marked
-  `read_only: true` in store codegen, guaranteeing that role mutations occur
-  strictly via the audited `set_user_role` ops task.
+  `'USER'` with a `CHECK` constraint restricting `'SYSTEM'` exclusively to
+  `id = 'quadsmith'` and `'USER'` / `'ADMIN'` to all other accounts, and is
+  marked `read_only: true` in store codegen, guaranteeing that regular role
+  mutations occur strictly via the audited `set_user_role` ops task while
+  `@quadsmith` (`role = 'SYSTEM'`) can only be accessed from ops clients
+  (`qsops login-quadsmith` and `app-ops-web`) via the JIT-gated
+  `OpsService.LoginAsQuadsmith` RPC.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>

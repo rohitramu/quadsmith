@@ -53,7 +53,10 @@ function ProductDetailView({
   const isCreator =
     isAuthenticated &&
     user &&
-    (user.uuid === item?.userUuid || user.id === item?.authorUsername || user.role === "ADMIN");
+    (user.uuid === item?.userUuid ||
+      user.id === item?.authorUsername ||
+      user.role === "ADMIN" ||
+      user.role === "SYSTEM");
 
   const handleDelete = async () => {
     if (!srvDef?.deleteMethod) return;

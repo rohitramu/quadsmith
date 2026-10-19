@@ -316,7 +316,7 @@ func (s *BuildServiceHandler) UpdateBuild(ctx context.Context, req *connect.Requ
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	if userCtx.Role != "ADMIN" {
+	if !userCtx.IsAdmin() {
 		if existingUserUUID == nil || *existingUserUUID != userCtx.UserUUID {
 			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("you do not have permission to update this build"))
 		}
@@ -480,7 +480,7 @@ func (s *BuildServiceHandler) DeleteBuild(ctx context.Context, req *connect.Requ
 		}
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
-	if userCtx.Role != "ADMIN" && (b.UserUuid == nil || *b.UserUuid != userCtx.UserUUID) {
+	if !userCtx.IsAdmin() && (b.UserUuid == nil || *b.UserUuid != userCtx.UserUUID) {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("you do not have permission to delete this build"))
 	}
 	tx, err := s.db.Begin(ctx)

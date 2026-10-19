@@ -82,12 +82,16 @@ func resolveEntity(ctx context.Context, db *pgxpool.Pool, entityID string, colle
 
 func checkProbationaryPeriod(ctx context.Context, db *pgxpool.Pool, userUUID string) error {
 	var createdAt time.Time
-	err := db.QueryRow(ctx, "SELECT created_at FROM users WHERE uuid = $1", userUUID).Scan(&createdAt)
+	var role string
+	err := db.QueryRow(ctx, "SELECT created_at, role FROM users WHERE uuid = $1", userUUID).Scan(&createdAt, &role)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return nil
 		}
 		return connect.NewError(connect.CodeInternal, err)
+	}
+	if role == authcontext.RoleAdmin || role == authcontext.RoleSystem {
+		return nil
 	}
 	if time.Since(createdAt) < 24*time.Hour {
 		return connect.NewError(connect.CodePermissionDenied, errors.New("new accounts have a 24-hour read-only probationary period before interacting with the community"))
@@ -342,7 +346,7 @@ func (s *SocialService) UpdateReview(ctx context.Context, req *connect.Request[p
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	if userUUID != u.UserUUID && u.Role != "ADMIN" {
+	if userUUID != u.UserUUID && !u.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot edit another user's review"))
 	}
 
@@ -390,7 +394,7 @@ func (s *SocialService) DeleteReview(ctx context.Context, req *connect.Request[p
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
 
-	if userUUID != u.UserUUID && u.Role != "ADMIN" {
+	if userUUID != u.UserUUID && !u.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot delete another user's review"))
 	}
 
@@ -651,7 +655,7 @@ func (s *SocialService) DeleteReviewComment(ctx context.Context, req *connect.Re
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("comment not found"))
 	}
 
-	if userUUID != u.UserUUID && u.Role != "ADMIN" {
+	if userUUID != u.UserUUID && !u.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot delete another user's comment"))
 	}
 
@@ -815,7 +819,7 @@ func (s *SocialService) UpdateQuestion(ctx context.Context, req *connect.Request
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("question not found"))
 	}
 
-	if authorUUID != u.UserUUID && u.Role != "ADMIN" {
+	if authorUUID != u.UserUUID && !u.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot edit another user's question"))
 	}
 
@@ -860,7 +864,7 @@ func (s *SocialService) DeleteQuestion(ctx context.Context, req *connect.Request
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("question not found"))
 	}
 
-	if authorUUID != u.UserUUID && u.Role != "ADMIN" {
+	if authorUUID != u.UserUUID && !u.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot delete another user's question"))
 	}
 
@@ -1147,7 +1151,7 @@ func (s *SocialService) UpdateAnswer(ctx context.Context, req *connect.Request[p
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("answer not found"))
 	}
 
-	if authorUUID != u.UserUUID && u.Role != "ADMIN" {
+	if authorUUID != u.UserUUID && !u.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot edit another user's answer"))
 	}
 
@@ -1180,7 +1184,7 @@ func (s *SocialService) DeleteAnswer(ctx context.Context, req *connect.Request[p
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("answer not found"))
 	}
 
-	if authorUUID != u.UserUUID && u.Role != "ADMIN" {
+	if authorUUID != u.UserUUID && !u.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot delete another user's answer"))
 	}
 
@@ -1469,7 +1473,7 @@ func (s *SocialService) EndorseAnswer(ctx context.Context, req *connect.Request[
 		WHERE q.uuid = $1
 	`, qUUID).Scan(&buildAuthorUUID)
 
-	if err != nil || !buildAuthorUUID.Valid || (buildAuthorUUID.String != u.UserUUID && u.Role != "ADMIN") {
+	if err != nil || !buildAuthorUUID.Valid || (buildAuthorUUID.String != u.UserUUID && !u.IsAdmin()) {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("only the build author (or admin) can endorse an answer"))
 	}
 
@@ -1577,7 +1581,7 @@ func (s *SocialService) DeleteQuestionComment(ctx context.Context, req *connect.
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("comment not found"))
 	}
 
-	if userUUID != u.UserUUID && u.Role != "ADMIN" {
+	if userUUID != u.UserUUID && !u.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot delete another user's comment"))
 	}
 
@@ -1648,7 +1652,7 @@ func (s *SocialService) DeleteAnswerComment(ctx context.Context, req *connect.Re
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("comment not found"))
 	}
 
-	if userUUID != u.UserUUID && u.Role != "ADMIN" {
+	if userUUID != u.UserUUID && !u.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot delete another user's comment"))
 	}
 
@@ -1806,7 +1810,7 @@ func (s *SocialService) UpdateCollection(ctx context.Context, req *connect.Reque
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("collection not found"))
 	}
 
-	if userUUID != u.UserUUID && u.Role != "ADMIN" {
+	if userUUID != u.UserUUID && !u.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot update another user's collection"))
 	}
 
@@ -1862,7 +1866,7 @@ func (s *SocialService) DeleteCollection(ctx context.Context, req *connect.Reque
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("collection not found"))
 	}
 
-	if userUUID != u.UserUUID && u.Role != "ADMIN" {
+	if userUUID != u.UserUUID && !u.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot delete another user's collection"))
 	}
 
@@ -1987,7 +1991,7 @@ func (s *SocialService) AddCollectionItem(ctx context.Context, req *connect.Requ
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("collection not found"))
 	}
 
-	if userUUID != u.UserUUID && u.Role != "ADMIN" {
+	if userUUID != u.UserUUID && !u.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot add items to another user's collection"))
 	}
 
@@ -2031,7 +2035,7 @@ func (s *SocialService) RemoveCollectionItem(ctx context.Context, req *connect.R
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("collection not found"))
 	}
 
-	if userUUID != u.UserUUID && u.Role != "ADMIN" {
+	if userUUID != u.UserUUID && !u.IsAdmin() {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("cannot remove items from another user's collection"))
 	}
 
