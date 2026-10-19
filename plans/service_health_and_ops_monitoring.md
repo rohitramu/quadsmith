@@ -615,6 +615,14 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
      interactive collapsible **Common Expression Language (CEL) Filter Syntax**
      helper with clickable field pills, a sort column/direction selector, and
      sortable table headers.
+   - **Vertical 5-Service Deep Health Cards with Direct `/healthz` & `/metrics`
+     Links**: Renders the 5 monitored services (`server-api`, `server-web`,
+     `server-ops-api`, `server-ops-web`, and `server-cron`) in a vertical stack
+     of full-width health cards. Each card includes direct links to
+     `/services/<service>/healthz` and `/services/<service>/metrics`, which
+     `server-ops-web` authenticates via the operator's `qs_ops_token` session
+     and proxies to the target service (including internal-only `server-cron`)
+     across `sandbox`, `staging`, and `prod`.
    - **Clickable Trace IDs & Full Request Trace Inspector Modal**: Every
      `trace_id` displayed in Recent Traced Requests, Job Execution History, the
      Job Inspector, and the Internal API Audit Log is a clickable button that

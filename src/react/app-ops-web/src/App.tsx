@@ -1836,54 +1836,75 @@ export default function App() {
             <div className="bg-[#111827] border border-slate-800 rounded-xl p-5 space-y-4">
               <div className="flex items-center justify-between">
                 <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-slate-200">
-                  5-Service Deep Health Matrix (/healthz)
+                  5-Service Deep Health Matrix (/healthz &amp; /metrics)
                 </h2>
                 <span className="text-xs font-mono text-slate-400">
                   Checked: {formatTimestamp(systemHealth?.checkedAt)}
                 </span>
               </div>
 
-              <div
-                data-testid="service-health-matrix"
-                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-3"
-              >
+              <div data-testid="service-health-matrix" className="flex flex-col gap-3">
                 {(systemHealth?.services ?? []).map((svc) => (
                   <div
                     key={`${svc.serviceName}-${svc.region}`}
                     data-testid={`health-card-${svc.serviceName}`}
-                    className="bg-[#090d16] border border-slate-800 rounded-lg p-3.5 space-y-2.5"
+                    className="bg-[#090d16] border border-slate-800 rounded-lg p-4 space-y-3"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="font-mono font-bold text-xs text-slate-100">
-                        {svc.serviceName}
-                      </span>
-                      <span
-                        className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
-                          svc.status === "HEALTHY"
-                            ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
-                            : svc.status === "DEGRADED"
-                              ? "bg-amber-500/15 text-amber-300 border border-amber-500/30"
-                              : "bg-rose-500/15 text-rose-300 border border-rose-500/30"
-                        }`}
-                      >
-                        {svc.status}
-                      </span>
-                    </div>
-
-                    <div className="text-[11px] font-mono text-slate-400 space-y-0.5">
-                      <div>Region: {svc.region}</div>
-                      <div>Instance: {svc.instanceId}</div>
-                      <div>
-                        Uptime: {svc.uptimeSeconds.toString()}s · Goroutines: {svc.numGoroutines}
-                      </div>
-                      {svc.dbMaxConns > 0 && (
-                        <div>
-                          DB Pool: {svc.dbAcquiredConns}/{svc.dbMaxConns} (idle {svc.dbIdleConns})
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <span className="font-mono font-bold text-sm text-slate-100">
+                          {svc.serviceName}
+                        </span>
+                        <span
+                          className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                            svc.status === "HEALTHY"
+                              ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
+                              : svc.status === "DEGRADED"
+                                ? "bg-amber-500/15 text-amber-300 border border-amber-500/30"
+                                : "bg-rose-500/15 text-rose-300 border border-rose-500/30"
+                          }`}
+                        >
+                          {svc.status}
+                        </span>
+                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-mono text-slate-400">
+                          <span>Region: {svc.region}</span>
+                          <span>Instance: {svc.instanceId}</span>
+                          <span>
+                            Uptime: {svc.uptimeSeconds.toString()}s · Goroutines:{" "}
+                            {svc.numGoroutines}
+                          </span>
+                          {svc.dbMaxConns > 0 && (
+                            <span>
+                              DB Pool: {svc.dbAcquiredConns}/{svc.dbMaxConns} (idle{" "}
+                              {svc.dbIdleConns})
+                            </span>
+                          )}
                         </div>
-                      )}
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <a
+                          href={`/services/${svc.serviceName}/healthz`}
+                          target="_blank"
+                          rel="noreferrer"
+                          data-testid={`healthz-link-${svc.serviceName}`}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-slate-700 text-sky-300 border border-slate-700 text-[11px] font-mono transition"
+                        >
+                          /healthz ↗
+                        </a>
+                        <a
+                          href={`/services/${svc.serviceName}/metrics`}
+                          target="_blank"
+                          rel="noreferrer"
+                          data-testid={`metrics-link-${svc.serviceName}`}
+                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-slate-700 text-sky-300 border border-slate-700 text-[11px] font-mono transition"
+                        >
+                          /metrics ↗
+                        </a>
+                      </div>
                     </div>
 
-                    <div className="pt-2 border-t border-slate-800/80 space-y-1">
+                    <div className="pt-2.5 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-1">
                       {(svc.checks ?? []).map((chk) => (
                         <div
                           key={chk.name}

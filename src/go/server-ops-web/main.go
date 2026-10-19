@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"net/http/httputil"
@@ -96,6 +97,65 @@ func newOpsWebHandler(cfg *configpb.OpsWebServerConfig, reg *telemetry.Registry)
 	mux := http.NewServeMux()
 	mux.HandleFunc("/healthz", reg.HealthzHandler())
 	mux.HandleFunc("/metrics", reg.MetricsHandler())
+
+	serviceEndpointProxyHandler := func(w http.ResponseWriter, r *http.Request) {
+		trimmed := strings.TrimPrefix(r.URL.Path, "/services/")
+		parts := strings.Split(strings.Trim(trimmed, "/"), "/")
+		if len(parts) != 2 || (parts[1] != "healthz" && parts[1] != "metrics") {
+			http.NotFound(w, r)
+			return
+		}
+		serviceName, endpoint := parts[0], parts[1]
+		switch serviceName {
+		case "server-web", "server-api", "server-ops-api", "server-ops-web", "server-cron":
+		default:
+			http.NotFound(w, r)
+			return
+		}
+
+		token := extractOpsToken(r)
+		if token == "" {
+			writeGrafanaForbidden(w, "Operator authentication required to access /services/*")
+			return
+		}
+
+		authReq := connect.NewRequest(&opspb.GetCurrentOperatorRequest{})
+		authReq.Header().Set("Authorization", "Bearer "+token)
+		if _, err := opsClient.GetCurrentOperator(r.Context(), authReq); err != nil {
+			writeGrafanaForbidden(w, "Invalid operator session")
+			return
+		}
+
+		if serviceName == "server-ops-web" {
+			if endpoint == "healthz" {
+				reg.HealthzHandler()(w, r)
+			} else {
+				reg.MetricsHandler()(w, r)
+			}
+			return
+		}
+
+		targetURL := resolveServiceEndpointURL(cfg, serviceName, endpoint, r.URL.RawQuery)
+		upstreamReq, err := http.NewRequestWithContext(r.Context(), http.MethodGet, targetURL, nil)
+		if err != nil {
+			http.Error(w, "Invalid upstream target URL", http.StatusInternalServerError)
+			return
+		}
+		upstreamResp, err := opsHTTPClient.Do(upstreamReq)
+		if err != nil {
+			http.Error(w, fmt.Sprintf("Failed to reach %s /%s: %v", serviceName, endpoint, err), http.StatusBadGateway)
+			return
+		}
+		defer upstreamResp.Body.Close()
+
+		if ct := upstreamResp.Header.Get("Content-Type"); ct != "" {
+			w.Header().Set("Content-Type", ct)
+		}
+		w.WriteHeader(upstreamResp.StatusCode)
+		_, _ = io.Copy(w, upstreamResp.Body)
+	}
+
+	mux.HandleFunc("/services/", serviceEndpointProxyHandler)
 
 	grafanaHandler := func(w http.ResponseWriter, r *http.Request) {
 		token := extractOpsToken(r)
@@ -197,6 +257,74 @@ func writeGrafanaForbidden(w http.ResponseWriter, message string) {
 		"status": "FORBIDDEN",
 		"error":  message,
 	})
+}
+
+func resolveServiceEndpointURL(cfg *configpb.OpsWebServerConfig, serviceName, endpoint, rawQuery string) string {
+	opsAPIURL := strings.TrimRight(cfg.GetOpsApiUrl(), "/")
+	var baseURL string
+
+	switch serviceName {
+	case "server-ops-api":
+		baseURL = opsAPIURL
+	case "server-api":
+		if envURL := strings.TrimSpace(os.Getenv("QS_PEER_API_HEALTHZ")); envURL != "" {
+			baseURL = strings.TrimSuffix(strings.TrimRight(envURL, "/"), "/healthz")
+		}
+	case "server-web":
+		if envURL := strings.TrimSpace(os.Getenv("QS_PEER_WEB_HEALTHZ")); envURL != "" {
+			baseURL = strings.TrimSuffix(strings.TrimRight(envURL, "/"), "/healthz")
+		}
+	case "server-cron":
+		if envURL := strings.TrimSpace(os.Getenv("QS_PEER_CRON_HEALTHZ")); envURL != "" {
+			baseURL = strings.TrimSuffix(strings.TrimRight(envURL, "/"), "/healthz")
+		}
+	}
+
+	if baseURL == "" {
+		slot := ""
+		useDockerHost := cfg.GetEnvironment() != "sandbox"
+		if u, err := url.Parse(opsAPIURL); err == nil {
+			host := u.Hostname()
+			if strings.HasSuffix(host, "-blue") {
+				slot = "-blue"
+				useDockerHost = true
+			} else if strings.HasSuffix(host, "-green") {
+				slot = "-green"
+				useDockerHost = true
+			} else if strings.HasPrefix(host, "ops-api") {
+				useDockerHost = true
+			}
+		}
+
+		switch serviceName {
+		case "server-api":
+			if useDockerHost {
+				baseURL = fmt.Sprintf("http://api%s:8081", slot)
+			} else {
+				baseURL = "http://127.0.0.1:8081"
+			}
+		case "server-web":
+			if useDockerHost {
+				baseURL = fmt.Sprintf("http://web%s:8080", slot)
+			} else {
+				baseURL = "http://127.0.0.1:8080"
+			}
+		case "server-cron":
+			if useDockerHost {
+				baseURL = fmt.Sprintf("http://cron%s:8084", slot)
+			} else {
+				baseURL = "http://127.0.0.1:8084"
+			}
+		default:
+			baseURL = opsAPIURL
+		}
+	}
+
+	target := strings.TrimRight(baseURL, "/") + "/" + endpoint
+	if rawQuery != "" {
+		target += "?" + rawQuery
+	}
+	return target
 }
 
 func securityHeadersMiddleware(next http.Handler) http.Handler {

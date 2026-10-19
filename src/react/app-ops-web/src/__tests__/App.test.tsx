@@ -277,4 +277,76 @@ describe("Ops Console App", () => {
       setOpsCookieAndStorage(null);
     }
   });
+
+  it("renders vertical service health cards with direct /healthz and /metrics links", async () => {
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
+      const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
+      let payload: Record<string, unknown> = {};
+      if (url.endsWith("/GetCurrentOperator")) {
+        payload = {
+          operator: "rohitramu",
+          operatorType: "HUMAN",
+          groupName: "admins",
+        };
+      } else if (url.endsWith("/GetSystemHealth")) {
+        payload = {
+          status: "HEALTHY",
+          region: "local",
+          environment: "sandbox",
+          services: [
+            {
+              serviceName: "server-api",
+              region: "local",
+              instanceId: "server-api-local",
+              status: "HEALTHY",
+              uptimeSeconds: "120",
+              numGoroutines: 14,
+              dbAcquiredConns: 2,
+              dbMaxConns: 25,
+              dbIdleConns: 4,
+              checks: [{ name: "postgres:quadsmith_api", status: "HEALTHY", latencyMs: 1.2 }],
+            },
+            {
+              serviceName: "server-cron",
+              region: "local",
+              instanceId: "server-cron-local",
+              status: "HEALTHY",
+              uptimeSeconds: "120",
+              numGoroutines: 8,
+              checks: [{ name: "scheduler_loop", status: "HEALTHY", latencyMs: 0.1 }],
+            },
+          ],
+        };
+      } else if (url.endsWith("/GetSystemMetrics")) {
+        payload = { window: "5m", services: [] };
+      }
+      return new Response(JSON.stringify(payload), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    });
+
+    try {
+      setOpsCookieAndStorage("qs_op_sandbox_token_12345");
+      render(<App />);
+
+      const matrix = await screen.findByTestId("service-health-matrix");
+      expect(matrix.className).toContain("flex-col");
+
+      const apiHealthz = await screen.findByTestId("healthz-link-server-api");
+      expect(apiHealthz).toHaveAttribute("href", "/services/server-api/healthz");
+
+      const apiMetrics = screen.getByTestId("metrics-link-server-api");
+      expect(apiMetrics).toHaveAttribute("href", "/services/server-api/metrics");
+
+      const cronHealthz = screen.getByTestId("healthz-link-server-cron");
+      expect(cronHealthz).toHaveAttribute("href", "/services/server-cron/healthz");
+
+      const cronMetrics = screen.getByTestId("metrics-link-server-cron");
+      expect(cronMetrics).toHaveAttribute("href", "/services/server-cron/metrics");
+    } finally {
+      fetchSpy.mockRestore();
+      setOpsCookieAndStorage(null);
+    }
+  });
 });

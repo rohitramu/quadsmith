@@ -64,8 +64,14 @@ func TestOpsWebServer_JitGatedGrafanaAndHealthz(t *testing.T) {
 	opsPath, opsHandler := opsconnect.NewOpsServiceHandler(&mockOpsAPIServer{})
 	opsMux.Handle(opsPath, opsHandler)
 	opsMux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		_, _ = w.Write([]byte(`{"status":"HEALTHY"}`))
+		_, _ = w.Write([]byte(`{"status":"HEALTHY","service":"server-ops-api"}`))
+	})
+	opsMux.HandleFunc("/metrics", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "text/plain; version=0.0.4")
+		w.WriteHeader(http.StatusOK)
+		_, _ = w.Write([]byte("quadsmith_health_status{service=\"server-ops-api\"} 1\n"))
 	})
 	opsAPISrv := httptest.NewServer(opsMux)
 	defer opsAPISrv.Close()
@@ -143,5 +149,38 @@ func TestOpsWebServer_JitGatedGrafanaAndHealthz(t *testing.T) {
 	}
 	if !telemetry.IsValidUUID(receivedTraceID) {
 		t.Errorf("expected valid UUID trace ID forwarded to Grafana, got %q", receivedTraceID)
+	}
+
+	// 5. Unauthenticated request to /services/server-ops-api/healthz -> 403 Forbidden
+	reqSvcUnauth := httptest.NewRequest(http.MethodGet, "/services/server-ops-api/healthz", nil)
+	recSvcUnauth := httptest.NewRecorder()
+	handler.ServeHTTP(recSvcUnauth, reqSvcUnauth)
+	if recSvcUnauth.Code != http.StatusForbidden {
+		t.Fatalf("expected 403 Forbidden without token on /services/*, got %d", recSvcUnauth.Code)
+	}
+
+	// 6. Authenticated operator (no JIT required) can access /services/<service>/healthz and /metrics
+	reqSvcHealth := httptest.NewRequest(http.MethodGet, "/services/server-ops-api/healthz", nil)
+	reqSvcHealth.AddCookie(&http.Cookie{Name: "qs_ops_token", Value: "tok-no-jit"})
+	recSvcHealth := httptest.NewRecorder()
+	handler.ServeHTTP(recSvcHealth, reqSvcHealth)
+	if recSvcHealth.Code != http.StatusOK || !strings.Contains(recSvcHealth.Body.String(), `"service":"server-ops-api"`) {
+		t.Fatalf("expected 200 OK from /services/server-ops-api/healthz, got %d: %s", recSvcHealth.Code, recSvcHealth.Body.String())
+	}
+
+	reqSvcMetrics := httptest.NewRequest(http.MethodGet, "/services/server-ops-api/metrics", nil)
+	reqSvcMetrics.AddCookie(&http.Cookie{Name: "qs_ops_token", Value: "tok-no-jit"})
+	recSvcMetrics := httptest.NewRecorder()
+	handler.ServeHTTP(recSvcMetrics, reqSvcMetrics)
+	if recSvcMetrics.Code != http.StatusOK || !strings.Contains(recSvcMetrics.Body.String(), "quadsmith_health_status") {
+		t.Fatalf("expected 200 OK from /services/server-ops-api/metrics, got %d: %s", recSvcMetrics.Code, recSvcMetrics.Body.String())
+	}
+
+	reqSelfMetrics := httptest.NewRequest(http.MethodGet, "/services/server-ops-web/metrics", nil)
+	reqSelfMetrics.AddCookie(&http.Cookie{Name: "qs_ops_token", Value: "tok-no-jit"})
+	recSelfMetrics := httptest.NewRecorder()
+	handler.ServeHTTP(recSelfMetrics, reqSelfMetrics)
+	if recSelfMetrics.Code != http.StatusOK || !strings.Contains(recSelfMetrics.Body.String(), "quadsmith_health_status") {
+		t.Fatalf("expected 200 OK from /services/server-ops-web/metrics, got %d: %s", recSelfMetrics.Code, recSelfMetrics.Body.String())
 	}
 }
