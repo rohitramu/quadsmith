@@ -17,6 +17,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"quadsmith/shared/pkg/authcontext"
@@ -36,6 +37,8 @@ var (
 
 type traceIDContextKey struct{}
 type loggerContextKey struct{}
+type registryContextKey struct{}
+type dbQueryStartContextKey struct{}
 
 // NewTraceID generates a new RFC 9562 time-ordered UUID v7 string.
 func NewTraceID() string {
@@ -98,6 +101,35 @@ func TraceIDFromContext(ctx context.Context) string {
 	return ""
 }
 
+// WithRegistry attaches a telemetry *Registry to ctx so downstream interceptors, DB tracers,
+// and handlers can emit structured debug/info/error logs correlated to the active trace_id.
+func WithRegistry(ctx context.Context, reg *Registry) context.Context {
+	return context.WithValue(ctx, registryContextKey{}, reg)
+}
+
+// RegistryFromContext returns the telemetry *Registry attached to ctx, or nil if unset.
+func RegistryFromContext(ctx context.Context) *Registry {
+	if ctx == nil {
+		return nil
+	}
+	if r, ok := ctx.Value(registryContextKey{}).(*Registry); ok {
+		return r
+	}
+	return nil
+}
+
+// EmitLog emits a structured log entry on the Registry attached to ctx (if any).
+func EmitLog(ctx context.Context, level, msg string, attrs map[string]any) {
+	if reg := RegistryFromContext(ctx); reg != nil {
+		reg.EmitLog(ctx, level, msg, attrs)
+	}
+}
+
+// EmitDebug emits a DEBUG-level structured log entry on the Registry attached to ctx (if any).
+func EmitDebug(ctx context.Context, msg string, attrs map[string]any) {
+	EmitLog(ctx, "DEBUG", msg, attrs)
+}
+
 // WithLogger attaches a request-scoped structured logger to ctx.
 func WithLogger(ctx context.Context, logger *slog.Logger) context.Context {
 	return context.WithValue(ctx, loggerContextKey{}, logger)
@@ -111,6 +143,127 @@ func LoggerFromContext(ctx context.Context) *slog.Logger {
 		}
 	}
 	return slog.Default()
+}
+
+type registrySlogHandler struct {
+	reg       *Registry
+	traceID   string
+	baseAttrs map[string]any
+}
+
+func (h *registrySlogHandler) Enabled(_ context.Context, _ slog.Level) bool {
+	return true
+}
+
+func (h *registrySlogHandler) Handle(ctx context.Context, rec slog.Record) error {
+	if h.reg == nil {
+		return nil
+	}
+	attrs := make(map[string]any, len(h.baseAttrs)+rec.NumAttrs())
+	for k, v := range h.baseAttrs {
+		attrs[k] = v
+	}
+	rec.Attrs(func(a slog.Attr) bool {
+		switch a.Key {
+		case "trace_id", "region", "service", "instance":
+			return true
+		default:
+			attrs[a.Key] = a.Value.Any()
+			return true
+		}
+	})
+	logCtx := ctx
+	if TraceIDFromContext(logCtx) == "" && h.traceID != "" {
+		logCtx = WithTraceID(logCtx, h.traceID)
+	}
+	h.reg.EmitLog(logCtx, rec.Level.String(), rec.Message, attrs)
+	return nil
+}
+
+func (h *registrySlogHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
+	merged := make(map[string]any, len(h.baseAttrs)+len(attrs))
+	for k, v := range h.baseAttrs {
+		merged[k] = v
+	}
+	for _, a := range attrs {
+		switch a.Key {
+		case "trace_id", "region", "service", "instance":
+			continue
+		default:
+			merged[a.Key] = a.Value.Any()
+		}
+	}
+	return &registrySlogHandler{
+		reg:       h.reg,
+		traceID:   h.traceID,
+		baseAttrs: merged,
+	}
+}
+
+func (h *registrySlogHandler) WithGroup(_ string) slog.Handler {
+	return h
+}
+
+type dbQueryStartInfo struct {
+	startedAt time.Time
+	sql       string
+	argsCount int
+}
+
+type dbQueryTracer struct {
+	dbName string
+}
+
+// NewDBQueryTracer returns a pgx.QueryTracer that emits DEBUG-level "db_query" logs
+// for all SQL queries executed within a traced request context.
+func NewDBQueryTracer(dbName string) pgx.QueryTracer {
+	return &dbQueryTracer{dbName: dbName}
+}
+
+func compactSQLString(sql string) string {
+	fields := strings.Fields(sql)
+	joined := strings.Join(fields, " ")
+	if len(joined) > 160 {
+		return joined[:157] + "..."
+	}
+	return joined
+}
+
+func (t *dbQueryTracer) TraceQueryStart(ctx context.Context, _ *pgx.Conn, data pgx.TraceQueryStartData) context.Context {
+	if TraceIDFromContext(ctx) == "" || RegistryFromContext(ctx) == nil {
+		return ctx
+	}
+	cleaned := compactSQLString(data.SQL)
+	if strings.EqualFold(cleaned, "SELECT 1") || cleaned == "" {
+		return ctx
+	}
+	return context.WithValue(ctx, dbQueryStartContextKey{}, dbQueryStartInfo{
+		startedAt: time.Now(),
+		sql:       cleaned,
+		argsCount: len(data.Args),
+	})
+}
+
+func (t *dbQueryTracer) TraceQueryEnd(ctx context.Context, _ *pgx.Conn, data pgx.TraceQueryEndData) {
+	info, ok := ctx.Value(dbQueryStartContextKey{}).(dbQueryStartInfo)
+	if !ok {
+		return
+	}
+	durMs := math.Round(float64(time.Since(info.startedAt).Microseconds())/10.0) / 100.0
+	attrs := map[string]any{
+		"database":      t.dbName,
+		"sql":           info.sql,
+		"args_count":    info.argsCount,
+		"command_tag":   data.CommandTag.String(),
+		"rows_affected": data.CommandTag.RowsAffected(),
+		"duration_ms":   durMs,
+	}
+	if data.Err != nil {
+		attrs["error"] = data.Err.Error()
+		EmitDebug(ctx, "db_query", attrs)
+		return
+	}
+	EmitDebug(ctx, "db_query", attrs)
 }
 
 // TracedTransport is an http.RoundTripper that propagates X-Trace-Id and X-Internal-Hop-Token
@@ -138,7 +291,22 @@ func (t *TracedTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	if t.BearerToken != "" && clone.Header.Get("Authorization") == "" {
 		clone.Header.Set("Authorization", "Bearer "+t.BearerToken)
 	}
-	return base.RoundTrip(clone)
+	t0 := time.Now()
+	resp, err := base.RoundTrip(clone)
+	durMs := math.Round(float64(time.Since(t0).Microseconds())/10.0) / 100.0
+	if RegistryFromContext(req.Context()) != nil && !strings.HasSuffix(clone.URL.Path, "/healthz") && !strings.HasSuffix(clone.URL.Path, "/metrics") {
+		statusCode := 0
+		if resp != nil {
+			statusCode = resp.StatusCode
+		}
+		EmitDebug(req.Context(), "outbound_internal_hop", map[string]any{
+			"target_url":  clone.URL.Redacted(),
+			"method":      clone.Method,
+			"status_code": statusCode,
+			"duration_ms": durMs,
+		})
+	}
+	return resp, err
 }
 
 // NewTracedHTTPClient creates an *http.Client that automatically propagates X-Trace-Id
@@ -586,17 +754,24 @@ func (r *Registry) Middleware(next http.Handler) http.Handler {
 		w.Header().Set(TraceIDHeader, traceID)
 
 		ctx := WithTraceID(req.Context(), traceID)
-		reqLogger := slog.Default().With(
-			slog.String("trace_id", traceID),
-			slog.String("region", r.region),
-			slog.String("service", r.serviceName),
-			slog.String("instance", r.instanceID),
-		)
+		ctx = WithRegistry(ctx, r)
+		reqLogger := slog.New(&registrySlogHandler{
+			reg:     r,
+			traceID: traceID,
+		})
 		ctx = WithLogger(ctx, reqLogger)
 		req = req.WithContext(ctx)
 
 		route := normalizeRoute(req.URL.Path)
 		if route != "/metrics" && route != "/healthz" && req.Method != http.MethodOptions {
+			r.EmitLog(ctx, "DEBUG", "trace_context_initialized", map[string]any{
+				"route":          route,
+				"method":         req.Method,
+				"hop_type":       hopType,
+				"proto":          req.Proto,
+				"remote_addr":    req.RemoteAddr,
+				"content_length": req.ContentLength,
+			})
 			r.EmitLog(ctx, "INFO", "request_started", map[string]any{
 				"route":    route,
 				"method":   req.Method,
@@ -624,6 +799,16 @@ func (r *Registry) Middleware(next http.Handler) http.Handler {
 		success := statusCode >= 200 && statusCode < 400
 		if strings.HasPrefix(route, "/quadsmith.") && statusCode != http.StatusOK {
 			success = false
+		}
+
+		if route != "/healthz" {
+			r.EmitLog(ctx, "DEBUG", "response_flushed", map[string]any{
+				"route":       route,
+				"method":      req.Method,
+				"hop_type":    hopType,
+				"status_code": statusCode,
+				"rtt_ms":      rttMs,
+			})
 		}
 
 		r.RecordRequest(traceID, route, req.Method, statusCode, success, rttMs)

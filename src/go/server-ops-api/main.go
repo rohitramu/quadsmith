@@ -39,6 +39,11 @@ func connectPool(ctx context.Context, dbCfg *configpb.DatabaseConfig) (*pgxpool.
 	if dbCfg.GetMinConnections() > 0 {
 		poolCfg.MinConns = dbCfg.GetMinConnections()
 	}
+	dbName := dbCfg.GetName()
+	if dbName == "" {
+		dbName = "postgres"
+	}
+	poolCfg.ConnConfig.Tracer = telemetry.NewDBQueryTracer(dbName)
 	return pgxpool.NewWithConfig(ctx, poolCfg)
 }
 

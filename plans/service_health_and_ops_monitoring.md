@@ -538,8 +538,11 @@ recent trace IDs by region and service from the terminal:
   `service_name`, `instance_id`, `region`, `operation`, `method`, `status_code`,
   `success`, `duration_ms`, `occurred_at`, `attributes`) and chronological
   `TraceLogRecord` events (`timestamp`, `level`, `service_name`, `instance_id`,
-  `region`, `message`, `attributes`) across VictoriaLogs, the in-memory ring
-  buffers of all 5 Go services, and `quadsmith_ops.internal_api_calls`.
+  `region`, `message`, `attributes`) — including `DEBUG` logs such as
+  `trace_context_initialized`, `db_query` (captured via `pgx.QueryTracer`),
+  `rpc_auth_verified`, `outbound_internal_hop`, and `response_flushed` — across
+  VictoriaLogs, the in-memory ring buffers of all 5 Go services, and
+  `quadsmith_ops.internal_api_calls`.
 - **Unified CEL Filtering and Multi-Column Sorting Across All `OpsService`
   Collections**: `GetDatabaseStats`, `ListTasks`, `ListJobs`,
   `ListInternalApiCalls`, `ListIamUsers`, `ListIamGroups`, `ListInternalTokens`,
@@ -619,6 +622,13 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
      `service_name == "server-api" && route != "/healthz" && route != "/metrics"`
      so the Ops UI focuses on public API server (`server-api`) application
      traffic while filtering out internal health and metrics scrape endpoints.
+   - **Tabbed Per-Route RED Metrics & Recent Traced Requests Explorer**: Renders
+     the telemetry explorer inside a 2-tab sub-navigation
+     (`1. Per-Route RED Metrics` as the default first tab and
+     `2. Recent Traced Requests` as the second tab). Clicking any route row in
+     `1. Per-Route RED Metrics` automatically switches to
+     `2. Recent Traced Requests` and applies `route == "<clicked_route>"` to the
+     traced requests CEL filter.
    - **Vertical 5-Service Deep Health Cards with Direct `/healthz` & `/metrics`
      Links**: Renders the 5 monitored services (`server-api`, `server-web`,
      `server-ops-api`, `server-ops-web`, and `server-cron`) in a vertical stack
@@ -627,12 +637,15 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
      `server-ops-web` authenticates via the operator's `qs_ops_token` session
      and proxies to the target service (including internal-only `server-cron`)
      across `sandbox`, `staging`, and `prod`.
-   - **Clickable Trace IDs & Full Request Trace Inspector Modal**: Every
-     `trace_id` displayed in Recent Traced Requests, Job Execution History, the
-     Job Inspector, and the Internal API Audit Log is a clickable button that
-     invokes `OpsService.GetTrace` and opens the **Full Request Trace
-     Inspector** modal displaying the Cross-Service Hop Waterfall (`spans`) and
-     Chronological Cross-Service Structured Logs (`logs`).
+   - **Clickable Trace IDs & Full Request Trace Inspector Modal (with Debug
+     Logs)**: Every `trace_id` displayed in Recent Traced Requests, Job
+     Execution History, the Job Inspector, and the Internal API Audit Log is a
+     clickable button that invokes `OpsService.GetTrace` and opens the **Full
+     Request Trace Inspector** modal displaying the Cross-Service Hop Waterfall
+     (`spans`) and Chronological Cross-Service Structured & Debug Logs (`logs`,
+     including `DEBUG` events for trace context initialization, PostgreSQL SQL
+     queries via `pgx.QueryTracer`, RPC auth verification, outbound internal
+     hops, and response flushing).
    - **Operational Task Triggering**: Interactive list of all 6 registered tasks
      (`ListTasks`: `cleanup_expired_otps`, `cleanup_expired_tokens`,
      `cleanup_orphaned_blobs`, `purge_soft_deleted_accounts`,

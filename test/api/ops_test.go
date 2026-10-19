@@ -970,6 +970,16 @@ func TestOpsServer_ServiceHealthAndObservability(t *testing.T) {
 	if len(traceRes.Msg.GetLogs()) == 0 {
 		t.Errorf("Expected at least 1 log entry in GetTrace(%s), got 0", traceID)
 	}
+	foundDebugLog := false
+	for _, l := range traceRes.Msg.GetLogs() {
+		if l.GetLevel() == "DEBUG" {
+			foundDebugLog = true
+			break
+		}
+	}
+	if !foundDebugLog {
+		t.Errorf("Expected at least 1 DEBUG log entry in GetTrace(%s), got logs: %+v", traceID, traceRes.Msg.GetLogs())
+	}
 
 	cmdTrace := exec.Command(qsopsPath, "system", "trace", traceID, "--token", "qs_op_sandbox_token_12345")
 	outTrace, err := cmdTrace.CombinedOutput()

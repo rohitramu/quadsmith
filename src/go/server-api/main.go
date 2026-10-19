@@ -63,6 +63,7 @@ func main() {
 	if cfg.Database.GetMinConnections() > 0 {
 		poolCfg.MinConns = cfg.Database.GetMinConnections()
 	}
+	poolCfg.ConnConfig.Tracer = telemetry.NewDBQueryTracer("quadsmith_api")
 	pool, err := pgxpool.NewWithConfig(context.Background(), poolCfg)
 	if err != nil {
 		log.Fatalf("Unable to connect to database: %v\n", err)

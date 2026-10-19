@@ -3,11 +3,15 @@ package auth
 import (
 	"context"
 	"errors"
+	"math"
 	"net/http"
 	"strings"
+	"time"
 
 	"connectrpc.com/connect"
 	"github.com/jackc/pgx/v5/pgxpool"
+
+	"quadsmith/shared/pkg/telemetry"
 
 	"quadsmith/shared/gen/quadsmith/api/apiconnect"
 )
@@ -172,11 +176,39 @@ func NewAuthInterceptor(pool *pgxpool.Pool) connect.UnaryInterceptorFunc {
 			}
 
 			// 3. Enforce authentication on protected endpoints
-			if !IsPublicProcedure(procedure) && userCtx == nil {
+			isPublic := IsPublicProcedure(procedure)
+			if !isPublic && userCtx == nil {
+				telemetry.EmitDebug(ctx, "rpc_auth_rejected", map[string]any{
+					"procedure": procedure,
+					"public":    isPublic,
+				})
 				return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 			}
 
-			return next(ctx, req)
+			authAttrs := map[string]any{
+				"procedure":     procedure,
+				"public":        isPublic,
+				"authenticated": userCtx != nil,
+			}
+			if userCtx != nil {
+				authAttrs["user_uuid"] = userCtx.UserUUID
+				authAttrs["role"] = userCtx.Role
+			}
+			telemetry.EmitDebug(ctx, "rpc_auth_verified", authAttrs)
+
+			t0 := time.Now()
+			res, err := next(ctx, req)
+			durMs := math.Round(float64(time.Since(t0).Microseconds())/10.0) / 100.0
+			status := "OK"
+			if err != nil {
+				status = connect.CodeOf(err).String()
+			}
+			telemetry.EmitDebug(ctx, "rpc_handler_completed", map[string]any{
+				"procedure":   procedure,
+				"status":      status,
+				"duration_ms": durMs,
+			})
+			return res, err
 		}
 	}
 }

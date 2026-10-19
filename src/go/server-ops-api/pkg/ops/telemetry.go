@@ -719,7 +719,8 @@ func (s *OpsService) GetTrace(ctx context.Context, req *connect.Request[pb.GetTr
 	}
 
 	addLog := func(lr *pb.TraceLogRecord) {
-		key := fmt.Sprintf("%d|%s|%s|%s", lr.GetTimestamp().AsTime().UnixNano(), lr.GetServiceName(), lr.GetLevel(), lr.GetMessage())
+		extra := lr.GetAttributes()["sql"] + "|" + lr.GetAttributes()["route"] + "|" + lr.GetAttributes()["procedure"]
+		key := fmt.Sprintf("%d|%s|%s|%s|%s", lr.GetTimestamp().AsTime().UnixNano(), lr.GetServiceName(), lr.GetLevel(), lr.GetMessage(), extra)
 		if seenLogs[key] {
 			return
 		}
@@ -896,28 +897,75 @@ func (s *OpsService) GetTrace(ctx context.Context, req *connect.Request[pb.GetTr
 	sort.Slice(spans, func(i, j int) bool {
 		return spans[i].GetOccurredAt().AsTime().Before(spans[j].GetOccurredAt().AsTime())
 	})
-	sort.Slice(logs, func(i, j int) bool {
-		return logs[i].GetTimestamp().AsTime().Before(logs[j].GetTimestamp().AsTime())
-	})
-
-	// Synthesize a log entry for each span if no logs were captured yet (e.g. from older audit rows)
-	if len(logs) == 0 && len(spans) > 0 {
-		for _, sp := range spans {
-			lvl := "INFO"
-			if !sp.GetSuccess() {
-				lvl = "ERROR"
+	// Synthesize log entries (including DEBUG entries) for each span if not already captured (e.g. from older audit rows)
+	hasDebugLog := false
+	for _, l := range logs {
+		if strings.EqualFold(l.GetLevel(), "DEBUG") {
+			hasDebugLog = true
+			break
+		}
+	}
+	if len(spans) > 0 && !hasDebugLog {
+		hasAnyLog := len(logs) > 0
+		for idx, sp := range spans {
+			hopType := sp.GetAttributes()["hop_type"]
+			if hopType == "" {
+				if idx == 0 {
+					hopType = "ingress"
+				} else {
+					hopType = "internal_hop"
+				}
 			}
+			startTime := sp.GetOccurredAt().AsTime().Add(-time.Duration(sp.GetDurationMs()*1000) * time.Microsecond)
 			logs = append(logs, &pb.TraceLogRecord{
-				Timestamp:   sp.GetOccurredAt(),
-				Level:       lvl,
+				Timestamp:   timestamppb.New(startTime),
+				Level:       "DEBUG",
 				ServiceName: sp.GetServiceName(),
 				InstanceId:  sp.GetInstanceId(),
 				Region:      sp.GetRegion(),
-				Message:     "http_request",
-				Attributes:  sp.GetAttributes(),
+				Message:     "trace_context_initialized",
+				Attributes: map[string]string{
+					"route":    sp.GetOperation(),
+					"method":   sp.GetMethod(),
+					"hop_type": hopType,
+				},
+			})
+			if !hasAnyLog {
+				lvl := "INFO"
+				if !sp.GetSuccess() {
+					lvl = "ERROR"
+				}
+				logs = append(logs, &pb.TraceLogRecord{
+					Timestamp:   sp.GetOccurredAt(),
+					Level:       lvl,
+					ServiceName: sp.GetServiceName(),
+					InstanceId:  sp.GetInstanceId(),
+					Region:      sp.GetRegion(),
+					Message:     "http_request",
+					Attributes:  sp.GetAttributes(),
+				})
+			}
+			logs = append(logs, &pb.TraceLogRecord{
+				Timestamp:   sp.GetOccurredAt(),
+				Level:       "DEBUG",
+				ServiceName: sp.GetServiceName(),
+				InstanceId:  sp.GetInstanceId(),
+				Region:      sp.GetRegion(),
+				Message:     "response_flushed",
+				Attributes: map[string]string{
+					"route":       sp.GetOperation(),
+					"method":      sp.GetMethod(),
+					"hop_type":    hopType,
+					"status_code": fmt.Sprintf("%d", sp.GetStatusCode()),
+					"rtt_ms":      fmt.Sprintf("%.2f", sp.GetDurationMs()),
+				},
 			})
 		}
 	}
+
+	sort.Slice(logs, func(i, j int) bool {
+		return logs[i].GetTimestamp().AsTime().Before(logs[j].GetTimestamp().AsTime())
+	})
 
 	rootService := "server-ops-api"
 	rootRoute := "/"

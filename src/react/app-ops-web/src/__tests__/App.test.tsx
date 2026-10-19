@@ -114,8 +114,9 @@ describe("Ops Console App", () => {
     expect(screen.getByText("p95_rtt_ms")).toBeInTheDocument();
   });
 
-  it("filters routes and traced requests to server-api (excluding /healthz and /metrics) by default and opens the Full Request Trace Inspector modal when clicking a Trace ID", async () => {
+  it("filters routes to server-api (excluding /healthz and /metrics) in the first tab, switches to Recent Traced Requests with route filter on click, and displays internal hops plus DEBUG logs in the trace modal", async () => {
     const traceId = "0195f0a1-1234-7000-8000-abcdef012345";
+    const otherApiTraceId = "0195f0a1-8888-7000-8000-000000000009";
     const healthTraceId = "0195f0a1-9999-7000-8000-000000000001";
     const opsTraceId = "0195f0a1-9999-7000-8000-000000000002";
     const fetchSpy = vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
@@ -149,6 +150,19 @@ describe("Ops Console App", () => {
                   p50RttMs: 1.5,
                   p95RttMs: 3.2,
                   p99RttMs: 4.1,
+                },
+                {
+                  serviceName: "server-api",
+                  region: "local",
+                  method: "POST",
+                  route: "/quadsmith.api.FrameService/ListFrames",
+                  totalRequests: "18",
+                  successCount: "18",
+                  errorCount: "0",
+                  availabilityPercent: 100,
+                  p50RttMs: 1.2,
+                  p95RttMs: 2.4,
+                  p99RttMs: 3.1,
                 },
                 {
                   serviceName: "server-api",
@@ -199,6 +213,17 @@ describe("Ops Console App", () => {
               rttMs: 4.75,
               success: true,
               occurredAt: "2026-10-18T12:00:00Z",
+            },
+            {
+              traceId: otherApiTraceId,
+              region: "local",
+              serviceName: "server-api",
+              method: "POST",
+              route: "/quadsmith.api.FrameService/ListFrames",
+              statusCode: 200,
+              rttMs: 2.1,
+              success: true,
+              occurredAt: "2026-10-18T12:00:00.500Z",
             },
             {
               traceId: healthTraceId,
@@ -254,6 +279,32 @@ describe("Ops Console App", () => {
           logs: [
             {
               timestamp: "2026-10-18T12:00:00Z",
+              level: "DEBUG",
+              serviceName: "server-api",
+              instanceId: "server-api-1",
+              region: "local",
+              message: "trace_context_initialized",
+              attributes: {
+                method: "POST",
+                route: "/quadsmith.api.MotorService/ListMotors",
+              },
+            },
+            {
+              timestamp: "2026-10-18T12:00:00.001Z",
+              level: "DEBUG",
+              serviceName: "server-api",
+              instanceId: "server-api-1",
+              region: "local",
+              message: "db_query",
+              attributes: {
+                database: "quadsmith_api",
+                sql: "SELECT uuid, id, brand, model FROM motors ORDER BY id ASC",
+                rows_affected: "12",
+                duration_ms: "1.15",
+              },
+            },
+            {
+              timestamp: "2026-10-18T12:00:00.004Z",
               level: "INFO",
               serviceName: "server-api",
               instanceId: "server-api-1",
@@ -279,23 +330,47 @@ describe("Ops Console App", () => {
       setOpsCookieAndStorage("qs_op_sandbox_token_12345");
       render(<App />);
 
-      const traceBtn = await screen.findByTestId(`inspect-trace-${traceId}`);
-      expect(screen.queryByTestId(`inspect-trace-${healthTraceId}`)).not.toBeInTheDocument();
-      expect(screen.queryByTestId(`inspect-trace-${opsTraceId}`)).not.toBeInTheDocument();
+      // Tab 1 (Per-Route RED Metrics) is active by default
+      const routeBtn = await screen.findByTestId(
+        "select-route-/quadsmith.api.MotorService/ListMotors",
+      );
+      expect(screen.getByTestId("telemetry-tab-routes")).toHaveAttribute("aria-selected", "true");
+      expect(screen.getByTestId("telemetry-tab-traces")).toHaveAttribute("aria-selected", "false");
+      expect(screen.queryByTestId("route-requests-table")).not.toBeInTheDocument();
 
       const routesTable = screen.getByTestId("routes-red-table");
       expect(routesTable).toHaveTextContent("/quadsmith.api.MotorService/ListMotors");
+      expect(routesTable).toHaveTextContent("/quadsmith.api.FrameService/ListFrames");
+      expect(routesTable).not.toHaveTextContent("/healthz");
       expect(routesTable).not.toHaveTextContent("/quadsmith.ops.OpsService/GetSystemHealth");
+
+      // Clicking a route in Tab 1 switches to Tab 2 (Recent Traced Requests) and adds the route filter
+      fireEvent.click(routeBtn);
+
+      expect(screen.getByTestId("telemetry-tab-traces")).toHaveAttribute("aria-selected", "true");
+      const tracesFilterInput = screen.getByTestId("traces-filter-input") as HTMLInputElement;
+      expect(tracesFilterInput.value).toContain(
+        'route == "/quadsmith.api.MotorService/ListMotors"',
+      );
+
+      const traceBtn = await screen.findByTestId(`inspect-trace-${traceId}`);
+      expect(screen.queryByTestId(`inspect-trace-${otherApiTraceId}`)).not.toBeInTheDocument();
+      expect(screen.queryByTestId(`inspect-trace-${healthTraceId}`)).not.toBeInTheDocument();
+      expect(screen.queryByTestId(`inspect-trace-${opsTraceId}`)).not.toBeInTheDocument();
 
       fireEvent.click(traceBtn);
 
       const modal = await screen.findByTestId("trace-inspector-modal");
       expect(modal).toBeInTheDocument();
       expect(screen.getByTestId("trace-inspector-id")).toHaveTextContent(traceId);
+      expect(screen.getByTestId("trace-debug-logs-count")).toHaveTextContent("2");
       expect(screen.getByTestId("trace-spans-list")).toHaveTextContent(
         "/quadsmith.api.MotorService/ListMotors",
       );
-      expect(screen.getByTestId("trace-logs-table")).toHaveTextContent("http_request");
+      const logsTable = screen.getByTestId("trace-logs-table");
+      expect(logsTable).toHaveTextContent("trace_context_initialized");
+      expect(logsTable).toHaveTextContent("db_query");
+      expect(logsTable).toHaveTextContent("http_request");
 
       fireEvent.click(screen.getByTestId("close-trace-inspector"));
       expect(screen.queryByTestId("trace-inspector-modal")).not.toBeInTheDocument();

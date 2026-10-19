@@ -132,10 +132,30 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 		// Inject operator context
 		ctx = WithOperatorContext(ctx, opCtx)
 
+		telemetry.EmitDebug(ctx, "ops_auth_verified", map[string]any{
+			"procedure":     procedure,
+			"method":        methodName,
+			"operator":      opCtx.Operator,
+			"operator_type": opCtx.OperatorType,
+			"group_name":    opCtx.GroupName,
+			"jit_grant_id":  opCtx.JitGrantID,
+		})
+
 		// 4. Execution & Synchronous Audit Logging (for OpsService RPCs)
 		t0 := time.Now()
 		res, err := next(ctx, req)
 		durationMs := time.Since(t0).Milliseconds()
+
+		rpcStatus := "OK"
+		if err != nil {
+			rpcStatus = connect.CodeOf(err).String()
+		}
+		telemetry.EmitDebug(ctx, "ops_handler_completed", map[string]any{
+			"procedure":   procedure,
+			"method":      methodName,
+			"status":      rpcStatus,
+			"duration_ms": durationMs,
+		})
 
 		if strings.HasPrefix(procedure, "/quadsmith.ops.OpsService/") && in.opsDb != nil {
 			status := "OK"

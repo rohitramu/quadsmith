@@ -568,6 +568,32 @@ export function getStoredOpsToken(): string {
 }
 
 type ActiveTab = "health" | "tasks" | "jobs" | "db" | "iam";
+export type TelemetryExplorerTab = "routes" | "traces";
+
+export function applyRouteToTraceCelFilter(
+  currentFilter: string,
+  route: string,
+  serviceName?: string,
+): string {
+  let cleaned = currentFilter
+    .replace(/\s*&&\s*route\s*==\s*("[^"]*"|'[^']*')/g, "")
+    .replace(/route\s*==\s*("[^"]*"|'[^']*')\s*&&\s*/g, "")
+    .replace(/^\s*route\s*==\s*("[^"]*"|'[^']*')\s*$/g, "")
+    .trim();
+
+  if (serviceName && /service_name\s*==\s*("[^"]*"|'[^']*')/.test(cleaned)) {
+    cleaned = cleaned.replace(
+      /service_name\s*==\s*("[^"]*"|'[^']*')/g,
+      `service_name == "${serviceName}"`,
+    );
+  }
+
+  const routeClause = `route == "${route}"`;
+  if (!cleaned) {
+    return routeClause;
+  }
+  return `${cleaned} && ${routeClause}`;
+}
 
 function formatTimestamp(ts?: { seconds: bigint }): string {
   if (!ts) return "—";
@@ -713,6 +739,7 @@ export default function App() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [activeTab, setActiveTab] = useState<ActiveTab>("health");
+  const [telemetrySubTab, setTelemetrySubTab] = useState<TelemetryExplorerTab>("routes");
   const [regionFilter, setRegionFilter] = useState<string>("all");
   const [serviceFilter, setServiceFilter] = useState<string>("all");
   const [metricsWindow, setMetricsWindow] = useState<string>("5m");
@@ -1157,6 +1184,20 @@ export default function App() {
           logs.push({
             $typeName: "quadsmith.ops.TraceLogRecord",
             timestamp: req.occurredAt,
+            level: "DEBUG",
+            serviceName: req.serviceName,
+            instanceId: req.instanceId || `${req.serviceName}-1`,
+            region: req.region || "local",
+            message: "trace_context_initialized",
+            attributes: {
+              route: req.route,
+              method: req.method,
+              hop_type: hopType,
+            },
+          });
+          logs.push({
+            $typeName: "quadsmith.ops.TraceLogRecord",
+            timestamp: req.occurredAt,
             level: req.success ? "INFO" : "ERROR",
             serviceName: req.serviceName,
             instanceId: req.instanceId || `${req.serviceName}-1`,
@@ -1165,6 +1206,22 @@ export default function App() {
             attributes: {
               route: req.route,
               method: req.method,
+              status_code: String(req.statusCode),
+              rtt_ms: req.rttMs.toFixed(2),
+            },
+          });
+          logs.push({
+            $typeName: "quadsmith.ops.TraceLogRecord",
+            timestamp: req.occurredAt,
+            level: "DEBUG",
+            serviceName: req.serviceName,
+            instanceId: req.instanceId || `${req.serviceName}-1`,
+            region: req.region || "local",
+            message: "response_flushed",
+            attributes: {
+              route: req.route,
+              method: req.method,
+              hop_type: hopType,
               status_code: String(req.statusCode),
               rtt_ms: req.rttMs.toFixed(2),
             },
@@ -1213,6 +1270,21 @@ export default function App() {
             durationMs: rtt,
             occurredAt: call.createdAt,
             attributes: attrs,
+          });
+          logs.push({
+            $typeName: "quadsmith.ops.TraceLogRecord",
+            timestamp: call.createdAt,
+            level: "DEBUG",
+            serviceName: "server-ops-api",
+            instanceId: "server-ops-api-1",
+            region: call.region || "local",
+            message: "ops_auth_verified",
+            attributes: {
+              route: call.method,
+              operator: call.caller,
+              operator_type: call.callerType,
+              group_name: call.groupName,
+            },
           });
           logs.push({
             $typeName: "quadsmith.ops.TraceLogRecord",
@@ -1281,6 +1353,11 @@ export default function App() {
     },
     [routeRequests, auditCalls, jobs],
   );
+
+  const handleSelectRouteFromMetrics = useCallback((r: RouteMetricStat) => {
+    setTraceCelFilter((prev) => applyRouteToTraceCelFilter(prev, r.route, r.serviceName));
+    setTelemetrySubTab("traces");
+  }, []);
 
   const handleInspectTrace = useCallback(
     async (rawTraceId: string) => {
@@ -1974,450 +2051,527 @@ export default function App() {
                 </div>
               </div>
 
-              {/* CEL SmartFilterInput for Per-Route RED Metrics */}
-              <div data-testid="routes-cel-filter-section" className="space-y-3">
-                <SmartFilterInput
-                  value={routeCelFilter}
-                  onApply={setRouteCelFilter}
-                  fields={ROUTE_METRIC_FIELDS}
-                  presets={ROUTE_METRIC_PRESETS}
-                  syntaxExamples={ROUTE_METRIC_SYNTAX}
-                  error={routeEvalResult.error}
-                  placeholder="Filter routes with CEL (e.g., error_count > 0 || p95_rtt_ms > 10.0)..."
-                  inputTestId="route-search-input"
-                  helpTestId="routes-cel-help-btn"
-                  applyTestId="routes-cel-apply-btn"
-                  className="w-full"
-                />
-
-                <CollectionSortBar
-                  totalCount={allRoutes.length}
-                  filteredCount={routeEvalResult.items.length}
-                  noun="routes"
-                  sortField={routeSortField}
-                  sortDir={routeSortDir}
-                  options={[
-                    { field: "total_requests", label: "Requests" },
-                    { field: "error_count", label: "Errors" },
-                    { field: "availability_percent", label: "Availability" },
-                    { field: "p50_rtt_ms", label: "P50 RTT" },
-                    { field: "p95_rtt_ms", label: "P95 RTT" },
-                    { field: "p99_rtt_ms", label: "P99 RTT" },
-                    { field: "service_name", label: "Service" },
-                    { field: "route", label: "Route" },
-                  ]}
-                  onSortFieldChange={setRouteSortField}
-                  onSortDirToggle={() =>
-                    setRouteSortDir((d: SortDirection) => (d === "asc" ? "desc" : "asc"))
-                  }
-                  testIdPrefix="routes"
-                />
-              </div>
-
-              {/* Per-Route RED Table */}
-              <div className="overflow-x-auto">
-                <table
-                  data-testid="routes-red-table"
-                  className="w-full text-left border-collapse text-xs font-mono"
+              {/* Sub-tab bar: 1. Per-Route RED Metrics | 2. Recent Traced Requests */}
+              <div
+                role="tablist"
+                aria-label="Route Metrics and Traced Requests Explorer Tabs"
+                className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3"
+              >
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={telemetrySubTab === "routes"}
+                  data-testid="telemetry-tab-routes"
+                  onClick={() => setTelemetrySubTab("routes")}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors cursor-pointer flex items-center gap-2 ${
+                    telemetrySubTab === "routes"
+                      ? "bg-sky-600 text-white shadow-sm"
+                      : "bg-[#090d16] text-slate-400 border border-slate-800 hover:text-slate-200 hover:border-slate-700"
+                  }`}
                 >
-                  <thead>
-                    <tr className="border-b border-slate-800 text-slate-400">
-                      <SortableTh
-                        label="SERVICE"
-                        field="service_name"
-                        activeField={routeSortField}
-                        direction={routeSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            routeSortField,
-                            routeSortDir,
-                            setRouteSortField,
-                            setRouteSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="REGION"
-                        field="region"
-                        activeField={routeSortField}
-                        direction={routeSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            routeSortField,
-                            routeSortDir,
-                            setRouteSortField,
-                            setRouteSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="METHOD"
-                        field="method"
-                        activeField={routeSortField}
-                        direction={routeSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            routeSortField,
-                            routeSortDir,
-                            setRouteSortField,
-                            setRouteSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="ROUTE"
-                        field="route"
-                        activeField={routeSortField}
-                        direction={routeSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            routeSortField,
-                            routeSortDir,
-                            setRouteSortField,
-                            setRouteSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="REQS"
-                        field="total_requests"
-                        activeField={routeSortField}
-                        direction={routeSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            routeSortField,
-                            routeSortDir,
-                            setRouteSortField,
-                            setRouteSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="ERRORS"
-                        field="error_count"
-                        activeField={routeSortField}
-                        direction={routeSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            routeSortField,
-                            routeSortDir,
-                            setRouteSortField,
-                            setRouteSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="AVAILABILITY"
-                        field="availability_percent"
-                        activeField={routeSortField}
-                        direction={routeSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            routeSortField,
-                            routeSortDir,
-                            setRouteSortField,
-                            setRouteSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="P50 RTT"
-                        field="p50_rtt_ms"
-                        activeField={routeSortField}
-                        direction={routeSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            routeSortField,
-                            routeSortDir,
-                            setRouteSortField,
-                            setRouteSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="P95 RTT"
-                        field="p95_rtt_ms"
-                        activeField={routeSortField}
-                        direction={routeSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            routeSortField,
-                            routeSortDir,
-                            setRouteSortField,
-                            setRouteSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="P99 RTT"
-                        field="p99_rtt_ms"
-                        activeField={routeSortField}
-                        direction={routeSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            routeSortField,
-                            routeSortDir,
-                            setRouteSortField,
-                            setRouteSortDir,
-                          )
-                        }
-                      />
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-800/60">
-                    {routeEvalResult.items.map((r) => (
-                      <tr
-                        key={`${r.serviceName}-${r.method}-${r.route}`}
-                        className="hover:bg-slate-900/50"
-                      >
-                        <td className="py-2 px-3 text-sky-300">{r.serviceName}</td>
-                        <td className="py-2 px-3 text-slate-400">{r.region}</td>
-                        <td className="py-2 px-3 text-slate-300">{r.method}</td>
-                        <td className="py-2 px-3 text-slate-100">{r.route}</td>
-                        <td className="py-2 px-3">{r.totalRequests.toString()}</td>
-                        <td className="py-2 px-3 text-rose-400">{r.errorCount.toString()}</td>
-                        <td className="py-2 px-3 text-emerald-400">
-                          {r.availabilityPercent.toFixed(2)}%
-                        </td>
-                        <td className="py-2 px-3">{r.p50RttMs.toFixed(2)} ms</td>
-                        <td className="py-2 px-3">{r.p95RttMs.toFixed(2)} ms</td>
-                        <td className="py-2 px-3">{r.p99RttMs.toFixed(2)} ms</td>
-                      </tr>
-                    ))}
-                    {routeEvalResult.items.length === 0 && (
-                      <tr>
-                        <td colSpan={10} className="py-4 text-center text-slate-500">
-                          No route metrics recorded for current filter.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </table>
-              </div>
-
-              {/* Traced Requests Table */}
-              <div className="pt-4 border-t border-slate-800 space-y-3">
-                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
-                  Recent Traced Requests (VictoriaLogs / Ring Buffer)
-                </h3>
-
-                <SmartFilterInput
-                  value={traceCelFilter}
-                  onApply={setTraceCelFilter}
-                  fields={TRACE_REQUEST_FIELDS}
-                  presets={TRACE_REQUEST_PRESETS}
-                  syntaxExamples={TRACE_REQUEST_SYNTAX}
-                  error={traceEvalResult.error}
-                  placeholder="Filter traced requests with CEL (e.g., success == false || rtt_ms > 15.0)..."
-                  inputTestId="traces-filter-input"
-                  helpTestId="traces-cel-help-btn"
-                  applyTestId="traces-cel-apply-btn"
-                  className="w-full"
-                />
-
-                <CollectionSortBar
-                  totalCount={routeRequests.length}
-                  filteredCount={traceEvalResult.items.length}
-                  noun="traced requests"
-                  sortField={traceSortField}
-                  sortDir={traceSortDir}
-                  options={[
-                    { field: "occurred_at", label: "Occurred At" },
-                    { field: "rtt_ms", label: "RTT" },
-                    { field: "status_code", label: "Status Code" },
-                    { field: "service_name", label: "Service" },
-                    { field: "route", label: "Route" },
-                    { field: "trace_id", label: "Trace ID" },
-                  ]}
-                  onSortFieldChange={setTraceSortField}
-                  onSortDirToggle={() =>
-                    setTraceSortDir((d: SortDirection) => (d === "asc" ? "desc" : "asc"))
-                  }
-                  testIdPrefix="traces"
-                />
-
-                <div className="overflow-x-auto">
-                  <table
-                    data-testid="route-requests-table"
-                    className="w-full text-left border-collapse text-xs font-mono"
+                  <span>1. Per-Route RED Metrics</span>
+                  <span
+                    className={`px-1.5 py-0.5 rounded text-[10px] ${
+                      telemetrySubTab === "routes"
+                        ? "bg-sky-800/80 text-sky-100"
+                        : "bg-slate-800 text-slate-300"
+                    }`}
                   >
-                    <thead>
-                      <tr className="border-b border-slate-800 text-slate-400">
-                        <SortableTh
-                          label="OCCURRED AT"
-                          field="occurred_at"
-                          activeField={traceSortField}
-                          direction={traceSortDir}
-                          onToggle={(f) =>
-                            toggleColumnSort(
-                              f,
-                              traceSortField,
-                              traceSortDir,
-                              setTraceSortField,
-                              setTraceSortDir,
-                            )
-                          }
-                        />
-                        <SortableTh
-                          label="TRACE ID (UUIDv7)"
-                          field="trace_id"
-                          activeField={traceSortField}
-                          direction={traceSortDir}
-                          onToggle={(f) =>
-                            toggleColumnSort(
-                              f,
-                              traceSortField,
-                              traceSortDir,
-                              setTraceSortField,
-                              setTraceSortDir,
-                            )
-                          }
-                        />
-                        <SortableTh
-                          label="REGION"
-                          field="region"
-                          activeField={traceSortField}
-                          direction={traceSortDir}
-                          onToggle={(f) =>
-                            toggleColumnSort(
-                              f,
-                              traceSortField,
-                              traceSortDir,
-                              setTraceSortField,
-                              setTraceSortDir,
-                            )
-                          }
-                        />
-                        <SortableTh
-                          label="SERVICE"
-                          field="service_name"
-                          activeField={traceSortField}
-                          direction={traceSortDir}
-                          onToggle={(f) =>
-                            toggleColumnSort(
-                              f,
-                              traceSortField,
-                              traceSortDir,
-                              setTraceSortField,
-                              setTraceSortDir,
-                            )
-                          }
-                        />
-                        <SortableTh
-                          label="METHOD"
-                          field="method"
-                          activeField={traceSortField}
-                          direction={traceSortDir}
-                          onToggle={(f) =>
-                            toggleColumnSort(
-                              f,
-                              traceSortField,
-                              traceSortDir,
-                              setTraceSortField,
-                              setTraceSortDir,
-                            )
-                          }
-                        />
-                        <SortableTh
-                          label="ROUTE"
-                          field="route"
-                          activeField={traceSortField}
-                          direction={traceSortDir}
-                          onToggle={(f) =>
-                            toggleColumnSort(
-                              f,
-                              traceSortField,
-                              traceSortDir,
-                              setTraceSortField,
-                              setTraceSortDir,
-                            )
-                          }
-                        />
-                        <SortableTh
-                          label="STATUS"
-                          field="status_code"
-                          activeField={traceSortField}
-                          direction={traceSortDir}
-                          onToggle={(f) =>
-                            toggleColumnSort(
-                              f,
-                              traceSortField,
-                              traceSortDir,
-                              setTraceSortField,
-                              setTraceSortDir,
-                            )
-                          }
-                        />
-                        <SortableTh
-                          label="RTT"
-                          field="rtt_ms"
-                          activeField={traceSortField}
-                          direction={traceSortDir}
-                          onToggle={(f) =>
-                            toggleColumnSort(
-                              f,
-                              traceSortField,
-                              traceSortDir,
-                              setTraceSortField,
-                              setTraceSortDir,
-                            )
-                          }
-                        />
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-800/60">
-                      {traceEvalResult.items.map((req, idx) => (
-                        <tr
-                          key={`${req.traceId}-${req.serviceName}-${idx}`}
-                          className="hover:bg-slate-900/50"
-                        >
-                          <td className="py-2 px-3 text-slate-400">
-                            {formatTimestamp(req.occurredAt)}
-                          </td>
-                          <td className="py-2 px-3">
-                            <button
-                              type="button"
-                              data-testid={`inspect-trace-${req.traceId}`}
-                              onClick={() => void handleInspectTrace(req.traceId)}
-                              title="Click to inspect full cross-service trace"
-                              className="text-amber-300 hover:text-amber-200 underline decoration-amber-500/50 hover:decoration-amber-300 font-mono cursor-pointer text-left"
-                            >
-                              {req.traceId}
-                            </button>
-                          </td>
-                          <td className="py-2 px-3 text-slate-400">{req.region}</td>
-                          <td className="py-2 px-3 text-sky-300">{req.serviceName}</td>
-                          <td className="py-2 px-3 text-slate-300">{req.method}</td>
-                          <td className="py-2 px-3 text-slate-100">{req.route}</td>
-                          <td className="py-2 px-3">
-                            <span className={req.success ? "text-emerald-400" : "text-rose-400"}>
-                              {req.statusCode} ({req.success ? "OK" : "ERR"})
-                            </span>
-                          </td>
-                          <td className="py-2 px-3">{req.rttMs.toFixed(2)} ms</td>
-                        </tr>
-                      ))}
-                      {traceEvalResult.items.length === 0 && (
-                        <tr>
-                          <td colSpan={8} className="py-4 text-center text-slate-500">
-                            No traced requests match current filters.
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+                    {routeEvalResult.items.length}
+                  </span>
+                </button>
+
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={telemetrySubTab === "traces"}
+                  data-testid="telemetry-tab-traces"
+                  onClick={() => setTelemetrySubTab("traces")}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors cursor-pointer flex items-center gap-2 ${
+                    telemetrySubTab === "traces"
+                      ? "bg-sky-600 text-white shadow-sm"
+                      : "bg-[#090d16] text-slate-400 border border-slate-800 hover:text-slate-200 hover:border-slate-700"
+                  }`}
+                >
+                  <span>2. Recent Traced Requests</span>
+                  <span
+                    className={`px-1.5 py-0.5 rounded text-[10px] ${
+                      telemetrySubTab === "traces"
+                        ? "bg-sky-800/80 text-sky-100"
+                        : "bg-slate-800 text-slate-300"
+                    }`}
+                  >
+                    {traceEvalResult.items.length}
+                  </span>
+                </button>
               </div>
+
+              {telemetrySubTab === "routes" && (
+                <div data-testid="telemetry-panel-routes" className="space-y-4">
+                  {/* CEL SmartFilterInput for Per-Route RED Metrics */}
+                  <div data-testid="routes-cel-filter-section" className="space-y-3">
+                    <SmartFilterInput
+                      value={routeCelFilter}
+                      onApply={setRouteCelFilter}
+                      fields={ROUTE_METRIC_FIELDS}
+                      presets={ROUTE_METRIC_PRESETS}
+                      syntaxExamples={ROUTE_METRIC_SYNTAX}
+                      error={routeEvalResult.error}
+                      placeholder="Filter routes with CEL (e.g., error_count > 0 || p95_rtt_ms > 10.0)..."
+                      inputTestId="route-search-input"
+                      helpTestId="routes-cel-help-btn"
+                      applyTestId="routes-cel-apply-btn"
+                      className="w-full"
+                    />
+
+                    <CollectionSortBar
+                      totalCount={allRoutes.length}
+                      filteredCount={routeEvalResult.items.length}
+                      noun="routes"
+                      sortField={routeSortField}
+                      sortDir={routeSortDir}
+                      options={[
+                        { field: "total_requests", label: "Requests" },
+                        { field: "error_count", label: "Errors" },
+                        { field: "availability_percent", label: "Availability" },
+                        { field: "p50_rtt_ms", label: "P50 RTT" },
+                        { field: "p95_rtt_ms", label: "P95 RTT" },
+                        { field: "p99_rtt_ms", label: "P99 RTT" },
+                        { field: "service_name", label: "Service" },
+                        { field: "route", label: "Route" },
+                      ]}
+                      onSortFieldChange={setRouteSortField}
+                      onSortDirToggle={() =>
+                        setRouteSortDir((d: SortDirection) => (d === "asc" ? "desc" : "asc"))
+                      }
+                      testIdPrefix="routes"
+                    />
+                  </div>
+
+                  {/* Per-Route RED Table */}
+                  <div className="overflow-x-auto">
+                    <table
+                      data-testid="routes-red-table"
+                      className="w-full text-left border-collapse text-xs font-mono"
+                    >
+                      <thead>
+                        <tr className="border-b border-slate-800 text-slate-400">
+                          <SortableTh
+                            label="SERVICE"
+                            field="service_name"
+                            activeField={routeSortField}
+                            direction={routeSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                routeSortField,
+                                routeSortDir,
+                                setRouteSortField,
+                                setRouteSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="REGION"
+                            field="region"
+                            activeField={routeSortField}
+                            direction={routeSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                routeSortField,
+                                routeSortDir,
+                                setRouteSortField,
+                                setRouteSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="METHOD"
+                            field="method"
+                            activeField={routeSortField}
+                            direction={routeSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                routeSortField,
+                                routeSortDir,
+                                setRouteSortField,
+                                setRouteSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="ROUTE"
+                            field="route"
+                            activeField={routeSortField}
+                            direction={routeSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                routeSortField,
+                                routeSortDir,
+                                setRouteSortField,
+                                setRouteSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="REQS"
+                            field="total_requests"
+                            activeField={routeSortField}
+                            direction={routeSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                routeSortField,
+                                routeSortDir,
+                                setRouteSortField,
+                                setRouteSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="ERRORS"
+                            field="error_count"
+                            activeField={routeSortField}
+                            direction={routeSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                routeSortField,
+                                routeSortDir,
+                                setRouteSortField,
+                                setRouteSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="AVAILABILITY"
+                            field="availability_percent"
+                            activeField={routeSortField}
+                            direction={routeSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                routeSortField,
+                                routeSortDir,
+                                setRouteSortField,
+                                setRouteSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="P50 RTT"
+                            field="p50_rtt_ms"
+                            activeField={routeSortField}
+                            direction={routeSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                routeSortField,
+                                routeSortDir,
+                                setRouteSortField,
+                                setRouteSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="P95 RTT"
+                            field="p95_rtt_ms"
+                            activeField={routeSortField}
+                            direction={routeSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                routeSortField,
+                                routeSortDir,
+                                setRouteSortField,
+                                setRouteSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="P99 RTT"
+                            field="p99_rtt_ms"
+                            activeField={routeSortField}
+                            direction={routeSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                routeSortField,
+                                routeSortDir,
+                                setRouteSortField,
+                                setRouteSortDir,
+                              )
+                            }
+                          />
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-800/60">
+                        {routeEvalResult.items.map((r) => (
+                          <tr
+                            key={`${r.serviceName}-${r.method}-${r.route}`}
+                            onClick={() => handleSelectRouteFromMetrics(r)}
+                            className="hover:bg-slate-900/60 cursor-pointer transition-colors"
+                          >
+                            <td className="py-2 px-3 text-sky-300">{r.serviceName}</td>
+                            <td className="py-2 px-3 text-slate-400">{r.region}</td>
+                            <td className="py-2 px-3 text-slate-300">{r.method}</td>
+                            <td className="py-2 px-3">
+                              <button
+                                type="button"
+                                data-testid={`select-route-${r.route}`}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleSelectRouteFromMetrics(r);
+                                }}
+                                title="Click to view traced requests for this route"
+                                className="text-sky-300 hover:text-sky-200 underline decoration-sky-500/50 hover:decoration-sky-300 font-mono cursor-pointer text-left"
+                              >
+                                {r.route}
+                              </button>
+                            </td>
+                            <td className="py-2 px-3">{r.totalRequests.toString()}</td>
+                            <td className="py-2 px-3 text-rose-400">{r.errorCount.toString()}</td>
+                            <td className="py-2 px-3 text-emerald-400">
+                              {r.availabilityPercent.toFixed(2)}%
+                            </td>
+                            <td className="py-2 px-3">{r.p50RttMs.toFixed(2)} ms</td>
+                            <td className="py-2 px-3">{r.p95RttMs.toFixed(2)} ms</td>
+                            <td className="py-2 px-3">{r.p99RttMs.toFixed(2)} ms</td>
+                          </tr>
+                        ))}
+                        {routeEvalResult.items.length === 0 && (
+                          <tr>
+                            <td colSpan={10} className="py-4 text-center text-slate-500">
+                              No route metrics recorded for current filter.
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {/* Traced Requests Table (Tab 2) */}
+              {telemetrySubTab === "traces" && (
+                <div data-testid="telemetry-panel-traces" className="space-y-3">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-400">
+                      Recent Traced Requests (VictoriaLogs / Ring Buffer)
+                    </h3>
+                  </div>
+
+                  <SmartFilterInput
+                    value={traceCelFilter}
+                    onApply={setTraceCelFilter}
+                    fields={TRACE_REQUEST_FIELDS}
+                    presets={TRACE_REQUEST_PRESETS}
+                    syntaxExamples={TRACE_REQUEST_SYNTAX}
+                    error={traceEvalResult.error}
+                    placeholder="Filter traced requests with CEL (e.g., success == false || rtt_ms > 15.0)..."
+                    inputTestId="traces-filter-input"
+                    helpTestId="traces-cel-help-btn"
+                    applyTestId="traces-cel-apply-btn"
+                    className="w-full"
+                  />
+
+                  <CollectionSortBar
+                    totalCount={routeRequests.length}
+                    filteredCount={traceEvalResult.items.length}
+                    noun="traced requests"
+                    sortField={traceSortField}
+                    sortDir={traceSortDir}
+                    options={[
+                      { field: "occurred_at", label: "Occurred At" },
+                      { field: "rtt_ms", label: "RTT" },
+                      { field: "status_code", label: "Status Code" },
+                      { field: "service_name", label: "Service" },
+                      { field: "route", label: "Route" },
+                      { field: "trace_id", label: "Trace ID" },
+                    ]}
+                    onSortFieldChange={setTraceSortField}
+                    onSortDirToggle={() =>
+                      setTraceSortDir((d: SortDirection) => (d === "asc" ? "desc" : "asc"))
+                    }
+                    testIdPrefix="traces"
+                  />
+
+                  <div className="overflow-x-auto">
+                    <table
+                      data-testid="route-requests-table"
+                      className="w-full text-left border-collapse text-xs font-mono"
+                    >
+                      <thead>
+                        <tr className="border-b border-slate-800 text-slate-400">
+                          <SortableTh
+                            label="OCCURRED AT"
+                            field="occurred_at"
+                            activeField={traceSortField}
+                            direction={traceSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                traceSortField,
+                                traceSortDir,
+                                setTraceSortField,
+                                setTraceSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="TRACE ID (UUIDv7)"
+                            field="trace_id"
+                            activeField={traceSortField}
+                            direction={traceSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                traceSortField,
+                                traceSortDir,
+                                setTraceSortField,
+                                setTraceSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="REGION"
+                            field="region"
+                            activeField={traceSortField}
+                            direction={traceSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                traceSortField,
+                                traceSortDir,
+                                setTraceSortField,
+                                setTraceSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="SERVICE"
+                            field="service_name"
+                            activeField={traceSortField}
+                            direction={traceSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                traceSortField,
+                                traceSortDir,
+                                setTraceSortField,
+                                setTraceSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="METHOD"
+                            field="method"
+                            activeField={traceSortField}
+                            direction={traceSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                traceSortField,
+                                traceSortDir,
+                                setTraceSortField,
+                                setTraceSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="ROUTE"
+                            field="route"
+                            activeField={traceSortField}
+                            direction={traceSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                traceSortField,
+                                traceSortDir,
+                                setTraceSortField,
+                                setTraceSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="STATUS"
+                            field="status_code"
+                            activeField={traceSortField}
+                            direction={traceSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                traceSortField,
+                                traceSortDir,
+                                setTraceSortField,
+                                setTraceSortDir,
+                              )
+                            }
+                          />
+                          <SortableTh
+                            label="RTT"
+                            field="rtt_ms"
+                            activeField={traceSortField}
+                            direction={traceSortDir}
+                            onToggle={(f) =>
+                              toggleColumnSort(
+                                f,
+                                traceSortField,
+                                traceSortDir,
+                                setTraceSortField,
+                                setTraceSortDir,
+                              )
+                            }
+                          />
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-slate-800/60">
+                        {traceEvalResult.items.map((req, idx) => (
+                          <tr
+                            key={`${req.traceId}-${req.serviceName}-${idx}`}
+                            className="hover:bg-slate-900/50"
+                          >
+                            <td className="py-2 px-3 text-slate-400">
+                              {formatTimestamp(req.occurredAt)}
+                            </td>
+                            <td className="py-2 px-3">
+                              <button
+                                type="button"
+                                data-testid={`inspect-trace-${req.traceId}`}
+                                onClick={() => void handleInspectTrace(req.traceId)}
+                                title="Click to inspect full cross-service trace"
+                                className="text-amber-300 hover:text-amber-200 underline decoration-amber-500/50 hover:decoration-amber-300 font-mono cursor-pointer text-left"
+                              >
+                                {req.traceId}
+                              </button>
+                            </td>
+                            <td className="py-2 px-3 text-slate-400">{req.region}</td>
+                            <td className="py-2 px-3 text-sky-300">{req.serviceName}</td>
+                            <td className="py-2 px-3 text-slate-300">{req.method}</td>
+                            <td className="py-2 px-3 text-slate-100">{req.route}</td>
+                            <td className="py-2 px-3">
+                              <span className={req.success ? "text-emerald-400" : "text-rose-400"}>
+                                {req.statusCode} ({req.success ? "OK" : "ERR"})
+                              </span>
+                            </td>
+                            <td className="py-2 px-3">{req.rttMs.toFixed(2)} ms</td>
+                          </tr>
+                        ))}
+                        {traceEvalResult.items.length === 0 && (
+                          <tr>
+                            <td colSpan={8} className="py-4 text-center text-slate-500">
+                              No traced requests match current filters.
+                            </td>
+                          </tr>
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -3458,6 +3612,12 @@ export default function App() {
                         {(selectedTrace.logs ?? []).length}
                       </strong>
                     </span>
+                    <span>
+                      Debug Logs:{" "}
+                      <strong data-testid="trace-debug-logs-count" className="text-sky-300">
+                        {(selectedTrace.logs ?? []).filter((l) => l.level === "DEBUG").length}
+                      </strong>
+                    </span>
                     {selectedTrace.startedAt && (
                       <span>Started: {formatTimestamp(selectedTrace.startedAt)}</span>
                     )}
@@ -3571,7 +3731,7 @@ export default function App() {
                   {/* Chronological Cross-Service Logs */}
                   <div className="space-y-3">
                     <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">
-                      Chronological Cross-Service Structured Logs (
+                      Chronological Cross-Service Structured &amp; Debug Logs (
                       {(selectedTrace.logs ?? []).length} Events)
                     </h3>
                     <div className="overflow-x-auto bg-[#090d16] border border-slate-800 rounded-lg">
@@ -3625,7 +3785,9 @@ export default function App() {
                                         ? "text-rose-400 font-bold"
                                         : log.level === "WARN"
                                           ? "text-amber-300 font-bold"
-                                          : "text-emerald-400"
+                                          : log.level === "DEBUG"
+                                            ? "text-sky-300 font-bold"
+                                            : "text-emerald-400"
                                     }
                                   >
                                     {log.level}
