@@ -568,7 +568,7 @@ export function getStoredOpsToken(): string {
 }
 
 type ActiveTab = "health" | "tasks" | "jobs" | "db" | "iam";
-export type TelemetryExplorerTab = "routes" | "traces";
+export type TelemetryExplorerTab = "routes" | "traces" | "trace_detail";
 
 export function applyRouteToTraceCelFilter(
   currentFilter: string,
@@ -1367,6 +1367,8 @@ export default function App() {
     async (rawTraceId: string) => {
       const cleanId = rawTraceId.trim();
       if (!cleanId || cleanId === "—") return;
+      setActiveTab("health");
+      setTelemetrySubTab("trace_detail");
       setSelectedTraceId(cleanId);
       setTraceLoading(true);
       setTraceError("");
@@ -2087,7 +2089,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Sub-tab bar: 1. Per-Route Metrics | 2. Recent Traced Requests */}
+              {/* Sub-tab bar: 1. Per-Route Metrics | 2. Recent Traced Requests | 3. Trace & Debug Logs */}
               <div
                 role="tablist"
                 aria-label="Route Metrics and Traced Requests Explorer Tabs"
@@ -2139,6 +2141,32 @@ export default function App() {
                   >
                     {traceEvalResult.items.length}
                   </span>
+                </button>
+
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={telemetrySubTab === "trace_detail"}
+                  data-testid="telemetry-tab-trace-detail"
+                  onClick={() => setTelemetrySubTab("trace_detail")}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors cursor-pointer flex items-center gap-2 ${
+                    telemetrySubTab === "trace_detail"
+                      ? "bg-sky-600 text-white shadow-sm"
+                      : "bg-[#090d16] text-slate-400 border border-slate-800 hover:text-slate-200 hover:border-slate-700"
+                  }`}
+                >
+                  <span>3. Trace &amp; Debug Logs</span>
+                  {selectedTraceId && (
+                    <span
+                      className={`px-1.5 py-0.5 rounded text-[10px] ${
+                        telemetrySubTab === "trace_detail"
+                          ? "bg-sky-800/80 text-sky-100"
+                          : "bg-slate-800 text-amber-300"
+                      }`}
+                    >
+                      {(selectedTrace?.logs ?? []).length}
+                    </span>
+                  )}
                 </button>
               </div>
 
@@ -2704,6 +2732,330 @@ export default function App() {
                       </button>
                     </div>
                   </div>
+                </div>
+              )}
+
+              {/* Trace & Debug Logs (Tab 3) */}
+              {telemetrySubTab === "trace_detail" && (
+                <div
+                  data-testid="telemetry-panel-trace-detail"
+                  className="bg-[#0b1120] border border-slate-800 rounded-xl overflow-hidden"
+                >
+                  {!selectedTraceId ? (
+                    <div className="p-8 text-center space-y-3 text-xs font-mono text-slate-400">
+                      <p>
+                        No request trace selected yet. Click any{" "}
+                        <strong className="text-amber-300">UUIDv7 Trace ID</strong> in{" "}
+                        <strong className="text-sky-300">2. Recent Traced Requests</strong>,{" "}
+                        <strong className="text-sky-300">Job Execution History</strong>, or{" "}
+                        <strong className="text-sky-300">API Audit Log</strong> to inspect its
+                        cross-service hops and debug logs here.
+                      </p>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => setTelemetrySubTab("traces")}
+                          className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 hover:bg-slate-800 text-sky-300 text-xs font-mono cursor-pointer"
+                        >
+                          ← Browse Recent Traced Requests
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div data-testid="trace-inspector-panel">
+                      {/* Trace Header */}
+                      <div className="px-5 py-4 border-b border-slate-800 bg-[#0d1424] flex flex-wrap items-center justify-between gap-3">
+                        <div className="space-y-1">
+                          <div className="flex flex-wrap items-center gap-2">
+                            <span className="px-2 py-0.5 rounded bg-amber-950/70 border border-amber-700 text-amber-300 text-[11px] font-mono font-bold uppercase tracking-wider">
+                              Full Request Trace
+                            </span>
+                            <span
+                              data-testid="trace-inspector-id"
+                              className="font-mono font-bold text-sm text-amber-300"
+                            >
+                              {selectedTraceId}
+                            </span>
+                            {selectedTrace && (
+                              <span
+                                className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold ${
+                                  selectedTrace.success
+                                    ? "bg-emerald-950/70 border border-emerald-700 text-emerald-300"
+                                    : "bg-rose-950/70 border border-rose-700 text-rose-300"
+                                }`}
+                              >
+                                {selectedTrace.success ? "OK" : "ERROR"}
+                              </span>
+                            )}
+                          </div>
+                          {selectedTrace && (
+                            <div className="text-xs font-mono text-slate-400 flex flex-wrap items-center gap-3">
+                              <span>
+                                Region:{" "}
+                                <strong className="text-slate-200">
+                                  {selectedTrace.region || "local"}
+                                </strong>
+                              </span>
+                              <span>
+                                Root:{" "}
+                                <strong className="text-sky-300">
+                                  {selectedTrace.rootService || "—"} {selectedTrace.rootRoute || ""}
+                                </strong>
+                              </span>
+                              <span>
+                                Total Duration:{" "}
+                                <strong className="text-slate-200">
+                                  {Number(selectedTrace.totalRttMs || 0).toFixed(2)} ms
+                                </strong>
+                              </span>
+                              <span>
+                                Spans:{" "}
+                                <strong className="text-slate-200">
+                                  {(selectedTrace.spans ?? []).length}
+                                </strong>
+                              </span>
+                              <span>
+                                Logs:{" "}
+                                <strong className="text-slate-200">
+                                  {(selectedTrace.logs ?? []).length}
+                                </strong>
+                              </span>
+                              <span>
+                                Debug Logs:{" "}
+                                <strong
+                                  data-testid="trace-debug-logs-count"
+                                  className="text-sky-300"
+                                >
+                                  {
+                                    (selectedTrace.logs ?? []).filter((l) => l.level === "DEBUG")
+                                      .length
+                                  }
+                                </strong>
+                              </span>
+                              {selectedTrace.startedAt && (
+                                <span>Started: {formatTimestamp(selectedTrace.startedAt)}</span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          data-testid="close-trace-inspector"
+                          onClick={() => {
+                            setSelectedTraceId("");
+                            setSelectedTrace(null);
+                            setTraceError("");
+                            setTelemetrySubTab("traces");
+                          }}
+                          className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-mono cursor-pointer"
+                        >
+                          ← Back to Traced Requests
+                        </button>
+                      </div>
+
+                      {/* Trace Body */}
+                      <div className="p-5 space-y-6 text-xs font-mono">
+                        {traceLoading && (
+                          <div className="py-6 text-center text-slate-400">
+                            Loading cross-service spans and structured logs for trace{" "}
+                            {selectedTraceId}...
+                          </div>
+                        )}
+
+                        {traceError && (
+                          <div className="p-3 rounded-lg bg-rose-950/60 border border-rose-700 text-rose-200">
+                            {traceError}
+                          </div>
+                        )}
+
+                        {selectedTrace && !traceLoading && (
+                          <>
+                            {/* Cross-Service Span Waterfall */}
+                            <div className="space-y-3">
+                              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">
+                                Cross-Service Hop Waterfall ({(selectedTrace.spans ?? []).length}{" "}
+                                Spans)
+                              </h3>
+                              <div
+                                data-testid="trace-spans-list"
+                                className="space-y-2 bg-[#090d16] border border-slate-800 rounded-lg p-3"
+                              >
+                                {(selectedTrace.spans ?? []).map((span, idx) => {
+                                  const spanRtt = Number(span.durationMs || 0);
+                                  const maxRtt = Math.max(
+                                    Number(selectedTrace.totalRttMs || 1),
+                                    spanRtt || 1,
+                                    1,
+                                  );
+                                  const widthPct = Math.min(
+                                    100,
+                                    Math.max(8, (spanRtt / maxRtt) * 100),
+                                  );
+                                  const attrs = span.attributes ?? {};
+                                  const hopType = attrs.hop_type || (idx === 0 ? "ingress" : "hop");
+                                  const caller = attrs.caller || "";
+                                  const jitGrantId = attrs.jit_grant_id || "";
+                                  return (
+                                    <div
+                                      key={`${span.serviceName}-${span.operation}-${idx}`}
+                                      data-testid={`trace-span-row-${idx}`}
+                                      className="p-2.5 rounded bg-[#111827] border border-slate-800/80 space-y-1.5"
+                                    >
+                                      <div className="flex flex-wrap items-center justify-between gap-2">
+                                        <div className="flex flex-wrap items-center gap-2">
+                                          <span className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] uppercase">
+                                            {hopType}
+                                          </span>
+                                          <span className="text-sky-300 font-bold">
+                                            {span.serviceName}
+                                          </span>
+                                          <span className="text-slate-500">
+                                            ({span.instanceId})
+                                          </span>
+                                          <span className="text-slate-200 font-semibold">
+                                            {span.method} {span.operation}
+                                          </span>
+                                        </div>
+                                        <div className="flex items-center gap-3">
+                                          {caller && (
+                                            <span className="text-slate-400">
+                                              Caller:{" "}
+                                              <strong className="text-slate-200">{caller}</strong>
+                                              {jitGrantId ? ` (JIT: ${jitGrantId})` : ""}
+                                            </span>
+                                          )}
+                                          <span
+                                            className={
+                                              span.success ? "text-emerald-400" : "text-rose-400"
+                                            }
+                                          >
+                                            HTTP {span.statusCode}
+                                          </span>
+                                          <span className="text-amber-300 font-bold">
+                                            {spanRtt.toFixed(2)} ms
+                                          </span>
+                                        </div>
+                                      </div>
+                                      <div className="w-full h-2 rounded bg-slate-900 overflow-hidden">
+                                        <div
+                                          className={`h-full rounded ${
+                                            span.success ? "bg-sky-500" : "bg-rose-500"
+                                          }`}
+                                          style={{ width: `${widthPct}%` }}
+                                        />
+                                      </div>
+                                    </div>
+                                  );
+                                })}
+                                {(selectedTrace.spans ?? []).length === 0 && (
+                                  <div className="py-3 text-center text-slate-500">
+                                    No span hops recorded for this trace ID.
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Chronological Cross-Service Logs */}
+                            <div className="space-y-3">
+                              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">
+                                Chronological Cross-Service Structured &amp; Debug Logs (
+                                {(selectedTrace.logs ?? []).length} Events)
+                              </h3>
+                              <div className="overflow-x-auto bg-[#090d16] border border-slate-800 rounded-lg">
+                                <table
+                                  data-testid="trace-logs-table"
+                                  className="w-full text-left border-collapse text-xs font-mono"
+                                >
+                                  <thead>
+                                    <tr className="border-b border-slate-800 text-slate-400">
+                                      <th className="py-2 px-3">TIMESTAMP</th>
+                                      <th className="py-2 px-3">SERVICE</th>
+                                      <th className="py-2 px-3">LEVEL</th>
+                                      <th className="py-2 px-3">EVENT</th>
+                                      <th className="py-2 px-3">ROUTE &amp; ATTRIBUTES</th>
+                                      <th className="py-2 px-3">STATUS / RTT</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody className="divide-y divide-slate-800/60">
+                                    {(selectedTrace.logs ?? []).map((log, idx) => {
+                                      const attrs = log.attributes ?? {};
+                                      const routeSummary =
+                                        attrs.route || attrs.operation
+                                          ? `${attrs.method ? `${attrs.method} ` : ""}${attrs.route || attrs.operation}`
+                                          : log.message;
+                                      const statusCode = attrs.status_code || attrs.status || "";
+                                      const rttStr = attrs.rtt_ms || attrs.duration_ms || "";
+                                      const attrPairs = Object.entries(attrs).filter(
+                                        ([k]) =>
+                                          k !== "route" &&
+                                          k !== "method" &&
+                                          k !== "status_code" &&
+                                          k !== "rtt_ms" &&
+                                          k !== "duration_ms",
+                                      );
+                                      return (
+                                        <tr
+                                          key={`${log.serviceName}-${log.message}-${idx}`}
+                                          className="hover:bg-slate-900/50"
+                                        >
+                                          <td className="py-2 px-3 text-slate-400 whitespace-nowrap">
+                                            {formatTimestamp(log.timestamp)}
+                                          </td>
+                                          <td className="py-2 px-3 text-sky-300 whitespace-nowrap">
+                                            {log.serviceName}{" "}
+                                            <span className="text-slate-500">
+                                              ({log.instanceId})
+                                            </span>
+                                          </td>
+                                          <td className="py-2 px-3">
+                                            <span
+                                              className={
+                                                log.level === "ERROR"
+                                                  ? "text-rose-400 font-bold"
+                                                  : log.level === "WARN"
+                                                    ? "text-amber-300 font-bold"
+                                                    : log.level === "DEBUG"
+                                                      ? "text-sky-300 font-bold"
+                                                      : "text-emerald-400"
+                                              }
+                                            >
+                                              {log.level}
+                                            </span>
+                                          </td>
+                                          <td className="py-2 px-3 text-amber-300">
+                                            {log.message}
+                                          </td>
+                                          <td className="py-2 px-3 text-slate-200">
+                                            <div>{routeSummary}</div>
+                                            {attrPairs.length > 0 && (
+                                              <div className="text-[11px] text-slate-500 break-all">
+                                                {attrPairs.map(([k, v]) => `${k}=${v}`).join(" · ")}
+                                              </div>
+                                            )}
+                                          </td>
+                                          <td className="py-2 px-3 whitespace-nowrap text-slate-300">
+                                            {statusCode ? `Status ${statusCode}` : "—"}
+                                            {rttStr ? ` · ${rttStr} ms` : ""}
+                                          </td>
+                                        </tr>
+                                      );
+                                    })}
+                                    {(selectedTrace.logs ?? []).length === 0 && (
+                                      <tr>
+                                        <td colSpan={6} className="py-4 text-center text-slate-500">
+                                          No structured log entries recorded for this trace ID.
+                                        </td>
+                                      </tr>
+                                    )}
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -3675,291 +4027,6 @@ export default function App() {
           </div>
         )}
       </main>
-
-      {/* Full Request Trace Inspector Modal */}
-      {selectedTraceId && (
-        <div
-          data-testid="trace-inspector-modal"
-          className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
-          onClick={() => {
-            setSelectedTraceId("");
-            setSelectedTrace(null);
-            setTraceError("");
-          }}
-        >
-          <div
-            className="bg-[#0b1120] border border-slate-700 rounded-xl max-w-5xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Modal Header */}
-            <div className="px-5 py-4 border-b border-slate-800 bg-[#111827] flex flex-wrap items-center justify-between gap-3">
-              <div className="space-y-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <span className="px-2 py-0.5 rounded bg-amber-950/70 border border-amber-700 text-amber-300 text-[11px] font-mono font-bold uppercase tracking-wider">
-                    Full Request Trace
-                  </span>
-                  <span
-                    data-testid="trace-inspector-id"
-                    className="font-mono font-bold text-sm text-amber-300"
-                  >
-                    {selectedTraceId}
-                  </span>
-                  {selectedTrace && (
-                    <span
-                      className={`px-2 py-0.5 rounded text-[11px] font-mono font-bold ${
-                        selectedTrace.success
-                          ? "bg-emerald-950/70 border border-emerald-700 text-emerald-300"
-                          : "bg-rose-950/70 border border-rose-700 text-rose-300"
-                      }`}
-                    >
-                      {selectedTrace.success ? "OK" : "ERROR"}
-                    </span>
-                  )}
-                </div>
-                {selectedTrace && (
-                  <div className="text-xs font-mono text-slate-400 flex flex-wrap items-center gap-3">
-                    <span>
-                      Region:{" "}
-                      <strong className="text-slate-200">{selectedTrace.region || "local"}</strong>
-                    </span>
-                    <span>
-                      Root:{" "}
-                      <strong className="text-sky-300">
-                        {selectedTrace.rootService || "—"} {selectedTrace.rootRoute || ""}
-                      </strong>
-                    </span>
-                    <span>
-                      Total Duration:{" "}
-                      <strong className="text-slate-200">
-                        {Number(selectedTrace.totalRttMs || 0).toFixed(2)} ms
-                      </strong>
-                    </span>
-                    <span>
-                      Spans:{" "}
-                      <strong className="text-slate-200">
-                        {(selectedTrace.spans ?? []).length}
-                      </strong>
-                    </span>
-                    <span>
-                      Logs:{" "}
-                      <strong className="text-slate-200">
-                        {(selectedTrace.logs ?? []).length}
-                      </strong>
-                    </span>
-                    <span>
-                      Debug Logs:{" "}
-                      <strong data-testid="trace-debug-logs-count" className="text-sky-300">
-                        {(selectedTrace.logs ?? []).filter((l) => l.level === "DEBUG").length}
-                      </strong>
-                    </span>
-                    {selectedTrace.startedAt && (
-                      <span>Started: {formatTimestamp(selectedTrace.startedAt)}</span>
-                    )}
-                  </div>
-                )}
-              </div>
-              <button
-                type="button"
-                data-testid="close-trace-inspector"
-                onClick={() => {
-                  setSelectedTraceId("");
-                  setSelectedTrace(null);
-                  setTraceError("");
-                }}
-                className="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-mono cursor-pointer"
-              >
-                ✕ Close
-              </button>
-            </div>
-
-            {/* Modal Body */}
-            <div className="p-5 overflow-y-auto space-y-6 text-xs font-mono">
-              {traceLoading && (
-                <div className="py-6 text-center text-slate-400">
-                  Loading cross-service spans and structured logs for trace {selectedTraceId}...
-                </div>
-              )}
-
-              {traceError && (
-                <div className="p-3 rounded-lg bg-rose-950/60 border border-rose-700 text-rose-200">
-                  {traceError}
-                </div>
-              )}
-
-              {selectedTrace && !traceLoading && (
-                <>
-                  {/* Cross-Service Span Waterfall */}
-                  <div className="space-y-3">
-                    <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">
-                      Cross-Service Hop Waterfall ({(selectedTrace.spans ?? []).length} Spans)
-                    </h3>
-                    <div
-                      data-testid="trace-spans-list"
-                      className="space-y-2 bg-[#090d16] border border-slate-800 rounded-lg p-3"
-                    >
-                      {(selectedTrace.spans ?? []).map((span, idx) => {
-                        const spanRtt = Number(span.durationMs || 0);
-                        const maxRtt = Math.max(
-                          Number(selectedTrace.totalRttMs || 1),
-                          spanRtt || 1,
-                          1,
-                        );
-                        const widthPct = Math.min(100, Math.max(8, (spanRtt / maxRtt) * 100));
-                        const attrs = span.attributes ?? {};
-                        const hopType = attrs.hop_type || (idx === 0 ? "ingress" : "hop");
-                        const caller = attrs.caller || "";
-                        const jitGrantId = attrs.jit_grant_id || "";
-                        return (
-                          <div
-                            key={`${span.serviceName}-${span.operation}-${idx}`}
-                            data-testid={`trace-span-row-${idx}`}
-                            className="p-2.5 rounded bg-[#111827] border border-slate-800/80 space-y-1.5"
-                          >
-                            <div className="flex flex-wrap items-center justify-between gap-2">
-                              <div className="flex flex-wrap items-center gap-2">
-                                <span className="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300 text-[10px] uppercase">
-                                  {hopType}
-                                </span>
-                                <span className="text-sky-300 font-bold">{span.serviceName}</span>
-                                <span className="text-slate-500">({span.instanceId})</span>
-                                <span className="text-slate-200 font-semibold">
-                                  {span.method} {span.operation}
-                                </span>
-                              </div>
-                              <div className="flex items-center gap-3">
-                                {caller && (
-                                  <span className="text-slate-400">
-                                    Caller: <strong className="text-slate-200">{caller}</strong>
-                                    {jitGrantId ? ` (JIT: ${jitGrantId})` : ""}
-                                  </span>
-                                )}
-                                <span
-                                  className={span.success ? "text-emerald-400" : "text-rose-400"}
-                                >
-                                  HTTP {span.statusCode}
-                                </span>
-                                <span className="text-amber-300 font-bold">
-                                  {spanRtt.toFixed(2)} ms
-                                </span>
-                              </div>
-                            </div>
-                            <div className="w-full h-2 rounded bg-slate-900 overflow-hidden">
-                              <div
-                                className={`h-full rounded ${
-                                  span.success ? "bg-sky-500" : "bg-rose-500"
-                                }`}
-                                style={{ width: `${widthPct}%` }}
-                              />
-                            </div>
-                          </div>
-                        );
-                      })}
-                      {(selectedTrace.spans ?? []).length === 0 && (
-                        <div className="py-3 text-center text-slate-500">
-                          No span hops recorded for this trace ID.
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Chronological Cross-Service Logs */}
-                  <div className="space-y-3">
-                    <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">
-                      Chronological Cross-Service Structured &amp; Debug Logs (
-                      {(selectedTrace.logs ?? []).length} Events)
-                    </h3>
-                    <div className="overflow-x-auto bg-[#090d16] border border-slate-800 rounded-lg">
-                      <table
-                        data-testid="trace-logs-table"
-                        className="w-full text-left border-collapse text-xs font-mono"
-                      >
-                        <thead>
-                          <tr className="border-b border-slate-800 text-slate-400">
-                            <th className="py-2 px-3">TIMESTAMP</th>
-                            <th className="py-2 px-3">SERVICE</th>
-                            <th className="py-2 px-3">LEVEL</th>
-                            <th className="py-2 px-3">EVENT</th>
-                            <th className="py-2 px-3">ROUTE &amp; ATTRIBUTES</th>
-                            <th className="py-2 px-3">STATUS / RTT</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-800/60">
-                          {(selectedTrace.logs ?? []).map((log, idx) => {
-                            const attrs = log.attributes ?? {};
-                            const routeSummary =
-                              attrs.route || attrs.operation
-                                ? `${attrs.method ? `${attrs.method} ` : ""}${attrs.route || attrs.operation}`
-                                : log.message;
-                            const statusCode = attrs.status_code || attrs.status || "";
-                            const rttStr = attrs.rtt_ms || attrs.duration_ms || "";
-                            const attrPairs = Object.entries(attrs).filter(
-                              ([k]) =>
-                                k !== "route" &&
-                                k !== "method" &&
-                                k !== "status_code" &&
-                                k !== "rtt_ms" &&
-                                k !== "duration_ms",
-                            );
-                            return (
-                              <tr
-                                key={`${log.serviceName}-${log.message}-${idx}`}
-                                className="hover:bg-slate-900/50"
-                              >
-                                <td className="py-2 px-3 text-slate-400 whitespace-nowrap">
-                                  {formatTimestamp(log.timestamp)}
-                                </td>
-                                <td className="py-2 px-3 text-sky-300 whitespace-nowrap">
-                                  {log.serviceName}{" "}
-                                  <span className="text-slate-500">({log.instanceId})</span>
-                                </td>
-                                <td className="py-2 px-3">
-                                  <span
-                                    className={
-                                      log.level === "ERROR"
-                                        ? "text-rose-400 font-bold"
-                                        : log.level === "WARN"
-                                          ? "text-amber-300 font-bold"
-                                          : log.level === "DEBUG"
-                                            ? "text-sky-300 font-bold"
-                                            : "text-emerald-400"
-                                    }
-                                  >
-                                    {log.level}
-                                  </span>
-                                </td>
-                                <td className="py-2 px-3 text-amber-300">{log.message}</td>
-                                <td className="py-2 px-3 text-slate-200">
-                                  <div>{routeSummary}</div>
-                                  {attrPairs.length > 0 && (
-                                    <div className="text-[11px] text-slate-500 break-all">
-                                      {attrPairs.map(([k, v]) => `${k}=${v}`).join(" · ")}
-                                    </div>
-                                  )}
-                                </td>
-                                <td className="py-2 px-3 whitespace-nowrap text-slate-300">
-                                  {statusCode ? `Status ${statusCode}` : "—"}
-                                  {rttStr ? ` · ${rttStr} ms` : ""}
-                                </td>
-                              </tr>
-                            );
-                          })}
-                          {(selectedTrace.logs ?? []).length === 0 && (
-                            <tr>
-                              <td colSpan={6} className="py-4 text-center text-slate-500">
-                                No structured log entries recorded for this trace ID.
-                              </td>
-                            </tr>
-                          )}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

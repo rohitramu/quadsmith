@@ -627,18 +627,19 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
      `service_name == "server-api" && route != "/healthz" && route != "/metrics"`
      so the Ops UI focuses on public API server (`server-api`) application
      traffic while filtering out internal health and metrics scrape endpoints.
-   - **Tabbed Per-Route Metrics & Paginated Traced Requests Explorer**: Renders
-     the telemetry explorer inside a 2-tab sub-navigation
-     (`1. Per-Route Metrics` as the default first tab and
-     `2. Recent Traced Requests` as the second tab). Clicking any route row in
-     `1. Per-Route Metrics` automatically switches to
-     `2. Recent Traced Requests` and applies `route == "<clicked_route>"` to the
-     traced requests CEL filter. Operators can look further into the past via
-     the extended lookback window selector (`5m`, `15m`, `1h`, `6h`, `24h`,
-     `7d`, `60d`, or `All History`) and configurable **History Depth** (`100` to
-     `2,000` traced requests fetched from VictoriaLogs), and page through
-     matching requests using **Page Size** (`10`, `25`, `50`, or `100` per page)
-     and `First / Prev / Next / Last` pagination controls.
+   - **Tabbed Per-Route Metrics, Paginated Traced Requests & Trace Debug Logs
+     Explorer**: Renders the telemetry explorer inside a 3-tab sub-navigation
+     (`1. Per-Route Metrics` as the default first tab,
+     `2. Recent Traced Requests` as the second tab, and `3. Trace & Debug Logs`
+     as the third tab). Clicking any route row in `1. Per-Route Metrics`
+     automatically switches to `2. Recent Traced Requests` and applies
+     `route == "<clicked_route>"` to the traced requests CEL filter. Operators
+     can look further into the past via the extended lookback window selector
+     (`5m`, `15m`, `1h`, `6h`, `24h`, `7d`, `60d`, or `All History`) and
+     configurable **History Depth** (`100` to `2,000` traced requests fetched
+     from VictoriaLogs), and page through matching requests using **Page Size**
+     (`10`, `25`, `50`, or `100` per page) and `First / Prev / Next / Last`
+     pagination controls.
    - **Vertical 5-Service Deep Health Cards with Direct `/healthz` & `/metrics`
      Links**: Renders the 5 monitored services (`server-api`, `server-web`,
      `server-ops-api`, `server-ops-web`, and `server-cron`) in a vertical stack
@@ -647,15 +648,15 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
      `server-ops-web` authenticates via the operator's `qs_ops_token` session
      and proxies to the target service (including internal-only `server-cron`)
      across `sandbox`, `staging`, and `prod`.
-   - **Clickable Trace IDs & Full Request Trace Inspector Modal (with Debug
-     Logs)**: Every `trace_id` displayed in Recent Traced Requests, Job
-     Execution History, the Job Inspector, and the Internal API Audit Log is a
-     clickable button that invokes `OpsService.GetTrace` and opens the **Full
-     Request Trace Inspector** modal displaying the Cross-Service Hop Waterfall
-     (`spans`) and Chronological Cross-Service Structured & Debug Logs (`logs`,
-     including `DEBUG` events for trace context initialization, PostgreSQL SQL
-     queries via `pgx.QueryTracer`, RPC auth verification, outbound internal
-     hops, and response flushing).
+   - **Clickable Trace IDs & 3rd Tab Trace & Debug Logs Inspector**: Every
+     `trace_id` displayed in Recent Traced Requests, Job Execution History, the
+     Job Inspector, and the Internal API Audit Log is a clickable button that
+     invokes `OpsService.GetTrace` and switches to the `3. Trace & Debug Logs`
+     sub-tab, displaying the Cross-Service Hop Waterfall (`spans`) and
+     Chronological Cross-Service Structured & Debug Logs (`logs`, including
+     `DEBUG` events for trace context initialization, PostgreSQL SQL queries via
+     `pgx.QueryTracer`, RPC auth verification, outbound internal hops, and
+     response flushing).
    - **Operational Task Triggering**: Interactive list of all 6 registered tasks
      (`ListTasks`: `cleanup_expired_otps`, `cleanup_expired_tokens`,
      `cleanup_orphaned_blobs`, `purge_soft_deleted_accounts`,

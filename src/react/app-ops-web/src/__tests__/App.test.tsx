@@ -114,7 +114,7 @@ describe("Ops Console App", () => {
     expect(screen.getByText("p95_rtt_ms")).toBeInTheDocument();
   });
 
-  it("filters routes to server-api (excluding /healthz and /metrics) in the first tab, switches to Recent Traced Requests with route filter on click, and displays internal hops plus DEBUG logs in the trace modal", async () => {
+  it("filters routes to server-api (excluding /healthz and /metrics) in the first tab, switches to Recent Traced Requests with route filter on click, and displays internal hops plus DEBUG logs in the 3rd Trace & Debug Logs tab", async () => {
     const traceId = "0195f0a1-1234-7000-8000-abcdef012345";
     const otherApiTraceId = "0195f0a1-8888-7000-8000-000000000009";
     const healthTraceId = "0195f0a1-9999-7000-8000-000000000001";
@@ -337,6 +337,10 @@ describe("Ops Console App", () => {
       expect(screen.getByTestId("telemetry-tab-routes")).toHaveAttribute("aria-selected", "true");
       expect(screen.getByTestId("telemetry-tab-routes")).toHaveTextContent("1. Per-Route Metrics");
       expect(screen.getByTestId("telemetry-tab-traces")).toHaveAttribute("aria-selected", "false");
+      expect(screen.getByTestId("telemetry-tab-trace-detail")).toHaveAttribute(
+        "aria-selected",
+        "false",
+      );
       expect(screen.queryByTestId("route-requests-table")).not.toBeInTheDocument();
 
       const routesTable = screen.getByTestId("routes-red-table");
@@ -359,10 +363,15 @@ describe("Ops Console App", () => {
       expect(screen.queryByTestId(`inspect-trace-${healthTraceId}`)).not.toBeInTheDocument();
       expect(screen.queryByTestId(`inspect-trace-${opsTraceId}`)).not.toBeInTheDocument();
 
+      // Clicking a trace ID in Tab 2 switches to Tab 3 (3. Trace & Debug Logs)
       fireEvent.click(traceBtn);
 
-      const modal = await screen.findByTestId("trace-inspector-modal");
-      expect(modal).toBeInTheDocument();
+      expect(screen.getByTestId("telemetry-tab-trace-detail")).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
+      const tracePanel = await screen.findByTestId("trace-inspector-panel");
+      expect(tracePanel).toBeInTheDocument();
       expect(screen.getByTestId("trace-inspector-id")).toHaveTextContent(traceId);
       expect(screen.getByTestId("trace-debug-logs-count")).toHaveTextContent("2");
       expect(screen.getByTestId("trace-spans-list")).toHaveTextContent(
@@ -373,8 +382,10 @@ describe("Ops Console App", () => {
       expect(logsTable).toHaveTextContent("db_query");
       expect(logsTable).toHaveTextContent("http_request");
 
+      // Clicking Back to Traced Requests switches back to Tab 2
       fireEvent.click(screen.getByTestId("close-trace-inspector"));
-      expect(screen.queryByTestId("trace-inspector-modal")).not.toBeInTheDocument();
+      expect(screen.getByTestId("telemetry-tab-traces")).toHaveAttribute("aria-selected", "true");
+      expect(screen.queryByTestId("trace-inspector-panel")).not.toBeInTheDocument();
 
       // Verify pagination bar and historical lookback controls are rendered on Tab 2
       expect(screen.getByTestId("traces-pagination-bar")).toBeInTheDocument();
@@ -385,7 +396,10 @@ describe("Ops Console App", () => {
       expect(screen.getByTestId("traces-next-page-btn")).toBeDisabled();
 
       // Clear the route filter so both API requests show up (2 requests total)
-      fireEvent.change(tracesFilterInput, {
+      const remountedTracesFilterInput = screen.getByTestId(
+        "traces-filter-input",
+      ) as HTMLInputElement;
+      fireEvent.change(remountedTracesFilterInput, {
         target: { value: 'service_name == "server-api" && !route.startsWith("/healthz")' },
       });
       fireEvent.click(screen.getByTestId("traces-cel-apply-btn"));
