@@ -417,7 +417,8 @@ describe("Ops Console App", () => {
       expect(logsTable).toHaveTextContent("db_query");
       expect(logsTable).toHaveTextContent("http_request");
 
-      // Verify ROUTE and ATTRIBUTES are separate columns and ATTRIBUTES is the last column
+      // Verify ROUTE and ATTRIBUTES are separate columns, ATTRIBUTES is the last column,
+      // and ATTRIBUTES wraps at natural word breaks (whitespace-normal break-words) without ellipsis
       const logHeaders = Array.from(logsTable.querySelectorAll("thead th")).map((th) =>
         th.textContent?.trim(),
       );
@@ -430,6 +431,14 @@ describe("Ops Console App", () => {
         "STATUS / RTT",
         "ATTRIBUTES",
       ]);
+      const dbQueryAttrsCell = screen.getByTestId("trace-log-attributes-1");
+      expect(dbQueryAttrsCell.className).toContain("whitespace-normal");
+      expect(dbQueryAttrsCell.className).toContain("break-words");
+      expect(dbQueryAttrsCell.className).not.toContain("break-all");
+      expect(dbQueryAttrsCell.className).not.toContain("truncate");
+      expect(dbQueryAttrsCell).toHaveTextContent(
+        "SELECT uuid, id, brand, model FROM motors ORDER BY id ASC",
+      );
 
       // Toggle ATTRIBUTES column via trace-logs-column-selector
       fireEvent.click(screen.getByTestId("trace-logs-col-toggle-attributes"));

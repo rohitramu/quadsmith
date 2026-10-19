@@ -124,3 +124,22 @@ func TestHealthzAndMetricsEndpoints(t *testing.T) {
 		}
 	}
 }
+
+func TestCompactSQLString_NeverEllipsizes(t *testing.T) {
+	longSQL := `
+		SELECT
+			uuid, id, brand, model, stator_diameter_mm, stator_height_mm, kv,
+			weight_g, max_power_w, max_current_a, min_cells_s, max_cells_s,
+			shaft_diameter_mm, mounting_pattern_mm, retail_price_usd, product_url
+		FROM motors
+		WHERE stator_diameter_mm >= 22 AND kv BETWEEN 1700 AND 2500
+		ORDER BY brand ASC, model ASC, kv DESC
+	`
+	compacted := compactSQLString(longSQL)
+	if strings.Contains(compacted, "...") {
+		t.Fatalf("expected compactSQLString not to ellipsize long SQL query, got %q", compacted)
+	}
+	if !strings.HasSuffix(compacted, "ORDER BY brand ASC, model ASC, kv DESC") {
+		t.Fatalf("expected full SQL suffix to be preserved, got %q", compacted)
+	}
+}

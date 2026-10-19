@@ -222,11 +222,7 @@ func NewDBQueryTracer(dbName string) pgx.QueryTracer {
 
 func compactSQLString(sql string) string {
 	fields := strings.Fields(sql)
-	joined := strings.Join(fields, " ")
-	if len(joined) > 160 {
-		return joined[:157] + "..."
-	}
-	return joined
+	return strings.Join(fields, " ")
 }
 
 func (t *dbQueryTracer) TraceQueryStart(ctx context.Context, _ *pgx.Conn, data pgx.TraceQueryStartData) context.Context {

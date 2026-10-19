@@ -3379,7 +3379,10 @@ export default function App() {
                                             </td>
                                           )}
                                           {traceLogCols.includes("attributes") && (
-                                            <td className="py-2 px-3 text-slate-300 break-all">
+                                            <td
+                                              data-testid={`trace-log-attributes-${idx}`}
+                                              className="py-2 px-3 text-slate-300 whitespace-normal break-words"
+                                            >
                                               {attributesSummary}
                                             </td>
                                           )}

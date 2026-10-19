@@ -671,7 +671,9 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
      PostgreSQL SQL queries via `pgx.QueryTracer`, RPC auth verification,
      outbound internal hops, and response flushing) with separate `Route` and
      `Attributes` columns (`Timestamp`, `Service`, `Level`, `Event`, `Route`,
-     `Status / RTT`, and `Attributes` as the last column).
+     `Status / RTT`, and `Attributes` as the last column). The `Attributes`
+     column is never ellipsized (including full SQL query strings) and wraps at
+     natural word breaks (`whitespace-normal break-words`).
    - **Operational Task Triggering**: Interactive list of all 6 registered tasks
      (`ListTasks`: `cleanup_expired_otps`, `cleanup_expired_tokens`,
      `cleanup_orphaned_blobs`, `purge_soft_deleted_accounts`,
