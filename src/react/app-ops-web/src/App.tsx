@@ -740,6 +740,82 @@ export function applyRouteToTraceCelFilter(
   return `${cleaned} && ${routeClause}`;
 }
 
+function formatYamlValue(val: unknown, indent = 0): string {
+  const pad = "  ".repeat(indent);
+  if (val === null || val === undefined) {
+    return "null";
+  }
+  if (typeof val === "number" || typeof val === "boolean") {
+    return String(val);
+  }
+  if (Array.isArray(val)) {
+    if (val.length === 0) return "[]";
+    return val
+      .map((item) => {
+        if (item !== null && typeof item === "object") {
+          const nested = formatYamlValue(item, indent + 1).trimStart();
+          return `${pad}- ${nested}`;
+        }
+        return `${pad}- ${formatYamlValue(item, indent + 1)}`;
+      })
+      .join("\n");
+  }
+  if (typeof val === "object") {
+    const entries = Object.entries(val as Record<string, unknown>);
+    if (entries.length === 0) return "{}";
+    return entries
+      .map(([k, v]) => {
+        if (v !== null && typeof v === "object") {
+          return `${pad}${k}:\n${formatYamlValue(v, indent + 1)}`;
+        }
+        return `${pad}${k}: ${formatYamlValue(v, indent + 1)}`;
+      })
+      .join("\n");
+  }
+  const str = String(val);
+  if (str.includes("\n")) {
+    const lines = str.split("\n").map((line) => `${"  ".repeat(indent + 1)}${line}`);
+    return `|-\n${lines.join("\n")}`;
+  }
+  return str;
+}
+
+export function formatAttributesAsYaml(attrs: Record<string, string> | undefined | null): string {
+  if (!attrs) return "—";
+  const allEntries = Object.entries(attrs);
+  if (allEntries.length === 0) return "—";
+  const filtered = allEntries.filter(
+    ([k]) =>
+      k !== "route" &&
+      k !== "operation" &&
+      k !== "method" &&
+      k !== "status_code" &&
+      k !== "status" &&
+      k !== "rtt_ms" &&
+      k !== "duration_ms",
+  );
+  const pairs = filtered.length > 0 ? filtered : allEntries;
+  return pairs
+    .map(([k, rawVal]) => {
+      const trimmed = rawVal.trim();
+      if (
+        (trimmed.startsWith("{") && trimmed.endsWith("}")) ||
+        (trimmed.startsWith("[") && trimmed.endsWith("]"))
+      ) {
+        try {
+          const parsed: unknown = JSON.parse(trimmed);
+          if (parsed !== null && typeof parsed === "object") {
+            return `${k}:\n${formatYamlValue(parsed, 1)}`;
+          }
+        } catch {
+          // Fall back to plain scalar string
+        }
+      }
+      return `${k}: ${formatYamlValue(rawVal, 0)}`;
+    })
+    .join("\n");
+}
+
 function formatTimestamp(ts?: { seconds: bigint }): string {
   if (!ts) return "—";
   const ms = Number(ts.seconds) * 1000;
@@ -3313,24 +3389,11 @@ export default function App() {
                                           : "—";
                                       const statusCode = attrs.status_code || attrs.status || "";
                                       const rttStr = attrs.rtt_ms || attrs.duration_ms || "";
-                                      const attrPairs = Object.entries(attrs).filter(
-                                        ([k]) =>
-                                          k !== "route" &&
-                                          k !== "operation" &&
-                                          k !== "method" &&
-                                          k !== "status_code" &&
-                                          k !== "status" &&
-                                          k !== "rtt_ms" &&
-                                          k !== "duration_ms",
-                                      );
-                                      const attributesSummary =
-                                        attrPairs.length > 0
-                                          ? attrPairs.map(([k, v]) => `${k}=${v}`).join(" · ")
-                                          : log.message || "—";
+                                      const attributesYaml = formatAttributesAsYaml(attrs);
                                       return (
                                         <tr
                                           key={`${log.serviceName}-${log.message}-${idx}`}
-                                          className="hover:bg-slate-900/50"
+                                          className="hover:bg-slate-900/50 align-top"
                                         >
                                           {traceLogCols.includes("timestamp") && (
                                             <td className="py-2 px-3 text-slate-400 whitespace-nowrap">
@@ -3381,9 +3444,9 @@ export default function App() {
                                           {traceLogCols.includes("attributes") && (
                                             <td
                                               data-testid={`trace-log-attributes-${idx}`}
-                                              className="py-2 px-3 text-slate-300 whitespace-normal break-words"
+                                              className="py-2 px-3 text-slate-300 whitespace-pre-wrap break-words"
                                             >
-                                              {attributesSummary}
+                                              {attributesYaml}
                                             </td>
                                           )}
                                         </tr>

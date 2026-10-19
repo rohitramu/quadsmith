@@ -432,12 +432,16 @@ describe("Ops Console App", () => {
         "ATTRIBUTES",
       ]);
       const dbQueryAttrsCell = screen.getByTestId("trace-log-attributes-1");
-      expect(dbQueryAttrsCell.className).toContain("whitespace-normal");
+      expect(dbQueryAttrsCell.className).toContain("whitespace-pre-wrap");
       expect(dbQueryAttrsCell.className).toContain("break-words");
       expect(dbQueryAttrsCell.className).not.toContain("break-all");
       expect(dbQueryAttrsCell.className).not.toContain("truncate");
-      expect(dbQueryAttrsCell).toHaveTextContent(
-        "SELECT uuid, id, brand, model FROM motors ORDER BY id ASC",
+      expect(dbQueryAttrsCell.textContent).toBe(
+        [
+          "database: quadsmith_api",
+          "sql: SELECT uuid, id, brand, model FROM motors ORDER BY id ASC",
+          "rows_affected: 12",
+        ].join("\n"),
       );
 
       // Toggle ATTRIBUTES column via trace-logs-column-selector

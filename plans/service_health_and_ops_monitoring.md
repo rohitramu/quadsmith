@@ -662,9 +662,9 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
      matching requests using **Page Size** (`10`, `25`, `50`, or `100` per page)
      and `First / Prev / Next / Last` pagination controls.
    - **Clickable Trace IDs & `Trace & Debug Logs` Tab with Separate `Route` and
-     Last-Column `Attributes`**: Every `trace_id` displayed in Recent Traced
-     Requests, Job Execution History, the Job Inspector, and the Internal API
-     Audit Log is a clickable button that invokes `OpsService.GetTrace` and
+     Last-Column YAML `Attributes`**: Every `trace_id` displayed in Recent
+     Traced Requests, Job Execution History, the Job Inspector, and the Internal
+     API Audit Log is a clickable button that invokes `OpsService.GetTrace` and
      switches to the `Trace & Debug Logs` tab, displaying the Cross-Service Hop
      Waterfall (`spans`) and Chronological Cross-Service Structured & Debug Logs
      (`logs`, including `DEBUG` events for trace context initialization,
@@ -672,8 +672,9 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
      outbound internal hops, and response flushing) with separate `Route` and
      `Attributes` columns (`Timestamp`, `Service`, `Level`, `Event`, `Route`,
      `Status / RTT`, and `Attributes` as the last column). The `Attributes`
-     column is never ellipsized (including full SQL query strings) and wraps at
-     natural word breaks (`whitespace-normal break-words`).
+     column renders structured attributes as multi-line YAML (`key: value`), is
+     never ellipsized (including full SQL query strings), and wraps at natural
+     word breaks (`whitespace-pre-wrap break-words`).
    - **Operational Task Triggering**: Interactive list of all 6 registered tasks
      (`ListTasks`: `cleanup_expired_otps`, `cleanup_expired_tokens`,
      `cleanup_orphaned_blobs`, `purge_soft_deleted_accounts`,
