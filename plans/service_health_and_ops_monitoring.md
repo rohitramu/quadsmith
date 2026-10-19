@@ -614,7 +614,11 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
      filter bar with field/operator autocomplete, quick filter presets, an
      interactive collapsible **Common Expression Language (CEL) Filter Syntax**
      helper with clickable field pills, a sort column/direction selector, and
-     sortable table headers.
+     sortable table headers. By default, the Per-Route RED Metrics and Recent
+     Traced Requests tables initialize their CEL filter bars to
+     `service_name == "server-api" && route != "/healthz" && route != "/metrics"`
+     so the Ops UI focuses on public API server (`server-api`) application
+     traffic while filtering out internal health and metrics scrape endpoints.
    - **Vertical 5-Service Deep Health Cards with Direct `/healthz` & `/metrics`
      Links**: Renders the 5 monitored services (`server-api`, `server-web`,
      `server-ops-api`, `server-ops-web`, and `server-cron`) in a vertical stack

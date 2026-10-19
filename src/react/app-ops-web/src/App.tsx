@@ -108,11 +108,17 @@ export const ROUTE_METRIC_FIELDS: FieldDef[] = [
   },
 ];
 
+export const DEFAULT_SERVICE_CEL_FILTER =
+  'service_name == "server-api" && route != "/healthz" && route != "/metrics"';
+
 export const ROUTE_METRIC_PRESETS: FilterPreset[] = [
+  { label: "Public API", query: DEFAULT_SERVICE_CEL_FILTER },
+  {
+    label: "Ops API",
+    query: 'service_name == "server-ops-api" && route != "/healthz" && route != "/metrics"',
+  },
   { label: "Errors Only", query: "error_count > 0" },
   { label: "High P95 (>10ms)", query: "p95_rtt_ms > 10.0" },
-  { label: "Public API", query: 'service_name == "server-api"' },
-  { label: "Ops API", query: 'service_name == "server-ops-api"' },
 ];
 
 export const ROUTE_METRIC_SYNTAX: SyntaxExamples = {
@@ -123,7 +129,7 @@ export const ROUTE_METRIC_SYNTAX: SyntaxExamples = {
   ],
   numericComparison: ["p95_rtt_ms >= 5.0", "error_count > 0", "availability_percent < 99.9"],
   compoundConditions: [
-    'service_name == "server-api" && p95_rtt_ms > 10.0',
+    'service_name == "server-api" && route != "/healthz" && route != "/metrics"',
     "error_count > 0 || availability_percent < 99.5",
   ],
 };
@@ -186,10 +192,14 @@ export const TRACE_REQUEST_FIELDS: FieldDef[] = [
 ];
 
 export const TRACE_REQUEST_PRESETS: FilterPreset[] = [
+  { label: "Public API", query: DEFAULT_SERVICE_CEL_FILTER },
+  {
+    label: "Ops API",
+    query: 'service_name == "server-ops-api" && route != "/healthz" && route != "/metrics"',
+  },
   { label: "Failed Requests", query: "success == false" },
   { label: "5xx Status", query: "status_code >= 500" },
   { label: "Slow (>15ms)", query: "rtt_ms > 15.0" },
-  { label: "POST Requests", query: 'method == "POST"' },
 ];
 
 export const TRACE_REQUEST_SYNTAX: SyntaxExamples = {
@@ -708,11 +718,11 @@ export default function App() {
   const [metricsWindow, setMetricsWindow] = useState<string>("5m");
 
   // CEL Filter & Sort state per collection
-  const [routeCelFilter, setRouteCelFilter] = useState<string>("");
+  const [routeCelFilter, setRouteCelFilter] = useState<string>(DEFAULT_SERVICE_CEL_FILTER);
   const [routeSortField, setRouteSortField] = useState<string>("total_requests");
   const [routeSortDir, setRouteSortDir] = useState<SortDirection>("desc");
 
-  const [traceCelFilter, setTraceCelFilter] = useState<string>("");
+  const [traceCelFilter, setTraceCelFilter] = useState<string>(DEFAULT_SERVICE_CEL_FILTER);
   const [traceSortField, setTraceSortField] = useState<string>("occurred_at");
   const [traceSortDir, setTraceSortDir] = useState<SortDirection>("desc");
 

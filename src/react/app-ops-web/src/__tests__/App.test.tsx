@@ -114,8 +114,10 @@ describe("Ops Console App", () => {
     expect(screen.getByText("p95_rtt_ms")).toBeInTheDocument();
   });
 
-  it("opens the Full Request Trace Inspector modal when clicking a Trace ID", async () => {
+  it("filters routes and traced requests to server-api (excluding /healthz and /metrics) by default and opens the Full Request Trace Inspector modal when clicking a Trace ID", async () => {
     const traceId = "0195f0a1-1234-7000-8000-abcdef012345";
+    const healthTraceId = "0195f0a1-9999-7000-8000-000000000001";
+    const opsTraceId = "0195f0a1-9999-7000-8000-000000000002";
     const fetchSpy = vi.spyOn(globalThis, "fetch").mockImplementation(async (input) => {
       const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
       let payload: Record<string, unknown> = {};
@@ -128,20 +130,97 @@ describe("Ops Console App", () => {
       } else if (url.endsWith("/GetSystemHealth")) {
         payload = { services: [] };
       } else if (url.endsWith("/GetSystemMetrics")) {
-        payload = { window: "5m", services: [] };
+        payload = {
+          window: "5m",
+          services: [
+            {
+              serviceName: "server-api",
+              region: "local",
+              routes: [
+                {
+                  serviceName: "server-api",
+                  region: "local",
+                  method: "POST",
+                  route: "/quadsmith.api.MotorService/ListMotors",
+                  totalRequests: "42",
+                  successCount: "42",
+                  errorCount: "0",
+                  availabilityPercent: 100,
+                  p50RttMs: 1.5,
+                  p95RttMs: 3.2,
+                  p99RttMs: 4.1,
+                },
+                {
+                  serviceName: "server-api",
+                  region: "local",
+                  method: "GET",
+                  route: "/healthz",
+                  totalRequests: "500",
+                  successCount: "500",
+                  errorCount: "0",
+                  availabilityPercent: 100,
+                  p50RttMs: 0.2,
+                  p95RttMs: 0.5,
+                  p99RttMs: 0.8,
+                },
+              ],
+            },
+            {
+              serviceName: "server-ops-api",
+              region: "local",
+              routes: [
+                {
+                  serviceName: "server-ops-api",
+                  region: "local",
+                  method: "POST",
+                  route: "/quadsmith.ops.OpsService/GetSystemHealth",
+                  totalRequests: "10",
+                  successCount: "10",
+                  errorCount: "0",
+                  availabilityPercent: 100,
+                  p50RttMs: 2.0,
+                  p95RttMs: 4.0,
+                  p99RttMs: 5.0,
+                },
+              ],
+            },
+          ],
+        };
       } else if (url.endsWith("/ListRouteRequests")) {
         payload = {
           requests: [
             {
               traceId,
               region: "local",
-              serviceName: "server-ops-api",
+              serviceName: "server-api",
               method: "POST",
-              route: "/quadsmith.ops.OpsService/CleanupExpiredOtps",
+              route: "/quadsmith.api.MotorService/ListMotors",
               statusCode: 200,
               rttMs: 4.75,
               success: true,
               occurredAt: "2026-10-18T12:00:00Z",
+            },
+            {
+              traceId: healthTraceId,
+              region: "local",
+              serviceName: "server-api",
+              method: "GET",
+              route: "/healthz",
+              statusCode: 200,
+              rttMs: 0.3,
+              success: true,
+              occurredAt: "2026-10-18T12:00:01Z",
+            },
+            {
+              traceId: opsTraceId,
+              region: "local",
+              serviceName: "server-ops-api",
+              method: "POST",
+              route: "/quadsmith.ops.OpsService/CleanupExpiredOtps",
+              statusCode: 200,
+              rttMs: 3.1,
+              success: true,
+              occurredAt: "2026-10-18T12:00:02Z",
             },
           ],
         };
@@ -149,19 +228,19 @@ describe("Ops Console App", () => {
         payload = {
           traceId,
           region: "local",
-          rootService: "server-ops-api",
-          rootRoute: "/quadsmith.ops.OpsService/CleanupExpiredOtps",
+          rootService: "server-api",
+          rootRoute: "/quadsmith.api.MotorService/ListMotors",
           rootMethod: "POST",
           statusCode: 200,
           totalRttMs: 4.75,
           success: true,
           spans: [
             {
-              spanId: "span_server-ops-api_1",
-              serviceName: "server-ops-api",
-              instanceId: "server-ops-api-1",
+              spanId: "span_server-api_1",
+              serviceName: "server-api",
+              instanceId: "server-api-1",
               region: "local",
-              operation: "/quadsmith.ops.OpsService/CleanupExpiredOtps",
+              operation: "/quadsmith.api.MotorService/ListMotors",
               method: "POST",
               statusCode: 200,
               durationMs: 4.75,
@@ -169,8 +248,6 @@ describe("Ops Console App", () => {
               occurredAt: "2026-10-18T12:00:00Z",
               attributes: {
                 hop_type: "ingress",
-                caller: "rohitramu",
-                caller_type: "HUMAN",
               },
             },
           ],
@@ -178,13 +255,13 @@ describe("Ops Console App", () => {
             {
               timestamp: "2026-10-18T12:00:00Z",
               level: "INFO",
-              serviceName: "server-ops-api",
-              instanceId: "server-ops-api-1",
+              serviceName: "server-api",
+              instanceId: "server-api-1",
               region: "local",
               message: "http_request",
               attributes: {
                 method: "POST",
-                route: "/quadsmith.ops.OpsService/CleanupExpiredOtps",
+                route: "/quadsmith.api.MotorService/ListMotors",
                 status_code: "200",
                 rtt_ms: "4.75",
               },
@@ -203,13 +280,20 @@ describe("Ops Console App", () => {
       render(<App />);
 
       const traceBtn = await screen.findByTestId(`inspect-trace-${traceId}`);
+      expect(screen.queryByTestId(`inspect-trace-${healthTraceId}`)).not.toBeInTheDocument();
+      expect(screen.queryByTestId(`inspect-trace-${opsTraceId}`)).not.toBeInTheDocument();
+
+      const routesTable = screen.getByTestId("routes-red-table");
+      expect(routesTable).toHaveTextContent("/quadsmith.api.MotorService/ListMotors");
+      expect(routesTable).not.toHaveTextContent("/quadsmith.ops.OpsService/GetSystemHealth");
+
       fireEvent.click(traceBtn);
 
       const modal = await screen.findByTestId("trace-inspector-modal");
       expect(modal).toBeInTheDocument();
       expect(screen.getByTestId("trace-inspector-id")).toHaveTextContent(traceId);
       expect(screen.getByTestId("trace-spans-list")).toHaveTextContent(
-        "/quadsmith.ops.OpsService/CleanupExpiredOtps",
+        "/quadsmith.api.MotorService/ListMotors",
       );
       expect(screen.getByTestId("trace-logs-table")).toHaveTextContent("http_request");
 
