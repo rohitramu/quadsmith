@@ -1867,7 +1867,7 @@ export default function App() {
       <nav className="px-6 pt-4 border-b border-slate-800 flex flex-wrap gap-2">
         {(
           [
-            ["health", "1. Service Health & RED Metrics"],
+            ["health", "1. Service Health & Route Metrics"],
             ["tasks", "2. Background Tasks & Triggers"],
             ["jobs", "3. Job Execution History"],
             ["db", "4. Public DB Statistics"],
@@ -2045,11 +2045,11 @@ export default function App() {
               </div>
             </div>
 
-            {/* Route RED Metrics & Trace Explorer Filters */}
+            {/* Route Metrics & Trace Explorer Filters */}
             <div className="bg-[#111827] border border-slate-800 rounded-xl p-5 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-slate-200">
-                  Per-Route RED Metrics &amp; Request Trace Explorer
+                  Per-Route Metrics &amp; Request Trace Explorer
                 </h2>
 
                 <div className="flex flex-wrap items-center gap-2">
@@ -2087,7 +2087,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Sub-tab bar: 1. Per-Route RED Metrics | 2. Recent Traced Requests */}
+              {/* Sub-tab bar: 1. Per-Route Metrics | 2. Recent Traced Requests */}
               <div
                 role="tablist"
                 aria-label="Route Metrics and Traced Requests Explorer Tabs"
@@ -2105,7 +2105,7 @@ export default function App() {
                       : "bg-[#090d16] text-slate-400 border border-slate-800 hover:text-slate-200 hover:border-slate-700"
                   }`}
                 >
-                  <span>1. Per-Route RED Metrics</span>
+                  <span>1. Per-Route Metrics</span>
                   <span
                     className={`px-1.5 py-0.5 rounded text-[10px] ${
                       telemetrySubTab === "routes"
@@ -2144,7 +2144,7 @@ export default function App() {
 
               {telemetrySubTab === "routes" && (
                 <div data-testid="telemetry-panel-routes" className="space-y-4">
-                  {/* CEL SmartFilterInput for Per-Route RED Metrics */}
+                  {/* CEL SmartFilterInput for Per-Route Metrics */}
                   <div data-testid="routes-cel-filter-section" className="space-y-3">
                     <SmartFilterInput
                       value={routeCelFilter}
@@ -2184,7 +2184,7 @@ export default function App() {
                     />
                   </div>
 
-                  {/* Per-Route RED Table */}
+                  {/* Per-Route Metrics Table */}
                   <div className="overflow-x-auto">
                     <table
                       data-testid="routes-red-table"

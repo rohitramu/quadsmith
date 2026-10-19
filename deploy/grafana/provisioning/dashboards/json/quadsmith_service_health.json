@@ -1,6 +1,6 @@
 {
   "uid": "quadsmith-health",
-  "title": "Quadsmith Service Health & RED Telemetry",
+  "title": "Quadsmith Service Health & Route Telemetry",
   "schemaVersion": 39,
   "version": 2,
   "refresh": "5s",

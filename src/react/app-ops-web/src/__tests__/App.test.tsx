@@ -330,11 +330,12 @@ describe("Ops Console App", () => {
       setOpsCookieAndStorage("qs_op_sandbox_token_12345");
       render(<App />);
 
-      // Tab 1 (Per-Route RED Metrics) is active by default
+      // Tab 1 (Per-Route Metrics) is active by default
       const routeBtn = await screen.findByTestId(
         "select-route-/quadsmith.api.MotorService/ListMotors",
       );
       expect(screen.getByTestId("telemetry-tab-routes")).toHaveAttribute("aria-selected", "true");
+      expect(screen.getByTestId("telemetry-tab-routes")).toHaveTextContent("1. Per-Route Metrics");
       expect(screen.getByTestId("telemetry-tab-traces")).toHaveAttribute("aria-selected", "false");
       expect(screen.queryByTestId("route-requests-table")).not.toBeInTheDocument();
 

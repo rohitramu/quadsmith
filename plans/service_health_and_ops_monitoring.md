@@ -617,21 +617,21 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
    - **Interactive CEL Filtering (`SmartFilterInput`) & Sorting Across All
      Collections**: Shares `SmartFilterInput` and `filterAndSortRecords` from
      `src/react/shared` with the public catalog. Every collection view (Route
-     RED Metrics, Recent Traced Requests, Operational Tasks, Job History, Public
-     DB Statistics, Internal Bearer Tokens, and API Audit Log) provides a CEL
+     Metrics, Recent Traced Requests, Operational Tasks, Job History, Public DB
+     Statistics, Internal Bearer Tokens, and API Audit Log) provides a CEL
      filter bar with field/operator autocomplete, quick filter presets, an
      interactive collapsible **Common Expression Language (CEL) Filter Syntax**
      helper with clickable field pills, a sort column/direction selector, and
-     sortable table headers. By default, the Per-Route RED Metrics and Recent
-     Traced Requests tables initialize their CEL filter bars to
+     sortable table headers. By default, the Per-Route Metrics and Recent Traced
+     Requests tables initialize their CEL filter bars to
      `service_name == "server-api" && route != "/healthz" && route != "/metrics"`
      so the Ops UI focuses on public API server (`server-api`) application
      traffic while filtering out internal health and metrics scrape endpoints.
-   - **Tabbed Per-Route RED Metrics & Paginated Traced Requests Explorer**:
-     Renders the telemetry explorer inside a 2-tab sub-navigation
-     (`1. Per-Route RED Metrics` as the default first tab and
+   - **Tabbed Per-Route Metrics & Paginated Traced Requests Explorer**: Renders
+     the telemetry explorer inside a 2-tab sub-navigation
+     (`1. Per-Route Metrics` as the default first tab and
      `2. Recent Traced Requests` as the second tab). Clicking any route row in
-     `1. Per-Route RED Metrics` automatically switches to
+     `1. Per-Route Metrics` automatically switches to
      `2. Recent Traced Requests` and applies `route == "<clicked_route>"` to the
      traced requests CEL filter. Operators can look further into the past via
      the extended lookback window selector (`5m`, `15m`, `1h`, `6h`, `24h`,
