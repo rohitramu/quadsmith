@@ -197,6 +197,10 @@ message RefreshToken {
     (quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED
   ];
   google.protobuf.Timestamp created_at = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_OBSERVED];
+  optional string jit_grant_uuid = 10 [
+    (quadsmith.sql.column) = {create_index: true},
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PRIVATE
+  ];
 }
 
 message User {

@@ -189,10 +189,28 @@ func AuthenticateHTTPRequest(ctx context.Context, pool *pgxpool.Pool, r *http.Re
 		tokenStr := strings.TrimSpace(authHeader[7:])
 		if claims, err := VerifyAccessToken(tokenStr); err == nil && claims != nil {
 			if pool != nil {
-				var role string
-				err := pool.QueryRow(ctx, `SELECT role FROM users WHERE uuid::text = $1`, claims.UserUUID).Scan(&role)
-				if err == nil && role != "" {
+				if claims.UserUUID == SystemUserUUID {
+					if claims.SessionUUID == "" {
+						return nil
+					}
+					var role string
+					err := pool.QueryRow(ctx, `
+						SELECT u.role
+						FROM users u
+						JOIN refresh_tokens r ON r.user_uuid = u.uuid
+						WHERE u.uuid = $1::uuid AND r.uuid = $2::uuid AND r.expires_at > NOW()`,
+						claims.UserUUID, claims.SessionUUID,
+					).Scan(&role)
+					if err != nil || role == "" {
+						return nil
+					}
 					claims.Role = role
+				} else {
+					var role string
+					err := pool.QueryRow(ctx, `SELECT role FROM users WHERE uuid::text = $1`, claims.UserUUID).Scan(&role)
+					if err == nil && role != "" {
+						claims.Role = role
+					}
 				}
 			}
 			return claims

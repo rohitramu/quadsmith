@@ -460,6 +460,7 @@ type RefreshToken struct {
 	IpAddress     string                 `protobuf:"bytes,8,opt,name=ip_address,json=ipAddress,proto3" json:"ip_address,omitempty"`
 	LocationHint  string                 `protobuf:"bytes,9,opt,name=location_hint,json=locationHint,proto3" json:"location_hint,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,7,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	JitGrantUuid  *string                `protobuf:"bytes,10,opt,name=jit_grant_uuid,json=jitGrantUuid,proto3,oneof" json:"jit_grant_uuid,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -555,6 +556,13 @@ func (x *RefreshToken) GetCreatedAt() *timestamppb.Timestamp {
 		return x.CreatedAt
 	}
 	return nil
+}
+
+func (x *RefreshToken) GetJitGrantUuid() string {
+	if x != nil && x.JitGrantUuid != nil {
+		return *x.JitGrantUuid
+	}
+	return ""
 }
 
 type User struct {
@@ -1029,7 +1037,7 @@ const file_quadsmith_store_user_proto_rawDesc = "" +
 	"\x13provider_account_id\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x03R\x11providerAccountId\x12J\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt:N\xc2\xf3\x18D\n" +
-	"\x0eoauth_accounts\x1a\x1dprovider, provider_account_id\x1a\x13user_uuid, provider\xc2\xf0\x19\x02\b\x02\"\xfa\x03\n" +
+	"\x0eoauth_accounts\x1a\x1dprovider, provider_account_id\x1a\x13user_uuid, provider\xc2\xf0\x19\x02\b\x02\"\xc4\x04\n" +
 	"\fRefreshToken\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x124\n" +
@@ -1046,8 +1054,12 @@ const file_quadsmith_store_user_proto_rawDesc = "" +
 	"ip_address\x18\b \x01(\tB\f\xc2\xf3\x18\x04:\x02''\xc0\xf0\x19\x03R\tipAddress\x121\n" +
 	"\rlocation_hint\x18\t \x01(\tB\f\xc2\xf3\x18\x04:\x02''\xc0\xf0\x19\x03R\flocationHint\x12?\n" +
 	"\n" +
-	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt:\x1a\xc2\xf3\x18\x10\n" +
-	"\x0erefresh_tokens\xc2\xf0\x19\x02\b\x03\"\xe8\x04\n" +
+	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03R\tcreatedAt\x125\n" +
+	"\x0ejit_grant_uuid\x18\n" +
+	" \x01(\tB\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x05H\x00R\fjitGrantUuid\x88\x01\x01:\x1a\xc2\xf3\x18\x10\n" +
+	"\x0erefresh_tokens\xc2\xf0\x19\x02\b\x03B\x11\n" +
+	"\x0f_jit_grant_uuid\"\xe8\x04\n" +
 	"\x04User\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x82\x01\n" +
@@ -1170,6 +1182,7 @@ func file_quadsmith_store_user_proto_init() {
 	}
 	file_quadsmith_store_user_proto_msgTypes[0].OneofWrappers = []any{}
 	file_quadsmith_store_user_proto_msgTypes[2].OneofWrappers = []any{}
+	file_quadsmith_store_user_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

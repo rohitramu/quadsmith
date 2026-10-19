@@ -721,6 +721,33 @@ func (s *OpsService) LoginAsQuadsmith(ctx context.Context, _ *connect.Request[pb
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("sensitive procedure requires a HUMAN operator"))
 	}
 
+	var grantUUID string
+	var jitExpiresAt time.Time
+	if opCtx.JitGrantUUID != "" {
+		err := s.opsDb.QueryRow(ctx, `
+			SELECT uuid::text, expires_at
+			FROM jit_grants
+			WHERE uuid = $1::uuid AND status = 'ACTIVE' AND expires_at > NOW()`,
+			opCtx.JitGrantUUID,
+		).Scan(&grantUUID, &jitExpiresAt)
+		if err != nil {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("active JIT grant required to log in as @quadsmith"))
+		}
+	} else {
+		err := s.opsDb.QueryRow(ctx, `
+			SELECT uuid::text, expires_at
+			FROM jit_grants
+			WHERE operator = $1 AND status = 'ACTIVE' AND expires_at > NOW()
+			  AND (operation = '*' OR operation = 'LoginAsQuadsmith')
+			ORDER BY expires_at DESC
+			LIMIT 1`,
+			opCtx.Operator,
+		).Scan(&grantUUID, &jitExpiresAt)
+		if err != nil {
+			return nil, connect.NewError(connect.CodePermissionDenied, errors.New("active JIT grant required to log in as @quadsmith"))
+		}
+	}
+
 	userUUID, err := auth.EnsureSystemUser(ctx, s.publicDb)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to ensure @quadsmith system user: %w", err))
@@ -733,18 +760,17 @@ func (s *OpsService) LoginAsQuadsmith(ctx context.Context, _ *connect.Request[pb
 	}
 
 	now := time.Now()
-	expiresAt := now.Add(auth.RefreshTokenTTL)
 	deviceHint := fmt.Sprintf("Ops Login (%s)", opCtx.Operator)
 
 	_, err = s.publicDb.Exec(ctx, `
-		INSERT INTO refresh_tokens (uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, ip_address, location_hint, created_at)
-		VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, '127.0.0.1', 'Ops Console', $5)
-	`, sessionUUID, userUUID, tokenHash, expiresAt, now, deviceHint)
+		INSERT INTO refresh_tokens (uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, ip_address, location_hint, created_at, jit_grant_uuid)
+		VALUES ($1::uuid, $2::uuid, $3, $4, $5, $6, '127.0.0.1', 'Ops Console', $5, $7::uuid)
+	`, sessionUUID, userUUID, tokenHash, jitExpiresAt, now, deviceHint, grantUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to create @quadsmith session: %w", err))
 	}
 
-	accessToken, err := auth.SignAccessToken(userUUID, auth.SystemUserHandle, "", sessionUUID)
+	accessToken, err := auth.SignAccessTokenWithExpiry(userUUID, auth.SystemUserHandle, "", sessionUUID, jitExpiresAt)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to sign access token: %w", err))
 	}
@@ -755,7 +781,7 @@ func (s *OpsService) LoginAsQuadsmith(ctx context.Context, _ *connect.Request[pb
 		UserUuid:     userUUID,
 		Username:     auth.SystemUserHandle,
 		Role:         auth.RoleSystem,
-		ExpiresAt:    timestamppb.New(expiresAt),
+		ExpiresAt:    timestamppb.New(jitExpiresAt),
 	}), nil
 }
 
@@ -873,15 +899,47 @@ func (s *OpsService) RevokeInternalToken(ctx context.Context, req *connect.Reque
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("token ID cannot be empty"))
 	}
 
-	cmd, err := s.opsDb.Exec(ctx, `
+	var revokedTokenHash string
+	err := s.opsDb.QueryRow(ctx, `
 		UPDATE internal_tokens
 		SET revoked_at = NOW()
-		WHERE (id = $1 OR uuid::text = $1) AND revoked_at IS NULL`, id)
+		WHERE (id = $1 OR uuid::text = $1) AND revoked_at IS NULL
+		RETURNING token_hash`, id).Scan(&revokedTokenHash)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return connect.NewResponse(&pb.RevokeInternalTokenResponse{Success: false}), nil
+		}
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to revoke token: %w", err))
 	}
 
-	return connect.NewResponse(&pb.RevokeInternalTokenResponse{Success: cmd.RowsAffected() > 0}), nil
+	// Revoke any active JIT grants issued to this specific token and terminate their @quadsmith sessions
+	if revokedTokenHash != "" {
+		rows, gErr := s.opsDb.Query(ctx, `
+			UPDATE jit_grants
+			SET status = 'REVOKED', revoked_at = NOW()
+			WHERE token_hash = $1 AND status = 'ACTIVE'
+			RETURNING uuid::text`, revokedTokenHash)
+		if gErr == nil {
+			var grantUUIDs []string
+			for rows.Next() {
+				var gUUID string
+				if rows.Scan(&gUUID) == nil && gUUID != "" {
+					grantUUIDs = append(grantUUIDs, gUUID)
+				}
+			}
+			rows.Close()
+			if s.publicDb != nil {
+				for _, gUUID := range grantUUIDs {
+					_, _ = s.publicDb.Exec(ctx, `
+						DELETE FROM refresh_tokens
+						WHERE user_uuid = $1::uuid AND jit_grant_uuid = $2::uuid`,
+						auth.SystemUserUUID, gUUID)
+				}
+			}
+		}
+	}
+
+	return connect.NewResponse(&pb.RevokeInternalTokenResponse{Success: true}), nil
 }
 
 // ---------------------------------------------------------
@@ -922,10 +980,10 @@ func (s *OpsService) AcquireJitGrant(ctx context.Context, req *connect.Request[p
 		INSERT INTO jit_grants (
 			uuid, id, token_hash, operator, operator_type, reason, operation, status, hours, expires_at, created_at
 		) VALUES (
-			$1, $2, '', $3, $4, $5, $6, 'ACTIVE', $7, $8, NOW()
+			$1, $2, $3, $4, $5, $6, $7, 'ACTIVE', $8, $9, NOW()
 		)
 		RETURNING uuid, id, operator, operator_type, reason, operation, status, hours, expires_at, created_at`,
-		grantUUID, grantID, opCtx.Operator, opCtx.OperatorType, reason, operation, hours, expiresAt,
+		grantUUID, grantID, opCtx.TokenHash, opCtx.Operator, opCtx.OperatorType, reason, operation, hours, expiresAt,
 	).Scan(
 		&grant.Uuid, &grant.Id, &grant.Operator, &grant.OperatorType, &grant.Reason,
 		&grant.Operation, &grant.Status, &grant.Hours, &expiresAt, &createdAt,
@@ -973,6 +1031,15 @@ func (s *OpsService) ExtendJitGrant(ctx context.Context, req *connect.Request[pb
 			return nil, connect.NewError(connect.CodeNotFound, errors.New("active JIT grant not found or already expired"))
 		}
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to extend JIT grant: %w", err))
+	}
+
+	// Sync extended expiry to any active @quadsmith sessions bound to this JIT grant
+	if s.publicDb != nil && grant.Uuid != "" {
+		_, _ = s.publicDb.Exec(ctx, `
+			UPDATE refresh_tokens
+			SET expires_at = $1
+			WHERE user_uuid = $2::uuid AND jit_grant_uuid = $3::uuid AND expires_at > NOW()`,
+			expiresAt, auth.SystemUserUUID, grant.Uuid)
 	}
 
 	grant.ExpiresAt = timestamppb.New(expiresAt)
@@ -1044,15 +1111,28 @@ func (s *OpsService) RevokeJitGrant(ctx context.Context, req *connect.Request[pb
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("grant ID cannot be empty"))
 	}
 
-	cmd, err := s.opsDb.Exec(ctx, `
+	var revokedGrantUUID string
+	err := s.opsDb.QueryRow(ctx, `
 		UPDATE jit_grants
 		SET status = 'REVOKED', revoked_at = NOW()
-		WHERE (id = $1 OR uuid::text = $1) AND status = 'ACTIVE'`, grantID)
+		WHERE (id = $1 OR uuid::text = $1) AND status = 'ACTIVE'
+		RETURNING uuid::text`, grantID).Scan(&revokedGrantUUID)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return connect.NewResponse(&pb.RevokeJitGrantResponse{Success: false}), nil
+		}
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to revoke JIT grant: %w", err))
 	}
 
-	return connect.NewResponse(&pb.RevokeJitGrantResponse{Success: cmd.RowsAffected() > 0}), nil
+	// Immediately terminate all @quadsmith sessions bound to this revoked JIT grant
+	if s.publicDb != nil && revokedGrantUUID != "" {
+		_, _ = s.publicDb.Exec(ctx, `
+			DELETE FROM refresh_tokens
+			WHERE user_uuid = $1::uuid AND jit_grant_uuid = $2::uuid`,
+			auth.SystemUserUUID, revokedGrantUUID)
+	}
+
+	return connect.NewResponse(&pb.RevokeJitGrantResponse{Success: true}), nil
 }
 
 func generateCryptoToken(prefix string) string {

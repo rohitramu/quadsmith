@@ -334,12 +334,15 @@ CREATE TABLE IF NOT EXISTS refresh_tokens (
   device_hint TEXT NOT NULL,
   ip_address TEXT DEFAULT '' NOT NULL,
   location_hint TEXT DEFAULT '' NOT NULL,
-  created_at TIMESTAMPTZ
+  created_at TIMESTAMPTZ,
+  jit_grant_uuid UUID
 );
 
 CREATE INDEX IF NOT EXISTS idx_refresh_tokens_user_uuid ON refresh_tokens (user_uuid);
 
 CREATE INDEX IF NOT EXISTS idx_refresh_tokens_token_hash ON refresh_tokens (token_hash);
+
+CREATE INDEX IF NOT EXISTS idx_refresh_tokens_jit_grant_uuid ON refresh_tokens (jit_grant_uuid);
 
 CREATE TABLE IF NOT EXISTS users (
   uuid UUID NOT NULL,

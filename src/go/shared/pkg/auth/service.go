@@ -1430,8 +1430,12 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("session has expired. Please sign in again"))
 	}
 
-	// sliding window: roll expiration forward to NOW() + RefreshTokenTTL
-	newExpiresAt := time.Now().Add(s.cfg.RefreshTokenTTL)
+	// For @quadsmith (SYSTEM), preserve the fixed JIT grant expiration ceiling;
+	// for regular users, roll expiration forward by RefreshTokenTTL (sliding window).
+	newExpiresAt := expiresAt
+	if userUUID != SystemUserUUID {
+		newExpiresAt = time.Now().Add(s.cfg.RefreshTokenTTL)
+	}
 	clientIP := getClientIP(req)
 	locationHint := extractLocationHint(req.Header(), clientIP)
 	if clientIP != "" && locationHint != "" && locationHint != "Unknown Location" {
@@ -1497,7 +1501,11 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 		profile.UpdatedAt = timestamppb.New(*profileUpdatedAt)
 	}
 
-	accessToken, err := SignAccessToken(userUUID, username, email, sessionUUID)
+	var maxTokenExpiry time.Time
+	if userUUID == SystemUserUUID {
+		maxTokenExpiry = newExpiresAt
+	}
+	accessToken, err := SignAccessTokenWithExpiry(userUUID, username, email, sessionUUID, maxTokenExpiry)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, err)
 	}
@@ -1523,11 +1531,20 @@ func (s *AuthService) RefreshToken(ctx context.Context, req *connect.Request[pb.
 		ActiveBan:        activeBan,
 	})
 
+	cookieMaxAge := int(s.cfg.RefreshTokenTTL.Seconds())
+	if userUUID == SystemUserUUID {
+		remaining := int(time.Until(newExpiresAt).Seconds())
+		if remaining < 1 {
+			remaining = 1
+		}
+		cookieMaxAge = remaining
+	}
+
 	cookie := &http.Cookie{
 		Name:     "qs_session",
 		Value:    token,
 		Path:     "/",
-		MaxAge:   int(s.cfg.RefreshTokenTTL.Seconds()),
+		MaxAge:   cookieMaxAge,
 		HttpOnly: true,
 		SameSite: http.SameSiteLaxMode,
 		Secure:   s.cfg.SecureCookies,
@@ -1658,12 +1675,16 @@ func (s *AuthService) ListActiveSessions(ctx context.Context, _ *connect.Request
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 	}
 
-	rows, err := s.db.Query(ctx, `
+	query := `
 		SELECT uuid, device_hint, ip_address, location_hint, created_at, last_used_at
 		FROM refresh_tokens
-		WHERE user_uuid = $1 AND (expires_at IS NULL OR expires_at > NOW())
-		ORDER BY (uuid = $2) DESC, COALESCE(last_used_at, created_at) DESC`,
-		userCtx.UserUUID, userCtx.SessionUUID)
+		WHERE user_uuid = $1 AND (expires_at IS NULL OR expires_at > NOW())`
+	if userCtx.UserUUID == SystemUserUUID && userCtx.SessionUUID != "" {
+		query += ` AND jit_grant_uuid IS NOT DISTINCT FROM (SELECT jit_grant_uuid FROM refresh_tokens WHERE uuid::text = $2)`
+	}
+	query += ` ORDER BY (uuid::text = $2) DESC, COALESCE(last_used_at, created_at) DESC`
+
+	rows, err := s.db.Query(ctx, query, userCtx.UserUUID, userCtx.SessionUUID)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to query sessions: %w", err))
 	}
@@ -1714,10 +1735,22 @@ func (s *AuthService) RevokeSession(ctx context.Context, req *connect.Request[pb
 		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("session_uuid is required"))
 	}
 
-	tag, err := s.db.Exec(ctx, `
-		DELETE FROM refresh_tokens
-		WHERE uuid = $1 AND user_uuid = $2`,
-		sessionUUID, userCtx.UserUUID)
+	var query string
+	var args []any
+	if userCtx.UserUUID == SystemUserUUID && userCtx.SessionUUID != "" {
+		query = `
+			DELETE FROM refresh_tokens
+			WHERE uuid = $1::uuid AND user_uuid = $2::uuid
+			  AND jit_grant_uuid IS NOT DISTINCT FROM (SELECT jit_grant_uuid FROM refresh_tokens WHERE uuid = $3::uuid)`
+		args = []any{sessionUUID, userCtx.UserUUID, userCtx.SessionUUID}
+	} else {
+		query = `
+			DELETE FROM refresh_tokens
+			WHERE uuid = $1::uuid AND user_uuid = $2::uuid`
+		args = []any{sessionUUID, userCtx.UserUUID}
+	}
+
+	tag, err := s.db.Exec(ctx, query, args...)
 	if err != nil {
 		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to revoke session: %w", err))
 	}
@@ -1749,13 +1782,15 @@ func (s *AuthService) RevokeOtherSessions(ctx context.Context, _ *connect.Reques
 		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("authentication required"))
 	}
 
-	var tag any
 	var count int32
 	if userCtx.SessionUUID != "" {
-		cmdTag, err := s.db.Exec(ctx, `
+		query := `
 			DELETE FROM refresh_tokens
-			WHERE user_uuid = $1 AND uuid != $2`,
-			userCtx.UserUUID, userCtx.SessionUUID)
+			WHERE user_uuid = $1::uuid AND uuid != $2::uuid`
+		if userCtx.UserUUID == SystemUserUUID {
+			query += ` AND jit_grant_uuid IS NOT DISTINCT FROM (SELECT jit_grant_uuid FROM refresh_tokens WHERE uuid = $2::uuid)`
+		}
+		cmdTag, err := s.db.Exec(ctx, query, userCtx.UserUUID, userCtx.SessionUUID)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to revoke other sessions: %w", err))
 		}
@@ -1763,14 +1798,13 @@ func (s *AuthService) RevokeOtherSessions(ctx context.Context, _ *connect.Reques
 	} else {
 		cmdTag, err := s.db.Exec(ctx, `
 			DELETE FROM refresh_tokens
-			WHERE user_uuid = $1`,
+			WHERE user_uuid = $1::uuid`,
 			userCtx.UserUUID)
 		if err != nil {
 			return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to revoke other sessions: %w", err))
 		}
 		count = int32(cmdTag.RowsAffected())
 	}
-	_ = tag
 
 	return connect.NewResponse(&pb.RevokeOtherSessionsResponse{
 		Success:      true,

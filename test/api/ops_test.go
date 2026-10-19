@@ -1041,6 +1041,31 @@ func TestOpsWeb_GrafanaProxyJITGating(t *testing.T) {
 	if resp3.StatusCode == http.StatusUnauthorized || resp3.StatusCode == http.StatusForbidden {
 		t.Errorf("Expected JIT-elevated request to pass auth/JIT gate, got %d", resp3.StatusCode)
 	}
+
+	// 4. Verify /services/<service>/healthz and /services/<service>/metrics proxy on server-ops-web
+	reqCronHealth, _ := http.NewRequestWithContext(ctx, http.MethodGet, opsWebURL+"/services/server-cron/healthz", nil)
+	reqCronHealth.Header.Set("Authorization", "Bearer qs_op_sandbox_token_12345")
+	respCronHealth, err := client.Do(reqCronHealth)
+	if err != nil {
+		t.Fatalf("GET /services/server-cron/healthz failed: %v", err)
+	}
+	cronHealthBody, _ := io.ReadAll(respCronHealth.Body)
+	respCronHealth.Body.Close()
+	if respCronHealth.StatusCode != http.StatusOK || !strings.Contains(string(cronHealthBody), `"service":"server-cron"`) {
+		t.Errorf("Expected 200 OK from /services/server-cron/healthz, got %d: %s", respCronHealth.StatusCode, string(cronHealthBody))
+	}
+
+	reqCronMetrics, _ := http.NewRequestWithContext(ctx, http.MethodGet, opsWebURL+"/services/server-cron/metrics", nil)
+	reqCronMetrics.Header.Set("Authorization", "Bearer qs_op_sandbox_token_12345")
+	respCronMetrics, err := client.Do(reqCronMetrics)
+	if err != nil {
+		t.Fatalf("GET /services/server-cron/metrics failed: %v", err)
+	}
+	cronMetricsBody, _ := io.ReadAll(respCronMetrics.Body)
+	respCronMetrics.Body.Close()
+	if respCronMetrics.StatusCode != http.StatusOK || !strings.Contains(string(cronMetricsBody), "quadsmith_health_status") {
+		t.Errorf("Expected 200 OK from /services/server-cron/metrics, got %d: %s", respCronMetrics.StatusCode, string(cronMetricsBody))
+	}
 }
 
 func TestOpsService_CELFilterAndSorting(t *testing.T) {
@@ -1214,6 +1239,7 @@ func TestOpsServer_LoginAsQuadsmithAndSystemAccountProtections(t *testing.T) {
 	}
 
 	// Verify RefreshToken works with the minted refresh_token (used by app-web ops_refresh_token handoff)
+	// and preserves the fixed JIT grant expires_at ceiling instead of sliding out to 5 days.
 	refRes, err := qsAuthClient.RefreshToken(ctx, connect.NewRequest(&apipb.RefreshTokenRequest{
 		RefreshToken: loginRes.Msg.GetRefreshToken(),
 	}))
@@ -1223,8 +1249,34 @@ func TestOpsServer_LoginAsQuadsmithAndSystemAccountProtections(t *testing.T) {
 	if refRes.Msg.GetUser().GetId() != "quadsmith" || refRes.Msg.GetUser().GetRole() != "SYSTEM" || refRes.Msg.GetAccessToken() == "" {
 		t.Errorf("Unexpected RefreshToken response for @quadsmith: %+v", refRes.Msg)
 	}
+	op1AccessToken := refRes.Msg.GetAccessToken()
+	op1RefreshToken := loginRes.Msg.GetRefreshToken()
+	if refRes.Msg.GetRefreshToken() != "" {
+		op1RefreshToken = refRes.Msg.GetRefreshToken()
+	}
+	qsHTTPClient = &http.Client{
+		Transport: &authRoundTripper{base: http.DefaultTransport, token: op1AccessToken},
+		Timeout:   5 * time.Second,
+	}
+	qsAuthClient = apiconnect.NewAuthServiceClient(qsHTTPClient, getAPIURL())
 
-	// 6. Verify qsops login-quadsmith CLI command writes valid qs config
+	var op1SessionExpiresAt time.Time
+	var op1JitGrantUUID string
+	if err := pubPool.QueryRow(ctx, `
+		SELECT expires_at, COALESCE(jit_grant_uuid::text, '')
+		FROM refresh_tokens
+		WHERE token_hash = encode(sha256($1::bytea), 'hex')
+	`, op1RefreshToken).Scan(&op1SessionExpiresAt, &op1JitGrantUUID); err != nil {
+		t.Fatalf("Failed to query operator1 @quadsmith refresh_tokens row: %v", err)
+	}
+	if op1JitGrantUUID == "" {
+		t.Fatalf("Expected non-empty jit_grant_uuid on @quadsmith refresh_tokens row")
+	}
+	if time.Until(op1SessionExpiresAt) > 2*time.Hour {
+		t.Fatalf("Expected @quadsmith session expires_at to be capped at 1h JIT grant (~1h), got %v", time.Until(op1SessionExpiresAt))
+	}
+
+	// 6. Verify qsops login-quadsmith CLI command writes valid qs config (creates a 2nd session under grant1)
 	qsopsPath := resolveQSOpsPath(t)
 	tmpConfig := filepath.Join(t.TempDir(), "config.json")
 	cmd := exec.Command(qsopsPath, "login-quadsmith", "--qs-config", tmpConfig, "--token", "qs_op_sandbox_token_12345")
@@ -1241,6 +1293,140 @@ func TestOpsServer_LoginAsQuadsmithAndSystemAccountProtections(t *testing.T) {
 	}
 	if !containsString(string(cfgBytes), `"user_id": "quadsmith"`) || !containsString(string(cfgBytes), `"access_token":`) {
 		t.Errorf("Expected user_id=quadsmith and access_token in written config.json, got: %s", string(cfgBytes))
+	}
+
+	// 7. Create a second HUMAN operator token (operator2) to verify parallel independent @quadsmith session lifecycles
+	op2TokenRes, err := operatorClient.CreateInternalToken(ctx, connect.NewRequest(&pb.CreateInternalTokenRequest{
+		Name:         "parallel-op2-" + time.Now().Format("150405.000"),
+		Type:         "HUMAN",
+		GroupName:    "operators",
+		DurationDays: 1,
+	}))
+	if err != nil {
+		t.Fatalf("CreateInternalToken for operator2 failed: %v", err)
+	}
+	op2TokenID := op2TokenRes.Msg.GetTokenId()
+	op2RawToken := op2TokenRes.Msg.GetTokenSecret()
+	defer func() {
+		_, _ = operatorClient.RevokeInternalToken(ctx, connect.NewRequest(&pb.RevokeInternalTokenRequest{
+			Id: op2TokenID,
+		}))
+	}()
+
+	operator2Client := newOpsClient(op2RawToken)
+	grant2Res, err := operator2Client.AcquireJitGrant(ctx, connect.NewRequest(&pb.AcquireJitGrantRequest{
+		Hours:     1,
+		Reason:    "Parallel operator2 LoginAsQuadsmith test",
+		Operation: "*",
+	}))
+	if err != nil {
+		t.Fatalf("AcquireJitGrant for operator2 failed: %v", err)
+	}
+	grant2ID := grant2Res.Msg.GetGrant().GetId()
+	defer func() {
+		_, _ = operator2Client.RevokeJitGrant(ctx, connect.NewRequest(&pb.RevokeJitGrantRequest{GrantId: grant2ID}))
+	}()
+
+	login2Res, err := operator2Client.LoginAsQuadsmith(ctx, connect.NewRequest(&pb.LoginAsQuadsmithRequest{}))
+	if err != nil {
+		t.Fatalf("LoginAsQuadsmith for operator2 failed: %v", err)
+	}
+	op2AccessToken := login2Res.Msg.GetAccessToken()
+	op2RefreshToken := login2Res.Msg.GetRefreshToken()
+	qs2HTTPClient := &http.Client{
+		Transport: &authRoundTripper{base: http.DefaultTransport, token: op2AccessToken},
+		Timeout:   5 * time.Second,
+	}
+	qs2AuthClient := apiconnect.NewAuthServiceClient(qs2HTTPClient, getAPIURL())
+
+	var op2SessionExpiresAt time.Time
+	var op2JitGrantUUID string
+	if err := pubPool.QueryRow(ctx, `
+		SELECT expires_at, COALESCE(jit_grant_uuid::text, '')
+		FROM refresh_tokens
+		WHERE token_hash = encode(sha256($1::bytea), 'hex')
+	`, op2RefreshToken).Scan(&op2SessionExpiresAt, &op2JitGrantUUID); err != nil {
+		t.Fatalf("Failed to query operator2 @quadsmith refresh_tokens row: %v", err)
+	}
+	if op2JitGrantUUID == "" || op2JitGrantUUID == op1JitGrantUUID {
+		t.Fatalf("Expected distinct jit_grant_uuid for operator2, got op1=%s op2=%s", op1JitGrantUUID, op2JitGrantUUID)
+	}
+
+	// 8. Verify ExtendJitGrant on grant1 extends operator1's @quadsmith session without changing operator2's session
+	if _, err := operatorClient.ExtendJitGrant(ctx, connect.NewRequest(&pb.ExtendJitGrantRequest{
+		GrantId: grantID,
+		Hours:   1,
+	})); err != nil {
+		t.Fatalf("ExtendJitGrant for operator1 failed: %v", err)
+	}
+	var op1ExtendedExpiresAt, op2UnchangedExpiresAt time.Time
+	if err := pubPool.QueryRow(ctx, `SELECT expires_at FROM refresh_tokens WHERE token_hash = encode(sha256($1::bytea), 'hex')`, op1RefreshToken).Scan(&op1ExtendedExpiresAt); err != nil {
+		t.Fatalf("Failed to query extended operator1 session: %v", err)
+	}
+	if err := pubPool.QueryRow(ctx, `SELECT expires_at FROM refresh_tokens WHERE token_hash = encode(sha256($1::bytea), 'hex')`, op2RefreshToken).Scan(&op2UnchangedExpiresAt); err != nil {
+		t.Fatalf("Failed to query operator2 session after operator1 extension: %v", err)
+	}
+	if !op1ExtendedExpiresAt.After(op1SessionExpiresAt.Add(30 * time.Minute)) {
+		t.Errorf("Expected operator1 @quadsmith session expires_at to be extended by ~1h, before=%v after=%v", op1SessionExpiresAt, op1ExtendedExpiresAt)
+	}
+	if !op2UnchangedExpiresAt.Equal(op2SessionExpiresAt) {
+		t.Errorf("Expected operator2 @quadsmith session expires_at to remain unchanged (%v), got %v", op2SessionExpiresAt, op2UnchangedExpiresAt)
+	}
+
+	// 9. Verify ListActiveSessions and RevokeOtherSessions isolate @quadsmith sessions by jit_grant_uuid
+	op1SessionsRes, err := qsAuthClient.ListActiveSessions(ctx, connect.NewRequest(&apipb.ListActiveSessionsRequest{}))
+	if err != nil {
+		t.Fatalf("ListActiveSessions for operator1 failed: %v", err)
+	}
+	if len(op1SessionsRes.Msg.GetSessions()) != 2 {
+		t.Fatalf("Expected operator1 to see exactly 2 sessions under grant1 (RPC + CLI), got %d", len(op1SessionsRes.Msg.GetSessions()))
+	}
+	revOtherRes, err := qsAuthClient.RevokeOtherSessions(ctx, connect.NewRequest(&apipb.RevokeOtherSessionsRequest{}))
+	if err != nil {
+		t.Fatalf("RevokeOtherSessions for operator1 failed: %v", err)
+	}
+	if revOtherRes.Msg.GetRevokedCount() != 1 {
+		t.Errorf("Expected RevokeOtherSessions to revoke 1 sibling session under grant1, got %d", revOtherRes.Msg.GetRevokedCount())
+	}
+	// Operator2's session must still be active
+	if _, err := qs2AuthClient.GetCurrentUser(ctx, connect.NewRequest(&apipb.GetCurrentUserRequest{})); err != nil {
+		t.Fatalf("Expected operator2's @quadsmith session to remain active after operator1 RevokeOtherSessions: %v", err)
+	}
+
+	// 10. Verify RevokeJitGrant on grant1 immediately logs out operator1's @quadsmith session while operator2 stays logged in
+	if _, err := operatorClient.RevokeJitGrant(ctx, connect.NewRequest(&pb.RevokeJitGrantRequest{GrantId: grantID})); err != nil {
+		t.Fatalf("RevokeJitGrant for operator1 failed: %v", err)
+	}
+	if _, err := qsAuthClient.GetCurrentUser(ctx, connect.NewRequest(&apipb.GetCurrentUserRequest{})); err == nil || connect.CodeOf(err) != connect.CodeUnauthenticated {
+		t.Fatalf("Expected operator1 GetCurrentUser as @quadsmith to fail with CodeUnauthenticated immediately after JIT revocation, got %v", err)
+	}
+	if _, err := qsAuthClient.RefreshToken(ctx, connect.NewRequest(&apipb.RefreshTokenRequest{RefreshToken: op1RefreshToken})); err == nil || connect.CodeOf(err) != connect.CodeUnauthenticated {
+		t.Fatalf("Expected operator1 RefreshToken as @quadsmith to fail with CodeUnauthenticated immediately after JIT revocation, got %v", err)
+	}
+
+	// Meanwhile, operator2's @quadsmith session (access token + refresh token) must still succeed!
+	if _, err := qs2AuthClient.GetCurrentUser(ctx, connect.NewRequest(&apipb.GetCurrentUserRequest{})); err != nil {
+		t.Fatalf("Expected operator2 GetCurrentUser as @quadsmith to remain authenticated after operator1 JIT revocation: %v", err)
+	}
+	ref2Res, err := qs2AuthClient.RefreshToken(ctx, connect.NewRequest(&apipb.RefreshTokenRequest{RefreshToken: op2RefreshToken}))
+	if err != nil {
+		t.Fatalf("Expected operator2 RefreshToken as @quadsmith to remain valid after operator1 JIT revocation: %v", err)
+	}
+	if ref2Res.Msg.GetRefreshToken() != "" {
+		op2RefreshToken = ref2Res.Msg.GetRefreshToken()
+	}
+
+	// 11. Verify RevokeInternalToken on operator2 immediately revokes grant2 and logs out operator2's @quadsmith session
+	if _, err := operator2Client.RevokeInternalToken(ctx, connect.NewRequest(&pb.RevokeInternalTokenRequest{
+		Id: op2TokenID,
+	})); err != nil {
+		t.Fatalf("RevokeInternalToken for operator2 failed: %v", err)
+	}
+	if _, err := qs2AuthClient.GetCurrentUser(ctx, connect.NewRequest(&apipb.GetCurrentUserRequest{})); err == nil || connect.CodeOf(err) != connect.CodeUnauthenticated {
+		t.Fatalf("Expected operator2 GetCurrentUser as @quadsmith to fail with CodeUnauthenticated after internal token revocation, got %v", err)
+	}
+	if _, err := qs2AuthClient.RefreshToken(ctx, connect.NewRequest(&apipb.RefreshTokenRequest{RefreshToken: op2RefreshToken})); err == nil || connect.CodeOf(err) != connect.CodeUnauthenticated {
+		t.Fatalf("Expected operator2 RefreshToken as @quadsmith to fail with CodeUnauthenticated after internal token revocation, got %v", err)
 	}
 }
 

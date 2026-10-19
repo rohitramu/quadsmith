@@ -1187,7 +1187,7 @@ func ExportOAuthAccounts(ctx context.Context, db *pgxpool.Pool, userUUID string)
 }
 
 func CreateRefreshToken(ctx context.Context, tx pgx.Tx, m *RefreshToken) error {
-	query := `INSERT INTO refresh_tokens (uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, ip_address, location_hint, created_at) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
+	query := `INSERT INTO refresh_tokens (uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, ip_address, location_hint, created_at, jit_grant_uuid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`
 	_, err := tx.Exec(ctx, query, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -1213,13 +1213,18 @@ func CreateRefreshToken(ctx context.Context, tx pgx.Tx, m *RefreshToken) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.CreatedAt))
+	}(m.CreatedAt), func(s *string) interface{} {
+		if s == nil || *s == "" {
+			return nil
+		}
+		return *s
+	}(m.JitGrantUuid))
 	return err
 }
 
 func GetRefreshToken(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*RefreshToken, error) {
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "token_hash": true, "expires_at": true, "last_used_at": true, "device_hint": true, "ip_address": true, "location_hint": true, "created_at": true}
-	colsStr := "uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, ip_address, location_hint, created_at"
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "token_hash": true, "expires_at": true, "last_used_at": true, "device_hint": true, "ip_address": true, "location_hint": true, "created_at": true, "jit_grant_uuid": true}
+	colsStr := "uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, ip_address, location_hint, created_at, jit_grant_uuid"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -1230,7 +1235,7 @@ func GetRefreshToken(ctx context.Context, db *pgxpool.Pool, idOrUuid string, col
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "user_uuid", "token_hash", "expires_at", "last_used_at", "device_hint", "ip_address", "location_hint", "created_at"}
+		cols = []string{"uuid", "user_uuid", "token_hash", "expires_at", "last_used_at", "device_hint", "ip_address", "location_hint", "created_at", "jit_grant_uuid"}
 	}
 	query := `SELECT ` + colsStr + ` FROM refresh_tokens WHERE uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -1280,6 +1285,8 @@ func GetRefreshToken(ctx context.Context, db *pgxpool.Pool, idOrUuid string, col
 					m.CreatedAt = timestamppb.New(*v)
 				}
 			})
+		case "jit_grant_uuid":
+			scanArgs[i] = &m.JitGrantUuid
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -1297,7 +1304,7 @@ func GetRefreshToken(ctx context.Context, db *pgxpool.Pool, idOrUuid string, col
 }
 
 func UpdateRefreshToken(ctx context.Context, tx pgx.Tx, m *RefreshToken) error {
-	query := `UPDATE refresh_tokens SET user_uuid = $2, token_hash = $3, expires_at = $4, last_used_at = $5, device_hint = $6, ip_address = $7, location_hint = $8, created_at = $9 WHERE uuid = $1`
+	query := `UPDATE refresh_tokens SET user_uuid = $2, token_hash = $3, expires_at = $4, last_used_at = $5, device_hint = $6, ip_address = $7, location_hint = $8, created_at = $9, jit_grant_uuid = $10 WHERE uuid = $1`
 	_, err := tx.Exec(ctx, query, m.Uuid, func(s string) interface{} {
 		if s == "" {
 			return nil
@@ -1318,7 +1325,12 @@ func UpdateRefreshToken(ctx context.Context, tx pgx.Tx, m *RefreshToken) error {
 			return nil
 		}
 		return ts.AsTime()
-	}(m.CreatedAt))
+	}(m.CreatedAt), func(s *string) interface{} {
+		if s == nil || *s == "" {
+			return nil
+		}
+		return *s
+	}(m.JitGrantUuid))
 	return err
 }
 
@@ -1329,8 +1341,8 @@ func DeleteRefreshToken(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListRefreshTokens(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*RefreshToken, error) {
-	validCols := map[string]bool{"uuid": true, "user_uuid": true, "token_hash": true, "expires_at": true, "last_used_at": true, "device_hint": true, "ip_address": true, "location_hint": true, "created_at": true}
-	colsStr := "uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, ip_address, location_hint, created_at"
+	validCols := map[string]bool{"uuid": true, "user_uuid": true, "token_hash": true, "expires_at": true, "last_used_at": true, "device_hint": true, "ip_address": true, "location_hint": true, "created_at": true, "jit_grant_uuid": true}
+	colsStr := "uuid, user_uuid, token_hash, expires_at, last_used_at, device_hint, ip_address, location_hint, created_at, jit_grant_uuid"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -1341,7 +1353,7 @@ func ListRefreshTokens(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "user_uuid", "token_hash", "expires_at", "last_used_at", "device_hint", "ip_address", "location_hint", "created_at"}
+		cols = []string{"uuid", "user_uuid", "token_hash", "expires_at", "last_used_at", "device_hint", "ip_address", "location_hint", "created_at", "jit_grant_uuid"}
 	}
 	query := `SELECT ` + colsStr + ` FROM refresh_tokens`
 	if whereClause != "" {
@@ -1432,6 +1444,8 @@ func ListRefreshTokens(ctx context.Context, db *pgxpool.Pool, cols []string, sor
 						m.CreatedAt = timestamppb.New(*v)
 					}
 				})
+			case "jit_grant_uuid":
+				scanArgs[i] = &m.JitGrantUuid
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

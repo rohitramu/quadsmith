@@ -23,6 +23,7 @@ type OperatorContext struct {
 	Operator     string
 	OperatorType string
 	GroupName    string
+	TokenHash    string
 	JitGrantUUID string
 	JitGrantID   string
 }
@@ -164,18 +165,19 @@ func (in *OpsInterceptor) WrapStreamingHandler(next connect.StreamingHandlerFunc
 }
 
 func (in *OpsInterceptor) authenticateToken(ctx context.Context, token string) (*OperatorContext, error) {
+	tokenHash := HashToken(token)
 	for _, bt := range in.bootstrapTokens {
 		if bt.GetToken() != "" && bt.GetToken() == token {
 			return &OperatorContext{
 				Operator:     bt.GetName(),
 				OperatorType: bt.GetType(),
 				GroupName:    bt.GetGroupName(),
+				TokenHash:    tokenHash,
 			}, nil
 		}
 	}
 
 	// Dynamic token check in quadsmith_ops.internal_tokens
-	tokenHash := HashToken(token)
 	var name, tokenType, groupName string
 	var expiresAt *time.Time
 	var revokedAt *time.Time
@@ -201,6 +203,7 @@ func (in *OpsInterceptor) authenticateToken(ctx context.Context, token string) (
 		Operator:     name,
 		OperatorType: tokenType,
 		GroupName:    groupName,
+		TokenHash:    tokenHash,
 	}, nil
 }
 

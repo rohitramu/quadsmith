@@ -591,6 +591,31 @@ immutable system account (`@quadsmith`, UUID
      JIT Elevation bar that calls `LoginAsQuadsmith` and opens `app-web` with a
      one-time `?ops_refresh_token=...` handoff parameter, which `AuthContext`
      immediately exchanges via `RefreshSession` and strips from the URL bar.
+3. **JIT-Bound Session Lifecycle & Parallel Operator Isolation**:
+   - Each `@quadsmith` session in `quadsmith_api.refresh_tokens` records the
+     minter's `jit_grant_uuid` (`UUID`, indexed) and sets `expires_at` to the
+     active JIT grant's `expires_at` rather than the standard 5-day sliding
+     window.
+   - `AuthService.RefreshToken` preserves the fixed `expires_at` ceiling for
+     `@quadsmith` (`SystemUserUUID`) without extending it, and caps newly signed
+     access token `exp` claims at `min(now + AccessTokenTTL, expires_at)` via
+     `SignAccessTokenWithExpiry`.
+   - On every authenticated request for `@quadsmith`, `AuthenticateHTTPRequest`
+     verifies that the backing `refresh_tokens` row (`claims.SessionUUID`) still
+     exists and has `expires_at > NOW()`, ensuring that JIT expiry or revocation
+     immediately invalidates active Bearer JWTs without waiting for JWT `exp`.
+   - `OpsService.RevokeJitGrant` and `OpsService.RevokeInternalToken` delete
+     only the `@quadsmith` `refresh_tokens` rows bound to the revoked
+     `jit_grant_uuid`, and `OpsService.ExtendJitGrant` updates `expires_at` only
+     for sessions bound to the extended `jit_grant_uuid`.
+   - `AuthService.ListActiveSessions`, `RevokeSession`, and
+     `RevokeOtherSessions` scope `@quadsmith` queries by the caller's
+     `jit_grant_uuid` so multiple operators can hold concurrent `@quadsmith`
+     sessions with completely independent lifecycles.
+   - In `app-web` (`AuthContext.tsx`), `@quadsmith` sessions schedule a timer at
+     the JWT `exp` boundary and verify session liveness periodically and on
+     window focus so the UI logs out immediately when the operator's JIT grant
+     expires or is revoked.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -609,6 +634,20 @@ in through the main web application's `/login` page.
 - Exposes the `@quadsmith` system account to public login endpoints and removes
   the requirement for an audited `HUMAN` operator token with an active JIT
   elevation lease.
+
+##### <a id="alt-revoke-all-quadsmith-sessions-globally" >Revoke All @quadsmith Sessions Globally on Any JIT Revocation</a>
+
+Delete all `refresh_tokens` rows for `user_uuid = SystemUserUUID` whenever any
+operator revokes a JIT grant.
+
+**Pros:**
+
+- Does not require a `jit_grant_uuid` column on `refresh_tokens`.
+
+**Cons:**
+
+- Breaks parallel operations by forcibly logging out Operator B whenever
+  Operator A's JIT grant expires or is revoked.
 
 </details>
 

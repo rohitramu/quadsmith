@@ -183,6 +183,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setAccessToken(null);
       setUser(null);
       setProfile(null);
+      setEmails([]);
+      setSessions([]);
     }
   }, [authClient]);
 
@@ -321,6 +323,81 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       refreshSessions();
     }
   }, [user, refreshEmails, refreshSessions]);
+
+  // For @quadsmith (SYSTEM) sessions bound to an operator's JIT grant, actively monitor
+  // session liveness via JWT exp timer, periodic checks, and window focus so the client
+  // immediately logs out when the operator's JIT grant expires or is revoked.
+  useEffect(() => {
+    if (!user || user.id !== "quadsmith") return;
+    let cancelled = false;
+    let expiryTimeout: ReturnType<typeof setTimeout> | null = null;
+
+    const scheduleJwtExpiryCheck = () => {
+      if (expiryTimeout) {
+        clearTimeout(expiryTimeout);
+        expiryTimeout = null;
+      }
+      const token = getAccessToken();
+      if (!token) return;
+      try {
+        const parts = token.split(".");
+        if (parts.length === 3) {
+          const base64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+          const payload = JSON.parse(atob(base64)) as { exp?: number };
+          if (typeof payload.exp === "number") {
+            const delayMs = Math.max(0, payload.exp * 1000 - Date.now() + 250);
+            expiryTimeout = setTimeout(() => {
+              void verifySystemSession();
+            }, delayMs);
+          }
+        }
+      } catch {
+        // ignore malformed token
+      }
+    };
+
+    const verifySystemSession = async () => {
+      if (cancelled) return;
+      try {
+        await authClient.getCurrentUser({});
+        if (!cancelled) {
+          scheduleJwtExpiryCheck();
+        }
+      } catch {
+        if (cancelled) return;
+        await refreshSession();
+        if (!cancelled) {
+          scheduleJwtExpiryCheck();
+        }
+      }
+    };
+
+    scheduleJwtExpiryCheck();
+    const pollInterval = setInterval(() => {
+      void verifySystemSession();
+    }, 10_000);
+
+    const handleVisibilityOrFocus = () => {
+      if (typeof document === "undefined" || document.visibilityState === "visible") {
+        void verifySystemSession();
+      }
+    };
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("focus", handleVisibilityOrFocus);
+      document.addEventListener("visibilitychange", handleVisibilityOrFocus);
+    }
+
+    return () => {
+      cancelled = true;
+      if (expiryTimeout) clearTimeout(expiryTimeout);
+      clearInterval(pollInterval);
+      if (typeof window !== "undefined") {
+        window.removeEventListener("focus", handleVisibilityOrFocus);
+        document.removeEventListener("visibilitychange", handleVisibilityOrFocus);
+      }
+    };
+  }, [user, authClient, refreshSession]);
 
   const revokeSession = async (sessionUuid: string) => {
     await authClient.revokeSession({ sessionUuid });

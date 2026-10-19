@@ -77,17 +77,28 @@ type JWTClaims struct {
 
 // SignAccessToken signs a new 1-hour access JWT using HMAC-SHA256 with a dedicated subkey
 func SignAccessToken(userUUID, userID, email, sessionUUID string) (string, error) {
+	return SignAccessTokenWithExpiry(userUUID, userID, email, sessionUUID, time.Time{})
+}
+
+// SignAccessTokenWithExpiry signs an access JWT whose expiration is capped at maxExpiresAt (if non-zero).
+func SignAccessTokenWithExpiry(userUUID, userID, email, sessionUUID string, maxExpiresAt time.Time) (string, error) {
 	now := time.Now()
 	masterSecretMu.RLock()
 	ttl := accessTokenTTL
 	masterSecretMu.RUnlock()
+
+	expTime := now.Add(ttl)
+	if !maxExpiresAt.IsZero() && maxExpiresAt.Before(expTime) {
+		expTime = maxExpiresAt
+	}
+
 	claims := JWTClaims{
 		UserUUID:    userUUID,
 		UserID:      userID,
 		Email:       email,
 		SessionUUID: sessionUUID,
 		Iat:         now.Unix(),
-		Exp:         now.Add(ttl).Unix(),
+		Exp:         expTime.Unix(),
 	}
 
 	header := jwtHeader{Alg: "HS256", Typ: "JWT"}
