@@ -614,62 +614,77 @@ strictly JIT-gated `/grafana/*` reverse proxy to `grafana/grafana-oss`:
    - **JIT Access Lease Management**: View active JIT countdown in the top
      header, request new 1–12h JIT leases (`AcquireJitGrant`), extend active
      leases (`ExtendJitGrant`), and revoke leases (`RevokeJitGrant`).
-   - **Interactive CEL Filtering (`SmartFilterInput`) & Sorting Across All
-     Collections**: Shares `SmartFilterInput` and `filterAndSortRecords` from
-     `src/react/shared` with the public catalog. Every collection view (Route
-     Metrics, Recent Traced Requests, Operational Tasks, Job History, Public DB
-     Statistics, Internal Bearer Tokens, and API Audit Log) provides a CEL
-     filter bar with field/operator autocomplete, quick filter presets, an
-     interactive collapsible **Common Expression Language (CEL) Filter Syntax**
-     helper with clickable field pills, a sort column/direction selector, and
-     sortable table headers. By default, the Per-Route Metrics and Recent Traced
-     Requests tables initialize their CEL filter bars to
+   - **Full-Width Layout, Sticky Top Header & Unnumbered Navigation Bar**: The
+     Ops UI spans the full screen width (`w-full`) and pins its top header,
+     unnumbered primary navigation bar (`Service Health & Route Metrics`,
+     `Background Tasks & Triggers`, `Job Execution History`,
+     `Public DB Statistics`, and `IAM, Tokens & Audit Log`), and JIT status bar
+     inside a sticky top container (`sticky top-0 z-40`) so navigation and
+     controls never disappear when scrolling.
+   - **CEL Filtering, Sorting & Selectable Columns Across All Views**: Shares
+     `SmartFilterInput` and `filterAndSortRecords` from `src/react/shared` with
+     the public catalog. Every collection table in the Ops Console
+     (`Service Health`, `Per-Route Metrics`, `Recent Traced Requests`,
+     `Trace & Debug Logs`, `Operational Tasks`, `Job History`,
+     `Public DB Statistics`, `Internal Bearer Tokens`, and `API Audit Log`)
+     provides selectable column toggles (`Columns:`) so operators can choose
+     which columns/fields to display, alongside a CEL filter bar with
+     field/operator autocomplete, quick filter presets, an interactive
+     collapsible **Common Expression Language (CEL) Filter Syntax** helper with
+     clickable field pills, a sort column/direction selector, and sortable table
+     headers. By default, the Per-Route Metrics and Recent Traced Requests
+     tables initialize their CEL filter bars to
      `service_name == "server-api" && route != "/healthz" && route != "/metrics"`
      so the Ops UI focuses on public API server (`server-api`) application
      traffic while filtering out internal health and metrics scrape endpoints.
-   - **Tabbed Per-Route Metrics, Paginated Traced Requests & Trace Debug Logs
-     Explorer**: Renders the telemetry explorer inside a 3-tab sub-navigation
-     (`1. Per-Route Metrics` as the default first tab,
-     `2. Recent Traced Requests` as the second tab, and `3. Trace & Debug Logs`
-     as the third tab). Clicking any route row in `1. Per-Route Metrics`
-     automatically switches to `2. Recent Traced Requests` and applies
-     `route == "<clicked_route>"` to the traced requests CEL filter. Operators
-     can look further into the past via the extended lookback window selector
-     (`5m`, `15m`, `1h`, `6h`, `24h`, `7d`, `60d`, or `All History`) and
-     configurable **History Depth** (`100` to `2,000` traced requests fetched
-     from VictoriaLogs), and page through matching requests using **Page Size**
-     (`10`, `25`, `50`, or `100` per page) and `First / Prev / Next / Last`
-     pagination controls.
-   - **Vertical 5-Service Deep Health Cards with Direct `/healthz` & `/metrics`
+   - **4-Tab Telemetry Explorer (`Service Health`, `Per-Route Metrics`,
+     `Recent Traced Requests` & `Trace & Debug Logs`)**: Renders the telemetry
+     explorer inside an unnumbered 4-tab sub-navigation (`Service Health` as the
+     default first tab, `Per-Route Metrics` as the second tab,
+     `Recent Traced Requests` as the third tab, and `Trace & Debug Logs` as the
+     fourth tab).
+   - **Vertical `Service Health` Cards with Direct `/healthz` & `/metrics`
      Links**: Renders the 5 monitored services (`server-api`, `server-web`,
-     `server-ops-api`, `server-ops-web`, and `server-cron`) in a vertical stack
-     of full-width health cards. Each card includes direct links to
-     `/services/<service>/healthz` and `/services/<service>/metrics`, which
-     `server-ops-web` authenticates via the operator's `qs_ops_token` session
-     and proxies to the target service (including internal-only `server-cron`)
-     across `sandbox`, `staging`, and `prod`.
-   - **Clickable Trace IDs & 3rd Tab Trace & Debug Logs Inspector**: Every
-     `trace_id` displayed in Recent Traced Requests, Job Execution History, the
-     Job Inspector, and the Internal API Audit Log is a clickable button that
-     invokes `OpsService.GetTrace` and switches to the `3. Trace & Debug Logs`
-     sub-tab, displaying the Cross-Service Hop Waterfall (`spans`) and
-     Chronological Cross-Service Structured & Debug Logs (`logs`, including
-     `DEBUG` events for trace context initialization, PostgreSQL SQL queries via
-     `pgx.QueryTracer`, RPC auth verification, outbound internal hops, and
-     response flushing).
+     `server-ops-api`, `server-ops-web`, and `server-cron`) in the first tab in
+     a vertical stack of full-width health cards with selectable display fields.
+     Each card includes direct links to `/services/<service>/healthz` and
+     `/services/<service>/metrics`, which `server-ops-web` authenticates via the
+     operator's `qs_ops_token` session and proxies to the target service
+     (including internal-only `server-cron`) across `sandbox`, `staging`, and
+     `prod`.
+   - **Interactive `Per-Route Metrics` & Paginated `Recent Traced Requests`**:
+     Clicking any route row in `Per-Route Metrics` automatically switches to
+     `Recent Traced Requests` and applies `route == "<clicked_route>"` to the
+     traced requests CEL filter. Operators can look further into the past via
+     the extended lookback window selector (`5m`, `15m`, `1h`, `6h`, `24h`,
+     `7d`, `60d`, or `All History`) and configurable **History Depth** (`100` to
+     `2,000` traced requests fetched from VictoriaLogs), and page through
+     matching requests using **Page Size** (`10`, `25`, `50`, or `100` per page)
+     and `First / Prev / Next / Last` pagination controls.
+   - **Clickable Trace IDs & `Trace & Debug Logs` Tab with Separate `Route` and
+     Last-Column `Attributes`**: Every `trace_id` displayed in Recent Traced
+     Requests, Job Execution History, the Job Inspector, and the Internal API
+     Audit Log is a clickable button that invokes `OpsService.GetTrace` and
+     switches to the `Trace & Debug Logs` tab, displaying the Cross-Service Hop
+     Waterfall (`spans`) and Chronological Cross-Service Structured & Debug Logs
+     (`logs`, including `DEBUG` events for trace context initialization,
+     PostgreSQL SQL queries via `pgx.QueryTracer`, RPC auth verification,
+     outbound internal hops, and response flushing) with separate `Route` and
+     `Attributes` columns (`Timestamp`, `Service`, `Level`, `Event`, `Route`,
+     `Status / RTT`, and `Attributes` as the last column).
    - **Operational Task Triggering**: Interactive list of all 6 registered tasks
      (`ListTasks`: `cleanup_expired_otps`, `cleanup_expired_tokens`,
      `cleanup_orphaned_blobs`, `purge_soft_deleted_accounts`,
      `send_username_release_warnings`, and a parameter form for `set_user_role`)
      with 1-click manual trigger buttons, CEL filtering, and sorting.
    - **Job History & Job Details Inspector**: Live table of `ListJobs` with CEL
-     filtering and sorting where clicking any job row fetches and displays full
-     job details (`GetJob`: `job_id`, `task_name`, `procedure`, `caller_id`,
-     `status`, duration, timestamps, `region`, `X-Trace-Id` UUID, and execution
-     output/error message).
+     filtering, sorting, and selectable columns where clicking any job row
+     fetches and displays full job details (`GetJob`: `job_id`, `task_name`,
+     `procedure`, `caller_id`, `status`, duration, timestamps, `region`,
+     `X-Trace-Id` UUID, and execution output/error message).
    - **Database Stats, IAM & Audit Logs**: Views for `GetDatabaseStats`,
-     `ListInternalTokens`, and `ListInternalApiCalls` with CEL filtering and
-     sortable columns.
+     `ListInternalTokens`, and `ListInternalApiCalls` with CEL filtering,
+     sortable columns, and selectable column toggles.
    - **JIT-Gated Link to Grafana (`/grafana/`)**: A prominent **"📊 Open Grafana
      Dashboard (`/grafana/`)"** button in the header that navigates to
      `/grafana/` when a JIT lease is active (or prompts the operator to activate

@@ -114,7 +114,7 @@ describe("Ops Console App", () => {
     expect(screen.getByText("p95_rtt_ms")).toBeInTheDocument();
   });
 
-  it("filters routes to server-api (excluding /healthz and /metrics) in the first tab, switches to Recent Traced Requests with route filter on click, and displays internal hops plus DEBUG logs in the 3rd Trace & Debug Logs tab", async () => {
+  it("renders sticky top bar with unnumbered navbar, full-width layout, Service Health as the first tab, Per-Route Metrics and Traced Requests tabs, and separate Route and Attributes columns in Trace & Debug Logs with selectable columns", async () => {
     const traceId = "0195f0a1-1234-7000-8000-abcdef012345";
     const otherApiTraceId = "0195f0a1-8888-7000-8000-000000000009";
     const healthTraceId = "0195f0a1-9999-7000-8000-000000000001";
@@ -330,18 +330,48 @@ describe("Ops Console App", () => {
       setOpsCookieAndStorage("qs_op_sandbox_token_12345");
       render(<App />);
 
-      // Tab 1 (Per-Route Metrics) is active by default
-      const routeBtn = await screen.findByTestId(
-        "select-route-/quadsmith.api.MotorService/ListMotors",
-      );
-      expect(screen.getByTestId("telemetry-tab-routes")).toHaveAttribute("aria-selected", "true");
-      expect(screen.getByTestId("telemetry-tab-routes")).toHaveTextContent("1. Per-Route Metrics");
+      // Verify sticky top bar, unnumbered navigation bar, and full-width layout
+      const stickyBar = await screen.findByTestId("ops-sticky-top-bar");
+      expect(stickyBar.className).toContain("sticky");
+      expect(stickyBar.className).toContain("top-0");
+
+      const navbar = screen.getByTestId("ops-main-navbar");
+      expect(navbar).toBeInTheDocument();
+      expect(screen.getByTestId("tab-health")).toHaveTextContent("Service Health & Route Metrics");
+      expect(screen.getByTestId("tab-tasks")).toHaveTextContent("Background Tasks & Triggers");
+      expect(screen.getByTestId("tab-jobs")).toHaveTextContent("Job Execution History");
+      expect(screen.getByTestId("tab-db")).toHaveTextContent("Public DB Statistics");
+      expect(screen.getByTestId("tab-iam")).toHaveTextContent("IAM, Tokens & Audit Log");
+
+      const mainContent = screen.getByTestId("ops-main-content");
+      expect(mainContent.className).toContain("w-full");
+      expect(mainContent.className).not.toContain("max-w-7xl");
+
+      // Tab 1 (Service Health) is active by default and unnumbered
+      expect(screen.getByTestId("telemetry-tab-health")).toHaveAttribute("aria-selected", "true");
+      expect(screen.getByTestId("telemetry-tab-health")).toHaveTextContent("Service Health");
+      expect(screen.getByTestId("telemetry-tab-routes")).toHaveAttribute("aria-selected", "false");
+      expect(screen.getByTestId("telemetry-tab-routes")).toHaveTextContent("Per-Route Metrics");
       expect(screen.getByTestId("telemetry-tab-traces")).toHaveAttribute("aria-selected", "false");
+      expect(screen.getByTestId("telemetry-tab-traces")).toHaveTextContent(
+        "Recent Traced Requests",
+      );
       expect(screen.getByTestId("telemetry-tab-trace-detail")).toHaveAttribute(
         "aria-selected",
         "false",
       );
-      expect(screen.queryByTestId("route-requests-table")).not.toBeInTheDocument();
+      expect(screen.getByTestId("telemetry-tab-trace-detail")).toHaveTextContent(
+        "Trace & Debug Logs",
+      );
+      expect(screen.getByTestId("telemetry-panel-health")).toBeInTheDocument();
+      expect(screen.getByTestId("health-column-selector")).toBeInTheDocument();
+
+      // Switch to Tab 2 (Per-Route Metrics)
+      fireEvent.click(screen.getByTestId("telemetry-tab-routes"));
+      expect(screen.getByTestId("telemetry-tab-routes")).toHaveAttribute("aria-selected", "true");
+      const routeBtn = await screen.findByTestId(
+        "select-route-/quadsmith.api.MotorService/ListMotors",
+      );
 
       const routesTable = screen.getByTestId("routes-red-table");
       expect(routesTable).toHaveTextContent("/quadsmith.api.MotorService/ListMotors");
@@ -349,7 +379,12 @@ describe("Ops Console App", () => {
       expect(routesTable).not.toHaveTextContent("/healthz");
       expect(routesTable).not.toHaveTextContent("/quadsmith.ops.OpsService/GetSystemHealth");
 
-      // Clicking a route in Tab 1 switches to Tab 2 (Recent Traced Requests) and adds the route filter
+      // Toggle a column in Per-Route Metrics using the ColumnSelector
+      expect(routesTable).toHaveTextContent("REGION");
+      fireEvent.click(screen.getByTestId("routes-col-toggle-region"));
+      expect(routesTable).not.toHaveTextContent("REGION");
+
+      // Clicking a route switches to Tab 3 (Recent Traced Requests) and adds the route filter
       fireEvent.click(routeBtn);
 
       expect(screen.getByTestId("telemetry-tab-traces")).toHaveAttribute("aria-selected", "true");
@@ -363,7 +398,7 @@ describe("Ops Console App", () => {
       expect(screen.queryByTestId(`inspect-trace-${healthTraceId}`)).not.toBeInTheDocument();
       expect(screen.queryByTestId(`inspect-trace-${opsTraceId}`)).not.toBeInTheDocument();
 
-      // Clicking a trace ID in Tab 2 switches to Tab 3 (3. Trace & Debug Logs)
+      // Clicking a trace ID switches to Tab 4 (Trace & Debug Logs)
       fireEvent.click(traceBtn);
 
       expect(screen.getByTestId("telemetry-tab-trace-detail")).toHaveAttribute(
@@ -382,12 +417,40 @@ describe("Ops Console App", () => {
       expect(logsTable).toHaveTextContent("db_query");
       expect(logsTable).toHaveTextContent("http_request");
 
-      // Clicking Back to Traced Requests switches back to Tab 2
+      // Verify ROUTE and ATTRIBUTES are separate columns and ATTRIBUTES is the last column
+      const logHeaders = Array.from(logsTable.querySelectorAll("thead th")).map((th) =>
+        th.textContent?.trim(),
+      );
+      expect(logHeaders).toEqual([
+        "TIMESTAMP",
+        "SERVICE",
+        "LEVEL",
+        "EVENT",
+        "ROUTE",
+        "STATUS / RTT",
+        "ATTRIBUTES",
+      ]);
+
+      // Toggle ATTRIBUTES column via trace-logs-column-selector
+      fireEvent.click(screen.getByTestId("trace-logs-col-toggle-attributes"));
+      const updatedHeaders = Array.from(logsTable.querySelectorAll("thead th")).map((th) =>
+        th.textContent?.trim(),
+      );
+      expect(updatedHeaders).toEqual([
+        "TIMESTAMP",
+        "SERVICE",
+        "LEVEL",
+        "EVENT",
+        "ROUTE",
+        "STATUS / RTT",
+      ]);
+
+      // Clicking Back to Traced Requests switches back to Recent Traced Requests
       fireEvent.click(screen.getByTestId("close-trace-inspector"));
       expect(screen.getByTestId("telemetry-tab-traces")).toHaveAttribute("aria-selected", "true");
       expect(screen.queryByTestId("trace-inspector-panel")).not.toBeInTheDocument();
 
-      // Verify pagination bar and historical lookback controls are rendered on Tab 2
+      // Verify pagination bar and historical lookback controls are rendered on Recent Traced Requests
       expect(screen.getByTestId("traces-pagination-bar")).toBeInTheDocument();
       expect(screen.getByTestId("traces-page-indicator")).toHaveTextContent("Page 1 of 1");
       expect(screen.getByTestId("traces-history-limit-select")).toHaveValue("500");

@@ -568,7 +568,152 @@ export function getStoredOpsToken(): string {
 }
 
 type ActiveTab = "health" | "tasks" | "jobs" | "db" | "iam";
-export type TelemetryExplorerTab = "routes" | "traces" | "trace_detail";
+export type TelemetryExplorerTab = "health" | "routes" | "traces" | "trace_detail";
+
+export interface ColumnOption {
+  key: string;
+  label: string;
+}
+
+export const HEALTH_COLUMNS: ColumnOption[] = [
+  { key: "status", label: "Status" },
+  { key: "region", label: "Region" },
+  { key: "instance", label: "Instance" },
+  { key: "runtime", label: "Uptime & Goroutines" },
+  { key: "db_pool", label: "DB Pool" },
+  { key: "endpoints", label: "Endpoints" },
+  { key: "checks", label: "Dependency Checks" },
+];
+
+export const ROUTE_COLUMNS: ColumnOption[] = [
+  { key: "service_name", label: "Service" },
+  { key: "region", label: "Region" },
+  { key: "method", label: "Method" },
+  { key: "route", label: "Route" },
+  { key: "total_requests", label: "Reqs" },
+  { key: "error_count", label: "Errors" },
+  { key: "availability_percent", label: "Availability" },
+  { key: "p50_rtt_ms", label: "P50 RTT" },
+  { key: "p95_rtt_ms", label: "P95 RTT" },
+  { key: "p99_rtt_ms", label: "P99 RTT" },
+];
+
+export const TRACE_COLUMNS: ColumnOption[] = [
+  { key: "occurred_at", label: "Occurred At" },
+  { key: "trace_id", label: "Trace ID" },
+  { key: "region", label: "Region" },
+  { key: "service_name", label: "Service" },
+  { key: "method", label: "Method" },
+  { key: "route", label: "Route" },
+  { key: "status_code", label: "Status" },
+  { key: "rtt_ms", label: "RTT" },
+];
+
+export const TRACE_LOG_COLUMNS: ColumnOption[] = [
+  { key: "timestamp", label: "Timestamp" },
+  { key: "service", label: "Service" },
+  { key: "level", label: "Level" },
+  { key: "event", label: "Event" },
+  { key: "route", label: "Route" },
+  { key: "status_rtt", label: "Status / RTT" },
+  { key: "attributes", label: "Attributes" },
+];
+
+export const JOB_COLUMNS: ColumnOption[] = [
+  { key: "job_id", label: "Job ID" },
+  { key: "trace_id", label: "Trace ID" },
+  { key: "region", label: "Region" },
+  { key: "task_name", label: "Task" },
+  { key: "caller", label: "Caller" },
+  { key: "status", label: "Status" },
+  { key: "duration_ms", label: "Duration" },
+  { key: "created_at", label: "Created At" },
+];
+
+export const DB_COLUMNS: ColumnOption[] = [
+  { key: "table_name", label: "Table Name" },
+  { key: "row_count", label: "Live Rows" },
+  { key: "total_size_bytes", label: "Disk Size" },
+];
+
+export const TOKEN_COLUMNS: ColumnOption[] = [
+  { key: "id", label: "ID" },
+  { key: "name", label: "Name" },
+  { key: "type", label: "Type" },
+  { key: "group_name", label: "Group" },
+  { key: "expires_at", label: "Expires At" },
+  { key: "status", label: "Status" },
+  { key: "action", label: "Action" },
+];
+
+export const AUDIT_COLUMNS: ColumnOption[] = [
+  { key: "created_at", label: "Timestamp" },
+  { key: "trace_id", label: "Trace ID" },
+  { key: "region", label: "Region" },
+  { key: "caller", label: "Caller" },
+  { key: "group_name", label: "Group" },
+  { key: "method", label: "Method" },
+  { key: "jit_grant_id", label: "JIT Grant" },
+  { key: "status", label: "Status" },
+  { key: "duration_ms", label: "Duration" },
+];
+
+interface ColumnSelectorProps {
+  columns: ColumnOption[];
+  visibleColumns: string[];
+  onChange: (nextColumns: string[]) => void;
+  testIdPrefix: string;
+}
+
+function ColumnSelector({ columns, visibleColumns, onChange, testIdPrefix }: ColumnSelectorProps) {
+  const handleToggle = (key: string) => {
+    if (visibleColumns.includes(key)) {
+      if (visibleColumns.length <= 1) return;
+      onChange(visibleColumns.filter((c) => c !== key));
+    } else {
+      const nextSet = new Set([...visibleColumns, key]);
+      onChange(columns.map((c) => c.key).filter((k) => nextSet.has(k)));
+    }
+  };
+
+  return (
+    <div
+      data-testid={`${testIdPrefix}-column-selector`}
+      className="flex flex-wrap items-center gap-1.5 text-xs font-mono text-slate-400"
+    >
+      <span className="text-[11px] uppercase tracking-wider text-slate-400 mr-1">Columns:</span>
+      {columns.map((col) => {
+        const active = visibleColumns.includes(col.key);
+        return (
+          <button
+            key={col.key}
+            type="button"
+            aria-pressed={active}
+            data-testid={`${testIdPrefix}-col-toggle-${col.key}`}
+            onClick={() => handleToggle(col.key)}
+            className={`px-2 py-0.5 rounded text-[11px] font-mono border transition-colors cursor-pointer ${
+              active
+                ? "bg-sky-600/20 border-sky-500/40 text-sky-200 font-semibold"
+                : "bg-[#090d16] border-slate-800 text-slate-500 hover:text-slate-300"
+            }`}
+          >
+            {active ? `✓ ${col.label}` : col.label}
+          </button>
+        );
+      })}
+      {visibleColumns.length < columns.length && (
+        <button
+          type="button"
+          data-testid={`${testIdPrefix}-col-reset`}
+          onClick={() => onChange(columns.map((c) => c.key))}
+          className="px-2 py-0.5 rounded text-[11px] font-mono border border-slate-700 bg-slate-800 text-slate-200 hover:bg-slate-700 cursor-pointer"
+        >
+          Show All
+        </button>
+      )}
+    </div>
+  );
+}
 
 export function applyRouteToTraceCelFilter(
   currentFilter: string,
@@ -739,10 +884,22 @@ export default function App() {
   const [loading, setLoading] = useState<boolean>(false);
 
   const [activeTab, setActiveTab] = useState<ActiveTab>("health");
-  const [telemetrySubTab, setTelemetrySubTab] = useState<TelemetryExplorerTab>("routes");
+  const [telemetrySubTab, setTelemetrySubTab] = useState<TelemetryExplorerTab>("health");
   const [regionFilter, setRegionFilter] = useState<string>("all");
   const [serviceFilter, setServiceFilter] = useState<string>("all");
   const [metricsWindow, setMetricsWindow] = useState<string>("5m");
+
+  // Selectable columns state per tab
+  const [healthCols, setHealthCols] = useState<string[]>(() => HEALTH_COLUMNS.map((c) => c.key));
+  const [routeCols, setRouteCols] = useState<string[]>(() => ROUTE_COLUMNS.map((c) => c.key));
+  const [traceCols, setTraceCols] = useState<string[]>(() => TRACE_COLUMNS.map((c) => c.key));
+  const [traceLogCols, setTraceLogCols] = useState<string[]>(() =>
+    TRACE_LOG_COLUMNS.map((c) => c.key),
+  );
+  const [jobCols, setJobCols] = useState<string[]>(() => JOB_COLUMNS.map((c) => c.key));
+  const [dbCols, setDbCols] = useState<string[]>(() => DB_COLUMNS.map((c) => c.key));
+  const [tokenCols, setTokenCols] = useState<string[]>(() => TOKEN_COLUMNS.map((c) => c.key));
+  const [auditCols, setAuditCols] = useState<string[]>(() => AUDIT_COLUMNS.map((c) => c.key));
 
   // CEL Filter & Sort state per collection
   const [routeCelFilter, setRouteCelFilter] = useState<string>(DEFAULT_SERVICE_CEL_FILTER);
@@ -1676,172 +1833,209 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#090d16] text-slate-100 flex flex-col">
-      {/* Top Header */}
-      <header className="bg-[#111827] border-b border-slate-800 px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2.5">
-            <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-mono font-bold tracking-wider text-sm text-slate-100">
-              QUADSMITH // OPS CONSOLE
+    <div className="min-h-screen w-full bg-[#090d16] text-slate-100 flex flex-col">
+      {/* Sticky Top Bar (Header + Navigation Bar + JIT Bar) */}
+      <div
+        data-testid="ops-sticky-top-bar"
+        className="sticky top-0 z-40 bg-[#111827]/95 backdrop-blur border-b border-slate-800 shadow-lg"
+      >
+        {/* Top Header & Navigation Bar */}
+        <header className="border-b border-slate-800 px-6 py-3 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-4">
+            <div className="flex items-center gap-2.5">
+              <span className="h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="font-mono font-bold tracking-wider text-sm text-slate-100">
+                QUADSMITH // OPS CONSOLE
+              </span>
+            </div>
+            <span className="px-2 py-0.5 text-xs font-mono rounded bg-slate-800 text-sky-300 border border-slate-700">
+              env:{systemHealth?.environment || oauthConfig?.environment || "sandbox"}
             </span>
-          </div>
-          <span className="px-2 py-0.5 text-xs font-mono rounded bg-slate-800 text-sky-300 border border-slate-700">
-            env:{systemHealth?.environment || oauthConfig?.environment || "sandbox"}
-          </span>
-          <div className="flex items-center gap-1.5 text-xs font-mono text-slate-400">
-            <span>Region:</span>
-            <select
-              aria-label="Deployment Region Filter"
-              data-testid="region-filter-select"
-              value={regionFilter}
-              onChange={(e) => setRegionFilter(e.target.value)}
-              className="bg-[#090d16] border border-slate-700 rounded px-2 py-1 text-xs font-mono text-slate-200"
-            >
-              <option value="all">All Regions ({systemHealth?.region || "local"})</option>
-              <option value="local">local</option>
-              <option value="us-central1">us-central1</option>
-            </select>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => void refreshDashboard()}
-            disabled={loading}
-            className="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-mono cursor-pointer"
-          >
-            {loading ? "Refreshing..." : "↻ Refresh"}
-          </button>
-          <span
-            data-testid="operator-badge"
-            className="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-xs font-mono text-slate-300"
-          >
-            {operatorInfo.operator} ({operatorInfo.groupName})
-          </span>
-          <button
-            type="button"
-            onClick={handleSignOut}
-            className="px-2.5 py-1 rounded bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 text-xs font-mono cursor-pointer"
-          >
-            Sign Out
-          </button>
-        </div>
-      </header>
-
-      {/* JIT Elevation & Grafana Gate Bar */}
-      <section className="bg-[#0d1424] border-b border-slate-800 px-6 py-3 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <span
-            data-testid="jit-status-badge"
-            className={`px-2.5 py-1 rounded text-xs font-mono font-semibold border ${
-              hasActiveJit
-                ? "bg-amber-500/15 text-amber-300 border-amber-500/40"
-                : "bg-slate-800 text-slate-400 border-slate-700"
-            }`}
-          >
-            {hasActiveJit
-              ? `⚡ JIT ELEVATED · ${activeJitGrant?.id} (expires ${formatTimestamp(activeJitGrant?.expiresAt)})`
-              : "🔒 JIT LOCKED · READ-ONLY DIAGNOSTICS"}
-          </span>
-
-          {!hasActiveJit ? (
-            <div className="flex flex-wrap items-center gap-2">
-              <input
-                type="text"
-                data-testid="jit-reason-input"
-                value={jitReason}
-                onChange={(e) => setJitReason(e.target.value)}
-                placeholder="Reason for JIT elevation..."
-                className="bg-[#090d16] border border-slate-700 rounded px-2.5 py-1 text-xs font-mono text-slate-200 w-64"
-              />
+            <div className="flex items-center gap-1.5 text-xs font-mono text-slate-400">
+              <span>Region:</span>
               <select
-                aria-label="JIT Lease Hours"
-                data-testid="jit-hours-select"
-                value={jitHours}
-                onChange={(e) => setJitHours(Number(e.target.value))}
+                aria-label="Deployment Region Filter"
+                data-testid="region-filter-select"
+                value={regionFilter}
+                onChange={(e) => setRegionFilter(e.target.value)}
                 className="bg-[#090d16] border border-slate-700 rounded px-2 py-1 text-xs font-mono text-slate-200"
               >
-                <option value={1}>1h</option>
-                <option value={2}>2h</option>
-                <option value={4}>4h</option>
-                <option value={8}>8h</option>
-                <option value={12}>12h</option>
+                <option value="all">All Regions ({systemHealth?.region || "local"})</option>
+                <option value="local">local</option>
+                <option value="us-central1">us-central1</option>
               </select>
-              <button
-                type="button"
-                data-testid="acquire-jit-btn"
-                onClick={() => void handleAcquireJit()}
-                className="px-3 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 text-xs font-mono font-semibold cursor-pointer"
-              >
-                Acquire JIT Lease
-              </button>
             </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                data-testid="extend-jit-btn"
-                onClick={() => void handleExtendJit()}
-                className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-mono cursor-pointer"
-              >
-                +2h Extend
-              </button>
-              <button
-                type="button"
-                data-testid="revoke-jit-btn"
-                onClick={() => void handleRevokeJit()}
-                className="px-2.5 py-1 rounded bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 text-xs font-mono cursor-pointer"
-              >
-                Revoke Lease
-              </button>
-            </div>
-          )}
-        </div>
 
-        {/* JIT-gated @quadsmith Impersonation & Grafana Deep-Dive Links */}
-        <div className="flex items-center gap-2">
-          {hasActiveJit ? (
-            <>
-              <button
-                type="button"
-                data-testid="login-quadsmith-btn"
-                onClick={() => void handleLoginAsQuadsmith()}
-                className="px-3 py-1.5 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 text-xs font-mono font-semibold transition cursor-pointer"
-              >
-                🚀 Log in as @quadsmith
-              </button>
-              <a
-                href="/grafana/d/quadsmith-health/quadsmith-service-health"
-                target="_blank"
-                rel="noreferrer"
-                data-testid="open-grafana-btn"
-                className="px-3 py-1.5 rounded bg-sky-600/25 hover:bg-sky-600/35 text-sky-200 border border-sky-500/40 text-xs font-mono font-semibold transition"
-              >
-                📊 Open Grafana Dashboard (/grafana/)
-              </a>
-            </>
-          ) : (
-            <>
-              <span
-                data-testid="login-quadsmith-btn"
-                title="Acquire an active JIT lease to log in as @quadsmith"
-                className="px-3 py-1.5 rounded bg-slate-900 text-slate-500 border border-slate-800 text-xs font-mono cursor-not-allowed"
-              >
-                🔒 Log in as @quadsmith (Requires JIT)
-              </span>
-              <span
-                data-testid="open-grafana-btn"
-                title="Acquire an active JIT lease to access /grafana/*"
-                className="px-3 py-1.5 rounded bg-slate-900 text-slate-500 border border-slate-800 text-xs font-mono cursor-not-allowed"
-              >
-                🔒 Grafana Dashboard (Requires JIT)
-              </span>
-            </>
-          )}
-        </div>
-      </section>
+            {/* Primary Navigation Bar (Unnumbered) */}
+            <nav
+              aria-label="Primary Navigation"
+              data-testid="ops-main-navbar"
+              className="flex flex-wrap items-center gap-1.5 bg-[#090d16] p-1 rounded-lg border border-slate-800"
+            >
+              {(
+                [
+                  ["health", "Service Health & Route Metrics"],
+                  ["tasks", "Background Tasks & Triggers"],
+                  ["jobs", "Job Execution History"],
+                  ["db", "Public DB Statistics"],
+                  ["iam", "IAM, Tokens & Audit Log"],
+                ] as const
+              ).map(([id, label]) => (
+                <button
+                  key={id}
+                  type="button"
+                  data-testid={`tab-${id}`}
+                  onClick={() => setActiveTab(id)}
+                  className={`px-3 py-1.5 text-xs font-mono rounded-md transition cursor-pointer ${
+                    activeTab === id
+                      ? "bg-sky-600 text-white font-semibold shadow-sm"
+                      : "bg-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => void refreshDashboard()}
+              disabled={loading}
+              className="px-3 py-1.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-mono cursor-pointer"
+            >
+              {loading ? "Refreshing..." : "↻ Refresh"}
+            </button>
+            <span
+              data-testid="operator-badge"
+              className="px-2.5 py-1 rounded bg-slate-900 border border-slate-700 text-xs font-mono text-slate-300"
+            >
+              {operatorInfo.operator} ({operatorInfo.groupName})
+            </span>
+            <button
+              type="button"
+              onClick={handleSignOut}
+              className="px-2.5 py-1 rounded bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 text-xs font-mono cursor-pointer"
+            >
+              Sign Out
+            </button>
+          </div>
+        </header>
+
+        {/* JIT Elevation & Grafana Gate Bar */}
+        <section className="bg-[#0d1424]/95 px-6 py-2.5 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center gap-3">
+            <span
+              data-testid="jit-status-badge"
+              className={`px-2.5 py-1 rounded text-xs font-mono font-semibold border ${
+                hasActiveJit
+                  ? "bg-amber-500/15 text-amber-300 border-amber-500/40"
+                  : "bg-slate-800 text-slate-400 border-slate-700"
+              }`}
+            >
+              {hasActiveJit
+                ? `⚡ JIT ELEVATED · ${activeJitGrant?.id} (expires ${formatTimestamp(activeJitGrant?.expiresAt)})`
+                : "🔒 JIT LOCKED · READ-ONLY DIAGNOSTICS"}
+            </span>
+
+            {!hasActiveJit ? (
+              <div className="flex flex-wrap items-center gap-2">
+                <input
+                  type="text"
+                  data-testid="jit-reason-input"
+                  value={jitReason}
+                  onChange={(e) => setJitReason(e.target.value)}
+                  placeholder="Reason for JIT elevation..."
+                  className="bg-[#090d16] border border-slate-700 rounded px-2.5 py-1 text-xs font-mono text-slate-200 w-64"
+                />
+                <select
+                  aria-label="JIT Lease Hours"
+                  data-testid="jit-hours-select"
+                  value={jitHours}
+                  onChange={(e) => setJitHours(Number(e.target.value))}
+                  className="bg-[#090d16] border border-slate-700 rounded px-2 py-1 text-xs font-mono text-slate-200"
+                >
+                  <option value={1}>1h</option>
+                  <option value={2}>2h</option>
+                  <option value={4}>4h</option>
+                  <option value={8}>8h</option>
+                  <option value={12}>12h</option>
+                </select>
+                <button
+                  type="button"
+                  data-testid="acquire-jit-btn"
+                  onClick={() => void handleAcquireJit()}
+                  className="px-3 py-1 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 text-xs font-mono font-semibold cursor-pointer"
+                >
+                  Acquire JIT Lease
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  data-testid="extend-jit-btn"
+                  onClick={() => void handleExtendJit()}
+                  className="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-mono cursor-pointer"
+                >
+                  +2h Extend
+                </button>
+                <button
+                  type="button"
+                  data-testid="revoke-jit-btn"
+                  onClick={() => void handleRevokeJit()}
+                  className="px-2.5 py-1 rounded bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 border border-rose-800/60 text-xs font-mono cursor-pointer"
+                >
+                  Revoke Lease
+                </button>
+              </div>
+            )}
+          </div>
+
+          {/* JIT-gated @quadsmith Impersonation & Grafana Deep-Dive Links */}
+          <div className="flex items-center gap-2">
+            {hasActiveJit ? (
+              <>
+                <button
+                  type="button"
+                  data-testid="login-quadsmith-btn"
+                  onClick={() => void handleLoginAsQuadsmith()}
+                  className="px-3 py-1.5 rounded bg-amber-500/20 hover:bg-amber-500/30 text-amber-200 border border-amber-500/40 text-xs font-mono font-semibold transition cursor-pointer"
+                >
+                  🚀 Log in as @quadsmith
+                </button>
+                <a
+                  href="/grafana/d/quadsmith-health/quadsmith-service-health"
+                  target="_blank"
+                  rel="noreferrer"
+                  data-testid="open-grafana-btn"
+                  className="px-3 py-1.5 rounded bg-sky-600/25 hover:bg-sky-600/35 text-sky-200 border border-sky-500/40 text-xs font-mono font-semibold transition"
+                >
+                  📊 Open Grafana Dashboard (/grafana/)
+                </a>
+              </>
+            ) : (
+              <>
+                <span
+                  data-testid="login-quadsmith-btn"
+                  title="Acquire an active JIT lease to log in as @quadsmith"
+                  className="px-3 py-1.5 rounded bg-slate-900 text-slate-500 border border-slate-800 text-xs font-mono cursor-not-allowed"
+                >
+                  🔒 Log in as @quadsmith (Requires JIT)
+                </span>
+                <span
+                  data-testid="open-grafana-btn"
+                  title="Acquire an active JIT lease to access /grafana/*"
+                  className="px-3 py-1.5 rounded bg-slate-900 text-slate-500 border border-slate-800 text-xs font-mono cursor-not-allowed"
+                >
+                  🔒 Grafana Dashboard (Requires JIT)
+                </span>
+              </>
+            )}
+          </div>
+        </section>
+      </div>
 
       {/* Feedback Banners */}
       {(bannerMessage || bannerError) && (
@@ -1865,35 +2059,8 @@ export default function App() {
         </div>
       )}
 
-      {/* Navigation Tabs */}
-      <nav className="px-6 pt-4 border-b border-slate-800 flex flex-wrap gap-2">
-        {(
-          [
-            ["health", "1. Service Health & Route Metrics"],
-            ["tasks", "2. Background Tasks & Triggers"],
-            ["jobs", "3. Job Execution History"],
-            ["db", "4. Public DB Statistics"],
-            ["iam", "5. IAM, Tokens & Audit Log"],
-          ] as const
-        ).map(([id, label]) => (
-          <button
-            key={id}
-            type="button"
-            data-testid={`tab-${id}`}
-            onClick={() => setActiveTab(id)}
-            className={`px-4 py-2 text-xs font-mono rounded-t-lg border-t border-x transition cursor-pointer ${
-              activeTab === id
-                ? "bg-[#111827] text-sky-300 border-slate-700 font-semibold"
-                : "bg-transparent text-slate-400 border-transparent hover:text-slate-200"
-            }`}
-          >
-            {label}
-          </button>
-        ))}
-      </nav>
-
-      {/* Main Content Area */}
-      <main className="flex-1 p-6 space-y-6 max-w-7xl w-full mx-auto">
+      {/* Full-Width Main Content Area */}
+      <main data-testid="ops-main-content" className="flex-1 p-6 space-y-6 w-full">
         {activeTab === "health" && (
           <div className="space-y-6">
             {/* Fleet KPI Summary */}
@@ -1953,105 +2120,11 @@ export default function App() {
               </div>
             </div>
 
-            {/* 5-Service Deep Health Matrix */}
-            <div className="bg-[#111827] border border-slate-800 rounded-xl p-5 space-y-4">
-              <div className="flex items-center justify-between">
-                <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-slate-200">
-                  5-Service Deep Health Matrix (/healthz &amp; /metrics)
-                </h2>
-                <span className="text-xs font-mono text-slate-400">
-                  Checked: {formatTimestamp(systemHealth?.checkedAt)}
-                </span>
-              </div>
-
-              <div data-testid="service-health-matrix" className="flex flex-col gap-3">
-                {(systemHealth?.services ?? []).map((svc) => (
-                  <div
-                    key={`${svc.serviceName}-${svc.region}`}
-                    data-testid={`health-card-${svc.serviceName}`}
-                    className="bg-[#090d16] border border-slate-800 rounded-lg p-4 space-y-3"
-                  >
-                    <div className="flex flex-wrap items-center justify-between gap-3">
-                      <div className="flex flex-wrap items-center gap-3">
-                        <span className="font-mono font-bold text-sm text-slate-100">
-                          {svc.serviceName}
-                        </span>
-                        <span
-                          className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
-                            svc.status === "HEALTHY"
-                              ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
-                              : svc.status === "DEGRADED"
-                                ? "bg-amber-500/15 text-amber-300 border border-amber-500/30"
-                                : "bg-rose-500/15 text-rose-300 border border-rose-500/30"
-                          }`}
-                        >
-                          {svc.status}
-                        </span>
-                        <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-mono text-slate-400">
-                          <span>Region: {svc.region}</span>
-                          <span>Instance: {svc.instanceId}</span>
-                          <span>
-                            Uptime: {svc.uptimeSeconds.toString()}s · Goroutines:{" "}
-                            {svc.numGoroutines}
-                          </span>
-                          {svc.dbMaxConns > 0 && (
-                            <span>
-                              DB Pool: {svc.dbAcquiredConns}/{svc.dbMaxConns} (idle{" "}
-                              {svc.dbIdleConns})
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        <a
-                          href={`/services/${svc.serviceName}/healthz`}
-                          target="_blank"
-                          rel="noreferrer"
-                          data-testid={`healthz-link-${svc.serviceName}`}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-slate-700 text-sky-300 border border-slate-700 text-[11px] font-mono transition"
-                        >
-                          /healthz ↗
-                        </a>
-                        <a
-                          href={`/services/${svc.serviceName}/metrics`}
-                          target="_blank"
-                          rel="noreferrer"
-                          data-testid={`metrics-link-${svc.serviceName}`}
-                          className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-slate-700 text-sky-300 border border-slate-700 text-[11px] font-mono transition"
-                        >
-                          /metrics ↗
-                        </a>
-                      </div>
-                    </div>
-
-                    <div className="pt-2.5 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-1">
-                      {(svc.checks ?? []).map((chk) => (
-                        <div
-                          key={chk.name}
-                          className="flex items-center justify-between text-[11px] font-mono"
-                        >
-                          <span className="text-slate-300 truncate">{chk.name}</span>
-                          <span
-                            className={
-                              chk.status === "HEALTHY" ? "text-emerald-400" : "text-rose-400"
-                            }
-                          >
-                            {chk.status} ({chk.latencyMs.toFixed(1)}ms)
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Route Metrics & Trace Explorer Filters */}
+            {/* Tabbed Service Health, Per-Route Metrics & Request Trace Explorer */}
             <div className="bg-[#111827] border border-slate-800 rounded-xl p-5 space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <h2 className="text-sm font-mono font-bold uppercase tracking-wider text-slate-200">
-                  Per-Route Metrics &amp; Request Trace Explorer
+                  Service Health, Per-Route Metrics &amp; Request Trace Explorer
                 </h2>
 
                 <div className="flex flex-wrap items-center gap-2">
@@ -2089,12 +2162,36 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Sub-tab bar: 1. Per-Route Metrics | 2. Recent Traced Requests | 3. Trace & Debug Logs */}
+              {/* Sub-tab bar: Service Health | Per-Route Metrics | Recent Traced Requests | Trace & Debug Logs */}
               <div
                 role="tablist"
-                aria-label="Route Metrics and Traced Requests Explorer Tabs"
+                aria-label="Service Health and Telemetry Explorer Tabs"
                 className="flex flex-wrap items-center gap-2 border-b border-slate-800 pb-3"
               >
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={telemetrySubTab === "health"}
+                  data-testid="telemetry-tab-health"
+                  onClick={() => setTelemetrySubTab("health")}
+                  className={`px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold transition-colors cursor-pointer flex items-center gap-2 ${
+                    telemetrySubTab === "health"
+                      ? "bg-sky-600 text-white shadow-sm"
+                      : "bg-[#090d16] text-slate-400 border border-slate-800 hover:text-slate-200 hover:border-slate-700"
+                  }`}
+                >
+                  <span>Service Health</span>
+                  <span
+                    className={`px-1.5 py-0.5 rounded text-[10px] ${
+                      telemetrySubTab === "health"
+                        ? "bg-sky-800/80 text-sky-100"
+                        : "bg-slate-800 text-slate-300"
+                    }`}
+                  >
+                    {(systemHealth?.services ?? []).length}
+                  </span>
+                </button>
+
                 <button
                   type="button"
                   role="tab"
@@ -2107,7 +2204,7 @@ export default function App() {
                       : "bg-[#090d16] text-slate-400 border border-slate-800 hover:text-slate-200 hover:border-slate-700"
                   }`}
                 >
-                  <span>1. Per-Route Metrics</span>
+                  <span>Per-Route Metrics</span>
                   <span
                     className={`px-1.5 py-0.5 rounded text-[10px] ${
                       telemetrySubTab === "routes"
@@ -2131,7 +2228,7 @@ export default function App() {
                       : "bg-[#090d16] text-slate-400 border border-slate-800 hover:text-slate-200 hover:border-slate-700"
                   }`}
                 >
-                  <span>2. Recent Traced Requests</span>
+                  <span>Recent Traced Requests</span>
                   <span
                     className={`px-1.5 py-0.5 rounded text-[10px] ${
                       telemetrySubTab === "traces"
@@ -2155,7 +2252,7 @@ export default function App() {
                       : "bg-[#090d16] text-slate-400 border border-slate-800 hover:text-slate-200 hover:border-slate-700"
                   }`}
                 >
-                  <span>3. Trace &amp; Debug Logs</span>
+                  <span>Trace &amp; Debug Logs</span>
                   {selectedTraceId && (
                     <span
                       className={`px-1.5 py-0.5 rounded text-[10px] ${
@@ -2170,6 +2267,120 @@ export default function App() {
                 </button>
               </div>
 
+              {/* Tab 1: Service Health */}
+              {telemetrySubTab === "health" && (
+                <div data-testid="telemetry-panel-health" className="space-y-4">
+                  <div className="flex flex-wrap items-center justify-between gap-3">
+                    <h3 className="text-sm font-mono font-bold uppercase tracking-wider text-slate-200">
+                      Service Health
+                    </h3>
+                    <span className="text-xs font-mono text-slate-400">
+                      Checked: {formatTimestamp(systemHealth?.checkedAt)}
+                    </span>
+                  </div>
+
+                  <ColumnSelector
+                    columns={HEALTH_COLUMNS}
+                    visibleColumns={healthCols}
+                    onChange={setHealthCols}
+                    testIdPrefix="health"
+                  />
+
+                  <div data-testid="service-health-matrix" className="flex flex-col gap-3">
+                    {(systemHealth?.services ?? []).map((svc) => (
+                      <div
+                        key={`${svc.serviceName}-${svc.region}`}
+                        data-testid={`health-card-${svc.serviceName}`}
+                        className="bg-[#090d16] border border-slate-800 rounded-lg p-4 space-y-3"
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-3">
+                          <div className="flex flex-wrap items-center gap-3">
+                            <span className="font-mono font-bold text-sm text-slate-100">
+                              {svc.serviceName}
+                            </span>
+                            {healthCols.includes("status") && (
+                              <span
+                                className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                                  svc.status === "HEALTHY"
+                                    ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
+                                    : svc.status === "DEGRADED"
+                                      ? "bg-amber-500/15 text-amber-300 border border-amber-500/30"
+                                      : "bg-rose-500/15 text-rose-300 border border-rose-500/30"
+                                }`}
+                              >
+                                {svc.status}
+                              </span>
+                            )}
+                            <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] font-mono text-slate-400">
+                              {healthCols.includes("region") && <span>Region: {svc.region}</span>}
+                              {healthCols.includes("instance") && (
+                                <span>Instance: {svc.instanceId}</span>
+                              )}
+                              {healthCols.includes("runtime") && (
+                                <span>
+                                  Uptime: {svc.uptimeSeconds.toString()}s · Goroutines:{" "}
+                                  {svc.numGoroutines}
+                                </span>
+                              )}
+                              {healthCols.includes("db_pool") && svc.dbMaxConns > 0 && (
+                                <span>
+                                  DB Pool: {svc.dbAcquiredConns}/{svc.dbMaxConns} (idle{" "}
+                                  {svc.dbIdleConns})
+                                </span>
+                              )}
+                            </div>
+                          </div>
+
+                          {healthCols.includes("endpoints") && (
+                            <div className="flex items-center gap-2">
+                              <a
+                                href={`/services/${svc.serviceName}/healthz`}
+                                target="_blank"
+                                rel="noreferrer"
+                                data-testid={`healthz-link-${svc.serviceName}`}
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-slate-700 text-sky-300 border border-slate-700 text-[11px] font-mono transition"
+                              >
+                                /healthz ↗
+                              </a>
+                              <a
+                                href={`/services/${svc.serviceName}/metrics`}
+                                target="_blank"
+                                rel="noreferrer"
+                                data-testid={`metrics-link-${svc.serviceName}`}
+                                className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800/90 hover:bg-slate-700 text-sky-300 border border-slate-700 text-[11px] font-mono transition"
+                              >
+                                /metrics ↗
+                              </a>
+                            </div>
+                          )}
+                        </div>
+
+                        {healthCols.includes("checks") && (
+                          <div className="pt-2.5 border-t border-slate-800/80 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-1">
+                            {(svc.checks ?? []).map((chk) => (
+                              <div
+                                key={chk.name}
+                                className="flex items-center justify-between text-[11px] font-mono"
+                              >
+                                <span className="text-slate-300 truncate">{chk.name}</span>
+                                <span
+                                  className={
+                                    chk.status === "HEALTHY" ? "text-emerald-400" : "text-rose-400"
+                                  }
+                                >
+                                  {chk.status} ({chk.latencyMs.toFixed(1)}ms)
+                                </span>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Tab 2: Per-Route Metrics */}
               {telemetrySubTab === "routes" && (
                 <div data-testid="telemetry-panel-routes" className="space-y-4">
                   {/* CEL SmartFilterInput for Per-Route Metrics */}
@@ -2210,6 +2421,13 @@ export default function App() {
                       }
                       testIdPrefix="routes"
                     />
+
+                    <ColumnSelector
+                      columns={ROUTE_COLUMNS}
+                      visibleColumns={routeCols}
+                      onChange={setRouteCols}
+                      testIdPrefix="routes"
+                    />
                   </div>
 
                   {/* Per-Route Metrics Table */}
@@ -2220,156 +2438,176 @@ export default function App() {
                     >
                       <thead>
                         <tr className="border-b border-slate-800 text-slate-400">
-                          <SortableTh
-                            label="SERVICE"
-                            field="service_name"
-                            activeField={routeSortField}
-                            direction={routeSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                routeSortField,
-                                routeSortDir,
-                                setRouteSortField,
-                                setRouteSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="REGION"
-                            field="region"
-                            activeField={routeSortField}
-                            direction={routeSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                routeSortField,
-                                routeSortDir,
-                                setRouteSortField,
-                                setRouteSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="METHOD"
-                            field="method"
-                            activeField={routeSortField}
-                            direction={routeSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                routeSortField,
-                                routeSortDir,
-                                setRouteSortField,
-                                setRouteSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="ROUTE"
-                            field="route"
-                            activeField={routeSortField}
-                            direction={routeSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                routeSortField,
-                                routeSortDir,
-                                setRouteSortField,
-                                setRouteSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="REQS"
-                            field="total_requests"
-                            activeField={routeSortField}
-                            direction={routeSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                routeSortField,
-                                routeSortDir,
-                                setRouteSortField,
-                                setRouteSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="ERRORS"
-                            field="error_count"
-                            activeField={routeSortField}
-                            direction={routeSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                routeSortField,
-                                routeSortDir,
-                                setRouteSortField,
-                                setRouteSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="AVAILABILITY"
-                            field="availability_percent"
-                            activeField={routeSortField}
-                            direction={routeSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                routeSortField,
-                                routeSortDir,
-                                setRouteSortField,
-                                setRouteSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="P50 RTT"
-                            field="p50_rtt_ms"
-                            activeField={routeSortField}
-                            direction={routeSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                routeSortField,
-                                routeSortDir,
-                                setRouteSortField,
-                                setRouteSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="P95 RTT"
-                            field="p95_rtt_ms"
-                            activeField={routeSortField}
-                            direction={routeSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                routeSortField,
-                                routeSortDir,
-                                setRouteSortField,
-                                setRouteSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="P99 RTT"
-                            field="p99_rtt_ms"
-                            activeField={routeSortField}
-                            direction={routeSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                routeSortField,
-                                routeSortDir,
-                                setRouteSortField,
-                                setRouteSortDir,
-                              )
-                            }
-                          />
+                          {routeCols.includes("service_name") && (
+                            <SortableTh
+                              label="SERVICE"
+                              field="service_name"
+                              activeField={routeSortField}
+                              direction={routeSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  routeSortField,
+                                  routeSortDir,
+                                  setRouteSortField,
+                                  setRouteSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {routeCols.includes("region") && (
+                            <SortableTh
+                              label="REGION"
+                              field="region"
+                              activeField={routeSortField}
+                              direction={routeSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  routeSortField,
+                                  routeSortDir,
+                                  setRouteSortField,
+                                  setRouteSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {routeCols.includes("method") && (
+                            <SortableTh
+                              label="METHOD"
+                              field="method"
+                              activeField={routeSortField}
+                              direction={routeSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  routeSortField,
+                                  routeSortDir,
+                                  setRouteSortField,
+                                  setRouteSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {routeCols.includes("route") && (
+                            <SortableTh
+                              label="ROUTE"
+                              field="route"
+                              activeField={routeSortField}
+                              direction={routeSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  routeSortField,
+                                  routeSortDir,
+                                  setRouteSortField,
+                                  setRouteSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {routeCols.includes("total_requests") && (
+                            <SortableTh
+                              label="REQS"
+                              field="total_requests"
+                              activeField={routeSortField}
+                              direction={routeSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  routeSortField,
+                                  routeSortDir,
+                                  setRouteSortField,
+                                  setRouteSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {routeCols.includes("error_count") && (
+                            <SortableTh
+                              label="ERRORS"
+                              field="error_count"
+                              activeField={routeSortField}
+                              direction={routeSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  routeSortField,
+                                  routeSortDir,
+                                  setRouteSortField,
+                                  setRouteSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {routeCols.includes("availability_percent") && (
+                            <SortableTh
+                              label="AVAILABILITY"
+                              field="availability_percent"
+                              activeField={routeSortField}
+                              direction={routeSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  routeSortField,
+                                  routeSortDir,
+                                  setRouteSortField,
+                                  setRouteSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {routeCols.includes("p50_rtt_ms") && (
+                            <SortableTh
+                              label="P50 RTT"
+                              field="p50_rtt_ms"
+                              activeField={routeSortField}
+                              direction={routeSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  routeSortField,
+                                  routeSortDir,
+                                  setRouteSortField,
+                                  setRouteSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {routeCols.includes("p95_rtt_ms") && (
+                            <SortableTh
+                              label="P95 RTT"
+                              field="p95_rtt_ms"
+                              activeField={routeSortField}
+                              direction={routeSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  routeSortField,
+                                  routeSortDir,
+                                  setRouteSortField,
+                                  setRouteSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {routeCols.includes("p99_rtt_ms") && (
+                            <SortableTh
+                              label="P99 RTT"
+                              field="p99_rtt_ms"
+                              activeField={routeSortField}
+                              direction={routeSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  routeSortField,
+                                  routeSortDir,
+                                  setRouteSortField,
+                                  setRouteSortDir,
+                                )
+                              }
+                            />
+                          )}
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-800/60">
@@ -2379,36 +2617,59 @@ export default function App() {
                             onClick={() => handleSelectRouteFromMetrics(r)}
                             className="hover:bg-slate-900/60 cursor-pointer transition-colors"
                           >
-                            <td className="py-2 px-3 text-sky-300">{r.serviceName}</td>
-                            <td className="py-2 px-3 text-slate-400">{r.region}</td>
-                            <td className="py-2 px-3 text-slate-300">{r.method}</td>
-                            <td className="py-2 px-3">
-                              <button
-                                type="button"
-                                data-testid={`select-route-${r.route}`}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleSelectRouteFromMetrics(r);
-                                }}
-                                title="Click to view traced requests for this route"
-                                className="text-sky-300 hover:text-sky-200 underline decoration-sky-500/50 hover:decoration-sky-300 font-mono cursor-pointer text-left"
-                              >
-                                {r.route}
-                              </button>
-                            </td>
-                            <td className="py-2 px-3">{r.totalRequests.toString()}</td>
-                            <td className="py-2 px-3 text-rose-400">{r.errorCount.toString()}</td>
-                            <td className="py-2 px-3 text-emerald-400">
-                              {r.availabilityPercent.toFixed(2)}%
-                            </td>
-                            <td className="py-2 px-3">{r.p50RttMs.toFixed(2)} ms</td>
-                            <td className="py-2 px-3">{r.p95RttMs.toFixed(2)} ms</td>
-                            <td className="py-2 px-3">{r.p99RttMs.toFixed(2)} ms</td>
+                            {routeCols.includes("service_name") && (
+                              <td className="py-2 px-3 text-sky-300">{r.serviceName}</td>
+                            )}
+                            {routeCols.includes("region") && (
+                              <td className="py-2 px-3 text-slate-400">{r.region}</td>
+                            )}
+                            {routeCols.includes("method") && (
+                              <td className="py-2 px-3 text-slate-300">{r.method}</td>
+                            )}
+                            {routeCols.includes("route") && (
+                              <td className="py-2 px-3">
+                                <button
+                                  type="button"
+                                  data-testid={`select-route-${r.route}`}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleSelectRouteFromMetrics(r);
+                                  }}
+                                  title="Click to view traced requests for this route"
+                                  className="text-sky-300 hover:text-sky-200 underline decoration-sky-500/50 hover:decoration-sky-300 font-mono cursor-pointer text-left"
+                                >
+                                  {r.route}
+                                </button>
+                              </td>
+                            )}
+                            {routeCols.includes("total_requests") && (
+                              <td className="py-2 px-3">{r.totalRequests.toString()}</td>
+                            )}
+                            {routeCols.includes("error_count") && (
+                              <td className="py-2 px-3 text-rose-400">{r.errorCount.toString()}</td>
+                            )}
+                            {routeCols.includes("availability_percent") && (
+                              <td className="py-2 px-3 text-emerald-400">
+                                {r.availabilityPercent.toFixed(2)}%
+                              </td>
+                            )}
+                            {routeCols.includes("p50_rtt_ms") && (
+                              <td className="py-2 px-3">{r.p50RttMs.toFixed(2)} ms</td>
+                            )}
+                            {routeCols.includes("p95_rtt_ms") && (
+                              <td className="py-2 px-3">{r.p95RttMs.toFixed(2)} ms</td>
+                            )}
+                            {routeCols.includes("p99_rtt_ms") && (
+                              <td className="py-2 px-3">{r.p99RttMs.toFixed(2)} ms</td>
+                            )}
                           </tr>
                         ))}
                         {routeEvalResult.items.length === 0 && (
                           <tr>
-                            <td colSpan={10} className="py-4 text-center text-slate-500">
+                            <td
+                              colSpan={routeCols.length}
+                              className="py-4 text-center text-slate-500"
+                            >
                               No route metrics recorded for current filter.
                             </td>
                           </tr>
@@ -2419,7 +2680,7 @@ export default function App() {
                 </div>
               )}
 
-              {/* Traced Requests Table (Tab 2) */}
+              {/* Tab 3: Recent Traced Requests */}
               {telemetrySubTab === "traces" && (
                 <div data-testid="telemetry-panel-traces" className="space-y-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
@@ -2498,6 +2759,13 @@ export default function App() {
                     testIdPrefix="traces"
                   />
 
+                  <ColumnSelector
+                    columns={TRACE_COLUMNS}
+                    visibleColumns={traceCols}
+                    onChange={setTraceCols}
+                    testIdPrefix="traces"
+                  />
+
                   <div className="overflow-x-auto">
                     <table
                       data-testid="route-requests-table"
@@ -2505,126 +2773,142 @@ export default function App() {
                     >
                       <thead>
                         <tr className="border-b border-slate-800 text-slate-400">
-                          <SortableTh
-                            label="OCCURRED AT"
-                            field="occurred_at"
-                            activeField={traceSortField}
-                            direction={traceSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                traceSortField,
-                                traceSortDir,
-                                setTraceSortField,
-                                setTraceSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="TRACE ID (UUIDv7)"
-                            field="trace_id"
-                            activeField={traceSortField}
-                            direction={traceSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                traceSortField,
-                                traceSortDir,
-                                setTraceSortField,
-                                setTraceSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="REGION"
-                            field="region"
-                            activeField={traceSortField}
-                            direction={traceSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                traceSortField,
-                                traceSortDir,
-                                setTraceSortField,
-                                setTraceSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="SERVICE"
-                            field="service_name"
-                            activeField={traceSortField}
-                            direction={traceSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                traceSortField,
-                                traceSortDir,
-                                setTraceSortField,
-                                setTraceSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="METHOD"
-                            field="method"
-                            activeField={traceSortField}
-                            direction={traceSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                traceSortField,
-                                traceSortDir,
-                                setTraceSortField,
-                                setTraceSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="ROUTE"
-                            field="route"
-                            activeField={traceSortField}
-                            direction={traceSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                traceSortField,
-                                traceSortDir,
-                                setTraceSortField,
-                                setTraceSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="STATUS"
-                            field="status_code"
-                            activeField={traceSortField}
-                            direction={traceSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                traceSortField,
-                                traceSortDir,
-                                setTraceSortField,
-                                setTraceSortDir,
-                              )
-                            }
-                          />
-                          <SortableTh
-                            label="RTT"
-                            field="rtt_ms"
-                            activeField={traceSortField}
-                            direction={traceSortDir}
-                            onToggle={(f) =>
-                              toggleColumnSort(
-                                f,
-                                traceSortField,
-                                traceSortDir,
-                                setTraceSortField,
-                                setTraceSortDir,
-                              )
-                            }
-                          />
+                          {traceCols.includes("occurred_at") && (
+                            <SortableTh
+                              label="OCCURRED AT"
+                              field="occurred_at"
+                              activeField={traceSortField}
+                              direction={traceSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  traceSortField,
+                                  traceSortDir,
+                                  setTraceSortField,
+                                  setTraceSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {traceCols.includes("trace_id") && (
+                            <SortableTh
+                              label="TRACE ID (UUIDv7)"
+                              field="trace_id"
+                              activeField={traceSortField}
+                              direction={traceSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  traceSortField,
+                                  traceSortDir,
+                                  setTraceSortField,
+                                  setTraceSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {traceCols.includes("region") && (
+                            <SortableTh
+                              label="REGION"
+                              field="region"
+                              activeField={traceSortField}
+                              direction={traceSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  traceSortField,
+                                  traceSortDir,
+                                  setTraceSortField,
+                                  setTraceSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {traceCols.includes("service_name") && (
+                            <SortableTh
+                              label="SERVICE"
+                              field="service_name"
+                              activeField={traceSortField}
+                              direction={traceSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  traceSortField,
+                                  traceSortDir,
+                                  setTraceSortField,
+                                  setTraceSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {traceCols.includes("method") && (
+                            <SortableTh
+                              label="METHOD"
+                              field="method"
+                              activeField={traceSortField}
+                              direction={traceSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  traceSortField,
+                                  traceSortDir,
+                                  setTraceSortField,
+                                  setTraceSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {traceCols.includes("route") && (
+                            <SortableTh
+                              label="ROUTE"
+                              field="route"
+                              activeField={traceSortField}
+                              direction={traceSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  traceSortField,
+                                  traceSortDir,
+                                  setTraceSortField,
+                                  setTraceSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {traceCols.includes("status_code") && (
+                            <SortableTh
+                              label="STATUS"
+                              field="status_code"
+                              activeField={traceSortField}
+                              direction={traceSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  traceSortField,
+                                  traceSortDir,
+                                  setTraceSortField,
+                                  setTraceSortDir,
+                                )
+                              }
+                            />
+                          )}
+                          {traceCols.includes("rtt_ms") && (
+                            <SortableTh
+                              label="RTT"
+                              field="rtt_ms"
+                              activeField={traceSortField}
+                              direction={traceSortDir}
+                              onToggle={(f) =>
+                                toggleColumnSort(
+                                  f,
+                                  traceSortField,
+                                  traceSortDir,
+                                  setTraceSortField,
+                                  setTraceSortDir,
+                                )
+                              }
+                            />
+                          )}
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-slate-800/60">
@@ -2633,35 +2917,56 @@ export default function App() {
                             key={`${req.traceId}-${req.serviceName}-${idx}`}
                             className="hover:bg-slate-900/50"
                           >
-                            <td className="py-2 px-3 text-slate-400">
-                              {formatTimestamp(req.occurredAt)}
-                            </td>
-                            <td className="py-2 px-3">
-                              <button
-                                type="button"
-                                data-testid={`inspect-trace-${req.traceId}`}
-                                onClick={() => void handleInspectTrace(req.traceId)}
-                                title="Click to inspect full cross-service trace"
-                                className="text-amber-300 hover:text-amber-200 underline decoration-amber-500/50 hover:decoration-amber-300 font-mono cursor-pointer text-left"
-                              >
-                                {req.traceId}
-                              </button>
-                            </td>
-                            <td className="py-2 px-3 text-slate-400">{req.region}</td>
-                            <td className="py-2 px-3 text-sky-300">{req.serviceName}</td>
-                            <td className="py-2 px-3 text-slate-300">{req.method}</td>
-                            <td className="py-2 px-3 text-slate-100">{req.route}</td>
-                            <td className="py-2 px-3">
-                              <span className={req.success ? "text-emerald-400" : "text-rose-400"}>
-                                {req.statusCode} ({req.success ? "OK" : "ERR"})
-                              </span>
-                            </td>
-                            <td className="py-2 px-3">{req.rttMs.toFixed(2)} ms</td>
+                            {traceCols.includes("occurred_at") && (
+                              <td className="py-2 px-3 text-slate-400">
+                                {formatTimestamp(req.occurredAt)}
+                              </td>
+                            )}
+                            {traceCols.includes("trace_id") && (
+                              <td className="py-2 px-3">
+                                <button
+                                  type="button"
+                                  data-testid={`inspect-trace-${req.traceId}`}
+                                  onClick={() => void handleInspectTrace(req.traceId)}
+                                  title="Click to inspect full cross-service trace"
+                                  className="text-amber-300 hover:text-amber-200 underline decoration-amber-500/50 hover:decoration-amber-300 font-mono cursor-pointer text-left"
+                                >
+                                  {req.traceId}
+                                </button>
+                              </td>
+                            )}
+                            {traceCols.includes("region") && (
+                              <td className="py-2 px-3 text-slate-400">{req.region}</td>
+                            )}
+                            {traceCols.includes("service_name") && (
+                              <td className="py-2 px-3 text-sky-300">{req.serviceName}</td>
+                            )}
+                            {traceCols.includes("method") && (
+                              <td className="py-2 px-3 text-slate-300">{req.method}</td>
+                            )}
+                            {traceCols.includes("route") && (
+                              <td className="py-2 px-3 text-slate-100">{req.route}</td>
+                            )}
+                            {traceCols.includes("status_code") && (
+                              <td className="py-2 px-3">
+                                <span
+                                  className={req.success ? "text-emerald-400" : "text-rose-400"}
+                                >
+                                  {req.statusCode} ({req.success ? "OK" : "ERR"})
+                                </span>
+                              </td>
+                            )}
+                            {traceCols.includes("rtt_ms") && (
+                              <td className="py-2 px-3">{req.rttMs.toFixed(2)} ms</td>
+                            )}
                           </tr>
                         ))}
                         {pagedTraceItems.length === 0 && (
                           <tr>
-                            <td colSpan={8} className="py-4 text-center text-slate-500">
+                            <td
+                              colSpan={traceCols.length}
+                              className="py-4 text-center text-slate-500"
+                            >
                               No traced requests match current filters.
                             </td>
                           </tr>
@@ -2735,7 +3040,7 @@ export default function App() {
                 </div>
               )}
 
-              {/* Trace & Debug Logs (Tab 3) */}
+              {/* Tab 4: Trace & Debug Logs */}
               {telemetrySubTab === "trace_detail" && (
                 <div
                   data-testid="telemetry-panel-trace-detail"
@@ -2746,7 +3051,7 @@ export default function App() {
                       <p>
                         No request trace selected yet. Click any{" "}
                         <strong className="text-amber-300">UUIDv7 Trace ID</strong> in{" "}
-                        <strong className="text-sky-300">2. Recent Traced Requests</strong>,{" "}
+                        <strong className="text-sky-300">Recent Traced Requests</strong>,{" "}
                         <strong className="text-sky-300">Job Execution History</strong>, or{" "}
                         <strong className="text-sky-300">API Audit Log</strong> to inspect its
                         cross-service hops and debug logs here.
@@ -2957,10 +3262,18 @@ export default function App() {
 
                             {/* Chronological Cross-Service Logs */}
                             <div className="space-y-3">
-                              <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">
-                                Chronological Cross-Service Structured &amp; Debug Logs (
-                                {(selectedTrace.logs ?? []).length} Events)
-                              </h3>
+                              <div className="flex flex-wrap items-center justify-between gap-3">
+                                <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-slate-300">
+                                  Chronological Cross-Service Structured &amp; Debug Logs (
+                                  {(selectedTrace.logs ?? []).length} Events)
+                                </h3>
+                                <ColumnSelector
+                                  columns={TRACE_LOG_COLUMNS}
+                                  visibleColumns={traceLogCols}
+                                  onChange={setTraceLogCols}
+                                  testIdPrefix="trace-logs"
+                                />
+                              </div>
                               <div className="overflow-x-auto bg-[#090d16] border border-slate-800 rounded-lg">
                                 <table
                                   data-testid="trace-logs-table"
@@ -2968,81 +3281,117 @@ export default function App() {
                                 >
                                   <thead>
                                     <tr className="border-b border-slate-800 text-slate-400">
-                                      <th className="py-2 px-3">TIMESTAMP</th>
-                                      <th className="py-2 px-3">SERVICE</th>
-                                      <th className="py-2 px-3">LEVEL</th>
-                                      <th className="py-2 px-3">EVENT</th>
-                                      <th className="py-2 px-3">ROUTE &amp; ATTRIBUTES</th>
-                                      <th className="py-2 px-3">STATUS / RTT</th>
+                                      {traceLogCols.includes("timestamp") && (
+                                        <th className="py-2 px-3">TIMESTAMP</th>
+                                      )}
+                                      {traceLogCols.includes("service") && (
+                                        <th className="py-2 px-3">SERVICE</th>
+                                      )}
+                                      {traceLogCols.includes("level") && (
+                                        <th className="py-2 px-3">LEVEL</th>
+                                      )}
+                                      {traceLogCols.includes("event") && (
+                                        <th className="py-2 px-3">EVENT</th>
+                                      )}
+                                      {traceLogCols.includes("route") && (
+                                        <th className="py-2 px-3">ROUTE</th>
+                                      )}
+                                      {traceLogCols.includes("status_rtt") && (
+                                        <th className="py-2 px-3">STATUS / RTT</th>
+                                      )}
+                                      {traceLogCols.includes("attributes") && (
+                                        <th className="py-2 px-3">ATTRIBUTES</th>
+                                      )}
                                     </tr>
                                   </thead>
                                   <tbody className="divide-y divide-slate-800/60">
                                     {(selectedTrace.logs ?? []).map((log, idx) => {
                                       const attrs = log.attributes ?? {};
-                                      const routeSummary =
+                                      const routeOnly =
                                         attrs.route || attrs.operation
                                           ? `${attrs.method ? `${attrs.method} ` : ""}${attrs.route || attrs.operation}`
-                                          : log.message;
+                                          : "—";
                                       const statusCode = attrs.status_code || attrs.status || "";
                                       const rttStr = attrs.rtt_ms || attrs.duration_ms || "";
                                       const attrPairs = Object.entries(attrs).filter(
                                         ([k]) =>
                                           k !== "route" &&
+                                          k !== "operation" &&
                                           k !== "method" &&
                                           k !== "status_code" &&
+                                          k !== "status" &&
                                           k !== "rtt_ms" &&
                                           k !== "duration_ms",
                                       );
+                                      const attributesSummary =
+                                        attrPairs.length > 0
+                                          ? attrPairs.map(([k, v]) => `${k}=${v}`).join(" · ")
+                                          : log.message || "—";
                                       return (
                                         <tr
                                           key={`${log.serviceName}-${log.message}-${idx}`}
                                           className="hover:bg-slate-900/50"
                                         >
-                                          <td className="py-2 px-3 text-slate-400 whitespace-nowrap">
-                                            {formatTimestamp(log.timestamp)}
-                                          </td>
-                                          <td className="py-2 px-3 text-sky-300 whitespace-nowrap">
-                                            {log.serviceName}{" "}
-                                            <span className="text-slate-500">
-                                              ({log.instanceId})
-                                            </span>
-                                          </td>
-                                          <td className="py-2 px-3">
-                                            <span
-                                              className={
-                                                log.level === "ERROR"
-                                                  ? "text-rose-400 font-bold"
-                                                  : log.level === "WARN"
-                                                    ? "text-amber-300 font-bold"
-                                                    : log.level === "DEBUG"
-                                                      ? "text-sky-300 font-bold"
-                                                      : "text-emerald-400"
-                                              }
-                                            >
-                                              {log.level}
-                                            </span>
-                                          </td>
-                                          <td className="py-2 px-3 text-amber-300">
-                                            {log.message}
-                                          </td>
-                                          <td className="py-2 px-3 text-slate-200">
-                                            <div>{routeSummary}</div>
-                                            {attrPairs.length > 0 && (
-                                              <div className="text-[11px] text-slate-500 break-all">
-                                                {attrPairs.map(([k, v]) => `${k}=${v}`).join(" · ")}
-                                              </div>
-                                            )}
-                                          </td>
-                                          <td className="py-2 px-3 whitespace-nowrap text-slate-300">
-                                            {statusCode ? `Status ${statusCode}` : "—"}
-                                            {rttStr ? ` · ${rttStr} ms` : ""}
-                                          </td>
+                                          {traceLogCols.includes("timestamp") && (
+                                            <td className="py-2 px-3 text-slate-400 whitespace-nowrap">
+                                              {formatTimestamp(log.timestamp)}
+                                            </td>
+                                          )}
+                                          {traceLogCols.includes("service") && (
+                                            <td className="py-2 px-3 text-sky-300 whitespace-nowrap">
+                                              {log.serviceName}{" "}
+                                              <span className="text-slate-500">
+                                                ({log.instanceId})
+                                              </span>
+                                            </td>
+                                          )}
+                                          {traceLogCols.includes("level") && (
+                                            <td className="py-2 px-3">
+                                              <span
+                                                className={
+                                                  log.level === "ERROR"
+                                                    ? "text-rose-400 font-bold"
+                                                    : log.level === "WARN"
+                                                      ? "text-amber-300 font-bold"
+                                                      : log.level === "DEBUG"
+                                                        ? "text-sky-300 font-bold"
+                                                        : "text-emerald-400"
+                                                }
+                                              >
+                                                {log.level}
+                                              </span>
+                                            </td>
+                                          )}
+                                          {traceLogCols.includes("event") && (
+                                            <td className="py-2 px-3 text-amber-300 whitespace-nowrap">
+                                              {log.message}
+                                            </td>
+                                          )}
+                                          {traceLogCols.includes("route") && (
+                                            <td className="py-2 px-3 text-slate-200 whitespace-nowrap">
+                                              {routeOnly}
+                                            </td>
+                                          )}
+                                          {traceLogCols.includes("status_rtt") && (
+                                            <td className="py-2 px-3 whitespace-nowrap text-slate-300">
+                                              {statusCode ? `Status ${statusCode}` : "—"}
+                                              {rttStr ? ` · ${rttStr} ms` : ""}
+                                            </td>
+                                          )}
+                                          {traceLogCols.includes("attributes") && (
+                                            <td className="py-2 px-3 text-slate-300 break-all">
+                                              {attributesSummary}
+                                            </td>
+                                          )}
                                         </tr>
                                       );
                                     })}
                                     {(selectedTrace.logs ?? []).length === 0 && (
                                       <tr>
-                                        <td colSpan={6} className="py-4 text-center text-slate-500">
+                                        <td
+                                          colSpan={traceLogCols.length}
+                                          className="py-4 text-center text-slate-500"
+                                        >
                                           No structured log entries recorded for this trace ID.
                                         </td>
                                       </tr>
@@ -3223,6 +3572,13 @@ export default function App() {
               testIdPrefix="jobs"
             />
 
+            <ColumnSelector
+              columns={JOB_COLUMNS}
+              visibleColumns={jobCols}
+              onChange={setJobCols}
+              testIdPrefix="jobs"
+            />
+
             <div className="overflow-x-auto">
               <table
                 data-testid="jobs-table"
@@ -3230,126 +3586,142 @@ export default function App() {
               >
                 <thead>
                   <tr className="border-b border-slate-800 text-slate-400">
-                    <SortableTh
-                      label="JOB ID"
-                      field="job_id"
-                      activeField={jobSortField}
-                      direction={jobSortDir}
-                      onToggle={(f) =>
-                        toggleColumnSort(
-                          f,
-                          jobSortField,
-                          jobSortDir,
-                          setJobSortField,
-                          setJobSortDir,
-                        )
-                      }
-                    />
-                    <SortableTh
-                      label="TRACE ID"
-                      field="trace_id"
-                      activeField={jobSortField}
-                      direction={jobSortDir}
-                      onToggle={(f) =>
-                        toggleColumnSort(
-                          f,
-                          jobSortField,
-                          jobSortDir,
-                          setJobSortField,
-                          setJobSortDir,
-                        )
-                      }
-                    />
-                    <SortableTh
-                      label="REGION"
-                      field="region"
-                      activeField={jobSortField}
-                      direction={jobSortDir}
-                      onToggle={(f) =>
-                        toggleColumnSort(
-                          f,
-                          jobSortField,
-                          jobSortDir,
-                          setJobSortField,
-                          setJobSortDir,
-                        )
-                      }
-                    />
-                    <SortableTh
-                      label="TASK"
-                      field="task_name"
-                      activeField={jobSortField}
-                      direction={jobSortDir}
-                      onToggle={(f) =>
-                        toggleColumnSort(
-                          f,
-                          jobSortField,
-                          jobSortDir,
-                          setJobSortField,
-                          setJobSortDir,
-                        )
-                      }
-                    />
-                    <SortableTh
-                      label="CALLER"
-                      field="caller"
-                      activeField={jobSortField}
-                      direction={jobSortDir}
-                      onToggle={(f) =>
-                        toggleColumnSort(
-                          f,
-                          jobSortField,
-                          jobSortDir,
-                          setJobSortField,
-                          setJobSortDir,
-                        )
-                      }
-                    />
-                    <SortableTh
-                      label="STATUS"
-                      field="status"
-                      activeField={jobSortField}
-                      direction={jobSortDir}
-                      onToggle={(f) =>
-                        toggleColumnSort(
-                          f,
-                          jobSortField,
-                          jobSortDir,
-                          setJobSortField,
-                          setJobSortDir,
-                        )
-                      }
-                    />
-                    <SortableTh
-                      label="DURATION"
-                      field="duration_ms"
-                      activeField={jobSortField}
-                      direction={jobSortDir}
-                      onToggle={(f) =>
-                        toggleColumnSort(
-                          f,
-                          jobSortField,
-                          jobSortDir,
-                          setJobSortField,
-                          setJobSortDir,
-                        )
-                      }
-                    />
-                    <SortableTh
-                      label="CREATED AT"
-                      field="created_at"
-                      activeField={jobSortField}
-                      direction={jobSortDir}
-                      onToggle={(f) =>
-                        toggleColumnSort(
-                          f,
-                          jobSortField,
-                          jobSortDir,
-                          setJobSortField,
-                          setJobSortDir,
-                        )
-                      }
-                    />
+                    {jobCols.includes("job_id") && (
+                      <SortableTh
+                        label="JOB ID"
+                        field="job_id"
+                        activeField={jobSortField}
+                        direction={jobSortDir}
+                        onToggle={(f) =>
+                          toggleColumnSort(
+                            f,
+                            jobSortField,
+                            jobSortDir,
+                            setJobSortField,
+                            setJobSortDir,
+                          )
+                        }
+                      />
+                    )}
+                    {jobCols.includes("trace_id") && (
+                      <SortableTh
+                        label="TRACE ID"
+                        field="trace_id"
+                        activeField={jobSortField}
+                        direction={jobSortDir}
+                        onToggle={(f) =>
+                          toggleColumnSort(
+                            f,
+                            jobSortField,
+                            jobSortDir,
+                            setJobSortField,
+                            setJobSortDir,
+                          )
+                        }
+                      />
+                    )}
+                    {jobCols.includes("region") && (
+                      <SortableTh
+                        label="REGION"
+                        field="region"
+                        activeField={jobSortField}
+                        direction={jobSortDir}
+                        onToggle={(f) =>
+                          toggleColumnSort(
+                            f,
+                            jobSortField,
+                            jobSortDir,
+                            setJobSortField,
+                            setJobSortDir,
+                          )
+                        }
+                      />
+                    )}
+                    {jobCols.includes("task_name") && (
+                      <SortableTh
+                        label="TASK"
+                        field="task_name"
+                        activeField={jobSortField}
+                        direction={jobSortDir}
+                        onToggle={(f) =>
+                          toggleColumnSort(
+                            f,
+                            jobSortField,
+                            jobSortDir,
+                            setJobSortField,
+                            setJobSortDir,
+                          )
+                        }
+                      />
+                    )}
+                    {jobCols.includes("caller") && (
+                      <SortableTh
+                        label="CALLER"
+                        field="caller"
+                        activeField={jobSortField}
+                        direction={jobSortDir}
+                        onToggle={(f) =>
+                          toggleColumnSort(
+                            f,
+                            jobSortField,
+                            jobSortDir,
+                            setJobSortField,
+                            setJobSortDir,
+                          )
+                        }
+                      />
+                    )}
+                    {jobCols.includes("status") && (
+                      <SortableTh
+                        label="STATUS"
+                        field="status"
+                        activeField={jobSortField}
+                        direction={jobSortDir}
+                        onToggle={(f) =>
+                          toggleColumnSort(
+                            f,
+                            jobSortField,
+                            jobSortDir,
+                            setJobSortField,
+                            setJobSortDir,
+                          )
+                        }
+                      />
+                    )}
+                    {jobCols.includes("duration_ms") && (
+                      <SortableTh
+                        label="DURATION"
+                        field="duration_ms"
+                        activeField={jobSortField}
+                        direction={jobSortDir}
+                        onToggle={(f) =>
+                          toggleColumnSort(
+                            f,
+                            jobSortField,
+                            jobSortDir,
+                            setJobSortField,
+                            setJobSortDir,
+                          )
+                        }
+                      />
+                    )}
+                    {jobCols.includes("created_at") && (
+                      <SortableTh
+                        label="CREATED AT"
+                        field="created_at"
+                        activeField={jobSortField}
+                        direction={jobSortDir}
+                        onToggle={(f) =>
+                          toggleColumnSort(
+                            f,
+                            jobSortField,
+                            jobSortDir,
+                            setJobSortField,
+                            setJobSortDir,
+                          )
+                        }
+                      />
+                    )}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/60">
@@ -3359,38 +3731,56 @@ export default function App() {
                       onClick={() => setSelectedJob(j)}
                       className="hover:bg-slate-900/50 cursor-pointer"
                     >
-                      <td className="py-2 px-3 text-sky-300 font-semibold">{j.jobId}</td>
-                      <td className="py-2 px-3">
-                        <button
-                          type="button"
-                          data-testid={`inspect-trace-${j.traceId}`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            void handleInspectTrace(j.traceId);
-                          }}
-                          title="Click to inspect full cross-service trace"
-                          className="text-amber-300 hover:text-amber-200 underline decoration-amber-500/50 hover:decoration-amber-300 font-mono cursor-pointer text-left"
-                        >
-                          {j.traceId}
-                        </button>
-                      </td>
-                      <td className="py-2 px-3 text-slate-400">{j.region}</td>
-                      <td className="py-2 px-3 text-slate-100">{j.taskName}</td>
-                      <td className="py-2 px-3 text-slate-300">
-                        {j.caller} ({j.callerType})
-                      </td>
-                      <td className="py-2 px-3">
-                        <span className={j.status === "OK" ? "text-emerald-400" : "text-rose-400"}>
-                          {j.status}
-                        </span>
-                      </td>
-                      <td className="py-2 px-3">{j.durationMs.toString()} ms</td>
-                      <td className="py-2 px-3 text-slate-400">{formatTimestamp(j.createdAt)}</td>
+                      {jobCols.includes("job_id") && (
+                        <td className="py-2 px-3 text-sky-300 font-semibold">{j.jobId}</td>
+                      )}
+                      {jobCols.includes("trace_id") && (
+                        <td className="py-2 px-3">
+                          <button
+                            type="button"
+                            data-testid={`inspect-trace-${j.traceId}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              void handleInspectTrace(j.traceId);
+                            }}
+                            title="Click to inspect full cross-service trace"
+                            className="text-amber-300 hover:text-amber-200 underline decoration-amber-500/50 hover:decoration-amber-300 font-mono cursor-pointer text-left"
+                          >
+                            {j.traceId}
+                          </button>
+                        </td>
+                      )}
+                      {jobCols.includes("region") && (
+                        <td className="py-2 px-3 text-slate-400">{j.region}</td>
+                      )}
+                      {jobCols.includes("task_name") && (
+                        <td className="py-2 px-3 text-slate-100">{j.taskName}</td>
+                      )}
+                      {jobCols.includes("caller") && (
+                        <td className="py-2 px-3 text-slate-300">
+                          {j.caller} ({j.callerType})
+                        </td>
+                      )}
+                      {jobCols.includes("status") && (
+                        <td className="py-2 px-3">
+                          <span
+                            className={j.status === "OK" ? "text-emerald-400" : "text-rose-400"}
+                          >
+                            {j.status}
+                          </span>
+                        </td>
+                      )}
+                      {jobCols.includes("duration_ms") && (
+                        <td className="py-2 px-3">{j.durationMs.toString()} ms</td>
+                      )}
+                      {jobCols.includes("created_at") && (
+                        <td className="py-2 px-3 text-slate-400">{formatTimestamp(j.createdAt)}</td>
+                      )}
                     </tr>
                   ))}
                   {jobEvalResult.items.length === 0 && (
                     <tr>
-                      <td colSpan={8} className="py-4 text-center text-slate-500">
+                      <td colSpan={jobCols.length} className="py-4 text-center text-slate-500">
                         No job executions recorded yet.
                       </td>
                     </tr>
@@ -3480,6 +3870,13 @@ export default function App() {
               testIdPrefix="db"
             />
 
+            <ColumnSelector
+              columns={DB_COLUMNS}
+              visibleColumns={dbCols}
+              onChange={setDbCols}
+              testIdPrefix="db"
+            />
+
             <div className="overflow-x-auto">
               <table
                 data-testid="db-stats-table"
@@ -3487,48 +3884,60 @@ export default function App() {
               >
                 <thead>
                   <tr className="border-b border-slate-800 text-slate-400">
-                    <SortableTh
-                      label="TABLE NAME"
-                      field="table_name"
-                      activeField={dbSortField}
-                      direction={dbSortDir}
-                      onToggle={(f) =>
-                        toggleColumnSort(f, dbSortField, dbSortDir, setDbSortField, setDbSortDir)
-                      }
-                    />
-                    <SortableTh
-                      label="LIVE ROWS"
-                      field="row_count"
-                      activeField={dbSortField}
-                      direction={dbSortDir}
-                      onToggle={(f) =>
-                        toggleColumnSort(f, dbSortField, dbSortDir, setDbSortField, setDbSortDir)
-                      }
-                    />
-                    <SortableTh
-                      label="DISK SIZE"
-                      field="total_size_bytes"
-                      activeField={dbSortField}
-                      direction={dbSortDir}
-                      onToggle={(f) =>
-                        toggleColumnSort(f, dbSortField, dbSortDir, setDbSortField, setDbSortDir)
-                      }
-                    />
+                    {dbCols.includes("table_name") && (
+                      <SortableTh
+                        label="TABLE NAME"
+                        field="table_name"
+                        activeField={dbSortField}
+                        direction={dbSortDir}
+                        onToggle={(f) =>
+                          toggleColumnSort(f, dbSortField, dbSortDir, setDbSortField, setDbSortDir)
+                        }
+                      />
+                    )}
+                    {dbCols.includes("row_count") && (
+                      <SortableTh
+                        label="LIVE ROWS"
+                        field="row_count"
+                        activeField={dbSortField}
+                        direction={dbSortDir}
+                        onToggle={(f) =>
+                          toggleColumnSort(f, dbSortField, dbSortDir, setDbSortField, setDbSortDir)
+                        }
+                      />
+                    )}
+                    {dbCols.includes("total_size_bytes") && (
+                      <SortableTh
+                        label="DISK SIZE"
+                        field="total_size_bytes"
+                        activeField={dbSortField}
+                        direction={dbSortDir}
+                        onToggle={(f) =>
+                          toggleColumnSort(f, dbSortField, dbSortDir, setDbSortField, setDbSortDir)
+                        }
+                      />
+                    )}
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/60">
                   {dbEvalResult.items.map((tbl) => (
                     <tr key={tbl.tableName} className="hover:bg-slate-900/50">
-                      <td className="py-2 px-3 text-slate-100">{tbl.tableName}</td>
-                      <td className="py-2 px-3 text-sky-300">{tbl.rowCount.toString()}</td>
-                      <td className="py-2 px-3 text-slate-300">
-                        {formatBytes(tbl.totalSizeBytes)}
-                      </td>
+                      {dbCols.includes("table_name") && (
+                        <td className="py-2 px-3 text-slate-100">{tbl.tableName}</td>
+                      )}
+                      {dbCols.includes("row_count") && (
+                        <td className="py-2 px-3 text-sky-300">{tbl.rowCount.toString()}</td>
+                      )}
+                      {dbCols.includes("total_size_bytes") && (
+                        <td className="py-2 px-3 text-slate-300">
+                          {formatBytes(tbl.totalSizeBytes)}
+                        </td>
+                      )}
                     </tr>
                   ))}
                   {dbEvalResult.items.length === 0 && (
                     <tr>
-                      <td colSpan={3} className="py-4 text-center text-slate-500">
+                      <td colSpan={dbCols.length} className="py-4 text-center text-slate-500">
                         No database tables match current filter.
                       </td>
                     </tr>
@@ -3669,6 +4078,13 @@ export default function App() {
                 testIdPrefix="tokens"
               />
 
+              <ColumnSelector
+                columns={TOKEN_COLUMNS}
+                visibleColumns={tokenCols}
+                onChange={setTokenCols}
+                testIdPrefix="tokens"
+              />
+
               <div className="overflow-x-auto">
                 <table
                   data-testid="tokens-table"
@@ -3676,128 +4092,154 @@ export default function App() {
                 >
                   <thead>
                     <tr className="border-b border-slate-800 text-slate-400">
-                      <SortableTh
-                        label="ID"
-                        field="id"
-                        activeField={tokenSortField}
-                        direction={tokenSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            tokenSortField,
-                            tokenSortDir,
-                            setTokenSortField,
-                            setTokenSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="NAME"
-                        field="name"
-                        activeField={tokenSortField}
-                        direction={tokenSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            tokenSortField,
-                            tokenSortDir,
-                            setTokenSortField,
-                            setTokenSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="TYPE"
-                        field="type"
-                        activeField={tokenSortField}
-                        direction={tokenSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            tokenSortField,
-                            tokenSortDir,
-                            setTokenSortField,
-                            setTokenSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="GROUP"
-                        field="group_name"
-                        activeField={tokenSortField}
-                        direction={tokenSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            tokenSortField,
-                            tokenSortDir,
-                            setTokenSortField,
-                            setTokenSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="EXPIRES AT"
-                        field="expires_at"
-                        activeField={tokenSortField}
-                        direction={tokenSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            tokenSortField,
-                            tokenSortDir,
-                            setTokenSortField,
-                            setTokenSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="STATUS"
-                        field="status"
-                        activeField={tokenSortField}
-                        direction={tokenSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            tokenSortField,
-                            tokenSortDir,
-                            setTokenSortField,
-                            setTokenSortDir,
-                          )
-                        }
-                      />
-                      <th className="py-2 px-3">ACTION</th>
+                      {tokenCols.includes("id") && (
+                        <SortableTh
+                          label="ID"
+                          field="id"
+                          activeField={tokenSortField}
+                          direction={tokenSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              tokenSortField,
+                              tokenSortDir,
+                              setTokenSortField,
+                              setTokenSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {tokenCols.includes("name") && (
+                        <SortableTh
+                          label="NAME"
+                          field="name"
+                          activeField={tokenSortField}
+                          direction={tokenSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              tokenSortField,
+                              tokenSortDir,
+                              setTokenSortField,
+                              setTokenSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {tokenCols.includes("type") && (
+                        <SortableTh
+                          label="TYPE"
+                          field="type"
+                          activeField={tokenSortField}
+                          direction={tokenSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              tokenSortField,
+                              tokenSortDir,
+                              setTokenSortField,
+                              setTokenSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {tokenCols.includes("group_name") && (
+                        <SortableTh
+                          label="GROUP"
+                          field="group_name"
+                          activeField={tokenSortField}
+                          direction={tokenSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              tokenSortField,
+                              tokenSortDir,
+                              setTokenSortField,
+                              setTokenSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {tokenCols.includes("expires_at") && (
+                        <SortableTh
+                          label="EXPIRES AT"
+                          field="expires_at"
+                          activeField={tokenSortField}
+                          direction={tokenSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              tokenSortField,
+                              tokenSortDir,
+                              setTokenSortField,
+                              setTokenSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {tokenCols.includes("status") && (
+                        <SortableTh
+                          label="STATUS"
+                          field="status"
+                          activeField={tokenSortField}
+                          direction={tokenSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              tokenSortField,
+                              tokenSortDir,
+                              setTokenSortField,
+                              setTokenSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {tokenCols.includes("action") && <th className="py-2 px-3">ACTION</th>}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60">
                     {tokenEvalResult.items.map((tok) => (
                       <tr key={tok.uuid}>
-                        <td className="py-2 px-3 text-sky-300">{tok.id}</td>
-                        <td className="py-2 px-3 text-slate-100">{tok.name}</td>
-                        <td className="py-2 px-3 text-slate-300">{tok.type}</td>
-                        <td className="py-2 px-3 text-slate-300">{tok.groupName}</td>
-                        <td className="py-2 px-3 text-slate-400">
-                          {formatTimestamp(tok.expiresAt)}
-                        </td>
-                        <td className="py-2 px-3">
-                          {tok.revokedAt ? (
-                            <span className="text-rose-400">REVOKED</span>
-                          ) : (
-                            <span className="text-emerald-400">ACTIVE</span>
-                          )}
-                        </td>
-                        <td className="py-2 px-3">
-                          {!tok.revokedAt && (
-                            <button
-                              type="button"
-                              disabled={!hasActiveJit}
-                              onClick={() => void handleRevokeToken(tok.id)}
-                              className="text-rose-400 hover:underline disabled:text-slate-600 cursor-pointer"
-                            >
-                              Revoke
-                            </button>
-                          )}
-                        </td>
+                        {tokenCols.includes("id") && (
+                          <td className="py-2 px-3 text-sky-300">{tok.id}</td>
+                        )}
+                        {tokenCols.includes("name") && (
+                          <td className="py-2 px-3 text-slate-100">{tok.name}</td>
+                        )}
+                        {tokenCols.includes("type") && (
+                          <td className="py-2 px-3 text-slate-300">{tok.type}</td>
+                        )}
+                        {tokenCols.includes("group_name") && (
+                          <td className="py-2 px-3 text-slate-300">{tok.groupName}</td>
+                        )}
+                        {tokenCols.includes("expires_at") && (
+                          <td className="py-2 px-3 text-slate-400">
+                            {formatTimestamp(tok.expiresAt)}
+                          </td>
+                        )}
+                        {tokenCols.includes("status") && (
+                          <td className="py-2 px-3">
+                            {tok.revokedAt ? (
+                              <span className="text-rose-400">REVOKED</span>
+                            ) : (
+                              <span className="text-emerald-400">ACTIVE</span>
+                            )}
+                          </td>
+                        )}
+                        {tokenCols.includes("action") && (
+                          <td className="py-2 px-3">
+                            {!tok.revokedAt && (
+                              <button
+                                type="button"
+                                disabled={!hasActiveJit}
+                                onClick={() => void handleRevokeToken(tok.id)}
+                                className="text-rose-400 hover:underline disabled:text-slate-600 cursor-pointer"
+                              >
+                                Revoke
+                              </button>
+                            )}
+                          </td>
+                        )}
                       </tr>
                     ))}
                   </tbody>
@@ -3846,6 +4288,13 @@ export default function App() {
                 testIdPrefix="audit"
               />
 
+              <ColumnSelector
+                columns={AUDIT_COLUMNS}
+                visibleColumns={auditCols}
+                onChange={setAuditCols}
+                testIdPrefix="audit"
+              />
+
               <div className="overflow-x-auto">
                 <table
                   data-testid="audit-table"
@@ -3853,171 +4302,209 @@ export default function App() {
                 >
                   <thead>
                     <tr className="border-b border-slate-800 text-slate-400">
-                      <SortableTh
-                        label="TIMESTAMP"
-                        field="created_at"
-                        activeField={auditSortField}
-                        direction={auditSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            auditSortField,
-                            auditSortDir,
-                            setAuditSortField,
-                            setAuditSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="TRACE ID"
-                        field="trace_id"
-                        activeField={auditSortField}
-                        direction={auditSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            auditSortField,
-                            auditSortDir,
-                            setAuditSortField,
-                            setAuditSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="REGION"
-                        field="region"
-                        activeField={auditSortField}
-                        direction={auditSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            auditSortField,
-                            auditSortDir,
-                            setAuditSortField,
-                            setAuditSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="CALLER"
-                        field="caller"
-                        activeField={auditSortField}
-                        direction={auditSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            auditSortField,
-                            auditSortDir,
-                            setAuditSortField,
-                            setAuditSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="GROUP"
-                        field="group_name"
-                        activeField={auditSortField}
-                        direction={auditSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            auditSortField,
-                            auditSortDir,
-                            setAuditSortField,
-                            setAuditSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="METHOD"
-                        field="method"
-                        activeField={auditSortField}
-                        direction={auditSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            auditSortField,
-                            auditSortDir,
-                            setAuditSortField,
-                            setAuditSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="JIT GRANT"
-                        field="jit_grant_id"
-                        activeField={auditSortField}
-                        direction={auditSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            auditSortField,
-                            auditSortDir,
-                            setAuditSortField,
-                            setAuditSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="STATUS"
-                        field="status"
-                        activeField={auditSortField}
-                        direction={auditSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            auditSortField,
-                            auditSortDir,
-                            setAuditSortField,
-                            setAuditSortDir,
-                          )
-                        }
-                      />
-                      <SortableTh
-                        label="DURATION"
-                        field="duration_ms"
-                        activeField={auditSortField}
-                        direction={auditSortDir}
-                        onToggle={(f) =>
-                          toggleColumnSort(
-                            f,
-                            auditSortField,
-                            auditSortDir,
-                            setAuditSortField,
-                            setAuditSortDir,
-                          )
-                        }
-                      />
+                      {auditCols.includes("created_at") && (
+                        <SortableTh
+                          label="TIMESTAMP"
+                          field="created_at"
+                          activeField={auditSortField}
+                          direction={auditSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              auditSortField,
+                              auditSortDir,
+                              setAuditSortField,
+                              setAuditSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {auditCols.includes("trace_id") && (
+                        <SortableTh
+                          label="TRACE ID"
+                          field="trace_id"
+                          activeField={auditSortField}
+                          direction={auditSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              auditSortField,
+                              auditSortDir,
+                              setAuditSortField,
+                              setAuditSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {auditCols.includes("region") && (
+                        <SortableTh
+                          label="REGION"
+                          field="region"
+                          activeField={auditSortField}
+                          direction={auditSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              auditSortField,
+                              auditSortDir,
+                              setAuditSortField,
+                              setAuditSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {auditCols.includes("caller") && (
+                        <SortableTh
+                          label="CALLER"
+                          field="caller"
+                          activeField={auditSortField}
+                          direction={auditSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              auditSortField,
+                              auditSortDir,
+                              setAuditSortField,
+                              setAuditSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {auditCols.includes("group_name") && (
+                        <SortableTh
+                          label="GROUP"
+                          field="group_name"
+                          activeField={auditSortField}
+                          direction={auditSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              auditSortField,
+                              auditSortDir,
+                              setAuditSortField,
+                              setAuditSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {auditCols.includes("method") && (
+                        <SortableTh
+                          label="METHOD"
+                          field="method"
+                          activeField={auditSortField}
+                          direction={auditSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              auditSortField,
+                              auditSortDir,
+                              setAuditSortField,
+                              setAuditSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {auditCols.includes("jit_grant_id") && (
+                        <SortableTh
+                          label="JIT GRANT"
+                          field="jit_grant_id"
+                          activeField={auditSortField}
+                          direction={auditSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              auditSortField,
+                              auditSortDir,
+                              setAuditSortField,
+                              setAuditSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {auditCols.includes("status") && (
+                        <SortableTh
+                          label="STATUS"
+                          field="status"
+                          activeField={auditSortField}
+                          direction={auditSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              auditSortField,
+                              auditSortDir,
+                              setAuditSortField,
+                              setAuditSortDir,
+                            )
+                          }
+                        />
+                      )}
+                      {auditCols.includes("duration_ms") && (
+                        <SortableTh
+                          label="DURATION"
+                          field="duration_ms"
+                          activeField={auditSortField}
+                          direction={auditSortDir}
+                          onToggle={(f) =>
+                            toggleColumnSort(
+                              f,
+                              auditSortField,
+                              auditSortDir,
+                              setAuditSortField,
+                              setAuditSortDir,
+                            )
+                          }
+                        />
+                      )}
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60">
                     {auditEvalResult.items.map((c) => (
                       <tr key={c.uuid} className="hover:bg-slate-900/50">
-                        <td className="py-2 px-3 text-slate-400">{formatTimestamp(c.createdAt)}</td>
-                        <td className="py-2 px-3">
-                          <button
-                            type="button"
-                            data-testid={`inspect-trace-${c.traceId}`}
-                            onClick={() => void handleInspectTrace(c.traceId)}
-                            title="Click to inspect full cross-service trace"
-                            className="text-amber-300 hover:text-amber-200 underline decoration-amber-500/50 hover:decoration-amber-300 font-mono cursor-pointer text-left"
-                          >
-                            {c.traceId}
-                          </button>
-                        </td>
-                        <td className="py-2 px-3 text-slate-400">{c.region}</td>
-                        <td className="py-2 px-3 text-slate-100">{c.caller}</td>
-                        <td className="py-2 px-3 text-slate-300">{c.groupName}</td>
-                        <td className="py-2 px-3 text-sky-300">{c.method}</td>
-                        <td className="py-2 px-3 text-amber-300">{c.jitGrantId || "—"}</td>
-                        <td className="py-2 px-3">
-                          <span
-                            className={c.status === "OK" ? "text-emerald-400" : "text-rose-400"}
-                          >
-                            {c.status}
-                          </span>
-                        </td>
-                        <td className="py-2 px-3">{c.durationMs.toString()} ms</td>
+                        {auditCols.includes("created_at") && (
+                          <td className="py-2 px-3 text-slate-400">
+                            {formatTimestamp(c.createdAt)}
+                          </td>
+                        )}
+                        {auditCols.includes("trace_id") && (
+                          <td className="py-2 px-3">
+                            <button
+                              type="button"
+                              data-testid={`inspect-trace-${c.traceId}`}
+                              onClick={() => void handleInspectTrace(c.traceId)}
+                              title="Click to inspect full cross-service trace"
+                              className="text-amber-300 hover:text-amber-200 underline decoration-amber-500/50 hover:decoration-amber-300 font-mono cursor-pointer text-left"
+                            >
+                              {c.traceId}
+                            </button>
+                          </td>
+                        )}
+                        {auditCols.includes("region") && (
+                          <td className="py-2 px-3 text-slate-400">{c.region}</td>
+                        )}
+                        {auditCols.includes("caller") && (
+                          <td className="py-2 px-3 text-slate-100">{c.caller}</td>
+                        )}
+                        {auditCols.includes("group_name") && (
+                          <td className="py-2 px-3 text-slate-300">{c.groupName}</td>
+                        )}
+                        {auditCols.includes("method") && (
+                          <td className="py-2 px-3 text-sky-300">{c.method}</td>
+                        )}
+                        {auditCols.includes("jit_grant_id") && (
+                          <td className="py-2 px-3 text-amber-300">{c.jitGrantId || "—"}</td>
+                        )}
+                        {auditCols.includes("status") && (
+                          <td className="py-2 px-3">
+                            <span
+                              className={c.status === "OK" ? "text-emerald-400" : "text-rose-400"}
+                            >
+                              {c.status}
+                            </span>
+                          </td>
+                        )}
+                        {auditCols.includes("duration_ms") && (
+                          <td className="py-2 px-3">{c.durationMs.toString()} ms</td>
+                        )}
                       </tr>
                     ))}
                   </tbody>
