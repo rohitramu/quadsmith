@@ -412,31 +412,34 @@ describe("Ops Console App", () => {
       expect(screen.getByTestId("trace-spans-list")).toHaveTextContent(
         "/quadsmith.api.MotorService/ListMotors",
       );
-      const logsTable = screen.getByTestId("trace-logs-table");
-      expect(logsTable).toHaveTextContent("trace_context_initialized");
-      expect(logsTable).toHaveTextContent("db_query");
-      expect(logsTable).toHaveTextContent("http_request");
+      const logsList = screen.getByTestId("trace-logs-list");
+      expect(logsList).toHaveTextContent("trace_context_initialized");
+      expect(logsList).toHaveTextContent("db_query");
+      expect(logsList).toHaveTextContent("http_request");
 
-      // Verify ROUTE and ATTRIBUTES are separate columns, ATTRIBUTES is the last column,
-      // and ATTRIBUTES wraps at natural word breaks (whitespace-normal break-words) without ellipsis
-      const logHeaders = Array.from(logsTable.querySelectorAll("thead th")).map((th) =>
-        th.textContent?.trim(),
-      );
-      expect(logHeaders).toEqual([
-        "TIMESTAMP",
-        "SERVICE",
-        "LEVEL",
-        "EVENT",
-        "ROUTE",
-        "STATUS / RTT",
-        "ATTRIBUTES",
-      ]);
-      const dbQueryAttrsCell = screen.getByTestId("trace-log-attributes-1");
-      expect(dbQueryAttrsCell.className).toContain("whitespace-pre-wrap");
-      expect(dbQueryAttrsCell.className).toContain("break-words");
-      expect(dbQueryAttrsCell.className).not.toContain("break-all");
-      expect(dbQueryAttrsCell.className).not.toContain("truncate");
-      expect(dbQueryAttrsCell.textContent).toBe(
+      // Verify each log entry renders as a two-tier full-width card:
+      // metadata fields in the top header bar and full-width non-wrapping YAML attributes below
+      const firstHeader = screen.getByTestId("trace-log-header-0");
+      expect(firstHeader).toHaveTextContent("DEBUG");
+      expect(firstHeader).toHaveTextContent("server-api (server-api-1)");
+      expect(firstHeader).toHaveTextContent("trace_context_initialized");
+      expect(firstHeader).toHaveTextContent("Route: POST /quadsmith.api.MotorService/ListMotors");
+
+      const dbQueryHeader = screen.getByTestId("trace-log-header-1");
+      expect(dbQueryHeader).toHaveTextContent("db_query");
+      expect(dbQueryHeader).toHaveTextContent("Route: —");
+      expect(dbQueryHeader).toHaveTextContent("1.15 ms");
+
+      const dbQueryAttrsPre = screen.getByTestId("trace-log-attributes-1");
+      expect(dbQueryAttrsPre.tagName).toBe("PRE");
+      expect(dbQueryAttrsPre.className).toContain("whitespace-pre");
+      expect(dbQueryAttrsPre.className).toContain("overflow-x-auto");
+      expect(dbQueryAttrsPre.className).not.toContain("whitespace-pre-wrap");
+      expect(dbQueryAttrsPre.className).not.toContain("whitespace-normal");
+      expect(dbQueryAttrsPre.className).not.toContain("break-words");
+      expect(dbQueryAttrsPre.className).not.toContain("break-all");
+      expect(dbQueryAttrsPre.className).not.toContain("truncate");
+      expect(dbQueryAttrsPre.textContent).toBe(
         [
           "database: quadsmith_api",
           "sql: SELECT uuid, id, brand, model FROM motors ORDER BY id ASC",
@@ -444,19 +447,16 @@ describe("Ops Console App", () => {
         ].join("\n"),
       );
 
-      // Toggle ATTRIBUTES column via trace-logs-column-selector
-      fireEvent.click(screen.getByTestId("trace-logs-col-toggle-attributes"));
-      const updatedHeaders = Array.from(logsTable.querySelectorAll("thead th")).map((th) =>
-        th.textContent?.trim(),
+      // Toggle Attributes (YAML) and Route via trace-logs-column-selector
+      expect(screen.getByTestId("trace-logs-col-toggle-attributes")).toHaveTextContent(
+        "Attributes (YAML)",
       );
-      expect(updatedHeaders).toEqual([
-        "TIMESTAMP",
-        "SERVICE",
-        "LEVEL",
-        "EVENT",
-        "ROUTE",
-        "STATUS / RTT",
-      ]);
+      fireEvent.click(screen.getByTestId("trace-logs-col-toggle-attributes"));
+      expect(screen.queryByTestId("trace-log-attributes-1")).not.toBeInTheDocument();
+      expect(screen.getByTestId("trace-log-header-1")).toBeInTheDocument();
+
+      fireEvent.click(screen.getByTestId("trace-logs-col-toggle-route"));
+      expect(screen.getByTestId("trace-log-header-0")).not.toHaveTextContent("Route:");
 
       // Clicking Back to Traced Requests switches back to Recent Traced Requests
       fireEvent.click(screen.getByTestId("close-trace-inspector"));

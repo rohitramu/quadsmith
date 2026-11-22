@@ -616,7 +616,7 @@ export const TRACE_LOG_COLUMNS: ColumnOption[] = [
   { key: "event", label: "Event" },
   { key: "route", label: "Route" },
   { key: "status_rtt", label: "Status / RTT" },
-  { key: "attributes", label: "Attributes" },
+  { key: "attributes", label: "Attributes (YAML)" },
 ];
 
 export const JOB_COLUMNS: ColumnOption[] = [
@@ -3350,120 +3350,116 @@ export default function App() {
                                   testIdPrefix="trace-logs"
                                 />
                               </div>
-                              <div className="overflow-x-auto bg-[#090d16] border border-slate-800 rounded-lg">
-                                <table
-                                  data-testid="trace-logs-table"
-                                  className="w-full text-left border-collapse text-xs font-mono"
-                                >
-                                  <thead>
-                                    <tr className="border-b border-slate-800 text-slate-400">
-                                      {traceLogCols.includes("timestamp") && (
-                                        <th className="py-2 px-3">TIMESTAMP</th>
-                                      )}
-                                      {traceLogCols.includes("service") && (
-                                        <th className="py-2 px-3">SERVICE</th>
-                                      )}
-                                      {traceLogCols.includes("level") && (
-                                        <th className="py-2 px-3">LEVEL</th>
-                                      )}
-                                      {traceLogCols.includes("event") && (
-                                        <th className="py-2 px-3">EVENT</th>
-                                      )}
-                                      {traceLogCols.includes("route") && (
-                                        <th className="py-2 px-3">ROUTE</th>
-                                      )}
-                                      {traceLogCols.includes("status_rtt") && (
-                                        <th className="py-2 px-3">STATUS / RTT</th>
-                                      )}
-                                      {traceLogCols.includes("attributes") && (
-                                        <th className="py-2 px-3">ATTRIBUTES</th>
-                                      )}
-                                    </tr>
-                                  </thead>
-                                  <tbody className="divide-y divide-slate-800/60">
-                                    {(selectedTrace.logs ?? []).map((log, idx) => {
-                                      const attrs = log.attributes ?? {};
-                                      const routeOnly =
-                                        attrs.route || attrs.operation
-                                          ? `${attrs.method ? `${attrs.method} ` : ""}${attrs.route || attrs.operation}`
-                                          : "—";
-                                      const statusCode = attrs.status_code || attrs.status || "";
-                                      const rttStr = attrs.rtt_ms || attrs.duration_ms || "";
-                                      const attributesYaml = formatAttributesAsYaml(attrs);
-                                      return (
-                                        <tr
-                                          key={`${log.serviceName}-${log.message}-${idx}`}
-                                          className="hover:bg-slate-900/50 align-top"
+                              <div data-testid="trace-logs-list" className="space-y-2.5">
+                                {(selectedTrace.logs ?? []).map((log, idx) => {
+                                  const attrs = log.attributes ?? {};
+                                  const routeOnly =
+                                    attrs.route || attrs.operation
+                                      ? `${attrs.method ? `${attrs.method} ` : ""}${attrs.route || attrs.operation}`
+                                      : "—";
+                                  const statusCode = attrs.status_code || attrs.status || "";
+                                  const rttStr = attrs.rtt_ms || attrs.duration_ms || "";
+                                  const attributesYaml = formatAttributesAsYaml(attrs);
+                                  const hasHeaderCols =
+                                    traceLogCols.includes("timestamp") ||
+                                    traceLogCols.includes("level") ||
+                                    traceLogCols.includes("service") ||
+                                    traceLogCols.includes("event") ||
+                                    traceLogCols.includes("route") ||
+                                    traceLogCols.includes("status_rtt");
+                                  return (
+                                    <div
+                                      key={`${log.serviceName}-${log.message}-${idx}`}
+                                      data-testid={`trace-log-card-${idx}`}
+                                      className="rounded-lg border border-slate-800 bg-[#111827] overflow-hidden"
+                                    >
+                                      {hasHeaderCols && (
+                                        <div
+                                          data-testid={`trace-log-header-${idx}`}
+                                          className={`px-3.5 py-2 bg-[#0d1424] ${
+                                            traceLogCols.includes("attributes")
+                                              ? "border-b border-slate-800/80"
+                                              : ""
+                                          } flex flex-wrap items-center justify-between gap-x-6 gap-y-1.5 text-xs font-mono`}
                                         >
-                                          {traceLogCols.includes("timestamp") && (
-                                            <td className="py-2 px-3 text-slate-400 whitespace-nowrap">
-                                              {formatTimestamp(log.timestamp)}
-                                            </td>
-                                          )}
-                                          {traceLogCols.includes("service") && (
-                                            <td className="py-2 px-3 text-sky-300 whitespace-nowrap">
-                                              {log.serviceName}{" "}
-                                              <span className="text-slate-500">
-                                                ({log.instanceId})
+                                          <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+                                            {traceLogCols.includes("timestamp") && (
+                                              <span className="text-slate-400 whitespace-nowrap">
+                                                {formatTimestamp(log.timestamp)}
                                               </span>
-                                            </td>
-                                          )}
-                                          {traceLogCols.includes("level") && (
-                                            <td className="py-2 px-3">
+                                            )}
+                                            {traceLogCols.includes("level") && (
                                               <span
-                                                className={
+                                                className={`px-1.5 py-0.5 rounded font-bold text-[10px] border ${
                                                   log.level === "ERROR"
-                                                    ? "text-rose-400 font-bold"
+                                                    ? "bg-rose-500/15 border-rose-500/30 text-rose-300"
                                                     : log.level === "WARN"
-                                                      ? "text-amber-300 font-bold"
+                                                      ? "bg-amber-500/15 border-amber-500/30 text-amber-300"
                                                       : log.level === "DEBUG"
-                                                        ? "text-sky-300 font-bold"
-                                                        : "text-emerald-400"
-                                                }
+                                                        ? "bg-sky-500/15 border-sky-500/30 text-sky-300"
+                                                        : "bg-emerald-500/15 border-emerald-500/30 text-emerald-300"
+                                                }`}
                                               >
                                                 {log.level}
                                               </span>
-                                            </td>
-                                          )}
-                                          {traceLogCols.includes("event") && (
-                                            <td className="py-2 px-3 text-amber-300 whitespace-nowrap">
-                                              {log.message}
-                                            </td>
-                                          )}
-                                          {traceLogCols.includes("route") && (
-                                            <td className="py-2 px-3 text-slate-200 whitespace-nowrap">
-                                              {routeOnly}
-                                            </td>
-                                          )}
+                                            )}
+                                            {traceLogCols.includes("service") && (
+                                              <span className="text-sky-300 whitespace-nowrap">
+                                                {log.serviceName}{" "}
+                                                <span className="text-slate-500">
+                                                  ({log.instanceId})
+                                                </span>
+                                              </span>
+                                            )}
+                                            {traceLogCols.includes("event") && (
+                                              <span className="text-amber-300 font-semibold whitespace-nowrap">
+                                                {log.message}
+                                              </span>
+                                            )}
+                                            {traceLogCols.includes("route") && (
+                                              <span
+                                                className={
+                                                  routeOnly === "—"
+                                                    ? "text-slate-500 whitespace-nowrap"
+                                                    : "text-slate-200 whitespace-nowrap"
+                                                }
+                                              >
+                                                <span className="text-slate-500">Route:</span>{" "}
+                                                {routeOnly}
+                                              </span>
+                                            )}
+                                          </div>
                                           {traceLogCols.includes("status_rtt") && (
-                                            <td className="py-2 px-3 whitespace-nowrap text-slate-300">
-                                              {statusCode ? `Status ${statusCode}` : "—"}
-                                              {rttStr ? ` · ${rttStr} ms` : ""}
-                                            </td>
+                                            <div className="whitespace-nowrap text-slate-300">
+                                              {statusCode || rttStr ? (
+                                                <>
+                                                  {statusCode ? `Status ${statusCode}` : ""}
+                                                  {statusCode && rttStr ? " · " : ""}
+                                                  {rttStr ? `${rttStr} ms` : ""}
+                                                </>
+                                              ) : (
+                                                <span className="text-slate-400">—</span>
+                                              )}
+                                            </div>
                                           )}
-                                          {traceLogCols.includes("attributes") && (
-                                            <td
-                                              data-testid={`trace-log-attributes-${idx}`}
-                                              className="py-2 px-3 text-slate-300 whitespace-pre-wrap break-words"
-                                            >
-                                              {attributesYaml}
-                                            </td>
-                                          )}
-                                        </tr>
-                                      );
-                                    })}
-                                    {(selectedTrace.logs ?? []).length === 0 && (
-                                      <tr>
-                                        <td
-                                          colSpan={traceLogCols.length}
-                                          className="py-4 text-center text-slate-500"
+                                        </div>
+                                      )}
+                                      {traceLogCols.includes("attributes") && (
+                                        <pre
+                                          data-testid={`trace-log-attributes-${idx}`}
+                                          className="m-0 px-3.5 py-2.5 bg-[#090d16] text-slate-300 text-xs font-mono whitespace-pre overflow-x-auto"
                                         >
-                                          No structured log entries recorded for this trace ID.
-                                        </td>
-                                      </tr>
-                                    )}
-                                  </tbody>
-                                </table>
+                                          {attributesYaml}
+                                        </pre>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                                {(selectedTrace.logs ?? []).length === 0 && (
+                                  <div className="py-4 px-3.5 rounded-lg border border-slate-800 bg-[#090d16] text-center text-xs font-mono text-slate-500">
+                                    No structured log entries recorded for this trace ID.
+                                  </div>
+                                )}
                               </div>
                             </div>
                           </>
