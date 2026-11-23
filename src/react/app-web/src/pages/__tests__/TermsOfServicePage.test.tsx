@@ -67,8 +67,9 @@ describe("TermsOfServicePage Component", () => {
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/makes no guarantee regarding the security, availability, or retention/i),
+      screen.getByText(/quadsmith takes reasonable measures to protect your information/i),
     ).toBeInTheDocument();
+    expect(screen.queryByText(/unauthorized access or data loss/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/ip addresses/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/\.zip/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/30-day/i)).not.toBeInTheDocument();

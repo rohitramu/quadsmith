@@ -218,11 +218,7 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
             may collect and process information you provide as well as technical and usage data to
             operate, secure, and improve the service and comply with the law.
           </p>
-          <p>
-            Quadsmith makes no guarantee regarding the security, availability, or retention of any
-            data, and is not liable for unauthorized access or data loss to the fullest extent
-            permitted by law.
-          </p>
+          <p>Quadsmith takes reasonable measures to protect your information.</p>
         </div>
       </section>
     </div>
