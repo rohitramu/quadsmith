@@ -225,7 +225,7 @@ Evaluator is provided `"AS IS"` without warranties of airworthiness or safety:
 - **Safety Disclaimers Modal & Terms of Service Page**
   ([`SafetyDisclaimersModal.tsx`](../src/react/app-web/src/components/SafetyDisclaimersModal.tsx),
   [`TermsOfServicePage.tsx`](../src/react/app-web/src/pages/TermsOfServicePage.tsx)):
-  Clicking `Safety Disclaimers` anywhere in the application opens a modal dialog
+  Clicking `Safety disclaimers` on Build Evaluator surfaces opens a modal dialog
   covering LiPo electrical safety, mechanical and propeller safety, compliance
   with local rules and regulations, and manufacturer specification verification,
   alongside the full `/terms` page.

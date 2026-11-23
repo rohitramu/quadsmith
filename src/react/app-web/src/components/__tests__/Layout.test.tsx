@@ -93,13 +93,12 @@ describe("Layout Component", () => {
       "/components/software",
     );
     expect(screen.getByRole("link", { name: "Gear" })).toHaveAttribute("href", "/components/gear");
-    expect(screen.getByRole("link", { name: /Terms & Disclaimers/i })).toHaveAttribute(
-      "href",
-      "/terms",
-    );
-    expect(
-      screen.getAllByRole("button", { name: /Safety Disclaimers/i }).length,
-    ).toBeGreaterThanOrEqual(1);
+    const termsLinks = screen.getAllByRole("link", { name: /Terms & Disclaimers/i });
+    expect(termsLinks.length).toBeGreaterThanOrEqual(1);
+    for (const link of termsLinks) {
+      expect(link).toHaveAttribute("href", "/terms");
+    }
+    expect(screen.queryByRole("button", { name: /Safety Disclaimers/i })).not.toBeInTheDocument();
     expect(screen.getByTestId("global-legal-footer")).toBeInTheDocument();
 
     // No expand/collapse toggle buttons

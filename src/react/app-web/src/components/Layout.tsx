@@ -10,7 +10,6 @@ import {
   Menu,
   User,
   Scale,
-  ShieldAlert,
 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useQuery } from "@connectrpc/connect-query";
@@ -32,16 +31,14 @@ import { EllipsisHint } from "@quadsmith/shared";
 import { ErrorBoundary } from "@quadsmith/shared";
 import { useAuth } from "../context/AuthContext";
 import { getAvatarPalette, getInitial } from "@quadsmith/shared";
-import { SafetyDisclaimersModal } from "./SafetyDisclaimersModal";
 
 export function Layout() {
   const { user, profile, logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Mobile drawer & safety modal state
+  // Mobile drawer state
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isSafetyModalOpen, setIsSafetyModalOpen] = useState(false);
 
   // Close drawer when location changes
   useEffect(() => {
@@ -378,7 +375,7 @@ export function Layout() {
             <Link
               to="/terms"
               className={`flex items-center gap-2.5 px-3 py-1.5 text-sm rounded-md hover:bg-zinc-800 ${
-                location.pathname === "/terms" && location.hash !== "#disclaimers"
+                location.pathname === "/terms"
                   ? "bg-zinc-800 text-blue-400 font-medium"
                   : "text-zinc-400"
               }`}
@@ -386,19 +383,6 @@ export function Layout() {
               <Scale size={15} className="text-zinc-400 shrink-0" />
               <span>Terms &amp; Disclaimers</span>
             </Link>
-          </li>
-          <li>
-            <button
-              type="button"
-              onClick={() => {
-                setIsDrawerOpen(false);
-                setIsSafetyModalOpen(true);
-              }}
-              className="w-full flex items-center gap-2.5 px-3 py-1.5 text-sm rounded-md hover:bg-zinc-800 text-zinc-400 text-left cursor-pointer"
-            >
-              <ShieldAlert size={15} className="text-amber-500/80 shrink-0" />
-              <span>Safety Disclaimers</span>
-            </button>
           </li>
         </ul>
       </div>
@@ -782,15 +766,8 @@ export function Layout() {
                     to="/terms"
                     className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
                   >
-                    Terms of Service
+                    Terms &amp; Disclaimers
                   </Link>
-                  <button
-                    type="button"
-                    onClick={() => setIsSafetyModalOpen(true)}
-                    className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors cursor-pointer"
-                  >
-                    Safety Disclaimers
-                  </button>
                   <Link
                     to="/terms#build-evaluator"
                     className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
@@ -809,12 +786,6 @@ export function Layout() {
           )}
         </main>
       </div>
-
-      {/* Safety Disclaimers Modal */}
-      <SafetyDisclaimersModal
-        isOpen={isSafetyModalOpen}
-        onClose={() => setIsSafetyModalOpen(false)}
-      />
 
       {/* Global Ellipsis Hint for all truncated text across UI */}
       <EllipsisHint />
