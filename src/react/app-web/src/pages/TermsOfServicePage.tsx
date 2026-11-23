@@ -17,7 +17,7 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
   });
 
   const content = (
-    <div className="max-w-4xl mx-auto space-y-8">
+    <div className="max-w-[96rem] mx-auto space-y-8">
       {/* Breadcrumb Navigation */}
       <nav
         aria-label="Breadcrumb"

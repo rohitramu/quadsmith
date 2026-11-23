@@ -744,7 +744,7 @@ export function AccountSettingsPage() {
   const isSystemAccount = user?.role === "SYSTEM" || user?.id === "quadsmith";
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
+    <div className="max-w-[96rem] mx-auto space-y-8">
       {/* Prominent Ban Alert Banner */}
       {isBanned && user?.activeBan && (
         <div

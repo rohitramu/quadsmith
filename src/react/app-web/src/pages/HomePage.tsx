@@ -50,7 +50,7 @@ export function HomePage() {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-[96rem] mx-auto">
       {/* Top Welcome & Navigation Banner */}
       <section className="mb-8 p-6 rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900/60 to-zinc-950 shadow-xs">
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3 text-zinc-50">

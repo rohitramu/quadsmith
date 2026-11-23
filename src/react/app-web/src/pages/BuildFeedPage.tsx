@@ -51,7 +51,7 @@ export function BuildFeedPage() {
   const buildColor = getCollectionColor("builds");
 
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-[96rem] mx-auto">
       {/* Page Header */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-zinc-800">
         <div>
@@ -65,7 +65,7 @@ export function BuildFeedPage() {
               Build Feed
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-zinc-400 max-w-xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-zinc-400 max-w-5xl leading-relaxed">
             Explore verified community and curated quadcopter builds. Inspect detailed Bills of
             Materials, component compatibility, and simulated flight performance.
           </p>
