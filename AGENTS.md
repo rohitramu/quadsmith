@@ -275,8 +275,15 @@ corroboration checks.
 
 - Only run `make test` when making changes to files under `src/`, `test/`,
   `deploy/docker-compose.yaml`, `deploy/nginx/`, `.dockerignore`, or build/test
-  rules in `Makefile`. Always ensure all tests pass before considering a task
-  complete or pushing code.
+  rules in `Makefile`—except for pure static text/copy edits noted below. Always
+  ensure all required tests pass before considering a task complete or pushing
+  code.
+- **Static Text & Copy-Only Edits**: When only changing static prose or labels
+  in `src/react/` with no logic, layout, or styling changes—and the text does
+  not appear in any Playwright visual snapshot (`test/web/specs/`)—do not run
+  `make test`. Only update and run the affected unit test file (e.g.,
+  `npm --prefix src/react/app-web test -- --run <path>`) if assertions check
+  that copy, and rely on `make verify` / `make build`.
 - `make test` automatically runs `make verify`, so if `make test` is run,
   `make verify` does not need to be run separately.
 - When only modifying files outside those paths (such as `AGENTS.md`,
@@ -302,12 +309,18 @@ corroboration checks.
 
 ## UI Changes & Visual Previews
 
-Whenever committing changes that modify the UI (such as frontend web components,
-pages, layouts, or styling):
-
+- **Selective Preview Generation**:
+  - Only generate HTML visual previews for **nontrivial visual, layout, styling,
+    or interactive UI changes** (such as new pages/components, redesigned
+    layouts, or new interactive controls).
+  - **Skip HTML previews** (and headless Chrome verification) for **copy/text
+    edits, simple element removals, or minor tweaks** that do not meaningfully
+    alter visual design or layout. When helpful for reviewing substantive copy
+    or structural text changes, share a lightweight **before/after Markdown diff
+    artifact** (`<name>_diff.md`) instead.
 - **Dual Previews (Desktop & Mobile)**:
-  - Generate **two separate self-contained HTML preview artifacts** for every UI
-    change:
+  - When visual previews are warranted, generate **two separate self-contained
+    HTML preview artifacts**:
 
     1. **Desktop Preview** (`<name>_preview_desktop.html`): Built for the
        Antigravity Desktop studio/side-pane. Features the full layout,
@@ -379,4 +392,5 @@ pages, layouts, or styling):
   plan, keep iterations strictly confined to the preview artifacts until
   approved. When the user directly requests a specific UI change (outside of
   discussing a visual design or planning document), implement it directly in the
-  codebase alongside the updated preview artifacts, tests, and commit/push.
+  codebase alongside any warranted preview or diff artifacts, required tests,
+  and commit/push.
