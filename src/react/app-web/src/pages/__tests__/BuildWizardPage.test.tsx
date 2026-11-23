@@ -76,11 +76,11 @@ describe("BuildWizardPage Component", () => {
     // Selected Parts section under Evaluator
     expect(screen.getByText("Selected Parts")).toBeInTheDocument();
 
-    // Build Evaluator is marked as Experimental
-    const experimentalBadge = screen.getByTestId("forge-evaluator-experimental-badge");
-    expect(experimentalBadge).toBeInTheDocument();
-    expect(experimentalBadge).toHaveTextContent(/experimental/i);
-    expect(experimentalBadge).toHaveAttribute("href", "/terms#experimental-evaluator");
+    // Build Evaluator displays AS IS notice without Experimental badge
+    expect(
+      screen.getByText(/provided “as is” without warranties of airworthiness or safety/i),
+    ).toBeInTheDocument();
+    expect(screen.queryByTestId("forge-evaluator-experimental-badge")).not.toBeInTheDocument();
   });
 
   it("supports editing existing builds via /builds/:buildId/edit, pre-populating components and displaying 'Save Changes'", async () => {

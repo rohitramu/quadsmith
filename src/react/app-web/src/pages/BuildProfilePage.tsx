@@ -63,7 +63,6 @@ import {
   Search,
   Hammer,
   Edit,
-  FlaskConical,
 } from "lucide-react";
 
 interface BomComponentProps {
@@ -614,15 +613,6 @@ export function BuildProfilePage() {
                     <Gauge className="text-blue-400" size={22} />
                     <span>Build Evaluation &amp; Performance</span>
                   </h2>
-                  <Link
-                    to="/terms#experimental-evaluator"
-                    data-testid="evaluator-experimental-badge"
-                    title="Experimental Build Evaluator — provided AS IS without warranties of airworthiness or safety"
-                    className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition-colors"
-                  >
-                    <FlaskConical size={12} className="shrink-0" />
-                    <span>Experimental</span>
-                  </Link>
                   {isFetchingEvaluation && (
                     <span
                       role="status"
@@ -636,8 +626,8 @@ export function BuildProfilePage() {
                 </div>
               </div>
               <p className="text-xs sm:text-sm text-zinc-400 mt-1.5 leading-relaxed">
-                The Build Evaluator is an experimental feature provided &ldquo;AS IS&rdquo; without
-                warranties of airworthiness or safety.{" "}
+                The Build Evaluator is provided &ldquo;AS IS&rdquo; without warranties of
+                airworthiness or safety.{" "}
                 <SafetyDisclaimersButton>Safety disclaimers</SafetyDisclaimersButton>.
               </p>
             </div>

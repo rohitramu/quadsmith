@@ -385,11 +385,11 @@ export function ReviewStep() {
         <p className="leading-relaxed">
           <strong className="text-amber-300">Hardware &amp; Flight Safety Notice:</strong>{" "}
           Compatibility checks and the{" "}
-          <span className="text-amber-400 font-semibold">Experimental Build Evaluator</span> are
-          provided &ldquo;AS IS&rdquo; without warranties of airworthiness or safety. Before
-          assembly or flight, always verify manufacturer datasheets, wiring pinouts, electrical
-          ratings, and propeller clearance, test first power-up with a current-limiting smoke
-          stopper, and comply with local rules and regulations. Review our{" "}
+          <span className="text-amber-400 font-semibold">Build Evaluator</span> are provided
+          &ldquo;AS IS&rdquo; without warranties of airworthiness or safety. Before assembly or
+          flight, always verify manufacturer datasheets, wiring pinouts, electrical ratings, and
+          propeller clearance, test first power-up with a current-limiting smoke stopper, and comply
+          with local rules and regulations. Review our{" "}
           <SafetyDisclaimersButton className="text-amber-400 hover:text-amber-300 underline underline-offset-2 font-medium cursor-pointer">
             Safety Disclaimers
           </SafetyDisclaimersButton>{" "}

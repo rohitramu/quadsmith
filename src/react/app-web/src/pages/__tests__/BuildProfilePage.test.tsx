@@ -42,10 +42,10 @@ describe("BuildProfilePage Component", () => {
       }),
     ).toBeInTheDocument();
 
-    const experimentalBadge = screen.getByTestId("evaluator-experimental-badge");
-    expect(experimentalBadge).toBeInTheDocument();
-    expect(experimentalBadge).toHaveTextContent(/experimental/i);
-    expect(experimentalBadge).toHaveAttribute("href", "/terms#experimental-evaluator");
+    expect(
+      screen.getByText(/the build evaluator is provided “as is” without warranties/i),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/experimental/i)).not.toBeInTheDocument();
 
     const safetyBtn = screen.getByRole("button", { name: /^safety disclaimers$/i });
     expect(safetyBtn).toBeInTheDocument();

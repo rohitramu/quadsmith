@@ -5,7 +5,7 @@ import { TermsOfServicePage } from "../TermsOfServicePage";
 import { AppRoutes } from "../../App";
 
 describe("TermsOfServicePage Component", () => {
-  it("renders Terms of Service, FPV safety disclaimers, Experimental Build Evaluator section, and Privacy summary without top table of contents links", () => {
+  it("renders Terms of Service, FPV safety disclaimers, Build Evaluator section, and Privacy summary without top badges or table of contents links", () => {
     renderWithProviders(<TermsOfServicePage />, { route: "/terms" });
 
     expect(
@@ -15,11 +15,10 @@ describe("TermsOfServicePage Component", () => {
       }),
     ).toBeInTheDocument();
 
-    // Top table of contents / quick-section links should not be rendered
+    // Top Legal & Safety Documentation pill and table of contents links should not be rendered
+    expect(screen.queryByText(/legal & safety documentation/i)).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /safety disclaimers/i })).not.toBeInTheDocument();
-    expect(
-      screen.queryByRole("link", { name: /experimental build evaluator/i }),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /build evaluator/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /^terms of service$/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("link", { name: /data & privacy/i })).not.toBeInTheDocument();
 
@@ -38,14 +37,15 @@ describe("TermsOfServicePage Component", () => {
     expect(screen.getByText(/local rules & regulations/i)).toBeInTheDocument();
     expect(screen.getByText(/catalog data & hardware revisions/i)).toBeInTheDocument();
 
-    // Section 2: Experimental Build Evaluator & Compatibility Engine
+    // Section 2: Build Evaluator & Compatibility Engine (no "Experimental" labels)
     expect(
       screen.getByRole("heading", {
         level: 2,
-        name: /experimental build evaluator & compatibility engine/i,
+        name: /^build evaluator & compatibility engine$/i,
       }),
     ).toBeInTheDocument();
     expect(screen.getByText(/provided “as is” without warranty:/i)).toBeInTheDocument();
+    expect(screen.queryByText(/experimental/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/featured on build profile pages/i)).not.toBeInTheDocument();
 
     // Section 3: Terms of Service (concise plain-English paragraphs, no numbered sub-clauses)

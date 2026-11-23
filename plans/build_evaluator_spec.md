@@ -10,7 +10,7 @@
   - [Multi-Profile Flight Time and Range Boundary Estimation](#multi-profile-flight-time-and-range-boundary-estimation)
   - [Handling Quality via Disk Loading and Torque-to-Inertia Ratios](#handling-quality-via-disk-loading-and-torque-to-inertia-ratios)
   - [Continuous Payload Capacity Curves and Threshold Markers](#continuous-payload-capacity-curves-and-threshold-markers)
-  - [Experimental Designation and Safety Disclaimers](#experimental-designation-and-safety-disclaimers)
+  - ["AS IS" Disclaimers and Safety Warnings](#as-is-disclaimers-and-safety-warnings)
 - [3. Assumptions](#3-assumptions)
 
 ---
@@ -44,8 +44,8 @@ battery and payload parameters.
 > - Assess flight agility and prop wash handling through
 >   [disk loading](https://en.wikipedia.org/wiki/Disk_loading) and
 >   torque-to-inertia ratios, accompanied by continuous payload vs. TWR curves.
-> - Label all evaluator surfaces as `"Experimental"` and link directly to
->   hardware, electrical, and flight safety disclaimers (`/terms`).
+> - State on evaluator surfaces that estimates are provided `"AS IS"` and link
+>   to hardware, electrical, and flight safety disclaimers (`/terms`).
 
 The Build Evaluator acts as a pure domain logic service within the Quadsmith
 platform. It ingests an assembled quadcopter hardware configuration (frame
@@ -201,31 +201,27 @@ standardized benchmark thresholds:
 - **Absolute Usability Floor**: $1.5:1$ TWR (minimum threshold for reliable
   outdoor flight control).
 
-### <a id="experimental-designation-and-safety-disclaimers" >Experimental Designation and Safety Disclaimers</a>
+### <a id="as-is-disclaimers-and-safety-warnings" >"AS IS" Disclaimers and Safety Warnings</a>
 
-All Build Evaluator surfaces across the web application are explicitly labeled
-with an **`Experimental`** badge. They state that the Build Evaluator is
-provided `"AS IS"` without warranties of airworthiness or safety:
+Build Evaluator surfaces across the web application state that the Build
+Evaluator is provided `"AS IS"` without warranties of airworthiness or safety:
 
 - **Build Profile Dashboard**
   ([`BuildProfilePage.tsx`](../src/react/app-web/src/pages/BuildProfilePage.tsx)):
-  Displays the `Experimental` badge alongside `Build Evaluation & Performance`,
-  states that the Build Evaluator is provided `"AS IS"` without warranties of
-  airworthiness or safety, and opens the safety disclaimers modal when
-  `Safety disclaimers` is clicked.
+  Displays `Build Evaluation & Performance`, states that the Build Evaluator is
+  provided `"AS IS"` without warranties of airworthiness or safety, and opens
+  the safety disclaimers modal when `Safety disclaimers` is clicked.
 - **The Forge Live Evaluator**
   ([`BuildWizardPage.tsx`](../src/react/app-web/src/pages/BuildWizardPage.tsx)):
-  Displays the `Experimental` badge and `Safety disclaimers` modal trigger in
-  both the desktop evaluator card and the mobile collapsible telemetry drawer.
-  Step 12
+  Displays the `"AS IS"` notice and `Safety disclaimers` modal trigger in both
+  the desktop evaluator card and the mobile collapsible telemetry drawer. Step
+  12
   ([`ReviewStep.tsx`](../src/react/app-web/src/components/forge/steps/ReviewStep.tsx))
   also displays a pre-save hardware, flight safety, and local compliance notice.
-- **Build Cards & WASM Engine Loader**
-  ([`BuildCard.tsx`](../src/react/app-web/src/components/BuildCard.tsx),
-  [`WasmLoadingIndicator.tsx`](../src/react/app-web/src/components/WasmLoadingIndicator.tsx)):
-  Marks quick-evaluated card outputs and the WebAssembly loader as
-  `Experimental` and provided `"AS IS"` without warranties of airworthiness or
-  safety.
+- **WASM Engine Loader**
+  ([`WasmLoadingIndicator.tsx`](../src/react/app-web/src/components/WasmLoadingIndicator.tsx)):
+  Notes while loading the WebAssembly engine that the Build Evaluator is
+  provided `"AS IS"` without warranties of airworthiness or safety.
 - **Safety Disclaimers Modal & Terms of Service Page**
   ([`SafetyDisclaimersModal.tsx`](../src/react/app-web/src/components/SafetyDisclaimersModal.tsx),
   [`TermsOfServicePage.tsx`](../src/react/app-web/src/pages/TermsOfServicePage.tsx)):
@@ -251,7 +247,7 @@ Build Profile or open The Forge configurator.
 
 - Degrades browsing and configuration UX with repetitive modal friction on every
   session.
-- Persistent inline `Experimental` badges, on-demand `Safety Disclaimers` modal
+- Persistent inline `"AS IS"` notices, on-demand `Safety Disclaimers` modal
   dialogs, and the `/terms` page communicate the exact boundaries without
   blocking read-only exploration.
 

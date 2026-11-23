@@ -22,12 +22,12 @@ export function SafetyDisclaimersCards() {
             Important Hardware, Electrical, and Flight Safety Notice
           </p>
           <p className="text-amber-200/90">
-            The Experimental Build Evaluator, compatibility checks, and component catalog are
-            provided strictly <strong>&ldquo;AS IS&rdquo;</strong> without warranties of
-            airworthiness or safety. Improper wiring, voltage mismatches, or mechanical failures can
-            cause fires, severe personal injury, or property damage. Always verify every component
-            against official manufacturer datasheets, test on the bench before applying full battery
-            power, and comply with all local rules and regulations.
+            The Build Evaluator, compatibility checks, and component catalog are provided strictly{" "}
+            <strong>&ldquo;AS IS&rdquo;</strong> without warranties of airworthiness or safety.
+            Improper wiring, voltage mismatches, or mechanical failures can cause fires, severe
+            personal injury, or property damage. Always verify every component against official
+            manufacturer datasheets, test on the bench before applying full battery power, and
+            comply with all local rules and regulations.
           </p>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ShieldAlert, FlaskConical, Scale, Lock, ChevronRight, CheckCircle2 } from "lucide-react";
+import { ShieldAlert, Gauge, Scale, Lock, ChevronRight, CheckCircle2 } from "lucide-react";
 import { useDocumentMeta } from "@quadsmith/shared";
 import logo from "../assets/quadsmith-logo.svg";
 import { SafetyDisclaimersCards } from "../components/SafetyDisclaimersModal";
@@ -12,7 +12,7 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
   useDocumentMeta({
     title: "Terms of Service & Disclaimers — Quadsmith",
     description:
-      "Quadsmith Terms of Service, FPV drone hardware and LiPo electrical safety disclaimers, local compliance responsibilities, and Experimental Build Evaluator notice.",
+      "Quadsmith Terms of Service, FPV drone hardware and LiPo electrical safety disclaimers, local compliance responsibilities, and Build Evaluator notice.",
     image: "/og-default.png",
   });
 
@@ -37,21 +37,16 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
       </nav>
 
       {/* Page Header */}
-      <header className="p-6 sm:p-8 rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900/80 to-zinc-950 shadow-xs space-y-4">
-        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-blue-500/10 text-blue-400 border border-blue-500/20">
-          <Scale size={13} className="shrink-0" />
-          <span>Legal &amp; Safety Documentation</span>
-        </div>
-
+      <header className="p-6 sm:p-8 rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900/80 to-zinc-950 shadow-xs space-y-3">
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-50 text-balance">
           Terms of Service &amp; Disclaimers
         </h1>
 
         <p className="text-sm sm:text-base text-zinc-400 leading-relaxed text-pretty">
-          Quadsmith is a reference catalog, compatibility checker, and experimental build evaluator
-          for FPV multirotor builders. Please review these safety disclaimers and terms carefully
-          before assembling, powering, or flying any aircraft, and always comply with local rules
-          and regulations.
+          Quadsmith is a reference catalog, compatibility checker, and build evaluator for FPV
+          multirotor builders. Please review these safety disclaimers and terms carefully before
+          assembling, powering, or flying any aircraft, and always comply with local rules and
+          regulations.
         </p>
       </header>
 
@@ -81,38 +76,32 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
       </section>
 
       {/* ============================================================ */}
-      {/* SECTION 2: EXPERIMENTAL BUILD EVALUATOR                      */}
+      {/* SECTION 2: BUILD EVALUATOR & COMPATIBILITY ENGINE            */}
       {/* ============================================================ */}
       <section
-        id="experimental-evaluator"
-        aria-labelledby="experimental-evaluator-heading"
+        id="build-evaluator"
+        aria-labelledby="build-evaluator-heading"
         className="p-6 sm:p-8 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-5 scroll-mt-20"
       >
         <div className="border-b border-zinc-800 pb-4">
-          <div className="flex items-center gap-2.5 flex-wrap">
-            <FlaskConical className="text-amber-400 shrink-0" size={22} />
-            <h2
-              id="experimental-evaluator-heading"
-              className="text-xl sm:text-2xl font-bold text-zinc-100 text-balance"
-            >
-              Experimental Build Evaluator &amp; Compatibility Engine
-            </h2>
-            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/10 text-amber-400 border border-amber-500/20">
-              <FlaskConical size={11} className="shrink-0" />
-              <span>Experimental</span>
-            </span>
-          </div>
+          <h2
+            id="build-evaluator-heading"
+            className="text-xl sm:text-2xl font-bold text-zinc-100 flex items-center gap-2.5 text-balance"
+          >
+            <Gauge className="text-blue-400 shrink-0" size={22} />
+            <span>Build Evaluator &amp; Compatibility Engine</span>
+          </h2>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            Why the Build Evaluator and compatibility checks are designated as Experimental.
+            How Build Evaluator estimates and compatibility checks should be interpreted.
           </p>
         </div>
 
         <div className="space-y-4 text-xs sm:text-sm text-zinc-300 leading-relaxed text-pretty">
           <p>
-            The Quadsmith <strong>Build Evaluator</strong> and compatibility checks are{" "}
-            <strong className="text-amber-400">Experimental</strong> features provided strictly{" "}
-            <strong>&ldquo;AS IS&rdquo;</strong> and <strong>&ldquo;AS AVAILABLE&rdquo;</strong>{" "}
-            without warranties of airworthiness, compatibility, accuracy, or safety.
+            The Quadsmith <strong>Build Evaluator</strong> and compatibility checks are provided
+            strictly <strong>&ldquo;AS IS&rdquo;</strong> and{" "}
+            <strong>&ldquo;AS AVAILABLE&rdquo;</strong> without warranties of airworthiness,
+            compatibility, accuracy, or safety.
           </p>
 
           <ul className="space-y-2.5 bg-zinc-950/70 p-5 rounded-xl border border-zinc-800">
@@ -120,9 +109,8 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
               <CheckCircle2 size={16} className="text-amber-400 shrink-0 mt-0.5" />
               <span>
                 <strong>Provided &ldquo;AS IS&rdquo; Without Warranty:</strong> The Build Evaluator
-                is an experimental tool for general informational comparison only and makes no
-                representations or warranties regarding flight performance, airworthiness, or
-                operational safety.
+                is a tool for general informational comparison only and makes no representations or
+                warranties regarding flight performance, airworthiness, or operational safety.
               </span>
             </li>
             <li className="flex items-start gap-2.5">

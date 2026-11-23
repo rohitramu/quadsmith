@@ -1,5 +1,4 @@
 import { useState, useMemo, useRef, useEffect } from "react";
-import { Link } from "react-router-dom";
 import {
   Hammer,
   RotateCcw,
@@ -10,7 +9,6 @@ import {
   ChevronRight,
   ChevronDown,
   ClipboardCheck,
-  FlaskConical,
 } from "lucide-react";
 import { useDocumentMeta } from "@quadsmith/shared";
 import { BatteryCombobox } from "../components/BatteryCombobox";
@@ -519,13 +517,6 @@ function BuildWizardContent() {
                         <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-200">
                           Build Evaluator
                         </span>
-                        <Link
-                          to="/terms#experimental-evaluator"
-                          className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30"
-                        >
-                          <FlaskConical size={10} className="shrink-0" />
-                          <span>Experimental</span>
-                        </Link>
                       </div>
                       <SafetyDisclaimersButton className="text-[11px] text-amber-400/90 hover:text-amber-300 underline underline-offset-2 font-medium cursor-pointer">
                         Safety disclaimers
@@ -784,15 +775,6 @@ function BuildWizardContent() {
                       Build Evaluator
                     </h3>
                   </div>
-                  <Link
-                    to="/terms#experimental-evaluator"
-                    data-testid="forge-evaluator-experimental-badge"
-                    title="Experimental Build Evaluator — provided AS IS without warranties of airworthiness or safety"
-                    className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-amber-500/15 text-amber-400 border border-amber-500/30 hover:bg-amber-500/25 transition-colors"
-                  >
-                    <FlaskConical size={11} className="shrink-0" />
-                    <span>Experimental</span>
-                  </Link>
                 </div>
                 <p className="text-[11px] text-zinc-400 mt-1.5 leading-snug">
                   Provided &ldquo;AS IS&rdquo; without warranties of airworthiness or safety.{" "}

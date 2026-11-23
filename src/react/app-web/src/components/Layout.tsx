@@ -772,13 +772,10 @@ export function Layout() {
             >
               <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <p className="leading-relaxed max-w-2xl text-pretty">
-                  Hardware specifications, compatibility checks, and the{" "}
-                  <span className="text-amber-400/90 font-medium">
-                    Experimental Build Evaluator
-                  </span>{" "}
-                  are provided &ldquo;AS IS&rdquo; without warranties of airworthiness or safety.
-                  Always verify manufacturer datasheets, electrical ratings, and comply with local
-                  rules and regulations before assembly or flight.
+                  Hardware specifications, compatibility checks, and the Build Evaluator are
+                  provided &ldquo;AS IS&rdquo; without warranties of airworthiness or safety. Always
+                  verify manufacturer datasheets, electrical ratings, and comply with local rules
+                  and regulations before assembly or flight.
                 </p>
                 <div className="flex flex-wrap items-center gap-4 shrink-0 font-medium">
                   <Link
@@ -795,10 +792,10 @@ export function Layout() {
                     Safety Disclaimers
                   </button>
                   <Link
-                    to="/terms#experimental-evaluator"
-                    className="text-amber-400/90 hover:text-amber-300 underline underline-offset-2 transition-colors"
+                    to="/terms#build-evaluator"
+                    className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
                   >
-                    Experimental Evaluator
+                    Build Evaluator
                   </Link>
                   <Link
                     to="/terms#privacy"
