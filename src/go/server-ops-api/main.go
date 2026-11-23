@@ -20,11 +20,15 @@ import (
 	"golang.org/x/net/http2/h2c"
 
 	"quadsmith/server-ops-api/pkg/ops"
+	"quadsmith/shared/pkg/auth"
+	"quadsmith/shared/pkg/authcontext"
+	"quadsmith/shared/pkg/blob"
 	"quadsmith/shared/pkg/config"
 	"quadsmith/shared/pkg/opsauth"
 	"quadsmith/shared/pkg/telemetry"
 
 	configpb "quadsmith/shared/gen/quadsmith/config"
+	opspb "quadsmith/shared/gen/quadsmith/ops"
 	"quadsmith/shared/gen/quadsmith/ops/opsconnect"
 )
 
@@ -118,6 +122,41 @@ func main() {
 	path, handler := opsconnect.NewOpsServiceHandler(service, handlerOpts...)
 	mux.Handle(path, handler)
 
+	mountCatalogOpsHandlers(mux, publicPool, handlerOpts...)
+
+	// Ops component image upload & blob streaming endpoints
+	rawBlobHandler := blob.NewHandler(publicPool, func(reqCtx context.Context, _ *http.Request) *authcontext.UserContext {
+		_, _ = auth.EnsureSystemUser(reqCtx, publicPool)
+		return &authcontext.UserContext{
+			UserUUID: authcontext.SystemUserUUID,
+			UserID:   authcontext.SystemUserHandle,
+			Role:     authcontext.RoleSystem,
+		}
+	})
+	opsBlobUploadHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		var cookieTok string
+		if c, err := r.Cookie("qs_ops_token"); err == nil {
+			cookieTok = c.Value
+		}
+		t0 := time.Now()
+		opCtx, authErr := interceptor.AuthenticateSensitiveHTTP(r.Context(), r.Header.Get("Authorization"), cookieTok, "UploadCatalogBlob")
+		if authErr != nil {
+			code := http.StatusForbidden
+			if connect.CodeOf(authErr) == connect.CodeUnauthenticated {
+				code = http.StatusUnauthorized
+			}
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(code)
+			_, _ = w.Write([]byte(`{"error":` + strconv.Quote(authErr.Error()) + `}`))
+			return
+		}
+		rawBlobHandler.ServeHTTP(w, r)
+		interceptor.RecordAudit(r.Context(), "UploadCatalogBlob", opCtx, "OK", nil, time.Since(t0).Milliseconds())
+	})
+	mux.Handle("/api/ops/blobs", opsBlobUploadHandler)
+	mux.Handle("/api/ops/blobs/", opsBlobUploadHandler)
+	mux.Handle("/blobs/", rawBlobHandler)
+
 	mux.HandleFunc("/healthz", reg.HealthzHandler())
 	mux.HandleFunc("/metrics", reg.MetricsHandler())
 
@@ -156,7 +195,7 @@ func main() {
 		AllowCredentials: true,
 	})
 
-	instrumentedHandler := reg.Middleware(mux)
+	instrumentedHandler := reg.Middleware(dynamicOpsMaxBytesHandler(mux, int64(maxReqBytes)))
 
 	server := &http.Server{
 		Addr:              ":" + strconv.Itoa(port),
@@ -187,4 +226,40 @@ func main() {
 	}
 
 	log.Println("Ops API server stopped gracefully")
+}
+
+func dynamicOpsMaxBytesHandler(next http.Handler, defaultLimit int64) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		limit := defaultLimit
+		if strings.HasPrefix(r.URL.Path, "/api/ops/blobs") {
+			limit = 100 << 20 // 100MB for catalog image/media uploads
+		}
+		http.MaxBytesHandler(next, limit).ServeHTTP(w, r)
+	})
+}
+
+func mountCatalogOpsHandlers(mux *http.ServeMux, pool *pgxpool.Pool, opts ...connect.HandlerOption) {
+	register := func(path string, h http.Handler) {
+		mux.Handle(path, h)
+	}
+	register(opsconnect.NewAntennaOpsServiceHandler(opspb.NewAntennaOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewBatteryOpsServiceHandler(opspb.NewBatteryOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewCameraOpsServiceHandler(opspb.NewCameraOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewChargerOpsServiceHandler(opspb.NewChargerOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewElectronicSpeedControllerOpsServiceHandler(opspb.NewElectronicSpeedControllerOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewEscFirmwareOpsServiceHandler(opspb.NewEscFirmwareOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewFcFirmwareOpsServiceHandler(opspb.NewFcFirmwareOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewFieldToolOpsServiceHandler(opspb.NewFieldToolOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewFlightControllerOpsServiceHandler(opspb.NewFlightControllerOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewFrameOpsServiceHandler(opspb.NewFrameOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewGogglesOpsServiceHandler(opspb.NewGogglesOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewGpsReceiverOpsServiceHandler(opspb.NewGpsReceiverOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewMotorOpsServiceHandler(opspb.NewMotorOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewPropellerOpsServiceHandler(opspb.NewPropellerOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewRadioFirmwareOpsServiceHandler(opspb.NewRadioFirmwareOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewReceiverOpsServiceHandler(opspb.NewReceiverOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewSoftwareToolOpsServiceHandler(opspb.NewSoftwareToolOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewTransmitterOpsServiceHandler(opspb.NewTransmitterOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewVideoTransmitterOpsServiceHandler(opspb.NewVideoTransmitterOpsServiceHandler(pool), opts...))
+	register(opsconnect.NewVtxFirmwareOpsServiceHandler(opspb.NewVtxFirmwareOpsServiceHandler(pool), opts...))
 }

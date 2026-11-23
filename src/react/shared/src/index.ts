@@ -13,6 +13,7 @@ export * from "./hooks/useDocumentMeta";
 export * from "./lib/api";
 export * from "./lib/avatarColor";
 export * from "./lib/batteryFilter";
+export * from "./lib/catalogRegistry";
 export * from "./lib/celEvaluator";
 export * from "./lib/collectionColors";
 export * from "./lib/format";

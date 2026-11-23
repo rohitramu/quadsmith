@@ -44,9 +44,8 @@ type Propeller struct {
 	PrimaryDisplayImage *string          `protobuf:"bytes,12,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media               []*Media         `protobuf:"bytes,13,rep,name=media,proto3" json:"media,omitempty"`
 	// Propeller mounting interface (e.g., "M5", "1.5mm T-Mount", "2mm T-Mount", "1.5mm Press-Fit", "1mm Press-Fit", "0.8mm Press-Fit")
-	PropMountInterface string  `protobuf:"bytes,14,opt,name=prop_mount_interface,json=propMountInterface,proto3" json:"prop_mount_interface,omitempty"`
-	UserUuid           *string `protobuf:"bytes,15,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
-	AuthorUsername     *string `protobuf:"bytes,16,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
+	PropMountInterface string `protobuf:"bytes,14,opt,name=prop_mount_interface,json=propMountInterface,proto3" json:"prop_mount_interface,omitempty"`
+	IsArchived         bool   `protobuf:"varint,15,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -179,146 +178,7 @@ func (x *Propeller) GetPropMountInterface() string {
 	return ""
 }
 
-func (x *Propeller) GetUserUuid() string {
-	if x != nil && x.UserUuid != nil {
-		return *x.UserUuid
-	}
-	return ""
-}
-
-func (x *Propeller) GetAuthorUsername() string {
-	if x != nil && x.AuthorUsername != nil {
-		return *x.AuthorUsername
-	}
-	return ""
-}
-
-type CreatePropellerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Propeller     *Propeller             `protobuf:"bytes,1,opt,name=propeller,proto3" json:"propeller,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreatePropellerRequest) Reset() {
-	*x = CreatePropellerRequest{}
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreatePropellerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreatePropellerRequest) ProtoMessage() {}
-
-func (x *CreatePropellerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreatePropellerRequest.ProtoReflect.Descriptor instead.
-func (*CreatePropellerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_propeller_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CreatePropellerRequest) GetPropeller() *Propeller {
-	if x != nil {
-		return x.Propeller
-	}
-	return nil
-}
-
-type DeletePropellerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeletePropellerRequest) Reset() {
-	*x = DeletePropellerRequest{}
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeletePropellerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeletePropellerRequest) ProtoMessage() {}
-
-func (x *DeletePropellerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeletePropellerRequest.ProtoReflect.Descriptor instead.
-func (*DeletePropellerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_propeller_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeletePropellerRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeletePropellerResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeletePropellerResponse) Reset() {
-	*x = DeletePropellerResponse{}
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeletePropellerResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeletePropellerResponse) ProtoMessage() {}
-
-func (x *DeletePropellerResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeletePropellerResponse.ProtoReflect.Descriptor instead.
-func (*DeletePropellerResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_propeller_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *DeletePropellerResponse) GetIsArchived() bool {
+func (x *Propeller) GetIsArchived() bool {
 	if x != nil {
 		return x.IsArchived
 	}
@@ -335,7 +195,7 @@ type GetPropellerRequest struct {
 
 func (x *GetPropellerRequest) Reset() {
 	*x = GetPropellerRequest{}
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[4]
+	mi := &file_quadsmith_api_propeller_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -347,7 +207,7 @@ func (x *GetPropellerRequest) String() string {
 func (*GetPropellerRequest) ProtoMessage() {}
 
 func (x *GetPropellerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[4]
+	mi := &file_quadsmith_api_propeller_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -360,7 +220,7 @@ func (x *GetPropellerRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetPropellerRequest.ProtoReflect.Descriptor instead.
 func (*GetPropellerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_propeller_proto_rawDescGZIP(), []int{4}
+	return file_quadsmith_api_propeller_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetPropellerRequest) GetId() string {
@@ -390,7 +250,7 @@ type ListPropellersRequest struct {
 
 func (x *ListPropellersRequest) Reset() {
 	*x = ListPropellersRequest{}
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[5]
+	mi := &file_quadsmith_api_propeller_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -402,7 +262,7 @@ func (x *ListPropellersRequest) String() string {
 func (*ListPropellersRequest) ProtoMessage() {}
 
 func (x *ListPropellersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[5]
+	mi := &file_quadsmith_api_propeller_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -415,7 +275,7 @@ func (x *ListPropellersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPropellersRequest.ProtoReflect.Descriptor instead.
 func (*ListPropellersRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_propeller_proto_rawDescGZIP(), []int{5}
+	return file_quadsmith_api_propeller_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListPropellersRequest) GetFilter() string {
@@ -463,7 +323,7 @@ type ListPropellersResponse struct {
 
 func (x *ListPropellersResponse) Reset() {
 	*x = ListPropellersResponse{}
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[6]
+	mi := &file_quadsmith_api_propeller_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -475,7 +335,7 @@ func (x *ListPropellersResponse) String() string {
 func (*ListPropellersResponse) ProtoMessage() {}
 
 func (x *ListPropellersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[6]
+	mi := &file_quadsmith_api_propeller_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -488,7 +348,7 @@ func (x *ListPropellersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListPropellersResponse.ProtoReflect.Descriptor instead.
 func (*ListPropellersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_propeller_proto_rawDescGZIP(), []int{6}
+	return file_quadsmith_api_propeller_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListPropellersResponse) GetPropellers() []*Propeller {
@@ -505,93 +365,39 @@ func (x *ListPropellersResponse) GetNextPageToken() string {
 	return ""
 }
 
-type UpdatePropellerRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Propeller     *Propeller             `protobuf:"bytes,1,opt,name=propeller,proto3" json:"propeller,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdatePropellerRequest) Reset() {
-	*x = UpdatePropellerRequest{}
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdatePropellerRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdatePropellerRequest) ProtoMessage() {}
-
-func (x *UpdatePropellerRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_propeller_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdatePropellerRequest.ProtoReflect.Descriptor instead.
-func (*UpdatePropellerRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_propeller_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *UpdatePropellerRequest) GetPropeller() *Propeller {
-	if x != nil {
-		return x.Propeller
-	}
-	return nil
-}
-
 var File_quadsmith_api_propeller_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_propeller_proto_rawDesc = "" +
 	"\n" +
-	"\x1dquadsmith/api/propeller.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xe6\a\n" +
+	"\x1dquadsmith/api/propeller.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xb0\x06\n" +
 	"\tPropeller\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xc0\xf0\x19\x04R\x02id\x12.\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\fmanufacturer\x12\x18\n" +
-	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02R\x04name\x12\x1f\n" +
-	"\bweight_g\x18\x05 \x01(\x02B\x04\xc0\xf0\x19\x02R\aweightG\x12%\n" +
-	"\vdiameter_mm\x18\x06 \x01(\x02B\x04\xc0\xf0\x19\x02R\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x04R\fmanufacturer\x12\x18\n" +
+	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x04R\x04name\x12\x1f\n" +
+	"\bweight_g\x18\x05 \x01(\x02B\x04\xc0\xf0\x19\x04R\aweightG\x12%\n" +
+	"\vdiameter_mm\x18\x06 \x01(\x02B\x04\xc0\xf0\x19\x04R\n" +
 	"diameterMm\x12\x1f\n" +
-	"\bpitch_mm\x18\a \x01(\x02B\x04\xc0\xf0\x19\x02R\apitchMm\x12\x1c\n" +
-	"\x06blades\x18\b \x01(\rB\x04\xc0\xf0\x19\x02R\x06blades\x12 \n" +
-	"\bmaterial\x18\t \x01(\tB\x04\xc0\xf0\x19\x02R\bmaterial\x12&\n" +
+	"\bpitch_mm\x18\a \x01(\x02B\x04\xc0\xf0\x19\x04R\apitchMm\x12\x1c\n" +
+	"\x06blades\x18\b \x01(\rB\x04\xc0\xf0\x19\x04R\x06blades\x12 \n" +
+	"\bmaterial\x18\t \x01(\tB\x04\xc0\xf0\x19\x04R\bmaterial\x12&\n" +
 	"\vdescription\x18\n" +
-	" \x01(\tB\x04\xc0\xf0\x19\x02R\vdescription\x12K\n" +
-	"\x0freference_links\x18\v \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x04\xc0\xf0\x19\x02R\x0ereferenceLinks\x12=\n" +
-	"\x15primary_display_image\x18\f \x01(\tB\x04\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x120\n" +
-	"\x05media\x18\r \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x02R\x05media\x126\n" +
-	"\x14prop_mount_interface\x18\x0e \x01(\tB\x04\xc0\xf0\x19\x02R\x12propMountInterface\x12&\n" +
-	"\tuser_uuid\x18\x0f \x01(\tB\x04\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x122\n" +
-	"\x0fauthor_username\x18\x10 \x01(\tB\x04\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xd7\x01\x8a\xb5\x183\n" +
+	" \x01(\tB\x04\xc0\xf0\x19\x04R\vdescription\x12K\n" +
+	"\x0freference_links\x18\v \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x04\xc0\xf0\x19\x04R\x0ereferenceLinks\x12=\n" +
+	"\x15primary_display_image\x18\f \x01(\tB\x04\xc0\xf0\x19\x04H\x00R\x13primaryDisplayImage\x88\x01\x01\x120\n" +
+	"\x05media\x18\r \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x04R\x05media\x126\n" +
+	"\x14prop_mount_interface\x18\x0e \x01(\tB\x04\xc0\xf0\x19\x04R\x12propMountInterface\x12%\n" +
+	"\vis_archived\x18\x0f \x01(\bB\x04\xc0\xf0\x19\x04R\n" +
+	"isArchived:y\x8a\xb5\x183\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\vdiameter_mm\n" +
 	"\bpitch_mm\n" +
 	"\x06blades\x9a\xb5\x18\x1ecomponents/hardware/propellers\xc2\xf3\x18\x16\n" +
 	"\n" +
-	"propellers*\bentities\xc2\xf0\x19`\b\x05\x12\\uuid IN (SELECT uuid FROM entities WHERE collection = 'propellers' AND user_uuid = $1::uuid)B\x18\n" +
-	"\x16_primary_display_imageB\f\n" +
-	"\n" +
-	"_user_uuidB\x12\n" +
-	"\x10_author_username\"P\n" +
-	"\x16CreatePropellerRequest\x126\n" +
-	"\tpropeller\x18\x01 \x01(\v2\x18.quadsmith.api.PropellerR\tpropeller\"(\n" +
-	"\x16DeletePropellerRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\":\n" +
-	"\x17DeletePropellerResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"?\n" +
+	"propellers*\bentities\xc2\xf0\x19\x02\b\x01B\x18\n" +
+	"\x16_primary_display_image\"?\n" +
 	"\x13GetPropellerRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x99\x01\n" +
@@ -606,15 +412,10 @@ const file_quadsmith_api_propeller_proto_rawDesc = "" +
 	"\n" +
 	"propellers\x18\x01 \x03(\v2\x18.quadsmith.api.PropellerR\n" +
 	"propellers\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"P\n" +
-	"\x16UpdatePropellerRequest\x126\n" +
-	"\tpropeller\x18\x01 \x01(\v2\x18.quadsmith.api.PropellerR\tpropeller2\xc9\x03\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xbf\x01\n" +
 	"\x10PropellerService\x12L\n" +
 	"\fGetPropeller\x12\".quadsmith.api.GetPropellerRequest\x1a\x18.quadsmith.api.Propeller\x12]\n" +
-	"\x0eListPropellers\x12$.quadsmith.api.ListPropellersRequest\x1a%.quadsmith.api.ListPropellersResponse\x12R\n" +
-	"\x0fCreatePropeller\x12%.quadsmith.api.CreatePropellerRequest\x1a\x18.quadsmith.api.Propeller\x12R\n" +
-	"\x0fUpdatePropeller\x12%.quadsmith.api.UpdatePropellerRequest\x1a\x18.quadsmith.api.Propeller\x12`\n" +
-	"\x0fDeletePropeller\x12%.quadsmith.api.DeletePropellerRequest\x1a&.quadsmith.api.DeletePropellerResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"\x0eListPropellers\x12$.quadsmith.api.ListPropellersRequest\x1a%.quadsmith.api.ListPropellersResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_propeller_proto_rawDescOnce sync.Once
@@ -628,40 +429,28 @@ func file_quadsmith_api_propeller_proto_rawDescGZIP() []byte {
 	return file_quadsmith_api_propeller_proto_rawDescData
 }
 
-var file_quadsmith_api_propeller_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_quadsmith_api_propeller_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_quadsmith_api_propeller_proto_goTypes = []any{
-	(*Propeller)(nil),               // 0: quadsmith.api.Propeller
-	(*CreatePropellerRequest)(nil),  // 1: quadsmith.api.CreatePropellerRequest
-	(*DeletePropellerRequest)(nil),  // 2: quadsmith.api.DeletePropellerRequest
-	(*DeletePropellerResponse)(nil), // 3: quadsmith.api.DeletePropellerResponse
-	(*GetPropellerRequest)(nil),     // 4: quadsmith.api.GetPropellerRequest
-	(*ListPropellersRequest)(nil),   // 5: quadsmith.api.ListPropellersRequest
-	(*ListPropellersResponse)(nil),  // 6: quadsmith.api.ListPropellersResponse
-	(*UpdatePropellerRequest)(nil),  // 7: quadsmith.api.UpdatePropellerRequest
-	(*ReferenceLink)(nil),           // 8: quadsmith.api.ReferenceLink
-	(*Media)(nil),                   // 9: quadsmith.api.Media
+	(*Propeller)(nil),              // 0: quadsmith.api.Propeller
+	(*GetPropellerRequest)(nil),    // 1: quadsmith.api.GetPropellerRequest
+	(*ListPropellersRequest)(nil),  // 2: quadsmith.api.ListPropellersRequest
+	(*ListPropellersResponse)(nil), // 3: quadsmith.api.ListPropellersResponse
+	(*ReferenceLink)(nil),          // 4: quadsmith.api.ReferenceLink
+	(*Media)(nil),                  // 5: quadsmith.api.Media
 }
 var file_quadsmith_api_propeller_proto_depIdxs = []int32{
-	8,  // 0: quadsmith.api.Propeller.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 1: quadsmith.api.Propeller.media:type_name -> quadsmith.api.Media
-	0,  // 2: quadsmith.api.CreatePropellerRequest.propeller:type_name -> quadsmith.api.Propeller
-	0,  // 3: quadsmith.api.ListPropellersResponse.propellers:type_name -> quadsmith.api.Propeller
-	0,  // 4: quadsmith.api.UpdatePropellerRequest.propeller:type_name -> quadsmith.api.Propeller
-	4,  // 5: quadsmith.api.PropellerService.GetPropeller:input_type -> quadsmith.api.GetPropellerRequest
-	5,  // 6: quadsmith.api.PropellerService.ListPropellers:input_type -> quadsmith.api.ListPropellersRequest
-	1,  // 7: quadsmith.api.PropellerService.CreatePropeller:input_type -> quadsmith.api.CreatePropellerRequest
-	7,  // 8: quadsmith.api.PropellerService.UpdatePropeller:input_type -> quadsmith.api.UpdatePropellerRequest
-	2,  // 9: quadsmith.api.PropellerService.DeletePropeller:input_type -> quadsmith.api.DeletePropellerRequest
-	0,  // 10: quadsmith.api.PropellerService.GetPropeller:output_type -> quadsmith.api.Propeller
-	6,  // 11: quadsmith.api.PropellerService.ListPropellers:output_type -> quadsmith.api.ListPropellersResponse
-	0,  // 12: quadsmith.api.PropellerService.CreatePropeller:output_type -> quadsmith.api.Propeller
-	0,  // 13: quadsmith.api.PropellerService.UpdatePropeller:output_type -> quadsmith.api.Propeller
-	3,  // 14: quadsmith.api.PropellerService.DeletePropeller:output_type -> quadsmith.api.DeletePropellerResponse
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	4, // 0: quadsmith.api.Propeller.reference_links:type_name -> quadsmith.api.ReferenceLink
+	5, // 1: quadsmith.api.Propeller.media:type_name -> quadsmith.api.Media
+	0, // 2: quadsmith.api.ListPropellersResponse.propellers:type_name -> quadsmith.api.Propeller
+	1, // 3: quadsmith.api.PropellerService.GetPropeller:input_type -> quadsmith.api.GetPropellerRequest
+	2, // 4: quadsmith.api.PropellerService.ListPropellers:input_type -> quadsmith.api.ListPropellersRequest
+	0, // 5: quadsmith.api.PropellerService.GetPropeller:output_type -> quadsmith.api.Propeller
+	3, // 6: quadsmith.api.PropellerService.ListPropellers:output_type -> quadsmith.api.ListPropellersResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_propeller_proto_init() }
@@ -678,7 +467,7 @@ func file_quadsmith_api_propeller_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_propeller_proto_rawDesc), len(file_quadsmith_api_propeller_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

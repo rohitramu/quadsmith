@@ -124,7 +124,7 @@ describe("ProductPage Component", () => {
     expect(document.getElementById("qa")).toHaveClass("hidden");
   });
 
-  it("opens Create Similar component modal when Create Similar button is clicked", async () => {
+  it("renders strictly read-only product details without Create Similar, Edit, Delete, or author attribution", async () => {
     renderWithProviders(
       <Routes>
         <Route path="/components/:categoryId/:collectionId/:productId" element={<ProductPage />} />
@@ -136,13 +136,9 @@ describe("ProductPage Component", () => {
       expect(screen.getByRole("heading", { level: 1, name: "ECO II 2207" })).toBeInTheDocument();
     });
 
-    const createSimilarBtn = screen.getByRole("button", { name: /create similar/i });
-    expect(createSimilarBtn).toBeInTheDocument();
-    fireEvent.click(createSimilarBtn);
-
-    expect(screen.getByRole("heading", { name: /create similar motor/i })).toBeInTheDocument();
-    expect(screen.getByDisplayValue("EMAX")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("ECO II 2207")).toBeInTheDocument();
-    expect(screen.queryByLabelText(/id slug/i)).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /create similar/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /edit component/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("button", { name: /delete/i })).not.toBeInTheDocument();
+    expect(screen.queryByText(/added by/i)).not.toBeInTheDocument();
   });
 });

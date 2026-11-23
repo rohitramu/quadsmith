@@ -17,9 +17,6 @@ option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 service CameraService {
   rpc GetCamera(GetCameraRequest) returns (Camera);
   rpc ListCameras(ListCamerasRequest) returns (ListCamerasResponse);
-  rpc CreateCamera(CreateCameraRequest) returns (Camera);
-  rpc UpdateCamera(UpdateCameraRequest) returns (Camera);
-  rpc DeleteCamera(DeleteCameraRequest) returns (DeleteCameraResponse);
 }
 
 // ---------------------------------------------------------
@@ -32,10 +29,7 @@ message Camera {
     inherits: "entities"
   };
   option (quadsmith.common.collection_path) = "components/hardware/cameras";
-  option (quadsmith.data.export) = {
-    domain: EXPORT_DOMAIN_COMPONENTS
-    user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'cameras' AND user_uuid = $1::uuid)"
-  };
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
   option (quadsmith.common.frontend) = {
     default_columns: [
       "manufacturer",
@@ -57,47 +51,34 @@ message Camera {
 
   string manufacturer = 3 [
     (quadsmith.sql.column) = {create_index: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
-  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  bool is_internal_only = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  bool is_internal_only = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 
-  float weight_g = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  float weight_g = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 
   // Protocol / signal type (e.g., "Analog", "DJI O3", "DJI O4 Pro", "DJI O4 Lite", "Walksnail Avatar", "HDZero")
-  string protocol = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string protocol = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 
   // Sensor size (e.g., "1/3 CMOS", "1/1.8 CMOS")
-  string sensor_size = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string sensor_size = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 
   // Camera mounting interface (e.g., "14mm (Nano)", "19mm (Micro)", "20mm (DJI O3)")
-  string camera_mount_interface = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string camera_mount_interface = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 
   // Lens focal length or FOV descriptor (e.g., 1.8, 2.1)
-  float lens_size_mm = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string description = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  repeated ReferenceLink reference_links = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  optional string primary_display_image = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  repeated Media media = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  optional string user_uuid = 15 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
-  optional string author_username = 16 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  float lens_size_mm = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  string description = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  repeated ReferenceLink reference_links = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  optional string primary_display_image = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  repeated Media media = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  bool is_archived = 15 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 }
 
 // ---------------------------------------------------------
 // Request/response messages
 // ---------------------------------------------------------
-
-message CreateCameraRequest {
-  Camera camera = 1;
-}
-
-message DeleteCameraRequest {
-  string id = 1;
-}
-
-message DeleteCameraResponse {
-  bool is_archived = 1;
-}
 
 message GetCameraRequest {
   string id = 1;
@@ -115,8 +96,4 @@ message ListCamerasRequest {
 message ListCamerasResponse {
   repeated Camera cameras = 1;
   string next_page_token = 2;
-}
-
-message UpdateCameraRequest {
-  Camera camera = 1;
 }

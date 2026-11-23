@@ -17,9 +17,6 @@ option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 service ChargerService {
   rpc GetCharger(GetChargerRequest) returns (Charger);
   rpc ListChargers(ListChargersRequest) returns (ListChargersResponse);
-  rpc CreateCharger(CreateChargerRequest) returns (Charger);
-  rpc UpdateCharger(UpdateChargerRequest) returns (Charger);
-  rpc DeleteCharger(DeleteChargerRequest) returns (DeleteChargerResponse);
 }
 
 // ---------------------------------------------------------
@@ -32,10 +29,7 @@ message Charger {
     inherits: "entities"
   };
   option (quadsmith.common.collection_path) = "components/gear/chargers";
-  option (quadsmith.data.export) = {
-    domain: EXPORT_DOMAIN_COMPONENTS
-    user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'chargers' AND user_uuid = $1::uuid)"
-  };
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
   option (quadsmith.common.frontend) = {
     default_columns: [
       "manufacturer",
@@ -57,39 +51,26 @@ message Charger {
   string id = 2 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
   string manufacturer = 3 [
     (quadsmith.sql.column) = {create_index: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
-  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  float weight_g = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  uint32 channels = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  float max_charge_power_w = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  float max_charge_current_a = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string input_voltage_range = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string supported_chemistries = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  uint32 max_cells_s = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string description = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  repeated ReferenceLink reference_links = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  optional string primary_display_image = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  repeated Media media = 15 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  optional string user_uuid = 16 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
-  optional string author_username = 17 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  float weight_g = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  uint32 channels = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  float max_charge_power_w = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  float max_charge_current_a = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  string input_voltage_range = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  string supported_chemistries = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  uint32 max_cells_s = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  string description = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  repeated ReferenceLink reference_links = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  optional string primary_display_image = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  repeated Media media = 15 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  bool is_archived = 16 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 }
 
 // ---------------------------------------------------------
 // Request/response messages
 // ---------------------------------------------------------
-
-message CreateChargerRequest {
-  Charger charger = 1;
-}
-
-message DeleteChargerRequest {
-  string id = 1;
-}
-
-message DeleteChargerResponse {
-  bool is_archived = 1;
-}
 
 message GetChargerRequest {
   string id = 1;
@@ -107,8 +88,4 @@ message ListChargersRequest {
 message ListChargersResponse {
   repeated Charger chargers = 1;
   string next_page_token = 2;
-}
-
-message UpdateChargerRequest {
-  Charger charger = 1;
 }

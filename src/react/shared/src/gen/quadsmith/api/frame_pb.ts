@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_frame: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChlxdWFkc21pdGgvYXBpL2ZyYW1lLnByb3RvEg1xdWFkc21pdGguYXBpIvoGCgVGcmFtZRI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIQCgJpZBgCIAEoCUIEwPAZBBIgCgxtYW51ZmFjdHVyZXIYAyABKAlCCsLzGAIoAcDwGQISEgoEbmFtZRgEIAEoCUIEwPAZAhIWCgh3ZWlnaHRfZxgFIAEoAkIEwPAZAhIaCgx3aGVlbGJhc2VfbW0YBiABKAJCBMDwGQISHgoQbWF4X3Byb3Bfc2l6ZV9tbRgHIAEoAkIEwPAZAhIWCghnZW9tZXRyeRgIIAEoCUIEwPAZAhIZCgtkZXNjcmlwdGlvbhgJIAEoCUIEwPAZAhI7Cg9yZWZlcmVuY2VfbGlua3MYCiADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCBMDwGQISKAoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAsgASgJQgTA8BkCSACIAQESKQoFbWVkaWEYDCADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgTA8BkCEiAKC21vdG9yX2NvdW50GA0gASgNQgvC8xgDOgE0wPAZAhIlChdjYW1lcmFfbW91bnRfaW50ZXJmYWNlcxgOIAMoCUIEwPAZAhIiChRtb3Rvcl9tb3VudF9wYXR0ZXJucxgPIAMoCUIEwPAZAhIiChRib2FyZF9tb3VudF9wYXR0ZXJucxgQIAMoCUIEwPAZAhIcCgl1c2VyX3V1aWQYESABKAlCBMDwGQRIAYgBARIiCg9hdXRob3JfdXNlcm5hbWUYEiABKAlCBMDwGQJIAogBATrEAYq1GCwKDG1hbnVmYWN0dXJlcgoEbmFtZQoMd2hlZWxiYXNlX21tCghnZW9tZXRyeZq1GBpjb21wb25lbnRzL2hhcmR3YXJlL2ZyYW1lc8LzGBIKBmZyYW1lcyoIZW50aXRpZXPC8BlcCAUSWHV1aWQgSU4gKFNFTEVDVCB1dWlkIEZST00gZW50aXRpZXMgV0hFUkUgY29sbGVjdGlvbiA9ICdmcmFtZXMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiOQoSQ3JlYXRlRnJhbWVSZXF1ZXN0EiMKBWZyYW1lGAEgASgLMhQucXVhZHNtaXRoLmFwaS5GcmFtZSIgChJEZWxldGVGcmFtZVJlcXVlc3QSCgoCaWQYASABKAkiKgoTRGVsZXRlRnJhbWVSZXNwb25zZRITCgtpc19hcmNoaXZlZBgBIAEoCCIuCg9HZXRGcmFtZVJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJpChFMaXN0RnJhbWVzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlMKEkxpc3RGcmFtZXNSZXNwb25zZRIkCgZmcmFtZXMYASADKAsyFC5xdWFkc21pdGguYXBpLkZyYW1lEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSI5ChJVcGRhdGVGcmFtZVJlcXVlc3QSIwoFZnJhbWUYASABKAsyFC5xdWFkc21pdGguYXBpLkZyYW1lMokDCgxGcmFtZVNlcnZpY2USQAoIR2V0RnJhbWUSHi5xdWFkc21pdGguYXBpLkdldEZyYW1lUmVxdWVzdBoULnF1YWRzbWl0aC5hcGkuRnJhbWUSUQoKTGlzdEZyYW1lcxIgLnF1YWRzbWl0aC5hcGkuTGlzdEZyYW1lc1JlcXVlc3QaIS5xdWFkc21pdGguYXBpLkxpc3RGcmFtZXNSZXNwb25zZRJGCgtDcmVhdGVGcmFtZRIhLnF1YWRzbWl0aC5hcGkuQ3JlYXRlRnJhbWVSZXF1ZXN0GhQucXVhZHNtaXRoLmFwaS5GcmFtZRJGCgtVcGRhdGVGcmFtZRIhLnF1YWRzbWl0aC5hcGkuVXBkYXRlRnJhbWVSZXF1ZXN0GhQucXVhZHNtaXRoLmFwaS5GcmFtZRJUCgtEZWxldGVGcmFtZRIhLnF1YWRzbWl0aC5hcGkuRGVsZXRlRnJhbWVSZXF1ZXN0GiIucXVhZHNtaXRoLmFwaS5EZWxldGVGcmFtZVJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "ChlxdWFkc21pdGgvYXBpL2ZyYW1lLnByb3RvEg1xdWFkc21pdGguYXBpItYFCgVGcmFtZRI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIQCgJpZBgCIAEoCUIEwPAZBBIgCgxtYW51ZmFjdHVyZXIYAyABKAlCCsLzGAIoAcDwGQQSEgoEbmFtZRgEIAEoCUIEwPAZBBIWCgh3ZWlnaHRfZxgFIAEoAkIEwPAZBBIaCgx3aGVlbGJhc2VfbW0YBiABKAJCBMDwGQQSHgoQbWF4X3Byb3Bfc2l6ZV9tbRgHIAEoAkIEwPAZBBIWCghnZW9tZXRyeRgIIAEoCUIEwPAZBBIZCgtkZXNjcmlwdGlvbhgJIAEoCUIEwPAZBBI7Cg9yZWZlcmVuY2VfbGlua3MYCiADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCBMDwGQQSKAoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAsgASgJQgTA8BkESACIAQESKQoFbWVkaWEYDCADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgTA8BkEEiAKC21vdG9yX2NvdW50GA0gASgNQgvC8xgDOgE0wPAZBBIlChdjYW1lcmFfbW91bnRfaW50ZXJmYWNlcxgOIAMoCUIEwPAZBBIiChRtb3Rvcl9tb3VudF9wYXR0ZXJucxgPIAMoCUIEwPAZBBIiChRib2FyZF9tb3VudF9wYXR0ZXJucxgQIAMoCUIEwPAZBBIZCgtpc19hcmNoaXZlZBgRIAEoCEIEwPAZBDpqirUYLAoMbWFudWZhY3R1cmVyCgRuYW1lCgx3aGVlbGJhc2VfbW0KCGdlb21ldHJ5mrUYGmNvbXBvbmVudHMvaGFyZHdhcmUvZnJhbWVzwvMYEgoGZnJhbWVzKghlbnRpdGllc8LwGQIIAUIYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlIi4KD0dldEZyYW1lUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJImkKEUxpc3RGcmFtZXNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiUwoSTGlzdEZyYW1lc1Jlc3BvbnNlEiQKBmZyYW1lcxgBIAMoCzIULnF1YWRzbWl0aC5hcGkuRnJhbWUSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMqMBCgxGcmFtZVNlcnZpY2USQAoIR2V0RnJhbWUSHi5xdWFkc21pdGguYXBpLkdldEZyYW1lUmVxdWVzdBoULnF1YWRzbWl0aC5hcGkuRnJhbWUSUQoKTGlzdEZyYW1lcxIgLnF1YWRzbWl0aC5hcGkuTGlzdEZyYW1lc1JlcXVlc3QaIS5xdWFkc21pdGguYXBpLkxpc3RGcmFtZXNSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -128,14 +128,9 @@ export type Frame = Message<"quadsmith.api.Frame"> & {
   boardMountPatterns: string[];
 
   /**
-   * @generated from field: optional string user_uuid = 17;
+   * @generated from field: bool is_archived = 17;
    */
-  userUuid?: string | undefined;
-
-  /**
-   * @generated from field: optional string author_username = 18;
-   */
-  authorUsername?: string | undefined;
+  isArchived: boolean;
 };
 
 /**
@@ -145,60 +140,6 @@ export type Frame = Message<"quadsmith.api.Frame"> & {
 export const FrameSchema: GenMessage<Frame> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_frame, 0);
-
-/**
- * @generated from message quadsmith.api.CreateFrameRequest
- */
-export type CreateFrameRequest = Message<"quadsmith.api.CreateFrameRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Frame frame = 1;
-   */
-  frame?: Frame | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateFrameRequest.
- * Use `create(CreateFrameRequestSchema)` to create a new message.
- */
-export const CreateFrameRequestSchema: GenMessage<CreateFrameRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteFrameRequest
- */
-export type DeleteFrameRequest = Message<"quadsmith.api.DeleteFrameRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteFrameRequest.
- * Use `create(DeleteFrameRequestSchema)` to create a new message.
- */
-export const DeleteFrameRequestSchema: GenMessage<DeleteFrameRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 2);
-
-/**
- * @generated from message quadsmith.api.DeleteFrameResponse
- */
-export type DeleteFrameResponse = Message<"quadsmith.api.DeleteFrameResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteFrameResponse.
- * Use `create(DeleteFrameResponseSchema)` to create a new message.
- */
-export const DeleteFrameResponseSchema: GenMessage<DeleteFrameResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 3);
 
 /**
  * @generated from message quadsmith.api.GetFrameRequest
@@ -221,7 +162,7 @@ export type GetFrameRequest = Message<"quadsmith.api.GetFrameRequest"> & {
  */
 export const GetFrameRequestSchema: GenMessage<GetFrameRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 4);
+  messageDesc(file_quadsmith_api_frame, 1);
 
 /**
  * @generated from message quadsmith.api.ListFramesRequest
@@ -259,7 +200,7 @@ export type ListFramesRequest = Message<"quadsmith.api.ListFramesRequest"> & {
  */
 export const ListFramesRequestSchema: GenMessage<ListFramesRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 5);
+  messageDesc(file_quadsmith_api_frame, 2);
 
 /**
  * @generated from message quadsmith.api.ListFramesResponse
@@ -282,25 +223,7 @@ export type ListFramesResponse = Message<"quadsmith.api.ListFramesResponse"> & {
  */
 export const ListFramesResponseSchema: GenMessage<ListFramesResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 6);
-
-/**
- * @generated from message quadsmith.api.UpdateFrameRequest
- */
-export type UpdateFrameRequest = Message<"quadsmith.api.UpdateFrameRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Frame frame = 1;
-   */
-  frame?: Frame | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateFrameRequest.
- * Use `create(UpdateFrameRequestSchema)` to create a new message.
- */
-export const UpdateFrameRequestSchema: GenMessage<UpdateFrameRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_frame, 7);
+  messageDesc(file_quadsmith_api_frame, 3);
 
 /**
  * @generated from service quadsmith.api.FrameService
@@ -321,29 +244,5 @@ export const FrameService: GenService<{
     methodKind: "unary";
     input: typeof ListFramesRequestSchema;
     output: typeof ListFramesResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.FrameService.CreateFrame
-   */
-  createFrame: {
-    methodKind: "unary";
-    input: typeof CreateFrameRequestSchema;
-    output: typeof FrameSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.FrameService.UpdateFrame
-   */
-  updateFrame: {
-    methodKind: "unary";
-    input: typeof UpdateFrameRequestSchema;
-    output: typeof FrameSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.FrameService.DeleteFrame
-   */
-  deleteFrame: {
-    methodKind: "unary";
-    input: typeof DeleteFrameRequestSchema;
-    output: typeof DeleteFrameResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_frame, 0);

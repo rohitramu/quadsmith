@@ -44,8 +44,7 @@ type Camera struct {
 	ReferenceLinks      []*ReferenceLink `protobuf:"bytes,12,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	PrimaryDisplayImage *string          `protobuf:"bytes,13,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media               []*Media         `protobuf:"bytes,14,rep,name=media,proto3" json:"media,omitempty"`
-	UserUuid            *string          `protobuf:"bytes,15,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
-	AuthorUsername      *string          `protobuf:"bytes,16,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
+	IsArchived          bool             `protobuf:"varint,15,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -178,146 +177,7 @@ func (x *Camera) GetMedia() []*Media {
 	return nil
 }
 
-func (x *Camera) GetUserUuid() string {
-	if x != nil && x.UserUuid != nil {
-		return *x.UserUuid
-	}
-	return ""
-}
-
-func (x *Camera) GetAuthorUsername() string {
-	if x != nil && x.AuthorUsername != nil {
-		return *x.AuthorUsername
-	}
-	return ""
-}
-
-type CreateCameraRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Camera        *Camera                `protobuf:"bytes,1,opt,name=camera,proto3" json:"camera,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateCameraRequest) Reset() {
-	*x = CreateCameraRequest{}
-	mi := &file_quadsmith_api_camera_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateCameraRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateCameraRequest) ProtoMessage() {}
-
-func (x *CreateCameraRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_camera_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateCameraRequest.ProtoReflect.Descriptor instead.
-func (*CreateCameraRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_camera_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CreateCameraRequest) GetCamera() *Camera {
-	if x != nil {
-		return x.Camera
-	}
-	return nil
-}
-
-type DeleteCameraRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteCameraRequest) Reset() {
-	*x = DeleteCameraRequest{}
-	mi := &file_quadsmith_api_camera_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteCameraRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteCameraRequest) ProtoMessage() {}
-
-func (x *DeleteCameraRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_camera_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteCameraRequest.ProtoReflect.Descriptor instead.
-func (*DeleteCameraRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_camera_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteCameraRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteCameraResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteCameraResponse) Reset() {
-	*x = DeleteCameraResponse{}
-	mi := &file_quadsmith_api_camera_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteCameraResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteCameraResponse) ProtoMessage() {}
-
-func (x *DeleteCameraResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_camera_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteCameraResponse.ProtoReflect.Descriptor instead.
-func (*DeleteCameraResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_camera_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *DeleteCameraResponse) GetIsArchived() bool {
+func (x *Camera) GetIsArchived() bool {
 	if x != nil {
 		return x.IsArchived
 	}
@@ -334,7 +194,7 @@ type GetCameraRequest struct {
 
 func (x *GetCameraRequest) Reset() {
 	*x = GetCameraRequest{}
-	mi := &file_quadsmith_api_camera_proto_msgTypes[4]
+	mi := &file_quadsmith_api_camera_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -346,7 +206,7 @@ func (x *GetCameraRequest) String() string {
 func (*GetCameraRequest) ProtoMessage() {}
 
 func (x *GetCameraRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_camera_proto_msgTypes[4]
+	mi := &file_quadsmith_api_camera_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -359,7 +219,7 @@ func (x *GetCameraRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetCameraRequest.ProtoReflect.Descriptor instead.
 func (*GetCameraRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_camera_proto_rawDescGZIP(), []int{4}
+	return file_quadsmith_api_camera_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetCameraRequest) GetId() string {
@@ -389,7 +249,7 @@ type ListCamerasRequest struct {
 
 func (x *ListCamerasRequest) Reset() {
 	*x = ListCamerasRequest{}
-	mi := &file_quadsmith_api_camera_proto_msgTypes[5]
+	mi := &file_quadsmith_api_camera_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -401,7 +261,7 @@ func (x *ListCamerasRequest) String() string {
 func (*ListCamerasRequest) ProtoMessage() {}
 
 func (x *ListCamerasRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_camera_proto_msgTypes[5]
+	mi := &file_quadsmith_api_camera_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -414,7 +274,7 @@ func (x *ListCamerasRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCamerasRequest.ProtoReflect.Descriptor instead.
 func (*ListCamerasRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_camera_proto_rawDescGZIP(), []int{5}
+	return file_quadsmith_api_camera_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListCamerasRequest) GetFilter() string {
@@ -462,7 +322,7 @@ type ListCamerasResponse struct {
 
 func (x *ListCamerasResponse) Reset() {
 	*x = ListCamerasResponse{}
-	mi := &file_quadsmith_api_camera_proto_msgTypes[6]
+	mi := &file_quadsmith_api_camera_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -474,7 +334,7 @@ func (x *ListCamerasResponse) String() string {
 func (*ListCamerasResponse) ProtoMessage() {}
 
 func (x *ListCamerasResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_camera_proto_msgTypes[6]
+	mi := &file_quadsmith_api_camera_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -487,7 +347,7 @@ func (x *ListCamerasResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCamerasResponse.ProtoReflect.Descriptor instead.
 func (*ListCamerasResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_camera_proto_rawDescGZIP(), []int{6}
+	return file_quadsmith_api_camera_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListCamerasResponse) GetCameras() []*Camera {
@@ -504,92 +364,38 @@ func (x *ListCamerasResponse) GetNextPageToken() string {
 	return ""
 }
 
-type UpdateCameraRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Camera        *Camera                `protobuf:"bytes,1,opt,name=camera,proto3" json:"camera,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateCameraRequest) Reset() {
-	*x = UpdateCameraRequest{}
-	mi := &file_quadsmith_api_camera_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateCameraRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateCameraRequest) ProtoMessage() {}
-
-func (x *UpdateCameraRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_camera_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateCameraRequest.ProtoReflect.Descriptor instead.
-func (*UpdateCameraRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_camera_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *UpdateCameraRequest) GetCamera() *Camera {
-	if x != nil {
-		return x.Camera
-	}
-	return nil
-}
-
 var File_quadsmith_api_camera_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_camera_proto_rawDesc = "" +
 	"\n" +
-	"\x1aquadsmith/api/camera.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xfa\a\n" +
+	"\x1aquadsmith/api/camera.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xc7\x06\n" +
 	"\x06Camera\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xc0\xf0\x19\x04R\x02id\x12.\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\fmanufacturer\x12\x18\n" +
-	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02R\x04name\x12.\n" +
-	"\x10is_internal_only\x18\x05 \x01(\bB\x04\xc0\xf0\x19\x02R\x0eisInternalOnly\x12\x1f\n" +
-	"\bweight_g\x18\x06 \x01(\x02B\x04\xc0\xf0\x19\x02R\aweightG\x12 \n" +
-	"\bprotocol\x18\a \x01(\tB\x04\xc0\xf0\x19\x02R\bprotocol\x12%\n" +
-	"\vsensor_size\x18\b \x01(\tB\x04\xc0\xf0\x19\x02R\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x04R\fmanufacturer\x12\x18\n" +
+	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x04R\x04name\x12.\n" +
+	"\x10is_internal_only\x18\x05 \x01(\bB\x04\xc0\xf0\x19\x04R\x0eisInternalOnly\x12\x1f\n" +
+	"\bweight_g\x18\x06 \x01(\x02B\x04\xc0\xf0\x19\x04R\aweightG\x12 \n" +
+	"\bprotocol\x18\a \x01(\tB\x04\xc0\xf0\x19\x04R\bprotocol\x12%\n" +
+	"\vsensor_size\x18\b \x01(\tB\x04\xc0\xf0\x19\x04R\n" +
 	"sensorSize\x12:\n" +
-	"\x16camera_mount_interface\x18\t \x01(\tB\x04\xc0\xf0\x19\x02R\x14cameraMountInterface\x12&\n" +
+	"\x16camera_mount_interface\x18\t \x01(\tB\x04\xc0\xf0\x19\x04R\x14cameraMountInterface\x12&\n" +
 	"\flens_size_mm\x18\n" +
-	" \x01(\x02B\x04\xc0\xf0\x19\x02R\n" +
+	" \x01(\x02B\x04\xc0\xf0\x19\x04R\n" +
 	"lensSizeMm\x12&\n" +
-	"\vdescription\x18\v \x01(\tB\x04\xc0\xf0\x19\x02R\vdescription\x12K\n" +
-	"\x0freference_links\x18\f \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x04\xc0\xf0\x19\x02R\x0ereferenceLinks\x12=\n" +
-	"\x15primary_display_image\x18\r \x01(\tB\x04\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x120\n" +
-	"\x05media\x18\x0e \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x02R\x05media\x12&\n" +
-	"\tuser_uuid\x18\x0f \x01(\tB\x04\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x122\n" +
-	"\x0fauthor_username\x18\x10 \x01(\tB\x04\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xd1\x01\x8a\xb5\x186\n" +
+	"\vdescription\x18\v \x01(\tB\x04\xc0\xf0\x19\x04R\vdescription\x12K\n" +
+	"\x0freference_links\x18\f \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x04\xc0\xf0\x19\x04R\x0ereferenceLinks\x12=\n" +
+	"\x15primary_display_image\x18\r \x01(\tB\x04\xc0\xf0\x19\x04H\x00R\x13primaryDisplayImage\x88\x01\x01\x120\n" +
+	"\x05media\x18\x0e \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x04R\x05media\x12%\n" +
+	"\vis_archived\x18\x0f \x01(\bB\x04\xc0\xf0\x19\x04R\n" +
+	"isArchived:v\x8a\xb5\x186\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\bprotocol\n" +
 	"\x16camera_mount_interface\x9a\xb5\x18\x1bcomponents/hardware/cameras\xc2\xf3\x18\x13\n" +
-	"\acameras*\bentities\xc2\xf0\x19]\b\x05\x12Yuuid IN (SELECT uuid FROM entities WHERE collection = 'cameras' AND user_uuid = $1::uuid)B\x18\n" +
-	"\x16_primary_display_imageB\f\n" +
-	"\n" +
-	"_user_uuidB\x12\n" +
-	"\x10_author_username\"D\n" +
-	"\x13CreateCameraRequest\x12-\n" +
-	"\x06camera\x18\x01 \x01(\v2\x15.quadsmith.api.CameraR\x06camera\"%\n" +
-	"\x13DeleteCameraRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"7\n" +
-	"\x14DeleteCameraResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"<\n" +
+	"\acameras*\bentities\xc2\xf0\x19\x02\b\x01B\x18\n" +
+	"\x16_primary_display_image\"<\n" +
 	"\x10GetCameraRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x96\x01\n" +
@@ -602,15 +408,10 @@ const file_quadsmith_api_camera_proto_rawDesc = "" +
 	"\x04sort\x18\x05 \x03(\tR\x04sort\"n\n" +
 	"\x13ListCamerasResponse\x12/\n" +
 	"\acameras\x18\x01 \x03(\v2\x15.quadsmith.api.CameraR\acameras\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"D\n" +
-	"\x13UpdateCameraRequest\x12-\n" +
-	"\x06camera\x18\x01 \x01(\v2\x15.quadsmith.api.CameraR\x06camera2\x99\x03\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xaa\x01\n" +
 	"\rCameraService\x12C\n" +
 	"\tGetCamera\x12\x1f.quadsmith.api.GetCameraRequest\x1a\x15.quadsmith.api.Camera\x12T\n" +
-	"\vListCameras\x12!.quadsmith.api.ListCamerasRequest\x1a\".quadsmith.api.ListCamerasResponse\x12I\n" +
-	"\fCreateCamera\x12\".quadsmith.api.CreateCameraRequest\x1a\x15.quadsmith.api.Camera\x12I\n" +
-	"\fUpdateCamera\x12\".quadsmith.api.UpdateCameraRequest\x1a\x15.quadsmith.api.Camera\x12W\n" +
-	"\fDeleteCamera\x12\".quadsmith.api.DeleteCameraRequest\x1a#.quadsmith.api.DeleteCameraResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"\vListCameras\x12!.quadsmith.api.ListCamerasRequest\x1a\".quadsmith.api.ListCamerasResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_camera_proto_rawDescOnce sync.Once
@@ -624,40 +425,28 @@ func file_quadsmith_api_camera_proto_rawDescGZIP() []byte {
 	return file_quadsmith_api_camera_proto_rawDescData
 }
 
-var file_quadsmith_api_camera_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_quadsmith_api_camera_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_quadsmith_api_camera_proto_goTypes = []any{
-	(*Camera)(nil),               // 0: quadsmith.api.Camera
-	(*CreateCameraRequest)(nil),  // 1: quadsmith.api.CreateCameraRequest
-	(*DeleteCameraRequest)(nil),  // 2: quadsmith.api.DeleteCameraRequest
-	(*DeleteCameraResponse)(nil), // 3: quadsmith.api.DeleteCameraResponse
-	(*GetCameraRequest)(nil),     // 4: quadsmith.api.GetCameraRequest
-	(*ListCamerasRequest)(nil),   // 5: quadsmith.api.ListCamerasRequest
-	(*ListCamerasResponse)(nil),  // 6: quadsmith.api.ListCamerasResponse
-	(*UpdateCameraRequest)(nil),  // 7: quadsmith.api.UpdateCameraRequest
-	(*ReferenceLink)(nil),        // 8: quadsmith.api.ReferenceLink
-	(*Media)(nil),                // 9: quadsmith.api.Media
+	(*Camera)(nil),              // 0: quadsmith.api.Camera
+	(*GetCameraRequest)(nil),    // 1: quadsmith.api.GetCameraRequest
+	(*ListCamerasRequest)(nil),  // 2: quadsmith.api.ListCamerasRequest
+	(*ListCamerasResponse)(nil), // 3: quadsmith.api.ListCamerasResponse
+	(*ReferenceLink)(nil),       // 4: quadsmith.api.ReferenceLink
+	(*Media)(nil),               // 5: quadsmith.api.Media
 }
 var file_quadsmith_api_camera_proto_depIdxs = []int32{
-	8,  // 0: quadsmith.api.Camera.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 1: quadsmith.api.Camera.media:type_name -> quadsmith.api.Media
-	0,  // 2: quadsmith.api.CreateCameraRequest.camera:type_name -> quadsmith.api.Camera
-	0,  // 3: quadsmith.api.ListCamerasResponse.cameras:type_name -> quadsmith.api.Camera
-	0,  // 4: quadsmith.api.UpdateCameraRequest.camera:type_name -> quadsmith.api.Camera
-	4,  // 5: quadsmith.api.CameraService.GetCamera:input_type -> quadsmith.api.GetCameraRequest
-	5,  // 6: quadsmith.api.CameraService.ListCameras:input_type -> quadsmith.api.ListCamerasRequest
-	1,  // 7: quadsmith.api.CameraService.CreateCamera:input_type -> quadsmith.api.CreateCameraRequest
-	7,  // 8: quadsmith.api.CameraService.UpdateCamera:input_type -> quadsmith.api.UpdateCameraRequest
-	2,  // 9: quadsmith.api.CameraService.DeleteCamera:input_type -> quadsmith.api.DeleteCameraRequest
-	0,  // 10: quadsmith.api.CameraService.GetCamera:output_type -> quadsmith.api.Camera
-	6,  // 11: quadsmith.api.CameraService.ListCameras:output_type -> quadsmith.api.ListCamerasResponse
-	0,  // 12: quadsmith.api.CameraService.CreateCamera:output_type -> quadsmith.api.Camera
-	0,  // 13: quadsmith.api.CameraService.UpdateCamera:output_type -> quadsmith.api.Camera
-	3,  // 14: quadsmith.api.CameraService.DeleteCamera:output_type -> quadsmith.api.DeleteCameraResponse
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	4, // 0: quadsmith.api.Camera.reference_links:type_name -> quadsmith.api.ReferenceLink
+	5, // 1: quadsmith.api.Camera.media:type_name -> quadsmith.api.Media
+	0, // 2: quadsmith.api.ListCamerasResponse.cameras:type_name -> quadsmith.api.Camera
+	1, // 3: quadsmith.api.CameraService.GetCamera:input_type -> quadsmith.api.GetCameraRequest
+	2, // 4: quadsmith.api.CameraService.ListCameras:input_type -> quadsmith.api.ListCamerasRequest
+	0, // 5: quadsmith.api.CameraService.GetCamera:output_type -> quadsmith.api.Camera
+	3, // 6: quadsmith.api.CameraService.ListCameras:output_type -> quadsmith.api.ListCamerasResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_camera_proto_init() }
@@ -674,7 +463,7 @@ func file_quadsmith_api_camera_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_camera_proto_rawDesc), len(file_quadsmith_api_camera_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

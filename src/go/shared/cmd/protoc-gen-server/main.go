@@ -24,6 +24,7 @@ func main() {
 		}
 		generateSearchRegistry(gen)
 		generateReferenceLinkValidation(gen)
+		generateOpsCatalogServer(gen)
 		return nil
 	})
 }
@@ -66,21 +67,25 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 	g.P()
 	g.P(`import (`)
 	g.P(`	"context"`)
-	g.P(`	"encoding/json"`)
-	g.P(`	"errors"`)
-	g.P(`	"fmt"`)
-	g.P(`	"regexp"`)
-	g.P(`	"strings"`)
 	if hasBuild {
+		g.P(`	"encoding/json"`)
+	}
+	g.P(`	"errors"`)
+	if hasBuild {
+		g.P(`	"fmt"`)
 		g.P(`	"math"`)
+		g.P(`	"regexp"`)
 		g.P(`	"sort"`)
+		g.P(`	"strings"`)
 	}
 	g.P(`	"connectrpc.com/connect"`)
 	g.P(`	"github.com/jackc/pgx/v5"`)
 	g.P(`	"github.com/jackc/pgx/v5/pgxpool"`)
 	g.P(`	"quadsmith/shared/internal/cel2sql"`)
-	g.P(`	"quadsmith/shared/pkg/authcontext"`)
-	g.P(`	"quadsmith/shared/pkg/buildid"`)
+	if hasBuild {
+		g.P(`	"quadsmith/shared/pkg/authcontext"`)
+		g.P(`	"quadsmith/shared/pkg/buildid"`)
+	}
 	g.P(`	"quadsmith/shared/pkg/pagination"`)
 	g.P(`)`)
 	g.P()
@@ -884,8 +889,6 @@ func generateFile(gen *protogen.Plugin, file *protogen.File) {
 			g.P("	}")
 			g.P("	return connect.NewResponse(&ListSimilarBuildsResponse{SimilarBuilds: results}), nil")
 			g.P("}")
-		} else {
-			generateComponentMutationHandlers(g, msg, serviceName, msgName, pluralName)
 		}
 
 	}
@@ -1133,7 +1136,7 @@ func generateDomainValidation(g *protogen.GeneratedFile, msg *protogen.Message) 
 	}
 }
 
-func getBuildsRefQuery(msgName string) string {
+func getComponentRefQuery(msgName string) string {
 	switch msgName {
 	case "Frame":
 		return "(SELECT count(*) FROM builds WHERE frame_uuid = $1) +"
@@ -1144,15 +1147,15 @@ func getBuildsRefQuery(msgName string) string {
 	case "FlightController":
 		return "(SELECT count(*) FROM builds WHERE flight_controller_uuid = $1) +"
 	case "VideoTransmitter":
-		return "(SELECT count(*) FROM builds WHERE video_transmitter_uuid = $1) +"
+		return "(SELECT count(*) FROM builds WHERE video_transmitter_uuid = $1) + (SELECT count(*) FROM flight_controllers WHERE internal_video_transmitter_uuid = $1) +"
 	case "GpsReceiver":
 		return "(SELECT count(*) FROM builds WHERE gps_receiver_uuid = $1) +"
 	case "ElectronicSpeedController":
-		return "(SELECT count(*) FROM builds WHERE $1::uuid = ANY(electronic_speed_controller_uuids)) +"
+		return "(SELECT count(*) FROM builds WHERE $1::uuid = ANY(electronic_speed_controller_uuids)) + (SELECT count(*) FROM flight_controllers WHERE internal_electronic_speed_controller_uuid = $1) +"
 	case "Receiver":
-		return "(SELECT count(*) FROM builds WHERE $1::uuid = ANY(receiver_uuids)) +"
+		return "(SELECT count(*) FROM builds WHERE $1::uuid = ANY(receiver_uuids)) + (SELECT count(*) FROM flight_controllers WHERE internal_receiver_uuid = $1) +"
 	case "Antenna":
-		return "(SELECT count(*) FROM builds WHERE $1::uuid = ANY(antenna_uuids)) +"
+		return "(SELECT count(*) FROM builds WHERE $1::uuid = ANY(antenna_uuids)) + (SELECT count(*) FROM receivers WHERE $1::uuid = ANY(antenna_uuids)) + (SELECT count(*) FROM video_transmitters WHERE $1::uuid = ANY(antenna_uuids)) +"
 	case "Camera":
 		return "(SELECT count(*) FROM builds WHERE $1::uuid = ANY(camera_uuids)) +"
 	default:
@@ -1160,7 +1163,96 @@ func getBuildsRefQuery(msgName string) string {
 	}
 }
 
-func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.Message, serviceName, msgName, pluralName string) {
+func generateSubComponentUUIDTranslation(g *protogen.GeneratedFile, msgName string) {
+	switch msgName {
+	case "FlightController":
+		g.P("	if m.InternalElectronicSpeedControllerUuid != nil && *m.InternalElectronicSpeedControllerUuid != \"\" {")
+		g.P("		if sub, err := apipb.GetElectronicSpeedController(ctx, s.db, *m.InternalElectronicSpeedControllerUuid, []string{\"uuid\"}); err == nil && sub != nil && sub.Uuid != \"\" {")
+		g.P("			*m.InternalElectronicSpeedControllerUuid = sub.Uuid")
+		g.P("		}")
+		g.P("	}")
+		g.P("	if m.InternalReceiverUuid != nil && *m.InternalReceiverUuid != \"\" {")
+		g.P("		if sub, err := apipb.GetReceiver(ctx, s.db, *m.InternalReceiverUuid, []string{\"uuid\"}); err == nil && sub != nil && sub.Uuid != \"\" {")
+		g.P("			*m.InternalReceiverUuid = sub.Uuid")
+		g.P("		}")
+		g.P("	}")
+		g.P("	if m.InternalVideoTransmitterUuid != nil && *m.InternalVideoTransmitterUuid != \"\" {")
+		g.P("		if sub, err := apipb.GetVideoTransmitter(ctx, s.db, *m.InternalVideoTransmitterUuid, []string{\"uuid\"}); err == nil && sub != nil && sub.Uuid != \"\" {")
+		g.P("			*m.InternalVideoTransmitterUuid = sub.Uuid")
+		g.P("		}")
+		g.P("	}")
+	case "Receiver", "VideoTransmitter":
+		g.P("	for i, idOrUuid := range m.AntennaUuids {")
+		g.P("		if idOrUuid != \"\" {")
+		g.P("			if sub, err := apipb.GetAntenna(ctx, s.db, idOrUuid, []string{\"uuid\"}); err == nil && sub != nil && sub.Uuid != \"\" {")
+		g.P("				m.AntennaUuids[i] = sub.Uuid")
+		g.P("			}")
+		g.P("		}")
+		g.P("	}")
+	}
+}
+
+func generateOpsCatalogServer(gen *protogen.Plugin) {
+	var compMessages []*protogen.Message
+	for _, f := range gen.Files {
+		if string(f.Desc.Package()) != "quadsmith.api" {
+			continue
+		}
+		for _, msg := range f.Messages {
+			if getTableName(msg) == "" || getCollectionPath(msg) == "" || msg.GoIdent.GoName == "Build" {
+				continue
+			}
+			compMessages = append(compMessages, msg)
+		}
+	}
+	if len(compMessages) == 0 {
+		return
+	}
+
+	sort.Slice(compMessages, func(i, j int) bool {
+		return compMessages[i].GoIdent.GoName < compMessages[j].GoIdent.GoName
+	})
+
+	g := gen.NewGeneratedFile("quadsmith/ops/catalog_server.pb.go", "quadsmith/shared/gen/quadsmith/ops")
+	g.P("// Code generated by protoc-gen-server. DO NOT EDIT.")
+	g.P("package ops")
+	g.P()
+	g.P("import (")
+	g.P(`	"context"`)
+	g.P(`	"encoding/json"`)
+	g.P(`	"errors"`)
+	g.P(`	"fmt"`)
+	g.P(`	"regexp"`)
+	g.P(`	"strings"`)
+	g.P()
+	g.P(`	"connectrpc.com/connect"`)
+	g.P(`	"github.com/jackc/pgx/v5"`)
+	g.P(`	"github.com/jackc/pgx/v5/pgxpool"`)
+	g.P()
+	g.P(`	"quadsmith/shared/internal/cel2sql"`)
+	g.P(`	"quadsmith/shared/pkg/authcontext"`)
+	g.P(`	"quadsmith/shared/pkg/buildid"`)
+	g.P(`	"quadsmith/shared/pkg/pagination"`)
+	g.P()
+	g.P(`	apipb "quadsmith/shared/gen/quadsmith/api"`)
+	g.P(")")
+	g.P()
+
+	for _, msg := range compMessages {
+		generateOpsComponentHandlers(g, msg)
+	}
+}
+
+func generateOpsComponentHandlers(g *protogen.GeneratedFile, msg *protogen.Message) {
+	msgName := msg.GoIdent.GoName
+	pluralName := msgName + "s"
+	if strings.HasSuffix(msgName, "y") {
+		pluralName = strings.TrimSuffix(msgName, "y") + "ies"
+	} else if strings.HasSuffix(msgName, "s") {
+		pluralName = msgName
+	}
+
+	handlerType := msgName + "OpsServiceHandler"
 	tableName := getTableName(msg)
 	collPath := getCollectionPath(msg)
 	parts := strings.Split(collPath, "/")
@@ -1174,22 +1266,82 @@ func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.
 		}
 	}
 
-	buildsRef := getBuildsRefQuery(msgName)
+	refQuery := getComponentRefQuery(msgName)
+
+	g.P("type ", handlerType, " struct {")
+	g.P("	db *pgxpool.Pool")
+	g.P("}")
+	g.P()
+	g.P("func New", handlerType, "(db *pgxpool.Pool) *", handlerType, " {")
+	g.P("	return &", handlerType, "{db: db}")
+	g.P("}")
+	g.P()
+
+	// --- GET ---
+	g.P("func (s *", handlerType, ") Get", msgName, "(ctx context.Context, req *connect.Request[Get", msgName, "OpsRequest]) (*connect.Response[apipb.", msgName, "], error) {")
+	g.P("	m, err := apipb.Get", msgName, "(ctx, s.db, req.Msg.GetId(), req.Msg.GetColumns())")
+	g.P("	if err != nil {")
+	g.P("		if pagination.IsInvalidArgument(err) {")
+	g.P("			return nil, connect.NewError(connect.CodeInvalidArgument, err)")
+	g.P("		}")
+	g.P("		if errors.Is(err, pgx.ErrNoRows) {")
+	g.P("			return nil, connect.NewError(connect.CodeNotFound, errors.New(\"not found\"))")
+	g.P("		}")
+	g.P("		return nil, connect.NewError(connect.CodeInternal, errors.New(\"an internal error occurred\"))")
+	g.P("	}")
+	g.P("	return connect.NewResponse(m), nil")
+	g.P("}")
+	g.P()
+
+	// --- LIST ---
+	g.P("func (s *", handlerType, ") List", pluralName, "(ctx context.Context, req *connect.Request[List", pluralName, "OpsRequest]) (*connect.Response[List", pluralName, "OpsResponse], error) {")
+	g.P("	pageSize, err := pagination.ParsePageSize(req.Msg.GetPageSize())")
+	g.P("	if err != nil {")
+	g.P("		return nil, connect.NewError(connect.CodeInvalidArgument, err)")
+	g.P("	}")
+	g.P()
+	g.P("	filter, sort, offset, err := pagination.ResolveParams(req.Msg.GetFilter(), req.Msg.GetSort(), req.Msg.GetPageToken())")
+	g.P("	if err != nil {")
+	g.P("		return nil, connect.NewError(connect.CodeInvalidArgument, err)")
+	g.P("	}")
+	g.P()
+	g.P("	where, args, err := cel2sql.Compile(filter)")
+	g.P("	if err != nil {")
+	g.P("		return nil, connect.NewError(connect.CodeInvalidArgument, err)")
+	g.P("	}")
+	g.P()
+	g.P("	includeArchived := req.Msg.GetIncludeArchived() || strings.Contains(filter, \"is_archived\")")
+	g.P("	items, err := apipb.List", pluralName, "IncludingArchived(ctx, s.db, includeArchived, req.Msg.GetColumns(), sort, where, pageSize+1, offset, args...)")
+	g.P("	if err != nil {")
+	g.P("		if pagination.IsInvalidArgument(err) {")
+	g.P("			return nil, connect.NewError(connect.CodeInvalidArgument, err)")
+	g.P("		}")
+	g.P("		return nil, connect.NewError(connect.CodeInternal, errors.New(\"an internal error occurred\"))")
+	g.P("	}")
+	g.P()
+	g.P("	nextPageToken := \"\"")
+	g.P("	if int32(len(items)) > pageSize {")
+	g.P("		items = items[:pageSize]")
+	g.P("		nextPageToken, err = pagination.EncodePageToken(offset+pageSize, filter, sort)")
+	g.P("		if err != nil {")
+	g.P("			return nil, connect.NewError(connect.CodeInternal, err)")
+	g.P("		}")
+	g.P("	}")
+	g.P()
+	g.P("	res := &List", pluralName, "OpsResponse{")
+	g.P("		", pluralName, ": items,")
+	g.P("		NextPageToken: nextPageToken,")
+	g.P("	}")
+	g.P("	return connect.NewResponse(res), nil")
+	g.P("}")
+	g.P()
 
 	// --- CREATE ---
-	g.P("// Create", msgName, " creates and persists a new ", msgName, " component")
-	g.P("func (s *", serviceName, "Handler) Create", msgName, "(ctx context.Context, req *connect.Request[Create", msgName, "Request]) (*connect.Response[", msgName, "], error) {")
-	g.P("	userCtx := authcontext.UserContextFromContext(ctx)")
-	g.P("	if userCtx == nil {")
-	g.P("		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New(\"authentication required\"))")
-	g.P("	}")
+	g.P("func (s *", handlerType, ") Create", msgName, "(ctx context.Context, req *connect.Request[Create", msgName, "OpsRequest]) (*connect.Response[apipb.", msgName, "], error) {")
 	g.P("	m := req.Msg.Get", msgName, "()")
 	g.P("	if m == nil {")
 	g.P("		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New(\"", strings.ToLower(msgName), " object is required\"))")
 	g.P("	}")
-	g.P()
-	g.P("	m.UserUuid = &userCtx.UserUUID")
-	g.P("	m.AuthorUsername = &userCtx.UserID")
 	g.P()
 	g.P("	if strings.TrimSpace(m.Name) == \"\" {")
 	g.P("		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New(\"name is required\"))")
@@ -1206,11 +1358,13 @@ func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.
 		g.P("	}")
 	}
 	generateDomainValidation(g, msg)
-	g.P("	if err := ValidateReferenceLinks(m.ReferenceLinks); err != nil {")
+	g.P("	if err := apipb.ValidateReferenceLinks(m.ReferenceLinks); err != nil {")
 	g.P("		return nil, connect.NewError(connect.CodeInvalidArgument, err)")
 	g.P("	}")
+	generateSubComponentUUIDTranslation(g, msgName)
 	g.P()
 	g.P("	m.Uuid = authcontext.NewUUIDv7()")
+	g.P("	m.IsArchived = false")
 	g.P()
 	g.P("	if m.Id == \"\" {")
 	if hasMfr {
@@ -1267,19 +1421,20 @@ func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.
 	if hasMfr {
 		g.P("	authorOrMfr := m.Manufacturer")
 	} else {
-		g.P("	authorOrMfr := userCtx.UserID")
+		g.P("	authorOrMfr := authcontext.SystemUserHandle")
 	}
+	g.P("	sysUserUUID := authcontext.SystemUserUUID")
 	g.P("	_, err = tx.Exec(ctx, `")
 	g.P("		INSERT INTO entities (uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, user_uuid, is_archived, created_at, updated_at)")
 	g.P("		VALUES ($1, '", collName, "', $2, $3, $4, $5, $6, $7, $8, $9, false, NOW(), NOW())")
 	g.P("		ON CONFLICT (collection, id) DO UPDATE")
-	g.P("		SET name = EXCLUDED.name, description = EXCLUDED.description, primary_display_image = EXCLUDED.primary_display_image, author_or_manufacturer = EXCLUDED.author_or_manufacturer, updated_at = NOW()")
-	g.P("	`, m.Uuid, m.Id, m.Name, m.Description, m.PrimaryDisplayImage, refLinksJSON, mediaJSON, authorOrMfr, m.UserUuid)")
+	g.P("		SET name = EXCLUDED.name, description = EXCLUDED.description, primary_display_image = EXCLUDED.primary_display_image, author_or_manufacturer = EXCLUDED.author_or_manufacturer, user_uuid = EXCLUDED.user_uuid, updated_at = NOW()")
+	g.P("	`, m.Uuid, m.Id, m.Name, m.Description, m.PrimaryDisplayImage, refLinksJSON, mediaJSON, authorOrMfr, &sysUserUUID)")
 	g.P("	if err != nil {")
 	g.P("		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf(\"failed to save entity: %w\", err))")
 	g.P("	}")
 	g.P()
-	g.P("	if err := Create", msgName, "(ctx, tx, m); err != nil {")
+	g.P("	if err := apipb.Create", msgName, "(ctx, tx, m); err != nil {")
 	g.P("		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf(\"failed to save ", tableName, ": %w\", err))")
 	g.P("	}")
 	g.P()
@@ -1313,17 +1468,16 @@ func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.
 	g.P("		return nil, connect.NewError(connect.CodeInternal, err)")
 	g.P("	}")
 	g.P()
-	g.P("	return connect.NewResponse(m), nil")
+	g.P("	created, err := apipb.Get", msgName, "(ctx, s.db, m.Uuid, nil)")
+	g.P("	if err != nil {")
+	g.P("		return connect.NewResponse(m), nil")
+	g.P("	}")
+	g.P("	return connect.NewResponse(created), nil")
 	g.P("}")
 	g.P()
 
 	// --- UPDATE ---
-	g.P("// Update", msgName, " updates an existing ", msgName, " component")
-	g.P("func (s *", serviceName, "Handler) Update", msgName, "(ctx context.Context, req *connect.Request[Update", msgName, "Request]) (*connect.Response[", msgName, "], error) {")
-	g.P("	userCtx := authcontext.UserContextFromContext(ctx)")
-	g.P("	if userCtx == nil {")
-	g.P("		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New(\"authentication required\"))")
-	g.P("	}")
+	g.P("func (s *", handlerType, ") Update", msgName, "(ctx context.Context, req *connect.Request[Update", msgName, "OpsRequest]) (*connect.Response[apipb.", msgName, "], error) {")
 	g.P("	m := req.Msg.Get", msgName, "()")
 	g.P("	if m == nil {")
 	g.P("		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New(\"", strings.ToLower(msgName), " object is required\"))")
@@ -1339,9 +1493,8 @@ func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.
 	g.P()
 	g.P("	var existingUUID string")
 	g.P("	var existingID string")
-	g.P("	var existingUserUUID *string")
 	g.P("	var isArchived bool")
-	g.P("	err := s.db.QueryRow(ctx, \"SELECT uuid::text, id, user_uuid::text, is_archived FROM entities WHERE collection = $1 AND (id = $2 OR uuid::text = $2)\", \"", collName, "\", lookup).Scan(&existingUUID, &existingID, &existingUserUUID, &isArchived)")
+	g.P("	err := s.db.QueryRow(ctx, \"SELECT uuid::text, id, is_archived FROM entities WHERE collection = $1 AND (id = $2 OR uuid::text = $2)\", \"", collName, "\", lookup).Scan(&existingUUID, &existingID, &isArchived)")
 	g.P("	if err != nil {")
 	g.P("		if errors.Is(err, pgx.ErrNoRows) {")
 	g.P("			return nil, connect.NewError(connect.CodeNotFound, errors.New(\"", strings.ToLower(msgName), " not found\"))")
@@ -1349,15 +1502,9 @@ func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.
 	g.P("		return nil, connect.NewError(connect.CodeInternal, err)")
 	g.P("	}")
 	g.P()
-	g.P("	if !userCtx.IsAdmin() {")
-	g.P("		if existingUserUUID == nil || *existingUserUUID != userCtx.UserUUID {")
-	g.P("			return nil, connect.NewError(connect.CodePermissionDenied, errors.New(\"you do not have permission to update this component\"))")
-	g.P("		}")
-	g.P("	}")
-	g.P()
 	g.P("	m.Uuid = existingUUID")
 	g.P("	m.Id = existingID")
-	g.P("	m.UserUuid = existingUserUUID")
+	g.P("	m.IsArchived = isArchived")
 	g.P()
 	g.P("	if strings.TrimSpace(m.Name) == \"\" {")
 	g.P("		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New(\"name is required\"))")
@@ -1374,9 +1521,10 @@ func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.
 		g.P("	}")
 	}
 	generateDomainValidation(g, msg)
-	g.P("	if err := ValidateReferenceLinks(m.ReferenceLinks); err != nil {")
+	g.P("	if err := apipb.ValidateReferenceLinks(m.ReferenceLinks); err != nil {")
 	g.P("		return nil, connect.NewError(connect.CodeInvalidArgument, err)")
 	g.P("	}")
+	generateSubComponentUUIDTranslation(g, msgName)
 	g.P()
 	g.P("	tx, err := s.db.Begin(ctx)")
 	g.P("	if err != nil {")
@@ -1394,7 +1542,7 @@ func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.
 	if hasMfr {
 		g.P("	authorOrMfr := m.Manufacturer")
 	} else {
-		g.P("	authorOrMfr := userCtx.UserID")
+		g.P("	authorOrMfr := authcontext.SystemUserHandle")
 	}
 	g.P("	_, err = tx.Exec(ctx, `")
 	g.P("		UPDATE entities")
@@ -1405,7 +1553,7 @@ func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.
 	g.P("		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf(\"failed to update entity: %w\", err))")
 	g.P("	}")
 	g.P()
-	g.P("	if err := Update", msgName, "(ctx, tx, m); err != nil {")
+	g.P("	if err := apipb.Update", msgName, "(ctx, tx, m); err != nil {")
 	g.P("		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf(\"failed to update ", tableName, ": %w\", err))")
 	g.P("	}")
 	g.P()
@@ -1443,7 +1591,7 @@ func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.
 	g.P("		return nil, connect.NewError(connect.CodeInternal, err)")
 	g.P("	}")
 	g.P()
-	g.P("	updated, err := Get", msgName, "(ctx, s.db, m.Uuid, nil)")
+	g.P("	updated, err := apipb.Get", msgName, "(ctx, s.db, m.Uuid, nil)")
 	g.P("	if err != nil {")
 	g.P("		return connect.NewResponse(m), nil")
 	g.P("	}")
@@ -1452,31 +1600,19 @@ func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.
 	g.P()
 
 	// --- DELETE ---
-	g.P("// Delete", msgName, " deletes or archives a ", msgName, " component")
-	g.P("func (s *", serviceName, "Handler) Delete", msgName, "(ctx context.Context, req *connect.Request[Delete", msgName, "Request]) (*connect.Response[Delete", msgName, "Response], error) {")
-	g.P("	userCtx := authcontext.UserContextFromContext(ctx)")
-	g.P("	if userCtx == nil {")
-	g.P("		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New(\"authentication required\"))")
-	g.P("	}")
+	g.P("func (s *", handlerType, ") Delete", msgName, "(ctx context.Context, req *connect.Request[Delete", msgName, "OpsRequest]) (*connect.Response[Delete", msgName, "OpsResponse], error) {")
 	g.P("	idOrUUID := strings.TrimSpace(req.Msg.GetId())")
 	g.P("	if idOrUUID == \"\" {")
 	g.P("		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New(\"id is required\"))")
 	g.P("	}")
 	g.P()
 	g.P("	var existingUUID string")
-	g.P("	var existingUserUUID *string")
-	g.P("	err := s.db.QueryRow(ctx, \"SELECT uuid::text, user_uuid::text FROM entities WHERE collection = $1 AND (id = $2 OR uuid::text = $2)\", \"", collName, "\", idOrUUID).Scan(&existingUUID, &existingUserUUID)")
+	g.P("	err := s.db.QueryRow(ctx, \"SELECT uuid::text FROM entities WHERE collection = $1 AND (id = $2 OR uuid::text = $2)\", \"", collName, "\", idOrUUID).Scan(&existingUUID)")
 	g.P("	if err != nil {")
 	g.P("		if errors.Is(err, pgx.ErrNoRows) {")
 	g.P("			return nil, connect.NewError(connect.CodeNotFound, errors.New(\"", strings.ToLower(msgName), " not found\"))")
 	g.P("		}")
 	g.P("		return nil, connect.NewError(connect.CodeInternal, err)")
-	g.P("	}")
-	g.P()
-	g.P("	if !userCtx.IsAdmin() {")
-	g.P("		if existingUserUUID == nil || *existingUserUUID != userCtx.UserUUID {")
-	g.P("			return nil, connect.NewError(connect.CodePermissionDenied, errors.New(\"you do not have permission to delete this component\"))")
-	g.P("		}")
 	g.P("	}")
 	g.P()
 	g.P("	tx, err := s.db.Begin(ctx)")
@@ -1488,8 +1624,8 @@ func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.
 	g.P("	var activityCount int64")
 	g.P("	_ = tx.QueryRow(ctx, `")
 	g.P("		SELECT (")
-	if buildsRef != "" {
-		g.P("			", buildsRef)
+	if refQuery != "" {
+		g.P("			", refQuery)
 	}
 	g.P("			(SELECT count(*) FROM questions WHERE entity_uuid = $1) +")
 	g.P("			(SELECT count(*) FROM reviews WHERE entity_uuid = $1) +")
@@ -1519,7 +1655,35 @@ func generateComponentMutationHandlers(g *protogen.GeneratedFile, msg *protogen.
 	g.P("		return nil, connect.NewError(connect.CodeInternal, err)")
 	g.P("	}")
 	g.P()
-	g.P("	return connect.NewResponse(&Delete", msgName, "Response{IsArchived: isArchived}), nil")
+	g.P("	return connect.NewResponse(&Delete", msgName, "OpsResponse{IsArchived: isArchived}), nil")
+	g.P("}")
+	g.P()
+
+	// --- RESTORE ---
+	g.P("func (s *", handlerType, ") Restore", msgName, "(ctx context.Context, req *connect.Request[Restore", msgName, "OpsRequest]) (*connect.Response[apipb.", msgName, "], error) {")
+	g.P("	idOrUUID := strings.TrimSpace(req.Msg.GetId())")
+	g.P("	if idOrUUID == \"\" {")
+	g.P("		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New(\"id is required\"))")
+	g.P("	}")
+	g.P()
+	g.P("	var existingUUID string")
+	g.P("	err := s.db.QueryRow(ctx, \"SELECT uuid::text FROM entities WHERE collection = $1 AND (id = $2 OR uuid::text = $2)\", \"", collName, "\", idOrUUID).Scan(&existingUUID)")
+	g.P("	if err != nil {")
+	g.P("		if errors.Is(err, pgx.ErrNoRows) {")
+	g.P("			return nil, connect.NewError(connect.CodeNotFound, errors.New(\"", strings.ToLower(msgName), " not found\"))")
+	g.P("		}")
+	g.P("		return nil, connect.NewError(connect.CodeInternal, err)")
+	g.P("	}")
+	g.P()
+	g.P("	if _, err := s.db.Exec(ctx, \"UPDATE entities SET is_archived = false, updated_at = NOW() WHERE uuid = $1\", existingUUID); err != nil {")
+	g.P("		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf(\"failed to restore entity: %w\", err))")
+	g.P("	}")
+	g.P()
+	g.P("	restored, err := apipb.Get", msgName, "(ctx, s.db, existingUUID, nil)")
+	g.P("	if err != nil {")
+	g.P("		return nil, connect.NewError(connect.CodeInternal, err)")
+	g.P("	}")
+	g.P("	return connect.NewResponse(restored), nil")
 	g.P("}")
 	g.P()
 }

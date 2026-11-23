@@ -52,10 +52,11 @@ occurrences of `(quadsmith.sql.column) = {ignore: true}` across the repository):
    [`frame.proto`](../src/proto/quadsmith/api/frame.proto)) plus
    [`build.proto`](../src/proto/quadsmith/api/build.proto) use
    [Class Table Inheritance](https://martinfowler.com/eaaCatalog/classTableInheritance.html)
-   ([`user_created_components.md`](user_created_components.md)), storing common
-   metadata (`id`, `name`, `description`, `reference_links`,
-   `primary_display_image`, `media`, `user_uuid`) in the base `entities` table
-   and resolving `author_username` via a `LEFT JOIN` on `users`. Although
+   ([`ops_managed_component_catalog.md`](ops_managed_component_catalog.md)),
+   storing common metadata (`id`, `name`, `description`, `reference_links`,
+   `primary_display_image`, `media`, `is_archived`, plus `user_uuid` on
+   `entities`) in the base `entities` table and resolving `author_username` via
+   a `LEFT JOIN` on `users` strictly for `builds`. Although
    [`protoc-gen-store`](../src/go/shared/cmd/protoc-gen-store/main.go) already
    knows about this `entities` join,
    [`protoc-gen-sql`](../src/go/shared/cmd/protoc-gen-sql/main.go) does not,
@@ -211,10 +212,10 @@ message TableOptions {
 
 Each of the 20 component protos and
 [`build.proto`](../src/proto/quadsmith/api/build.proto) declares
-`inherits: "entities"` on its `quadsmith.sql.table` option, and removes
-`(quadsmith.sql.column) = {ignore: true}` from the 8 inherited fields (`id`,
+`inherits: "entities"` on its `quadsmith.sql.table` option, and omits
+`(quadsmith.sql.column) = {ignore: true}` on `entities`-inherited fields (`id`,
 `name`, `description`, `reference_links`, `primary_display_image`, `media`,
-`user_uuid`, and `author_username`):
+`is_archived`, plus `user_uuid` and `author_username` on `Build` only):
 
 ```protobuf
 message Motor {
@@ -223,10 +224,7 @@ message Motor {
     inherits: "entities"
   };
   option (quadsmith.common.collection_path) = "components/hardware/motors";
-  option (quadsmith.data.export) = {
-    domain: EXPORT_DOMAIN_COMPONENTS
-    user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'motors' AND user_uuid = $1::uuid)"
-  };
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
 
   string uuid = 1 [
     (quadsmith.sql.column) = {
@@ -238,36 +236,31 @@ message Motor {
   string id = 2 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
   string manufacturer = 3 [
     (quadsmith.sql.column) = {create_index: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
-  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
   // ... remaining inherited and motor-specific fields with zero ignore: true ...
 }
 ```
 
 Both [`protoc-gen-sql`](../src/go/shared/cmd/protoc-gen-sql/main.go) and
 [`protoc-gen-store`](../src/go/shared/cmd/protoc-gen-store/main.go) use a shared
-definition of the `entities`-inherited field set (`id`, `name`, `description`,
-`reference_links`, `primary_display_image`, `media`, `user_uuid`,
+definition of `entityInheritedFields` (`id`, `name`, `description`,
+`reference_links`, `primary_display_image`, `media`, `is_archived`, `user_uuid`,
 `author_username`) when `tblOpts.GetInherits() == "entities"`:
 
-- **`protoc-gen-sql`**: Skips the 8 inherited fields when generating
+- **`protoc-gen-sql`**: Skips `entityInheritedFields` when generating
   `CREATE TABLE` columns and indexes for the child table (e.g., `motors`),
   emitting only the primary key `uuid` (referencing `entities(uuid)`) and the
   child-specific columns. The generated DDL in
   [`quadsmith_api.sql`](../src/db/quadsmith_api.sql) for all 21 tables remains
   byte-for-byte identical.
-- **`protoc-gen-store`**: Excludes the 8 inherited fields from `activeFields`
-  (`INSERT INTO <child>`, `UPDATE <child>`, and `Export<PluralName>`) while
-  keeping all fields in `readableFields` (`SELECT ... FROM <child>`
-  `INNER JOIN entities USING (uuid)`
-  `LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u`
-  `ON u.u_uuid = entities.user_uuid`). Because `activeFields` for
-  `inherits: "entities"` tables contains the exact same child-table columns as
-  before, the `hasNonUUIDField` check in
-  [`protoc-gen-store/main.go`](../src/go/shared/cmd/protoc-gen-store/main.go)
-  and the generated `ExportBuilds` and `Export<Component>s` functions remain
-  100% unchanged.
+- **`protoc-gen-store`**: Excludes `entityInheritedFields` from `activeFields`
+  (`INSERT INTO <child>`, `UPDATE <child>`, and `ExportBuilds`) while keeping
+  them in `readableFields`
+  (`SELECT ... FROM <child> INNER JOIN entities USING (uuid)`, joining `users`
+  for `author_username` only when `author_username` is present on `Build`, per
+  [`ops_managed_component_catalog.md`](ops_managed_component_catalog.md)).
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>
@@ -712,9 +705,10 @@ and defining protos purely around query/mutation payloads.
    [`src/db/quadsmith_api.sql`](../src/db/quadsmith_api.sql) and removing
    internal storage messages from `quadsmith.api` requires no
    backwards-compatibility shims or data migrations.
-2. All 21 Catalog and Build entities share the same 8 inherited fields (`id`,
-   `name`, `description`, `reference_links`, `primary_display_image`, `media`,
-   `user_uuid`, and `author_username`) resolved from `entities` and `users`.
+2. All 20 Catalog entities share the 7 inherited fields (`id`, `name`,
+   `description`, `reference_links`, `primary_display_image`, `media`, and
+   `is_archived`) from `entities`, while `Build` additionally projects
+   `user_uuid` and `author_username` from `entities` and `users`.
 
 ---
 

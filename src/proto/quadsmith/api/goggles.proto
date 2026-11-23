@@ -17,9 +17,6 @@ option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 service GogglesService {
   rpc GetGoggles(GetGogglesRequest) returns (Goggles);
   rpc ListGoggles(ListGogglesRequest) returns (ListGogglesResponse);
-  rpc CreateGoggles(CreateGogglesRequest) returns (Goggles);
-  rpc UpdateGoggles(UpdateGogglesRequest) returns (Goggles);
-  rpc DeleteGoggles(DeleteGogglesRequest) returns (DeleteGogglesResponse);
 }
 
 // ---------------------------------------------------------
@@ -32,10 +29,7 @@ message Goggles {
     inherits: "entities"
   };
   option (quadsmith.common.collection_path) = "components/gear/goggles";
-  option (quadsmith.data.export) = {
-    domain: EXPORT_DOMAIN_COMPONENTS
-    user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'goggles' AND user_uuid = $1::uuid)"
-  };
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
   option (quadsmith.common.frontend) = {
     default_columns: [
       "manufacturer",
@@ -57,40 +51,27 @@ message Goggles {
   string id = 2 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
   string manufacturer = 3 [
     (quadsmith.sql.column) = {create_index: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
-  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  float weight_g = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string video_protocol = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string display_type = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string resolution = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  float fov_deg = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string ipd_range_mm = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string voltage_range = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  bool dvr_supported = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  string description = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  repeated ReferenceLink reference_links = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  optional string primary_display_image = 15 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  repeated Media media = 16 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  optional string user_uuid = 17 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
-  optional string author_username = 18 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  float weight_g = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  string video_protocol = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  string display_type = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  string resolution = 8 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  float fov_deg = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  string ipd_range_mm = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  string voltage_range = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  bool dvr_supported = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  string description = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  repeated ReferenceLink reference_links = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  optional string primary_display_image = 15 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  repeated Media media = 16 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  bool is_archived = 17 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 }
 
 // ---------------------------------------------------------
 // Request/response messages
 // ---------------------------------------------------------
-
-message CreateGogglesRequest {
-  Goggles goggles = 1;
-}
-
-message DeleteGogglesRequest {
-  string id = 1;
-}
-
-message DeleteGogglesResponse {
-  bool is_archived = 1;
-}
 
 message GetGogglesRequest {
   string id = 1;
@@ -108,8 +89,4 @@ message ListGogglesRequest {
 message ListGogglesResponse {
   repeated Goggles goggles = 1;
   string next_page_token = 2;
-}
-
-message UpdateGogglesRequest {
-  Goggles goggles = 1;
 }

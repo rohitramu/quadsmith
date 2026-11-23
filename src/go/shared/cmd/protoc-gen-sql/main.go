@@ -93,6 +93,7 @@ var entityInheritedFields = map[string]bool{
 	"media":                 true,
 	"user_uuid":             true,
 	"author_username":       true,
+	"is_archived":           true,
 }
 
 func isInheritedField(tblOpts *sqlpb.TableOptions, fieldName string) bool {

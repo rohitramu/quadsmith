@@ -27,8 +27,8 @@ func CreateVideoTransmitter(ctx context.Context, tx pgx.Tx, m *VideoTransmitter)
 }
 
 func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*VideoTransmitter, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "max_power_mw": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "port_type": true, "mount_pattern": true, "frequency_band_mhz": true, "antenna_connectors": true, "user_uuid": true, "author_username": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links, primary_display_image, media, port_type, mount_pattern, frequency_band_mhz, antenna_connectors, user_uuid, author_username"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "max_power_mw": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "port_type": true, "mount_pattern": true, "frequency_band_mhz": true, "antenna_connectors": true, "is_archived": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links, primary_display_image, media, port_type, mount_pattern, frequency_band_mhz, antenna_connectors, is_archived"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -39,9 +39,9 @@ func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links", "primary_display_image", "media", "port_type", "mount_pattern", "frequency_band_mhz", "antenna_connectors", "user_uuid", "author_username"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links", "primary_display_image", "media", "port_type", "mount_pattern", "frequency_band_mhz", "antenna_connectors", "is_archived"}
 	}
-	query := `SELECT ` + colsStr + ` FROM video_transmitters INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM video_transmitters INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &VideoTransmitter{}
@@ -85,10 +85,8 @@ func GetVideoTransmitter(ctx context.Context, db *pgxpool.Pool, idOrUuid string,
 			scanArgs[i] = &m.FrequencyBandMhz
 		case "antenna_connectors":
 			scanArgs[i] = &m.AntennaConnectors
-		case "user_uuid":
-			scanArgs[i] = &m.UserUuid
-		case "author_username":
-			scanArgs[i] = &m.AuthorUsername
+		case "is_archived":
+			scanArgs[i] = &m.IsArchived
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -123,8 +121,12 @@ func DeleteVideoTransmitter(ctx context.Context, tx pgx.Tx, idOrUuid string) err
 }
 
 func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*VideoTransmitter, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "max_power_mw": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "port_type": true, "mount_pattern": true, "frequency_band_mhz": true, "antenna_connectors": true, "user_uuid": true, "author_username": true}
-	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links, primary_display_image, media, port_type, mount_pattern, frequency_band_mhz, antenna_connectors, user_uuid, author_username"
+	return ListVideoTransmittersIncludingArchived(ctx, db, false, cols, sorts, whereClause, limit, offset, args...)
+}
+
+func ListVideoTransmittersIncludingArchived(ctx context.Context, db *pgxpool.Pool, includeArchived bool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*VideoTransmitter, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "is_internal_only": true, "weight_g": true, "protocol": true, "max_power_mw": true, "input_voltage_min_v": true, "input_voltage_max_v": true, "antenna_uuids": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "port_type": true, "mount_pattern": true, "frequency_band_mhz": true, "antenna_connectors": true, "is_archived": true}
+	colsStr := "uuid, id, manufacturer, name, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, description, reference_links, primary_display_image, media, port_type, mount_pattern, frequency_band_mhz, antenna_connectors, is_archived"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -135,12 +137,16 @@ func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string,
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links", "primary_display_image", "media", "port_type", "mount_pattern", "frequency_band_mhz", "antenna_connectors", "user_uuid", "author_username"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "is_internal_only", "weight_g", "protocol", "max_power_mw", "input_voltage_min_v", "input_voltage_max_v", "antenna_uuids", "description", "reference_links", "primary_display_image", "media", "port_type", "mount_pattern", "frequency_band_mhz", "antenna_connectors", "is_archived"}
 	}
-	query := `SELECT ` + colsStr + ` FROM video_transmitters INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid`
-	query += " WHERE entities.is_archived = false"
-	if whereClause != "" {
-		query += " AND (" + whereClause + ")"
+	query := `SELECT ` + colsStr + ` FROM video_transmitters INNER JOIN entities USING (uuid)`
+	if !includeArchived {
+		query += " WHERE entities.is_archived = false"
+		if whereClause != "" {
+			query += " AND (" + whereClause + ")"
+		}
+	} else if whereClause != "" {
+		query += " WHERE " + whereClause
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -223,10 +229,8 @@ func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string,
 				scanArgs[i] = &m.FrequencyBandMhz
 			case "antenna_connectors":
 				scanArgs[i] = &m.AntennaConnectors
-			case "user_uuid":
-				scanArgs[i] = &m.UserUuid
-			case "author_username":
-				scanArgs[i] = &m.AuthorUsername
+			case "is_archived":
+				scanArgs[i] = &m.IsArchived
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy
@@ -240,45 +244,6 @@ func ListVideoTransmitters(ctx context.Context, db *pgxpool.Pool, cols []string,
 			assign()
 		}
 		results = append(results, m)
-	}
-	return results, nil
-}
-
-func ExportVideoTransmitters(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*VideoTransmitter, error) {
-	query := `SELECT uuid, manufacturer, is_internal_only, weight_g, protocol, max_power_mw, input_voltage_min_v, input_voltage_max_v, antenna_uuids, port_type, mount_pattern, frequency_band_mhz, antenna_connectors FROM video_transmitters WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'video-transmitters' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
-	rows, err := db.Query(ctx, query, userUUID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	results := make([]*VideoTransmitter, 0)
-	for rows.Next() {
-		scanArgs := make([]interface{}, 13)
-		scanAssigns := make([]func(), 0, 13)
-		m := &VideoTransmitter{}
-		scanArgs[0] = &m.Uuid
-		scanArgs[1] = &m.Manufacturer
-		scanArgs[2] = &m.IsInternalOnly
-		scanArgs[3] = &m.WeightG
-		scanArgs[4] = &m.Protocol
-		scanArgs[5] = &m.MaxPowerMw
-		scanArgs[6] = &m.InputVoltageMinV
-		scanArgs[7] = &m.InputVoltageMaxV
-		scanArgs[8] = &m.AntennaUuids
-		scanArgs[9] = &m.PortType
-		scanArgs[10] = &m.MountPattern
-		scanArgs[11] = &m.FrequencyBandMhz
-		scanArgs[12] = &m.AntennaConnectors
-		err := rows.Scan(scanArgs...)
-		if err != nil {
-			return nil, err
-		}
-		for _, assign := range scanAssigns {
-			assign()
-		}
-		if m.Manufacturer != "" || m.IsInternalOnly || m.WeightG != 0 || m.Protocol != "" || m.MaxPowerMw != 0 || m.InputVoltageMinV != 0 || m.InputVoltageMaxV != 0 || len(m.AntennaUuids) > 0 || m.PortType != "" || m.MountPattern != "" || m.FrequencyBandMhz != 0 || len(m.AntennaConnectors) > 0 {
-			results = append(results, m)
-		}
 	}
 	return results, nil
 }

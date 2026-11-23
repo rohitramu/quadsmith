@@ -93,7 +93,8 @@ build: verify
 
 bin/qsops: $(OPS_CLI_FILES) bin/.generate_proto.sentinel src/go/vendor/modules.txt
 	@mkdir -p bin
-	@echo "--- Building Operations CLI to bin/qsops ---"
+	@echo "--- Generating and building Operations CLI to bin/qsops ---"
+	@cd src/go/cli-ops && go run generate_catalog_cli.go && gofmt -s -w catalog_cmd_gen.go
 	@go build -mod=vendor -tags sandbox -o bin/qsops-sandbox ./src/go/cli-ops
 	@cp -f bin/qsops-sandbox bin/qsops
 	@echo "--- Generating qsops shell completions to bin/ ---"
@@ -199,10 +200,11 @@ bin/.format_sql.sentinel: $(wildcard src/db/*.sql) .sql-formatter.json
 	@for f in src/db/*.sql; do npx -y sql-formatter --config .sql-formatter.json --fix "$$f"; done
 	@touch bin/.format_sql.sentinel
 
-bin/.generate_cli.sentinel: $(CLI_FILES) bin/.generate_proto.sentinel
+bin/.generate_cli.sentinel: $(CLI_FILES) $(OPS_CLI_FILES) bin/.generate_proto.sentinel
 	@mkdir -p bin
 	@echo "--- Generating CLI code ---"
 	@cd src/go/cli && go run generate_cli.go && gofmt -s -w main.go
+	@cd src/go/cli-ops && go run generate_catalog_cli.go && gofmt -s -w catalog_cmd_gen.go
 	@touch bin/.generate_cli.sentinel
 
 generate: bin/.generate_proto.sentinel bin/.format_sql.sentinel bin/.generate_cli.sentinel

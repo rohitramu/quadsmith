@@ -49,8 +49,7 @@ type Frame struct {
 	MotorMountPatterns []string `protobuf:"bytes,15,rep,name=motor_mount_patterns,json=motorMountPatterns,proto3" json:"motor_mount_patterns,omitempty"`
 	// Board mounting patterns supported by this frame (e.g., ["30.5x30.5mm", "20x20mm"], ["25.5x25.5mm"], ["16x16mm"])
 	BoardMountPatterns []string `protobuf:"bytes,16,rep,name=board_mount_patterns,json=boardMountPatterns,proto3" json:"board_mount_patterns,omitempty"`
-	UserUuid           *string  `protobuf:"bytes,17,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
-	AuthorUsername     *string  `protobuf:"bytes,18,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
+	IsArchived         bool     `protobuf:"varint,17,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
 	unknownFields      protoimpl.UnknownFields
 	sizeCache          protoimpl.SizeCache
 }
@@ -197,146 +196,7 @@ func (x *Frame) GetBoardMountPatterns() []string {
 	return nil
 }
 
-func (x *Frame) GetUserUuid() string {
-	if x != nil && x.UserUuid != nil {
-		return *x.UserUuid
-	}
-	return ""
-}
-
-func (x *Frame) GetAuthorUsername() string {
-	if x != nil && x.AuthorUsername != nil {
-		return *x.AuthorUsername
-	}
-	return ""
-}
-
-type CreateFrameRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Frame         *Frame                 `protobuf:"bytes,1,opt,name=frame,proto3" json:"frame,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateFrameRequest) Reset() {
-	*x = CreateFrameRequest{}
-	mi := &file_quadsmith_api_frame_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateFrameRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateFrameRequest) ProtoMessage() {}
-
-func (x *CreateFrameRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_frame_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateFrameRequest.ProtoReflect.Descriptor instead.
-func (*CreateFrameRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_frame_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CreateFrameRequest) GetFrame() *Frame {
-	if x != nil {
-		return x.Frame
-	}
-	return nil
-}
-
-type DeleteFrameRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteFrameRequest) Reset() {
-	*x = DeleteFrameRequest{}
-	mi := &file_quadsmith_api_frame_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteFrameRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteFrameRequest) ProtoMessage() {}
-
-func (x *DeleteFrameRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_frame_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteFrameRequest.ProtoReflect.Descriptor instead.
-func (*DeleteFrameRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_frame_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteFrameRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteFrameResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteFrameResponse) Reset() {
-	*x = DeleteFrameResponse{}
-	mi := &file_quadsmith_api_frame_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteFrameResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteFrameResponse) ProtoMessage() {}
-
-func (x *DeleteFrameResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_frame_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteFrameResponse.ProtoReflect.Descriptor instead.
-func (*DeleteFrameResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_frame_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *DeleteFrameResponse) GetIsArchived() bool {
+func (x *Frame) GetIsArchived() bool {
 	if x != nil {
 		return x.IsArchived
 	}
@@ -353,7 +213,7 @@ type GetFrameRequest struct {
 
 func (x *GetFrameRequest) Reset() {
 	*x = GetFrameRequest{}
-	mi := &file_quadsmith_api_frame_proto_msgTypes[4]
+	mi := &file_quadsmith_api_frame_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -365,7 +225,7 @@ func (x *GetFrameRequest) String() string {
 func (*GetFrameRequest) ProtoMessage() {}
 
 func (x *GetFrameRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_frame_proto_msgTypes[4]
+	mi := &file_quadsmith_api_frame_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -378,7 +238,7 @@ func (x *GetFrameRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFrameRequest.ProtoReflect.Descriptor instead.
 func (*GetFrameRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_frame_proto_rawDescGZIP(), []int{4}
+	return file_quadsmith_api_frame_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetFrameRequest) GetId() string {
@@ -408,7 +268,7 @@ type ListFramesRequest struct {
 
 func (x *ListFramesRequest) Reset() {
 	*x = ListFramesRequest{}
-	mi := &file_quadsmith_api_frame_proto_msgTypes[5]
+	mi := &file_quadsmith_api_frame_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -420,7 +280,7 @@ func (x *ListFramesRequest) String() string {
 func (*ListFramesRequest) ProtoMessage() {}
 
 func (x *ListFramesRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_frame_proto_msgTypes[5]
+	mi := &file_quadsmith_api_frame_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -433,7 +293,7 @@ func (x *ListFramesRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFramesRequest.ProtoReflect.Descriptor instead.
 func (*ListFramesRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_frame_proto_rawDescGZIP(), []int{5}
+	return file_quadsmith_api_frame_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListFramesRequest) GetFilter() string {
@@ -481,7 +341,7 @@ type ListFramesResponse struct {
 
 func (x *ListFramesResponse) Reset() {
 	*x = ListFramesResponse{}
-	mi := &file_quadsmith_api_frame_proto_msgTypes[6]
+	mi := &file_quadsmith_api_frame_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -493,7 +353,7 @@ func (x *ListFramesResponse) String() string {
 func (*ListFramesResponse) ProtoMessage() {}
 
 func (x *ListFramesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_frame_proto_msgTypes[6]
+	mi := &file_quadsmith_api_frame_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -506,7 +366,7 @@ func (x *ListFramesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFramesResponse.ProtoReflect.Descriptor instead.
 func (*ListFramesResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_frame_proto_rawDescGZIP(), []int{6}
+	return file_quadsmith_api_frame_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListFramesResponse) GetFrames() []*Frame {
@@ -523,93 +383,39 @@ func (x *ListFramesResponse) GetNextPageToken() string {
 	return ""
 }
 
-type UpdateFrameRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Frame         *Frame                 `protobuf:"bytes,1,opt,name=frame,proto3" json:"frame,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateFrameRequest) Reset() {
-	*x = UpdateFrameRequest{}
-	mi := &file_quadsmith_api_frame_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateFrameRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateFrameRequest) ProtoMessage() {}
-
-func (x *UpdateFrameRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_frame_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateFrameRequest.ProtoReflect.Descriptor instead.
-func (*UpdateFrameRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_frame_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *UpdateFrameRequest) GetFrame() *Frame {
-	if x != nil {
-		return x.Frame
-	}
-	return nil
-}
-
 var File_quadsmith_api_frame_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_frame_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/api/frame.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xe5\b\n" +
+	"\x19quadsmith/api/frame.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xb3\a\n" +
 	"\x05Frame\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xc0\xf0\x19\x04R\x02id\x12.\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\fmanufacturer\x12\x18\n" +
-	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02R\x04name\x12\x1f\n" +
-	"\bweight_g\x18\x05 \x01(\x02B\x04\xc0\xf0\x19\x02R\aweightG\x12'\n" +
-	"\fwheelbase_mm\x18\x06 \x01(\x02B\x04\xc0\xf0\x19\x02R\vwheelbaseMm\x12-\n" +
-	"\x10max_prop_size_mm\x18\a \x01(\x02B\x04\xc0\xf0\x19\x02R\rmaxPropSizeMm\x12 \n" +
-	"\bgeometry\x18\b \x01(\tB\x04\xc0\xf0\x19\x02R\bgeometry\x12&\n" +
-	"\vdescription\x18\t \x01(\tB\x04\xc0\xf0\x19\x02R\vdescription\x12K\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x04R\fmanufacturer\x12\x18\n" +
+	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x04R\x04name\x12\x1f\n" +
+	"\bweight_g\x18\x05 \x01(\x02B\x04\xc0\xf0\x19\x04R\aweightG\x12'\n" +
+	"\fwheelbase_mm\x18\x06 \x01(\x02B\x04\xc0\xf0\x19\x04R\vwheelbaseMm\x12-\n" +
+	"\x10max_prop_size_mm\x18\a \x01(\x02B\x04\xc0\xf0\x19\x04R\rmaxPropSizeMm\x12 \n" +
+	"\bgeometry\x18\b \x01(\tB\x04\xc0\xf0\x19\x04R\bgeometry\x12&\n" +
+	"\vdescription\x18\t \x01(\tB\x04\xc0\xf0\x19\x04R\vdescription\x12K\n" +
 	"\x0freference_links\x18\n" +
-	" \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x04\xc0\xf0\x19\x02R\x0ereferenceLinks\x12=\n" +
-	"\x15primary_display_image\x18\v \x01(\tB\x04\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x120\n" +
-	"\x05media\x18\f \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x02R\x05media\x12,\n" +
-	"\vmotor_count\x18\r \x01(\rB\v\xc2\xf3\x18\x03:\x014\xc0\xf0\x19\x02R\n" +
+	" \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x04\xc0\xf0\x19\x04R\x0ereferenceLinks\x12=\n" +
+	"\x15primary_display_image\x18\v \x01(\tB\x04\xc0\xf0\x19\x04H\x00R\x13primaryDisplayImage\x88\x01\x01\x120\n" +
+	"\x05media\x18\f \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x04R\x05media\x12,\n" +
+	"\vmotor_count\x18\r \x01(\rB\v\xc2\xf3\x18\x03:\x014\xc0\xf0\x19\x04R\n" +
 	"motorCount\x12<\n" +
-	"\x17camera_mount_interfaces\x18\x0e \x03(\tB\x04\xc0\xf0\x19\x02R\x15cameraMountInterfaces\x126\n" +
-	"\x14motor_mount_patterns\x18\x0f \x03(\tB\x04\xc0\xf0\x19\x02R\x12motorMountPatterns\x126\n" +
-	"\x14board_mount_patterns\x18\x10 \x03(\tB\x04\xc0\xf0\x19\x02R\x12boardMountPatterns\x12&\n" +
-	"\tuser_uuid\x18\x11 \x01(\tB\x04\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x122\n" +
-	"\x0fauthor_username\x18\x12 \x01(\tB\x04\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xc4\x01\x8a\xb5\x18,\n" +
+	"\x17camera_mount_interfaces\x18\x0e \x03(\tB\x04\xc0\xf0\x19\x04R\x15cameraMountInterfaces\x126\n" +
+	"\x14motor_mount_patterns\x18\x0f \x03(\tB\x04\xc0\xf0\x19\x04R\x12motorMountPatterns\x126\n" +
+	"\x14board_mount_patterns\x18\x10 \x03(\tB\x04\xc0\xf0\x19\x04R\x12boardMountPatterns\x12%\n" +
+	"\vis_archived\x18\x11 \x01(\bB\x04\xc0\xf0\x19\x04R\n" +
+	"isArchived:j\x8a\xb5\x18,\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\fwheelbase_mm\n" +
 	"\bgeometry\x9a\xb5\x18\x1acomponents/hardware/frames\xc2\xf3\x18\x12\n" +
-	"\x06frames*\bentities\xc2\xf0\x19\\\b\x05\x12Xuuid IN (SELECT uuid FROM entities WHERE collection = 'frames' AND user_uuid = $1::uuid)B\x18\n" +
-	"\x16_primary_display_imageB\f\n" +
-	"\n" +
-	"_user_uuidB\x12\n" +
-	"\x10_author_username\"@\n" +
-	"\x12CreateFrameRequest\x12*\n" +
-	"\x05frame\x18\x01 \x01(\v2\x14.quadsmith.api.FrameR\x05frame\"$\n" +
-	"\x12DeleteFrameRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"6\n" +
-	"\x13DeleteFrameResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\";\n" +
+	"\x06frames*\bentities\xc2\xf0\x19\x02\b\x01B\x18\n" +
+	"\x16_primary_display_image\";\n" +
 	"\x0fGetFrameRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x95\x01\n" +
@@ -622,16 +428,11 @@ const file_quadsmith_api_frame_proto_rawDesc = "" +
 	"\x04sort\x18\x05 \x03(\tR\x04sort\"j\n" +
 	"\x12ListFramesResponse\x12,\n" +
 	"\x06frames\x18\x01 \x03(\v2\x14.quadsmith.api.FrameR\x06frames\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"@\n" +
-	"\x12UpdateFrameRequest\x12*\n" +
-	"\x05frame\x18\x01 \x01(\v2\x14.quadsmith.api.FrameR\x05frame2\x89\x03\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xa3\x01\n" +
 	"\fFrameService\x12@\n" +
 	"\bGetFrame\x12\x1e.quadsmith.api.GetFrameRequest\x1a\x14.quadsmith.api.Frame\x12Q\n" +
 	"\n" +
-	"ListFrames\x12 .quadsmith.api.ListFramesRequest\x1a!.quadsmith.api.ListFramesResponse\x12F\n" +
-	"\vCreateFrame\x12!.quadsmith.api.CreateFrameRequest\x1a\x14.quadsmith.api.Frame\x12F\n" +
-	"\vUpdateFrame\x12!.quadsmith.api.UpdateFrameRequest\x1a\x14.quadsmith.api.Frame\x12T\n" +
-	"\vDeleteFrame\x12!.quadsmith.api.DeleteFrameRequest\x1a\".quadsmith.api.DeleteFrameResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"ListFrames\x12 .quadsmith.api.ListFramesRequest\x1a!.quadsmith.api.ListFramesResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_frame_proto_rawDescOnce sync.Once
@@ -645,40 +446,28 @@ func file_quadsmith_api_frame_proto_rawDescGZIP() []byte {
 	return file_quadsmith_api_frame_proto_rawDescData
 }
 
-var file_quadsmith_api_frame_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_quadsmith_api_frame_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_quadsmith_api_frame_proto_goTypes = []any{
-	(*Frame)(nil),               // 0: quadsmith.api.Frame
-	(*CreateFrameRequest)(nil),  // 1: quadsmith.api.CreateFrameRequest
-	(*DeleteFrameRequest)(nil),  // 2: quadsmith.api.DeleteFrameRequest
-	(*DeleteFrameResponse)(nil), // 3: quadsmith.api.DeleteFrameResponse
-	(*GetFrameRequest)(nil),     // 4: quadsmith.api.GetFrameRequest
-	(*ListFramesRequest)(nil),   // 5: quadsmith.api.ListFramesRequest
-	(*ListFramesResponse)(nil),  // 6: quadsmith.api.ListFramesResponse
-	(*UpdateFrameRequest)(nil),  // 7: quadsmith.api.UpdateFrameRequest
-	(*ReferenceLink)(nil),       // 8: quadsmith.api.ReferenceLink
-	(*Media)(nil),               // 9: quadsmith.api.Media
+	(*Frame)(nil),              // 0: quadsmith.api.Frame
+	(*GetFrameRequest)(nil),    // 1: quadsmith.api.GetFrameRequest
+	(*ListFramesRequest)(nil),  // 2: quadsmith.api.ListFramesRequest
+	(*ListFramesResponse)(nil), // 3: quadsmith.api.ListFramesResponse
+	(*ReferenceLink)(nil),      // 4: quadsmith.api.ReferenceLink
+	(*Media)(nil),              // 5: quadsmith.api.Media
 }
 var file_quadsmith_api_frame_proto_depIdxs = []int32{
-	8,  // 0: quadsmith.api.Frame.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 1: quadsmith.api.Frame.media:type_name -> quadsmith.api.Media
-	0,  // 2: quadsmith.api.CreateFrameRequest.frame:type_name -> quadsmith.api.Frame
-	0,  // 3: quadsmith.api.ListFramesResponse.frames:type_name -> quadsmith.api.Frame
-	0,  // 4: quadsmith.api.UpdateFrameRequest.frame:type_name -> quadsmith.api.Frame
-	4,  // 5: quadsmith.api.FrameService.GetFrame:input_type -> quadsmith.api.GetFrameRequest
-	5,  // 6: quadsmith.api.FrameService.ListFrames:input_type -> quadsmith.api.ListFramesRequest
-	1,  // 7: quadsmith.api.FrameService.CreateFrame:input_type -> quadsmith.api.CreateFrameRequest
-	7,  // 8: quadsmith.api.FrameService.UpdateFrame:input_type -> quadsmith.api.UpdateFrameRequest
-	2,  // 9: quadsmith.api.FrameService.DeleteFrame:input_type -> quadsmith.api.DeleteFrameRequest
-	0,  // 10: quadsmith.api.FrameService.GetFrame:output_type -> quadsmith.api.Frame
-	6,  // 11: quadsmith.api.FrameService.ListFrames:output_type -> quadsmith.api.ListFramesResponse
-	0,  // 12: quadsmith.api.FrameService.CreateFrame:output_type -> quadsmith.api.Frame
-	0,  // 13: quadsmith.api.FrameService.UpdateFrame:output_type -> quadsmith.api.Frame
-	3,  // 14: quadsmith.api.FrameService.DeleteFrame:output_type -> quadsmith.api.DeleteFrameResponse
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	4, // 0: quadsmith.api.Frame.reference_links:type_name -> quadsmith.api.ReferenceLink
+	5, // 1: quadsmith.api.Frame.media:type_name -> quadsmith.api.Media
+	0, // 2: quadsmith.api.ListFramesResponse.frames:type_name -> quadsmith.api.Frame
+	1, // 3: quadsmith.api.FrameService.GetFrame:input_type -> quadsmith.api.GetFrameRequest
+	2, // 4: quadsmith.api.FrameService.ListFrames:input_type -> quadsmith.api.ListFramesRequest
+	0, // 5: quadsmith.api.FrameService.GetFrame:output_type -> quadsmith.api.Frame
+	3, // 6: quadsmith.api.FrameService.ListFrames:output_type -> quadsmith.api.ListFramesResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_frame_proto_init() }
@@ -695,7 +484,7 @@ func file_quadsmith_api_frame_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_frame_proto_rawDesc), len(file_quadsmith_api_frame_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

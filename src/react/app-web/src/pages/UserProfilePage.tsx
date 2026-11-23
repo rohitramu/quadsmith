@@ -15,29 +15,18 @@ import {
   CheckCircle,
   Trash2,
   X,
-  Cpu,
 } from "lucide-react";
 import { getPublicProfile } from "@quadsmith/shared/gen/quadsmith/api/user-UserService_connectquery";
 import { listBuilds } from "@quadsmith/shared/gen/quadsmith/api/build-BuildService_connectquery";
-import { search } from "@quadsmith/shared/gen/quadsmith/api/search-SearchService_connectquery";
 import {
   listUserCollections,
   createCollection,
   deleteCollection,
 } from "@quadsmith/shared/gen/quadsmith/api/social-SocialService_connectquery";
-import { ALL_COLLECTIONS, getCollectionPath } from "../lib/hardwareCollections";
-import { ComponentFormModal } from "../components/ComponentFormModal";
-import {
-  getAvatarPalette,
-  getInitial,
-  CollectionBadge,
-  CollectionIcon,
-  getCollectionColor,
-} from "@quadsmith/shared";
+import { getAvatarPalette, getInitial, useDocumentMeta } from "@quadsmith/shared";
 import { BuildCard } from "../components/BuildCard";
 import { UserBadge } from "../components/UserBadge";
 import { useAuth } from "../context/AuthContext";
-import { useDocumentMeta } from "@quadsmith/shared";
 
 export function UserProfilePage() {
   const { id } = useParams<{ id: string }>();
@@ -54,19 +43,9 @@ export function UserProfilePage() {
   const [isCreating, setIsCreating] = useState(false);
   const [deletingColId, setDeletingColId] = useState<string | null>(null);
 
-  // Component state
-  const [isComponentModalOpen, setIsComponentModalOpen] = useState(false);
-  const [createModalCollectionId, setCreateModalCollectionId] = useState("motors");
-  const [selectedEditComponent, setSelectedEditComponent] = useState<any>(null);
+  const activeTab = searchParams.get("tab") === "collections" ? "collections" : "builds";
 
-  const activeTab =
-    searchParams.get("tab") === "collections"
-      ? "collections"
-      : searchParams.get("tab") === "components"
-        ? "components"
-        : "builds";
-
-  const handleTabChange = (tab: "builds" | "collections" | "components") => {
+  const handleTabChange = (tab: "builds" | "collections") => {
     setSearchParams((prev) => {
       const next = new URLSearchParams(prev);
       if (tab === "builds") {
@@ -133,29 +112,6 @@ export function UserProfilePage() {
     error: collectionsError,
     refetch: refetchCollections,
   } = useQuery(listUserCollections, { userId: id || "" }, { enabled: !!id });
-
-  const componentSelectors = useMemo(() => {
-    return ALL_COLLECTIONS.map((c) => ({
-      path: getCollectionPath(c),
-      filter: `author_username == "${id}"`,
-    }));
-  }, [id]);
-
-  const {
-    data: componentsSearchData,
-    isLoading: isLoadingComponents,
-    refetch: refetchComponents,
-  } = useQuery(
-    search,
-    {
-      query: "",
-      selectors: componentSelectors,
-      limit: 100,
-    },
-    { enabled: !!id },
-  );
-
-  const contributedComponents = componentsSearchData?.results || [];
 
   const isOwner = user?.id === id;
   const collections = collectionsData?.collections || [];
@@ -393,32 +349,6 @@ export function UserProfilePage() {
               }`}
             >
               {displayColCount}
-            </span>
-          </button>
-
-          <button
-            role="tab"
-            id="tab-components"
-            aria-controls="panel-components"
-            aria-selected={activeTab === "components"}
-            type="button"
-            onClick={() => handleTabChange("components")}
-            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2.5 sm:py-3 border-b-2 font-bold text-xs sm:text-sm transition-colors cursor-pointer shrink-0 ${
-              activeTab === "components"
-                ? "border-emerald-500 text-emerald-400"
-                : "border-transparent text-zinc-400 hover:text-zinc-200 hover:border-zinc-700"
-            }`}
-          >
-            <Cpu size={15} />
-            <span>Components</span>
-            <span
-              className={`px-1.5 sm:px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-mono transition-colors ${
-                activeTab === "components"
-                  ? "bg-emerald-500/10 text-emerald-400"
-                  : "bg-zinc-800 text-zinc-400"
-              }`}
-            >
-              {contributedComponents.length}
             </span>
           </button>
         </div>
@@ -724,157 +654,6 @@ export function UserProfilePage() {
             )}
           </section>
         )}
-
-        {/* Tab 3: Components Panel */}
-        {activeTab === "components" && (
-          <section
-            role="tabpanel"
-            id="panel-components"
-            aria-labelledby="tab-components"
-            className="space-y-6 animate-in fade-in duration-150"
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2">
-              <div>
-                <h3 className="text-base font-bold text-zinc-100 flex items-center gap-2">
-                  <Cpu size={18} className="text-blue-500" />
-                  <span>Contributed Components</span>
-                </h3>
-                <p className="text-xs text-zinc-400 mt-0.5">
-                  Hardware, gear, and software specifications cataloged by @{id}.
-                </p>
-              </div>
-
-              {isOwner && contributedComponents.length > 0 && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedEditComponent(null);
-                    setCreateModalCollectionId("motors");
-                    setIsComponentModalOpen(true);
-                  }}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-500/20 transition-colors self-start sm:self-auto cursor-pointer"
-                  aria-label="Add Component"
-                >
-                  <Plus size={14} />
-                  <span>+ Add New</span>
-                </button>
-              )}
-            </div>
-
-            {isLoadingComponents ? (
-              <div className="flex h-48 w-full items-center justify-center text-zinc-400">
-                <Loader2 size={24} className="animate-spin text-blue-500" />
-              </div>
-            ) : contributedComponents.length === 0 ? (
-              <div className="text-center py-16 px-4 rounded-2xl border border-dashed border-zinc-800 space-y-3">
-                <div className="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center mx-auto text-zinc-400">
-                  <Cpu size={24} />
-                </div>
-                <h4 className="text-sm font-bold text-zinc-100">No Components Contributed Yet</h4>
-                <p className="text-xs text-zinc-500 max-w-sm mx-auto">
-                  {isOwner
-                    ? "Contribute custom motors, frames, electronics, or firmware to Quadsmith's catalog."
-                    : `@${id} has not contributed any catalog components yet.`}
-                </p>
-                {isOwner && (
-                  <div className="pt-2">
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedEditComponent(null);
-                        setCreateModalCollectionId("motors");
-                        setIsComponentModalOpen(true);
-                      }}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs shadow-md shadow-emerald-500/20 transition-colors cursor-pointer"
-                      aria-label="Add Component"
-                    >
-                      <Plus size={14} />
-                      <span>+ Add New</span>
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {contributedComponents.map((item) => {
-                  const collectionKey = item.path
-                    ? item.path.split("/").pop() || "motors"
-                    : "motors";
-                  const colColor = getCollectionColor(collectionKey);
-                  return (
-                    <div
-                      key={item.uuid || item.id}
-                      className="p-4 rounded-xl border border-zinc-800 bg-zinc-900/50 hover:bg-zinc-800/50 transition-all flex flex-col justify-between space-y-3 group"
-                    >
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <CollectionBadge
-                            collection={collectionKey}
-                            label={item.collectionName || collectionKey}
-                            variant="pill"
-                            size="xs"
-                          />
-                          {isOwner && (
-                            <button
-                              type="button"
-                              onClick={() => {
-                                setSelectedEditComponent(item);
-                                setCreateModalCollectionId(item.path.split("/").pop() || "motors");
-                                setIsComponentModalOpen(true);
-                              }}
-                              className="text-xs text-blue-400 hover:underline cursor-pointer"
-                            >
-                              Edit
-                            </button>
-                          )}
-                        </div>
-
-                        <div className="flex items-center gap-3">
-                          {item.primaryDisplayImage ? (
-                            <img
-                              src={item.primaryDisplayImage}
-                              alt={item.name}
-                              className="w-10 h-10 rounded-lg object-cover bg-zinc-800 border border-zinc-700 shrink-0"
-                            />
-                          ) : (
-                            <div
-                              className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 border border-zinc-700/60 ${colColor.iconBgClass} ${colColor.textClass}`}
-                            >
-                              <CollectionIcon collection={collectionKey} color={true} size={18} />
-                            </div>
-                          )}
-                          <div className="min-w-0 flex-1">
-                            <Link
-                              to={`/${item.path}/${item.id}`}
-                              className="font-bold text-sm text-zinc-100 hover:underline truncate block"
-                            >
-                              {item.name}
-                            </Link>
-                            {item.description && (
-                              <p className="text-xs text-zinc-500 line-clamp-1">
-                                {item.description}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="pt-2 border-t border-zinc-800/80 flex items-center justify-between text-[11px] text-zinc-400 font-mono">
-                        <span>{item.id}</span>
-                        <Link
-                          to={`/${item.path}/${item.id}`}
-                          className="text-blue-400 font-sans font-medium hover:underline"
-                        >
-                          View &rarr;
-                        </Link>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </section>
-        )}
       </div>
 
       {/* Create Collection Modal */}
@@ -961,22 +740,6 @@ export function UserProfilePage() {
             </form>
           </div>
         </div>
-      )}
-
-      {/* Component Form Modal */}
-      {isComponentModalOpen && (
-        <ComponentFormModal
-          isOpen={isComponentModalOpen}
-          onClose={() => {
-            setIsComponentModalOpen(false);
-            setSelectedEditComponent(null);
-          }}
-          collectionId={createModalCollectionId}
-          initialData={selectedEditComponent}
-          onSuccess={() => {
-            refetchComponents();
-          }}
-        />
       )}
     </div>
   );

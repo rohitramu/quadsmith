@@ -39,8 +39,7 @@ type FcFirmware struct {
 	ReferenceLinks      []*ReferenceLink       `protobuf:"bytes,11,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	PrimaryDisplayImage *string                `protobuf:"bytes,12,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media               []*Media               `protobuf:"bytes,13,rep,name=media,proto3" json:"media,omitempty"`
-	UserUuid            *string                `protobuf:"bytes,14,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
-	AuthorUsername      *string                `protobuf:"bytes,15,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
+	IsArchived          bool                   `protobuf:"varint,14,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -166,146 +165,7 @@ func (x *FcFirmware) GetMedia() []*Media {
 	return nil
 }
 
-func (x *FcFirmware) GetUserUuid() string {
-	if x != nil && x.UserUuid != nil {
-		return *x.UserUuid
-	}
-	return ""
-}
-
-func (x *FcFirmware) GetAuthorUsername() string {
-	if x != nil && x.AuthorUsername != nil {
-		return *x.AuthorUsername
-	}
-	return ""
-}
-
-type CreateFcFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	FcFirmware    *FcFirmware            `protobuf:"bytes,1,opt,name=fc_firmware,json=fcFirmware,proto3" json:"fc_firmware,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateFcFirmwareRequest) Reset() {
-	*x = CreateFcFirmwareRequest{}
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateFcFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateFcFirmwareRequest) ProtoMessage() {}
-
-func (x *CreateFcFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateFcFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*CreateFcFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CreateFcFirmwareRequest) GetFcFirmware() *FcFirmware {
-	if x != nil {
-		return x.FcFirmware
-	}
-	return nil
-}
-
-type DeleteFcFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteFcFirmwareRequest) Reset() {
-	*x = DeleteFcFirmwareRequest{}
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteFcFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteFcFirmwareRequest) ProtoMessage() {}
-
-func (x *DeleteFcFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteFcFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*DeleteFcFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteFcFirmwareRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteFcFirmwareResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteFcFirmwareResponse) Reset() {
-	*x = DeleteFcFirmwareResponse{}
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteFcFirmwareResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteFcFirmwareResponse) ProtoMessage() {}
-
-func (x *DeleteFcFirmwareResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteFcFirmwareResponse.ProtoReflect.Descriptor instead.
-func (*DeleteFcFirmwareResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *DeleteFcFirmwareResponse) GetIsArchived() bool {
+func (x *FcFirmware) GetIsArchived() bool {
 	if x != nil {
 		return x.IsArchived
 	}
@@ -322,7 +182,7 @@ type GetFcFirmwareRequest struct {
 
 func (x *GetFcFirmwareRequest) Reset() {
 	*x = GetFcFirmwareRequest{}
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[4]
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -334,7 +194,7 @@ func (x *GetFcFirmwareRequest) String() string {
 func (*GetFcFirmwareRequest) ProtoMessage() {}
 
 func (x *GetFcFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[4]
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -347,7 +207,7 @@ func (x *GetFcFirmwareRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetFcFirmwareRequest.ProtoReflect.Descriptor instead.
 func (*GetFcFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{4}
+	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetFcFirmwareRequest) GetId() string {
@@ -377,7 +237,7 @@ type ListFcFirmwaresRequest struct {
 
 func (x *ListFcFirmwaresRequest) Reset() {
 	*x = ListFcFirmwaresRequest{}
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[5]
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -389,7 +249,7 @@ func (x *ListFcFirmwaresRequest) String() string {
 func (*ListFcFirmwaresRequest) ProtoMessage() {}
 
 func (x *ListFcFirmwaresRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[5]
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -402,7 +262,7 @@ func (x *ListFcFirmwaresRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFcFirmwaresRequest.ProtoReflect.Descriptor instead.
 func (*ListFcFirmwaresRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{5}
+	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListFcFirmwaresRequest) GetFilter() string {
@@ -450,7 +310,7 @@ type ListFcFirmwaresResponse struct {
 
 func (x *ListFcFirmwaresResponse) Reset() {
 	*x = ListFcFirmwaresResponse{}
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[6]
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -462,7 +322,7 @@ func (x *ListFcFirmwaresResponse) String() string {
 func (*ListFcFirmwaresResponse) ProtoMessage() {}
 
 func (x *ListFcFirmwaresResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[6]
+	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -475,7 +335,7 @@ func (x *ListFcFirmwaresResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFcFirmwaresResponse.ProtoReflect.Descriptor instead.
 func (*ListFcFirmwaresResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{6}
+	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListFcFirmwaresResponse) GetFcFirmwares() []*FcFirmware {
@@ -492,92 +352,37 @@ func (x *ListFcFirmwaresResponse) GetNextPageToken() string {
 	return ""
 }
 
-type UpdateFcFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	FcFirmware    *FcFirmware            `protobuf:"bytes,1,opt,name=fc_firmware,json=fcFirmware,proto3" json:"fc_firmware,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateFcFirmwareRequest) Reset() {
-	*x = UpdateFcFirmwareRequest{}
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateFcFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateFcFirmwareRequest) ProtoMessage() {}
-
-func (x *UpdateFcFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_fc_firmware_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateFcFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*UpdateFcFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_fc_firmware_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *UpdateFcFirmwareRequest) GetFcFirmware() *FcFirmware {
-	if x != nil {
-		return x.FcFirmware
-	}
-	return nil
-}
-
 var File_quadsmith_api_fc_firmware_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_fc_firmware_proto_rawDesc = "" +
 	"\n" +
-	"\x1fquadsmith/api/fc_firmware.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\x92\b\n" +
+	"\x1fquadsmith/api/fc_firmware.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xdc\x06\n" +
 	"\n" +
 	"FcFirmware\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xc0\xf0\x19\x04R\x02id\x12.\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\fmanufacturer\x12\x18\n" +
-	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02R\x04name\x12\x1e\n" +
-	"\aversion\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x02R\aversion\x127\n" +
-	"\x14target_architectures\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x02R\x13targetArchitectures\x125\n" +
-	"\x13supported_protocols\x18\a \x01(\tB\x04\xc0\xf0\x19\x02R\x12supportedProtocols\x12*\n" +
-	"\x0eis_open_source\x18\b \x01(\bB\x04\xc0\xf0\x19\x02R\fisOpenSource\x12+\n" +
-	"\x0erepository_url\x18\t \x01(\tB\x04\xc0\xf0\x19\x02R\rrepositoryUrl\x12&\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x04R\fmanufacturer\x12\x18\n" +
+	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x04R\x04name\x12\x1e\n" +
+	"\aversion\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x04R\aversion\x127\n" +
+	"\x14target_architectures\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x04R\x13targetArchitectures\x125\n" +
+	"\x13supported_protocols\x18\a \x01(\tB\x04\xc0\xf0\x19\x04R\x12supportedProtocols\x12*\n" +
+	"\x0eis_open_source\x18\b \x01(\bB\x04\xc0\xf0\x19\x04R\fisOpenSource\x12+\n" +
+	"\x0erepository_url\x18\t \x01(\tB\x04\xc0\xf0\x19\x04R\rrepositoryUrl\x12&\n" +
 	"\vdescription\x18\n" +
-	" \x01(\tB\x04\xc0\xf0\x19\x02R\vdescription\x12K\n" +
-	"\x0freference_links\x18\v \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x04\xc0\xf0\x19\x02R\x0ereferenceLinks\x12=\n" +
-	"\x15primary_display_image\x18\f \x01(\tB\x04\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x120\n" +
-	"\x05media\x18\r \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x02R\x05media\x12&\n" +
-	"\tuser_uuid\x18\x0e \x01(\tB\x04\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x122\n" +
-	"\x0fauthor_username\x18\x0f \x01(\tB\x04\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xfa\x01\x8a\xb5\x18C\n" +
+	" \x01(\tB\x04\xc0\xf0\x19\x04R\vdescription\x12K\n" +
+	"\x0freference_links\x18\v \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x04\xc0\xf0\x19\x04R\x0ereferenceLinks\x12=\n" +
+	"\x15primary_display_image\x18\f \x01(\tB\x04\xc0\xf0\x19\x04H\x00R\x13primaryDisplayImage\x88\x01\x01\x120\n" +
+	"\x05media\x18\r \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x04R\x05media\x12%\n" +
+	"\vis_archived\x18\x0e \x01(\bB\x04\xc0\xf0\x19\x04R\n" +
+	"isArchived:\x9b\x01\x8a\xb5\x18C\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\aversion\n" +
 	"\x14target_architectures\n" +
 	"\x0eis_open_source\x9a\xb5\x18\x1fcomponents/software/fc-firmware\xc2\xf3\x18'\n" +
-	"\x1bflight_controller_firmwares*\bentities\xc2\xf0\x19a\b\x05\x12]uuid IN (SELECT uuid FROM entities WHERE collection = 'fc-firmware' AND user_uuid = $1::uuid)B\x18\n" +
-	"\x16_primary_display_imageB\f\n" +
-	"\n" +
-	"_user_uuidB\x12\n" +
-	"\x10_author_username\"U\n" +
-	"\x17CreateFcFirmwareRequest\x12:\n" +
-	"\vfc_firmware\x18\x01 \x01(\v2\x19.quadsmith.api.FcFirmwareR\n" +
-	"fcFirmware\")\n" +
-	"\x17DeleteFcFirmwareRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\";\n" +
-	"\x18DeleteFcFirmwareResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"@\n" +
+	"\x1bflight_controller_firmwares*\bentities\xc2\xf0\x19\x02\b\x01B\x18\n" +
+	"\x16_primary_display_image\"@\n" +
 	"\x14GetFcFirmwareRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x9a\x01\n" +
@@ -590,16 +395,10 @@ const file_quadsmith_api_fc_firmware_proto_rawDesc = "" +
 	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x7f\n" +
 	"\x17ListFcFirmwaresResponse\x12<\n" +
 	"\ffc_firmwares\x18\x01 \x03(\v2\x19.quadsmith.api.FcFirmwareR\vfcFirmwares\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"U\n" +
-	"\x17UpdateFcFirmwareRequest\x12:\n" +
-	"\vfc_firmware\x18\x01 \x01(\v2\x19.quadsmith.api.FcFirmwareR\n" +
-	"fcFirmware2\xd9\x03\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xc6\x01\n" +
 	"\x11FcFirmwareService\x12O\n" +
 	"\rGetFcFirmware\x12#.quadsmith.api.GetFcFirmwareRequest\x1a\x19.quadsmith.api.FcFirmware\x12`\n" +
-	"\x0fListFcFirmwares\x12%.quadsmith.api.ListFcFirmwaresRequest\x1a&.quadsmith.api.ListFcFirmwaresResponse\x12U\n" +
-	"\x10CreateFcFirmware\x12&.quadsmith.api.CreateFcFirmwareRequest\x1a\x19.quadsmith.api.FcFirmware\x12U\n" +
-	"\x10UpdateFcFirmware\x12&.quadsmith.api.UpdateFcFirmwareRequest\x1a\x19.quadsmith.api.FcFirmware\x12c\n" +
-	"\x10DeleteFcFirmware\x12&.quadsmith.api.DeleteFcFirmwareRequest\x1a'.quadsmith.api.DeleteFcFirmwareResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"\x0fListFcFirmwares\x12%.quadsmith.api.ListFcFirmwaresRequest\x1a&.quadsmith.api.ListFcFirmwaresResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_fc_firmware_proto_rawDescOnce sync.Once
@@ -613,40 +412,28 @@ func file_quadsmith_api_fc_firmware_proto_rawDescGZIP() []byte {
 	return file_quadsmith_api_fc_firmware_proto_rawDescData
 }
 
-var file_quadsmith_api_fc_firmware_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_quadsmith_api_fc_firmware_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_quadsmith_api_fc_firmware_proto_goTypes = []any{
-	(*FcFirmware)(nil),               // 0: quadsmith.api.FcFirmware
-	(*CreateFcFirmwareRequest)(nil),  // 1: quadsmith.api.CreateFcFirmwareRequest
-	(*DeleteFcFirmwareRequest)(nil),  // 2: quadsmith.api.DeleteFcFirmwareRequest
-	(*DeleteFcFirmwareResponse)(nil), // 3: quadsmith.api.DeleteFcFirmwareResponse
-	(*GetFcFirmwareRequest)(nil),     // 4: quadsmith.api.GetFcFirmwareRequest
-	(*ListFcFirmwaresRequest)(nil),   // 5: quadsmith.api.ListFcFirmwaresRequest
-	(*ListFcFirmwaresResponse)(nil),  // 6: quadsmith.api.ListFcFirmwaresResponse
-	(*UpdateFcFirmwareRequest)(nil),  // 7: quadsmith.api.UpdateFcFirmwareRequest
-	(*ReferenceLink)(nil),            // 8: quadsmith.api.ReferenceLink
-	(*Media)(nil),                    // 9: quadsmith.api.Media
+	(*FcFirmware)(nil),              // 0: quadsmith.api.FcFirmware
+	(*GetFcFirmwareRequest)(nil),    // 1: quadsmith.api.GetFcFirmwareRequest
+	(*ListFcFirmwaresRequest)(nil),  // 2: quadsmith.api.ListFcFirmwaresRequest
+	(*ListFcFirmwaresResponse)(nil), // 3: quadsmith.api.ListFcFirmwaresResponse
+	(*ReferenceLink)(nil),           // 4: quadsmith.api.ReferenceLink
+	(*Media)(nil),                   // 5: quadsmith.api.Media
 }
 var file_quadsmith_api_fc_firmware_proto_depIdxs = []int32{
-	8,  // 0: quadsmith.api.FcFirmware.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 1: quadsmith.api.FcFirmware.media:type_name -> quadsmith.api.Media
-	0,  // 2: quadsmith.api.CreateFcFirmwareRequest.fc_firmware:type_name -> quadsmith.api.FcFirmware
-	0,  // 3: quadsmith.api.ListFcFirmwaresResponse.fc_firmwares:type_name -> quadsmith.api.FcFirmware
-	0,  // 4: quadsmith.api.UpdateFcFirmwareRequest.fc_firmware:type_name -> quadsmith.api.FcFirmware
-	4,  // 5: quadsmith.api.FcFirmwareService.GetFcFirmware:input_type -> quadsmith.api.GetFcFirmwareRequest
-	5,  // 6: quadsmith.api.FcFirmwareService.ListFcFirmwares:input_type -> quadsmith.api.ListFcFirmwaresRequest
-	1,  // 7: quadsmith.api.FcFirmwareService.CreateFcFirmware:input_type -> quadsmith.api.CreateFcFirmwareRequest
-	7,  // 8: quadsmith.api.FcFirmwareService.UpdateFcFirmware:input_type -> quadsmith.api.UpdateFcFirmwareRequest
-	2,  // 9: quadsmith.api.FcFirmwareService.DeleteFcFirmware:input_type -> quadsmith.api.DeleteFcFirmwareRequest
-	0,  // 10: quadsmith.api.FcFirmwareService.GetFcFirmware:output_type -> quadsmith.api.FcFirmware
-	6,  // 11: quadsmith.api.FcFirmwareService.ListFcFirmwares:output_type -> quadsmith.api.ListFcFirmwaresResponse
-	0,  // 12: quadsmith.api.FcFirmwareService.CreateFcFirmware:output_type -> quadsmith.api.FcFirmware
-	0,  // 13: quadsmith.api.FcFirmwareService.UpdateFcFirmware:output_type -> quadsmith.api.FcFirmware
-	3,  // 14: quadsmith.api.FcFirmwareService.DeleteFcFirmware:output_type -> quadsmith.api.DeleteFcFirmwareResponse
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	4, // 0: quadsmith.api.FcFirmware.reference_links:type_name -> quadsmith.api.ReferenceLink
+	5, // 1: quadsmith.api.FcFirmware.media:type_name -> quadsmith.api.Media
+	0, // 2: quadsmith.api.ListFcFirmwaresResponse.fc_firmwares:type_name -> quadsmith.api.FcFirmware
+	1, // 3: quadsmith.api.FcFirmwareService.GetFcFirmware:input_type -> quadsmith.api.GetFcFirmwareRequest
+	2, // 4: quadsmith.api.FcFirmwareService.ListFcFirmwares:input_type -> quadsmith.api.ListFcFirmwaresRequest
+	0, // 5: quadsmith.api.FcFirmwareService.GetFcFirmware:output_type -> quadsmith.api.FcFirmware
+	3, // 6: quadsmith.api.FcFirmwareService.ListFcFirmwares:output_type -> quadsmith.api.ListFcFirmwaresResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_fc_firmware_proto_init() }
@@ -663,7 +450,7 @@ func file_quadsmith_api_fc_firmware_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_fc_firmware_proto_rawDesc), len(file_quadsmith_api_fc_firmware_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

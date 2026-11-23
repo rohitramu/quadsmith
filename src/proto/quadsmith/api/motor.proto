@@ -17,9 +17,6 @@ option go_package = "quadsmith/shared/gen/quadsmith/api;api";
 service MotorService {
   rpc GetMotor(GetMotorRequest) returns (Motor);
   rpc ListMotors(ListMotorsRequest) returns (ListMotorsResponse);
-  rpc CreateMotor(CreateMotorRequest) returns (Motor);
-  rpc UpdateMotor(UpdateMotorRequest) returns (Motor);
-  rpc DeleteMotor(DeleteMotorRequest) returns (DeleteMotorResponse);
 }
 
 // ---------------------------------------------------------
@@ -33,10 +30,7 @@ message Motor {
     inherits: "entities"
   };
   option (quadsmith.common.collection_path) = "components/hardware/motors";
-  option (quadsmith.data.export) = {
-    domain: EXPORT_DOMAIN_COMPONENTS
-    user_filter: "uuid IN (SELECT uuid FROM entities WHERE collection = 'motors' AND user_uuid = $1::uuid)"
-  };
+  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_NONE};
   option (quadsmith.common.frontend) = {
     default_columns: [
       "manufacturer",
@@ -59,55 +53,42 @@ message Motor {
 
   string manufacturer = 3 [
     (quadsmith.sql.column) = {create_index: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
-  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string name = 4 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 
-  float weight_g = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  float stator_diameter_mm = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  float stator_height_mm = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  float weight_g = 5 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  float stator_diameter_mm = 6 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  float stator_height_mm = 7 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
   uint32 kv = 8 [
     (quadsmith.sql.column) = {create_index: true},
-    (quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC
+    (quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC
   ];
-  string description = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  repeated ReferenceLink reference_links = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  optional string primary_display_image = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  repeated Media media = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string description = 9 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  repeated ReferenceLink reference_links = 10 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  optional string primary_display_image = 11 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  repeated Media media = 12 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 
   // Minimum operating voltage (volts) - mandatory
-  float min_voltage = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  float min_voltage = 13 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 
   // Maximum operating voltage (volts) - mandatory
-  float max_voltage = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  float max_voltage = 14 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 
   // Maximum continuous current rating (amperes) - mandatory
-  float max_current_a = 15 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  float max_current_a = 15 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 
   // Supported propeller mounting interfaces (e.g., ["M5"], ["1.5mm T-Mount", "1.5mm Press-Fit"], ["1mm Press-Fit"], ["0.8mm Press-Fit"])
-  repeated string prop_mount_interfaces = 16 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  repeated string prop_mount_interfaces = 16 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 
   // Motor mounting bolt pattern (e.g., "16x16mm", "19x19mm", "12x12mm", "9x9mm", "3-hole 6.6mm")
-  string mount_pattern = 17 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
-  optional string user_uuid = 18 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
-  optional string author_username = 19 [(quadsmith.data.content_type) = CONTENT_TYPE_USER_PROVIDED_PUBLIC];
+  string mount_pattern = 17 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
+  bool is_archived = 18 [(quadsmith.data.content_type) = CONTENT_TYPE_SYSTEM_METADATA_PUBLIC];
 }
 
 // ---------------------------------------------------------
 // Request/response messages
 // ---------------------------------------------------------
-
-message CreateMotorRequest {
-  Motor motor = 1;
-}
-
-message DeleteMotorRequest {
-  string id = 1;
-}
-
-message DeleteMotorResponse {
-  bool is_archived = 1;
-}
 
 message GetMotorRequest {
   string id = 1;
@@ -125,8 +106,4 @@ message ListMotorsRequest {
 message ListMotorsResponse {
   repeated Motor motors = 1;
   string next_page_token = 2;
-}
-
-message UpdateMotorRequest {
-  Motor motor = 1;
 }

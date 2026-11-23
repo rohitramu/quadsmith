@@ -692,11 +692,14 @@ Furthermore, three critical proxy and security behaviors are configured across
    `http://127.0.0.1:9000` in local gateway tests), the `quadsmith.com`
    (`default_server`) block in `nginx.conf` proxies `location /blobs/` and
    `location /api/blobs` directly to `http://api_upstream`, while
-   [`ComponentFormModal.tsx`](../src/react/app-web/src/components/ComponentFormModal.tsx)
-   is updated to use `getApiBaseUrl()` and `getStoredAccessToken()` (matching
    [`BuildPhotoModal.tsx`](../src/react/app-web/src/components/BuildPhotoModal.tsx)
    and
-   [`AccountSettingsModal.tsx`](../src/react/app-web/src/components/AccountSettingsModal.tsx)).
+   [`AccountSettingsModal.tsx`](../src/react/app-web/src/components/AccountSettingsModal.tsx)
+   use `getApiBaseUrl()` and `getStoredAccessToken()` (and catalog image uploads
+   in
+   [`OpsCatalogWorkspace.tsx`](../src/react/app-ops-web/src/components/OpsCatalogWorkspace.tsx)
+   target `/api/ops/blobs` on `server-ops-api`, per
+   [`ops_managed_component_catalog.md`](ops_managed_component_catalog.md)).
    Simultaneously, the `Content-Security-Policy` header in
    [`src/go/server-web/main.go`](../src/go/server-web/main.go) is updated to
    include
@@ -783,6 +786,20 @@ http {
         listen 9000;
         server_name ops.quadsmith.com staging-ops.quadsmith.com;
         client_max_body_size 2m;
+
+        location /quadsmith.ops. {
+            proxy_pass http://ops_api_upstream;
+        }
+
+        location /api/ops/blobs {
+            client_max_body_size 100m;
+            proxy_request_buffering off;
+            proxy_pass http://ops_api_upstream;
+        }
+
+        location /blobs/ {
+            proxy_pass http://api_upstream;
+        }
 
         location / {
             proxy_pass http://ops_web_upstream;

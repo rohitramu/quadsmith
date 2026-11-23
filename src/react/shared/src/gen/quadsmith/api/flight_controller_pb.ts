@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_flight_controller: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiVxdWFkc21pdGgvYXBpL2ZsaWdodF9jb250cm9sbGVyLnByb3RvEg1xdWFkc21pdGguYXBpIqcKChBGbGlnaHRDb250cm9sbGVyEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhAKAmlkGAIgASgJQgTA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZAhISCgRuYW1lGAQgASgJQgTA8BkCEh4KEGlzX2ludGVybmFsX29ubHkYBSABKAhCBMDwGQISFgoId2VpZ2h0X2cYBiABKAJCBMDwGQISFwoJcHJvY2Vzc29yGAcgASgJQgTA8BkCEhIKBGd5cm8YCCABKAlCBMDwGQISZAopaW50ZXJuYWxfZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVyX3V1aWQYCSABKAlCLMLzGCQaImVsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlcnModXVpZCnA8BkCSACIAQESPgoWaW50ZXJuYWxfcmVjZWl2ZXJfdXVpZBgKIAEoCUIZwvMYERoPcmVjZWl2ZXJzKHV1aWQpwPAZAkgBiAEBElAKH2ludGVybmFsX3ZpZGVvX3RyYW5zbWl0dGVyX3V1aWQYCyABKAlCIsLzGBoaGHZpZGVvX3RyYW5zbWl0dGVycyh1dWlkKcDwGQJIAogBARIZCgtkZXNjcmlwdGlvbhgMIAEoCUIEwPAZAhI7Cg9yZWZlcmVuY2VfbGlua3MYDSADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCBMDwGQISKAoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGA4gASgJQgTA8BkCSAOIAQESKQoFbWVkaWEYDyADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgTA8BkCEhkKC21pbl92b2x0YWdlGBAgASgCQgTA8BkCEhkKC21heF92b2x0YWdlGBEgASgCQgTA8BkCEhcKCXZ0eF9wb3J0cxgSIAMoCUIEwPAZAhIfChF2dHhfdm9sdGFnZV9taW5fdhgTIAEoAkIEwPAZAhIfChF2dHhfdm9sdGFnZV9tYXhfdhgUIAEoAkIEwPAZAhIbCg1tb3VudF9wYXR0ZXJuGBUgASgJQgTA8BkCEhwKCXVzZXJfdXVpZBgWIAEoCUIEwPAZBEgEiAEBEiIKD2F1dGhvcl91c2VybmFtZRgXIAEoCUIEwPAZAkgFiAEBOusBirUYLwoMbWFudWZhY3R1cmVyCgRuYW1lCglwcm9jZXNzb3IKBGd5cm8KCHdlaWdodF9nmrUYJmNvbXBvbmVudHMvaGFyZHdhcmUvZmxpZ2h0LWNvbnRyb2xsZXJzwvMYHgoSZmxpZ2h0X2NvbnRyb2xsZXJzKghlbnRpdGllc8LwGWgIBRJkdXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSBlbnRpdGllcyBXSEVSRSBjb2xsZWN0aW9uID0gJ2ZsaWdodC1jb250cm9sbGVycycgQU5EIHVzZXJfdXVpZCA9ICQxOjp1dWlkKUIsCipfaW50ZXJuYWxfZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVyX3V1aWRCGQoXX2ludGVybmFsX3JlY2VpdmVyX3V1aWRCIgogX2ludGVybmFsX3ZpZGVvX3RyYW5zbWl0dGVyX3V1aWRCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiWwodQ3JlYXRlRmxpZ2h0Q29udHJvbGxlclJlcXVlc3QSOgoRZmxpZ2h0X2NvbnRyb2xsZXIYASABKAsyHy5xdWFkc21pdGguYXBpLkZsaWdodENvbnRyb2xsZXIiKwodRGVsZXRlRmxpZ2h0Q29udHJvbGxlclJlcXVlc3QSCgoCaWQYASABKAkiNQoeRGVsZXRlRmxpZ2h0Q29udHJvbGxlclJlc3BvbnNlEhMKC2lzX2FyY2hpdmVkGAEgASgIIjkKGkdldEZsaWdodENvbnRyb2xsZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkidAocTGlzdEZsaWdodENvbnRyb2xsZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJInUKHUxpc3RGbGlnaHRDb250cm9sbGVyc1Jlc3BvbnNlEjsKEmZsaWdodF9jb250cm9sbGVycxgBIAMoCzIfLnF1YWRzbWl0aC5hcGkuRmxpZ2h0Q29udHJvbGxlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiWwodVXBkYXRlRmxpZ2h0Q29udHJvbGxlclJlcXVlc3QSOgoRZmxpZ2h0X2NvbnRyb2xsZXIYASABKAsyHy5xdWFkc21pdGguYXBpLkZsaWdodENvbnRyb2xsZXIyuQQKF0ZsaWdodENvbnRyb2xsZXJTZXJ2aWNlEmEKE0dldEZsaWdodENvbnRyb2xsZXISKS5xdWFkc21pdGguYXBpLkdldEZsaWdodENvbnRyb2xsZXJSZXF1ZXN0Gh8ucXVhZHNtaXRoLmFwaS5GbGlnaHRDb250cm9sbGVyEnIKFUxpc3RGbGlnaHRDb250cm9sbGVycxIrLnF1YWRzbWl0aC5hcGkuTGlzdEZsaWdodENvbnRyb2xsZXJzUmVxdWVzdBosLnF1YWRzbWl0aC5hcGkuTGlzdEZsaWdodENvbnRyb2xsZXJzUmVzcG9uc2USZwoWQ3JlYXRlRmxpZ2h0Q29udHJvbGxlchIsLnF1YWRzbWl0aC5hcGkuQ3JlYXRlRmxpZ2h0Q29udHJvbGxlclJlcXVlc3QaHy5xdWFkc21pdGguYXBpLkZsaWdodENvbnRyb2xsZXISZwoWVXBkYXRlRmxpZ2h0Q29udHJvbGxlchIsLnF1YWRzbWl0aC5hcGkuVXBkYXRlRmxpZ2h0Q29udHJvbGxlclJlcXVlc3QaHy5xdWFkc21pdGguYXBpLkZsaWdodENvbnRyb2xsZXISdQoWRGVsZXRlRmxpZ2h0Q29udHJvbGxlchIsLnF1YWRzbWl0aC5hcGkuRGVsZXRlRmxpZ2h0Q29udHJvbGxlclJlcXVlc3QaLS5xdWFkc21pdGguYXBpLkRlbGV0ZUZsaWdodENvbnRyb2xsZXJSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
+    "CiVxdWFkc21pdGgvYXBpL2ZsaWdodF9jb250cm9sbGVyLnByb3RvEg1xdWFkc21pdGguYXBpIvgIChBGbGlnaHRDb250cm9sbGVyEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhAKAmlkGAIgASgJQgTA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZBBISCgRuYW1lGAQgASgJQgTA8BkEEh4KEGlzX2ludGVybmFsX29ubHkYBSABKAhCBMDwGQQSFgoId2VpZ2h0X2cYBiABKAJCBMDwGQQSFwoJcHJvY2Vzc29yGAcgASgJQgTA8BkEEhIKBGd5cm8YCCABKAlCBMDwGQQSZAopaW50ZXJuYWxfZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVyX3V1aWQYCSABKAlCLMLzGCQaImVsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlcnModXVpZCnA8BkESACIAQESPgoWaW50ZXJuYWxfcmVjZWl2ZXJfdXVpZBgKIAEoCUIZwvMYERoPcmVjZWl2ZXJzKHV1aWQpwPAZBEgBiAEBElAKH2ludGVybmFsX3ZpZGVvX3RyYW5zbWl0dGVyX3V1aWQYCyABKAlCIsLzGBoaGHZpZGVvX3RyYW5zbWl0dGVycyh1dWlkKcDwGQRIAogBARIZCgtkZXNjcmlwdGlvbhgMIAEoCUIEwPAZBBI7Cg9yZWZlcmVuY2VfbGlua3MYDSADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCBMDwGQQSKAoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGA4gASgJQgTA8BkESAOIAQESKQoFbWVkaWEYDyADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgTA8BkEEhkKC21pbl92b2x0YWdlGBAgASgCQgTA8BkEEhkKC21heF92b2x0YWdlGBEgASgCQgTA8BkEEhcKCXZ0eF9wb3J0cxgSIAMoCUIEwPAZBBIfChF2dHhfdm9sdGFnZV9taW5fdhgTIAEoAkIEwPAZBBIfChF2dHhfdm9sdGFnZV9tYXhfdhgUIAEoAkIEwPAZBBIbCg1tb3VudF9wYXR0ZXJuGBUgASgJQgTA8BkEEhkKC2lzX2FyY2hpdmVkGBYgASgIQgTA8BkEOoUBirUYLwoMbWFudWZhY3R1cmVyCgRuYW1lCglwcm9jZXNzb3IKBGd5cm8KCHdlaWdodF9nmrUYJmNvbXBvbmVudHMvaGFyZHdhcmUvZmxpZ2h0LWNvbnRyb2xsZXJzwvMYHgoSZmxpZ2h0X2NvbnRyb2xsZXJzKghlbnRpdGllc8LwGQIIAUIsCipfaW50ZXJuYWxfZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVyX3V1aWRCGQoXX2ludGVybmFsX3JlY2VpdmVyX3V1aWRCIgogX2ludGVybmFsX3ZpZGVvX3RyYW5zbWl0dGVyX3V1aWRCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZSI5ChpHZXRGbGlnaHRDb250cm9sbGVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJInQKHExpc3RGbGlnaHRDb250cm9sbGVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJ1Ch1MaXN0RmxpZ2h0Q29udHJvbGxlcnNSZXNwb25zZRI7ChJmbGlnaHRfY29udHJvbGxlcnMYASADKAsyHy5xdWFkc21pdGguYXBpLkZsaWdodENvbnRyb2xsZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMvABChdGbGlnaHRDb250cm9sbGVyU2VydmljZRJhChNHZXRGbGlnaHRDb250cm9sbGVyEikucXVhZHNtaXRoLmFwaS5HZXRGbGlnaHRDb250cm9sbGVyUmVxdWVzdBofLnF1YWRzbWl0aC5hcGkuRmxpZ2h0Q29udHJvbGxlchJyChVMaXN0RmxpZ2h0Q29udHJvbGxlcnMSKy5xdWFkc21pdGguYXBpLkxpc3RGbGlnaHRDb250cm9sbGVyc1JlcXVlc3QaLC5xdWFkc21pdGguYXBpLkxpc3RGbGlnaHRDb250cm9sbGVyc1Jlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -161,14 +161,9 @@ export type FlightController = Message<"quadsmith.api.FlightController"> & {
   mountPattern: string;
 
   /**
-   * @generated from field: optional string user_uuid = 22;
+   * @generated from field: bool is_archived = 22;
    */
-  userUuid?: string | undefined;
-
-  /**
-   * @generated from field: optional string author_username = 23;
-   */
-  authorUsername?: string | undefined;
+  isArchived: boolean;
 };
 
 /**
@@ -178,63 +173,6 @@ export type FlightController = Message<"quadsmith.api.FlightController"> & {
 export const FlightControllerSchema: GenMessage<FlightController> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_flight_controller, 0);
-
-/**
- * @generated from message quadsmith.api.CreateFlightControllerRequest
- */
-export type CreateFlightControllerRequest =
-  Message<"quadsmith.api.CreateFlightControllerRequest"> & {
-    /**
-     * @generated from field: quadsmith.api.FlightController flight_controller = 1;
-     */
-    flightController?: FlightController | undefined;
-  };
-
-/**
- * Describes the message quadsmith.api.CreateFlightControllerRequest.
- * Use `create(CreateFlightControllerRequestSchema)` to create a new message.
- */
-export const CreateFlightControllerRequestSchema: GenMessage<CreateFlightControllerRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_flight_controller, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteFlightControllerRequest
- */
-export type DeleteFlightControllerRequest =
-  Message<"quadsmith.api.DeleteFlightControllerRequest"> & {
-    /**
-     * @generated from field: string id = 1;
-     */
-    id: string;
-  };
-
-/**
- * Describes the message quadsmith.api.DeleteFlightControllerRequest.
- * Use `create(DeleteFlightControllerRequestSchema)` to create a new message.
- */
-export const DeleteFlightControllerRequestSchema: GenMessage<DeleteFlightControllerRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_flight_controller, 2);
-
-/**
- * @generated from message quadsmith.api.DeleteFlightControllerResponse
- */
-export type DeleteFlightControllerResponse =
-  Message<"quadsmith.api.DeleteFlightControllerResponse"> & {
-    /**
-     * @generated from field: bool is_archived = 1;
-     */
-    isArchived: boolean;
-  };
-
-/**
- * Describes the message quadsmith.api.DeleteFlightControllerResponse.
- * Use `create(DeleteFlightControllerResponseSchema)` to create a new message.
- */
-export const DeleteFlightControllerResponseSchema: GenMessage<DeleteFlightControllerResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_flight_controller, 3);
 
 /**
  * @generated from message quadsmith.api.GetFlightControllerRequest
@@ -257,7 +195,7 @@ export type GetFlightControllerRequest = Message<"quadsmith.api.GetFlightControl
  */
 export const GetFlightControllerRequestSchema: GenMessage<GetFlightControllerRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_flight_controller, 4);
+  messageDesc(file_quadsmith_api_flight_controller, 1);
 
 /**
  * @generated from message quadsmith.api.ListFlightControllersRequest
@@ -295,7 +233,7 @@ export type ListFlightControllersRequest = Message<"quadsmith.api.ListFlightCont
  */
 export const ListFlightControllersRequestSchema: GenMessage<ListFlightControllersRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_flight_controller, 5);
+  messageDesc(file_quadsmith_api_flight_controller, 2);
 
 /**
  * @generated from message quadsmith.api.ListFlightControllersResponse
@@ -319,26 +257,7 @@ export type ListFlightControllersResponse =
  */
 export const ListFlightControllersResponseSchema: GenMessage<ListFlightControllersResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_flight_controller, 6);
-
-/**
- * @generated from message quadsmith.api.UpdateFlightControllerRequest
- */
-export type UpdateFlightControllerRequest =
-  Message<"quadsmith.api.UpdateFlightControllerRequest"> & {
-    /**
-     * @generated from field: quadsmith.api.FlightController flight_controller = 1;
-     */
-    flightController?: FlightController | undefined;
-  };
-
-/**
- * Describes the message quadsmith.api.UpdateFlightControllerRequest.
- * Use `create(UpdateFlightControllerRequestSchema)` to create a new message.
- */
-export const UpdateFlightControllerRequestSchema: GenMessage<UpdateFlightControllerRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_flight_controller, 7);
+  messageDesc(file_quadsmith_api_flight_controller, 3);
 
 /**
  * @generated from service quadsmith.api.FlightControllerService
@@ -359,29 +278,5 @@ export const FlightControllerService: GenService<{
     methodKind: "unary";
     input: typeof ListFlightControllersRequestSchema;
     output: typeof ListFlightControllersResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.FlightControllerService.CreateFlightController
-   */
-  createFlightController: {
-    methodKind: "unary";
-    input: typeof CreateFlightControllerRequestSchema;
-    output: typeof FlightControllerSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.FlightControllerService.UpdateFlightController
-   */
-  updateFlightController: {
-    methodKind: "unary";
-    input: typeof UpdateFlightControllerRequestSchema;
-    output: typeof FlightControllerSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.FlightControllerService.DeleteFlightController
-   */
-  deleteFlightController: {
-    methodKind: "unary";
-    input: typeof DeleteFlightControllerRequestSchema;
-    output: typeof DeleteFlightControllerResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_flight_controller, 0);

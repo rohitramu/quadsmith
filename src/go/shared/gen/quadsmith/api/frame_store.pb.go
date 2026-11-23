@@ -22,8 +22,8 @@ func CreateFrame(ctx context.Context, tx pgx.Tx, m *Frame) error {
 }
 
 func GetFrame(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Frame, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "wheelbase_mm": true, "max_prop_size_mm": true, "geometry": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "motor_count": true, "camera_mount_interfaces": true, "motor_mount_patterns": true, "board_mount_patterns": true, "user_uuid": true, "author_username": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, wheelbase_mm, max_prop_size_mm, geometry, description, reference_links, primary_display_image, media, motor_count, camera_mount_interfaces, motor_mount_patterns, board_mount_patterns, user_uuid, author_username"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "wheelbase_mm": true, "max_prop_size_mm": true, "geometry": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "motor_count": true, "camera_mount_interfaces": true, "motor_mount_patterns": true, "board_mount_patterns": true, "is_archived": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, wheelbase_mm, max_prop_size_mm, geometry, description, reference_links, primary_display_image, media, motor_count, camera_mount_interfaces, motor_mount_patterns, board_mount_patterns, is_archived"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetFrame(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "wheelbase_mm", "max_prop_size_mm", "geometry", "description", "reference_links", "primary_display_image", "media", "motor_count", "camera_mount_interfaces", "motor_mount_patterns", "board_mount_patterns", "user_uuid", "author_username"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "wheelbase_mm", "max_prop_size_mm", "geometry", "description", "reference_links", "primary_display_image", "media", "motor_count", "camera_mount_interfaces", "motor_mount_patterns", "board_mount_patterns", "is_archived"}
 	}
-	query := `SELECT ` + colsStr + ` FROM frames INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM frames INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Frame{}
@@ -74,10 +74,8 @@ func GetFrame(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 			scanArgs[i] = &m.MotorMountPatterns
 		case "board_mount_patterns":
 			scanArgs[i] = &m.BoardMountPatterns
-		case "user_uuid":
-			scanArgs[i] = &m.UserUuid
-		case "author_username":
-			scanArgs[i] = &m.AuthorUsername
+		case "is_archived":
+			scanArgs[i] = &m.IsArchived
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -107,8 +105,12 @@ func DeleteFrame(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Frame, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "wheelbase_mm": true, "max_prop_size_mm": true, "geometry": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "motor_count": true, "camera_mount_interfaces": true, "motor_mount_patterns": true, "board_mount_patterns": true, "user_uuid": true, "author_username": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, wheelbase_mm, max_prop_size_mm, geometry, description, reference_links, primary_display_image, media, motor_count, camera_mount_interfaces, motor_mount_patterns, board_mount_patterns, user_uuid, author_username"
+	return ListFramesIncludingArchived(ctx, db, false, cols, sorts, whereClause, limit, offset, args...)
+}
+
+func ListFramesIncludingArchived(ctx context.Context, db *pgxpool.Pool, includeArchived bool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Frame, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "wheelbase_mm": true, "max_prop_size_mm": true, "geometry": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "motor_count": true, "camera_mount_interfaces": true, "motor_mount_patterns": true, "board_mount_patterns": true, "is_archived": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, wheelbase_mm, max_prop_size_mm, geometry, description, reference_links, primary_display_image, media, motor_count, camera_mount_interfaces, motor_mount_patterns, board_mount_patterns, is_archived"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -119,12 +121,16 @@ func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "wheelbase_mm", "max_prop_size_mm", "geometry", "description", "reference_links", "primary_display_image", "media", "motor_count", "camera_mount_interfaces", "motor_mount_patterns", "board_mount_patterns", "user_uuid", "author_username"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "wheelbase_mm", "max_prop_size_mm", "geometry", "description", "reference_links", "primary_display_image", "media", "motor_count", "camera_mount_interfaces", "motor_mount_patterns", "board_mount_patterns", "is_archived"}
 	}
-	query := `SELECT ` + colsStr + ` FROM frames INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid`
-	query += " WHERE entities.is_archived = false"
-	if whereClause != "" {
-		query += " AND (" + whereClause + ")"
+	query := `SELECT ` + colsStr + ` FROM frames INNER JOIN entities USING (uuid)`
+	if !includeArchived {
+		query += " WHERE entities.is_archived = false"
+		if whereClause != "" {
+			query += " AND (" + whereClause + ")"
+		}
+	} else if whereClause != "" {
+		query += " WHERE " + whereClause
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -201,10 +207,8 @@ func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 				scanArgs[i] = &m.MotorMountPatterns
 			case "board_mount_patterns":
 				scanArgs[i] = &m.BoardMountPatterns
-			case "user_uuid":
-				scanArgs[i] = &m.UserUuid
-			case "author_username":
-				scanArgs[i] = &m.AuthorUsername
+			case "is_archived":
+				scanArgs[i] = &m.IsArchived
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy
@@ -218,42 +222,6 @@ func ListFrames(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 			assign()
 		}
 		results = append(results, m)
-	}
-	return results, nil
-}
-
-func ExportFrames(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Frame, error) {
-	query := `SELECT uuid, manufacturer, weight_g, wheelbase_mm, max_prop_size_mm, geometry, motor_count, camera_mount_interfaces, motor_mount_patterns, board_mount_patterns FROM frames WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'frames' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
-	rows, err := db.Query(ctx, query, userUUID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	results := make([]*Frame, 0)
-	for rows.Next() {
-		scanArgs := make([]interface{}, 10)
-		scanAssigns := make([]func(), 0, 10)
-		m := &Frame{}
-		scanArgs[0] = &m.Uuid
-		scanArgs[1] = &m.Manufacturer
-		scanArgs[2] = &m.WeightG
-		scanArgs[3] = &m.WheelbaseMm
-		scanArgs[4] = &m.MaxPropSizeMm
-		scanArgs[5] = &m.Geometry
-		scanArgs[6] = &m.MotorCount
-		scanArgs[7] = &m.CameraMountInterfaces
-		scanArgs[8] = &m.MotorMountPatterns
-		scanArgs[9] = &m.BoardMountPatterns
-		err := rows.Scan(scanArgs...)
-		if err != nil {
-			return nil, err
-		}
-		for _, assign := range scanAssigns {
-			assign()
-		}
-		if m.Manufacturer != "" || m.WeightG != 0 || m.WheelbaseMm != 0 || m.MaxPropSizeMm != 0 || m.Geometry != "" || m.MotorCount != 0 || len(m.CameraMountInterfaces) > 0 || len(m.MotorMountPatterns) > 0 || len(m.BoardMountPatterns) > 0 {
-			results = append(results, m)
-		}
 	}
 	return results, nil
 }

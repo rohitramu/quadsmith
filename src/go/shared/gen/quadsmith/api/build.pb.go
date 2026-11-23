@@ -55,6 +55,7 @@ type Build struct {
 	Media               []*Media         `protobuf:"bytes,18,rep,name=media,proto3" json:"media,omitempty"`
 	UserUuid            *string          `protobuf:"bytes,19,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
 	AuthorUsername      *string          `protobuf:"bytes,20,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
+	IsArchived          bool             `protobuf:"varint,21,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -220,6 +221,13 @@ func (x *Build) GetAuthorUsername() string {
 		return *x.AuthorUsername
 	}
 	return ""
+}
+
+func (x *Build) GetIsArchived() bool {
+	if x != nil {
+		return x.IsArchived
+	}
+	return false
 }
 
 type CreateBuildRequest struct {
@@ -814,7 +822,7 @@ var File_quadsmith_api_build_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_build_proto_rawDesc = "" +
 	"\n" +
-	"\x19quadsmith/api/build.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xa5\n" +
+	"\x19quadsmith/api/build.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xcc\n" +
 	"\n" +
 	"\x05Build\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x14\n" +
@@ -838,7 +846,9 @@ const file_quadsmith_api_build_proto_rawDesc = "" +
 	"\x15primary_display_image\x18\x11 \x01(\tB\x04\xc0\xf0\x19\x02H\x01R\x13primaryDisplayImage\x88\x01\x01\x120\n" +
 	"\x05media\x18\x12 \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x02R\x05media\x12&\n" +
 	"\tuser_uuid\x18\x13 \x01(\tB\x04\xc0\xf0\x19\x04H\x02R\buserUuid\x88\x01\x01\x122\n" +
-	"\x0fauthor_username\x18\x14 \x01(\tB\x04\xc0\xf0\x19\x02H\x03R\x0eauthorUsername\x88\x01\x01:\x8e\x01\x8a\xb5\x18\n" +
+	"\x0fauthor_username\x18\x14 \x01(\tB\x04\xc0\xf0\x19\x02H\x03R\x0eauthorUsername\x88\x01\x01\x12%\n" +
+	"\vis_archived\x18\x15 \x01(\bB\x04\xc0\xf0\x19\x02R\n" +
+	"isArchived:\x8e\x01\x8a\xb5\x18\n" +
 	"\n" +
 	"\x02id\n" +
 	"\x04name\x9a\xb5\x18\x06builds\xc2\xf3\x18\x12\n" +

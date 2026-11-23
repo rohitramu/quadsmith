@@ -13,18 +13,3 @@ export const getVtxFirmware = VtxFirmwareService.method.getVtxFirmware;
  * @generated from rpc quadsmith.api.VtxFirmwareService.ListVtxFirmwares
  */
 export const listVtxFirmwares = VtxFirmwareService.method.listVtxFirmwares;
-
-/**
- * @generated from rpc quadsmith.api.VtxFirmwareService.CreateVtxFirmware
- */
-export const createVtxFirmware = VtxFirmwareService.method.createVtxFirmware;
-
-/**
- * @generated from rpc quadsmith.api.VtxFirmwareService.UpdateVtxFirmware
- */
-export const updateVtxFirmware = VtxFirmwareService.method.updateVtxFirmware;
-
-/**
- * @generated from rpc quadsmith.api.VtxFirmwareService.DeleteVtxFirmware
- */
-export const deleteVtxFirmware = VtxFirmwareService.method.deleteVtxFirmware;

@@ -13,18 +13,3 @@ export const getPropeller = PropellerService.method.getPropeller;
  * @generated from rpc quadsmith.api.PropellerService.ListPropellers
  */
 export const listPropellers = PropellerService.method.listPropellers;
-
-/**
- * @generated from rpc quadsmith.api.PropellerService.CreatePropeller
- */
-export const createPropeller = PropellerService.method.createPropeller;
-
-/**
- * @generated from rpc quadsmith.api.PropellerService.UpdatePropeller
- */
-export const updatePropeller = PropellerService.method.updatePropeller;
-
-/**
- * @generated from rpc quadsmith.api.PropellerService.DeletePropeller
- */
-export const deletePropeller = PropellerService.method.deletePropeller;

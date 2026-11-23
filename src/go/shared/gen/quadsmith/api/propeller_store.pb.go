@@ -22,8 +22,8 @@ func CreatePropeller(ctx context.Context, tx pgx.Tx, m *Propeller) error {
 }
 
 func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Propeller, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "diameter_mm": true, "pitch_mm": true, "blades": true, "material": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "prop_mount_interface": true, "user_uuid": true, "author_username": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media, prop_mount_interface, user_uuid, author_username"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "diameter_mm": true, "pitch_mm": true, "blades": true, "material": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "prop_mount_interface": true, "is_archived": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media, prop_mount_interface, is_archived"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material", "description", "reference_links", "primary_display_image", "media", "prop_mount_interface", "user_uuid", "author_username"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material", "description", "reference_links", "primary_display_image", "media", "prop_mount_interface", "is_archived"}
 	}
-	query := `SELECT ` + colsStr + ` FROM propellers INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM propellers INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Propeller{}
@@ -70,10 +70,8 @@ func GetPropeller(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols [
 			scanArgs[i] = &m.Media
 		case "prop_mount_interface":
 			scanArgs[i] = &m.PropMountInterface
-		case "user_uuid":
-			scanArgs[i] = &m.UserUuid
-		case "author_username":
-			scanArgs[i] = &m.AuthorUsername
+		case "is_archived":
+			scanArgs[i] = &m.IsArchived
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -103,8 +101,12 @@ func DeletePropeller(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Propeller, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "diameter_mm": true, "pitch_mm": true, "blades": true, "material": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "prop_mount_interface": true, "user_uuid": true, "author_username": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media, prop_mount_interface, user_uuid, author_username"
+	return ListPropellersIncludingArchived(ctx, db, false, cols, sorts, whereClause, limit, offset, args...)
+}
+
+func ListPropellersIncludingArchived(ctx context.Context, db *pgxpool.Pool, includeArchived bool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Propeller, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "diameter_mm": true, "pitch_mm": true, "blades": true, "material": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "prop_mount_interface": true, "is_archived": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, diameter_mm, pitch_mm, blades, material, description, reference_links, primary_display_image, media, prop_mount_interface, is_archived"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -115,12 +117,16 @@ func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material", "description", "reference_links", "primary_display_image", "media", "prop_mount_interface", "user_uuid", "author_username"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "diameter_mm", "pitch_mm", "blades", "material", "description", "reference_links", "primary_display_image", "media", "prop_mount_interface", "is_archived"}
 	}
-	query := `SELECT ` + colsStr + ` FROM propellers INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid`
-	query += " WHERE entities.is_archived = false"
-	if whereClause != "" {
-		query += " AND (" + whereClause + ")"
+	query := `SELECT ` + colsStr + ` FROM propellers INNER JOIN entities USING (uuid)`
+	if !includeArchived {
+		query += " WHERE entities.is_archived = false"
+		if whereClause != "" {
+			query += " AND (" + whereClause + ")"
+		}
+	} else if whereClause != "" {
+		query += " WHERE " + whereClause
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -193,10 +199,8 @@ func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 				scanArgs[i] = &m.Media
 			case "prop_mount_interface":
 				scanArgs[i] = &m.PropMountInterface
-			case "user_uuid":
-				scanArgs[i] = &m.UserUuid
-			case "author_username":
-				scanArgs[i] = &m.AuthorUsername
+			case "is_archived":
+				scanArgs[i] = &m.IsArchived
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy
@@ -210,40 +214,6 @@ func ListPropellers(ctx context.Context, db *pgxpool.Pool, cols []string, sorts 
 			assign()
 		}
 		results = append(results, m)
-	}
-	return results, nil
-}
-
-func ExportPropellers(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Propeller, error) {
-	query := `SELECT uuid, manufacturer, weight_g, diameter_mm, pitch_mm, blades, material, prop_mount_interface FROM propellers WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'propellers' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
-	rows, err := db.Query(ctx, query, userUUID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	results := make([]*Propeller, 0)
-	for rows.Next() {
-		scanArgs := make([]interface{}, 8)
-		scanAssigns := make([]func(), 0, 8)
-		m := &Propeller{}
-		scanArgs[0] = &m.Uuid
-		scanArgs[1] = &m.Manufacturer
-		scanArgs[2] = &m.WeightG
-		scanArgs[3] = &m.DiameterMm
-		scanArgs[4] = &m.PitchMm
-		scanArgs[5] = &m.Blades
-		scanArgs[6] = &m.Material
-		scanArgs[7] = &m.PropMountInterface
-		err := rows.Scan(scanArgs...)
-		if err != nil {
-			return nil, err
-		}
-		for _, assign := range scanAssigns {
-			assign()
-		}
-		if m.Manufacturer != "" || m.WeightG != 0 || m.DiameterMm != 0 || m.PitchMm != 0 || m.Blades != 0 || m.Material != "" || m.PropMountInterface != "" {
-			results = append(results, m)
-		}
 	}
 	return results, nil
 }

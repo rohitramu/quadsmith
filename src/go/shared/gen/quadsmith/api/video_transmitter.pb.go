@@ -53,8 +53,7 @@ type VideoTransmitter struct {
 	FrequencyBandMhz uint32 `protobuf:"varint,18,opt,name=frequency_band_mhz,json=frequencyBandMhz,proto3" json:"frequency_band_mhz,omitempty"`
 	// Supported antenna connector types (e.g., ["SMA"], ["U.FL"], ["Dual U.FL", "U.FL"], ["MMCX", "SMA"])
 	AntennaConnectors []string `protobuf:"bytes,19,rep,name=antenna_connectors,json=antennaConnectors,proto3" json:"antenna_connectors,omitempty"`
-	UserUuid          *string  `protobuf:"bytes,20,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
-	AuthorUsername    *string  `protobuf:"bytes,21,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
+	IsArchived        bool     `protobuf:"varint,20,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
 	unknownFields     protoimpl.UnknownFields
 	sizeCache         protoimpl.SizeCache
 }
@@ -222,146 +221,7 @@ func (x *VideoTransmitter) GetAntennaConnectors() []string {
 	return nil
 }
 
-func (x *VideoTransmitter) GetUserUuid() string {
-	if x != nil && x.UserUuid != nil {
-		return *x.UserUuid
-	}
-	return ""
-}
-
-func (x *VideoTransmitter) GetAuthorUsername() string {
-	if x != nil && x.AuthorUsername != nil {
-		return *x.AuthorUsername
-	}
-	return ""
-}
-
-type CreateVideoTransmitterRequest struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	VideoTransmitter *VideoTransmitter      `protobuf:"bytes,1,opt,name=video_transmitter,json=videoTransmitter,proto3" json:"video_transmitter,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *CreateVideoTransmitterRequest) Reset() {
-	*x = CreateVideoTransmitterRequest{}
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateVideoTransmitterRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateVideoTransmitterRequest) ProtoMessage() {}
-
-func (x *CreateVideoTransmitterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateVideoTransmitterRequest.ProtoReflect.Descriptor instead.
-func (*CreateVideoTransmitterRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_video_transmitter_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CreateVideoTransmitterRequest) GetVideoTransmitter() *VideoTransmitter {
-	if x != nil {
-		return x.VideoTransmitter
-	}
-	return nil
-}
-
-type DeleteVideoTransmitterRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteVideoTransmitterRequest) Reset() {
-	*x = DeleteVideoTransmitterRequest{}
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteVideoTransmitterRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteVideoTransmitterRequest) ProtoMessage() {}
-
-func (x *DeleteVideoTransmitterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteVideoTransmitterRequest.ProtoReflect.Descriptor instead.
-func (*DeleteVideoTransmitterRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_video_transmitter_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteVideoTransmitterRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteVideoTransmitterResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteVideoTransmitterResponse) Reset() {
-	*x = DeleteVideoTransmitterResponse{}
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteVideoTransmitterResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteVideoTransmitterResponse) ProtoMessage() {}
-
-func (x *DeleteVideoTransmitterResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteVideoTransmitterResponse.ProtoReflect.Descriptor instead.
-func (*DeleteVideoTransmitterResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_video_transmitter_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *DeleteVideoTransmitterResponse) GetIsArchived() bool {
+func (x *VideoTransmitter) GetIsArchived() bool {
 	if x != nil {
 		return x.IsArchived
 	}
@@ -378,7 +238,7 @@ type GetVideoTransmitterRequest struct {
 
 func (x *GetVideoTransmitterRequest) Reset() {
 	*x = GetVideoTransmitterRequest{}
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[4]
+	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -390,7 +250,7 @@ func (x *GetVideoTransmitterRequest) String() string {
 func (*GetVideoTransmitterRequest) ProtoMessage() {}
 
 func (x *GetVideoTransmitterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[4]
+	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -403,7 +263,7 @@ func (x *GetVideoTransmitterRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetVideoTransmitterRequest.ProtoReflect.Descriptor instead.
 func (*GetVideoTransmitterRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_video_transmitter_proto_rawDescGZIP(), []int{4}
+	return file_quadsmith_api_video_transmitter_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetVideoTransmitterRequest) GetId() string {
@@ -433,7 +293,7 @@ type ListVideoTransmittersRequest struct {
 
 func (x *ListVideoTransmittersRequest) Reset() {
 	*x = ListVideoTransmittersRequest{}
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[5]
+	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -445,7 +305,7 @@ func (x *ListVideoTransmittersRequest) String() string {
 func (*ListVideoTransmittersRequest) ProtoMessage() {}
 
 func (x *ListVideoTransmittersRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[5]
+	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -458,7 +318,7 @@ func (x *ListVideoTransmittersRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListVideoTransmittersRequest.ProtoReflect.Descriptor instead.
 func (*ListVideoTransmittersRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_video_transmitter_proto_rawDescGZIP(), []int{5}
+	return file_quadsmith_api_video_transmitter_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListVideoTransmittersRequest) GetFilter() string {
@@ -506,7 +366,7 @@ type ListVideoTransmittersResponse struct {
 
 func (x *ListVideoTransmittersResponse) Reset() {
 	*x = ListVideoTransmittersResponse{}
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[6]
+	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -518,7 +378,7 @@ func (x *ListVideoTransmittersResponse) String() string {
 func (*ListVideoTransmittersResponse) ProtoMessage() {}
 
 func (x *ListVideoTransmittersResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[6]
+	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -531,7 +391,7 @@ func (x *ListVideoTransmittersResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListVideoTransmittersResponse.ProtoReflect.Descriptor instead.
 func (*ListVideoTransmittersResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_video_transmitter_proto_rawDescGZIP(), []int{6}
+	return file_quadsmith_api_video_transmitter_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListVideoTransmittersResponse) GetVideoTransmitters() []*VideoTransmitter {
@@ -548,99 +408,44 @@ func (x *ListVideoTransmittersResponse) GetNextPageToken() string {
 	return ""
 }
 
-type UpdateVideoTransmitterRequest struct {
-	state            protoimpl.MessageState `protogen:"open.v1"`
-	VideoTransmitter *VideoTransmitter      `protobuf:"bytes,1,opt,name=video_transmitter,json=videoTransmitter,proto3" json:"video_transmitter,omitempty"`
-	unknownFields    protoimpl.UnknownFields
-	sizeCache        protoimpl.SizeCache
-}
-
-func (x *UpdateVideoTransmitterRequest) Reset() {
-	*x = UpdateVideoTransmitterRequest{}
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateVideoTransmitterRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateVideoTransmitterRequest) ProtoMessage() {}
-
-func (x *UpdateVideoTransmitterRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_video_transmitter_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateVideoTransmitterRequest.ProtoReflect.Descriptor instead.
-func (*UpdateVideoTransmitterRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_video_transmitter_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *UpdateVideoTransmitterRequest) GetVideoTransmitter() *VideoTransmitter {
-	if x != nil {
-		return x.VideoTransmitter
-	}
-	return nil
-}
-
 var File_quadsmith_api_video_transmitter_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_video_transmitter_proto_rawDesc = "" +
 	"\n" +
-	"%quadsmith/api/video_transmitter.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\x94\n" +
-	"\n" +
+	"%quadsmith/api/video_transmitter.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xd7\b\n" +
 	"\x10VideoTransmitter\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xc0\xf0\x19\x04R\x02id\x12.\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\fmanufacturer\x12\x18\n" +
-	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02R\x04name\x12.\n" +
-	"\x10is_internal_only\x18\x05 \x01(\bB\x04\xc0\xf0\x19\x02R\x0eisInternalOnly\x12\x1f\n" +
-	"\bweight_g\x18\x06 \x01(\x02B\x04\xc0\xf0\x19\x02R\aweightG\x12&\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x04R\fmanufacturer\x12\x18\n" +
+	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x04R\x04name\x12.\n" +
+	"\x10is_internal_only\x18\x05 \x01(\bB\x04\xc0\xf0\x19\x04R\x0eisInternalOnly\x12\x1f\n" +
+	"\bweight_g\x18\x06 \x01(\x02B\x04\xc0\xf0\x19\x04R\aweightG\x12&\n" +
 	"\bprotocol\x18\a \x01(\tB\n" +
-	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\bprotocol\x12&\n" +
-	"\fmax_power_mw\x18\b \x01(\rB\x04\xc0\xf0\x19\x02R\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x04R\bprotocol\x12&\n" +
+	"\fmax_power_mw\x18\b \x01(\rB\x04\xc0\xf0\x19\x04R\n" +
 	"maxPowerMw\x123\n" +
-	"\x13input_voltage_min_v\x18\t \x01(\x02B\x04\xc0\xf0\x19\x02R\x10inputVoltageMinV\x123\n" +
+	"\x13input_voltage_min_v\x18\t \x01(\x02B\x04\xc0\xf0\x19\x04R\x10inputVoltageMinV\x123\n" +
 	"\x13input_voltage_max_v\x18\n" +
-	" \x01(\x02B\x04\xc0\xf0\x19\x02R\x10inputVoltageMaxV\x12)\n" +
-	"\rantenna_uuids\x18\v \x03(\tB\x04\xc0\xf0\x19\x02R\fantennaUuids\x12&\n" +
-	"\vdescription\x18\f \x01(\tB\x04\xc0\xf0\x19\x02R\vdescription\x12K\n" +
-	"\x0freference_links\x18\r \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x04\xc0\xf0\x19\x02R\x0ereferenceLinks\x12=\n" +
-	"\x15primary_display_image\x18\x0e \x01(\tB\x04\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x120\n" +
-	"\x05media\x18\x0f \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x02R\x05media\x12!\n" +
-	"\tport_type\x18\x10 \x01(\tB\x04\xc0\xf0\x19\x02R\bportType\x12)\n" +
-	"\rmount_pattern\x18\x11 \x01(\tB\x04\xc0\xf0\x19\x02R\fmountPattern\x122\n" +
-	"\x12frequency_band_mhz\x18\x12 \x01(\rB\x04\xc0\xf0\x19\x02R\x10frequencyBandMhz\x123\n" +
-	"\x12antenna_connectors\x18\x13 \x03(\tB\x04\xc0\xf0\x19\x02R\x11antennaConnectors\x12&\n" +
-	"\tuser_uuid\x18\x14 \x01(\tB\x04\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x122\n" +
-	"\x0fauthor_username\x18\x15 \x01(\tB\x04\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xf2\x01\x8a\xb5\x186\n" +
+	" \x01(\x02B\x04\xc0\xf0\x19\x04R\x10inputVoltageMaxV\x12)\n" +
+	"\rantenna_uuids\x18\v \x03(\tB\x04\xc0\xf0\x19\x04R\fantennaUuids\x12&\n" +
+	"\vdescription\x18\f \x01(\tB\x04\xc0\xf0\x19\x04R\vdescription\x12K\n" +
+	"\x0freference_links\x18\r \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x04\xc0\xf0\x19\x04R\x0ereferenceLinks\x12=\n" +
+	"\x15primary_display_image\x18\x0e \x01(\tB\x04\xc0\xf0\x19\x04H\x00R\x13primaryDisplayImage\x88\x01\x01\x120\n" +
+	"\x05media\x18\x0f \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x04R\x05media\x12!\n" +
+	"\tport_type\x18\x10 \x01(\tB\x04\xc0\xf0\x19\x04R\bportType\x12)\n" +
+	"\rmount_pattern\x18\x11 \x01(\tB\x04\xc0\xf0\x19\x04R\fmountPattern\x122\n" +
+	"\x12frequency_band_mhz\x18\x12 \x01(\rB\x04\xc0\xf0\x19\x04R\x10frequencyBandMhz\x123\n" +
+	"\x12antenna_connectors\x18\x13 \x03(\tB\x04\xc0\xf0\x19\x04R\x11antennaConnectors\x12%\n" +
+	"\vis_archived\x18\x14 \x01(\bB\x04\xc0\xf0\x19\x04R\n" +
+	"isArchived:\x8c\x01\x8a\xb5\x186\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\bprotocol\n" +
 	"\fmax_power_mw\n" +
 	"\bweight_g\x9a\xb5\x18&components/hardware/video-transmitters\xc2\xf3\x18\x1e\n" +
-	"\x12video_transmitters*\bentities\xc2\xf0\x19h\b\x05\x12duuid IN (SELECT uuid FROM entities WHERE collection = 'video-transmitters' AND user_uuid = $1::uuid)B\x18\n" +
-	"\x16_primary_display_imageB\f\n" +
-	"\n" +
-	"_user_uuidB\x12\n" +
-	"\x10_author_username\"m\n" +
-	"\x1dCreateVideoTransmitterRequest\x12L\n" +
-	"\x11video_transmitter\x18\x01 \x01(\v2\x1f.quadsmith.api.VideoTransmitterR\x10videoTransmitter\"/\n" +
-	"\x1dDeleteVideoTransmitterRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"A\n" +
-	"\x1eDeleteVideoTransmitterResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"F\n" +
+	"\x12video_transmitters*\bentities\xc2\xf0\x19\x02\b\x01B\x18\n" +
+	"\x16_primary_display_image\"F\n" +
 	"\x1aGetVideoTransmitterRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\xa0\x01\n" +
@@ -653,15 +458,10 @@ const file_quadsmith_api_video_transmitter_proto_rawDesc = "" +
 	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x97\x01\n" +
 	"\x1dListVideoTransmittersResponse\x12N\n" +
 	"\x12video_transmitters\x18\x01 \x03(\v2\x1f.quadsmith.api.VideoTransmitterR\x11videoTransmitters\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"m\n" +
-	"\x1dUpdateVideoTransmitterRequest\x12L\n" +
-	"\x11video_transmitter\x18\x01 \x01(\v2\x1f.quadsmith.api.VideoTransmitterR\x10videoTransmitter2\xb9\x04\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xf0\x01\n" +
 	"\x17VideoTransmitterService\x12a\n" +
 	"\x13GetVideoTransmitter\x12).quadsmith.api.GetVideoTransmitterRequest\x1a\x1f.quadsmith.api.VideoTransmitter\x12r\n" +
-	"\x15ListVideoTransmitters\x12+.quadsmith.api.ListVideoTransmittersRequest\x1a,.quadsmith.api.ListVideoTransmittersResponse\x12g\n" +
-	"\x16CreateVideoTransmitter\x12,.quadsmith.api.CreateVideoTransmitterRequest\x1a\x1f.quadsmith.api.VideoTransmitter\x12g\n" +
-	"\x16UpdateVideoTransmitter\x12,.quadsmith.api.UpdateVideoTransmitterRequest\x1a\x1f.quadsmith.api.VideoTransmitter\x12u\n" +
-	"\x16DeleteVideoTransmitter\x12,.quadsmith.api.DeleteVideoTransmitterRequest\x1a-.quadsmith.api.DeleteVideoTransmitterResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"\x15ListVideoTransmitters\x12+.quadsmith.api.ListVideoTransmittersRequest\x1a,.quadsmith.api.ListVideoTransmittersResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_video_transmitter_proto_rawDescOnce sync.Once
@@ -675,40 +475,28 @@ func file_quadsmith_api_video_transmitter_proto_rawDescGZIP() []byte {
 	return file_quadsmith_api_video_transmitter_proto_rawDescData
 }
 
-var file_quadsmith_api_video_transmitter_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_quadsmith_api_video_transmitter_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_quadsmith_api_video_transmitter_proto_goTypes = []any{
-	(*VideoTransmitter)(nil),               // 0: quadsmith.api.VideoTransmitter
-	(*CreateVideoTransmitterRequest)(nil),  // 1: quadsmith.api.CreateVideoTransmitterRequest
-	(*DeleteVideoTransmitterRequest)(nil),  // 2: quadsmith.api.DeleteVideoTransmitterRequest
-	(*DeleteVideoTransmitterResponse)(nil), // 3: quadsmith.api.DeleteVideoTransmitterResponse
-	(*GetVideoTransmitterRequest)(nil),     // 4: quadsmith.api.GetVideoTransmitterRequest
-	(*ListVideoTransmittersRequest)(nil),   // 5: quadsmith.api.ListVideoTransmittersRequest
-	(*ListVideoTransmittersResponse)(nil),  // 6: quadsmith.api.ListVideoTransmittersResponse
-	(*UpdateVideoTransmitterRequest)(nil),  // 7: quadsmith.api.UpdateVideoTransmitterRequest
-	(*ReferenceLink)(nil),                  // 8: quadsmith.api.ReferenceLink
-	(*Media)(nil),                          // 9: quadsmith.api.Media
+	(*VideoTransmitter)(nil),              // 0: quadsmith.api.VideoTransmitter
+	(*GetVideoTransmitterRequest)(nil),    // 1: quadsmith.api.GetVideoTransmitterRequest
+	(*ListVideoTransmittersRequest)(nil),  // 2: quadsmith.api.ListVideoTransmittersRequest
+	(*ListVideoTransmittersResponse)(nil), // 3: quadsmith.api.ListVideoTransmittersResponse
+	(*ReferenceLink)(nil),                 // 4: quadsmith.api.ReferenceLink
+	(*Media)(nil),                         // 5: quadsmith.api.Media
 }
 var file_quadsmith_api_video_transmitter_proto_depIdxs = []int32{
-	8,  // 0: quadsmith.api.VideoTransmitter.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 1: quadsmith.api.VideoTransmitter.media:type_name -> quadsmith.api.Media
-	0,  // 2: quadsmith.api.CreateVideoTransmitterRequest.video_transmitter:type_name -> quadsmith.api.VideoTransmitter
-	0,  // 3: quadsmith.api.ListVideoTransmittersResponse.video_transmitters:type_name -> quadsmith.api.VideoTransmitter
-	0,  // 4: quadsmith.api.UpdateVideoTransmitterRequest.video_transmitter:type_name -> quadsmith.api.VideoTransmitter
-	4,  // 5: quadsmith.api.VideoTransmitterService.GetVideoTransmitter:input_type -> quadsmith.api.GetVideoTransmitterRequest
-	5,  // 6: quadsmith.api.VideoTransmitterService.ListVideoTransmitters:input_type -> quadsmith.api.ListVideoTransmittersRequest
-	1,  // 7: quadsmith.api.VideoTransmitterService.CreateVideoTransmitter:input_type -> quadsmith.api.CreateVideoTransmitterRequest
-	7,  // 8: quadsmith.api.VideoTransmitterService.UpdateVideoTransmitter:input_type -> quadsmith.api.UpdateVideoTransmitterRequest
-	2,  // 9: quadsmith.api.VideoTransmitterService.DeleteVideoTransmitter:input_type -> quadsmith.api.DeleteVideoTransmitterRequest
-	0,  // 10: quadsmith.api.VideoTransmitterService.GetVideoTransmitter:output_type -> quadsmith.api.VideoTransmitter
-	6,  // 11: quadsmith.api.VideoTransmitterService.ListVideoTransmitters:output_type -> quadsmith.api.ListVideoTransmittersResponse
-	0,  // 12: quadsmith.api.VideoTransmitterService.CreateVideoTransmitter:output_type -> quadsmith.api.VideoTransmitter
-	0,  // 13: quadsmith.api.VideoTransmitterService.UpdateVideoTransmitter:output_type -> quadsmith.api.VideoTransmitter
-	3,  // 14: quadsmith.api.VideoTransmitterService.DeleteVideoTransmitter:output_type -> quadsmith.api.DeleteVideoTransmitterResponse
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	4, // 0: quadsmith.api.VideoTransmitter.reference_links:type_name -> quadsmith.api.ReferenceLink
+	5, // 1: quadsmith.api.VideoTransmitter.media:type_name -> quadsmith.api.Media
+	0, // 2: quadsmith.api.ListVideoTransmittersResponse.video_transmitters:type_name -> quadsmith.api.VideoTransmitter
+	1, // 3: quadsmith.api.VideoTransmitterService.GetVideoTransmitter:input_type -> quadsmith.api.GetVideoTransmitterRequest
+	2, // 4: quadsmith.api.VideoTransmitterService.ListVideoTransmitters:input_type -> quadsmith.api.ListVideoTransmittersRequest
+	0, // 5: quadsmith.api.VideoTransmitterService.GetVideoTransmitter:output_type -> quadsmith.api.VideoTransmitter
+	3, // 6: quadsmith.api.VideoTransmitterService.ListVideoTransmitters:output_type -> quadsmith.api.ListVideoTransmittersResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_video_transmitter_proto_init() }
@@ -725,7 +513,7 @@ func file_quadsmith_api_video_transmitter_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_video_transmitter_proto_rawDesc), len(file_quadsmith_api_video_transmitter_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

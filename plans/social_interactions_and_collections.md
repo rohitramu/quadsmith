@@ -179,9 +179,10 @@ technical authority of the builder:
   **Question Asker** when a solution resolves their inquiry. Floats to the top
   of the answer list.
 - **Author Endorsed ($\bigstar$ Badge)**: Conferred exclusively by the **Build
-  Author** on their own builds (or catalog administrators on hardware
-  components). Confirms that the proposed advice aligns with the builder's
-  physical testing.
+  Author** on their own builds (`e.collection == 'builds'`, per
+  [`ops_managed_component_catalog.md`](ops_managed_component_catalog.md)).
+  Confirms that the proposed advice aligns with the builder's physical testing.
+  Component Q&A relies strictly on Accepted Answer and community voting.
 
 An answer may receive either, both, or neither badge.
 

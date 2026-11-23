@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { SmartFilterInput, filterAndSortRecords } from "@quadsmith/shared";
 import App, {
@@ -609,6 +609,179 @@ describe("Ops Console App", () => {
 
       const cronMetrics = screen.getByTestId("metrics-link-server-cron");
       expect(cronMetrics).toHaveAttribute("href", "/services/server-cron/metrics");
+    } finally {
+      fetchSpy.mockRestore();
+      setOpsCookieAndStorage(null);
+    }
+  });
+
+  it("browses all 20 Component Catalog collections read-only without JIT and gates mutations until HUMAN JIT is active", async () => {
+    let jitActive = false;
+    const listMotorBodies: Record<string, unknown>[] = [];
+    const createdPayloads: Record<string, unknown>[] = [];
+    const updatedPayloads: Record<string, unknown>[] = [];
+    const restoredIds: string[] = [];
+    const deletedIds: string[] = [];
+
+    const fetchSpy = vi.spyOn(globalThis, "fetch").mockImplementation(async (input, init) => {
+      const url = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
+      let bodyStr = "{}";
+      if (init?.body != null) {
+        bodyStr = (await new Response(init.body as BodyInit).text()) || "{}";
+      } else if (input instanceof Request) {
+        bodyStr = (await input.clone().text()) || "{}";
+      }
+      const parsedBody = JSON.parse(bodyStr) as Record<string, any>;
+
+      let payload: Record<string, unknown> = {};
+      if (url.endsWith("/GetCurrentOperator")) {
+        payload = {
+          operator: "rohitramu",
+          operatorType: "HUMAN",
+          groupName: "operators",
+          activeJitGrant: jitActive
+            ? {
+                id: "jit-cat-1",
+                operator: "rohitramu",
+                hours: 2,
+                reason: "Catalog curation",
+                operation: "*",
+                status: "ACTIVE",
+              }
+            : undefined,
+        };
+      } else if (url.endsWith("/AcquireJitGrant")) {
+        jitActive = true;
+        payload = {
+          grant: {
+            id: "jit-cat-1",
+            operator: "rohitramu",
+            hours: 2,
+            reason: "Catalog curation",
+            operation: "*",
+            status: "ACTIVE",
+          },
+        };
+      } else if (url.endsWith("/quadsmith.ops.MotorOpsService/ListMotors")) {
+        listMotorBodies.push(parsedBody);
+        payload = {
+          motors: [
+            {
+              uuid: "018f0000-0000-7000-8000-000000000101",
+              id: "tmotor-f60-pro-v",
+              manufacturer: "T-Motor",
+              name: "F60 Pro V",
+              kv: 1950,
+              statorDiameterMm: 22,
+              statorHeightMm: 7.5,
+              weightG: 33.5,
+              isArchived: false,
+            },
+            ...(parsedBody.includeArchived
+              ? [
+                  {
+                    uuid: "018f0000-0000-7000-8000-000000000102",
+                    id: "legacy-xing-2207",
+                    manufacturer: "iFlight",
+                    name: "XING 2207 Legacy",
+                    kv: 1800,
+                    weightG: 34.0,
+                    isArchived: true,
+                  },
+                ]
+              : []),
+          ],
+        };
+      } else if (url.endsWith("/quadsmith.ops.MotorOpsService/CreateMotor")) {
+        createdPayloads.push(parsedBody);
+        payload = {
+          uuid: "018f0000-0000-7000-8000-000000000199",
+          id: "tmotor-velox-v3",
+          ...(parsedBody.motor || {}),
+        };
+      } else if (url.endsWith("/quadsmith.ops.MotorOpsService/UpdateMotor")) {
+        updatedPayloads.push(parsedBody);
+        payload = parsedBody.motor || {};
+      } else if (url.endsWith("/quadsmith.ops.MotorOpsService/RestoreMotor")) {
+        restoredIds.push(parsedBody.id);
+        payload = { id: parsedBody.id, name: "XING 2207 Legacy", isArchived: false };
+      } else if (url.endsWith("/quadsmith.ops.MotorOpsService/DeleteMotor")) {
+        deletedIds.push(parsedBody.id);
+        payload = { isArchived: true };
+      } else if (url.endsWith("/GetSystemHealth")) {
+        payload = { status: "HEALTHY", region: "local", services: [] };
+      } else if (url.endsWith("/GetSystemMetrics")) {
+        payload = { window: "5m", services: [] };
+      }
+
+      return new Response(JSON.stringify(payload), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      });
+    });
+
+    try {
+      setOpsCookieAndStorage("qs_op_sandbox_token_12345");
+      render(<App />);
+
+      const catalogTab = await screen.findByTestId("tab-catalog");
+      fireEvent.click(catalogTab);
+
+      // Left rail displays all 20 collections across Hardware, Pilot Gear, and Software & Firmware
+      expect(await screen.findByTestId("ops-catalog-workspace")).toBeInTheDocument();
+      expect(screen.getByTestId("catalog-nav-motors")).toBeInTheDocument();
+      expect(screen.getByTestId("catalog-nav-goggles")).toBeInTheDocument();
+      expect(screen.getByTestId("catalog-nav-fc-firmwares")).toBeInTheDocument();
+
+      // Active motor row renders; mutation controls are disabled while JIT is locked
+      expect(await screen.findByTestId("catalog-row-tmotor-f60-pro-v")).toBeInTheDocument();
+      expect(screen.getByTestId("catalog-add-btn")).toBeDisabled();
+      expect(screen.getByTestId("catalog-clone-tmotor-f60-pro-v")).toBeDisabled();
+      expect(screen.getByTestId("catalog-edit-tmotor-f60-pro-v")).toBeDisabled();
+      expect(screen.getByTestId("catalog-delete-tmotor-f60-pro-v")).toBeDisabled();
+
+      // Toggle Include Archived without JIT -> loads archived row
+      fireEvent.click(screen.getByTestId("catalog-include-archived"));
+      expect(await screen.findByTestId("catalog-row-legacy-xing-2207")).toBeInTheDocument();
+      expect(listMotorBodies.some((b) => b.includeArchived === true)).toBe(true);
+
+      // Elevate JIT -> mutation buttons unlock
+      fireEvent.click(screen.getByTestId("acquire-jit-btn"));
+      await waitFor(() => {
+        expect(screen.getByTestId("catalog-add-btn")).not.toBeDisabled();
+      });
+
+      // 1. Create Similar pre-fills manufacturer & model name without copying immutable ID
+      fireEvent.click(screen.getByTestId("catalog-clone-tmotor-f60-pro-v"));
+      expect(screen.getByRole("heading", { name: /Create Similar Motor/i })).toBeInTheDocument();
+      const modelInput = screen.getByLabelText(/Model Name/i) as HTMLInputElement;
+      expect(modelInput.value).toBe("F60 Pro V");
+      fireEvent.change(modelInput, { target: { value: "Velox V3" } });
+      fireEvent.click(screen.getByTestId("ops-component-save-btn"));
+      await waitFor(() => {
+        expect(createdPayloads.length).toBe(1);
+      });
+
+      // 2. Edit existing motor
+      fireEvent.click(screen.getByTestId("catalog-edit-tmotor-f60-pro-v"));
+      expect(screen.getByRole("heading", { name: /Edit Motor/i })).toBeInTheDocument();
+      fireEvent.click(screen.getByTestId("ops-component-save-btn"));
+      await waitFor(() => {
+        expect(updatedPayloads.length).toBe(1);
+      });
+
+      // 3. Restore archived motor
+      fireEvent.click(screen.getByTestId("catalog-restore-legacy-xing-2207"));
+      await waitFor(() => {
+        expect(restoredIds).toContain("legacy-xing-2207");
+      });
+
+      // 4. Delete / Archive confirmation
+      fireEvent.click(screen.getByTestId("catalog-delete-tmotor-f60-pro-v"));
+      fireEvent.click(screen.getByTestId("ops-confirm-delete-btn"));
+      await waitFor(() => {
+        expect(deletedIds).toContain("tmotor-f60-pro-v");
+      });
     } finally {
       fetchSpy.mockRestore();
       setOpsCookieAndStorage(null);

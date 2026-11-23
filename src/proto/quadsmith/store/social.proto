@@ -215,7 +215,10 @@ message Entity {
     name: "entities"
     unique_constraints: ["collection, id"]
   };
-  option (quadsmith.data.export) = {domain: EXPORT_DOMAIN_COMPONENTS};
+  option (quadsmith.data.export) = {
+    domain: EXPORT_DOMAIN_BUILDS
+    user_filter: "collection = 'builds' AND user_uuid = $1::uuid"
+  };
 
   string uuid = 1 [
     (quadsmith.sql.column) = {is_primary_key: true},

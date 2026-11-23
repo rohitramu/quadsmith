@@ -159,7 +159,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("motor %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "motors", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "motors", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateMotor(ctx, tx, v); err != nil {
@@ -181,7 +181,7 @@ func main() {
 			if v.MotorCount == 0 {
 				v.MotorCount = 4
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "frames", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "frames", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateFrame(ctx, tx, v); err != nil {
@@ -200,7 +200,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("battery %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "batteries", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "batteries", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateBattery(ctx, tx, v); err != nil {
@@ -219,7 +219,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("electronic speed controller %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "electronic-speed-controllers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "electronic-speed-controllers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateElectronicSpeedController(ctx, tx, v); err != nil {
@@ -238,7 +238,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("antenna %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "antennas", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "antennas", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateAntenna(ctx, tx, v); err != nil {
@@ -257,7 +257,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("camera %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "cameras", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "cameras", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateCamera(ctx, tx, v); err != nil {
@@ -276,7 +276,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("propeller %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "propellers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "propellers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreatePropeller(ctx, tx, v); err != nil {
@@ -295,7 +295,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("receiver %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "receivers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "receivers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateReceiver(ctx, tx, v); err != nil {
@@ -314,7 +314,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("video transmitter %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "video-transmitters", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "video-transmitters", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateVideoTransmitter(ctx, tx, v); err != nil {
@@ -333,7 +333,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("flight controller %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "flight-controllers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "flight-controllers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateFlightController(ctx, tx, v); err != nil {
@@ -352,7 +352,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("gps receiver %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "gps-receivers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "gps-receivers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateGpsReceiver(ctx, tx, v); err != nil {
@@ -375,7 +375,7 @@ func main() {
 			if v.AuthorUsername != nil {
 				authorStr = *v.AuthorUsername
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "builds", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, authorStr, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedBuildEntity(ctx, tx, &v.Uuid, "builds", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, authorStr, v.UserUuid, v.AuthorUsername); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateBuild(ctx, tx, v); err != nil {
@@ -394,7 +394,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("fc_firmware %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "fc-firmware", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "fc-firmware", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateFcFirmware(ctx, tx, v); err != nil {
@@ -413,7 +413,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("esc_firmware %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "esc-firmware", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "esc-firmware", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateEscFirmware(ctx, tx, v); err != nil {
@@ -432,7 +432,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("vtx_firmware %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "vtx-firmware", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "vtx-firmware", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateVtxFirmware(ctx, tx, v); err != nil {
@@ -451,7 +451,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("radio_firmware %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "radio-firmware", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "radio-firmware", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateRadioFirmware(ctx, tx, v); err != nil {
@@ -470,7 +470,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("software_tool %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "software-tools", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "software-tools", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateSoftwareTool(ctx, tx, v); err != nil {
@@ -489,7 +489,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("transmitter %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "transmitters", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "transmitters", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateTransmitter(ctx, tx, v); err != nil {
@@ -508,7 +508,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("goggles %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "goggles", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "goggles", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateGoggles(ctx, tx, v); err != nil {
@@ -527,7 +527,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("charger %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "chargers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "chargers", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateCharger(ctx, tx, v); err != nil {
@@ -546,7 +546,7 @@ func main() {
 			if err := pb.ValidateReferenceLinks(v.ReferenceLinks); err != nil {
 				panic(fmt.Errorf("field_tool %s: %w", v.Id, err))
 			}
-			if err := seedEntity(ctx, tx, &v.Uuid, "field-tools", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer, v.UserUuid, v.AuthorUsername); err != nil {
+			if err := seedComponentEntity(ctx, tx, &v.Uuid, "field-tools", v.Id, v.Name, v.Description, v.PrimaryDisplayImage, v.ReferenceLinks, v.Media, v.Manufacturer); err != nil {
 				panic(err)
 			}
 			if err := pb.CreateFieldTool(ctx, tx, v); err != nil {
@@ -574,7 +574,13 @@ const (
 	defaultSeederUsername = "alex"
 )
 
-func seedEntity(ctx context.Context, tx pgx.Tx, uuidPtr *string, collection, id, name, description string, primaryDisplayImage *string, refLinks []*pb.ReferenceLink, media []*pb.Media, authorOrMfr string, userUUID *string, authorUsername *string) error {
+func seedComponentEntity(ctx context.Context, tx pgx.Tx, uuidPtr *string, collection, id, name, description string, primaryDisplayImage *string, refLinks []*pb.ReferenceLink, media []*pb.Media, manufacturer string) error {
+	sysUUID := authcontext.SystemUserUUID
+	sysHandle := authcontext.SystemUserHandle
+	return seedBuildEntity(ctx, tx, uuidPtr, collection, id, name, description, primaryDisplayImage, refLinks, media, manufacturer, &sysUUID, &sysHandle)
+}
+
+func seedBuildEntity(ctx context.Context, tx pgx.Tx, uuidPtr *string, collection, id, name, description string, primaryDisplayImage *string, refLinks []*pb.ReferenceLink, media []*pb.Media, authorOrMfr string, userUUID *string, authorUsername *string) error {
 	if *uuidPtr == "" {
 		*uuidPtr = authcontext.NewUUIDv7()
 	}

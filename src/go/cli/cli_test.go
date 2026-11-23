@@ -378,33 +378,43 @@ func TestDomainSubcommands(t *testing.T) {
 		for _, sub := range cmd.Commands() {
 			subcommands[sub.Name()] = true
 		}
-		for _, expected := range []string{"list", "get", "evaluate"} {
+		for _, expected := range []string{"list", "get", "create", "update", "delete", "evaluate"} {
 			if !subcommands[expected] {
 				t.Errorf("builds missing %q subcommand", expected)
 			}
 		}
 	})
 
-	// Verify components subcommand and its 11 component collections under hardware
-	componentCollections := []string{
-		"antennas",
-		"batteries",
-		"cameras",
-		"electronic-speed-controllers",
-		"flight-controllers",
-		"frames",
-		"gps-receivers",
-		"motors",
-		"propellers",
-		"receivers",
-		"video-transmitters",
+	// Verify all 20 component collections are strictly read-only (list and get only)
+	componentPaths := [][]string{
+		{"components", "hardware", "antennas"},
+		{"components", "hardware", "batteries"},
+		{"components", "hardware", "cameras"},
+		{"components", "hardware", "electronic-speed-controllers"},
+		{"components", "hardware", "flight-controllers"},
+		{"components", "hardware", "frames"},
+		{"components", "hardware", "gps-receivers"},
+		{"components", "hardware", "motors"},
+		{"components", "hardware", "propellers"},
+		{"components", "hardware", "receivers"},
+		{"components", "hardware", "video-transmitters"},
+		{"components", "gear", "transmitters"},
+		{"components", "gear", "goggles"},
+		{"components", "gear", "chargers"},
+		{"components", "gear", "field-tools"},
+		{"components", "software", "fc-firmwares"},
+		{"components", "software", "esc-firmwares"},
+		{"components", "software", "vtx-firmwares"},
+		{"components", "software", "radio-firmwares"},
+		{"components", "software", "software-tools"},
 	}
 
-	for _, c := range componentCollections {
-		t.Run("components/hardware/"+c, func(t *testing.T) {
-			cmd, _, err := rootCmd.Find([]string{"components", "hardware", c})
+	for _, p := range componentPaths {
+		pathStr := strings.Join(p, "/")
+		t.Run(pathStr, func(t *testing.T) {
+			cmd, _, err := rootCmd.Find(p)
 			if err != nil {
-				t.Fatalf("could not find component collection components/hardware/%s: %v", c, err)
+				t.Fatalf("could not find component collection %s: %v", pathStr, err)
 			}
 
 			subcommands := make(map[string]bool)
@@ -413,10 +423,15 @@ func TestDomainSubcommands(t *testing.T) {
 			}
 
 			if !subcommands["list"] {
-				t.Errorf("components/hardware/%s missing 'list' subcommand", c)
+				t.Errorf("%s missing 'list' subcommand", pathStr)
 			}
 			if !subcommands["get"] {
-				t.Errorf("components/hardware/%s missing 'get' subcommand", c)
+				t.Errorf("%s missing 'get' subcommand", pathStr)
+			}
+			for _, forbidden := range []string{"create", "update", "delete", "restore"} {
+				if subcommands[forbidden] {
+					t.Errorf("%s must not expose %q subcommand on public CLI", pathStr, forbidden)
+				}
 			}
 		})
 	}

@@ -96,14 +96,13 @@ type ExportDomain int32
 
 const (
 	ExportDomain_EXPORT_DOMAIN_UNSPECIFIED ExportDomain = 0
-	ExportDomain_EXPORT_DOMAIN_NONE        ExportDomain = 1 // System/ops tables not exported in user archives
+	ExportDomain_EXPORT_DOMAIN_NONE        ExportDomain = 1 // System/ops/catalog tables not exported in user archives
 	ExportDomain_EXPORT_DOMAIN_ACCOUNT     ExportDomain = 2 // -> account.json
 	ExportDomain_EXPORT_DOMAIN_SECURITY    ExportDomain = 3 // -> security.json
 	ExportDomain_EXPORT_DOMAIN_BUILDS      ExportDomain = 4 // -> builds.json
-	ExportDomain_EXPORT_DOMAIN_COMPONENTS  ExportDomain = 5 // -> components.json
-	ExportDomain_EXPORT_DOMAIN_COLLECTIONS ExportDomain = 6 // -> collections.json
-	ExportDomain_EXPORT_DOMAIN_SOCIAL      ExportDomain = 7 // -> social.json
-	ExportDomain_EXPORT_DOMAIN_BLOBS       ExportDomain = 8 // -> blobs.json + blobs/
+	ExportDomain_EXPORT_DOMAIN_COLLECTIONS ExportDomain = 5 // -> collections.json
+	ExportDomain_EXPORT_DOMAIN_SOCIAL      ExportDomain = 6 // -> social.json
+	ExportDomain_EXPORT_DOMAIN_BLOBS       ExportDomain = 7 // -> blobs.json + blobs/
 )
 
 // Enum value maps for ExportDomain.
@@ -114,10 +113,9 @@ var (
 		2: "EXPORT_DOMAIN_ACCOUNT",
 		3: "EXPORT_DOMAIN_SECURITY",
 		4: "EXPORT_DOMAIN_BUILDS",
-		5: "EXPORT_DOMAIN_COMPONENTS",
-		6: "EXPORT_DOMAIN_COLLECTIONS",
-		7: "EXPORT_DOMAIN_SOCIAL",
-		8: "EXPORT_DOMAIN_BLOBS",
+		5: "EXPORT_DOMAIN_COLLECTIONS",
+		6: "EXPORT_DOMAIN_SOCIAL",
+		7: "EXPORT_DOMAIN_BLOBS",
 	}
 	ExportDomain_value = map[string]int32{
 		"EXPORT_DOMAIN_UNSPECIFIED": 0,
@@ -125,10 +123,9 @@ var (
 		"EXPORT_DOMAIN_ACCOUNT":     2,
 		"EXPORT_DOMAIN_SECURITY":    3,
 		"EXPORT_DOMAIN_BUILDS":      4,
-		"EXPORT_DOMAIN_COMPONENTS":  5,
-		"EXPORT_DOMAIN_COLLECTIONS": 6,
-		"EXPORT_DOMAIN_SOCIAL":      7,
-		"EXPORT_DOMAIN_BLOBS":       8,
+		"EXPORT_DOMAIN_COLLECTIONS": 5,
+		"EXPORT_DOMAIN_SOCIAL":      6,
+		"EXPORT_DOMAIN_BLOBS":       7,
 	}
 )
 
@@ -261,17 +258,16 @@ const file_quadsmith_data_data_proto_rawDesc = "" +
 	"\x1aCONTENT_TYPE_USER_OBSERVED\x10\x03\x12'\n" +
 	"#CONTENT_TYPE_SYSTEM_METADATA_PUBLIC\x10\x04\x12(\n" +
 	"$CONTENT_TYPE_SYSTEM_METADATA_PRIVATE\x10\x05\x12\x1e\n" +
-	"\x1aCONTENT_TYPE_SYSTEM_SECRET\x10\x06*\x86\x02\n" +
+	"\x1aCONTENT_TYPE_SYSTEM_SECRET\x10\x06*\xe8\x01\n" +
 	"\fExportDomain\x12\x1d\n" +
 	"\x19EXPORT_DOMAIN_UNSPECIFIED\x10\x00\x12\x16\n" +
 	"\x12EXPORT_DOMAIN_NONE\x10\x01\x12\x19\n" +
 	"\x15EXPORT_DOMAIN_ACCOUNT\x10\x02\x12\x1a\n" +
 	"\x16EXPORT_DOMAIN_SECURITY\x10\x03\x12\x18\n" +
-	"\x14EXPORT_DOMAIN_BUILDS\x10\x04\x12\x1c\n" +
-	"\x18EXPORT_DOMAIN_COMPONENTS\x10\x05\x12\x1d\n" +
-	"\x19EXPORT_DOMAIN_COLLECTIONS\x10\x06\x12\x18\n" +
-	"\x14EXPORT_DOMAIN_SOCIAL\x10\a\x12\x17\n" +
-	"\x13EXPORT_DOMAIN_BLOBS\x10\b:X\n" +
+	"\x14EXPORT_DOMAIN_BUILDS\x10\x04\x12\x1d\n" +
+	"\x19EXPORT_DOMAIN_COLLECTIONS\x10\x05\x12\x18\n" +
+	"\x14EXPORT_DOMAIN_SOCIAL\x10\x06\x12\x17\n" +
+	"\x13EXPORT_DOMAIN_BLOBS\x10\a:X\n" +
 	"\x06export\x12\x1f.google.protobuf.MessageOptions\x18\x88\x9e\x03 \x01(\v2\x1d.quadsmith.data.ExportOptionsR\x06export:_\n" +
 	"\fcontent_type\x12\x1d.google.protobuf.FieldOptions\x18\x88\x9e\x03 \x01(\x0e2\x1b.quadsmith.data.ContentTypeR\vcontentTypeB*Z(quadsmith/shared/gen/quadsmith/data;datab\x06proto3"
 

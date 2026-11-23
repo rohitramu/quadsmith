@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_software_tool: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiFxdWFkc21pdGgvYXBpL3NvZnR3YXJlX3Rvb2wucHJvdG8SDXF1YWRzbWl0aC5hcGki6AUKDFNvZnR3YXJlVG9vbBI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIQCgJpZBgCIAEoCUIEwPAZBBIgCgxtYW51ZmFjdHVyZXIYAyABKAlCCsLzGAIoAcDwGQISEgoEbmFtZRgEIAEoCUIEwPAZAhIVCgd2ZXJzaW9uGAUgASgJQgTA8BkCEhYKCGNhdGVnb3J5GAYgASgJQgTA8BkCEhYKCHBsYXRmb3JtGAcgASgJQgTA8BkCEhkKC2Rlc2NyaXB0aW9uGAggASgJQgTA8BkCEjsKD3JlZmVyZW5jZV9saW5rcxgJIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGlua0IEwPAZAhIoChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYCiABKAlCBMDwGQJIAIgBARIpCgVtZWRpYRgLIAMoCzIULnF1YWRzbWl0aC5hcGkuTWVkaWFCBMDwGQISHAoJdXNlcl91dWlkGAwgASgJQgTA8BkESAGIAQESIgoPYXV0aG9yX3VzZXJuYW1lGA0gASgJQgTA8BkCSAKIAQE64QGKtRgxCgxtYW51ZmFjdHVyZXIKBG5hbWUKB3ZlcnNpb24KCGNhdGVnb3J5CghwbGF0Zm9ybZq1GCJjb21wb25lbnRzL3NvZnR3YXJlL3NvZnR3YXJlLXRvb2xzwvMYGgoOc29mdHdhcmVfdG9vbHMqCGVudGl0aWVzwvAZZAgFEmB1dWlkIElOIChTRUxFQ1QgdXVpZCBGUk9NIGVudGl0aWVzIFdIRVJFIGNvbGxlY3Rpb24gPSAnc29mdHdhcmUtdG9vbHMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiTwoZQ3JlYXRlU29mdHdhcmVUb29sUmVxdWVzdBIyCg1zb2Z0d2FyZV90b29sGAEgASgLMhsucXVhZHNtaXRoLmFwaS5Tb2Z0d2FyZVRvb2wiJwoZRGVsZXRlU29mdHdhcmVUb29sUmVxdWVzdBIKCgJpZBgBIAEoCSIxChpEZWxldGVTb2Z0d2FyZVRvb2xSZXNwb25zZRITCgtpc19hcmNoaXZlZBgBIAEoCCI1ChZHZXRTb2Z0d2FyZVRvb2xSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkicAoYTGlzdFNvZnR3YXJlVG9vbHNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiaQoZTGlzdFNvZnR3YXJlVG9vbHNSZXNwb25zZRIzCg5zb2Z0d2FyZV90b29scxgBIAMoCzIbLnF1YWRzbWl0aC5hcGkuU29mdHdhcmVUb29sEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSJPChlVcGRhdGVTb2Z0d2FyZVRvb2xSZXF1ZXN0EjIKDXNvZnR3YXJlX3Rvb2wYASABKAsyGy5xdWFkc21pdGguYXBpLlNvZnR3YXJlVG9vbDL5AwoTU29mdHdhcmVUb29sU2VydmljZRJVCg9HZXRTb2Z0d2FyZVRvb2wSJS5xdWFkc21pdGguYXBpLkdldFNvZnR3YXJlVG9vbFJlcXVlc3QaGy5xdWFkc21pdGguYXBpLlNvZnR3YXJlVG9vbBJmChFMaXN0U29mdHdhcmVUb29scxInLnF1YWRzbWl0aC5hcGkuTGlzdFNvZnR3YXJlVG9vbHNSZXF1ZXN0GigucXVhZHNtaXRoLmFwaS5MaXN0U29mdHdhcmVUb29sc1Jlc3BvbnNlElsKEkNyZWF0ZVNvZnR3YXJlVG9vbBIoLnF1YWRzbWl0aC5hcGkuQ3JlYXRlU29mdHdhcmVUb29sUmVxdWVzdBobLnF1YWRzbWl0aC5hcGkuU29mdHdhcmVUb29sElsKElVwZGF0ZVNvZnR3YXJlVG9vbBIoLnF1YWRzbWl0aC5hcGkuVXBkYXRlU29mdHdhcmVUb29sUmVxdWVzdBobLnF1YWRzbWl0aC5hcGkuU29mdHdhcmVUb29sEmkKEkRlbGV0ZVNvZnR3YXJlVG9vbBIoLnF1YWRzbWl0aC5hcGkuRGVsZXRlU29mdHdhcmVUb29sUmVxdWVzdBopLnF1YWRzbWl0aC5hcGkuRGVsZXRlU29mdHdhcmVUb29sUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
+    "CiFxdWFkc21pdGgvYXBpL3NvZnR3YXJlX3Rvb2wucHJvdG8SDXF1YWRzbWl0aC5hcGkivAQKDFNvZnR3YXJlVG9vbBI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIQCgJpZBgCIAEoCUIEwPAZBBIgCgxtYW51ZmFjdHVyZXIYAyABKAlCCsLzGAIoAcDwGQQSEgoEbmFtZRgEIAEoCUIEwPAZBBIVCgd2ZXJzaW9uGAUgASgJQgTA8BkEEhYKCGNhdGVnb3J5GAYgASgJQgTA8BkEEhYKCHBsYXRmb3JtGAcgASgJQgTA8BkEEhkKC2Rlc2NyaXB0aW9uGAggASgJQgTA8BkEEjsKD3JlZmVyZW5jZV9saW5rcxgJIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGlua0IEwPAZBBIoChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYCiABKAlCBMDwGQRIAIgBARIpCgVtZWRpYRgLIAMoCzIULnF1YWRzbWl0aC5hcGkuTWVkaWFCBMDwGQQSGQoLaXNfYXJjaGl2ZWQYDCABKAhCBMDwGQQ6f4q1GDEKDG1hbnVmYWN0dXJlcgoEbmFtZQoHdmVyc2lvbgoIY2F0ZWdvcnkKCHBsYXRmb3JtmrUYImNvbXBvbmVudHMvc29mdHdhcmUvc29mdHdhcmUtdG9vbHPC8xgaCg5zb2Z0d2FyZV90b29scyoIZW50aXRpZXPC8BkCCAFCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZSI1ChZHZXRTb2Z0d2FyZVRvb2xSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkicAoYTGlzdFNvZnR3YXJlVG9vbHNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiaQoZTGlzdFNvZnR3YXJlVG9vbHNSZXNwb25zZRIzCg5zb2Z0d2FyZV90b29scxgBIAMoCzIbLnF1YWRzbWl0aC5hcGkuU29mdHdhcmVUb29sEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTLUAQoTU29mdHdhcmVUb29sU2VydmljZRJVCg9HZXRTb2Z0d2FyZVRvb2wSJS5xdWFkc21pdGguYXBpLkdldFNvZnR3YXJlVG9vbFJlcXVlc3QaGy5xdWFkc21pdGguYXBpLlNvZnR3YXJlVG9vbBJmChFMaXN0U29mdHdhcmVUb29scxInLnF1YWRzbWl0aC5hcGkuTGlzdFNvZnR3YXJlVG9vbHNSZXF1ZXN0GigucXVhZHNtaXRoLmFwaS5MaXN0U29mdHdhcmVUb29sc1Jlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -89,14 +89,9 @@ export type SoftwareTool = Message<"quadsmith.api.SoftwareTool"> & {
   media: Media[];
 
   /**
-   * @generated from field: optional string user_uuid = 12;
+   * @generated from field: bool is_archived = 12;
    */
-  userUuid?: string | undefined;
-
-  /**
-   * @generated from field: optional string author_username = 13;
-   */
-  authorUsername?: string | undefined;
+  isArchived: boolean;
 };
 
 /**
@@ -106,60 +101,6 @@ export type SoftwareTool = Message<"quadsmith.api.SoftwareTool"> & {
 export const SoftwareToolSchema: GenMessage<SoftwareTool> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_software_tool, 0);
-
-/**
- * @generated from message quadsmith.api.CreateSoftwareToolRequest
- */
-export type CreateSoftwareToolRequest = Message<"quadsmith.api.CreateSoftwareToolRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.SoftwareTool software_tool = 1;
-   */
-  softwareTool?: SoftwareTool | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateSoftwareToolRequest.
- * Use `create(CreateSoftwareToolRequestSchema)` to create a new message.
- */
-export const CreateSoftwareToolRequestSchema: GenMessage<CreateSoftwareToolRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_software_tool, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteSoftwareToolRequest
- */
-export type DeleteSoftwareToolRequest = Message<"quadsmith.api.DeleteSoftwareToolRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteSoftwareToolRequest.
- * Use `create(DeleteSoftwareToolRequestSchema)` to create a new message.
- */
-export const DeleteSoftwareToolRequestSchema: GenMessage<DeleteSoftwareToolRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_software_tool, 2);
-
-/**
- * @generated from message quadsmith.api.DeleteSoftwareToolResponse
- */
-export type DeleteSoftwareToolResponse = Message<"quadsmith.api.DeleteSoftwareToolResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteSoftwareToolResponse.
- * Use `create(DeleteSoftwareToolResponseSchema)` to create a new message.
- */
-export const DeleteSoftwareToolResponseSchema: GenMessage<DeleteSoftwareToolResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_software_tool, 3);
 
 /**
  * @generated from message quadsmith.api.GetSoftwareToolRequest
@@ -182,7 +123,7 @@ export type GetSoftwareToolRequest = Message<"quadsmith.api.GetSoftwareToolReque
  */
 export const GetSoftwareToolRequestSchema: GenMessage<GetSoftwareToolRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_software_tool, 4);
+  messageDesc(file_quadsmith_api_software_tool, 1);
 
 /**
  * @generated from message quadsmith.api.ListSoftwareToolsRequest
@@ -220,7 +161,7 @@ export type ListSoftwareToolsRequest = Message<"quadsmith.api.ListSoftwareToolsR
  */
 export const ListSoftwareToolsRequestSchema: GenMessage<ListSoftwareToolsRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_software_tool, 5);
+  messageDesc(file_quadsmith_api_software_tool, 2);
 
 /**
  * @generated from message quadsmith.api.ListSoftwareToolsResponse
@@ -243,25 +184,7 @@ export type ListSoftwareToolsResponse = Message<"quadsmith.api.ListSoftwareTools
  */
 export const ListSoftwareToolsResponseSchema: GenMessage<ListSoftwareToolsResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_software_tool, 6);
-
-/**
- * @generated from message quadsmith.api.UpdateSoftwareToolRequest
- */
-export type UpdateSoftwareToolRequest = Message<"quadsmith.api.UpdateSoftwareToolRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.SoftwareTool software_tool = 1;
-   */
-  softwareTool?: SoftwareTool | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateSoftwareToolRequest.
- * Use `create(UpdateSoftwareToolRequestSchema)` to create a new message.
- */
-export const UpdateSoftwareToolRequestSchema: GenMessage<UpdateSoftwareToolRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_software_tool, 7);
+  messageDesc(file_quadsmith_api_software_tool, 3);
 
 /**
  * @generated from service quadsmith.api.SoftwareToolService
@@ -282,29 +205,5 @@ export const SoftwareToolService: GenService<{
     methodKind: "unary";
     input: typeof ListSoftwareToolsRequestSchema;
     output: typeof ListSoftwareToolsResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.SoftwareToolService.CreateSoftwareTool
-   */
-  createSoftwareTool: {
-    methodKind: "unary";
-    input: typeof CreateSoftwareToolRequestSchema;
-    output: typeof SoftwareToolSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.SoftwareToolService.UpdateSoftwareTool
-   */
-  updateSoftwareTool: {
-    methodKind: "unary";
-    input: typeof UpdateSoftwareToolRequestSchema;
-    output: typeof SoftwareToolSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.SoftwareToolService.DeleteSoftwareTool
-   */
-  deleteSoftwareTool: {
-    methodKind: "unary";
-    input: typeof DeleteSoftwareToolRequestSchema;
-    output: typeof DeleteSoftwareToolResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_software_tool, 0);

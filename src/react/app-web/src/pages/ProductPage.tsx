@@ -1,24 +1,22 @@
 import { useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
-import { useQuery, useMutation } from "@connectrpc/connect-query";
-import { useQueryClient } from "@tanstack/react-query";
-import { ChevronRight, Edit, Trash2, AlertTriangle, Loader2, Copy } from "lucide-react";
+import { useParams, Link } from "react-router-dom";
+import { useQuery } from "@connectrpc/connect-query";
+import { ChevronRight, AlertTriangle } from "lucide-react";
+import {
+  CollectionBadge,
+  formatProductTitle,
+  getCatalogCollectionMeta,
+  useDocumentMeta,
+} from "@quadsmith/shared";
 import {
   getHardwareCollection,
   getCollectionPath,
   type HardwareCollectionDef,
 } from "../lib/hardwareCollections";
-import { getComponentServiceDef } from "../lib/componentServices";
-import { useAuth } from "../context/AuthContext";
-import { ComponentFormModal } from "../components/ComponentFormModal";
-import { CollectionBadge } from "@quadsmith/shared";
 import { MediaGallery } from "../components/MediaGallery";
-import { UserBadge } from "../components/UserBadge";
 import { ReferenceLinksList } from "../components/SocialLinkPreviewCard";
 import { SocialToolbar } from "../components/SocialToolbar";
 import { SocialTabs, type SocialTabType } from "../components/SocialTabs";
-import { useDocumentMeta } from "@quadsmith/shared";
-import { formatProductTitle } from "@quadsmith/shared";
 
 function ProductDetailView({
   categoryId,
@@ -29,54 +27,16 @@ function ProductDetailView({
   collection: HardwareCollectionDef;
   productId: string;
 }) {
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const { user, isAuthenticated } = useAuth();
-  const srvDef = getComponentServiceDef(collection.id);
+  const catalogMeta = getCatalogCollectionMeta(collection.id);
 
-  const { data, isLoading, error, refetch } = useQuery(
+  const { data, isLoading, error } = useQuery(
     collection.getQuery,
     { id: productId },
     { enabled: !!productId },
   );
 
   const [activeSocialTab, setActiveSocialTab] = useState<SocialTabType>("reviews");
-  const [isCreateSimilarOpen, setIsCreateSimilarOpen] = useState(false);
-  const [isEditOpen, setIsEditOpen] = useState(false);
-  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
-
-  const { mutateAsync: mutateDelete } = useMutation(srvDef?.deleteMethod);
-
   const item = data as any;
-  const isCreator =
-    isAuthenticated &&
-    user &&
-    (user.uuid === item?.userUuid ||
-      user.id === item?.authorUsername ||
-      user.role === "ADMIN" ||
-      user.role === "SYSTEM");
-
-  const handleDelete = async () => {
-    if (!srvDef?.deleteMethod) return;
-    setIsDeleting(true);
-    setDeleteError(null);
-    try {
-      const res: any = await mutateDelete({ id: item.id || item.uuid || productId });
-      await queryClient.invalidateQueries();
-      setIsDeleteConfirmOpen(false);
-      if (res?.isArchived) {
-        await refetch();
-      } else {
-        navigate(`/${getCollectionPath(collection)}`);
-      }
-    } catch (err: unknown) {
-      setDeleteError(err instanceof Error ? err.message : "Failed to delete component");
-    } finally {
-      setIsDeleting(false);
-    }
-  };
 
   useDocumentMeta({
     title: item
@@ -141,53 +101,14 @@ function ProductDetailView({
                 <div className="flex items-center gap-2 mb-2">
                   <CollectionBadge
                     collection={collection.id}
-                    label={srvDef?.singularLabel || collection.name}
+                    label={catalogMeta?.singularLabel || collection.name}
                     size="sm"
                   />
-                  {item.authorUsername && (
-                    <UserBadge
-                      username={item.authorUsername}
-                      prefix="Added by "
-                      size="sm"
-                      isAuthor={true}
-                    />
-                  )}
                 </div>
                 <h1 className="text-3xl font-bold">{item.name || item.id}</h1>
                 <p className="text-xl text-zinc-400">
                   {item.manufacturer || "Unknown Manufacturer"}
                 </p>
-              </div>
-
-              <div className="flex items-center gap-2 shrink-0">
-                <button
-                  type="button"
-                  onClick={() => setIsCreateSimilarOpen(true)}
-                  className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-zinc-700 hover:bg-zinc-800 text-xs font-medium transition-colors cursor-pointer"
-                >
-                  <Copy size={14} className="text-zinc-500" />
-                  <span>Create Similar</span>
-                </button>
-                {isCreator && (
-                  <>
-                    <button
-                      type="button"
-                      onClick={() => setIsEditOpen(true)}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-zinc-700 hover:bg-zinc-800 text-xs font-medium transition-colors cursor-pointer"
-                    >
-                      <Edit size={14} className="text-zinc-500" />
-                      <span>Edit Component</span>
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setIsDeleteConfirmOpen(true)}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-red-900/50 text-red-400 hover:bg-red-950/30 text-xs font-medium transition-colors cursor-pointer"
-                    >
-                      <Trash2 size={14} />
-                      <span>Delete</span>
-                    </button>
-                  </>
-                )}
               </div>
             </div>
 
@@ -275,86 +196,6 @@ function ProductDetailView({
             activeTab={activeSocialTab}
             onTabChange={setActiveSocialTab}
           />
-
-          {/* Create Similar Component Modal */}
-          <ComponentFormModal
-            isOpen={isCreateSimilarOpen}
-            onClose={() => setIsCreateSimilarOpen(false)}
-            collectionId={collection.id}
-            initialData={item}
-            isClone={true}
-            onSuccess={(newItem) => {
-              if (newItem?.id || newItem?.uuid) {
-                navigate(
-                  `/components/${categoryId}/${collection.id}/${newItem.id || newItem.uuid}`,
-                );
-              }
-            }}
-          />
-
-          {/* Edit Component Modal */}
-          <ComponentFormModal
-            isOpen={isEditOpen}
-            onClose={() => setIsEditOpen(false)}
-            collectionId={collection.id}
-            initialData={item}
-            onSuccess={() => {
-              refetch();
-            }}
-          />
-
-          {/* Delete Confirmation Modal */}
-          {isDeleteConfirmOpen && (
-            <div
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="delete-confirm-title"
-              className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
-            >
-              <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-md p-6 shadow-2xl space-y-4">
-                <div className="w-10 h-10 rounded-full bg-amber-950 text-amber-600 flex items-center justify-center">
-                  <AlertTriangle size={20} />
-                </div>
-
-                <div>
-                  <h3 id="delete-confirm-title" className="text-lg font-bold">
-                    Delete or Archive Component
-                  </h3>
-                  <p className="text-xs text-zinc-400 mt-1 leading-relaxed">
-                    If this component is referenced by existing builds, reviews, or collections, it
-                    will be <strong>archived and delisted</strong> from catalog searches to prevent
-                    breaking other pilots' builds. If unreferenced, it will be permanently deleted.
-                  </p>
-                </div>
-
-                {deleteError && (
-                  <div className="p-2.5 rounded-lg bg-red-500/10 border border-red-500/20 text-red-600 text-xs">
-                    {deleteError}
-                  </div>
-                )}
-
-                <div className="flex items-center justify-end gap-2 pt-2">
-                  <button
-                    type="button"
-                    disabled={isDeleting}
-                    onClick={() => setIsDeleteConfirmOpen(false)}
-                    className="px-4 py-2 rounded-lg border border-zinc-700 text-xs font-medium hover:bg-zinc-800 transition-colors cursor-pointer"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    type="button"
-                    disabled={isDeleting}
-                    onClick={handleDelete}
-                    className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer disabled:opacity-50"
-                  >
-                    {isDeleting && <Loader2 size={12} className="animate-spin" />}
-                    Confirm Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
         </>
       )}
     </div>

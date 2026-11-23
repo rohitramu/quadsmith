@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_electronic_speed_controller: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Ci9xdWFkc21pdGgvYXBpL2VsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlci5wcm90bxINcXVhZHNtaXRoLmFwaSLOBwoZRWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlchI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIQCgJpZBgCIAEoCUIEwPAZBBIgCgxtYW51ZmFjdHVyZXIYAyABKAlCCsLzGAIoAcDwGQISEgoEbmFtZRgEIAEoCUIEwPAZAhIeChBpc19pbnRlcm5hbF9vbmx5GAUgASgIQgTA8BkCEhYKCHdlaWdodF9nGAYgASgCQgTA8BkCEhgKCm1heF9tb3RvcnMYByABKA1CBMDwGQISIQoTbW90b3JfY3VycmVudF9tYXhfYRgIIAEoAkIEwPAZAhIjChVtb3Rvcl9jdXJyZW50X2J1cnN0X2EYCSABKAJCBMDwGQISFgoIZmlybXdhcmUYCiABKAlCBMDwGQISGQoLZGVzY3JpcHRpb24YCyABKAlCBMDwGQISOwoPcmVmZXJlbmNlX2xpbmtzGAwgAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgTA8BkCEigKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgNIAEoCUIEwPAZAkgAiAEBEikKBW1lZGlhGA4gAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIEwPAZAhIZCgttaW5fdm9sdGFnZRgPIAEoAkIEwPAZAhIZCgttYXhfdm9sdGFnZRgQIAEoAkIEwPAZAhIcCgl1c2VyX3V1aWQYESABKAlCBMDwGQRIAYgBARIiCg9hdXRob3JfdXNlcm5hbWUYEiABKAlCBMDwGQJIAogBATqZAoq1GD8KDG1hbnVmYWN0dXJlcgoEbmFtZQoTbW90b3JfY3VycmVudF9tYXhfYQoKbWF4X21vdG9ycwoIZmlybXdhcmWatRgwY29tcG9uZW50cy9oYXJkd2FyZS9lbGVjdHJvbmljLXNwZWVkLWNvbnRyb2xsZXJzwvMYKAocZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVycyoIZW50aXRpZXPC8BlyCAUSbnV1aWQgSU4gKFNFTEVDVCB1dWlkIEZST00gZW50aXRpZXMgV0hFUkUgY29sbGVjdGlvbiA9ICdlbGVjdHJvbmljLXNwZWVkLWNvbnRyb2xsZXJzJyBBTkQgdXNlcl91dWlkID0gJDE6OnV1aWQpQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2VCDAoKX3VzZXJfdXVpZEISChBfYXV0aG9yX3VzZXJuYW1lIncKJkNyZWF0ZUVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJSZXF1ZXN0Ek0KG2VsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlchgBIAEoCzIoLnF1YWRzbWl0aC5hcGkuRWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlciI0CiZEZWxldGVFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyUmVxdWVzdBIKCgJpZBgBIAEoCSI+CidEZWxldGVFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiQgojR2V0RWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJ9CiVMaXN0RWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlcnNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkikQEKJkxpc3RFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyc1Jlc3BvbnNlEk4KHGVsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlcnMYASADKAsyKC5xdWFkc21pdGguYXBpLkVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIncKJlVwZGF0ZUVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJSZXF1ZXN0Ek0KG2VsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlchgBIAEoCzIoLnF1YWRzbWl0aC5hcGkuRWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlcjLNBQogRWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlclNlcnZpY2USfAocR2V0RWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlchIyLnF1YWRzbWl0aC5hcGkuR2V0RWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlclJlcXVlc3QaKC5xdWFkc21pdGguYXBpLkVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXISjQEKHkxpc3RFbGVjdHJvbmljU3BlZWRDb250cm9sbGVycxI0LnF1YWRzbWl0aC5hcGkuTGlzdEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJzUmVxdWVzdBo1LnF1YWRzbWl0aC5hcGkuTGlzdEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJzUmVzcG9uc2USggEKH0NyZWF0ZUVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXISNS5xdWFkc21pdGguYXBpLkNyZWF0ZUVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJSZXF1ZXN0GigucXVhZHNtaXRoLmFwaS5FbGVjdHJvbmljU3BlZWRDb250cm9sbGVyEoIBCh9VcGRhdGVFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyEjUucXVhZHNtaXRoLmFwaS5VcGRhdGVFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyUmVxdWVzdBooLnF1YWRzbWl0aC5hcGkuRWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlchKQAQofRGVsZXRlRWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlchI1LnF1YWRzbWl0aC5hcGkuRGVsZXRlRWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlclJlcXVlc3QaNi5xdWFkc21pdGguYXBpLkRlbGV0ZUVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
+    "Ci9xdWFkc21pdGgvYXBpL2VsZWN0cm9uaWNfc3BlZWRfY29udHJvbGxlci5wcm90bxINcXVhZHNtaXRoLmFwaSKVBgoZRWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlchI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIQCgJpZBgCIAEoCUIEwPAZBBIgCgxtYW51ZmFjdHVyZXIYAyABKAlCCsLzGAIoAcDwGQQSEgoEbmFtZRgEIAEoCUIEwPAZBBIeChBpc19pbnRlcm5hbF9vbmx5GAUgASgIQgTA8BkEEhYKCHdlaWdodF9nGAYgASgCQgTA8BkEEhgKCm1heF9tb3RvcnMYByABKA1CBMDwGQQSIQoTbW90b3JfY3VycmVudF9tYXhfYRgIIAEoAkIEwPAZBBIjChVtb3Rvcl9jdXJyZW50X2J1cnN0X2EYCSABKAJCBMDwGQQSFgoIZmlybXdhcmUYCiABKAlCBMDwGQQSGQoLZGVzY3JpcHRpb24YCyABKAlCBMDwGQQSOwoPcmVmZXJlbmNlX2xpbmtzGAwgAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgTA8BkEEigKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgNIAEoCUIEwPAZBEgAiAEBEikKBW1lZGlhGA4gAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIEwPAZBBIZCgttaW5fdm9sdGFnZRgPIAEoAkIEwPAZBBIZCgttYXhfdm9sdGFnZRgQIAEoAkIEwPAZBBIZCgtpc19hcmNoaXZlZBgRIAEoCEIEwPAZBDqpAYq1GD8KDG1hbnVmYWN0dXJlcgoEbmFtZQoTbW90b3JfY3VycmVudF9tYXhfYQoKbWF4X21vdG9ycwoIZmlybXdhcmWatRgwY29tcG9uZW50cy9oYXJkd2FyZS9lbGVjdHJvbmljLXNwZWVkLWNvbnRyb2xsZXJzwvMYKAocZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVycyoIZW50aXRpZXPC8BkCCAFCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZSJCCiNHZXRFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJIn0KJUxpc3RFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSKRAQomTGlzdEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJzUmVzcG9uc2USTgocZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVycxgBIAMoCzIoLnF1YWRzbWl0aC5hcGkuRWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkysAIKIEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJTZXJ2aWNlEnwKHEdldEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXISMi5xdWFkc21pdGguYXBpLkdldEVsZWN0cm9uaWNTcGVlZENvbnRyb2xsZXJSZXF1ZXN0GigucXVhZHNtaXRoLmFwaS5FbGVjdHJvbmljU3BlZWRDb250cm9sbGVyEo0BCh5MaXN0RWxlY3Ryb25pY1NwZWVkQ29udHJvbGxlcnMSNC5xdWFkc21pdGguYXBpLkxpc3RFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyc1JlcXVlc3QaNS5xdWFkc21pdGguYXBpLkxpc3RFbGVjdHJvbmljU3BlZWRDb250cm9sbGVyc1Jlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -124,14 +124,9 @@ export type ElectronicSpeedController = Message<"quadsmith.api.ElectronicSpeedCo
   maxVoltage: number;
 
   /**
-   * @generated from field: optional string user_uuid = 17;
+   * @generated from field: bool is_archived = 17;
    */
-  userUuid?: string | undefined;
-
-  /**
-   * @generated from field: optional string author_username = 18;
-   */
-  authorUsername?: string | undefined;
+  isArchived: boolean;
 };
 
 /**
@@ -141,63 +136,6 @@ export type ElectronicSpeedController = Message<"quadsmith.api.ElectronicSpeedCo
 export const ElectronicSpeedControllerSchema: GenMessage<ElectronicSpeedController> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_electronic_speed_controller, 0);
-
-/**
- * @generated from message quadsmith.api.CreateElectronicSpeedControllerRequest
- */
-export type CreateElectronicSpeedControllerRequest =
-  Message<"quadsmith.api.CreateElectronicSpeedControllerRequest"> & {
-    /**
-     * @generated from field: quadsmith.api.ElectronicSpeedController electronic_speed_controller = 1;
-     */
-    electronicSpeedController?: ElectronicSpeedController | undefined;
-  };
-
-/**
- * Describes the message quadsmith.api.CreateElectronicSpeedControllerRequest.
- * Use `create(CreateElectronicSpeedControllerRequestSchema)` to create a new message.
- */
-export const CreateElectronicSpeedControllerRequestSchema: GenMessage<CreateElectronicSpeedControllerRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_electronic_speed_controller, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteElectronicSpeedControllerRequest
- */
-export type DeleteElectronicSpeedControllerRequest =
-  Message<"quadsmith.api.DeleteElectronicSpeedControllerRequest"> & {
-    /**
-     * @generated from field: string id = 1;
-     */
-    id: string;
-  };
-
-/**
- * Describes the message quadsmith.api.DeleteElectronicSpeedControllerRequest.
- * Use `create(DeleteElectronicSpeedControllerRequestSchema)` to create a new message.
- */
-export const DeleteElectronicSpeedControllerRequestSchema: GenMessage<DeleteElectronicSpeedControllerRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_electronic_speed_controller, 2);
-
-/**
- * @generated from message quadsmith.api.DeleteElectronicSpeedControllerResponse
- */
-export type DeleteElectronicSpeedControllerResponse =
-  Message<"quadsmith.api.DeleteElectronicSpeedControllerResponse"> & {
-    /**
-     * @generated from field: bool is_archived = 1;
-     */
-    isArchived: boolean;
-  };
-
-/**
- * Describes the message quadsmith.api.DeleteElectronicSpeedControllerResponse.
- * Use `create(DeleteElectronicSpeedControllerResponseSchema)` to create a new message.
- */
-export const DeleteElectronicSpeedControllerResponseSchema: GenMessage<DeleteElectronicSpeedControllerResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_electronic_speed_controller, 3);
 
 /**
  * @generated from message quadsmith.api.GetElectronicSpeedControllerRequest
@@ -221,7 +159,7 @@ export type GetElectronicSpeedControllerRequest =
  */
 export const GetElectronicSpeedControllerRequestSchema: GenMessage<GetElectronicSpeedControllerRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_electronic_speed_controller, 4);
+  messageDesc(file_quadsmith_api_electronic_speed_controller, 1);
 
 /**
  * @generated from message quadsmith.api.ListElectronicSpeedControllersRequest
@@ -260,7 +198,7 @@ export type ListElectronicSpeedControllersRequest =
  */
 export const ListElectronicSpeedControllersRequestSchema: GenMessage<ListElectronicSpeedControllersRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_electronic_speed_controller, 5);
+  messageDesc(file_quadsmith_api_electronic_speed_controller, 2);
 
 /**
  * @generated from message quadsmith.api.ListElectronicSpeedControllersResponse
@@ -284,26 +222,7 @@ export type ListElectronicSpeedControllersResponse =
  */
 export const ListElectronicSpeedControllersResponseSchema: GenMessage<ListElectronicSpeedControllersResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_electronic_speed_controller, 6);
-
-/**
- * @generated from message quadsmith.api.UpdateElectronicSpeedControllerRequest
- */
-export type UpdateElectronicSpeedControllerRequest =
-  Message<"quadsmith.api.UpdateElectronicSpeedControllerRequest"> & {
-    /**
-     * @generated from field: quadsmith.api.ElectronicSpeedController electronic_speed_controller = 1;
-     */
-    electronicSpeedController?: ElectronicSpeedController | undefined;
-  };
-
-/**
- * Describes the message quadsmith.api.UpdateElectronicSpeedControllerRequest.
- * Use `create(UpdateElectronicSpeedControllerRequestSchema)` to create a new message.
- */
-export const UpdateElectronicSpeedControllerRequestSchema: GenMessage<UpdateElectronicSpeedControllerRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_electronic_speed_controller, 7);
+  messageDesc(file_quadsmith_api_electronic_speed_controller, 3);
 
 /**
  * @generated from service quadsmith.api.ElectronicSpeedControllerService
@@ -324,29 +243,5 @@ export const ElectronicSpeedControllerService: GenService<{
     methodKind: "unary";
     input: typeof ListElectronicSpeedControllersRequestSchema;
     output: typeof ListElectronicSpeedControllersResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.ElectronicSpeedControllerService.CreateElectronicSpeedController
-   */
-  createElectronicSpeedController: {
-    methodKind: "unary";
-    input: typeof CreateElectronicSpeedControllerRequestSchema;
-    output: typeof ElectronicSpeedControllerSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.ElectronicSpeedControllerService.UpdateElectronicSpeedController
-   */
-  updateElectronicSpeedController: {
-    methodKind: "unary";
-    input: typeof UpdateElectronicSpeedControllerRequestSchema;
-    output: typeof ElectronicSpeedControllerSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.ElectronicSpeedControllerService.DeleteElectronicSpeedController
-   */
-  deleteElectronicSpeedController: {
-    methodKind: "unary";
-    input: typeof DeleteElectronicSpeedControllerRequestSchema;
-    output: typeof DeleteElectronicSpeedControllerResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_electronic_speed_controller, 0);

@@ -24,10 +24,12 @@ import (
 )
 
 var (
-	embeddedConfig *configpb.OpsCliConfig
-	opsServerURL   string
-	tokenFlag      string
-	jsonOut        bool
+	embeddedConfig       *configpb.OpsCliConfig
+	opsServerURL         string
+	overrideOpsServerURL string
+	tokenFlag            string
+	jsonOut              bool
+	yamlOut              bool
 )
 
 func init() {
@@ -122,21 +124,34 @@ func (t *bearerTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	return t.base.RoundTrip(req)
 }
 
-func getOpsClient() opsconnect.OpsServiceClient {
+func getOpsServerURL() string {
+	if overrideOpsServerURL != "" {
+		return overrideOpsServerURL
+	}
+	if v := os.Getenv("QS_OPS_SERVER_URL"); v != "" {
+		return v
+	}
+	return opsServerURL
+}
+
+func getOpsHTTPClient() *http.Client {
 	token := loadSessionToken()
 	transport := &bearerTransport{
 		token: token,
 		base:  http.DefaultTransport,
 	}
 	timeout := 60 * time.Second
-	if embeddedConfig.GetTimeout() != nil && embeddedConfig.GetTimeout().AsDuration() > 0 {
+	if embeddedConfig != nil && embeddedConfig.GetTimeout() != nil && embeddedConfig.GetTimeout().AsDuration() > 0 {
 		timeout = embeddedConfig.GetTimeout().AsDuration()
 	}
-	httpClient := &http.Client{
+	return &http.Client{
 		Transport: transport,
 		Timeout:   timeout,
 	}
-	return opsconnect.NewOpsServiceClient(httpClient, opsServerURL)
+}
+
+func getOpsClient() opsconnect.OpsServiceClient {
+	return opsconnect.NewOpsServiceClient(getOpsHTTPClient(), getOpsServerURL())
 }
 
 func main() {
@@ -146,10 +161,16 @@ func main() {
 }
 
 func newRootCmd() *cobra.Command {
+	jsonOut = false
+	yamlOut = false
+	tokenFlag = ""
 	rootCmd := &cobra.Command{
 		Use:   "qsops",
 		Short: "Quadsmith Developer Operations CLI",
-		Long:  "Operational and developer tooling for system diagnostics, IAM, JIT elevation, DB maintenance, background tasks, and scheduled jobs.",
+		Long:  "Operational and developer tooling for component catalog curation, system diagnostics, IAM, JIT elevation, DB maintenance, background tasks, and scheduled jobs.",
+		PersistentPreRun: func(cmd *cobra.Command, args []string) {
+			cmd.SilenceUsage = true
+		},
 	}
 
 	rootCmd.PersistentFlags().StringVar(&tokenFlag, "token", "", "Operator session or bootstrap token (env: QS_OPS_TOKEN)")
@@ -165,7 +186,9 @@ func newRootCmd() *cobra.Command {
 	// Top-level aliases
 	rootCmd.AddCommand(newJitCmd())
 
-	// Domain operation commands
+	// Catalog & Domain operation commands
+	rootCmd.AddCommand(newComponentsCmd())
+	rootCmd.AddCommand(newOpsBlobCmd())
 	rootCmd.AddCommand(newSystemCmd())
 	rootCmd.AddCommand(newDbCmd())
 	rootCmd.AddCommand(newTasksCmd())

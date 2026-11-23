@@ -22,8 +22,8 @@ func CreateBattery(ctx context.Context, tx pgx.Tx, m *Battery) error {
 }
 
 func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Battery, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "capacity_mah": true, "cell_count_s": true, "chemistry": true, "connector": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "max_current_a": true, "user_uuid": true, "author_username": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a, user_uuid, author_username"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "capacity_mah": true, "cell_count_s": true, "chemistry": true, "connector": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "max_current_a": true, "is_archived": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a, is_archived"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a", "user_uuid", "author_username"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a", "is_archived"}
 	}
-	query := `SELECT ` + colsStr + ` FROM batteries INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM batteries INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Battery{}
@@ -74,10 +74,8 @@ func GetBattery(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 			scanArgs[i] = &m.MaxVoltage
 		case "max_current_a":
 			scanArgs[i] = &m.MaxCurrentA
-		case "user_uuid":
-			scanArgs[i] = &m.UserUuid
-		case "author_username":
-			scanArgs[i] = &m.AuthorUsername
+		case "is_archived":
+			scanArgs[i] = &m.IsArchived
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -107,8 +105,12 @@ func DeleteBattery(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Battery, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "capacity_mah": true, "cell_count_s": true, "chemistry": true, "connector": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "max_current_a": true, "user_uuid": true, "author_username": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a, user_uuid, author_username"
+	return ListBatteriesIncludingArchived(ctx, db, false, cols, sorts, whereClause, limit, offset, args...)
+}
+
+func ListBatteriesIncludingArchived(ctx context.Context, db *pgxpool.Pool, includeArchived bool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Battery, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "capacity_mah": true, "cell_count_s": true, "chemistry": true, "connector": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "min_voltage": true, "max_voltage": true, "max_current_a": true, "is_archived": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, capacity_mah, cell_count_s, chemistry, connector, description, reference_links, primary_display_image, media, min_voltage, max_voltage, max_current_a, is_archived"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -119,12 +121,16 @@ func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a", "user_uuid", "author_username"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "capacity_mah", "cell_count_s", "chemistry", "connector", "description", "reference_links", "primary_display_image", "media", "min_voltage", "max_voltage", "max_current_a", "is_archived"}
 	}
-	query := `SELECT ` + colsStr + ` FROM batteries INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid`
-	query += " WHERE entities.is_archived = false"
-	if whereClause != "" {
-		query += " AND (" + whereClause + ")"
+	query := `SELECT ` + colsStr + ` FROM batteries INNER JOIN entities USING (uuid)`
+	if !includeArchived {
+		query += " WHERE entities.is_archived = false"
+		if whereClause != "" {
+			query += " AND (" + whereClause + ")"
+		}
+	} else if whereClause != "" {
+		query += " WHERE " + whereClause
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -201,10 +207,8 @@ func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 				scanArgs[i] = &m.MaxVoltage
 			case "max_current_a":
 				scanArgs[i] = &m.MaxCurrentA
-			case "user_uuid":
-				scanArgs[i] = &m.UserUuid
-			case "author_username":
-				scanArgs[i] = &m.AuthorUsername
+			case "is_archived":
+				scanArgs[i] = &m.IsArchived
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy
@@ -218,42 +222,6 @@ func ListBatteries(ctx context.Context, db *pgxpool.Pool, cols []string, sorts [
 			assign()
 		}
 		results = append(results, m)
-	}
-	return results, nil
-}
-
-func ExportBatteries(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Battery, error) {
-	query := `SELECT uuid, manufacturer, weight_g, capacity_mah, cell_count_s, chemistry, connector, min_voltage, max_voltage, max_current_a FROM batteries WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'batteries' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
-	rows, err := db.Query(ctx, query, userUUID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	results := make([]*Battery, 0)
-	for rows.Next() {
-		scanArgs := make([]interface{}, 10)
-		scanAssigns := make([]func(), 0, 10)
-		m := &Battery{}
-		scanArgs[0] = &m.Uuid
-		scanArgs[1] = &m.Manufacturer
-		scanArgs[2] = &m.WeightG
-		scanArgs[3] = &m.CapacityMah
-		scanArgs[4] = &m.CellCountS
-		scanArgs[5] = &m.Chemistry
-		scanArgs[6] = &m.Connector
-		scanArgs[7] = &m.MinVoltage
-		scanArgs[8] = &m.MaxVoltage
-		scanArgs[9] = &m.MaxCurrentA
-		err := rows.Scan(scanArgs...)
-		if err != nil {
-			return nil, err
-		}
-		for _, assign := range scanAssigns {
-			assign()
-		}
-		if m.Manufacturer != "" || m.WeightG != 0 || m.CapacityMah != 0 || m.CellCountS != 0 || m.Chemistry != "" || m.Connector != "" || m.MinVoltage != 0 || m.MaxVoltage != 0 || m.MaxCurrentA != 0 {
-			results = append(results, m)
-		}
 	}
 	return results, nil
 }

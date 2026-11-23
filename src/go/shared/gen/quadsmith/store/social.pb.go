@@ -1311,7 +1311,7 @@ const file_quadsmith_store_social_proto_rawDesc = "" +
 	"acceptedAt\x88\x01\x01\x12F\n" +
 	"\vendorsed_at\x18\r \x01(\v2\x1a.google.protobuf.TimestampB\x04\xc0\xf0\x19\x03H\x02R\n" +
 	"endorsedAt\x88\x01\x01:\x13\xc2\xf3\x18\t\n" +
-	"\aanswers\xc2\xf0\x19\x02\b\aB\r\n" +
+	"\aanswers\xc2\xf0\x19\x02\b\x06B\r\n" +
 	"\v_deleted_atB\x0e\n" +
 	"\f_accepted_atB\x0e\n" +
 	"\f_endorsed_at\"\xd7\x03\n" +
@@ -1328,7 +1328,7 @@ const file_quadsmith_store_social_proto_rawDesc = "" +
 	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
 	"\n" +
 	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt:\x1b\xc2\xf3\x18\x11\n" +
-	"\x0fanswer_comments\xc2\xf0\x19\x02\b\aB\r\n" +
+	"\x0fanswer_comments\xc2\xf0\x19\x02\b\x06B\r\n" +
 	"\v_deleted_at\"\xd1\x02\n" +
 	"\n" +
 	"AnswerVote\x12\x1e\n" +
@@ -1340,7 +1340,7 @@ const file_quadsmith_store_social_proto_rawDesc = "" +
 	"\tis_upvote\x18\x04 \x01(\bB\x04\xc0\xf0\x19\x02R\bisUpvote\x12J\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt:0\xc2\xf3\x18&\n" +
-	"\fanswer_votes\x1a\x16user_uuid, answer_uuid\xc2\xf0\x19\x02\b\a\"\xb8\x03\n" +
+	"\fanswer_votes\x1a\x16user_uuid, answer_uuid\xc2\xf0\x19\x02\b\x06\"\xb8\x03\n" +
 	"\n" +
 	"Collection\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
@@ -1354,7 +1354,7 @@ const file_quadsmith_store_social_proto_rawDesc = "" +
 	"created_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
 	"\n" +
 	"updated_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt:\x17\xc2\xf3\x18\r\n" +
-	"\vcollections\xc2\xf0\x19\x02\b\x06\"\xb0\x03\n" +
+	"\vcollections\xc2\xf0\x19\x02\b\x05\"\xb0\x03\n" +
 	"\x0eCollectionItem\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12X\n" +
@@ -1363,7 +1363,7 @@ const file_quadsmith_store_social_proto_rawDesc = "" +
 	"entityUuid\x12J\n" +
 	"\n" +
 	"created_at\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt:\x88\x01\xc2\xf3\x180\n" +
-	"\x10collection_items\x1a\x1ccollection_uuid, entity_uuid\xc2\xf0\x19P\b\x06\x12Lcollection_uuid IN (SELECT uuid FROM collections WHERE user_uuid = $1::uuid)\"\x81\x06\n" +
+	"\x10collection_items\x1a\x1ccollection_uuid, entity_uuid\xc2\xf0\x19P\b\x05\x12Lcollection_uuid IN (SELECT uuid FROM collections WHERE user_uuid = $1::uuid)\"\xb1\x06\n" +
 	"\x06Entity\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12*\n" +
@@ -1386,8 +1386,8 @@ const file_quadsmith_store_social_proto_rawDesc = "" +
 	"created_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
 	"\n" +
 	"updated_at\x18\f \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt\x129\n" +
-	"\tuser_uuid\x18\r \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01:$\xc2\xf3\x18\x1a\n" +
-	"\bentities\x1a\x0ecollection, id\xc2\xf0\x19\x02\b\x05B\x18\n" +
+	"\tuser_uuid\x18\r \x01(\tB\x17\xc2\xf3\x18\x0f\x1a\vusers(uuid)(\x01\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01:T\xc2\xf3\x18\x1a\n" +
+	"\bentities\x1a\x0ecollection, id\xc2\xf0\x192\b\x04\x12.collection = 'builds' AND user_uuid = $1::uuidB\x18\n" +
 	"\x16_primary_display_imageB\f\n" +
 	"\n" +
 	"_user_uuid\"\xe1\x04\n" +
@@ -1409,7 +1409,7 @@ const file_quadsmith_store_social_proto_rawDesc = "" +
 	" \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
 	"\n" +
 	"updated_at\x18\v \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt:\x15\xc2\xf3\x18\v\n" +
-	"\tquestions\xc2\xf0\x19\x02\b\aB\r\n" +
+	"\tquestions\xc2\xf0\x19\x02\b\x06B\r\n" +
 	"\v_deleted_at\"\xe1\x03\n" +
 	"\x0fQuestionComment\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
@@ -1423,7 +1423,7 @@ const file_quadsmith_store_social_proto_rawDesc = "" +
 	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
 	"\n" +
 	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt:\x1d\xc2\xf3\x18\x13\n" +
-	"\x11question_comments\xc2\xf0\x19\x02\b\aB\r\n" +
+	"\x11question_comments\xc2\xf0\x19\x02\b\x06B\r\n" +
 	"\v_deleted_at\"\xdd\x02\n" +
 	"\fQuestionVote\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
@@ -1433,7 +1433,7 @@ const file_quadsmith_store_social_proto_rawDesc = "" +
 	"\tis_upvote\x18\x04 \x01(\bB\x04\xc0\xf0\x19\x02R\bisUpvote\x12J\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt:4\xc2\xf3\x18*\n" +
-	"\x0equestion_votes\x1a\x18user_uuid, question_uuid\xc2\xf0\x19\x02\b\a\"\xda\x04\n" +
+	"\x0equestion_votes\x1a\x18user_uuid, question_uuid\xc2\xf0\x19\x02\b\x06\"\xda\x04\n" +
 	"\x06Review\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x12\x1c\n" +
@@ -1451,7 +1451,7 @@ const file_quadsmith_store_social_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt:+\xc2\xf3\x18!\n" +
-	"\areviews\x1a\x16user_uuid, entity_uuid\xc2\xf0\x19\x02\b\aB\r\n" +
+	"\areviews\x1a\x16user_uuid, entity_uuid\xc2\xf0\x19\x02\b\x06B\r\n" +
 	"\v_deleted_at\"\xd7\x03\n" +
 	"\rReviewComment\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
@@ -1466,7 +1466,7 @@ const file_quadsmith_store_social_proto_rawDesc = "" +
 	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt\x12J\n" +
 	"\n" +
 	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tupdatedAt:\x1b\xc2\xf3\x18\x11\n" +
-	"\x0freview_comments\xc2\xf0\x19\x02\b\aB\r\n" +
+	"\x0freview_comments\xc2\xf0\x19\x02\b\x06B\r\n" +
 	"\v_deleted_at\"\xd3\x02\n" +
 	"\n" +
 	"ReviewVote\x12\x1e\n" +
@@ -1479,7 +1479,7 @@ const file_quadsmith_store_social_proto_rawDesc = "" +
 	"is_helpful\x18\x04 \x01(\bB\x04\xc0\xf0\x19\x02R\tisHelpful\x12J\n" +
 	"\n" +
 	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampB\x0f\xc2\xf3\x18\a:\x05NOW()\xc0\xf0\x19\x03R\tcreatedAt:0\xc2\xf3\x18&\n" +
-	"\freview_votes\x1a\x16user_uuid, review_uuid\xc2\xf0\x19\x02\b\a\"\xfe\x01\n" +
+	"\freview_votes\x1a\x16user_uuid, review_uuid\xc2\xf0\x19\x02\b\x06\"\xfe\x01\n" +
 	"\x0eUserReputation\x12\x1e\n" +
 	"\x04uuid\x18\x01 \x01(\tB\n" +
 	"\xc2\xf3\x18\x02\x10\x01\xc0\xf0\x19\x04R\x04uuid\x124\n" +

@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_transmitter: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Ch9xdWFkc21pdGgvYXBpL3RyYW5zbWl0dGVyLnByb3RvEg1xdWFkc21pdGguYXBpIvEGCgtUcmFuc21pdHRlchI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIQCgJpZBgCIAEoCUIEwPAZBBIgCgxtYW51ZmFjdHVyZXIYAyABKAlCCsLzGAIoAcDwGQISEgoEbmFtZRgEIAEoCUIEwPAZAhIWCgh3ZWlnaHRfZxgFIAEoAkIEwPAZAhIZCgtyZl9wcm90b2NvbBgGIAEoCUIEwPAZAhIeChBvcGVyYXRpbmdfc3lzdGVtGAcgASgJQgTA8BkCEhkKC2dpbWJhbF90eXBlGAggASgJQgTA8BkCEhoKDG1heF9wb3dlcl9tdxgJIAEoDUIEwPAZAhIWCghjaGFubmVscxgKIAEoDUIEwPAZAhIaCgxiYXR0ZXJ5X3R5cGUYCyABKAlCBMDwGQISGQoLZGVzY3JpcHRpb24YDCABKAlCBMDwGQISOwoPcmVmZXJlbmNlX2xpbmtzGA0gAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgTA8BkCEigKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgOIAEoCUIEwPAZAkgAiAEBEikKBW1lZGlhGA8gAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIEwPAZAhIcCgl1c2VyX3V1aWQYECABKAlCBMDwGQRIAYgBARIiCg9hdXRob3JfdXNlcm5hbWUYESABKAlCBMDwGQJIAogBATr0AYq1GE4KDG1hbnVmYWN0dXJlcgoEbmFtZQoLcmZfcHJvdG9jb2wKEG9wZXJhdGluZ19zeXN0ZW0KC2dpbWJhbF90eXBlCgxtYXhfcG93ZXJfbXeatRgcY29tcG9uZW50cy9nZWFyL3RyYW5zbWl0dGVyc8LzGBgKDHRyYW5zbWl0dGVycyoIZW50aXRpZXPC8BliCAUSXnV1aWQgSU4gKFNFTEVDVCB1dWlkIEZST00gZW50aXRpZXMgV0hFUkUgY29sbGVjdGlvbiA9ICd0cmFuc21pdHRlcnMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiSwoYQ3JlYXRlVHJhbnNtaXR0ZXJSZXF1ZXN0Ei8KC3RyYW5zbWl0dGVyGAEgASgLMhoucXVhZHNtaXRoLmFwaS5UcmFuc21pdHRlciImChhEZWxldGVUcmFuc21pdHRlclJlcXVlc3QSCgoCaWQYASABKAkiMAoZRGVsZXRlVHJhbnNtaXR0ZXJSZXNwb25zZRITCgtpc19hcmNoaXZlZBgBIAEoCCI0ChVHZXRUcmFuc21pdHRlclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJvChdMaXN0VHJhbnNtaXR0ZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJImUKGExpc3RUcmFuc21pdHRlcnNSZXNwb25zZRIwCgx0cmFuc21pdHRlcnMYASADKAsyGi5xdWFkc21pdGguYXBpLlRyYW5zbWl0dGVyEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSJLChhVcGRhdGVUcmFuc21pdHRlclJlcXVlc3QSLwoLdHJhbnNtaXR0ZXIYASABKAsyGi5xdWFkc21pdGguYXBpLlRyYW5zbWl0dGVyMukDChJUcmFuc21pdHRlclNlcnZpY2USUgoOR2V0VHJhbnNtaXR0ZXISJC5xdWFkc21pdGguYXBpLkdldFRyYW5zbWl0dGVyUmVxdWVzdBoaLnF1YWRzbWl0aC5hcGkuVHJhbnNtaXR0ZXISYwoQTGlzdFRyYW5zbWl0dGVycxImLnF1YWRzbWl0aC5hcGkuTGlzdFRyYW5zbWl0dGVyc1JlcXVlc3QaJy5xdWFkc21pdGguYXBpLkxpc3RUcmFuc21pdHRlcnNSZXNwb25zZRJYChFDcmVhdGVUcmFuc21pdHRlchInLnF1YWRzbWl0aC5hcGkuQ3JlYXRlVHJhbnNtaXR0ZXJSZXF1ZXN0GhoucXVhZHNtaXRoLmFwaS5UcmFuc21pdHRlchJYChFVcGRhdGVUcmFuc21pdHRlchInLnF1YWRzbWl0aC5hcGkuVXBkYXRlVHJhbnNtaXR0ZXJSZXF1ZXN0GhoucXVhZHNtaXRoLmFwaS5UcmFuc21pdHRlchJmChFEZWxldGVUcmFuc21pdHRlchInLnF1YWRzbWl0aC5hcGkuRGVsZXRlVHJhbnNtaXR0ZXJSZXF1ZXN0GigucXVhZHNtaXRoLmFwaS5EZWxldGVUcmFuc21pdHRlclJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "Ch9xdWFkc21pdGgvYXBpL3RyYW5zbWl0dGVyLnByb3RvEg1xdWFkc21pdGguYXBpIsgFCgtUcmFuc21pdHRlchI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIQCgJpZBgCIAEoCUIEwPAZBBIgCgxtYW51ZmFjdHVyZXIYAyABKAlCCsLzGAIoAcDwGQQSEgoEbmFtZRgEIAEoCUIEwPAZBBIWCgh3ZWlnaHRfZxgFIAEoAkIEwPAZBBIZCgtyZl9wcm90b2NvbBgGIAEoCUIEwPAZBBIeChBvcGVyYXRpbmdfc3lzdGVtGAcgASgJQgTA8BkEEhkKC2dpbWJhbF90eXBlGAggASgJQgTA8BkEEhoKDG1heF9wb3dlcl9tdxgJIAEoDUIEwPAZBBIWCghjaGFubmVscxgKIAEoDUIEwPAZBBIaCgxiYXR0ZXJ5X3R5cGUYCyABKAlCBMDwGQQSGQoLZGVzY3JpcHRpb24YDCABKAlCBMDwGQQSOwoPcmVmZXJlbmNlX2xpbmtzGA0gAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgTA8BkEEigKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgOIAEoCUIEwPAZBEgAiAEBEikKBW1lZGlhGA8gAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIEwPAZBBIZCgtpc19hcmNoaXZlZBgQIAEoCEIEwPAZBDqUAYq1GE4KDG1hbnVmYWN0dXJlcgoEbmFtZQoLcmZfcHJvdG9jb2wKEG9wZXJhdGluZ19zeXN0ZW0KC2dpbWJhbF90eXBlCgxtYXhfcG93ZXJfbXeatRgcY29tcG9uZW50cy9nZWFyL3RyYW5zbWl0dGVyc8LzGBgKDHRyYW5zbWl0dGVycyoIZW50aXRpZXPC8BkCCAFCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZSI0ChVHZXRUcmFuc21pdHRlclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJvChdMaXN0VHJhbnNtaXR0ZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJImUKGExpc3RUcmFuc21pdHRlcnNSZXNwb25zZRIwCgx0cmFuc21pdHRlcnMYASADKAsyGi5xdWFkc21pdGguYXBpLlRyYW5zbWl0dGVyEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTLNAQoSVHJhbnNtaXR0ZXJTZXJ2aWNlElIKDkdldFRyYW5zbWl0dGVyEiQucXVhZHNtaXRoLmFwaS5HZXRUcmFuc21pdHRlclJlcXVlc3QaGi5xdWFkc21pdGguYXBpLlRyYW5zbWl0dGVyEmMKEExpc3RUcmFuc21pdHRlcnMSJi5xdWFkc21pdGguYXBpLkxpc3RUcmFuc21pdHRlcnNSZXF1ZXN0GicucXVhZHNtaXRoLmFwaS5MaXN0VHJhbnNtaXR0ZXJzUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -109,14 +109,9 @@ export type Transmitter = Message<"quadsmith.api.Transmitter"> & {
   media: Media[];
 
   /**
-   * @generated from field: optional string user_uuid = 16;
+   * @generated from field: bool is_archived = 16;
    */
-  userUuid?: string | undefined;
-
-  /**
-   * @generated from field: optional string author_username = 17;
-   */
-  authorUsername?: string | undefined;
+  isArchived: boolean;
 };
 
 /**
@@ -126,60 +121,6 @@ export type Transmitter = Message<"quadsmith.api.Transmitter"> & {
 export const TransmitterSchema: GenMessage<Transmitter> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_transmitter, 0);
-
-/**
- * @generated from message quadsmith.api.CreateTransmitterRequest
- */
-export type CreateTransmitterRequest = Message<"quadsmith.api.CreateTransmitterRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Transmitter transmitter = 1;
-   */
-  transmitter?: Transmitter | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateTransmitterRequest.
- * Use `create(CreateTransmitterRequestSchema)` to create a new message.
- */
-export const CreateTransmitterRequestSchema: GenMessage<CreateTransmitterRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_transmitter, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteTransmitterRequest
- */
-export type DeleteTransmitterRequest = Message<"quadsmith.api.DeleteTransmitterRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteTransmitterRequest.
- * Use `create(DeleteTransmitterRequestSchema)` to create a new message.
- */
-export const DeleteTransmitterRequestSchema: GenMessage<DeleteTransmitterRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_transmitter, 2);
-
-/**
- * @generated from message quadsmith.api.DeleteTransmitterResponse
- */
-export type DeleteTransmitterResponse = Message<"quadsmith.api.DeleteTransmitterResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteTransmitterResponse.
- * Use `create(DeleteTransmitterResponseSchema)` to create a new message.
- */
-export const DeleteTransmitterResponseSchema: GenMessage<DeleteTransmitterResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_transmitter, 3);
 
 /**
  * @generated from message quadsmith.api.GetTransmitterRequest
@@ -202,7 +143,7 @@ export type GetTransmitterRequest = Message<"quadsmith.api.GetTransmitterRequest
  */
 export const GetTransmitterRequestSchema: GenMessage<GetTransmitterRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_transmitter, 4);
+  messageDesc(file_quadsmith_api_transmitter, 1);
 
 /**
  * @generated from message quadsmith.api.ListTransmittersRequest
@@ -240,7 +181,7 @@ export type ListTransmittersRequest = Message<"quadsmith.api.ListTransmittersReq
  */
 export const ListTransmittersRequestSchema: GenMessage<ListTransmittersRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_transmitter, 5);
+  messageDesc(file_quadsmith_api_transmitter, 2);
 
 /**
  * @generated from message quadsmith.api.ListTransmittersResponse
@@ -263,25 +204,7 @@ export type ListTransmittersResponse = Message<"quadsmith.api.ListTransmittersRe
  */
 export const ListTransmittersResponseSchema: GenMessage<ListTransmittersResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_transmitter, 6);
-
-/**
- * @generated from message quadsmith.api.UpdateTransmitterRequest
- */
-export type UpdateTransmitterRequest = Message<"quadsmith.api.UpdateTransmitterRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Transmitter transmitter = 1;
-   */
-  transmitter?: Transmitter | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateTransmitterRequest.
- * Use `create(UpdateTransmitterRequestSchema)` to create a new message.
- */
-export const UpdateTransmitterRequestSchema: GenMessage<UpdateTransmitterRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_transmitter, 7);
+  messageDesc(file_quadsmith_api_transmitter, 3);
 
 /**
  * @generated from service quadsmith.api.TransmitterService
@@ -302,29 +225,5 @@ export const TransmitterService: GenService<{
     methodKind: "unary";
     input: typeof ListTransmittersRequestSchema;
     output: typeof ListTransmittersResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.TransmitterService.CreateTransmitter
-   */
-  createTransmitter: {
-    methodKind: "unary";
-    input: typeof CreateTransmitterRequestSchema;
-    output: typeof TransmitterSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.TransmitterService.UpdateTransmitter
-   */
-  updateTransmitter: {
-    methodKind: "unary";
-    input: typeof UpdateTransmitterRequestSchema;
-    output: typeof TransmitterSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.TransmitterService.DeleteTransmitter
-   */
-  deleteTransmitter: {
-    methodKind: "unary";
-    input: typeof DeleteTransmitterRequestSchema;
-    output: typeof DeleteTransmitterResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_transmitter, 0);

@@ -28,6 +28,7 @@ import {
   type TraceLogRecord,
   type TraceSpan,
 } from "@quadsmith/shared/gen/quadsmith/ops/ops_pb";
+import { OpsCatalogWorkspace } from "./components/OpsCatalogWorkspace";
 
 const OPS_TOKEN_STORAGE_KEY = "qs_ops_token";
 const SANDBOX_DEFAULT_OPERATOR_TOKEN = "qs_op_sandbox_token_12345";
@@ -567,7 +568,7 @@ export function getStoredOpsToken(): string {
   return localStorage.getItem(OPS_TOKEN_STORAGE_KEY) || "";
 }
 
-type ActiveTab = "health" | "tasks" | "jobs" | "db" | "iam";
+type ActiveTab = "health" | "catalog" | "tasks" | "jobs" | "db" | "iam";
 export type TelemetryExplorerTab = "health" | "routes" | "traces" | "trace_detail";
 
 export interface ColumnOption {
@@ -1039,19 +1040,20 @@ export default function App() {
   const [newTokenType, setNewTokenType] = useState<string>("HUMAN");
   const [createdTokenSecret, setCreatedTokenSecret] = useState<string>("");
 
-  const client = useMemo(() => {
+  const transport = useMemo(() => {
     const authInterceptor: Interceptor = (next) => async (req) => {
       if (token) {
         req.header.set("Authorization", `Bearer ${token}`);
       }
       return next(req);
     };
-    const transport = createConnectTransport({
+    return createConnectTransport({
       baseUrl: getOpsApiBaseUrl(),
       interceptors: [authInterceptor],
     });
-    return createClient(OpsService, transport);
   }, [token]);
+
+  const client = useMemo(() => createClient(OpsService, transport), [transport]);
 
   useEffect(() => {
     setOpsCookieAndStorage(token || null);
@@ -1951,6 +1953,7 @@ export default function App() {
               {(
                 [
                   ["health", "Service Health & Route Metrics"],
+                  ["catalog", "Component Catalog"],
                   ["tasks", "Background Tasks & Triggers"],
                   ["jobs", "Job Execution History"],
                   ["db", "Public DB Statistics"],
@@ -4574,6 +4577,25 @@ export default function App() {
               </div>
             </div>
           </div>
+        )}
+
+        {activeTab === "catalog" && (
+          <OpsCatalogWorkspace
+            transport={transport}
+            opsBaseUrl={getOpsApiBaseUrl()}
+            token={token}
+            hasActiveJit={hasActiveJit}
+            operatorType={operatorInfo.operatorType}
+            onFeedback={(msg, isError) => {
+              if (isError) {
+                setBannerError(msg);
+                setBannerMessage("");
+              } else {
+                setBannerMessage(msg);
+                setBannerError("");
+              }
+            }}
+          />
         )}
       </main>
     </div>

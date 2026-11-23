@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_propeller: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "Ch1xdWFkc21pdGgvYXBpL3Byb3BlbGxlci5wcm90bxINcXVhZHNtaXRoLmFwaSKxBgoJUHJvcGVsbGVyEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhAKAmlkGAIgASgJQgTA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZAhISCgRuYW1lGAQgASgJQgTA8BkCEhYKCHdlaWdodF9nGAUgASgCQgTA8BkCEhkKC2RpYW1ldGVyX21tGAYgASgCQgTA8BkCEhYKCHBpdGNoX21tGAcgASgCQgTA8BkCEhQKBmJsYWRlcxgIIAEoDUIEwPAZAhIWCghtYXRlcmlhbBgJIAEoCUIEwPAZAhIZCgtkZXNjcmlwdGlvbhgKIAEoCUIEwPAZAhI7Cg9yZWZlcmVuY2VfbGlua3MYCyADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCBMDwGQISKAoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAwgASgJQgTA8BkCSACIAQESKQoFbWVkaWEYDSADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgTA8BkCEiIKFHByb3BfbW91bnRfaW50ZXJmYWNlGA4gASgJQgTA8BkCEhwKCXVzZXJfdXVpZBgPIAEoCUIEwPAZBEgBiAEBEiIKD2F1dGhvcl91c2VybmFtZRgQIAEoCUIEwPAZAkgCiAEBOtcBirUYMwoMbWFudWZhY3R1cmVyCgRuYW1lCgtkaWFtZXRlcl9tbQoIcGl0Y2hfbW0KBmJsYWRlc5q1GB5jb21wb25lbnRzL2hhcmR3YXJlL3Byb3BlbGxlcnPC8xgWCgpwcm9wZWxsZXJzKghlbnRpdGllc8LwGWAIBRJcdXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSBlbnRpdGllcyBXSEVSRSBjb2xsZWN0aW9uID0gJ3Byb3BlbGxlcnMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiRQoWQ3JlYXRlUHJvcGVsbGVyUmVxdWVzdBIrCglwcm9wZWxsZXIYASABKAsyGC5xdWFkc21pdGguYXBpLlByb3BlbGxlciIkChZEZWxldGVQcm9wZWxsZXJSZXF1ZXN0EgoKAmlkGAEgASgJIi4KF0RlbGV0ZVByb3BlbGxlclJlc3BvbnNlEhMKC2lzX2FyY2hpdmVkGAEgASgIIjIKE0dldFByb3BlbGxlclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJtChVMaXN0UHJvcGVsbGVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJfChZMaXN0UHJvcGVsbGVyc1Jlc3BvbnNlEiwKCnByb3BlbGxlcnMYASADKAsyGC5xdWFkc21pdGguYXBpLlByb3BlbGxlchIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkiRQoWVXBkYXRlUHJvcGVsbGVyUmVxdWVzdBIrCglwcm9wZWxsZXIYASABKAsyGC5xdWFkc21pdGguYXBpLlByb3BlbGxlcjLJAwoQUHJvcGVsbGVyU2VydmljZRJMCgxHZXRQcm9wZWxsZXISIi5xdWFkc21pdGguYXBpLkdldFByb3BlbGxlclJlcXVlc3QaGC5xdWFkc21pdGguYXBpLlByb3BlbGxlchJdCg5MaXN0UHJvcGVsbGVycxIkLnF1YWRzbWl0aC5hcGkuTGlzdFByb3BlbGxlcnNSZXF1ZXN0GiUucXVhZHNtaXRoLmFwaS5MaXN0UHJvcGVsbGVyc1Jlc3BvbnNlElIKD0NyZWF0ZVByb3BlbGxlchIlLnF1YWRzbWl0aC5hcGkuQ3JlYXRlUHJvcGVsbGVyUmVxdWVzdBoYLnF1YWRzbWl0aC5hcGkuUHJvcGVsbGVyElIKD1VwZGF0ZVByb3BlbGxlchIlLnF1YWRzbWl0aC5hcGkuVXBkYXRlUHJvcGVsbGVyUmVxdWVzdBoYLnF1YWRzbWl0aC5hcGkuUHJvcGVsbGVyEmAKD0RlbGV0ZVByb3BlbGxlchIlLnF1YWRzbWl0aC5hcGkuRGVsZXRlUHJvcGVsbGVyUmVxdWVzdBomLnF1YWRzbWl0aC5hcGkuRGVsZXRlUHJvcGVsbGVyUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
+    "Ch1xdWFkc21pdGgvYXBpL3Byb3BlbGxlci5wcm90bxINcXVhZHNtaXRoLmFwaSKJBQoJUHJvcGVsbGVyEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhAKAmlkGAIgASgJQgTA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZBBISCgRuYW1lGAQgASgJQgTA8BkEEhYKCHdlaWdodF9nGAUgASgCQgTA8BkEEhkKC2RpYW1ldGVyX21tGAYgASgCQgTA8BkEEhYKCHBpdGNoX21tGAcgASgCQgTA8BkEEhQKBmJsYWRlcxgIIAEoDUIEwPAZBBIWCghtYXRlcmlhbBgJIAEoCUIEwPAZBBIZCgtkZXNjcmlwdGlvbhgKIAEoCUIEwPAZBBI7Cg9yZWZlcmVuY2VfbGlua3MYCyADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCBMDwGQQSKAoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAwgASgJQgTA8BkESACIAQESKQoFbWVkaWEYDSADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgTA8BkEEiIKFHByb3BfbW91bnRfaW50ZXJmYWNlGA4gASgJQgTA8BkEEhkKC2lzX2FyY2hpdmVkGA8gASgIQgTA8BkEOnmKtRgzCgxtYW51ZmFjdHVyZXIKBG5hbWUKC2RpYW1ldGVyX21tCghwaXRjaF9tbQoGYmxhZGVzmrUYHmNvbXBvbmVudHMvaGFyZHdhcmUvcHJvcGVsbGVyc8LzGBYKCnByb3BlbGxlcnMqCGVudGl0aWVzwvAZAggBQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2UiMgoTR2V0UHJvcGVsbGVyUmVxdWVzdBIKCgJpZBgBIAEoCRIPCgdjb2x1bW5zGAIgAygJIm0KFUxpc3RQcm9wZWxsZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIl8KFkxpc3RQcm9wZWxsZXJzUmVzcG9uc2USLAoKcHJvcGVsbGVycxgBIAMoCzIYLnF1YWRzbWl0aC5hcGkuUHJvcGVsbGVyEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTK/AQoQUHJvcGVsbGVyU2VydmljZRJMCgxHZXRQcm9wZWxsZXISIi5xdWFkc21pdGguYXBpLkdldFByb3BlbGxlclJlcXVlc3QaGC5xdWFkc21pdGguYXBpLlByb3BlbGxlchJdCg5MaXN0UHJvcGVsbGVycxIkLnF1YWRzbWl0aC5hcGkuTGlzdFByb3BlbGxlcnNSZXF1ZXN0GiUucXVhZHNtaXRoLmFwaS5MaXN0UHJvcGVsbGVyc1Jlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -114,14 +114,9 @@ export type Propeller = Message<"quadsmith.api.Propeller"> & {
   propMountInterface: string;
 
   /**
-   * @generated from field: optional string user_uuid = 15;
+   * @generated from field: bool is_archived = 15;
    */
-  userUuid?: string | undefined;
-
-  /**
-   * @generated from field: optional string author_username = 16;
-   */
-  authorUsername?: string | undefined;
+  isArchived: boolean;
 };
 
 /**
@@ -131,60 +126,6 @@ export type Propeller = Message<"quadsmith.api.Propeller"> & {
 export const PropellerSchema: GenMessage<Propeller> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_propeller, 0);
-
-/**
- * @generated from message quadsmith.api.CreatePropellerRequest
- */
-export type CreatePropellerRequest = Message<"quadsmith.api.CreatePropellerRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Propeller propeller = 1;
-   */
-  propeller?: Propeller | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreatePropellerRequest.
- * Use `create(CreatePropellerRequestSchema)` to create a new message.
- */
-export const CreatePropellerRequestSchema: GenMessage<CreatePropellerRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_propeller, 1);
-
-/**
- * @generated from message quadsmith.api.DeletePropellerRequest
- */
-export type DeletePropellerRequest = Message<"quadsmith.api.DeletePropellerRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeletePropellerRequest.
- * Use `create(DeletePropellerRequestSchema)` to create a new message.
- */
-export const DeletePropellerRequestSchema: GenMessage<DeletePropellerRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_propeller, 2);
-
-/**
- * @generated from message quadsmith.api.DeletePropellerResponse
- */
-export type DeletePropellerResponse = Message<"quadsmith.api.DeletePropellerResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeletePropellerResponse.
- * Use `create(DeletePropellerResponseSchema)` to create a new message.
- */
-export const DeletePropellerResponseSchema: GenMessage<DeletePropellerResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_propeller, 3);
 
 /**
  * @generated from message quadsmith.api.GetPropellerRequest
@@ -207,7 +148,7 @@ export type GetPropellerRequest = Message<"quadsmith.api.GetPropellerRequest"> &
  */
 export const GetPropellerRequestSchema: GenMessage<GetPropellerRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_propeller, 4);
+  messageDesc(file_quadsmith_api_propeller, 1);
 
 /**
  * @generated from message quadsmith.api.ListPropellersRequest
@@ -245,7 +186,7 @@ export type ListPropellersRequest = Message<"quadsmith.api.ListPropellersRequest
  */
 export const ListPropellersRequestSchema: GenMessage<ListPropellersRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_propeller, 5);
+  messageDesc(file_quadsmith_api_propeller, 2);
 
 /**
  * @generated from message quadsmith.api.ListPropellersResponse
@@ -268,25 +209,7 @@ export type ListPropellersResponse = Message<"quadsmith.api.ListPropellersRespon
  */
 export const ListPropellersResponseSchema: GenMessage<ListPropellersResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_propeller, 6);
-
-/**
- * @generated from message quadsmith.api.UpdatePropellerRequest
- */
-export type UpdatePropellerRequest = Message<"quadsmith.api.UpdatePropellerRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Propeller propeller = 1;
-   */
-  propeller?: Propeller | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdatePropellerRequest.
- * Use `create(UpdatePropellerRequestSchema)` to create a new message.
- */
-export const UpdatePropellerRequestSchema: GenMessage<UpdatePropellerRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_propeller, 7);
+  messageDesc(file_quadsmith_api_propeller, 3);
 
 /**
  * @generated from service quadsmith.api.PropellerService
@@ -307,29 +230,5 @@ export const PropellerService: GenService<{
     methodKind: "unary";
     input: typeof ListPropellersRequestSchema;
     output: typeof ListPropellersResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.PropellerService.CreatePropeller
-   */
-  createPropeller: {
-    methodKind: "unary";
-    input: typeof CreatePropellerRequestSchema;
-    output: typeof PropellerSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.PropellerService.UpdatePropeller
-   */
-  updatePropeller: {
-    methodKind: "unary";
-    input: typeof UpdatePropellerRequestSchema;
-    output: typeof PropellerSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.PropellerService.DeletePropeller
-   */
-  deletePropeller: {
-    methodKind: "unary";
-    input: typeof DeletePropellerRequestSchema;
-    output: typeof DeletePropellerResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_propeller, 0);

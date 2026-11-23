@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_receiver: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChxxdWFkc21pdGgvYXBpL3JlY2VpdmVyLnByb3RvEg1xdWFkc21pdGguYXBpItAGCghSZWNlaXZlchI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIQCgJpZBgCIAEoCUIEwPAZBBIgCgxtYW51ZmFjdHVyZXIYAyABKAlCCsLzGAIoAcDwGQISEgoEbmFtZRgEIAEoCUIEwPAZAhIeChBpc19pbnRlcm5hbF9vbmx5GAUgASgIQgTA8BkCEhYKCHdlaWdodF9nGAYgASgCQgTA8BkCEhwKCHByb3RvY29sGAcgASgJQgrC8xgCKAHA8BkCEiAKEmZyZXF1ZW5jeV9iYW5kX21oehgIIAEoDUIEwPAZAhIbCg1oYXNfdGVsZW1ldHJ5GAkgASgIQgTA8BkCEhsKDWFudGVubmFfdXVpZHMYCiADKAlCBMDwGQISGQoLZGVzY3JpcHRpb24YCyABKAlCBMDwGQISOwoPcmVmZXJlbmNlX2xpbmtzGAwgAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgTA8BkCEigKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgNIAEoCUIEwPAZAkgAiAEBEikKBW1lZGlhGA4gAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIEwPAZAhIcCgl1c2VyX3V1aWQYDyABKAlCBMDwGQRIAYgBARIiCg9hdXRob3JfdXNlcm5hbWUYECABKAlCBMDwGQJIAogBATriAYq1GEEKDG1hbnVmYWN0dXJlcgoEbmFtZQoIcHJvdG9jb2wKEmZyZXF1ZW5jeV9iYW5kX21oegoNaGFzX3RlbGVtZXRyeZq1GB1jb21wb25lbnRzL2hhcmR3YXJlL3JlY2VpdmVyc8LzGBUKCXJlY2VpdmVycyoIZW50aXRpZXPC8BlfCAUSW3V1aWQgSU4gKFNFTEVDVCB1dWlkIEZST00gZW50aXRpZXMgV0hFUkUgY29sbGVjdGlvbiA9ICdyZWNlaXZlcnMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiQgoVQ3JlYXRlUmVjZWl2ZXJSZXF1ZXN0EikKCHJlY2VpdmVyGAEgASgLMhcucXVhZHNtaXRoLmFwaS5SZWNlaXZlciIjChVEZWxldGVSZWNlaXZlclJlcXVlc3QSCgoCaWQYASABKAkiLQoWRGVsZXRlUmVjZWl2ZXJSZXNwb25zZRITCgtpc19hcmNoaXZlZBgBIAEoCCIxChJHZXRSZWNlaXZlclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJsChRMaXN0UmVjZWl2ZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlwKFUxpc3RSZWNlaXZlcnNSZXNwb25zZRIqCglyZWNlaXZlcnMYASADKAsyFy5xdWFkc21pdGguYXBpLlJlY2VpdmVyEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSJCChVVcGRhdGVSZWNlaXZlclJlcXVlc3QSKQoIcmVjZWl2ZXIYASABKAsyFy5xdWFkc21pdGguYXBpLlJlY2VpdmVyMrkDCg9SZWNlaXZlclNlcnZpY2USSQoLR2V0UmVjZWl2ZXISIS5xdWFkc21pdGguYXBpLkdldFJlY2VpdmVyUmVxdWVzdBoXLnF1YWRzbWl0aC5hcGkuUmVjZWl2ZXISWgoNTGlzdFJlY2VpdmVycxIjLnF1YWRzbWl0aC5hcGkuTGlzdFJlY2VpdmVyc1JlcXVlc3QaJC5xdWFkc21pdGguYXBpLkxpc3RSZWNlaXZlcnNSZXNwb25zZRJPCg5DcmVhdGVSZWNlaXZlchIkLnF1YWRzbWl0aC5hcGkuQ3JlYXRlUmVjZWl2ZXJSZXF1ZXN0GhcucXVhZHNtaXRoLmFwaS5SZWNlaXZlchJPCg5VcGRhdGVSZWNlaXZlchIkLnF1YWRzbWl0aC5hcGkuVXBkYXRlUmVjZWl2ZXJSZXF1ZXN0GhcucXVhZHNtaXRoLmFwaS5SZWNlaXZlchJdCg5EZWxldGVSZWNlaXZlchIkLnF1YWRzbWl0aC5hcGkuRGVsZXRlUmVjZWl2ZXJSZXF1ZXN0GiUucXVhZHNtaXRoLmFwaS5EZWxldGVSZWNlaXZlclJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "ChxxdWFkc21pdGgvYXBpL3JlY2VpdmVyLnByb3RvEg1xdWFkc21pdGguYXBpIqoFCghSZWNlaXZlchI6CgR1dWlkGAEgASgJQizC8xgkEAEaIGVudGl0aWVzKHV1aWQpIE9OIERFTEVURSBDQVNDQURFwPAZBBIQCgJpZBgCIAEoCUIEwPAZBBIgCgxtYW51ZmFjdHVyZXIYAyABKAlCCsLzGAIoAcDwGQQSEgoEbmFtZRgEIAEoCUIEwPAZBBIeChBpc19pbnRlcm5hbF9vbmx5GAUgASgIQgTA8BkEEhYKCHdlaWdodF9nGAYgASgCQgTA8BkEEhwKCHByb3RvY29sGAcgASgJQgrC8xgCKAHA8BkEEiAKEmZyZXF1ZW5jeV9iYW5kX21oehgIIAEoDUIEwPAZBBIbCg1oYXNfdGVsZW1ldHJ5GAkgASgIQgTA8BkEEhsKDWFudGVubmFfdXVpZHMYCiADKAlCBMDwGQQSGQoLZGVzY3JpcHRpb24YCyABKAlCBMDwGQQSOwoPcmVmZXJlbmNlX2xpbmtzGAwgAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgTA8BkEEigKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgNIAEoCUIEwPAZBEgAiAEBEikKBW1lZGlhGA4gAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIEwPAZBBIZCgtpc19hcmNoaXZlZBgPIAEoCEIEwPAZBDqFAYq1GEEKDG1hbnVmYWN0dXJlcgoEbmFtZQoIcHJvdG9jb2wKEmZyZXF1ZW5jeV9iYW5kX21oegoNaGFzX3RlbGVtZXRyeZq1GB1jb21wb25lbnRzL2hhcmR3YXJlL3JlY2VpdmVyc8LzGBUKCXJlY2VpdmVycyoIZW50aXRpZXPC8BkCCAFCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZSIxChJHZXRSZWNlaXZlclJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJsChRMaXN0UmVjZWl2ZXJzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlwKFUxpc3RSZWNlaXZlcnNSZXNwb25zZRIqCglyZWNlaXZlcnMYASADKAsyFy5xdWFkc21pdGguYXBpLlJlY2VpdmVyEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTK4AQoPUmVjZWl2ZXJTZXJ2aWNlEkkKC0dldFJlY2VpdmVyEiEucXVhZHNtaXRoLmFwaS5HZXRSZWNlaXZlclJlcXVlc3QaFy5xdWFkc21pdGguYXBpLlJlY2VpdmVyEloKDUxpc3RSZWNlaXZlcnMSIy5xdWFkc21pdGguYXBpLkxpc3RSZWNlaXZlcnNSZXF1ZXN0GiQucXVhZHNtaXRoLmFwaS5MaXN0UmVjZWl2ZXJzUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -110,14 +110,9 @@ export type Receiver = Message<"quadsmith.api.Receiver"> & {
   media: Media[];
 
   /**
-   * @generated from field: optional string user_uuid = 15;
+   * @generated from field: bool is_archived = 15;
    */
-  userUuid?: string | undefined;
-
-  /**
-   * @generated from field: optional string author_username = 16;
-   */
-  authorUsername?: string | undefined;
+  isArchived: boolean;
 };
 
 /**
@@ -127,60 +122,6 @@ export type Receiver = Message<"quadsmith.api.Receiver"> & {
 export const ReceiverSchema: GenMessage<Receiver> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_receiver, 0);
-
-/**
- * @generated from message quadsmith.api.CreateReceiverRequest
- */
-export type CreateReceiverRequest = Message<"quadsmith.api.CreateReceiverRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Receiver receiver = 1;
-   */
-  receiver?: Receiver | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateReceiverRequest.
- * Use `create(CreateReceiverRequestSchema)` to create a new message.
- */
-export const CreateReceiverRequestSchema: GenMessage<CreateReceiverRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_receiver, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteReceiverRequest
- */
-export type DeleteReceiverRequest = Message<"quadsmith.api.DeleteReceiverRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteReceiverRequest.
- * Use `create(DeleteReceiverRequestSchema)` to create a new message.
- */
-export const DeleteReceiverRequestSchema: GenMessage<DeleteReceiverRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_receiver, 2);
-
-/**
- * @generated from message quadsmith.api.DeleteReceiverResponse
- */
-export type DeleteReceiverResponse = Message<"quadsmith.api.DeleteReceiverResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteReceiverResponse.
- * Use `create(DeleteReceiverResponseSchema)` to create a new message.
- */
-export const DeleteReceiverResponseSchema: GenMessage<DeleteReceiverResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_receiver, 3);
 
 /**
  * @generated from message quadsmith.api.GetReceiverRequest
@@ -203,7 +144,7 @@ export type GetReceiverRequest = Message<"quadsmith.api.GetReceiverRequest"> & {
  */
 export const GetReceiverRequestSchema: GenMessage<GetReceiverRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_receiver, 4);
+  messageDesc(file_quadsmith_api_receiver, 1);
 
 /**
  * @generated from message quadsmith.api.ListReceiversRequest
@@ -241,7 +182,7 @@ export type ListReceiversRequest = Message<"quadsmith.api.ListReceiversRequest">
  */
 export const ListReceiversRequestSchema: GenMessage<ListReceiversRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_receiver, 5);
+  messageDesc(file_quadsmith_api_receiver, 2);
 
 /**
  * @generated from message quadsmith.api.ListReceiversResponse
@@ -264,25 +205,7 @@ export type ListReceiversResponse = Message<"quadsmith.api.ListReceiversResponse
  */
 export const ListReceiversResponseSchema: GenMessage<ListReceiversResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_receiver, 6);
-
-/**
- * @generated from message quadsmith.api.UpdateReceiverRequest
- */
-export type UpdateReceiverRequest = Message<"quadsmith.api.UpdateReceiverRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Receiver receiver = 1;
-   */
-  receiver?: Receiver | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateReceiverRequest.
- * Use `create(UpdateReceiverRequestSchema)` to create a new message.
- */
-export const UpdateReceiverRequestSchema: GenMessage<UpdateReceiverRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_receiver, 7);
+  messageDesc(file_quadsmith_api_receiver, 3);
 
 /**
  * @generated from service quadsmith.api.ReceiverService
@@ -303,29 +226,5 @@ export const ReceiverService: GenService<{
     methodKind: "unary";
     input: typeof ListReceiversRequestSchema;
     output: typeof ListReceiversResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.ReceiverService.CreateReceiver
-   */
-  createReceiver: {
-    methodKind: "unary";
-    input: typeof CreateReceiverRequestSchema;
-    output: typeof ReceiverSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.ReceiverService.UpdateReceiver
-   */
-  updateReceiver: {
-    methodKind: "unary";
-    input: typeof UpdateReceiverRequestSchema;
-    output: typeof ReceiverSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.ReceiverService.DeleteReceiver
-   */
-  deleteReceiver: {
-    methodKind: "unary";
-    input: typeof DeleteReceiverRequestSchema;
-    output: typeof DeleteReceiverResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_receiver, 0);

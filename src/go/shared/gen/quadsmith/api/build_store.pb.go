@@ -72,8 +72,8 @@ func CreateBuild(ctx context.Context, tx pgx.Tx, m *Build) error {
 }
 
 func GetBuild(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Build, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "name": true, "description": true, "frame_uuid": true, "motor_uuid": true, "flight_controller_uuid": true, "electronic_speed_controller_uuids": true, "receiver_uuids": true, "antenna_uuids": true, "propeller_uuid": true, "camera_uuids": true, "video_transmitter_uuid": true, "gps_receiver_uuid": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
-	colsStr := "uuid, id, name, description, frame_uuid, motor_uuid, flight_controller_uuid, electronic_speed_controller_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, video_transmitter_uuid, gps_receiver_uuid, reference_links, primary_display_image, media, user_uuid, author_username"
+	validCols := map[string]bool{"uuid": true, "id": true, "name": true, "description": true, "frame_uuid": true, "motor_uuid": true, "flight_controller_uuid": true, "electronic_speed_controller_uuids": true, "receiver_uuids": true, "antenna_uuids": true, "propeller_uuid": true, "camera_uuids": true, "video_transmitter_uuid": true, "gps_receiver_uuid": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true, "is_archived": true}
+	colsStr := "uuid, id, name, description, frame_uuid, motor_uuid, flight_controller_uuid, electronic_speed_controller_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, video_transmitter_uuid, gps_receiver_uuid, reference_links, primary_display_image, media, user_uuid, author_username, is_archived"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -84,7 +84,7 @@ func GetBuild(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "name", "description", "frame_uuid", "motor_uuid", "flight_controller_uuid", "electronic_speed_controller_uuids", "receiver_uuids", "antenna_uuids", "propeller_uuid", "camera_uuids", "video_transmitter_uuid", "gps_receiver_uuid", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
+		cols = []string{"uuid", "id", "name", "description", "frame_uuid", "motor_uuid", "flight_controller_uuid", "electronic_speed_controller_uuids", "receiver_uuids", "antenna_uuids", "propeller_uuid", "camera_uuids", "video_transmitter_uuid", "gps_receiver_uuid", "reference_links", "primary_display_image", "media", "user_uuid", "author_username", "is_archived"}
 	}
 	query := `SELECT ` + colsStr + ` FROM builds INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
@@ -160,6 +160,8 @@ func GetBuild(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []str
 			scanArgs[i] = &m.UserUuid
 		case "author_username":
 			scanArgs[i] = &m.AuthorUsername
+		case "is_archived":
+			scanArgs[i] = &m.IsArchived
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -239,8 +241,12 @@ func DeleteBuild(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Build, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "name": true, "description": true, "frame_uuid": true, "motor_uuid": true, "flight_controller_uuid": true, "electronic_speed_controller_uuids": true, "receiver_uuids": true, "antenna_uuids": true, "propeller_uuid": true, "camera_uuids": true, "video_transmitter_uuid": true, "gps_receiver_uuid": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
-	colsStr := "uuid, id, name, description, frame_uuid, motor_uuid, flight_controller_uuid, electronic_speed_controller_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, video_transmitter_uuid, gps_receiver_uuid, reference_links, primary_display_image, media, user_uuid, author_username"
+	return ListBuildsIncludingArchived(ctx, db, false, cols, sorts, whereClause, limit, offset, args...)
+}
+
+func ListBuildsIncludingArchived(ctx context.Context, db *pgxpool.Pool, includeArchived bool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Build, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "name": true, "description": true, "frame_uuid": true, "motor_uuid": true, "flight_controller_uuid": true, "electronic_speed_controller_uuids": true, "receiver_uuids": true, "antenna_uuids": true, "propeller_uuid": true, "camera_uuids": true, "video_transmitter_uuid": true, "gps_receiver_uuid": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true, "is_archived": true}
+	colsStr := "uuid, id, name, description, frame_uuid, motor_uuid, flight_controller_uuid, electronic_speed_controller_uuids, receiver_uuids, antenna_uuids, propeller_uuid, camera_uuids, video_transmitter_uuid, gps_receiver_uuid, reference_links, primary_display_image, media, user_uuid, author_username, is_archived"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -251,12 +257,16 @@ func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "name", "description", "frame_uuid", "motor_uuid", "flight_controller_uuid", "electronic_speed_controller_uuids", "receiver_uuids", "antenna_uuids", "propeller_uuid", "camera_uuids", "video_transmitter_uuid", "gps_receiver_uuid", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
+		cols = []string{"uuid", "id", "name", "description", "frame_uuid", "motor_uuid", "flight_controller_uuid", "electronic_speed_controller_uuids", "receiver_uuids", "antenna_uuids", "propeller_uuid", "camera_uuids", "video_transmitter_uuid", "gps_receiver_uuid", "reference_links", "primary_display_image", "media", "user_uuid", "author_username", "is_archived"}
 	}
 	query := `SELECT ` + colsStr + ` FROM builds INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid`
-	query += " WHERE entities.is_archived = false"
-	if whereClause != "" {
-		query += " AND (" + whereClause + ")"
+	if !includeArchived {
+		query += " WHERE entities.is_archived = false"
+		if whereClause != "" {
+			query += " AND (" + whereClause + ")"
+		}
+	} else if whereClause != "" {
+		query += " WHERE " + whereClause
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -369,6 +379,8 @@ func ListBuilds(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []st
 				scanArgs[i] = &m.UserUuid
 			case "author_username":
 				scanArgs[i] = &m.AuthorUsername
+			case "is_archived":
+				scanArgs[i] = &m.IsArchived
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy

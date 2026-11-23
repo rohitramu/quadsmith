@@ -44,14 +44,13 @@ enum ContentType {
 
 enum ExportDomain {
   EXPORT_DOMAIN_UNSPECIFIED = 0;
-  EXPORT_DOMAIN_NONE = 1; // System/ops tables not exported in user archives
+  EXPORT_DOMAIN_NONE = 1; // System/ops/catalog tables not exported in user archives
   EXPORT_DOMAIN_ACCOUNT = 2; // -> account.json
   EXPORT_DOMAIN_SECURITY = 3; // -> security.json
   EXPORT_DOMAIN_BUILDS = 4; // -> builds.json
-  EXPORT_DOMAIN_COMPONENTS = 5; // -> components.json
-  EXPORT_DOMAIN_COLLECTIONS = 6; // -> collections.json
-  EXPORT_DOMAIN_SOCIAL = 7; // -> social.json
-  EXPORT_DOMAIN_BLOBS = 8; // -> blobs.json + blobs/
+  EXPORT_DOMAIN_COLLECTIONS = 5; // -> collections.json
+  EXPORT_DOMAIN_SOCIAL = 6; // -> social.json
+  EXPORT_DOMAIN_BLOBS = 7; // -> blobs.json + blobs/
 }
 
 extend google.protobuf.MessageOptions {

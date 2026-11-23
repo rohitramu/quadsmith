@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_goggles: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChtxdWFkc21pdGgvYXBpL2dvZ2dsZXMucHJvdG8SDXF1YWRzbWl0aC5hcGki8gYKB0dvZ2dsZXMSOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSEAoCaWQYAiABKAlCBMDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkCEhIKBG5hbWUYBCABKAlCBMDwGQISFgoId2VpZ2h0X2cYBSABKAJCBMDwGQISHAoOdmlkZW9fcHJvdG9jb2wYBiABKAlCBMDwGQISGgoMZGlzcGxheV90eXBlGAcgASgJQgTA8BkCEhgKCnJlc29sdXRpb24YCCABKAlCBMDwGQISFQoHZm92X2RlZxgJIAEoAkIEwPAZAhIaCgxpcGRfcmFuZ2VfbW0YCiABKAlCBMDwGQISGwoNdm9sdGFnZV9yYW5nZRgLIAEoCUIEwPAZAhIbCg1kdnJfc3VwcG9ydGVkGAwgASgIQgTA8BkCEhkKC2Rlc2NyaXB0aW9uGA0gASgJQgTA8BkCEjsKD3JlZmVyZW5jZV9saW5rcxgOIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGlua0IEwPAZAhIoChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYDyABKAlCBMDwGQJIAIgBARIpCgVtZWRpYRgQIAMoCzIULnF1YWRzbWl0aC5hcGkuTWVkaWFCBMDwGQISHAoJdXNlcl91dWlkGBEgASgJQgTA8BkESAGIAQESIgoPYXV0aG9yX3VzZXJuYW1lGBIgASgJQgTA8BkCSAKIAQE63gGKtRhHCgxtYW51ZmFjdHVyZXIKBG5hbWUKDnZpZGVvX3Byb3RvY29sCgxkaXNwbGF5X3R5cGUKCnJlc29sdXRpb24KB2Zvdl9kZWeatRgXY29tcG9uZW50cy9nZWFyL2dvZ2dsZXPC8xgTCgdnb2dnbGVzKghlbnRpdGllc8LwGV0IBRJZdXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSBlbnRpdGllcyBXSEVSRSBjb2xsZWN0aW9uID0gJ2dvZ2dsZXMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiPwoUQ3JlYXRlR29nZ2xlc1JlcXVlc3QSJwoHZ29nZ2xlcxgBIAEoCzIWLnF1YWRzbWl0aC5hcGkuR29nZ2xlcyIiChREZWxldGVHb2dnbGVzUmVxdWVzdBIKCgJpZBgBIAEoCSIsChVEZWxldGVHb2dnbGVzUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiMAoRR2V0R29nZ2xlc1JlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJqChJMaXN0R29nZ2xlc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJXChNMaXN0R29nZ2xlc1Jlc3BvbnNlEicKB2dvZ2dsZXMYASADKAsyFi5xdWFkc21pdGguYXBpLkdvZ2dsZXMSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIj8KFFVwZGF0ZUdvZ2dsZXNSZXF1ZXN0EicKB2dvZ2dsZXMYASABKAsyFi5xdWFkc21pdGguYXBpLkdvZ2dsZXMypgMKDkdvZ2dsZXNTZXJ2aWNlEkYKCkdldEdvZ2dsZXMSIC5xdWFkc21pdGguYXBpLkdldEdvZ2dsZXNSZXF1ZXN0GhYucXVhZHNtaXRoLmFwaS5Hb2dnbGVzElQKC0xpc3RHb2dnbGVzEiEucXVhZHNtaXRoLmFwaS5MaXN0R29nZ2xlc1JlcXVlc3QaIi5xdWFkc21pdGguYXBpLkxpc3RHb2dnbGVzUmVzcG9uc2USTAoNQ3JlYXRlR29nZ2xlcxIjLnF1YWRzbWl0aC5hcGkuQ3JlYXRlR29nZ2xlc1JlcXVlc3QaFi5xdWFkc21pdGguYXBpLkdvZ2dsZXMSTAoNVXBkYXRlR29nZ2xlcxIjLnF1YWRzbWl0aC5hcGkuVXBkYXRlR29nZ2xlc1JlcXVlc3QaFi5xdWFkc21pdGguYXBpLkdvZ2dsZXMSWgoNRGVsZXRlR29nZ2xlcxIjLnF1YWRzbWl0aC5hcGkuRGVsZXRlR29nZ2xlc1JlcXVlc3QaJC5xdWFkc21pdGguYXBpLkRlbGV0ZUdvZ2dsZXNSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
+    "ChtxdWFkc21pdGgvYXBpL2dvZ2dsZXMucHJvdG8SDXF1YWRzbWl0aC5hcGkizgUKB0dvZ2dsZXMSOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSEAoCaWQYAiABKAlCBMDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkEEhIKBG5hbWUYBCABKAlCBMDwGQQSFgoId2VpZ2h0X2cYBSABKAJCBMDwGQQSHAoOdmlkZW9fcHJvdG9jb2wYBiABKAlCBMDwGQQSGgoMZGlzcGxheV90eXBlGAcgASgJQgTA8BkEEhgKCnJlc29sdXRpb24YCCABKAlCBMDwGQQSFQoHZm92X2RlZxgJIAEoAkIEwPAZBBIaCgxpcGRfcmFuZ2VfbW0YCiABKAlCBMDwGQQSGwoNdm9sdGFnZV9yYW5nZRgLIAEoCUIEwPAZBBIbCg1kdnJfc3VwcG9ydGVkGAwgASgIQgTA8BkEEhkKC2Rlc2NyaXB0aW9uGA0gASgJQgTA8BkEEjsKD3JlZmVyZW5jZV9saW5rcxgOIAMoCzIcLnF1YWRzbWl0aC5hcGkuUmVmZXJlbmNlTGlua0IEwPAZBBIoChVwcmltYXJ5X2Rpc3BsYXlfaW1hZ2UYDyABKAlCBMDwGQRIAIgBARIpCgVtZWRpYRgQIAMoCzIULnF1YWRzbWl0aC5hcGkuTWVkaWFCBMDwGQQSGQoLaXNfYXJjaGl2ZWQYESABKAhCBMDwGQQ6gwGKtRhHCgxtYW51ZmFjdHVyZXIKBG5hbWUKDnZpZGVvX3Byb3RvY29sCgxkaXNwbGF5X3R5cGUKCnJlc29sdXRpb24KB2Zvdl9kZWeatRgXY29tcG9uZW50cy9nZWFyL2dvZ2dsZXPC8xgTCgdnb2dnbGVzKghlbnRpdGllc8LwGQIIAUIYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlIjAKEUdldEdvZ2dsZXNSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiagoSTGlzdEdvZ2dsZXNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiVwoTTGlzdEdvZ2dsZXNSZXNwb25zZRInCgdnb2dnbGVzGAEgAygLMhYucXVhZHNtaXRoLmFwaS5Hb2dnbGVzEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTKuAQoOR29nZ2xlc1NlcnZpY2USRgoKR2V0R29nZ2xlcxIgLnF1YWRzbWl0aC5hcGkuR2V0R29nZ2xlc1JlcXVlc3QaFi5xdWFkc21pdGguYXBpLkdvZ2dsZXMSVAoLTGlzdEdvZ2dsZXMSIS5xdWFkc21pdGguYXBpLkxpc3RHb2dnbGVzUmVxdWVzdBoiLnF1YWRzbWl0aC5hcGkuTGlzdEdvZ2dsZXNSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -114,14 +114,9 @@ export type Goggles = Message<"quadsmith.api.Goggles"> & {
   media: Media[];
 
   /**
-   * @generated from field: optional string user_uuid = 17;
+   * @generated from field: bool is_archived = 17;
    */
-  userUuid?: string | undefined;
-
-  /**
-   * @generated from field: optional string author_username = 18;
-   */
-  authorUsername?: string | undefined;
+  isArchived: boolean;
 };
 
 /**
@@ -131,60 +126,6 @@ export type Goggles = Message<"quadsmith.api.Goggles"> & {
 export const GogglesSchema: GenMessage<Goggles> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_goggles, 0);
-
-/**
- * @generated from message quadsmith.api.CreateGogglesRequest
- */
-export type CreateGogglesRequest = Message<"quadsmith.api.CreateGogglesRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Goggles goggles = 1;
-   */
-  goggles?: Goggles | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateGogglesRequest.
- * Use `create(CreateGogglesRequestSchema)` to create a new message.
- */
-export const CreateGogglesRequestSchema: GenMessage<CreateGogglesRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_goggles, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteGogglesRequest
- */
-export type DeleteGogglesRequest = Message<"quadsmith.api.DeleteGogglesRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteGogglesRequest.
- * Use `create(DeleteGogglesRequestSchema)` to create a new message.
- */
-export const DeleteGogglesRequestSchema: GenMessage<DeleteGogglesRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_goggles, 2);
-
-/**
- * @generated from message quadsmith.api.DeleteGogglesResponse
- */
-export type DeleteGogglesResponse = Message<"quadsmith.api.DeleteGogglesResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteGogglesResponse.
- * Use `create(DeleteGogglesResponseSchema)` to create a new message.
- */
-export const DeleteGogglesResponseSchema: GenMessage<DeleteGogglesResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_goggles, 3);
 
 /**
  * @generated from message quadsmith.api.GetGogglesRequest
@@ -207,7 +148,7 @@ export type GetGogglesRequest = Message<"quadsmith.api.GetGogglesRequest"> & {
  */
 export const GetGogglesRequestSchema: GenMessage<GetGogglesRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_goggles, 4);
+  messageDesc(file_quadsmith_api_goggles, 1);
 
 /**
  * @generated from message quadsmith.api.ListGogglesRequest
@@ -245,7 +186,7 @@ export type ListGogglesRequest = Message<"quadsmith.api.ListGogglesRequest"> & {
  */
 export const ListGogglesRequestSchema: GenMessage<ListGogglesRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_goggles, 5);
+  messageDesc(file_quadsmith_api_goggles, 2);
 
 /**
  * @generated from message quadsmith.api.ListGogglesResponse
@@ -268,25 +209,7 @@ export type ListGogglesResponse = Message<"quadsmith.api.ListGogglesResponse"> &
  */
 export const ListGogglesResponseSchema: GenMessage<ListGogglesResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_goggles, 6);
-
-/**
- * @generated from message quadsmith.api.UpdateGogglesRequest
- */
-export type UpdateGogglesRequest = Message<"quadsmith.api.UpdateGogglesRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Goggles goggles = 1;
-   */
-  goggles?: Goggles | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateGogglesRequest.
- * Use `create(UpdateGogglesRequestSchema)` to create a new message.
- */
-export const UpdateGogglesRequestSchema: GenMessage<UpdateGogglesRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_goggles, 7);
+  messageDesc(file_quadsmith_api_goggles, 3);
 
 /**
  * @generated from service quadsmith.api.GogglesService
@@ -307,29 +230,5 @@ export const GogglesService: GenService<{
     methodKind: "unary";
     input: typeof ListGogglesRequestSchema;
     output: typeof ListGogglesResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.GogglesService.CreateGoggles
-   */
-  createGoggles: {
-    methodKind: "unary";
-    input: typeof CreateGogglesRequestSchema;
-    output: typeof GogglesSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.GogglesService.UpdateGoggles
-   */
-  updateGoggles: {
-    methodKind: "unary";
-    input: typeof UpdateGogglesRequestSchema;
-    output: typeof GogglesSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.GogglesService.DeleteGoggles
-   */
-  deleteGoggles: {
-    methodKind: "unary";
-    input: typeof DeleteGogglesRequestSchema;
-    output: typeof DeleteGogglesResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_goggles, 0);

@@ -30,13 +30,12 @@ Furthermore, two recent architectural plans established strict
 single-source-of-truth invariants across the schema:
 
 - **Table-Per-Type (TPT) Entity Hierarchy
-  ([user_created_components.md](user_created_components.md#L100-L131))**: The
-  unified [`entities`](../src/db/quadsmith_api.sql#L465-L481) table is the
-  single source of truth for resource identity (`id`, `collection`) and common
-  metadata (`name`, `description`, `primary_display_image`,
-  `author_or_manufacturer`). Subtype and social tables reference
-  `entities(uuid)` and dynamically project human-readable fields via indexed
-  primary-key joins.
+  ([ops_managed_component_catalog.md](ops_managed_component_catalog.md))**: The
+  unified [`entities`](../src/db/quadsmith_api.sql) table is the single source
+  of truth for resource identity (`id`, `collection`) and common metadata
+  (`name`, `description`, `primary_display_image`, `author_or_manufacturer`,
+  `is_archived`). Subtype and social tables reference `entities(uuid)` and
+  dynamically project human-readable fields via indexed primary-key joins.
 - **Canonical Email Storage & GDPR Data Classification
   ([gdpr_data_export.md](gdpr_data_export.md#L695-L740))**: The redundant
   `users.email` SQL column was removed in favor of

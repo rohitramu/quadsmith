@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_antenna: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChtxdWFkc21pdGgvYXBpL2FudGVubmEucHJvdG8SDXF1YWRzbWl0aC5hcGki5AYKB0FudGVubmESOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSEAoCaWQYAiABKAlCBMDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkCEhIKBG5hbWUYBCABKAlCBMDwGQISHgoQaXNfaW50ZXJuYWxfb25seRgFIAEoCEIEwPAZAhIWCgh3ZWlnaHRfZxgGIAEoAkIEwPAZAhIXCgljb25uZWN0b3IYByABKAlCBMDwGQISGgoMcG9sYXJpemF0aW9uGAggASgJQgTA8BkCEiAKEmZyZXF1ZW5jeV9iYW5kX21oehgJIAEoDUIEwPAZAhIXCglsZW5ndGhfbW0YCiABKAJCBMDwGQISFgoIZ2Fpbl9kYmkYCyABKAJCBMDwGQISGQoLZGVzY3JpcHRpb24YDCABKAlCBMDwGQISOwoPcmVmZXJlbmNlX2xpbmtzGA0gAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgTA8BkCEigKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgOIAEoCUIEwPAZAkgAiAEBEikKBW1lZGlhGA8gAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIEwPAZAhIcCgl1c2VyX3V1aWQYECABKAlCBMDwGQRIAYgBARIiCg9hdXRob3JfdXNlcm5hbWUYESABKAlCBMDwGQJIAogBATrpAYq1GEsKDG1hbnVmYWN0dXJlcgoEbmFtZQoJY29ubmVjdG9yCgxwb2xhcml6YXRpb24KEmZyZXF1ZW5jeV9iYW5kX21oegoIZ2Fpbl9kYmmatRgcY29tcG9uZW50cy9oYXJkd2FyZS9hbnRlbm5hc8LzGBQKCGFudGVubmFzKghlbnRpdGllc8LwGV4IBRJadXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSBlbnRpdGllcyBXSEVSRSBjb2xsZWN0aW9uID0gJ2FudGVubmFzJyBBTkQgdXNlcl91dWlkID0gJDE6OnV1aWQpQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2VCDAoKX3VzZXJfdXVpZEISChBfYXV0aG9yX3VzZXJuYW1lIj8KFENyZWF0ZUFudGVubmFSZXF1ZXN0EicKB2FudGVubmEYASABKAsyFi5xdWFkc21pdGguYXBpLkFudGVubmEiIgoURGVsZXRlQW50ZW5uYVJlcXVlc3QSCgoCaWQYASABKAkiLAoVRGVsZXRlQW50ZW5uYVJlc3BvbnNlEhMKC2lzX2FyY2hpdmVkGAEgASgIIjAKEUdldEFudGVubmFSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiawoTTGlzdEFudGVubmFzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlkKFExpc3RBbnRlbm5hc1Jlc3BvbnNlEigKCGFudGVubmFzGAEgAygLMhYucXVhZHNtaXRoLmFwaS5BbnRlbm5hEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCSI/ChRVcGRhdGVBbnRlbm5hUmVxdWVzdBInCgdhbnRlbm5hGAEgASgLMhYucXVhZHNtaXRoLmFwaS5BbnRlbm5hMqkDCg5BbnRlbm5hU2VydmljZRJGCgpHZXRBbnRlbm5hEiAucXVhZHNtaXRoLmFwaS5HZXRBbnRlbm5hUmVxdWVzdBoWLnF1YWRzbWl0aC5hcGkuQW50ZW5uYRJXCgxMaXN0QW50ZW5uYXMSIi5xdWFkc21pdGguYXBpLkxpc3RBbnRlbm5hc1JlcXVlc3QaIy5xdWFkc21pdGguYXBpLkxpc3RBbnRlbm5hc1Jlc3BvbnNlEkwKDUNyZWF0ZUFudGVubmESIy5xdWFkc21pdGguYXBpLkNyZWF0ZUFudGVubmFSZXF1ZXN0GhYucXVhZHNtaXRoLmFwaS5BbnRlbm5hEkwKDVVwZGF0ZUFudGVubmESIy5xdWFkc21pdGguYXBpLlVwZGF0ZUFudGVubmFSZXF1ZXN0GhYucXVhZHNtaXRoLmFwaS5BbnRlbm5hEloKDURlbGV0ZUFudGVubmESIy5xdWFkc21pdGguYXBpLkRlbGV0ZUFudGVubmFSZXF1ZXN0GiQucXVhZHNtaXRoLmFwaS5EZWxldGVBbnRlbm5hUmVzcG9uc2VCKFomcXVhZHNtaXRoL3NoYXJlZC9nZW4vcXVhZHNtaXRoL2FwaTthcGliBnByb3RvMw",
+    "ChtxdWFkc21pdGgvYXBpL2FudGVubmEucHJvdG8SDXF1YWRzbWl0aC5hcGkivwUKB0FudGVubmESOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSEAoCaWQYAiABKAlCBMDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkEEhIKBG5hbWUYBCABKAlCBMDwGQQSHgoQaXNfaW50ZXJuYWxfb25seRgFIAEoCEIEwPAZBBIWCgh3ZWlnaHRfZxgGIAEoAkIEwPAZBBIXCgljb25uZWN0b3IYByABKAlCBMDwGQQSGgoMcG9sYXJpemF0aW9uGAggASgJQgTA8BkEEiAKEmZyZXF1ZW5jeV9iYW5kX21oehgJIAEoDUIEwPAZBBIXCglsZW5ndGhfbW0YCiABKAJCBMDwGQQSFgoIZ2Fpbl9kYmkYCyABKAJCBMDwGQQSGQoLZGVzY3JpcHRpb24YDCABKAlCBMDwGQQSOwoPcmVmZXJlbmNlX2xpbmtzGA0gAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgTA8BkEEigKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgOIAEoCUIEwPAZBEgAiAEBEikKBW1lZGlhGA8gAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIEwPAZBBIZCgtpc19hcmNoaXZlZBgQIAEoCEIEwPAZBDqNAYq1GEsKDG1hbnVmYWN0dXJlcgoEbmFtZQoJY29ubmVjdG9yCgxwb2xhcml6YXRpb24KEmZyZXF1ZW5jeV9iYW5kX21oegoIZ2Fpbl9kYmmatRgcY29tcG9uZW50cy9oYXJkd2FyZS9hbnRlbm5hc8LzGBQKCGFudGVubmFzKghlbnRpdGllc8LwGQIIAUIYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlIjAKEUdldEFudGVubmFSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiawoTTGlzdEFudGVubmFzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJIlkKFExpc3RBbnRlbm5hc1Jlc3BvbnNlEigKCGFudGVubmFzGAEgAygLMhYucXVhZHNtaXRoLmFwaS5BbnRlbm5hEhcKD25leHRfcGFnZV90b2tlbhgCIAEoCTKxAQoOQW50ZW5uYVNlcnZpY2USRgoKR2V0QW50ZW5uYRIgLnF1YWRzbWl0aC5hcGkuR2V0QW50ZW5uYVJlcXVlc3QaFi5xdWFkc21pdGguYXBpLkFudGVubmESVwoMTGlzdEFudGVubmFzEiIucXVhZHNtaXRoLmFwaS5MaXN0QW50ZW5uYXNSZXF1ZXN0GiMucXVhZHNtaXRoLmFwaS5MaXN0QW50ZW5uYXNSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -119,14 +119,9 @@ export type Antenna = Message<"quadsmith.api.Antenna"> & {
   media: Media[];
 
   /**
-   * @generated from field: optional string user_uuid = 16;
+   * @generated from field: bool is_archived = 16;
    */
-  userUuid?: string | undefined;
-
-  /**
-   * @generated from field: optional string author_username = 17;
-   */
-  authorUsername?: string | undefined;
+  isArchived: boolean;
 };
 
 /**
@@ -136,60 +131,6 @@ export type Antenna = Message<"quadsmith.api.Antenna"> & {
 export const AntennaSchema: GenMessage<Antenna> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_antenna, 0);
-
-/**
- * @generated from message quadsmith.api.CreateAntennaRequest
- */
-export type CreateAntennaRequest = Message<"quadsmith.api.CreateAntennaRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Antenna antenna = 1;
-   */
-  antenna?: Antenna | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateAntennaRequest.
- * Use `create(CreateAntennaRequestSchema)` to create a new message.
- */
-export const CreateAntennaRequestSchema: GenMessage<CreateAntennaRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_antenna, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteAntennaRequest
- */
-export type DeleteAntennaRequest = Message<"quadsmith.api.DeleteAntennaRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteAntennaRequest.
- * Use `create(DeleteAntennaRequestSchema)` to create a new message.
- */
-export const DeleteAntennaRequestSchema: GenMessage<DeleteAntennaRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_antenna, 2);
-
-/**
- * @generated from message quadsmith.api.DeleteAntennaResponse
- */
-export type DeleteAntennaResponse = Message<"quadsmith.api.DeleteAntennaResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteAntennaResponse.
- * Use `create(DeleteAntennaResponseSchema)` to create a new message.
- */
-export const DeleteAntennaResponseSchema: GenMessage<DeleteAntennaResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_antenna, 3);
 
 /**
  * @generated from message quadsmith.api.GetAntennaRequest
@@ -212,7 +153,7 @@ export type GetAntennaRequest = Message<"quadsmith.api.GetAntennaRequest"> & {
  */
 export const GetAntennaRequestSchema: GenMessage<GetAntennaRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_antenna, 4);
+  messageDesc(file_quadsmith_api_antenna, 1);
 
 /**
  * @generated from message quadsmith.api.ListAntennasRequest
@@ -250,7 +191,7 @@ export type ListAntennasRequest = Message<"quadsmith.api.ListAntennasRequest"> &
  */
 export const ListAntennasRequestSchema: GenMessage<ListAntennasRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_antenna, 5);
+  messageDesc(file_quadsmith_api_antenna, 2);
 
 /**
  * @generated from message quadsmith.api.ListAntennasResponse
@@ -273,25 +214,7 @@ export type ListAntennasResponse = Message<"quadsmith.api.ListAntennasResponse">
  */
 export const ListAntennasResponseSchema: GenMessage<ListAntennasResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_antenna, 6);
-
-/**
- * @generated from message quadsmith.api.UpdateAntennaRequest
- */
-export type UpdateAntennaRequest = Message<"quadsmith.api.UpdateAntennaRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Antenna antenna = 1;
-   */
-  antenna?: Antenna | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateAntennaRequest.
- * Use `create(UpdateAntennaRequestSchema)` to create a new message.
- */
-export const UpdateAntennaRequestSchema: GenMessage<UpdateAntennaRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_antenna, 7);
+  messageDesc(file_quadsmith_api_antenna, 3);
 
 /**
  * @generated from service quadsmith.api.AntennaService
@@ -312,29 +235,5 @@ export const AntennaService: GenService<{
     methodKind: "unary";
     input: typeof ListAntennasRequestSchema;
     output: typeof ListAntennasResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.AntennaService.CreateAntenna
-   */
-  createAntenna: {
-    methodKind: "unary";
-    input: typeof CreateAntennaRequestSchema;
-    output: typeof AntennaSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.AntennaService.UpdateAntenna
-   */
-  updateAntenna: {
-    methodKind: "unary";
-    input: typeof UpdateAntennaRequestSchema;
-    output: typeof AntennaSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.AntennaService.DeleteAntenna
-   */
-  deleteAntenna: {
-    methodKind: "unary";
-    input: typeof DeleteAntennaRequestSchema;
-    output: typeof DeleteAntennaResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_antenna, 0);

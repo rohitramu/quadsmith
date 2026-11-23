@@ -1856,7 +1856,7 @@ func ListEntities(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []
 }
 
 func ExportEntities(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Entity, error) {
-	query := `SELECT uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at, user_uuid FROM entities WHERE user_uuid = $1::uuid ORDER BY uuid ASC`
+	query := `SELECT uuid, collection, id, name, description, primary_display_image, reference_links, media, author_or_manufacturer, is_archived, created_at, updated_at, user_uuid FROM entities WHERE collection = 'builds' AND user_uuid = $1::uuid ORDER BY uuid ASC`
 	rows, err := db.Query(ctx, query, userUUID)
 	if err != nil {
 		return nil, err

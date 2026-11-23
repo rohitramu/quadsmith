@@ -27,9 +27,9 @@
 ## <a id="1-background" >1. Background</a>
 
 In Quadsmith, entities fall into two primary categories: user-assembled aircraft
-configurations ([`Builds`](src/proto/quadsmith/api/build.proto)) and 20 catalog
-collections representing hardware specifications, pilot gear, and firmware
-([`Components`](user_created_components.md)).
+configurations ([`Builds`](../src/proto/quadsmith/api/build.proto)) and 20
+catalog collections representing hardware specifications, pilot gear, and
+firmware ([`Components`](ops_managed_component_catalog.md)).
 
 Currently, [The Forge](src/react/app-web/src/pages/BuildWizardPage.tsx) mandates
 a Step 0 gate: `TemplateStep`. Every builder must either choose an existing
@@ -77,10 +77,13 @@ and Forge streamlining to:
 - Enable one-click **"Build Similar"** on all build profiles and feed cards via
   URL navigation (`/builds/new?from=<buildId>`), pre-populating all 11 component
   slots, unlocking all wizard steps, and attributing the remix.
-- Enable **"Create Similar"** on all 20 component catalog pages via
-  `ComponentFormModal`, allowing any authenticated pilot to rapidly spawn
-  product variants pre-filled with manufacturer specs, with **all** physical,
-  electrical, and dimensional specs remaining 100% editable.
+- Enable **"Create Similar"** across all 20 component catalog collections in the
+  Ops console
+  ([`OpsCatalogWorkspace.tsx`](../src/react/app-ops-web/src/components/OpsCatalogWorkspace.tsx),
+  per [`ops_managed_component_catalog.md`](ops_managed_component_catalog.md)),
+  allowing elevated `HUMAN` operators to rapidly spawn product variants
+  pre-filled with manufacturer specs, with **all** physical, electrical, and
+  dimensional specs remaining 100% editable.
 
 ---
 
@@ -165,12 +168,13 @@ diffs that require author or admin approval.
 
 ID slugs are strictly system-generated and immutable:
 
-- **Complete Removal of Slug Inputs**: Remove the `ID Slug` input field entirely
+- **Complete Removal of Public Slug Inputs**: Remove the `ID Slug` input field
   from
-  [`ComponentFormModal.tsx`](src/react/app-web/src/components/ComponentFormModal.tsx)
-  and
-  [`ReviewStep.tsx`](src/react/app-web/src/components/forge/steps/ReviewStep.tsx).
-  Users are never prompted for, and cannot choose, custom slugs.
+  [`ReviewStep.tsx`](../src/react/app-web/src/components/forge/steps/ReviewStep.tsx).
+  Pilots are never prompted for custom build slugs, while operators creating
+  components in
+  [`OpsCatalogWorkspace.tsx`](../src/react/app-ops-web/src/components/OpsCatalogWorkspace.tsx)
+  can leave `ID Slug` blank for automatic slug derivation.
 - **Deterministic Slug Generation**: On creation (`CreateBuild` and
   `Create<Component>`), the backend slug generator automatically converts
   `manufacturer` and `name` (or `name` for builds) into a clean, hyphenated
@@ -375,36 +379,32 @@ Retain a "Load from Build..." button inside The Forge header toolbar.
 
 ### <a id="catalog-component-create-similar-with-fully-editable-specs" >Catalog Component 'Create Similar' with Fully Editable Specs</a>
 
-For the 20 catalog component collections:
+For the 20 catalog component collections (moved exclusively to the Ops plane in
+[`ops_managed_component_catalog.md`](ops_managed_component_catalog.md)):
 
-1. **Trigger on `ProductPage.tsx`**:
-   - Add a **"Create Similar"** button with a `Copy` icon to the product header
-     actions:
-     - For the creator/admin: displayed alongside "Edit Component" and "Delete".
-     - For non-owners: displayed prominently as the primary action.
+1. **Trigger in `OpsCatalogWorkspace.tsx` (`app-ops-web`)**:
+   - Render a **"Create Similar"** row action button with a `Copy` icon on every
+     component row (unlocked when an operator holds an active `HUMAN` JIT
+     grant), while public
+     [`ProductPage.tsx`](../src/react/app-web/src/pages/ProductPage.tsx) remains
+     strictly read-only.
 2. **Modal Invocation**:
-   - Sets `isCreateSimilarOpen = true` and passes `initialData={item}`.
-3. **100% Fully Editable Form Fields (No Slug Input)**:
+   - Opens `OpsComponentFormModal` in `clone` mode with `initialData={item}`.
+3. **100% Fully Editable Form Fields**:
    - In
-     [`ComponentFormModal.tsx`](src/react/app-web/src/components/ComponentFormModal.tsx),
-     add a prop `isClone?: boolean`.
-   - When `isClone` is true:
-     - Mode is treated as **Create** (invoking `Create<Type>` instead of
-       `Update<Type>`).
-     - Modal title displays `Create Similar ${srvDef.singularLabel}`.
-     - **No Slug Field**: The ID slug input is omitted entirely from the form;
-       the slug is automatically derived and persisted on the backend.
-     - **All Specs Fully Editable**: Every single physical, electrical, and
-       mechanical specification (stator diameter, stator height, KV, weight,
-       min/max voltage, max current, mount patterns, propeller interfaces, cell
-       counts, capacity, etc.) is rendered as an active, unlocked input field
-       pre-populated with the existing component's values. The pilot is free to
-       edit any subset of specs or retain them.
-     - `name` is pre-populated with `initialData.name`.
-     - `manufacturer` is pre-populated with `initialData.manufacturer`.
-     - Description, primary display image, and reference links are pre-populated
-       and fully editable.
-     - Submit button displays `Create ${srvDef.singularLabel}`.
+     [`OpsCatalogWorkspace.tsx`](../src/react/app-ops-web/src/components/OpsCatalogWorkspace.tsx),
+     when `mode === "clone"`:
+     - Mode is treated as **Create** (invoking
+       `<Component>OpsService.Create<Type>` instead of `Update<Type>`).
+     - Modal title displays `Create Similar ${collection.singularLabel}`.
+     - **Auto-Generated Slug**: The ID slug input starts blank so the slug is
+       automatically derived and persisted on the backend unless overridden.
+     - **All Specs Fully Editable**: Every physical, electrical, and mechanical
+       specification is rendered as an active, unlocked input pre-populated with
+       the source component's values.
+     - `name`, `manufacturer`, `description`, `primaryDisplayImage`, and
+       `referenceLinks` are pre-populated and editable.
+     - Submit button displays `Create ${collection.singularLabel}`.
 
 ### <a id="build-feed-and-build-profile-ui-integration" >Build Feed and Build Profile UI Integration</a>
 
@@ -439,9 +439,10 @@ nested sub-sections above:
 
 ## <a id="5-assumptions" >5. Assumptions</a>
 
-1. Authenticated users have permissions to create builds via `CreateBuild`,
-   update their own builds via `UpdateBuild`, and create components via
-   `Create<Component>`.
+1. Authenticated pilots have permissions to create builds via `CreateBuild` and
+   update their own builds via `UpdateBuild`, while `HUMAN` operators holding an
+   active JIT grant create and update catalog components via
+   `<Component>OpsService` (`server-ops-api`).
 2. Existing builds fetched via `GetBuild` have valid component foreign keys that
    can be looked up by the client.
 3. Unauthenticated pilots can configure a "Build Similar" session in The Forge,
@@ -468,12 +469,11 @@ Run the test suite using `make test`:
    - Verify "Edit Build" renders when logged in as the build creator.
    - Verify "Build Similar" renders for all users and links to
      `/builds/new?from=<id>`.
-3. **`ProductPage.test.tsx` & `ComponentFormModal.test.tsx`**:
-   - Verify "Create Similar" button opens `ComponentFormModal` with all specs
-     pre-filled as active, editable inputs.
-   - Verify no slug input is rendered in the modal.
-   - Verify saving calls `create<Component>` mutation with backend slug
-     generation.
+3. **`ProductPage.test.tsx` & `app-ops-web/src/__tests__/App.test.tsx`**:
+   - Verify public `ProductPage` omits component mutation buttons, while
+     `app-ops-web` "Create Similar" opens `OpsComponentFormModal` with all specs
+     pre-filled as active, editable inputs and calls
+     `<Component>OpsService.Create<Component>`.
 
 ### <a id="manual-verification" >Manual Verification</a>
 

@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_esc_firmware: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiBxdWFkc21pdGgvYXBpL2VzY19maXJtd2FyZS5wcm90bxINcXVhZHNtaXRoLmFwaSKrBgoLRXNjRmlybXdhcmUSOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSEAoCaWQYAiABKAlCBMDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkCEhIKBG5hbWUYBCABKAlCBMDwGQISFQoHdmVyc2lvbhgFIAEoCUIEwPAZAhIXCglwcm90b2NvbHMYBiABKAlCBMDwGQISIQoTcHdtX2ZyZXF1ZW5jeV9yYW5nZRgHIAEoCUIEwPAZAhIcCg5pc19vcGVuX3NvdXJjZRgIIAEoCEIEwPAZAhIZCgtkZXNjcmlwdGlvbhgJIAEoCUIEwPAZAhI7Cg9yZWZlcmVuY2VfbGlua3MYCiADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCBMDwGQISKAoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAsgASgJQgTA8BkCSACIAQESKQoFbWVkaWEYDCADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgTA8BkCEhwKCXVzZXJfdXVpZBgNIAEoCUIEwPAZBEgBiAEBEiIKD2F1dGhvcl91c2VybmFtZRgOIAEoCUIEwPAZAkgCiAEBOvsBirUYOAoMbWFudWZhY3R1cmVyCgRuYW1lCgd2ZXJzaW9uCglwcm90b2NvbHMKDmlzX29wZW5fc291cmNlmrUYIGNvbXBvbmVudHMvc29mdHdhcmUvZXNjLWZpcm13YXJlwvMYMQolZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVyX2Zpcm13YXJlcyoIZW50aXRpZXPC8BliCAUSXnV1aWQgSU4gKFNFTEVDVCB1dWlkIEZST00gZW50aXRpZXMgV0hFUkUgY29sbGVjdGlvbiA9ICdlc2MtZmlybXdhcmUnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiTAoYQ3JlYXRlRXNjRmlybXdhcmVSZXF1ZXN0EjAKDGVzY19maXJtd2FyZRgBIAEoCzIaLnF1YWRzbWl0aC5hcGkuRXNjRmlybXdhcmUiJgoYRGVsZXRlRXNjRmlybXdhcmVSZXF1ZXN0EgoKAmlkGAEgASgJIjAKGURlbGV0ZUVzY0Zpcm13YXJlUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiNAoVR2V0RXNjRmlybXdhcmVSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkibwoXTGlzdEVzY0Zpcm13YXJlc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJmChhMaXN0RXNjRmlybXdhcmVzUmVzcG9uc2USMQoNZXNjX2Zpcm13YXJlcxgBIAMoCzIaLnF1YWRzbWl0aC5hcGkuRXNjRmlybXdhcmUSFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIkwKGFVwZGF0ZUVzY0Zpcm13YXJlUmVxdWVzdBIwCgxlc2NfZmlybXdhcmUYASABKAsyGi5xdWFkc21pdGguYXBpLkVzY0Zpcm13YXJlMukDChJFc2NGaXJtd2FyZVNlcnZpY2USUgoOR2V0RXNjRmlybXdhcmUSJC5xdWFkc21pdGguYXBpLkdldEVzY0Zpcm13YXJlUmVxdWVzdBoaLnF1YWRzbWl0aC5hcGkuRXNjRmlybXdhcmUSYwoQTGlzdEVzY0Zpcm13YXJlcxImLnF1YWRzbWl0aC5hcGkuTGlzdEVzY0Zpcm13YXJlc1JlcXVlc3QaJy5xdWFkc21pdGguYXBpLkxpc3RFc2NGaXJtd2FyZXNSZXNwb25zZRJYChFDcmVhdGVFc2NGaXJtd2FyZRInLnF1YWRzbWl0aC5hcGkuQ3JlYXRlRXNjRmlybXdhcmVSZXF1ZXN0GhoucXVhZHNtaXRoLmFwaS5Fc2NGaXJtd2FyZRJYChFVcGRhdGVFc2NGaXJtd2FyZRInLnF1YWRzbWl0aC5hcGkuVXBkYXRlRXNjRmlybXdhcmVSZXF1ZXN0GhoucXVhZHNtaXRoLmFwaS5Fc2NGaXJtd2FyZRJmChFEZWxldGVFc2NGaXJtd2FyZRInLnF1YWRzbWl0aC5hcGkuRGVsZXRlRXNjRmlybXdhcmVSZXF1ZXN0GigucXVhZHNtaXRoLmFwaS5EZWxldGVFc2NGaXJtd2FyZVJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "CiBxdWFkc21pdGgvYXBpL2VzY19maXJtd2FyZS5wcm90bxINcXVhZHNtaXRoLmFwaSKCBQoLRXNjRmlybXdhcmUSOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSEAoCaWQYAiABKAlCBMDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkEEhIKBG5hbWUYBCABKAlCBMDwGQQSFQoHdmVyc2lvbhgFIAEoCUIEwPAZBBIXCglwcm90b2NvbHMYBiABKAlCBMDwGQQSIQoTcHdtX2ZyZXF1ZW5jeV9yYW5nZRgHIAEoCUIEwPAZBBIcCg5pc19vcGVuX3NvdXJjZRgIIAEoCEIEwPAZBBIZCgtkZXNjcmlwdGlvbhgJIAEoCUIEwPAZBBI7Cg9yZWZlcmVuY2VfbGlua3MYCiADKAsyHC5xdWFkc21pdGguYXBpLlJlZmVyZW5jZUxpbmtCBMDwGQQSKAoVcHJpbWFyeV9kaXNwbGF5X2ltYWdlGAsgASgJQgTA8BkESACIAQESKQoFbWVkaWEYDCADKAsyFC5xdWFkc21pdGguYXBpLk1lZGlhQgTA8BkEEhkKC2lzX2FyY2hpdmVkGA0gASgIQgTA8BkEOpsBirUYOAoMbWFudWZhY3R1cmVyCgRuYW1lCgd2ZXJzaW9uCglwcm90b2NvbHMKDmlzX29wZW5fc291cmNlmrUYIGNvbXBvbmVudHMvc29mdHdhcmUvZXNjLWZpcm13YXJlwvMYMQolZWxlY3Ryb25pY19zcGVlZF9jb250cm9sbGVyX2Zpcm13YXJlcyoIZW50aXRpZXPC8BkCCAFCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZSI0ChVHZXRFc2NGaXJtd2FyZVJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJvChdMaXN0RXNjRmlybXdhcmVzUmVxdWVzdBIOCgZmaWx0ZXIYASABKAkSEQoJcGFnZV9zaXplGAIgASgFEhIKCnBhZ2VfdG9rZW4YAyABKAkSDwoHY29sdW1ucxgEIAMoCRIMCgRzb3J0GAUgAygJImYKGExpc3RFc2NGaXJtd2FyZXNSZXNwb25zZRIxCg1lc2NfZmlybXdhcmVzGAEgAygLMhoucXVhZHNtaXRoLmFwaS5Fc2NGaXJtd2FyZRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkyzQEKEkVzY0Zpcm13YXJlU2VydmljZRJSCg5HZXRFc2NGaXJtd2FyZRIkLnF1YWRzbWl0aC5hcGkuR2V0RXNjRmlybXdhcmVSZXF1ZXN0GhoucXVhZHNtaXRoLmFwaS5Fc2NGaXJtd2FyZRJjChBMaXN0RXNjRmlybXdhcmVzEiYucXVhZHNtaXRoLmFwaS5MaXN0RXNjRmlybXdhcmVzUmVxdWVzdBonLnF1YWRzbWl0aC5hcGkuTGlzdEVzY0Zpcm13YXJlc1Jlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -94,14 +94,9 @@ export type EscFirmware = Message<"quadsmith.api.EscFirmware"> & {
   media: Media[];
 
   /**
-   * @generated from field: optional string user_uuid = 13;
+   * @generated from field: bool is_archived = 13;
    */
-  userUuid?: string | undefined;
-
-  /**
-   * @generated from field: optional string author_username = 14;
-   */
-  authorUsername?: string | undefined;
+  isArchived: boolean;
 };
 
 /**
@@ -111,60 +106,6 @@ export type EscFirmware = Message<"quadsmith.api.EscFirmware"> & {
 export const EscFirmwareSchema: GenMessage<EscFirmware> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_esc_firmware, 0);
-
-/**
- * @generated from message quadsmith.api.CreateEscFirmwareRequest
- */
-export type CreateEscFirmwareRequest = Message<"quadsmith.api.CreateEscFirmwareRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.EscFirmware esc_firmware = 1;
-   */
-  escFirmware?: EscFirmware | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateEscFirmwareRequest.
- * Use `create(CreateEscFirmwareRequestSchema)` to create a new message.
- */
-export const CreateEscFirmwareRequestSchema: GenMessage<CreateEscFirmwareRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_esc_firmware, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteEscFirmwareRequest
- */
-export type DeleteEscFirmwareRequest = Message<"quadsmith.api.DeleteEscFirmwareRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteEscFirmwareRequest.
- * Use `create(DeleteEscFirmwareRequestSchema)` to create a new message.
- */
-export const DeleteEscFirmwareRequestSchema: GenMessage<DeleteEscFirmwareRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_esc_firmware, 2);
-
-/**
- * @generated from message quadsmith.api.DeleteEscFirmwareResponse
- */
-export type DeleteEscFirmwareResponse = Message<"quadsmith.api.DeleteEscFirmwareResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteEscFirmwareResponse.
- * Use `create(DeleteEscFirmwareResponseSchema)` to create a new message.
- */
-export const DeleteEscFirmwareResponseSchema: GenMessage<DeleteEscFirmwareResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_esc_firmware, 3);
 
 /**
  * @generated from message quadsmith.api.GetEscFirmwareRequest
@@ -187,7 +128,7 @@ export type GetEscFirmwareRequest = Message<"quadsmith.api.GetEscFirmwareRequest
  */
 export const GetEscFirmwareRequestSchema: GenMessage<GetEscFirmwareRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_esc_firmware, 4);
+  messageDesc(file_quadsmith_api_esc_firmware, 1);
 
 /**
  * @generated from message quadsmith.api.ListEscFirmwaresRequest
@@ -225,7 +166,7 @@ export type ListEscFirmwaresRequest = Message<"quadsmith.api.ListEscFirmwaresReq
  */
 export const ListEscFirmwaresRequestSchema: GenMessage<ListEscFirmwaresRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_esc_firmware, 5);
+  messageDesc(file_quadsmith_api_esc_firmware, 2);
 
 /**
  * @generated from message quadsmith.api.ListEscFirmwaresResponse
@@ -248,25 +189,7 @@ export type ListEscFirmwaresResponse = Message<"quadsmith.api.ListEscFirmwaresRe
  */
 export const ListEscFirmwaresResponseSchema: GenMessage<ListEscFirmwaresResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_esc_firmware, 6);
-
-/**
- * @generated from message quadsmith.api.UpdateEscFirmwareRequest
- */
-export type UpdateEscFirmwareRequest = Message<"quadsmith.api.UpdateEscFirmwareRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.EscFirmware esc_firmware = 1;
-   */
-  escFirmware?: EscFirmware | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateEscFirmwareRequest.
- * Use `create(UpdateEscFirmwareRequestSchema)` to create a new message.
- */
-export const UpdateEscFirmwareRequestSchema: GenMessage<UpdateEscFirmwareRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_esc_firmware, 7);
+  messageDesc(file_quadsmith_api_esc_firmware, 3);
 
 /**
  * @generated from service quadsmith.api.EscFirmwareService
@@ -287,29 +210,5 @@ export const EscFirmwareService: GenService<{
     methodKind: "unary";
     input: typeof ListEscFirmwaresRequestSchema;
     output: typeof ListEscFirmwaresResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.EscFirmwareService.CreateEscFirmware
-   */
-  createEscFirmware: {
-    methodKind: "unary";
-    input: typeof CreateEscFirmwareRequestSchema;
-    output: typeof EscFirmwareSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.EscFirmwareService.UpdateEscFirmware
-   */
-  updateEscFirmware: {
-    methodKind: "unary";
-    input: typeof UpdateEscFirmwareRequestSchema;
-    output: typeof EscFirmwareSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.EscFirmwareService.DeleteEscFirmware
-   */
-  deleteEscFirmware: {
-    methodKind: "unary";
-    input: typeof DeleteEscFirmwareRequestSchema;
-    output: typeof DeleteEscFirmwareResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_esc_firmware, 0);

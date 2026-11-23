@@ -117,7 +117,7 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 		}
 
 		// 3. JIT Elevation Check (sensitive methods require HUMAN operator and active JIT grant)
-		if in.isSensitiveMethod(methodName) {
+		if in.isSensitiveProcedure(procedure, methodName) {
 			if opCtx.OperatorType != "HUMAN" {
 				return nil, connect.NewError(connect.CodePermissionDenied, errors.New("sensitive procedure requires a HUMAN operator"))
 			}
@@ -141,7 +141,7 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 			"jit_grant_id":  opCtx.JitGrantID,
 		})
 
-		// 4. Execution & Synchronous Audit Logging (for OpsService RPCs)
+		// 4. Execution & Synchronous Audit Logging (for all quadsmith.ops.* RPCs)
 		t0 := time.Now()
 		res, err := next(ctx, req)
 		durationMs := time.Since(t0).Milliseconds()
@@ -157,7 +157,7 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 			"duration_ms": durationMs,
 		})
 
-		if strings.HasPrefix(procedure, "/quadsmith.ops.OpsService/") && in.opsDb != nil {
+		if strings.HasPrefix(procedure, "/quadsmith.ops.") && in.opsDb != nil {
 			status := "OK"
 			var errMsg *string
 			if err != nil {
@@ -254,6 +254,26 @@ func (in *OpsInterceptor) authorizeGroup(groupName, methodName string) error {
 	return connect.NewError(connect.CodePermissionDenied, fmt.Errorf("group %q is not authorized to execute %s", groupName, methodName))
 }
 
+func isCatalogMutationProcedure(procedure, methodName string) bool {
+	if !strings.HasPrefix(procedure, "/quadsmith.ops.") || strings.HasPrefix(procedure, "/quadsmith.ops.OpsService/") {
+		return false
+	}
+	return strings.HasPrefix(methodName, "Create") ||
+		strings.HasPrefix(methodName, "Update") ||
+		strings.HasPrefix(methodName, "Delete") ||
+		strings.HasPrefix(methodName, "Restore")
+}
+
+func (in *OpsInterceptor) isSensitiveProcedure(procedure, methodName string) bool {
+	if in.jit == nil || !in.jit.GetEnabled() {
+		return false
+	}
+	if isCatalogMutationProcedure(procedure, methodName) {
+		return true
+	}
+	return in.isSensitiveMethod(methodName)
+}
+
 func (in *OpsInterceptor) isSensitiveMethod(methodName string) bool {
 	if in.jit == nil || !in.jit.GetEnabled() {
 		return false
@@ -262,8 +282,49 @@ func (in *OpsInterceptor) isSensitiveMethod(methodName string) bool {
 		if m == "*" || m == methodName {
 			return true
 		}
+		if strings.HasSuffix(m, "*") && strings.HasPrefix(methodName, strings.TrimSuffix(m, "*")) {
+			return true
+		}
 	}
 	return false
+}
+
+// AuthenticateSensitiveHTTP verifies a raw HTTP request (such as /api/ops/blobs) for a HUMAN operator with an active JIT grant.
+func (in *OpsInterceptor) AuthenticateSensitiveHTTP(ctx context.Context, authHeader, cookieToken, methodName string) (*OperatorContext, error) {
+	token := strings.TrimSpace(strings.TrimPrefix(strings.TrimSpace(authHeader), "Bearer "))
+	if token == "" {
+		token = strings.TrimSpace(cookieToken)
+	}
+	if token == "" {
+		return nil, connect.NewError(connect.CodeUnauthenticated, errors.New("unauthenticated: missing bearer token"))
+	}
+	opCtx, err := in.authenticateToken(ctx, token)
+	if err != nil {
+		return nil, err
+	}
+	if err := in.authorizeGroup(opCtx.GroupName, methodName); err != nil {
+		return nil, err
+	}
+	if opCtx.OperatorType != "HUMAN" {
+		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("sensitive procedure requires a HUMAN operator"))
+	}
+	if in.jit != nil && in.jit.GetEnabled() {
+		grantUUID, grantID, err := in.checkJitGrant(ctx, opCtx.Operator, methodName)
+		if err != nil {
+			return nil, err
+		}
+		opCtx.JitGrantUUID = grantUUID
+		opCtx.JitGrantID = grantID
+	}
+	return opCtx, nil
+}
+
+// RecordAudit writes an audit entry to internal_api_calls when opsDb is available.
+func (in *OpsInterceptor) RecordAudit(ctx context.Context, methodName string, opCtx *OperatorContext, status string, errMsg *string, durationMs int64) string {
+	if in.opsDb == nil || opCtx == nil {
+		return ""
+	}
+	return in.logAudit(ctx, methodName, opCtx, status, errMsg, durationMs)
 }
 
 func (in *OpsInterceptor) checkJitGrant(ctx context.Context, operator, methodName string) (string, string, error) {

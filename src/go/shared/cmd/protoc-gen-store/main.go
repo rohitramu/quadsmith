@@ -36,6 +36,7 @@ var entityInheritedFields = map[string]bool{
 	"media":                 true,
 	"user_uuid":             true,
 	"author_username":       true,
+	"is_archived":           true,
 }
 
 func isInheritedField(tblOpts *sqlpb.TableOptions, fieldName string) bool {
@@ -277,10 +278,13 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	validColsStr := "map[string]bool{\"" + strings.Join(readableColNames, "\": true, \"") + "\": true}"
 
 	hasId := false
+	hasAuthorUsername := false
 	for _, col := range readableColNames {
 		if col == "id" {
 			hasId = true
-			break
+		}
+		if col == "author_username" {
+			hasAuthorUsername = true
 		}
 	}
 
@@ -293,7 +297,10 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 
 	fromClause := tableName
 	if hasEntitiesJoin {
-		fromClause = tableName + " INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid"
+		fromClause = tableName + " INNER JOIN entities USING (uuid)"
+		if hasAuthorUsername {
+			fromClause += " LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid"
+		}
 	}
 
 	// --- GET ---
@@ -447,7 +454,15 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 		pluralName = msgName
 	}
 
-	g.P("func List", pluralName, "(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*", msgName, ", error) {")
+	if hasEntitiesJoin {
+		g.P("func List", pluralName, "(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*", msgName, ", error) {")
+		g.P("	return List", pluralName, "IncludingArchived(ctx, db, false, cols, sorts, whereClause, limit, offset, args...)")
+		g.P("}")
+		g.P()
+		g.P("func List", pluralName, "IncludingArchived(ctx context.Context, db *pgxpool.Pool, includeArchived bool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*", msgName, ", error) {")
+	} else {
+		g.P("func List", pluralName, "(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*", msgName, ", error) {")
+	}
 	g.P("	validCols := " + validColsStr)
 	g.P("	colsStr := \"", readableColsStr, "\"")
 	g.P("	if len(cols) > 0 {")
@@ -464,9 +479,13 @@ func generateStoreForMessage(g *protogen.GeneratedFile, msg *protogen.Message) {
 	g.P("   }")
 	g.P("	query := `SELECT ` + colsStr + ` FROM ", fromClause, "`")
 	if hasEntitiesJoin {
-		g.P("	query += \" WHERE entities.is_archived = false\"")
-		g.P("	if whereClause != \"\" {")
-		g.P("		query += \" AND (\" + whereClause + \")\"")
+		g.P("	if !includeArchived {")
+		g.P("		query += \" WHERE entities.is_archived = false\"")
+		g.P("		if whereClause != \"\" {")
+		g.P("			query += \" AND (\" + whereClause + \")\"")
+		g.P("		}")
+		g.P("	} else if whereClause != \"\" {")
+		g.P("		query += \" WHERE \" + whereClause")
 		g.P("	}")
 	} else {
 		g.P("	if whereClause != \"\" {")

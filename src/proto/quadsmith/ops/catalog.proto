@@ -1,0 +1,994 @@
+syntax = "proto3";
+
+package quadsmith.ops;
+
+import "quadsmith/api/antenna.proto";
+import "quadsmith/api/battery.proto";
+import "quadsmith/api/camera.proto";
+import "quadsmith/api/charger.proto";
+import "quadsmith/api/electronic_speed_controller.proto";
+import "quadsmith/api/esc_firmware.proto";
+import "quadsmith/api/fc_firmware.proto";
+import "quadsmith/api/field_tool.proto";
+import "quadsmith/api/flight_controller.proto";
+import "quadsmith/api/frame.proto";
+import "quadsmith/api/goggles.proto";
+import "quadsmith/api/gps_receiver.proto";
+import "quadsmith/api/motor.proto";
+import "quadsmith/api/propeller.proto";
+import "quadsmith/api/radio_firmware.proto";
+import "quadsmith/api/receiver.proto";
+import "quadsmith/api/software_tool.proto";
+import "quadsmith/api/transmitter.proto";
+import "quadsmith/api/video_transmitter.proto";
+import "quadsmith/api/vtx_firmware.proto";
+
+option go_package = "quadsmith/shared/gen/quadsmith/ops;ops";
+
+// ---------------------------------------------------------
+// Services
+// ---------------------------------------------------------
+
+service AntennaOpsService {
+  rpc GetAntenna(GetAntennaOpsRequest) returns (quadsmith.api.Antenna);
+  rpc ListAntennas(ListAntennasOpsRequest) returns (ListAntennasOpsResponse);
+  rpc CreateAntenna(CreateAntennaOpsRequest) returns (quadsmith.api.Antenna);
+  rpc UpdateAntenna(UpdateAntennaOpsRequest) returns (quadsmith.api.Antenna);
+  rpc DeleteAntenna(DeleteAntennaOpsRequest) returns (DeleteAntennaOpsResponse);
+  rpc RestoreAntenna(RestoreAntennaOpsRequest) returns (quadsmith.api.Antenna);
+}
+
+service BatteryOpsService {
+  rpc GetBattery(GetBatteryOpsRequest) returns (quadsmith.api.Battery);
+  rpc ListBatteries(ListBatteriesOpsRequest) returns (ListBatteriesOpsResponse);
+  rpc CreateBattery(CreateBatteryOpsRequest) returns (quadsmith.api.Battery);
+  rpc UpdateBattery(UpdateBatteryOpsRequest) returns (quadsmith.api.Battery);
+  rpc DeleteBattery(DeleteBatteryOpsRequest) returns (DeleteBatteryOpsResponse);
+  rpc RestoreBattery(RestoreBatteryOpsRequest) returns (quadsmith.api.Battery);
+}
+
+service CameraOpsService {
+  rpc GetCamera(GetCameraOpsRequest) returns (quadsmith.api.Camera);
+  rpc ListCameras(ListCamerasOpsRequest) returns (ListCamerasOpsResponse);
+  rpc CreateCamera(CreateCameraOpsRequest) returns (quadsmith.api.Camera);
+  rpc UpdateCamera(UpdateCameraOpsRequest) returns (quadsmith.api.Camera);
+  rpc DeleteCamera(DeleteCameraOpsRequest) returns (DeleteCameraOpsResponse);
+  rpc RestoreCamera(RestoreCameraOpsRequest) returns (quadsmith.api.Camera);
+}
+
+service ChargerOpsService {
+  rpc GetCharger(GetChargerOpsRequest) returns (quadsmith.api.Charger);
+  rpc ListChargers(ListChargersOpsRequest) returns (ListChargersOpsResponse);
+  rpc CreateCharger(CreateChargerOpsRequest) returns (quadsmith.api.Charger);
+  rpc UpdateCharger(UpdateChargerOpsRequest) returns (quadsmith.api.Charger);
+  rpc DeleteCharger(DeleteChargerOpsRequest) returns (DeleteChargerOpsResponse);
+  rpc RestoreCharger(RestoreChargerOpsRequest) returns (quadsmith.api.Charger);
+}
+
+service ElectronicSpeedControllerOpsService {
+  rpc GetElectronicSpeedController(GetElectronicSpeedControllerOpsRequest) returns (quadsmith.api.ElectronicSpeedController);
+  rpc ListElectronicSpeedControllers(ListElectronicSpeedControllersOpsRequest) returns (ListElectronicSpeedControllersOpsResponse);
+  rpc CreateElectronicSpeedController(CreateElectronicSpeedControllerOpsRequest) returns (quadsmith.api.ElectronicSpeedController);
+  rpc UpdateElectronicSpeedController(UpdateElectronicSpeedControllerOpsRequest) returns (quadsmith.api.ElectronicSpeedController);
+  rpc DeleteElectronicSpeedController(DeleteElectronicSpeedControllerOpsRequest) returns (DeleteElectronicSpeedControllerOpsResponse);
+  rpc RestoreElectronicSpeedController(RestoreElectronicSpeedControllerOpsRequest) returns (quadsmith.api.ElectronicSpeedController);
+}
+
+service EscFirmwareOpsService {
+  rpc GetEscFirmware(GetEscFirmwareOpsRequest) returns (quadsmith.api.EscFirmware);
+  rpc ListEscFirmwares(ListEscFirmwaresOpsRequest) returns (ListEscFirmwaresOpsResponse);
+  rpc CreateEscFirmware(CreateEscFirmwareOpsRequest) returns (quadsmith.api.EscFirmware);
+  rpc UpdateEscFirmware(UpdateEscFirmwareOpsRequest) returns (quadsmith.api.EscFirmware);
+  rpc DeleteEscFirmware(DeleteEscFirmwareOpsRequest) returns (DeleteEscFirmwareOpsResponse);
+  rpc RestoreEscFirmware(RestoreEscFirmwareOpsRequest) returns (quadsmith.api.EscFirmware);
+}
+
+service FcFirmwareOpsService {
+  rpc GetFcFirmware(GetFcFirmwareOpsRequest) returns (quadsmith.api.FcFirmware);
+  rpc ListFcFirmwares(ListFcFirmwaresOpsRequest) returns (ListFcFirmwaresOpsResponse);
+  rpc CreateFcFirmware(CreateFcFirmwareOpsRequest) returns (quadsmith.api.FcFirmware);
+  rpc UpdateFcFirmware(UpdateFcFirmwareOpsRequest) returns (quadsmith.api.FcFirmware);
+  rpc DeleteFcFirmware(DeleteFcFirmwareOpsRequest) returns (DeleteFcFirmwareOpsResponse);
+  rpc RestoreFcFirmware(RestoreFcFirmwareOpsRequest) returns (quadsmith.api.FcFirmware);
+}
+
+service FieldToolOpsService {
+  rpc GetFieldTool(GetFieldToolOpsRequest) returns (quadsmith.api.FieldTool);
+  rpc ListFieldTools(ListFieldToolsOpsRequest) returns (ListFieldToolsOpsResponse);
+  rpc CreateFieldTool(CreateFieldToolOpsRequest) returns (quadsmith.api.FieldTool);
+  rpc UpdateFieldTool(UpdateFieldToolOpsRequest) returns (quadsmith.api.FieldTool);
+  rpc DeleteFieldTool(DeleteFieldToolOpsRequest) returns (DeleteFieldToolOpsResponse);
+  rpc RestoreFieldTool(RestoreFieldToolOpsRequest) returns (quadsmith.api.FieldTool);
+}
+
+service FlightControllerOpsService {
+  rpc GetFlightController(GetFlightControllerOpsRequest) returns (quadsmith.api.FlightController);
+  rpc ListFlightControllers(ListFlightControllersOpsRequest) returns (ListFlightControllersOpsResponse);
+  rpc CreateFlightController(CreateFlightControllerOpsRequest) returns (quadsmith.api.FlightController);
+  rpc UpdateFlightController(UpdateFlightControllerOpsRequest) returns (quadsmith.api.FlightController);
+  rpc DeleteFlightController(DeleteFlightControllerOpsRequest) returns (DeleteFlightControllerOpsResponse);
+  rpc RestoreFlightController(RestoreFlightControllerOpsRequest) returns (quadsmith.api.FlightController);
+}
+
+service FrameOpsService {
+  rpc GetFrame(GetFrameOpsRequest) returns (quadsmith.api.Frame);
+  rpc ListFrames(ListFramesOpsRequest) returns (ListFramesOpsResponse);
+  rpc CreateFrame(CreateFrameOpsRequest) returns (quadsmith.api.Frame);
+  rpc UpdateFrame(UpdateFrameOpsRequest) returns (quadsmith.api.Frame);
+  rpc DeleteFrame(DeleteFrameOpsRequest) returns (DeleteFrameOpsResponse);
+  rpc RestoreFrame(RestoreFrameOpsRequest) returns (quadsmith.api.Frame);
+}
+
+service GogglesOpsService {
+  rpc GetGoggles(GetGogglesOpsRequest) returns (quadsmith.api.Goggles);
+  rpc ListGoggles(ListGogglesOpsRequest) returns (ListGogglesOpsResponse);
+  rpc CreateGoggles(CreateGogglesOpsRequest) returns (quadsmith.api.Goggles);
+  rpc UpdateGoggles(UpdateGogglesOpsRequest) returns (quadsmith.api.Goggles);
+  rpc DeleteGoggles(DeleteGogglesOpsRequest) returns (DeleteGogglesOpsResponse);
+  rpc RestoreGoggles(RestoreGogglesOpsRequest) returns (quadsmith.api.Goggles);
+}
+
+service GpsReceiverOpsService {
+  rpc GetGpsReceiver(GetGpsReceiverOpsRequest) returns (quadsmith.api.GpsReceiver);
+  rpc ListGpsReceivers(ListGpsReceiversOpsRequest) returns (ListGpsReceiversOpsResponse);
+  rpc CreateGpsReceiver(CreateGpsReceiverOpsRequest) returns (quadsmith.api.GpsReceiver);
+  rpc UpdateGpsReceiver(UpdateGpsReceiverOpsRequest) returns (quadsmith.api.GpsReceiver);
+  rpc DeleteGpsReceiver(DeleteGpsReceiverOpsRequest) returns (DeleteGpsReceiverOpsResponse);
+  rpc RestoreGpsReceiver(RestoreGpsReceiverOpsRequest) returns (quadsmith.api.GpsReceiver);
+}
+
+service MotorOpsService {
+  rpc GetMotor(GetMotorOpsRequest) returns (quadsmith.api.Motor);
+  rpc ListMotors(ListMotorsOpsRequest) returns (ListMotorsOpsResponse);
+  rpc CreateMotor(CreateMotorOpsRequest) returns (quadsmith.api.Motor);
+  rpc UpdateMotor(UpdateMotorOpsRequest) returns (quadsmith.api.Motor);
+  rpc DeleteMotor(DeleteMotorOpsRequest) returns (DeleteMotorOpsResponse);
+  rpc RestoreMotor(RestoreMotorOpsRequest) returns (quadsmith.api.Motor);
+}
+
+service PropellerOpsService {
+  rpc GetPropeller(GetPropellerOpsRequest) returns (quadsmith.api.Propeller);
+  rpc ListPropellers(ListPropellersOpsRequest) returns (ListPropellersOpsResponse);
+  rpc CreatePropeller(CreatePropellerOpsRequest) returns (quadsmith.api.Propeller);
+  rpc UpdatePropeller(UpdatePropellerOpsRequest) returns (quadsmith.api.Propeller);
+  rpc DeletePropeller(DeletePropellerOpsRequest) returns (DeletePropellerOpsResponse);
+  rpc RestorePropeller(RestorePropellerOpsRequest) returns (quadsmith.api.Propeller);
+}
+
+service RadioFirmwareOpsService {
+  rpc GetRadioFirmware(GetRadioFirmwareOpsRequest) returns (quadsmith.api.RadioFirmware);
+  rpc ListRadioFirmwares(ListRadioFirmwaresOpsRequest) returns (ListRadioFirmwaresOpsResponse);
+  rpc CreateRadioFirmware(CreateRadioFirmwareOpsRequest) returns (quadsmith.api.RadioFirmware);
+  rpc UpdateRadioFirmware(UpdateRadioFirmwareOpsRequest) returns (quadsmith.api.RadioFirmware);
+  rpc DeleteRadioFirmware(DeleteRadioFirmwareOpsRequest) returns (DeleteRadioFirmwareOpsResponse);
+  rpc RestoreRadioFirmware(RestoreRadioFirmwareOpsRequest) returns (quadsmith.api.RadioFirmware);
+}
+
+service ReceiverOpsService {
+  rpc GetReceiver(GetReceiverOpsRequest) returns (quadsmith.api.Receiver);
+  rpc ListReceivers(ListReceiversOpsRequest) returns (ListReceiversOpsResponse);
+  rpc CreateReceiver(CreateReceiverOpsRequest) returns (quadsmith.api.Receiver);
+  rpc UpdateReceiver(UpdateReceiverOpsRequest) returns (quadsmith.api.Receiver);
+  rpc DeleteReceiver(DeleteReceiverOpsRequest) returns (DeleteReceiverOpsResponse);
+  rpc RestoreReceiver(RestoreReceiverOpsRequest) returns (quadsmith.api.Receiver);
+}
+
+service SoftwareToolOpsService {
+  rpc GetSoftwareTool(GetSoftwareToolOpsRequest) returns (quadsmith.api.SoftwareTool);
+  rpc ListSoftwareTools(ListSoftwareToolsOpsRequest) returns (ListSoftwareToolsOpsResponse);
+  rpc CreateSoftwareTool(CreateSoftwareToolOpsRequest) returns (quadsmith.api.SoftwareTool);
+  rpc UpdateSoftwareTool(UpdateSoftwareToolOpsRequest) returns (quadsmith.api.SoftwareTool);
+  rpc DeleteSoftwareTool(DeleteSoftwareToolOpsRequest) returns (DeleteSoftwareToolOpsResponse);
+  rpc RestoreSoftwareTool(RestoreSoftwareToolOpsRequest) returns (quadsmith.api.SoftwareTool);
+}
+
+service TransmitterOpsService {
+  rpc GetTransmitter(GetTransmitterOpsRequest) returns (quadsmith.api.Transmitter);
+  rpc ListTransmitters(ListTransmittersOpsRequest) returns (ListTransmittersOpsResponse);
+  rpc CreateTransmitter(CreateTransmitterOpsRequest) returns (quadsmith.api.Transmitter);
+  rpc UpdateTransmitter(UpdateTransmitterOpsRequest) returns (quadsmith.api.Transmitter);
+  rpc DeleteTransmitter(DeleteTransmitterOpsRequest) returns (DeleteTransmitterOpsResponse);
+  rpc RestoreTransmitter(RestoreTransmitterOpsRequest) returns (quadsmith.api.Transmitter);
+}
+
+service VideoTransmitterOpsService {
+  rpc GetVideoTransmitter(GetVideoTransmitterOpsRequest) returns (quadsmith.api.VideoTransmitter);
+  rpc ListVideoTransmitters(ListVideoTransmittersOpsRequest) returns (ListVideoTransmittersOpsResponse);
+  rpc CreateVideoTransmitter(CreateVideoTransmitterOpsRequest) returns (quadsmith.api.VideoTransmitter);
+  rpc UpdateVideoTransmitter(UpdateVideoTransmitterOpsRequest) returns (quadsmith.api.VideoTransmitter);
+  rpc DeleteVideoTransmitter(DeleteVideoTransmitterOpsRequest) returns (DeleteVideoTransmitterOpsResponse);
+  rpc RestoreVideoTransmitter(RestoreVideoTransmitterOpsRequest) returns (quadsmith.api.VideoTransmitter);
+}
+
+service VtxFirmwareOpsService {
+  rpc GetVtxFirmware(GetVtxFirmwareOpsRequest) returns (quadsmith.api.VtxFirmware);
+  rpc ListVtxFirmwares(ListVtxFirmwaresOpsRequest) returns (ListVtxFirmwaresOpsResponse);
+  rpc CreateVtxFirmware(CreateVtxFirmwareOpsRequest) returns (quadsmith.api.VtxFirmware);
+  rpc UpdateVtxFirmware(UpdateVtxFirmwareOpsRequest) returns (quadsmith.api.VtxFirmware);
+  rpc DeleteVtxFirmware(DeleteVtxFirmwareOpsRequest) returns (DeleteVtxFirmwareOpsResponse);
+  rpc RestoreVtxFirmware(RestoreVtxFirmwareOpsRequest) returns (quadsmith.api.VtxFirmware);
+}
+
+// ---------------------------------------------------------
+// Request/response messages
+// ---------------------------------------------------------
+
+message CreateAntennaOpsRequest {
+  quadsmith.api.Antenna antenna = 1;
+}
+
+message CreateBatteryOpsRequest {
+  quadsmith.api.Battery battery = 1;
+}
+
+message CreateCameraOpsRequest {
+  quadsmith.api.Camera camera = 1;
+}
+
+message CreateChargerOpsRequest {
+  quadsmith.api.Charger charger = 1;
+}
+
+message CreateElectronicSpeedControllerOpsRequest {
+  quadsmith.api.ElectronicSpeedController electronic_speed_controller = 1;
+}
+
+message CreateEscFirmwareOpsRequest {
+  quadsmith.api.EscFirmware esc_firmware = 1;
+}
+
+message CreateFcFirmwareOpsRequest {
+  quadsmith.api.FcFirmware fc_firmware = 1;
+}
+
+message CreateFieldToolOpsRequest {
+  quadsmith.api.FieldTool field_tool = 1;
+}
+
+message CreateFlightControllerOpsRequest {
+  quadsmith.api.FlightController flight_controller = 1;
+}
+
+message CreateFrameOpsRequest {
+  quadsmith.api.Frame frame = 1;
+}
+
+message CreateGogglesOpsRequest {
+  quadsmith.api.Goggles goggles = 1;
+}
+
+message CreateGpsReceiverOpsRequest {
+  quadsmith.api.GpsReceiver gps_receiver = 1;
+}
+
+message CreateMotorOpsRequest {
+  quadsmith.api.Motor motor = 1;
+}
+
+message CreatePropellerOpsRequest {
+  quadsmith.api.Propeller propeller = 1;
+}
+
+message CreateRadioFirmwareOpsRequest {
+  quadsmith.api.RadioFirmware radio_firmware = 1;
+}
+
+message CreateReceiverOpsRequest {
+  quadsmith.api.Receiver receiver = 1;
+}
+
+message CreateSoftwareToolOpsRequest {
+  quadsmith.api.SoftwareTool software_tool = 1;
+}
+
+message CreateTransmitterOpsRequest {
+  quadsmith.api.Transmitter transmitter = 1;
+}
+
+message CreateVideoTransmitterOpsRequest {
+  quadsmith.api.VideoTransmitter video_transmitter = 1;
+}
+
+message CreateVtxFirmwareOpsRequest {
+  quadsmith.api.VtxFirmware vtx_firmware = 1;
+}
+
+message DeleteAntennaOpsRequest {
+  string id = 1;
+}
+
+message DeleteAntennaOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteBatteryOpsRequest {
+  string id = 1;
+}
+
+message DeleteBatteryOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteCameraOpsRequest {
+  string id = 1;
+}
+
+message DeleteCameraOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteChargerOpsRequest {
+  string id = 1;
+}
+
+message DeleteChargerOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteElectronicSpeedControllerOpsRequest {
+  string id = 1;
+}
+
+message DeleteElectronicSpeedControllerOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteEscFirmwareOpsRequest {
+  string id = 1;
+}
+
+message DeleteEscFirmwareOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteFcFirmwareOpsRequest {
+  string id = 1;
+}
+
+message DeleteFcFirmwareOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteFieldToolOpsRequest {
+  string id = 1;
+}
+
+message DeleteFieldToolOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteFlightControllerOpsRequest {
+  string id = 1;
+}
+
+message DeleteFlightControllerOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteFrameOpsRequest {
+  string id = 1;
+}
+
+message DeleteFrameOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteGogglesOpsRequest {
+  string id = 1;
+}
+
+message DeleteGogglesOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteGpsReceiverOpsRequest {
+  string id = 1;
+}
+
+message DeleteGpsReceiverOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteMotorOpsRequest {
+  string id = 1;
+}
+
+message DeleteMotorOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeletePropellerOpsRequest {
+  string id = 1;
+}
+
+message DeletePropellerOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteRadioFirmwareOpsRequest {
+  string id = 1;
+}
+
+message DeleteRadioFirmwareOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteReceiverOpsRequest {
+  string id = 1;
+}
+
+message DeleteReceiverOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteSoftwareToolOpsRequest {
+  string id = 1;
+}
+
+message DeleteSoftwareToolOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteTransmitterOpsRequest {
+  string id = 1;
+}
+
+message DeleteTransmitterOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteVideoTransmitterOpsRequest {
+  string id = 1;
+}
+
+message DeleteVideoTransmitterOpsResponse {
+  bool is_archived = 1;
+}
+
+message DeleteVtxFirmwareOpsRequest {
+  string id = 1;
+}
+
+message DeleteVtxFirmwareOpsResponse {
+  bool is_archived = 1;
+}
+
+message GetAntennaOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetBatteryOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetCameraOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetChargerOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetElectronicSpeedControllerOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetEscFirmwareOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetFcFirmwareOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetFieldToolOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetFlightControllerOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetFrameOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetGogglesOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetGpsReceiverOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetMotorOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetPropellerOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetRadioFirmwareOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetReceiverOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetSoftwareToolOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetTransmitterOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetVideoTransmitterOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message GetVtxFirmwareOpsRequest {
+  string id = 1;
+  repeated string columns = 2;
+}
+
+message ListAntennasOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListAntennasOpsResponse {
+  repeated quadsmith.api.Antenna antennas = 1;
+  string next_page_token = 2;
+}
+
+message ListBatteriesOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListBatteriesOpsResponse {
+  repeated quadsmith.api.Battery batteries = 1;
+  string next_page_token = 2;
+}
+
+message ListCamerasOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListCamerasOpsResponse {
+  repeated quadsmith.api.Camera cameras = 1;
+  string next_page_token = 2;
+}
+
+message ListChargersOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListChargersOpsResponse {
+  repeated quadsmith.api.Charger chargers = 1;
+  string next_page_token = 2;
+}
+
+message ListElectronicSpeedControllersOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListElectronicSpeedControllersOpsResponse {
+  repeated quadsmith.api.ElectronicSpeedController electronic_speed_controllers = 1;
+  string next_page_token = 2;
+}
+
+message ListEscFirmwaresOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListEscFirmwaresOpsResponse {
+  repeated quadsmith.api.EscFirmware esc_firmwares = 1;
+  string next_page_token = 2;
+}
+
+message ListFcFirmwaresOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListFcFirmwaresOpsResponse {
+  repeated quadsmith.api.FcFirmware fc_firmwares = 1;
+  string next_page_token = 2;
+}
+
+message ListFieldToolsOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListFieldToolsOpsResponse {
+  repeated quadsmith.api.FieldTool field_tools = 1;
+  string next_page_token = 2;
+}
+
+message ListFlightControllersOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListFlightControllersOpsResponse {
+  repeated quadsmith.api.FlightController flight_controllers = 1;
+  string next_page_token = 2;
+}
+
+message ListFramesOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListFramesOpsResponse {
+  repeated quadsmith.api.Frame frames = 1;
+  string next_page_token = 2;
+}
+
+message ListGogglesOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListGogglesOpsResponse {
+  repeated quadsmith.api.Goggles goggles = 1;
+  string next_page_token = 2;
+}
+
+message ListGpsReceiversOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListGpsReceiversOpsResponse {
+  repeated quadsmith.api.GpsReceiver gps_receivers = 1;
+  string next_page_token = 2;
+}
+
+message ListMotorsOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListMotorsOpsResponse {
+  repeated quadsmith.api.Motor motors = 1;
+  string next_page_token = 2;
+}
+
+message ListPropellersOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListPropellersOpsResponse {
+  repeated quadsmith.api.Propeller propellers = 1;
+  string next_page_token = 2;
+}
+
+message ListRadioFirmwaresOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListRadioFirmwaresOpsResponse {
+  repeated quadsmith.api.RadioFirmware radio_firmwares = 1;
+  string next_page_token = 2;
+}
+
+message ListReceiversOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListReceiversOpsResponse {
+  repeated quadsmith.api.Receiver receivers = 1;
+  string next_page_token = 2;
+}
+
+message ListSoftwareToolsOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListSoftwareToolsOpsResponse {
+  repeated quadsmith.api.SoftwareTool software_tools = 1;
+  string next_page_token = 2;
+}
+
+message ListTransmittersOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListTransmittersOpsResponse {
+  repeated quadsmith.api.Transmitter transmitters = 1;
+  string next_page_token = 2;
+}
+
+message ListVideoTransmittersOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListVideoTransmittersOpsResponse {
+  repeated quadsmith.api.VideoTransmitter video_transmitters = 1;
+  string next_page_token = 2;
+}
+
+message ListVtxFirmwaresOpsRequest {
+  string filter = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+  repeated string columns = 4;
+  repeated string sort = 5;
+  bool include_archived = 6;
+}
+
+message ListVtxFirmwaresOpsResponse {
+  repeated quadsmith.api.VtxFirmware vtx_firmwares = 1;
+  string next_page_token = 2;
+}
+
+message RestoreAntennaOpsRequest {
+  string id = 1;
+}
+
+message RestoreBatteryOpsRequest {
+  string id = 1;
+}
+
+message RestoreCameraOpsRequest {
+  string id = 1;
+}
+
+message RestoreChargerOpsRequest {
+  string id = 1;
+}
+
+message RestoreElectronicSpeedControllerOpsRequest {
+  string id = 1;
+}
+
+message RestoreEscFirmwareOpsRequest {
+  string id = 1;
+}
+
+message RestoreFcFirmwareOpsRequest {
+  string id = 1;
+}
+
+message RestoreFieldToolOpsRequest {
+  string id = 1;
+}
+
+message RestoreFlightControllerOpsRequest {
+  string id = 1;
+}
+
+message RestoreFrameOpsRequest {
+  string id = 1;
+}
+
+message RestoreGogglesOpsRequest {
+  string id = 1;
+}
+
+message RestoreGpsReceiverOpsRequest {
+  string id = 1;
+}
+
+message RestoreMotorOpsRequest {
+  string id = 1;
+}
+
+message RestorePropellerOpsRequest {
+  string id = 1;
+}
+
+message RestoreRadioFirmwareOpsRequest {
+  string id = 1;
+}
+
+message RestoreReceiverOpsRequest {
+  string id = 1;
+}
+
+message RestoreSoftwareToolOpsRequest {
+  string id = 1;
+}
+
+message RestoreTransmitterOpsRequest {
+  string id = 1;
+}
+
+message RestoreVideoTransmitterOpsRequest {
+  string id = 1;
+}
+
+message RestoreVtxFirmwareOpsRequest {
+  string id = 1;
+}
+
+message UpdateAntennaOpsRequest {
+  quadsmith.api.Antenna antenna = 1;
+}
+
+message UpdateBatteryOpsRequest {
+  quadsmith.api.Battery battery = 1;
+}
+
+message UpdateCameraOpsRequest {
+  quadsmith.api.Camera camera = 1;
+}
+
+message UpdateChargerOpsRequest {
+  quadsmith.api.Charger charger = 1;
+}
+
+message UpdateElectronicSpeedControllerOpsRequest {
+  quadsmith.api.ElectronicSpeedController electronic_speed_controller = 1;
+}
+
+message UpdateEscFirmwareOpsRequest {
+  quadsmith.api.EscFirmware esc_firmware = 1;
+}
+
+message UpdateFcFirmwareOpsRequest {
+  quadsmith.api.FcFirmware fc_firmware = 1;
+}
+
+message UpdateFieldToolOpsRequest {
+  quadsmith.api.FieldTool field_tool = 1;
+}
+
+message UpdateFlightControllerOpsRequest {
+  quadsmith.api.FlightController flight_controller = 1;
+}
+
+message UpdateFrameOpsRequest {
+  quadsmith.api.Frame frame = 1;
+}
+
+message UpdateGogglesOpsRequest {
+  quadsmith.api.Goggles goggles = 1;
+}
+
+message UpdateGpsReceiverOpsRequest {
+  quadsmith.api.GpsReceiver gps_receiver = 1;
+}
+
+message UpdateMotorOpsRequest {
+  quadsmith.api.Motor motor = 1;
+}
+
+message UpdatePropellerOpsRequest {
+  quadsmith.api.Propeller propeller = 1;
+}
+
+message UpdateRadioFirmwareOpsRequest {
+  quadsmith.api.RadioFirmware radio_firmware = 1;
+}
+
+message UpdateReceiverOpsRequest {
+  quadsmith.api.Receiver receiver = 1;
+}
+
+message UpdateSoftwareToolOpsRequest {
+  quadsmith.api.SoftwareTool software_tool = 1;
+}
+
+message UpdateTransmitterOpsRequest {
+  quadsmith.api.Transmitter transmitter = 1;
+}
+
+message UpdateVideoTransmitterOpsRequest {
+  quadsmith.api.VideoTransmitter video_transmitter = 1;
+}
+
+message UpdateVtxFirmwareOpsRequest {
+  quadsmith.api.VtxFirmware vtx_firmware = 1;
+}

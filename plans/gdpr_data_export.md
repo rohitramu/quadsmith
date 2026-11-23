@@ -316,14 +316,13 @@ message ExportOptions {
 
 enum ExportDomain {
   EXPORT_DOMAIN_UNSPECIFIED = 0;
-  EXPORT_DOMAIN_NONE = 1;        // System/ops tables not exported in user archives
+  EXPORT_DOMAIN_NONE = 1;        // System/ops/catalog tables not exported in user archives
   EXPORT_DOMAIN_ACCOUNT = 2;     // -> account.json
   EXPORT_DOMAIN_SECURITY = 3;    // -> security.json
   EXPORT_DOMAIN_BUILDS = 4;      // -> builds.json
-  EXPORT_DOMAIN_COMPONENTS = 5;  // -> components.json
-  EXPORT_DOMAIN_COLLECTIONS = 6; // -> collections.json
-  EXPORT_DOMAIN_SOCIAL = 7;      // -> social.json
-  EXPORT_DOMAIN_BLOBS = 8;       // -> blobs.json + blobs/
+  EXPORT_DOMAIN_COLLECTIONS = 5; // -> collections.json
+  EXPORT_DOMAIN_SOCIAL = 6;      // -> social.json
+  EXPORT_DOMAIN_BLOBS = 7;       // -> blobs.json + blobs/
 }
 
 enum ContentType {
@@ -569,15 +568,16 @@ serves the archive via a dedicated HTTP endpoint:
 - **Streaming Assembly**: Uses the standard library
   [Go `archive/zip` package](https://pkg.go.dev/archive/zip)
   (`zip.NewWriter(w)`) to invoke the generated `Export<PluralName>` store
-  functions for each `ExportDomain`, write seven indented UTF-8 JSON manifests,
-  and stream raw binary files into `blobs/`:
+  functions for each `ExportDomain`, write six indented UTF-8 JSON manifests,
+  and stream raw binary files into `blobs/` (catalog components declare
+  `EXPORT_DOMAIN_NONE` under
+  [`ops_managed_component_catalog.md`](ops_managed_component_catalog.md)):
 
 | Archive Path                           | `ExportDomain`              | Generated Store Functions Invoked                                                                                                                                                              |
 | :------------------------------------- | :-------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `account.json`                         | `EXPORT_DOMAIN_ACCOUNT`     | `ExportUsers`, `ExportUserProfiles`, `ExportUserEmails`, `ExportOAuthAccounts`, `ExportUserEmailOAuthAccounts`, `ExportUsernameHistories`                                                      |
 | `security.json`                        | `EXPORT_DOMAIN_SECURITY`    | `ExportRefreshTokens`                                                                                                                                                                          |
-| `builds.json`                          | `EXPORT_DOMAIN_BUILDS`      | `ExportEntities` (filtered to `collection = 'builds'`), `ExportBuilds`                                                                                                                         |
-| `components.json`                      | `EXPORT_DOMAIN_COMPONENTS`  | `ExportEntities` (filtered to `collection != 'builds'`), plus `Export<ComponentPlural>` across all 20 component tables                                                                         |
+| `builds.json`                          | `EXPORT_DOMAIN_BUILDS`      | `ExportEntities` (filtered to `collection = 'builds' AND user_uuid = $1::uuid`), `ExportBuilds`                                                                                                |
 | `collections.json`                     | `EXPORT_DOMAIN_COLLECTIONS` | `ExportCollections`, `ExportCollectionItems`                                                                                                                                                   |
 | `social.json`                          | `EXPORT_DOMAIN_SOCIAL`      | `ExportReviews`, `ExportReviewVotes`, `ExportReviewComments`, `ExportQuestions`, `ExportAnswers`, `ExportQuestionVotes`, `ExportAnswerVotes`, `ExportQuestionComments`, `ExportAnswerComments` |
 | `blobs.json` + `blobs/<id>_<filename>` | `EXPORT_DOMAIN_BLOBS`       | `ExportBlobs` (metadata written to `blobs.json`; raw `bytes` streamed into `blobs/<id>_<sanitized_filename>`)                                                                                  |
@@ -674,9 +674,9 @@ transient, in-flight authentication challenges as internal operational data:
 ##### <a id="omitting-security-json-entirely" >Omitting security.json Entirely</a>
 
 Exporting only user-provided content (`account.json`, `builds.json`,
-`components.json`, `collections.json`, `social.json`, `blobs.json`) and omitting
-`security.json` (`RefreshToken`) completely. No session or access logs are
-included in the archive.
+`collections.json`, `social.json`, `blobs.json`) and omitting `security.json`
+(`RefreshToken`) completely. No session or access logs are included in the
+archive.
 
 **Pros:**
 
@@ -1001,12 +1001,11 @@ window.
 
 ## <a id="6-future-work" >6. Future work</a>
 
-### <a id="direct-build-and-component-import-from-archive" >Direct Build and Component Import from Archive</a>
+### <a id="direct-build-and-component-import-from-archive" >Direct Build Import from Archive</a>
 
 Allow users to upload a previously exported `quadsmith-data-*.zip` archive (or
-individual `builds.json` and `components.json` files) via the Web UI and
-`qs account import` CLI command to restore or migrate drafts and custom parts
-into a new account.
+individual `builds.json` files) via the Web UI and `qs account import` CLI
+command to restore or migrate build drafts into a new account.
 
 ### <a id="declarative-account-deletion-scrubber-via-content-type" >Declarative Account Deletion Scrubber via `content_type`</a>
 

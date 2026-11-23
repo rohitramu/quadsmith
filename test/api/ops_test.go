@@ -1,8 +1,11 @@
 package api
 
 import (
+	"archive/zip"
+	"bytes"
 	"context"
 	"io"
+	"mime/multipart"
 	"net/http"
 	"os"
 	"os/exec"
@@ -1480,6 +1483,314 @@ func TestOpsServer_LoginAsQuadsmithAndSystemAccountProtections(t *testing.T) {
 	}
 	if _, err := qs2AuthClient.RefreshToken(ctx, connect.NewRequest(&apipb.RefreshTokenRequest{RefreshToken: op2RefreshToken})); err == nil || connect.CodeOf(err) != connect.CodeUnauthenticated {
 		t.Fatalf("Expected operator2 RefreshToken as @quadsmith to fail with CodeUnauthenticated after internal token revocation, got %v", err)
+	}
+}
+
+func TestOpsServer_ComponentCatalogLifecycleAndBoundary(t *testing.T) {
+	ctx := context.Background()
+	pubPool, err := pgxpool.New(ctx, getDBURL())
+	if err != nil {
+		t.Fatalf("Failed to connect to quadsmith_api DB: %v", err)
+	}
+	defer pubPool.Close()
+
+	opsPool, err := pgxpool.New(ctx, getOpsDBURL())
+	if err != nil {
+		t.Fatalf("Failed to connect to quadsmith_ops DB: %v", err)
+	}
+	defer opsPool.Close()
+
+	// 1. Public API boundary: component mutation endpoints must not exist on server-api
+	rawPostResp, err := http.Post(
+		getAPIURL()+"/quadsmith.api.MotorService/CreateMotor",
+		"application/json",
+		strings.NewReader(`{"motor":{"name":"Unauthorized Public Motor"}}`),
+	)
+	if err != nil {
+		t.Fatalf("POST to removed public CreateMotor failed unexpectedly: %v", err)
+	}
+	_ = rawPostResp.Body.Close()
+	if rawPostResp.StatusCode != http.StatusNotFound {
+		t.Errorf("Expected 404 Not Found on removed /quadsmith.api.MotorService/CreateMotor, got %d", rawPostResp.StatusCode)
+	}
+
+	operatorClient := newOpsClient("qs_op_sandbox_token_12345")
+	opHTTPClient := &http.Client{
+		Transport: &authRoundTripper{base: http.DefaultTransport, token: "qs_op_sandbox_token_12345"},
+		Timeout:   10 * time.Second,
+	}
+	robotHTTPClient := &http.Client{
+		Transport: &authRoundTripper{base: http.DefaultTransport, token: "qs_robot_sandbox_token_67890"},
+		Timeout:   10 * time.Second,
+	}
+	opMotorOps := opsconnect.NewMotorOpsServiceClient(opHTTPClient, getOpsURL())
+	robotMotorOps := opsconnect.NewMotorOpsServiceClient(robotHTTPClient, getOpsURL())
+	pubMotorClient := apiconnect.NewMotorServiceClient(http.DefaultClient, getAPIURL())
+
+	// Clear any active JIT grants before testing read vs write boundary
+	if grantsRes, err := operatorClient.ListJitGrants(ctx, connect.NewRequest(&pb.ListJitGrantsRequest{ActiveOnly: true})); err == nil {
+		for _, g := range grantsRes.Msg.GetGrants() {
+			_, _ = operatorClient.RevokeJitGrant(ctx, connect.NewRequest(&pb.RevokeJitGrantRequest{GrantId: g.GetId()}))
+		}
+	}
+
+	// 2. Read-only Ops catalog browsing succeeds WITHOUT JIT for both HUMAN operators and ROBOT tokens
+	if listRes, err := opMotorOps.ListMotors(ctx, connect.NewRequest(&pb.ListMotorsOpsRequest{PageSize: 5, IncludeArchived: true})); err != nil || len(listRes.Msg.GetMotors()) == 0 {
+		t.Fatalf("Expected HUMAN operator ListMotors without JIT to succeed, got err=%v count=%d", err, len(listRes.Msg.GetMotors()))
+	}
+	if listRes, err := robotMotorOps.ListMotors(ctx, connect.NewRequest(&pb.ListMotorsOpsRequest{PageSize: 5})); err != nil || len(listRes.Msg.GetMotors()) == 0 {
+		t.Fatalf("Expected ROBOT ListMotors without JIT to succeed, got err=%v count=%d", err, len(listRes.Msg.GetMotors()))
+	}
+
+	// 3. Catalog mutations and /api/ops/blobs fail with PermissionDenied without active HUMAN JIT
+	testSlug := "ops-e2e-motor-" + time.Now().Format("150405000")
+	createReq := &pb.CreateMotorOpsRequest{
+		Motor: &apipb.Motor{
+			Id:               testSlug,
+			Name:             "Ops E2E Test Motor",
+			Manufacturer:     "Quadsmith Labs",
+			Kv:               1950,
+			WeightG:          31.5,
+			StatorDiameterMm: 22,
+			StatorHeightMm:   7.5,
+			MinVoltage:       14.8,
+			MaxVoltage:       25.2,
+			MaxCurrentA:      48.0,
+		},
+	}
+	if _, err := opMotorOps.CreateMotor(ctx, connect.NewRequest(createReq)); err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("Expected CreateMotor without JIT to fail with CodePermissionDenied, got %v", err)
+	}
+	if _, err := robotMotorOps.CreateMotor(ctx, connect.NewRequest(createReq)); err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("Expected ROBOT CreateMotor to fail with CodePermissionDenied, got %v", err)
+	}
+
+	var deniedBlobBuf bytes.Buffer
+	deniedWriter := multipart.NewWriter(&deniedBlobBuf)
+	deniedPart, _ := deniedWriter.CreateFormFile("file", "denied.png")
+	_, _ = deniedPart.Write([]byte("\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR"))
+	_ = deniedWriter.Close()
+	deniedBlobReq, _ := http.NewRequestWithContext(ctx, http.MethodPost, getOpsURL()+"/api/ops/blobs", &deniedBlobBuf)
+	deniedBlobReq.Header.Set("Content-Type", deniedWriter.FormDataContentType())
+	deniedBlobResp, err := opHTTPClient.Do(deniedBlobReq)
+	if err != nil {
+		t.Fatalf("POST /api/ops/blobs without JIT transport error: %v", err)
+	}
+	_ = deniedBlobResp.Body.Close()
+	if deniedBlobResp.StatusCode != http.StatusForbidden {
+		t.Fatalf("Expected 403 Forbidden from /api/ops/blobs without JIT, got %d", deniedBlobResp.StatusCode)
+	}
+
+	// 4. Acquire HUMAN JIT grant and exercise Create -> Update -> Ops Blob -> Q&A Endorse Guard -> Archive -> Restore -> Hard Delete
+	grantRes, err := operatorClient.AcquireJitGrant(ctx, connect.NewRequest(&pb.AcquireJitGrantRequest{
+		Hours:     1,
+		Reason:    "E2E catalog curation test",
+		Operation: "*",
+	}))
+	if err != nil {
+		t.Fatalf("AcquireJitGrant failed: %v", err)
+	}
+	grantID := grantRes.Msg.GetGrant().GetId()
+	defer func() {
+		_, _ = pubPool.Exec(ctx, `DELETE FROM entities WHERE id = $1`, testSlug)
+		_, _ = operatorClient.RevokeJitGrant(ctx, connect.NewRequest(&pb.RevokeJitGrantRequest{GrantId: grantID}))
+	}()
+
+	createdRes, err := opMotorOps.CreateMotor(ctx, connect.NewRequest(createReq))
+	if err != nil {
+		t.Fatalf("CreateMotor with active HUMAN JIT failed: %v", err)
+	}
+	motorUUID := createdRes.Msg.GetUuid()
+	if createdRes.Msg.GetId() != testSlug || motorUUID == "" {
+		t.Fatalf("Unexpected created motor: %+v", createdRes.Msg)
+	}
+
+	// Verify entities.user_uuid is attributed internally to SystemUserUUID (@quadsmith)
+	var entityUserUUID string
+	if err := pubPool.QueryRow(ctx, `SELECT user_uuid::text FROM entities WHERE uuid = $1`, motorUUID).Scan(&entityUserUUID); err != nil {
+		t.Fatalf("Failed to query entities.user_uuid for created motor: %v", err)
+	}
+	if entityUserUUID != auth.SystemUserUUID {
+		t.Errorf("Expected entities.user_uuid = %s (@quadsmith), got %s", auth.SystemUserUUID, entityUserUUID)
+	}
+
+	// Verify audit trail entry in quadsmith_ops.internal_api_calls
+	var auditCount int
+	if err := opsPool.QueryRow(ctx, `
+		SELECT COUNT(*)
+		FROM internal_api_calls c
+		JOIN jit_grants j ON j.uuid = c.jit_grant_uuid
+		WHERE c.method = 'CreateMotor' AND c.status = 'OK' AND j.id = $1
+	`, grantID).Scan(&auditCount); err != nil || auditCount == 0 {
+		t.Errorf("Expected audited CreateMotor entry in internal_api_calls under grant %s, got count=%d err=%v", grantID, auditCount, err)
+	}
+
+	// UpdateMotor via Ops plane
+	updatedMotor := createdRes.Msg
+	updatedMotor.Kv = 2080
+	updRes, err := opMotorOps.UpdateMotor(ctx, connect.NewRequest(&pb.UpdateMotorOpsRequest{Motor: updatedMotor}))
+	if err != nil || updRes.Msg.GetKv() != 2080 {
+		t.Fatalf("UpdateMotor failed: err=%v kv=%d", err, updRes.Msg.GetKv())
+	}
+
+	// Upload a 1x1 PNG via /api/ops/blobs with active JIT
+	png1x1 := []byte{
+		0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
+		0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52,
+		0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x01,
+		0x08, 0x06, 0x00, 0x00, 0x00, 0x1f, 0x15, 0xc4,
+		0x89, 0x00, 0x00, 0x00, 0x0a, 0x49, 0x44, 0x41,
+		0x54, 0x78, 0x9c, 0x63, 0x00, 0x01, 0x00, 0x00,
+		0x05, 0x00, 0x01, 0x0d, 0x0a, 0x2d, 0xb4, 0x00,
+		0x00, 0x00, 0x00, 0x49, 0x45, 0x4e, 0x44, 0xae,
+		0x42, 0x60, 0x82,
+	}
+	var blobBuf bytes.Buffer
+	blobWriter := multipart.NewWriter(&blobBuf)
+	blobPart, _ := blobWriter.CreateFormFile("file", "catalog_motor.png")
+	_, _ = blobPart.Write(png1x1)
+	_ = blobWriter.Close()
+	blobReq, _ := http.NewRequestWithContext(ctx, http.MethodPost, getOpsURL()+"/api/ops/blobs", &blobBuf)
+	blobReq.Header.Set("Content-Type", blobWriter.FormDataContentType())
+	blobResp, err := opHTTPClient.Do(blobReq)
+	if err != nil {
+		t.Fatalf("POST /api/ops/blobs with JIT failed: %v", err)
+	}
+	blobBody, _ := io.ReadAll(blobResp.Body)
+	_ = blobResp.Body.Close()
+	if blobResp.StatusCode != http.StatusCreated && blobResp.StatusCode != http.StatusOK {
+		t.Fatalf("Expected 200/201 from /api/ops/blobs with JIT, got %d: %s", blobResp.StatusCode, string(blobBody))
+	}
+
+	// Create a Q&A question & answer on the motor, verify EndorseAnswer is rejected on components, and verify soft-archive
+	_, _ = pubPool.Exec(ctx, `UPDATE users SET created_at = NOW() - INTERVAL '48 hours' WHERE uuid = '018f0000-0000-7000-8000-000000000001'`)
+	pilotToken, err := auth.SignAccessToken("018f0000-0000-7000-8000-000000000001", "test_pilot", "pilot@example.com", "session-1")
+	if err != nil {
+		t.Fatalf("SignAccessToken failed: %v", err)
+	}
+	sysLoginRes, err := operatorClient.LoginAsQuadsmith(ctx, connect.NewRequest(&pb.LoginAsQuadsmithRequest{}))
+	if err != nil {
+		t.Fatalf("LoginAsQuadsmith failed: %v", err)
+	}
+	pilotSocial := apiconnect.NewSocialServiceClient(&http.Client{
+		Transport: &authRoundTripper{base: http.DefaultTransport, token: pilotToken},
+		Timeout:   5 * time.Second,
+	}, getAPIURL())
+	sysSocial := apiconnect.NewSocialServiceClient(&http.Client{
+		Transport: &authRoundTripper{base: http.DefaultTransport, token: sysLoginRes.Msg.GetAccessToken()},
+		Timeout:   5 * time.Second,
+	}, getAPIURL())
+
+	collectionMotors := "motors"
+	qRes, err := pilotSocial.CreateQuestion(ctx, connect.NewRequest(&apipb.CreateQuestionRequest{
+		EntityId:   testSlug,
+		Collection: &collectionMotors,
+		Title:      "Does this motor support 6S?",
+		Body:       "Checking voltage ceiling for freestyle builds.",
+	}))
+	if err != nil {
+		t.Fatalf("CreateQuestion on motor failed: %v", err)
+	}
+	aRes, err := pilotSocial.CreateAnswer(ctx, connect.NewRequest(&apipb.CreateAnswerRequest{
+		QuestionId: qRes.Msg.GetId(),
+		Body:       "Yes, rated for 6S LiPo.",
+	}))
+	if err != nil {
+		t.Fatalf("CreateAnswer on motor question failed: %v", err)
+	}
+
+	// EndorseAnswer must fail with CodeFailedPrecondition on component Q&A even for @quadsmith
+	if _, err := sysSocial.EndorseAnswer(ctx, connect.NewRequest(&apipb.EndorseAnswerRequest{
+		AnswerUuid: aRes.Msg.GetUuid(),
+	})); err == nil || connect.CodeOf(err) != connect.CodeFailedPrecondition {
+		t.Errorf("Expected EndorseAnswer on component Q&A to fail with CodeFailedPrecondition, got %v", err)
+	}
+
+	// DeleteMotor while referenced by Q&A -> soft-archives (IsArchived: true)
+	delArchivedRes, err := opMotorOps.DeleteMotor(ctx, connect.NewRequest(&pb.DeleteMotorOpsRequest{Id: testSlug}))
+	if err != nil {
+		t.Fatalf("DeleteMotor (referenced) failed: %v", err)
+	}
+	if !delArchivedRes.Msg.GetIsArchived() {
+		t.Fatalf("Expected referenced motor to be soft-archived (IsArchived=true), got false")
+	}
+
+	// Public GetMotor returns IsArchived=true; public ListMotors omits it; Ops ListMotors(IncludeArchived: true) includes it
+	pubGetRes, err := pubMotorClient.GetMotor(ctx, connect.NewRequest(&apipb.GetMotorRequest{Id: testSlug}))
+	if err != nil || !pubGetRes.Msg.GetIsArchived() {
+		t.Fatalf("Expected public GetMotor on archived slug to succeed with IsArchived=true, err=%v archived=%v", err, pubGetRes.Msg.GetIsArchived())
+	}
+	pubListRes, err := pubMotorClient.ListMotors(ctx, connect.NewRequest(&apipb.ListMotorsRequest{
+		Filter:   `id == "` + testSlug + `"`,
+		PageSize: 10,
+	}))
+	if err != nil || len(pubListRes.Msg.GetMotors()) != 0 {
+		t.Errorf("Expected archived motor to be hidden from public ListMotors, got count=%d err=%v", len(pubListRes.Msg.GetMotors()), err)
+	}
+	opsArchivedList, err := opMotorOps.ListMotors(ctx, connect.NewRequest(&pb.ListMotorsOpsRequest{
+		Filter:          `id == "` + testSlug + `"`,
+		IncludeArchived: true,
+		PageSize:        10,
+	}))
+	if err != nil || len(opsArchivedList.Msg.GetMotors()) != 1 || !opsArchivedList.Msg.GetMotors()[0].GetIsArchived() {
+		t.Fatalf("Expected Ops ListMotors(IncludeArchived=true) to return archived motor, got %+v err=%v", opsArchivedList, err)
+	}
+
+	// RestoreMotor flips IsArchived back to false
+	restoredRes, err := opMotorOps.RestoreMotor(ctx, connect.NewRequest(&pb.RestoreMotorOpsRequest{Id: testSlug}))
+	if err != nil || restoredRes.Msg.GetIsArchived() {
+		t.Fatalf("RestoreMotor failed: err=%v archived=%v", err, restoredRes.Msg.GetIsArchived())
+	}
+
+	// Remove question reference, then DeleteMotor -> permanent hard delete (IsArchived=false)
+	_, _ = pubPool.Exec(ctx, `DELETE FROM questions WHERE entity_uuid = $1`, motorUUID)
+	delHardRes, err := opMotorOps.DeleteMotor(ctx, connect.NewRequest(&pb.DeleteMotorOpsRequest{Id: testSlug}))
+	if err != nil || delHardRes.Msg.GetIsArchived() {
+		t.Fatalf("Expected unreferenced DeleteMotor to hard-delete (IsArchived=false), err=%v archived=%v", err, delHardRes.Msg.GetIsArchived())
+	}
+	if _, err := pubMotorClient.GetMotor(ctx, connect.NewRequest(&apipb.GetMotorRequest{Id: testSlug})); connect.CodeOf(err) != connect.CodeNotFound {
+		t.Errorf("Expected hard-deleted motor to return CodeNotFound, got %v", err)
+	}
+
+	// 5. Verify qsops CLI catalog listing against live Ops server
+	qsopsPath := resolveQSOpsPath(t)
+	cliCmd := exec.Command(qsopsPath, "--token", "qs_op_sandbox_token_12345", "--json", "components", "hardware", "motors", "list", "--limit", "2")
+	cliCmd.Env = append(os.Environ(), "QS_OPS_SERVER_URL="+getOpsURL())
+	cliOut, err := cliCmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops components hardware motors list failed: %v\nOutput: %s", err, string(cliOut))
+	}
+	if !containsString(string(cliOut), `"kv"`) {
+		t.Errorf("Expected motor JSON in qsops list output, got: %s", string(cliOut))
+	}
+
+	// 6. Verify GDPR export ZIP omits components.json and retains builds.json
+	exportTok, err := auth.SignExportToken("018f0000-0000-7000-8000-000000000001", "test_pilot")
+	if err != nil {
+		t.Fatalf("SignExportToken failed: %v", err)
+	}
+	expResp, err := http.Get(getAPIURL() + "/api/account/export?token=" + exportTok)
+	if err != nil {
+		t.Fatalf("GET /api/account/export failed: %v", err)
+	}
+	expBytes, _ := io.ReadAll(expResp.Body)
+	_ = expResp.Body.Close()
+	if expResp.StatusCode != http.StatusOK {
+		t.Fatalf("Expected 200 OK from /api/account/export, got %d: %s", expResp.StatusCode, string(expBytes))
+	}
+	zr, err := zip.NewReader(bytes.NewReader(expBytes), int64(len(expBytes)))
+	if err != nil {
+		t.Fatalf("Failed to parse GDPR export ZIP: %v", err)
+	}
+	zipFiles := make(map[string]bool)
+	for _, zf := range zr.File {
+		zipFiles[zf.Name] = true
+	}
+	if !zipFiles["builds.json"] {
+		t.Errorf("Expected builds.json in GDPR export archive, got files: %v", zipFiles)
+	}
+	if zipFiles["components.json"] {
+		t.Errorf("Expected components.json to be omitted from GDPR export archive, got files: %v", zipFiles)
 	}
 }
 

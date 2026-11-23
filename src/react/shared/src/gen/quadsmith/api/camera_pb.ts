@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_camera: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "ChpxdWFkc21pdGgvYXBpL2NhbWVyYS5wcm90bxINcXVhZHNtaXRoLmFwaSK4BgoGQ2FtZXJhEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhAKAmlkGAIgASgJQgTA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZAhISCgRuYW1lGAQgASgJQgTA8BkCEh4KEGlzX2ludGVybmFsX29ubHkYBSABKAhCBMDwGQISFgoId2VpZ2h0X2cYBiABKAJCBMDwGQISFgoIcHJvdG9jb2wYByABKAlCBMDwGQISGQoLc2Vuc29yX3NpemUYCCABKAlCBMDwGQISJAoWY2FtZXJhX21vdW50X2ludGVyZmFjZRgJIAEoCUIEwPAZAhIaCgxsZW5zX3NpemVfbW0YCiABKAJCBMDwGQISGQoLZGVzY3JpcHRpb24YCyABKAlCBMDwGQISOwoPcmVmZXJlbmNlX2xpbmtzGAwgAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgTA8BkCEigKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgNIAEoCUIEwPAZAkgAiAEBEikKBW1lZGlhGA4gAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIEwPAZAhIcCgl1c2VyX3V1aWQYDyABKAlCBMDwGQRIAYgBARIiCg9hdXRob3JfdXNlcm5hbWUYECABKAlCBMDwGQJIAogBATrRAYq1GDYKDG1hbnVmYWN0dXJlcgoEbmFtZQoIcHJvdG9jb2wKFmNhbWVyYV9tb3VudF9pbnRlcmZhY2WatRgbY29tcG9uZW50cy9oYXJkd2FyZS9jYW1lcmFzwvMYEwoHY2FtZXJhcyoIZW50aXRpZXPC8BldCAUSWXV1aWQgSU4gKFNFTEVDVCB1dWlkIEZST00gZW50aXRpZXMgV0hFUkUgY29sbGVjdGlvbiA9ICdjYW1lcmFzJyBBTkQgdXNlcl91dWlkID0gJDE6OnV1aWQpQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2VCDAoKX3VzZXJfdXVpZEISChBfYXV0aG9yX3VzZXJuYW1lIjwKE0NyZWF0ZUNhbWVyYVJlcXVlc3QSJQoGY2FtZXJhGAEgASgLMhUucXVhZHNtaXRoLmFwaS5DYW1lcmEiIQoTRGVsZXRlQ2FtZXJhUmVxdWVzdBIKCgJpZBgBIAEoCSIrChREZWxldGVDYW1lcmFSZXNwb25zZRITCgtpc19hcmNoaXZlZBgBIAEoCCIvChBHZXRDYW1lcmFSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkiagoSTGlzdENhbWVyYXNSZXF1ZXN0Eg4KBmZpbHRlchgBIAEoCRIRCglwYWdlX3NpemUYAiABKAUSEgoKcGFnZV90b2tlbhgDIAEoCRIPCgdjb2x1bW5zGAQgAygJEgwKBHNvcnQYBSADKAkiVgoTTGlzdENhbWVyYXNSZXNwb25zZRImCgdjYW1lcmFzGAEgAygLMhUucXVhZHNtaXRoLmFwaS5DYW1lcmESFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIjwKE1VwZGF0ZUNhbWVyYVJlcXVlc3QSJQoGY2FtZXJhGAEgASgLMhUucXVhZHNtaXRoLmFwaS5DYW1lcmEymQMKDUNhbWVyYVNlcnZpY2USQwoJR2V0Q2FtZXJhEh8ucXVhZHNtaXRoLmFwaS5HZXRDYW1lcmFSZXF1ZXN0GhUucXVhZHNtaXRoLmFwaS5DYW1lcmESVAoLTGlzdENhbWVyYXMSIS5xdWFkc21pdGguYXBpLkxpc3RDYW1lcmFzUmVxdWVzdBoiLnF1YWRzbWl0aC5hcGkuTGlzdENhbWVyYXNSZXNwb25zZRJJCgxDcmVhdGVDYW1lcmESIi5xdWFkc21pdGguYXBpLkNyZWF0ZUNhbWVyYVJlcXVlc3QaFS5xdWFkc21pdGguYXBpLkNhbWVyYRJJCgxVcGRhdGVDYW1lcmESIi5xdWFkc21pdGguYXBpLlVwZGF0ZUNhbWVyYVJlcXVlc3QaFS5xdWFkc21pdGguYXBpLkNhbWVyYRJXCgxEZWxldGVDYW1lcmESIi5xdWFkc21pdGguYXBpLkRlbGV0ZUNhbWVyYVJlcXVlc3QaIy5xdWFkc21pdGguYXBpLkRlbGV0ZUNhbWVyYVJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "ChpxdWFkc21pdGgvYXBpL2NhbWVyYS5wcm90bxINcXVhZHNtaXRoLmFwaSKTBQoGQ2FtZXJhEjoKBHV1aWQYASABKAlCLMLzGCQQARogZW50aXRpZXModXVpZCkgT04gREVMRVRFIENBU0NBREXA8BkEEhAKAmlkGAIgASgJQgTA8BkEEiAKDG1hbnVmYWN0dXJlchgDIAEoCUIKwvMYAigBwPAZBBISCgRuYW1lGAQgASgJQgTA8BkEEh4KEGlzX2ludGVybmFsX29ubHkYBSABKAhCBMDwGQQSFgoId2VpZ2h0X2cYBiABKAJCBMDwGQQSFgoIcHJvdG9jb2wYByABKAlCBMDwGQQSGQoLc2Vuc29yX3NpemUYCCABKAlCBMDwGQQSJAoWY2FtZXJhX21vdW50X2ludGVyZmFjZRgJIAEoCUIEwPAZBBIaCgxsZW5zX3NpemVfbW0YCiABKAJCBMDwGQQSGQoLZGVzY3JpcHRpb24YCyABKAlCBMDwGQQSOwoPcmVmZXJlbmNlX2xpbmtzGAwgAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgTA8BkEEigKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgNIAEoCUIEwPAZBEgAiAEBEikKBW1lZGlhGA4gAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIEwPAZBBIZCgtpc19hcmNoaXZlZBgPIAEoCEIEwPAZBDp2irUYNgoMbWFudWZhY3R1cmVyCgRuYW1lCghwcm90b2NvbAoWY2FtZXJhX21vdW50X2ludGVyZmFjZZq1GBtjb21wb25lbnRzL2hhcmR3YXJlL2NhbWVyYXPC8xgTCgdjYW1lcmFzKghlbnRpdGllc8LwGQIIAUIYChZfcHJpbWFyeV9kaXNwbGF5X2ltYWdlIi8KEEdldENhbWVyYVJlcXVlc3QSCgoCaWQYASABKAkSDwoHY29sdW1ucxgCIAMoCSJqChJMaXN0Q2FtZXJhc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJWChNMaXN0Q2FtZXJhc1Jlc3BvbnNlEiYKB2NhbWVyYXMYASADKAsyFS5xdWFkc21pdGguYXBpLkNhbWVyYRIXCg9uZXh0X3BhZ2VfdG9rZW4YAiABKAkyqgEKDUNhbWVyYVNlcnZpY2USQwoJR2V0Q2FtZXJhEh8ucXVhZHNtaXRoLmFwaS5HZXRDYW1lcmFSZXF1ZXN0GhUucXVhZHNtaXRoLmFwaS5DYW1lcmESVAoLTGlzdENhbWVyYXMSIS5xdWFkc21pdGguYXBpLkxpc3RDYW1lcmFzUmVxdWVzdBoiLnF1YWRzbWl0aC5hcGkuTGlzdENhbWVyYXNSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -112,14 +112,9 @@ export type Camera = Message<"quadsmith.api.Camera"> & {
   media: Media[];
 
   /**
-   * @generated from field: optional string user_uuid = 15;
+   * @generated from field: bool is_archived = 15;
    */
-  userUuid?: string | undefined;
-
-  /**
-   * @generated from field: optional string author_username = 16;
-   */
-  authorUsername?: string | undefined;
+  isArchived: boolean;
 };
 
 /**
@@ -129,60 +124,6 @@ export type Camera = Message<"quadsmith.api.Camera"> & {
 export const CameraSchema: GenMessage<Camera> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_camera, 0);
-
-/**
- * @generated from message quadsmith.api.CreateCameraRequest
- */
-export type CreateCameraRequest = Message<"quadsmith.api.CreateCameraRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Camera camera = 1;
-   */
-  camera?: Camera | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateCameraRequest.
- * Use `create(CreateCameraRequestSchema)` to create a new message.
- */
-export const CreateCameraRequestSchema: GenMessage<CreateCameraRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteCameraRequest
- */
-export type DeleteCameraRequest = Message<"quadsmith.api.DeleteCameraRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteCameraRequest.
- * Use `create(DeleteCameraRequestSchema)` to create a new message.
- */
-export const DeleteCameraRequestSchema: GenMessage<DeleteCameraRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 2);
-
-/**
- * @generated from message quadsmith.api.DeleteCameraResponse
- */
-export type DeleteCameraResponse = Message<"quadsmith.api.DeleteCameraResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteCameraResponse.
- * Use `create(DeleteCameraResponseSchema)` to create a new message.
- */
-export const DeleteCameraResponseSchema: GenMessage<DeleteCameraResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 3);
 
 /**
  * @generated from message quadsmith.api.GetCameraRequest
@@ -205,7 +146,7 @@ export type GetCameraRequest = Message<"quadsmith.api.GetCameraRequest"> & {
  */
 export const GetCameraRequestSchema: GenMessage<GetCameraRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 4);
+  messageDesc(file_quadsmith_api_camera, 1);
 
 /**
  * @generated from message quadsmith.api.ListCamerasRequest
@@ -243,7 +184,7 @@ export type ListCamerasRequest = Message<"quadsmith.api.ListCamerasRequest"> & {
  */
 export const ListCamerasRequestSchema: GenMessage<ListCamerasRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 5);
+  messageDesc(file_quadsmith_api_camera, 2);
 
 /**
  * @generated from message quadsmith.api.ListCamerasResponse
@@ -266,25 +207,7 @@ export type ListCamerasResponse = Message<"quadsmith.api.ListCamerasResponse"> &
  */
 export const ListCamerasResponseSchema: GenMessage<ListCamerasResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 6);
-
-/**
- * @generated from message quadsmith.api.UpdateCameraRequest
- */
-export type UpdateCameraRequest = Message<"quadsmith.api.UpdateCameraRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.Camera camera = 1;
-   */
-  camera?: Camera | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateCameraRequest.
- * Use `create(UpdateCameraRequestSchema)` to create a new message.
- */
-export const UpdateCameraRequestSchema: GenMessage<UpdateCameraRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_camera, 7);
+  messageDesc(file_quadsmith_api_camera, 3);
 
 /**
  * @generated from service quadsmith.api.CameraService
@@ -305,29 +228,5 @@ export const CameraService: GenService<{
     methodKind: "unary";
     input: typeof ListCamerasRequestSchema;
     output: typeof ListCamerasResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.CameraService.CreateCamera
-   */
-  createCamera: {
-    methodKind: "unary";
-    input: typeof CreateCameraRequestSchema;
-    output: typeof CameraSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.CameraService.UpdateCamera
-   */
-  updateCamera: {
-    methodKind: "unary";
-    input: typeof UpdateCameraRequestSchema;
-    output: typeof CameraSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.CameraService.DeleteCamera
-   */
-  deleteCamera: {
-    methodKind: "unary";
-    input: typeof DeleteCameraRequestSchema;
-    output: typeof DeleteCameraResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_camera, 0);

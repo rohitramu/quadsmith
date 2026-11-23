@@ -1464,16 +1464,23 @@ func (s *SocialService) EndorseAnswer(ctx context.Context, req *connect.Request[
 		return nil, connect.NewError(connect.CodeNotFound, errors.New("answer not found"))
 	}
 
-	// Dual-Authority: ONLY the Build Author can confer "Author Verified" star badge
+	// Dual-Authority: ONLY Build questions support "Author Verified" endorsement
+	var entityCollection string
 	var buildAuthorUUID sql.NullString
 	err = s.db.QueryRow(ctx, `
-		SELECT e.user_uuid
+		SELECT e.collection, e.user_uuid
 		FROM questions q
 		JOIN entities e ON e.uuid = q.entity_uuid
 		WHERE q.uuid = $1
-	`, qUUID).Scan(&buildAuthorUUID)
+	`, qUUID).Scan(&entityCollection, &buildAuthorUUID)
+	if err != nil {
+		return nil, connect.NewError(connect.CodeNotFound, errors.New("question entity not found"))
+	}
+	if entityCollection != "builds" {
+		return nil, connect.NewError(connect.CodeFailedPrecondition, errors.New("answer endorsement is only supported on build questions"))
+	}
 
-	if err != nil || !buildAuthorUUID.Valid || (buildAuthorUUID.String != u.UserUUID && !u.IsAdmin()) {
+	if !buildAuthorUUID.Valid || (buildAuthorUUID.String != u.UserUUID && !u.IsAdmin()) {
 		return nil, connect.NewError(connect.CodePermissionDenied, errors.New("only the build author (or admin) can endorse an answer"))
 	}
 

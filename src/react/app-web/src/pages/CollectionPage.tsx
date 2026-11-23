@@ -28,7 +28,6 @@ import { CollectionBadge } from "@quadsmith/shared";
 import { CollectionIcon } from "@quadsmith/shared";
 import { getCollectionColor } from "@quadsmith/shared";
 import { useDocumentMeta } from "@quadsmith/shared";
-import { ComponentFormModal } from "../components/ComponentFormModal";
 import { StyledSelect } from "../components/StyledSelect";
 
 function PropertySelector({
@@ -338,7 +337,6 @@ export function CollectionTableView({
   const [pageSize, setPageSize] = useState<number>(20);
   const [pageIndex, setPageIndex] = useState<number>(0);
   const [tokenHistory, setTokenHistory] = useState<string[]>([""]);
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
   const colColor = collection.color || getCollectionColor(collection.id);
 
   // Reset pagination when search params change
@@ -415,7 +413,7 @@ export function CollectionTableView({
 
   const currentToken = tokenHistory[pageIndex] || "";
 
-  const { data, isLoading, isFetching, error, refetch } = useQuery(
+  const { data, isLoading, isFetching, error } = useQuery(
     collection.listQuery,
     {
       filter: effectiveFilter,
@@ -492,16 +490,6 @@ export function CollectionTableView({
           />
           <h1 className="text-3xl font-bold">{collection.name}</h1>
         </div>
-
-        <button
-          type="button"
-          onClick={() => setIsCreateModalOpen(true)}
-          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-semibold shadow-xs transition-colors cursor-pointer"
-          aria-label="Add Component"
-        >
-          <Plus size={16} />
-          <span>+ Add New</span>
-        </button>
       </div>
 
       {/* Smart Filter Input above the table */}
@@ -644,11 +632,6 @@ export function CollectionTableView({
                               )}
                             </div>
                             <div className="flex items-center gap-1 shrink-0">
-                              {(item.isUserCreated || item.is_user_created) && (
-                                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                                  Community
-                                </span>
-                              )}
                               {item.is_internal_only && (
                                 <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
                                   Internal
@@ -774,15 +757,6 @@ export function CollectionTableView({
           )}
         </>
       )}
-
-      <ComponentFormModal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        collectionId={collection.id}
-        onSuccess={() => {
-          refetch();
-        }}
-      />
     </div>
   );
 }

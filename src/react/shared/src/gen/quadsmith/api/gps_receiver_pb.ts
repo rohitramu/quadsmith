@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_api_gps_receiver: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiBxdWFkc21pdGgvYXBpL2dwc19yZWNlaXZlci5wcm90bxINcXVhZHNtaXRoLmFwaSLtBgoLR3BzUmVjZWl2ZXISOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSEAoCaWQYAiABKAlCBMDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkCEhIKBG5hbWUYBCABKAlCBMDwGQISHgoQaXNfaW50ZXJuYWxfb25seRgFIAEoCEIEwPAZAhIWCgh3ZWlnaHRfZxgGIAEoAkIEwPAZAhIVCgdjaGlwc2V0GAcgASgJQgTA8BkCEhwKCHByb3RvY29sGAggASgJQgrC8xgCKAHA8BkCEhoKB2NvbXBhc3MYCSABKAlCBMDwGQJIAIgBARIhChNpbnB1dF92b2x0YWdlX21pbl92GAsgASgCQgTA8BkCEiEKE2lucHV0X3ZvbHRhZ2VfbWF4X3YYDCABKAJCBMDwGQISGQoLZGVzY3JpcHRpb24YDSABKAlCBMDwGQISOwoPcmVmZXJlbmNlX2xpbmtzGA4gAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgTA8BkCEigKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgPIAEoCUIEwPAZAkgBiAEBEikKBW1lZGlhGBAgAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIEwPAZAhIcCgl1c2VyX3V1aWQYESABKAlCBMDwGQRIAogBARIiCg9hdXRob3JfdXNlcm5hbWUYEiABKAlCBMDwGQJIA4gBATrTAYq1GCYKDG1hbnVmYWN0dXJlcgoEbmFtZQoHY2hpcHNldAoHY29tcGFzc5q1GCFjb21wb25lbnRzL2hhcmR3YXJlL2dwcy1yZWNlaXZlcnPC8xgZCg1ncHNfcmVjZWl2ZXJzKghlbnRpdGllc8LwGWMIBRJfdXVpZCBJTiAoU0VMRUNUIHV1aWQgRlJPTSBlbnRpdGllcyBXSEVSRSBjb2xsZWN0aW9uID0gJ2dwcy1yZWNlaXZlcnMnIEFORCB1c2VyX3V1aWQgPSAkMTo6dXVpZClCCgoIX2NvbXBhc3NCGAoWX3ByaW1hcnlfZGlzcGxheV9pbWFnZUIMCgpfdXNlcl91dWlkQhIKEF9hdXRob3JfdXNlcm5hbWUiTAoYQ3JlYXRlR3BzUmVjZWl2ZXJSZXF1ZXN0EjAKDGdwc19yZWNlaXZlchgBIAEoCzIaLnF1YWRzbWl0aC5hcGkuR3BzUmVjZWl2ZXIiJgoYRGVsZXRlR3BzUmVjZWl2ZXJSZXF1ZXN0EgoKAmlkGAEgASgJIjAKGURlbGV0ZUdwc1JlY2VpdmVyUmVzcG9uc2USEwoLaXNfYXJjaGl2ZWQYASABKAgiNAoVR2V0R3BzUmVjZWl2ZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkibwoXTGlzdEdwc1JlY2VpdmVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJmChhMaXN0R3BzUmVjZWl2ZXJzUmVzcG9uc2USMQoNZ3BzX3JlY2VpdmVycxgBIAMoCzIaLnF1YWRzbWl0aC5hcGkuR3BzUmVjZWl2ZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJIkwKGFVwZGF0ZUdwc1JlY2VpdmVyUmVxdWVzdBIwCgxncHNfcmVjZWl2ZXIYASABKAsyGi5xdWFkc21pdGguYXBpLkdwc1JlY2VpdmVyMukDChJHcHNSZWNlaXZlclNlcnZpY2USUgoOR2V0R3BzUmVjZWl2ZXISJC5xdWFkc21pdGguYXBpLkdldEdwc1JlY2VpdmVyUmVxdWVzdBoaLnF1YWRzbWl0aC5hcGkuR3BzUmVjZWl2ZXISYwoQTGlzdEdwc1JlY2VpdmVycxImLnF1YWRzbWl0aC5hcGkuTGlzdEdwc1JlY2VpdmVyc1JlcXVlc3QaJy5xdWFkc21pdGguYXBpLkxpc3RHcHNSZWNlaXZlcnNSZXNwb25zZRJYChFDcmVhdGVHcHNSZWNlaXZlchInLnF1YWRzbWl0aC5hcGkuQ3JlYXRlR3BzUmVjZWl2ZXJSZXF1ZXN0GhoucXVhZHNtaXRoLmFwaS5HcHNSZWNlaXZlchJYChFVcGRhdGVHcHNSZWNlaXZlchInLnF1YWRzbWl0aC5hcGkuVXBkYXRlR3BzUmVjZWl2ZXJSZXF1ZXN0GhoucXVhZHNtaXRoLmFwaS5HcHNSZWNlaXZlchJmChFEZWxldGVHcHNSZWNlaXZlchInLnF1YWRzbWl0aC5hcGkuRGVsZXRlR3BzUmVjZWl2ZXJSZXF1ZXN0GigucXVhZHNtaXRoLmFwaS5EZWxldGVHcHNSZWNlaXZlclJlc3BvbnNlQihaJnF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9hcGk7YXBpYgZwcm90bzM",
+    "CiBxdWFkc21pdGgvYXBpL2dwc19yZWNlaXZlci5wcm90bxINcXVhZHNtaXRoLmFwaSLCBQoLR3BzUmVjZWl2ZXISOgoEdXVpZBgBIAEoCUIswvMYJBABGiBlbnRpdGllcyh1dWlkKSBPTiBERUxFVEUgQ0FTQ0FERcDwGQQSEAoCaWQYAiABKAlCBMDwGQQSIAoMbWFudWZhY3R1cmVyGAMgASgJQgrC8xgCKAHA8BkEEhIKBG5hbWUYBCABKAlCBMDwGQQSHgoQaXNfaW50ZXJuYWxfb25seRgFIAEoCEIEwPAZBBIWCgh3ZWlnaHRfZxgGIAEoAkIEwPAZBBIVCgdjaGlwc2V0GAcgASgJQgTA8BkEEhwKCHByb3RvY29sGAggASgJQgrC8xgCKAHA8BkEEhoKB2NvbXBhc3MYCSABKAlCBMDwGQRIAIgBARIhChNpbnB1dF92b2x0YWdlX21pbl92GAsgASgCQgTA8BkEEiEKE2lucHV0X3ZvbHRhZ2VfbWF4X3YYDCABKAJCBMDwGQQSGQoLZGVzY3JpcHRpb24YDSABKAlCBMDwGQQSOwoPcmVmZXJlbmNlX2xpbmtzGA4gAygLMhwucXVhZHNtaXRoLmFwaS5SZWZlcmVuY2VMaW5rQgTA8BkEEigKFXByaW1hcnlfZGlzcGxheV9pbWFnZRgPIAEoCUIEwPAZBEgBiAEBEikKBW1lZGlhGBAgAygLMhQucXVhZHNtaXRoLmFwaS5NZWRpYUIEwPAZBBIZCgtpc19hcmNoaXZlZBgRIAEoCEIEwPAZBDpyirUYJgoMbWFudWZhY3R1cmVyCgRuYW1lCgdjaGlwc2V0Cgdjb21wYXNzmrUYIWNvbXBvbmVudHMvaGFyZHdhcmUvZ3BzLXJlY2VpdmVyc8LzGBkKDWdwc19yZWNlaXZlcnMqCGVudGl0aWVzwvAZAggBQgoKCF9jb21wYXNzQhgKFl9wcmltYXJ5X2Rpc3BsYXlfaW1hZ2UiNAoVR2V0R3BzUmVjZWl2ZXJSZXF1ZXN0EgoKAmlkGAEgASgJEg8KB2NvbHVtbnMYAiADKAkibwoXTGlzdEdwc1JlY2VpdmVyc1JlcXVlc3QSDgoGZmlsdGVyGAEgASgJEhEKCXBhZ2Vfc2l6ZRgCIAEoBRISCgpwYWdlX3Rva2VuGAMgASgJEg8KB2NvbHVtbnMYBCADKAkSDAoEc29ydBgFIAMoCSJmChhMaXN0R3BzUmVjZWl2ZXJzUmVzcG9uc2USMQoNZ3BzX3JlY2VpdmVycxgBIAMoCzIaLnF1YWRzbWl0aC5hcGkuR3BzUmVjZWl2ZXISFwoPbmV4dF9wYWdlX3Rva2VuGAIgASgJMs0BChJHcHNSZWNlaXZlclNlcnZpY2USUgoOR2V0R3BzUmVjZWl2ZXISJC5xdWFkc21pdGguYXBpLkdldEdwc1JlY2VpdmVyUmVxdWVzdBoaLnF1YWRzbWl0aC5hcGkuR3BzUmVjZWl2ZXISYwoQTGlzdEdwc1JlY2VpdmVycxImLnF1YWRzbWl0aC5hcGkuTGlzdEdwc1JlY2VpdmVyc1JlcXVlc3QaJy5xdWFkc21pdGguYXBpLkxpc3RHcHNSZWNlaXZlcnNSZXNwb25zZUIoWiZxdWFkc21pdGgvc2hhcmVkL2dlbi9xdWFkc21pdGgvYXBpO2FwaWIGcHJvdG8z",
     [
       file_quadsmith_api_media,
       file_quadsmith_api_reference_link,
@@ -119,14 +119,9 @@ export type GpsReceiver = Message<"quadsmith.api.GpsReceiver"> & {
   media: Media[];
 
   /**
-   * @generated from field: optional string user_uuid = 17;
+   * @generated from field: bool is_archived = 17;
    */
-  userUuid?: string | undefined;
-
-  /**
-   * @generated from field: optional string author_username = 18;
-   */
-  authorUsername?: string | undefined;
+  isArchived: boolean;
 };
 
 /**
@@ -136,60 +131,6 @@ export type GpsReceiver = Message<"quadsmith.api.GpsReceiver"> & {
 export const GpsReceiverSchema: GenMessage<GpsReceiver> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_api_gps_receiver, 0);
-
-/**
- * @generated from message quadsmith.api.CreateGpsReceiverRequest
- */
-export type CreateGpsReceiverRequest = Message<"quadsmith.api.CreateGpsReceiverRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.GpsReceiver gps_receiver = 1;
-   */
-  gpsReceiver?: GpsReceiver | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.CreateGpsReceiverRequest.
- * Use `create(CreateGpsReceiverRequestSchema)` to create a new message.
- */
-export const CreateGpsReceiverRequestSchema: GenMessage<CreateGpsReceiverRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_gps_receiver, 1);
-
-/**
- * @generated from message quadsmith.api.DeleteGpsReceiverRequest
- */
-export type DeleteGpsReceiverRequest = Message<"quadsmith.api.DeleteGpsReceiverRequest"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteGpsReceiverRequest.
- * Use `create(DeleteGpsReceiverRequestSchema)` to create a new message.
- */
-export const DeleteGpsReceiverRequestSchema: GenMessage<DeleteGpsReceiverRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_gps_receiver, 2);
-
-/**
- * @generated from message quadsmith.api.DeleteGpsReceiverResponse
- */
-export type DeleteGpsReceiverResponse = Message<"quadsmith.api.DeleteGpsReceiverResponse"> & {
-  /**
-   * @generated from field: bool is_archived = 1;
-   */
-  isArchived: boolean;
-};
-
-/**
- * Describes the message quadsmith.api.DeleteGpsReceiverResponse.
- * Use `create(DeleteGpsReceiverResponseSchema)` to create a new message.
- */
-export const DeleteGpsReceiverResponseSchema: GenMessage<DeleteGpsReceiverResponse> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_gps_receiver, 3);
 
 /**
  * @generated from message quadsmith.api.GetGpsReceiverRequest
@@ -212,7 +153,7 @@ export type GetGpsReceiverRequest = Message<"quadsmith.api.GetGpsReceiverRequest
  */
 export const GetGpsReceiverRequestSchema: GenMessage<GetGpsReceiverRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_gps_receiver, 4);
+  messageDesc(file_quadsmith_api_gps_receiver, 1);
 
 /**
  * @generated from message quadsmith.api.ListGpsReceiversRequest
@@ -250,7 +191,7 @@ export type ListGpsReceiversRequest = Message<"quadsmith.api.ListGpsReceiversReq
  */
 export const ListGpsReceiversRequestSchema: GenMessage<ListGpsReceiversRequest> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_gps_receiver, 5);
+  messageDesc(file_quadsmith_api_gps_receiver, 2);
 
 /**
  * @generated from message quadsmith.api.ListGpsReceiversResponse
@@ -273,25 +214,7 @@ export type ListGpsReceiversResponse = Message<"quadsmith.api.ListGpsReceiversRe
  */
 export const ListGpsReceiversResponseSchema: GenMessage<ListGpsReceiversResponse> =
   /*@__PURE__*/
-  messageDesc(file_quadsmith_api_gps_receiver, 6);
-
-/**
- * @generated from message quadsmith.api.UpdateGpsReceiverRequest
- */
-export type UpdateGpsReceiverRequest = Message<"quadsmith.api.UpdateGpsReceiverRequest"> & {
-  /**
-   * @generated from field: quadsmith.api.GpsReceiver gps_receiver = 1;
-   */
-  gpsReceiver?: GpsReceiver | undefined;
-};
-
-/**
- * Describes the message quadsmith.api.UpdateGpsReceiverRequest.
- * Use `create(UpdateGpsReceiverRequestSchema)` to create a new message.
- */
-export const UpdateGpsReceiverRequestSchema: GenMessage<UpdateGpsReceiverRequest> =
-  /*@__PURE__*/
-  messageDesc(file_quadsmith_api_gps_receiver, 7);
+  messageDesc(file_quadsmith_api_gps_receiver, 3);
 
 /**
  * @generated from service quadsmith.api.GpsReceiverService
@@ -312,29 +235,5 @@ export const GpsReceiverService: GenService<{
     methodKind: "unary";
     input: typeof ListGpsReceiversRequestSchema;
     output: typeof ListGpsReceiversResponseSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.GpsReceiverService.CreateGpsReceiver
-   */
-  createGpsReceiver: {
-    methodKind: "unary";
-    input: typeof CreateGpsReceiverRequestSchema;
-    output: typeof GpsReceiverSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.GpsReceiverService.UpdateGpsReceiver
-   */
-  updateGpsReceiver: {
-    methodKind: "unary";
-    input: typeof UpdateGpsReceiverRequestSchema;
-    output: typeof GpsReceiverSchema;
-  };
-  /**
-   * @generated from rpc quadsmith.api.GpsReceiverService.DeleteGpsReceiver
-   */
-  deleteGpsReceiver: {
-    methodKind: "unary";
-    input: typeof DeleteGpsReceiverRequestSchema;
-    output: typeof DeleteGpsReceiverResponseSchema;
   };
 }> = /*@__PURE__*/ serviceDesc(file_quadsmith_api_gps_receiver, 0);

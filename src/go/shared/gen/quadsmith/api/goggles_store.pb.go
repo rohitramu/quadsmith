@@ -22,8 +22,8 @@ func CreateGoggles(ctx context.Context, tx pgx.Tx, m *Goggles) error {
 }
 
 func GetGoggles(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []string) (*Goggles, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "video_protocol": true, "display_type": true, "resolution": true, "fov_deg": true, "ipd_range_mm": true, "voltage_range": true, "dvr_supported": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported, description, reference_links, primary_display_image, media, user_uuid, author_username"
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "video_protocol": true, "display_type": true, "resolution": true, "fov_deg": true, "ipd_range_mm": true, "voltage_range": true, "dvr_supported": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "is_archived": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported, description, reference_links, primary_display_image, media, is_archived"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -34,9 +34,9 @@ func GetGoggles(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "video_protocol", "display_type", "resolution", "fov_deg", "ipd_range_mm", "voltage_range", "dvr_supported", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "video_protocol", "display_type", "resolution", "fov_deg", "ipd_range_mm", "voltage_range", "dvr_supported", "description", "reference_links", "primary_display_image", "media", "is_archived"}
 	}
-	query := `SELECT ` + colsStr + ` FROM goggles INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
+	query := `SELECT ` + colsStr + ` FROM goggles INNER JOIN entities USING (uuid) WHERE entities.id = $1 OR entities.uuid::text = $1 LIMIT 1`
 	scanArgs := make([]interface{}, len(cols))
 	scanAssigns := make([]func(), 0, len(cols))
 	m := &Goggles{}
@@ -74,10 +74,8 @@ func GetGoggles(ctx context.Context, db *pgxpool.Pool, idOrUuid string, cols []s
 			scanArgs[i] = &m.PrimaryDisplayImage
 		case "media":
 			scanArgs[i] = &m.Media
-		case "user_uuid":
-			scanArgs[i] = &m.UserUuid
-		case "author_username":
-			scanArgs[i] = &m.AuthorUsername
+		case "is_archived":
+			scanArgs[i] = &m.IsArchived
 		default:
 			var dummy interface{}
 			scanArgs[i] = &dummy
@@ -107,8 +105,12 @@ func DeleteGoggles(ctx context.Context, tx pgx.Tx, idOrUuid string) error {
 }
 
 func ListGoggles(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Goggles, error) {
-	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "video_protocol": true, "display_type": true, "resolution": true, "fov_deg": true, "ipd_range_mm": true, "voltage_range": true, "dvr_supported": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "user_uuid": true, "author_username": true}
-	colsStr := "uuid, id, manufacturer, name, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported, description, reference_links, primary_display_image, media, user_uuid, author_username"
+	return ListGogglesIncludingArchived(ctx, db, false, cols, sorts, whereClause, limit, offset, args...)
+}
+
+func ListGogglesIncludingArchived(ctx context.Context, db *pgxpool.Pool, includeArchived bool, cols []string, sorts []string, whereClause string, limit int32, offset int32, args ...any) ([]*Goggles, error) {
+	validCols := map[string]bool{"uuid": true, "id": true, "manufacturer": true, "name": true, "weight_g": true, "video_protocol": true, "display_type": true, "resolution": true, "fov_deg": true, "ipd_range_mm": true, "voltage_range": true, "dvr_supported": true, "description": true, "reference_links": true, "primary_display_image": true, "media": true, "is_archived": true}
+	colsStr := "uuid, id, manufacturer, name, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported, description, reference_links, primary_display_image, media, is_archived"
 	if len(cols) > 0 {
 		safeCols := make([]string, 0, len(cols))
 		for _, col := range cols {
@@ -119,12 +121,16 @@ func ListGoggles(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 		}
 		colsStr = strings.Join(safeCols, ", ")
 	} else {
-		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "video_protocol", "display_type", "resolution", "fov_deg", "ipd_range_mm", "voltage_range", "dvr_supported", "description", "reference_links", "primary_display_image", "media", "user_uuid", "author_username"}
+		cols = []string{"uuid", "id", "manufacturer", "name", "weight_g", "video_protocol", "display_type", "resolution", "fov_deg", "ipd_range_mm", "voltage_range", "dvr_supported", "description", "reference_links", "primary_display_image", "media", "is_archived"}
 	}
-	query := `SELECT ` + colsStr + ` FROM goggles INNER JOIN entities USING (uuid) LEFT JOIN (SELECT uuid AS u_uuid, id AS author_username FROM users) u ON u.u_uuid = entities.user_uuid`
-	query += " WHERE entities.is_archived = false"
-	if whereClause != "" {
-		query += " AND (" + whereClause + ")"
+	query := `SELECT ` + colsStr + ` FROM goggles INNER JOIN entities USING (uuid)`
+	if !includeArchived {
+		query += " WHERE entities.is_archived = false"
+		if whereClause != "" {
+			query += " AND (" + whereClause + ")"
+		}
+	} else if whereClause != "" {
+		query += " WHERE " + whereClause
 	}
 	var orderClauses []string
 	hasIdSort := false
@@ -201,10 +207,8 @@ func ListGoggles(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 				scanArgs[i] = &m.PrimaryDisplayImage
 			case "media":
 				scanArgs[i] = &m.Media
-			case "user_uuid":
-				scanArgs[i] = &m.UserUuid
-			case "author_username":
-				scanArgs[i] = &m.AuthorUsername
+			case "is_archived":
+				scanArgs[i] = &m.IsArchived
 			default:
 				var dummy interface{}
 				scanArgs[i] = &dummy
@@ -218,42 +222,6 @@ func ListGoggles(ctx context.Context, db *pgxpool.Pool, cols []string, sorts []s
 			assign()
 		}
 		results = append(results, m)
-	}
-	return results, nil
-}
-
-func ExportGoggles(ctx context.Context, db *pgxpool.Pool, userUUID string) ([]*Goggles, error) {
-	query := `SELECT uuid, manufacturer, weight_g, video_protocol, display_type, resolution, fov_deg, ipd_range_mm, voltage_range, dvr_supported FROM goggles WHERE uuid IN (SELECT uuid FROM entities WHERE collection = 'goggles' AND user_uuid = $1::uuid) ORDER BY uuid ASC`
-	rows, err := db.Query(ctx, query, userUUID)
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-	results := make([]*Goggles, 0)
-	for rows.Next() {
-		scanArgs := make([]interface{}, 10)
-		scanAssigns := make([]func(), 0, 10)
-		m := &Goggles{}
-		scanArgs[0] = &m.Uuid
-		scanArgs[1] = &m.Manufacturer
-		scanArgs[2] = &m.WeightG
-		scanArgs[3] = &m.VideoProtocol
-		scanArgs[4] = &m.DisplayType
-		scanArgs[5] = &m.Resolution
-		scanArgs[6] = &m.FovDeg
-		scanArgs[7] = &m.IpdRangeMm
-		scanArgs[8] = &m.VoltageRange
-		scanArgs[9] = &m.DvrSupported
-		err := rows.Scan(scanArgs...)
-		if err != nil {
-			return nil, err
-		}
-		for _, assign := range scanAssigns {
-			assign()
-		}
-		if m.Manufacturer != "" || m.WeightG != 0 || m.VideoProtocol != "" || m.DisplayType != "" || m.Resolution != "" || m.FovDeg != 0 || m.IpdRangeMm != "" || m.VoltageRange != "" || m.DvrSupported {
-			results = append(results, m)
-		}
 	}
 	return results, nil
 }

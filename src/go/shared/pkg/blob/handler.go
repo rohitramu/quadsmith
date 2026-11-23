@@ -33,7 +33,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	path := r.URL.Path
 
 	switch {
-	case r.Method == http.MethodPost && (path == "/api/blobs" || path == "/api/blobs/"):
+	case r.Method == http.MethodPost && (path == "/api/blobs" || path == "/api/blobs/" || path == "/api/ops/blobs" || path == "/api/ops/blobs/"):
 		h.handleUpload(w, r)
 	case r.Method == http.MethodGet && strings.HasPrefix(path, "/api/blobs/") && strings.HasSuffix(path, "/metadata"):
 		h.handleMetadata(w, r)

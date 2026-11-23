@@ -38,8 +38,7 @@ type EscFirmware struct {
 	ReferenceLinks      []*ReferenceLink       `protobuf:"bytes,10,rep,name=reference_links,json=referenceLinks,proto3" json:"reference_links,omitempty"`
 	PrimaryDisplayImage *string                `protobuf:"bytes,11,opt,name=primary_display_image,json=primaryDisplayImage,proto3,oneof" json:"primary_display_image,omitempty"`
 	Media               []*Media               `protobuf:"bytes,12,rep,name=media,proto3" json:"media,omitempty"`
-	UserUuid            *string                `protobuf:"bytes,13,opt,name=user_uuid,json=userUuid,proto3,oneof" json:"user_uuid,omitempty"`
-	AuthorUsername      *string                `protobuf:"bytes,14,opt,name=author_username,json=authorUsername,proto3,oneof" json:"author_username,omitempty"`
+	IsArchived          bool                   `protobuf:"varint,13,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
 	unknownFields       protoimpl.UnknownFields
 	sizeCache           protoimpl.SizeCache
 }
@@ -158,146 +157,7 @@ func (x *EscFirmware) GetMedia() []*Media {
 	return nil
 }
 
-func (x *EscFirmware) GetUserUuid() string {
-	if x != nil && x.UserUuid != nil {
-		return *x.UserUuid
-	}
-	return ""
-}
-
-func (x *EscFirmware) GetAuthorUsername() string {
-	if x != nil && x.AuthorUsername != nil {
-		return *x.AuthorUsername
-	}
-	return ""
-}
-
-type CreateEscFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	EscFirmware   *EscFirmware           `protobuf:"bytes,1,opt,name=esc_firmware,json=escFirmware,proto3" json:"esc_firmware,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *CreateEscFirmwareRequest) Reset() {
-	*x = CreateEscFirmwareRequest{}
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[1]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *CreateEscFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*CreateEscFirmwareRequest) ProtoMessage() {}
-
-func (x *CreateEscFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[1]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use CreateEscFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*CreateEscFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_esc_firmware_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *CreateEscFirmwareRequest) GetEscFirmware() *EscFirmware {
-	if x != nil {
-		return x.EscFirmware
-	}
-	return nil
-}
-
-type DeleteEscFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteEscFirmwareRequest) Reset() {
-	*x = DeleteEscFirmwareRequest{}
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[2]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteEscFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteEscFirmwareRequest) ProtoMessage() {}
-
-func (x *DeleteEscFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[2]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteEscFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*DeleteEscFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_esc_firmware_proto_rawDescGZIP(), []int{2}
-}
-
-func (x *DeleteEscFirmwareRequest) GetId() string {
-	if x != nil {
-		return x.Id
-	}
-	return ""
-}
-
-type DeleteEscFirmwareResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	IsArchived    bool                   `protobuf:"varint,1,opt,name=is_archived,json=isArchived,proto3" json:"is_archived,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *DeleteEscFirmwareResponse) Reset() {
-	*x = DeleteEscFirmwareResponse{}
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *DeleteEscFirmwareResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*DeleteEscFirmwareResponse) ProtoMessage() {}
-
-func (x *DeleteEscFirmwareResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use DeleteEscFirmwareResponse.ProtoReflect.Descriptor instead.
-func (*DeleteEscFirmwareResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_esc_firmware_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *DeleteEscFirmwareResponse) GetIsArchived() bool {
+func (x *EscFirmware) GetIsArchived() bool {
 	if x != nil {
 		return x.IsArchived
 	}
@@ -314,7 +174,7 @@ type GetEscFirmwareRequest struct {
 
 func (x *GetEscFirmwareRequest) Reset() {
 	*x = GetEscFirmwareRequest{}
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[4]
+	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -326,7 +186,7 @@ func (x *GetEscFirmwareRequest) String() string {
 func (*GetEscFirmwareRequest) ProtoMessage() {}
 
 func (x *GetEscFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[4]
+	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -339,7 +199,7 @@ func (x *GetEscFirmwareRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetEscFirmwareRequest.ProtoReflect.Descriptor instead.
 func (*GetEscFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_esc_firmware_proto_rawDescGZIP(), []int{4}
+	return file_quadsmith_api_esc_firmware_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *GetEscFirmwareRequest) GetId() string {
@@ -369,7 +229,7 @@ type ListEscFirmwaresRequest struct {
 
 func (x *ListEscFirmwaresRequest) Reset() {
 	*x = ListEscFirmwaresRequest{}
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[5]
+	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -381,7 +241,7 @@ func (x *ListEscFirmwaresRequest) String() string {
 func (*ListEscFirmwaresRequest) ProtoMessage() {}
 
 func (x *ListEscFirmwaresRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[5]
+	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -394,7 +254,7 @@ func (x *ListEscFirmwaresRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEscFirmwaresRequest.ProtoReflect.Descriptor instead.
 func (*ListEscFirmwaresRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_esc_firmware_proto_rawDescGZIP(), []int{5}
+	return file_quadsmith_api_esc_firmware_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *ListEscFirmwaresRequest) GetFilter() string {
@@ -442,7 +302,7 @@ type ListEscFirmwaresResponse struct {
 
 func (x *ListEscFirmwaresResponse) Reset() {
 	*x = ListEscFirmwaresResponse{}
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[6]
+	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -454,7 +314,7 @@ func (x *ListEscFirmwaresResponse) String() string {
 func (*ListEscFirmwaresResponse) ProtoMessage() {}
 
 func (x *ListEscFirmwaresResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[6]
+	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -467,7 +327,7 @@ func (x *ListEscFirmwaresResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListEscFirmwaresResponse.ProtoReflect.Descriptor instead.
 func (*ListEscFirmwaresResponse) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_esc_firmware_proto_rawDescGZIP(), []int{6}
+	return file_quadsmith_api_esc_firmware_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *ListEscFirmwaresResponse) GetEscFirmwares() []*EscFirmware {
@@ -484,89 +344,35 @@ func (x *ListEscFirmwaresResponse) GetNextPageToken() string {
 	return ""
 }
 
-type UpdateEscFirmwareRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	EscFirmware   *EscFirmware           `protobuf:"bytes,1,opt,name=esc_firmware,json=escFirmware,proto3" json:"esc_firmware,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *UpdateEscFirmwareRequest) Reset() {
-	*x = UpdateEscFirmwareRequest{}
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[7]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *UpdateEscFirmwareRequest) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*UpdateEscFirmwareRequest) ProtoMessage() {}
-
-func (x *UpdateEscFirmwareRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_quadsmith_api_esc_firmware_proto_msgTypes[7]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use UpdateEscFirmwareRequest.ProtoReflect.Descriptor instead.
-func (*UpdateEscFirmwareRequest) Descriptor() ([]byte, []int) {
-	return file_quadsmith_api_esc_firmware_proto_rawDescGZIP(), []int{7}
-}
-
-func (x *UpdateEscFirmwareRequest) GetEscFirmware() *EscFirmware {
-	if x != nil {
-		return x.EscFirmware
-	}
-	return nil
-}
-
 var File_quadsmith_api_esc_firmware_proto protoreflect.FileDescriptor
 
 const file_quadsmith_api_esc_firmware_proto_rawDesc = "" +
 	"\n" +
-	" quadsmith/api/esc_firmware.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\xd1\a\n" +
+	" quadsmith/api/esc_firmware.proto\x12\rquadsmith.api\x1a\x19quadsmith/api/media.proto\x1a\"quadsmith/api/reference_link.proto\x1a\x1dquadsmith/common/common.proto\x1a\x19quadsmith/data/data.proto\x1a\x17quadsmith/sql/sql.proto\"\x9a\x06\n" +
 	"\vEscFirmware\x12@\n" +
 	"\x04uuid\x18\x01 \x01(\tB,\xc2\xf3\x18$\x10\x01\x1a entities(uuid) ON DELETE CASCADE\xc0\xf0\x19\x04R\x04uuid\x12\x14\n" +
 	"\x02id\x18\x02 \x01(\tB\x04\xc0\xf0\x19\x04R\x02id\x12.\n" +
 	"\fmanufacturer\x18\x03 \x01(\tB\n" +
-	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x02R\fmanufacturer\x12\x18\n" +
-	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x02R\x04name\x12\x1e\n" +
-	"\aversion\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x02R\aversion\x12\"\n" +
-	"\tprotocols\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x02R\tprotocols\x124\n" +
-	"\x13pwm_frequency_range\x18\a \x01(\tB\x04\xc0\xf0\x19\x02R\x11pwmFrequencyRange\x12*\n" +
-	"\x0eis_open_source\x18\b \x01(\bB\x04\xc0\xf0\x19\x02R\fisOpenSource\x12&\n" +
-	"\vdescription\x18\t \x01(\tB\x04\xc0\xf0\x19\x02R\vdescription\x12K\n" +
+	"\xc2\xf3\x18\x02(\x01\xc0\xf0\x19\x04R\fmanufacturer\x12\x18\n" +
+	"\x04name\x18\x04 \x01(\tB\x04\xc0\xf0\x19\x04R\x04name\x12\x1e\n" +
+	"\aversion\x18\x05 \x01(\tB\x04\xc0\xf0\x19\x04R\aversion\x12\"\n" +
+	"\tprotocols\x18\x06 \x01(\tB\x04\xc0\xf0\x19\x04R\tprotocols\x124\n" +
+	"\x13pwm_frequency_range\x18\a \x01(\tB\x04\xc0\xf0\x19\x04R\x11pwmFrequencyRange\x12*\n" +
+	"\x0eis_open_source\x18\b \x01(\bB\x04\xc0\xf0\x19\x04R\fisOpenSource\x12&\n" +
+	"\vdescription\x18\t \x01(\tB\x04\xc0\xf0\x19\x04R\vdescription\x12K\n" +
 	"\x0freference_links\x18\n" +
-	" \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x04\xc0\xf0\x19\x02R\x0ereferenceLinks\x12=\n" +
-	"\x15primary_display_image\x18\v \x01(\tB\x04\xc0\xf0\x19\x02H\x00R\x13primaryDisplayImage\x88\x01\x01\x120\n" +
-	"\x05media\x18\f \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x02R\x05media\x12&\n" +
-	"\tuser_uuid\x18\r \x01(\tB\x04\xc0\xf0\x19\x04H\x01R\buserUuid\x88\x01\x01\x122\n" +
-	"\x0fauthor_username\x18\x0e \x01(\tB\x04\xc0\xf0\x19\x02H\x02R\x0eauthorUsername\x88\x01\x01:\xfb\x01\x8a\xb5\x188\n" +
+	" \x03(\v2\x1c.quadsmith.api.ReferenceLinkB\x04\xc0\xf0\x19\x04R\x0ereferenceLinks\x12=\n" +
+	"\x15primary_display_image\x18\v \x01(\tB\x04\xc0\xf0\x19\x04H\x00R\x13primaryDisplayImage\x88\x01\x01\x120\n" +
+	"\x05media\x18\f \x03(\v2\x14.quadsmith.api.MediaB\x04\xc0\xf0\x19\x04R\x05media\x12%\n" +
+	"\vis_archived\x18\r \x01(\bB\x04\xc0\xf0\x19\x04R\n" +
+	"isArchived:\x9b\x01\x8a\xb5\x188\n" +
 	"\fmanufacturer\n" +
 	"\x04name\n" +
 	"\aversion\n" +
 	"\tprotocols\n" +
 	"\x0eis_open_source\x9a\xb5\x18 components/software/esc-firmware\xc2\xf3\x181\n" +
-	"%electronic_speed_controller_firmwares*\bentities\xc2\xf0\x19b\b\x05\x12^uuid IN (SELECT uuid FROM entities WHERE collection = 'esc-firmware' AND user_uuid = $1::uuid)B\x18\n" +
-	"\x16_primary_display_imageB\f\n" +
-	"\n" +
-	"_user_uuidB\x12\n" +
-	"\x10_author_username\"Y\n" +
-	"\x18CreateEscFirmwareRequest\x12=\n" +
-	"\fesc_firmware\x18\x01 \x01(\v2\x1a.quadsmith.api.EscFirmwareR\vescFirmware\"*\n" +
-	"\x18DeleteEscFirmwareRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\"<\n" +
-	"\x19DeleteEscFirmwareResponse\x12\x1f\n" +
-	"\vis_archived\x18\x01 \x01(\bR\n" +
-	"isArchived\"A\n" +
+	"%electronic_speed_controller_firmwares*\bentities\xc2\xf0\x19\x02\b\x01B\x18\n" +
+	"\x16_primary_display_image\"A\n" +
 	"\x15GetEscFirmwareRequest\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x18\n" +
 	"\acolumns\x18\x02 \x03(\tR\acolumns\"\x9b\x01\n" +
@@ -579,15 +385,10 @@ const file_quadsmith_api_esc_firmware_proto_rawDesc = "" +
 	"\x04sort\x18\x05 \x03(\tR\x04sort\"\x83\x01\n" +
 	"\x18ListEscFirmwaresResponse\x12?\n" +
 	"\resc_firmwares\x18\x01 \x03(\v2\x1a.quadsmith.api.EscFirmwareR\fescFirmwares\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"Y\n" +
-	"\x18UpdateEscFirmwareRequest\x12=\n" +
-	"\fesc_firmware\x18\x01 \x01(\v2\x1a.quadsmith.api.EscFirmwareR\vescFirmware2\xe9\x03\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken2\xcd\x01\n" +
 	"\x12EscFirmwareService\x12R\n" +
 	"\x0eGetEscFirmware\x12$.quadsmith.api.GetEscFirmwareRequest\x1a\x1a.quadsmith.api.EscFirmware\x12c\n" +
-	"\x10ListEscFirmwares\x12&.quadsmith.api.ListEscFirmwaresRequest\x1a'.quadsmith.api.ListEscFirmwaresResponse\x12X\n" +
-	"\x11CreateEscFirmware\x12'.quadsmith.api.CreateEscFirmwareRequest\x1a\x1a.quadsmith.api.EscFirmware\x12X\n" +
-	"\x11UpdateEscFirmware\x12'.quadsmith.api.UpdateEscFirmwareRequest\x1a\x1a.quadsmith.api.EscFirmware\x12f\n" +
-	"\x11DeleteEscFirmware\x12'.quadsmith.api.DeleteEscFirmwareRequest\x1a(.quadsmith.api.DeleteEscFirmwareResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
+	"\x10ListEscFirmwares\x12&.quadsmith.api.ListEscFirmwaresRequest\x1a'.quadsmith.api.ListEscFirmwaresResponseB(Z&quadsmith/shared/gen/quadsmith/api;apib\x06proto3"
 
 var (
 	file_quadsmith_api_esc_firmware_proto_rawDescOnce sync.Once
@@ -601,40 +402,28 @@ func file_quadsmith_api_esc_firmware_proto_rawDescGZIP() []byte {
 	return file_quadsmith_api_esc_firmware_proto_rawDescData
 }
 
-var file_quadsmith_api_esc_firmware_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_quadsmith_api_esc_firmware_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_quadsmith_api_esc_firmware_proto_goTypes = []any{
-	(*EscFirmware)(nil),               // 0: quadsmith.api.EscFirmware
-	(*CreateEscFirmwareRequest)(nil),  // 1: quadsmith.api.CreateEscFirmwareRequest
-	(*DeleteEscFirmwareRequest)(nil),  // 2: quadsmith.api.DeleteEscFirmwareRequest
-	(*DeleteEscFirmwareResponse)(nil), // 3: quadsmith.api.DeleteEscFirmwareResponse
-	(*GetEscFirmwareRequest)(nil),     // 4: quadsmith.api.GetEscFirmwareRequest
-	(*ListEscFirmwaresRequest)(nil),   // 5: quadsmith.api.ListEscFirmwaresRequest
-	(*ListEscFirmwaresResponse)(nil),  // 6: quadsmith.api.ListEscFirmwaresResponse
-	(*UpdateEscFirmwareRequest)(nil),  // 7: quadsmith.api.UpdateEscFirmwareRequest
-	(*ReferenceLink)(nil),             // 8: quadsmith.api.ReferenceLink
-	(*Media)(nil),                     // 9: quadsmith.api.Media
+	(*EscFirmware)(nil),              // 0: quadsmith.api.EscFirmware
+	(*GetEscFirmwareRequest)(nil),    // 1: quadsmith.api.GetEscFirmwareRequest
+	(*ListEscFirmwaresRequest)(nil),  // 2: quadsmith.api.ListEscFirmwaresRequest
+	(*ListEscFirmwaresResponse)(nil), // 3: quadsmith.api.ListEscFirmwaresResponse
+	(*ReferenceLink)(nil),            // 4: quadsmith.api.ReferenceLink
+	(*Media)(nil),                    // 5: quadsmith.api.Media
 }
 var file_quadsmith_api_esc_firmware_proto_depIdxs = []int32{
-	8,  // 0: quadsmith.api.EscFirmware.reference_links:type_name -> quadsmith.api.ReferenceLink
-	9,  // 1: quadsmith.api.EscFirmware.media:type_name -> quadsmith.api.Media
-	0,  // 2: quadsmith.api.CreateEscFirmwareRequest.esc_firmware:type_name -> quadsmith.api.EscFirmware
-	0,  // 3: quadsmith.api.ListEscFirmwaresResponse.esc_firmwares:type_name -> quadsmith.api.EscFirmware
-	0,  // 4: quadsmith.api.UpdateEscFirmwareRequest.esc_firmware:type_name -> quadsmith.api.EscFirmware
-	4,  // 5: quadsmith.api.EscFirmwareService.GetEscFirmware:input_type -> quadsmith.api.GetEscFirmwareRequest
-	5,  // 6: quadsmith.api.EscFirmwareService.ListEscFirmwares:input_type -> quadsmith.api.ListEscFirmwaresRequest
-	1,  // 7: quadsmith.api.EscFirmwareService.CreateEscFirmware:input_type -> quadsmith.api.CreateEscFirmwareRequest
-	7,  // 8: quadsmith.api.EscFirmwareService.UpdateEscFirmware:input_type -> quadsmith.api.UpdateEscFirmwareRequest
-	2,  // 9: quadsmith.api.EscFirmwareService.DeleteEscFirmware:input_type -> quadsmith.api.DeleteEscFirmwareRequest
-	0,  // 10: quadsmith.api.EscFirmwareService.GetEscFirmware:output_type -> quadsmith.api.EscFirmware
-	6,  // 11: quadsmith.api.EscFirmwareService.ListEscFirmwares:output_type -> quadsmith.api.ListEscFirmwaresResponse
-	0,  // 12: quadsmith.api.EscFirmwareService.CreateEscFirmware:output_type -> quadsmith.api.EscFirmware
-	0,  // 13: quadsmith.api.EscFirmwareService.UpdateEscFirmware:output_type -> quadsmith.api.EscFirmware
-	3,  // 14: quadsmith.api.EscFirmwareService.DeleteEscFirmware:output_type -> quadsmith.api.DeleteEscFirmwareResponse
-	10, // [10:15] is the sub-list for method output_type
-	5,  // [5:10] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	4, // 0: quadsmith.api.EscFirmware.reference_links:type_name -> quadsmith.api.ReferenceLink
+	5, // 1: quadsmith.api.EscFirmware.media:type_name -> quadsmith.api.Media
+	0, // 2: quadsmith.api.ListEscFirmwaresResponse.esc_firmwares:type_name -> quadsmith.api.EscFirmware
+	1, // 3: quadsmith.api.EscFirmwareService.GetEscFirmware:input_type -> quadsmith.api.GetEscFirmwareRequest
+	2, // 4: quadsmith.api.EscFirmwareService.ListEscFirmwares:input_type -> quadsmith.api.ListEscFirmwaresRequest
+	0, // 5: quadsmith.api.EscFirmwareService.GetEscFirmware:output_type -> quadsmith.api.EscFirmware
+	3, // 6: quadsmith.api.EscFirmwareService.ListEscFirmwares:output_type -> quadsmith.api.ListEscFirmwaresResponse
+	5, // [5:7] is the sub-list for method output_type
+	3, // [3:5] is the sub-list for method input_type
+	3, // [3:3] is the sub-list for extension type_name
+	3, // [3:3] is the sub-list for extension extendee
+	0, // [0:3] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_api_esc_firmware_proto_init() }
@@ -651,7 +440,7 @@ func file_quadsmith_api_esc_firmware_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_api_esc_firmware_proto_rawDesc), len(file_quadsmith_api_esc_firmware_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

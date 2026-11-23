@@ -134,18 +134,9 @@ func streamArchive(ctx context.Context, pool *pgxpool.Pool, zw *zip.Writer, user
 	}
 
 	// 3. builds.json
-	allEntities, err := storepb.ExportEntities(ctx, pool, userUUID)
+	buildEntities, err := storepb.ExportEntities(ctx, pool, userUUID)
 	if err != nil {
 		return err
-	}
-	var buildEntities []*storepb.Entity
-	var compEntities []*storepb.Entity
-	for _, e := range allEntities {
-		if e.Collection == "builds" {
-			buildEntities = append(buildEntities, e)
-		} else {
-			compEntities = append(compEntities, e)
-		}
 	}
 
 	builds, err := pb.ExportBuilds(ctx, pool, userUUID)
@@ -164,138 +155,7 @@ func streamArchive(ctx context.Context, pool *pgxpool.Pool, zw *zip.Writer, user
 		return err
 	}
 
-	// 4. components.json (all 20 component tables)
-	antennas, err := pb.ExportAntennas(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	batteries, err := pb.ExportBatteries(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	cameras, err := pb.ExportCameras(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	chargers, err := pb.ExportChargers(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	escs, err := pb.ExportElectronicSpeedControllers(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	escFirmwares, err := pb.ExportEscFirmwares(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	fcFirmwares, err := pb.ExportFcFirmwares(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	fieldTools, err := pb.ExportFieldTools(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	fcs, err := pb.ExportFlightControllers(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	frames, err := pb.ExportFrames(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	goggles, err := pb.ExportGoggles(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	gps, err := pb.ExportGpsReceivers(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	motors, err := pb.ExportMotors(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	props, err := pb.ExportPropellers(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	radioFirmwares, err := pb.ExportRadioFirmwares(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	receivers, err := pb.ExportReceivers(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	softwareTools, err := pb.ExportSoftwareTools(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	transmitters, err := pb.ExportTransmitters(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	vtxs, err := pb.ExportVideoTransmitters(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-	vtxFirmwares, err := pb.ExportVtxFirmwares(ctx, pool, userUUID)
-	if err != nil {
-		return err
-	}
-
-	compsArchive := struct {
-		Entities                   []json.RawMessage `json:"entities"`
-		Antennas                   []json.RawMessage `json:"antennas"`
-		Batteries                  []json.RawMessage `json:"batteries"`
-		Cameras                    []json.RawMessage `json:"cameras"`
-		Chargers                   []json.RawMessage `json:"chargers"`
-		ElectronicSpeedControllers []json.RawMessage `json:"electronic_speed_controllers"`
-		EscFirmwares               []json.RawMessage `json:"esc_firmwares"`
-		FcFirmwares                []json.RawMessage `json:"fc_firmwares"`
-		FieldTools                 []json.RawMessage `json:"field_tools"`
-		FlightControllers          []json.RawMessage `json:"flight_controllers"`
-		Frames                     []json.RawMessage `json:"frames"`
-		Goggles                    []json.RawMessage `json:"goggles"`
-		GpsReceivers               []json.RawMessage `json:"gps_receivers"`
-		Motors                     []json.RawMessage `json:"motors"`
-		Propellers                 []json.RawMessage `json:"propellers"`
-		RadioFirmwares             []json.RawMessage `json:"radio_firmwares"`
-		Receivers                  []json.RawMessage `json:"receivers"`
-		SoftwareTools              []json.RawMessage `json:"software_tools"`
-		Transmitters               []json.RawMessage `json:"transmitters"`
-		VideoTransmitters          []json.RawMessage `json:"video_transmitters"`
-		VtxFirmwares               []json.RawMessage `json:"vtx_firmwares"`
-	}{
-		Entities:                   mustProtoSlice(compEntities),
-		Antennas:                   mustProtoSlice(antennas),
-		Batteries:                  mustProtoSlice(batteries),
-		Cameras:                    mustProtoSlice(cameras),
-		Chargers:                   mustProtoSlice(chargers),
-		ElectronicSpeedControllers: mustProtoSlice(escs),
-		EscFirmwares:               mustProtoSlice(escFirmwares),
-		FcFirmwares:                mustProtoSlice(fcFirmwares),
-		FieldTools:                 mustProtoSlice(fieldTools),
-		FlightControllers:          mustProtoSlice(fcs),
-		Frames:                     mustProtoSlice(frames),
-		Goggles:                    mustProtoSlice(goggles),
-		GpsReceivers:               mustProtoSlice(gps),
-		Motors:                     mustProtoSlice(motors),
-		Propellers:                 mustProtoSlice(props),
-		RadioFirmwares:             mustProtoSlice(radioFirmwares),
-		Receivers:                  mustProtoSlice(receivers),
-		SoftwareTools:              mustProtoSlice(softwareTools),
-		Transmitters:               mustProtoSlice(transmitters),
-		VideoTransmitters:          mustProtoSlice(vtxs),
-		VtxFirmwares:               mustProtoSlice(vtxFirmwares),
-	}
-	if err := writeJSONToZip(zw, "components.json", compsArchive); err != nil {
-		return err
-	}
-
-	// 5. collections.json
+	// 4. collections.json
 	collections, err := storepb.ExportCollections(ctx, pool, userUUID)
 	if err != nil {
 		return err
