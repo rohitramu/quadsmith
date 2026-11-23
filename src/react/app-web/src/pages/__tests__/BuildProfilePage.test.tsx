@@ -21,6 +21,10 @@ describe("BuildProfilePage Component", () => {
     expect(
       await screen.findByRole("heading", { level: 1, name: "Bando Basher 5 inch" }),
     ).toBeInTheDocument();
+
+    const detailContainer = screen.getByTestId("build-detail-container");
+    expect(detailContainer.className).toContain("max-w-[96rem]");
+    expect(detailContainer.className).toContain("mx-auto");
     expect(screen.getByText(/Created by/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "@alex" })).toBeInTheDocument();
     expect(screen.queryByText("@bando-basher-5-inch")).not.toBeInTheDocument();
@@ -295,6 +299,10 @@ describe("BuildProfilePage Component", () => {
       await screen.findByRole("heading", { level: 1, name: "Bando Basher 5 inch" }),
     ).toBeInTheDocument();
 
+    const detailContainer = screen.getByTestId("build-detail-container");
+    expect(detailContainer.className).toContain("max-w-[96rem]");
+    expect(detailContainer.className).toContain("mx-auto");
+
     // Verify initial state: reviews panel is visible (not hidden)
     const reviewsPanel = document.getElementById("reviews");
     expect(reviewsPanel).not.toBeNull();
@@ -363,6 +371,10 @@ describe("BuildProfilePage Component", () => {
       await screen.findByRole("heading", { level: 1, name: "Bando Basher 5 inch" }),
     ).toBeInTheDocument();
 
+    const detailContainer = screen.getByTestId("build-detail-container");
+    expect(detailContainer.className).toContain("max-w-[96rem]");
+    expect(detailContainer.className).toContain("mx-auto");
+
     // Verify Similar Builds tab is present
     const similarTabBtn = screen.getByRole("button", { name: /Similar Builds/i });
     expect(similarTabBtn).toBeInTheDocument();
@@ -405,6 +417,10 @@ describe("BuildProfilePage Component", () => {
     expect(
       await screen.findByRole("heading", { level: 1, name: "Bando Basher 5 inch" }),
     ).toBeInTheDocument();
+
+    const detailContainer = screen.getByTestId("build-detail-container");
+    expect(detailContainer.className).toContain("max-w-[96rem]");
+    expect(detailContainer.className).toContain("mx-auto");
 
     const similarTabBtn = screen.getByRole("button", { name: /Similar Builds/i });
     await user.click(similarTabBtn);

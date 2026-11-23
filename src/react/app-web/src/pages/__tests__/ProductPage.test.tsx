@@ -25,6 +25,10 @@ describe("ProductPage Component", () => {
       expect(screen.getByRole("heading", { level: 1, name: "ECO II 2207" })).toBeInTheDocument();
     });
 
+    const detailContainer = screen.getByTestId("product-detail-container");
+    expect(detailContainer.className).toContain("max-w-[96rem]");
+    expect(detailContainer.className).toContain("mx-auto");
+
     // Verify breadcrumb product name includes manufacturer without dash
     expect(screen.getByText("EMAX ECO II 2207")).toBeInTheDocument();
 
@@ -97,6 +101,10 @@ describe("ProductPage Component", () => {
     await waitFor(() => {
       expect(screen.getByRole("heading", { level: 1, name: "ECO II 2207" })).toBeInTheDocument();
     });
+
+    const detailContainer = screen.getByTestId("product-detail-container");
+    expect(detailContainer.className).toContain("max-w-[96rem]");
+    expect(detailContainer.className).toContain("mx-auto");
 
     // Verify initial state: reviews panel is visible (not hidden)
     const reviewsPanel = document.getElementById("reviews");

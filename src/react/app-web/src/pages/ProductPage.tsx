@@ -50,7 +50,7 @@ function ProductDetailView({
   });
 
   return (
-    <div className="max-w-6xl mx-auto">
+    <div data-testid="product-detail-container" className="max-w-[96rem] mx-auto">
       <nav
         aria-label="Breadcrumb"
         className="mb-4 text-sm text-zinc-400 flex items-center gap-1.5 flex-wrap"
@@ -208,7 +208,7 @@ export function ProductPage() {
 
   if (!collection) {
     return (
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-[96rem] mx-auto">
         <p className="text-zinc-500">
           Product page for {collectionId?.replace(/[-_]/g, " ")} coming soon.
         </p>
