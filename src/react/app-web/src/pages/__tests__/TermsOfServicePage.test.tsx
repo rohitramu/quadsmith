@@ -48,7 +48,7 @@ describe("TermsOfServicePage Component", () => {
     expect(screen.getByText(/provided “as is” without warranty:/i)).toBeInTheDocument();
     expect(screen.queryByText(/featured on build profile pages/i)).not.toBeInTheDocument();
 
-    // Section 3: Terms of Service (broad paragraphs, no numbered sub-clauses)
+    // Section 3: Terms of Service (concise plain-English paragraphs, no numbered sub-clauses)
     expect(
       screen.getByRole("heading", {
         level: 2,
@@ -56,12 +56,10 @@ describe("TermsOfServicePage Component", () => {
       }),
     ).toBeInTheDocument();
     expect(screen.queryByText(/1\. acceptance of terms/i)).not.toBeInTheDocument();
-    expect(screen.getByText(/indemnify, defend, and hold harmless quadsmith/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/modify, suspend, or discontinue any part of the service/i),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/indemnify and hold quadsmith harmless/i)).toBeInTheDocument();
+    expect(screen.getByText(/modify or discontinue the service/i)).toBeInTheDocument();
 
-    // Section 4: Data & Privacy (broad privacy notice, no export/deletion specifics)
+    // Section 4: Data & Privacy (concise privacy notice, no technical/export/deletion lists)
     expect(
       screen.getByRole("heading", {
         level: 2,
@@ -69,8 +67,9 @@ describe("TermsOfServicePage Component", () => {
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/no internet transmission or electronic storage is completely secure/i),
+      screen.getByText(/makes no guarantee regarding the security, availability, or retention/i),
     ).toBeInTheDocument();
+    expect(screen.queryByText(/ip addresses/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/\.zip/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/30-day/i)).not.toBeInTheDocument();
   });

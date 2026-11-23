@@ -151,7 +151,7 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
       <section
         id="terms-of-service"
         aria-labelledby="tos-heading"
-        className="p-6 sm:p-8 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-5 scroll-mt-20"
+        className="p-6 sm:p-8 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4 scroll-mt-20"
       >
         <div className="border-b border-zinc-800 pb-4">
           <h2
@@ -162,42 +162,31 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
             <span>Terms of Service</span>
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            General terms governing access to and use of Quadsmith.
+            General terms governing your use of Quadsmith.
           </p>
         </div>
 
-        <div className="space-y-4 text-xs sm:text-sm text-zinc-400 leading-relaxed text-pretty">
+        <div className="space-y-3 text-xs sm:text-sm text-zinc-400 leading-relaxed text-pretty">
           <p>
-            By accessing or using Quadsmith, you agree to these Terms of Service and all Safety
-            Disclaimers, and agree to comply with all applicable laws and regulations. Quadsmith and
-            all content, data, tools, and services made available through it are provided strictly
-            on an <strong className="text-zinc-200">&ldquo;AS IS&rdquo;</strong> and{" "}
-            <strong className="text-zinc-200">&ldquo;AS AVAILABLE&rdquo;</strong> basis, without
-            warranties of any kind, whether express, implied, or statutory—including any implied
-            warranties of merchantability, fitness for a particular purpose, accuracy, completeness,
-            safety, airworthiness, availability, or non-infringement.
+            By using Quadsmith, you agree to these terms and agree to comply with all applicable
+            laws. Quadsmith and everything provided through it are offered strictly{" "}
+            <strong className="text-zinc-200">&ldquo;AS IS&rdquo;</strong> and{" "}
+            <strong className="text-zinc-200">&ldquo;AS AVAILABLE&rdquo;</strong> without warranties
+            of any kind, express or implied.
           </p>
 
           <p>
-            Your use of Quadsmith and any reliance on information provided through it is solely at
-            your own risk. To the fullest extent permitted by applicable law, Quadsmith shall not be
-            liable for any direct, indirect, incidental, special, consequential, exemplary, or
-            punitive damages, losses, injuries, or claims of any kind arising out of or related to
-            your access to, use of, or inability to use the service. You agree to indemnify, defend,
-            and hold harmless Quadsmith from and against any claims, liabilities, damages, losses,
-            and expenses (including reasonable legal fees) arising out of your use of the service,
-            any content you submit, or your violation of these terms or applicable law.
+            You use Quadsmith entirely at your own risk. To the fullest extent permitted by law,
+            Quadsmith is not liable for any damages, losses, or claims arising from your use of or
+            inability to use the service, and you agree to indemnify and hold Quadsmith harmless
+            from any claims arising from your use, your content, or your violation of these terms.
           </p>
 
           <p>
-            You are solely responsible for your account activity and any content you submit, and by
-            submitting content you represent that you have all necessary rights to do so and grant
-            Quadsmith a worldwide, non-exclusive, royalty-free license to host, use, reproduce,
-            display, and distribute that content in connection with operating and promoting the
-            service. Quadsmith reserves the right, in its sole discretion and at any time without
-            notice or liability, to modify, suspend, or discontinue any part of the service, remove
-            or edit any content, restrict or terminate access, and update these terms, with
-            continued use constituting acceptance of any updated terms.
+            You are responsible for your account and anything you submit, and grant Quadsmith a
+            license to use and display that content in connection with the service. Quadsmith may
+            modify or discontinue the service, remove content, restrict access, or update these
+            terms at any time without notice or liability.
           </p>
         </div>
       </section>
@@ -219,26 +208,20 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
             <span>Data &amp; Privacy</span>
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            How Quadsmith collects, processes, and handles information.
+            How Quadsmith handles information.
           </p>
         </div>
 
         <div className="space-y-3 text-xs sm:text-sm text-zinc-400 leading-relaxed text-pretty">
           <p>
-            By using Quadsmith, you acknowledge that Quadsmith may collect, store, and process
-            account information, user-submitted content, and technical, diagnostic, usage, and log
-            data (such as IP addresses, device and browser metadata, and cookies or session tokens)
-            as reasonably necessary to operate, secure, maintain, analyze, and improve the service,
-            enforce these terms, and comply with legal obligations, including through third-party
-            infrastructure, hosting, authentication, and communication providers acting on its
-            behalf.
+            By using Quadsmith, you acknowledge that Quadsmith and its third-party service providers
+            may collect and process information you provide as well as technical and usage data to
+            operate, secure, and improve the service and comply with the law.
           </p>
           <p>
-            While Quadsmith takes reasonable measures to safeguard information, no internet
-            transmission or electronic storage is completely secure. Quadsmith makes no warranty or
-            guarantee regarding the absolute security, availability, backup, or continued retention
-            of any data or content, and is not liable for unauthorized access or data loss to the
-            fullest extent permitted by applicable law.
+            Quadsmith makes no guarantee regarding the security, availability, or retention of any
+            data, and is not liable for unauthorized access or data loss to the fullest extent
+            permitted by law.
           </p>
         </div>
       </section>
