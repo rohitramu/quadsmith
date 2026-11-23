@@ -2,10 +2,7 @@ import { Link } from "react-router-dom";
 import { ShieldAlert, FlaskConical, Scale, Lock, ChevronRight, CheckCircle2 } from "lucide-react";
 import { useDocumentMeta } from "@quadsmith/shared";
 import logo from "../assets/quadsmith-logo.svg";
-import {
-  SafetyDisclaimersButton,
-  SafetyDisclaimersCards,
-} from "../components/SafetyDisclaimersModal";
+import { SafetyDisclaimersCards } from "../components/SafetyDisclaimersModal";
 
 export interface TermsOfServicePageProps {
   standalone?: boolean;
@@ -56,33 +53,6 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
           before assembling, powering, or flying any aircraft, and always comply with local rules
           and regulations.
         </p>
-
-        {/* Quick Section Navigation */}
-        <div className="pt-2 flex flex-wrap items-center gap-2 text-xs">
-          <SafetyDisclaimersButton className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 font-medium transition-colors cursor-pointer">
-            <ShieldAlert size={12} className="text-amber-400 shrink-0" />
-            <span>Safety Disclaimers</span>
-          </SafetyDisclaimersButton>
-          <a
-            href="#experimental-evaluator"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-amber-500/30 bg-amber-500/10 hover:bg-amber-500/15 text-amber-300 font-medium transition-colors"
-          >
-            <FlaskConical size={12} className="shrink-0" />
-            <span>Experimental Build Evaluator</span>
-          </a>
-          <a
-            href="#terms-of-service"
-            className="px-3 py-1.5 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 font-medium transition-colors"
-          >
-            Terms of Service
-          </a>
-          <a
-            href="#privacy"
-            className="px-3 py-1.5 rounded-xl border border-zinc-800 bg-zinc-900 hover:bg-zinc-800 text-zinc-200 font-medium transition-colors"
-          >
-            Data &amp; Privacy
-          </a>
-        </div>
       </header>
 
       {/* ============================================================ */}

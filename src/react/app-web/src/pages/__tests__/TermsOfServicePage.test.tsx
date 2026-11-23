@@ -5,8 +5,8 @@ import { TermsOfServicePage } from "../TermsOfServicePage";
 import { AppRoutes } from "../../App";
 
 describe("TermsOfServicePage Component", () => {
-  it("renders Terms of Service, FPV safety disclaimers, Experimental Build Evaluator section, and Privacy summary", async () => {
-    const { user } = renderWithProviders(<TermsOfServicePage />, { route: "/terms" });
+  it("renders Terms of Service, FPV safety disclaimers, Experimental Build Evaluator section, and Privacy summary without top table of contents links", () => {
+    renderWithProviders(<TermsOfServicePage />, { route: "/terms" });
 
     expect(
       screen.getByRole("heading", {
@@ -14,6 +14,14 @@ describe("TermsOfServicePage Component", () => {
         name: /terms of service & disclaimers/i,
       }),
     ).toBeInTheDocument();
+
+    // Top table of contents / quick-section links should not be rendered
+    expect(screen.queryByRole("button", { name: /safety disclaimers/i })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", { name: /experimental build evaluator/i }),
+    ).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /^terms of service$/i })).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /data & privacy/i })).not.toBeInTheDocument();
 
     // Critical safety warning callout
     expect(screen.getByRole("note", { name: /critical safety warning/i })).toBeInTheDocument();
@@ -58,15 +66,6 @@ describe("TermsOfServicePage Component", () => {
         name: /data & privacy/i,
       }),
     ).toBeInTheDocument();
-
-    // Clicking "Safety Disclaimers" button opens the Safety Disclaimers modal
-    const safetyBtn = screen.getByRole("button", { name: /safety disclaimers/i });
-    await user.click(safetyBtn);
-    expect(screen.getByTestId("safety-disclaimers-modal")).toBeInTheDocument();
-
-    const closeBtn = screen.getByTestId("acknowledge-safety-disclaimers-btn");
-    await user.click(closeBtn);
-    expect(screen.queryByTestId("safety-disclaimers-modal")).not.toBeInTheDocument();
   });
 
   it("renders standalone header when accessed by unauthenticated users via /terms", async () => {
