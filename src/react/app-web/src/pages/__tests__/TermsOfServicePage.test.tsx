@@ -46,26 +46,33 @@ describe("TermsOfServicePage Component", () => {
       }),
     ).toBeInTheDocument();
     expect(screen.getByText(/provided “as is” without warranty:/i)).toBeInTheDocument();
+    expect(screen.queryByText(/featured on build profile pages/i)).not.toBeInTheDocument();
 
-    // Section 3: Terms of Service
+    // Section 3: Terms of Service (broad paragraphs, no numbered sub-clauses)
     expect(
       screen.getByRole("heading", {
         level: 2,
         name: /^terms of service$/i,
       }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/1\. acceptance of terms/i)).toBeInTheDocument();
+    expect(screen.queryByText(/1\. acceptance of terms/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/indemnify, defend, and hold harmless quadsmith/i)).toBeInTheDocument();
     expect(
-      screen.getByText(/3\. limitation of liability & assumption of risk/i),
+      screen.getByText(/modify, suspend, or discontinue any part of the service/i),
     ).toBeInTheDocument();
 
-    // Section 4: Data & Privacy
+    // Section 4: Data & Privacy (broad privacy notice, no export/deletion specifics)
     expect(
       screen.getByRole("heading", {
         level: 2,
         name: /data & privacy/i,
       }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByText(/no internet transmission or electronic storage is completely secure/i),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/\.zip/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/30-day/i)).not.toBeInTheDocument();
   });
 
   it("renders standalone header when accessed by unauthenticated users via /terms", async () => {

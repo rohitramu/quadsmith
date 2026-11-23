@@ -109,11 +109,10 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
 
         <div className="space-y-4 text-xs sm:text-sm text-zinc-300 leading-relaxed text-pretty">
           <p>
-            The Quadsmith <strong>Build Evaluator</strong> (featured on Build Profile pages, Build
-            Feed cards, and inside The Forge configurator) is an{" "}
-            <strong className="text-amber-400">Experimental</strong> feature provided strictly{" "}
+            The Quadsmith <strong>Build Evaluator</strong> and compatibility checks are{" "}
+            <strong className="text-amber-400">Experimental</strong> features provided strictly{" "}
             <strong>&ldquo;AS IS&rdquo;</strong> and <strong>&ldquo;AS AVAILABLE&rdquo;</strong>{" "}
-            without warranties of airworthiness, compatibility, or safety.
+            without warranties of airworthiness, compatibility, accuracy, or safety.
           </p>
 
           <ul className="space-y-2.5 bg-zinc-950/70 p-5 rounded-xl border border-zinc-800">
@@ -129,10 +128,9 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
             <li className="flex items-start gap-2.5">
               <CheckCircle2 size={16} className="text-amber-400 shrink-0 mt-0.5" />
               <span>
-                <strong>Advisory Compatibility Checks:</strong> Compatibility checks evaluate basic
-                mounting patterns, propeller sizes, voltage ranges, and protocols on a best-effort
-                basis. Passing compatibility checks does not guarantee physical fitment, electrical
-                compatibility, or safe operation.
+                <strong>Advisory Compatibility Checks:</strong> Compatibility checks evaluate
+                selected specifications on a best-effort basis only. Passing compatibility checks
+                does not guarantee physical fitment, electrical compatibility, or safe operation.
               </span>
             </li>
             <li className="flex items-start gap-2.5">
@@ -153,7 +151,7 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
       <section
         id="terms-of-service"
         aria-labelledby="tos-heading"
-        className="p-6 sm:p-8 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-6 scroll-mt-20"
+        className="p-6 sm:p-8 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-5 scroll-mt-20"
       >
         <div className="border-b border-zinc-800 pb-4">
           <h2
@@ -164,81 +162,48 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
             <span>Terms of Service</span>
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            Conditions governing access to the Quadsmith web application, APIs, and CLI tools.
+            General terms governing access to and use of Quadsmith.
           </p>
         </div>
 
-        <div className="space-y-5 text-xs sm:text-sm text-zinc-300 leading-relaxed text-pretty">
-          <div className="space-y-1.5">
-            <h3 className="text-sm sm:text-base font-bold text-zinc-100">1. Acceptance of Terms</h3>
-            <p className="text-zinc-400">
-              By accessing or using Quadsmith—including browsing the component catalog, configuring
-              builds in The Forge, using the Experimental Build Evaluator, signing into an account,
-              or interacting with the Quadsmith API or CLI—you agree to be bound by these Terms of
-              Service and all Safety Disclaimers, and you agree to comply with all applicable local
-              rules and regulations.
-            </p>
-          </div>
+        <div className="space-y-4 text-xs sm:text-sm text-zinc-400 leading-relaxed text-pretty">
+          <p>
+            By accessing or using Quadsmith, you agree to these Terms of Service and all Safety
+            Disclaimers, and agree to comply with all applicable laws and regulations. Quadsmith and
+            all content, data, tools, and services made available through it are provided strictly
+            on an <strong className="text-zinc-200">&ldquo;AS IS&rdquo;</strong> and{" "}
+            <strong className="text-zinc-200">&ldquo;AS AVAILABLE&rdquo;</strong> basis, without
+            warranties of any kind, whether express, implied, or statutory—including any implied
+            warranties of merchantability, fitness for a particular purpose, accuracy, completeness,
+            safety, airworthiness, availability, or non-infringement.
+          </p>
 
-          <div className="space-y-1.5">
-            <h3 className="text-sm sm:text-base font-bold text-zinc-100">
-              2. &ldquo;AS IS&rdquo; &amp; &ldquo;AS AVAILABLE&rdquo; Disclaimer of Warranties
-            </h3>
-            <p className="text-zinc-400">
-              Quadsmith and all catalog data, compatibility checks, and the Experimental Build
-              Evaluator are provided strictly on an <strong>&ldquo;AS IS&rdquo;</strong> and{" "}
-              <strong>&ldquo;AS AVAILABLE&rdquo;</strong> basis, without warranties of any kind,
-              either express, implied, or statutory—including, without limitation, implied
-              warranties of merchantability, fitness for a particular purpose, airworthiness,
-              safety, accuracy, or non-infringement.
-            </p>
-          </div>
+          <p>
+            Your use of Quadsmith and any reliance on information provided through it is solely at
+            your own risk. To the fullest extent permitted by applicable law, Quadsmith shall not be
+            liable for any direct, indirect, incidental, special, consequential, exemplary, or
+            punitive damages, losses, injuries, or claims of any kind arising out of or related to
+            your access to, use of, or inability to use the service. You agree to indemnify, defend,
+            and hold harmless Quadsmith from and against any claims, liabilities, damages, losses,
+            and expenses (including reasonable legal fees) arising out of your use of the service,
+            any content you submit, or your violation of these terms or applicable law.
+          </p>
 
-          <div className="space-y-1.5">
-            <h3 className="text-sm sm:text-base font-bold text-zinc-100">
-              3. Limitation of Liability &amp; Assumption of Risk
-            </h3>
-            <p className="text-zinc-400">
-              You expressly understand and agree that you assume all risks associated with
-              selecting, wiring, soldering, powering, and flying multirotor hardware. To the fullest
-              extent permitted by law, Quadsmith, its operators, maintainers, and contributors shall
-              not be liable for any direct, indirect, incidental, special, consequential, or
-              exemplary damages—including damaged or destroyed electronics, battery fires, lost
-              aircraft (&ldquo;flyaways&rdquo;), personal injury, property damage, or legal
-              penalties—arising from your use of or reliance on this platform.
-            </p>
-          </div>
-
-          <div className="space-y-1.5">
-            <h3 className="text-sm sm:text-base font-bold text-zinc-100">
-              4. User Accounts &amp; Community Contributions
-            </h3>
-            <p className="text-zinc-400">
-              Quadsmith uses passwordless authentication via verified email one-time passcodes
-              (OTP), magic links, and OAuth providers. You are responsible for maintaining the
-              security of your linked email accounts and active sessions. By submitting public
-              builds, custom catalog components, collections, reviews, Q&amp;A discussions, or
-              reference links, you represent that you have the right to share that content and grant
-              Quadsmith a non-exclusive license to display and distribute it across the platform.
-            </p>
-          </div>
-
-          <div className="space-y-1.5">
-            <h3 className="text-sm sm:text-base font-bold text-zinc-100">
-              5. Acceptable Use &amp; Platform Moderation
-            </h3>
-            <p className="text-zinc-400">
-              You agree not to submit intentionally inaccurate hardware safety specifications,
-              abusive or unlawful content, spam, or automated scraping payloads that degrade service
-              availability. Platform administrators reserve the right to moderate content and issue
-              temporary or permanent account restrictions for violations of community standards.
-            </p>
-          </div>
+          <p>
+            You are solely responsible for your account activity and any content you submit, and by
+            submitting content you represent that you have all necessary rights to do so and grant
+            Quadsmith a worldwide, non-exclusive, royalty-free license to host, use, reproduce,
+            display, and distribute that content in connection with operating and promoting the
+            service. Quadsmith reserves the right, in its sole discretion and at any time without
+            notice or liability, to modify, suspend, or discontinue any part of the service, remove
+            or edit any content, restrict or terminate access, and update these terms, with
+            continued use constituting acceptance of any updated terms.
+          </p>
         </div>
       </section>
 
       {/* ============================================================ */}
-      {/* SECTION 4: DATA & PRIVACY SUMMARY                            */}
+      {/* SECTION 4: DATA & PRIVACY                                    */}
       {/* ============================================================ */}
       <section
         id="privacy"
@@ -254,30 +219,26 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
             <span>Data &amp; Privacy</span>
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            How Quadsmith handles account credentials, sessions, data portability, and deletion.
+            How Quadsmith collects, processes, and handles information.
           </p>
         </div>
 
         <div className="space-y-3 text-xs sm:text-sm text-zinc-400 leading-relaxed text-pretty">
           <p>
-            Quadsmith collects only the data required to operate your account and community
-            contributions: your verified email address(es), linked OAuth identifiers, active session
-            metadata, public profile handle and bio, and the builds, components, collections, and
-            discussions you author.
+            By using Quadsmith, you acknowledge that Quadsmith may collect, store, and process
+            account information, user-submitted content, and technical, diagnostic, usage, and log
+            data (such as IP addresses, device and browser metadata, and cookies or session tokens)
+            as reasonably necessary to operate, secure, maintain, analyze, and improve the service,
+            enforce these terms, and comply with legal obligations, including through third-party
+            infrastructure, hosting, authentication, and communication providers acting on its
+            behalf.
           </p>
           <p>
-            Authenticated users can inspect and revoke active sessions, download a complete
-            machine-readable <code>.zip</code> archive of their personal data, or initiate account
-            deletion with a 30-day restoration grace period at any time from{" "}
-            <Link
-              to="/account"
-              className="text-blue-400 hover:text-blue-300 underline underline-offset-2 font-medium"
-            >
-              Account Settings
-            </Link>
-            . When an account is permanently purged after the 30-day grace period, personal email
-            records and authentication credentials are erased while public communal contributions
-            remain preserved under anonymized attribution.
+            While Quadsmith takes reasonable measures to safeguard information, no internet
+            transmission or electronic storage is completely secure. Quadsmith makes no warranty or
+            guarantee regarding the absolute security, availability, backup, or continued retention
+            of any data or content, and is not liable for unauthorized access or data loss to the
+            fullest extent permitted by applicable law.
           </p>
         </div>
       </section>
