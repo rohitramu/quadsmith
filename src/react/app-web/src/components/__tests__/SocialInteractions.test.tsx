@@ -268,7 +268,7 @@ describe("Social Interactions Components", () => {
       expect(screen.queryByRole("button", { name: /ask a question/i })).not.toBeInTheDocument();
     });
 
-    it("hides voting buttons on the user's own question and answer", async () => {
+    it("renders disabled voting buttons on the user's own question and answer", async () => {
       const ownQuestion = create(QuestionSchema, {
         uuid: "018f0000-0000-7000-0000-000000000699",
         id: "own-question-test",
@@ -276,8 +276,8 @@ describe("Social Interactions Components", () => {
         entityUuid: mockBuild1.uuid,
         title: "How to tune PIDs for this frame?",
         body: "Any recommended betaflight master multiplier?",
-        netScore: 5,
-        upvoteCount: 5,
+        netScore: 0,
+        upvoteCount: 0,
         downvoteCount: 0,
         answerCount: 1,
         hasAcceptedAnswer: false,
@@ -295,20 +295,53 @@ describe("Social Interactions Components", () => {
         },
       });
 
-      // Own question is displayed with net score 5
+      // Own question is displayed with net score 0 flanked by disabled voting buttons
       expect(await screen.findByText("How to tune PIDs for this frame?")).toBeInTheDocument();
-      expect(screen.getByText("5")).toBeInTheDocument();
+      expect(screen.getByText("0")).toBeInTheDocument();
 
-      // Voting buttons for own question should not be in the document
-      expect(screen.queryByTitle(/upvote question/i)).not.toBeInTheDocument();
-      expect(screen.queryByTitle(/downvote question/i)).not.toBeInTheDocument();
+      const upvoteQBtn = screen.getByRole("button", { name: /upvote question/i });
+      const downvoteQBtn = screen.getByRole("button", { name: /downvote question/i });
+      expect(upvoteQBtn).toBeDisabled();
+      expect(downvoteQBtn).toBeDisabled();
 
       // For answers: mockAnswer1 is also authored by mockUser (mockUser.uuid)
-      // Its score 4 should be displayed, but its voting buttons should be hidden
+      // Its score 4 should be displayed alongside disabled voting buttons
       expect(await screen.findByText(/Yes, you can use 20x20mm stacks/i)).toBeInTheDocument();
       expect(screen.getByText("4")).toBeInTheDocument();
-      expect(screen.queryByTitle(/^upvote/i)).not.toBeInTheDocument();
-      expect(screen.queryByTitle(/^downvote/i)).not.toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /upvote answer/i })).toBeDisabled();
+      expect(screen.getByRole("button", { name: /downvote answer/i })).toBeDisabled();
+    });
+
+    it("posts and displays clarification comments on questions and answers", async () => {
+      const { user } = renderWithProviders(
+        <SocialQaSection target={target} entityName={targetName} />,
+      );
+
+      expect(
+        await screen.findByText(/Does this frame fit 20x20mm mounting stacks\?/i),
+      ).toBeInTheDocument();
+
+      const qCommentInput = screen.getByPlaceholderText(/Add a clarification comment/i);
+      const qCommentBtn = screen.getByRole("button", { name: /^Comment$/i });
+      expect(qCommentBtn).toBeDisabled();
+
+      await user.type(qCommentInput, "Using 25mm standoffs with DJI O3.");
+      expect(qCommentBtn).toBeEnabled();
+      await user.click(qCommentBtn);
+
+      expect(await screen.findByText("Using 25mm standoffs with DJI O3.")).toBeInTheDocument();
+      expect(qCommentInput).toHaveValue("");
+
+      const ansCommentInput = await screen.findByPlaceholderText(/Clarify this answer/i);
+      const ansReplyBtn = screen.getByRole("button", { name: /^Reply$/i });
+      expect(ansReplyBtn).toBeDisabled();
+
+      await user.type(ansCommentInput, "Do M2 gummies fit cleanly?");
+      expect(ansReplyBtn).toBeEnabled();
+      await user.click(ansReplyBtn);
+
+      expect(await screen.findByText("Do M2 gummies fit cleanly?")).toBeInTheDocument();
+      expect(ansCommentInput).toHaveValue("");
     });
   });
 

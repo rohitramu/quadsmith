@@ -973,6 +973,58 @@ func (s *SocialService) ListQuestions(ctx context.Context, req *connect.Request[
 		}
 		questions = append(questions, &q)
 	}
+	rows.Close()
+	if err := rows.Err(); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	if len(questions) > 0 {
+		qByUUID := make(map[string]*pb.Question, len(questions))
+		qUUIDs := make([]string, 0, len(questions))
+		for _, q := range questions {
+			qByUUID[q.Uuid] = q
+			qUUIDs = append(qUUIDs, q.Uuid)
+		}
+
+		cRows, err := s.db.Query(ctx, `
+			SELECT
+				c.uuid, c.question_uuid, c.user_uuid, c.body, c.deleted_at, c.created_at, c.updated_at,
+				CASE WHEN c.deleted_at IS NOT NULL THEN '[Deleted User]' ELSE u.id END as author_username,
+				CASE WHEN c.deleted_at IS NOT NULL THEN '' ELSE COALESCE(p.avatar_url, '') END as author_avatar_url
+			FROM question_comments c
+			JOIN users u ON u.uuid = c.user_uuid
+			LEFT JOIN user_profiles p ON p.user_uuid = u.uuid
+			WHERE c.question_uuid = ANY($1::uuid[])
+			ORDER BY c.created_at ASC
+		`, qUUIDs)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		defer cRows.Close()
+
+		for cRows.Next() {
+			var c pb.QuestionComment
+			var delAt *time.Time
+			var createdAt, updatedAt time.Time
+			if err := cRows.Scan(
+				&c.Uuid, &c.QuestionUuid, &c.UserUuid, &c.Body, &delAt, &createdAt, &updatedAt,
+				&c.AuthorUsername, &c.AuthorAvatarUrl,
+			); err != nil {
+				return nil, connect.NewError(connect.CodeInternal, err)
+			}
+			c.CreatedAt = timestamppb.New(createdAt)
+			c.UpdatedAt = timestamppb.New(updatedAt)
+			if delAt != nil {
+				c.DeletedAt = timestamppb.New(*delAt)
+			}
+			if parent, ok := qByUUID[c.QuestionUuid]; ok {
+				parent.Comments = append(parent.Comments, &c)
+			}
+		}
+		if err := cRows.Err(); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+	}
 
 	return connect.NewResponse(&pb.ListQuestionsResponse{Questions: questions}), nil
 }
@@ -1259,6 +1311,58 @@ func (s *SocialService) ListAnswers(ctx context.Context, req *connect.Request[pb
 			a.DeletedAt = timestamppb.New(*delAt)
 		}
 		answers = append(answers, &a)
+	}
+	rows.Close()
+	if err := rows.Err(); err != nil {
+		return nil, connect.NewError(connect.CodeInternal, err)
+	}
+
+	if len(answers) > 0 {
+		aByUUID := make(map[string]*pb.Answer, len(answers))
+		aUUIDs := make([]string, 0, len(answers))
+		for _, a := range answers {
+			aByUUID[a.Uuid] = a
+			aUUIDs = append(aUUIDs, a.Uuid)
+		}
+
+		cRows, err := s.db.Query(ctx, `
+			SELECT
+				c.uuid, c.answer_uuid, c.user_uuid, c.body, c.deleted_at, c.created_at, c.updated_at,
+				CASE WHEN c.deleted_at IS NOT NULL THEN '[Deleted User]' ELSE u.id END as author_username,
+				CASE WHEN c.deleted_at IS NOT NULL THEN '' ELSE COALESCE(p.avatar_url, '') END as author_avatar_url
+			FROM answer_comments c
+			JOIN users u ON u.uuid = c.user_uuid
+			LEFT JOIN user_profiles p ON p.user_uuid = u.uuid
+			WHERE c.answer_uuid = ANY($1::uuid[])
+			ORDER BY c.created_at ASC
+		`, aUUIDs)
+		if err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
+		defer cRows.Close()
+
+		for cRows.Next() {
+			var c pb.AnswerComment
+			var delAt *time.Time
+			var createdAt, updatedAt time.Time
+			if err := cRows.Scan(
+				&c.Uuid, &c.AnswerUuid, &c.UserUuid, &c.Body, &delAt, &createdAt, &updatedAt,
+				&c.AuthorUsername, &c.AuthorAvatarUrl,
+			); err != nil {
+				return nil, connect.NewError(connect.CodeInternal, err)
+			}
+			c.CreatedAt = timestamppb.New(createdAt)
+			c.UpdatedAt = timestamppb.New(updatedAt)
+			if delAt != nil {
+				c.DeletedAt = timestamppb.New(*delAt)
+			}
+			if parent, ok := aByUUID[c.AnswerUuid]; ok {
+				parent.Comments = append(parent.Comments, &c)
+			}
+		}
+		if err := cRows.Err(); err != nil {
+			return nil, connect.NewError(connect.CodeInternal, err)
+		}
 	}
 
 	return connect.NewResponse(&pb.ListAnswersResponse{Answers: answers}), nil

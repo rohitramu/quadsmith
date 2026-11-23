@@ -222,8 +222,10 @@ are derived directly from relational vote records and endorsement events:
   24-hour window.
 - **Reputation Floor**: Total reputation cannot drop below `0`.
 - **Self-Voting Prohibition**: Authors cannot vote on their own reviews,
-  questions, or answers; voting action buttons are completely hidden in the UI
-  on authored content.
+  questions, or answers. Voting action buttons are hidden on authored reviews,
+  while Q&A upvote/downvote buttons remain visible in a disabled state on
+  authored (or archived/unauthenticated) questions and answers so net vote
+  scores retain clear visual context.
 
 <details>
 <summary><strong>Alternatives considered</strong></summary>

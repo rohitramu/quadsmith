@@ -1,6 +1,6 @@
 import { createRouterTransport } from "@connectrpc/connect";
 import { ConnectError, Code } from "@connectrpc/connect";
-import { create } from "@bufbuild/protobuf";
+import { create, clone } from "@bufbuild/protobuf";
 import { MotorService } from "@quadsmith/shared/gen/quadsmith/api/motor_pb";
 import { FrameService } from "@quadsmith/shared/gen/quadsmith/api/frame_pb";
 import { FlightControllerService } from "@quadsmith/shared/gen/quadsmith/api/flight_controller_pb";
@@ -17,7 +17,13 @@ import { EvaluatorService } from "@quadsmith/shared/gen/quadsmith/api/evaluator_
 import { CompatibilityService } from "@quadsmith/shared/gen/quadsmith/api/compatibility_pb";
 import { LinkPreviewService } from "@quadsmith/shared/gen/quadsmith/api/link_preview_pb";
 import { SearchService } from "@quadsmith/shared/gen/quadsmith/api/search_pb";
-import { SocialService } from "@quadsmith/shared/gen/quadsmith/api/social_pb";
+import {
+  SocialService,
+  QuestionSchema,
+  AnswerSchema,
+  QuestionCommentSchema,
+  AnswerCommentSchema,
+} from "@quadsmith/shared/gen/quadsmith/api/social_pb";
 import {
   AuthService,
   EmailOtpPurpose,
@@ -107,7 +113,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     batteries = mockBatteries,
     defaultBatteryId = batteries.length > 0 ? batteries[0].id : "",
     reviews = [...(options.reviews ?? mockReviews)],
-    questions = [...(options.questions ?? mockQuestions)],
+    questions = (options.questions ?? mockQuestions).map((q) => clone(QuestionSchema, q)),
     collections = (options.collections ?? mockCollections).map((c) => ({ ...c })),
     similarBuilds = [...(options.similarBuilds ?? mockSimilarBuilds)],
     entitySocialSummary = options.entitySocialSummary ?? mockEntitySocialSummary1,
@@ -115,6 +121,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
     simulateError = false,
     isAuthenticated = true,
   } = options;
+  const answers = mockAnswers.map((a) => clone(AnswerSchema, a));
   const userEmails = (options.userEmails ?? mockUserEmails).map((e) => create(UserEmailSchema, e));
   const userSessions = (options.userSessions ?? mockSessions).map((s) => create(SessionSchema, s));
 
@@ -1232,13 +1239,13 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           );
         }
         return {
-          questions: list,
+          questions: list.map((q) => clone(QuestionSchema, q)),
           nextPageToken: "",
         };
       },
       createQuestion: (req) => {
         const targetId = req.entityId || (req as any).buildId || (req as any).componentId;
-        const newQ = {
+        const newQ = create(QuestionSchema, {
           uuid: `q-${Date.now()}`,
           id: `question-${Date.now()}`,
           userUuid: mockUser.uuid,
@@ -1254,9 +1261,9 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           authorUsername: mockUser.id,
           currentUserVote: 0,
           comments: [],
-        };
-        questions.unshift(newQ as any);
-        return newQ as any;
+        });
+        questions.unshift(newQ);
+        return newQ;
       },
       updateQuestion: (req) => {
         const q = questions.find(
@@ -1301,10 +1308,10 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         return { netScore: 0, upvoteCount: 0, downvoteCount: 0, currentUserVote: req.vote };
       },
       listAnswers: () => ({
-        answers: mockAnswers,
+        answers: answers.map((a) => clone(AnswerSchema, a)),
       }),
       createAnswer: (req) => {
-        const newA = {
+        const newA = create(AnswerSchema, {
           uuid: `ans-${Date.now()}`,
           questionUuid: req.questionId,
           userUuid: mockUser.uuid,
@@ -1319,12 +1326,12 @@ export function createMockTransport(options: MockTransportOptions = {}) {
           currentUserVote: 0,
           commentCount: 0,
           comments: [],
-        };
-        mockAnswers.push(newA as any);
-        return newA as any;
+        });
+        answers.push(newA);
+        return newA;
       },
       updateAnswer: (req) => {
-        const a = mockAnswers.find((item) => item.uuid === req.answerUuid);
+        const a = answers.find((item) => item.uuid === req.answerUuid);
         if (a) {
           a.body = req.body;
           a.isEdited = true;
@@ -1333,14 +1340,14 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         throw new ConnectError("Answer not found", Code.NotFound);
       },
       deleteAnswer: (req) => {
-        const idx = mockAnswers.findIndex((item) => item.uuid === req.answerUuid);
+        const idx = answers.findIndex((item) => item.uuid === req.answerUuid);
         if (idx !== -1) {
-          return mockAnswers.splice(idx, 1)[0];
+          return answers.splice(idx, 1)[0];
         }
         throw new ConnectError("Answer not found", Code.NotFound);
       },
       voteAnswer: (req) => {
-        const a = mockAnswers.find((item) => item.uuid === req.answerUuid);
+        const a = answers.find((item) => item.uuid === req.answerUuid);
         if (a) {
           if (a.userUuid === mockUser.uuid) {
             throw new ConnectError("cannot vote on your own answer", Code.PermissionDenied);
@@ -1359,7 +1366,7 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         return { netScore: 0, upvoteCount: 0, downvoteCount: 0, currentUserVote: req.vote };
       },
       acceptAnswer: (req) => {
-        const a = mockAnswers.find((item) => item.uuid === req.answerUuid);
+        const a = answers.find((item) => item.uuid === req.answerUuid);
         if (a) {
           a.isAcceptedByAsker = !a.isAcceptedByAsker;
           return a;
@@ -1367,30 +1374,45 @@ export function createMockTransport(options: MockTransportOptions = {}) {
         throw new ConnectError("Answer not found", Code.NotFound);
       },
       endorseAnswer: (req) => {
-        const a = mockAnswers.find((item) => item.uuid === req.answerUuid);
+        const a = answers.find((item) => item.uuid === req.answerUuid);
         if (a) {
           a.isAuthorEndorsed = !a.isAuthorEndorsed;
           return a;
         }
         throw new ConnectError("Answer not found", Code.NotFound);
       },
-      createQuestionComment: (req) =>
-        ({
+      createQuestionComment: (req) => {
+        const newComment = create(QuestionCommentSchema, {
           uuid: `qc-${Date.now()}`,
           questionUuid: req.questionId,
           userUuid: mockUser.uuid,
           body: req.body,
           authorUsername: mockUser.id,
-        }) as any,
+        });
+        const q = questions.find(
+          (item) => item.id === req.questionId || item.uuid === req.questionId,
+        );
+        if (q) {
+          q.comments.push(newComment);
+        }
+        return newComment;
+      },
       deleteQuestionComment: () => ({}),
-      createAnswerComment: (req) =>
-        ({
+      createAnswerComment: (req) => {
+        const newComment = create(AnswerCommentSchema, {
           uuid: `ac-${Date.now()}`,
           answerUuid: req.answerUuid,
           userUuid: mockUser.uuid,
           body: req.body,
           authorUsername: mockUser.id,
-        }) as any,
+        });
+        const a = answers.find((item) => item.uuid === req.answerUuid);
+        if (a) {
+          a.comments.push(newComment);
+          a.commentCount = (a.commentCount ?? 0) + 1;
+        }
+        return newComment;
+      },
       deleteAnswerComment: () => ({}),
 
       listUserCollections: (req) => {

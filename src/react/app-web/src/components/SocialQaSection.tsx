@@ -66,6 +66,8 @@ export function SocialQaSection({
 
   // Micro comments state
   const [qCommentTexts, setQCommentTexts] = useState<Record<string, string>>({});
+  const [submittingQCommentId, setSubmittingQCommentId] = useState<string | null>(null);
+  const [qCommentErrors, setQCommentErrors] = useState<Record<string, string>>({});
 
   const queryPayload = {
     entityId: target.id,
@@ -150,13 +152,20 @@ export function SocialQaSection({
 
   async function handleAddQComment(questionId: string) {
     const text = qCommentTexts[questionId]?.trim();
-    if (!text) return;
+    if (!text || submittingQCommentId === questionId) return;
+    setSubmittingQCommentId(questionId);
+    setQCommentErrors((prev) => ({ ...prev, [questionId]: "" }));
     try {
       await mutateCreateQComment({ questionId, body: text });
       setQCommentTexts((prev) => ({ ...prev, [questionId]: "" }));
       await refetchQuestions();
     } catch (err: unknown) {
-      alert(err instanceof Error ? err.message : "Failed to post comment");
+      setQCommentErrors((prev) => ({
+        ...prev,
+        [questionId]: err instanceof Error ? err.message : "Failed to post comment",
+      }));
+    } finally {
+      setSubmittingQCommentId(null);
     }
   }
 
@@ -294,6 +303,12 @@ export function SocialQaSection({
         ) : (
           questions.map((q) => {
             const isAsker = Boolean(user?.uuid && user.uuid === q.userUuid);
+            const canVoteQ = isAuthenticated && !isAsker && !isArchived;
+            const qVoteDisabledReason = isArchived
+              ? "Voting is disabled on archived items"
+              : isAsker
+                ? "You cannot vote on your own question"
+                : "Sign in to vote";
             const comments = q.comments || [];
 
             return (
@@ -305,35 +320,43 @@ export function SocialQaSection({
                 <div className="flex items-start gap-4">
                   {/* Voting column */}
                   <div className="flex flex-col items-center gap-0.5 shrink-0 pt-1">
-                    {!isAsker && !isArchived && (
-                      <button
-                        type="button"
-                        onClick={() => handleVoteQ(q.id, q.currentUserVote, 1)}
-                        className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                          q.currentUserVote === 1
-                            ? "bg-emerald-500/10 text-emerald-400"
-                            : "hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500"
-                        }`}
-                        title="Upvote (+1 rep to author)"
-                      >
-                        <ChevronUp size={20} />
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      disabled={!canVoteQ}
+                      aria-label="Upvote question"
+                      onClick={() => handleVoteQ(q.id, q.currentUserVote, 1)}
+                      className={`p-1.5 rounded-lg transition-colors ${
+                        !canVoteQ
+                          ? "text-zinc-600 opacity-50 cursor-not-allowed"
+                          : q.currentUserVote === 1
+                            ? "bg-emerald-500/10 text-emerald-400 cursor-pointer"
+                            : "hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500 cursor-pointer"
+                      }`}
+                      title={canVoteQ ? "Upvote (+1 rep to author)" : qVoteDisabledReason}
+                    >
+                      <ChevronUp size={20} />
+                    </button>
                     <span className="font-bold text-sm font-mono text-zinc-100">{q.netScore}</span>
-                    {!isAsker && !isArchived && (
-                      <button
-                        type="button"
-                        onClick={() => handleVoteQ(q.id, q.currentUserVote, -1)}
-                        className={`p-1.5 rounded-lg transition-colors cursor-pointer ${
-                          q.currentUserVote === -1
-                            ? "bg-rose-500/10 text-rose-400"
-                            : "hover:bg-zinc-800 text-zinc-400 hover:text-rose-500"
-                        }`}
-                        title="Downvote (-2 rep to author, costs voter -2 rep • requires 100 rep)"
-                      >
-                        <ChevronDown size={20} />
-                      </button>
-                    )}
+                    <button
+                      type="button"
+                      disabled={!canVoteQ}
+                      aria-label="Downvote question"
+                      onClick={() => handleVoteQ(q.id, q.currentUserVote, -1)}
+                      className={`p-1.5 rounded-lg transition-colors ${
+                        !canVoteQ
+                          ? "text-zinc-600 opacity-50 cursor-not-allowed"
+                          : q.currentUserVote === -1
+                            ? "bg-rose-500/10 text-rose-400 cursor-pointer"
+                            : "hover:bg-zinc-800 text-zinc-400 hover:text-rose-500 cursor-pointer"
+                      }`}
+                      title={
+                        canVoteQ
+                          ? "Downvote (-2 rep to author, costs voter -2 rep • requires 10 rep)"
+                          : qVoteDisabledReason
+                      }
+                    >
+                      <ChevronDown size={20} />
+                    </button>
                   </div>
 
                   {/* Question details */}
@@ -396,29 +419,35 @@ export function SocialQaSection({
 
                     {/* Add comment under question */}
                     {isAuthenticated && !isArchived && (
-                      <div className="pt-2 flex items-center gap-2">
-                        <input
-                          type="text"
-                          value={qCommentTexts[q.id] || ""}
-                          onChange={(e) =>
-                            setQCommentTexts((prev) => ({ ...prev, [q.id]: e.target.value }))
-                          }
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                              e.preventDefault();
-                              handleAddQComment(q.id);
+                      <div className="pt-2 space-y-1.5">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            value={qCommentTexts[q.id] || ""}
+                            onChange={(e) =>
+                              setQCommentTexts((prev) => ({ ...prev, [q.id]: e.target.value }))
                             }
-                          }}
-                          placeholder="Add a clarification comment..."
-                          className="flex-1 rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-1 text-xs text-zinc-200 placeholder-zinc-400 focus:outline-hidden"
-                        />
-                        <button
-                          type="button"
-                          onClick={() => handleAddQComment(q.id)}
-                          className="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs text-zinc-300 font-medium"
-                        >
-                          Comment
-                        </button>
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                handleAddQComment(q.id);
+                              }
+                            }}
+                            placeholder="Add a clarification comment..."
+                            className="flex-1 rounded-lg border border-zinc-800 bg-zinc-950 px-3 py-1 text-xs text-zinc-200 placeholder-zinc-400 focus:outline-hidden"
+                          />
+                          <button
+                            type="button"
+                            disabled={!qCommentTexts[q.id]?.trim() || submittingQCommentId === q.id}
+                            onClick={() => handleAddQComment(q.id)}
+                            className="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs text-zinc-300 font-medium cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Comment
+                          </button>
+                        </div>
+                        {qCommentErrors[q.id] && (
+                          <p className="text-xs text-rose-400">{qCommentErrors[q.id]}</p>
+                        )}
                       </div>
                     )}
                   </div>
@@ -517,6 +546,8 @@ function QuestionAnswersList({
   const { mutateAsync: mutateCreateAnsComment } = useMutation(createAnswerComment);
 
   const [ansCommentTexts, setAnsCommentTexts] = useState<Record<string, string>>({});
+  const [submittingAnsCommentId, setSubmittingAnsCommentId] = useState<string | null>(null);
+  const [ansCommentErrors, setAnsCommentErrors] = useState<Record<string, string>>({});
 
   const answers = answersRes?.answers || [];
   const isQuestionAsker = user?.uuid === question.userUuid;
@@ -557,13 +588,20 @@ function QuestionAnswersList({
 
   async function handleAddComment(answerUuid: string) {
     const text = ansCommentTexts[answerUuid]?.trim();
-    if (!text) return;
+    if (!text || submittingAnsCommentId === answerUuid) return;
+    setSubmittingAnsCommentId(answerUuid);
+    setAnsCommentErrors((prev) => ({ ...prev, [answerUuid]: "" }));
     try {
       await mutateCreateAnsComment({ answerUuid, body: text });
       setAnsCommentTexts((prev) => ({ ...prev, [answerUuid]: "" }));
       await refetch();
     } catch (err: unknown) {
-      alert(err instanceof Error ? err.message : "Failed to post comment");
+      setAnsCommentErrors((prev) => ({
+        ...prev,
+        [answerUuid]: err instanceof Error ? err.message : "Failed to post comment",
+      }));
+    } finally {
+      setSubmittingAnsCommentId(null);
     }
   }
 
@@ -585,6 +623,12 @@ function QuestionAnswersList({
         const isAccepted = ans.isAcceptedByAsker;
         const isEndorsed = ans.isAuthorEndorsed;
         const isMyAnswer = Boolean(user?.uuid && user.uuid === ans.userUuid);
+        const canVoteAns = isAuthenticated && !isMyAnswer && !isArchived;
+        const ansVoteDisabledReason = isArchived
+          ? "Voting is disabled on archived items"
+          : isMyAnswer
+            ? "You cannot vote on your own answer"
+            : "Sign in to vote";
         const comments = ans.comments || [];
 
         return (
@@ -647,35 +691,43 @@ function QuestionAnswersList({
             {/* Answer Body with Voting Column */}
             <div className="flex items-start gap-4">
               <div className="flex flex-col items-center gap-0.5 shrink-0 pt-0.5">
-                {!isMyAnswer && !isArchived && (
-                  <button
-                    type="button"
-                    onClick={() => handleVote(ans.uuid, ans.currentUserVote, 1)}
-                    className={`p-1 rounded-md transition-colors cursor-pointer ${
-                      ans.currentUserVote === 1
-                        ? "bg-emerald-500/10 text-emerald-400"
-                        : "hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500"
-                    }`}
-                    title="Upvote (+1 rep)"
-                  >
-                    <ChevronUp size={16} />
-                  </button>
-                )}
+                <button
+                  type="button"
+                  disabled={!canVoteAns}
+                  aria-label="Upvote answer"
+                  onClick={() => handleVote(ans.uuid, ans.currentUserVote, 1)}
+                  className={`p-1 rounded-md transition-colors ${
+                    !canVoteAns
+                      ? "text-zinc-600 opacity-50 cursor-not-allowed"
+                      : ans.currentUserVote === 1
+                        ? "bg-emerald-500/10 text-emerald-400 cursor-pointer"
+                        : "hover:bg-zinc-800 text-zinc-400 hover:text-emerald-500 cursor-pointer"
+                  }`}
+                  title={canVoteAns ? "Upvote (+1 rep)" : ansVoteDisabledReason}
+                >
+                  <ChevronUp size={16} />
+                </button>
                 <span className="font-bold text-xs font-mono text-zinc-100">{ans.netScore}</span>
-                {!isMyAnswer && !isArchived && (
-                  <button
-                    type="button"
-                    onClick={() => handleVote(ans.uuid, ans.currentUserVote, -1)}
-                    className={`p-1 rounded-md transition-colors cursor-pointer ${
-                      ans.currentUserVote === -1
-                        ? "bg-rose-500/10 text-rose-400"
-                        : "hover:bg-zinc-800 text-zinc-400 hover:text-rose-500"
-                    }`}
-                    title="Downvote (-2 rep, costs voter -2 rep • requires 100 rep)"
-                  >
-                    <ChevronDown size={16} />
-                  </button>
-                )}
+                <button
+                  type="button"
+                  disabled={!canVoteAns}
+                  aria-label="Downvote answer"
+                  onClick={() => handleVote(ans.uuid, ans.currentUserVote, -1)}
+                  className={`p-1 rounded-md transition-colors ${
+                    !canVoteAns
+                      ? "text-zinc-600 opacity-50 cursor-not-allowed"
+                      : ans.currentUserVote === -1
+                        ? "bg-rose-500/10 text-rose-400 cursor-pointer"
+                        : "hover:bg-zinc-800 text-zinc-400 hover:text-rose-500 cursor-pointer"
+                  }`}
+                  title={
+                    canVoteAns
+                      ? "Downvote (-2 rep, costs voter -2 rep • requires 10 rep)"
+                      : ansVoteDisabledReason
+                  }
+                >
+                  <ChevronDown size={16} />
+                </button>
               </div>
 
               <div className="text-sm text-zinc-200 leading-relaxed whitespace-pre-line flex-1">
@@ -701,29 +753,37 @@ function QuestionAnswersList({
 
             {/* Add comment under answer */}
             {isAuthenticated && !isArchived && (
-              <div className="pt-1 pl-4 flex items-center gap-2">
-                <input
-                  type="text"
-                  value={ansCommentTexts[ans.uuid] || ""}
-                  onChange={(e) =>
-                    setAnsCommentTexts((prev) => ({ ...prev, [ans.uuid]: e.target.value }))
-                  }
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      e.preventDefault();
-                      handleAddComment(ans.uuid);
+              <div className="pt-1 pl-4 space-y-1.5">
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={ansCommentTexts[ans.uuid] || ""}
+                    onChange={(e) =>
+                      setAnsCommentTexts((prev) => ({ ...prev, [ans.uuid]: e.target.value }))
                     }
-                  }}
-                  placeholder="Clarify this answer..."
-                  className="flex-1 rounded-lg border border-zinc-800 bg-zinc-950 px-2.5 py-1 text-xs text-zinc-200 placeholder-zinc-400 focus:outline-hidden"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleAddComment(ans.uuid)}
-                  className="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs text-zinc-300 font-medium"
-                >
-                  Reply
-                </button>
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleAddComment(ans.uuid);
+                      }
+                    }}
+                    placeholder="Clarify this answer..."
+                    className="flex-1 rounded-lg border border-zinc-800 bg-zinc-950 px-2.5 py-1 text-xs text-zinc-200 placeholder-zinc-400 focus:outline-hidden"
+                  />
+                  <button
+                    type="button"
+                    disabled={
+                      !ansCommentTexts[ans.uuid]?.trim() || submittingAnsCommentId === ans.uuid
+                    }
+                    onClick={() => handleAddComment(ans.uuid)}
+                    className="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-xs text-zinc-300 font-medium cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Reply
+                  </button>
+                </div>
+                {ansCommentErrors[ans.uuid] && (
+                  <p className="text-xs text-rose-400">{ansCommentErrors[ans.uuid]}</p>
+                )}
               </div>
             )}
           </div>
