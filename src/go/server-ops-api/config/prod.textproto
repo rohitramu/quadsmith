@@ -58,9 +58,18 @@ jit {
 }
 
 oauth {
-  provider: "github"
-  client_id: "${QS_OAUTH_CLIENT_ID}"
-  client_secret: "${QS_OAUTH_CLIENT_SECRET}"
-  allowed_orgs: "quadsmith"
-  default_group: "viewers"
+  team_mappings {
+    org: "quadsmith"
+    team_slug: "operators"
+    group_name: "operators"
+  }
+  team_mappings {
+    org: "quadsmith"
+    team_slug: "viewers"
+    group_name: "viewers"
+  }
+  github {
+    client_id: "${QS_OAUTH_CLIENT_ID}"
+    client_secret: "${QS_OAUTH_CLIENT_SECRET}"
+  }
 }

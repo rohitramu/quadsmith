@@ -95,6 +95,9 @@ const (
 	// OpsServiceLoginAsQuadsmithProcedure is the fully-qualified name of the OpsService's
 	// LoginAsQuadsmith RPC.
 	OpsServiceLoginAsQuadsmithProcedure = "/quadsmith.ops.OpsService/LoginAsQuadsmith"
+	// OpsServiceStartOAuthDeviceFlowProcedure is the fully-qualified name of the OpsService's
+	// StartOAuthDeviceFlow RPC.
+	OpsServiceStartOAuthDeviceFlowProcedure = "/quadsmith.ops.OpsService/StartOAuthDeviceFlow"
 	// OpsServiceCreateInternalTokenProcedure is the fully-qualified name of the OpsService's
 	// CreateInternalToken RPC.
 	OpsServiceCreateInternalTokenProcedure = "/quadsmith.ops.OpsService/CreateInternalToken"
@@ -148,6 +151,7 @@ type OpsServiceClient interface {
 	ListIamUsers(context.Context, *connect.Request[ops.ListIamUsersRequest]) (*connect.Response[ops.ListIamUsersResponse], error)
 	ListIamGroups(context.Context, *connect.Request[ops.ListIamGroupsRequest]) (*connect.Response[ops.ListIamGroupsResponse], error)
 	LoginAsQuadsmith(context.Context, *connect.Request[ops.LoginAsQuadsmithRequest]) (*connect.Response[ops.LoginAsQuadsmithResponse], error)
+	StartOAuthDeviceFlow(context.Context, *connect.Request[ops.StartOAuthDeviceFlowRequest]) (*connect.Response[ops.StartOAuthDeviceFlowResponse], error)
 	// Dynamic Token Management
 	CreateInternalToken(context.Context, *connect.Request[ops.CreateInternalTokenRequest]) (*connect.Response[ops.CreateInternalTokenResponse], error)
 	ListInternalTokens(context.Context, *connect.Request[ops.ListInternalTokensRequest]) (*connect.Response[ops.ListInternalTokensResponse], error)
@@ -308,6 +312,12 @@ func NewOpsServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...
 			connect.WithSchema(opsServiceMethods.ByName("LoginAsQuadsmith")),
 			connect.WithClientOptions(opts...),
 		),
+		startOAuthDeviceFlow: connect.NewClient[ops.StartOAuthDeviceFlowRequest, ops.StartOAuthDeviceFlowResponse](
+			httpClient,
+			baseURL+OpsServiceStartOAuthDeviceFlowProcedure,
+			connect.WithSchema(opsServiceMethods.ByName("StartOAuthDeviceFlow")),
+			connect.WithClientOptions(opts...),
+		),
 		createInternalToken: connect.NewClient[ops.CreateInternalTokenRequest, ops.CreateInternalTokenResponse](
 			httpClient,
 			baseURL+OpsServiceCreateInternalTokenProcedure,
@@ -378,6 +388,7 @@ type opsServiceClient struct {
 	listIamUsers                *connect.Client[ops.ListIamUsersRequest, ops.ListIamUsersResponse]
 	listIamGroups               *connect.Client[ops.ListIamGroupsRequest, ops.ListIamGroupsResponse]
 	loginAsQuadsmith            *connect.Client[ops.LoginAsQuadsmithRequest, ops.LoginAsQuadsmithResponse]
+	startOAuthDeviceFlow        *connect.Client[ops.StartOAuthDeviceFlowRequest, ops.StartOAuthDeviceFlowResponse]
 	createInternalToken         *connect.Client[ops.CreateInternalTokenRequest, ops.CreateInternalTokenResponse]
 	listInternalTokens          *connect.Client[ops.ListInternalTokensRequest, ops.ListInternalTokensResponse]
 	revokeInternalToken         *connect.Client[ops.RevokeInternalTokenRequest, ops.RevokeInternalTokenResponse]
@@ -502,6 +513,11 @@ func (c *opsServiceClient) LoginAsQuadsmith(ctx context.Context, req *connect.Re
 	return c.loginAsQuadsmith.CallUnary(ctx, req)
 }
 
+// StartOAuthDeviceFlow calls quadsmith.ops.OpsService.StartOAuthDeviceFlow.
+func (c *opsServiceClient) StartOAuthDeviceFlow(ctx context.Context, req *connect.Request[ops.StartOAuthDeviceFlowRequest]) (*connect.Response[ops.StartOAuthDeviceFlowResponse], error) {
+	return c.startOAuthDeviceFlow.CallUnary(ctx, req)
+}
+
 // CreateInternalToken calls quadsmith.ops.OpsService.CreateInternalToken.
 func (c *opsServiceClient) CreateInternalToken(ctx context.Context, req *connect.Request[ops.CreateInternalTokenRequest]) (*connect.Response[ops.CreateInternalTokenResponse], error) {
 	return c.createInternalToken.CallUnary(ctx, req)
@@ -567,6 +583,7 @@ type OpsServiceHandler interface {
 	ListIamUsers(context.Context, *connect.Request[ops.ListIamUsersRequest]) (*connect.Response[ops.ListIamUsersResponse], error)
 	ListIamGroups(context.Context, *connect.Request[ops.ListIamGroupsRequest]) (*connect.Response[ops.ListIamGroupsResponse], error)
 	LoginAsQuadsmith(context.Context, *connect.Request[ops.LoginAsQuadsmithRequest]) (*connect.Response[ops.LoginAsQuadsmithResponse], error)
+	StartOAuthDeviceFlow(context.Context, *connect.Request[ops.StartOAuthDeviceFlowRequest]) (*connect.Response[ops.StartOAuthDeviceFlowResponse], error)
 	// Dynamic Token Management
 	CreateInternalToken(context.Context, *connect.Request[ops.CreateInternalTokenRequest]) (*connect.Response[ops.CreateInternalTokenResponse], error)
 	ListInternalTokens(context.Context, *connect.Request[ops.ListInternalTokensRequest]) (*connect.Response[ops.ListInternalTokensResponse], error)
@@ -723,6 +740,12 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 		connect.WithSchema(opsServiceMethods.ByName("LoginAsQuadsmith")),
 		connect.WithHandlerOptions(opts...),
 	)
+	opsServiceStartOAuthDeviceFlowHandler := connect.NewUnaryHandler(
+		OpsServiceStartOAuthDeviceFlowProcedure,
+		svc.StartOAuthDeviceFlow,
+		connect.WithSchema(opsServiceMethods.ByName("StartOAuthDeviceFlow")),
+		connect.WithHandlerOptions(opts...),
+	)
 	opsServiceCreateInternalTokenHandler := connect.NewUnaryHandler(
 		OpsServiceCreateInternalTokenProcedure,
 		svc.CreateInternalToken,
@@ -813,6 +836,8 @@ func NewOpsServiceHandler(svc OpsServiceHandler, opts ...connect.HandlerOption) 
 			opsServiceListIamGroupsHandler.ServeHTTP(w, r)
 		case OpsServiceLoginAsQuadsmithProcedure:
 			opsServiceLoginAsQuadsmithHandler.ServeHTTP(w, r)
+		case OpsServiceStartOAuthDeviceFlowProcedure:
+			opsServiceStartOAuthDeviceFlowHandler.ServeHTTP(w, r)
 		case OpsServiceCreateInternalTokenProcedure:
 			opsServiceCreateInternalTokenHandler.ServeHTTP(w, r)
 		case OpsServiceListInternalTokensProcedure:
@@ -926,6 +951,10 @@ func (UnimplementedOpsServiceHandler) ListIamGroups(context.Context, *connect.Re
 
 func (UnimplementedOpsServiceHandler) LoginAsQuadsmith(context.Context, *connect.Request[ops.LoginAsQuadsmithRequest]) (*connect.Response[ops.LoginAsQuadsmithResponse], error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.LoginAsQuadsmith is not implemented"))
+}
+
+func (UnimplementedOpsServiceHandler) StartOAuthDeviceFlow(context.Context, *connect.Request[ops.StartOAuthDeviceFlowRequest]) (*connect.Response[ops.StartOAuthDeviceFlowResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quadsmith.ops.OpsService.StartOAuthDeviceFlow is not implemented"))
 }
 
 func (UnimplementedOpsServiceHandler) CreateInternalToken(context.Context, *connect.Request[ops.CreateInternalTokenRequest]) (*connect.Response[ops.CreateInternalTokenResponse], error) {

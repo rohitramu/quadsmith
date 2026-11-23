@@ -43,6 +43,7 @@ service OpsService {
   rpc ListIamUsers(ListIamUsersRequest) returns (ListIamUsersResponse);
   rpc ListIamGroups(ListIamGroupsRequest) returns (ListIamGroupsResponse);
   rpc LoginAsQuadsmith(LoginAsQuadsmithRequest) returns (LoginAsQuadsmithResponse);
+  rpc StartOAuthDeviceFlow(StartOAuthDeviceFlowRequest) returns (StartOAuthDeviceFlowResponse);
 
   // Dynamic Token Management
   rpc CreateInternalToken(CreateInternalTokenRequest) returns (CreateInternalTokenResponse);
@@ -176,6 +177,7 @@ message ExchangeOAuthCodeRequest {
   string code = 1;
   string code_verifier = 2;
   string redirect_uri = 3;
+  string device_code = 4;
 }
 
 message ExchangeOAuthCodeResponse {
@@ -183,6 +185,8 @@ message ExchangeOAuthCodeResponse {
   google.protobuf.Timestamp expires_at = 2;
   string operator = 3;
   string group_name = 4;
+  bool pending = 5;
+  int32 retry_after_seconds = 6;
 }
 
 message ExtendJitGrantRequest {
@@ -435,6 +439,16 @@ message SetUserRoleResponse {
   string username = 2;
   string previous_role = 3;
   string role = 4;
+}
+
+message StartOAuthDeviceFlowRequest {}
+
+message StartOAuthDeviceFlowResponse {
+  string device_code = 1;
+  string user_code = 2;
+  string verification_uri = 3;
+  int32 expires_in_seconds = 4;
+  int32 interval_seconds = 5;
 }
 
 // ---------------------------------------------------------

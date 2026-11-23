@@ -1862,7 +1862,19 @@ export default function App() {
 
           <div className="space-y-3">
             <a
-              href={oauthConfig?.authorizeUrl || "https://github.com/login/oauth/authorize"}
+              href={(() => {
+                const rawUrl =
+                  oauthConfig?.authorizeUrl || "https://github.com/login/oauth/authorize";
+                if (
+                  typeof window !== "undefined" &&
+                  (rawUrl.startsWith("https://") || rawUrl.startsWith("http://")) &&
+                  !rawUrl.includes("redirect_uri=")
+                ) {
+                  const sep = rawUrl.includes("?") ? "&" : "?";
+                  return `${rawUrl}${sep}redirect_uri=${encodeURIComponent(window.location.origin)}`;
+                }
+                return rawUrl;
+              })()}
               className="w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold text-sm transition"
             >
               Sign in with GitHub OAuth
@@ -1875,7 +1887,7 @@ export default function App() {
                 onClick={handleSandboxLogin}
                 className="w-full py-2.5 px-4 rounded-lg bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border border-emerald-500/40 font-mono text-xs transition cursor-pointer"
               >
-                ⚡ Authenticate as Sandbox Operator (rohitramu)
+                ⚡ Authenticate as Sandbox Operator
               </button>
             )}
           </div>

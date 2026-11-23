@@ -179,7 +179,8 @@ per-binary schema files under `src/proto/quadsmith/config/`:
 - `server_api.proto`: `ApiServerConfig`, `AuthConfig`, `EmailConfig`,
   `ConsoleEmailConfig`, `SmtpConfig`.
 - `server_ops_api.proto`: `OpsApiServerConfig`, `JitPolicyConfig`,
-  `OAuthConfig`, `DeveloperMapping`.
+  `OAuthConfig`, `GitHubTeamMapping`, `OpsGitHubOAuthConfig`,
+  `OpsMockOAuthConfig`.
 - `server_ops_web.proto`: `OpsWebServerConfig`.
 - `server_cron.proto`: `CronServerConfig`, `CleanupExpiredOtpsSchedule`,
   `CleanupExpiredTokensSchedule`, `CleanupOrphanedBlobsSchedule`,

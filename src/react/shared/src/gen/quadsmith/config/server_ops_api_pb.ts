@@ -19,7 +19,7 @@ import type { Message } from "@bufbuild/protobuf";
 export const file_quadsmith_config_server_ops_api: GenFile =
   /*@__PURE__*/
   fileDesc(
-    "CiVxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9vcHNfYXBpLnByb3RvEhBxdWFkc21pdGguY29uZmlnIrYDChJPcHNBcGlTZXJ2ZXJDb25maWcSGAoLZW52aXJvbm1lbnQYASABKAlIAIgBARIuCgZzZXJ2ZXIYAiABKAsyHi5xdWFkc21pdGguY29uZmlnLlNlcnZlckNvbmZpZxIyCghkYXRhYmFzZRgDIAEoCzIgLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VDb25maWcSOwoRaW50ZXJuYWxfZGF0YWJhc2UYBCABKAsyIC5xdWFkc21pdGguY29uZmlnLkRhdGFiYXNlQ29uZmlnEjUKBmdyb3VwcxgFIAMoCzIlLnF1YWRzbWl0aC5jb25maWcuSW50ZXJuYWxHcm91cENvbmZpZxJAChBib290c3RyYXBfdG9rZW5zGAYgAygLMiYucXVhZHNtaXRoLmNvbmZpZy5Cb290c3RyYXBUb2tlbkNvbmZpZxIuCgNqaXQYByABKAsyIS5xdWFkc21pdGguY29uZmlnLkppdFBvbGljeUNvbmZpZxIsCgVvYXV0aBgIIAEoCzIdLnF1YWRzbWl0aC5jb25maWcuT0F1dGhDb25maWdCDgoMX2Vudmlyb25tZW50Is4BCg9KaXRQb2xpY3lDb25maWcSFAoHZW5hYmxlZBgBIAEoCEgAiAEBEhkKDGF1dG9fYXBwcm92ZRgCIAEoCEgBiAEBEhoKDWRlZmF1bHRfaG91cnMYAyABKAVIAogBARIWCgltYXhfaG91cnMYBCABKAVIA4gBARIZChFzZW5zaXRpdmVfbWV0aG9kcxgFIAMoCUIKCghfZW5hYmxlZEIPCg1fYXV0b19hcHByb3ZlQhAKDl9kZWZhdWx0X2hvdXJzQgwKCl9tYXhfaG91cnMiiQIKC09BdXRoQ29uZmlnEhUKCHByb3ZpZGVyGAEgASgJSACIAQESFgoJY2xpZW50X2lkGAIgASgJSAGIAQESGgoNY2xpZW50X3NlY3JldBgDIAEoCUgCiAEBEhQKDGFsbG93ZWRfb3JncxgEIAMoCRIaCg1kZWZhdWx0X2dyb3VwGAUgASgJSAOIAQESPgoSZGV2ZWxvcGVyX21hcHBpbmdzGAYgAygLMiIucXVhZHNtaXRoLmNvbmZpZy5EZXZlbG9wZXJNYXBwaW5nQgsKCV9wcm92aWRlckIMCgpfY2xpZW50X2lkQhAKDl9jbGllbnRfc2VjcmV0QhAKDl9kZWZhdWx0X2dyb3VwIlgKEERldmVsb3Blck1hcHBpbmcSEgoFZW1haWwYASABKAlIAIgBARIXCgpncm91cF9uYW1lGAIgASgJSAGIAQFCCAoGX2VtYWlsQg0KC19ncm91cF9uYW1lQi5aLHF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9jb25maWc7Y29uZmlnYgZwcm90bzM",
+    "CiVxdWFkc21pdGgvY29uZmlnL3NlcnZlcl9vcHNfYXBpLnByb3RvEhBxdWFkc21pdGguY29uZmlnIrYDChJPcHNBcGlTZXJ2ZXJDb25maWcSGAoLZW52aXJvbm1lbnQYASABKAlIAIgBARIuCgZzZXJ2ZXIYAiABKAsyHi5xdWFkc21pdGguY29uZmlnLlNlcnZlckNvbmZpZxIyCghkYXRhYmFzZRgDIAEoCzIgLnF1YWRzbWl0aC5jb25maWcuRGF0YWJhc2VDb25maWcSOwoRaW50ZXJuYWxfZGF0YWJhc2UYBCABKAsyIC5xdWFkc21pdGguY29uZmlnLkRhdGFiYXNlQ29uZmlnEjUKBmdyb3VwcxgFIAMoCzIlLnF1YWRzbWl0aC5jb25maWcuSW50ZXJuYWxHcm91cENvbmZpZxJAChBib290c3RyYXBfdG9rZW5zGAYgAygLMiYucXVhZHNtaXRoLmNvbmZpZy5Cb290c3RyYXBUb2tlbkNvbmZpZxIuCgNqaXQYByABKAsyIS5xdWFkc21pdGguY29uZmlnLkppdFBvbGljeUNvbmZpZxIsCgVvYXV0aBgIIAEoCzIdLnF1YWRzbWl0aC5jb25maWcuT0F1dGhDb25maWdCDgoMX2Vudmlyb25tZW50Is4BCg9KaXRQb2xpY3lDb25maWcSFAoHZW5hYmxlZBgBIAEoCEgAiAEBEhkKDGF1dG9fYXBwcm92ZRgCIAEoCEgBiAEBEhoKDWRlZmF1bHRfaG91cnMYAyABKAVIAogBARIWCgltYXhfaG91cnMYBCABKAVIA4gBARIZChFzZW5zaXRpdmVfbWV0aG9kcxgFIAMoCUIKCghfZW5hYmxlZEIPCg1fYXV0b19hcHByb3ZlQhAKDl9kZWZhdWx0X2hvdXJzQgwKCl9tYXhfaG91cnMiwQEKC09BdXRoQ29uZmlnEjoKDXRlYW1fbWFwcGluZ3MYASADKAsyIy5xdWFkc21pdGguY29uZmlnLkdpdEh1YlRlYW1NYXBwaW5nEjQKBG1vY2sYAiABKAsyJC5xdWFkc21pdGguY29uZmlnLk9wc01vY2tPQXV0aENvbmZpZ0gAEjgKBmdpdGh1YhgDIAEoCzImLnF1YWRzbWl0aC5jb25maWcuT3BzR2l0SHViT0F1dGhDb25maWdIAEIGCgRtb2RlInsKEUdpdEh1YlRlYW1NYXBwaW5nEhAKA29yZxgBIAEoCUgAiAEBEhYKCXRlYW1fc2x1ZxgCIAEoCUgBiAEBEhcKCmdyb3VwX25hbWUYAyABKAlIAogBAUIGCgRfb3JnQgwKCl90ZWFtX3NsdWdCDQoLX2dyb3VwX25hbWUiagoUT3BzR2l0SHViT0F1dGhDb25maWcSFgoJY2xpZW50X2lkGAEgASgJSACIAQESGgoNY2xpZW50X3NlY3JldBgCIAEoCUgBiAEBQgwKCl9jbGllbnRfaWRCEAoOX2NsaWVudF9zZWNyZXQiFAoST3BzTW9ja09BdXRoQ29uZmlnQi5aLHF1YWRzbWl0aC9zaGFyZWQvZ2VuL3F1YWRzbWl0aC9jb25maWc7Y29uZmlnYgZwcm90bzM",
     [file_quadsmith_config_common],
   );
 
@@ -123,36 +123,29 @@ export const JitPolicyConfigSchema: GenMessage<JitPolicyConfig> =
  */
 export type OAuthConfig = Message<"quadsmith.config.OAuthConfig"> & {
   /**
-   * "github", "google", etc.
-   *
-   * @generated from field: optional string provider = 1;
+   * @generated from field: repeated quadsmith.config.GitHubTeamMapping team_mappings = 1;
    */
-  provider?: string | undefined;
+  teamMappings: GitHubTeamMapping[];
 
   /**
-   * @generated from field: optional string client_id = 2;
+   * @generated from oneof quadsmith.config.OAuthConfig.mode
    */
-  clientId?: string | undefined;
-
-  /**
-   * @generated from field: optional string client_secret = 3;
-   */
-  clientSecret?: string | undefined;
-
-  /**
-   * @generated from field: repeated string allowed_orgs = 4;
-   */
-  allowedOrgs: string[];
-
-  /**
-   * @generated from field: optional string default_group = 5;
-   */
-  defaultGroup?: string | undefined;
-
-  /**
-   * @generated from field: repeated quadsmith.config.DeveloperMapping developer_mappings = 6;
-   */
-  developerMappings: DeveloperMapping[];
+  mode:
+    | {
+        /**
+         * @generated from field: quadsmith.config.OpsMockOAuthConfig mock = 2;
+         */
+        value: OpsMockOAuthConfig;
+        case: "mock";
+      }
+    | {
+        /**
+         * @generated from field: quadsmith.config.OpsGitHubOAuthConfig github = 3;
+         */
+        value: OpsGitHubOAuthConfig;
+        case: "github";
+      }
+    | { case: undefined; value?: undefined };
 };
 
 /**
@@ -164,24 +157,65 @@ export const OAuthConfigSchema: GenMessage<OAuthConfig> =
   messageDesc(file_quadsmith_config_server_ops_api, 2);
 
 /**
- * @generated from message quadsmith.config.DeveloperMapping
+ * @generated from message quadsmith.config.GitHubTeamMapping
  */
-export type DeveloperMapping = Message<"quadsmith.config.DeveloperMapping"> & {
+export type GitHubTeamMapping = Message<"quadsmith.config.GitHubTeamMapping"> & {
   /**
-   * @generated from field: optional string email = 1;
+   * @generated from field: optional string org = 1;
    */
-  email?: string | undefined;
+  org?: string | undefined;
 
   /**
-   * @generated from field: optional string group_name = 2;
+   * @generated from field: optional string team_slug = 2;
+   */
+  teamSlug?: string | undefined;
+
+  /**
+   * @generated from field: optional string group_name = 3;
    */
   groupName?: string | undefined;
 };
 
 /**
- * Describes the message quadsmith.config.DeveloperMapping.
- * Use `create(DeveloperMappingSchema)` to create a new message.
+ * Describes the message quadsmith.config.GitHubTeamMapping.
+ * Use `create(GitHubTeamMappingSchema)` to create a new message.
  */
-export const DeveloperMappingSchema: GenMessage<DeveloperMapping> =
+export const GitHubTeamMappingSchema: GenMessage<GitHubTeamMapping> =
   /*@__PURE__*/
   messageDesc(file_quadsmith_config_server_ops_api, 3);
+
+/**
+ * @generated from message quadsmith.config.OpsGitHubOAuthConfig
+ */
+export type OpsGitHubOAuthConfig = Message<"quadsmith.config.OpsGitHubOAuthConfig"> & {
+  /**
+   * @generated from field: optional string client_id = 1;
+   */
+  clientId?: string | undefined;
+
+  /**
+   * @generated from field: optional string client_secret = 2;
+   */
+  clientSecret?: string | undefined;
+};
+
+/**
+ * Describes the message quadsmith.config.OpsGitHubOAuthConfig.
+ * Use `create(OpsGitHubOAuthConfigSchema)` to create a new message.
+ */
+export const OpsGitHubOAuthConfigSchema: GenMessage<OpsGitHubOAuthConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_server_ops_api, 4);
+
+/**
+ * @generated from message quadsmith.config.OpsMockOAuthConfig
+ */
+export type OpsMockOAuthConfig = Message<"quadsmith.config.OpsMockOAuthConfig"> & {};
+
+/**
+ * Describes the message quadsmith.config.OpsMockOAuthConfig.
+ * Use `create(OpsMockOAuthConfigSchema)` to create a new message.
+ */
+export const OpsMockOAuthConfigSchema: GenMessage<OpsMockOAuthConfig> =
+  /*@__PURE__*/
+  messageDesc(file_quadsmith_config_server_ops_api, 5);

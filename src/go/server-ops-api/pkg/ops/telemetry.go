@@ -22,36 +22,6 @@ import (
 	pb "quadsmith/shared/gen/quadsmith/ops"
 )
 
-func (s *OpsService) GetOAuthConfig(ctx context.Context, _ *connect.Request[pb.GetOAuthConfigRequest]) (*connect.Response[pb.GetOAuthConfigResponse], error) {
-	provider := "github"
-	clientID := ""
-	env := "sandbox"
-	if s.cfg != nil {
-		if s.cfg.GetEnvironment() != "" {
-			env = s.cfg.GetEnvironment()
-		}
-		if s.cfg.Oauth != nil {
-			if s.cfg.Oauth.GetProvider() != "" {
-				provider = s.cfg.Oauth.GetProvider()
-			}
-			clientID = s.cfg.Oauth.GetClientId()
-		}
-	}
-
-	authURL := "https://github.com/login/oauth/authorize"
-	if clientID != "" {
-		authURL = fmt.Sprintf("https://github.com/login/oauth/authorize?client_id=%s&scope=read:user,user:email", url.QueryEscape(clientID))
-	}
-
-	return connect.NewResponse(&pb.GetOAuthConfigResponse{
-		Provider:     provider,
-		ClientId:     clientID,
-		Environment:  env,
-		Region:       telemetry.CurrentRegion(),
-		AuthorizeUrl: authURL,
-	}), nil
-}
-
 type peerTarget struct {
 	serviceName string
 	url         string

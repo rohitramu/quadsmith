@@ -130,6 +130,11 @@ export const listIamGroups = OpsService.method.listIamGroups;
 export const loginAsQuadsmith = OpsService.method.loginAsQuadsmith;
 
 /**
+ * @generated from rpc quadsmith.ops.OpsService.StartOAuthDeviceFlow
+ */
+export const startOAuthDeviceFlow = OpsService.method.startOAuthDeviceFlow;
+
+/**
  * Dynamic Token Management
  *
  * @generated from rpc quadsmith.ops.OpsService.CreateInternalToken

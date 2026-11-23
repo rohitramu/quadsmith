@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"text/tabwriter"
 	"time"
@@ -202,21 +204,89 @@ func newRootCmd() *cobra.Command {
 // Auth & Identity Commands
 // ---------------------------------------------------------
 
+func tryOpenBrowser(targetURL string) {
+	switch runtime.GOOS {
+	case "darwin":
+		_ = exec.Command("open", targetURL).Start()
+	case "linux":
+		if os.Getenv("DISPLAY") != "" || os.Getenv("WAYLAND_DISPLAY") != "" {
+			_ = exec.Command("xdg-open", targetURL).Start()
+		}
+	}
+}
+
 func newLoginCmd() *cobra.Command {
 	var code string
+	var useDevice bool
+	var noBrowser bool
 	cmd := &cobra.Command{
 		Use:   "login",
-		Short: "Authenticate with GitHub OAuth to acquire a session token",
+		Short: "Authenticate with GitHub OAuth (verifying @quadsmith team membership) to acquire a session token",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if code == "" {
-				code = "dev-sandbox-code"
-			}
 			client := getOpsClient()
-			resp, err := client.ExchangeOAuthCode(cmd.Context(), connect.NewRequest(&pb.ExchangeOAuthCodeRequest{
-				Code: code,
-			}))
-			if err != nil {
-				return fmt.Errorf("login failed: %w", err)
+			ctx := cmd.Context()
+
+			var resp *connect.Response[pb.ExchangeOAuthCodeResponse]
+			if strings.TrimSpace(code) == "" && (useDevice || embeddedConfig.GetEnvironment() != "sandbox") {
+				devResp, err := client.StartOAuthDeviceFlow(ctx, connect.NewRequest(&pb.StartOAuthDeviceFlowRequest{}))
+				if err != nil {
+					return fmt.Errorf("failed to start GitHub device flow: %w", err)
+				}
+				dev := devResp.Msg
+				fmt.Printf("! Copy your one-time GitHub code: %s\n", dev.GetUserCode())
+				fmt.Printf("  Open %s in your browser to authorize qsops...\n", dev.GetVerificationUri())
+				if !noBrowser {
+					tryOpenBrowser(dev.GetVerificationUri())
+				}
+
+				interval := time.Duration(dev.GetIntervalSeconds()) * time.Second
+				if interval < time.Second {
+					interval = 5 * time.Second
+				}
+				expiresIn := time.Duration(dev.GetExpiresInSeconds()) * time.Second
+				if expiresIn <= 0 {
+					expiresIn = 15 * time.Minute
+				}
+				deadline := time.Now().Add(expiresIn)
+
+				for {
+					if time.Now().After(deadline) {
+						return errors.New("GitHub device authorization timed out before approval")
+					}
+					select {
+					case <-ctx.Done():
+						return ctx.Err()
+					case <-time.After(interval):
+					}
+
+					pollResp, err := client.ExchangeOAuthCode(ctx, connect.NewRequest(&pb.ExchangeOAuthCodeRequest{
+						DeviceCode: dev.GetDeviceCode(),
+					}))
+					if err != nil {
+						return fmt.Errorf("login failed: %w", err)
+					}
+					if pollResp.Msg.GetPending() {
+						if retrySec := pollResp.Msg.GetRetryAfterSeconds(); retrySec > 0 {
+							if d := time.Duration(retrySec) * time.Second; d > interval {
+								interval = d
+							}
+						}
+						continue
+					}
+					resp = pollResp
+					break
+				}
+			} else {
+				if strings.TrimSpace(code) == "" {
+					code = "dev-sandbox-code"
+				}
+				exResp, err := client.ExchangeOAuthCode(ctx, connect.NewRequest(&pb.ExchangeOAuthCodeRequest{
+					Code: strings.TrimSpace(code),
+				}))
+				if err != nil {
+					return fmt.Errorf("login failed: %w", err)
+				}
+				resp = exResp
 			}
 
 			token := resp.Msg.GetToken()
@@ -228,13 +298,15 @@ func newLoginCmd() *cobra.Command {
 				return fmt.Errorf("failed to save session: %w", err)
 			}
 
-			fmt.Printf("✓ Successfully authenticated as %s (group: %s)\n", operator, group)
+			fmt.Printf("✓ Successfully authenticated as @%s (group: %s)\n", operator, group)
 			fmt.Printf("  Session token stored in ~/.quadsmith/ops_session.json (expires: %s)\n",
 				expiresAt.Format(time.RFC1123))
 			return nil
 		},
 	}
-	cmd.Flags().StringVar(&code, "code", "", "OAuth authorization code (defaults to sandbox dev code)")
+	cmd.Flags().StringVar(&code, "code", "", "OAuth authorization code (optional override)")
+	cmd.Flags().BoolVar(&useDevice, "device", false, "Use interactive GitHub Device Flow even in sandbox")
+	cmd.Flags().BoolVar(&noBrowser, "no-browser", false, "Do not attempt to open the verification URL in a browser")
 	return cmd
 }
 

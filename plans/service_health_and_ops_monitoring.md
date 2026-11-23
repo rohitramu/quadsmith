@@ -552,10 +552,13 @@ recent trace IDs by region and service from the terminal:
   and `ListJitGrants` also accept optional CEL `filter` and
   `repeated string sort` (`field` for ascending, `^field` or `-field` for
   descending), evaluated by `src/go/shared/pkg/cel2sql.FilterAndSort`.
-- `GetOAuthConfig(GetOAuthConfigRequest) returns (GetOAuthConfigResponse)`:
-  Public (unauthenticated) RPC returning the GitHub OAuth `client_id`,
-  `provider`, `environment`, `region`, and `authorize_url` so `app-ops-web` can
-  initiate browser GitHub OAuth login (or 1-click sandbox login in `sandbox`).
+- `GetOAuthConfig(GetOAuthConfigRequest) returns (GetOAuthConfigResponse)` and
+  `StartOAuthDeviceFlow(StartOAuthDeviceFlowRequest) returns (StartOAuthDeviceFlowResponse)`:
+  Public (unauthenticated) RPCs returning GitHub OAuth configuration
+  (`scope=read:user,read:org`) for `app-ops-web` and GitHub Device Flow user
+  codes for `qsops login`, verified against declarative `@quadsmith/operators`
+  and `@quadsmith/viewers` `team_mappings` (deny-by-default, with deterministic
+  `mock` mode in `sandbox` and zero committed human emails or handles).
 
 In [src/go/cli-ops/main.go](../src/go/cli-ops/main.go), extend `qsops`:
 

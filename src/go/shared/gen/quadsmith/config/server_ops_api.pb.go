@@ -198,15 +198,15 @@ func (x *JitPolicyConfig) GetSensitiveMethods() []string {
 }
 
 type OAuthConfig struct {
-	state             protoimpl.MessageState `protogen:"open.v1"`
-	Provider          *string                `protobuf:"bytes,1,opt,name=provider,proto3,oneof" json:"provider,omitempty"` // "github", "google", etc.
-	ClientId          *string                `protobuf:"bytes,2,opt,name=client_id,json=clientId,proto3,oneof" json:"client_id,omitempty"`
-	ClientSecret      *string                `protobuf:"bytes,3,opt,name=client_secret,json=clientSecret,proto3,oneof" json:"client_secret,omitempty"`
-	AllowedOrgs       []string               `protobuf:"bytes,4,rep,name=allowed_orgs,json=allowedOrgs,proto3" json:"allowed_orgs,omitempty"`
-	DefaultGroup      *string                `protobuf:"bytes,5,opt,name=default_group,json=defaultGroup,proto3,oneof" json:"default_group,omitempty"`
-	DeveloperMappings []*DeveloperMapping    `protobuf:"bytes,6,rep,name=developer_mappings,json=developerMappings,proto3" json:"developer_mappings,omitempty"`
-	unknownFields     protoimpl.UnknownFields
-	sizeCache         protoimpl.SizeCache
+	state        protoimpl.MessageState `protogen:"open.v1"`
+	TeamMappings []*GitHubTeamMapping   `protobuf:"bytes,1,rep,name=team_mappings,json=teamMappings,proto3" json:"team_mappings,omitempty"`
+	// Types that are valid to be assigned to Mode:
+	//
+	//	*OAuthConfig_Mock
+	//	*OAuthConfig_Github
+	Mode          isOAuthConfig_Mode `protobuf_oneof:"mode"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
 }
 
 func (x *OAuthConfig) Reset() {
@@ -239,70 +239,77 @@ func (*OAuthConfig) Descriptor() ([]byte, []int) {
 	return file_quadsmith_config_server_ops_api_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *OAuthConfig) GetProvider() string {
-	if x != nil && x.Provider != nil {
-		return *x.Provider
-	}
-	return ""
-}
-
-func (x *OAuthConfig) GetClientId() string {
-	if x != nil && x.ClientId != nil {
-		return *x.ClientId
-	}
-	return ""
-}
-
-func (x *OAuthConfig) GetClientSecret() string {
-	if x != nil && x.ClientSecret != nil {
-		return *x.ClientSecret
-	}
-	return ""
-}
-
-func (x *OAuthConfig) GetAllowedOrgs() []string {
+func (x *OAuthConfig) GetTeamMappings() []*GitHubTeamMapping {
 	if x != nil {
-		return x.AllowedOrgs
+		return x.TeamMappings
 	}
 	return nil
 }
 
-func (x *OAuthConfig) GetDefaultGroup() string {
-	if x != nil && x.DefaultGroup != nil {
-		return *x.DefaultGroup
-	}
-	return ""
-}
-
-func (x *OAuthConfig) GetDeveloperMappings() []*DeveloperMapping {
+func (x *OAuthConfig) GetMode() isOAuthConfig_Mode {
 	if x != nil {
-		return x.DeveloperMappings
+		return x.Mode
 	}
 	return nil
 }
 
-type DeveloperMapping struct {
+func (x *OAuthConfig) GetMock() *OpsMockOAuthConfig {
+	if x != nil {
+		if x, ok := x.Mode.(*OAuthConfig_Mock); ok {
+			return x.Mock
+		}
+	}
+	return nil
+}
+
+func (x *OAuthConfig) GetGithub() *OpsGitHubOAuthConfig {
+	if x != nil {
+		if x, ok := x.Mode.(*OAuthConfig_Github); ok {
+			return x.Github
+		}
+	}
+	return nil
+}
+
+type isOAuthConfig_Mode interface {
+	isOAuthConfig_Mode()
+}
+
+type OAuthConfig_Mock struct {
+	Mock *OpsMockOAuthConfig `protobuf:"bytes,2,opt,name=mock,proto3,oneof"`
+}
+
+type OAuthConfig_Github struct {
+	Github *OpsGitHubOAuthConfig `protobuf:"bytes,3,opt,name=github,proto3,oneof"`
+}
+
+func (*OAuthConfig_Mock) isOAuthConfig_Mode() {}
+
+func (*OAuthConfig_Github) isOAuthConfig_Mode() {}
+
+type GitHubTeamMapping struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         *string                `protobuf:"bytes,1,opt,name=email,proto3,oneof" json:"email,omitempty"`
-	GroupName     *string                `protobuf:"bytes,2,opt,name=group_name,json=groupName,proto3,oneof" json:"group_name,omitempty"`
+	Org           *string                `protobuf:"bytes,1,opt,name=org,proto3,oneof" json:"org,omitempty"`
+	TeamSlug      *string                `protobuf:"bytes,2,opt,name=team_slug,json=teamSlug,proto3,oneof" json:"team_slug,omitempty"`
+	GroupName     *string                `protobuf:"bytes,3,opt,name=group_name,json=groupName,proto3,oneof" json:"group_name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *DeveloperMapping) Reset() {
-	*x = DeveloperMapping{}
+func (x *GitHubTeamMapping) Reset() {
+	*x = GitHubTeamMapping{}
 	mi := &file_quadsmith_config_server_ops_api_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *DeveloperMapping) String() string {
+func (x *GitHubTeamMapping) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*DeveloperMapping) ProtoMessage() {}
+func (*GitHubTeamMapping) ProtoMessage() {}
 
-func (x *DeveloperMapping) ProtoReflect() protoreflect.Message {
+func (x *GitHubTeamMapping) ProtoReflect() protoreflect.Message {
 	mi := &file_quadsmith_config_server_ops_api_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -314,23 +321,118 @@ func (x *DeveloperMapping) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use DeveloperMapping.ProtoReflect.Descriptor instead.
-func (*DeveloperMapping) Descriptor() ([]byte, []int) {
+// Deprecated: Use GitHubTeamMapping.ProtoReflect.Descriptor instead.
+func (*GitHubTeamMapping) Descriptor() ([]byte, []int) {
 	return file_quadsmith_config_server_ops_api_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *DeveloperMapping) GetEmail() string {
-	if x != nil && x.Email != nil {
-		return *x.Email
+func (x *GitHubTeamMapping) GetOrg() string {
+	if x != nil && x.Org != nil {
+		return *x.Org
 	}
 	return ""
 }
 
-func (x *DeveloperMapping) GetGroupName() string {
+func (x *GitHubTeamMapping) GetTeamSlug() string {
+	if x != nil && x.TeamSlug != nil {
+		return *x.TeamSlug
+	}
+	return ""
+}
+
+func (x *GitHubTeamMapping) GetGroupName() string {
 	if x != nil && x.GroupName != nil {
 		return *x.GroupName
 	}
 	return ""
+}
+
+type OpsGitHubOAuthConfig struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	ClientId      *string                `protobuf:"bytes,1,opt,name=client_id,json=clientId,proto3,oneof" json:"client_id,omitempty"`
+	ClientSecret  *string                `protobuf:"bytes,2,opt,name=client_secret,json=clientSecret,proto3,oneof" json:"client_secret,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OpsGitHubOAuthConfig) Reset() {
+	*x = OpsGitHubOAuthConfig{}
+	mi := &file_quadsmith_config_server_ops_api_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OpsGitHubOAuthConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OpsGitHubOAuthConfig) ProtoMessage() {}
+
+func (x *OpsGitHubOAuthConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_config_server_ops_api_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OpsGitHubOAuthConfig.ProtoReflect.Descriptor instead.
+func (*OpsGitHubOAuthConfig) Descriptor() ([]byte, []int) {
+	return file_quadsmith_config_server_ops_api_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *OpsGitHubOAuthConfig) GetClientId() string {
+	if x != nil && x.ClientId != nil {
+		return *x.ClientId
+	}
+	return ""
+}
+
+func (x *OpsGitHubOAuthConfig) GetClientSecret() string {
+	if x != nil && x.ClientSecret != nil {
+		return *x.ClientSecret
+	}
+	return ""
+}
+
+type OpsMockOAuthConfig struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *OpsMockOAuthConfig) Reset() {
+	*x = OpsMockOAuthConfig{}
+	mi := &file_quadsmith_config_server_ops_api_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *OpsMockOAuthConfig) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OpsMockOAuthConfig) ProtoMessage() {}
+
+func (x *OpsMockOAuthConfig) ProtoReflect() protoreflect.Message {
+	mi := &file_quadsmith_config_server_ops_api_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OpsMockOAuthConfig.ProtoReflect.Descriptor instead.
+func (*OpsMockOAuthConfig) Descriptor() ([]byte, []int) {
+	return file_quadsmith_config_server_ops_api_proto_rawDescGZIP(), []int{5}
 }
 
 var File_quadsmith_config_server_ops_api_proto protoreflect.FileDescriptor
@@ -359,25 +461,28 @@ const file_quadsmith_config_server_ops_api_proto_rawDesc = "" +
 	"\r_auto_approveB\x10\n" +
 	"\x0e_default_hoursB\f\n" +
 	"\n" +
-	"_max_hours\"\xd9\x02\n" +
-	"\vOAuthConfig\x12\x1f\n" +
-	"\bprovider\x18\x01 \x01(\tH\x00R\bprovider\x88\x01\x01\x12 \n" +
-	"\tclient_id\x18\x02 \x01(\tH\x01R\bclientId\x88\x01\x01\x12(\n" +
-	"\rclient_secret\x18\x03 \x01(\tH\x02R\fclientSecret\x88\x01\x01\x12!\n" +
-	"\fallowed_orgs\x18\x04 \x03(\tR\vallowedOrgs\x12(\n" +
-	"\rdefault_group\x18\x05 \x01(\tH\x03R\fdefaultGroup\x88\x01\x01\x12Q\n" +
-	"\x12developer_mappings\x18\x06 \x03(\v2\".quadsmith.config.DeveloperMappingR\x11developerMappingsB\v\n" +
-	"\t_providerB\f\n" +
+	"_max_hours\"\xdd\x01\n" +
+	"\vOAuthConfig\x12H\n" +
+	"\rteam_mappings\x18\x01 \x03(\v2#.quadsmith.config.GitHubTeamMappingR\fteamMappings\x12:\n" +
+	"\x04mock\x18\x02 \x01(\v2$.quadsmith.config.OpsMockOAuthConfigH\x00R\x04mock\x12@\n" +
+	"\x06github\x18\x03 \x01(\v2&.quadsmith.config.OpsGitHubOAuthConfigH\x00R\x06githubB\x06\n" +
+	"\x04mode\"\x95\x01\n" +
+	"\x11GitHubTeamMapping\x12\x15\n" +
+	"\x03org\x18\x01 \x01(\tH\x00R\x03org\x88\x01\x01\x12 \n" +
+	"\tteam_slug\x18\x02 \x01(\tH\x01R\bteamSlug\x88\x01\x01\x12\"\n" +
+	"\n" +
+	"group_name\x18\x03 \x01(\tH\x02R\tgroupName\x88\x01\x01B\x06\n" +
+	"\x04_orgB\f\n" +
+	"\n" +
+	"_team_slugB\r\n" +
+	"\v_group_name\"\x82\x01\n" +
+	"\x14OpsGitHubOAuthConfig\x12 \n" +
+	"\tclient_id\x18\x01 \x01(\tH\x00R\bclientId\x88\x01\x01\x12(\n" +
+	"\rclient_secret\x18\x02 \x01(\tH\x01R\fclientSecret\x88\x01\x01B\f\n" +
 	"\n" +
 	"_client_idB\x10\n" +
-	"\x0e_client_secretB\x10\n" +
-	"\x0e_default_group\"j\n" +
-	"\x10DeveloperMapping\x12\x19\n" +
-	"\x05email\x18\x01 \x01(\tH\x00R\x05email\x88\x01\x01\x12\"\n" +
-	"\n" +
-	"group_name\x18\x02 \x01(\tH\x01R\tgroupName\x88\x01\x01B\b\n" +
-	"\x06_emailB\r\n" +
-	"\v_group_nameB.Z,quadsmith/shared/gen/quadsmith/config;configb\x06proto3"
+	"\x0e_client_secret\"\x14\n" +
+	"\x12OpsMockOAuthConfigB.Z,quadsmith/shared/gen/quadsmith/config;configb\x06proto3"
 
 var (
 	file_quadsmith_config_server_ops_api_proto_rawDescOnce sync.Once
@@ -391,31 +496,35 @@ func file_quadsmith_config_server_ops_api_proto_rawDescGZIP() []byte {
 	return file_quadsmith_config_server_ops_api_proto_rawDescData
 }
 
-var file_quadsmith_config_server_ops_api_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_quadsmith_config_server_ops_api_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_quadsmith_config_server_ops_api_proto_goTypes = []any{
 	(*OpsApiServerConfig)(nil),   // 0: quadsmith.config.OpsApiServerConfig
 	(*JitPolicyConfig)(nil),      // 1: quadsmith.config.JitPolicyConfig
 	(*OAuthConfig)(nil),          // 2: quadsmith.config.OAuthConfig
-	(*DeveloperMapping)(nil),     // 3: quadsmith.config.DeveloperMapping
-	(*ServerConfig)(nil),         // 4: quadsmith.config.ServerConfig
-	(*DatabaseConfig)(nil),       // 5: quadsmith.config.DatabaseConfig
-	(*InternalGroupConfig)(nil),  // 6: quadsmith.config.InternalGroupConfig
-	(*BootstrapTokenConfig)(nil), // 7: quadsmith.config.BootstrapTokenConfig
+	(*GitHubTeamMapping)(nil),    // 3: quadsmith.config.GitHubTeamMapping
+	(*OpsGitHubOAuthConfig)(nil), // 4: quadsmith.config.OpsGitHubOAuthConfig
+	(*OpsMockOAuthConfig)(nil),   // 5: quadsmith.config.OpsMockOAuthConfig
+	(*ServerConfig)(nil),         // 6: quadsmith.config.ServerConfig
+	(*DatabaseConfig)(nil),       // 7: quadsmith.config.DatabaseConfig
+	(*InternalGroupConfig)(nil),  // 8: quadsmith.config.InternalGroupConfig
+	(*BootstrapTokenConfig)(nil), // 9: quadsmith.config.BootstrapTokenConfig
 }
 var file_quadsmith_config_server_ops_api_proto_depIdxs = []int32{
-	4, // 0: quadsmith.config.OpsApiServerConfig.server:type_name -> quadsmith.config.ServerConfig
-	5, // 1: quadsmith.config.OpsApiServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
-	5, // 2: quadsmith.config.OpsApiServerConfig.internal_database:type_name -> quadsmith.config.DatabaseConfig
-	6, // 3: quadsmith.config.OpsApiServerConfig.groups:type_name -> quadsmith.config.InternalGroupConfig
-	7, // 4: quadsmith.config.OpsApiServerConfig.bootstrap_tokens:type_name -> quadsmith.config.BootstrapTokenConfig
-	1, // 5: quadsmith.config.OpsApiServerConfig.jit:type_name -> quadsmith.config.JitPolicyConfig
-	2, // 6: quadsmith.config.OpsApiServerConfig.oauth:type_name -> quadsmith.config.OAuthConfig
-	3, // 7: quadsmith.config.OAuthConfig.developer_mappings:type_name -> quadsmith.config.DeveloperMapping
-	8, // [8:8] is the sub-list for method output_type
-	8, // [8:8] is the sub-list for method input_type
-	8, // [8:8] is the sub-list for extension type_name
-	8, // [8:8] is the sub-list for extension extendee
-	0, // [0:8] is the sub-list for field type_name
+	6,  // 0: quadsmith.config.OpsApiServerConfig.server:type_name -> quadsmith.config.ServerConfig
+	7,  // 1: quadsmith.config.OpsApiServerConfig.database:type_name -> quadsmith.config.DatabaseConfig
+	7,  // 2: quadsmith.config.OpsApiServerConfig.internal_database:type_name -> quadsmith.config.DatabaseConfig
+	8,  // 3: quadsmith.config.OpsApiServerConfig.groups:type_name -> quadsmith.config.InternalGroupConfig
+	9,  // 4: quadsmith.config.OpsApiServerConfig.bootstrap_tokens:type_name -> quadsmith.config.BootstrapTokenConfig
+	1,  // 5: quadsmith.config.OpsApiServerConfig.jit:type_name -> quadsmith.config.JitPolicyConfig
+	2,  // 6: quadsmith.config.OpsApiServerConfig.oauth:type_name -> quadsmith.config.OAuthConfig
+	3,  // 7: quadsmith.config.OAuthConfig.team_mappings:type_name -> quadsmith.config.GitHubTeamMapping
+	5,  // 8: quadsmith.config.OAuthConfig.mock:type_name -> quadsmith.config.OpsMockOAuthConfig
+	4,  // 9: quadsmith.config.OAuthConfig.github:type_name -> quadsmith.config.OpsGitHubOAuthConfig
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_quadsmith_config_server_ops_api_proto_init() }
@@ -426,15 +535,19 @@ func file_quadsmith_config_server_ops_api_proto_init() {
 	file_quadsmith_config_common_proto_init()
 	file_quadsmith_config_server_ops_api_proto_msgTypes[0].OneofWrappers = []any{}
 	file_quadsmith_config_server_ops_api_proto_msgTypes[1].OneofWrappers = []any{}
-	file_quadsmith_config_server_ops_api_proto_msgTypes[2].OneofWrappers = []any{}
+	file_quadsmith_config_server_ops_api_proto_msgTypes[2].OneofWrappers = []any{
+		(*OAuthConfig_Mock)(nil),
+		(*OAuthConfig_Github)(nil),
+	}
 	file_quadsmith_config_server_ops_api_proto_msgTypes[3].OneofWrappers = []any{}
+	file_quadsmith_config_server_ops_api_proto_msgTypes[4].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quadsmith_config_server_ops_api_proto_rawDesc), len(file_quadsmith_config_server_ops_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

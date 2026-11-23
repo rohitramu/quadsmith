@@ -1699,6 +1699,40 @@ func TestOpsServer_ComponentCatalogLifecycleAndBoundary(t *testing.T) {
 		t.Fatalf("CreateAnswer on motor question failed: %v", err)
 	}
 
+	// Clarification comments on component questions and answers must persist and be returned by ListQuestions / ListAnswers
+	if _, err := pilotSocial.CreateQuestionComment(ctx, connect.NewRequest(&apipb.CreateQuestionCommentRequest{
+		QuestionId: qRes.Msg.GetId(),
+		Body:       "Running 51433 props on 6S 1300mAh.",
+	})); err != nil {
+		t.Fatalf("CreateQuestionComment on motor question failed: %v", err)
+	}
+	qListRes, err := pilotSocial.ListQuestions(ctx, connect.NewRequest(&apipb.ListQuestionsRequest{
+		EntityId:   testSlug,
+		Collection: &collectionMotors,
+	}))
+	if err != nil || len(qListRes.Msg.GetQuestions()) != 1 || len(qListRes.Msg.GetQuestions()[0].GetComments()) != 1 {
+		t.Fatalf("Expected ListQuestions to return 1 question with 1 comment, err=%v questions=%v", err, qListRes)
+	}
+	if got := qListRes.Msg.GetQuestions()[0].GetComments()[0].GetBody(); got != "Running 51433 props on 6S 1300mAh." {
+		t.Errorf("Unexpected question comment body: got %q", got)
+	}
+
+	if _, err := pilotSocial.CreateAnswerComment(ctx, connect.NewRequest(&apipb.CreateAnswerCommentRequest{
+		AnswerUuid: aRes.Msg.GetUuid(),
+		Body:       "Confirmed cool stator temps after 4 packs.",
+	})); err != nil {
+		t.Fatalf("CreateAnswerComment on motor answer failed: %v", err)
+	}
+	aListRes, err := pilotSocial.ListAnswers(ctx, connect.NewRequest(&apipb.ListAnswersRequest{
+		QuestionId: qRes.Msg.GetId(),
+	}))
+	if err != nil || len(aListRes.Msg.GetAnswers()) != 1 || len(aListRes.Msg.GetAnswers()[0].GetComments()) != 1 {
+		t.Fatalf("Expected ListAnswers to return 1 answer with 1 comment, err=%v answers=%v", err, aListRes)
+	}
+	if got := aListRes.Msg.GetAnswers()[0].GetComments()[0].GetBody(); got != "Confirmed cool stator temps after 4 packs." {
+		t.Errorf("Unexpected answer comment body: got %q", got)
+	}
+
 	// EndorseAnswer must fail with CodeFailedPrecondition on component Q&A even for @quadsmith
 	if _, err := sysSocial.EndorseAnswer(ctx, connect.NewRequest(&apipb.EndorseAnswerRequest{
 		AnswerUuid: aRes.Msg.GetUuid(),
@@ -1791,6 +1825,112 @@ func TestOpsServer_ComponentCatalogLifecycleAndBoundary(t *testing.T) {
 	}
 	if zipFiles["components.json"] {
 		t.Errorf("Expected components.json to be omitted from GDPR export archive, got files: %v", zipFiles)
+	}
+}
+
+func TestOpsServer_GitHubTeamMappingsAndDeviceFlowLogin(t *testing.T) {
+	ctx := context.Background()
+	unauthClient := newOpsClient("")
+
+	// 1. Verify GetOAuthConfig is public and returns sandbox mock config
+	oauthCfg, err := unauthClient.GetOAuthConfig(ctx, connect.NewRequest(&pb.GetOAuthConfigRequest{}))
+	if err != nil {
+		t.Fatalf("GetOAuthConfig failed: %v", err)
+	}
+	if oauthCfg.Msg.GetProvider() != "github" || oauthCfg.Msg.GetEnvironment() != "sandbox" {
+		t.Errorf("Unexpected GetOAuthConfig: %+v", oauthCfg.Msg)
+	}
+
+	// 2. Verify @quadsmith/operators maps to operators and @quadsmith/viewers maps to viewers
+	opEx, err := unauthClient.ExchangeOAuthCode(ctx, connect.NewRequest(&pb.ExchangeOAuthCodeRequest{
+		Code: "mock-operator-code",
+	}))
+	if err != nil {
+		t.Fatalf("ExchangeOAuthCode(mock-operator-code) failed: %v", err)
+	}
+	if opEx.Msg.GetOperator() != "sandbox-operator" || opEx.Msg.GetGroupName() != "operators" || opEx.Msg.GetToken() == "" {
+		t.Fatalf("Unexpected operator OAuth exchange result: %+v", opEx.Msg)
+	}
+
+	viewerEx, err := unauthClient.ExchangeOAuthCode(ctx, connect.NewRequest(&pb.ExchangeOAuthCodeRequest{
+		Code: "mock-viewer-code",
+	}))
+	if err != nil {
+		t.Fatalf("ExchangeOAuthCode(mock-viewer-code) failed: %v", err)
+	}
+	if viewerEx.Msg.GetOperator() != "sandbox-viewer" || viewerEx.Msg.GetGroupName() != "viewers" || viewerEx.Msg.GetToken() == "" {
+		t.Fatalf("Unexpected viewer OAuth exchange result: %+v", viewerEx.Msg)
+	}
+
+	// Verify minted viewer token can read diagnostics but is denied mutations
+	mintedViewerClient := newOpsClient(viewerEx.Msg.GetToken())
+	if _, err := mintedViewerClient.GetSystemDiagnostics(ctx, connect.NewRequest(&pb.GetSystemDiagnosticsRequest{})); err != nil {
+		t.Fatalf("Minted viewer token failed GetSystemDiagnostics: %v", err)
+	}
+	if _, err := mintedViewerClient.CreateInternalToken(ctx, connect.NewRequest(&pb.CreateInternalTokenRequest{
+		Name:         "should-fail",
+		Type:         "HUMAN",
+		GroupName:    "viewers",
+		DurationDays: 1,
+	})); err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Errorf("Expected minted viewer token to be denied CreateInternalToken with CodePermissionDenied, got %v", err)
+	}
+
+	// 3. Verify dual-team precedence (@quadsmith/operators wins over @quadsmith/viewers)
+	dualEx, err := unauthClient.ExchangeOAuthCode(ctx, connect.NewRequest(&pb.ExchangeOAuthCodeRequest{
+		Code: "mock-dual-team-code",
+	}))
+	if err != nil {
+		t.Fatalf("ExchangeOAuthCode(mock-dual-team-code) failed: %v", err)
+	}
+	if dualEx.Msg.GetGroupName() != "operators" {
+		t.Errorf("Expected dual-team member to receive 'operators', got %q", dualEx.Msg.GetGroupName())
+	}
+
+	// 4. Verify deny-by-default for GitHub users outside mapped @quadsmith teams
+	if _, err := unauthClient.ExchangeOAuthCode(ctx, connect.NewRequest(&pb.ExchangeOAuthCodeRequest{
+		Code: "mock-outsider-code",
+	})); err == nil || connect.CodeOf(err) != connect.CodePermissionDenied {
+		t.Fatalf("Expected CodePermissionDenied for unmapped GitHub team member, got %v", err)
+	}
+
+	// 5. Verify invalid code returns CodeUnauthenticated
+	if _, err := unauthClient.ExchangeOAuthCode(ctx, connect.NewRequest(&pb.ExchangeOAuthCodeRequest{
+		Code: "bogus-oauth-code",
+	})); err == nil || connect.CodeOf(err) != connect.CodeUnauthenticated {
+		t.Fatalf("Expected CodeUnauthenticated for invalid OAuth code, got %v", err)
+	}
+
+	// 6. Verify qsops login --device --no-browser completes Device Flow and authenticates whoami
+	qsopsPath := resolveQSOpsPath(t)
+	tmpHome := t.TempDir()
+	var cleanEnv []string
+	for _, kv := range os.Environ() {
+		if strings.HasPrefix(kv, "HOME=") || strings.HasPrefix(kv, "QS_OPS_TOKEN=") || strings.HasPrefix(kv, "QS_OPS_SERVER_URL=") {
+			continue
+		}
+		cleanEnv = append(cleanEnv, kv)
+	}
+	cleanEnv = append(cleanEnv, "HOME="+tmpHome, "QS_OPS_SERVER_URL="+getOpsURL())
+
+	loginCmd := exec.Command(qsopsPath, "login", "--device", "--no-browser")
+	loginCmd.Env = cleanEnv
+	loginOut, err := loginCmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops login --device --no-browser failed: %v\nOutput: %s", err, string(loginOut))
+	}
+	if !containsString(string(loginOut), "QSOP-1234") || !containsString(string(loginOut), "@sandbox-operator (group: operators)") {
+		t.Errorf("Unexpected qsops login --device output: %s", string(loginOut))
+	}
+
+	whoamiCmd := exec.Command(qsopsPath, "whoami")
+	whoamiCmd.Env = cleanEnv
+	whoamiOut, err := whoamiCmd.CombinedOutput()
+	if err != nil {
+		t.Fatalf("qsops whoami after device login failed: %v\nOutput: %s", err, string(whoamiOut))
+	}
+	if !containsString(string(whoamiOut), "sandbox-operator") || !containsString(string(whoamiOut), "operators") {
+		t.Errorf("Unexpected qsops whoami output: %s", string(whoamiOut))
 	}
 }
 

@@ -30,15 +30,22 @@ message JitPolicyConfig {
 }
 
 message OAuthConfig {
-  optional string provider = 1; // "github", "google", etc.
-  optional string client_id = 2;
-  optional string client_secret = 3;
-  repeated string allowed_orgs = 4;
-  optional string default_group = 5;
-  repeated DeveloperMapping developer_mappings = 6;
+  repeated GitHubTeamMapping team_mappings = 1;
+  oneof mode {
+    OpsMockOAuthConfig mock = 2;
+    OpsGitHubOAuthConfig github = 3;
+  }
 }
 
-message DeveloperMapping {
-  optional string email = 1;
-  optional string group_name = 2;
+message GitHubTeamMapping {
+  optional string org = 1;
+  optional string team_slug = 2;
+  optional string group_name = 3;
 }
+
+message OpsGitHubOAuthConfig {
+  optional string client_id = 1;
+  optional string client_secret = 2;
+}
+
+message OpsMockOAuthConfig {}

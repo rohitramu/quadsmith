@@ -93,8 +93,8 @@ func (in *OpsInterceptor) WrapUnary(next connect.UnaryFunc) connect.UnaryFunc {
 			methodName = procedure[idx+1:]
 		}
 
-		// Public endpoints: ExchangeOAuthCode and GetOAuthConfig do not require auth
-		if methodName == "ExchangeOAuthCode" || methodName == "GetOAuthConfig" {
+		// Public endpoints: ExchangeOAuthCode, GetOAuthConfig, and StartOAuthDeviceFlow do not require auth
+		if methodName == "ExchangeOAuthCode" || methodName == "GetOAuthConfig" || methodName == "StartOAuthDeviceFlow" {
 			return next(ctx, req)
 		}
 

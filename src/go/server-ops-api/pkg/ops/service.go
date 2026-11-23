@@ -6,6 +6,7 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
+	"net/http"
 	"os"
 	"runtime"
 	"strings"
@@ -28,11 +29,14 @@ import (
 
 type OpsService struct {
 	opsconnect.UnimplementedOpsServiceHandler
-	publicDb  *pgxpool.Pool
-	opsDb     *pgxpool.Pool
-	cfg       *configpb.OpsApiServerConfig
-	telemetry *telemetry.Registry
-	startTime time.Time
+	publicDb           *pgxpool.Pool
+	opsDb              *pgxpool.Pool
+	cfg                *configpb.OpsApiServerConfig
+	telemetry          *telemetry.Registry
+	startTime          time.Time
+	oauthHTTPClient    *http.Client
+	githubOAuthBaseURL string
+	githubAPIBaseURL   string
 }
 
 func NewOpsService(publicDb, opsDb *pgxpool.Pool, cfg *configpb.OpsApiServerConfig, reg ...*telemetry.Registry) *OpsService {
@@ -49,11 +53,12 @@ func NewOpsService(publicDb, opsDb *pgxpool.Pool, cfg *configpb.OpsApiServerConf
 		r = telemetry.NewRegistry("server-ops-api", cfg.GetEnvironment(), true)
 	}
 	return &OpsService{
-		publicDb:  publicDb,
-		opsDb:     opsDb,
-		cfg:       cfg,
-		telemetry: r,
-		startTime: time.Now(),
+		publicDb:        publicDb,
+		opsDb:           opsDb,
+		cfg:             cfg,
+		telemetry:       r,
+		startTime:       time.Now(),
+		oauthHTTPClient: &http.Client{Timeout: 10 * time.Second},
 	}
 }
 
@@ -559,51 +564,6 @@ func (s *OpsService) ListInternalApiCalls(ctx context.Context, req *connect.Requ
 // ---------------------------------------------------------
 // Authentication & IAM
 // ---------------------------------------------------------
-
-func (s *OpsService) ExchangeOAuthCode(ctx context.Context, req *connect.Request[pb.ExchangeOAuthCodeRequest]) (*connect.Response[pb.ExchangeOAuthCodeResponse], error) {
-	code := req.Msg.GetCode()
-	if code == "" {
-		return nil, connect.NewError(connect.CodeInvalidArgument, errors.New("missing authorization code"))
-	}
-
-	// Developer identity mapping from GitHub OAuth
-	operatorName := "developer@quadsmith.dev"
-	groupName := "operators"
-	if s.cfg.Oauth != nil {
-		if s.cfg.Oauth.GetDefaultGroup() != "" {
-			groupName = s.cfg.Oauth.GetDefaultGroup()
-		}
-		// If developer mappings configured, match first
-		if len(s.cfg.Oauth.DeveloperMappings) > 0 {
-			groupName = s.cfg.Oauth.DeveloperMappings[0].GetGroupName()
-			operatorName = s.cfg.Oauth.DeveloperMappings[0].GetEmail()
-		}
-	}
-
-	// Generate persistent internal session token
-	tokenSecret := generateCryptoToken("qs_op_")
-	tokenHash := opsauth.HashToken(tokenSecret)
-	tokenUUID := auth.NewUUIDv7()
-	tokenID := fmt.Sprintf("tok_%d", time.Now().UnixNano())
-	expiresAt := time.Now().Add(24 * time.Hour)
-
-	_, err := s.opsDb.Exec(ctx, `
-		INSERT INTO internal_tokens (
-			uuid, id, name, type, group_name, token_hash, expires_at, created_at
-		) VALUES (
-			$1, $2, $3, 'HUMAN', $4, $5, $6, NOW()
-		)`, tokenUUID, tokenID, operatorName, groupName, tokenHash, expiresAt)
-	if err != nil {
-		return nil, connect.NewError(connect.CodeInternal, fmt.Errorf("failed to issue session token: %w", err))
-	}
-
-	return connect.NewResponse(&pb.ExchangeOAuthCodeResponse{
-		Token:     tokenSecret,
-		ExpiresAt: timestamppb.New(expiresAt),
-		Operator:  operatorName,
-		GroupName: groupName,
-	}), nil
-}
 
 func (s *OpsService) GetCurrentOperator(ctx context.Context, _ *connect.Request[pb.GetCurrentOperatorRequest]) (*connect.Response[pb.GetCurrentOperatorResponse], error) {
 	opCtx := opsauth.OperatorContextFromContext(ctx)

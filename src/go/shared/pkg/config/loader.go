@@ -440,12 +440,12 @@ func applyOpsApiServerEnvOverrides(cfg *configpb.OpsApiServerConfig) {
 	if cfg.InternalDatabase != nil {
 		applyInternalDatabaseEnvOverrides(cfg.InternalDatabase)
 	}
-	if cfg.Oauth != nil {
+	if cfg.Oauth != nil && cfg.Oauth.GetGithub() != nil {
 		if v := os.Getenv("QS_OAUTH_CLIENT_ID"); v != "" {
-			cfg.Oauth.ClientId = &v
+			cfg.Oauth.GetGithub().ClientId = &v
 		}
 		if v := os.Getenv("QS_OAUTH_CLIENT_SECRET"); v != "" {
-			cfg.Oauth.ClientSecret = &v
+			cfg.Oauth.GetGithub().ClientSecret = &v
 		}
 	}
 }
@@ -781,8 +781,60 @@ func ValidateOpsApiServerConfig(c *configpb.OpsApiServerConfig) error {
 		errs = append(errs, "internal_database: "+err.Error())
 	}
 
+	definedGroups := make(map[string]bool)
 	if len(c.Groups) == 0 {
 		errs = append(errs, "at least one IAM group must be defined in groups")
+	} else {
+		for _, g := range c.Groups {
+			if name := strings.TrimSpace(g.GetName()); name != "" {
+				definedGroups[name] = true
+			}
+		}
+	}
+
+	if c.Oauth == nil {
+		errs = append(errs, "oauth configuration section is missing")
+	} else {
+		if len(c.Oauth.GetTeamMappings()) == 0 {
+			errs = append(errs, "oauth.team_mappings must define at least one GitHub team mapping")
+		} else {
+			seenTeams := make(map[string]bool)
+			for i, tm := range c.Oauth.GetTeamMappings() {
+				org := strings.TrimSpace(tm.GetOrg())
+				slug := strings.TrimSpace(tm.GetTeamSlug())
+				group := strings.TrimSpace(tm.GetGroupName())
+				if org == "" {
+					errs = append(errs, fmt.Sprintf("oauth.team_mappings[%d].org cannot be empty", i))
+				}
+				if slug == "" {
+					errs = append(errs, fmt.Sprintf("oauth.team_mappings[%d].team_slug cannot be empty", i))
+				}
+				if group == "" {
+					errs = append(errs, fmt.Sprintf("oauth.team_mappings[%d].group_name cannot be empty", i))
+				} else if len(definedGroups) > 0 && !definedGroups[group] {
+					errs = append(errs, fmt.Sprintf("oauth.team_mappings[%d].group_name %q is not defined in groups", i, group))
+				}
+				if org != "" && slug != "" {
+					key := strings.ToLower(org) + "/" + strings.ToLower(slug)
+					if seenTeams[key] {
+						errs = append(errs, fmt.Sprintf("duplicate GitHub team %q in oauth.team_mappings[%d]", key, i))
+					}
+					seenTeams[key] = true
+				}
+			}
+		}
+
+		if (isStaging(c.GetEnvironment()) || isProduction(c.GetEnvironment())) && c.Oauth.GetMock() != nil {
+			errs = append(errs, fmt.Sprintf("oauth.mock cannot be enabled in %s environment", c.GetEnvironment()))
+		}
+		if gh := c.Oauth.GetGithub(); gh != nil {
+			if strings.TrimSpace(gh.GetClientId()) == "" {
+				errs = append(errs, "oauth.github.client_id cannot be empty")
+			}
+			if strings.TrimSpace(gh.GetClientSecret()) == "" {
+				errs = append(errs, "oauth.github.client_secret cannot be empty")
+			}
+		}
 	}
 
 	if len(errs) > 0 {

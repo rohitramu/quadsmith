@@ -180,11 +180,21 @@ func NewTestOpsApiServerConfig(t testing.TB, opts ...OpsApiServerOption) *config
 			SensitiveMethods: []string{"RevokeInternalToken", "SetUserRole", "LoginAsQuadsmith"},
 		},
 		Oauth: &configpb.OAuthConfig{
-			Provider:     proto.String("github"),
-			ClientId:     proto.String("dummy-id"),
-			ClientSecret: proto.String("dummy-secret"),
-			AllowedOrgs:  []string{"quadsmith"},
-			DefaultGroup: proto.String("viewers"),
+			TeamMappings: []*configpb.GitHubTeamMapping{
+				{
+					Org:       proto.String("quadsmith"),
+					TeamSlug:  proto.String("operators"),
+					GroupName: proto.String("operators"),
+				},
+				{
+					Org:       proto.String("quadsmith"),
+					TeamSlug:  proto.String("viewers"),
+					GroupName: proto.String("viewers"),
+				},
+			},
+			Mode: &configpb.OAuthConfig_Mock{
+				Mock: &configpb.OpsMockOAuthConfig{},
+			},
 		},
 	}
 
