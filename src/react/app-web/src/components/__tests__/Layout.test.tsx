@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithProviders } from "../../test/test-utils";
 import { Layout } from "../Layout";
@@ -93,13 +93,24 @@ describe("Layout Component", () => {
       "/components/software",
     );
     expect(screen.getByRole("link", { name: "Gear" })).toHaveAttribute("href", "/components/gear");
-    const termsLinks = screen.getAllByRole("link", { name: /Terms & Disclaimers/i });
-    expect(termsLinks.length).toBeGreaterThanOrEqual(1);
-    for (const link of termsLinks) {
-      expect(link).toHaveAttribute("href", "/terms");
-    }
+
+    const sidebar = screen.getByRole("navigation", { name: "Sidebar" });
+    expect(within(sidebar).queryByText(/Legal & Safety/i)).not.toBeInTheDocument();
+    expect(
+      within(sidebar).queryByRole("link", { name: /Terms & Disclaimers/i }),
+    ).not.toBeInTheDocument();
+
+    const footer = screen.getByTestId("global-legal-footer");
+    expect(footer).toBeInTheDocument();
+    expect(within(footer).getByRole("link", { name: /Terms & Disclaimers/i })).toHaveAttribute(
+      "href",
+      "/terms",
+    );
+    expect(
+      within(footer).queryByRole("link", { name: /Build Evaluator/i }),
+    ).not.toBeInTheDocument();
+    expect(within(footer).queryByRole("link", { name: /Data & Privacy/i })).not.toBeInTheDocument();
     expect(screen.queryByRole("button", { name: /Safety Disclaimers/i })).not.toBeInTheDocument();
-    expect(screen.getByTestId("global-legal-footer")).toBeInTheDocument();
 
     // No expand/collapse toggle buttons
     expect(screen.queryByRole("button", { name: /Expand Hardware menu/i })).not.toBeInTheDocument();

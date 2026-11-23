@@ -365,27 +365,6 @@ export function Layout() {
           </li>
         </ul>
       </div>
-
-      <div className="pt-4 border-t border-zinc-800/80">
-        <h2 className="text-xs font-semibold text-zinc-500 uppercase tracking-wider mb-2">
-          Legal &amp; Safety
-        </h2>
-        <ul className="space-y-1">
-          <li>
-            <Link
-              to="/terms"
-              className={`flex items-center gap-2.5 px-3 py-1.5 text-sm rounded-md hover:bg-zinc-800 ${
-                location.pathname === "/terms"
-                  ? "bg-zinc-800 text-blue-400 font-medium"
-                  : "text-zinc-400"
-              }`}
-            >
-              <Scale size={15} className="text-zinc-400 shrink-0" />
-              <span>Terms &amp; Disclaimers</span>
-            </Link>
-          </li>
-        </ul>
-      </div>
     </nav>
   );
 
@@ -767,18 +746,6 @@ export function Layout() {
                     className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
                   >
                     Terms &amp; Disclaimers
-                  </Link>
-                  <Link
-                    to="/terms#build-evaluator"
-                    className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
-                  >
-                    Build Evaluator
-                  </Link>
-                  <Link
-                    to="/terms#privacy"
-                    className="text-zinc-400 hover:text-zinc-200 underline underline-offset-2 transition-colors"
-                  >
-                    Data &amp; Privacy
                   </Link>
                 </div>
               </div>
