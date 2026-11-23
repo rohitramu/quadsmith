@@ -183,8 +183,8 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
           </p>
 
           <p>
-            You are responsible for your account and anything you submit, and grant Quadsmith a
-            license to use and display that content in connection with the service. Quadsmith may
+            You are responsible for your account and anything you submit, and give Quadsmith
+            permission to use and display that content in connection with the service. Quadsmith may
             modify or discontinue the service, remove content, restrict access, or update these
             terms at any time without notice or liability.
           </p>
@@ -212,14 +212,11 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
           </p>
         </div>
 
-        <div className="space-y-3 text-xs sm:text-sm text-zinc-400 leading-relaxed text-pretty">
-          <p>
-            By using Quadsmith, you acknowledge that Quadsmith and its third-party service providers
-            may collect and process information you provide as well as technical and usage data to
-            operate, secure, and improve the service and comply with the law.
-          </p>
-          <p>Quadsmith takes reasonable measures to protect your information.</p>
-        </div>
+        <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed text-pretty">
+          By using Quadsmith, you acknowledge that Quadsmith and its third-party service providers
+          may collect and process information you provide as well as technical and usage data to
+          operate, secure, and improve the service and comply with the law.
+        </p>
       </section>
     </div>
   );

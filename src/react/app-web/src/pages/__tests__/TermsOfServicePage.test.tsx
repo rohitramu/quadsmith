@@ -57,6 +57,10 @@ describe("TermsOfServicePage Component", () => {
     ).toBeInTheDocument();
     expect(screen.queryByText(/1\. acceptance of terms/i)).not.toBeInTheDocument();
     expect(screen.getByText(/indemnify and hold quadsmith harmless/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/give quadsmith permission to use and display that content/i),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(/license/i)).not.toBeInTheDocument();
     expect(screen.getByText(/modify or discontinue the service/i)).toBeInTheDocument();
 
     // Section 4: Data & Privacy (concise privacy notice, no technical/export/deletion lists)
@@ -67,8 +71,11 @@ describe("TermsOfServicePage Component", () => {
       }),
     ).toBeInTheDocument();
     expect(
-      screen.getByText(/quadsmith takes reasonable measures to protect your information/i),
+      screen.getByText(/third-party service providers may collect and process information/i),
     ).toBeInTheDocument();
+    expect(
+      screen.queryByText(/reasonable measures to protect your information/i),
+    ).not.toBeInTheDocument();
     expect(screen.queryByText(/unauthorized access or data loss/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/ip addresses/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/\.zip/i)).not.toBeInTheDocument();
