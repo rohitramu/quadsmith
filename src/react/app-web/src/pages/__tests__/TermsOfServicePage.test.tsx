@@ -48,38 +48,32 @@ describe("TermsOfServicePage Component", () => {
     expect(screen.queryByText(/experimental/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/featured on build profile pages/i)).not.toBeInTheDocument();
 
-    // Section 3: Terms of Service (concise plain-English paragraphs, no numbered sub-clauses)
+    // Section 3: Combined Terms of Service & Privacy
     expect(
       screen.getByRole("heading", {
         level: 2,
-        name: /^terms of service$/i,
+        name: /^terms of service & privacy$/i,
       }),
     ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", {
+        level: 2,
+        name: /^data & privacy$/i,
+      }),
+    ).not.toBeInTheDocument();
     expect(screen.queryByText(/1\. acceptance of terms/i)).not.toBeInTheDocument();
-    expect(screen.getByText(/indemnify and hold quadsmith harmless/i)).toBeInTheDocument();
-    expect(
-      screen.getByText(/give quadsmith permission to use and display that content/i),
-    ).toBeInTheDocument();
+    expect(screen.queryByText(/indemnify/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/license/i)).not.toBeInTheDocument();
-    expect(screen.getByText(/modify or discontinue the service/i)).toBeInTheDocument();
-
-    // Section 4: Data & Privacy (concise privacy notice, no technical/export/deletion lists)
-    expect(
-      screen.getByRole("heading", {
-        level: 2,
-        name: /data & privacy/i,
-      }),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(/third-party service providers may collect and process information/i),
-    ).toBeInTheDocument();
+    expect(screen.queryByText(/without notice or liability/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/operate, secure, and improve/i)).not.toBeInTheDocument();
     expect(
       screen.queryByText(/reasonable measures to protect your information/i),
     ).not.toBeInTheDocument();
-    expect(screen.queryByText(/unauthorized access or data loss/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/ip addresses/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/\.zip/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/30-day/i)).not.toBeInTheDocument();
+    expect(
+      screen.getByText(/give quadsmith permission to use and display that content/i),
+    ).toBeInTheDocument();
+    expect(screen.getByText(/at any time without notice\./i)).toBeInTheDocument();
+    expect(screen.getByText(/to operate and improve the service/i)).toBeInTheDocument();
   });
 
   it("renders standalone header when accessed by unauthenticated users via /terms", async () => {

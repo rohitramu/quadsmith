@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { ShieldAlert, Gauge, Scale, Lock, ChevronRight, CheckCircle2 } from "lucide-react";
+import { ShieldAlert, Gauge, Scale, ChevronRight, CheckCircle2 } from "lucide-react";
 import { useDocumentMeta } from "@quadsmith/shared";
 import logo from "../assets/quadsmith-logo.svg";
 import { SafetyDisclaimersCards } from "../components/SafetyDisclaimersModal";
@@ -134,23 +134,23 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
       </section>
 
       {/* ============================================================ */}
-      {/* SECTION 3: TERMS OF SERVICE                                  */}
+      {/* SECTION 3: TERMS OF SERVICE & PRIVACY                        */}
       {/* ============================================================ */}
       <section
         id="terms-of-service"
         aria-labelledby="tos-heading"
         className="p-6 sm:p-8 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4 scroll-mt-20"
       >
-        <div className="border-b border-zinc-800 pb-4">
+        <div id="privacy" className="border-b border-zinc-800 pb-4 scroll-mt-20">
           <h2
             id="tos-heading"
             className="text-xl sm:text-2xl font-bold text-zinc-100 flex items-center gap-2.5 text-balance"
           >
             <Scale className="text-blue-400 shrink-0" size={22} />
-            <span>Terms of Service</span>
+            <span>Terms of Service &amp; Privacy</span>
           </h2>
           <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            General terms governing your use of Quadsmith.
+            General terms governing your use of Quadsmith and how information is handled.
           </p>
         </div>
 
@@ -166,45 +166,22 @@ export function TermsOfServicePage({ standalone = false }: TermsOfServicePagePro
           <p>
             You use Quadsmith entirely at your own risk. To the fullest extent permitted by law,
             Quadsmith is not liable for any damages, losses, or claims arising from your use of or
-            inability to use the service, and you agree to indemnify and hold Quadsmith harmless
-            from any claims arising from your use, your content, or your violation of these terms.
+            inability to use the service.
           </p>
 
           <p>
             You are responsible for your account and anything you submit, and give Quadsmith
             permission to use and display that content in connection with the service. Quadsmith may
             modify or discontinue the service, remove content, restrict access, or update these
-            terms at any time without notice or liability.
+            terms at any time without notice.
+          </p>
+
+          <p>
+            By using Quadsmith, you acknowledge that Quadsmith and its third-party service providers
+            may collect and process information you provide as well as technical and usage data to
+            operate and improve the service and comply with the law.
           </p>
         </div>
-      </section>
-
-      {/* ============================================================ */}
-      {/* SECTION 4: DATA & PRIVACY                                    */}
-      {/* ============================================================ */}
-      <section
-        id="privacy"
-        aria-labelledby="privacy-heading"
-        className="p-6 sm:p-8 rounded-2xl border border-zinc-800 bg-zinc-900/40 space-y-4 scroll-mt-20"
-      >
-        <div className="border-b border-zinc-800 pb-4">
-          <h2
-            id="privacy-heading"
-            className="text-xl sm:text-2xl font-bold text-zinc-100 flex items-center gap-2.5 text-balance"
-          >
-            <Lock className="text-emerald-400 shrink-0" size={22} />
-            <span>Data &amp; Privacy</span>
-          </h2>
-          <p className="text-xs sm:text-sm text-zinc-400 mt-1">
-            How Quadsmith handles information.
-          </p>
-        </div>
-
-        <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed text-pretty">
-          By using Quadsmith, you acknowledge that Quadsmith and its third-party service providers
-          may collect and process information you provide as well as technical and usage data to
-          operate, secure, and improve the service and comply with the law.
-        </p>
       </section>
     </div>
   );
