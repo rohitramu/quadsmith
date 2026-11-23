@@ -11,6 +11,13 @@ describe("HomePage Component", () => {
       screen.getByRole("heading", { level: 1, name: "Welcome to Quadsmith" }),
     ).toBeInTheDocument();
 
+    const container = screen.getByTestId("home-page-container");
+    expect(container.className).toContain("max-w-[110rem]");
+    expect(container.className).toContain("mx-auto");
+
+    const buildsGrid = screen.getByTestId("home-builds-grid");
+    expect(buildsGrid.className).toContain("xl:grid-cols-2");
+
     expect(
       screen.getByText(
         /ultimate hardware data sourcing and component browser for FPV drone builders/i,

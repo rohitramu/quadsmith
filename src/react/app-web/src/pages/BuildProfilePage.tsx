@@ -493,7 +493,7 @@ export function BuildProfilePage() {
 
   if (isLoadingBuild) {
     return (
-      <div className="max-w-[96rem] mx-auto py-8">
+      <div className="max-w-[110rem] mx-auto py-8">
         <p className="text-zinc-500 animate-pulse">Loading build profile...</p>
       </div>
     );
@@ -501,7 +501,7 @@ export function BuildProfilePage() {
 
   if (buildError || !build) {
     return (
-      <div className="max-w-[96rem] mx-auto py-8">
+      <div className="max-w-[110rem] mx-auto py-8">
         <h1 className="text-2xl font-bold text-red-500 mb-2">Build Not Found</h1>
         <p className="text-zinc-500 mb-4">
           Could not find a build profile for &quot;{buildId}&quot;.
@@ -517,7 +517,7 @@ export function BuildProfilePage() {
   }
 
   return (
-    <div data-testid="build-detail-container" className="max-w-[96rem] mx-auto">
+    <div data-testid="build-detail-container" className="max-w-[110rem] mx-auto">
       {/* Breadcrumb Navigation */}
       <nav
         aria-label="Breadcrumb"
@@ -548,7 +548,7 @@ export function BuildProfilePage() {
               </div>
             )}
             {build.description && (
-              <p className="mt-3 text-base sm:text-lg text-zinc-400 leading-relaxed max-w-5xl">
+              <p className="mt-3 text-base sm:text-lg text-zinc-400 leading-relaxed">
                 {build.description}
               </p>
             )}

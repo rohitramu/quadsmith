@@ -14,8 +14,11 @@ describe("CategoryPage Component", () => {
       { route: "/components/hardware" },
     );
 
-    // Title
+    // Title & bounded container
     expect(screen.getByRole("heading", { level: 1, name: "hardware" })).toBeInTheDocument();
+    const container = screen.getByTestId("category-page-container");
+    expect(container.className).toContain("max-w-[110rem]");
+    expect(container.className).toContain("mx-auto");
 
     // Verify all hardware collections are present
     expect(HARDWARE_COLLECTIONS).toHaveLength(11);

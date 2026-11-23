@@ -733,7 +733,7 @@ export function Layout() {
               data-testid="global-legal-footer"
               className="mt-8 border-t border-zinc-800/80 px-4 sm:px-6 lg:px-8 py-6 text-xs text-zinc-500"
             >
-              <div className="max-w-[96rem] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="max-w-[110rem] mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                 <p className="leading-relaxed max-w-2xl text-pretty">
                   Hardware specifications, compatibility checks, and the Build Evaluator are
                   provided &ldquo;AS IS&rdquo; without warranties of airworthiness or safety. Always

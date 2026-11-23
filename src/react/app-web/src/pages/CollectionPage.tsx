@@ -13,9 +13,8 @@ import {
   ChevronLeft,
   ChevronRight,
   ChevronsLeft,
-  ExternalLink,
 } from "lucide-react";
-import { useState, useMemo, useRef, useEffect } from "react";
+import { useState, useMemo, useRef, useEffect, useLayoutEffect } from "react";
 import { keepPreviousData } from "@tanstack/react-query";
 import { SmartFilterInput } from "../components/SmartFilterInput";
 import {
@@ -273,6 +272,151 @@ function PropertySelector({
   );
 }
 
+const HEADER_COLUMN_IDS = new Set(["name", "manufacturer"]);
+const NON_AUTO_SPEC_COLUMN_IDS = new Set([
+  "id",
+  "uuid",
+  "name",
+  "manufacturer",
+  "is_internal_only",
+  "weight_g",
+  "description",
+  "primary_display_image",
+]);
+const TARGET_DEFAULT_SPEC_COUNT = 5;
+
+const XL_SPEC_GRID_COLS: Record<number, string> = {
+  1: "xl:grid-cols-1",
+  2: "xl:grid-cols-2",
+  3: "xl:grid-cols-3",
+  4: "xl:grid-cols-4",
+  5: "xl:grid-cols-5",
+};
+
+function CatalogRowCard({
+  item,
+  productUrl,
+  collectionId,
+  colTextClass,
+  activeColumns,
+  xlSpecColsClass,
+}: {
+  item: any;
+  productUrl: string;
+  collectionId: string;
+  colTextClass: string;
+  activeColumns: ColumnConfig[];
+  xlSpecColsClass: string;
+}) {
+  const cardRef = useRef<HTMLElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    const cardEl = cardRef.current;
+    const bodyEl = bodyRef.current;
+    if (!cardEl || !bodyEl) return;
+
+    let lastApplied = 0;
+    const syncPhotoSize = () => {
+      const bodyHeight = Math.round(bodyEl.getBoundingClientRect().height);
+      if (bodyHeight <= 0) return;
+      const cardWidth = Math.round(cardEl.clientWidth);
+      const nextSize =
+        cardWidth > 0 ? Math.min(bodyHeight, Math.floor(cardWidth * 0.48)) : bodyHeight;
+      if (nextSize !== lastApplied) {
+        lastApplied = nextSize;
+        cardEl.style.setProperty("--card-photo-size", `${nextSize}px`);
+      }
+    };
+
+    syncPhotoSize();
+    if (typeof ResizeObserver === "undefined") return;
+
+    const observer = new ResizeObserver(() => {
+      syncPhotoSize();
+    });
+    observer.observe(bodyEl);
+    observer.observe(cardEl);
+    return () => observer.disconnect();
+  }, [activeColumns.length, item.description]);
+
+  return (
+    <Link
+      to={productUrl}
+      data-testid="catalog-card"
+      aria-label={`View ${item.name || item.id}`}
+      className="group block rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/70"
+    >
+      <article
+        ref={cardRef}
+        className="flex items-stretch rounded-2xl border border-zinc-800 bg-zinc-900/90 overflow-clip shadow-xs transition-all group-hover:border-zinc-700 group-hover:bg-zinc-900 group-hover:shadow-md"
+      >
+        {/* Left Identity + Middle Spec Pills */}
+        <div
+          ref={bodyRef}
+          className="flex-1 min-w-0 p-2.5 sm:p-4 lg:px-5 flex flex-col lg:flex-row lg:items-center gap-2 sm:gap-3 lg:gap-6"
+        >
+          <div className="lg:w-64 xl:w-[21rem] shrink-0 min-w-0">
+            <div className="flex items-center gap-2 mb-0.5 min-w-0">
+              {item.manufacturer && (
+                <span className="text-[10px] sm:text-[11px] font-bold text-zinc-400 uppercase tracking-wider truncate">
+                  {item.manufacturer}
+                </span>
+              )}
+              {(item.isInternalOnly || item.is_internal_only) && (
+                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20 shrink-0">
+                  Internal
+                </span>
+              )}
+            </div>
+            <h2 className="font-bold text-[13.5px] sm:text-base text-zinc-50 group-hover:text-emerald-400 transition-colors truncate">
+              {item.name || item.id}
+            </h2>
+            {item.description && (
+              <p className="hidden sm:block text-xs text-zinc-400 truncate mt-0.5 leading-relaxed">
+                {item.description}
+              </p>
+            )}
+          </div>
+
+          <div className={`flex-1 min-w-0 grid grid-cols-3 ${xlSpecColsClass} gap-1.5 sm:gap-2`}>
+            {activeColumns.map((col) => (
+              <div
+                key={col.id}
+                className="bg-zinc-800/50 rounded-lg sm:rounded-xl px-1.5 py-1 sm:px-2.5 sm:py-1.5 border border-zinc-800/80 flex flex-col min-w-0"
+              >
+                <span className="text-[9px] sm:text-[10px] font-semibold uppercase tracking-wider text-zinc-500 truncate">
+                  {col.title}
+                </span>
+                <div className="text-[11px] sm:text-[13px] font-semibold text-zinc-200 truncate mt-0.5">
+                  {col.renderCell(item)}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right Full-Height 1:1 Square Product Photo */}
+        <div
+          data-testid="catalog-card-photo"
+          className={`w-[var(--card-photo-size,6rem)] aspect-square self-stretch shrink-0 relative overflow-clip border-l border-zinc-800/80 bg-zinc-950/65 flex items-center justify-center ${colTextClass}`}
+        >
+          {item.primaryDisplayImage ? (
+            <img
+              src={item.primaryDisplayImage}
+              alt=""
+              loading="lazy"
+              className="absolute inset-0 block w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
+            />
+          ) : (
+            <CollectionIcon collection={collectionId} size={28} className="opacity-70" />
+          )}
+        </div>
+      </article>
+    </Link>
+  );
+}
+
 export function CollectionTableView({
   categoryId,
   collection,
@@ -295,17 +439,60 @@ export function CollectionTableView({
     return collection.defaultColumnIds;
   }, [collection]);
 
+  const defaultSpecColumnIds = useMemo(() => {
+    const result = protoDefaultCols.filter(
+      (c) => c in collection.columns && !HEADER_COLUMN_IDS.has(c) && c !== "primary_display_image",
+    );
+    const hasWeight = "weight_g" in collection.columns;
+    const reserveWeightSlot =
+      hasWeight && !result.includes("weight_g") && result.length < TARGET_DEFAULT_SPEC_COUNT;
+    const domainLimit = reserveWeightSlot
+      ? TARGET_DEFAULT_SPEC_COUNT - 1
+      : TARGET_DEFAULT_SPEC_COUNT;
+
+    for (const key of Object.keys(collection.columns)) {
+      if (result.length >= domainLimit) break;
+      if (NON_AUTO_SPEC_COLUMN_IDS.has(key)) continue;
+      if (!result.includes(key)) {
+        result.push(key);
+      }
+    }
+
+    if (reserveWeightSlot && result.length < TARGET_DEFAULT_SPEC_COUNT) {
+      result.push("weight_g");
+    }
+
+    for (const key of Object.keys(collection.columns)) {
+      if (result.length >= TARGET_DEFAULT_SPEC_COUNT) break;
+      if (NON_AUTO_SPEC_COLUMN_IDS.has(key)) continue;
+      if (!result.includes(key)) {
+        result.push(key);
+      }
+    }
+
+    return result.length > 0 ? result : Object.keys(collection.columns).slice(0, 1);
+  }, [protoDefaultCols, collection.columns]);
+
+  const selectableProperties = useMemo(() => {
+    return Object.values(collection.columns).filter(
+      (col) => !HEADER_COLUMN_IDS.has(col.id) && col.id !== "primary_display_image",
+    );
+  }, [collection.columns]);
+
   const selectedColumnIds = useMemo(() => {
     const propsParam = searchParams.get("properties") || searchParams.get("columns");
     if (!propsParam) {
-      return protoDefaultCols;
+      return defaultSpecColumnIds;
     }
     const parsed = propsParam
       .split(",")
       .map((c) => c.trim())
-      .filter((c) => c in collection.columns);
-    return parsed.length > 0 ? parsed : protoDefaultCols;
-  }, [searchParams, protoDefaultCols, collection.columns]);
+      .filter(
+        (c) =>
+          c in collection.columns && !HEADER_COLUMN_IDS.has(c) && c !== "primary_display_image",
+      );
+    return parsed.length > 0 ? parsed : defaultSpecColumnIds;
+  }, [searchParams, defaultSpecColumnIds, collection.columns]);
 
   const filterQuery = searchParams.get("filter") || "";
 
@@ -374,6 +561,28 @@ export function CollectionTableView({
       .filter((c): c is ColumnConfig => !!c);
   }, [selectedColumnIds, collection]);
 
+  const sortableColumns = useMemo(() => {
+    const ordered: ColumnConfig[] = [];
+    const seen = new Set<string>();
+    const pushCol = (id: string) => {
+      if (id === "primary_display_image" || seen.has(id)) return;
+      const col = collection.columns[id];
+      if (col) {
+        seen.add(id);
+        ordered.push(col);
+      }
+    };
+    pushCol("name");
+    pushCol("manufacturer");
+    for (const id of selectedColumnIds) {
+      pushCol(id);
+    }
+    for (const id of Object.keys(collection.columns)) {
+      pushCol(id);
+    }
+    return ordered;
+  }, [collection.columns, selectedColumnIds]);
+
   const sortArray = useMemo(() => {
     if (!sortField) return [];
     return sortDir === "desc" ? [`^${sortField}`] : [sortField];
@@ -393,8 +602,8 @@ export function CollectionTableView({
   const handlePropertiesChange = (newProps: string[]) => {
     const nextParams = new URLSearchParams(searchParams);
     const isDefault =
-      newProps.length === protoDefaultCols.length &&
-      newProps.every((c, i) => c === protoDefaultCols[i]);
+      newProps.length === defaultSpecColumnIds.length &&
+      newProps.every((c, i) => c === defaultSpecColumnIds[i]);
     if (isDefault) {
       nextParams.delete("properties");
       nextParams.delete("columns");
@@ -465,8 +674,11 @@ export function CollectionTableView({
   );
   const hasPrevPage = pageIndex > 0;
 
+  const xlSpecColsClass =
+    XL_SPEC_GRID_COLS[Math.min(Math.max(activeColumns.length, 1), 5)] || "xl:grid-cols-5";
+
   return (
-    <div>
+    <div data-testid="collection-page-container" className="max-w-[110rem] mx-auto">
       <nav
         aria-label="Breadcrumb"
         className="mb-4 text-sm text-zinc-400 flex items-center gap-1.5 flex-wrap"
@@ -533,7 +745,8 @@ export function CollectionTableView({
               <div className="flex items-center gap-1.5">
                 <StyledSelect
                   value={
-                    sortField || (collection.columns["name"] ? "name" : activeColumns[0]?.id || "")
+                    sortField ||
+                    (collection.columns["name"] ? "name" : sortableColumns[0]?.id || "")
                   }
                   onChange={(newField) => {
                     const nextParams = new URLSearchParams(searchParams);
@@ -543,7 +756,7 @@ export function CollectionTableView({
                     nextParams.delete("order");
                     setSearchParams(nextParams);
                   }}
-                  options={activeColumns.map((col) => ({
+                  options={sortableColumns.map((col) => ({
                     value: col.id,
                     label: `Sort: ${col.title}`,
                   }))}
@@ -555,7 +768,7 @@ export function CollectionTableView({
                   onClick={() => {
                     const currentField =
                       sortField ||
-                      (collection.columns["name"] ? "name" : activeColumns[0]?.id || "");
+                      (collection.columns["name"] ? "name" : sortableColumns[0]?.id || "");
                     const nextDir = sortDir === "asc" ? "desc" : "asc";
                     const nextParams = new URLSearchParams(searchParams);
                     nextParams.set("sort", nextDir === "desc" ? `^${currentField}` : currentField);
@@ -577,9 +790,9 @@ export function CollectionTableView({
               </div>
 
               <PropertySelector
-                allProperties={Object.values(collection.columns)}
+                allProperties={selectableProperties}
                 selectedPropertyIds={selectedColumnIds}
-                defaultPropertyIds={protoDefaultCols}
+                defaultPropertyIds={defaultSpecColumnIds}
                 onChange={handlePropertiesChange}
               />
             </div>
@@ -590,109 +803,18 @@ export function CollectionTableView({
               No {collection.name.toLowerCase()} found matching the active filters.
             </div>
           ) : (
-            <div
-              data-testid="catalog-grid"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-4"
-            >
-              {items.map((item: any) => {
-                const productUrl = `/${getCollectionPath(collection)}/${item.id}`;
-                return (
-                  <article
-                    key={item.id}
-                    data-testid="catalog-card"
-                    className="rounded-2xl border border-zinc-800 bg-zinc-900/90 p-4 sm:p-5 shadow-xs hover:border-zinc-700 hover:shadow-md transition-all flex flex-col justify-between"
-                  >
-                    <div>
-                      {/* Header: Thumbnail + Badges/Manufacturer + Name + Community/Internal */}
-                      <div className="flex items-start gap-3 pb-3 mb-3 border-b border-zinc-800/80">
-                        {/* Thumbnail / Icon */}
-                        <div
-                          className={`w-12 h-12 rounded-xl shrink-0 flex items-center justify-center overflow-hidden border border-zinc-800 bg-zinc-800/80 ${colColor.textClass}`}
-                        >
-                          {item.primaryDisplayImage ? (
-                            <img
-                              src={item.primaryDisplayImage}
-                              alt=""
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <CollectionIcon collection={collection.id} size={22} />
-                          )}
-                        </div>
-
-                        {/* Title & Metadata */}
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center justify-between gap-1.5 mb-1">
-                            <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
-                              <CollectionBadge collection={collection.id} size="xs" />
-                              {item.manufacturer && (
-                                <span className="text-[11px] font-semibold text-zinc-500 uppercase tracking-wider truncate">
-                                  {item.manufacturer}
-                                </span>
-                              )}
-                            </div>
-                            <div className="flex items-center gap-1 shrink-0">
-                              {item.is_internal_only && (
-                                <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-amber-500/10 text-amber-400 border border-amber-500/20">
-                                  Internal
-                                </span>
-                              )}
-                            </div>
-                          </div>
-
-                          <Link
-                            to={productUrl}
-                            className="font-bold text-sm sm:text-base text-zinc-50 hover:text-emerald-400 transition-colors line-clamp-1 block"
-                            aria-label={`View ${item.name || item.id}`}
-                          >
-                            {item.name || item.id}
-                          </Link>
-                        </div>
-                      </div>
-
-                      {/* Spec Grid for active columns */}
-                      <div className="grid grid-cols-2 gap-2">
-                        {activeColumns
-                          .filter((col) => col.id !== "name")
-                          .map((col) => (
-                            <div
-                              key={col.id}
-                              className="bg-zinc-800/50 rounded-xl px-2.5 py-1.5 border border-zinc-800/80 flex flex-col min-w-0"
-                            >
-                              <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-500 truncate">
-                                {col.title}
-                              </span>
-                              <div className="text-xs font-semibold text-zinc-200 truncate mt-0.5">
-                                {col.renderCell(item)}
-                              </div>
-                            </div>
-                          ))}
-                      </div>
-
-                      {/* Description if present */}
-                      {item.description && (
-                        <p className="text-xs text-zinc-400 line-clamp-2 mt-3 leading-relaxed">
-                          {item.description}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* Footer Direct Link & ID */}
-                    <div className="mt-3.5 pt-2.5 border-t border-zinc-800/80 flex items-center justify-between text-xs">
-                      <span className="font-mono text-[11px] text-zinc-500 truncate">
-                        {item.id}
-                      </span>
-                      <Link
-                        to={productUrl}
-                        className="inline-flex items-center gap-1 font-semibold text-emerald-400 hover:underline shrink-0"
-                      >
-                        <span>Details</span>
-                        <ExternalLink size={12} />
-                      </Link>
-                    </div>
-                  </article>
-                );
-              })}
+            <div data-testid="catalog-grid" className="grid grid-cols-1 gap-3">
+              {items.map((item: any) => (
+                <CatalogRowCard
+                  key={item.id}
+                  item={item}
+                  productUrl={`/${getCollectionPath(collection)}/${item.id}`}
+                  collectionId={collection.id}
+                  colTextClass={colColor.textClass}
+                  activeColumns={activeColumns}
+                  xlSpecColsClass={xlSpecColsClass}
+                />
+              ))}
             </div>
           )}
 
@@ -767,7 +889,7 @@ export function CollectionPage() {
 
   if (!collection) {
     return (
-      <div>
+      <div data-testid="collection-page-container" className="max-w-[110rem] mx-auto">
         <nav
           aria-label="Breadcrumb"
           className="mb-4 text-sm text-zinc-400 flex items-center gap-1.5 flex-wrap"

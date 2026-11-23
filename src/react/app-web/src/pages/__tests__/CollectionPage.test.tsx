@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import { renderWithProviders } from "../../test/test-utils";
 import { CollectionPage } from "../CollectionPage";
@@ -36,7 +36,15 @@ describe("CollectionPage Component", () => {
     expect(screen.getAllByText(/showing/i).length).toBeGreaterThan(0);
     expect(screen.getByText("F60 PRO V")).toBeInTheDocument();
 
-    // Check row links to product detail pages
+    // Check bounded container & single-column row-card links to product detail pages
+    const pageContainer = screen.getByTestId("collection-page-container");
+    expect(pageContainer.className).toContain("max-w-[110rem]");
+    expect(pageContainer.className).toContain("mx-auto");
+
+    const catalogGrid = screen.getByTestId("catalog-grid");
+    expect(catalogGrid.className).toContain("grid-cols-1");
+    expect(catalogGrid.className).not.toContain("2xl:grid-cols-3");
+
     const emaxLink = screen.getByRole("link", { name: /view eco ii 2207/i });
     expect(emaxLink).toHaveAttribute("href", "/components/hardware/motors/emax-eco-ii-2207");
   });
@@ -79,17 +87,21 @@ describe("CollectionPage Component", () => {
       expect(screen.getByText("ECO II 2207")).toBeInTheDocument();
     });
 
-    // Find and click the Properties dropdown button
-    const propertiesButton = screen.getByRole("button", { name: /properties \(/i });
+    // Find and click the Properties dropdown button (5 default spec properties on Motors)
+    const propertiesButton = screen.getByRole("button", { name: /properties \(5\)/i });
     await user.click(propertiesButton);
 
-    // Popover should be open
-    expect(screen.getByText(/visible \(drag or arrows\)/i)).toBeInTheDocument();
+    // Popover should be open without duplicating Name or Manufacturer
+    const visibleHeader = screen.getByText(/visible \(drag or arrows\)/i);
+    expect(visibleHeader).toBeInTheDocument();
+    const popover = visibleHeader.closest("div.absolute") as HTMLElement;
+    expect(within(popover).queryByText("Name")).not.toBeInTheDocument();
+    expect(within(popover).queryByText("Manufacturer")).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Reset to Default" })).toBeInTheDocument();
 
-    // Find checkbox for Stator Size property and uncheck it to hide
+    // Find checkboxes for visible spec properties
     const checkboxes = screen.getAllByRole("checkbox");
-    expect(checkboxes.length).toBeGreaterThan(0);
+    expect(checkboxes.length).toBeGreaterThanOrEqual(5);
   });
 
   it("renders empty state message when no items match filters", async () => {
@@ -288,7 +300,7 @@ describe("CollectionPage Component", () => {
     await user.click(propertiesButton);
 
     // Hide Stator Size property by clicking its checkbox
-    const statorCheckbox = screen.getAllByRole("checkbox")[2]; // In visible properties
+    const statorCheckbox = screen.getAllByRole("checkbox")[1]; // In visible properties
     await user.click(statorCheckbox);
 
     await waitFor(() => {
@@ -304,7 +316,7 @@ describe("CollectionPage Component", () => {
     });
   });
 
-  it("renders catalog cards with rich details including manufacturer, badge, specs, and details link without hover cards", async () => {
+  it("renders single-column clickable row-cards with ~5 default spec pills and a square right-side photo pane", async () => {
     renderWithProviders(
       <Routes>
         <Route path="/components/:categoryId/:collectionId" element={<CollectionPage />} />
@@ -316,16 +328,27 @@ describe("CollectionPage Component", () => {
       expect(screen.getByText("ECO II 2207")).toBeInTheDocument();
     });
 
-    // Check catalog cards are rendered
+    // Check whole-card clickable links are rendered without hover cards or footer Details links
     const cards = screen.getAllByTestId("catalog-card");
     expect(cards.length).toBeGreaterThan(0);
+    expect(cards[0].tagName).toBe("A");
+    expect(cards[0]).toHaveAttribute("href", "/components/hardware/motors/emax-eco-ii-2207");
 
-    // Verify hover cards are not used on catalog cards
     expect(screen.queryByTestId("product-hover-card")).not.toBeInTheDocument();
+    expect(screen.queryByRole("link", { name: /details/i })).not.toBeInTheDocument();
 
-    // Check direct Details link is present in footer
-    const detailsLinks = screen.getAllByRole("link", { name: /details/i });
-    expect(detailsLinks.length).toBeGreaterThan(0);
-    expect(detailsLinks[0]).toHaveAttribute("href", "/components/hardware/motors/emax-eco-ii-2207");
+    // Verify 5 default spec pills are shown without duplicating Manufacturer
+    expect(within(cards[0]).getByText("KV")).toBeInTheDocument();
+    expect(within(cards[0]).getByText("Stator Size")).toBeInTheDocument();
+    expect(within(cards[0]).getByText("Max Current (A)")).toBeInTheDocument();
+    expect(within(cards[0]).getByText("Prop Mounts")).toBeInTheDocument();
+    expect(within(cards[0]).getByText("Weight (g)")).toBeInTheDocument();
+    expect(within(cards[0]).queryByText("Manufacturer")).not.toBeInTheDocument();
+
+    // Verify full-height 1:1 square right-side photo pane
+    const photoPanes = screen.getAllByTestId("catalog-card-photo");
+    expect(photoPanes.length).toBe(cards.length);
+    expect(photoPanes[0].className).toContain("aspect-square");
+    expect(photoPanes[0].className).toContain("self-stretch");
   });
 });

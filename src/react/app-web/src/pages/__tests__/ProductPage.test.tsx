@@ -26,7 +26,7 @@ describe("ProductPage Component", () => {
     });
 
     const detailContainer = screen.getByTestId("product-detail-container");
-    expect(detailContainer.className).toContain("max-w-[96rem]");
+    expect(detailContainer.className).toContain("max-w-[110rem]");
     expect(detailContainer.className).toContain("mx-auto");
 
     // Verify breadcrumb product name includes manufacturer without dash
@@ -103,7 +103,7 @@ describe("ProductPage Component", () => {
     });
 
     const detailContainer = screen.getByTestId("product-detail-container");
-    expect(detailContainer.className).toContain("max-w-[96rem]");
+    expect(detailContainer.className).toContain("max-w-[110rem]");
     expect(detailContainer.className).toContain("mx-auto");
 
     // Verify initial state: reviews panel is visible (not hidden)

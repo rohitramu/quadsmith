@@ -50,7 +50,7 @@ export function HomePage() {
   }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
-    <div className="max-w-[96rem] mx-auto">
+    <div data-testid="home-page-container" className="max-w-[110rem] mx-auto">
       {/* Top Welcome & Navigation Banner */}
       <section className="mb-8 p-6 rounded-2xl border border-zinc-800 bg-gradient-to-br from-zinc-900/60 to-zinc-950 shadow-xs">
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3 text-zinc-50">
@@ -99,7 +99,7 @@ export function HomePage() {
 
         {/* Loading Initial Skeleton */}
         {isLoading && (
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             {[1, 2].map((n) => (
               <div
                 key={n}
@@ -142,7 +142,7 @@ export function HomePage() {
         )}
 
         {/* Build Feed Stream */}
-        <div className="space-y-6">
+        <div data-testid="home-builds-grid" className="grid grid-cols-1 xl:grid-cols-2 gap-6">
           {builds.map((b) => (
             <BuildCard key={b.uuid || b.id} build={b} />
           ))}

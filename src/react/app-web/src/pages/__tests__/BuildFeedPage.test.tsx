@@ -9,6 +9,13 @@ describe("BuildFeedPage Component", () => {
 
     expect(screen.getByRole("heading", { level: 1, name: "Build Feed" })).toBeInTheDocument();
 
+    const container = screen.getByTestId("build-feed-container");
+    expect(container.className).toContain("max-w-[110rem]");
+    expect(container.className).toContain("mx-auto");
+
+    const feedGrid = screen.getByTestId("build-feed-grid");
+    expect(feedGrid.className).toContain("xl:grid-cols-2");
+
     expect(
       screen.getByText(/explore verified community and curated quadcopter builds/i),
     ).toBeInTheDocument();

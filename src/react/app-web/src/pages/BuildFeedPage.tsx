@@ -51,7 +51,7 @@ export function BuildFeedPage() {
   const buildColor = getCollectionColor("builds");
 
   return (
-    <div className="max-w-[96rem] mx-auto">
+    <div data-testid="build-feed-container" className="max-w-[110rem] mx-auto">
       {/* Page Header */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-6 border-b border-zinc-800">
         <div>
@@ -65,7 +65,7 @@ export function BuildFeedPage() {
               Build Feed
             </h1>
           </div>
-          <p className="text-xs sm:text-sm text-zinc-400 max-w-5xl leading-relaxed">
+          <p className="text-xs sm:text-sm text-zinc-400 leading-relaxed">
             Explore verified community and curated quadcopter builds. Inspect detailed Bills of
             Materials, component compatibility, and simulated flight performance.
           </p>
@@ -87,7 +87,7 @@ export function BuildFeedPage() {
 
         {/* Loading Initial Skeleton */}
         {isLoading && (
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             {[1, 2].map((n) => (
               <div
                 key={n}
@@ -130,7 +130,7 @@ export function BuildFeedPage() {
         )}
 
         {/* Build Feed Stream */}
-        <div className="space-y-6">
+        <div data-testid="build-feed-grid" className="grid grid-cols-1 xl:grid-cols-2 gap-6">
           {builds.map((b) => (
             <BuildCard key={b.uuid || b.id} build={b} />
           ))}

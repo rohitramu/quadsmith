@@ -32,7 +32,7 @@ export function CategoryPage() {
           : [];
 
   return (
-    <div>
+    <div data-testid="category-page-container" className="max-w-[110rem] mx-auto">
       <div className="flex items-center gap-3 mb-6">
         {categoryId === "hardware" && (
           <Cpu size={32} className="text-zinc-400 shrink-0" aria-hidden="true" />

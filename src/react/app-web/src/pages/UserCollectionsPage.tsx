@@ -126,7 +126,7 @@ export function UserCollectionsPage() {
 
   if (isLoadingSingleCol || isLoadingItems) {
     return (
-      <div className="max-w-[96rem] mx-auto py-16 flex justify-center text-zinc-400">
+      <div className="max-w-[110rem] mx-auto py-16 flex justify-center text-zinc-400">
         <Loader2 size={24} className="animate-spin text-blue-500" />
       </div>
     );
@@ -149,7 +149,7 @@ export function UserCollectionsPage() {
   const items = itemsRes?.items || [];
 
   return (
-    <div className="max-w-[96rem] mx-auto space-y-8 animate-in fade-in duration-200">
+    <div className="max-w-[110rem] mx-auto space-y-8 animate-in fade-in duration-200">
       {/* Breadcrumb */}
       <nav
         aria-label="Breadcrumb"

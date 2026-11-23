@@ -313,24 +313,26 @@ across all pages on mobile.
 ### <a id="unified-responsive-spec-card-grid-and-toolbar-sorting-in-component-catalogs" >Unified Responsive Spec Card Grid and Toolbar Sorting in Component Catalogs</a>
 
 In
-[`src/react/app-web/src/pages/CollectionPage.tsx`](../src/react/app-web/src/pages/CollectionPage.tsx),
+[`src/react/app-web/src/pages/CollectionPage.tsx`](../src/react/app-web/src/pages/CollectionPage.tsx)
+(further standardized for wide displays in
+[wide_viewport_container_standardization.md](wide_viewport_container_standardization.md)),
 the traditional multi-column `<table>` is replaced across **all viewports** with
-a **Unified Responsive Spec Card Grid**
-(`grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4`), and the creation
-action button label is streamlined to `+ Add New`:
+a **Single-Column Clickable Horizontal Split Row-Card List**
+(`grid grid-cols-1 gap-3`) inside a centered `max-w-[110rem] mx-auto` (`1760px`)
+container:
 
-| Element               | Mobile (`320px–639px` / `< sm`)                                                                          | Tablet (`640px–1023px`)              | Desktop (`>= 1024px` / `lg+`)                                                           |
-| :-------------------- | :------------------------------------------------------------------------------------------------------- | :----------------------------------- | :-------------------------------------------------------------------------------------- |
-| **Action Button**     | `+ Add New` compact emerald button                                                                       | `+ Add New` button                   | `+ Add New` button                                                                      |
-| **Card Grid Columns** | 1 column (`grid-cols-1 gap-3`)                                                                           | 1–2 columns (`sm:grid-cols-2 gap-4`) | 2–3 columns (`lg:grid-cols-2 2xl:grid-cols-3 gap-4`)                                    |
-| **Card Header**       | Component thumbnail/icon, `Name` link, `Manufacturer` subtitle, and category / `Community` badge         | Same unified card header             | Same unified card header with direct Details link (no redundant hover overlay)          |
-| **Card Spec Pills**   | 2-column grid of labeled key-value spec pills (`Weight`, `KV`, `Stator`, etc.) for all active properties | 2-column labeled spec pill grid      | 2-column labeled spec pill grid that wraps cleanly as more `Properties (N)` are enabled |
-| **Catalog Toolbar**   | Custom-styled **Sort Dropdown** (`Sort: Field ↑↓`) + `Properties (N)` popover                            | Same unified toolbar                 | Same unified toolbar                                                                    |
+| Element               | Mobile (`320px–639px` / `< sm`)                                                         | Tablet (`640px–1023px`)                                  | Desktop (`>= 1024px` / `lg+`)                                                                |
+| :-------------------- | :-------------------------------------------------------------------------------------- | :------------------------------------------------------- | :------------------------------------------------------------------------------------------- |
+| **Card Grid Columns** | 1 column (`grid-cols-1 gap-3`)                                                          | 1 column (`grid-cols-1 gap-3`)                           | 1 column (`grid-cols-1 gap-3`)                                                               |
+| **Card Shell & Left** | Whole-card clickable `<Link>` wrapping `<article>` with `Manufacturer` and bold `Name`  | Adds 1-line truncated `description` above spec pills     | Side-by-side left identity column (`lg:w-64 xl:w-[21rem]`) beside inline spec pills          |
+| **Card Spec Pills**   | 3-column grid (`grid-cols-3`) of ~4–5 default labeled spec pills                        | 3-column grid (`grid-cols-3`) of labeled spec pills      | Up to 5-column grid (`xl:grid-cols-5`) wrapping cleanly as more `Properties (N)` are enabled |
+| **Right Photo Pane**  | Full-height `1:1` square product photo (`aspect-square`) or centered `<CollectionIcon>` | Full-height `1:1` square product photo (`aspect-square`) | Full-height `1:1` square product photo (`aspect-square`) flush against the right card edge   |
+| **Catalog Toolbar**   | Custom-styled **Sort Dropdown** (`Sort: Field ↑↓`) + `Properties (N)` popover           | Same unified toolbar                                     | Same unified toolbar                                                                         |
 
 - **Zero Horizontal Overflow With Dynamic Properties**: When a user enables
   extra specification properties in the `Properties (N)` popover, additional
-  labeled key-value pills flow naturally inside each component card's spec grid
-  rather than forcing horizontal scrollbars.
+  labeled key-value pills flow naturally onto balanced rows inside each
+  component card's spec grid rather than forcing horizontal scrollbars.
 - **Unified Sorting**: Because sorting is driven by an explicit custom-styled
   toolbar dropdown (field selection + ascending/descending toggle) rather than
   table header cells, sorting is equally discoverable on mobile, tablet, and

@@ -23,7 +23,7 @@ describe("BuildProfilePage Component", () => {
     ).toBeInTheDocument();
 
     const detailContainer = screen.getByTestId("build-detail-container");
-    expect(detailContainer.className).toContain("max-w-[96rem]");
+    expect(detailContainer.className).toContain("max-w-[110rem]");
     expect(detailContainer.className).toContain("mx-auto");
     expect(screen.getByText(/Created by/i)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "@alex" })).toBeInTheDocument();
@@ -300,7 +300,7 @@ describe("BuildProfilePage Component", () => {
     ).toBeInTheDocument();
 
     const detailContainer = screen.getByTestId("build-detail-container");
-    expect(detailContainer.className).toContain("max-w-[96rem]");
+    expect(detailContainer.className).toContain("max-w-[110rem]");
     expect(detailContainer.className).toContain("mx-auto");
 
     // Verify initial state: reviews panel is visible (not hidden)
@@ -372,7 +372,7 @@ describe("BuildProfilePage Component", () => {
     ).toBeInTheDocument();
 
     const detailContainer = screen.getByTestId("build-detail-container");
-    expect(detailContainer.className).toContain("max-w-[96rem]");
+    expect(detailContainer.className).toContain("max-w-[110rem]");
     expect(detailContainer.className).toContain("mx-auto");
 
     // Verify Similar Builds tab is present
@@ -419,7 +419,7 @@ describe("BuildProfilePage Component", () => {
     ).toBeInTheDocument();
 
     const detailContainer = screen.getByTestId("build-detail-container");
-    expect(detailContainer.className).toContain("max-w-[96rem]");
+    expect(detailContainer.className).toContain("max-w-[110rem]");
     expect(detailContainer.className).toContain("mx-auto");
 
     const similarTabBtn = screen.getByRole("button", { name: /Similar Builds/i });

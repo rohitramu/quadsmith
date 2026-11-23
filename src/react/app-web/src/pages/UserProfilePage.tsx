@@ -194,7 +194,7 @@ export function UserProfilePage() {
   const displayColCount = collections.length;
 
   return (
-    <div className="max-w-[96rem] mx-auto space-y-8">
+    <div className="max-w-[110rem] mx-auto space-y-8">
       {/* User Profile Header Card */}
       <div className="p-8 rounded-2xl border border-zinc-800 bg-zinc-900 shadow-sm space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
